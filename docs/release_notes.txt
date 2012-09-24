@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.00! 
+Welcome to LimeSurvey v2.00+! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -51,933 +51,561 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.0RC7 to 2.0 (build 120920) Sept 20, 2012
--New feature: Added link from deactivation page to export page and corrected language (jcleeland)
--New Feature: Added remotecontrol function get_site_settings (Spiros Trougakos)
--New feature: CSS styles for EM's "Show Logic File" feature (Marcel Minke)
--New feature: Dropdown inline search options for jqGrid survey list (useful for active/expired/inactive) (jcleeland)
--New feature: Question save/save and close options - instead of just updating and closing, now choice is to save and keep editing, or to save and return to question view. My wife made me do it. (jcleeland)
--New feature: Remotecontrol functions for manipulation of groups (Spiros Trougakos)
--New feature: Remotecontrol functions for manipulation of questions (Spiros Trougakos)
--New feature: Remotecontrol functions for manipulation of surveys (Spiros Trougakos)
--New feature: Remotecontrol functions for manipulation of tokens (Spiros Trougakos)
--New Feature: Remotecontrol functions invite_participants, remind_participants (Spiros Trougakos)
--New feature: Sorting for inline text listing in statistics display, also initial sorting for text display of numerical responses. Todo: fix some of the sorting problems for numerical responses (jcleeland)
--New feature: Statistics browse, etc - view file and generic sort icons (jcleeland)
--New feature: Statistics output screen cleaned up, placed inside collapsible divs (jcleeland)
--New translation: Czech informal (Carsten Schmitz)
--New translation: Swahili (Carsten Schmitz)
-#Updated translation: Chinese (Hong Kong) (Traditional) by cmj
-#Updated translation: Chinese (Simplified) by jun9, yanglaw
-#Updated translation: Chinese (Taiwan) (Traditional) by hinghang, pochuenw
-#Updated translation: Croatian by c_schmitz
-#Updated translation: Czech by pavelwil, slansky
-#Updated translation: Czech Informal by slansky
-#Updated translation: Danish by nielsb
-#Updated translation: Dutch by MrP
-#Updated translation: Estonian by Erhi, LimAlf
-#Updated translation: French (France) by BenoitBouvarel, DenisChenu, titoun31, ulysse68
-#Updated translation: German by c_schmitz, debianese, tomscher, macwig
-#Updated translation: German (Informal) by groetzner, c_schmitz, PDrews, tomscher
-#Updated translation: Greek by kiolalis
-#Updated translation: Italian by flocs, gifino, lfanfoni, alesarrett, mike73rn, lpittalis
+Changes from 2.00 (build 120920) to 2.00+ (build 120924) Sept 24, 2012
+-Fixed issue #6562: Export token attribute fields not working (Carsten Schmitz)
+-Fixed issue #6568: Date filters do not seem to work in statistics reporting (Carsten Schmitz)
+-Fixed issue #6569: Setting $bUnused=true in list_participants results in error (Spiros Trougakos)
+-Fixed issue #6570: Saving survey-administrators shows wrong message (Carsten Schmitz)
+-Fixed issue #6573: Inconsistent behaviour of 'hide group description' setting (Carsten Schmitz)
+-Fixed issue #6574: Postgres DB Error after importing a survey (Carsten Schmitz)
+-Fixed issue #6578: Error whan saving global settings (Carsten Schmitz)
+-Fixed issue #6580: Errors when editing questions in a multilingual survey (Carsten Schmitz)
+-Fixed issue: Median calculation of timing response (Denis Chenu)
+-Fixed issue: Wrong description for extended question setting (Carsten Schmitz)
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by BenoitBouvarel, DenisChenu, Qat
+#Updated translation: German by c_schmitz
+#Updated translation: Italian by lfanfoni
 #Updated translation: Japanese by nomoto
-#Updated translation: Norwegian (Bokmal) by finni, peterhol, pmonstad
-#Updated translation: Persian by moohebat
-#Updated translation: Polish by elisa, zozlak
-#Updated translation: Portuguese (Portugal) by jtrigo
-#Updated translation: Russian by Fencer, gdemin
+#Updated translation: Malay by addaashar
+#Updated translation: Norwegian (Bokmal) by finni, peterhol
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by gchehab, mauriciofurtado
+#Updated translation: Portuguese (Portugal) by ecoutinho
+#Updated translation: Russian by Fencer
 #Updated translation: Serbian by MilaVeljovic
-#Updated translation: Spanish (Spain) by jbermudezperez, Nodens, jaimealvarezv, pavelwil
-#Updated translation: Swahili by jmbaria
+#Updated translation: Spanish (Mexican)
 #Updated translation: Turkish by kayazeren
--Fixed issue #4646: Reset conditions not working (Carsten Schmitz)
--Fixed issue #5795: No save message at attribute management (jcleeland)
+
+Changes from 1.92 (build 120919) to 2.00 (build 120920) Sept 20, 2012
++New feature #5044: Allowing selection of token valid from/until datea(#1) (Shubham Sachdeva)
++New feature #5762: empty class on empty input type text (Denis Chenu)
++New feature #5807: ability to replace survey_runtime.js function in template Fixed issue : time_limit attribute javascript error Dev : add only one css/js file if needed for question Dev : use css_header_includes and js_header_includes array from qanda Dev : TODO remove double call to jquery-ui.css, problem with slider (Denis Chenu)
++New feature #6073: token information on the browse index (Denis Chenu)
++New feature: "Send confirmation emails?" setting in Survey properties --> General settings --> Tokens. (Tony Partner)
++New feature: $lwcdropdowns setting removed from config-defaults.php and moved to Advanced question settings for List with Comment question type (Carsten Schmitz)
++New feature: A real installer (magiclko)
++New feature: Ability to change admin theme in global settings (Carsten Schmitz)
++New feature: Ability to copy data from participant attribute to the token field in a survey token table (jcleeland)
++New feature: Ability to make last minute changes in the survey activation screen to settings that cannot be changed after activation anymore (c_schmitz)
++New feature: Ability to overwrite/create attribute values for existing participants when importing from a CSV file (jcleeland)
++New feature: Ability to reset Expression Manager for admin with showlogicfile
++New feature: Add drag and drop feature to ranking question - done by GCI participant Nano8Blazex (Carsten Schmitz)
++New feature: Added link from deactivation page to export page and corrected language (jcleeland)
++New Feature: Added remotecontrol function get_site_settings (Spiros Trougakos)
++New feature: Allow different repeat heading for array, array text and array number question type (Denis Chenu)
++New feature: Attribute hide_tip now available for date question (Carsten Schmitz)
++New feature: Create new label sets or replace old ones from subquestions or answers
++New feature: CSS styles for EM's "Show Logic File" feature (Marcel Minke)
++New feature: Database installation by command line. Usage: "php index.php installer cmd_install_db" (Carsten Schmitz)
++New feature: Direct link from individual token entries to matching entry in the participants database in action row (jcleeland)
++New feature: Direct link from tokens to participants grid showing linked participants only (jcleeland)
++New feature: Dropdown inline search options for jqGrid survey list (useful for active/expired/inactive) (jcleeland)
++New feature: Each type of validation tip can be styled separately (so if a question fails validation checks, you can see whether it is because of wrong number of answers, wrong value range, wrong sum range, or wrong regex criteria). (tmswhite)
++New feature: Export multiple survey archives at the survey list as one big ZIP file (Carsten Schmitz)
++New feature: Export survey ZIP archive function with includes the survey structure, responses, tokens and timings - can be used for archival purposes or to move a survey from one server to another. (c_schmitz)
++New feature: Global setting to restrict the languages being available in administration or frontend (Carsten Schmitz)
++New feature: Header of ranking droptable in advanced settings (Denis Chenu)
++New feature: Implemented mass actions in surveylist which allows to delete/expire several surveys at the same time - only available to super administrators (Carsten Schmitz)
++New feature: In deactivation screen you can choose now between deactivation and expiration (Carsten Schmitz)
++New feature: More class on question and answer item for easiest manipulation
++New feature: More explicit labels for accessibility, hidden by default with .hide class
++New feature: Multilingual question attributes (Carsten Schmitz)
++New feature: New admin style (Carsten Schmitz)
++New feature: New admin style 'gartergrey' (Carsten Schmitz)
++New feature: New admin style 'gringegreen' (Carsten Schmitz)
++New feature: New images for cpdb links - 12 and 16pt size (jcleeland)
++New feature: New images for jqGrid navButtons (jcleeland)
++New feature: New translation: Spanish (Chile) kindly provided by Victor Pinto (Carsten Schmitz)
++New feature: Option to display text responses 'inline' in statistics output (will need translations) (Jason Cleeland)
++New feature: Option to switch between different graphs/no graph in statistics  - switchable in advanced question settings and in statistics itself (Carsten Schmitz)
++New feature: Participant CSV import detects existence of participant_id in CSV file, and if it exists, uses the participant_id to detect duplicates. Also cleaned up colors and styles of upload summary. (jcleeland)
++New feature: Permissions are now copied by default when copying a survey - also added an additional option to exclude it. (Carsten Schmitz)
++New feature: Ported LimeSurvey to use the Yii framework (magiclko,dionet)
++New feature: Question save/save and close options - instead of just updating and closing, now choice is to save and keep editing, or to save and return to question view. My wife made me do it. (jcleeland)
++New feature: Question save/save and close options - instead of just updating and closing, now choice is to save and keep editing, or to save and return to question view. My wife made me do it. (jcleeland)
++New feature: Randomization groups for question groups Carsten Schmitz)
++New feature: Randomization groups for question groups Carsten Schmitz)
++New feature: RemoteControl 'Activate survey' function (Carsten Schmitz)
++New feature: RemoteControl 'Activate tokens' function (Carsten Schmitz)
++New feature: RemoteControl function 'Export responses as csv/xls/pdf/doc' (Carsten Schmitz)
++New feature: RemoteControl function 'Modify survey locale setting' (Carsten Schmitz)
++New feature: RemoteControl functions 'Add/delete survey language' (Carsten Schmitz)
++New feature: Remotecontrol functions for manipulation of groups (Spiros Trougakos)
++New feature: Remotecontrol functions for manipulation of questions (Spiros Trougakos)
++New feature: Remotecontrol functions for manipulation of surveys (Spiros Trougakos)
++New feature: Remotecontrol functions for manipulation of tokens (Spiros Trougakos)
++New feature: Remotecontrol functions invite_participants, remind_participants (Spiros Trougakos)
++New feature: RemoteControl Import survey function (Carsten Schmitz)
++New feature: RemoteControl 'Modify survey settings' function (Carsten Schmitz)
++New feature: RemoteControl RPC API can now be switched to Off,JSON-RPC or XML-RPC (Carsten Schmitz)
++New feature: Reorder questions/question groups per Drag-n-drop  (Carsten Schmitz)
++New feature: Search option 'begins with' in cpdb so fields can be searched in an alternative way to 'contains' (jcleeland)
++New feature: Show Google maps with markers at statistics by GCI participant Licker Nandor (Carsten Schmitz)
++New feature: Show modified question attributes at question summary (Carsten Schmitz)
++New feature: Sorting for inline text listing in statistics display, also initial sorting for text display of numerical responses. Todo: fix some of the sorting problems for numerical responses (jcleeland)
++New feature: Statistics browse, etc - view file and generic sort icons (jcleeland)
++New feature: Statistics output screen cleaned up, placed inside collapsible divs (jcleeland)
++New feature: Survey links table now stores "Last invite" and "Date completed" information for survey links (jcleeland)
++New feature: Timer function added to radio list question type (jcleeland)
++New feature: Token section workflow improvements by GCI participant Nano8Blazex
++New feature: URL params for integration of survey panels (Carsten Schmitz)
++New translation: Afrikaans (Andrie de Vries)
++New translation: Amharic - kindly provided by Mezene Worku (Carsten Schmitz)
++New translation: Czech informal
++New translation: Swahili
+
+Changes from 1.92+ (build 120909) to 1.92+ (build 120919) September 19, 2012
+-Fixed issue #6528: Save changes on label set results in a php warning when text contains a tab character (Carsten Schmitz)
+-Fixed issue #6536: HTML editor converts special characters to html entities within equations (Carsten Schmitz)
+-Fixed issue #6547: Arbitrary URL redirect - parameter "redirect" (Carsten Schmitz)
+-Fixed issue #6553: $column_style global parameter aren't used (Denis Chenu)
+
+Changes from 1.92+ (build 120822) to 1.92+ (build 120909) September 9, 2012
+-Fixed issue #6530: Since latest update unable to upload documents in survey (Denis Chenu)
+-Fixed issue #6543: SQL injection in activate_functions.php - parameter "sid" (jcleeland)
+-Fixed issue #6544: SQL injection in activate_functions.php - parameter "fixnumbering" (jcleeland)
+-Fixed issue #6545: SQL injection in preview.php - parameter "lang". Sanitized language string. (jcleeland)
+-Fixed issue #6546: SQL injection in userrighthandling.php - parameter "ugid" (jcleeland)
+
+Changes from 1.92+ (build 120815) to 1.92+ (build 120822) August 22, 2012
+-Fixed issue #6423: Potential XSS in 'Resume survey' load form (Carsten Schmitz)
+#Updated translation: Chinese (Simplified) by jun9
+#Updated translation: French (France) by BenoitBouvarel
+#Updated translation: Italian by lfanfoni
+#Updated translation: Korean by gregshin
+#Updated translation: Spanish (Chile) by jergas
+#Updated translation: Thai
+
+Changes from 1.92+ (build 120808) to 1.92+ (build 120815) August 15, 2012
+-Fixed issue #6319: Preview group can throw error (Denis Chenu)
+-Fixed issue #6442 : Adding labels fails without numbers in last Code field in Label Set editor (Denis Chenu)
+-Fixed issue #6452: File Upload not working with embedded_layout use (Carsten Schmitz)
+-Fixed issue #6465: Assessment typo (Carsten Schmitz)
+-Fixed issue #6467 : checkbox for 'other' missing for multiple choice (Denis Chenu)
+-Fixed issue #6470 : Bad emplacement of Other text input box for large screen in Multiple option (Denis Chenu)
+-Fixed issue #6476: Error in data entry when using multiple choice with comment questions and MSSQL (Carsten Schmitz)
+-Fixed issue: Multiple option with checkbox : Other can be checked at submit with empty value (Denis Chenu)
+-Fixed issue: Remove escape character (\) from any field evaluated by EM. (Thomas White)
+#Updated translation: French (France) by BenoitBouvarel, DenisChenu
+#Updated translation: German by debianese
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Malay by ayahanda
+#Updated translation: Polish by elisa
+
+Changes from 1.92+ (build 120801) to 1.92+ (build 120808) August 8, 2012
+-Fixed issue #6424: Lastpage field not being added in MSSQL when upgrading from 1.85 or older (Carsten Schmitz)
+-Fixed issue #6439: Question type Array (numbers) does not work with numbers >10 as labels (Thomas White)
+#Updated translation: Czech by slansky
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Malay by ayahanda
+#Updated translation: Polish by elisa
+#Updated translation: Turkish by kayazeren
+
+Changes from 1.92+ (build 120725) to 1.92+ (build 120801) August 1, 2012
 -Fixed issue #6066: File upload fails if single oder double quotes are used (Carsten Schmitz)
--Fixed issue #6067: jqGrid behaviours for editing attributes fixed (jcleeland)
--Fixed issue #6113: Import participants from CSV does not work. Adjusted system settings to cope with mac file endings (jcleeland)
--Fixed issue #6189: Export to R - csv file uses incorrect quote character (andrie)
--Fixed issue #6259: PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ls2.lime_surveys' doesn't exist (Carsten Schmitz)
--Fixed issue #6287: Anable to export QueXML with Postgresql 9.1 Fixed issue #6297: QueXML Export broken Dev Removed condition checking for queXML export (Adam Zammit)
--Fixed issue #6319: Previewgroup can throw error (Denis Chenu)
+-Fixed issue #6287: Unable to export QueXML with Postgresql 9.1 (Adam Zammit)
+-Fixed issue #6297: QueXML Export broken Dev Removed condition checking for queXML export (Adam Zammit)
+-Fixed issue #6334: Don't have a valid session in file upload question (Carsten Schmitz)
+-Fixed issue #6387: Broken Add vs Replace Buttons on Quick Add for Labels (tpartner)
+-Fixed issue #6395: QuickAdd permits longer codes than 5 characters (Carsten Schmitz)
+#Updated translation: Albanian by emiljan, c_schmitz
+#Updated translation: Czech by slansky
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Formal) by gifino
+#Updated translation: Norwegian (Bokmal) by reidarborgersen, dittaeva
+#Updated translation: Polish by elisa
+#Updated translation: Turkish by kayazeren
+
+Changes from 1.92+ (build 120718) to 1.92+ (build 120725) July 25, 2012
+-Fixed issue #6312: Editing Survey Security Permissions as non-super-admin and non-survey owner throws PHP Fatal Error (Stephanie King)
+-Fixed Issue #6312 - Editing Survey Security Permissions as non-super-admin and non-survey owner throws PHP Fatal Error (Stephanie King)
+-Fixed issue #6335 : Group preview add answer (Denis Chenu)
+-Fixed issue #6336 : Bad template URL if templatedir is not exist (Denis Chenu)
+-Fixed issue #6337 : $defaulttemplate aren't allways used (Denis Chenu)
 -Fixed issue #6340: Error "String offset cast occured" when adding user and using PHP 5.4 or later (Carsten Schmitz)
--Fixed issue #6341: Installation fails if ./tmp/runtime is not writable (Carsten Schmitz)
--Fixed issue #6344: Printable survey shows wrong content for Array (Numbers) (Carsten Schmitz)
 -Fixed issue #6346: Statistic page filter not remembering statistics language (Carsten Schmitz)
--Fixed issue #6347: display of question text different in 1.92+ and 2.0 when view question in admin mode (Carsten Schmitz)
 -Fixed issue #6348: Bar chart not translated in statistics when changing statistics language (Carsten Schmitz)
 -Fixed issue #6349: condition does not work while using slider with stars (Thomas White)
--Fixed issue #6350: Error html_entity_decode(): charset `ANSI_X3.4-1968' not supported, assuming iso-8859-1 on survey save when sending confirmation email (Carsten Schmitz)
--Fixed issue #6351: Error when deleting a user (Carsten Schmitz)
--Fixed issue #6354: Typo. De-typo-ified (thx sammousa :-)) (jcleeland)
--Fixed issue #6355: Change graph type in statistics view not working (jcleeland)
--Fixed issue #6359: Installations with postgres as database fail because of syntax error (jcleeland)
--Fixed issue #6360: No Server time displayed in global settings (Carsten Schmitz)
--Fixed issue #6363: Statistics repsonse filters don't display speaker icon, show question text twice (jcleeland)
--Fixed issue #6363: updated blobblueish style for earlier fix (jcleeland)
--Fixed issue #6367: Participants database not importing from CSV even though CSV file in correct format (jcleeland)
--Fixed issue #6368: Some older tokens tables don't have all required fields. (jcleeland)
--Fixed issue #6371: Statistics not checking selected checkboxes in response filter section after displaying stats (jcleeland)
--Fixed issue #6372: Browse text responses does not work (jcleeland)
--Fixed issue #6372: Browse text responses doesn't work. Also reworked much of the stats function a lot of which is still spaghetti code. (jcleeland)
--Fixed issue #6374: Cannot delete survey response (Carsten Schmitz)
--Fixed issue #6377: Large integer values corrupted in survey responses (Carsten Schmitz)
--Fixed issue #6378: Fatal error when editing conditions and using Text (Array) question (Carsten Schmitz)
--Fixed issue #6379: Cannot define default answer for question (Carsten Schmitz)
--Fixed issue #6380: Error while exporting survey results to Excel (Carsten Schmitz)
--Fixed issue #6381: Central participant database, admin language should not determine the list of available surveys (jcleeland)
--Fixed issue #6383: All languages are presented when editing label set even restricted ones (Carsten Schmitz)
--Fixed issue #6385: Graphs produces "Undefined offset: 8" error when there are more than 7 items to display. Problem was the directory location of the pchart color palette. Also some code tidying, changing db calls to use standard Yii models rather than raw SQL. Also fixed bug caused when the 'statistics_graphtype' question attribute did not exist. (jcleeland)
--Fixed issue #6386: Importing CSV labels sets from LS website throws SQL exception (Carsten Schmitz)
--Fixed issue #6387: Broken Add vs Replace Buttons on Quick Add for Labels (tpartner)
--Fixed issue #6388: Graph cannot be changed from bar-graph to pie-graph javascript error occurs. Also added text explanations to the icons for mouseovers. (jcleeland)
--Fixed issue #6389: Changing bar graph to pie graph for text based question fails (jcleeland)
--Fixed issue #6389: Show text responses inline option no longer available. Fixed methodology to improve script efficiency. (jcleeland)
--Fixed issue #6390: Show text responses inline option no longer available in general filter of statistics page (jcleeland)
--Fixed issue #6391: Quartile calculations seem to be wrong. They really were. The limit/offset functions weren't working properly, and the method was calculating quartiles based on sum values, which is just wrong. Corrected methodology and database call, although the database call should probably be improved later. (jcleeland)
--Fixed issue #6392: Language switch question type broken (Carsten Schmitz)
--Fixed issue #6393: Multilingual attributes are lost when copying or importing survey (Carsten Schmitz)
--Fixed issue #6395: QuickAdd permits longer codes than 5 characters (Carsten Schmitz)
--Fixed issue #6397: Non-Superadmin user is unable to create a survey (Carsten Schmitz)
--Fixed issue #6398: New user unable to access CPD (jcleeland)
--Fixed issue #6401: Question Type List and Sample Popups fall off the screen (Sam Mousa)
--Fixed issue #6402: Adding participants to survey without selecting individual ones copies participants you don't own (jcleeland)
--Fixed issue #6403: Link from participants grid to surveys bypasses survey permissions (jcleeland)
--Fixed issue #6404: No bounce check button (Carsten Schmitz)
--Fixed issue #6410: No options for some location atributes (Carsten Schmitz)
--Fixed issue #6412: "SAVE" button visible when importing (Carsten Schmitz)
--Fixed issue #6419: Failed to reproduce statistic with large survey in Yii Branch (missing semi-colon) (jcleeland)
--Fixed issue #6420: Timer causes redirection even when perviewing a survey (jcleeland)
--Fixed issue #6423: Potential XSS in load saved survey form (Carsten Schmitz)
--Fixed issue #6424: Lastpage field not being added in MSSQL when upgrading from 1.85 or older (Carsten Schmitz)
--Fixed issue #6425: Misalignment for date filter at statistics (Carsten Schmitz)
--Fixed issue #6427: 'Select tokens IDs' line showing up even when no tokens were selected for sending reminders (Carsten Schmitz)
--Fixed issue #6428: Unable to set time in dropdown mode for date question type (Carsten Schmitz)
--Fixed issue #6429: Admin language should not determine the list of available attributes. Attributes now displayed in admin language first, then in the first found language if there is no admin language translation available (jcleeland)
--Fixed issue #6430: Central Participant Database: List of participants does not scale well with the number of attributes (jcleeland)
--Fixed issue #6433: Wrong date/time is showing in survey summary (Carsten Schmitz)
--Fixed issue #6434: Regenerate question codes doesn't work (Carsten Schmitz)
--Fixed issue #6438: Statistics doesn't work with numerical question types (Carsten Schmitz)
--Fixed issue #6439: Question type Array (numbers) does not work with numbers >10 as labels (Thomas White)
--Fixed issue #6440: Adding a question allways put at end of group (Denis Chenu)
--Fixed issue #6442: Adding labels fails without numbers in last Code field in Label Set editor (Denis Chenu)
--Fixed issue #6444: Fix English sentence on the install directions (Carsten Schmitz)
--Fixed issue #6445: No existing answer option imput field to start with when editing answer options (Carsten Schmitz)
--Fixed issue #6447: Question number doesn't display properly when the survey is refreshed. (Aaron Schmitz)
--Fixed issue #6448: Error when saving global settings on MSSQL (Carsten Schmitz)
--Fixed issue #6449: Faulty GUI after question group import (Carsten Schmitz)
--Fixed issue #6451: Missing array filter edit boxes in Ranking Question (Thomas White)
--Fixed issue #6452: File Upload not working with embedded_layout use (Carsten Schmitz)
--Fixed issue #6453: The generic image url was used instead of the adminimage url. The generic one does not take styles into account, the admin-one does. (Sam Mousa)
--Fixed issue #6456: Fixed the issue, editing now works. (Sam Mousa)
--Fixed issue #6459: Declaration of statistics::run() should be compatible with Survey_Common_Action::run() (Sam Mousa)
--Fixed issue #6460: Unable to change scenario number and to delete a scenario (Carsten Schmitz)
--Fixed issue #6463: Unable to add answers (Denis Chenu)
--Fixed issue #6465: Assessment typo (Carsten Schmitz)
--Fixed issue #6466: Wrong table name is displayed on deactivation (Carsten Schmitz)
--Fixed issue #6467: Checkbox for 'other' missing for multiple choice (Denis Chenu)
--Fixed issue #6468: Can't set participant attribute value to 0 (zero) on drop down (jcleeland)
--Fixed issue #6471: Unable to save label in label editor with XSS protection (Carsten Schmitz)
--Fixed issue #6472: Rank question overlaps if hidden by condition (Denis Chenu)
--Fixed issue #6473: When condition is corrected single quotes are added (Carsten Schmitz)
--Fixed issue #6474: When viewing answers, "View completed responses only" does not work (Carsten Schmitz)
--Fixed issue #6478: Unable to import excel survey (Carsten Schmitz) (Thomas White)
--Fixed issue #6481: Filters showing all text responses (jcleeland)
--Fixed issue #6482: Default values of hidden fields are not saved when taking survey (Carsten Schmitz)
--Fixed issue #6484: EM sessions misbehaving (Aaron Schmitz)
--Fixed issue #6486: Public statistics links broken (Carsten Schmitz)
--Fixed issue #6487: Backend statistics fatal error (Aaron Schmitz)
--Fixed issue #6488: Upload question type not working (Carsten Schmitz)
--Fixed issue #6489: Display problems in installer (Carsten Schmitz)
--Fixed issue #6490: Impossible to enable confirmation emails in survey settings (Carsten Schmitz)
--Fixed issue #6491: Modal dialogs in attribute control do not close after use or reload grid (jcleeland)
--Fixed issue #6493: Bounce settings are not saved (Carsten Schmitz)
--Fixed issue #6494: Non-existing attribute fields are shown (Carsten Schmitz)
--Fixed issue #6495: Version shows as RC8 on the RC9 release (Carsten Schmitz)
--Fixed issue #6496: Server error when changing question group for a question (Carsten Schmitz)
--Fixed issue #6498: E-mails incorrectly encoded (Carsten Schmitz)
--Fixed issue #6499: Unported CI code in import_helper.php (Carsten Schmitz)
--Fixed issue #6500: Plain ascii email invitations/reminders displaying HTML link (Carsten Schmitz)
--Fixed issue #6501: Import excel with same title for 2 group make Duplicate entry (Denis Chenu)
--Fixed issue #6503: Update of "Invitation sent" is broken (Carsten Schmitz)
--Fixed issue #6506: Central Participant Database: admin language should not determine the list of shown attributes (jcleeland)
--Fixed issue #6507: Central Participant Database: Admin language should not influence on the mapping of token attributes. System now checks if there is a matching description in the default language of the survey, then if not if there is a matching description in the currently selected admin language, then finally defaults to the first returned language. (jcleeland)
--Fixed issue #6508: Central Participant Database: Cannot edit more than 20 attributes per participant (also fixed sorting, and added paging and filtering options) (jcleeland)
--Fixed issue #6515: Central Participant Database on deleint participant not all data is erased (jcleeland)
--Fixed issue #6520: Participants Database - imported CSV file does not recognise firstname, lastname or email as acceptable fields if they are capitalised (jcleeland)
--Fixed issue #6526: Incorrect behavior when using prev/next question arrows for groups/questions (Carsten Schmitz)
--Fixed issue #6528: Save changes on label set results in a php warning when text contains a tab character (Carsten Schmitz)
--Fixed issue #6529: Subquestion showing iup in position select box when adding a question (Carsten Schmitz)
--Fixed issue #6530: Since latest update unable to upload documents in survey (Denis Chenu)
--Fixed issue #6536: HTML editor converts special characters to html entities within equations (Carsten Schmitz)
--Fixed issue #6539: When sending tokens emails they are sent out all at once instead of batches (Carsten Schmitz)
--Fixed issue #6540: Participants Database - database datatypes set wrong and are limited to short limits (jcleeland)
--Fixed issue #6541: Attempting to view multiple surveys at the same time causes survey to submit as incomplete, or questions disappear on refresh. - patch by LouisD (Carsten Schmitz)
--Fixed issue #6547: Arbitrary URL redirect - parameter "redirect" (Carsten Schmitz)
--Fixed issue #6552: When database session handling is enabled the session starts to behave errorenously after some time (Carsten Schmitz)
--Fixed issue #6553 : $column_style global parameter aren't used (Denis Chenu)
--Fixed issue #6555: "display tokens" page empty/slow when there are too many tokens - patch by siyang1982 (Carsten Schmitz)
--Fixed issue #6557: Problem when php-imap is not installed (Carsten Schmitz)
--Fixed issue: 5 point star rating breaked in Yii (Denis Chenu)
--Fixed issue: Add offset and limit to list_participant (Spiros Trougakos)
--Fixed issue: Adding labels look only the first code for number (Denis Chenu)
--Fixed issue: Bad place for HTML editor when creating new survey with HTML editor (Denis Chenu)
--Fixed issue: Case problem when browsing responses (mennodekker)
--Fixed issue: Casting for return values int in remotecontrol functions (Spiros Trougakos)
--Fixed issue: Change get and set functions(Survey,Group,Question,Tokens) invalid properties check (Spiros Trougakos)
--Fixed issue: Clean up remotecontrol of dublicate functions (Spiros Trougakos)
--Fixed issue: Cleanup of temp directories failing (Carsten Schmitz)
--Fixed issue: Default values not saved for certain question types. (Aaron Schmitz)
--Fixed issue: Delete a question rewrites question order by qid (Denis Chenu)
--Fixed issue: Delete dialog not visible in some instances (jcleeland)
--Fixed issue: Discriminate get_survey_locale_settings from get_survey_settings function (Spiros Trougakos)
--Fixed issue: Empty settings array returns status message in get-modify survey,group,token (Spiros Trougakos)
--Fixed issue: escaping in statistics browse text responses view, also added title/hover info for browse view (jcleeland)
--Fixed issue: Fix  wrong function descriptions (Spiros Trougakos)
--Fixed issue: Fix get_question_properties, set_question_properties, list_questions to take into account multilingual questions (Spiros Trougakos)
--Fixed issue: fix javascripts path using adminscript and generalscript in config setting (Yong Zhang)
--Fixed issue: Fix naming according to hungarian rule (Spiros Trougakos)
--Fixed issue: Fix PHP notice that breaks participants display - strict standards creating default object from empty value (extended version of Aaron's fix) (jcleeland)
--Fixed issue: Fixed error messages and functionality in list_surveys (Spiros Trougakos)
--Fixed issue: Import excel make multi sub question with the same code for additional langage (Denis Chenu)
--Fixed issue: Incorporated token_return functionality into get_token_list (Spiros Trougakos)
--Fixed issue: Invalid images and script file paths (Yong Zhang)
--Fixed issue: Invalid images paths (Yong Zhang)
--Fixed issue: leftover debug line removed (jcleeland)
--Fixed issue: Link for next/previous breaked (Denis Chenu)
--Fixed issue: More statistics_help script fixes (jcleeland)
--Fixed issue: Move hasSurveyPermission higher to avoid not needed calls (Spiros Trougakos)
--Fixed issue: Move insertParticipant from remotecontrol to model (Spiros Trougakos)
--Fixed issue: Move remotecontrol validation in model (Spiros Trougakos)
--Fixed issue: Multiple option with checkbox : Other can be checked at submit with empty value (Denis Chenu)
--Fixed issue: multiple short text and multiple numerical results in statistics were endlessly looping, continued cleaning up code (jcleeland)
--Fixed issue: numerical calculations in statistics were not working (jcleeland)
--Fixed issue: PHP Error in statistic_view.php (Rahmat Awaludin)
--Fixed issue: Printable survey not properly using the configured template (Carsten Schmitz)
--Fixed issue: questions with advanced-settting set to default to bar-graph weren't working in statistics page (jcleeland)
--Fixed issue: quota creation doesn't function properly. (Aaron Schmitz)
--Fixed issue: Relative URL path should not be used in email (Yong Zhang)
--Fixed issue: Remotecontrol function add_participants (Spiros Trougakos)
--Fixed issue: Remove obsolete RevertUpgradeConditionsToRelevance in delete_group (Spiros Trougakos)
--Fixed issue: Removed obsolete features from add_survey (Spiros Trougakos)
--Fixed issue: Resume later button not showing (Carsten Schmitz)
--Fixed issue: save button doesn't show in URL Parameters dialog (Aaron Schmitz)
--Fixed issue: Several problems when editing a quota (Carsten Schmitz)
--Fixed issue: Simplify in export_statistics (Spiros Trougakos)
--Fixed issue: sitename doesn't display properly in fronted statistics. (Aaron Schmitz)
--Fixed issue: Statistics pdf header was referring to old /image directory - updated to default to admin style image directory (jcleeland)
--Fixed issue: Statistics script not able to build query selector for array(column) question type (jcleeland)
--Fixed issue: Subquestions and attributes were not properly copied when copying question (Carsten Schmitz)
--Fixed issue: Survey breaking if configured template does not exist (Carsten Schmitz)
--Fixed issue: the background color of the jqGrid loading modal is too dark. This may not be the best colour, but it's better :-) (jcleeland)
--Fixed issue: Tokens not listed if related responses record is missing (Carsten Schmitz)
--Fixed issue: Tokens table not displaying more than 25 entries. Also added sort capabilities. (jcleeland)
--Fixed issue: Undefined variable: dv in check_view.php (Aaron Schmitz)
--Fixed issue: URL parameters for non-subquestions don't save properly (Aaron Schmitz)
--Fixed issue: URL parameters not rendered and saved correctly. (Aaron Schmitz)
+-Fixed issue: Bad CSS for empty other comment in mandatory question for citronade (Denis Chenu)
+-New feature: Ability to reset Expression Manager for admin with showlogicfile (Denis Chenu)
 
-
-Changes from 2.0RC6 to 2.0RC7 (build 120803) Aug 3, 2012
--Fixed issue #4646: Reset conditions not working (Carsten Schmitz)
--Fixed issue #6319: Previewgroup can throw error (Denis Chenu)
--Fixed issue #6347: display of question text different in 1.92+ and 2.0 when view question in admin mode (Carsten Schmitz)
--Fixed issue #6380: Error while exporting survey results to Excel (Carsten Schmitz)
--Fixed issue #6404: No bounce check button (Carsten Schmitz)
--Fixed issue #6412: "SAVE" button visible when importing (Carsten Schmitz)
--Fixed issue #6420: Timer causes redirection even when perviewing a survey (jcleeland)
--Fixed issue #6424: Lastpage field not being added in MSSQL when upgrading from 1.85 or older (Carsten Schmitz)
--Fixed issue #6425: Misalignment for date filter at statistics (Carsten Schmitz)
--Fixed issue #6427: 'Select tokens IDs' line showing up even when no tokens were selected for sending reminders (Carsten Schmitz)
--Fixed issue #6428: Unable to set time in dropdown mode for date question type (Carsten Schmitz)
--Fixed issue #6429: Admin language should not determine the list of available attributes. Attributes now displayed in admin language first, then in the first found language if there is no admin language translation available (jcleeland)
--Fixed issue #6430: Central Participant Database: List of participants does not scale well with the number of attributes (jcleeland)
--Fixed issue #6433: Wrong date/time is showing in survey summary (Carsten Schmitz)
--Fixed issue #6434: Regenerate question codes doesn't work (Carsten Schmitz)
--Fixed issue #6438: Statistics doesn't work with numerical question types (Carsten Schmitz)
--Fixed issue #6439: Question type Array (numbers) does not work with numbers >10 as labels (Thomas White)
--Fixed issue #6440: Adding a question allways put at end of group (Denis Chenu)
--Fixed issue #6442: Adding labels fails without numbers in last Code field in Label Set editor (Denis Chenu)
--Fixed issue #6444: Fix English sentence on the install directions (Carsten Schmitz)
--Fixed issue #6445: No existing answer option imput field to start with when editing answer options (Carsten Schmitz)
--Fixed issue #6448: Error when saving global settings on MSSQL (Carsten Schmitz)
--Fixed issue #6449: Faulty GUI after question group import (Carsten Schmitz)
--Fixed issue #6451: Missing array filter edit boxes in Ranking Question (Thomas White)
--Fixed issue #6452: File Upload not working with embedded_layout use (Carsten Schmitz)
--Fixed issue #6453: The generic image url was used instead of the adminimage url. The generic one does not take styles into account, the admin-one does. (Sam Mousa)
--Fixed issue #6456: Fixed the issue, editing now works. (Sam Mousa)
--Fixed issue #6459: Declaration of statistics::run() should be compatible with Survey_Common_Action::run() (Sam Mousa)
--Fixed issue #6460: Unable to change scenario number and to delete a scenario (Carsten Schmitz)
--Fixed issue #6463: Unable to add answers (Denis Chenu)
--Fixed issue #6465: Assessment typo (Carsten Schmitz)
--Fixed issue #6466: Wrong table name is displayed on deactivation (Carsten Schmitz)
--Fixed issue #6467: Checkbox for 'other' missing for multiple choice (Denis Chenu)
--Fixed issue #6468: Can't set participant attribute value to 0 (zero) on drop down (jcleeland)
--Fixed issue #6471: Unable to save label in label editor with XSS protection (Carsten Schmitz)
--Fixed issue #6472: Rank question overlaps if hidden by condition (Denis Chenu)
--Fixed issue #6473: When condition is corrected single quotes are added (Carsten Schmitz)
--Fixed issue #6474: When viewing answers, "View completed responses only" does not work (Carsten Schmitz)
--Fixed issue #6491: Modal dialogs in attribute control do not close after use or reload grid (jcleeland)
--Fixed issue: Adding labels look only the first code for number (Denis Chenu)
--Fixed issue: Bad place for HTML editor when creating new survey with HTML editor (Denis Chenu)
--Fixed issue: Delete a question rewrites question order by qid (Denis Chenu)
--Fixed issue: fix javascripts path using adminscript and generalscript in config setting (Yong Zhang)
--Fixed issue: Invalid images and script file paths (Yong Zhang)
--Fixed issue: Invalid images paths (Yong Zhang)
--Fixed issue: Multiple option with checkbox : Other can be checked at submit with empty value (Denis Chenu)
--Fixed issue: PHP Error in statistic_view.php (Rahmat Awaludin)
--Fixed issue: save button doesn't show in URL Parameters dialog (Aaron Schmitz)
--Fixed issue: Tokens not listed if related responses record is missing (Carsten Schmitz)
--Fixed issue: URL parameters for non-subquestions don't save properly (Aaron Schmitz)
--Fixed issue: PHP Script error in PrintanswersController.php (Rahmat Awaludin)
-#Updated translation: Chinese (Hong Kong) (Traditional) by cmj
-#Updated translation: Chinese (Taiwan) (Traditional) by pochuenw
-#Updated translation: Czech by slansky
-#Updated translation: Dutch by MrP
-#Updated translation: Estonian by LimAlf
-#Updated translation: French (France) by BenoitBouvarel, ulysse68
-#Updated translation: German by c_schmitz, debianese
-#Updated translation: German (Informal) by groetzner, c_schmitz
-#Updated translation: Italian by flocs, gifino, lfanfoni
-#Updated translation: Japanese by nomoto
-#Updated translation: Norwegian (BokmÃ¥l) by peterhol, pmonstad,
-#Updated translation: Persian by moohebat
-#Updated translation: Russian by gdemin
-#Updated translation: Turkish by kayazeren
-
-
-Changes from 2.0RC6 to 2.0RC7 (build 120803) Aug 3, 2012
--New feature: Added link from deactivation page to export page and corrected language (jcleeland)
--New Feature: Added remotecontrol function get_site_settings (Spiros Trougakos)
--New feature: CSS styles for EM's "Show Logic File" feature (Marcel Minke)
--New feature: Dropdown inline search options for jqGrid survey list (useful for active/expired/inactive) (jcleeland)
--New feature: Question save/save and close options - instead of just updating and closing, now choice is to save and keep editing, or to save and return to question view. My wife made me do it. (jcleeland)
--New feature: Remotecontrol functions for manipulation of groups (Spiros Trougakos)
--New feature: Remotecontrol functions for manipulation of questions (Spiros Trougakos)
--New feature: Remotecontrol functions for manipulation of surveys (Spiros Trougakos)
--New feature: Remotecontrol functions for manipulation of tokens (Spiros Trougakos)
--New feature: Sorting for inline text listing in statistics display, also initial sorting for text display of numerical responses. Todo: fix some of the sorting problems for numerical responses (jcleeland)
--New feature: Statistics browse, etc - view file and generic sort icons (jcleeland)
--New feature: Statistics output screen cleaned up, placed inside collapsible divs (jcleeland)
--Updated feature:  Remote control functions new naming schema (Spiros Trougakos)
-#Updated translation: Czech by slansky
-#Updated translation: Turkish by kayazeren
--Fixed issue #6401: Question type list and aample popups fall off the screen (Sam Mousa)
--Fixed issue #5795: No save message at attribute management (jcleeland)
--Fixed issue #6066: File upload fails if single oder double quotes are used (Carsten Schmitz)
--Fixed issue #6067: jqGrid behaviours for editing attributes has errors (jcleeland)
--Fixed issue #6113: Import participants from CSV does not work. Adjusted system settings to cope with mac file endings (jcleeland)
--Fixed issue #6259: PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ls2.lime_surveys' doesn't exist (Carsten Schmitz)
--Fixed issue #6287: Unable to export QueXML with Postgresql 9.1 Fixed issue #6297: QueXML Export broken Dev Removed condition checking for queXML export (Adam Zammit)
--Fixed issue #6340: Error "String offset cast occured" when adding user and using PHP 5.4 or later (Carsten Schmitz)
--Fixed issue #6341: Installation fails if ./tmp/runtime is not writable (Carsten Schmitz)
--Fixed issue #6344: Printable survey shows wrong content for Array (Numbers) (Carsten Schmitz)
--Fixed issue #6346: Statistic page filter not remembering statistics language (Carsten Schmitz)
--Fixed issue #6347: display of question text different in 1.92+ and 2.0 when view question in admin mode (Carsten Schmitz)
--Fixed issue #6348: Bar chart not translated in statistics when changing statistics language (Carsten Schmitz)
--Fixed issue #6349: Condition does not work while using slider with stars (Thomas White)
--Fixed issue #6350: Error html_entity_decode(): charset `ANSI_X3.4-1968' not supported, assuming iso-8859-1 on survey save when sending confirmation email (Carsten Schmitz)
--Fixed issue #6351: Error when deleting a user (Carsten Schmitz)
--Fixed issue #6354: Typo in sPostgres installation script (jcleeland)
--Fixed issue #6355: Change graph type in statistics view not working (jcleeland)
--Fixed issue #6359: Installations with postgres as database fail because of syntax error (jcleeland)
--Fixed issue #6360: No Server time displayed in global settings (Carsten Schmitz)
--Fixed issue #6363: Statistics repsonse filters don't display speaker icon, show question text twice (jcleeland)
--Fixed issue #6363: Updated blobblueish style for earlier fix (jcleeland)
--Fixed issue #6367: Participants database not importing from CSV even though CSV file in correct format (jcleeland)
--Fixed issue #6368: Missing variable after creating function (jcleeland)
--Fixed issue #6371: Statistics not checking selected checkboxes in response filter section after displaying stats (jcleeland)
--Fixed issue #6372: Browse text responses doesn't work. Also reworked much of the stats function a lot of which is still spaghetti code. (jcleeland)
--Fixed issue #6374: Cannot delete survey response (Carsten Schmitz)
--Fixed issue #6377: Large integer values corrupted in survey responses (Carsten Schmitz)
--Fixed issue #6378: Fatal error when editing conditions and using Text (Array) question (Carsten Schmitz)
--Fixed issue #6379: Cannot define default answer for question (Carsten Schmitz)
--Fixed issue #6381: Central participant database, admin language should not determine the list of available surveys (jcleeland)
--Fixed issue #6383: All languages are presented when editing label set even restricted ones (Carsten Schmitz)
--Fixed issue #6385: Graphs produces "Undefined offset: 8" error when there are more than 7 items to display. Problem was the directory location of the pchart color palette. Also some code tidying, changing db calls to use standard Yii models rather than raw SQL. Also fixed bug caused when the 'statistics_graphtype' question attribute did not exist. (jcleeland)
--Fixed issue #6386: Importing CSV labels sets from LS website throws SQL exception (Carsten Schmitz)
--Fixed issue #6387: Broken Add vs Replace Buttons on Quick Add for Labels (tpartner)
--Fixed issue #6388: Graph cannot be changed from bar-graph to pie-graph javascript error occurs. Also added text explanations to the icons for mouseovers. (jcleeland)
--Fixed issue #6389: Changing bar graph to pie graph for text based question fails (jcleeland)
--Fixed issue #6389: Show text responses inline option no longer available. Fixed methodology to improve script efficiency. (jcleeland)
--Fixed issue #6390: Show text responses inline option no longer available in general filter of statistics page (jcleeland)
--Fixed issue #6391: Quartile calculations seem to be wrong. They really were. The limit/offset functions weren't working properly, and the method was calculating quartiles based on sum values, which is just wrong. Corrected methodology and database call, although the database call should probably be improved later. (jcleeland)
--Fixed issue #6392: Language switch question type broken (Carsten Schmitz)
--Fixed issue #6393: Multilingual attributes are lost when copying or importing survey (Carsten Schmitz)
--Fixed issue #6395: QuickAdd permits longer codes than 5 characters (Carsten Schmitz)
--Fixed issue #6397: Non-Superadmin user is unable to create a survey (Carsten Schmitz)
--Fixed issue #6398: New user unable to access CPD (jcleeland)
--Fixed issue #6402: adding participants to survey without selecting individual ones copies participants you don't own (jcleeland)
--Fixed issue #6403: Link from participants grid to surveys bypasses survey permissions (jcleeland)
--Fixed issue #6410: No options for some location atributes (Carsten Schmitz)
--Fixed issue #6419: Failed to reproduce statistic with large survey in Yii Branch (missing semi-colon) (jcleeland)
--Fixed issue: 5 point star rating breaked in Yii (Denis Chenu)
--Fixed issue: Add offset and limit to list_participant (Spiros Trougakos)
--Fixed issue: Change get and set functions(Survey,Group,Question,Tokens) invalid properties check (Spiros Trougakos)
--Fixed issue: Clean up remotecontrol of dublicate functions (Spiros Trougakos)
--Fixed issue: Discriminate get_survey_locale_settings from get_survey_settings function (Spiros Trougakos)
--Fixed issue: Empty settings array returns status message in get-modify survey,group,token (Spiros Trougakos)
--Fixed issue: escaping in statistics browse text responses view, also added title/hover info for browse view (jcleeland)
--Fixed issue: Fixed error messages and functionality in list_surveys (Spiros Trougakos)
--Fixed issue: Fix get_question_properties, set_question_properties, list_questions to take into account multilingual questions (Spiros Trougakos)
--Fixed issue: Fix naming according to hungarian rule (Spiros Trougakos)
--Fixed issue: Fix PHP notice that breaks participants display - strict standards creating default object from empty value (extended version of Aaron's fix) (jcleeland)
--Fixed Issue: Fix  wrong function descriptions (Spiros Trougakos)
--Fixed issue: Incorporated token_return functionality into get_token_list (Spiros Trougakos)
--Fixed issue: Link for next/previous breaked (Denis Chenu)
--Fixed issue: more statistics_help script fixes (jcleeland)
--Fixed issue: Move hasSurveyPermission higher to avoid not needed calls (Spiros Trougakos)
--Fixed issue: Move insertParticipant from remotecontrol to model (Spiros Trougakos)
--Fixed issue: Move remotecontrol validation in model (Spiros Trougakos)
--Fixed issue: multiple short text and multiple numerical results in statistics were endlessly looping, continued cleaning up code (jcleeland)
--Fixed issue: numerical calculations in statistics were not working (jcleeland)
--Fixed issue: Printable survey not properly using the configured template (Carsten Schmitz)
--Fixed issue: questions with advanced-settting set to default to bar-graph weren't working in statistics page (jcleeland)
--Fixed issue: Remotecontrol function add_participants (Spiros Trougakos)
--Fixed issue: Removed obsolete features from add_survey (Spiros Trougakos)
--Fixed issue: Remove obsolete RevertUpgradeConditionsToRelevance in delete_group (Spiros Trougakos)
--Fixed issue: Resume later button not showing (Carsten Schmitz)
--Fixed issue: Simplify in export_statistics (Spiros Trougakos)
--Fixed issue: statistics pdf header was referring to old /image directory - updated to default to admin style image directory (jcleeland)
--Fixed issue: statistics script not able to build query selector for array(column) question type (jcleeland)
--Fixed issue: Subquestions and attributes were not properly copied when copying question (Carsten Schmitz)
--Fixed issue: Survey breaking if configured template does not exist (Carsten Schmitz)
--Fixed issue: the background color of the jqGrid loading modal is too dark. This may not be the best colour, but it's better :-) (jcleeland)
--Fixed issue: tokens table not displaying more than 25 entries. Also added sort capabilities. (jcleeland)
--Fixed issue: Path error for certain CSS files. (Aaron Schmitz)
-
-Changes from 2.0RC6 to 2.0RC7 (build 120721) June 20, 2012
--Fixed issue #6192 - PHP notice "undefined variable" when using end URL (jcleeland)
--Fixed issue #6277 - case insensitive search now enabled (default search changed ton "cn" (contains) in earlier update) (jcleeland)
--Fixed issue: Error on survey creation (Carsten Schmitz)
--Fixed issue "Indirect modification of overloaded element of CHttpSession has no effect" with statistics_helper - applying an array element to an object in Yii is problematic. (jcleeland)
-
-Changes from 2.0RC5 to 2.0RC6 (build 120720) June 19, 2012
-Fixed issue #6343: Fatal DB Error during fresh install (c_schmitz)
-New feature: Ability to reset Expression Manager for admin with showlogicfile
-Fixed issue #6330: Regex engine does not accept a leading zero even if explicitly specified as acceptable
-Fixed issue #6335 : Group preview add answers
-
-Changes from 2.0RC4 to 2.0RC5 (build 120719) June 19, 2012
--Fixed issue #6257: Manage token attribute fields language url tabs show "Array" (tpartner)
--Fixed issue #6304: Reloading unfinished survey can submit it without user interaction / reloading survey don't goe to actual step (Denis Chenu)
+Changes from 1.92+ (build 120711) to 1.92+ (build 120718) July 18, 2012
 -Fixed issue #6328: pre-filling of hidden questions does not work (Thomas White)
--Fixed issue #5597: No feedback from 'share panel', also fixed range of other nonfunctioning problems with share panel such as delete not working, change 'can_edit' not working (jcleeland)
--Fixed issue #5849: Unable to paste into numeric question types (Thomas White)
--Fixed issue #6116: Deleting token does not delete from lime_survey_links. Built all functionality, including deleting links when tokens table is dropped, and rebuilding links when a tokens table is restored. (jcleeland)
--Fixed issue #6138: crash MSSQL in token information (Denis Chenu)
--Fixed issue #6183: Ranking question unaccessible without javascript and touch screen (Denis Chenu)
--Fixed issue #6188: Display error in conditions editor when selecting several options per sub-question (Carsten Schmitz)
--Fixed issue #6210: Inconsistent database after deleting a file by "clear & exit" button (Denis Chenu)
--Fixed issue #6219: Show Logic File does not show auto-generated array_filter equations (Thomas White)
--Fixed issue #6242: Unable to print answers after submitting survey (Carsten Schmitz)
--Fixed issue #6244: Survey creation is not set properly (Carsten Schmitz)
--Fixed issue #6247: Folder ".../<limesurvey>/application/runtime" needs to be writable (Carsten Schmitz)
--Fixed issue #6248: Using "Quick Add" in label sets generates same code value for all lines (Carsten Schmitz)
--Fixed issue #6252: English warning message though German language set (Carsten Schmitz)
--Fixed issue #6254: Possible to define labels with the same code within a label set (Carsten Schmitz)
--Fixed issue #6255: Wrong encoding with certain browsers (Carsten Schmitz)
--Fixed issue #6256: Touch event support (tpartner)
--Fixed issue #6258: Double include of startpage and HEAD in clearall (Denis Chenu)
--Fixed issue #6261: unable to preview non-active survey, group, or question (Denis Chenu)
--Fixed issue #6264: Unable to access data entry screen (Carsten Schmitz)
--Fixed issue #6266: Email protocol defaults to sendmail (Carsten Schmitz)
--Fixed issue #6267: array_filter of ranking question does not work in Chrome and IE (Thomas White)
--Fixed issue #6268: Seemingly unable to save when editing a token (Carsten Schmitz)
--Fixed issue #6271: text entry fields use onchange instead of onkeyup events to propagate changes (Thomas White)
--Fixed issue #6272: Tokenlist is empty (tpartner)
--Fixed issue #6279: "Cannot modify header information" warning after DB update (Carsten Schmitz)
--Fixed issue #6281: hidden variables used in equations have wrong name so don't POST properly (Thomas White)
--Fixed issue #6283: Quick translation is not working (tpartner)
--Fixed issue #6284: In some cases statistics' layout is broken (Carsten Schmitz)
--Fixed issue #6285: Error on response export to PDF (Carsten Schmitz)
--Fixed Issue #6286: White screen when you enter in /index.php/admin/index after login with a user whitout permission (jositopr)
--Fixed issue #6293: {SURVEYURL} incorrect in invitations/reminders (Carsten Schmitz)
--Fixed issue #6295: Cannot change question group (Carsten Schmitz)
--Fixed issue #6296: Question type file upload dose not work (tpartner)
--Fixed issue #6298: File upload button too narrow in Safari + Chrome (tpartner)
--Fixed issue #6300: Token can be duplicated under some condition (For Yii : dummy token) (Denis Chenu)
--Fixed issue #6305: Assessment values are not shown in logic file; nor in question, and group previews (Thomas White)
--Fixed issue #6306: Dashes in template name should not be allowed (Carsten Schmitz)
--Fixed issue #6309: Bad javascript for Multiple choice with "Other option" (Denis Chenu)
--Fixed issue #6314: Survey user can change questionnaire translation even when it only has read rights (Carsten Schmitz)
--Fixed issue #6317: Time statistics is not active (Denis Chenu)
+-Fixed issue #6304: Reloading unfinished survey can submit it without user interaction / reloading survey don't goe to actual step (Denis Chenu)
 -Fixed issue #6318: Attributes/validation cut off when checking with EM (Carsten Schmitz)
 -Fixed issue #6329: Language titles in language switcher are displayed in the currently used language instead of the native name (Carsten Schmitz)
 -Fixed issue #6330: Regex engine does not accept a leading zero even if explicitly specified as acceptable (Thomas White)
--Fixed issue #6331: Optin and Optout features not working in Yii version. Optout has been updated to fix. Optin will be next. Placeholders created for opting out of participants system (ie: system wide optout, as opposed to single token optout) (jcleeland)
--Fixed issue #6336: Bad template URL if templatedir is not exist (Denis Chenu)
--Fixed issue #6337: $defaulttemplate aren't allways used (Denis Chenu)
--Fixed issue: Incorrectly placed parenthesis breaking token search (jcleeland)
--Fixed issue: Missing reset button in token search screen (jcleeland)
--Fixed issue: Action icons weren't produced when searching through tokens (jcleeland)
--Fixed issue: After deleting token table, screen was returning to survey list but it should return to viewing the survey currently being worked on (jcleeland)
--Fixed issue: Alloweditaftercompletion is break (Denis Chenu)
--Fixed issue: Attribute editing styles and layout fixed to make sense, copying participants and attributes between CPDB and token tables fixed, and made to allow choice between copying attributes, and permanently linking. Fixed numerous bugs and inconsistencies. Improved layout of mapping pages, made consistent. (jcleeland)
--Fixed issue: Automapped attributes not overwriting when copied from CPDB to token (jcleeland)
--Fixed issue: Bad CSS for empty other comment in mandatory question for citronade (Denis Chenu)
--Fixed issue: Bad repeat head with some parameter (Denis Chenu)
--Fixed issue: Centering stopped working on mapping screens. (jcleeland)
--Fixed issue: Changes to comments in multiple choice checkbox could not trigger changes in tailoring (Thomas White)
--Fixed issue: Cleaned up and synchronised styles for attribute mapping (including blobbluish) (jcleeland)
--Fixed issue: Clearing "other" value in multiple choice checkbox did not clear associated comment (Thomas White)
--Fixed issue: Colors for CPDB attribute mapping pages in gringegreen template had not been updated (jcleeland)
--Fixed issue: Copying of values and attributes from tokens to cpdb, and vice versa, now fully tested and working including the ability to select to overwrite attribute values to participants who already exist in either table (token or cpdb) (jcleeland)
--Fixed issue: Copy token participants and mapping token attributes functionality and layouts corrected and now work in all tested scenarios (jcleeland)
--Fixed issue: CSS for mapping (attribute, CSV and Tokens from CPDB) weren't referenced properly. (jcleeland)
--Fixed issue: Email invitation icon was displaying for completed tokens. Fixed layout issues with action icons as well. (jcleeland)
--Fixed issue: EM unit tests broken due to  missing LEMradix variable. (Thomas White)
--Fixed issue: error when browsing linked responses if the associated token was missing - $browsedatafield does not exist line 33. (jcleeland)
--Fixed issue: Error when using MSSQL and editing survey settings (Carsten Schmitz)
--Fixed issue: Excel Survey Structure export was not exporting assessment values (Thomas White)
--Fixed issue: FilterToolbar on main screen (listing surveys) was not listing surveys properly, also modified to used defaultSearch = 'cn' (contains) so that searches list matching items that contain the search string rather than start-with the search string. (jcleeland)
--Fixed issue: Further fixes and cleanups of participant database system (jcleeland)
--Fixed issue: Missing images at panel integration setting (Carsten Schmitz)
--Fixed issue: Missing semi-colons (jcleeland)
--Fixed issue: More fixes for participant database search feature, also fixed attribute mapping CPDB->tokens for token attributes (jcleeland)
--Fixed issue: Multi condition searches were not working, function completely reworked (jcleeland)
--Fixed issue: No link between tokens table and central participants database - added icon in toolbar (jcleeland)
 -Fixed issue: Other comment mandatory requires 2 or more characters in comment field instead of 1 or more characters (Thomas White)
--Fixed issue: Panel icons for search and export were not working in the Participants database. Also tidied code in tokens.js (jcleeland)
--Fixed issue: Problems with activation/deactivation when using MSSQL server (Carsten Schmitz)
--Fixed issue: Restoring token table did not restore attributedescription value in the surveys table and so any extra attributes were not known about. Can recreate descriptive names for CPDB linked attributes but can only recreate basic fieldname for token only attributes. (jcleeland)
--Fixed issue: Revert to using onchange instead of onkeyup for Array  Numbers when using dropdown lists of numbers (Thomas White)
--Fixed issue: RPC method 'add_response' failing if the survey is not datestamped (Carsten Schmitz)
--Fixed issue: Search by number-of survey links as second item in multi item search was not working (jcleeland)
--Fixed issue: Search by survey_links in participants screen was not working. Now can search by number of surveys a participant has been invited to (jcleeland)
--Fixed issue: Searches in Tokens grid not working (jcleeland)
--Fixed issue: Search not working in tokens after changing jqGrid settings to "loadonce: true" (jcleeland)
--Fixed issue: Search with multiple criteria not working in various scenarios (jcleeland)
--Fixed issue: Show Survey Logic File does not show survey title, description, welcome, endmsg, endurl, nor any errors within them (Thomas White)
--Fixed issue: Sorting issues for subgrids, token script and participants tables fixed. (jcleeland)
--Fixed issue: Third search choice in search popup did not include attribute search options (jcleeland)
--Fixed issue: Tokens grid wasn't giving link to view response when survey is not anonymous and token has been completed (jcleeland)
--Fixed issue: Too much replicated code in search functions. Code has been rationalised and reduced in size by about 5/6ths. The getParticipantsSearch function is also now deprecated and getParticipantsSearchMultiple() function can be used as a drop in replacement. (jcleeland)
--Fixed issue: Unchecking entries in multiple choice checkbox did not clear associated comment (Thomas White)
--Fixed issue: When copying a participant attribute value to the token field in a tokens table and not overwriting existing data, system attempted to rename token field (jcleeland)
--Fixed issue: When dropping a tokens table, the attributedescriptions field in the surveys table was left unchanged, which meant when a new tokens table was created, there would be errors because the matching attribute fields didn't exist any more. Field is now cleared when table dropped. TODO: create replacement data for this field when restoring a tokens table. (jcleeland)
--Fixed issue: When sending email invitation system did not show details or error messages (jcleeland)
--Fixed issue: When updating token table to record completed survey, date format was incorrect (jcleeland)
 -Fixed issue: Whole Question Validation (em_validation_q) missing from several question types (Thomas White)
--Fixed issue: Wrong flag image for ZH-Hant-TW (Carsten Schmitz)
--New feature: Ability to copy data from participant attribute to the token field in a survey token table (jcleeland)
--New feature: Ability to overwrite/create attribute values for existing participants when importing from a CSV file (jcleeland)
--New feature: Allow different repeat heading for array, array text and array number question type (Denis Chenu)
--New feature: Direct link from individual token entries to matching entry in the participants database in action row (jcleeland)
--New feature: Direct link from tokens to participants grid showing linked participants only (jcleeland)
--New feature: Header of ranking droptable in advanced settings (Denis Chenu)
--New Feature: New images for cpdb links - 12 and 16pt size (jcleeland)
--New feature: New images for jqGrid navButtons (jcleeland)
--New feature: Participant CSV import detects existence of participant_id in CSV file, and if it exists, uses the participant_id to detect duplicates. Also cleaned up colors and styles of upload summary. (jcleeland)
--New feature: RemoteControl 'Activate survey' function (Carsten Schmitz)
--New feature: RemoteControl 'Activate tokens' function (Carsten Schmitz)
--New feature: RemoteControl function 'Export responses as csv/xls/pdf/doc' (Carsten Schmitz)
--New feature: RemoteControl function 'Modify survey locale setting' (Carsten Schmitz)
--New feature: RemoteControl functions 'Add/delete survey language' (Carsten Schmitz)
--New feature: RemoteControl Import survey function (Carsten Schmitz)
--New feature: RemoteControl 'Modify survey settings' function (Carsten Schmitz)
--New feature: RemoteControl RPC API can now be switched to Off,JSON-RPC or XML-RPC (Carsten Schmitz)
--New feature: Search option 'begins with' in cpdb so fields can be searched in an alternative way to 'contains' (jcleeland)
--New feature: Survey links table now stores "Last invite" and "Date completed" information for survey links (jcleeland)
 #Updated translation: Chinese (Simplified) by yooyooh
 #Updated translation: Czech by slansky
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by Mazi
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Polish by elisa
+#Updated translation: Spanish (Spain) by danielgeisler
+
+Changes from 1.92+ (build 120704) to 1.92+ (build 120711) July 11, 2012
+-Fixed issue #6207: Error "Ambiguous column name 'qid'" when using MSSQL server and editing answer options (Carsten Schmitz)
+-Fixed issue #6252: English warning message though German language set (Carsten Schmitz)
+-Fixed issue #6282: Error accessing a survey from a language that it hasn't (Carsten Schmitz)
+-Fixed issue #6284: In some cases statistics' layout is broken (Carsten Schmitz)
+-Fixed issue #6290: Array (texts) responses with single quotes are truncated on data entry screen (Carsten Schmitz)
+-Fixed issue #6300: Token can be duplicated under some condition (Denis Chenu)
+-Fixed issue #6305: Assessment values are not shown in logic file; nor in question, and group previews (Thomas White)
+-Fixed issue #6309 : Bad javascript for 	Multiple choice with "Other option" (Denis Chenu)
+-Fixed issue: Several remote file inclusion vulnerabilities (only when register_globals is activated) (Carsten Schmitz)
+-Fixed issue: When magic quotes enabled on the server then quoting was not correct on the response data (Carsten Schmitz)
+#Updated translation: Czech by slansky
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Polish by elisa
+#Updated translation: Russian by gdemin
+#Updated translation: Spanish (Spain) by gap1981
 #Updated translation: Turkish by kayazeren
 
-
-Changes from 2.0RC3 to 2.0RC4 (build 120522) June 22, 2012
--Fixed issue #6240: conversion of conditions to relevance can fail for multiple choice tests during some upgrades. (Thomas White)
--Fixed issue: Problems on upgrade from a previous version (Carsten Schmitz)
--Fixed issue: Proper codes for Italian translations (Carsten Schmitz)
-#Updated translation: Chinese (Simplified) by yooyooh
+Changes from 1.92+ (build 120623) to 1.92+ (build 120704) July 4, 2012
 #Updated translation: Czech by slansky
-#Updated translation: German by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Spanish (Chile) by SirCrovax
+-Fixed issue #5849: Unable to paste into numeric question types (Thomas White)
+-Fixed issue #6188: Display error in conditions editor when selecting several options per sub-question (Carsten Schmitz)
+-Fixed issue #6210 Inconsistent database after deleting a file by "clear & exit" button (Denis Chenu)
+-Fixed issue #6250 : Public statistics always use default template (Denis Chenu)
+-Fixed issue #6256: Touch event support (tpartner)
+-Fixed issue #6271: text entry fields use onchange instead of onkeyup events to propagate changes (Thomas White)
+-Fixed issue #6281: hidden variables used in equations have wrong name so don't POST properly (Thomas White)
+-Fixed issue #6296: Question type file upload dose not work (tpartner)
+-Fixed issue #6298: File upload button too narrow in Safari + Chrome (tpartner)
+-Fixed issue: Array filter of ranking does not work reliably across browsers (Thomas White)
+-Fixed issue: Changes to comments in multiple choice checkbox could not trigger changes in tailoring (Thomas White)
+-Fixed issue: Clearing "other" value in multiple choice checkbox did not clear associated comment (Thomas White)
+-Fixed issue: EM unit tests broken due to  missing LEMradix variable. (Thomas White)
+-Fixed issue: Revert to using onchange instead of onkeyup for Array  Numbers when using dropdown lists of numbers (Thomas White)
+-Fixed issue: Show Survey Logic File does not show survey title, description, welcome, endmsg, endurl, nor any errors within them (Thomas White)
+-Fixed issue: Unchecking entries in multiple choice checkbox did not clear associated comment (Thomas White)
+-Fixed issue: Wrong flag image for ZH-Hant-TW (Carsten Schmitz)
+-Fixed issue: Removed dot in front of languageswitch drop down. (Marcel Minke)
+
+Changes from 1.92+ (build 120620) to 1.92+ (build 120623) June 22, 2012
+-Fixed issue #6240: conversion of conditions to relevance can fail for multiple choice tests during some upgrades (Thomas White)
+#Updated translation: Chinese (Simplified) by yooyooh
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Italian by gifino, lfanfoni
+#Updated translation: Polish by elisa
 
 
-Changes from 2.0RC2 to 2.0RC3 (build 120521) June 20, 2012
-+New feature: Timer function added to radio list question type (jcleeland)
--Fixed issue #6155: Error on MSSQL: Ambiguous column name qid (Menno Dekker)
--Fixed issue #6157: Random answer order doesn't work with postgresql (mennodekker)
--Fixed issue #6057: Hitting RETURN while typing in M.C. 'Other' of non-tracked survey looses all survey input (tpartner)
--Fixed issue #6137: Import Excel survey structure leads to database crash (Andrie de Vries)
--Fixed issue #6137: Import Excel survey structure leads to database crash (Denis Chenu)
--Fixed issue #1643 - Participant panel - display participants crash, should replace "en" with 'en'. Done. (jcleeland)
+Changes from 1.92+ (build 120613) to 1.92+ (build 120620) June 20, 2012
 -Fixed issue #5766: exclude_all_others_auto does not work (Thomas White)
--Fixed issue #5943: exclusive option in multiple choice hide all other answer options (Thomas White)
--Fixed issue #6079: sub-question filtering broken if "other" or "no answer" option is given (Thomas White)
--Fixed issue #6130: Response emails sent as "text/plain" but with HTML embedded (Carsten Schmitz)
--Fixed issue #6131: Images for questions upoaded to server but not showed up (Carsten Schmitz)
--Fixed issue #6133: Race condition with concurrent upload of similar "survey structure" (Carsten Schmitz)
--Fixed issue #6138 : Undefined index: count(tid) in Tokens_dynamic.php with postgresql (Denis Chenu)
--Fixed issue #6140: Survey doesn't start from where it was left on Token Persistence (Thomas White)
--Fixed issue #6147: "Please rank at least x items" not being translated (Carsten Schmitz)
--Fixed issue #6149: EM shows wrong result for number generated by rand() function (Thomas White)
--Fixed issue #6154: File upload questions not mandatory anymore (Thomas White)
--Fixed issue #6158: in question-by-question mode, EM replacements in same group but on different page use <span> (Thomas White)
--Fixed issue #6159: On Chrome 19 and IE 8 jqGrid is too wide (tpartner)
--Fixed issue #6160: unable to import .lss files (Thomas White)
--Fixed issue #6161: Unable to create a new survey (Thomas White)
--Fixed issue #6163: error in mandatory array_filter-ed multi-numeric and multiple-short questions (Thomas White)
--Fixed issue #6165: unable to implement affirmative exclusive non-answer in array_filter_exclude (Thomas White)
--Fixed issue #6169 - Timer message not displayed correctly. The js_header_includes function was adding extra directory information to any call to include js files that didn't start with http - breaking any relative url's included. (jcleeland)
--Fixed issue #6171: variable < X is true even if variable isn't answered (Thomas White)
--Fixed issue #6173: users can skip min_sum_value and equals_sum_value questions (Thomas White)
--Fixed issue #6175: using "Array filter" and other option causes an error (Thomas White)
--Fixed issue #6176: replacements of other value for multiple-choice don't appear when click previous (Thomas White)
--Fixed issue #6177: uppercase logical operators (e.g. 'OR') in EM yield JavaScript errors (Thomas White)
--Fixed issue #6186: Array Question Type: EM doesn't convert condition correctly, AND becomes OR (Thomas White)
--Fixed issue #6187: Javascript Error on em_javascript.js : attr is undefined (Thomas White)
--Fixed issue #6193 : AdminController cannot find the requested view "/admin/user/setUserRights" (Denis Chenu)
--Fixed issue #6196: Misplaced PopUpEditor icon (tpartner)
--Fixed issue #6197: Session expiration timeout is 0 (Carsten Schmitz)
--Fixed issue #6200: if enter text into other box, then click the other checkbox, the entered text disappears (Thomas White)
--Fixed issue #6201: Fatal error: Cannot redeclare replacenewline() (Thomas White)
--Fixed issue #6202 : SQL error with failed_login_attempts with IPv6 (Denis Chenu)
 -Fixed issue #6205: Add http:// by default to endurl for indication (Denis Chenu)
--Fixed issue #6206: Question re-ordering not reflected in question picker drop-down (Carsten Schmitz)
 -Fixed issue #6207: [Microsoft][ODBC SQL Server Driver][SQL Server]Ambiguous column name 'qid' (Carsten Schmitz)
 -Fixed issue #6207: [Microsoft][ODBC SQL Server Driver][SQL Server]Ambiguous column name 'qid' (Thomas White)
+-Fixed issue #6208 : Adding user to user group leads to error message (Denis Chenu)
 -Fixed issue #6211: Problems with two "file upload" question types in the same question group (Thomas White)
 -Fixed issue #6213: File upload questions tips have an error in italian (Thomas White)
 -Fixed issue #6214: relevance equations that only contain static replacement values cause JS crash (Thomas White)
 -Fixed issue #6221: Array filtering does not work when trigger question has multiple inputs per row (Thomas White)
 -Fixed issue #6222: Conditions not working when it relies on value from a hidden question (Thomas White)
+-Fixed issue #6223: Admin login does not work with postgres right after install (Carsten Schmitz)
+-Fixed issue #6224: resetadminpw.php: SQL-string for postgres incorrect (Carsten Schmitz)
 -Fixed issue #6225: unable to pass qcode-named variables via URL (Thomas White)
--Fixed issue #6226 & #6229 : Cannot edit answer (token and edit answers after submitting activated) (Denis Chenu)
+-Fixed issue #6226 & #6229: Only end message with Cannot edit answer (token and edit answers after submitting activated) (Denis Chenu)
 -Fixed issue #6231: EM doesn't convert condition correctly, OR becomes AND (Thomas White)
 -Fixed issue #6235: Javascript errors when use equations for min/max num values in Ranking questions (Thomas White)
 -Fixed issue #6238: array filtering does not work for Ranking questions (Thomas White)
 -Fixed issue #6239: Ranking style questions can't be used to filter other questions (Thomas White)
--Fixed issue: Crash when tmp not writable (mennodekker)
 -Fixed issue: Array-filter algorithms for Ranking questions do not appear in Show Logic File (Thomas White)
--Fixed issue: Assesments for multi choice question (Denis Chenu)
--Fixed issue: cannot do a survey with edit answers after submitting activated or token answer persistance (Denis Chenu)
--Fixed issue: Clean up RTL styles - blobblueish template (tpartner)
--Fixed issue: Clean up RTL styles - gartergrey template (tpartner)
--Fixed issue: Clean up RTL styles - gringegreen template (tpartner)
--Fixed issue: HTML error in hidden field for equation question type (Thomas White)
--Fixed issue: Integrity check removal of orphaned survey entries failing (Carsten Schmitz)
--Fixed issue: Invalid HTML and unnecessary <font> element (tpartner)
--Fixed issue: Invalid HTML in language changer (tpartner)
--Fixed issue: Javascript error with alert in public survey (Denis Chenu)
--Fixed issue: jqGrid table overflowing .wrapper element (tpartner)
--Fixed issue: minor coding cleanup, added stubs for checking CPDB integrity (jcleeland)
--Fixed issue: No group managment in Yii (Denis Chenu)
--Fixed issue: 'other' status flag missing from Show Logic File (Thomas White)
 -Fixed issue: PHP errors thrown if use invalid array filter question (Thomas White)
--Fixed issue: "Please check at least one item" not appropriate for single select list questions (Thomas White)
--Fixed issue: Save and load answer don't use survey template (Denis Chenu)
--Fixed issue: Save empty string for value (Denis Chenu)
+-Fixed issue: QID links in Show Survey Logic File should open new edit-question window, not just view question (Thomas White)
 -Fixed issue: ShowLogicFile did not show array filters for List(Radio) questions when "other" advanced question option selected (Thomas White)
--Fixed issue: Time limit doesn't work (Denis Chenu)
--Fixed issue: Survey import/copy not working in MSSQL (Carsten Schmitz)
 #Updated translation: Chinese (Simplified) by yooyooh
-#Updated translation: Czech by slansky
-#Updated translation: Dutch
-#Updated translation: Dutch
-#Updated translation: German by c_schmitz
-#Updated translation: German (Informal) by c_schmitz
-#Updated translation: Italian by lfanfoni, flocs
-#Updated translation: Polish
-#Updated translation: Portuguese (Portugal)
-#Updated translation: Slovenian
+#Updated translation: Italian by lfanfoni, gifino
+#Updated translation: Polish by elisa
+#Updated translation: Swedish
 #Updated translation: Turkish by kayazeren
 
+Changes from 1.92+ (build 120608) to 1.92+ (build 120613) June 13, 2012
+-Fixed issue #6100: English in other language (Thomas White)
+-Fixed issue #6130: Response emails sent as "text/plain" but with HTML embedded (Carsten Schmitz)
+-Fixed issue #6147: "Please rank at least x items" not being translated (Carsten Schmitz)
+-Fixed issue #6151: CSS errors on public statistics page (Carsten Schmitz)
+-Fixed issue #6153: "Cannot find data type DATE" when activating a survey with MSSQL 2005 (Carsten Schmitz)
+-Fixed issue #6168: Question preview ignores "no answer" setting (Thomas White)
+-Fixed issue #6177: uppercase logical operators (e.g. 'OR') in EM yield JavaScript errors (Thomas White)
+-Fixed issue #6178: es-CL is listed as Spanish (Mexico) instead of Spanish (Chile) (Carsten Schmitz)
+-Fixed issue #6186: Array Question Type: EM doesn't convert condition correctly, AND becomes OR (Thomas White)
+-Fixed issue #6187: Javascript Error on em_javascript.js : attr is undefined (Thomas White)
+-Fixed issue #6196: Misplaced PopUpEditor icon (tpartner)
+-Fixed issue #6200: if enter text into other box, then click the other checkbox, the entered text disappears (Thomas White)
+-Fixed issue #6201: Fatal error: Cannot redeclare replacenewline() (Thomas White)
+-Fixed issue: "Please check at least one item" not appropriate for single select list questions (Thomas White)
+#Updated translation: Arabic by maan
+#Updated translation: Croatian by rovinj
+#Updated translation: Czech by slansky
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Korean by heasunchun
+#Updated translation: Norwegian (Bokmål) by c_schmitz
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Spanish (Mexican) by scoutino
 
-Changes from 2.0RC1 to 2.0RC2 (build 120528) May 28, 2012
-#Updated translation: Czech (lukas-slansky)
-#Updated translation: Dutch by Nickko Updated translation: Dutch (Informal) by Nickko (root)
-#Updated translation: French (France) by DenisChenu 
-#Updated translation: French (France) by Nickko Updated translation: German (Informal) by c_schmitz (root)
+Changes from 1.92+ (build 120607) to 1.92+ (build 120608) June 7, 2012
+Fixed issue HTML error in hidden field for equation question type
+
+Changes from 1.92+ (build 120530) to 1.92+ (build 120607) June 7, 2012
+-Fixed issue #6122: EM seems to be holding a cache in admin dev: now only setting language in EM (mennodekker)
+-Fixed issue #6155: Error on MSSQL: Ambiguous column name qid (Menno Dekker)
+-Fixed issue #5943: exclusive option in multiple choice hide all other answer options (Thomas White)
+-Fixed issue #6057: Hitting RETURN while typing in M.C. 'Other' of non-tracked survey looses all survey input (tpartner)
+-Fixed issue #6140: Survey doesn't start from where it was left on Token Persistence (Thomas White)
+-Fixed issue #6149: EM shows wrong result for number generated by rand() function (Thomas White)
+-Fixed issue #6154: File upload questions not mandatory anymore (Thomas White)
+-Fixed issue #6158: In question-by-question mode, EM replacements in same group but on different page use <span> (Thomas White)
+-Fixed issue #6163: error in mandatory array_filter-ed multi-numeric and multiple-short questions 
+-Fixed issue #6165: unable to implement affirmative exclusive non-answer in array_filter_exclude 
+-Fixed issue #06079: sub-question filtering broken if "other" or "no answer" option is given (Thomas White)
+-Fixed issue #6171: variable < X is true even if variable isn't answered (Thomas White)
+-Fixed issue #6172: Update to Version 1.92+ from 1.91+ Cannot Complete - Reason: Duplicate column name 'grelevance' (Thomas White)
+-Fixed issue #6173: users can skip min_sum_value and equals_sum_value questions (Thomas White)
+-Fixed issue #6176: replacements of other value for multiple-choice don't appear when click previous (Thomas White)
+-Fixed issue: Assesments for multi choice question (Denis Chenu)
+-Fixed issue: Error in PostgreSQL DB create script. (Jonathan Harker)
+-Fixed issue: Error in upgrade from old DB versions (Carsten Schmitz)
+-Fixed issue: Errors in Postgres DB creation script (Carsten Schmitz)
+-Fixed issue: Google Analytics Style #2 breaks if group names contain special characters (Thomas White)
+-Fixed issue: mktime() function needs to be passed integer values (Thomas White)
+-Fixed issue: 'other' status flag missing from Show Logic File (Thomas White)
+-Fixed issue: Errors in Postgres upgrade and DB creation (Carsten Schmitz)
+#Updated translation: Amharic by mezwor 
+#Updated translation: Czech by slansky 
+#Updated translation: Dutch 
+#Updated translation: Dutch (Informal)
+#Updated translation: Estonian by LimAlf 
+#Updated translation: Italian by lfanfoni 
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by algarvio 
+#Updated translation: Slovenian 
+#Updated translation: Spanish (Chile) by SirCrovax 
+#Updated translation: Turkish by kayazeren
+
+Changes from 1.92+ (build 120529) to 1.92+ (build 120530) May 28, 2012
+-Fixed issue #6133: Race condition with concurrent upload of similar "survey structure" (Carsten Schmitz)
+
+Changes from 1.92+ (build 120526) to 1.92+ (build 120529) May 28, 2012
+-Fixed issue #6106: Mandatory error shown when testing a question (Carsten Schmitz)
+-Fixed issue #6133: Race condition with concurrent upload of similar "survey structure" (Carsten Schmitz)
+-Fixed issue #6136: Relevance evaluation with Postgres fails when using regular expressions (Carsten Schmitz)
+-Fixed issue: Admin language switching to survey language (Carsten Schmitz)
+
+Changes from 1.92+ (build 120517) to 1.92+ (build 120526) May 26, 2012
+#Updated translation: Dutch by Nickko 
+#Updated translation: Dutch (Informal) by Nickko (root)
+#Updated translation: French by Denis Chenu, Nickko 
 #Updated translation: German (Informal) by c_schmitz (root)
 #Updated translation: German by c_schmitz 
-#Updated translation: German, Portuguese, Slovenian (LimeSurvey Translations)
-+New feature #5762: empty class on empty input type text (Denis Chenu)
-+New feature #5807: ability to replace survey_runtime.js function in template Fixed issue : time_limit attribute javascript error Dev : add only one css/js file if needed for question Dev : use css_header_includes and js_header_includes array from qanda Dev : TODO remove double call to jquery-ui.css, problem with slider (Denis Chenu)
-+New feature #6073: token information on the browse index (Denis Chenu)
-+New feature: New translation: Spanish (Chile) kindly provided by Victor Pinto (Carsten Schmitz)
+#Updated translation: Polish (elisa-ls)
+#Updated translation: Dutch
+#Updated translation: Portuguese
+#Updated translation: Slovenian
+-Fixed issue #6122: EM seems to be holding a cache in admin dev: only set language when a surveyid is set (mennodekker)
 -Fixed issue #5766: exclude_all_others_auto does not work (Thomas White)
--Fixed issue #5943: Exclusive option in multiple choice hide all other answer options (Thomas White)
--Fixed issue #6001: Assessment creation when there is no question group (Daniel Klischies)
--Fixed issue #6073: survey summary is not implemented 
--Fixed issue #6077: Error on listing surveys (Carsten Schmitz)
--Fixed issue #6078: Invalid LimeExpressionManager->ngT() calls (Thomas White)
--Fixed issue #6080: wrong validation for multiple numeric questions Fixed issue : misaligned input with multi column on citronade (Denis Chenu)
--Fixed issue #6083: Uploading a file takes me to upload template Zip archive (Denis Chenu)
--Fixed issue #6084: When changing language during a survey not all texts were also properly switched (Carsten Schmitz)
--Fixed issue #6085: By pasting a subquestion code can contain a space (Carsten Schmitz)
--Fixed issue #6086: 1.92+ Build 120509 Conditions do not work with probably good logic (Thomas White)
--Fixed issue #6087: Cascading array filter fails for depth>=3 in group and question modes (Thomas White)
--Fixed issue #6088: Saving a subquestion using Postgres shows error (Carsten Schmitz)
--Fixed issue #6089: Checking database integrity fails on PostgreSQL (Carsten Schmitz)
--Fixed issue #6090: Activating a survey gives a database error on PostgreSQL (Carsten Schmitz)
--Fixed issue #6092: Fatal error: Allowed memory size of .. when editing a result (Carsten Schmitz)
--Fixed issue #6093: Wrong result when comparing decimal values from equation question types in surveys using comma as decimal point (Thomas White)
--Fixed issue #6102: "Print your answers" shows EM syntax errors (Thomas White)
--Fixed issue #6105: Can't view responses/statistics on this survey (Carsten Schmitz)
--Fixed issue #6107: Changing user settings doesn't work (Carsten Schmitz)
--Fixed issue #6108: E-Mail Settings in admin are ignored (Carsten Schmitz)
--Fixed issue #6114: Encryption really off for bounce managment Dev: put notls for bounceencryption=="Off" (Denis Chenu)
--Fixed issue #6117: Crash when generating tokens for items token list that have not been issued one (Denis Chenu)
--Fixed issue #6118: Crash when initializing tokens table (Denis Chenu)
+-Fixed issue #6114: Mail encryption really off for bounce managment (Denis Chenu)
 -Fixed issue #6119: Apostrophe bug in statistics PDF and Excel output (Carsten Schmitz)
 -Fixed issue #6124: User with limited rights is allowed to export complete MySQL DB 
--Fixed issue #6125: Install fails when no DBO driver is installed instead of warning in requirements (Carsten Schmitz)
--Fixed issue #6126: Install fails with certain PHP versions after the database was populated (Carsten Schmitz)
--Fixed issue #6136: Relevance evaluation with Postgres fails when using regular expressions (Carsten Schmitz)
--Fixed issue: Browser language was not auto-detected even if set in the user profile to do so (Carsten Schmitz)
--Fixed issue: Datestamp on not date stamped survey (Denis Chenu)
--Fixed issue: Endless javascript loop in answer edit or subquestion edit Dev : actually getnextcode return source if source is an only text. Maybe another solution (Denis Chenu)
--Fixed issue: Excel import fails if Excel text fields contain ASCII non-breaking space  (0xA0) (Thomas White)
--Fixed issue: Excel import/export issues (Thomas White)
--Fixed issue: Mangeled view when editing a response (Carsten Schmitz)
--Fixed issue: Missing iterate survey functionality (Aaron Schmitz)
--Fixed issue: Missing text and icons in search dialog, javascript code tidying (jcleeland)
--Fixed issue: Missing translations for jQuery popup calendar (Carsten Schmitz)
--Fixed issue: Navigation bar visible when testing a survey (Carsten Schmitz)
--Fixed issue: Nice exit if surveyid is invalid (Denis Chenu)
--Fixed issue: participants 'add survey' feature couldn't tell which surveys have tokens tables and threw error when attempting to add participants to survey without table. Also tidied Tokens_dynamic.php model file. (jcleeland)
--Fixed issue: Question creation failing because of a static function being declared as non-static (Daniel Klischies)
--Fixed issue: Removed feature: PDF global setting (Carsten Schmitz)
--Fixed issue: Save timings (Denis Chenu)
--Fixed issue: Slowness and display issues with response browsing (speedup by 75%) (Carsten Schmitz)
--Fixed issue: Small error in Postgres on update (Carsten Schmitz)
--Fixed issue: Survey archive format not properly importing (Carsten Schmitz)
--Fixed issue: Survey list not working properly when a survey has no proper owner. Dev On upgrade from an earlier version all invalid owner IDs are fixed (Carsten Schmitz)
--Fixed issue: Template editor not using syntax highlighting according to file type (Carsten Schmitz)
--Fixed issue: Unable to add label in label set administration (Carsten Schmitz)
--Fixed issue: Unable to end survey with save timing TODO: browse save timing / clean browse code (Denis Chenu)
--Fixed issue: User with configurator access don't have acces to global settings (Denis Chenu)
+-Fixed issue: User with configurator access doesn't have acces to global settings (Denis Chenu)
+-Fixed issue: Survey list does not show surveys having deleted owners (Carsten Schmitz)
 
 
-Changes from 2.0b1 to 2.0RC1 (build 120510) May 10, 2012
-+New feature: Ability to change admin theme in global settings (Carsten Schmitz)
-+New feature: New admin style (Carsten Schmitz)
-+New feature: New admin style 'gartergrey' (Carsten Schmitz)
-+New feature: New admin style 'gringegreen' (Carsten Schmitz)
-+New feature: Permissions are now copied by default when copying a survey - also added an additional option to exclude it. (Carsten Schmitz)
-+New translation: Afrikaans (Andrie de Vries)
-+New translation: Amharic - kindly provided by Mezene Worku (Carsten Schmitz)
+Changes from 1.92+ (build 120516) to 1.92+ (build 120517) May 17, 2012
+-Fixed issue: Missing translations / texts
+
+Changes from 1.92+ (build 120509) to 1.92+ (build 120516) May 16, 2012
++New translation: Spanish (Chile) kindly provided by Victor Pinto (Carsten Schmitz)
+#Updated translation: Polish (elisa-ls)
+#Updated translation: Amharic kindly provided by Mezene Worku 
 #Updated translation: Czech (lukas-slansky)
-#Updated translation: Galician - kindly provided by Carlos Neira Cortizas Updated translation: German (Carsten Schmitz)
-#Updated translation: German Updated translation: German (informal) (Carsten Schmitz)
--Fixed issue #5778: Lot of correction in rtl.css for template (Denis Chenu)
--Fixed issue #5789: Question text is parsed to a template? (Carsten Schmitz)
--Fixed issue #5799: When adding participants to a survey, options are disabled. Redesigned UI as per discussion. (jcleeland)
--Fixed issue #5896: miscellaneous, rarely used, qcode.* attributes showing blank values (Thomas White)
--Fixed issue #5985: Notifications using INSERTANS and/or QCODE don't work with all-in-one presentation of survey (Thomas White)
--Fixed issue #5986: Import label set does not work for old CSV files (Carsten Schmitz)
--Fixed issue #5987: prefix and suffix are misaligned for "total" field at miltiple numeric question(tpartner)
--Fixed issue #5988: Problem displaying words with French accent within Expression Manager (Carsten Schmitz)
--Fixed issue #5991: Database upgrade fails with errors on Postgres (Carsten Schmitz)
--Fixed issue #5992: After upgrade to Version 1.92+ Build 120405 the uploaded file information gets corrupted. (Thomas White)
--Fixed issue #5997: Upload iframe not translated in actual lang Fixed issue : don't see just uploaded files in upload question (Denis Chenu)
--Fixed issue #6002: @@SURVEYURL@@ placeholder fails to translate (Thomas White)
--Fixed issue #6006: Error in LImeExpressionManage.php anytime using an array (numbers) with checkboxes and Mandatory (Thomas White)
--Fixed issue #6007: Token variables resolving as 'undefined variable' after Version 1.91+ Build 11026 (Thomas White)
--Fixed issue #6008: File upload doesn't work from data entry, not available in response edit (Menno Dekker)
--Fixed issue #6013: passthru stopped working (Thomas White)
--Fixed issue #6015: INSERTANS does not work in end message (Thomas White)
--Fixed issue #6016: Load Unfinished Survey button does not display for existing survey (Carsten Schmitz)
--Fixed issue #6019: Count and Percentage have no values. (dionet)
--Fixed issue #6020: Fatal error: Call to undefined method LimeExpressionManager::ngT() (Carsten Schmitz)
--Fixed issue #6021: Importing xml from 1.92 getting error Undefined variable: aImportResults (dionet)
--Fixed issue #6022: After having logged in the main admin screen show a "reloading screen..." message but nothing happens (dionet)
--Fixed issue #6025: Error when attemping to create a label set (Carsten Schmitz)
--Fixed issue #6027: Users who have token creation permission can't create token table (Carsten Schmitz)
--Fixed issue #6030 : misalign input in multi-line answers / citronade part (Denis Chenu)
--Fixed issue #6030: answeroption not left-aligned (tpartner)
--Fixed issue #6030: answeroption not left-aligned (tpartner)
--Fixed issue #6030: answeroption not left-aligned Fixed issue : Select is too large for list-with-comment with dropdown Fixed issue : use attribute dropdown on list with comment (Denis Chenu)
--Fixed issue #6035: Insertans not working in multiple options with comments (Carsten Schmitz)
--Fixed issue #6037: Zero uses left by default when importing tokens from CSV (Carsten Schmitz)
--Fixed issue #6039: Installer precheck fails without gd lib - patch kindly provided by yuvallb (Carsten Schmitz)
--Fixed issue #6044: Data entry does not show text fields as defined (Menno Dekker)
--Fixed issue #6045: Firefox 12 vertical scrolling problem in admin view (and other pages) (Carsten Schmitz)
--Fixed issue #6045: Firefox 12 vertical scrolling problem in admin view (and other pages) (Carsten Schmitz)
+#Updated translation: German by c_schmitz 
+#Updated translation: Persian - kindly provided by Morteza Farahbod 
+#Updated translation: Turkish - 100% - kindly provided by Kaya Zeren
+-Fixed issue #5766: exclude_all_others_auto does not work (Thomas White)
+-Fixed issue #5943: Exclusive option in multiple choice hides all other answer options (Thomas White)
+-Fixed issue #6003: Text truncated after single quote when browsing responses to Multiple short text question. (Thomas White)
 -Fixed issue #6046: Resume later deletes answers from db when all questions are on one page (Thomas White)
+-Fixed issue #6078: Invalid LimeExpressionManager->ngT() calls (TMSWhite)
+-Fixed issue #6086: 1.92+ Build 120509 Conditions do not work with probably good logic (Thomas White)
+-Fixed issue #6087: cascading array filter fails for depth>=3 in group and question modes (Thomas White)
+-Fixed issue #6093: Wrong result when comparing decimal values from equation question types in surveys using comma as decimal point (Thomas White)
+-Fixed issue #6102: "Print your answers" shows EM syntax errors (Thomas White)
 -Fixed issue #6048: Conditions editor produces fatal error: maximum allocated memory (Carsten Schmitz)
--Fixed issue #6053: CDbException when activating/deactivating a survey with datestamp OR save IP option (Menno Dekker)
--Fixed issue #6054: Page not found when importing data from a deactivated table (Carsten Schmitz)
--Fixed issue #6055: Received Bad Request when coming back from the data entry to main admin screen (Carsten Schmitz)
+-Fixed issue #6080: Wrong validation for multiple numeric questions 
+-Fixed issue #6085: By pasting a subquestion code can contain a space (Carsten Schmitz)
+-Fixed issue: Misaligned input with multi column on citronade (Denis Chenu)
+-Fixed issue: Array-filter equations not visible for List-type questions in Show Survey Logic file (Thomas White)
+-Fixed issue: Datestamp on not date stamped survey. Dev: use 1980-01-01 for 'All database same value' (Denis Chenu)
+-Fixed issue: Endless javascript loop in answer edit or subquestion edit (Denis Chenu)
+-Fixed issue: Missing translations for jQuery popup calendar (Carsten Schmitz)
+-Fixed issue: Nice exit if surveyid is invalid (Denis Chenu)
+-Fixed issue: Unable to add label in label set administration (Carsten Schmitz)
+
+Changes from 1.92+ (build 120501) to 1.92+ (build 120509) May 9, 2012
++New translation: Afrikaans 
++New translation: Amharic - kindly provided by Mezene Worku
+#Updated translation: Polish (elisa-ls)
+#Updated translation: German (Carsten Schmitz)
+#Updated translation: German (informal) (Carsten Schmitz)
+#Updated translation: Persian by M. Farahbod (Carsten Schmitz)
+#Updated translation: Portuguese (Brazil) by Flávio Rodrigues (Carsten Schmitz)
+-Fixed issue #5975: Confirmation screen broken for iterate survey feature (tpartner)
+-Fixed issue #5987: prefix and suffix are misaligned for "total" field at miltiple numeric question (tpartner)
+-Fixed issue #6030: answeroption not left-aligned (tpartner)
+-Fixed issue #6030: answeroption not left-aligned Dev Fixed up CSS for list-radio questions (tpartner)
+-Fixed issue #6044: Use advanced question settings such as numbers_only, display_rows, max_characters, prefix, suffix, ... at data entry screen. (Marcel Minke)
+-Fixed issue #6062: Language selector is missing on survey without description nor welcome message (tpartner)
+-Fixed issue #6075: Content of previous answer is not replaced, instead placeholder of selected answer is shown: eg. {TOKEN:ATTRIBUTE_2} (Thomas White)
+-Fixed issue #6030: answeroption not left-aligned with multiple-opt-comments Dev : move input outside label (Denis Chenu)
+-Fixed issue #6030: Misalign input in multi-line answers / citronade part Dev : fixed some issue with little screen too (Denis Chenu)
+-Fixed issue #6048: Conditions editor produces fatal error: maximum allocated memory (Carsten Schmitz)
 -Fixed issue #6059: EM puts spaces between variables (Carsten Schmitz)
 -Fixed issue #6061: Duplicate codes when adding new answer options/subquestions/labels (Carsten Schmitz)
--Fixed issue #6062: Language selector is missing on survey without description nor welcome message (tpartner)
 -Fixed issue #6065: Error when creating a new survey by copying an existing one (Carsten Schmitz)
 -Fixed issue #6071: Notices if using mssql and changing/importing survey (Carsten Schmitz)
--Fixed issue #6074: Can't generate tokens for new token entry (Carsten Schmitz)
--Fixed issue #6075: Content of previous answer is not replaced, instead placeholder of selected answer is shown: eg. {TOKEN:ATTRIBUTE_2} (Thomas White)
--Fixed issue: admin search results in participant panel weren't displaying a correct count when paged (jcleeland)
--Fixed issue: Attribute not set in upload file question type (Denis Chenu)
--Fixed issue: Conditions editor not working (Carsten Schmitz)
--Fixed issue: Conditions toolbar not visible (Carsten Schmitz)
--Fixed issue: converted title case to sentence case for participants/displayParticipants_view.php (jcleeland)
--Fixed issue: Creation of survey timings table (Menno Dekker)
--Fixed issue: edit icon not visible in participant attribute edit subgrid, also added comments (jcleeland)
--Fixed issue: Error on submission when survey is inactive (Carsten Schmitz)
--Fixed issue: error when copying participants to token table without attributes (jcleeland)
--Fixed issue: Error when taking a survey with a token due to mixture of sql and querybuilder statements (mennodekker)
--Fixed issue: Images inserted into HTML emails were not properly linked to the server (Carsten Schmitz)
--Fixed issue: incorrect link in token screen to take a survey (mennodekker)
--Fixed issue: incorrect username/password causing error message, fixed by requiring $user object to exist before checking for $sStoredPassword (jcleeland)
--Fixed issue: Installation on MSSQL server not working (Carsten Schmitz)
--Fixed issue: linked surveys not displaying in participants panel Fixed issue: hardcoded language in displayParticipants.js, moved to view and made translatable (jcleeland)
--Fixed issue: login screens and messages ugly (jcleeland)
--Fixed issue: made 'first steps' page consistent with other login pages using standard divs and headers (jcleeland)
--Fixed issue: Only set EM variables for {TOKEN:xxxx} when token table exists; and only for declared attributes (Thomas White)
--Fixed issue: Participant CSV import was ignoring "filter blank email" option and importing blank emails, and when importing blank email entries was not importing other attributes for that participant. (jcleeland)
--Fixed issue: Participant IP address not correctly captured if server is behind proxy (Carsten Schmitz)
--Fixed issue: quotas not propagating properly when new languages added, cleaned up functionality (jcleeland)
--Fixed issue: relevance SQL failing during survey import (jcleeland)
--Fixed issue: Removed queXML dependency on the domxml wrapper Fixed issue: Export to queXML not working (Adam Zammit)
--Fixed issue: selecting participants and adding to survey token table - list of surveys not taking into account the language selection (thus seperate item for each language was appearing in list) (jcleeland)
+-Fixed issue: Added quota_languagesettings table to the fixlanguageconsistency() array - when languages are added, matching quota entries are created for each language (jcleeland)
+-Fixed issue: Behaviour change on 'resume later' (Carsten Schmitz)
+-Fixed issue: db_quoteall added to fixlanguageconsistency() function when copying quota translations. (jcleeland)
 -Fixed issue: Submit date set even though participant was screened out by a quota (Carsten Schmitz)
--Fixed issue: Template editor not properly showing (Carsten Schmitz)
--Fixed issue: Temporary directory creator separating diretories with path separators (Adam Zammit)
--Fixed issue: translations modified to Sentence case from Title case (jcleeland)
--Fixed issue: Undefined variable with Sub-question validation (Denis Chenu)
--Fixed issue: various fixes relating to searches of the participants database using survey links (ie: qty of surveys) New feature: search participants database for participants who are linked to a particular survey by name (jcleeland)
+-Fixed issue: Several HTML fixes for data entry screen (data entry & data edit) (Marcel Minke)
+
+Changes from 1.92+ (build 120425) to 1.92+ (build 120501) May 1, 2012
+-Fixed issue #6008: File upload doesn't work from date entry, not available in response edit (mennodekker)
+-Fixed issue #6045: Firefox 12 vertical scrolling problem in admin view (and other pages) (Carsten Schmitz)
+-Fixed issue #6056 - Quota languages don't update (jcleeland)
+-Fixed issue: Images inserted into HTML emails were not properly linked to the server (Carsten Schmitz)
+-Fixed issue: Fixed several HTML issues for data entry mode 
+-Fixed issue: Partial fix (just data entry - editing data missing) for bug #6044: Use advanced question settings such as numbers_only, display_rows, max_characters, prefix, suffix, ... at data entry screen. (Marcel Minke)
+
+Changes from 1.92+ (build 120418) to 1.92+ (build 120425) April 25, 2012
+-Fixed issue #5988: Problem displaying words with French accent within Expression Manager (Carsten Schmitz)
+-Fixed issue #6027: Users who have token creation permission can't create token table (Carsten Schmitz)
+-Fixed issue #6035: Insertans not working in multiple options with comments (Carsten Schmitz)
+-Fixed issue #6036: Reminder sent to people which opted out (Carsten Schmitz)
+-Fixed issue #6037: Zero uses left by default when importing tokens from CSV (Carsten Schmitz)
+-Fixed issue #6042: Check for existing token taables after activation -> switch to closed access (Carsten Schmitz)
+-Fixed issue #6043: Errors creating surveys in MSSQL (Carsten Schmitz)
+#Updated translation: Czech (lukas-slansky)
+#Updated translation: Danish  - kindly provided by Søren O'Neill (Carsten Schmitz)
+#Updated translation: Finnish kindly provided by Flo Apps Oy (Carsten Schmitz)
+#Updated translation: German (Carsten Schmitz)
+#Updated translation: Italian - kindly provided by Alberto Danese (Carsten Schmitz)
+#Updated translation: Spanish (Mexico) (Carsten Schmitz)
+
+Changes from 1.92+ (build 120412) to 1.92+ (build 120418) April 18, 2012
+-Fixed issue #5896: Miscellaneous, rarely used, qcode.* attributes showing blank values (Thomas White)
+-Fixed issue #6006: Error in LImeExpressionManage.php anytime using an array (numbers) with checkboxes and Mandatory (Thomas White)
+-Fixed issue #6007: Token variables resolving as 'undefined variable' after Version 1.91+ Build 11026 (Thomas White)
+-Fixed issue #6013: passthru stopped working (Thomas White)
+-Fixed issue #6015: INSERTANS does not work in end message (Thomas White)
+-Fixed issue #6024: $deletenonvalues option no longer working in 1.92+ (Thomas White)
+-Fixed issue #5986: Import label set does not properly show an error for invalid files (Carsten Schmitz)
+-Fixed issue #6016: Load Unfinished Survey button does not display for existing survey (Carsten Schmitz)
+-Fixed issue #6018: Using mssqlnative the "date" question type uses DATETIME type and not DATE (Carsten Schmitz)
+-Fixed issue: Notice when using mssqlnative driver (Carsten Schmitz)
+-Fixed issue: Only set EM variables for {TOKEN:xxxx} when token table exists; and only for declared attributes (Thomas White)
+-Fixed issue: Participant IP address not correctly captured if server is behind proxy (Carsten Schmitz)
 -Fixed issue: Warning if upload file and there is no minimum number of files specified (Thomas White)
+#Updated translation: Czech kindly provided by Slansky Lukas 
+#Updated translation: French kindly provided by Guillaume Jaouen 
+#Updated translation: German 
+#Updated translation: German (informal) (Carsten Schmitz)
+
+
+Changes from 1.92+ (build 120405) to 1.92+ (build 120412) April 12, 2012
+-Fixed issue #5962: View Response Details does not work correctly if responses are filtered (Statistics) (Thomas White)
+-Fixed issue #5985: Notifications using INSERTANS and/or QCODE don't work with all-in-one presentation of survey (Thomas White)
+-Fixed issue #5992: After upgrade to Version 1.92+ Build 120405 the uploaded file information gets corrupted. (Thomas White)
+-Fixed issue #6002: @@SURVEYURL@@ placeholder fails to translate (Thomas White)
+-Fixed issue #5976: Iterate survey sets all "uses_left" to "1" even if there has been set a larger number previously (Carsten Schmitz)
+-Fixed issue #5997 : upload windows are on default survey langage (Denis Chenu)
+-Fixed issue: Bad HTML in editgroup(Denis Chenu)
+-Fixed issue: Mssqlnative driver gives back weird date format in export (Carsten Schmitz)
 -Fixed issue: With certain Apache configurations then em_javascript.js file was not readable (Carsten Schmitz)
--Fixed issue: The member function _getTokenIds in application/controllers/admin/tokens.php references a $iSurveyId variable which is not declared or initialised anywhere. The only reference to the function seems to be on line 1022, where such a variable is available. Adjusting the method to take an extra survey Id parameter seems to fix the problem I encountered when working with tokens in v2.0b1 (Federico Mestrone)
+#Updated translation: Danish  - kindly provided by Søren O'Neill (Carsten Schmitz)
+#Updated translation: Galician - kindly provided by Carlos Neira Cortizas (Carsten Schmitz)
+#Updated translation: German Updated translation: German (informal) (Carsten Schmitz)
+#Updated translation: Greek by Yannis Kaskamanidis (Carsten Schmitz)
+#Updated translation: Spanish (Mexico) (Carsten Schmitz)
 
 
-Changes from 2.0a3 to 2.0b1 (build 120406) Apr 5, 2012
-+New feature: Added the blacklisting options panel from http://docs.limesurvey.org/img/wiki_up/Screen_shot_5.png. (Aaron Schmitz)
-+New feature: Import and Export from a new Excel format with one row each per group, question, sub-question, and answer; and no dependence upon SGQA naming (Thomas White)
--Fixed issue: Error 500 loading the template editor (Aaron Schmitz)
--Fixed issue #5806: No label set for quick add // Save as label set don't work Implemented missing actions. (magiclko)
--Fixed issue #5731: Randomization group name seems to block "Test this survey" (Thomas White)
--Fixed issue #5877: all Lime replacement fields are broken. (Aaron Schmitz)
--Fixed issue #5908: The system is unable to find the requested action "printanswers.php". Mostly fixed via http://git.io/5Zn_9g (magiclko)
--Fixed issue #5920: Can't edit participant attribute value (magiclko)
--Fixed issue #5942: unable to activate survey after some modification (Denis Chenu)
--Fixed issue #5948: Mandatory directive for question is ignored for array (numbers) using checkbox layout (Thomas White)
+Changes from 1.92+ (build 120330) to 1.92+ (build 120405) April 5, 2012
+-Fixed issue #5877: Resume later doesn't work with a survey allowing public registration (Carsten Schmitz)
 -Fixed issue #5971: Strange behavior of expression manager - static equation results not visible (Thomas White)
--Fixed issue #5979: values prefilled via URL are not passed through to end URLFixed issue #05981: EM attributes that should be static generate <span> elements (Thomas White)
--Fixed issue #5979: values prefilled via URL are not passed through to end URL (Thomas White)
+-Fixed issue #5979: values prefilled via URL are not passed through to end URL Dev also syntax highlighted end URL  so can see if it contains typos (Thomas White)
+-Fixed issue #5981: EM attributes that should be static generate <span> elements (Thomas White)
 -Fixed issue #5982: Wrong replacement field properties (Thomas White)
--Fixed issue #5984: Javascript error with upload question type for italian language (Denis Chenu)
--Fixed issue #5858: Incorrect date format on detailed admin notification email and print answers (Carsten Schmitz)
--Fixed issue #5903: Not obvious in installation that you need at least one PDO DB driver installer (Carsten Schmitz)
--Fixed issue #5904: Database upgrade fails with errors on Postgres (Carsten Schmitz)
--Fixed issue #5904: Database upgrade fails with errors on Postgres Fixed issue: Missing tables and fields on upgrade (Carsten Schmitz)
--Fixed issue #5906: Import fails to convert INSERTANS for dual-scale questions (Carsten Schmitz)
--Fixed issue #5911: Error when entering global settings and using PostGres (Carsten Schmitz)
--Fixed issue #5912: Error when trying to create new survey and using PostGres (Carsten Schmitz)
--Fixed issue #5914: Error when entering user administration (Carsten Schmitz)
--Fixed issue #5917: Bold text not showing when using default template (Carsten Schmitz)
--Fixed issue #5924: Wrong alignment of subquestion text and radiobuttons in Array questions with RTL languages(Carsten Schmitz)
--Fixed issue #5927: Default template Yes/No questions & Male/Female alignment (Carsten Schmitz)
--Fixed issue #5930: File upload question - file deletion does not work (dionet)
--Fixed issue #5931: Bad HTML tbody tag for array question type Fixed issue : use repeatheadings for array (Denis Chenu)
--Fixed issue #5932: Default answers to hidden questions are not saved to database (Carsten Schmitz)
--Fixed issue #5933: Uploaded files with uppercase extensions show placeholder instead of image (Carsten Schmitz)
--Fixed issue #5939: Error by creating a new question (Carsten Schmitz)
--Fixed issue #5940: Database error when using Participant panel and PostgreSQL (Carsten Schmitz)
--Fixed issue #5941: Quotas fail to terminate survey (Carsten Schmitz)
--Fixed issue #5952: Error in statistics (Carsten Schmitz)
--Fixed issue #5950: Remove the default global setting for the HTML editor. (Aaron Schmitz)
--Fixed issue #5960: Startlanguage always saved as English (Carsten Schmitz)
--Fixed issue #5962: View Response Details does not work correctly if responses are filtered (Carsten Schmitz)
--Fixed issue #5967: Update link to previous version shown (Carsten Schmitz)
--Fixed issue #5928: Unable to edit answer or subquestion (Carsten Schmitz)
+-Fixed issue #5984: Javascript error with upload question type for italian language Dev: add js option on clang (Denis Chenu)
+-Fixed issue #5960: Start language always saved as English (Carsten Schmitz)
 -Fixed issue #5969: Trying to import a question group without a matching language gives no proper error (Carsten Schmitz)
+-Fixed issue: When there are multiple languages, getSubQuestions() returns wrong values (often a mix of language-specific values) (Thomas White)
+
+
+Changes from 1.92+ (build 120325) to 1.92+ (build 120330) Mar 30, 2012
+-Fixed issue #5948: Mandatory directive for question is ignored for array (numbers) using checkbox layout (Thomas White)
+-Fixed issue #5952: Error in statistics (Carsten Schmitz)
+-Fixed issue #5957: Cannot check integrity database (Carsten Schmitz)
+-Fixed issue #5962: View Response details does not work correctly if responses are filtered (Carsten Schmitz)
 -Fixed issue: Certain French characters garbled in statistics display and other areas (Carsten Schmitz)
--Fixed issue: Conditions were not properly converted to EM expressions when magicquotes are enabled (Carsten Schmitz)
--Fixed issue: copy tokens back to participants DB not working (fixed provided by Aniessh Sethh) (jcleeland)
--Fixed issue: Error in update scripts for MSSQL server (Carsten Schmitz)
--Fixed issue: javascript tidied up, langage moved out of javascript into view file (and translatable) (jcleeland)
--Fixed issue: jquery-ui button for rtl langage (Denis Chenu)
+-Fixed issue: Error if s_lang are not in survey langage (Denis Chenu)
+-Fixed issue: When trying to export to application then not all fields are shown (Carsten Schmitz)
+
+Changes from 1.92+ (build 120324) to 1.92+ (build 120325) Mar 23, 2012
+-Fixed issue #5877: Resume later doesn't work with a survey allowing public registration (magiclko)
 -Fixed issue: MSSQL error on importing survey (Carsten Schmitz)
+
+Changes from 1.92+ (build 120323) to 1.92+ (build 120324) Mar 23, 2012
+-Fixed issue #5877: Resume later doesn't work with a survey allowing public registration (magiclko)
+-Fixed issue #5934: Generating new Lablesets won't work (magiclko)
+-Fixed issue #5946: SQL error while creating new survey (Carsten Schmitz)
+
+Changes from 1.92+ (build 120319) to 1.92+ (build 120323) Mar 23, 2012
+-Fixed issue #5731: Randomization group name seems to block "Test this survey" (Thomas White)
+-Fixed issue #5909: Re-uploading files after deletions and other problems with File Upload question type and Expression Manager (Carsten Schmitz)
+-Fixed issue #5932: Default answers to hidden questions are not saved to database  (Thomas White)
+-Fixed issue #5933: Uploaded files with uppercase extensions show placeholder instead of image (Carsten Schmitz)
+-Fixed issue #5936: INSERTANS or TOKEN cannot be used in mail adress notification (Denis Chenu)
+-Fixed issue #5941: Quotas fail to terminate survey (Carsten Schmitz)
+-Fixed issue #5942: unable to activate survey after some modification (Denis Chenu)
+-Fixed issue #5944: Cannot grant "Survey security" permission to another user (Carsten Schmitz)
+-Fixed issue: Conditions were not properly converted to EM expressions when magicquotes are enabled (Carsten Schmitz)
+
+Changes from 1.92+ (build 120314) to 1.92+ (build 120319) Mar 19, 2012
+#Updated translation: Hungarian by Pongrácz István (Carsten Schmitz)
+-Fixed issue #5904: Database upgrade fails with errors on Postgres (Carsten Schmitz)
+-Fixed issue #5913: Bad SQL syntax in file create-mssql.sql (Carsten Schmitz)
+-Fixed issue #5917: Bold text not showing when using default template (Carsten Schmitz)
+-Fixed issue #5921: Duplicate header field names for Dual scale question type when exporting to application (Carsten Schmitz)
+-Fixed issue #5924: Wrong alignment of subquestion text and radiobuttons in Array questions with RTL languages (Carsten Schmitz)
+-Fixed issue #5926: With multilingual surveys the sheetname on Excel export was not always in the base language (Carsten Schmitz)
+-Fixed issue #5927: Default template Yes/No questions & Male/Female alignment (Carsten Schmitz)
+-Fixed issue: Error in update scripts for MSSQL server (Carsten Schmitz)
 -Fixed issue: PHP warning when importing label set without labels (Carsten Schmitz)
--Fixed issue: Print answers after survey completion not working (Carsten Schmitz)
--Fixed issue: Problems with using the File Upload question type 
--Fixed issue: unable to delete answers under some condition (Denis Chenu)
--Fixed issue: Various errors when using Postgres database (Carsten Schmitz)
--Fixed issue: Error loading the survey list for adding participants to a survey in the participants panel. (Aaron Schmitz)
 
-
-Changes from 2.0a2 to 2.0a3 (build 120315) Mar 14, 2012
+Changes from 1.92+ (build 120311) to 1.92+ (build 120314) Mar 14, 2012
 +New feature #5492: Changing global settings takes you away from survey design Now it "remembers" the referee url and redirect to that url after saving global settings! (magiclko)
--Fixed issue #5880: make em_q_fn_validation and em_sq_fn_validation more easily visible Dev  Now, if there is a validation_tip, it will appear if the validation fails.  One can use hide_tip to have it always be invisible unless there is a validation violation. (Thomas White)
--Fixed issue #5894: INSERTANS (and qcode.shown) returning wrong values for some question types Fixed issue Uploaded files fail if target directory does not exist. (Thomas White)
--Fixed issue #5895: on-page substitution of comment for List with Comment type not being displayed (Thomas White)
--Fixed issue #5898: {GOOGLE_ANALYTICS_JAVASCRIPT} integration errors Dev upgraded Goggle Analytics JavaScript to use recommended async code (Thomas White)
--Fixed issue #5901: Unable to movenext or submit a survey (Thomas White)
--Fixed issue #5891: "Add/edit answers for this question" icon for Array (Numbers) & Array (Texts) is "Row-Icon" instead of "Row-Column" Icon (Carsten Schmitz)
--Fixed issue #5899: Some error HTML instead of GPL license displayed in installation (Carsten Schmitz)
--Fixed issue: Data not saved and validations don't work when use multiflexible_checkbox option in Array (numbers) question type (Thomas White)
--Fixed issue: Demo surveys still using old fieldnames (Carsten Schmitz)
--Fixed issue: Equation question types were only capturing the contents of the first replacement <span> element (Thomas White)
--Fixed issue: Group preview sometimes does not work (Thomas White)
--Fixed issue: hide_type advanced question option not available for all question types (Thomas White)
--Fixed issue: Langage are not sent for HTML lang Dev: dirty fix, need a global function to replace in survey/index.php (Shnoulle)
--Fixed issue: List only langage selected survey in survey list Fixed issue : partially : bad HTML for survey listing with inactive survey with registration New feature ; lang tag in survey listing link list Dev: need to review registration link : template AND/OR global setting Dev: need a better langage session ( global langage session) (Shnoulle)
--Fixed issue: Question preview not working (Carsten Schmitz)
--Fixed issue: Survey cannot be imported (Carsten Schmitz)
--Fixed issue: Survey, group, and question details cannot be closed (Carsten Schmitz)
--Fixed issue: Unable to set global googleanalyticsapikey and googletranslateapikey (Thomas White)
--Fixed issue: When using question type Array (Numbers) with multiflexible_checkbox input and radix separator = comma, JavaScript throws error when trying to fix radix separator (Thomas White)
-
-
-Changes from 1.92+ to 2.0a2 (build 120312) Mar 11, 2012
-#Updated feature: Users and rights management workflow improvements - GCI2011 by Daniel Huang N (Pieter Jan Speelmans)
-#Updated feature: CodeMirror UI editor now used when editing templates  (magiclko)
-+New feature #5044: Allowing selection of token valid from/until datea(#1) (Shubham Sachdeva)
-+New feature: More class on question and answer item for easiest manipulation
-+New feature: More explicit labels for accessibility, hidden by default with .hide class
-+New feature: Each type of validation tip can be styled separately (so if a question fails validation checks, you can see whether it is because of wrong number of answers, wrong value range, wrong sum range, or wrong regex criteria). (tmswhite)
-+New feature: "Send confirmation emails?" setting in Survey properties --> General settings --> Tokens. (Tony Partner)
-+New feature: $lwcdropdowns setting removed from config-defaults.php and moved to Advanced question settings for List with Comment question type (Carsten Schmitz)
-+New feature: A real installer (magiclko)
-+New feature: Ability to make last minute changes in the survey activation screen to settings that cannot be changed after activation anymore (c_schmitz)
-+New feature: Add drag and drop feature to ranking question - done by GCI participant Nano8Blazex 
-+New feature: Attribute hide_tip now available for date question (Carsten Schmitz)
-+New feature: Create new label sets or replace old ones from subquestions or answers
-+New feature: Database installation by command line. Usage: "php index.php installer cmd_install_db" (Carsten Schmitz)
-+New feature: Export multiple survey archives at the survey list as one big ZIP file (Carsten Schmitz)
-+New feature: Export survey ZIP archive function with includes the survey structure, responses, tokens and timings - can be used for archival purposes or to move a survey from one server to another. (c_schmitz)
-+New feature: Global setting to restrict the languages being available in administration or frontend (c_schmitz)
-+New feature: Global setting to restrict the languages being available in administration or frontend (Carsten Schmitz)
-+New feature: Implemented mass actions in surveylist which allows to delete/expire several surveys at the same time - only available to super administrators (Carsten Schmitz)
-+New feature: In deactivation screen you can choose now between deactivation and expiration (Carsten Schmitz)
-+New feature: Multilingual question attributes (Carsten Schmitz)
-+New feature: Option to display text responses 'inline' in statistics output (will need translations) (Jason Cleeland)
-+New feature: Option to switch between different graphs/no graph in statistics  - switchable in advanced question settings and in statistics itself (Carsten Schmitz)
-+New feature: Ported LimeSurvey to use the Yii framework (magiclko,dionet)
-+New feature: Randomization groups for question groups Carsten Schmitz)
-+New feature: Reorder questions/question groups per Drag-n-drop  (Carsten Schmitz)
-+New feature: Show Google maps with markers at statistics by GCI participant Licker Nandor (Carsten Schmitz)
-+New feature: Show modified question attributes at question summary (Carsten Schmitz)
-+New feature: Token section workflow improvements by GCI participant Nano8Blazex
-+New feature: URL params for integration of survey panels (Carsten Schmitz)
-
-
-#Updated feature: Users and rights management workflow improvements - GCI2011 by Daniel Huang N (Pieter Jan Speelmans)
-+New Feature #5044: Allowing selection of token valid from/until datea(#1) (Shubham Sachdeva)
-+New Feature Each type of validation tip can be styled separately (so if a question fails validation checks, you can see whether it is because of wrong number of answers, wrong value range, wrong sum range, or wrong regex criteria). (tmswhite)
-+New feature: "Send confirmation emails?" setting in Survey properties --> General settings --> Tokens. (Tony Partner)
-+New feature: $lwcdropdowns setting removed from config-defaults.php and moved to Advanced question settings for List with Comment question type (Carsten Schmitz)
-+New feature: Ability to make last minute changes in the survey activation screen to settings that cannot be changed after activation anymore 
-+New feature: In deactivation screen you can choose now between deactivation and expiration (Carsten Schmitz)
-+New feature: Add drag and drop feature to ranking question - done by GCI participant Nano8Blazex (Carsten Schmitz)
-+New feature: Attribute hide_tip now available for date question (Carsten Schmitz)
-+New feature: Database installation by command line. Usage: "php index.php installer cmd_install_db" (Carsten Schmitz)
-+New feature: Export multiple survey archives at the survey list as one big ZIP file (Carsten Schmitz)
-+New feature: Export survey ZIP archive function with includes the survey structure, responses, tokens and timings - can be used for archival purposes or to move a survey from one server to another. 
-+New feature: Global setting to restrict the languages being available in administration or frontend (Carsten Schmitz)
-+New feature: Implemented mass actions in surveylist which allows to delete/expire several surveys at the same time - only available to super administrators (Carsten Schmitz)
-+New feature: Multilingual question attributes (Carsten Schmitz)
-+New feature: Option to display text responses 'inline' in statistics output (will need translations) (Jason Cleeland)
-+New feature: Option to switch between different graphs/no graph in statistics  - switchable in advanced question settings and in statistics itself (Carsten Schmitz)
-+New feature: Randomization groups for question groups Carsten Schmitz)
-+New feature: Reorder questions/question groups per Drag-n-drop  (Carsten Schmitz)
-+New feature: Show Google maps with markers at statistics by GCI participant Licker Nandor (Carsten Schmitz)
-+New feature: Show modified question attributes at question summary (Carsten Schmitz)
-+New feature: Token section workflow improvements by GCI participant Nano8Blazex
-+New feature: URL params for integration of survey panels (Carsten Schmitz)
-
-
-*Changed feature: CodeMirror UI editor now used when editing templates  (magiclko)
+-Fixed issue #5898: {GOOGLE_ANALYTICS_JAVASCRIPT} integration errors (Thomas White)
+-Fixed issue #5835: Standard survey header is not used in public statistics (Carsten Schmitz)
+-Fixed issue: Notice if Referer is not set (Shnoulle)
+-Fixed issue: Textareas in survey taking were not properly quoted when displayed again (Carsten Schmitz)
+-Fixed issue: Invalid email in 'resume later' save form did not show an error message (Carsten Schmitz)
+-Fixed issue: HTMLeditor popup not properly filtering some input variables (Carsten Schmitz)
 
 Changes from 1.91+ (build 120302) to 1.92+ (build 120311) Mar 11, 2012
 -Fixed issue #5859: Question group import does not update references properly (Thomas White)
