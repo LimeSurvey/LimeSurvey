@@ -93,7 +93,17 @@ class Survey_dynamic extends LSActiveRecord
             $v = str_replace($search, '', $v);
             $record->$k = $v;
         }
-        return $record->save();
+
+        try
+        {
+            $record->save();
+            return $record->id;
+        }
+        catch(Exception $e)
+        {
+            return false;
+        }
+        
     }
 
     /**

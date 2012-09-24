@@ -6036,12 +6036,17 @@ function includeKeypad()
 * @param string $quotaid - Optional quotaid that restricts the result to a given quota
 * @return array - nested array, Quotas->Members->Fields
 */
-function getQuotaInformation($surveyid,$language,$quotaid='all')
+function getQuotaInformation($surveyid,$language,$iQuotaID='all')
 {
     global $clienttoken;
     $baselang = Survey::model()->findByPk($surveyid)->language;
-
-    $result = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes(array('sid' => $surveyid, 'id' =>$quotaid));
+    $aAttributes=array('sid' => $surveyid);
+    if ($iQuotaID != 'all')
+    {
+        $aAttributes['id'] = $iQuotaID;
+    }
+    
+    $result = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes($aAttributes);
     $quota_info = array();
     $x=0;
 

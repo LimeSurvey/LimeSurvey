@@ -250,8 +250,6 @@
             foreach ($data as $k => $v){
                 $questions->$k = $v;
                 }
-//            if  (!$questions->save()) return false;
-//            else return $questions->qid;
             try
             {
                 $questions->save();

@@ -4488,10 +4488,14 @@
                 }
 
                 $sdata = array_filter($sdata);
-                if (Yii::app()->db->createCommand()->insert($this->surveyOptions['tablename'], $sdata))    // Checked
+                Survey_dynamic::sid($this->sid);
+                $oSurvey = new Survey_dynamic;
+                
+                $iNewID = $oSurvey->insertRecords($sdata); 
+                if ($iNewID)    // Checked
                 {
-                    $srid = Yii::app()->db->getLastInsertID();
-                    $_SESSION[$this->sessid]['srid'] = $srid;
+                    $srid = $iNewID;
+                    $_SESSION[$this->sessid]['srid'] = $iNewID;
                 }
                 else
                 {
@@ -4499,14 +4503,18 @@
                 }
                 //Insert Row for Timings, if needed
                 if ($this->surveyOptions['savetimings']) {
+                    Survey_timings::sid($this->sid);
+                    $oSurveyTimings = new Survey_timings;
+                    
                     $tdata = array(
                     'id'=>$srid,
                     'interviewtime'=>0
                     );
                     $tdata = array_filter($tdata);
-                    if (Yii::app()->db->createCommand()->insert($this->surveyOptions['tablename_timings'],$tdata))  // Checked
+                    $iNewID = $oSurveyTimings->insertRecords($tdata); 
+                    if ($iNewID)  // Checked
                     {
-                        $trid = Yii::app()->db->getLastInsertID();
+                        $trid = $iNewID;
                     }
                     else
                     {
