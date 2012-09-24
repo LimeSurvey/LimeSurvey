@@ -31,6 +31,7 @@ function db_upgrade_all($oldversion) {
     $sDBDriverName=setsDBDriverName();
     setVarchar($sDBDriverName);
     $sVarchar = Yii::app()->getConfig('varchar');
+    $sAutoIncrement  = Yii::app()->getConfig('autoincrement');
 
     if ($oldversion < 111)
     {
