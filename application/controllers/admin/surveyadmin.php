@@ -448,7 +448,7 @@ class SurveyAdmin extends Survey_Common_Action
             if (isset($aResult['error']))
             {
                 $aViewUrls['output']= "<br />\n<div class='messagebox ui-corner-all'>\n" .
-                "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n";
+                "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($iSurveyID)</div>\n";
                 if ($aResult['error']=='surveytablecreation')
                 {
                     $aViewUrls['output'].="<div class='warningheader'>".$clang->gT("Survey table could not be created.")."</div>\n";
@@ -459,7 +459,7 @@ class SurveyAdmin extends Survey_Common_Action
                 }
                 $aViewUrls['output'].="<p>" .
                 $clang->gT("Database error!!")."\n <font color='red'>" ."</font>\n" .
-                "<pre>".implode(' ', $createsurvey)."</pre>\n
+                "<pre>".implode(' ', $aResult['error'])."</pre>\n
                 <a href='".Yii::app()->getController()->createUrl("admin/survey/view/surveyid/".$iSurveyID)."'>".$clang->gT("Main Admin Screen")."</a>\n</div>" ;
             }
             else

@@ -329,7 +329,7 @@ function activateSurvey($iSurveyID, $simulate = false)
             case "|":
                 $createsurveydirectory = true;
                 if (strpos($arow['fieldname'], "_"))
-                    $createsurvey[$arow['fieldname']] = "INT(1)";
+                    $createsurvey[$arow['fieldname']] = "integer";
                 else
                     $createsurvey[$arow['fieldname']] = "text";
                 break;
@@ -402,6 +402,10 @@ function activateSurvey($iSurveyID, $simulate = false)
                     Yii::app()->db->createCommand($autonumberquery)->execute();
                     $autonumberquery = "alter table {{survey_{$iSurveyID}}} add [id] int identity({$row['autonumber_start']},1)";
                     Yii::app()->db->createCommand($autonumberquery)->execute();
+                }
+                elseif (Yii::app()->db->driverName=='pgsql')
+                {
+                    
                 }
                 else
                 {
