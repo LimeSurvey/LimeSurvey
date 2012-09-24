@@ -135,11 +135,10 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('bounceencryption', strip_tags(returnGlobal('bounceencryption')));
         setGlobalSetting('bounceaccountuser', strip_tags(returnGlobal('bounceaccountuser')));
 
-        if (returnGlobal('bounceaccountpass') != 'enteredpassword') {
-            setGlobalSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
-        }
-        setGlobalSetting('emailsmtpssl', sanitize_paranoid_string(returnGlobal('emailsmtpssl')));
-        setGlobalSetting('emailsmtpdebug', sanitize_int(returnGlobal('emailsmtpdebug')));
+        if (returnGlobal('bounceaccountpass') != 'enteredpassword') setGlobalSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
+        
+        if (returnGlobal('emailsmtpssl')) setGlobalSetting('emailsmtpssl', sanitize_paranoid_string(returnGlobal('emailsmtpssl')));
+        if (returnGlobal('emailsmtpdebug')) setGlobalSetting('emailsmtpdebug', sanitize_int(returnGlobal('emailsmtpdebug')));
         setGlobalSetting('emailsmtpuser', strip_tags(returnGlobal('emailsmtpuser')));
         setGlobalSetting('filterxsshtml', strip_tags($_POST['filterxsshtml']));
         setGlobalSetting('siteadminbounce', strip_tags($_POST['siteadminbounce']));

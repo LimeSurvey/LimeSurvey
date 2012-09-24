@@ -223,7 +223,7 @@
                     <input type='password' size='50' id='emailsmtppassword' name='emailsmtppassword' value='somepassword' /></li>
                 <li><label for='emailsmtpssl'><?php $clang->eT("SMTP SSL/TLS:"); ?></label>
                     <select id='emailsmtpssl' name='emailsmtpssl'>
-                        <option value='off'
+                        <option value=''
                             <?php if (getGlobalSetting('emailsmtpssl')=='') { echo "selected='selected'";} ?>
                             ><?php $clang->eT("Off"); ?></option>
                         <option value='ssl'
