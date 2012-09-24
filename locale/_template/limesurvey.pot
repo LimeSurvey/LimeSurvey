@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-09-24 11:42:10+00:00\n"
+"POT-Creation-Date: 2012-09-24 22:05:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7860,11 +7860,11 @@ msgstr ""
 msgid "Please be patient..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:369
+#: application/helpers/update/updatedb_helper.php:370
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1021
+#: application/helpers/update/updatedb_helper.php:1022
 msgid "Database update finished (%s)"
 msgstr ""
 
