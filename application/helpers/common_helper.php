@@ -1626,14 +1626,14 @@ function returnGlobal($stringname, $urlParam = null)
 {
     if(!isset($urlParam))
     {
-        if (!empty($_POST[$stringname]))
+        if (!empty($_POST[$stringname]) || '0' === $_POST[$stringname])
             $urlParam = $_POST[$stringname];
         //if ($this->input->cookie('stringname')) $urlParam = $this->input->cookie('stringname');
-        elseif (!empty($_GET[$stringname] ))
+        elseif (!empty($_GET[$stringname] ) || '0' === $_GET[$stringname])
         {
             $urlParam = $_GET[$stringname];
         }
-        elseif (!empty($_COOKIE[$stringname]))
+        elseif (!empty($_COOKIE[$stringname]) || '0' === $_COOKIE[$stringname])
         {
             $urlParam = $_COOKIE[$stringname];
         }
