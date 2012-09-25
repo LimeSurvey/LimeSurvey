@@ -2439,16 +2439,16 @@ function UpdateFieldArray()
 }
 
 /**
-* check_quota() returns quota information for the current survey
+* checkQuota() returns quota information for the current survey
 * @param string $checkaction - action the function must take after completing:
 * 								enforce: Enforce the Quota action
 * 								return: Return the updated quota array from getQuotaAnswers()
 * @param string $surveyid - Survey identification number
 * @return array - nested array, Quotas->Members->Fields, includes quota status and which members matched in session.
 */
-function check_quota($checkaction,$surveyid)
+function checkQuota($checkaction,$surveyid)
 {
-    global $clang, $clienttoken;
+    global $clang, $clienttoken, $thissurvey;
     if (!isset($_SESSION['survey_'.$surveyid]['s_lang'])){
         return;
     }
@@ -2602,11 +2602,11 @@ function check_quota($checkaction,$surveyid)
                         submittokens(true);
                     }
 
-                    killSurveySession($surveyid);
                 sendCacheHeaders();
                 if($quota['AutoloadUrl'] == 1 && $quota['Url'] != "")
                 {
                     header("Location: ".$quota['Url']);
+                    killSurveySession($surveyid);
                 }
                 doHeader();
 
@@ -2618,6 +2618,7 @@ function check_quota($checkaction,$surveyid)
                 echo "\t</div>\n";
                 echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[2622]');
                 doFooter();
+                killSurveySession($surveyid);
                 exit;
             }
 

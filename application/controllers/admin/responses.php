@@ -298,9 +298,9 @@ class responses extends Survey_Common_Action
             $clang = $aData['clang'];
             $aData['num_total_answers'] = Survey_dynamic::model($iSurveyID)->count();
             $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
-            $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}');
-            if($aData['with_token'])
+            if (tableExists('{{tokens_' . $iSurveyID . '}}'))
             {
+                $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}');
                 $aData['tokeninfo'] = Tokens_dynamic::model($iSurveyID)->summary();
             }
 

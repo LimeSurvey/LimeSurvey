@@ -306,7 +306,7 @@ class SurveyAdmin extends Survey_Common_Action
         else
         {
             //See if there is a tokens table for this survey
-            if (Yii::app()->db->schema->getTable("{{tokens_{$postsid}}}"))
+            if (tableExists("{{tokens_{$postsid}}}"))
             {
                 if (Yii::app()->db->getDriverName() == 'postgre')
                 {

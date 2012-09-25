@@ -4626,7 +4626,7 @@
                     }
                     // Check Quotas
                     $bQuotaMatched = false;
-                    $aQuotas = check_quota('return', $this->sid);
+                    $aQuotas = checkQuota('return', $this->sid);
                     if ($aQuotas !== false)
                     {
                         if ($aQuotas != false)
@@ -4641,7 +4641,7 @@
                     }
                     if ($bQuotaMatched)
                     {
-                        check_quota('enforce',$this->sid);  // will create a page and quit.
+                        checkQuota('enforce',$this->sid);  // will create a page and quit.
                     }
                     else
                     {
