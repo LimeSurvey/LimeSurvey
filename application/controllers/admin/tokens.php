@@ -385,6 +385,10 @@ class tokens extends Survey_Common_Action
         $aData = new stdClass;
         $aData->page = $page;
         $aData->records = Tokens_dynamic::model($iSurveyId)->count();
+        if ($limit>$aData->records)
+        {
+            $limit=$aData->records;
+        }
         $aData->total = ceil($aData->records / $limit);
 
         Yii::app()->loadHelper("surveytranslator");
@@ -2269,6 +2273,7 @@ class tokens extends Survey_Common_Action
         $aAdditionalAttributeFields = $thissurvey['attributedescriptions'];
         $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyId}}",true);
         $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
+        $aData['attrfieldnames']=array();
         foreach ($aAdditionalAttributeFields as $sField=>$aData)
         {
             if (in_array($sField,$aTokenFieldNames))
