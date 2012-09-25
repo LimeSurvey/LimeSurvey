@@ -600,7 +600,7 @@
         /**
         * used to specify whether to  generate equations using SGQA codes or qcodes
         * Default is to convert all qcode naming to sgqa naming when generating javascript, as that provides the greatest backwards compatibility
-        * Excel export of survey structure sets this to false so as to force use of qcode naming
+        * TSV export of survey structure sets this to false so as to force use of qcode naming
         *
         * @var Boolean
         */
@@ -8519,13 +8519,13 @@ EOD;
         }
 
         /**
-        * Export survey definition in format readable by ExcelSurveyImport
+        * TSV survey definition in format readable by TSVSurveyImport
         * one line each per group, question, sub-question, and answer
         * does not use SGQA naming at all.
         * @param type $sid
         * @return type
         */
-        static public function &ExcelSurveyExport($sid)
+        static public function &TSVSurveyExport($sid)
         {
             $fields = array(
             'class',

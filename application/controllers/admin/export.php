@@ -1250,9 +1250,9 @@ class export extends Survey_Common_Action {
                 exit;
             }
         }
-        elseif ($action == 'exportstructureexcel')
+        elseif ($action == 'exportstructuretsv')
         {
-            $this->_exportexcel($iSurveyID);
+            $this->_exporttsv($iSurveyID);
         }
         elseif ( $action == "exportarchive" )
         {
@@ -1261,10 +1261,10 @@ class export extends Survey_Common_Action {
     }
 
     /**
-     * Generate and Excel file for the survey structure
+     * Generate an TSV (tab-separated value) file for the survey structure
      * @param type $surveyid
      */
-    private function _exportexcel($surveyid)
+    private function _exporttsv($surveyid)
     {
         $fn = "limesurvey_survey_$surveyid.txt";
         header("Content-Type: text/tab-separated-values charset=UTF-8");
@@ -1274,7 +1274,7 @@ class export extends Survey_Common_Action {
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Pragma: public");                          // HTTP/1.0
 
-        $data =& LimeExpressionManager::ExcelSurveyExport($surveyid);
+        $data =& LimeExpressionManager::TSVSurveyExport($surveyid);
 
         $lines = array();
         foreach($data as $row)

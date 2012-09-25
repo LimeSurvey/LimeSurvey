@@ -29,6 +29,7 @@ ul,ol {
 p {
     clear: left;
     text-align:center;
+    margin:1em 0;
 }
 
 /* Wrapper */
@@ -1232,7 +1233,9 @@ textarea.updater-changelog {
     clear:left;
     padding-bottom:5px;
 }
-
+#tabs li{
+    clear:none;
+}
 .editorLink {
 	vertical-align: top;
 }
@@ -1435,6 +1438,7 @@ div.right {
     padding: 1px 1em;
     text-decoration:none !important;
     cursor:pointer;
+    font-size:0.9em;
     text-align: center;
     zoom: 1;
 }
