@@ -1671,6 +1671,10 @@ function ExcelImportSurvey($sFullFilepath)
         }
         // remove BOM from the first header cell, if needed
         $rowheaders[0] = preg_replace("/^\W+/","",$rowheaders[0]);
+        if (preg_match('/class$/',$rowheaders[0]))
+        {
+            $rowheaders[0] = 'class';   // second attempt to remove BOM
+        }
 
         $adata = array();
         foreach ($filelines as $rowline)
