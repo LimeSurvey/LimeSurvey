@@ -1,15 +1,15 @@
 <?php
 echo '<div class="header ui-widget-header">'.$clang->gT('Welcome to the ComfortUpdate').'</div><div class="updater-background"><br />';
-$clang->eT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br />';
-$clang->eT('The following steps will be done by this update:').'<br /><ul>';
+echo $clang->gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br /><br />';
+echo $clang->gT('The following steps will be done by this update:').'<br /><ul>';
 echo '<li>'.$clang->gT('Your LimeSurvey installation is checked if the update can be run successfully.').'</li>';
 echo '<li>'.$clang->gT('Your DB and any changed files will be backed up.').'</li>';
 echo '<li>'.$clang->gT('New files will be downloaded and installed.').'</li>';
-echo '<li>'.$clang->gT('If necessary the database will be updated.').'</li></ul>';
+echo '<li>'.$clang->gT('If necessary the database will be updated.').'</li></ul><br>';
 echo '<h3>'.$clang->gT('Checking basic requirements...').'</h3>';
 if ($updatekey==''){
-    $clang->eT('You need an update key to run the comfort update. During the beta test of this update feature the key "LIMESURVEYUPDATE" can be used.');
-    echo "<br /><form id='keyupdate' method='post' action='".Yii::app()->getController()->createUrl("admin/update/index/keyupdate")."'><label for='updatekey'>".$clang->gT('Please enter a valid update-key:').'</label>';
+    $clang->eT('You need an update key to run the ComfortUpdate. During the beta test of this update feature the key "LIMESURVEYUPDATE" can be used.');
+    echo "<br /><br /><form id='keyupdate' method='post' action='".Yii::app()->getController()->createUrl("admin/update/index/subaction/keyupdate")."'><label for='updatekey'>".$clang->gT('Please enter a valid update-key:').'</label>';
     echo '<input id="updatekey" name="updatekey" type="text" value="LIMESURVEYUPDATE" /> <input type="submit" value="'.$clang->gT('Save update key').'" /></form>';
 }
 else
@@ -26,7 +26,7 @@ else
         echo  "<li class='errortitle'>".sprintf($clang->gT("Version file is not writable (%s). Please set according file permissions."),APPPATH.'config/version.php')."</li>";
         $error=true;
     }
-    echo '</ul><h3>'.$clang->gT('Change log').'</h3>';
+    echo '</ul><br><h3>'.$clang->gT('Change log').'</h3>';
 
     if($httperror=="") {
     	echo '<textarea class="updater-changelog" readonly="readonly">'.htmlspecialchars($changelog['changelog']).'</textarea>';

@@ -28,7 +28,7 @@ if (!$downloaderror)
 	$clang->eT('Please check any problems above - update was done.').'<br />';
 }
 
-echo "<p><button onclick=\"window.open('".site_url("admin/globalsettings")."', '_top')\" >".$clang->gT('Back to main menu')."</button></p>";
+echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_top')\" >".$clang->gT('Back to main menu')."</button></p>";
 echo '</div>';
 
 ?>

@@ -50,7 +50,7 @@ else
         {
             echo '<li>'.htmlspecialchars($existingfile['file']).'</li>';
         }
-        echo '</ul>';
+        echo '</ul><br>';
     }
 
     if (count($modifiedfiles)>0)
@@ -63,7 +63,7 @@ else
         {
             echo '<li>'.htmlspecialchars($modifiedfile['file']).'</li>';
         }
-        echo '</ul>';
+        echo '</ul><br>';
     }
 
     if (count($readonlyfiles)>0)

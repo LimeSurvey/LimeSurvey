@@ -73,6 +73,8 @@ class GlobalSettings extends Survey_Common_Action
         $data['updateavailable'] = (Yii::app()->getConfig("updateavailable") &&  Yii::app()->getConfig("updatable"));
         $data['updatable'] = Yii::app()->getConfig("updatable");
         $data['updateinfo'] = Yii::app()->getConfig("updateinfo");
+        $data['updatebuild'] = Yii::app()->getConfig("updatebuild");
+        $data['updateversion'] = Yii::app()->getConfig("updateversion");
         $data['allLanguages'] = getLanguageData(false, Yii::app()->session['adminlang']);
         if (trim(Yii::app()->getConfig('restrictToLanguages')) == '') {
             $data['restrictToLanguages'] = array_keys($data['allLanguages']);

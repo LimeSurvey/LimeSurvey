@@ -205,9 +205,7 @@ class remotecontrol_handle
        {
 		   if( Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
 		   {     
-			   if (Yii::app()->getRegistry($sSetttingName) !== false)
-					return Yii::app()->getRegistry($sSetttingName);
-				elseif (Yii::app()->getConfig($sSetttingName) !== false)
+			   if (Yii::app()->getConfig($sSetttingName) !== false)
 					return Yii::app()->getConfig($sSetttingName);
 				else
 					return array('status' => 'Invalid setting');	

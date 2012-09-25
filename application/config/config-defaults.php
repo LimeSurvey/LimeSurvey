@@ -368,6 +368,12 @@ $config['chartfontsize'] =10;
 $config['updatecheckperiod']=7;
 
 /**
+* $updatekey - Sets the default update key for the ComfortUpdater
+*/
+$config['updatekey']='';
+
+
+/**
 * @var $showxquestions string allows you to control whether or not
 * {THEREAREXQUESTIONS} is displayed (if it is included in a template)
 *	hide = always hide {THEREAREXQUESTIONS}
