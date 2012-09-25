@@ -1079,6 +1079,13 @@ class InstallerController extends CController {
                 $dsn = "mysql:host={$sDatabaseLocation};port={$sDatabasePort};dbname={$sDatabaseName};";
                 break;
             case 'pgsql':
+                if (empty($sDatabasePwd))
+                {
+                    // If there's no password, we need to write password=""; instead of password=;,
+                    // or PostgreSQL's libpq will consider the DSN string part after "password="
+                    // (including the ";" and the potential dbname) as part of the password definition.
+                    $sDatabasePwd = '""';
+                }
                 $dsn = "pgsql:host={$sDatabaseLocation};port={$sDatabasePort};user={$sDatabaseUser};password={$sDatabasePwd};";
                 if ($sDatabaseName!='')
                 {
