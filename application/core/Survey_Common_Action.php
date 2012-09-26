@@ -332,7 +332,7 @@ class Survey_Common_Action extends CAction
         $sqrq = Questions::model()->findAllByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
         $aData['sqct'] = $sqct = count($sqrq);
 
-        $qrresult = Questions::model()->findAllByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
+        $qrrow = Questions::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
 
         $questionsummary = "<div class='menubar'>\n";
 
@@ -349,68 +349,65 @@ class Survey_Common_Action extends CAction
         $surveyinfo = array_map('flattenText', $surveyinfo);
         $aData['activated'] = $surveyinfo['active'];
 
-        foreach ($qrresult as $qrrow)
+        $qrrow = $qrrow->attributes;
+        if (hasSurveyPermission($iSurveyID, 'surveycontent', 'read'))
         {
-            $qrrow = $qrrow->attributes;
-            if (hasSurveyPermission($iSurveyID, 'surveycontent', 'read'))
+            if (count(Survey::model()->findByPk($iSurveyID)->additionalLanguages) != 0)
             {
-                if (count(Survey::model()->findByPk($iSurveyID)->additionalLanguages) != 0)
-                {
-                    Yii::app()->loadHelper('surveytranslator');
-                    $tmp_survlangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-                    $baselang = Survey::model()->findByPk($iSurveyID)->language;
-                    $tmp_survlangs[] = $baselang;
-                    rsort($tmp_survlangs);
-                    $aData['tmp_survlangs'] = $tmp_survlangs;
-                }
+                Yii::app()->loadHelper('surveytranslator');
+                $tmp_survlangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+                $baselang = Survey::model()->findByPk($iSurveyID)->language;
+                $tmp_survlangs[] = $baselang;
+                rsort($tmp_survlangs);
+                $aData['tmp_survlangs'] = $tmp_survlangs;
             }
-            $aData['qtypes'] = $qtypes = getQuestionTypeList('', 'array');
-            if ($action == 'editansweroptions' || $action == "editsubquestions" || $action == "editquestion" || $action == "editdefaultvalues" || $action =="editdefaultvalues" || $action == "copyquestion")
-            {
-                $qshowstyle = "style='display: none'";
-            }
-            else
-            {
-                $qshowstyle = "";
-            }
-            $aData['qshowstyle'] = $qshowstyle;
-            $aData['action'] = $action;
-            $aData['surveyid'] = $iSurveyID;
-            $aData['qid'] = $qid;
-            $aData['gid'] = $gid;
-            $aData['clang'] = $clang;
-            $aData['qrrow'] = $qrrow;
-            $aData['baselang'] = $baselang;
-            $aAttributesWithValues = Questions::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyID, $baselang);
-            $DisplayArray = array();
-            foreach ($aAttributesWithValues as $aAttribute)
-            {
-                if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default']) || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default']))
-                {
-                    if ($aAttribute['inputtype'] == 'singleselect')
-                    {
-                        $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
-                    }
-                    /*
-                    if ($aAttribute['name']=='relevance')
-                    {
-                    $sRelevance = $aAttribute['value'];
-                    if ($sRelevance !== '' && $sRelevance !== '1' && $sRelevance !== '0')
-                    {
-                    LimeExpressionManager::ProcessString("{" . $sRelevance . "}");    // tests Relevance equation so can pretty-print it
-                    $aAttribute['value']= LimeExpressionManager::GetLastPrettyPrintExpression();
-                    }
-                    }
-                    */
-                    $DisplayArray[] = $aAttribute;
-                }
-            }
-            $aData['advancedsettings'] = $DisplayArray;
-            $aData['condarray'] = $condarray;
-            $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
-            $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
-            $questionsummary .= $this->getController()->render('/admin/survey/Question/questionbar_view', $aData, true);
         }
+        $aData['qtypes'] = $qtypes = getQuestionTypeList('', 'array');
+        if ($action == 'editansweroptions' || $action == "editsubquestions" || $action == "editquestion" || $action == "editdefaultvalues" || $action =="editdefaultvalues" || $action == "copyquestion")
+        {
+            $qshowstyle = "style='display: none'";
+        }
+        else
+        {
+            $qshowstyle = "";
+        }
+        $aData['qshowstyle'] = $qshowstyle;
+        $aData['action'] = $action;
+        $aData['surveyid'] = $iSurveyID;
+        $aData['qid'] = $qid;
+        $aData['gid'] = $gid;
+        $aData['clang'] = $clang;
+        $aData['qrrow'] = $qrrow;
+        $aData['baselang'] = $baselang;
+        $aAttributesWithValues = Questions::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyID, $baselang);
+        $DisplayArray = array();
+        foreach ($aAttributesWithValues as $aAttribute)
+        {
+            if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default']) || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default']))
+            {
+                if ($aAttribute['inputtype'] == 'singleselect')
+                {
+                    $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
+                }
+                /*
+                if ($aAttribute['name']=='relevance')
+                {
+                $sRelevance = $aAttribute['value'];
+                if ($sRelevance !== '' && $sRelevance !== '1' && $sRelevance !== '0')
+                {
+                LimeExpressionManager::ProcessString("{" . $sRelevance . "}");    // tests Relevance equation so can pretty-print it
+                $aAttribute['value']= LimeExpressionManager::GetLastPrettyPrintExpression();
+                }
+                }
+                */
+                $DisplayArray[] = $aAttribute;
+            }
+        }
+        $aData['advancedsettings'] = $DisplayArray;
+        $aData['condarray'] = $condarray;
+        $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
+        $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
+        $questionsummary .= $this->getController()->render('/admin/survey/Question/questionbar_view', $aData, true);
         $finaldata['display'] = $questionsummary;
 
         $this->getController()->render('/survey_view', $finaldata);

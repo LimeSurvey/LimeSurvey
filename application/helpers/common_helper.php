@@ -604,7 +604,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
         }
         $sQuestionselecter .=">{$qrow['title']}:";
         $sQuestionselecter .= " ";
-        $question=flattenText($qrow['question'],true);
+        $question=flattenText($qrow['question']);
         if (strlen($question)<35)
         {
             $sQuestionselecter .= $question;
@@ -4585,7 +4585,7 @@ function flattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=fals
 {
     $sNicetext = stripJavaScript($sTextToFlatten);
     // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
-    $sNicetext = str_replace('</td',' </td', $sNicetext);
+    $sNicetext = str_replace(array('</td','</th'),array(' </td',' </th'), $sNicetext);
     if ($keepSpan) {
         // Keep <span> so can show EM syntax-highlighting; add space before tags so that word-wrapping not destroyed when remove tags.
         $sNicetext = strip_tags($sNicetext,'<span><table><tr><td><th>');
