@@ -155,7 +155,7 @@ class Save {
                 "refurl"=>getenv("HTTP_REFERER"));
                 if (Survey_dynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
                 {
-                    $srid = Yii::app()->db->getLastInsertID();
+                    $srid = Yii::app()->db->getCommandBuilder()->getLastInsertID('{{survey_' . $surveyid . '}}');
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
                 }
                 else
@@ -179,7 +179,7 @@ class Save {
 
             if (Saved_control::model()->insert($scdata))   // Checked
             {
-                $scid = Yii::app()->db->getLastInsertID();
+                $scid = Yii::app()->db->getCommandBuilder()->getLastInsertID('{{saved_control}}');
                 $_SESSION['survey_'.$surveyid]['scid'] = $scid;
             }
             else
