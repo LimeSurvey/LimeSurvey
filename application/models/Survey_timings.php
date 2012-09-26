@@ -89,7 +89,7 @@ class Survey_timings extends LSActiveRecord
                 $statistics['middleval'] = $middleval;
                 if ($statistics['count'] % 2)
                 {
-                    $median=($queryAll[$middleval]['interviewtime'] + $queryAll[$middleval-1]['interviewtime']) / 2; 
+                    $median=($queryAll[$middleval]['interviewtime'] + $queryAll[$middleval-1]['interviewtime']) / 2;
                 }
                 else
                 {
@@ -110,7 +110,21 @@ class Survey_timings extends LSActiveRecord
         }
         return $statistics;
     }
-    
+
+    public function insertRecords($data)
+    {
+        $record = new self;
+        foreach ($data as $k=>$v) {
+            $record->$k = $v;
+        }
+
+        try {
+            $record->save();
+            return $record->id;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
 
 ?>
