@@ -7434,7 +7434,7 @@ function  doesImportArraySupportLanguage($csvarray,$idkeysarray,$langfieldnum,$l
 {
     // An array with one row per object id and langsupport status as value
     $objlangsupportarray=Array();
-    if ($hasheader === true)
+    if ($hasheader === true )
     { // stripping first row to skip headers if any
         array_shift($csvarray);
     }

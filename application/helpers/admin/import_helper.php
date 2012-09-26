@@ -1237,6 +1237,10 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
     {
         $answerfieldnames=convertCSVRowToArray($answerarray[0],',','"');
         unset($answerarray[0]);
+        while (trim(reset($answerarray))=='')
+        {
+            array_shift($answerarray);
+        }        
         $countanswers = count($answerarray);
     }
     else {$countanswers=0;}
@@ -1257,7 +1261,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
     {
         $langfieldnum = array_search("language", $questionfieldnames);
         $qidfieldnum = array_search("qid", $questionfieldnames);
-        $questionssupportbaselang = doesImportArraySupportLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$sBaseLanguage,true);
+        $questionssupportbaselang = doesImportArraySupportLanguage($questionarray, array($qidfieldnum), $langfieldnum, $sBaseLanguage);
         if (!$questionssupportbaselang)
         {
             $results['fatalerror']=$clang->gT("You can't import a question which doesn't support at least the survey base language.");
@@ -1403,16 +1407,15 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
         //Assuming we will only import one question at a time we will now find out the maximum question order in this group
         //and save it for later
         $query = "SELECT MAX(question_order) AS maxqo FROM {{questions}} WHERE sid=$iNewSID AND gid=$newgid";
-        $res = Yii::app()->db->createCommand($query)->query();
-        //$row = $res->read();
+        $aRow = Yii::app()->db->createCommand($query)->queryRow();
 
-        if ($res->num_rows() == 0)
+        if ($aRow == false)
         {
             $newquestionorder=0;
         }
         else
         {
-            $newquestionorder = $row['maxqo'];
+            $newquestionorder = $aRow['maxqo'];
             $newquestionorder++;
         }
 
@@ -1477,13 +1480,13 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
             $newvalues=array_values($questionrowdata);
             if ($xssfilter)
                 XSSFilterArray($newvalues);
-            $qinsert = "INSERT INTO {{questions}} (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")";
-            $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie("Error: Failed to insert question<br />\n$qinsert<br />\n");
+            $questionrowdata=array_combine(array_keys($questionrowdata),$newvalues);
+            $iQID=Questions::model()->insertRecords($questionrowdata);
 
             // set the newqid only if is not set
             if (!isset($newqid))
             {
-                $newqid=Yii::app()->db->getLastInsertID();
+                $newqid=$iQID;
             }
         }
         $qtypes = getQuestionTypeList("" ,"array");
