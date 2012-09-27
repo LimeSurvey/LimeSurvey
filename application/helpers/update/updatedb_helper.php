@@ -577,8 +577,8 @@ function db_upgrade_all($oldversion) {
         alterColumn('{{user_groups}}','name',"{$sVarchar}(20)",false);
         alterColumn('{{user_groups}}','description',"text",false);
 
-        Yii::app()->db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}');
-        addPrimaryKey('user_in_groups', array('ugid','uid'));
+        try { Yii::app()->db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}'); } catch(Exception $e) {}        
+        try { addPrimaryKey('user_in_groups', array('ugid','uid')); } catch(Exception $e) {}        
 
         addColumn('{{surveys_languagesettings}}','surveyls_numberformat',"integer NOT NULL DEFAULT 0");
 
