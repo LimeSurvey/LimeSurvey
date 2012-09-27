@@ -44,5 +44,5 @@ else
 
 <div class='messagebox ui-corner-all'>
     <div class='header ui-widget-header'><?php echo $clang->eT("Note"); ?></div><br />
-    <?php $clang->eT("LDAP queries are defined by the administrator in the config-ldap.php file."); ?>
+    <?php $clang->eT("LDAP queries are defined by the administrator in the configuration file /application/config/ldap.php ."); ?>
 </div>
