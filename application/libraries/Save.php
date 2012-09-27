@@ -279,16 +279,17 @@ class Save {
         $passedTime = round(microtime(true) - $_POST['start_time'],2);
         if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
             $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
-            ."interviewtime = IFNULL(interviewtime, 0 ) + " .$passedTime
+            ."interviewtime = (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " .$passedTime
             ." WHERE id = " .$_SESSION['survey_'.$thissurvey['sid']]['srid'];
 
         }
         else
         {
             $setField .= "time";
+            $setField = Yii::app()->db->quoteColumnName($setField);
             $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
-            ."interviewtime =  IFNULL(interviewtime, 0 ) + " .$passedTime .","
-            .$setField." =  IFNULL(".$setField.", 0 ) + ".$passedTime
+            ."interviewtime =  (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " .$passedTime .","
+            .$setField." =  (CASE WHEN $setField IS NULL THEN 0 ELSE $setField END) + ".$passedTime
             ." WHERE id = " .$_SESSION['survey_'.$thissurvey['sid']]['srid'];
         }
         Yii::app()->db->createCommand($query)->execute();
