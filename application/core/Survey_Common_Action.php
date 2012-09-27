@@ -342,7 +342,8 @@ class Survey_Common_Action extends CAction
         $sumresult1 = Survey::model()->findByPk($iSurveyID);
         if (is_null($sumresult1))
         {
-            die('Invalid survey id');
+            Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
+            $this->getController()->redirect($this->getController()->createUrl("admin/index"));
         } //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
 
@@ -498,7 +499,8 @@ class Survey_Common_Action extends CAction
         $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByPk($iSurveyID); //$sumquery1, 1) ; //Checked
         if (is_null($sumresult1))
         {
-            die('Invalid survey id');
+            Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
+            $this->getController()->redirect($this->getController()->createUrl("admin/index"));
         } //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
         $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
@@ -639,7 +641,8 @@ class Survey_Common_Action extends CAction
         $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByPk($iSurveyID); //$sumquery1, 1) ; //Checked
         if (is_null($sumresult1))
         {
-            die('Invalid survey id');
+            Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
+            $this->getController()->redirect($this->getController()->createUrl("admin/index"));
         } //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
         $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);

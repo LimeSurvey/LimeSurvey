@@ -74,9 +74,8 @@ class responses extends Survey_Common_Action
         //SURVEY MATCHING $iSurveyID DOESN'T EXIST
         else
         {
-            $aErrorData['sHeading'] = $clang->gT('Browse responses');
-            $aErrorData['sMessage'] = $clang->gT('There is no matching survey.');
-            $this->getController()->render("/error_view", $aErrorData);
+            Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
+            $this->getController()->redirect($this->getController()->createUrl("admin/index"));
         }
 
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.

@@ -37,6 +37,12 @@ class tokens extends Survey_Common_Action
             die("You do not have permission to view this page"); // TODO Replace
         }
 
+        if (is_null(Survey::model()->findByPk($iSurveyId)))
+        {
+            Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
+            $this->getController()->redirect($this->getController()->createUrl("admin/index"));
+        }
+        
         Yii::app()->loadHelper("surveytranslator");
 
         //$dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
