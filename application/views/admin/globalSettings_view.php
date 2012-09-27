@@ -269,7 +269,7 @@
                     </select></li>
 
                 <li><label for='bounceaccounthost'><?php $clang->eT("Server name & port:"); ?></label>
-                    <input type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccounthost'))?>" /><span class='hint'><?php $clang->eT("Enter your hostname and port, e.g.: imap.gmail.com:995"); ?></span>
+                    <input type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccounthost'))?>" /> <span class='hint'><?php $clang->eT("Enter your hostname and port, e.g.: imap.gmail.com:995"); ?></span>
                 </li>
                 <li><label for='bounceaccountuser'><?php $clang->eT("User name:"); ?></label>
                     <input type='text' size='50' id='bounceaccountuser' name='bounceaccountuser'

@@ -41,8 +41,7 @@
                         ?>><?php $clang->eT("POP"); ?></option>
                 </select></li>
             <li><label for='bounceaccounthost'><?php $clang->eT("Server name & port:"); ?></label>
-            <input type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo $settings['bounceaccounthost']; ?>" />
-            <span class='annotation'><?php $clang->eT("Enter your hostname and port, e.g.: imap.gmail.com:995"); ?></span>
+            <input type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo $settings['bounceaccounthost']; ?>" /> <span class='annotation'><?php $clang->eT("Enter your hostname and port, e.g.: imap.gmail.com:995"); ?></span>
             <li><label for='bounceaccountuser'><?php $clang->eT("User name:"); ?></label>
                 <input type='text' size='50' id='bounceaccountuser' name='bounceaccountuser' value="<?php echo $settings['bounceaccountuser']; ?>" /></li>
             <li><label for='bounceaccountpass'><?php $clang->eT("Password:"); ?></label>

@@ -2633,7 +2633,7 @@ function checkQuota($checkaction,$surveyid)
                 echo "\t<div class='quotamessage'>\n";
                 echo "\t".$quota['Message']."<br /><br />\n";
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-                echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" name='move2'><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>
+                echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" id='moveprevbtn'>".$clang->gT("Previous")."</button>
                 <input type='hidden' name='thisstep' value='".($_SESSION['survey_'.$surveyid]['step'])."' id='thisstep' />
                 <input type='hidden' name='sid' value='".returnGlobal('sid')."' id='sid' />
                 <input type='hidden' name='token' value='".$clienttoken."' id='token' />
