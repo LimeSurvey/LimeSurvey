@@ -22,9 +22,9 @@
 function stripTagsFull($string) {
     $string=html_entity_decode($string, ENT_QUOTES, "UTF-8");
     //combining these into one mb_ereg_replace call ought to speed things up
-    //$string = str_replace(array("\r\n","\r","\n",'-oth-'), '', $string);
+    $string = str_replace(array("\r\n","\r","\n",'-oth-'), '', $string);
     //The backslashes must be escaped twice, once for php, and again for the regexp
-    //$string = str_replace("'|\\\\'", "&apos;", $string);
+    $string = str_replace("'|\\\\'", "&apos;", $string);
     return flattenText($string);
 }
 
@@ -303,7 +303,41 @@ function SPSSGetValues ($field = array(), $qidattributes = null ) {
 * @return array
 */
 function SPSSFieldMap($iSurveyID, $prefix = 'V') {
-    global $typeMap, $clang, $surveyprivate, $tokensexist, $language;
+    global $clang, $surveyprivate, $tokensexist, $language;
+    
+    $typeMap = array(
+'5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
+'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
+'A'=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
+'F'=>Array('name'=>'Array (Flexible Labels)','size'=>1,'SPSStype'=>'F'),
+'1'=>Array('name'=>'Array (Flexible Labels) Dual Scale','size'=>1,'SPSStype'=>'F'),
+'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'F'),
+'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F','Scale'=>2),
+'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
+'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A','hide'=>1),
+'D'=>Array('name'=>'Date','size'=>10,'SPSStype'=>'SDATE'),
+'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
+'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
+'I'=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),
+'!'=>Array('name'=>'List (Dropdown)','size'=>1,'SPSStype'=>'F'),
+'W'=>Array('name'=>'List (Flexible Labels) (Dropdown)','size'=>1,'SPSStype'=>'F'),
+'Z'=>Array('name'=>'List (Flexible Labels) (Radio)','size'=>1,'SPSStype'=>'F'),
+'L'=>Array('name'=>'List (Radio)','size'=>1,'SPSStype'=>'F'),
+'O'=>Array('name'=>'List With Comment','size'=>1,'SPSStype'=>'F'),
+'T'=>Array('name'=>'Long free text','size'=>1,'SPSStype'=>'A'),
+'K'=>Array('name'=>'Multiple Numerical Input','size'=>1,'SPSStype'=>'F'),
+'M'=>Array('name'=>'Multiple choice','size'=>1,'SPSStype'=>'F'),
+'P'=>Array('name'=>'Multiple choice with comments','size'=>1,'SPSStype'=>'F'),
+'Q'=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'F'),
+'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F','Scale'=>3),
+'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
+'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'F'),
+'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
+':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
+';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
+'|'=>Array('name'=>'File upload','size'=>1,'SPSStype'=>'A'),
+'*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
+);
 
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
 

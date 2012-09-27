@@ -286,6 +286,7 @@ class export extends Survey_Common_Action {
     */
     public function exportspss()
     {
+        global $length_vallabel;
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $subaction = Yii::app()->request->getParam('subaction');
 
@@ -399,7 +400,7 @@ class export extends Survey_Common_Action {
             $result = Yii::app()->db->createCommand($query)->query()->readAll(); //Checked
 
             $num_fields = isset( $result[0] ) ? count($result[0]) : 0;
-
+            
             //Now we check if we need to adjust the size of the field or the type of the field
             foreach ( $result as $row )
             {
@@ -465,7 +466,7 @@ class export extends Survey_Common_Action {
                 {
                     $field['size'] .= '.' . ($field['size']-1);
                 }
-
+                
                 if ( !$field['hide'] ) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
             }
 
@@ -576,6 +577,7 @@ class export extends Survey_Common_Action {
     */
     public function exportr()
     {
+        global $length_vallabel;
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $subaction = Yii::app()->request->getParam('subaction');
 
