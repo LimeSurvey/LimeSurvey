@@ -207,10 +207,11 @@ class export extends Survey_Common_Action {
         //function.
         $options = new FormattingOptions();
         $options->selectedColumns = Yii::app()->request->getPost('colselect');
-        $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from')) - 1;
-        $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to')) - 1;
+        $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from'));
+        $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to'));
         $options->answerFormat = $answers;
         $options->convertN = $convertnto2;
+        $options->output = 'display';
 
         if ( $options->convertN )
         {
@@ -224,7 +225,6 @@ class export extends Survey_Common_Action {
             $options->yValue = $convertyto1;
         }
 
-        $options->format = $type;
         $options->headerSpacesToUnderscores = $convertspacetous;
         $options->headingFormat = $exportstyle;
         $options->responseCompletionState = incompleteAnsFilterState();
@@ -265,7 +265,7 @@ class export extends Survey_Common_Action {
         }
 
         $resultsService = new ExportSurveyResultsService();
-        $resultsService->exportSurvey($iSurveyID, $explang, $options);
+        $resultsService->exportSurvey($iSurveyID, $explang, $type, $options);
 
         exit;
     }
