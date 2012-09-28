@@ -427,9 +427,9 @@ class conditionsaction extends Survey_Common_Action {
                 foreach($copyconditionsfrom as &$entry)
                     $entry = Yii::app()->db->quoteValue($entry);
                 $query = "SELECT * FROM {{conditions}}\n"
-                ."WHERE cid in ('";
+                ."WHERE cid in (";
                 $query .= implode(", ", $copyconditionsfrom);
-                $query .= "')";
+                $query .= ")";
                 $result = Yii::app()->db->createCommand($query)->query() or
                 safeDie("Couldn't get conditions for copy<br />$query<br />");
 
