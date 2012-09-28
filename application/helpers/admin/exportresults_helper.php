@@ -380,7 +380,7 @@ class SurveyObj
     * @var array[int][string]mixed
     */
     public $languageSettings;
-
+    
     /**
     * Returns question arrays ONLY for questions that are part of the
     * indicated group and are top level (i.e. no subquestions will be
@@ -424,7 +424,7 @@ class SurveyObj
 
     public function getQuestionText($fieldName)
     {
-        $question = $this->getQuestionArray($fieldName);
+        $question = $this->fieldMap[$fieldName];
         if ($question)
         {
             return $question['question'];
@@ -456,26 +456,6 @@ class SurveyObj
         }
 
         return $matchingTokens;
-    }
-
-    /**
-    * Returns an associative array containing keys that are equivalent to the
-    * field names in the question table. The values are for the question that matches
-    * the given $fieldName.  If no match is found then false is returned.
-    *
-    * @param string $fieldName
-    * @return array[string]mixed  (or false)
-    */
-    public function getQuestionArray($fieldName)
-    {
-        foreach ($this->questions as $question)
-        {
-            if ($question['qid'] == $this->fieldMap[$fieldName]['qid'])
-            {
-                return $question;
-            }
-        }
-        return false;
     }
 
     /**
@@ -517,16 +497,16 @@ class SurveyObj
     {
         $fullAnswer = null;
         $fieldType = $this->fieldMap[$fieldName]['type'];
-        $question = $this->getQuestionArray($fieldName);
+        $question = $this->fieldMap[$fieldName];
         $questionId = $question['qid'];
-        $answers = $this->getAnswers($questionId);
-        if (array_key_exists($answerCode, $answers))
+        $answer = null;
+        if ($questionId)
         {
-            $answer = $answers[$answerCode]['answer'];
-        }
-        else
-        {
-            $answer = null;
+            $answers = $this->getAnswers($questionId);
+            if (array_key_exists($answerCode, $answers))
+            {
+                $answer = $answers[$answerCode]['answer'];
+            }
         }
 
         //echo "\n$fieldName: $fieldType = $answerCode";
@@ -912,7 +892,7 @@ abstract class Writer implements IWriter
     */
     public function getAbbreviatedHeading(SurveyObj $survey, $fieldName)
     {
-        $question = $survey->getQuestionArray($fieldName);
+        $question = $survey->fieldMap[$fieldName];
         if ($question)
         {
             $heading = $question['question'];
@@ -939,7 +919,8 @@ abstract class Writer implements IWriter
     */
     public function getFullHeading(SurveyObj $survey, FormattingOptions $oOptions, $fieldName)
     {
-        $question = $survey->getQuestionArray($fieldName);
+        $question = $survey->fieldMap[$fieldName];
+        
         $heading = $question['question'];
         $heading = $this->stripTagsFull($heading);
         $heading.=$this->getFullFieldSubHeading($survey, $oOptions, $fieldName);
@@ -948,7 +929,8 @@ abstract class Writer implements IWriter
 
     public function getCodeHeading(SurveyObj $survey, FormattingOptions $oOptions, $fieldName)
     {
-        $question = $survey->getQuestionArray($fieldName);
+        $question = $survey->fieldMap[$fieldName];
+        
         $heading = $question['title'];
         $heading = $this->stripTagsFull($heading);
         $heading.=$this->getCodeFieldSubHeading($survey, $oOptions, $fieldName);
