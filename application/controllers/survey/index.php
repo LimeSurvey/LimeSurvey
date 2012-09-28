@@ -23,6 +23,7 @@ class index extends CAction {
         global $surveyid;
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
+		global $clang;
         $clang = Yii::app()->lang;
         @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('iSessionExpirationTime'));
 
@@ -405,8 +406,8 @@ class index extends CAction {
             if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen',$thissurvey['usecaptcha']))
             {
                 if ( (!isset($_POST['loadsecurity']) ||
-                !isset($_SESSION['survey_'.$surveyid]['secanswer']) ||
-                $_POST['loadsecurity'] != $_SESSION['survey_'.$surveyid]['secanswer']) &&
+                !isset(Yii::app()->session['secanswer']) ||
+                $_POST['loadsecurity'] != Yii::app()->session['secanswer']) &&
                 !isset($_GET['scid']))
                 {
                     $errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
@@ -416,7 +417,7 @@ class index extends CAction {
             // Load session before loading the values from the saved data
             if (isset($_GET['loadall']))
             {
-                buildsurveysession();
+                buildsurveysession($surveyid);
             }
 
             $_SESSION['survey_'.$surveyid]['holdname'] = $param['loadname']; //Session variable used to load answers every page.
