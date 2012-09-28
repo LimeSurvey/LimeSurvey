@@ -1017,7 +1017,13 @@ function db_upgrade_all($oldversion) {
         alterColumn('{{participant_attribute_values}}', 'value', "text", false);
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>162),"stg_name='DBVersion'");
     }
+    if ($oldversion < 163)
+    {
+        //Replace  by <script type="text/javascript" src="{TEMPLATEURL}template.js"></script> by {TEMPLATEJS}
 
+        $replacedTemplate=replaceTemplateJS();
+
+    }
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
 }
@@ -1761,5 +1767,50 @@ function setVarchar($sDBDriverName=null) {
     {
         Yii::app()->setConfig('varchar',$sVarchar='varchar');
         Yii::app()->setConfig('autoincrement', $sAutoIncrement='int(11) NOT NULL AUTO_INCREMENT');
+    }
+}
+
+function replaceTemplateJS(){
+    $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+    $clang = Yii::app()->lang;
+    if (!$usertemplaterootdir) {return false;}
+    $countstartpage=0;
+    $counterror=0;
+    if ($handle = opendir($usertemplaterootdir))
+    {
+        while (false !== ($file = readdir($handle)))
+        {
+            $fname = "$usertemplaterootdir/$file/startpage.pstpl";
+            if (is_file("$usertemplaterootdir/$file/startpage.pstpl"))
+            {
+                if(is_writable("$usertemplaterootdir/$file/startpage.pstpl")){
+                    $fhandle = fopen($fname,"r");
+                    $content = fread($fhandle,filesize($fname));
+                    $content = str_replace("<script type=\"text/javascript\" src=\"{TEMPLATEURL}template.js\"></script>", "{TEMPLATEJS}", $content);
+                    $fhandle = fopen($fname,"w");
+                    fwrite($fhandle,$content);
+                    fclose($fhandle);
+                }else{
+                    $counterror++;
+                }
+                $countstartpage++;
+            }
+        }
+        closedir($handle);
+    }
+        if($counterror)
+        {
+            echo sprintf($clang->gT("%s user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually."),$counterror);
+        }
+        else
+        {
+            if($countstartpage){
+                echo sprintf($clang->gT("All %s user templates updated."),$countstartpage);
+            }
+        }
+    if($counterror){
+        return false;
+    }else{
+        return $countstartpage;
     }
 }
