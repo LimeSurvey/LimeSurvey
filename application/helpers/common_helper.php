@@ -1622,21 +1622,16 @@ function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 * @param mixed $stringname
 * @param mixed $urlParam
 */
-function returnGlobal($stringname, $urlParam = null)
+function returnGlobal($stringname)
 {
-    if(!isset($urlParam))
+    if ($stringname=='sid') // don't read SID from a Cookie
     {
-        if (!empty($_POST[$stringname]))
-            $urlParam = $_POST[$stringname];
-        //if ($this->input->cookie('stringname')) $urlParam = $this->input->cookie('stringname');
-        elseif (!empty($_GET[$stringname] ))
-        {
-            $urlParam = $_GET[$stringname];
-        }
-        elseif (!empty($_COOKIE[$stringname]))
-        {
-            $urlParam = $_COOKIE[$stringname];
-        }
+        if (isset($_GET[$stringname])) $urlParam = $_GET[$stringname];
+        if (isset($_POST[$stringname])) $urlParam = $_POST[$stringname];
+    }
+    elseif (isset($_REQUEST[$stringname]))
+    {
+        $urlParam = $_REQUEST[$stringname];
     }
 
     if (isset($urlParam))
@@ -1656,7 +1651,10 @@ function returnGlobal($stringname, $urlParam = null)
             return sanitize_languagecode($urlParam);
         }
         elseif ($stringname =="htmleditormode" ||
-        $stringname =="subaction")
+        $stringname =="subaction" ||
+        $stringname =="questionselectormode" ||
+        $stringname =="templateeditormode"
+        )
         {
             return sanitize_paranoid_string($urlParam);
         }
@@ -1670,6 +1668,7 @@ function returnGlobal($stringname, $urlParam = null)
     {
         return NULL;
     }
+
 }
 
 
