@@ -22,7 +22,7 @@ class SurveyRuntimeHelper {
     * @param mixed $args
     */
     function run($surveyid,$args) {
-		global $errormsg;
+        global $errormsg;
 
         extract($args);
         $LEMsessid = 'survey_' . $surveyid;
