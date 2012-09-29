@@ -147,11 +147,11 @@ class Save {
             {
                 $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
                 $sdata = array(
-            		"datestamp" => $today,
-            		"ipaddr" => getIPAddress(),
-            		"startlanguage" => $_SESSION['survey_'.$surveyid]['s_lang'],
-            		"refurl" => getenv("HTTP_REFERER")
-            	);
+                    "datestamp" => $today,
+                    "ipaddr" => getIPAddress(),
+                    "startlanguage" => $_SESSION['survey_'.$surveyid]['s_lang'],
+                    "refurl" => getenv("HTTP_REFERER")
+                );
                 if (Survey_dynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
                 {
                     $srid = Yii::app()->db->getLastInsertID();
@@ -239,7 +239,7 @@ class Save {
         $language = $tokenentryarray['language'];
 
         //$message .= "\n\n$publicurl/$surveyid/lang-$language/tk-$clienttoken";
-	    $message .= "\n\n" . Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/lang/{$language}/token/{$clienttoken}");
+        $message .= "\n\n" . Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/lang/{$language}/token/{$clienttoken}");
 
         if (SendEmailMessage($message, $subject, $to, $from, $sitename, false, getBounceEmail($surveyid)))
         {
