@@ -114,16 +114,16 @@ class Save {
         if (empty($_POST['savename'])) $errormsg .= $clang->gT("You must supply a name for this saved session.")."<br />\n";
         if (empty($_POST['savepass'])) $errormsg .= $clang->gT("You must supply a password for this saved session.")."<br />\n";
         if (empty($_POST['savepass']) || empty($_POST['savepass2']) || $_POST['savepass'] != $_POST['savepass2'])
-		{
-			$errormsg .= $clang->gT("Your passwords do not match.")."<br />\n";
-		}
+        {
+            $errormsg .= $clang->gT("Your passwords do not match.")."<br />\n";
+        }
         // if security question asnwer is incorrect
         if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
         {
             if (empty($_POST['loadsecurity'])
-			 || !isset(Yii::app()->session['secanswer'])
-			 || $_POST['loadsecurity'] != Yii::app()->session['secanswer']
-			)
+             || !isset(Yii::app()->session['secanswer'])
+             || $_POST['loadsecurity'] != Yii::app()->session['secanswer']
+            )
             {
                 $errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
             }
@@ -134,7 +134,7 @@ class Save {
             return;
         }
 
-		$duplicate = Saved_control::model()->findAllByAttributes(array('sid' => $surveyid, 'identifier' => $_POST['savename']));
+        $duplicate = Saved_control::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $_POST['savename']));
         if (!empty($duplicate) && $duplicate->count() > 0)
         {
             $errormsg .= $clang->gT("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
@@ -147,11 +147,11 @@ class Save {
             {
                 $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
                 $sdata = array(
-					"datestamp" => $today,
-					"ipaddr" => getIPAddress(),
-					"startlanguage" => $_SESSION['survey_'.$surveyid]['s_lang'],
-					"refurl" => getenv("HTTP_REFERER")
-				);
+            		"datestamp" => $today,
+            		"ipaddr" => getIPAddress(),
+            		"startlanguage" => $_SESSION['survey_'.$surveyid]['s_lang'],
+            		"refurl" => getenv("HTTP_REFERER")
+            	);
                 if (Survey_dynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
                 {
                     $srid = Yii::app()->db->getLastInsertID();
@@ -164,17 +164,17 @@ class Save {
             }
             //CREATE ENTRY INTO "saved_control"
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
-			$saved_control = new Saved_control;
-			$saved_control->sid = $surveyid;
-			$saved_control->srid = $_SESSION['survey_'.$surveyid]['srid'];
-			$saved_control->identifier = $_POST['savename']; // Binding does escape, so no quoting/escaping necessary
-			$saved_control->access_code = md5($_POST['savepass']);
-			$saved_control->email = $_POST['saveemail'];
-			$saved_control->ip = getIPAddress();
-			$saved_control->saved_thisstep = $thisstep;
-			$saved_control->status = 'S';
-			$saved_control->saved_date = $today;
-			$saved_control->refurl = getenv('HTTP_REFERER');
+            $saved_control = new Saved_control;
+            $saved_control->sid = $surveyid;
+            $saved_control->srid = $_SESSION['survey_'.$surveyid]['srid'];
+            $saved_control->identifier = $_POST['savename']; // Binding does escape, so no quoting/escaping necessary
+            $saved_control->access_code = md5($_POST['savepass']);
+            $saved_control->email = $_POST['saveemail'];
+            $saved_control->ip = getIPAddress();
+            $saved_control->saved_thisstep = $thisstep;
+            $saved_control->status = 'S';
+            $saved_control->saved_date = $today;
+            $saved_control->refurl = getenv('HTTP_REFERER');
 
             if ($saved_control->save())
             {
@@ -198,9 +198,9 @@ class Save {
                 $message .= $clang->gT("Name").": ".$_POST['savename']."\n";
                 $message .= $clang->gT("Password").": ".$_POST['savepass']."\n\n";
                 $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-				$message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reaload/scid/{$scid}/loadname/".urlencode($_POST['savename'])."/loadpass/".urlencode($_POST['savepass']));
+                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reaload/scid/{$scid}/loadname/".urlencode($_POST['savename'])."/loadpass/".urlencode($_POST['savepass']));
                 if ($clienttoken) $message .= "/token/{$clienttoken}";
-				
+
                 $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
                 if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
                 {
@@ -239,7 +239,7 @@ class Save {
         $language = $tokenentryarray['language'];
 
         //$message .= "\n\n$publicurl/$surveyid/lang-$language/tk-$clienttoken";
-		$message .= "\n\n" . Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/lang/{$language}/token/{$clienttoken}");
+	    $message .= "\n\n" . Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/lang/{$language}/token/{$clienttoken}");
 
         if (SendEmailMessage($message, $subject, $to, $from, $sitename, false, getBounceEmail($surveyid)))
         {

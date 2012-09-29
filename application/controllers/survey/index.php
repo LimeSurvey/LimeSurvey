@@ -23,7 +23,7 @@ class index extends CAction {
         global $surveyid;
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
-		global $clang;
+        global $clang;
         $clang = Yii::app()->lang;
         @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('iSessionExpirationTime'));
 

@@ -22,6 +22,8 @@ class SurveyRuntimeHelper {
     * @param mixed $args
     */
     function run($surveyid,$args) {
+		global $errormsg;
+
         extract($args);
         $LEMsessid = 'survey_' . $surveyid;
         $sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
