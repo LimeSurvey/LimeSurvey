@@ -227,9 +227,9 @@ class tokens extends Survey_Common_Action
                         @$datelc = $lasthinfo->date;
                         $datelcu = strtotime($datelc);
                         $checktotal++;
-                        @imap_close($mbox);
                     }
                 }
+                @imap_close($mbox);
                 $condn = array('sid' => $iSurveyId);
                 $survey = Survey::model()->findByAttributes($condn);
                 $survey->bouncetime = $datelastbounce;
