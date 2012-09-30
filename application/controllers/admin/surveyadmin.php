@@ -1398,6 +1398,7 @@ class SurveyAdmin extends Survey_Common_Action
             $i++;
         }
 
+        $aData = new stdClass();
         $aData->page = 1;
         $aData->records = $oResult->getRowCount();
         $aData->total = 1;

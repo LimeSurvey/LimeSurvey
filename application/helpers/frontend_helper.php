@@ -2092,15 +2092,6 @@
 
     }
 
-    // Defaults need to be set within Expression Manager so that it can process defaults comprised of equations
-    //    // Prefill question/answer from defaultvalues
-    //    foreach ($fieldmap as $field)
-    //    {
-    //        if (isset($field['defaultvalue']))
-    //        {
-    //            $_SESSION['survey_'.$surveyid][$field['fieldname']]=$field['defaultvalue'];
-    //        }
-    //    }
     // Prefill questions/answers from command line params
     $reservedGetValues= array('token','sid','gid','qid','lang','newtest','action');
     $startingValues=array();
@@ -2108,7 +2099,7 @@
     {
         foreach ($_GET as $k=>$v)
         {
-            if (!in_array($k,$reservedGetValues))
+            if (!in_array($k,$reservedGetValues) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k]))
             {
                 $startingValues[$k] = $v;
             }
@@ -2133,14 +2124,16 @@
                     {
                         if ($aField['qid']==$aRow['targetqid'] && $aField['sqid']==$aRow['targetsqid'])
                         {
-                            $_SESSION['survey_'.$surveyid][$sFieldname]=$_GET[$aRow['parameter']];
+                            $_SESSION['survey_'.$surveyid]['startingValues'][$sFieldname]=$_GET[$aRow['parameter']];
+                            $_SESSION['survey_'.$surveyid]['startingValues'][$aRow['parameter']]=$_GET[$aRow['parameter']];
                         }
                     }
                     else
                     {
                         if ($aField['qid']==$aRow['targetqid'])
                         {
-                            $_SESSION['survey_'.$surveyid][$sFieldname]=$_GET[$aRow['parameter']];
+                            $_SESSION['survey_'.$surveyid]['startingValues'][$sFieldname]=$_GET[$aRow['parameter']];
+                            $_SESSION['survey_'.$surveyid]['startingValues'][$aRow['parameter']]=$_GET[$aRow['parameter']];
                         }
                     }
                 }
