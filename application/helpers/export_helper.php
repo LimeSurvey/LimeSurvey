@@ -1450,6 +1450,7 @@ function group_export($action, $iSurveyID, $gid)
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: cache");                // HTTP/1.0
 
+    $xml->openUri('php://output');    
     $xml->setIndent(true);
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
@@ -1466,7 +1467,6 @@ function group_export($action, $iSurveyID, $gid)
     groupGetXMLStructure($xml,$gid);
     $xml->endElement(); // close columns
     $xml->endDocument();
-    exit;
 }
 
 function groupGetXMLStructure($xml,$gid)
