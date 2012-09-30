@@ -4867,7 +4867,7 @@ function convertCSVRowToArray($string, $seperator, $quotechar)
 function createPassword()
 {
     $pwchars = "abcdefhjmnpqrstuvwxyz23456789";
-    $password_length = 8;
+    $password_length = 12;
     $passwd = '';
 
     for ($i=0; $i<$password_length; $i++)

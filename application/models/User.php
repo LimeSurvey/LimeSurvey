@@ -218,11 +218,7 @@ class User extends CActiveRecord
     */
     public function updatePassword($uid,$password)
     {
-        $data = array('password' => Yii::app()->db->quoteValue($password));
-        //$this->db->where(array("uid"=>$uid));
-        //$this->db->update('users',$data);
-        $this->updateByPk($uid, $data);
-
+        return $this->updateByPk($uid, array('password' => $password));
     }
 
     /**
