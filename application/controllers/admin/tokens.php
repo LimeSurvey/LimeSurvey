@@ -183,53 +183,56 @@ class tokens extends Survey_Common_Action
             {
                 imap_errors();
                 $count = imap_num_msg($mbox);
-                $lasthinfo = imap_headerinfo($mbox, $count);
-                $datelcu = strtotime($lasthinfo->date);
-                $datelastbounce = $datelcu;
-                $lastbounce = $thissurvey['bouncetime'];
-                while ($datelcu > $lastbounce)
+                if ($count>0)
                 {
-                    @$header = explode("\r\n", imap_body($mbox, $count, FT_PEEK)); // Don't put read
-                    foreach ($header as $item)
+                    $lasthinfo = imap_headerinfo($mbox, $count);
+                    $datelcu = strtotime($lasthinfo->date);
+                    $datelastbounce = $datelcu;
+                    $lastbounce = $thissurvey['bouncetime'];
+                    while ($datelcu > $lastbounce)
                     {
-                        if (preg_match('/^X-surveyid/', $item))
+                        @$header = explode("\r\n", imap_body($mbox, $count, FT_PEEK)); // Don't mark messages as read
+                        foreach ($header as $item)
                         {
-                            $iSurveyIdBounce = explode(": ", $item);
-                        }
-                        if (preg_match('/^X-tokenid/', $item))
-                        {
-                            $tokenBounce = explode(": ", $item);
-                            if ($iSurveyId == $iSurveyIdBounce[1])
+                            if (preg_match('/^X-surveyid/', $item))
                             {
-                                $aData = array(
-                                'emailstatus' => 'bounced'
-                                );
-                                $condn = array('token' => $tokenBounce[1]);
-
-                                $record = Tokens_dynamic::model($iSurveyId)->findByAttributes($condn);
-                                foreach ($aData as $k => $v)
-                                    $record->$k = $v;
-                                $record->save();
-
-                                $readbounce = imap_body($mbox, $count); // Put read
-                                if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) // TODO Y or just true, and a imap_delete
+                                $iSurveyIdBounce = explode(": ", $item);
+                            }
+                            if (preg_match('/^X-tokenid/', $item))
+                            {
+                                $tokenBounce = explode(": ", $item);
+                                if ($iSurveyId == $iSurveyIdBounce[1])
                                 {
-                                    $deletebounce = imap_delete($mbox, $count); // Put delete
+                                    $aData = array(
+                                    'emailstatus' => 'bounced'
+                                    );
+                                    $condn = array('token' => $tokenBounce[1]);
+
+                                    $record = Tokens_dynamic::model($iSurveyId)->findByAttributes($condn);
+                                    foreach ($aData as $k => $v)
+                                        $record->$k = $v;
+                                    $record->save();
+
+                                    $readbounce = imap_body($mbox, $count); // Put read
+                                    if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) // TODO Y or just true, and a imap_delete
+                                    {
+                                        $deletebounce = imap_delete($mbox, $count); // Put delete
+                                    }
+                                    $bouncetotal++;
                                 }
-                                $bouncetotal++;
                             }
                         }
+                        $count--;
+                        @$lasthinfo = imap_headerinfo($mbox, $count);
+                        @$datelc = $lasthinfo->date;
+                        $datelcu = strtotime($datelc);
+                        $checktotal++;
+                        @imap_close($mbox);
                     }
-                    $count--;
-                    @$lasthinfo = imap_headerinfo($mbox, $count);
-                    @$datelc = $lasthinfo->date;
-                    $datelcu = strtotime($datelc);
-                    $checktotal++;
-                    @imap_close($mbox);
                 }
                 $condn = array('sid' => $iSurveyId);
                 $survey = Survey::model()->findByAttributes($condn);
-                $survey->bouncetime = $datelistbounce;
+                $survey->bouncetime = $datelastbounce;
                 $survey->save();
 
                 if ($bouncetotal > 0)
