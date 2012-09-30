@@ -21,8 +21,9 @@
  */
 class VerificationController extends LSYii_Controller
 {
-    function actionImage()
+    function actionImage($sid)
     {
+        $iSurveyID=(int)$sid;
         Yii::app()->loadHelper('database');
         $rootdir = Yii::app()->getConfig('rootdir');
 
@@ -101,7 +102,7 @@ class VerificationController extends LSYii_Controller
         ImageDestroy($im);
 
         // Add the answer to the session
-        Yii::app()->session['secanswer'] = $num1+$num2;
+        $_SESSION['survey_'.$iSurveyID]['secanswer']  = $num1+$num2;
     }
 }
 
