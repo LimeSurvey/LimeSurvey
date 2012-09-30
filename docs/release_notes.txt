@@ -51,6 +51,14 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 120930) to 2.00+ (build 120931) Sept 30, 2012
+-Fixed issue #6610: Security captcha does not accept valid values (Carsten Schmitz)
+-Fixed issue #6611: Limesurvey only processing first of multiple bounced emails (Carsten Schmitz)
+-Fixed issue #6614: Editing a question not possible (Carsten Schmitz)
+-Fixed issue: Reset password not properly working (Carsten Schmitz)
+#Updated translation: Estonian by klaster
+
+
 Changes from 2.00+ (build 120926) to 2.00+ (build 120930) Sept 30, 2012
 -Fixed issue #6582: Export data to SPSS does not export value labels correctly (Menno Dekker)
 -Fixed issue #6578: Error whan saving global settings (Carsten Schmitz)
@@ -78,7 +86,6 @@ Changes from 2.00+ (build 120926) to 2.00+ (build 120930) Sept 30, 2012
 #Updated translation: Serbian by MilaVeljovic
 #Updated translation: Slovak by bmichelsz
 #Updated translation: Turkish by kayazeren
-
 
 Changes from 2.00+ (build 120924) to 2.00+ (build 120926) Sept 26, 2012
 -Fixed issue #6581: Excel format (.txt) is a TSV format (Tab separated value) (Denis Chenu)
