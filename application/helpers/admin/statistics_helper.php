@@ -26,7 +26,7 @@
 *  @param mixed $cache          An object containing [Hashkey] and [CacheFolder]
 *  @return                Name
 */
-function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache)
+function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache, $oLanguage)
 {
     /* This is a lazy solution to bug #6389. A better solution would be to find out how
        the "T" gets passed to this function from the statistics.js file in the first place! */
@@ -40,7 +40,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $language = Survey::model()->findByPk($iSurveyID)->language;
-    $statlang = new Limesurvey_lang($language);
+    $statlang = $oLanguage;
     $cachefilename = "";
 
     /* Set the fonts for the chart */
@@ -504,15 +504,14 @@ function buildSelects($allfields, $surveyid, $language) {
 *                       "qquestion"=>The description of the question,
 *                       "qtype"=>The question type code
 */
-function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
+function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage) {
 
     //Set up required variables
     $alist=array();
     $qtitle="";
     $qquestion="";
     $qtype="";
-    $statlangcode =  getBaseLanguageFromSurveyID($surveyid);
-    $statlang = new Limesurvey_lang($statlangcode);
+    $statlang = $oLanguage;
     $firstletter = substr($rt, 0, 1);
     $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
     $sDatabaseType = Yii::app()->db->getDriverName();
@@ -787,7 +786,6 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                 break;
 
             case 'html':
-
                 $statisticsoutput .= "\n<table class='statisticstable' >\n"
                 ."\t<thead><tr><th colspan='2' align='center'><strong>".sprintf($statlang->gT("Field summary for %s"),$qtitle).":</strong>"
                 ."</th></tr>\n"
@@ -1727,12 +1725,11 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
 * @param mixed $sql
 * @param mixed $usegraph
 */
-function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf) {
+function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf, $oLanguage) {
 
     /* Set up required variables */
     $TotalCompleted = 0; //Count of actually completed answers
-    $statlangcode =  getBaseLanguageFromSurveyID($surveyid);
-    $statlang = new Limesurvey_lang($statlangcode);
+    $statlang = $oLanguage;
     $statisticsoutput="";
     $sDatabaseType = Yii::app()->db->getDriverName();
     $tempdir = Yii::app()->getConfig("tempdir");
@@ -2996,7 +2993,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
 
         if (array_sum($gdata)>0 && $bShowGraph == true)
         {
-            $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache);
+            $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $statlang);
             //introduce new counter
             if (!isset($ci)) {$ci=0;}
 
@@ -3430,12 +3427,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         {
 
             //Step 1: Get information about this response field (SGQA) for the summary
-            $outputs=buildOutputList($rt, $language, $surveyid, $outputType, $sql);
+            $outputs=buildOutputList($rt, $language, $surveyid, $outputType, $sql, $statlang);
             $statisticsoutput .= $outputs['statisticsoutput'];
             //2. Collect and Display results #######################################################################
             if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
             {
-                $display=displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf);
+                $display=displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf, $statlang);
                 $statisticsoutput .= $display['statisticsoutput'];
                 $astatdata = array_merge($astatdata, $display['astatdata']);
             }	//end if -> collect and display results

@@ -491,7 +491,7 @@ class statistics extends Survey_Common_Action {
      * requirements of the SQL
      *
      * */
-    function listcolumn($surveyid, $column, $sql, $sortby="", $sortmethod="", $sorttype="")
+    function listcolumn($surveyid, $column, $sortby="", $sortmethod="", $sorttype="")
     {
         $search['condition']=$column." != ''";
         if($sql != "") {$search['condition'].= " AND ($sql)";}
