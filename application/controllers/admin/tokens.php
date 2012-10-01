@@ -1226,13 +1226,26 @@ class tokens extends Survey_Common_Action
     /**
     * Handle email action
     */
-    function email($iSurveyId, $aTokenIds = null)
+    function email($iSurveyId, $tids = null)
     {
         /* Check permissions */
         if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
         {
             die("You do not have permission to view this page"); // TODO Replace
         }
+        $aTokenIds=$tids;
+        if (empty($tids))
+        {
+            $aTokenIds = Yii::app()->request->getPost('tokenids', false);
+        }
+        if (!empty($aTokenIds))
+        {
+            $aTokenIds = explode('|', $aTokenIds);
+            $aTokenIds = array_filter($aTokenIds);
+            $aTokenIds = array_map('sanitize_int', $aTokenIds);
+        }
+        $aTokenIds=array_unique(array_filter((array) $aTokenIds));        
+        
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
@@ -1260,7 +1273,6 @@ class tokens extends Survey_Common_Action
         $aSurveyLangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
         $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
         array_unshift($aSurveyLangs, $sBaseLanguage);
-        $aTokenIds = $this->_getTokenIds($aTokenIds, $iSurveyId);
         $aTokenFields = getTokenFieldsAndNames($iSurveyId, true);
         $iAttributes = 0;
         $bHtml = (getEmailFormat($iSurveyId) == 'html');
@@ -1440,7 +1452,7 @@ class tokens extends Survey_Common_Action
                                 $slquery->date_invited = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
                                 $slquery->save();
                             }
-                            $tokenoutput .= " {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']})<br />\n";
+                            $tokenoutput .= "{$emrow['tid']}: {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']})<br />\n";
                             if (Yii::app()->getConfig("emailsmtpdebug") == 2)
                             {
                                 $tokenoutput .= $maildebug;
@@ -2300,28 +2312,6 @@ class tokens extends Survey_Common_Action
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         $this->_renderWrappedTemplate('token', array('tokenbar', 'tokenform'), $aData);
-    }
-
-    private function _getTokenIds($aTokenIds, $iSurveyId)
-    {
-        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
-        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
-        if (!$bTokenExists) //If no tokens table exists
-        {
-            self::_newtokentable($iSurveyId);
-        }
-        if (empty($aTokenIds))
-        {
-            $aTokenIds = Yii::app()->request->getPost('tokenids', false);
-        }
-        if (!empty($aTokenIds))
-        {
-            $aTokenIds = explode('|', $aTokenIds);
-            $aTokenIds = array_filter($aTokenIds);
-            $aTokenIds = array_map('sanitize_int', $aTokenIds);
-        }
-
-        return array_unique(array_filter((array) $aTokenIds));
     }
 
     /**
