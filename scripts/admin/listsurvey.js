@@ -127,7 +127,17 @@ $(document).ready(function(){
                                                           edit:false,
                                                           refresh: false,
                                                           search: true
-                                                        },{},{},{ msg:delmsg, width : 700 });
+                                                        },{},{},{ msg:delmsg, 
+                                                                  bSubmit: sDelCaption,
+                                                                  caption: sDelCaption,
+                                                                  bCancel: sCancel,
+                                                                  width : 700 },
+                                                                  {
+                                                                      caption: sSearchCaption,
+                                                                      Find : sFind,
+                                                                      odata : [ sOperator1, sOperator2, sOperator3, sOperator4, sOperator5, sOperator6, sOperator7, sOperator8, sOperator9, sOperator10, sOperator11, sOperator12, sOperator13, sOperator14 ],
+                                                                      Reset: sReset
+                                                                  });
     jQuery("#displaysurveys").jqGrid('filterToolbar', {searchOnEnter : false,defaultSearch: 'cn'});
     jQuery("#displaysurveys").jqGrid('navButtonAdd','#pager',{
         buttonicon:"ui-icon-refresh",
@@ -143,6 +153,9 @@ $(document).ready(function(){
         title: sSelectColumns,
         onClickButton : function (){
             jQuery("#displaysurveys").jqGrid('columnChooser', {
+                caption: sSelectColumns,
+                bSubmit: sSubmit,
+                bCancel: sCancel,
                 done : function (perm) {
                     if (perm) {
                         this.jqGrid("remapColumns", perm, true);
