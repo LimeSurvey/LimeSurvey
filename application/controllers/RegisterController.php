@@ -96,8 +96,8 @@ class RegisterController extends LSYii_Controller {
         if (function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen',$thissurvey['usecaptcha']) )
         {
             if (!isset($_POST['loadsecurity']) ||
-            !isset(Yii::app()->session['secanswer']) ||
-            Yii::app()->request->getPost('loadsecurity') != Yii::app()->session['secanswer'])
+            !isset($_SESSION['survey_'.$surveyid]['secanswer']) ||
+            Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$surveyid]['secanswer'])
             {
                 $register_errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
             }

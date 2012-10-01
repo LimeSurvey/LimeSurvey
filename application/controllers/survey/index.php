@@ -406,8 +406,8 @@ class index extends CAction {
             if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen',$thissurvey['usecaptcha']))
             {
                 if ( (!isset($_POST['loadsecurity']) ||
-                !isset(Yii::app()->session['secanswer']) ||
-                $_POST['loadsecurity'] != Yii::app()->session['secanswer']) &&
+                !isset($_SESSION['survey_'.$surveyid]['secanswer']) ||
+                $_POST['loadsecurity'] != $_SESSION['survey_'.$surveyid]['secanswer']) &&
                 !isset($_GET['scid']))
                 {
                     $errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
