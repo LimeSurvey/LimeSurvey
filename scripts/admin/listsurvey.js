@@ -90,6 +90,10 @@ $(document).ready(function(){
         return colModels;
     }
     jQuery("#displaysurveys").jqGrid({
+        recordtext: sRecordText,
+        emptyrecords: sEmptyRecords,
+        pgtext: sPageText,
+        loadtext : sLoadText,
         align:"center",
         url: jsonUrl,
         editurl: editUrl,
@@ -114,14 +118,21 @@ $(document).ready(function(){
         multiselect: true,
         loadonce : true,
         pager: "#pager",
-        caption: "Surveys",
+        caption: sCaption
     });
-    jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ add:false,del:true,edit:false,refresh: false,search: true},{},{},{ msg:delmsg, width : 700 });
+    jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ deltitle: sDelTitle, 
+                                                          searchtitle: sSearchTitle,
+                                                          add:false,
+                                                          del:true,
+                                                          edit:false,
+                                                          refresh: false,
+                                                          search: true
+                                                        },{},{},{ msg:delmsg, width : 700 });
     jQuery("#displaysurveys").jqGrid('filterToolbar', {searchOnEnter : false,defaultSearch: 'cn'});
     jQuery("#displaysurveys").jqGrid('navButtonAdd','#pager',{
         buttonicon:"ui-icon-refresh",
         caption:"",
-        title: "Refresh",
+        title: sRefresh,
         onClickButton : function (){
             $("#displaysurveys").setGridParam({datatype:'json', page:1}).trigger('reloadGrid');
         }
@@ -129,7 +140,7 @@ $(document).ready(function(){
     jQuery("#displaysurveys").jqGrid('navButtonAdd','#pager',{
         buttonicon:"ui-icon-calculator",
         caption:"",
-        title: "Select Columns",
+        title: sSelectColumns,
         onClickButton : function (){
             jQuery("#displaysurveys").jqGrid('columnChooser', {
                 done : function (perm) {

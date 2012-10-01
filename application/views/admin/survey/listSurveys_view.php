@@ -3,7 +3,16 @@
     var getuserurl = '<?php echo $this->createUrl('admin/survey/ajaxgetusers'); ?>';
     var ownerediturl = '<?php echo $this->createUrl('admin/survey/ajaxowneredit'); ?>';
     var delmsg ='<?php $clang->eT("Are you sure you want to delete these surveys?",'js');?>';
+    var sCaption ='<?php $clang->eT("Surveys",'js');?>';
+    var sSelectColumns ='<?php $clang->eT("Select columns",'js');?>';
+    var sRecordText = '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
+    var sPageText = '<?php $clang->eT("Page {0} of {1}",'js');?>';
+    var sLoadText = '<?php $clang->eT("Loading...",'js');?>';
+    var sDelTitle = '<?php $clang->eT("Delete selected survey(s)",'js');?>';
+    var sSearchTitle ='<?php $clang->eT("Filter surveys",'js');?>';
+    var sRefresh ='<?php $clang->eT("Reload survey list",'js');?>';
     var delBtnCaption ='<?php $clang->eT("Save",'js');?>';
+    var sEmptyRecords ='<?php $clang->eT("There are currently no surveys.",'js');?>';
     var sConfirmationExpireMessage='<?php $clang->eT("Are you sure you want to expire these surveys?",'js');?>';
     var sConfirmationArchiveMessage='<?php $clang->eT("This function creates a ZIP archive of several survey archives and can take some time - please be patient! Do you want to continue?",'js');?>';
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl('/admin/survey/getSurveys_json'); ?>";
