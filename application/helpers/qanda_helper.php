@@ -1743,7 +1743,7 @@ function do_list_radio($ia)
     $colcounter = 1;
     $trbc='';
 
-    foreach ($ansresult as $ansrow)
+    foreach ($ansresult as $key=>$ansrow)
     {
         $myfname = $ia[1].$ansrow['code'];
         $check_ans = '';
@@ -1767,9 +1767,9 @@ function do_list_radio($ia)
         '.$wrapper['item-end'];
 
         ++$rowcounter;
-        if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+        if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'] || (count($ansresult)-$key)==$wrapper['cols']-$colcounter)
         {
-            if($colcounter == $wrapper['cols'] - 1)
+            if($colcounter == $wrapper['cols'] - 1 )
             {
                 $answer .= $wrapper['col-devide-last'];
             }
@@ -1892,34 +1892,6 @@ function do_list_radio($ia)
     //END OF ITEMS
     $answer .= $wrapper['whole-end'].'
     <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
-
-    //    $checkotherscript = "";
-    //
-    //    if (isset($other) && $other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1)
-    //    {
-    //        $checkotherscript = "<script type='text/javascript'>\n"
-    //        . "\t<!--\n"
-    //        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
-    //        . "function ensureOther_{$ia[0]}()\n"
-    //        . "{\n"
-    //        . "\tothercommentval=document.getElementById('answer{$ia[1]}othertext').value;\n"
-    //        . "\totherval=document.getElementById('SOTH{$ia[1]}').checked;\n"
-    //        . "\tif (otherval == true && othercommentval == '') {\n"
-    //        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
-    //        . "return false;\n"
-    //        . "\t}\n"
-    //        . "\telse {\n"
-    //        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-    //        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
-    //        . "}\n"
-    //        . "\t}\n"
-    //        . "}\n"
-    //        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-    //        . "\t-->\n"
-    //        . "</script>\n";
-    //    }
-    //
-    //    $answer = $checkotherscript . $answer;
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);

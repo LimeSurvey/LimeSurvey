@@ -1052,10 +1052,6 @@ function setupColumns($columns, $answer_count,$wrapperclass="",$itemclass="")
         $columns = $answer_count;
     };
 
-    if ($answer_count>0 && $columns>0)
-    {
-        $columns = ceil($answer_count/ceil($answer_count/$columns)); // # of columns is # of answers divided by # of rows (all rounded up)
-    }
 
     $class_first = ' class="'.$wrapperclass.'"';
     if($columns > 1 && !is_null($column_style))
