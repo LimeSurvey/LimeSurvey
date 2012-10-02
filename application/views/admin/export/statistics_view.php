@@ -9,7 +9,6 @@
 <script type='text/javascript'>
     var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/graph"); ?>";
     var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/listcolumn/surveyid/".$surveyid."/column/"); ?>";
-    var sql="<?php echo urlencode($sql); ?>";
     var showTextInline="<?php echo $showtextinline ?>";
 </script>
 <form method='post' name='formbuilder' action='<?php echo Yii::app()->getController()->createUrl("admin/statistics/index/surveyid/$surveyid"); ?>#start'>

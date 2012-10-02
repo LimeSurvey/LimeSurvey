@@ -272,7 +272,9 @@ class InstallerController extends CController {
                     if (self::_dbConnect($aDbConfig, array())) {
                         $bDBConnectionWorks = true;
                     } else {
-                        $model->addError('dblocation', $clang->gT('Try again! Connection with database failed.'));
+                        $model->addError('dblocation', $clang->gT('Connection with database failed. Please check database location, user name and password and try again.'));
+                        $model->addError('dbpwd');
+                        $model->addError('dbuser');
                     }
                 }
 
@@ -840,6 +842,9 @@ class InstallerController extends CController {
 
         // zlib php library check
         check_PHPFunction('zlib_get_coding_type', $data['zlibPresent']);
+        
+        // imap php library check
+        check_PHPFunction('imap_open', $data['bIMAPPresent']);
 
         return $bProceed;
     }
@@ -1075,6 +1080,13 @@ class InstallerController extends CController {
                 $dsn = "mysql:host={$sDatabaseLocation};port={$sDatabasePort};dbname={$sDatabaseName};";
                 break;
             case 'pgsql':
+                if (empty($sDatabasePwd))
+                {
+                    // If there's no password, we need to write password=""; instead of password=;,
+                    // or PostgreSQL's libpq will consider the DSN string part after "password="
+                    // (including the ";" and the potential dbname) as part of the password definition.
+                    $sDatabasePwd = '""';
+                }
                 $dsn = "pgsql:host={$sDatabaseLocation};port={$sDatabasePort};user={$sDatabaseUser};password={$sDatabasePwd};";
                 if ($sDatabaseName!='')
                 {

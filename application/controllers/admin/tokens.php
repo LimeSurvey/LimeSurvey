@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*   $Id$
+*     $Id$
 */
 
 /**
@@ -18,8 +18,8 @@
 *
 * This controller performs token actions
 *
-* @package      LimeSurvey
-* @subpackage   Backend
+* @package        LimeSurvey
+* @subpackage    Backend
 */
 class tokens extends Survey_Common_Action
 {
@@ -37,6 +37,12 @@ class tokens extends Survey_Common_Action
             die("You do not have permission to view this page"); // TODO Replace
         }
 
+        if (is_null(Survey::model()->findByPk($iSurveyId)))
+        {
+            Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
+            $this->getController()->redirect($this->getController()->createUrl("admin/index"));
+        }
+        
         Yii::app()->loadHelper("surveytranslator");
 
         //$dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
@@ -92,6 +98,11 @@ class tokens extends Survey_Common_Action
         }
         if ($thissurvey['bounceprocessing'] != 'N' ||  ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') != 'off'))
         {
+            if (!function_exists('imap_open'))
+            {
+                   $clang->eT("The imap PHP library is not installed. Please contact your system administrator.");
+                   return;
+            }
             $bouncetotal = 0;
             $checktotal = 0;
             if ($thissurvey['bounceprocessing'] == 'G')
@@ -172,13 +183,15 @@ class tokens extends Survey_Common_Action
             {
                 imap_errors();
                 $count = imap_num_msg($mbox);
+                if ($count>0)
+                {
                 $lasthinfo = imap_headerinfo($mbox, $count);
                 $datelcu = strtotime($lasthinfo->date);
                 $datelastbounce = $datelcu;
                 $lastbounce = $thissurvey['bouncetime'];
                 while ($datelcu > $lastbounce)
                 {
-                    @$header = explode("\r\n", imap_body($mbox, $count, FT_PEEK)); // Don't put read
+                        @$header = explode("\r\n", imap_body($mbox, $count, FT_PEEK)); // Don't mark messages as read
                     foreach ($header as $item)
                     {
                         if (preg_match('/^X-surveyid/', $item))
@@ -214,11 +227,12 @@ class tokens extends Survey_Common_Action
                     @$datelc = $lasthinfo->date;
                     $datelcu = strtotime($datelc);
                     $checktotal++;
-                    @imap_close($mbox);
+                    }
                 }
+                    @imap_close($mbox);
                 $condn = array('sid' => $iSurveyId);
                 $survey = Survey::model()->findByAttributes($condn);
-                $survey->bouncetime = $datelistbounce;
+                $survey->bouncetime = $datelastbounce;
                 $survey->save();
 
                 if ($bouncetotal > 0)
@@ -375,18 +389,22 @@ class tokens extends Survey_Common_Action
         $limit = Yii::app()->request->getPost('rows');
         $limit = isset($limit) ? $limit : 25; //Stop division by zero errors
         $page = isset($page) ? $page : 1; //Stop division by zero errors
-        $tokens = Tokens_dynamic::model($iSurveyId)->findAll(array("order"=>$sidx. " ". $sord));
+        $tokens = Tokens_dynamic::model($iSurveyId)->findAll(array("order"=>$sidx. " ". $sord, "offset"=>($page - 1) * $limit, "limit"=>$limit));
 
         $aData = new stdClass;
         $aData->page = $page;
-        $aData->records = count($tokens);
+        $aData->records = Tokens_dynamic::model($iSurveyId)->count();
+        if ($limit>$aData->records)
+        {
+            $limit=$aData->records;
+        }
         $aData->total = ceil($aData->records / $limit);
 
         Yii::app()->loadHelper("surveytranslator");
 
         $format = getDateFormatData(Yii::app()->session['dateformat']);
 
-        for ($i = 0, $j = ($page - 1) * $limit; $i < $limit && $j < $aData->records; $i++, $j++)
+        for ($i = 0, $j = 0; $i < $limit && $j < $limit; $i++, $j++)
         {
             $token = $tokens[$j];
             if ((int) $token['validfrom'])
@@ -1148,15 +1166,11 @@ class tokens extends Survey_Common_Action
             $fields['attribute_' . $i] = array('type' => 'VARCHAR', 'constraint' => '255');
         }
 
-        $aData['thissurvey'] = getSurveyInfo($iSurveyId);
-        $aData['surveyid'] = $iSurveyId;
-
-        $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
-        'title' => sprintf($clang->gT("%s field(s) were successfully added."), $number2add),
-        'message' => "<br /><input type='button' value='" . $clang->gT("Back to attribute field management.") . "' onclick=\"window.open('" . $this->getController()->createUrl("/admin/tokens/managetokenattributes/surveyid/$iSurveyId") . "', '_top')\" />"
-        )), $aData);
-
         LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
+
+        Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s field(s) were successfully added."), $number2add);
+        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl("/admin/tokens/managetokenattributes/surveyid/$iSurveyId"));
+
     }
 
     /**
@@ -1211,13 +1225,26 @@ class tokens extends Survey_Common_Action
     /**
     * Handle email action
     */
-    function email($iSurveyId, $aTokenIds = null)
+    function email($iSurveyId, $tids = null)
     {
         /* Check permissions */
         if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
         {
             die("You do not have permission to view this page"); // TODO Replace
         }
+        $aTokenIds=$tids;
+        if (empty($tids))
+        {
+            $aTokenIds = Yii::app()->request->getPost('tokenids', false);
+        }
+        if (!empty($aTokenIds))
+        {
+            $aTokenIds = explode('|', $aTokenIds);
+            $aTokenIds = array_filter($aTokenIds);
+            $aTokenIds = array_map('sanitize_int', $aTokenIds);
+        }
+        $aTokenIds=array_unique(array_filter((array) $aTokenIds));        
+        
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
@@ -1245,7 +1272,6 @@ class tokens extends Survey_Common_Action
         $aSurveyLangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
         $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
         array_unshift($aSurveyLangs, $sBaseLanguage);
-        $aTokenIds = $this->_getTokenIds($aTokenIds, $iSurveyId);
         $aTokenFields = getTokenFieldsAndNames($iSurveyId, true);
         $iAttributes = 0;
         $bHtml = (getEmailFormat($iSurveyId) == 'html');
@@ -1263,7 +1289,7 @@ class tokens extends Survey_Common_Action
         $aData['examplerow'] = $aExampleRow;
         $aData['tokenids'] = $aTokenIds;
         $aData['ishtml'] = $bHtml;
-        $iMaxEmails = Yii::app()->request->getPost('maxemails');
+        $iMaxEmails = Yii::app()->getConfig('maxemails');
 
         if (Yii::app()->request->getPost('bypassbademails') == 'Y')
         {
@@ -1425,7 +1451,7 @@ class tokens extends Survey_Common_Action
                                 $slquery->date_invited = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
                                 $slquery->save();
                             }
-                            $tokenoutput .= " {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']})<br />\n";
+                            $tokenoutput .= "{$emrow['tid']}: {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']})<br />\n";
                             if (Yii::app()->getConfig("emailsmtpdebug") == 2)
                             {
                                 $tokenoutput .= $maildebug;
@@ -1543,6 +1569,9 @@ class tokens extends Survey_Common_Action
         }
         else
         {
+            $filterduplicatetoken = (Yii::app()->request->getPost('filterduplicatetoken') && Yii::app()->request->getPost('filterduplicatetoken') == 'on');
+            $filterblankemail = (Yii::app()->request->getPost('filterblankemail') && Yii::app()->request->getPost('filterblankemail') == 'on');
+            
             $ldap_queries = Yii::app()->getConfig('ldap_queries');
             $ldap_server = Yii::app()->getConfig('ldap_server');
 
@@ -2267,6 +2296,7 @@ class tokens extends Survey_Common_Action
         $aAdditionalAttributeFields = $thissurvey['attributedescriptions'];
         $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyId}}",true);
         $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
+        $aData['attrfieldnames']=array();
         foreach ($aAdditionalAttributeFields as $sField=>$aData)
         {
             if (in_array($sField,$aTokenFieldNames))
@@ -2281,28 +2311,6 @@ class tokens extends Survey_Common_Action
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         $this->_renderWrappedTemplate('token', array('tokenbar', 'tokenform'), $aData);
-    }
-
-    private function _getTokenIds($aTokenIds, $iSurveyId)
-    {
-        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
-        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
-        if (!$bTokenExists) //If no tokens table exists
-        {
-            self::_newtokentable($iSurveyId);
-        }
-        if (empty($aTokenIds))
-        {
-            $aTokenIds = Yii::app()->request->getPost('tokenids', false);
-        }
-        if (!empty($aTokenIds))
-        {
-            $aTokenIds = explode('|', $aTokenIds);
-            $aTokenIds = array_filter($aTokenIds);
-            $aTokenIds = array_map('sanitize_int', $aTokenIds);
-        }
-
-        return array_unique(array_filter((array) $aTokenIds));
     }
 
     /**

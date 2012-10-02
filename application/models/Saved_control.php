@@ -32,7 +32,7 @@ class Saved_control extends CActiveRecord {
      */
     public function primaryKey()
     {
-        return 'sid';
+		return 'scid';
     }
 
     /**

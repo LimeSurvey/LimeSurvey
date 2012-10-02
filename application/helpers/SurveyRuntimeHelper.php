@@ -22,6 +22,8 @@ class SurveyRuntimeHelper {
     * @param mixed $args
     */
     function run($surveyid,$args) {
+        global $errormsg;
+
         extract($args);
         $LEMsessid = 'survey_' . $surveyid;
         $sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
@@ -91,23 +93,23 @@ class SurveyRuntimeHelper {
         {
 
             //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
-            if (!isset($_SESSION[$LEMsessid]['step']))  //  || !$_SESSION[$LEMsessid]['step']) - don't do this for step0, else rebuild the session
+            if (!isset($_SESSION[$LEMsessid]['step'])) // || !$_SESSION[$LEMsessid]['step']) - don't do this for step0, else rebuild the session
             {
                 buildsurveysession($surveyid);
-                $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
+                $sTemplatePath = $_SESSION[$LEMsessid]['templatepath'];
 
-                LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false, $LEMdebugLevel);
+                if($surveyid != LimeExpressionManager::getLEMsurveyId())
+                    LimeExpressionManager::SetDirtyFlag();
+
+                LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
                 $_SESSION[$LEMsessid]['step'] = 0;
-                if ($surveyMode == 'survey')
+                if ($surveyMode == 'survey' || (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N'))
                 {
                     $move = "movenext"; // to force a call to NavigateForwards()
                 }
-                else if (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
-                    {
-                        //If explicitply set, hide the welcome screen
-                        $_SESSION[$LEMsessid]['step'] = 0;
-                        $move = "movenext";
-                    }
+            } else if($surveyid != LimeExpressionManager::getLEMsurveyId()) {
+                LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
+                LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
             }
 
             $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
@@ -920,7 +922,7 @@ END;
             echo templatereplace(file_get_contents($sTemplatePath."startgroup.pstpl"), array(), $redata);
             echo "\n";
 
-            if ($groupdescription && !$previewquestion)
+            if (!$previewquestion)
             {
                 echo templatereplace(file_get_contents($sTemplatePath."groupdescription.pstpl"), array(), $redata);
             }

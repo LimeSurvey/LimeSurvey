@@ -111,24 +111,9 @@ class export extends Survey_Common_Action {
         $gid = sanitize_int(Yii::app()->request->getParam('gid'));
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
-        if ( Yii::app()->getConfig("export4lsrc") === TRUE && hasSurveyPermission($iSurveyID, 'survey', 'export') )
-        {
-            if ( ! empty($_POST['action']) )
-            {
-                group_export(Yii::app()->request->getPost('action'), $iSurveyID, $gid);
-                return;
-            }
+        group_export("exportstructurecsvGroup", $iSurveyID, $gid);
 
-            $data = array("surveyid" => $iSurveyID, "gid" => $gid);
-
-            $this->_renderWrappedTemplate('export', "group_view", $data);
-        }
-        else
-        {
-            group_export("exportstructurecsvGroup", $iSurveyID, $gid);
-
-            return;
-        }
+        return;
     }
 
     public function question()
@@ -136,25 +121,7 @@ class export extends Survey_Common_Action {
         $gid = sanitize_int(Yii::app()->request->getParam('gid'));
         $qid = sanitize_int(Yii::app()->request->getParam('qid'));
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
-
-        if( Yii::app()->getConfig('export4lsrc') === TRUE && hasSurveyPermission($iSurveyID, 'survey', 'export') )
-        {
-            if( ! empty($_POST['action']) )
-            {
-                questionExport(Yii::app()->request->getPost('action'), $iSurveyID, $gid, $qid);
-                return;
-            }
-
-            $data = array("surveyid" => $iSurveyID, "gid" => $gid, "qid" =>$qid);
-
-            $this->_renderWrappedTemplate('export', "question_view", $data);
-        }
-        else
-        {
-            questionExport("exportstructurecsvQuestion", $iSurveyID, $gid, $qid);
-
-            return;
-        }
+        questionExport("exportstructurecsvQuestion", $iSurveyID, $gid, $qid);
     }
 
     public function exportresults()
@@ -240,10 +207,11 @@ class export extends Survey_Common_Action {
         //function.
         $options = new FormattingOptions();
         $options->selectedColumns = Yii::app()->request->getPost('colselect');
-        $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from')) - 1;
-        $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to')) - 1;
+        $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from'));
+        $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to'));
         $options->answerFormat = $answers;
         $options->convertN = $convertnto2;
+        $options->output = 'display';
 
         if ( $options->convertN )
         {
@@ -257,40 +225,32 @@ class export extends Survey_Common_Action {
             $options->yValue = $convertyto1;
         }
 
-        $options->format = $type;
         $options->headerSpacesToUnderscores = $convertspacetous;
         $options->headingFormat = $exportstyle;
         $options->responseCompletionState = incompleteAnsFilterState();
 
         //If we have no data for the filter state then default to show all.
-        if ( empty($options->responseCompletionState) )
+        if ( $options->responseCompletionState =='all' )
         {
             if ( ! isset($_POST['attribute_select']) )
             {
                 $_POST['attribute_select'] = array();
             }
 
-            $options->responseCompletionState = 'all';
-
             $dquery = '';
             if ( in_array('first_name', Yii::app()->request->getPost('attribute_select')) )
             {
-                $dquery .= ", {{tokens_$iSurveyID}}.firstname";
+                $options->selectedColumns[]="firstname";
             }
 
             if ( in_array('last_name', Yii::app()->request->getPost('attribute_select')) )
             {
-                $dquery .= ", {{tokens_$iSurveyID}}.lastname";
+                $options->selectedColumns[]="lastname";
             }
 
             if ( in_array('email_address', Yii::app()->request->getPost('attribute_select')) )
             {
-                $dquery .= ", {{tokens_$iSurveyID}}.email";
-            }
-
-            if ( in_array('token', Yii::app()->request->getPost('attribute_select')) )
-            {
-                $dquery .= ", {{tokens_$iSurveyID}}.token";
+                $options->selectedColumns[]="email";
             }
 
             $attributeFields = getTokenFieldsAndNames($iSurveyID, TRUE);
@@ -299,13 +259,13 @@ class export extends Survey_Common_Action {
             {
                 if ( in_array($attr_name, Yii::app()->request->getPost('attribute_select')) )
                 {
-                    $dquery .= ", {{tokens_$iSurveyID}}.$attr_name";
+                    $options->selectedColumns[]=$attr_name;
                 }
             }
         }
 
         $resultsService = new ExportSurveyResultsService();
-        $resultsService->exportSurvey($iSurveyID, $explang, $options);
+        $resultsService->exportSurvey($iSurveyID, $explang, $type, $options);
 
         exit;
     }
@@ -326,6 +286,7 @@ class export extends Survey_Common_Action {
     */
     public function exportspss()
     {
+        global $length_vallabel;
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $subaction = Yii::app()->request->getParam('subaction');
 
@@ -437,7 +398,7 @@ class export extends Survey_Common_Action {
             $result = Yii::app()->db->createCommand($query)->query()->readAll(); //Checked
 
             $num_fields = isset( $result[0] ) ? count($result[0]) : 0;
-
+            
             //Now we check if we need to adjust the size of the field or the type of the field
             foreach ( $result as $row )
             {
@@ -503,7 +464,7 @@ class export extends Survey_Common_Action {
                 {
                     $field['size'] = $q->adjustSize($field['size']);
                 }
-
+                
                 if ( !$field['hide'] ) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
             }
 
@@ -614,6 +575,7 @@ class export extends Survey_Common_Action {
     */
     public function exportr()
     {
+        global $length_vallabel;
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $subaction = Yii::app()->request->getParam('subaction');
 
@@ -1286,13 +1248,9 @@ class export extends Survey_Common_Action {
                 exit;
             }
         }
-        elseif ( $action == "exportstructureLsrcCsv" )
+        elseif ($action == 'exportstructuretsv')
         {
-            lsrccsv_export($iSurveyID);
-        }
-        elseif ($action == 'exportstructureexcel')
-        {
-            $this->_exportexcel($iSurveyID);
+            $this->_exporttsv($iSurveyID);
         }
         elseif ( $action == "exportarchive" )
         {
@@ -1301,46 +1259,29 @@ class export extends Survey_Common_Action {
     }
 
     /**
-     * Generate and Excel file for the survey structure
+     * Generate an TSV (tab-separated value) file for the survey structure
      * @param type $surveyid
      */
-    private function _exportexcel($surveyid)
+    private function _exporttsv($surveyid)
     {
-        $fn = "limesurvey_survey_$surveyid.xls";
-        $this->_addHeaders($fn, "text/csv", 0);
+        $fn = "limesurvey_survey_$surveyid.txt";
+        header("Content-Type: text/tab-separated-values charset=UTF-8");
+        header("Content-Disposition: attachment; filename=$fn");
+        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Pragma: public");                          // HTTP/1.0
 
-        $data =& LimeExpressionManager::ExcelSurveyExport($surveyid);
+        $data =& LimeExpressionManager::TSVSurveyExport($surveyid);
 
-        Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
-
-        // actually generate an Excel workbook
-        $workbook = new xlswriter;
-        $workbook->setVersion(8);
-        $workbook->setTempDir(Yii::app()->getConfig("tempdir"));
-        $workbook->send($fn);
-
-        $sheet =& $workbook->addWorksheet(); // do not translate/change this - the library does not support any special chars in sheet name
-        $sheet->setInputEncoding('utf-8');
-
-        $rc = -1;    // row counter
-        $cc = -1;    // column counter
+        $lines = array();
         foreach($data as $row)
         {
-            ++$rc;
-            $cc=-1;
-            foreach ($row as $col)
-            {
-                // Enclose in \" if begins by =
-                ++$cc;
-                if (substr($col,0,1) ==  "=")
-                {
-                    $col = "\"".$col."\"";
-                }
-                $col = str_replace(array("\t","\n","\r"),array(" "," "," "),$col);
-                $sheet->write($rc, $cc, $col);
-            }
+            $lines[] = implode("\t",str_replace(array("\t","\n","\r"),array(" "," "," "),$row));
         }
-        $workbook->close();
+        $output = implode("\n",$lines);
+//        echo "\xEF\xBB\xBF"; // UTF-8 BOM
+        echo $output;
         return;
     }
 

@@ -301,7 +301,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
             $lsiresult=Yii::app()->db->createCommand($lsainsert)->query();
             $results['labelsets']++;
             // Get the new insert id for the labels inside this labelset
-            $newlid=Yii::app()->db->getLastInsertID();
+            $newlid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{labelsets}}');
 
             if ($labelsarray) {
                 $count=0;
@@ -433,7 +433,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
             //GET NEW GID  .... if is not done before and we count a group if a new gid is required
             if ($newgid == 0)
             {
-                $newgid = Yii::apps()->db->getgetLastInsertID();
+                $newgid = Yii::apps()->db->getCommandBuilder()->getLastInsertID('{{groups}}');
                 $countgroups++;
             }
         }
@@ -521,7 +521,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                 }
                 else
                 {
-                    $aQIDReplacements[$oldqid]=Yii::app()->db->getLastInsertID();
+                    $aQIDReplacements[$oldqid]=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
                     $saveqid=$aQIDReplacements[$oldqid];
                 }
                 $aSQIDReplacements=array();
@@ -559,7 +559,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                                 $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
                                 if ($fieldname=='')
                                 {
-                                    $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=Yii::app()->db->getLastInsertID();
+                                    $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
                                 }
                             }
                         }
@@ -641,7 +641,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                     $qres = Yii::app()->db->createCommand()->insert('{{questions}}', $questionrowdata);
                     if (!isset($questionrowdata['qid']))
                     {
-                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=Yii::app()->db->getLastInsertID();
+                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
                     }
 
                     $results['subquestions']++;
@@ -870,7 +870,7 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
 
         if (!isset($aGIDReplacements[$oldgid]))
         {
-            $newgid=Yii::app()->db->getLastInsertID();
+            $newgid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{groups}}');
             $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
         }
     }
@@ -915,7 +915,7 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
         $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
         if (!isset($aQIDReplacements[$oldqid]))
         {
-            $newqid=Yii::app()->db->getLastInsertID();
+            $newqid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
             $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
             $results['questions']++;
         }
@@ -955,7 +955,7 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
             }
 
             $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
-            $newsqid=Yii::app()->db->getLastInsertID();
+            $newsqid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array
@@ -1265,6 +1265,10 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
     {
         $answerfieldnames=convertCSVRowToArray($answerarray[0],',','"');
         unset($answerarray[0]);
+        while (trim(reset($answerarray))=='')
+        {
+            array_shift($answerarray);
+        }
         $countanswers = count($answerarray);
     }
     else {$countanswers=0;}
@@ -1285,7 +1289,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
     {
         $langfieldnum = array_search("language", $questionfieldnames);
         $qidfieldnum = array_search("qid", $questionfieldnames);
-        $questionssupportbaselang = doesImportArraySupportLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$sBaseLanguage,true);
+        $questionssupportbaselang = doesImportArraySupportLanguage($questionarray, array($qidfieldnum), $langfieldnum, $sBaseLanguage);
         if (!$questionssupportbaselang)
         {
             $results['fatalerror']=$clang->gT("You can't import a question which doesn't support at least the survey base language.");
@@ -1346,7 +1350,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
             $lsiresult=Yii::app()->db->createCommand($lsainsert)->query();
 
             // Get the new insert id for the labels inside this labelset
-            $newlid=Yii::app()->db->getLastInsertID();
+            $newlid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{labelsets}}');
 
             if ($labelsarray) {
                 $count=0;
@@ -1431,16 +1435,15 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
         //Assuming we will only import one question at a time we will now find out the maximum question order in this group
         //and save it for later
         $query = "SELECT MAX(question_order) AS maxqo FROM {{questions}} WHERE sid=$iNewSID AND gid=$newgid";
-        $res = Yii::app()->db->createCommand($query)->query();
-        //$row = $res->read();
+        $aRow = Yii::app()->db->createCommand($query)->queryRow();
 
-        if ($res->num_rows() == 0)
+        if ($aRow == false)
         {
             $newquestionorder=0;
         }
         else
         {
-            $newquestionorder = $row['maxqo'];
+            $newquestionorder = $aRow['maxqo'];
             $newquestionorder++;
         }
 
@@ -1510,13 +1513,13 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
             $newvalues=array_values($questionrowdata);
             if ($xssfilter)
                 XSSFilterArray($newvalues);
-            $qinsert = "INSERT INTO {{questions}} (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")";
-            $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie("Error: Failed to insert question<br />\n$qinsert<br />\n");
+            $questionrowdata=array_combine(array_keys($questionrowdata),$newvalues);
+            $iQID=Questions::model()->insertRecords($questionrowdata);
 
             // set the newqid only if is not set
             if (!isset($newqid))
             {
-                $newqid=Yii::app()->db->getLastInsertID();
+                $newqid=$iQID;
             }
         }
         $results['answers']=0;
@@ -1556,7 +1559,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                         $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie ("Error: Failed to insert subquestion <br />\n$qinsert<br />\n");
                         if ($fieldname=='')
                         {
-                            $aSQIDReplacements[$labelrow['code']]=Yii::app()->db->getLastInsertID();
+                            $aSQIDReplacements[$labelrow['code']]=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
                         }
 
                     }
@@ -1646,7 +1649,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                     $qres = $question->save();
                     if (!isset($questionrowdata['qid']))
                     {
-                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=Yii::app()->db->getLastInsertID();
+                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=Yii::app()->db->getCommandBuilder()->getLastInsertID($question->tableName());
                     }
                     $results['subquestions']++;
                     // also convert default values subquestions for multiple choice
@@ -1816,7 +1819,7 @@ function XMLImportQuestion($sFullFilepath, $iNewSID, $newgid)
         $result = $ques->save();
         if (!isset($aQIDReplacements[$oldqid]))
         {
-            $newqid=Yii::app()->db->getLastInsertID();
+            $newqid=Yii::app()->db->getCommandBuilder()->getLastInsertID($ques->tableName());
             $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
         }
     }
@@ -1859,7 +1862,7 @@ function XMLImportQuestion($sFullFilepath, $iNewSID, $newgid)
             foreach ($insertdata as $k => $v)
                 $ques->$k = $v;
             $result = $ques->save();
-            $newsqid=Yii::app()->db->getLastInsertID();
+            $newsqid=Yii::app()->db->getCommandBuilder()->getLastInsertID($ques->tableName());
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array
@@ -2198,7 +2201,7 @@ function XMLImportLabelsets($sFullFilepath, $options)
         $result = Yii::app()->db->createCommand()->insert('{{labelsets}}', $insertdata);
         $results['labelsets']++;
 
-        $newlsid=Yii::app()->db->getLastInsertID();
+        $newlsid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{labelsets}}');
         $aLSIDReplacements[$oldlsid]=$newlsid; // add old and new lsid to the mapping array
     }
 
@@ -3028,7 +3031,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                             $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
                             if ($fieldname=='')
                             {
-                                $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=Yii::app()->db->getLastInsertID();
+                                $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
                             }
                         }
                     }
@@ -3373,9 +3376,9 @@ function importSurveyFile($sFullFilepath, $bTranslateLinksFields, $sNewSurveyNam
     {
         return XMLImportSurvey($sFullFilepath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
     }
-    elseif (isset($sExtension) && strtolower($sExtension) == 'xls')
+    elseif (isset($sExtension) && strtolower($sExtension) == 'txt')
     {
-        return ExcelImportSurvey($sFullFilepath);
+        return TSVImportSurvey($sFullFilepath);
     }
     elseif (isset($sExtension) && strtolower($sExtension) == 'lsa')  // Import a survey archive
     {
@@ -3940,7 +3943,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             unset($insertdata['id']);
             // now translate any links
             $result=Quota::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
-            $aQuotaReplacements[$oldid] = Yii::app()->db->getLastInsertID();
+            $aQuotaReplacements[$oldid] = Yii::app()->db->getCommandBuilder()->getLastInsertID('{{quota}}');
             $results['quota']++;
         }
     }
@@ -4258,7 +4261,7 @@ function XSSFilterArray(&$array)
 }
 
 /**
-* Import survey from an Excel file template that does not require or allow assigning of GID or QID values.
+* Import survey from an TSV file template that does not require or allow assigning of GID or QID values.
 * NOTE:  This currently only supports import of one language
 * @global type $connect
 * @global type $dbprefix
@@ -4269,19 +4272,72 @@ function XSSFilterArray(&$array)
 *
 * @author TMSWhite
 */
-function ExcelImportSurvey($sFullFilepath)
+function TSVImportSurvey($sFullFilepath)
 {
     $clang = Yii::app()->lang;
-
-    Yii::app()->loadLibrary('admin/excel/excel_reader2');
 
     $insertdata=array();
     $results=array();
     $results['error']=false;
     $baselang = 'en';   // TODO set proper default
 
-    $data = new Spreadsheet_Excel_Reader($sFullFilepath);
-    $adata = $data->dumptonamedarray();
+    $encoding='';
+    $handle = fopen($sFullFilepath, 'r');
+    $bom = fread($handle, 2);
+    rewind($handle);
+
+    // Excel tends to save CSV as UTF-16, which PHP does not properly detect
+    if($bom === chr(0xff).chr(0xfe)  || $bom === chr(0xfe).chr(0xff)){
+        // UTF16 Byte Order Mark present
+        $encoding = 'UTF-16';
+    } else {
+        $file_sample = fread($handle, 1000) + 'e'; //read first 1000 bytes
+        // + e is a workaround for mb_string bug
+        rewind($handle);
+
+        $encoding = mb_detect_encoding($file_sample , 'UTF-8, UTF-7, ASCII, EUC-JP,SJIS, eucJP-win, SJIS-win, JIS, ISO-2022-JP');
+    }
+    if ($encoding && $encoding != 'UTF-8'){
+        stream_filter_append($handle, 'convert.iconv.'.$encoding.'/UTF-8');
+    }
+
+    $file = stream_get_contents($handle);
+    fclose($handle);
+
+    // fix Excel non-breaking space
+    $file = str_replace("0xC20xA0",' ',$file);
+    $filelines = explode("\n",$file);
+    $row = array_shift($filelines);
+    $headers = explode("\t",$row);
+    $rowheaders = array();
+    foreach ($headers as $header)
+    {
+        $rowheaders[] = trim($header);
+    }
+    // remove BOM from the first header cell, if needed
+    $rowheaders[0] = preg_replace("/^\W+/","",$rowheaders[0]);
+    if (preg_match('/class$/',$rowheaders[0]))
+    {
+        $rowheaders[0] = 'class';   // second attempt to remove BOM
+    }
+
+    $adata = array();
+    foreach ($filelines as $rowline)
+    {
+        $rowarray = array();
+        $row = explode("\t",$rowline);
+        for ($i = 0; $i < count($rowheaders); ++$i)
+        {
+            $val = (isset($row[$i]) ? $row[$i] : '');
+            // if Excel was used, it surrounds strings with quotes and doubles internal double quotes.  Fix that.
+            if (preg_match('/^".*"$/',$val))
+            {
+                $val = str_replace('""','"',substr($val,1,-1));
+            }
+            $rowarray[$rowheaders[$i]] = $val;
+        }
+        $adata[] = $rowarray;
+    }
 
     $results['defaultvalues']=0;
     $results['answers']=0;
@@ -4383,7 +4439,6 @@ function ExcelImportSurvey($sFullFilepath)
     foreach ($adata as $row)
     {
         $rownumber += 1;
-        $row = str_replace(chr(0xA0),' ',$row);
         switch($row['class'])
         {
             case 'G':
@@ -4409,7 +4464,7 @@ function ExcelImportSurvey($sFullFilepath)
                 }
                 $newgid = Groups::model()->insertRecords($insertdata);
                 if(!$newgid){
-                    $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Failed to insert group").". ".$clang->gT("Excel row number ").$rownumber." (".$gname.")";
+                    $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Failed to insert group").". ".$clang->gT("Text file row number ").$rownumber." (".$gname.")";
                     break;
                 }
                 if (!isset($ginfo[$gname]))
@@ -4469,7 +4524,7 @@ function ExcelImportSurvey($sFullFilepath)
                 // Insert question and keep the qid for multi language survey
                 $result = Questions::model()->insertRecords($insertdata);
                 if(!$result){
-                    $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert question").". ".$clang->gT("Excel row number ").$rownumber." (".$qname.")";
+                    $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert question").". ".$clang->gT("Text file row number ").$rownumber." (".$qname.")";
                     break;
                 }
                 $newqid = $result;
@@ -4510,7 +4565,7 @@ function ExcelImportSurvey($sFullFilepath)
                                 $insertdata['value'] = $val;
                                 $result=Question_attributes::model()->insertRecords($insertdata);//
                                 if(!$result){
-                                    $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert question attribute").". ".$clang->gT("Excel row number ").$rownumber." ({$key})";
+                                    $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert question attribute").". ".$clang->gT("Text file row number ").$rownumber." ({$key})";
                                     break;
                                 }
                                 $results['question_attributes']++;
@@ -4528,7 +4583,7 @@ function ExcelImportSurvey($sFullFilepath)
                     $insertdata['defaultvalue'] = $row['default'];
                     $result = Defaultvalues::model()->insertRecords($insertdata);
                     if(!$result){
-                        $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert default value").". ".$clang->gT("Excel row number ").$rownumber;
+                        $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert default value").". ".$clang->gT("Text file row number ").$rownumber;
                         break;
                     }
                     $results['defaultvalues']++;
@@ -4550,7 +4605,7 @@ function ExcelImportSurvey($sFullFilepath)
                         $insertdata['defaultvalue'] = $row['default'];
                             $result = Defaultvalues::model()->insertRecords($insertdata);
                             if(!$result){
-                                $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert default value").". ".$clang->gT("Excel row number ").$rownumber;
+                                $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert default value").". ".$clang->gT("Text file row number ").$rownumber;
                                 break;
                             }
                         $results['defaultvalues']++;
@@ -4589,7 +4644,7 @@ function ExcelImportSurvey($sFullFilepath)
                     // Insert sub question and keep the sqid for multi language survey
                     $newsqid = Questions::model()->insertRecords($insertdata);
                     if(!$newsqid){
-                        $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert sub question").". ".$clang->gT("Excel row number ").$rownumber." (".$qname.")";
+                        $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert sub question").". ".$clang->gT("Text file row number ").$rownumber." (".$qname.")";
                         break;
                     }
                     if (!isset($sqinfo[$fullsqname]))
@@ -4611,7 +4666,7 @@ function ExcelImportSurvey($sFullFilepath)
                         $insertdata['defaultvalue'] = $row['default'];
                         $result = Defaultvalues::model()->insertRecords($insertdata);
                         if(!$result){
-                            $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert default value").". ".$clang->gT("Excel row number ").$rownumber;
+                            $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert default value").". ".$clang->gT("Text file row number ").$rownumber;
                             break;
                         }
                         $results['defaultvalues']++;
@@ -4629,7 +4684,7 @@ function ExcelImportSurvey($sFullFilepath)
                 $insertdata['sortorder'] = ++$aseq;
                 $result = Answers::model()->insertRecords($insertdata); // or safeDie("Error: Failed to insert answer<br />");
                 if(!$result){
-                    $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert answer").". ".$clang->gT("Excel row number ").$rownumber;
+                    $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert answer").". ".$clang->gT("Text file row number ").$rownumber;
                 }
                 $results['answers']++;
                 break;

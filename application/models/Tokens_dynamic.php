@@ -118,7 +118,7 @@ class Tokens_dynamic extends LSActiveRecord
     * (some older tokens tables dont' get udated properly)
     *
     */
-public function checkColumns() {
+    public function checkColumns() {
         $sid = self::$sid;
         $surveytable='{{tokens_'.$sid.'}}';
         $columncheck=array("tid", "participant_id", "firstname", "lastname", "email", "emailstatus","token","language","blacklisted","sent","remindersent","completed","usesleft","validfrom","validuntil");

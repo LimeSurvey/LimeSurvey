@@ -326,18 +326,6 @@ $config['notsupportlanguages'] = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja',
 $config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
 
 
-
-// RemoteControl Settings
-/**
-* This value determines if the RemoteControl is enabled (true) or not (false)
-*/
-$config['enableLsrc'] = false;
-
-/**
-* This value determines if you can save survey structures (as .csv) into your lsrc folder in export menu
-*/
-$config['export4lsrc'] = false;
-
 // CAS Settings
 /**
 * Please note that CAS functionality is very basic and you have to modify the client to your needs.
@@ -378,6 +366,12 @@ $config['chartfontsize'] =10;
 * Recommended: 7
 */
 $config['updatecheckperiod']=7;
+
+/**
+* $updatekey - Sets the default update key for the ComfortUpdater
+*/
+$config['updatekey']='';
+
 
 /**
 * @var $showxquestions string allows you to control whether or not

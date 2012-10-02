@@ -225,7 +225,7 @@
         $htmlcode .= ""
         . "<script type=\"text/javascript\">\n"
         . "$(document).ready(function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
-        customConfig : \"".Yii::app()->getConfig('adminscripts')."/ckeditor-config.js\"
+        customConfig : \"".Yii::app()->getConfig('adminscripts')."ckeditor-config.js\"
         ,LimeReplacementFieldsType : \"".$fieldtype."\"
         ,LimeReplacementFieldsSID : \"".$surveyID."\"
         ,LimeReplacementFieldsGID : \"".$gID."\"

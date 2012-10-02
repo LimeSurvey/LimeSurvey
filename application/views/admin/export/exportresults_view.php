@@ -119,7 +119,6 @@
                         <option value='first_name' id='first_name' /><?php $clang->eT("First name");?></option>
                         <option value='last_name' id='last_name' /><?php $clang->eT("Last name");?></option>
                         <option value='email_address' id='email_address' /><?php $clang->eT("Email address");?></option>
-                        <option value='token' id='token' /><?php $clang->eT("Token");?></option>
 
                         <?php $attrfieldnames=getTokenFieldsAndNames($surveyid,true);
                             foreach ($attrfieldnames as $attr_name=>$attr_desc)

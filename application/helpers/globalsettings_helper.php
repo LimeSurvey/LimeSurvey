@@ -32,15 +32,13 @@ function injectglobalsettings()
                 //$$setting['stg_name']=$setting['stg_value'];
                 Yii::app()->setConfig($setting->getAttribute('stg_name'), $setting->getAttribute('stg_value'));
             }
-
-            Yii::app()->setRegistry($setting->getAttribute('stg_name'), $setting->getAttribute('stg_value'));
         }
     }
 }
 
 function getGlobalSetting($settingname)
 {
-    $dbvalue = Yii::app()->getRegistry($settingname);
+    $dbvalue = Yii::app()->getConfig($settingname);
 
     if ($dbvalue === false)
     {
@@ -48,7 +46,7 @@ function getGlobalSetting($settingname)
 
         if ($dbvalue === null)
         {
-            Yii::app()->setRegistry($settingname, null);
+            Yii::app()->setConfig($settingname, null);
             $dbvalue = '';
         }
         else
@@ -87,8 +85,6 @@ function setGlobalSetting($settingname, $settingvalue)
         $record->stg_value = $settingvalue;
         $record->save();
     }
-
-    Yii::app()->setRegistry($settingname,$settingvalue);
 
     Yii::app()->setConfig($settingname, $settingvalue);
 }

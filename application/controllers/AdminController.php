@@ -399,7 +399,6 @@ class AdminController extends LSYii_Controller
     */
     public function _showadminmenu($surveyid = false)
     {
-        global $homedir, $scriptname, $setfont, $imageurl, $debug, $action, $updatebuild, $updateversion, $updatelastcheck, $databasetype;
 
         $clang = $this->lang;
         $data['clang']= $clang;

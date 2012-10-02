@@ -9,7 +9,7 @@ if (isset($tmp_survlangs)) { ?>
         </ul></div>
     <?php } ?>
 <div class='menubar-title ui-widget-header'>
-    <strong><?php $clang->eT("Question"); ?></strong> <span class='basic'><?php echo FlattenText($qrrow['question']); ?> (<?php echo $clang->gT("ID").":".$qid; ?>)</span>
+    <strong><?php $clang->eT("Question"); ?></strong> <span class='basic'><?php echo ellipsize(FlattenText($qrrow['question']),200); ?> (<?php echo $clang->gT("ID").":".$qid; ?>)</span>
 </div>
 <div class='menubar-main'>
     <div class='menubar-left'>
@@ -37,10 +37,10 @@ if (isset($tmp_survlangs)) { ?>
                 <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php $clang->eT("Edit Current Question"); ?>' /></a>
             <?php } ?>
 
-        <?php if(hasSurveyPermission($surveyid,'translations','read'))
+        <?php if(hasSurveyPermission($surveyid,'surveycontent','read'))
             { ?>
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt=''  />
-            <a href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>','_blank')">
+            <a target='_blank' href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>">
                 <img src='<?php echo $sImageURL; ?>quality_assurance.png' alt='<?php $clang->eT("Check survey logic for current question"); ?>' /></a>
             <?php } ?>
         <?php if ($activated != "Y")

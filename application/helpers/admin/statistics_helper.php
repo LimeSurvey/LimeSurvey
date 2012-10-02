@@ -26,7 +26,7 @@
 *  @param mixed $cache          An object containing [Hashkey] and [CacheFolder]
 *  @return                Name
 */
-function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache) //AJS
+function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache, $oLanguage) //AJS
 {
     /* This is a lazy solution to bug #6389. A better solution would be to find out how
        the "T" gets passed to this function from the statistics.js file in the first place! */
@@ -40,7 +40,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $language = Survey::model()->findByPk($iSurveyID)->language;
-    $statlang = new Limesurvey_lang($language);
+    $statlang = $oLanguage;
     $cachefilename = "";
 
     /* Set the fonts for the chart */
@@ -485,8 +485,7 @@ function buildSelects($summary, $surveyid, $language) {
 *                       "qquestion"=>The description of the question,
 *                       "qtype"=>The question type code
 */
-function buildOutputList($q, $language, $outputType, $sql)
-{
+function buildOutputList($q, $language, $outputType, $sql, $oLanguage) {
 
     //Set up required variables
     $alist=array();
@@ -494,8 +493,7 @@ function buildOutputList($q, $language, $outputType, $sql)
     $qtitle="";
     $qquestion="";
     $qtype = Question_types::model()->findByAttributes(array('class' => substr(get_class($q), 0, -8)))->getAttribute('legacy'); //AJS
-    $statlangcode =  getBaseLanguageFromSurveyID($surveyid);
-    $statlang = new Limesurvey_lang($statlangcode);
+    $statlang = $oLanguage;
     $firstletter = Question_types::model()->findByAttributes(array('class' => substr(get_class($q), 0, -8)))->getAttribute('legacy'); //AJS
     $sDatabaseType = Yii::app()->db->getDriverName();
     $statisticsoutput="";
@@ -711,7 +709,6 @@ function buildOutputList($q, $language, $outputType, $sql)
                 break;
 
             case 'html':
-
                 $statisticsoutput .= "\n<table class='statisticstable' >\n"
                 ."\t<thead><tr><th colspan='2' align='center'><strong>".sprintf($statlang->gT("Field summary for %s"),$qtitle).":</strong>"
                 ."</th></tr>\n"
@@ -1577,12 +1574,11 @@ function buildOutputList($q, $language, $outputType, $sql)
 * @param mixed $sql
 * @param mixed $usegraph
 */
-function displayResults($outputs, $results, $q, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf)
-{
+function displayResults($outputs, $results, $q, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf, $oLanguage) {
+
     /* Set up required variables */
     $TotalCompleted = 0; //Count of actually completed answers
-    $statlangcode =  getBaseLanguageFromSurveyID($surveyid);
-    $statlang = new Limesurvey_lang($statlangcode);
+    $statlang = $oLanguage;
     $statisticsoutput="";
     $sDatabaseType = Yii::app()->db->getDriverName();
     $tempdir = Yii::app()->getConfig("tempdir");
@@ -2833,7 +2829,7 @@ function displayResults($outputs, $results, $q, $outputType, $surveyid, $sql, $u
 
                     if (array_sum($gdata)>0 && $bShowGraph == true)
                     {
-                        $cachefilename = createChart($q->id, $q->surveyid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache);
+                        $cachefilename = createChart($q->id, $q->surveyid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $statlang);
                         //introduce new counter
                         if (!isset($ci)) {$ci=0;}
 
@@ -3194,12 +3190,12 @@ function generate_statistics($surveyid, $summary, $usegraph=0, $outputType='pdf'
     {
 
         //Step 1: Get information about this response field (SGQA) for the summary
-        $outputs=buildOutputList($q, $language, $outputType, $sql); //AJS
+        $outputs=buildOutputList($q, $language, $outputType, $sql, $statlang); //AJS
         $statisticsoutput .= $outputs['statisticsoutput'];
         //2. Collect and Display results #######################################################################
         if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
         {
-            $display=displayResults($outputs, $results, $q, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf); //AJS
+            $display=displayResults($outputs, $results, $q, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf, $statlang); //AJS
             $statisticsoutput .= $display['statisticsoutput'];
             $astatdata = array_merge($astatdata, $display['astatdata']);
         } //end if -> collect and display results

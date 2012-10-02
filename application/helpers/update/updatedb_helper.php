@@ -32,6 +32,7 @@ function db_upgrade_all($oldversion) {
     setVarchar($sDBDriverName);
     $sChar = Yii::app()->getConfig('char');
     $sVarchar = Yii::app()->getConfig('varchar');
+    $sAutoIncrement  = Yii::app()->getConfig('autoincrement');
 
     if ($oldversion < 111)
     {
@@ -577,8 +578,8 @@ function db_upgrade_all($oldversion) {
         alterColumn('{{user_groups}}','name',"{$sVarchar}(20)",false);
         alterColumn('{{user_groups}}','description',"text",false);
 
-        Yii::app()->db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}');
-        addPrimaryKey('user_in_groups', array('ugid','uid'));
+        try { Yii::app()->db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}'); } catch(Exception $e) {}        
+        try { addPrimaryKey('user_in_groups', array('ugid','uid')); } catch(Exception $e) {}        
 
         addColumn('{{surveys_languagesettings}}','surveyls_numberformat',"integer NOT NULL DEFAULT 0");
 
@@ -755,11 +756,23 @@ function db_upgrade_all($oldversion) {
         ));
 
         Yii::app()->db->createCommand()->dropTable('{{sessions}}');
-        createTable('{{sessions}}',array(
+        if ($sDBDriverName=='mysql')
+        {
+            Yii::app()->db->createCommand()->createTable('{{sessions}}',array(
         'id' => $sVarchar.'(32) NOT NULL',
         'expire' => 'integer',
+            'data' => 'longtext'
+            ));
+        }
+        else
+        {
+            Yii::app()->db->createCommand()->createTable('{{sessions}}',array(
+            'id' => $sVarchar.'(32) NOT NULL',
+            'expire' => 'integer',
         'data' => 'text'
         ));
+        }
+
         addPrimaryKey('sessions', array('id'));
 
         addColumn('{{surveys_languagesettings}}','surveyls_attributecaptions',"TEXT");
@@ -1007,6 +1020,12 @@ function db_upgrade_all($oldversion) {
     }
     if ($oldversion < 163)
     {
+        //Replace  by <script type="text/javascript" src="{TEMPLATEURL}template.js"></script> by {TEMPLATEJS}
+        $replacedTemplate=replaceTemplateJS();
+    }
+
+    if ($oldversion < 164)
+    {
         Yii::app()->db->createCommand()->createTable('{{question_types}}',array(
         'tid' => 'pk',
         'order' => 'integer NOT NULL',
@@ -1030,15 +1049,15 @@ function db_upgrade_all($oldversion) {
 
         Yii::app()->db->createCommand()->addColumn('{{questions}}','tid',"integer NOT NULL DEFAULT '0' AFTER `gid`");
 
-        upgradeSurveys163();
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>163),"stg_name='DBVersion'");
+        upgradeSurveys164();
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>164),"stg_name='DBVersion'");
     }
 
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
 }
 
-function upgradeSurveys163()
+function upgradeSurveys164()
 {
     $types = array(
         array(1, 1, 1, '5 point choice', 'FiveList', '5', 'Y'),
@@ -1839,5 +1858,50 @@ function setVarchar($sDBDriverName=null) {
         Yii::app()->setConfig('char', 'char');
         Yii::app()->setConfig('varchar','varchar');
         Yii::app()->setConfig('autoincrement', 'int(11) NOT NULL AUTO_INCREMENT');
+    }
+}
+
+function replaceTemplateJS(){
+    $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+    $clang = Yii::app()->lang;
+    if (!$usertemplaterootdir) {return false;}
+    $countstartpage=0;
+    $counterror=0;
+    if ($handle = opendir($usertemplaterootdir))
+    {
+        while (false !== ($file = readdir($handle)))
+        {
+            $fname = "$usertemplaterootdir/$file/startpage.pstpl";
+            if (is_file("$usertemplaterootdir/$file/startpage.pstpl"))
+            {
+                if(is_writable("$usertemplaterootdir/$file/startpage.pstpl")){
+                    $fhandle = fopen($fname,"r");
+                    $content = fread($fhandle,filesize($fname));
+                    $content = str_replace("<script type=\"text/javascript\" src=\"{TEMPLATEURL}template.js\"></script>", "{TEMPLATEJS}", $content);
+                    $fhandle = fopen($fname,"w");
+                    fwrite($fhandle,$content);
+                    fclose($fhandle);
+                }else{
+                    $counterror++;
+                }
+                $countstartpage++;
+            }
+        }
+        closedir($handle);
+    }
+        if($counterror)
+        {
+            echo sprintf($clang->gT("%s user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually."),$counterror);
+        }
+        else
+        {
+            if($countstartpage){
+                echo sprintf($clang->gT("All %s user templates updated."),$countstartpage);
+            }
+        }
+    if($counterror){
+        return false;
+    }else{
+        return $countstartpage;
     }
 }

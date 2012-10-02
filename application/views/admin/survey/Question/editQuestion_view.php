@@ -7,7 +7,8 @@
 <script type='text/javascript'><?php echo $qTypeOutput; ?></script>
 
 <div class='header ui-widget-header'>
-    <?php if ($adding) { ?>
+    <?php 
+    if ($adding) { ?>
         <?php $clang->eT("Add a new question"); ?>
         <?php } elseif ($copying) { ?>
         <?php $clang->eT("Copy question"); ?>

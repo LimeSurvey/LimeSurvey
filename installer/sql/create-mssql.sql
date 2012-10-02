@@ -305,7 +305,7 @@ CREATE TABLE [prefix_saved_control] (
 CREATE TABLE [prefix_sessions] (
   [id] varchar(32) NOT NULL,
   [expire] int,
-  [data] varchar(max),
+  [data] text,
       PRIMARY KEY ( [id] )
 );
 

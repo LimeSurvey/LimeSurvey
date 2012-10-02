@@ -1286,7 +1286,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
             if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<tr>
-                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='captcha' /></td>
+                    <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' /></td>
                 <td valign='middle'><input id='captcha' type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table>
                 </td>
                 </tr>";
@@ -1364,7 +1364,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
             if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<li>
-                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
                 </li>";
             }
             echo "<li>
@@ -1389,14 +1389,12 @@ function buildsurveysession($surveyid,$previewGroup=false)
         //check if token actually does exist
         // check also if it is allowed to change survey after completion
         if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-            $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token='".trim(strip_tags($clienttoken))."'";
+            $oTokenEntry = Tokens_dynamic::model($surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
         } else {
-            $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token='".trim(strip_tags($clienttoken))."' AND (completed = 'N' or completed='')";
+            $oTokenEntry = Tokens_dynamic::model($surveyid)->find("token=:token AND (completed = 'N' or completed='')", array(':token'=>trim(strip_tags($clienttoken))));
         }
 
-        $tkresult = dbExecuteAssoc($tkquery);    //Checked
-        $tkexist = reset($tkresult->read());
-        if (!$tkexist ||  ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
+        if (is_null($oTokenEntry) ||  ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
         {
             //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
@@ -1537,7 +1535,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
                 if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
                 {
                     echo "<li>
-                    <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                    <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
                     </li>";
                 }
                 echo "<li><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></li>
@@ -1916,7 +1914,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     {
         foreach ($_GET as $k=>$v)
         {
-            if (!in_array($k,$reservedGetValues))
+            if (!in_array($k,$reservedGetValues) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k]))
             {
                 $startingValues[$k] = $v;
             }
@@ -1941,14 +1939,16 @@ function buildsurveysession($surveyid,$previewGroup=false)
                     {
                         if ($q->id==$aRow['targetqid'] && $q->sqid==$aRow['targetsqid'])
                         {
-                            $_SESSION['survey_'.$surveyid][$q->fieldname]=$_GET[$aRow['parameter']];
+                            $_SESSION['survey_'.$surveyid]['startingValues'][$q->fieldname]=$_GET[$aRow['parameter']];
+                            $_SESSION['survey_'.$surveyid]['startingValues'][$aRow['parameter']]=$_GET[$aRow['parameter']];
                         }
                     }
                     else
                     {
                         if ($q->id==$aRow['targetqid'])
                         {
-                            $_SESSION['survey_'.$surveyid][$q->fieldname]=$_GET[$aRow['parameter']];
+                            $_SESSION['survey_'.$surveyid]['startingValues'][$q->fieldname]=$_GET[$aRow['parameter']];
+                            $_SESSION['survey_'.$surveyid]['startingValues'][$aRow['parameter']]=$_GET[$aRow['parameter']];
                         }
                     }
                 }
@@ -2220,16 +2220,16 @@ function UpdateFieldArray()
 }
 
 /**
-* check_quota() returns quota information for the current survey
+* checkQuota() returns quota information for the current survey
 * @param string $checkaction - action the function must take after completing:
 *                               enforce: Enforce the Quota action
 *                               return: Return the updated quota array from getQuotaAnswers()
 * @param string $surveyid - Survey identification number
 * @return array - nested array, Quotas->Members->Fields, includes quota status and which members matched in session.
 */
-function check_quota($checkaction,$surveyid)
+function checkQuota($checkaction,$surveyid)
 {
-    global $clang, $clienttoken;
+    global $clang, $clienttoken, $thissurvey;
     if (!isset($_SESSION['survey_'.$surveyid]['s_lang'])){
         return;
     }
@@ -2351,11 +2351,11 @@ function check_quota($checkaction,$surveyid)
                 submittokens(true);
             }
 
-            killSurveySession($surveyid);
             sendCacheHeaders();
             if($quota['AutoloadUrl'] == 1 && $quota['Url'] != "")
             {
                 header("Location: ".$quota['Url']);
+                    killSurveySession($surveyid);
             }
             doHeader();
 
@@ -2367,6 +2367,7 @@ function check_quota($checkaction,$surveyid)
             echo "\t</div>\n";
                 echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[2622]');
             doFooter();
+                killSurveySession($surveyid);
             exit;
         }
 
@@ -2381,7 +2382,7 @@ function check_quota($checkaction,$surveyid)
             echo "\t<div class='quotamessage'>\n";
             echo "\t".$quota['Message']."<br /><br />\n";
             echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-            echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" name='move2'><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>
+                echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" id='moveprevbtn'>".$clang->gT("Previous")."</button>
             <input type='hidden' name='thisstep' value='".($_SESSION['survey_'.$surveyid]['step'])."' id='thisstep' />
             <input type='hidden' name='sid' value='".returnGlobal('sid')."' id='sid' />
             <input type='hidden' name='token' value='".$clienttoken."' id='token' />

@@ -318,7 +318,7 @@ class SurveyAdmin extends Survey_Common_Action
         else
         {
             //See if there is a tokens table for this survey
-            if (Yii::app()->db->schema->getTable("{{tokens_{$postsid}}}"))
+            if (tableExists("{{tokens_{$postsid}}}"))
             {
                 if (Yii::app()->db->getDriverName() == 'postgre')
                 {
@@ -470,7 +470,8 @@ class SurveyAdmin extends Survey_Common_Action
                 }
                 $aViewUrls['output'].="<p>" .
                 $clang->gT("Database error!!")."\n <font color='red'>" ."</font>\n" .
-                "<a href='".Yii::app()->getController()->createUrl("admin/survey/view/surveyid/".$iSurveyID)."'>".$clang->gT("Main Admin Screen")."</a>\n</div>" ;
+                "<pre>".implode(' ', $aResult['error'])."</pre>\n
+                <a href='".Yii::app()->getController()->createUrl("admin/survey/view/surveyid/".$iSurveyID)."'>".$clang->gT("Main Admin Screen")."</a>\n</div>" ;
             }
             else
             {
@@ -894,7 +895,7 @@ class SurveyAdmin extends Survey_Common_Action
                     }
                 }
 
-                if (!$aData['bFailed'] && (strtolower($sExtension) != 'csv' && strtolower($sExtension) != 'lss' && strtolower($sExtension) != 'xls' && strtolower($sExtension) != 'lsa'))
+                if (!$aData['bFailed'] && (strtolower($sExtension) != 'csv' && strtolower($sExtension) != 'lss' && strtolower($sExtension) != 'txt' && strtolower($sExtension) != 'lsa'))
                 {
                     $aData['sErrorMessage'] = sprintf($clang->gT("Import failed. You specified an invalid file type '%s'."), $sExtension);
                     $aData['bFailed'] = true;
@@ -1408,6 +1409,7 @@ class SurveyAdmin extends Survey_Common_Action
             $i++;
         }
 
+        $aData = new stdClass();
         $aData->page = 1;
         $aData->records = $oResult->getRowCount();
         $aData->total = 1;

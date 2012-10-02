@@ -12,12 +12,11 @@
 */
 
 /**
-* Implements global registry and config
+* Implements global  config
 */
 class LSYii_Application extends CWebApplication
 {
     protected $config = array();
-    protected $registry = array();
     public $lang = null;
 
     /**
@@ -69,7 +68,7 @@ class LSYii_Application extends CWebApplication
     }
 
     /**
-    * Sets a configuration variable into the registry
+    * Sets a configuration variable into the config
     *
     * @access public
     * @param string $name
@@ -99,7 +98,7 @@ class LSYii_Application extends CWebApplication
     }
 
     /**
-    * Returns a config variable from the registry
+    * Returns a config variable from the config
     *
     * @access public
     * @param string $name
@@ -110,18 +109,6 @@ class LSYii_Application extends CWebApplication
         return isset($this->config[$name]) ? $this->config[$name] : false;
     }
 
-    /**
-    * Sets a configuration variable into the registry
-    *
-    * @access public
-    * @param string $name
-    * @param mixed $value
-    * @return void
-    */
-    public function setRegistry($name, $value)
-    {
-        $this->registry[$name] = $value;
-    }
 
     /**
     * For future use, cache the language app wise as well.
@@ -135,15 +122,4 @@ class LSYii_Application extends CWebApplication
         $this->lang = $lang;
     }
 
-    /**
-    * Returns a config variable from the registry
-    *
-    * @access public
-    * @param string $name
-    * @return mixed
-    */
-    public function getRegistry($name)
-    {
-        return isset($this->registry[$name]) ? $this->registry[$name] : false;
-    }
 }

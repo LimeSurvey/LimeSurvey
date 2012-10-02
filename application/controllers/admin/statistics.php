@@ -422,9 +422,6 @@ class statistics extends Survey_Common_Action {
         $aData['usegraph'] = $usegraph;
         $outputType = isset($_POST['outputtype']) ? $_POST['outputtype'] : false;
 
-        $selects=buildSelects($summary, $surveyid, $statlang); //AJS
-        $aData['sql']=implode(" AND ", $selects);
-
         switch($outputType){
             case 'html':
                 $statisticsoutput .= generate_statistics($surveyid,$summary,$usegraph,$outputType,'DD',$statlang); //AJS
@@ -453,7 +450,7 @@ class statistics extends Survey_Common_Action {
      * requirements of the SQL
      *
      * */
-    function listcolumn($surveyid, $column, $sql, $sortby="", $sortmethod="", $sorttype="")
+    function listcolumn($surveyid, $column, $sortby="", $sortmethod="", $sorttype="")
     {
         $search['condition']=$column." != ''";
         if($sql != "") {$search['condition'].= " AND ($sql)";}

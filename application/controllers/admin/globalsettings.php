@@ -73,6 +73,8 @@ class GlobalSettings extends Survey_Common_Action
         $data['updateavailable'] = (Yii::app()->getConfig("updateavailable") &&  Yii::app()->getConfig("updatable"));
         $data['updatable'] = Yii::app()->getConfig("updatable");
         $data['updateinfo'] = Yii::app()->getConfig("updateinfo");
+        $data['updatebuild'] = Yii::app()->getConfig("updatebuild");
+        $data['updateversion'] = Yii::app()->getConfig("updateversion");
         $data['allLanguages'] = getLanguageData(false, Yii::app()->session['adminlang']);
         if (trim(Yii::app()->getConfig('restrictToLanguages')) == '') {
             $data['restrictToLanguages'] = array_keys($data['allLanguages']);
@@ -135,9 +137,8 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('bounceencryption', strip_tags(returnGlobal('bounceencryption')));
         setGlobalSetting('bounceaccountuser', strip_tags(returnGlobal('bounceaccountuser')));
 
-        if (returnGlobal('bounceaccountpass') != 'enteredpassword') {
-            setGlobalSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
-        }
+        if (returnGlobal('bounceaccountpass') != 'enteredpassword') setGlobalSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
+        
         setGlobalSetting('emailsmtpssl', sanitize_paranoid_string(returnGlobal('emailsmtpssl')));
         setGlobalSetting('emailsmtpdebug', sanitize_int(returnGlobal('emailsmtpdebug')));
         setGlobalSetting('emailsmtpuser', strip_tags(returnGlobal('emailsmtpuser')));

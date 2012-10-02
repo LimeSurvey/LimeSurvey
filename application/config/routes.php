@@ -10,70 +10,31 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *  $Id$
  */
-/*
-| -------------------------------------------------------------------------
-| URI ROUTING
-| -------------------------------------------------------------------------
-| This file lets you re-map URI requests to specific controller functions.
-|
-| Typically there is a one-to-one relationship between a URL string
-| and its corresponding controller class/method. The segments in a
-| URL normally follow this pattern:
-|
-|   example.com/class/method/id/
-|
-| In some instances, however, you may want to remap this relationship
-| so that a different class/function is called than the one
-| corresponding to the URL.
-|
-| Please see the user guide for complete details:
-|
-|   http://codeigniter.com/user_guide/general/routing.html
-|
-| -------------------------------------------------------------------------
-| RESERVED ROUTES
-| -------------------------------------------------------------------------
-|
-| There area two reserved routes:
-|
-|   $route['default_controller'] = 'welcome';
-|
-| This route indicates which controller class should be loaded if the
-| URI contains no data. In the above example, the "welcome" class
-| would be loaded.
-|
-|   $route['404_override'] = 'errors/page_missing';
-|
-| This route will tell the Router what URI segments to use if those provided
-| in the URL cannot be matched to a valid route.
-|
-*/
+
 
 //Compatibility with classic modrewrite
-$route['(:num)/lang-(:any)/tk-(:any)'] = "survey/sid/$1/lang/$2/token/$3"; //This one must be first
-$route['(:num)/lang-(:any)'] = "survey/sid/$1/lang/$2";
-$route['(:num)/tk-(:any)'] = "survey/sid/$1/token/$2";
-$route['(:num)'] = "survey/sid/$1";
+$route['<_sid:\d+>/lang-<_lang:\w+>/tk-<_token:\w+>'] = "survey/index/sid/<_sid>/lang/<_lang>/token/<_token>"; //This one must be first
+$route['<_sid:\d+>/lang-<_lang:\w+>'] = "survey/index/sid/<_sid>/lang/<_lang>";
+$route['<_sid:\d+>/tk-<_token:\w+>'] = "survey/index/sid/<_sid>/token/<_token>";
 
 //Admin Routes
 $route['admin/index'] = "admin";
 $route['admin/<action:\w+>/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>';
 
 //question
-$route['admin/question/newquestion/(:num)/(:num)'] = "admin/question/index/addquestion/$1/$2";
-$route['admin/question/editquestion/(:num)/(:num)/(:num)'] = "admin/question/index/editquestion/$1/$2/$3";
+#$route['admin/question/addquestion/<_sid:\d+>/<_gid:\d+>'] = "admin/question/addquestion/surveyid/<_sid>/gid/<_gid>";
+#$route['admin/question/editquestion/<_sid:\d+>/<_gid:\d+>/<_qid:\d+>'] = "admin/question/editquestion/surveyid/<_sid>/gid/<_gid>/qid/<_qid>";
 
-$route['admin/labels/<action:\w+>'] = "admin/labels/index/<action>";
-$route['admin/labels/<action:\w+>/<lid:\d+>'] = "admin/labels/index/<action>/<id>";
+#$route['admin/labels/<_action:\w+>'] = "admin/labels/index/<_action>";
+#$route['admin/labels/<_action:\w+>/<_lid:\d+>'] = "admin/labels/index/<_action>/<_lid>";
 
-$route['<controller:\w+>/<action:\w+>'] = '<controller>/<action>';
+$route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 
 //Expression Manager tests
 $route['admin/expressions'] = "admin/expressions/index";
 
 //optout
-$route['optout/(:num)/(:any)/(:any)'] = "optout/index/$1/$2/$3";
+$route['optout/<_sid:\d+>/(:any)/(:any)'] = "optout/index/<_sid>/$2/$3";
 
 return $route;

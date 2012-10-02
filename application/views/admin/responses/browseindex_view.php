@@ -6,7 +6,7 @@
         <tr><th><?php $clang->eT("Incomplete responses:"); ?></th><td><?php echo ($num_total_answers - $num_completed_answers); ?></td></tr>
     </tbody>
 </table>
-<?php if($with_token){ ?>
+<?php if(isset($with_token)){ ?>
 <table class='statisticssummary'>
   <caption class="header ui-widget-header"><?php $clang->eT("Token summary"); ?></caption>
     <tfoot><tr><th><?php $clang->eT("Total records in this token table"); ?></th><td><?php echo $tokeninfo['tkcount']; ?></td></tr></tfoot>

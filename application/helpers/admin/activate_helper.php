@@ -296,6 +296,10 @@ function activateSurvey($iSurveyID, $simulate = false)
                     $autonumberquery = "alter table {{survey_{$iSurveyID}}} add [id] int identity({$row['autonumber_start']},1)";
                     Yii::app()->db->createCommand($autonumberquery)->execute();
                     }
+                elseif (Yii::app()->db->driverName=='pgsql')
+                {
+                    
+                }
                     else
                     {
                     $autonumberquery = "ALTER TABLE {{survey_{$iSurveyID}}} AUTO_INCREMENT = ".$row['autonumber_start'];

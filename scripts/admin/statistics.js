@@ -34,7 +34,7 @@ $(document).ready(function(){
              destinationdiv.parents("td:first").show();
          }
          if(destinationdiv.parents("td:first").css("display") != "none") {
-             $.post(listColumnUrl+'/'+id+'/sql/'+sql+'/'+extra, function(data) {
+             $.post(listColumnUrl+'/'+id+'/'+extra, function(data) {
                  destinationdiv.html(data);
              });
          }

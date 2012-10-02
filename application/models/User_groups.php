@@ -124,11 +124,11 @@ class User_groups extends CActiveRecord {
     }
 
     function addGroup($group_name, $group_description) {
-        $iquery = "INSERT INTO {{user_groups}} (`name`, `description`, `owner_id`) VALUES(:group_name, :group_desc, :loginID)";
+	    $iquery = "INSERT INTO {{user_groups}} (name, description, owner_id) VALUES(:group_name, :group_desc, :loginID)";
         $command = Yii::app()->db->createCommand($iquery)->bindParam(":group_name", $group_name, PDO::PARAM_STR)->bindParam(":group_desc", $group_description, PDO::PARAM_STR)->bindParam(":loginID", intval(Yii::app()->session['loginID']), PDO::PARAM_INT);
         $result = $command->query();
         if($result) { //Checked
-            $id = Yii::app()->db->getLastInsertID(); //Yii::app()->db->Insert_Id(db_table_name_nq('user_groups'),'ugid');
+	    	$id = Yii::app()->db->getCommandBuilder()->getLastInsertID($this->tableName()); //Yii::app()->db->Insert_Id(db_table_name_nq('user_groups'),'ugid');
             if($id > 0) {
                 $user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES (:ugid, :uid)';
                 $command = Yii::app()->db->createCommand($user_in_groups_query)->bindParam(":ugid", $id, PDO::PARAM_INT)->bindParam(":uid", intval(Yii::app()->session['loginID']), PDO::PARAM_INT)->query();
@@ -176,7 +176,7 @@ class User_groups extends CActiveRecord {
         $group->delete();
         if($group->getErrors())
             return false;
-        else 
+        else
             return true;
     }
 

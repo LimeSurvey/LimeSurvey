@@ -39,7 +39,7 @@
                 {?>
                 <li>
                     <label for='captchaimage'><?php $clang->eT("Security question");?></label>
-                    <img id='captchaimage' src='<?php echo Yii::app()->getController()->createUrl('/verification/image')?>' alt='captcha' />
+                    <img id='captchaimage' src='<?php echo Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)?>' alt='captcha' />
                     <input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
                 </li>
                 <?php

@@ -65,7 +65,7 @@
         {
             return array(
             'groups' => array(self::HAS_ONE, 'Groups', '',
-            'on' => 't.gid = groups.gid'
+            'on' => 't.gid = groups.gid AND t.language = groups.language'
             ),
             'parents' => array(self::HAS_ONE, 'Questions', '',
             'on' => 't.parent_qid = parents.qid',
@@ -229,8 +229,6 @@
             foreach ($data as $k => $v){
                 $questions->$k = $v;
                 }
-//            if  (!$questions->save()) return false;
-//            else return $questions->qid;
             try
             {
                 $questions->save();

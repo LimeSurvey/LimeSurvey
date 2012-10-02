@@ -23,6 +23,7 @@ class index extends CAction {
         global $surveyid, $thistpl;
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
+        global $clang;
         $clang = Yii::app()->lang;
         @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('sess_expiration'));
 
@@ -425,7 +426,7 @@ class index extends CAction {
             // Load session before loading the values from the saved data
             if (isset($_GET['loadall']))
             {
-                buildsurveysession();
+                buildsurveysession($surveyid);
             }
 
             $_SESSION['survey_'.$surveyid]['holdname'] = $param['loadname']; //Session variable used to load answers every page.
@@ -574,11 +575,6 @@ class index extends CAction {
             }
             killSurveySession($surveyid);
             sendCacheHeaders();
-            if (isset($_GET['redirect']))
-            {
-                killSurveySession($surveyid);
-                header("Location: {$_GET['redirect']}");
-            }
             doHeader();
 
             $redata = compact(array_keys(get_defined_vars()));

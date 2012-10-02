@@ -205,9 +205,7 @@ class remotecontrol_handle
        {
            if( Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
            {
-               if (Yii::app()->getRegistry($sSetttingName) !== false)
-                    return Yii::app()->getRegistry($sSetttingName);
-                elseif (Yii::app()->getConfig($sSetttingName) !== false)
+			   if (Yii::app()->getConfig($sSetttingName) !== false)
                     return Yii::app()->getConfig($sSetttingName);
                 else
                     return array('status' => 'Invalid setting');
@@ -1905,7 +1903,7 @@ class remotecontrol_handle
                     return array('status' => 'Error: No token table');
 
                 if($bUnused)
-                    $oTokens = Tokens_dynamic::model($iSurveyID)->findAll(array("completed = 'N'", 'limit' => $iLimit, 'offset' => $iStart));
+					$oTokens = Tokens_dynamic::model($iSurveyID)->findAll(array('condition'=>"completed = 'N'", 'limit' => $iLimit, 'offset' => $iStart));
                 else
                     $oTokens = Tokens_dynamic::model($iSurveyID)->findAll(array('limit' => $iLimit, 'offset' => $iStart));
 

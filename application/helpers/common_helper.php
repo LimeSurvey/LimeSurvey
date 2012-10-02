@@ -356,7 +356,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
         }
         $sQuestionselecter .=">{$qrow['title']}:";
         $sQuestionselecter .= " ";
-        $question=flattenText($qrow['question'],true);
+        $question=flattenText($qrow['question']);
         if (strlen($question)<35)
         {
             $sQuestionselecter .= $question;
@@ -393,7 +393,7 @@ function getGidPrevious($surveyid, $gid)
 
     if (!$surveyid) {$surveyid=returnGlobal('sid');}
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $qresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang)); //checked
+    $qresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
 
     $i = 0;
     $iPrev = -1;
@@ -422,7 +422,7 @@ function getQidPrevious($surveyid, $gid, $qid)
 {
     $clang = Yii::app()->lang;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $qrows = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang));
+    $qrows = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid'=>0),array('order'=>'question_order'));
 
     $i = 0;
     $iPrev = -1;
@@ -459,7 +459,7 @@ function getGidNext($surveyid, $gid)
 
     //$gquery = "SELECT gid FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
-    $qresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang)); //checked
+    $qresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
 
     $GidNext="";
     $i = 0;
@@ -491,7 +491,7 @@ function getQidNext($surveyid, $gid, $qid)
 {
     $clang = Yii::app()->lang;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $qrows = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid' => 0));
+    $qrows = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid' => 0), array('order'=>'question_order'));
 
 
     $i = 0;
@@ -670,26 +670,7 @@ function getMaxQuestionOrder($gid,$surveyid)
     else return $current_max ;
 }
 
-if(!defined('COLSTYLE'))
-{
     /**
-    * The following prepares and defines the 'COLSTYLE' constant which
-    * dictates how columns are to be marked up for list type questions.
-    *
-    * $column_style is initialised at the end of config-defaults.php or from within config.php
-    */
-    if( !isset($column_style)   ||
-    $column_style  != 'css' ||
-    $column_style  != 'ul'  ||
-    $column_style  != 'table' ||
-    $column_style  != null )
-    {
-        $column_style = 'ul';
-    };
-    define('COLSTYLE' ,strtolower($column_style), true);
-};
-
-/**
 * setupColumns() defines all the html tags to be wrapped around
 * various list type answers.
 *
@@ -719,10 +700,6 @@ if(!defined('COLSTYLE'))
 *    $wrapper['cols']          = Number of columns to be inserted
 *                                (and checked against)
 *
-* It also expect the constant COLSTYLE which sets how columns should
-* be rendered.
-*
-* COLSTYLE is defined 30 lines above.
 *
 * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 * Columns are a problem.
@@ -762,11 +739,15 @@ if(!defined('COLSTYLE'))
 function setupColumns($columns, $answer_count,$wrapperclass="",$itemclass="")
 {
 
-    $colstyle = COLSTYLE;
+    $column_style = Yii::app()->getConfig('column_style');
+    if ( !in_array($column_style,array('css','ul','table')) && !is_null($column_style) )
+    {
+        $column_style = 'ul';
+    };
 
     if($columns < 2)
     {
-        $colstyle = null;
+        $column_style = null;
         $columns = 1;
     }
 
@@ -781,9 +762,9 @@ function setupColumns($columns, $answer_count,$wrapperclass="",$itemclass="")
     }
 
     $class_first = ' class="'.$wrapperclass.'"';
-    if($columns > 1 && $colstyle != null)
+    if($columns > 1 && !is_null($column_style))
     {
-        if($colstyle == 'ul')
+        if($column_style == 'ul')
         {
             $ul = '-ul';
         }
@@ -816,7 +797,7 @@ function setupColumns($columns, $answer_count,$wrapperclass="",$itemclass="")
     ,'cols'     => $columns
     );
 
-    switch($colstyle)
+    switch($column_style)
     {
         case 'ul':  if($columns > 1)
             {
@@ -1345,22 +1326,17 @@ function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 * @param mixed $stringname
 * @param mixed $urlParam
 */
-function returnGlobal($stringname, $urlParam = null)
+function returnGlobal($stringname)
 {
-    if(!isset($urlParam))
+    if ($stringname=='sid') // don't read SID from a Cookie
     {
-        if (!empty($_POST[$stringname]))
-            $urlParam = $_POST[$stringname];
-        //if ($this->input->cookie('stringname')) $urlParam = $this->input->cookie('stringname');
-        elseif (!empty($_GET[$stringname] ))
-        {
-            $urlParam = $_GET[$stringname];
+        if (isset($_GET[$stringname])) $urlParam = $_GET[$stringname];
+        if (isset($_POST[$stringname])) $urlParam = $_POST[$stringname];
         }
-        elseif (!empty($_COOKIE[$stringname]))
+    elseif (isset($_REQUEST[$stringname]))
         {
-            $urlParam = $_COOKIE[$stringname];
+        $urlParam = $_REQUEST[$stringname];
         }
-    }
 
     if (isset($urlParam))
     {
@@ -1379,7 +1355,10 @@ function returnGlobal($stringname, $urlParam = null)
             return sanitize_languagecode($urlParam);
         }
         elseif ($stringname =="htmleditormode" ||
-        $stringname =="subaction")
+        $stringname =="subaction" ||
+        $stringname =="questionselectormode" ||
+        $stringname =="templateeditormode"
+        )
         {
             return sanitize_paranoid_string($urlParam);
         }
@@ -1393,6 +1372,7 @@ function returnGlobal($stringname, $urlParam = null)
     {
         return NULL;
     }
+
 }
 
 
@@ -2163,8 +2143,8 @@ function questionAttributes()
     'inputtype'=>'integer',
     'min'=>'1',
     'max'=>'100',
-    "help"=>$clang->gT('Set the percentage width of the answer column (1-100)'),
-    "caption"=>$clang->gT('Answer width'));
+    "help"=>$clang->gT('Set the percentage width of the (sub-)question column (1-100)'),
+    "caption"=>$clang->gT('(Sub-)question width'));
 
     $qattributes["repeat_headings"]=array(
     'category'=>$clang->gT('Display'),
@@ -3402,7 +3382,7 @@ function flattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=fals
 {
     $sNicetext = stripJavaScript($sTextToFlatten);
     // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
-    $sNicetext = str_replace('</td',' </td', $sNicetext);
+    $sNicetext = str_replace(array('</td','</th'),array(' </td',' </th'), $sNicetext);
     if ($keepSpan) {
         // Keep <span> so can show EM syntax-highlighting; add space before tags so that word-wrapping not destroyed when remove tags.
         $sNicetext = strip_tags($sNicetext,'<span><table><tr><td><th>');
@@ -3676,7 +3656,7 @@ function convertCSVRowToArray($string, $seperator, $quotechar)
 function createPassword()
 {
     $pwchars = "abcdefhjmnpqrstuvwxyz23456789";
-    $password_length = 8;
+    $password_length = 12;
     $passwd = '';
 
     for ($i=0; $i<$password_length; $i++)
@@ -4331,15 +4311,15 @@ function stripJavaScript($sContent){
 */
 function cleanTempDirectory()
 {
-    $dir =  Yii::app()->getConfig('tempdir').'/';
+    $dir =  Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR;
     $dp = opendir($dir) or show_error('Could not open temporary directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt') {
             @unlink($dir.$file);
         }
     }
-    $dir=  Yii::app()->getConfig('tempdir').'/upload/';
-    $dp = opendir($dir) or die ('Could not open temporary directory');
+    $dir=  Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR;
+    $dp = opendir($dir) or die ('Could not open temporary upload directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt') {
             @unlink($dir.$file);
@@ -4839,12 +4819,17 @@ function includeKeypad()
 * @param string $quotaid - Optional quotaid that restricts the result to a given quota
 * @return array - nested array, Quotas->Members->Fields
 */
-function getQuotaInformation($surveyid,$language,$quotaid='all')
+function getQuotaInformation($surveyid,$language,$iQuotaID='all')
 {
     global $clienttoken;
     $baselang = Survey::model()->findByPk($surveyid)->language;
+    $aAttributes=array('sid' => $surveyid);
+    if ($iQuotaID != 'all')
+    {
+        $aAttributes['id'] = $iQuotaID;
+    }
 
-    $quotas = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findByAttributes(array('sid' => $surveyid, 'id' =>$quotaid));
+    $quotas = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findByAttributes($aAttributes);
 
     $surveyinfo=getSurveyInfo($surveyid);
 

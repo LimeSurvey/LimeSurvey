@@ -49,9 +49,9 @@ class ExportSurveyResultsService
     * @param mixed $iSurveyId
     * @param mixed $sLanguageCode
     * @param FormattingOptions $oOptions
-    * @param mixed $sOutputStyle  'display' or 'return'  Default: display
+    * @param mixed $sOutputStyle  'display' or 'file'  Default: display (send to browser)
     */
-    function exportSurvey($iSurveyId, $sLanguageCode, FormattingOptions $oOptions, $sOutputStyle='display')
+    function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions)
     {
         //Do some input validation.
         if (empty($iSurveyId))
@@ -70,33 +70,27 @@ class ExportSurveyResultsService
         {
             safeDie('At least one column must be selected for export.');
         }
+        
         //echo $oOptions->toString().PHP_EOL;
         $writer = null;
-        $iSurveyId = sanitize_int($iSurveyId);
 
-        switch ( $oOptions->format ) {
+        $iSurveyId = sanitize_int($iSurveyId);
+        if ($oOptions->output=='display')
+        {
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Pragma: public");
+        }
+
+        switch ( $sExportPlugin ) {
             case "doc":
-                if ($sOutputStyle=='display')
-                {
-                    header("Content-Disposition: attachment; filename=results-survey".$iSurveyId.".doc");
-                    header("Content-type: application/vnd.ms-word");
-                }
                 $writer = new DocWriter();
                 break;
             case "xls":
-                if ($sOutputStyle=='return')
-                {
-                    $sRandomFileName=Yii::app()->getConfig("tempdir"). DIRECTORY_SEPARATOR . randomChars(40);
-                    $writer = new ExcelWriter($sRandomFileName);
-                }
-                else
-                {
                     $writer = new ExcelWriter();
-                }
                 break;
             case "pdf":
                 Yii::import("application.libraries.admin.pdf", true);
-                if ($sOutputStyle=='return')
+                if ($oOptions->output=='return')
                 {
                     $sRandomFileName=Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
                     $writer = new PdfWriter($sRandomFileName);
@@ -108,38 +102,34 @@ class ExportSurveyResultsService
                 break;
             case "csv":
             default:
-                if ($sOutputStyle=='display')
-                {
-                    header("Content-Disposition: attachment; filename=results-survey".$iSurveyId.".csv");
-                    header("Content-type: text/comma-separated-values; charset=UTF-8");
-                }
                 $writer = new CsvWriter();
                 break;
-        }
-        if ($sOutputStyle=='display')
-        {
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Pragma: public");
         }
 
         $surveyDao = new SurveyDao();
         $survey = $surveyDao->loadSurveyById($iSurveyId);
-        $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord);
+        $writer->init($survey, $sLanguageCode, $oOptions);
 
-        $writer->write($survey, $sLanguageCode, $oOptions);
-
-        $output = $writer->close();
-
-        if (($oOptions->format == 'csv' || $oOptions->format == 'doc') && $sOutputStyle='display')
+        $iBatchSize=100; $iCurrentRecord=$oOptions->responseMinRecord-1;
+        $bMoreRecords=true; $first=true;
+        while ($bMoreRecords)
         {
-            echo $output;
+            if($iBatchSize > (int)$oOptions->responseMaxRecord-$iCurrentRecord)
+            {
+               $iBatchSize=(int)$oOptions->responseMaxRecord-$iCurrentRecord;
         }
-        if (($oOptions->format == 'xls' || $oOptions->format == 'pdf') && $sOutputStyle='return')
+            $iExported= $surveyDao->loadSurveyResults($survey, $iBatchSize, $iCurrentRecord);
+            $iCurrentRecord+=$iExported;
+            $writer->write($survey, $sLanguageCode, $oOptions,$first);
+            $first=false;
+            $bMoreRecords=($iCurrentRecord < (int)$oOptions->responseMaxRecord);
+        }
+
+        $writer->close();
+        if ($oOptions->output=='file')
         {
-            $output=file_get_contents($sRandomFileName);
-            unlink($sRandomFileName);
+            return $writer->filename;
         }
-        return $output;
     }
 }
 
@@ -213,10 +203,11 @@ class FormattingOptions
     public $nValue;
 
     /**
-    * "doc", "xls", "csv", "pdf"
+    * Destination format - either 'display' (send to browser) or 'file' (send to file)
+    * 
     * @var string
     */
-    public $format;
+    public $output;
 
     public function toString()
     {
@@ -263,31 +254,31 @@ class SurveyDao
 
 
         //Load groups
-        $sql = 'SELECT g.* FROM {{groups}} AS g '.
+        $sQuery = 'SELECT g.* FROM {{groups}} AS g '.
         'WHERE g.sid = '.$intId.' '.
         'ORDER BY g.group_order;';
-        $recordSet = Yii::app()->db->createCommand($sql)->query()->readAll();
+        $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
         $survey->groups = $recordSet;
 
         //Load questions
-        $sql = 'SELECT q.* FROM {{questions}} AS q '.
+        $sQuery = 'SELECT q.* FROM {{questions}} AS q '.
         'JOIN {{groups}} AS g ON q.gid = g.gid '.
         'WHERE q.sid = '.$intId.' AND q.language = \''.$lang.'\' '.
         'ORDER BY g.group_order, q.question_order;';
-        $survey->questions = Yii::app()->db->createCommand($sql)->query()->readAll();
+        $survey->questions = Yii::app()->db->createCommand($sQuery)->query()->readAll();
 
         //Load answers
-        $sql = 'SELECT DISTINCT a.* FROM {{answers}} AS a '.
+        $sQuery = 'SELECT DISTINCT a.* FROM {{answers}} AS a '.
         'JOIN {{questions}} AS q ON a.qid = q.qid '.
         'WHERE q.sid = '.$intId.' AND a.language = \''.$lang.'\' '.
         'ORDER BY a.qid, a.sortorder;';
-        $survey->answers = Yii::app()->db->createCommand($sql)->query()->readAll();
+        $survey->answers = Yii::app()->db->createCommand($sQuery)->query()->readAll();
 
         //Load tokens
-        if (Yii::app()->db->schema->getTable('{{tokens_' . $intId . '}}'))
+        if (tableExists('{{tokens_' . $intId . '}}'))
         {
-            $sql = 'SELECT t.* FROM {{tokens_' . $intId . '}} AS t;';
-            $recordSet = Yii::app()->db->createCommand($sql)->query()->readAll();
+            $sQuery = 'SELECT t.* FROM {{tokens_' . $intId . '}} AS t;';
+            $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
             $survey->tokens = $recordSet;
         }
         else
@@ -296,8 +287,8 @@ class SurveyDao
         }
 
         //Load language settings
-        $sql = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.';';
-        $recordSet = Yii::app()->db->createCommand($sql)->query()->readAll();
+        $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.';';
+        $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
         $survey->languageSettings = $recordSet;
 
         return $survey;
@@ -310,33 +301,22 @@ class SurveyDao
     * If none are then all responses are loaded.
     *
     * @param Survey $survey
-    * @param int $minRecord
-    * @param int $maxRecord
+    * @param int $iOffset 
+    * @param int $iLimit 
     */
-    public function loadSurveyResults(SurveyObj $survey, $minRecord = null, $maxRecord = null)
+    public function loadSurveyResults(SurveyObj $survey, $iLimit, $iOffset )
     {
 
-        /* @var $recordSet ADORecordSet */
-        $sql = 'SELECT * FROM {{survey_' . $survey->id . '}} order by id';
-        if (!isset($minRecord) && !isset($maxRecord))
+        $oRecordSet = Yii::app()->db->createCommand()->select()->from('{{survey_' . $survey->id . '}}');
+        if (tableExists('tokens_'.$survey->id))
         {
-            //Neither min or max is set, load it all.
-            $recordSet = Yii::app()->db->createCommand($sql)->query()->readAll();
+            $oRecordSet->join('{{tokens_' . $survey->id . '}}','{{tokens_' . $survey->id . '}}.token={{survey_' . $survey->id . '}}.token');
         }
-        elseif (!isset($minRecord) xor !isset($maxRecord))
-        {
-            //One is set, but not the other...invalid input.
-            safeDie('Either none of, or both of, the variables $minRecord and $maxRecord must be set.');
+        $survey->responses=$oRecordSet->order('id')->limit($iLimit, $iOffset)->query()->readAll();
+
+        return count($survey->responses);
         }
-        else
-        {
-            //Both min and max are set.
-            $recordSet = Yii::app()->db->createCommand($sql)->limit($maxRecord - $minRecord + 1, $minRecord)->query()->readAll();
         }
-        //Convert the data in the recordSet to a 2D array and stuff it in $responses.
-        $survey->responses = $recordSet;
-    }
-}
 
 class SurveyObj
 {
@@ -446,7 +426,7 @@ class SurveyObj
 
     public function getQuestionText($fieldName)
     {
-        $question = $this->getQuestionArray($fieldName);
+        $question = $this->fieldMap[$fieldName];
         if ($question)
         {
             return $question['question'];
@@ -478,27 +458,6 @@ class SurveyObj
         }
 
         return $matchingTokens;
-    }
-
-    /**
-    * Returns an associative array containing keys that are equivalent to the
-    * field names in the question table. The values are for the question that matches
-    * the given $fieldName.  If no match is found then false is returned.
-    *
-    * @param string $fieldName
-    * @return array[string]mixed  (or false)
-    */
-    public function getQuestionArray($fieldName)
-    {
-        $q = $this->fieldMap[$fieldName];
-        foreach ($this->questions as $question)
-        {
-            if ($question['qid'] == $q->id)
-            {
-                return $question;
-            }
-        }
-        return false;
     }
 
     /**
@@ -682,14 +641,8 @@ abstract class Writer implements IWriter
 
     protected function translateHeading($column, $sLanguageCode)
     {
+        if (substr($column,0,10)=='attribute_') return $column;
         return $this->translator->translateHeading($column, $sLanguageCode);
-    }
-
-    private final function initialize(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
-    {
-        $this->languageCode = $sLanguageCode;
-        $this->translator = new Translator();
-        $this->init($survey, $sLanguageCode, $oOptions);
     }
 
     /**
@@ -701,11 +654,13 @@ abstract class Writer implements IWriter
     * @param mixed $sLanguageCode
     * @param FormattingOptions $oOptions
     */
-    protected function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
+    public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
-        //This implementation does nothing.
+        $this->languageCode = $sLanguageCode;
+        $this->translator = new Translator();
     }
 
+    
     /**
     * Returns true if, given the $oOptions, the response should be included in the
     * output, and false if otherwise.
@@ -744,7 +699,7 @@ abstract class Writer implements IWriter
     */
     public function getAbbreviatedHeading(SurveyObj $survey, $q)
     {
-        $question = $survey->getQuestionArray($q->fieldname);
+        $question = $survey->fieldMap[$fieldName];
         if ($question)
         {
             $heading = $question['question'];
@@ -770,7 +725,7 @@ abstract class Writer implements IWriter
     */
     public function getFullHeading(SurveyObj $survey, $q)
     {
-        $question = $survey->getQuestionArray($q->fieldname);
+        $question = $survey->fieldMap[$q->fieldname];
         $heading = $question['question'];
         $heading = $this->stripTagsFull($heading);
         $heading.= $q->getFieldSubHeading($survey, $this, false);
@@ -779,7 +734,7 @@ abstract class Writer implements IWriter
 
     public function getCodeHeading(SurveyObj $survey, $q)
     {
-        $question = $survey->getQuestionArray($q->fieldname);
+        $question = $survey->fieldMap[$q->fieldname];
         $heading = $question['title'];
         $heading = $this->stripTagsFull($heading);
         $heading.= $q->getFieldSubHeading($survey, $this, true);
@@ -811,13 +766,16 @@ abstract class Writer implements IWriter
     * @param Survey $survey
     * @param string $sLanguageCode
     * @param FormattingOptions $oOptions
+    * @param boolean $bOutputHeaders Set if header should be given back
     */
-    final public function write(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
+    final public function write(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions, $bOutputHeaders=true)
     {
-        $this->initialize($survey, $sLanguageCode, $oOptions);
 
         //Output the survey.
         $headers = array();
+        if ($bOutputHeaders)
+        {
+            
         foreach ($oOptions->selectedColumns as $column)
         {
             //Output the header.
@@ -853,6 +811,7 @@ abstract class Writer implements IWriter
 
             //$this->output.=$this->csvEscape($value).$this->separator;
             $headers[] = $value;
+        }
         }
 
         //Output the results.
@@ -926,6 +885,17 @@ class CsvWriter extends Writer
         $this->hasOutputHeader = false;
     }
 
+    public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
+    {
+        parent::init($survey, $sLanguageCode, $oOptions);
+        if ($oOptions->output=='display')
+            {
+                header("Content-Disposition: attachment; filename=results-survey".$survey->id.".csv");
+                header("Content-type: text/comma-separated-values; charset=UTF-8");
+            }
+
+    }
+    
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
         if(!$this->hasOutputHeader)
@@ -938,7 +908,12 @@ class CsvWriter extends Writer
             }
 
             //Output the header...once and only once.
-            $this->output .= implode($this->separator, $headers);
+            $sRecord=implode($this->separator, $headers);
+            if ($oOptions->output='display')
+            {
+                echo $sRecord; 
+            }
+
             $this->hasOutputHeader = true;
         }
         //Output the values.
@@ -948,7 +923,11 @@ class CsvWriter extends Writer
             $values[$index] = $this->csvEscape($value);
             $index++;
         }
-        $this->output .= PHP_EOL.implode($this->separator, $values);
+        $sRecord=PHP_EOL.implode($this->separator, $values);
+        if ($oOptions->output='display')
+        {
+            echo $sRecord; 
+    }
     }
 
     public function close()
@@ -983,9 +962,16 @@ class DocWriter extends Writer
 
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
-        //header("Content-Disposition: attachment; filename=results-survey".$survey->id.".doc");
-        //header("Content-type: application/vnd.ms-word");
-        $this->output .= '<style>
+        parent::init($survey, $sLanguageCode, $oOptions);
+
+        if ($oOptions->output=='display')
+        {
+            header("Content-Disposition: attachment; filename=results-survey".$survey->id.".doc");
+            header("Content-type: application/vnd.ms-word");
+        }
+        
+        
+        $sOutput = '<style>
         table {
         border-collapse:collapse;
         }
@@ -996,6 +982,9 @@ class DocWriter extends Writer
         background: #c0c0c0;
         }
         </style>';
+        if ($oOptions->output=='display'){
+            echo  $sOutput;
+    }
     }
 
     /**
@@ -1009,6 +998,10 @@ class DocWriter extends Writer
         {
             //No headers at all, only output values.
             $this->output .= implode($this->separator, $values).PHP_EOL;
+            if ($oOptions->output=='display'){
+                echo  $this->output;
+                $this->output='';
+        }
         }
         elseif ($oOptions->answerFormat == 'long')
         {
@@ -1030,6 +1023,11 @@ class DocWriter extends Writer
                 $counter++;
             }
             $this->output .= "</table>".PHP_EOL;
+            if ($oOptions->output=='display'){
+                echo  $this->output;
+                $this->output='';
+        }
+            
         }
         else
         {
@@ -1039,8 +1037,6 @@ class DocWriter extends Writer
 
     public function close()
     {
-        $this->output = rtrim($this->output, PHP_EOL);
-        return $this->output;
     }
 }
 
@@ -1072,22 +1068,26 @@ class ExcelWriter extends Writer
     public function __construct($filename = null)
     {
         Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
-        if (!empty($filename))
+        $this->separator = '~|';
+        $this->hasOutputHeader = false;
+        $this->rowCounter = 1;
+    }
+
+    public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
         {
-            $this->workbook = new xlswriter($filename);
+        parent::init($survey, $sLanguageCode, $oOptions);
+                            $sRandomFileName=Yii::app()->getConfig("tempdir"). DIRECTORY_SEPARATOR . randomChars(40);
+
+        if ($oOptions->output=='file')
+        {
+            $oOptions['filename']=Yii::app()->getConfig("tempdir"). DIRECTORY_SEPARATOR . randomChars(40);            
+            $this->workbook = new xlswriter($oOptions['filename']);
         }
         else
         {
             $this->workbook = new xlswriter;
         }
 
-        $this->separator = '~|';
-        $this->hasOutputHeader = false;
-        $this->rowCounter = 1;
-    }
-
-    protected function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
-    {
         $this->workbook->send('results-survey'.$survey->id.'.xls');
         $worksheetName = $survey->languageSettings[0]['surveyls_title'];
         $worksheetName=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$worksheetName),0,31); // Remove invalid characters
@@ -1177,8 +1177,9 @@ class PdfWriter extends Writer
         $this->rowCounter = 0;
     }
 
-    protected function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
+    public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
+        parent::init($survey, $sLanguageCode, $oOptions);
         $this->surveyName = $survey->languageSettings[0]['surveyls_title'];
         $this->pdf->titleintopdf($this->surveyName, $survey->languageSettings[0]['surveyls_description']);
     }

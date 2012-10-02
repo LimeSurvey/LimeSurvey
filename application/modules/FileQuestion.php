@@ -305,7 +305,7 @@ class FileQuestion extends QuestionModule
     public function getDBField()
     {
         if (strpos($this->fieldname, "_"))
-            return "INT(1)";
+            return "integer";
         else
            return "text";
     }

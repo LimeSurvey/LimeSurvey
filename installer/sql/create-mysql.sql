@@ -309,7 +309,7 @@ CREATE TABLE `prefix_saved_control` (
 CREATE TABLE `prefix_sessions`(
       `id` varchar(32) NOT NULL,
       `expire` int(11) DEFAULT NULL,
-      `data` text,
+      `data` longtext,
       PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

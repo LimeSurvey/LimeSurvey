@@ -9,10 +9,7 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-*
-*   $Id$
 */
-list(,$updaterversion)=explode(' ','$Rev: 11155 $');  // this is updated by subversion so don't change this string
 
 /**
 * Update Controller
@@ -24,19 +21,19 @@ list(,$updaterversion)=explode(' ','$Rev: 11155 $');  // this is updated by subv
 */
 class update extends Survey_Common_Action
 {
-
     /**
     * Default Controller Action
     */
-    function index($subaction = null)
+    function index($sSubAction = null)
     {
-        global $updaterversion;
         $this->_RunUpdaterUpdate();
 
         $clang = $this->getController()->lang;
-        $buildnumber = Yii::app()->getConfig("buildnumber");
+        $iCurrentBuildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
-        $updatekey = $this->_getUpdateKey($subaction);
+        $iDestinationBuild= Yii::app()->getConfig("updatebuild");
+
+        $updatekey = $this->_getUpdateKey($sSubAction);
         $error = false;
 
         if ( $updatekey != '' ) {
@@ -47,7 +44,7 @@ class update extends Survey_Common_Action
                 $error = true;
             }
 
-            list($httperror, $changelog, $cookies) = $this->_getChangelog($buildnumber, $updaterversion, $updatekey);
+            list($httperror, $changelog, $cookies) = $this->_getChangelog($iCurrentBuildnumber, $iDestinationBuild, $updatekey);
         }
 
         $aData['error'] = $error;
@@ -59,9 +56,19 @@ class update extends Survey_Common_Action
         $this->_renderWrappedTemplate('update', 'update', $aData);
     }
 
+    private function _getChangedFiles($buildnumber, $updaterversion, $updatekey)
+    {
+        $http = new http;
+        $httperror = $this->_requestChangedFiles($http, $buildnumber, $updaterversion, $updatekey);
+
+        if ($httperror != '') {
+            return array($httperror, null);
+        }
+        return $this->_readChangelog($http);
+    }
+    
     private function _getChangelog($buildnumber, $updaterversion, $updatekey)
     {
-        Yii::app()->loadLibrary('admin/http/http');
         $http = new http;
         $httperror = $this->_requestChangelog($http, $buildnumber, $updaterversion, $updatekey);
 
@@ -98,12 +105,26 @@ class update extends Survey_Common_Action
         return $http->SendRequest($arguments);
     }
 
-    private function _getUpdateKey($subaction)
+    private function _requestChangedFiles(http $http, $buildnumber, $updaterversion, $updatekey)
+    {
+        $http->timeout = 0;
+        $http->data_timeout = 0;
+        $http->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
+        $http->GetRequestArguments('http://update.limesurvey.org/updates/update/' . $buildnumber . '/' . $updaterversion . '/' . $updatekey, $arguments);
+
+        $http->Open($arguments);
+
+        return $http->SendRequest($arguments);
+    }
+    
+
+    private function _getUpdateKey($sSubAction)
     {
         $updatekey = Yii::app()->getConfig("updatekey");
-        if ($subaction == 'keyupdate') {
+        if ($sSubAction == 'keyupdate') {
             $updatekey = sanitize_paranoid_string($_POST['updatekey']);
             setGlobalSetting('updatekey', $updatekey);
+            Yii::app()->setConfig("updatekey", $updatekey);
             return $updatekey;
         }
         return $updatekey;
@@ -117,20 +138,18 @@ class update extends Survey_Common_Action
         $updatebuild = Yii::app()->getConfig("updatebuild");
         $updatekey = Yii::app()->getConfig("updatekey");
 
-        list($error, $updateinfo, $cookies) = $this->_getChangelog($buildnumber, $updatebuild, $updatekey);
-        $readonlyfiles = $this->_getReadOnlyFiles($updateinfo);
-
+        list($error, $updateinfo, $cookies) = $this->_getChangedFiles($buildnumber, $updatebuild, $updatekey);
+        $aData = $this->_getFileStatus($updateinfo);
 
         Yii::app()->session['updateinfo'] = $updateinfo;
         Yii::app()->session['updatesession'] = $cookies;
 
         $aData['error'] = $error;
         $aData['updateinfo'] = $updateinfo;
-        $aData['readonlyfiles'] = $readonlyfiles;
         $this->_renderWrappedTemplate('update', 'step2', $aData);
     }
 
-    private function _getReadOnlyFiles($updateinfo)
+    private function _getFileStatus($updateinfo)
     {
         // okay, updateinfo now contains all necessary updateinformation
         // Now check if the existing files have the mentioned checksum
@@ -148,7 +167,10 @@ class update extends Survey_Common_Action
         {
             $this->_checkFile($afile, $rootdir, $readonlyfiles, $existingfiles, $modifiedfiles);
         }
-        return $readonlyfiles;
+        return array('readonlyfiles'=>$readonlyfiles,
+        'modifiedfiles'=>$modifiedfiles,
+        'existingfiles'=>$existingfiles)
+        ;
     }
 
     private function _checkFile($file, $rootdir, &$readonlyfiles, &$existingfiles, &$modifiedfiles)
@@ -198,7 +220,6 @@ class update extends Survey_Common_Action
         $updatekey = Yii::app()->getConfig("updatekey");
         $updatebuild = Yii::app()->getConfig("updatebuild");
         //$_POST=$this->input->post();
-        Yii::app()->loadLibrary('admin/http/http');
         $rootdir = Yii::app()->getConfig("rootdir");
         $publicdir = Yii::app()->getConfig("publicdir");
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -224,7 +245,7 @@ class update extends Survey_Common_Action
         // okay, updateinfo now contains all necessary updateinformation
         // Create DB and file backups now
 
-        $basefilename = date("YmdHis-").md5(uniqid(rand(), true));
+        $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).'_'.md5(uniqid(rand(), true));
         //Now create a backup of the files to be delete or modified
 
         $filestozip=array();
@@ -237,48 +258,37 @@ class update extends Survey_Common_Action
             }
         }
 
-        Yii::app()->loadLibrary("admin/pclzip/pclzip",array('p_zipname' => $tempdir.DIRECTORY_SEPARATOR.'files-'.$basefilename.'.zip'));
-        $archive = $this->pclzip;
+        Yii::app()->loadLibrary("admin/pclzip/pclzip");
+        $archive = new PclZip($tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip');
 
         $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
 
         if ($v_list == 0) {
             die("Error : ".$archive->errorInfo(true));
         }
+        $aData['sFilesArchive']=$tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip';
 
         $aData['databasetype'] = $aDatabasetype;
 
         //TODO: Yii provides no function to backup the database. To be done after dumpdb is ported
         if (in_array($aDatabasetype, array('mysql', 'mysqli')))
         {
-            $this->load->dbutil();
-            $this->load->helper("string");
             if ((in_array($aDatabasetype, array('mysql', 'mysqli'))) && Yii::app()->getConfig('demoMode') != true) {
-                $tables = $this->db->list_tables();
-                foreach ($tables as $table)
-                {
-                    if ($this->db->dbprefix==substr($table, 0, strlen($this->db->dbprefix)))
-                    {
-                        $lstables[] = $table;
+                Yii::app()->loadHelper("admin/backupdb");
+                $sfilename = $tempdir.DIRECTORY_SEPARATOR."backup_db_".randomChars(20)."_".dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql";
+                $dfilename = $tempdir.DIRECTORY_SEPARATOR."LimeSurvey_database_backup_".$basefilename.".sql.gz";
+
+                outputDatabase('',false,$sfilename);
+
+                $archive = new PclZip($dfilename);
+                $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir);
+                unlink($sfilename);
+                if ($v_list == 0) {
+                    die("Error : ".$archive->errorInfo(true));
                     }
+                $aData['sSQLArchive']=$dfilename;
                 }
-                $sfilename = "backup_db_".random_string('unique')."_".dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql";
-                $dfilename = "LimeSurvey_".$this->db->database."_dump_".dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql.gz";
-                $prefs = array(
-                'format'      => 'zip',             // gzip, zip, txt
-                // File name - NEEDED ONLY WITH ZIP FILES
-                'filename'    => $sfilename,
-                'tables'      => $lstables,
-                'add_drop'    => TRUE,              // Whether to add DROP TABLE statements to backup file
-                'add_insert'  => TRUE,              // Whether to add INSERT data to backup file
-                'newline'     => "\n"               // Newline character used in backup file
-                );
-                $this->dbutil->backup($prefs);
-                $backup =& $this->dbutil->backup();
-                $this->load->helper('file');
-                write_file($tempdir.'/'.$sfilename.".gz", $backup);
             }
-        }
 
         $this->_renderWrappedTemplate('update', 'step3', $aData);
     }
@@ -291,7 +301,7 @@ class update extends Survey_Common_Action
         $tempdir = Yii::app()->getConfig("tempdir");
         $updatekey = Yii::app()->getConfig("updatekey");
         $updatebuild = Yii::app()->getConfig("updatebuild");
-        Yii::app()->loadLibrary('admin/http/http');
+
         $rootdir = Yii::app()->getConfig("rootdir");
         $publicdir = Yii::app()->getConfig("publicdir");
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -368,8 +378,8 @@ class update extends Survey_Common_Action
         //Now unzip the new files over the existing ones.
         $new_files = false;
         if (file_exists($tempdir.'/update.zip')){
-            Yii::app()->loadLibrary("admin/pclzip/pclzip",array('p_zipname' => $tempdir.'/update.zip'));
-            $archive = $this->pclzip;
+            Yii::app()->loadLibrary("admin/pclzip/pclzip");
+            $archive = new PclZip($tempdir.'/update.zip');
             if ($archive->extract(PCLZIP_OPT_PATH, $rootdir.'/', PCLZIP_OPT_REPLACE_NEWER)== 0) {
                 die("Error : ".$archive->errorInfo(true));
             }
@@ -399,7 +409,7 @@ class update extends Survey_Common_Action
             {
                 if(strpos($line,'buildnumber')!==false)
                 {
-                    $line='$config[\'buildnumber\']'." = '{Yii::app()->session['updateinfo']['toversion']}';\r\n";
+                    $line='$config[\'buildnumber\'] = '.Yii::app()->session['updateinfo']['toversion'].';'."\r\n";
                 }
                 fwrite($handle,$line);
             }
@@ -415,12 +425,10 @@ class update extends Survey_Common_Action
 
     private function _RunUpdaterUpdate()
     {
-        //global $homedir, $debug, $updaterversion;
-        global $updaterversion;
         $clang = $this->getController()->lang;
         $versionnumber = Yii::app()->getConfig("versionnumber");
+        $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
-        Yii::app()->loadLibrary('admin/http/http');
 
         $http=new http;
 
@@ -429,7 +437,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $http->data_timeout=0;
         $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $http->GetRequestArguments("http://update.limesurvey.org?updaterbuild=$updaterversion",$arguments);
+        $http->GetRequestArguments("http://update.limesurvey.org?updaterbuild={$buildnumber}",$arguments);
 
         $updateinfo=false;
         $error=$http->Open($arguments);
@@ -458,16 +466,13 @@ class update extends Survey_Common_Action
             $updateinfo['errorhtml']=$error;
         }
         unset( $http );
-        if ((int)$updateinfo['UpdaterRevision']<=$updaterversion)
+        if ((int)$updateinfo['UpdaterRevision']<=$buildnumber)
         {
+            // There is no newer updater version on the server
             return true;
         }
 
-        if (!is_writable($tempdir))
-        {
-            $error=true;
-        }
-        if (!is_writable(APPPATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'update.php'))
+        if (!is_writable($tempdir) || !is_writable(APPPATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'update.php'))
         {
             $error=true;
         }
@@ -485,7 +490,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $http->data_timeout=0;
         $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $http->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/$updaterversion",$arguments);
+        $http->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/{$this->updaterversion}",$arguments);
 
         $httperror=$http->Open($arguments);
         $httperror=$http->SendRequest($arguments);

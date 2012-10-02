@@ -177,7 +177,7 @@ CREATE TABLE prefix_participant_attribute_names (
 CREATE TABLE prefix_participant_attribute_values (
   "value_id" serial PRIMARY KEY NOT NULL,
   "attribute_id" integer NOT NULL,
-  "value" character text NOT NULL
+  "value" text NOT NULL
 );
 
 

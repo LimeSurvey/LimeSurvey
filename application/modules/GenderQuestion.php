@@ -215,7 +215,7 @@ class GenderQuestion extends QuestionModule
 
     public function availableAttributes($attr = false)
     {
-        $attrs=array("display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");
+        $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");
         return $attr?in_array($attr,$attrs):$attrs;
     }
 

@@ -600,7 +600,7 @@
         /**
         * used to specify whether to  generate equations using SGQA codes or qcodes
         * Default is to convert all qcode naming to sgqa naming when generating javascript, as that provides the greatest backwards compatibility
-        * Excel export of survey structure sets this to false so as to force use of qcode naming
+        * TSV export of survey structure sets this to false so as to force use of qcode naming
         *
         * @var Boolean
         */
@@ -2130,7 +2130,7 @@
                 // other comment mandatory
                 if ($other_comment_mandatory!='')
                 {
-                    $qtips['other_comment_mandatory']=$this->gT('Please also fill in the "other comment" field.');
+                    $qtips['other_comment_mandatory']=$this->gT('Please also fill in the &#8220;other comment&#8221; field.');
                 }
 
                 // regular expression validation
@@ -3675,10 +3675,14 @@
                 }
 
                 $sdata = array_filter($sdata);
-                if (Yii::app()->db->createCommand()->insert($this->surveyOptions['tablename'], $sdata))    // Checked
+                Survey_dynamic::sid($this->sid);
+                $oSurvey = new Survey_dynamic;
+                
+                $iNewID = $oSurvey->insertRecords($sdata); 
+                if ($iNewID)    // Checked
                 {
-                    $srid = Yii::app()->db->getLastInsertID();
-                    $_SESSION[$this->sessid]['srid'] = $srid;
+                    $srid = $iNewID;
+                    $_SESSION[$this->sessid]['srid'] = $iNewID;
                 }
                 else
                 {
@@ -3686,14 +3690,18 @@
                 }
                 //Insert Row for Timings, if needed
                 if ($this->surveyOptions['savetimings']) {
+                    Survey_timings::sid($this->sid);
+                    $oSurveyTimings = new Survey_timings;
+                    
                     $tdata = array(
                     'id'=>$srid,
                     'interviewtime'=>0
                     );
                     $tdata = array_filter($tdata);
-                    if (Yii::app()->db->createCommand()->insert($this->surveyOptions['tablename_timings'],$tdata))  // Checked
+                    $iNewID = $oSurveyTimings->insertRecords($tdata); 
+                    if ($iNewID)  // Checked
                     {
-                        $trid = Yii::app()->db->getLastInsertID();
+                        $trid = $iNewID;
                     }
                     else
                     {
@@ -3784,7 +3792,7 @@
                         // Check Quotas
                         $bQuotaMatched = false;
                     $aQuota = check_quota('return', $this->sid);
-                    if ($aQuota != false)
+                    if ($aQuota !== false)
                     {
                         if (isset($aQuota['status']) && $aQuota['status'] == 'matched') {
                             $bQuotaMatched = true;
@@ -3792,7 +3800,7 @@
                     }
                     if ($bQuotaMatched)
                     {
-                        check_quota('enforce',$this->sid);  // will create a page and quit.
+                        checkQuota('enforce',$this->sid);  // will create a page and quit.
                     }
                     else
                     {
@@ -7120,13 +7128,13 @@ EOD;
         }
 
         /**
-        * Export survey definition in format readable by ExcelSurveyImport
+        * TSV survey definition in format readable by TSVSurveyImport
         * one line each per group, question, sub-question, and answer
         * does not use SGQA naming at all.
         * @param type $sid
         * @return type
         */
-        static public function &ExcelSurveyExport($sid)
+        static public function &TSVSurveyExport($sid)
         {
             $fields = array(
             'class',
@@ -7514,6 +7522,15 @@ EOD;
             }
             return $out;
         }
+        
+        /** 
+        * Returns the survey ID of the EM singleton
+        */
+        public static function getLEMsurveyId() {
+                $LEM =& LimeExpressionManager::singleton();
+                return $LEM->sid;
+    }
+
     }
 
     /**
@@ -7538,4 +7555,6 @@ EOD;
         }
         return ($a['qseq'] < $b['qseq']) ? -1 : 1;
     }
+    
+  
 ?>
