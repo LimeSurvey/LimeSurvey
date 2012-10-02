@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-10-02 14:54:18+00:00\n"
+"POT-Creation-Date: 2012-10-02 14:57:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13005,7 +13005,7 @@ msgid "Imported template files for"
 msgstr ""
 
 #: application/views/admin/templates/importuploaded_view.php:69
-msgid "Template fixes summary"
+msgid "Template upgrade summary"
 msgstr ""
 
 #: application/views/admin/templates/importuploaded_view.php:96
