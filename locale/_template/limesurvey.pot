@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-10-02 13:17:26+00:00\n"
+"POT-Creation-Date: 2012-10-02 14:57:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7881,11 +7881,15 @@ msgstr ""
 msgid "Database update finished (%s)"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1803
-msgid "%s user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually."
+#: application/helpers/update/updatedb_helper.php:1811
+msgid "Some user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1808
+#: application/helpers/update/updatedb_helper.php:1813
+msgid "Template(s) to be verified :"
+msgstr ""
+
+#: application/helpers/update/updatedb_helper.php:1819
 msgid "All %s user templates updated."
 msgstr ""
 
@@ -13001,7 +13005,7 @@ msgid "Imported template files for"
 msgstr ""
 
 #: application/views/admin/templates/importuploaded_view.php:69
-msgid "Template fixes summary"
+msgid "Template upgrade summary"
 msgstr ""
 
 #: application/views/admin/templates/importuploaded_view.php:96

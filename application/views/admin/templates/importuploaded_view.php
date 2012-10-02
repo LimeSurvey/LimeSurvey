@@ -66,7 +66,7 @@ if(count($templateFixes['details'])>0)
     {
     ?>
     <br />
-    <div class="header"><?php $clang->eT("Template fixes summary") ?></div>
+    <div class="header"><?php $clang->eT("Template upgrade summary") ?></div>
     <?php
         if(!$templateFixes['success'])
         {
