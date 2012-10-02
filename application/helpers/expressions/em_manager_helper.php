@@ -8164,7 +8164,7 @@ EOD;
                     $attrs['other'] = $LEM->questionSeq2relevance[$qseq]['other'];
                 }
                 if (count($attrs) > 0) {
-                    $attrTable = "<table id='logicfileattributetable'><tr><th>" . $LEM->gT("Question Attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
+                    $attrTable = "<table id='logicfileattributetable'><tr><th>" . $LEM->gT("Question attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
                     $count=0;
                     foreach ($attrs as $key=>$value) {
                         if (is_null($value) || trim($value) == '') {
@@ -8172,6 +8172,7 @@ EOD;
                         }
                         switch ($key)
                         {
+                            // @todo: Rather compares the current attribute value to the defaults in the question attributes array to decide which ones should show (only the ones that are non-standard)
                             default:
                             case 'exclude_all_others':
                             case 'exclude_all_others_auto':
@@ -8180,6 +8181,10 @@ EOD;
                                     $value = NULL; // so can skip this one - just using continue here doesn't work.
                                 }
                                 break;
+                            case 'time_limit_action':
+                                if ( $value == '1') {
+                                    $value = NULL; // so can skip this one - just using continue here doesn't work.
+                                }
                             case 'relevance':
                                 $value = NULL;  // means an outdate database structure
                                 break;
