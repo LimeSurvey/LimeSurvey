@@ -45,6 +45,12 @@ HOW TO UPGRADE from LimeSurvey 1.50 or later (<=1.70)
    It is usually easier to customize a default templates, again, instead of fixing your old template! 
 8. Done.
 
+TEMPLATE modification between LimeSurvey 1.8
+------------------------------------------------------
+LimeSurvey 2 use a new placeholder for javascript inclusion: {TEMPLATEJS}.
+Old template can be incompatible with the new javascript inclusion system. LimeSurvey need a placeholder to include js file for public survey.
+The update process and the template upload process try to update your template. If there are javascript issue with your custom template, control you have the placeholder {TEMPLACEJS} in your starpage.pstpl.
+
 Thank you to everyone who helped with this new release!
 
 

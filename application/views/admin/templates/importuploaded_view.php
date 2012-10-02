@@ -61,5 +61,37 @@ if (count($aErrorFilesInfo) > 0)
 }
 ?>
     </ul>
+<?php
+if(count($templateFixes['details'])>0)
+    {
+    ?>
+    <br />
+    <div class="header"><?php $clang->eT("Template fixes summary") ?></div>
+    <?php
+        if(!$templateFixes['success'])
+        {
+            $status = $clang->gT("Error");
+            $statusClass = 'warningheader';
+        }
+        else
+        {
+            $status = $clang->gT("Success");
+            $statusClass = 'successheader';
+        }
+    ?>
+        <div class="<?php echo $statusClass ?>"><?php echo $status ?></div>
+        <ul>
+    <?php
+        foreach ($templateFixes['details'] as $detail)
+        {
+    ?>
+            <li><?php echo $detail ?></li>
+    <?php
+        }
+    ?>
+        </ul>
+    <?php
+    }
+?>
     <input type='submit' value='<?php $clang->eT("Open imported template") ?>' onclick="window.open('<?php echo $this->createUrl('admin/templates/view/editfile/startpage.pstpl/screenname/welcome/templatename/' . $newdir) ?>', '_top')" />
 </div>

@@ -144,19 +144,26 @@ class templates extends Survey_Common_Action
                 // Delete temporary folder
                 rmdir($extractdir);
 
-                if (count($aErrorFilesInfo) == 0 && count($aImportedFilesInfo) == 0)
-                    $this->getController()->error($clang->gT("This ZIP archive contains no valid template files. Import failed."));
+            if (count($aErrorFilesInfo) == 0 && count($aImportedFilesInfo) == 0)
+                $this->getController()->error($clang->gT("This ZIP archive contains no valid template files. Import failed."));
             }
             else
                 $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
-
-
+            if (count($aImportedFilesInfo) > 0)
+            {
+                $templateFixes= $this->_templateFixes($newdir);
+            }
+            else
+            {
+                $templateFixes= array();
+            }
             $aViewUrls = 'importuploaded_view';
             $aData = array(
             'aImportedFilesInfo' => $aImportedFilesInfo,
             'aErrorFilesInfo' => $aErrorFilesInfo,
             'lid' => $lid,
             'newdir' => $newdir,
+            'templateFixes' => $templateFixes,
             );
         }
         else
@@ -167,6 +174,53 @@ class templates extends Survey_Common_Action
 
         $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
     }
+    /**
+    * Try to correct a template with new funcyionnality.
+    *
+    * @access private
+    * @param string $templatename
+    * @return array $correction ($success,$number,array($information))
+    */
+
+    private function _templateFixes($templatename)
+    {
+        $clang = $this->getController()->lang;
+        $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+        $templateFixes=array();
+        $templateFixes['success']=true;
+        $templateFixes['details']=array();
+        // TEMPLATEJS control
+        $fname="$usertemplaterootdir/$templatename/startpage.pstpl";
+        if(is_file($fname))
+        {
+
+            $fhandle = fopen($fname,"r");
+            $content = fread($fhandle,filesize($fname));
+            if(strpos($content, "{TEMPLATEJS}")===false)
+            {
+                $content = str_replace("<script type=\"text/javascript\" src=\"{TEMPLATEURL}template.js\"></script>", "{TEMPLATEJS}", $content);
+                $fhandle = fopen($fname,"w");
+                fwrite($fhandle,$content);
+                fclose($fhandle);
+                if(strpos($content, "{TEMPLATEJS}")===false)
+                {
+                    $templateFixes['success']=false;
+                    $templateFixes['details']['templatejs']="Unable to adding {TEMPLATEJS} placeholder, please control your startpage.pstpl.";
+                }
+                else
+                {
+                    $templateFixes['details']['templatejs']="Placeholder {TEMPLATEJS} added to your startpage.pstpl.";
+                }
+            }
+        }
+        else
+        {
+            $templateFixes['success']=false;
+            $templateFixes['details']['templatejs']="Unable to find startpage.pstpl to add {TEMPLATEJS} placeholder, please control your template.";
+        }
+        return $templateFixes;
+    }
+
     /**
     * Responsible to import a template file.
     *
@@ -218,6 +272,7 @@ class templates extends Survey_Common_Action
         }
         $this->getController()->redirect(array("admin/templates/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
+
     /**
     * Generates a random temp directory
     *
@@ -867,6 +922,7 @@ class templates extends Survey_Common_Action
         $aData['notanswered'] = $notanswered;
         $aData['privacy'] = $privacy;
         $aData['surveyid'] = $surveyid;
+        $aData['sid'] = $surveyid;
         $aData['token'] = $token;
         $aData['assessments'] = $assessments;
         $aData['printoutput'] = $printoutput;
