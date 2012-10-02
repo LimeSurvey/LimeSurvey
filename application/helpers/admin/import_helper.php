@@ -4304,7 +4304,7 @@ function TSVImportSurvey($sFullFilepath)
         switch($row['class'])
         {
             case 'S':
-                if (isset($row['text']))
+                if (isset($row['text']) && $row['name'] != 'datecreated')
                 {
                     $surveyinfo[$row['name']] = $row['text'];
                 }
