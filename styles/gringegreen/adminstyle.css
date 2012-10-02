@@ -263,7 +263,10 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 #questiondetails td+td {
     text-align:left;
 }
-
+#questionactioncopy{
+    float: right;
+    margin-top: -60px
+}
 .outlinetable {
     border: 1px solid #111;
 }
