@@ -579,7 +579,7 @@ create index [labels_code_idx] on [prefix_labels] ([code]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '163');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '164');
 INSERT INTO [prefix_question_types] ([tid], [order], [group], [name], [class], [legacy], [system]) VALUES
 (1, 1, 1, '5 point choice', 'FiveList', '5', 'Y'),
 (2, 2, 1, 'List (dropdown)', 'Select', '!', 'Y'),

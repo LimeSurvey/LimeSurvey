@@ -3791,7 +3791,7 @@
                         }
                         // Check Quotas
                         $bQuotaMatched = false;
-                    $aQuota = check_quota('return', $this->sid);
+                    $aQuota = checkQuota('return', $this->sid);
                     if ($aQuota !== false)
                     {
                         if (isset($aQuota['status']) && $aQuota['status'] == 'matched') {

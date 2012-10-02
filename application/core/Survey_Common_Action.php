@@ -332,7 +332,7 @@ class Survey_Common_Action extends CAction
         $sqrq = Questions::model()->findAllByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
         $aData['sqct'] = $sqct = count($sqrq);
 
-        $qrrow = Questions::model()->findAllByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang))        $qrresult = Questions::model()->with('question_types')->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
+        $qrrow = Questions::model()->findAllByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
 
         $questionsummary = "<div class='menubar'>\n";
 
