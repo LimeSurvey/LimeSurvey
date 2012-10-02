@@ -1578,17 +1578,17 @@
             //check if tokens actually haven't been already used
             $areTokensUsed = usedTokens(trim(strip_tags($clienttoken)),$surveyid);
             //check if token actually does exist
+            $oTokenEntry = Tokens_dynamic::model($surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
+
             if ($thissurvey['alloweditaftercompletion'] == 'Y' )
             {
-                $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token='".trim(sanitize_xss_string(strip_tags($clienttoken)))."'";
+                $oTokenEntry = Tokens_dynamic::model($surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
             }
             else
             {
-                $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token='".trim(sanitize_xss_string(strip_tags($clienttoken)))."' AND (completed = 'N' or completed='')";
-            }
-            $tkresult = dbExecuteAssoc($tkquery);     //Checked
-            list($tkexist) = $tkresult->read();
-            if (!$tkexist || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
+                $oTokenEntry = Tokens_dynamic::model($surveyid)->find("token=:token  AND (completed = 'N' or completed='')", array(':token'=>trim(strip_tags($clienttoken))));
+           }
+            if (is_null($oTokenEntry) || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
             {
                 sendCacheHeaders();
                 doHeader();
