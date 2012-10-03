@@ -1458,7 +1458,7 @@ function group_export($action, $iSurveyID, $gid)
     $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
     $xml->startElement('languages');
 
-    $lresult = Groups::model()->findAllByAttributes(array('gid' => $gid), array('group' => 'language'));
+    $lresult = Groups::model()->findAllByAttributes(array('gid' => $gid), array('select'=>'language','group' => 'language'));
     foreach($lresult as $row)
     {
         $xml->writeElement('language',$row->language);
