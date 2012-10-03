@@ -53,8 +53,6 @@ class InstallerConfigForm extends CFormModel
 		foreach($drivers as $driver) {
 			if (isset($this->db_names[$driver]))
 				$this->supported_db_types[$driver] = $this->db_names[$driver];
-			else
-				$this->supported_db_types[$driver] = $driver;
 		}
 
 		asort($this->supported_db_types);
