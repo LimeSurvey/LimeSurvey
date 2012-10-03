@@ -4148,7 +4148,7 @@ function do_yesno($ia)
         // --> END NEW FEATURE - SAVE
     }
 
-    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"{ ".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."}\" />\n";
+    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
 }
