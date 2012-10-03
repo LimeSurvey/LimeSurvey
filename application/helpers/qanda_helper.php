@@ -4823,7 +4823,6 @@ function do_array($ia)
     $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $qresult = dbExecuteAssoc($qquery);     //Checked
     $qrow = $qresult->read(); $other = $qrow['other'];
-    $lquery = "SELECT * FROM {{answers}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['answer_width'])!='')
@@ -4850,13 +4849,14 @@ function do_array($ia)
         $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
         $minrepeatheadings = 0;
     }
-    $lresult = dbExecuteAssoc($lquery);   //Checked
-    if ($useDropdownLayout === false && $lresult->count() > 0)
+
+    $lresult= Answers::model()->findAll(array('order'=>'sortorder, code', 'condition'=>'qid=:qid AND language=:language AND scale_id=0', 'params'=>array(':qid'=>$ia[0],':language'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'])));
+    if ($useDropdownLayout === false && count($lresult) > 0)
     {
-        foreach ($lresult->readAll() as $lrow)
+        foreach ($lresult as $lrow)
         {
-            $labelans[]=$lrow['answer'];
-            $labelcode[]=$lrow['code'];
+            $labelans[]=$lrow->answer;
+            $labelcode[]=$lrow->code;
         }
 
         //		$cellwidth=sprintf('%02d', $cellwidth);
@@ -5017,11 +5017,11 @@ function do_array($ia)
 
         $answer = $answer_start . $answer_cols . $answer_head .$answer ."</table>\n";
     }
-    elseif ($useDropdownLayout === true && $lresult->count() > 0)
+    elseif ($useDropdownLayout === true && count($lresult)> 0)
     {
-        foreach($lresult->readAll() as $lrow)
-            $labels[]=Array('code' => $lrow['code'],
-            'answer' => $lrow['answer']);
+        foreach($lresult as $lrow)
+            $labels[]=Array('code' => $lrow->code,
+            'answer' => $lrow->answer);
         $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $ansresult = dbExecuteAssoc($ansquery);  //Checked
         if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
