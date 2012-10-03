@@ -6724,11 +6724,13 @@ function switchMSSQLIdentityInsert($table,$state)
     {
         if ($state == true)
         {
-            Yii::app()->db->createCommand('SET IDENTITY_INSERT {{'.$table.'}} ON')->execute();
+            // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
+            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' ON');  
         }
         else
         {
-            Yii::app()->db->createCommand('SET IDENTITY_INSERT {{'.$table.'}} OFF')->execute();
+            // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
+            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' OFF'); 
         }
     }
 }
