@@ -2305,6 +2305,13 @@ class tokens extends Survey_Common_Action
                 $aData['attrfieldnames'][$sField]=$aData;
             }
         }
+        foreach ($aTokenFieldNames as $sTokenFieldName)
+        {
+            if (strpos($sTokenFieldName,'attribute_')===0 && (!isset($aData['attrfieldnames']) || !isset($aData['attrfieldnames'][$sTokenFieldName])))
+            {
+                $aData['attrfieldnames'][$sTokenFieldName]=array('description'=>$sTokenFieldName,'mandatory'=>'N');    
+            }
+        } 
         
         $aData['thissurvey'] = $thissurvey;
         $aData['surveyid'] = $iSurveyId;
