@@ -1163,6 +1163,7 @@ textarea.updater-changelog {
     text-align: right;
     margin-right: 0.5em;
     float: left;
+    clear:left;
     font-weight: bold;
     color: #1d2d45;
 }
@@ -1182,6 +1183,7 @@ textarea.updater-changelog {
     text-align: right;
     margin-right: 0.5em;
     float: left;
+    clear:left;
     font-weight: bold;
     color: #121A28;
 }
