@@ -42,7 +42,7 @@ class LSYii_Application extends CWebApplication
         if(file_exists(APPPATH . DIRECTORY_SEPARATOR. 'config' . DIRECTORY_SEPARATOR . 'config.php'))
         {
             $ls_config = require(APPPATH . DIRECTORY_SEPARATOR. 'config' . DIRECTORY_SEPARATOR . 'config.php');
-            $settings = array_merge($settings, $ls_config);
+            $settings = array_merge($settings, $ls_config['config']);
         }
 
         foreach ($settings as $key => $value)
