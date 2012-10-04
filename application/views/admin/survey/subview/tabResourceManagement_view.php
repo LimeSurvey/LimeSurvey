@@ -1,7 +1,7 @@
 <div id='resources'>
     <form class='form30' id='browsesurveyresources' name='browsesurveyresources'
           action='<?php echo $this->createUrl("admin/kcfinder/index/load/browse"); ?>' method='get' target="_blank">
-        <ul style='list-style-type:none; text-align:center'>
+        <ul>
             <li>
                 <label>&nbsp;</label>
                 <?php echo CHtml::dropDownList('type', 'files', array('files' => $clang->gT('Files'), 'flash' => $clang->gT('Flash'), 'images' => $clang->gT('Images'))); ?>
@@ -18,7 +18,7 @@
     <form enctype='multipart/form-data'  class='form30' id='importsurveyresources' name='importsurveyresources' action='<?php echo $this->createUrl('admin/survey/importsurveyresources/'); ?>' method='post' onsubmit='return validatefilename(this,"<?php $clang->eT('Please select a file to import!', 'js'); ?>");'>
         <input type='hidden' name='surveyid' value='<?php echo $surveyid; ?>' />
         <input type='hidden' name='action' value='importsurveyresources' />
-        <ul style='list-style-type:none; text-align:center'>
+        <ul>
             <li><label for='the_file'><?php $clang->eT("Select ZIP File:"); ?></label>
                 <input id='the_file' name='the_file' type='file' /></li>
             <li><label>&nbsp;</label>
