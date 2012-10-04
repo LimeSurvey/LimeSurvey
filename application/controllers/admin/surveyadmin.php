@@ -1380,11 +1380,20 @@ class SurveyAdmin extends Survey_Common_Action
         left join {{questions}} sq on sq.qid=up.targetsqid
         where up.sid={$iSurveyID}");
         $i = 0;
+        $clang = $this->getController()->lang;
+        $aData = new stdClass();
 
         foreach ($oResult->readAll() as $oRow)
         {
             $aData->rows[$i]['id'] = $oRow['id'];
-            $oRow['title'] .= ': ' . ellipsize(flattenText($oRow['question'], false, true), 43, .70);
+            if ($oRow['question'] != '')
+            {
+                        $oRow['title'] .= ': ' . ellipsize(flattenText($oRow['question'], false, true), 43, .70);
+            }
+            else
+            {
+                        $oRow['title'] = $clang->gT('(No target question)');
+            }
 
             if ($oRow['sqquestion'] != '')
             {
@@ -1398,7 +1407,6 @@ class SurveyAdmin extends Survey_Common_Action
             $i++;
         }
 
-        $aData = new stdClass();
         $aData->page = 1;
         $aData->records = $oResult->getRowCount();
         $aData->total = 1;

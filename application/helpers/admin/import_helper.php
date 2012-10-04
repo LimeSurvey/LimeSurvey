@@ -3941,16 +3941,16 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata[(string)$key]=(string)$value;
             }
             $insertdata['sid']=$iNewSID; // remap the survey id
-            if ($insertdata['targetsqid']!='')
+            if (isset($insertdata['targetsqid']) && $insertdata['targetsqid']!='')
             {
                 $insertdata['targetsqid'] =$aSQIDReplacements[(int)$insertdata['targetsqid']]; // remap the qid
             }
-            if ($insertdata['targetqid']!='')
+            if (isset($insertdata['targetqid']) && $insertdata['targetqid']!='')
             {
                 $insertdata['targetqid'] =$aQIDReplacements[(int)$insertdata['targetqid']]; // remap the qid
             }
             unset($insertdata['id']);
-            $result=Survey_url_parameters::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $result=Survey_url_parameters::model()->insertRecord($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
             $results['survey_url_parameters']++;
         }
     }
@@ -4331,8 +4331,15 @@ function TSVImportSurvey($sFullFilepath)
     // Create the survey entry
     $surveyinfo['startdate']=NULL;
     $surveyinfo['active']='N';
+   // unset($surveyinfo['datecreated']);
     switchMSSQLIdentityInsert('surveys',true);
-    $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) or safeDie($clang->gT("Error").": Failed to insert survey<br />");
+    $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) ; //or safeDie($clang->gT("Error").": Failed to insert survey<br />");
+    if ($iNewSID==false)
+    {
+        $results['error'] = Survey::model()->getErrors();
+        $results['bFailed'] = true;
+        return $results;
+    }
     $surveyinfo['sid']=$iNewSID;
     $results['surveys']++;
     switchMSSQLIdentityInsert('surveys',false);
