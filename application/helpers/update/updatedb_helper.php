@@ -1405,7 +1405,7 @@ function upgradeQuestionAttributes142()
         foreach ($questionids as $questionid)
         {
             //Select all affected question attributes
-            $attributevalues=dbSelectColumn("SELECT value from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid);
+            $attributevalues=Yii::app()->db->createCommand("SELECT value from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid)->queryColumn();
             modifyDatabase("","delete from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid); echo $modifyoutput; flush();@ob_flush();
             $record['value']=implode(';',$attributevalues);
             $record['attribute']='exclude_all_other';

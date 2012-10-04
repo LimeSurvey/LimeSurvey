@@ -144,7 +144,7 @@ class Usergroups extends Survey_Common_Action
 
                 if (!empty($ugid) && ($ugid > -1)) {
                     $result = User_groups::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
-                    if ($result->count() > 0) {
+                    if ($result->count() > 0) {  // OK - AR count
                         $delquery_result = User_groups::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
 
                         // $del_user_in_groups_query = "DELETE FROM {{user_in_groups}} WHERE ugid=$ugid AND uid=".Yii::app()->session['loginID'];

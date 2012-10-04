@@ -273,9 +273,9 @@ class Survey extends CActiveRecord
         $survey = new self;
         foreach ($aData as $k => $v)
             $survey->$k = $v;
-        $survey->save();
-
-        return $aData['sid'];
+        $sResult= $survey->save();
+        if ($sResult==false) return false;
+        else return $aData['sid'];
     }
 
     /**
@@ -310,9 +310,9 @@ class Survey extends CActiveRecord
             $oResult = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID));
             foreach ($oResult as $aRow)
             {
-                Answers::model()->deleteAllByAttributes(array('qid' => Yii::app()->db->quoteValue($aRow['qid'])));
-                Conditions::model()->deleteAllByAttributes(array('qid' => Yii::app()->db->quoteValue($aRow['qid'])));
-                Question_attributes::model()->deleteAllByAttributes(array('qid' => Yii::app()->db->quoteValue($aRow['qid'])));
+                Answers::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                Conditions::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
+                Question_attributes::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
                 Defaultvalues::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
             }
 

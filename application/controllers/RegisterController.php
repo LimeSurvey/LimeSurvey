@@ -61,10 +61,9 @@ class RegisterController extends LSYii_Controller {
         }
 
         $usquery = "SELECT stg_value FROM {{settings_global}} where stg_name='SessionName'";
-        $usresult = dbExecuteAssoc($usquery,'',true);          //Checked
-        if ($usresult->count() > 0)
+        $usrow = Yii::app()->db->createCommand($usquery)->queryRow();
+        if ($usrow)
         {
-            $usrow = $usresult->read();
             $stg_SessionName=$usrow['stg_value'];
             Yii::app()->session->setSessionName("$stg_SessionName-runtime-$surveyid");
         }
@@ -129,8 +128,8 @@ class RegisterController extends LSYii_Controller {
         //Check if this email already exists in token database
         $query = "SELECT email FROM {{tokens_$surveyid}}\n"
         . "WHERE email = '".sanitize_email(Yii::app()->request->getPost('register_email'))."'";
-        $result = dbExecuteAssoc($query) or show_error("Unable to execute this query : \n <br/>".$query."<br />");   //Checked)
-        if (($result->count()) > 0)
+        $usrow = Yii::app()->db->createCommand($query)->queryRow();
+        if ($usrow)
         {
             $register_errormsg=$clang->gT("The email you used has already been registered.");
             Yii::app()->request->redirect(Yii::app()->createUrl('survey/index/sid/'.$surveyid));
@@ -161,8 +160,8 @@ class RegisterController extends LSYii_Controller {
         {
             $newtoken = randomChars($tokenlength);
             $ntquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token='$newtoken'";
-            $ntresult = dbExecuteAssoc($ntquery); //Checked
-            if (!$ntresult->count()) {$mayinsert = true;}
+            $usrow = Yii::app()->db->createCommand($ntquery)->queryRow();
+            if (!$usrow) {$mayinsert = true;}
         }
 
         $postfirstname=sanitize_xss_string(strip_tags(Yii::app()->request->getPost('register_firstname')));

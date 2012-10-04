@@ -82,34 +82,6 @@ function dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerro
 
 
 /**
-* Returns the first row of values of the $sql query result
-* as a 1-dimensional array
-*
-* @param mixed $sql
-*/
-function dbSelectColumn($sql)
-{
-    $dataset=Yii::app()->db->createCommand($sql)->query();
-    if ($dataset->count() > 0)
-    {
-        $fields = array_keys($dataset[0]);
-        $firstfield = $fields[0];
-        $resultarray=array();
-        foreach ($dataset->readAll() as $row)
-        {
-            $resultarray[] = $row[$firstfield];
-        }
-        /**while ($row = $dataset->fetchRow()) {
-        $resultarray[]=$row[0];
-        }*/
-    }
-    else
-        safeDie('No results were returned from the query :'.$sql);
-    return $resultarray;
-}
-
-
-/**
 * This functions quotes fieldnames accordingly
 *
 * @param mixed $id Fieldname to be quoted

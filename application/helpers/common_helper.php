@@ -833,28 +833,6 @@ function getGroupSum($surveyid, $lang)
 
 
 /**
-* Gets number of questions inside a particular group
-*
-* @param string $surveyid
-* @param mixed $groupid
-*/
-function getQuestionSum($surveyid, $groupid)
-{
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-    //$condn = "WHERE gid=$groupid and sid=$surveyid AND language='{$s_lang}'"; //Getting a count of questions for this survey
-    $condn = array(
-    'gid' => $groupid,
-    'sid' => $surveyid,
-    'language' => $s_lang
-
-    );
-    $sumresult3 = Questions::model()->getAllRecords($condn); //Checked
-    $questionscount = $sumresult3->count();
-    return $questionscount ;
-}
-
-
-/**
 * getMaxGroupOrder($surveyid) queries the database for the maximum sortorder of a group and returns the next higher one.
 *
 * @param mixed $surveyid
@@ -5486,18 +5464,16 @@ function getAttributeValue($surveyid,$attrName,$token)
     $surveyid=sanitize_int($surveyid);
 
     Tokens_dynamic::sid($surveyid);
-    $query=Tokens_dynamic::model()->getAllRecords($attrName, array("token"=>$token));
+    $query=Tokens_dynamic::model()->find(array("token"=>$token));
 
-    //$result=db_execute_num($query);
-    $count=$query->count(); //$result->RecordCount();
+    $count=$query->count(); // OK  - AR count
     if ($count != 1)
     {
         return null;
     }
     else
     {
-        $row=$query->readAll();//$result->FetchRow();
-        return $row[$attrName];//[0]
+        return $row->$attrName;//[0]
     }
 }
 
@@ -7501,9 +7477,7 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
     $sSurveyIDQuery.= 'ORDER BY a.users_name';
     $surveyidresult = Yii::app()->db->createCommand($sSurveyIDQuery)->query();  //Checked
 
-    //if ($surveyidresult->count() == 0) {return "Database Error";}
     $surveyselecter = "";
-    //$surveynames = $surveyidresult->GetRows();
 
     if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
     {
@@ -7544,9 +7518,7 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
     ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL";
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query();  //Checked
 
-    //if ($surveyidresult->count() == 0) {return "Database Error";}
     $surveyselecter = "";
-    //$surveynames = $surveyidresult->GetRows();
 
     if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
     {

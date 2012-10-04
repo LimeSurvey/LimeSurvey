@@ -179,34 +179,31 @@ class index extends CAction {
             $result = dbExecuteAssoc($query,false,true) or safeDie("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
             $list=array();
 
-            if($result->count() > 0)
+            foreach($result->readAll() as $rows)
             {
-                foreach($result->readAll() as $rows)
+                $querylang="SELECT surveyls_title
+                FROM {{surveys_languagesettings}}
+                WHERE surveyls_survey_id={$rows['sid']}
+                AND surveyls_language='{$sDisplayLanguage}'";
+                $resultlang=Yii::app()->db->createCommand($querylang)->queryRow();
+                if ($resultlang['surveyls_title'] )
                 {
-                    $querylang="SELECT surveyls_title
-                    FROM {{surveys_languagesettings}}
-                    WHERE surveyls_survey_id={$rows['sid']}
-                    AND surveyls_language='{$sDisplayLanguage}'";
-                    $resultlang=Yii::app()->db->createCommand($querylang)->queryRow();
-                    if ($resultlang['surveyls_title'] )
-                    {
-                        $rows['surveyls_title']=$resultlang['surveyls_title'];
-                        $langtag = "";
-                    }
-                    else
-                    {
-                        $langtag = "lang=\"{$rows['language']}\"";
-                    }
-                    $link = "<li><a href='".$this->getController()->createUrl('/survey/index/sid/'.$rows['sid']);
-                    if (isset($param['lang']) && $langtag=="") // TODO review with session ?
-                    {
-                        $link .= "/lang-".sanitize_languagecode($param['lang']);
-                    }
-                    $link .= "' $langtag class='surveytitle'>".$rows['surveyls_title']."</a>\n";
-                    if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."/language/".$sDisplayLanguage."'>(".$clang->gT('View statistics').")</a>";
-                    $link .= "</li>\n";
-                    $list[]=$link;
+                    $rows['surveyls_title']=$resultlang['surveyls_title'];
+                    $langtag = "";
                 }
+                else
+                {
+                    $langtag = "lang=\"{$rows['language']}\"";
+                }
+                $link = "<li><a href='".$this->getController()->createUrl('/survey/index/sid/'.$rows['sid']);
+                if (isset($param['lang']) && $langtag=="") // TODO review with session ?
+                {
+                    $link .= "/lang-".sanitize_languagecode($param['lang']);
+                }
+                $link .= "' $langtag class='surveytitle'>".$rows['surveyls_title']."</a>\n";
+                if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."/language/".$sDisplayLanguage."'>(".$clang->gT('View statistics').")</a>";
+                $link .= "</li>\n";
+                $list[]=$link;
             }
 
             //Check for inactive surveys which allow public registration.
@@ -224,12 +221,13 @@ class index extends CAction {
             ORDER BY surveyls_title";
 
             $sresult = dbExecuteAssoc($squery) or safeDie("Couldn't execute $squery");
-            if($sresult->count() > 0)
+            $aRows=$sresult->readAll();
+            if(count($aRows) > 0)
             {
                 $list[] = "</ul>"
                 ." <div class=\"survey-list-heading\">".$clang->gT("Following survey(s) are not yet active but you can register for them.")."</div>"
                 ." <ul>"; // TODO give it to template
-                foreach($sresult->readAll() as $rows)
+                foreach($aRows as $rows)
                 {
                     $querylang="SELECT surveyls_title
                     FROM {{surveys_languagesettings}}
@@ -455,13 +453,14 @@ class index extends CAction {
             // check if token actually does exist
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."'";
+                $sQuery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."'";
             } else {
-                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."' AND (completed = 'N' or completed='')";
+                $sQuery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."' AND (completed = 'N' or completed='')";
             }
-            $tkresult = dbExecuteAssoc($tkquery); //Checked
-            $tokendata = $tkresult->read();
-            if ($tkresult->count()==0 || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y'))
+            
+            $aRow = Yii::app()->db->createCommand($sQuery)->queryRow();
+            $tokendata = $aRow; 
+            if (!$aRow || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y'))
             {
                 sendCacheHeaders();
                 doHeader();
@@ -520,8 +519,8 @@ class index extends CAction {
             if (isset($_SESSION['survey_'.$surveyid]['srid']) && !Survey_dynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']))
             {
                 // delete the response but only if not already completed
-                 $result= dbExecuteAssoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['survey_'.$surveyid]['srid']." AND submitdate IS NULL");
-                if($result->count()>0){
+                $result= dbExecuteAssoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['survey_'.$surveyid]['srid']." AND submitdate IS NULL");
+                if($result->count()>0){ // Using count() here *should* be okay for MSSQL because it is a delete statement
                     // find out if there are any fuqt questions - checked
                     $fieldmap = createFieldMap($surveyid,'short',false,false,$s_lang);
                     foreach ($fieldmap as $field)
@@ -604,23 +603,22 @@ class index extends CAction {
         if (!isset($_SESSION['survey_'.$surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
         {
             // load previous answers if any (dataentry with nosubmit)
-            $srquery="SELECT id,submitdate,lastpage FROM {$thissurvey['tablename']} WHERE {$thissurvey['tablename']}.token='{$token}' order by id desc";
-            $result = dbSelectLimitAssoc($srquery,1);
-            if ($result->count()>0)
+            $sQuery="SELECT id,submitdate,lastpage FROM {$thissurvey['tablename']} WHERE {$thissurvey['tablename']}.token='{$token}' order by id desc";
+            $aRow = Yii::app()->db->createCommand($sQuery)->queryRow();
+            if ( $aRow )
             {
-                $row=$result->read();
-                if(($row['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
+                if(($aRow['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($aRow['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
                 {
-                    $_SESSION['survey_'.$surveyid]['srid'] = $row['id'];
-                    if (!is_null($row['lastpage']) && $row['submitdate']=='')
+                    $_SESSION['survey_'.$surveyid]['srid'] = $aRow['id'];
+                    if (!is_null($aRow['lastpage']) && $aRow['submitdate']=='')
                     {
                         $_SESSION['survey_'.$surveyid]['LEMtokenResume'] = true;
-                        $_SESSION['survey_'.$surveyid]['step'] = $row['lastpage'];
+                        $_SESSION['survey_'.$surveyid]['step'] = $aRow['lastpage'];
                     }
                 }
                 buildsurveysession($surveyid);
                 loadanswers();
-            }
+            }        
         }
 
         //        // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
@@ -793,13 +791,12 @@ class index extends CAction {
         if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 )
             return true;
 
-        $rightresult = dbExecuteAssoc(
+        $sQuery = dbExecuteAssoc(
         "SELECT uid
         FROM {{survey_permissions}}
-        WHERE sid = ".$iSurveyID."
-        AND uid = '".$_SESSION['loginID']."'
-        GROUP BY uid");
-        if ( $rightresult->count() > 0 )
+        WHERE sid = ".$iSurveyID." AND uid = '".$_SESSION['loginID']);
+        $aRow = Yii::app()->db->createCommand($sQuery)->queryRow();
+        if ( $aRow )
             return true;
         return false;
     }

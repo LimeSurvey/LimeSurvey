@@ -669,13 +669,12 @@ class CheckIntegrity extends Survey_Common_Action
                     $iHour = substr($sDateTime, 8, 2);
                     $iMinute = substr($sDateTime, 10, 2);
                     $sDate = date('d M Y  H:i', mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
-                    $sQuery = 'SELECT * FROM ' . $sTableName;
-                    $oQRresult = dbExecuteAssoc($sQuery) or safeDie('Failed: ' . $sQuery);
-                    $iRecordcount = $oQRresult->count();
-                    if ($iRecordcount == 0) { // empty table - so add it to immediate deletion
+                    $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
+                    $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
+                    if ($aFirstRow['recordcount']==0) { // empty table - so add it to immediate deletion
                         $aDelete['orphansurveytables'][] = $sTableName;
                     } else {
-                        $aOldSurveyTableAsk[] = array('table' => $sTableName, 'details' => sprintf($clang->gT('Survey ID %d saved at %s containing %d record(s) (%s)'), $iSurveyID, $sDate, $iRecordcount, $sType));
+                        $aOldSurveyTableAsk[] = array('table' => $sTableName, 'details' => sprintf($clang->gT('Survey ID %d saved at %s containing %d record(s) (%s)'), $iSurveyID, $sDate, $aFirstRow['recordcount'], $sType));
                     }
                 }
             }
@@ -732,16 +731,15 @@ class CheckIntegrity extends Survey_Common_Action
                     $iHour = substr($sDateTime, 8, 2);
                     $iMinute = substr($sDateTime, 10, 2);
                     $sDate = date('D, d M Y  h:i a', mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
-                    $sQuery = 'SELECT * FROM ' . $sTableName;
+                    $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
 
-                    $oQRresult = dbExecuteAssoc($sQuery) or safeDie('Failed: ' . $sQuery);
-                    $iRecordcount = $oQRresult->count();
-                    if ($iRecordcount == 0) {
+                    $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
+                    if ($aFirstRow['recordcount']==0) { // empty table - so add it to immediate deletion
                         $aDelete['orphantokentables'][] = $sTableName;
                     }
                     else
                     {
-                        $aOldTokenTableAsk[] = array('table' => $sTableName, 'details' => sprintf($clang->gT('Survey ID %d saved at %s containing %d record(s)'), $iSurveyID, $sDate, $iRecordcount));
+                        $aOldTokenTableAsk[] = array('table' => $sTableName, 'details' => sprintf($clang->gT('Survey ID %d saved at %s containing %d record(s)'), $iSurveyID, $sDate, $aFirstRow['recordcount']));
                     }
                 }
             }

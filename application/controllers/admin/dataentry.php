@@ -435,7 +435,7 @@ class dataentry extends Survey_Common_Action
 
                 $queryOldValues = "SELECT ".implode(", ",array_map("dbQuoteID", $aValidFields))." FROM {$oldtable} ";
                 $resultOldValues = dbExecuteAssoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
-                $iRecordCount = $resultOldValues->count();
+                $iRecordCount = 0;
                 $aSRIDConversions=array();
                 foreach ($resultOldValues->readAll() as $row)
                 {
@@ -446,6 +446,7 @@ class dataentry extends Survey_Common_Action
                     $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("dbQuoteID", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll",array_values($row))).")";
                     $result = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
                     $aSRIDConversions[$iOldID]=Yii::app()->db->getLastInsertID();
+                    $iRecordCount++;
                 }
 
                 Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) were successfully imported."), $iRecordCount);
@@ -463,7 +464,7 @@ class dataentry extends Survey_Common_Action
 
                     $queryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {$sOldTimingsTable} ";
                     $resultOldValues = dbExecuteAssoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
-                    $iRecordCountT=$resultOldValues->count();
+                    $iRecordCountT=0;
                     $aSRIDConversions=array();
                     foreach ($resultOldValues->readAll() as $row)
                     {
@@ -475,6 +476,7 @@ class dataentry extends Survey_Common_Action
                         //$sInsertSQL=Yii::app()->db->GetInsertSQL($sNewTimingsTable,$row);
                         $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",", array_map("dbQuoteID", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll", array_values($row))).")";
                         $result = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
+                        $iRecordCountT++;
                     }
                     Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
                 }
@@ -870,7 +872,7 @@ class dataentry extends Survey_Common_Action
                             }
                             $ansquery = "SELECT * FROM {{answers}} WHERE language = '{$sDataEntryLanguage}' AND qid=$thisqid ORDER BY sortorder, answer";
                             $ansresult = dbExecuteAssoc($ansquery);
-                            $anscount = $ansresult->count();
+                            $anscount = 0;
                             $aDataentryoutput .= "\t<script type='text/javascript'>\n"
                             ."\t<!--\n"
                             ."function rankthis_$thisqid(\$code, \$value)\n"
@@ -937,6 +939,7 @@ class dataentry extends Survey_Common_Action
                             foreach ($ansresult->readAll() as $ansrow) //Now we're getting the codes and answers
                             {
                                 $answers[] = array($ansrow['code'], $ansrow['answer']);
+                                $anscount++;
                             }
                             //now find out how many existing values there are
 

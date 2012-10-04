@@ -49,8 +49,9 @@
         {
             return;
         }
-        $result = dbExecuteAssoc($query) or safeDie ("Error loading results<br />$query<br />");   //Checked
-        if ($result->count() < 1)
+
+        $aRow = Yii::app()->db->createCommand($query)->queryRow();
+        if (!$aRow)
         {
             safeDie($clang->gT("There is no matching saved survey")."<br />\n");
         }
@@ -60,8 +61,7 @@
             //If this is from an email, build surveysession first
             $_SESSION['LEMtokenResume']=true;
 
-            $row=$result->read();
-            foreach ($row as $column => $value)
+            foreach ($aRow as $column => $value)
             {
                 if ($column == "token")
                 {
