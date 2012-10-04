@@ -107,10 +107,8 @@ function addinput()
     scale_id=removechars($(this).closest('table').attr('id'));
     newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;
     languages=langs.split(';');
-
-
     sNextCode=getNextCode($(this).parent().parent().find('.code').val());
-    while ($(this).parent().parent().parent().find('input[value="'+sNextCode+'"]').length>0 && nextcode!=$(this).parent().parent().find('.code').val())
+    while ($(this).parent().parent().parent().find('input[value="'+sNextCode+'"]').length>0 && sNextCode!=$(this).parent().parent().find('.code').val())
     {
         sNextCode=getNextCode(sNextCode);
     }
