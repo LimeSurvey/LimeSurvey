@@ -3370,7 +3370,7 @@ function do_multiplenumeric($ia)
             // color code missing mandatory questions red
             if ($ia[6]=='Y' && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])
                     || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep'] > $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step']))
-                    && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') {
+                    && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '') {
                 $theanswer = "<span class='errormandatory'>{$theanswer}</span>";
             }
 
