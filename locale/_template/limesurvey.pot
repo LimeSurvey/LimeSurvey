@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-10-03 22:05:57+00:00\n"
+"POT-Creation-Date: 2012-10-04 08:08:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3048,8 +3048,8 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:329
 #: application/controllers/admin/surveypermission.php:502
 #: application/controllers/admin/surveypermission.php:595
-#: application/controllers/admin/tokens.php:2331
-#: application/controllers/admin/tokens.php:2366
+#: application/controllers/admin/tokens.php:2338
+#: application/controllers/admin/tokens.php:2373
 #: application/controllers/admin/useraction.php:720
 #: application/helpers/common_helper.php:6349
 #: application/helpers/common_helper.php:6354
@@ -3628,22 +3628,22 @@ msgstr ""
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2328
+#: application/controllers/admin/tokens.php:2335
 #: application/views/admin/export/exportresults_view.php:115
 #: application/views/admin/token/tokenbar.php:3
 #: application/views/admin/token/tokenwarning.php:3
 msgid "Token control"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2329
+#: application/controllers/admin/tokens.php:2336
 msgid "A token table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2363
+#: application/controllers/admin/tokens.php:2370
 msgid "Import old tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2364
+#: application/controllers/admin/tokens.php:2371
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr ""
 
