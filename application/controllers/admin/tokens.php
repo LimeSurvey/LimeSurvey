@@ -2298,11 +2298,15 @@ class tokens extends Survey_Common_Action
         $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyId}}",true);
         $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
         $aData['attrfieldnames']=array();
-        foreach ($aAdditionalAttributeFields as $sField=>$aData)
+        foreach ($aAdditionalAttributeFields as $sField=>$aAttrData)
         {
             if (in_array($sField,$aTokenFieldNames))
             {
-                $aData['attrfieldnames'][$sField]=$aData;
+                if ($aAttrData['description']=='')
+                {
+                    $aAttrData['description']=$sField;
+                }
+                $aData['attrfieldnames'][(string)$sField]=$aAttrData;
             }
         }
         foreach ($aTokenFieldNames as $sTokenFieldName)
