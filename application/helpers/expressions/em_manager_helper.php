@@ -2579,8 +2579,8 @@
                 // other comment mandatory
                 if ($other_comment_mandatory!='')
                 {
-                    if (isset($_qattr['other_replace_text']) && flattenText($_qattr['other_replace_text']) != '') {
-                        $othertext = flattenText($_qattr['other_replace_text']);
+                    if (isset($qattr['other_replace_text']) && trim($qattr['other_replace_text']) != '') {
+                        $othertext = trim($qattr['other_replace_text']);
                     }
                     else {
                         $othertext = $this->gT('other');

@@ -305,7 +305,7 @@ class index extends CAction {
             }
             </script>';
 
-            $this->_printTemplateContent(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'endpage.pstpl', $redata, __LINE__);
+            $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/endpage.pstpl", $data, __LINE__);
             doFooter();
             exit;
         }
