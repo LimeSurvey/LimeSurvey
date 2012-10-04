@@ -353,6 +353,15 @@ class SurveyRuntimeHelper {
                     }
                 }
                 resetTimers();
+                
+                //Before doing the "templatereplace()" function, check the $thissurvey['url']
+                //field for limereplace stuff, and do transformations!
+                $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
+                $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'],array('SID'=>$thissurvey['sid'],
+                                                                                                'SAVEDID'=>$_SESSION[$LEMsessid]['srid'],
+                                                                                                'TOKEN'=>(isset($clienttoken) ? $clienttoken : ''),
+                                                                                                ));   // to do INSERTANS substitutions
+                
                 //END PAGE - COMMIT CHANGES TO DATABASE
                 if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
                 {
@@ -403,10 +412,6 @@ class SurveyRuntimeHelper {
                         //                        setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days   //@todo fix - sometimes results in headers already sent error
                     }
 
-                    //Before doing the "templatereplace()" function, check the $thissurvey['url']
-                    //field for limereplace stuff, and do transformations!
-                    $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
-                    $thissurvey['surveyls_url']=templatereplace($thissurvey['surveyls_url']);   // to do INSERTANS substitutions
 
                     $content = '';
                     $content .= templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
@@ -492,16 +497,7 @@ class SurveyRuntimeHelper {
                     if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
                     {
                         //Automatically redirect the page to the "url" setting for the survey
-
-                        $url = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
-                        $url = templatereplace($url);    // TODO - check safety of this - provides access to any replacement value
-                        $url = str_replace("{SAVEDID}", $saved_id, $url);               // to activate the SAVEDID in the END URL
-                        if(isset($clienttoken) && $clienttoken) {
-                            $url = str_replace("{TOKEN}", $clienttoken, $url);          // to activate the TOKEN in the END URL
-                        }
-                        $url = str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
-                        $url = str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
-                        header("Location: {$url}");
+                        header("Location: {$thissurvey['surveyls_url']}");
                     }
 
 
