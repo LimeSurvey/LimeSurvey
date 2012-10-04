@@ -842,12 +842,11 @@ class SurveyRuntimeHelper {
                 }
                 if (type == 'radio' || type == 'select-one')
                 {
-                    var hiddenformname='java'+name;
-                    document.getElementById(hiddenformname).value=value;
+                    $('#java'+name).val(value);
                 }
                 else if (type == 'checkbox')
                 {
-                    if (document.getElementById('answer'+name).checked)
+                    if ($('#answer'+name).is(':checked'))
                     {
                         $('#java'+name).val('Y');
                     } else
@@ -855,7 +854,7 @@ class SurveyRuntimeHelper {
                         $('#java'+name).val('');
                     }
                 }
-                else if (type == 'text' && name.match(/other$/) && typeof document.getElementById('java'+name) !== 'undefined' && document.getElementById('java'+name) != null)
+                else if (type == 'text' && name.match(/other$/))
                 {
                     $('#java'+name).val(value);
                 }
