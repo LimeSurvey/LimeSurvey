@@ -127,11 +127,11 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $css_header_includes=Yii::app()->getConfig("css_header_includes");
         if (file_exists($templatedir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
         {
-            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui-custom.css' />\n";
+            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}jquery-ui-custom.css' />\n";
         }
         elseif(file_exists($templatedir.DIRECTORY_SEPARATOR.'jquery-ui.css'))
         {
-            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui.css' />\n";
+            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}jquery-ui.css' />\n";
         }
         else
         {
@@ -149,7 +149,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                 {
                     if(file_exists($templatedir.DIRECTORY_SEPARATOR.$cssinclude))
                     {
-                        $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='{$$templateurl}/{$cssinclude}' />\n";
+                        $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}{$cssinclude}' />\n";
                     }
                     else
                     {
