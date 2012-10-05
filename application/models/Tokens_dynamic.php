@@ -78,7 +78,6 @@ class Tokens_dynamic extends LSActiveRecord
 	{
 		return array(
 		array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
-		array('remindersent' ,'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
 		array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
 		array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 	
 		array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
