@@ -57,6 +57,10 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121005) to 2.00+ (build 121006) Oct 05, 2012
+-Fixed issue #6596: Cant send invitation email with SQL DB (Spiros Trougakos)
+-Fixed issue #6657: Impossible to recover survey (Carsten Schmitz)
+
 Changes from 2.00+ (build 121002) to 2.00+ (build 121005) Oct 05, 2012
 -Fixed issue #6361: tab on date with drop-down throw javascript error (Denis Chenu)
 -Fixed issue #6592: Import of question with equation converts special characters to HTML entitities (Denis Chenu)
