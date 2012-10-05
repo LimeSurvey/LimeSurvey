@@ -1743,7 +1743,7 @@
 
     UpdateSessionGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
-    $sQuery = "SELECT count(*),\n"
+    $sQuery = "SELECT count(*)\n"
     ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
     ." WHERE {{questions}}.sid=".$surveyid."\n"
     ." AND {{groups}}.language='".$_SESSION['survey_'.$surveyid]['s_lang']."'\n"
