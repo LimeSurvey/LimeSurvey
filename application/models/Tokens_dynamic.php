@@ -145,17 +145,37 @@ class Tokens_dynamic extends LSActiveRecord
 
     public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
-        $emquery = "SELECT * FROM {{tokens_" . self::$sid . "}} WHERE ((completed ='N') or (completed='')) AND token <> '' AND email <> ''";
+		$command = new CDbCriteria;
+		$command->condition = '';	
+		$command->addCondition("(completed ='N') or (completed='')");
+		$command->addCondition("token <> ''");
+		$command->addCondition("email <> ''");
 
-        if ($bEmail) { $emquery .= " AND ((sent = 'N') or (sent = ''))"; } else { $emquery .= " AND sent <> 'N' AND sent <> ''"; }
-        if ($SQLemailstatuscondition) {$emquery .= " $SQLemailstatuscondition";}
-        if ($SQLremindercountcondition) {$emquery .= " $SQLremindercountcondition";}
-        if ($SQLreminderdelaycondition) {$emquery .= " $SQLreminderdelaycondition";}
-        if ($aTokenIds) {$emquery .= " AND tid IN ('".implode("', '", $aTokenIds)."')";}
-        $emquery .= " ORDER BY tid";
-        if ($iMaxEmails) {$emquery .= " LIMIT $iMaxEmails"; }
-        
-        return Yii::app()->db->createCommand($emquery)->queryAll();
+		if ($bEmail) { 
+			$command->addCondition("(sent = 'N') or (sent = '')");
+		} else {
+			$command->addCondition("(sent <> 'N') AND (sent <> '')");
+		}
+
+		if ($SQLemailstatuscondition)
+			$command->addCondition($SQLemailstatuscondition);
+			
+		if ($SQLremindercountcondition)
+			$command->addCondition($SQLremindercountcondition);
+			
+		if ($SQLreminderdelaycondition)
+			$command->addCondition($SQLreminderdelaycondition);
+			
+		if ($aTokenIds) 	
+			$command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')" );
+			
+		if ($iMaxEmails)
+			$command->limit = $iMaxEmails;
+			
+		$command->order = 'tid';	
+
+		$oResult = Tokens_dynamic::model()->findAll($command);
+		return $oResult;
     }
 
 	function insertParticipant($data)
