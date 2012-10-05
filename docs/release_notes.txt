@@ -57,6 +57,55 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121002) to 2.00+ (build 121005) Oct 05, 2012
+-Fixed issue #6361: tab on date with drop-down throw javascript error (Denis Chenu)
+-Fixed issue #6592: Import of question with equation converts special characters to HTML entitities (Denis Chenu)
+-Fixed issue #6593: Displays HTML Quote for Question type List (dropdown) (Denis Chenu)
+-Fixed issue #6623: imported tab delimited surveys are not visible (Thomas White)
+-Fixed issue #6625: Question type Array not working (Carsten Schmitz)
+-Fixed issue #6626: Editing of question groups not possible after adding a language to the survey and using MSSQL (Carsten Schmitz)
+-Fixed issue #6628: Passthrough values not being handled (Carsten Schmitz)
+-Fixed issue #6631: Questions conditional on a previous yes/no question are not displaying after navigating back to a question group. (Thomas White)
+-Fixed issue #6636: New token attributes not showing up in add new token page. (Carsten Schmitz)
+-Fixed issue #6637: default template settings aren't used with endpage.pstpl for surveylist (Denis Chenu)
+-Fixed issue #6638: Unable to change config-default in config.php (Carsten Schmitz)
+-Fixed issue #6640: ReminderSent status is still 'N' after sending reminder (Carsten Schmitz)
+-Fixed issue #6641: Send reminder to one token function sends reminder to all tokens (Carsten Schmitz)
+-Fixed issue #6642: unable to use limereplacementfields in popup HTML editor (Denis Chenu)
+-Fixed issue #6643: Can not export one response from survey to an application and translate problem (Carsten Schmitz)
+-Fixed issue #6645: Mandatory Multi numeric question type show error for line with 0 (Denis Chenu)
+-Fixed issue #6646 : HTML entities shown when answering survey and not filling a mandatory Multiple choice questions (Denis Chenu)
+-Fixed issue #6649: When trying to browse last 50 responses instead it shows first 50 responses (Carsten Schmitz)
+-Fixed issue #6652: Additional slahs in template paths in page header (Carsten Schmitz)
+-Fixed issue #6652: Question type Array not working on MSSQL (Carsten Schmitz)
+-Fixed issue: Conditions editor not properly working (Carsten Schmitz)
+-Fixed issue: Error exporting question group on MSSQL (Carsten Schmitz)
+-Fixed issue: Incorrect DB Version on install causing an unnecessary update on a fresh installation (Carsten Schmitz)
+-Fixed issue: JavaScript error when editing locale survey settings (Carsten Schmitz)
+-Fixed issue: Problems importing URL parameters (Carsten Schmitz)
+-Fixed issue: Unable to add subquestion without number (Denis Chenu)
+-Fixed issue: Unsupported database types being offered on installation (Carsten Schmitz)
+-Fixed issue: URL parameters empty on repeated editing (Carsten Schmitz)
+#Updated translation: Arabic by ysaad
+#Updated translation: Bulgarian by klaster
+#Updated translation: Danish by docl
+#Updated translation: Estonian by klaster
+#Updated translation: Finnish by klaster
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz, PDrews
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Latvian by vipgroup
+#Updated translation: Norwegian (Bokmal) by pmonstad, peterhol
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado, wagner, marciojv
+#Updated translation: Russian by ldemeschew, vipgroup
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Slovak by jmi239
+#Updated translation: Swedish by klaster
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.00+ (build 120931) to 2.00+ (build 121002) Oct 02, 2012
 -Fixed issue #6554: Show logic file always lists "time_limit_action" question attribute though it was not changed (Carsten Schmitz)
 -Fixed issue #6559: Batch emails to selected boxes not batching but trying to send to everyone (Carsten Schmitz)
