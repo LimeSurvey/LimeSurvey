@@ -1294,11 +1294,11 @@ class tokens extends Survey_Common_Action
 
         if (Yii::app()->request->getPost('bypassbademails') == 'Y')
         {
-            $SQLemailstatuscondition = " AND emailstatus = 'OK'";
+            $SQLemailstatuscondition = "emailstatus = 'OK'";
         }
         else
         {
-            $SQLemailstatuscondition = " AND emailstatus <> 'OptOut'";
+            $SQLemailstatuscondition = "emailstatus <> 'OptOut'";
         }
 
         if (!Yii::app()->request->getPost('ok'))
@@ -1324,7 +1324,7 @@ class tokens extends Survey_Common_Action
                 Yii::app()->request->getPost('maxremindercount') != '' &&
                 intval(Yii::app()->request->getPost('maxremindercount')) != 0)
                 {
-                    $SQLremindercountcondition = " AND remindercount < " . intval(Yii::app()->request->getPost('maxremindercount'));
+                    $SQLremindercountcondition = "remindercount < " . intval(Yii::app()->request->getPost('maxremindercount'));
                 }
 
                 if (Yii::app()->request->getPost('minreminderdelay') &&
@@ -1334,7 +1334,7 @@ class tokens extends Survey_Common_Action
                     // Yii::app()->request->getPost('minreminderdelay') in days (86400 seconds per day)
                     $compareddate = dateShift(
                     date("Y-m-d H:i:s", time() - 86400 * intval(Yii::app()->request->getPost('minreminderdelay'))), "Y-m-d H:i", $timeadjust);
-                    $SQLreminderdelaycondition = " AND ( "
+                    $SQLreminderdelaycondition = " ( "
                     . " (remindersent = 'N' AND sent < '" . $compareddate . "') "
                     . " OR "
                     . " (remindersent < '" . $compareddate . "'))";

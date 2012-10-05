@@ -1999,7 +1999,7 @@ class remotecontrol_handle
 				return array('status' => 'Error: No token table');
 			
 			$iMaxEmails = (int)Yii::app()->getConfig("maxemails");
-			$SQLemailstatuscondition = " AND emailstatus = 'OK'";		
+			$SQLemailstatuscondition = "emailstatus = 'OK'";		
 			
 			$oTokens = Tokens_dynamic::model($iSurveyID);
 			$aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, true, $SQLemailstatuscondition);
@@ -2051,7 +2051,7 @@ class remotecontrol_handle
 			else
 				$bHtml = false;
 			
-			$SQLemailstatuscondition = " AND emailstatus = 'OK'";	
+			$SQLemailstatuscondition = "emailstatus = 'OK'";	
 			$SQLremindercountcondition = '';
             $SQLreminderdelaycondition = '';	
 			$attributes = getTokenFieldsAndNames($iSurveyID);	
@@ -2060,11 +2060,11 @@ class remotecontrol_handle
 			if(!is_null($iMinDaysBetween))
 			{
 				$compareddate = dateShift(date("Y-m-d H:i:s", time() - 86400 * $iMinDaysBetween), "Y-m-d H:i", $timeadjust);
-                $SQLreminderdelaycondition = " AND ((remindersent = 'N' AND sent < '" . $compareddate . "')  OR  (remindersent < '" . $compareddate . "'))";	
+                $SQLreminderdelaycondition = " ((remindersent = 'N' AND sent < '" . $compareddate . "')  OR  (remindersent < '" . $compareddate . "'))";	
 			}
 
 			if(!is_null($iMaxReminders))
-				$SQLremindercountcondition = " AND remindercount < " . $iMaxReminders;
+				$SQLremindercountcondition = "remindercount < " . $iMaxReminders;
 
 			$oTokens = Tokens_dynamic::model($iSurveyID);
 			$aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
