@@ -1226,15 +1226,15 @@ class tokens extends Survey_Common_Action
     /**
     * Handle email action
     */
-    function email($iSurveyId, $tids = null)
+    function email($iSurveyId, $tokenids = null)
     {
         /* Check permissions */
         if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
         {
             die("You do not have permission to view this page"); // TODO Replace
         }
-        $aTokenIds=$tids;
-        if (empty($tids))
+        $aTokenIds=$tokenids;
+        if (empty($tokenids))
         {
             $aTokenIds = Yii::app()->request->getPost('tokenids', false);
         }

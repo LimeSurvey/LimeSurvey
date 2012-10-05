@@ -64,11 +64,11 @@
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl('admin/tokens/getTokens_json/surveyid/' . $surveyid); ?>";
     var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/setSession"); ?>";
     var editUrl = "<?php echo Yii::app()->getController()->createUrl('admin/tokens/editToken/surveyid/' . $surveyid); ?>";
-    var remindurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/remind/surveyid/{$surveyid}/tids/|"); ?>";
+    var remindurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/email/action/remind/surveyid/{$surveyid}/tokenids/|"); ?>";
     var attMapUrl = "<?php echo $this->createUrl("admin/participants/attributeMapToken/sid/");?>";
     var invitemsg = "<?php echo $clang->eT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"); ?>"
     var remindmsg = "<?php echo $clang->eT("Send reminder email to the selected entries (if they have already received the invitation email)"); ?>"
-    var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/email/surveyid/{$surveyid}/tids/|"); ?>";
+    var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/email/action/invite/surveyid/{$surveyid}/tokenids/|"); ?>";
     var viewParticipantsLink = "<?php $clang->eT("View participants of this survey in the central participant database panel") ?>";
     var sBounceProcessing = "<?php $clang->eT("Start bounce processing") ?>";
     var sBounceProcessingURL = "<?php echo Yii::app()->getController()->createUrl('admin/tokens/bounceprocessing/surveyid/' . $surveyid); ?>";
@@ -165,8 +165,6 @@
 </div>
 <br/>
 <table id="displaytokens"></table> <div id="pager"></div>
-<!--p><input type="button" name="sendinvitations" id="sendinvitations" value="Send Invitations" onclick='window.open("<?php echo Yii::app()->getController()->createUrl("admin/tokens/email/surveyid/{$surveyid}/tids/|"); ?>"+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")' /><input type="button" name="sendreminders" id="sendreminders" value="Send Reminders" onclick='window.open("<?php echo Yii::app()->getController()->createUrl("admin/tokens/remind/surveyid/{$surveyid}/tids/|"); ?>"+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")' />
-</p-->
 <p><input type='button' name='addtocpdb' id='addtocpdb' value='<?php $clang->eT("Add participants to central database");?>'/><br />
 <div id="addcpdb" title="addsurvey" style="display:none">
     <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
