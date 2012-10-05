@@ -49,9 +49,10 @@ class ExportSurveyResultsService
     * @param mixed $iSurveyId
     * @param mixed $sLanguageCode
     * @param FormattingOptions $oOptions
+    * @param string $sFilter 
     * @param mixed $sOutputStyle  'display' or 'file'  Default: display (send to browser)
     */
-    function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions)
+    function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter)
     {
         //Do some input validation.
         if (empty($iSurveyId))
@@ -113,15 +114,12 @@ class ExportSurveyResultsService
         $bMoreRecords=true; $first=true;
         while ($bMoreRecords)
         {
-            if($iBatchSize > (int)$oOptions->responseMaxRecord-$iCurrentRecord)
-            {
-               $iBatchSize=(int)$oOptions->responseMaxRecord-$iCurrentRecord;
-            }
-            $iExported= $surveyDao->loadSurveyResults($survey, $iBatchSize, $iCurrentRecord);
+ 
+            $iExported= $surveyDao->loadSurveyResults($survey, $iBatchSize, $iCurrentRecord, $sFilter);
             $iCurrentRecord+=$iExported;
             $writer->write($survey, $sLanguageCode, $oOptions,$first);
             $first=false;
-            $bMoreRecords=($iCurrentRecord < (int)$oOptions->responseMaxRecord);
+            $bMoreRecords= ($iExported == $iBatchSize);
         }
 
         $writer->close();
@@ -303,7 +301,7 @@ class SurveyDao
     * @param int $iOffset 
     * @param int $iLimit 
     */
-    public function loadSurveyResults(SurveyObj $survey, $iLimit, $iOffset )
+    public function loadSurveyResults(SurveyObj $survey, $iLimit, $iOffset, $sFilter='' )
     {
 
         $oRecordSet = Yii::app()->db->createCommand()->select()->from('{{survey_' . $survey->id . '}}');
@@ -311,6 +309,8 @@ class SurveyDao
         {
             $oRecordSet->join('{{tokens_' . $survey->id . '}}','{{tokens_' . $survey->id . '}}.token={{survey_' . $survey->id . '}}.token');
         }
+        if ($sFilter!='')
+            $oRecordSet->where($sFilter);
         $survey->responses=$oRecordSet->order('id')->limit($iLimit, $iOffset)->query()->readAll();
 
         return count($survey->responses);
@@ -712,17 +712,17 @@ class Translator
     //internationalization layer. <fieldname> => <internationalization key>
     private $headerTranslationKeys = array(
     'id' => 'id',
-    'lastname' => 'Last Name',
-    'firstname' => 'First Name',
-    'email' => 'Email Address',
+    'lastname' => 'Last name',
+    'firstname' => 'First name',
+    'email' => 'Email address',
     'token' => 'Token',
-    'datestamp' => 'Date Last Action',
-    'startdate' => 'Date Started',
+    'datestamp' => 'Date last action',
+    'startdate' => 'Date started',
     'submitdate' => 'Completed',
     //'completed' => 'Completed',
-    'ipaddr' => 'IP-Address',
+    'ipaddr' => 'IP address',
     'refurl' => 'Referring URL',
-    'lastpage' => 'Last page seen',
+    'lastpage' => 'Last page',
     'startlanguage' => 'Start language'//,
     //'tid' => 'Token ID'
     );

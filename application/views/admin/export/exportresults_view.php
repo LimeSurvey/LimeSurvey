@@ -1,11 +1,17 @@
-<div class='header ui-widget-header'><?php $clang->eT("Export results");?></div>
+<div class='header ui-widget-header'><?php $clang->eT("Export results");?>
+    <?php     if (isset($_POST['sql'])) {echo" - ".$clang->gT("Filtered from statistics script");}
+        if ($SingleResponse) {
+            echo " - ".sprintf($clang->gT("Single response: ID %s"),$SingleResponse);} 
+    ?>
+</div>
 <div class='wrap2columns'>
     <form id='resultexport' action='<?php echo $this->createUrl("admin/export/exportresults/surveyid/$surveyid");?>' method='post'><div class='left'>
 
-            <?php 	if (isset($_POST['sql'])) {echo" - ".$clang->gT("Filtered from statistics script");}
-                if (returnGlobal('id')<>'') {echo " - ".$clang->gT("Single response");} ?>
-
-            <fieldset><legend><?php $clang->eT("General");?></legend>
+            
+            <fieldset <?php  if ($SingleResponse) {?>
+                style='display:none';
+            <?php } ?>
+            ><legend><?php $clang->eT("General");?></legend>
 
                 <ul><li><label><?php $clang->eT("Range:");?></label> <?php $clang->eT("From");?> <input type='text' name='export_from' size='8' value='1' />
                         <?php $clang->eT("to");?> <input type='text' name='export_to' size='8' value='<?php echo $max_datasets;?>' /></li>
@@ -51,11 +57,11 @@
             <fieldset><legend><?php $clang->eT("Format");?></legend>
                 <ul>
                     <li><input type='radio' class='radiobtn' name='type' value='csv' id='csvdoc' <?php if (!function_exists('iconv'))
-                                { echo 'checked="checked" ';} ?> onclick='document.getElementById("ansabbrev").disabled=false;' />
+                            { echo 'checked="checked" ';} ?> onclick='document.getElementById("ansabbrev").disabled=false;' />
                         <label for='csvdoc'><?php $clang->eT("CSV File (All charsets)");?></label></li>
                     <li><input type='radio' class='radiobtn' name='type' value='xls' checked id='exceldoc' <?php if (!function_exists('iconv')) echo ' disabled="disabled" ';?> onclick='document.getElementById("ansabbrev").disabled=false;' />
                         <label for='exceldoc'><?php $clang->eT("Microsoft Excel (All charsets)");?><?php if (!function_exists('iconv'))
-                                { echo '<font class="warningtitle">'.$clang->gT("(Iconv Library not installed)").'</font>'; } ?>
+                            { echo '<font class="warningtitle">'.$clang->gT("(Iconv Library not installed)").'</font>'; } ?>
                         </label></li>
                     <li>
                         <input type='radio' class='radiobtn' name='type' value='doc' id='worddoc' onclick='document.getElementById("ansfull").checked=true;document.getElementById("ansabbrev").disabled=true;' />
@@ -74,8 +80,8 @@
                 <?php if (isset($_POST['sql'])) { ?>
                     <input type='hidden' name='sql' value="<?php echo stripcslashes($_POST['sql']);?>" />
                     <?php }
-                    if (returnGlobal('id')<>'') { ?>
-                    <input type='hidden' name='answerid' value="<?php echo stripcslashes(returnGlobal('id'));?>" />
+                    if ($SingleResponse) { ?>
+                    <input type='hidden' name='response_id' value="<?php echo $SingleResponse;?>" />
                     <?php }
                     $clang->eT("Choose columns");?>:
 
@@ -111,7 +117,7 @@
                     } ?>
                 </select>
                 <br />&nbsp;</fieldset>
-            <?php if ($thissurvey['anonymized'] == "N" && Yii::app()->db->schema->getTable("{{tokens_$surveyid}}")) { ?>
+            <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}")) { ?>
                 <fieldset><legend><?php $clang->eT("Token control");?></legend>
                     <?php $clang->eT("Choose token fields");?>:
                     <img src='<?php echo $imageurl;?>/help.gif' alt='<?php $clang->eT("Help");?>' onclick='javascript:alert("<?php $clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js");?>")' /><br />
