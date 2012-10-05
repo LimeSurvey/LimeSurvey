@@ -343,32 +343,34 @@
 
                 $scenario = $scenariorow['scenario'];
                 $currentcfield="";
-                $query = "SELECT {{conditions}}.*, {{questions}}.type "
+                $sConditionsQuery1 = "SELECT {{conditions}}.*, {{questions}}.type "
                 . "FROM {{conditions}}, {{questions}} "
                 . "WHERE {{conditions}}.cqid={{questions}}.qid "
                 . "AND {{conditions}}.qid=$value_qid "
                 . "AND {{conditions}}.scenario=$scenario "
                 . "AND {{conditions}}.cfieldname NOT LIKE '{%' "
                 . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
-                $result=dbExecuteAssoc($query) or safeDie($query."<br />");         //Checked
-                $conditionsfound = $result->count();
+                $oResult1=dbExecuteAssoc($sConditionsQuery1) or safeDie($query."<br />");         //Checked
+                $aConditionsResult1=$oResult2->readAll();         //Checked
+                $conditionsfound = count($aConditionsResult1);
 
-                $querytoken = "SELECT {{conditions}}.*, '' as type "
+                $sConditionsQuery2 = "SELECT {{conditions}}.*, '' as type "
                 . "FROM {{conditions}} "
                 . "WHERE "
                 . " {{conditions}}.qid=$value_qid "
                 . "AND {{conditions}}.scenario=$scenario "
                 . "AND {{conditions}}.cfieldname LIKE '{%' "
                 . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
-                $resulttoken=dbExecuteAssoc($querytoken) or safeDie($querytoken."<br />");         //Checked
-                $conditionsfoundtoken = $resulttoken->count();
+                $oResult2=dbExecuteAssoc($sConditionsQuery2) or safeDie($querytoken."<br />");
+                $aConditionsResult2=$oResult2->readAll();         //Checked
+                $conditionsfoundtoken = count($aConditionsResult2);
                 $conditionsfound = $conditionsfound + $conditionsfoundtoken;
 
-                foreach($resulttoken->readAll() as $Condrow)
+                foreach($aConditionsResult2 as $Condrow)
                 {
                     $aAllCondrows[] = $Condrow;
                 }
-                foreach($result->readAll() as $Condrow)
+                foreach($aConditionsResult1 as $Condrow)
                 {
                     $aAllCondrows[] = $Condrow;
                 }
@@ -1741,16 +1743,7 @@
 
     UpdateSessionGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
-
-    // TMSW Conditions->Relevance:  Duplicates refactoring of createFieldMap?  Conditions tables not needed here.
-
-    // Optimized Query
-    // Change query to use sub-select to see if conditions exist.
-    $query = "SELECT {{questions}}.*, {{groups}}.*,\n"
-    ." (SELECT count(1) FROM {{conditions}}\n"
-    ." WHERE {{questions}}.qid = {{conditions}}.qid) AS hasconditions,\n"
-    ." (SELECT count(1) FROM {{conditions}}\n"
-    ." WHERE {{questions}}.qid = {{conditions}}.cqid) AS usedinconditions\n"
+    $sQuery = "SELECT count(*),\n"
     ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
     ." WHERE {{questions}}.sid=".$surveyid."\n"
     ." AND {{groups}}.language='".$_SESSION['survey_'.$surveyid]['s_lang']."'\n"
@@ -1758,10 +1751,7 @@
     ." AND {{questions}}.parent_qid=0\n"
     ." ORDER BY {{groups}}.group_order,{{questions}}.question_order";
 
-    $result = dbExecuteAssoc($query);    //Checked
-
-    $totalquestions = $result->count();
-
+    $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
     // Fix totalquestions by substracting Test Display questions
     $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
@@ -2242,9 +2232,10 @@ function doAssessment($surveyid, $returndataonly=false)
     ORDER BY scope, id";
     if ($result = dbExecuteAssoc($query))   //Checked
     {
-        if ($result->count() > 0)
+        $aResultSet=$result->readAll();
+        if (count($aResultSet) > 0)
         {
-            foreach($result->readAll() as $row)
+            foreach($aResultSet as $row)
             {
                 if ($row['scope'] == "G")
                 {
@@ -2526,14 +2517,14 @@ function checkQuota($checkaction,$surveyid)
                 {
 
                     // Check the status of the quota, is it full or not
-                    $querysel = "SELECT id FROM {{survey_".$surveyid."}}
+                    $sQuery = "SELECT count(id) FROM {{survey_".$surveyid."}}
                     WHERE ".implode(' AND ',$querycond)." "."
                     AND submitdate IS NOT NULL";
 
-                    $result = dbExecuteAssoc($querysel) or safeDie();    //Checked
-                    $quota_check = $result->readAll();
+                    $iRowCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
+                    
 
-                    if ($result->count() >= $quota['Limit']) // Quota is full!!
+                    if ($iRowCount >= $quota['Limit']) // Quota is full!!
 
                     {
                         // Now we have to check if the quota matches in the current session

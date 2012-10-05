@@ -81,9 +81,10 @@
 
                         $query = "SELECT * FROM {{answers}} WHERE qid='{$qid}' AND language='{$anslang}' and scale_id=$scale_id ORDER BY sortorder, code";
                         $result = dbExecuteAssoc($query);
-                        $anscount = $result->count();
+                        $aResults= $result->readAll();
+                        $anscount = count($aResults);
 
-                        foreach ($result->readAll() as $row)
+                        foreach ($aResults as $row)
                         {
                             $row['code'] = htmlspecialchars($row['code']);
                             $row['answer']=htmlspecialchars($row['answer']);

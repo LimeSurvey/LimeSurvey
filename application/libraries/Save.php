@@ -135,7 +135,7 @@ class Save {
         }
 
         $duplicate = Saved_control::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $_POST['savename']));
-        if (!empty($duplicate) && $duplicate->count() > 0)
+        if (!empty($duplicate) && $duplicate->count() > 0)  // OK - AR count
         {
             $errormsg .= $clang->gT("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
             return;
