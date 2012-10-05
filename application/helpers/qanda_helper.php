@@ -3002,7 +3002,8 @@ function do_multipleshorttext($ia)
     }
 
     $ansresult = dbExecuteAssoc($ansquery);    //Checked
-    $anscount = $ansresult->count()*2;
+    $aSubquestions = $ansresult->readAll();
+    $anscount = count($aSubquestions)*2;
     //$answer .= "\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
     $fn = 1;
 
@@ -3022,7 +3023,7 @@ function do_multipleshorttext($ia)
             //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
             $drows=$aQuestionAttributes['display_rows'];
 
-            foreach ($ansresult->readAll() as $ansrow)
+            foreach ($aSubquestions as $ansrow)
             {
                 $myfname = $ia[1].$ansrow['title'];
                 if ($ansrow['question'] == "")
@@ -3064,7 +3065,7 @@ function do_multipleshorttext($ia)
         }
         else
         {
-            foreach ($ansresult->readAll() as $ansrow)
+            foreach ($aSubquestions as $ansrow)
             {
                 $myfname = $ia[1].$ansrow['title'];
                 if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
@@ -3323,8 +3324,8 @@ function do_multiplenumeric($ia)
     }
 
     $ansresult = dbExecuteAssoc($ansquery);	//Checked
-    $anscount = $ansresult->count()*2;
-    //$answer .= "\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
+    $aSubquestions = $ansresult->readAll();
+    $anscount = count($aSubquestions)*2;
     $fn = 1;
 
     $answer_main = '';
@@ -3337,7 +3338,7 @@ function do_multiplenumeric($ia)
     else
     {
         $label_width = 0;
-        foreach($ansresult->readAll() as $ansrow)
+        foreach($aSubquestions as $ansrow)
         {
             $myfname = $ia[1].$ansrow['title'];
             if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
@@ -4236,10 +4237,15 @@ function do_array_5point($ia)
     }
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
-    $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid=".$ia[0]." AND question like '%|%'";
-    $ansresult = dbExecuteAssoc($ansquery);   //Checked
+    $sQuery = "SELECT question FROM {{questions}} WHERE parent_qid=".$ia[0]." AND question like '%|%'";
+    $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-    if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
+    if ($iCount>0) {
+        $right_exists=true;
+        $answerwidth=$answerwidth/2;
+    } else {
+        $right_exists=false;
+    }
     // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
 
 
@@ -4252,7 +4258,8 @@ function do_array_5point($ia)
     }
 
     $ansresult = dbExecuteAssoc($ansquery);     //Checked
-    $anscount = $ansresult->count();
+    $aSubquestions = $ansresult->readAll();
+    $anscount = count($aSubquestions);
 
     $fn = 1;
     $answer = "\n<table class=\"question subquestion-list questions-list\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a five point Likert scale array\">\n\n"
@@ -4288,7 +4295,7 @@ function do_array_5point($ia)
     $trbc = '';
     $n=0;
     //return array($answer, $inputnames);
-    foreach ($ansresult->readAll() as $ansrow)
+    foreach ($aSubquestions as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
 
@@ -4406,7 +4413,8 @@ function do_array_10point($ia)
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
     $ansresult = dbExecuteAssoc($ansquery);   //Checked
-    $anscount = $ansresult->count();
+    $aSubquestions = $ansresult->readAll();
+    $anscount = count($aSubquestions);
 
     $fn = 1;
     $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a ten point Likert scale array\" >\n\n"
@@ -4438,7 +4446,7 @@ function do_array_10point($ia)
     $answer .= "</tr>\n</thead>";
     $answer_t_content = '<tbody';
     $trbc = '';
-    foreach ($ansresult->readAll() as $ansrow)
+    foreach ($aSubquestions as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
         $answertext = dTexts__run($ansrow['question']);
@@ -4532,7 +4540,8 @@ function do_array_yesnouncertain($ia)
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
     $ansresult = dbExecuteAssoc($ansquery);	//Checked
-    $anscount = $ansresult->count();
+    $aSubquestions = $ansresult->readAll();
+    $anscount = count($aSubquestions);
     $fn = 1;
     $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a Yes/No/uncertain Likert scale array\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
@@ -4568,7 +4577,7 @@ function do_array_yesnouncertain($ia)
     else
     {
         $trbc = '';
-        foreach($ansresult->readAll() as $ansrow)
+        foreach($aSubquestions as $ansrow)
         {
             $myfname = $ia[1].$ansrow['title'];
             $answertext = dTexts__run($ansrow['question']);
@@ -4685,7 +4694,8 @@ function do_array_increasesamedecrease($ia)
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
     $ansresult = dbExecuteAssoc($ansquery);  //Checked
-    $anscount = $ansresult->count();
+    $aSubquestions = $ansresult->readAll(); 
+    $anscount = count($aSubquestions);
 
     $fn = 1;
 
@@ -4719,7 +4729,7 @@ function do_array_increasesamedecrease($ia)
     ."\t</thead>\n";
     $answer_body = '<tbody>';
     $trbc = '';
-    foreach($ansresult->readAll() as $ansrow)
+    foreach($aSubquestions as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
         $answertext = dTexts__run($ansrow['question']);
@@ -4859,11 +4869,17 @@ function do_array($ia)
             $labelcode[]=$lrow->code;
         }
 
-        //		$cellwidth=sprintf('%02d', $cellwidth);
-
-        $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
-        $ansresult = dbExecuteAssoc($ansquery);  //Checked
-        if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
+        $sQuery = "SELECT question FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
+        $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
+        
+        if ($iCount>0) {
+            $right_exists=true;
+            $answerwidth=$answerwidth/2;
+        } 
+        else 
+        {
+            $right_exists=false;
+        }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
@@ -4873,7 +4889,8 @@ function do_array($ia)
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
         $ansresult = dbExecuteAssoc($ansquery); //Checked
-        $anscount = $ansresult->count();
+        $aQuestions=$ansresult->readAll();
+        $anscount = count($aQuestions);
         $fn=1;
 
         $numrows = count($labelans);
@@ -4904,7 +4921,7 @@ function do_array($ia)
         $trbc = '';
         $inputnames=array();
 
-        foreach($ansresult->readAll() as $ansrow)
+        foreach($aQuestions as $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
             {
@@ -5022,9 +5039,14 @@ function do_array($ia)
         foreach($lresult as $lrow)
             $labels[]=Array('code' => $lrow->code,
             'answer' => $lrow->answer);
-        $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
-        $ansresult = dbExecuteAssoc($ansquery);  //Checked
-        if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
+        $sQuery = "SELECT count(question) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
+        $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
+        if ($iCount>0) {
+            $right_exists=true;
+            $answerwidth=$answerwidth/2;
+        } else {
+            $right_exists=false;
+        }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
@@ -5034,7 +5056,8 @@ function do_array($ia)
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
         $ansresult = dbExecuteAssoc($ansquery); //Checked
-        $anscount = $ansresult->count();
+        $aQuestions = $ansresult->readAll();
+        $anscount = count($aQuestions);
         $fn=1;
 
         $numrows = count($labels);
@@ -5054,7 +5077,7 @@ function do_array($ia)
         $trbc = '';
         $inputnames=array();
 
-        foreach ($ansresult->readAll() as $ansrow)
+        foreach ($aQuestions as $ansrow)
         {
             $myfname = $ia[1].$ansrow['title'];
             $trbc = alternation($trbc , 'row');
@@ -5354,7 +5377,8 @@ function do_array_multitext($ia)
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
         $ansresult = dbExecuteAssoc($ansquery);
-        $anscount = $ansresult->count();
+        $aQuestions = $ansresult->readAll();
+        $anscount = count($aQuestions);
         $fn=1;
 
         $answer_cols = "\t<colgroup class=\"col-responses\">\n"
@@ -5390,7 +5414,7 @@ function do_array_multitext($ia)
         $answer = "\n<table$q_table_id_HTML class=\"question subquestions-list questions-list{$extraclass}$num_class"."$totals_class\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array of text responses\">\n" . $answer_cols . $answer_head;
         $answer .= "<tbody>";
         $trbc = '';
-        foreach ($ansresult->readAll() as $ansrow)
+        foreach ($aQuestions as $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
             {
@@ -5642,9 +5666,10 @@ function do_array_multiflexi($ia)
 
     $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult = dbExecuteAssoc($lquery);
-    if ($lresult->count() > 0)
+    $aQuestions=$lresult->readAll();
+    if (count($aQuestions) > 0)
     {
-        foreach ($lresult->readAll() as $lrow)
+        foreach ($aQuestions as $lrow)
         {
             $labelans[]=$lrow['question'];
             $labelcode[]=$lrow['title'];
@@ -5655,9 +5680,9 @@ function do_array_multiflexi($ia)
 
         $cellwidth=sprintf('%02d', $cellwidth);
 
-        $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid=".$ia[0]." AND scale_id=0 AND question like '%|%'";
-        $ansresult = dbExecuteAssoc($ansquery);
-        if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
+        $sQuery = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." AND scale_id=0 AND question like '%|%'";
+        $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
+        if ($iCount>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
@@ -5891,10 +5916,11 @@ function do_arraycolumns($ia)
     $qresult = dbExecuteAssoc($qquery);    //Checked
     $qrow = $qresult->read(); $other = $qrow['other'];
     $lquery = "SELECT * FROM {{answers}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
-    $lresult = dbExecuteAssoc($lquery);   //Checked
-    if ($lresult->count() > 0)
+    $oAnswers = dbExecuteAssoc($lquery);
+    $aAnswers = $oAnswers->readAll(); 
+    if (count($aAnswers) > 0)
     {
-        foreach ($lresult->readAll() as $lrow)
+        foreach ($aAnswers as $lrow)
         {
             $labelans[]=$lrow['answer'];
             $labelcode[]=$lrow['code'];
@@ -5914,7 +5940,8 @@ function do_arraycolumns($ia)
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
         $ansresult = dbExecuteAssoc($ansquery);  //Checked
-        $anscount = $ansresult->count();
+        $aQuestions = $ansresult->readAll();
+        $anscount = count($aQuestions);
         if ($anscount>0)
         {
             $fn=1;
@@ -5934,7 +5961,7 @@ function do_arraycolumns($ia)
             . "<tr>\n"
             . "\t<td>&nbsp;</td>\n";
 
-            while ($ansrow = $ansresult->read())
+            foreach ($aQuestions as $ansrow)
             {
                 $anscode[]=$ansrow['title'];
                 $answers[]=dTexts__run($ansrow['question']);
@@ -5960,7 +5987,7 @@ function do_arraycolumns($ia)
             $answer .= "</tr>\n\t</thead>\n\n\t<tbody>\n";
             $ansrowcount=0;
             $ansrowtotallength=0;
-            foreach($ansresult->readAll() as $ansrow)
+            foreach($aQuestions as $ansrow)
             {
                 $ansrowcount++;
                 $ansrowtotallength=$ansrowtotallength+strlen($ansrow['question']);
@@ -6083,7 +6110,8 @@ function do_array_dual($ia)
     }
 
     $lresult = dbExecuteAssoc($lquery); //Checked
-    if ($useDropdownLayout === false && $lresult->count() > 0)
+    $aAnswersScale1=$lresult->readAll();
+    if ($useDropdownLayout === false && count($aAnswersScale1) > 0)
     {
         if (trim($aQuestionAttributes['answer_width'])!='')
         {
@@ -6095,37 +6123,29 @@ function do_array_dual($ia)
         }
         $columnswidth = 100 - $answerwidth;
 
-        foreach ($lresult->readAll() as $lrow)
+        foreach ($aAnswersScale1 as $lrow)
         {
             $labelans[]=$lrow['answer'];
             $labelcode[]=$lrow['code'];
         }
+
         $lresult1 = dbExecuteAssoc($lquery1); //Checked
-        if ($lresult1->count() > 0)
+        foreach ($lresult1->readAll() as $lrow1)
         {
-            foreach ($lresult1->readAll() as $lrow1)
-            {
-                $labelans1[]=$lrow1['answer'];
-                $labelcode1[]=$lrow1['code'];
-            }
+            $labelans1[]=$lrow1['answer'];
+            $labelcode1[]=$lrow1['code'];
         }
+
         $numrows=count($labelans) + count($labelans1);
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) {$numrows++;}
         $cellwidth=$columnswidth/$numrows;
 
         $cellwidth=sprintf("%02d", $cellwidth);
 
-        $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%'";
-        $ansresult = dbExecuteAssoc($ansquery);   //Checked
-        if ($ansresult->count()>0)
-        {
-            $right_exists=true;
-        }
-        else
-        {
-            $right_exists=false;
-        }
-        // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
+        $sQuery = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%'";
+        $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
+        $right_exists= ($iCount>0);
+        // $right_exists is a flag to find out if there are any right hand answer parts. If there aren't we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
         }
@@ -6134,7 +6154,8 @@ function do_array_dual($ia)
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY question_order";
         }
         $ansresult = dbExecuteAssoc($ansquery);   //Checked
-        $anscount = $ansresult->count();
+        $aQuestionsRight=$ansresult->readAll();
+        $anscount = count($aQuestionsRight);
         $fn=1;
         // unselect second scale when using "no answer"
         $answer = "<script type='text/javascript'>\n"
@@ -6245,7 +6266,7 @@ function do_array_dual($ia)
         . "<tbody>\n";
 
         $trbc = '';
-        foreach ($ansresult->readAll() as $ansrow)
+        foreach ($aQuestionsRight as $ansrow)
         {
             // Build repeat headings if needed
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
@@ -6378,7 +6399,7 @@ function do_array_dual($ia)
         $answer .= "\t</tbody>\n";
         $answer .= "</table>\n";
     }
-    elseif ($useDropdownLayout === true && $lresult->count() > 0)
+    elseif ($useDropdownLayout === true && count($aAnswersScale1) > 0)
     {
 
         if (trim($aQuestionAttributes['answer_width'])!='')
@@ -6404,8 +6425,9 @@ function do_array_dual($ia)
         {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
-        $ansresult = dbExecuteAssoc($ansquery);    //Checked
-        $anscount = $ansresult->count();
+        $ansresult = dbExecuteAssoc($ansquery);
+        $aSubquestions=$ansresult->readAll();    //Checked
+        $anscount = count($aSubquestions);
 
         if ($anscount==0)
         {
@@ -6416,7 +6438,7 @@ function do_array_dual($ia)
         {
 
             //already done $lresult = dbExecuteAssoc($lquery);
-            foreach ($lresult->readAll() as $lrow)
+            foreach ($aAnswersScale1 as $lrow)
             {
                 $labels0[]=Array('code' => $lrow['code'],
                 'title' => $lrow['answer']);
@@ -6496,7 +6518,7 @@ function do_array_dual($ia)
             . "\t</thead>\n\n";
             $answer .= "\n<tbody>\n";
             $trbc = '';
-            foreach ($ansresult->readAll() as $ansrow)
+            foreach ($aSubquestions as $ansrow)
             {
                 $rowname = $ia[1].$ansrow['title'];
                 $dualgroup=0;
