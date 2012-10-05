@@ -23,11 +23,8 @@ $route['admin/index'] = "admin";
 $route['admin/<action:\w+>/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>';
 
 //question
-#$route['admin/question/addquestion/<_sid:\d+>/<_gid:\d+>'] = "admin/question/addquestion/surveyid/<_sid>/gid/<_gid>";
-#$route['admin/question/editquestion/<_sid:\d+>/<_gid:\d+>/<_qid:\d+>'] = "admin/question/editquestion/surveyid/<_sid>/gid/<_gid>/qid/<_qid>";
-
-#$route['admin/labels/<_action:\w+>'] = "admin/labels/index/<_action>";
-#$route['admin/labels/<_action:\w+>/<_lid:\d+>'] = "admin/labels/index/<_action>/<_lid>";
+$route['admin/labels/<_action:\w+>'] = "admin/labels/index/<_action>";
+$route['admin/labels/<_action:\w+>/<_lid:\d+>'] = "admin/labels/index/<_action>/<_lid>";
 
 $route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 

@@ -46,7 +46,7 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         if (!isset($p_cid)) { $p_cid=returnGlobal('cid'); }
-        if (!isset($p_subaction)) { $p_subaction=returnGlobal('subaction');}
+        if (!isset($p_subaction)) { if (isset($_POST['subaction'])) $p_subaction=$_POST['subaction']; else $p_subaction=$subaction;}
         if (!isset($p_cquestions)) {$p_cquestions=returnGlobal('cquestions');}
         if (!isset($p_csrctoken)) {$p_csrctoken=returnGlobal('csrctoken');}
         if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa=returnGlobal('prevQuestionSGQA');}
@@ -1043,7 +1043,7 @@ class conditionsaction extends Survey_Common_Action {
         }
         $questionNavOptions .= CHtml::closeTag('optgroup');
         $questionNavOptions .= CHtml::openTag('optgroup', array('class'=>'activesurveyselect', 'label'=>$clang->gT("Current","js")));
-        $question = strip_tags($questiontitle);
+        $question = strip_tags($questiontext);
         if (strlen($question)<35)
         {
             $questiontextshort = $question;
@@ -1246,13 +1246,31 @@ class conditionsaction extends Survey_Common_Action {
 
                     unset($currentfield);
 
+                    $query = "SELECT count(*) as recordcount
+                    FROM {{conditions}} c, {{questions}} q, {{groups}} g
+                    WHERE c.cqid=q.qid "
+                    ."AND q.gid=g.gid "
+                    ."AND q.parent_qid=0 "
+                    ."AND q.language=:lang1 "
+                    ."AND g.language=:lang2 "
+                    ."AND c.qid=:qid "
+                    ."AND c.scenario=:scenario "
+                    ."AND c.cfieldname NOT LIKE '{%' "; // avoid catching SRCtokenAttr conditions
+                    $sLanguage=Survey::model()->findByPk($iSurveyID)->language;
+                    $result=Yii::app()->db->createCommand($query)
+                    ->bindValue(":scenario", $scenarionr['scenario'])
+                    ->bindValue(":qid", $qid, PDO::PARAM_INT)
+                    ->bindValue(":lang1", $sLanguage, PDO::PARAM_STR)
+                    ->bindValue(":lang2", $sLanguage, PDO::PARAM_STR)
+                    ->queryRow();
+                    $conditionscount=(int)$result['recordcount'];
                     $query = "SELECT c.cid, c.scenario, c.cqid, c.cfieldname, c.method, c.value, q.type
                     FROM {{conditions}} c, {{questions}} q, {{groups}} g
                     WHERE c.cqid=q.qid "
                     ."AND q.gid=g.gid "
                     ."AND q.parent_qid=0 "
-                    ."AND q.language=:lang "
-                    ."AND g.language=:lang "
+                    ."AND q.language=:lang1 "
+                    ."AND g.language=:lang2 "
                     ."AND c.qid=:qid "
                     ."AND c.scenario=:scenario "
                     ."AND c.cfieldname NOT LIKE '{%' " // avoid catching SRCtokenAttr conditions
@@ -1261,9 +1279,23 @@ class conditionsaction extends Survey_Common_Action {
                     $result=Yii::app()->db->createCommand($query)
                     ->bindValue(":scenario", $scenarionr['scenario'])
                     ->bindValue(":qid", $qid, PDO::PARAM_INT)
-                    ->bindValue(":lang", $sLanguage, PDO::PARAM_STR)
+                    ->bindValue(":lang1", $sLanguage, PDO::PARAM_STR)
+                    ->bindValue(":lang2", $sLanguage, PDO::PARAM_STR)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-                    $conditionscount=count($result);
+
+
+                    
+                    $querytoken = "SELECT count(*) as recordcount "
+                    ."FROM {{conditions}} "
+                    ."WHERE "
+                    ." {{conditions}}.qid=:qid "
+                    ."AND {{conditions}}.scenario=:scenario "
+                    ."AND {{conditions}}.cfieldname LIKE '{%' "; // only catching SRCtokenAttr conditions
+                    $resulttoken = Yii::app()->db->createCommand($querytoken)
+                    ->bindValue(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)
+                    ->bindValue(":qid", $qid, PDO::PARAM_INT)
+                    ->queryRow() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
+                    $conditionscounttoken=(int)$resulttoken['recordcount'];
 
                     $querytoken = "SELECT {{conditions}}.cid, "
                     ."{{conditions}}.scenario, "
@@ -1282,8 +1314,9 @@ class conditionsaction extends Survey_Common_Action {
                     ->bindValue(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)
                     ->bindValue(":qid", $qid, PDO::PARAM_INT)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-                    $conditionscounttoken=count($resulttoken);
-
+                    
+                    
+                    
                     $conditionscount=$conditionscount+$conditionscounttoken;
 
                     if ($conditionscount > 0)
@@ -1298,7 +1331,6 @@ class conditionsaction extends Survey_Common_Action {
                             $aConditionsMerged[]=$arow;
                         }
 
-                        //				while ($rows=$result->FetchRow())
                         foreach ($aConditionsMerged as $rows)
                         {
                             if($rows['method'] == "") {$rows['method'] = "==";} //Fill in the empty method from previous versions
