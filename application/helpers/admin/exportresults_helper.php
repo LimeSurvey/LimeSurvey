@@ -305,7 +305,7 @@ class SurveyDao
     {
 
         $oRecordSet = Yii::app()->db->createCommand()->select()->from('{{survey_' . $survey->id . '}}');
-        if (tableExists('tokens_'.$survey->id))
+        if (tableExists('tokens_'.$survey->id) && in_array('token',Survey_dynamic::model($survey->id)->attributes))
         {
             $oRecordSet->join('{{tokens_' . $survey->id . '}}','{{tokens_' . $survey->id . '}}.token={{survey_' . $survey->id . '}}.token');
         }
