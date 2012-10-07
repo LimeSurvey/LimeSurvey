@@ -64,6 +64,12 @@
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl('admin/tokens/getTokens_json/surveyid/' . $surveyid); ?>";
     var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/setSession"); ?>";
     var editUrl = "<?php echo Yii::app()->getController()->createUrl('admin/tokens/editToken/surveyid/' . $surveyid); ?>";
+    var sEmptyRecords ='<?php $clang->eT("Participant table is empty.",'js');?>';
+    var sCaption ='<?php $clang->eT("Survey participants",'js');?>';
+    var sDelTitle = '<?php $clang->eT("Delete selected participant(s) from this survey",'js');?>';
+    var sRefreshTitle ='<?php $clang->eT("Reload participant list",'js');?>';
+    var noSearchResultsTxt = '<?php $clang->eT("No survey participants matching the search criteria",'js');?>';
+    var sFind= '<?php $clang->eT("Filter",'js');?>';
     var remindurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/email/action/remind/surveyid/{$surveyid}/tokenids/|"); ?>";
     var attMapUrl = "<?php echo $this->createUrl("admin/participants/attributeMapToken/sid/");?>";
     var invitemsg = "<?php echo $clang->eT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"); ?>"

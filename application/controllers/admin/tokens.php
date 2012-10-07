@@ -1086,7 +1086,7 @@ class tokens extends Survey_Common_Action
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
             $aData['tokenlength'] = $tokenlength;
-            $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+            $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'],$clang->langcode);
 
             $this->_renderWrappedTemplate('token', array('tokenbar', 'dummytokenform'), $aData);
         }

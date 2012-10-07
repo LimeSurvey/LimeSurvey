@@ -92,6 +92,7 @@ $(document).ready(function() {
     });
     var lastSel,lastSel2;
     jQuery("#displaytokens").jqGrid({
+        emptyrecords: sEmptyRecords,
         align:"center",
         headertitles: true,
         url: jsonUrl,
@@ -164,9 +165,11 @@ $(document).ready(function() {
             row.find('.token_edit').click();
         },
         pager: "#pager",
-        caption: "Tokens"
+        caption: sCaption
     });
     jQuery("#displaytokens").jqGrid('navGrid','#pager',{
+        deltitle: sDelTitle,
+        refreshtitle: sRefreshTitle,
         add:false,
         del:true,
         edit:false,
@@ -209,7 +212,7 @@ $(document).ready(function() {
     });
     $("#displaytokens").navButtonAdd('#pager',{
         caption:"",
-        title:"Full Search",
+        title: sFind,
         buttonicon:'searchicon',
         onClickButton:function(){
             var dialog_buttons={};
@@ -274,30 +277,15 @@ $(document).ready(function() {
                 $(this).dialog("close");
             };
             dialog_buttons[resetBtn]=function(){
-                jQuery("#displaytokens").jqGrid('setGridParam',{
-                    url:jsonUrl,
-                    gridComplete: function(){
-                        if(jQuery("#displaytokens").jqGrid('getGridParam', 'records') == 0) {
-                            var dialog_buttons={};
-                            dialog_buttons[okBtn]=function(){
-                                $( this ).dialog( "close" );
-                            };
-                            $("<p>"+noSearchResultsTxt+"</p>").dialog({
-                                modal: true,
-                                buttons: dialog_buttons,
-                                resizable: false
-                            });
-                        }
-                    }
-                });
                 $("#displaytokens").jqGrid('setGridParam', { search: false, postData: { "filters": ""} }).trigger("reloadGrid");
+                $(this).dialog("close");
             };
             /* End of building array for button functions */
             $("#search").dialog({
                 height: 300,
                 width: 750,
                 modal: true,
-                title : 'Full Search',
+                title : sFind,
                 buttons: dialog_buttons
             });
         }

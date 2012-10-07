@@ -27,12 +27,12 @@
     var sOperator14= '<?php $clang->eT("does not contain",'js');?>';
     var sFind= '<?php $clang->eT("Filter",'js');?>';
     var sReset= '<?php $clang->eT("Reset",'js');?>';
-    var sSelectColumns= '<?php $clang->eT("Select columns",'js');?>';
+    var sSelectColumns= '<?php $clang->eT("Select columns",'js');?>';                          
     var sSubmit= '<?php $clang->eT("Save",'js');?>';
     
     var sCancel = '<?php $clang->eT("Cancel",'js');?>';
     var sSearchTitle ='<?php $clang->eT("Filter surveys",'js');?>';
-    var sRefresh ='<?php $clang->eT("Reload survey list",'js');?>';
+    var sRefreshTitle ='<?php $clang->eT("Reload survey list",'js');?>';
     var delBtnCaption ='<?php $clang->eT("Save",'js');?>';
     var sEmptyRecords ='<?php $clang->eT("There are currently no surveys.",'js');?>';
     var sConfirmationExpireMessage='<?php $clang->eT("Are you sure you want to expire these surveys?",'js');?>';
