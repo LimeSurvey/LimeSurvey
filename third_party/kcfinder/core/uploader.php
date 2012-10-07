@@ -341,6 +341,15 @@ class uploader {
             is_array($this->config['filenameChangeChars'])
         )
             $filename = strtr($filename, $this->config['filenameChangeChars']);
+        // On Windows platforms, PHP will mangle non-ASCII characters, see http://bugs.php.net/bug.php?id=47096
+        if ( 'WIN' == substr( PHP_OS, 0, 3 ) ) {
+                $codepage = 'Windows-' . trim( strstr( setlocale( LC_CTYPE, 0 ), '.' ), '.' );
+                if ( function_exists( 'iconv' ) ) {
+                        $filename = iconv( 'UTF-8', $codepage, $filename );
+                } elseif ( function_exists( 'mb_convert_encoding' ) ) {
+                        $filename = mb_convert_encoding( $filename, 'UTF-8', $codepage );
+                }
+        }        
         return $filename;
     }
 

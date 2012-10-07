@@ -722,7 +722,16 @@ class browser extends uploader {
 
             $stat = stat($file);
             if ($stat === false) continue;
-            $name = basename($file);
+            $filename = basename($file);
+            if ( 'WIN' == substr( PHP_OS, 0, 3 ) ) {
+                    $codepage = 'Windows-' . trim( strstr( setlocale( LC_CTYPE, 0 ), '.' ), '.' );
+                    if ( function_exists( 'iconv' ) ) {
+                            $filename = iconv( $codepage,  'UTF-8', $filename );
+                    } elseif ( function_exists( 'mb_convert_encoding' ) ) {
+                            $filename = mb_convert_encoding( $filename, $codepage, 'UTF-8' );
+                    }
+            }  
+            $name=$filename;            
             $ext = file::getExtension($file);
             $bigIcon = file_exists("themes/{$this->config['theme']}/img/files/big/$ext.png");
             $smallIcon = file_exists("themes/{$this->config['theme']}/img/files/small/$ext.png");
