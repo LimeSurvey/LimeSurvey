@@ -76,7 +76,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
     {
         $i = 1;
         foreach ($fields as $field) {
-            echo $q.strtoupper($field['sql_name']).$q;
+            if (!$field['hide'] ) echo $q.strtoupper($field['sql_name']).$q;
             if ($i<$num_fields && !$field['hide']) echo ',';
             $i++;
         }
