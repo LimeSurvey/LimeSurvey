@@ -1,21 +1,21 @@
 $(document).ready(function(){
     // pupup calendar
-	$(".popupdate").each(function(i,e) {
+    $(".popupdate").each(function(i,e) {
         var basename = e.id.substr(6);
         format=$('#dateformat'+basename).val();
         language=$('#datelanguage'+basename).val();
         yearrange=$('#dateyearrange'+basename).val();
         range=yearrange.split(':');
         $(e).datepicker({ dateFormat: format,
-                          showOn: 'both',
-                          changeYear: true,
-                          changeMonth: true,
-                          yearRange: yearrange,
-                          defaultDate: +0,
-                          minDate:new Date(range[0],0,1),
-                          maxDate: new Date(range[1],11,31),
-                          duration: 'fast'
-                        }, $.datepicker.regional[language]);
+            showOn: 'both',
+            changeYear: true,
+            changeMonth: true,
+            yearRange: yearrange,
+            defaultDate: +0,
+            minDate:new Date(range[0],0,1),
+            maxDate: new Date(range[1],11,31),
+            duration: 'fast'
+            }, $.datepicker.regional[language]);
     });
 
     // dropdown dates
@@ -52,48 +52,72 @@ function dateUpdater() {
     }
 
     if ((!$('#year'+thisid).length || $('#year'+thisid).val()=='') &&
-            (!$('#month'+thisid).length || $('#month'+thisid).val()=='') &&
-            (!$('#day'+thisid).length || $('#day'+thisid).val()=='') &&
-            (!$('#hour'+thisid).length || $('#hour'+thisid).val()=='') &&
-            (!$('#minute'+thisid).length || $('#minute'+thisid).val()==''))
+        (!$('#month'+thisid).length || $('#month'+thisid).val()=='') &&
+        (!$('#day'+thisid).length || $('#day'+thisid).val()=='') &&
+        (!$('#hour'+thisid).length || $('#hour'+thisid).val()=='') &&
+        (!$('#minute'+thisid).length || $('#minute'+thisid).val()==''))
     {
         $('#qattribute_answer'+thisid).val('');
         $('#answer'+thisid).val('');
         $('#answer'+thisid).change();
     }
     else if (($('#year'+thisid).length && $('#year'+thisid).val()=='') ||
-            ($('#month'+thisid).length && $('#month'+thisid).val()=='') ||
-            ($('#day'+thisid).length && $('#day'+thisid).val()=='') ||
-            ($('#hour'+thisid).length && $('#hour'+thisid).val()==''))
-    {
-        $('#qattribute_answer'+thisid).val('Please complete all parts of the date!');
-        $('#answer'+thisid).val('');
-    }
-    else
-    {
-        var answer = $('#dateformat'+thisid).val();
-        if ($('#year'+thisid).length) answer = answer.replace(/y+/, $('#year'+thisid).val());
-        if ($('#month'+thisid).length) answer = answer.replace(/m+/, $('#month'+thisid).val());
-        if ($('#day'+thisid).length) answer = answer.replace(/d+/, $('#day'+thisid).val());
-        if ($('#hour'+thisid).length) answer = answer.replace(/H+/, $('#hour'+thisid).val());
-        if ($('#minute'+thisid).length)
+        ($('#month'+thisid).length && $('#month'+thisid).val()=='') ||
+        ($('#day'+thisid).length && $('#day'+thisid).val()=='') ||
+        ($('#hour'+thisid).length && $('#hour'+thisid).val()==''))
         {
-            // The minute is optional (assumed as 00)
-            if ($('#minute'+thisid).val()=='')
+            $('#qattribute_answer'+thisid).val('Please complete all parts of the date!');
+            $('#answer'+thisid).val('');
+        }
+        else
+        {
+            var answer = $('#dateformat'+thisid).val();
+            if ($('#year'+thisid).length) answer = answer.replace(/y+/, $('#year'+thisid).val());
+            if ($('#month'+thisid).length) answer = answer.replace(/m+/, $('#month'+thisid).val());
+            if ($('#day'+thisid).length) answer = answer.replace(/d+/, $('#day'+thisid).val());
+            if ($('#hour'+thisid).length) answer = answer.replace(/H+/, $('#hour'+thisid).val());
+            if ($('#minute'+thisid).length)
             {
-                answer = answer.replace(/M+/, '00');
+                // The minute is optional (assumed as 00)
+                if ($('#minute'+thisid).val()=='')
+                {
+                    answer = answer.replace(/M+/, '00');
+                }
+                else
+                {
+                    answer = answer.replace(/M+/, $('#minute'+thisid).val());
+                }
+            }
+            if ($('#year'+thisid).size()==0)
+            {
+                iYear='1900';
             }
             else
             {
-                answer = answer.replace(/M+/, $('#minute'+thisid).val());
+                iYear=$('#year'+thisid).val(); 
             }
+            if ($('#month'+thisid).size()==0)
+            {
+                iMonth='01';
+            }
+            else
+            {
+                iMonth=$('#month'+thisid).val(); 
+            }
+            if ($('#month'+thisid).size()==0)
+            {
+                iDay='01';
+            }
+            else
+            {
+                iDay=$('#day'+thisid).val(); 
+            }
+            ValidDate(this,iYear+'-'+iMonth+'-'+iDay);          
+            parseddate=$.datepicker.parseDate( 'dd-mm-yy', iDay+'-'+iMonth+'-'+iYear);
+            $('#answer'+thisid).val($.datepicker.formatDate( $('#dateformat'+thisid).val(), parseddate)); 
+            $('#answer'+thisid).change();
+            $('#qattribute_answer'+thisid).val('');
         }
-         ValidDate(this,$('#year'+thisid).val()+'-'+$('#month'+thisid).val()+'-'+$('#day'+thisid).val());          
-         parseddate=$.datepicker.parseDate( 'dd-mm-yy', $('#day'+thisid).val()+'-'+$('#month'+thisid).val()+'-'+$('#year'+thisid).val());
-         $('#answer'+thisid).val($.datepicker.formatDate( $('#dateformat'+thisid).val(), parseddate)); 
-        $('#answer'+thisid).change();
-        $('#qattribute_answer'+thisid).val('');
-    }
 }
 
 
