@@ -57,6 +57,29 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121006) to 2.00+ (build 121009) Oct 09, 2012
+-Fixed issue #6179: Files with umlauts in filename do not upload on some browsers (Carsten Schmitz)
+-Fixed issue #6441: Public statistics is missing result data and charts (Carsten Schmitz)
+-Fixed issue #6572: On chrome browser submenu's disappear (tpartner)
+-Fixed issue #6595: Data restore from old_survey_... table fails when using Postgres (Carsten Schmitz)
+-Fixed issue #6635: Export to R headers include hidden fields (Carsten Schmitz)
+-Fixed issue #6648: Advanced date/time input with dropdown box of only "year" creates "date is not valid" error (Carsten Schmitz)
+-Fixed issue #6659: Missing translations in token administration (Carsten Schmitz)
+-Fixed issue: Export results not working if survey is set to anonymized responses (Carsten Schmitz)
+#Updated translation: Czech by slansky
+#Updated translation: Danish by docl
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by BenoitBouvarel
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (BokmÃ¥l) by peterhol, pmonstad
+#Updated translation: Portuguese (Brazil) by mauriciofurtado, wagner, marciojv
+#Updated translation: Russian by ldemeschew
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Slovenian by Aambro
+#Updated translation: Spanish (Mexican) by pedrogk
+
+
 Changes from 2.00+ (build 121005) to 2.00+ (build 121006) Oct 05, 2012
 -Fixed issue #6596: Cant send invitation email with SQL DB (Spiros Trougakos)
 -Fixed issue #6657: Impossible to recover survey (Carsten Schmitz)
