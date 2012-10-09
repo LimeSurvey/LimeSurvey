@@ -835,8 +835,10 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguag
                 $tmpqid=substr($qqid, 0, strlen($qqid)-1);
 
                 //did we get a valid ID?
-                while (!in_array ($tmpqid,$legitqids))
-                    $tmpqid=substr($tmpqid, 0, strlen($tmpqid)-1);
+                while (!in_array ($tmpqid,$legitqids,true))
+                {
+                    $tmpqid=(int)substr($tmpqid, 0, strlen($tmpqid)-1);
+                }
 
                 //check lenght of ID
                 $iQuestionIDlength=strlen($tmpqid);
@@ -3055,7 +3057,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
             ."</div></td></tr>";
 
         }
-        $statisticsoutput .= "</table><br /> \n";
+        $statisticsoutput .= "</td></tr></table><br /> \n";
     }
 
     return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$pdf, "astatdata"=>$astatdata);
