@@ -32,9 +32,15 @@
 .sf-menu li:hover ul,
 .sf-menu li.sfHover ul {
 	left:			0;
-	top:			44px; /* match top ul list item height */
+	top:			43px; /* match top ul list item height */
 	z-index:		99;
 }
+
+.sf-menu.sf-js-enabled li:hover ul,
+.sf-menu.sf-js-enabled li.sfHover ul {
+	top:			44px; 
+}
+
 ul.sf-menu li:hover li ul,
 ul.sf-menu li.sfHover li ul {
 	top:			-999em;
@@ -59,11 +65,22 @@ ul.sf-menu li li li.sfHover ul {
 	float:			left;
 	margin-bottom:	1em;
 }
-.sf-menu a {
 
+.menubar-main ul.sf-menu {
+	height: auto;
+	margin-bottom: 0; 
+}
+
+.sf-menu a {
 	padding: 		0.1em 1em;
 	text-decoration:none;
 }
+
+.menubar-main .sf-menu a {
+	padding: 1px 1em 0 1em;
+	height: 42px;
+}
+
 .sf-menu a, .sf-menu a:visited  { /* visited pseudo selector so IE6 applies text colour*/
 	color:			#13a;
 }
