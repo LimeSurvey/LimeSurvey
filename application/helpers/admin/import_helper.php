@@ -3477,7 +3477,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['showxquestions']=$insertdata['showXquestions'];
             unset($insertdata['showXquestions']);
         }
-        $iNewSID = $results['newsid'] = Survey::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+        $iNewSID = $results['newsid'] = Survey::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [1]<br />");
 
         $results['surveys']++;
     }
@@ -3516,7 +3516,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
 
 
-        $result = Surveys_languagesettings::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+        $result = Surveys_languagesettings::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [2]<br />");
     }
 
 
@@ -3549,7 +3549,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 switchMSSQLIdentityInsert('groups',true);
                 $insertdata['gid']=$aGIDReplacements[$oldgid];
             }
-            $newgid = Groups::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $newgid = Groups::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [3]<br />");
             $results['groups']++;
 
             if (!isset($aGIDReplacements[$oldgid]))
@@ -3598,7 +3598,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($insertdata)
                 XSSFilterArray($insertdata);
-            $newqid = Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $newqid = Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [4]<br />");
             if (!isset($aQIDReplacements[$oldqid]))
             {
                 $aQIDReplacements[$oldqid]=$newqid;
@@ -3623,6 +3623,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata[(string)$key]=(string)$value;
             }
             if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
+            if (trim($insertdata['mandatory'])=='')
+            {
+                $insertdata['mandatory']='N';
+            }
             $insertdata['sid']=$iNewSID;
             $insertdata['gid']=$aGIDReplacements[(int)$insertdata['gid']];;
             $oldsqid=(int)$insertdata['qid']; unset($insertdata['qid']); // save the old qid
@@ -3640,7 +3644,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($insertdata)
                 XSSFilterArray($insertdata);
-            $newsqid =Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $newsqid =Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [5]<br />");
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array

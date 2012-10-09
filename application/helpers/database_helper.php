@@ -164,7 +164,6 @@ function dbSelectTablesLike($table)
         case 'sqlsrv' :
             return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table' ESCAPE '\'";
         case 'pgsql' :
-            $table=str_replace('\\','\\\\',$table);
             return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
         default: safeDie ("Couldn't create 'select tables like' query for connection type '".Yii::app()->db->getDriverName()."'");
     }

@@ -1748,8 +1748,7 @@
     ." WHERE {{questions}}.sid=".$surveyid."\n"
     ." AND {{groups}}.language='".$_SESSION['survey_'.$surveyid]['s_lang']."'\n"
     ." AND {{questions}}.language='".$_SESSION['survey_'.$surveyid]['s_lang']."'\n"
-    ." AND {{questions}}.parent_qid=0\n"
-    ." ORDER BY {{groups}}.group_order,{{questions}}.question_order";
+    ." AND {{questions}}.parent_qid=0\n";
 
     $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 

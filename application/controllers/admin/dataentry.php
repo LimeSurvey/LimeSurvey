@@ -441,11 +441,13 @@ class dataentry extends Survey_Common_Action
                 {
                     $iOldID=$row['id'];
                     unset($row['id']);
-
+                    // Remove NULL values
+                    $row=array_filter($row, 'strlen'); 
                     //$sInsertSQL=Yii::app()->db->GetInsertSQL($activetable, $row);
                     $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("dbQuoteID", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll",array_values($row))).")";
                     $result = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
-                    $aSRIDConversions[$iOldID]=Yii::app()->db->getLastInsertID();
+
+                    $aSRIDConversions[$iOldID] = Yii::app()->db->getCommandBuilder()->getLastInsertID($activetable);
                     $iRecordCount++;
                 }
 
