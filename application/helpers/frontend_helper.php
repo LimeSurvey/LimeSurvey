@@ -1899,7 +1899,7 @@
     $randomGroups=array();
     if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
     {
-        $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
+        $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) as value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
     }
     else
     {
