@@ -773,9 +773,9 @@ class translate extends Survey_Common_Action {
                     case 'question_help':
                         return Questions::model()->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang,'parent_qid' => 0), array('order' => 'question_order, scale_id'));
                     case 'subquestion':
-                        return Questions::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang), array('order' => 'groups.group_order, parents.question_order, t.scale_id, t.question_order', 'condition'=>'parents.language=:baselang AND groups.language=:baselang AND t.parent_qid>0', 'params'=>array(':baselang'=>$baselang)));
+                        return Questions::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang), array('order' => 'groups.group_order, parents.question_order, t.scale_id, t.question_order', 'condition'=>'parents.language=:baselang1 AND groups.language=:baselang2 AND t.parent_qid>0', 'params'=>array(':baselang1'=>$baselang,':baselang2'=>$baselang)));
                     case 'answer':
-                        return Answers::model()->with('questions', 'groups')->findAllByAttributes(array('language' => $baselang), array('order' => 'groups.group_order, questions.question_order, t.scale_id, t.sortorder', 'condition'=>'questions.sid=:sid AND questions.language=:baselang AND groups.language=:baselang', 'params'=>array(':baselang'=>$baselang, ':sid' => $iSurveyID)));
+                        return Answers::model()->with('questions', 'groups')->findAllByAttributes(array('language' => $baselang), array('order' => 'groups.group_order, questions.question_order, t.scale_id, t.sortorder', 'condition'=>'questions.sid=:sid AND questions.language=:baselang1 AND groups.language=:baselang2', 'params'=>array(':baselang1'=>$baselang, ':baselang2'=>$baselang, ':sid' => $iSurveyID)));
                 }
             case "queryupdate":
                 switch ( $type )
@@ -819,7 +819,8 @@ class translate extends Survey_Common_Action {
                     case 'subquestion':
                         return Questions::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang),array('question' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
                     case 'answer':
-                        return Answers::model()->updateByPk(array('qid'=>$id1, 'code'=>$id2, 'language'=>$tolang),array('answer' => $new));
+                        return Answers::model()->updateByPk(array('qid'=>$id1, 'code'=>$id2, 'language'=>$tolang, 'scale_id'=>0),array('answer' => $new));
+                        // @todo: FIXME for dual scale answer options
                 }
 
         }
