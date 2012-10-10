@@ -4316,7 +4316,7 @@ function categorySort($a, $b)
 // is safe to use in MySQL.  This does nothing if gpc_magic_quotes is on.
 function autoEscape($str) {
     if (!get_magic_quotes_gpc()) {
-        return mysql_real_escape_string($str);
+        return addslashes ($str);
     }
     return $str;
 }
