@@ -3577,7 +3577,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $insertdata[(string)$key]=(string)$value;
             }
-            if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
+            if (!in_array($insertdata['language'],$aLanguagesSupported) || $insertdata['gid']==0) continue;
             $iOldSID=$insertdata['sid'];
             $insertdata['sid']=$iNewSID;
             $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
@@ -3622,7 +3622,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $insertdata[(string)$key]=(string)$value;
             }
-            if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
+            if (!in_array($insertdata['language'],$aLanguagesSupported) || $insertdata['gid']==0) continue;
             if (!isset($insertdata['mandatory']) || trim($insertdata['mandatory'])=='')
             {
                 $insertdata['mandatory']='N';
@@ -3669,7 +3669,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $insertdata[(string)$key]=(string)$value;
             }
-            if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
+            if (!in_array($insertdata['language'],$aLanguagesSupported) || !isset($aQIDReplacements[(int)$insertdata['qid']])) continue;
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the parent_qid
 
             // now translate any links
@@ -3698,6 +3698,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata[(string)$key]=(string)$value;
             }
             unset($insertdata['qaid']);
+            if (!isset($aQIDReplacements[(int)$insertdata['qid']])) continue;
             $insertdata['qid']=$aQIDReplacements[(integer)$insertdata['qid']]; // remap the qid
             if ($iDBVersion<148 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) && $aAllAttributes[$insertdata['attribute']]['i18n'])
             {
