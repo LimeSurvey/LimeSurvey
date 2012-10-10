@@ -302,14 +302,16 @@
 
         public function getQuestionList($surveyid, $language)
         {
-            $query = "SELECT questions.*, groups.group_name, groups.group_order\n"
-            ." FROM {{questions}} as questions, {{groups}} as groups\n"
-            ." WHERE groups.gid=questions.gid\n"
-            ." AND groups.language=:language"
-            ." AND questions.language=:language"
-            ." AND questions.parent_qid=0\n"
+            $query = "SELECT questions.*, groups.group_name, groups.group_order"
+            ." FROM {{questions}} as questions, {{groups}} as groups"
+            ." WHERE groups.gid=questions.gid"
+            ." AND groups.language=:language1"
+            ." AND questions.language=:language2"
+            ." AND questions.parent_qid=0"
             ." AND questions.sid=:sid";
-            return Yii::app()->db->createCommand($query)->bindParam(":language", $language, PDO::PARAM_STR)->bindParam(":sid", $surveyid, PDO::PARAM_INT)->queryAll();
+            return Yii::app()->db->createCommand($query)->bindParam(":language1", $language, PDO::PARAM_STR)
+                                                        ->bindParam(":language2", $language, PDO::PARAM_STR)
+                                                        ->bindParam(":sid", $surveyid, PDO::PARAM_INT)->queryAll();
         }
 
     }
