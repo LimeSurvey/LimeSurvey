@@ -527,11 +527,11 @@ class dataentry extends Survey_Common_Action
             {{questions}}.sid={{surveys}}.sid AND {{questions}}.sid='$surveyid'
             order by group_order, question_order";
             $fnresult = dbExecuteAssoc($fnquery);
-
-            $fncount = $fnresult->getRowCount();
+            $fnresult=$fnresult->readAll();
+            $fncount = count($fnresult);
 
             $fnrows = array(); //Create an empty array in case FetchRow does not return any rows
-            foreach ($fnresult->readAll() as $fnrow)
+            foreach ($fnresult as $fnrow)
             {
                 $fnrows[] = $fnrow;
                 $private=$fnrow['anonymized'];
@@ -1641,8 +1641,9 @@ class dataentry extends Survey_Common_Action
                     $tokencompleted = "";
                     $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token='{$_POST['token']}'"; //dbQuoteAll($_POST['token'],true);
                     $tcresult = dbExecuteAssoc($tcquery);
-                    $tccount = $tcresult->getRowCount();
-                    foreach ($tcresult->readAll() as $tcrow)
+                    $tcresult = $tcresult->readAll();
+                    $tccount = count($tcresult);
+                    foreach ($tcresult as $tcrow)
                     {
                         $tokencompleted = $tcrow['completed'];
                     }
@@ -2245,13 +2246,14 @@ class dataentry extends Survey_Common_Action
                         case "R": //RANKING TYPE QUESTION
                             $thisqid=$deqrow['qid'];
                             $ansquery = "SELECT * FROM {{answers}} WHERE qid=$thisqid AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            $ansresult = dbExecuteAssoc($ansquery);
-                            $anscount = $ansresult->getRowCount();
+                            $ansresult = dbExecuteAssoc($ansquery);    
+                            $ansresult = $ansresult->readAll();
+                            $anscount = count($ansresult);
 
                             $cdata['thisqid'] = $thisqid;
                             $cdata['anscount'] = $anscount;
 
-                            foreach ($ansresult->readAll() as $ansrow)
+                            foreach ($ansresult as $ansrow)
                             {
                                 $answers[] = array($ansrow['code'], $ansrow['answer']);
                             }
@@ -2340,11 +2342,12 @@ class dataentry extends Survey_Common_Action
                             }
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult = dbExecuteAssoc($meaquery);
-                            $meacount = $mearesult->getRowCount();
+                            
 
                             $cdata['dcols'] = $dcols;
                             $cdata['meacount'] = $meacount;
                             $cdata['mearesult'] = $mearesult->readAll();
+                            $meacount = count($cdata['mearesult']);
 
                             break;
                         case "I": //Language Switch

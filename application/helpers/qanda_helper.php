@@ -1937,8 +1937,8 @@ function do_listwithcomment($ia)
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
 
-    $ansresult=Yii::app()->db->createCommand($ansquery)->query();
-    $anscount = $ansresult->getRowCount();
+    $ansresult=Yii::app()->db->createCommand($ansquery)->query()->readAll();
+    $anscount = count($ansresult);
 
 
     $hint_comment = $clang->gT('Please enter your comment here');
@@ -1948,7 +1948,7 @@ function do_listwithcomment($ia)
         <ul class="answers-list radio-list">
         ';
 
-        foreach ($ansresult->readAll() as $ansrow)
+        foreach ($ansresult as $ansrow)
         {
             $check_ans = '';
             if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code'])
@@ -2013,7 +2013,7 @@ function do_listwithcomment($ia)
         <select class="select" name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >
         ';
         // --> END NEW FEATURE - SAVE
-        foreach ($ansresult->readAll() as $ansrow)
+        foreach ($ansresult as $ansrow)
         {
             $check_ans = '';
             if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code'])
@@ -2083,8 +2083,8 @@ function do_ranking($ia)
     } else {
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
-    $ansresult = Yii::app()->db->createCommand($ansquery)->query();   //Checked
-    $anscount= $ansresult->getRowCount();
+    $ansresult = Yii::app()->db->createCommand($ansquery)->query()->readAll();   //Checked
+    $anscount= count($ansresult);
     if (trim($aQuestionAttributes["max_answers"])!='')
     {
         $max_answers=trim($aQuestionAttributes["max_answers"]);
@@ -2101,7 +2101,7 @@ function do_ranking($ia)
     // First start by a ranking without javascript : just a list of select box
     // construction select box
     $answers= array();
-        foreach ($ansresult->readAll() as $ansrow)
+        foreach ($ansresult as $ansrow)
         {
             $answers[] = $ansrow;
         }
@@ -2212,9 +2212,9 @@ function do_multiplechoice($ia)
     $qaresult = Yii::app()->db->createCommand($qaquery)->query();     //Checked
     foreach ($qaresult->readAll() as $qarow)
     {
-        $qquery = "SELECT qid FROM {{questions}} WHERE sid=".$thissurvey['sid']." AND scale_id=0 AND qid=".$qarow['qid'];
-        $qresult = Yii::app()->db->createCommand($qquery)->query();     //Checked
-        if ($qresult->getRowCount() > 0)
+        $qquery = "SELECT count(qid) FROM {{questions}} WHERE sid=".$thissurvey['sid']." AND scale_id=0 AND qid=".$qarow['qid'];
+        $qresult = Yii::app()->db->createCommand($qquery)->queryScalar();     //Checked
+        if ($qresult > 0)
         {
             $attribute_ref = true;
         }

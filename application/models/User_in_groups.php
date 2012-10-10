@@ -78,7 +78,7 @@ class User_in_groups extends CActiveRecord {
         return $data;
     }
 
-	function insert($data)
+	function insertRecords($data)
 	{
 		$user = Yii::app()->db->createCommand()->insert($this->tableName(), $data);
 		return (bool) $user;

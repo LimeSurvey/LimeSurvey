@@ -1716,9 +1716,9 @@ class tokens extends Survey_Common_Action
                                 $invalidemail = false;
                                 if ($filterduplicatetoken)
                                 {
-                                    $dupquery = "SELECT firstname, lastname from {{tokens_".intval($iSurveyId)."}} where email=:email and firstname=:firstname and lastname=:lastname";
-                                    $dupresult = Yii::app()->db->createCommand($dupquery)->bindParam(":email", $myemail, PDO::PARAM_STR)->bindParam(":firstname", $myfirstname, PDO::PARAM_STR)->bindParam(":lastname", $mylastname, PDO::PARAM_STR)->query();
-                                    if ($dupresult->getRowCount() > 0)
+                                    $dupquery = "SELECT count(tid) from {{tokens_".intval($iSurveyId)."}} where email=:email and firstname=:firstname and lastname=:lastname";
+                                    $dupresult = Yii::app()->db->createCommand($dupquery)->bindParam(":email", $myemail, PDO::PARAM_STR)->bindParam(":firstname", $myfirstname, PDO::PARAM_STR)->bindParam(":lastname", $mylastname, PDO::PARAM_STR)->queryScalar();
+                                    if ($dupresult > 0)
                                     {
                                         $dupfound = true;
                                         $duplicatelist[] = $myfirstname . " " . $mylastname . " (" . $myemail . ")";
@@ -1991,7 +1991,7 @@ class tokens extends Survey_Common_Action
 
                         if ($filterduplicatetoken != false)
                         {
-                            $dupquery = "SELECT tid from {{tokens_".intval($iSurveyId)."}} where 1=1";
+                            $dupquery = "SELECT count(tid) from {{tokens_".intval($iSurveyId)."}} where 1=1";
                             foreach ($filterduplicatefields as $field)
                             {
                                 if (isset($writearray[$field]))
@@ -1999,8 +1999,8 @@ class tokens extends Survey_Common_Action
                                     $dupquery.= " and ".Yii::app()->db->quoteColumnName($field)." = " . Yii::app()->db->quoteValue($writearray[$field]);
                                 }
                             }
-                            $dupresult = Yii::app()->db->createCommand($dupquery)->query();
-                            if ($dupresult->getRowCount() > 0)
+                            $dupresult = Yii::app()->db->createCommand($dupquery)->queryScalar();
+                            if ($dupresult > 0)
                             {
                                 $dupfound = true;
                                 $duplicatelist[] = Yii::app()->db->quoteValue($writearray['firstname']) . " " . Yii::app()->db->quoteValue($writearray['lastname']) . " (" . Yii::app()->db->quoteValue($writearray['email']) . ")";

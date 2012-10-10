@@ -819,15 +819,14 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
 
 
     $query = "SELECT MAX(group_order) AS maxqo FROM {{groups}} WHERE sid=$iNewSID";
-    $res = Yii::app()->db->createCommand($query)->query();
-    $resrow = $res->read();
-    if ($res->getRowCount() == 0)
+    $res = Yii::app()->db->createCommand($query)->queryScalar();
+    if ($res == false)
     {
         $newgrouporder=0;
     }
     else
     {
-        $newgrouporder=$resrow['maxqo'];
+        $newgrouporder=$res;
         $newgrouporder++;
     }
 

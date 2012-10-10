@@ -220,9 +220,10 @@ class surveypermission extends Survey_Common_Action {
             {
                 if($postusergroupid > 0){
                     $result2 = User::model()->getCommonUID($surveyid, $postusergroupid); //Checked
-                    if($result2->getRowCount() > 0)
+                    $result2 = $result2->readAll();
+                    if(count($result2) > 0)
                     {
-                        foreach ($result2->readAll() as $row2 )
+                        foreach ($result2 as $row2 )
                         {
                             $uid_arr[] = $row2['uid'];
                             $isrresult = Survey_permissions::model()->insertSomeRecords(array('sid' => $surveyid,'uid' => $row2['uid'], 'permission' => 'survey', 'read_p' => 1));

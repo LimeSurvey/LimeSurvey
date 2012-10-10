@@ -1022,7 +1022,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguag
             //CALCULATE QUARTILES
 
             //get data
-            $query ="SELECT ".Yii::app()->db->quoteColumnName($fieldname)." FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT null";
+            $query ="SELECT COUNT(".Yii::app()->db->quoteColumnName($fieldname).") FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT null";
             //NO ZEROES
             if(!$excludezeros)
             {
@@ -1036,8 +1036,11 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguag
             //if $sql values have been passed to the statistics script from another script, incorporate them
             if ($sql != "NULL") {$query .= " AND $sql";}
 
-            //execute query
-            $result = Yii::app()->db->createCommand($query)->query();
+            //we just put the total number of records at the beginning of this array
+            $medcount = Yii::app()->db->createCommand($query)->queryScalar();
+            array_unshift($showem, array($statlang->gT("Count"), $medcount));
+
+            
             $querystarter="SELECT ".Yii::app()->db->quoteColumnName($fieldname)." FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT null";
             //No Zeroes
             if(!$excludezeros)
@@ -1051,11 +1054,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguag
             //if $sql values have been passed to the statistics script from another script, incorporate them
             if ($sql != "NULL") {$querystarter .= " AND $sql";}
 
-            //we just count the number of records returned
-            $medcount=$result->getRowCount();
 
-            //put the total number of records at the beginning of this array
-            array_unshift($showem, array($statlang->gT("Count"), $medcount));
 
 
             //no more comment from Mazi regarding the calculation

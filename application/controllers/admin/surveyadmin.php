@@ -335,21 +335,18 @@ class SurveyAdmin extends Survey_Common_Action
             $new_autonumber_start = 0;
             $query = "SELECT id FROM ".Yii::app()->db->quoteTableName($sOldSurveyTableName)." ORDER BY id desc";
             $result = Yii::app()->db->createCommand($query)->limit(1)->query();
-            if ($result->getRowCount() > 0)
+            foreach ($result->readAll() as $row)
             {
-                foreach ($result->readAll() as $row)
+                if (strlen($row['id']) > 12) //Handle very large autonumbers (like those using IP prefixes)
                 {
-                    if (strlen($row['id']) > 12) //Handle very large autonumbers (like those using IP prefixes)
-                    {
-                        $part1 = substr($row['id'], 0, 12);
-                        $part2len = strlen($row['id']) - 12;
-                        $part2 = sprintf("%0{$part2len}d", substr($row['id'], 12, strlen($row['id']) - 12) + 1);
-                        $new_autonumber_start = "{$part1}{$part2}";
-                    }
-                    else
-                    {
-                        $new_autonumber_start = $row['id'] + 1;
-                    }
+                    $part1 = substr($row['id'], 0, 12);
+                    $part2len = strlen($row['id']) - 12;
+                    $part2 = sprintf("%0{$part2len}d", substr($row['id'], 12, strlen($row['id']) - 12) + 1);
+                    $new_autonumber_start = "{$part1}{$part2}";
+                }
+                else
+                {
+                    $new_autonumber_start = $row['id'] + 1;
                 }
             }
 
@@ -1377,11 +1374,12 @@ class SurveyAdmin extends Survey_Common_Action
         left join {{questions}} q on q.qid=up.targetqid
         left join {{questions}} sq on sq.qid=up.targetsqid
         where up.sid={$iSurveyID}");
+        $oResult= $oResult->readAll();
         $i = 0;
         $clang = $this->getController()->lang;
         $aData = new stdClass();
 
-        foreach ($oResult->readAll() as $oRow)
+        foreach ($oResult as $oRow)
         {
             $aData->rows[$i]['id'] = $oRow['id'];
             if ($oRow['question'] != '')
@@ -1406,7 +1404,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $aData->page = 1;
-        $aData->records = $oResult->getRowCount();
+        $aData->records = count($oResult);
         $aData->total = 1;
 
         echo ls_json_encode($aData);

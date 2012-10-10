@@ -213,11 +213,12 @@ class Survey_permissions extends CActiveRecord
 
     function getUserDetails($surveyid)
     {
-        $query2 = "SELECT p.sid, p.uid, u.users_name, u.full_name FROM {{survey_permissions}} AS p INNER JOIN {{users}}  AS u ON p.uid = u.uid
+        $sQuery = "SELECT p.sid, p.uid, u.users_name, u.full_name FROM {{survey_permissions}} AS p INNER JOIN {{users}}  AS u ON p.uid = u.uid
             WHERE p.sid = :surveyid AND u.uid != :userid
             GROUP BY p.sid, p.uid, u.users_name, u.full_name
             ORDER BY u.users_name";
-        return Yii::app()->db->createCommand($query2)->bindParam(":userid", Yii::app()->user->getId(), PDO::PARAM_INT)->bindParam("surveyid", $surveyid, PDO::PARAM_INT)->query(); //Checked
+        $iUserID=Yii::app()->user->getId();    
+        return Yii::app()->db->createCommand($sQuery)->bindParam(":userid", $iUserID, PDO::PARAM_INT)->bindParam("surveyid", $surveyid, PDO::PARAM_INT)->query()->readAll(); //Checked
     }
 
     function copySurveyPermissions($iSurveyIDSource,$iSurveyIDTarget)

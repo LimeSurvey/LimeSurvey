@@ -274,11 +274,11 @@ class printablesurvey extends Survey_Common_Action
 //
 //
 //                            $scenarioresult=Conditions::model()->getScenarios($deqrow['qid']);
-//
+//                            $scenarioresult = $scenarioresult->readAll();
 //                    //Loop through distinct scenarios, thus grouping them together.
-//                    foreach ($scenarioresult->readAll() as $scenariorow)
+//                    foreach ($scenarioresult as $scenariorow)
 //                    {
-//                        if($s == 0 && $scenarioresult->getRowCount() > 1)
+//                        if( $s == 0 && count($scenarioresult) > 1)
 //                        {
 //                            $explanation .= '<p class="scenario">'.self::_try_debug(__LINE__)." -------- Scenario {$scenariorow['scenario']} --------</p>\n\n";
 //                        }
@@ -750,8 +750,8 @@ class printablesurvey extends Survey_Common_Action
 
                             if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"));}
                             $dearesult=Answers::model()->getAllRecords(" qid='{$deqrow['qid']}' AND language='{$surveyprintlang}' ", array('sortorder','answer'));
-
-                            $deacount=$dearesult->getRowCount();
+                            $dearesult=$dearesult->readAll();
+                            $deacount=count($dearesult);
                             if ($deqrow['other'] == "Y") {$deacount++;}
 
                             $wrapper = setupColumns(0, $deacount);
@@ -761,7 +761,7 @@ class printablesurvey extends Survey_Common_Action
                             $rowcounter = 0;
                             $colcounter = 1;
 
-                            foreach ($dearesult->readAll() as $dearow)
+                            foreach ($dearesult as $dearow)
                             {
                                 if (isset($optCategorySeparator))
                                 {
@@ -837,12 +837,13 @@ class printablesurvey extends Survey_Common_Action
                             // ==================================================================
                         case "R":  //RANKING Type Question
                             $rearesult=Answers::model()->getAllRecords(" qid='{$deqrow['qid']}' AND language='{$surveyprintlang}'", array('sortorder', 'answer'));
-                            $reacount = $rearesult->getRowCount();
+                            $rearesult = $rearesult->readAll();
+                            $reacount = count($rearesult);
                             $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please number each box in order of preference from 1 to")." $reacount";
                             $question['QUESTION_TYPE_HELP'] .= self::_min_max_answers_help($qidattributes, $surveyprintlang, $surveyid);
                             if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please number each box in order of preference from 1 to ").$reacount,"U");}
                             $question['ANSWER'] = "\n<ul>\n";
-                            foreach ($rearesult->readAll() as $rearow)
+                            foreach ($rearesult as $rearow)
                             {
                                 $question['ANSWER'] .="\t<li>\n\t".self::_input_type_image('rank','',4,1)."\n\t\t&nbsp;".$rearow['answer'].self::_addsgqacode(" (".$fieldname.$rearow['code'].")")."\n\t</li>\n";
                                 if(isset($_POST['printableexport'])){$pdf->intopdf("__ ".$rearow['answer']);}
@@ -866,8 +867,9 @@ class printablesurvey extends Survey_Common_Action
 
                             $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
-                            $mearesult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}' AND language='{$surveyprintlang}' ", array('question_order'));
-                            $meacount = $mearesult->getRowCount();
+                            $mearesult = Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}' AND language='{$surveyprintlang}' ", array('question_order'));
+                            $mearesult = $mearesult->readAll();
+                            $meacount = count($mearesult);
                             if ($deqrow['other'] == 'Y') {$meacount++;}
 
                             $wrapper = setupColumns($dcols, $meacount);
@@ -876,7 +878,7 @@ class printablesurvey extends Survey_Common_Action
                             $rowcounter = 0;
                             $colcounter = 1;
 
-                            foreach ($mearesult->readAll() as $mearow)
+                            foreach ($mearesult as $mearow)
                             {
                                 $question['ANSWER'] .= $wrapper['item-start'].self::_input_type_image('checkbox',$mearow['question'])."\n\t\t".$mearow['question'].self::_addsgqacode(" (".$fieldname.$mearow['title'].") ").$wrapper['item-end'];
                                 if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$mearow['answer']);}
@@ -1289,8 +1291,8 @@ class printablesurvey extends Survey_Common_Action
 
                             $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
                             $fresult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}' and scale_id=1 AND language='{$surveyprintlang}' ", array('question_order'));
-
-                            $fcount = $fresult->getRowCount();
+                            $fresult = $fresult->readAll();
+                            $fcount = count($fresult);
                             $fwidth = "120";
                             $i=0;
                             $pdfoutput = array();
@@ -1298,8 +1300,7 @@ class printablesurvey extends Survey_Common_Action
 
                             //array to temporary store X axis question codes
                             $xaxisarray = array();
-                            $result = $fresult->readAll();
-                            foreach ($result as $frow)
+                            foreach ($fresult as $frow)
 
                             {
                                 $question['ANSWER'] .= "\t\t\t<th>{$frow['question']}</th>\n";
@@ -1364,8 +1365,8 @@ class printablesurvey extends Survey_Common_Action
 
                             $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
                             $fresult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}'  AND scale_id=1 AND language='{$surveyprintlang}' ", array('question_order'));
-
-                            $fcount = $fresult->getRowCount();
+                            $fresult = $fresult->readAll();
+                            $fcount = count($fresult);
                             $fwidth = "120";
                             $i=0;
                             $pdfoutput=array();
@@ -1373,7 +1374,7 @@ class printablesurvey extends Survey_Common_Action
 
                             //array to temporary store X axis question codes
                             $xaxisarray = array();
-                            foreach ($fresult->readAll() as $frow)
+                            foreach ($fresult as $frow)
                             {
                                 $question['ANSWER'] .= "\t\t\t<th>{$frow['question']}</th>\n";
                                 $i++;
@@ -1424,15 +1425,15 @@ class printablesurvey extends Survey_Common_Action
                             $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                             $fresult=Answers::model()->getAllRecords(" scale_id=0 AND qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}'", array('sortorder','code'));
-
-                            $fcount = $fresult->getRowCount();
+                            $fresult = $fresult->readAll(); 
+                            $fcount = count($fresult);
                             $fwidth = "120";
                             $i=1;
                             $pdfoutput = array();
                             $pdfoutput[0][0]='';
                             if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
                             $column_headings = array();
-                            foreach ($fresult->readAll() as $frow)
+                            foreach ($fresult as $frow)
                             {
                                 $column_headings[] = $frow['answer'].self::_addsgqacode(" (".$frow['code'].")");
                             }
@@ -1532,17 +1533,18 @@ class printablesurvey extends Survey_Common_Action
                             $question['ANSWER'] .= "\n<table>\n\t<thead>\n";
 
 
-                             $condition = "qid= '{$deqrow['qid']}'  AND language= '{$surveyprintlang}' AND scale_id=0";
-                             $fresult= Answers::model()->getAllRecords( $condition, array('sortorder', 'code'));
+                            $condition = "qid= '{$deqrow['qid']}'  AND language= '{$surveyprintlang}' AND scale_id=0";
+                            $fresult= Answers::model()->getAllRecords( $condition, array('sortorder', 'code'));
+                            $fresult = $fresult->readAll();
+                            $fcount = count($fresult);
 
-                            $fcount = $fresult->getRowCount();
                             $fwidth = "120";
                             $l1=0;
                             $printablesurveyoutput2 = "\t\t\t<td>&nbsp;</td>\n";
                             $myheader2 = '';
                             $pdfoutput = array();
                             $pdfoutput[0][0]='';
-                            foreach ($fresult->readAll() as $frow)
+                            foreach ($fresult as $frow)
                             {
                                 $printablesurveyoutput2 .="\t\t\t<th>{$frow['answer']}".self::_addsgqacode(" (".$frow['code'].")")."</th>\n";
                                 $myheader2 .= "<td></td>";
@@ -1553,14 +1555,15 @@ class printablesurvey extends Survey_Common_Action
                             $printablesurveyoutput2 .="\t\t\t<td>&nbsp;</td>\n";
                             //$fquery1 = "SELECT * FROM {{answers}} WHERE qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' AND scale_id=1 ORDER BY sortorder, code";
                            // $fresult1 = Yii::app()->db->createCommand($fquery1)->query();
-                            $fresult1=Answers::model()->getAllRecords(" qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' AND scale_id=1 ", array('sortorder','code'));
-                            $fcount1 = $fresult1->getRowCount();
+                            $fresult1 = Answers::model()->getAllRecords(" qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' AND scale_id=1 ", array('sortorder','code'));
+                            $fresult1 = $fresult1->readAll();
+                            $fcount1 = count ($fresult1);
                             $fwidth = "120";
                             $l2=0;
 
                             //array to temporary store second scale question codes
                             $scale2array = array();
-                            foreach ($fresult1->readAll() as $frow1)
+                            foreach ($fresult1 as $frow1)
                             {
                                 $printablesurveyoutput2 .="\t\t\t<th>{$frow1['answer']}".self::_addsgqacode(" (".$frow1['code'].")")."</th>\n";
                                 $pdfoutput[1][$l2]=$frow['answer'];
@@ -1636,17 +1639,18 @@ class printablesurvey extends Survey_Common_Action
 
                             $condition = "parent_qid= '{$deqrow['qid']}'  AND language= '{$surveyprintlang}'";
                             $fresult= Questions::model()->getAllRecords( $condition, array('question_order', 'title'));
+                            $fresult = $fresult->readAll();
                             $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose the appropriate response for each item:");
                             if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
                             $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
 
                             $mearesult=Answers::model()->getAllRecords(" qid='{$deqrow['qid']}' AND scale_id=0 AND language='{$surveyprintlang}' ", array('sortorder','code'));
-                            $fcount = $fresult->getRowCount();
+                            $fcount = count($fresult);
                             $fwidth = "120";
                             $i=0;
                             $pdfoutput = array();
                             $pdfoutput[0][0]='';
-                            foreach ($fresult->readAll() as $frow)
+                            foreach ($fresult as $frow)
                             {
                                 $question['ANSWER'] .= "\t\t\t<th>{$frow['question']}".self::_addsgqacode(" (".$fieldname.$frow['title'].")")."</th>\n";
                                 $i++;
