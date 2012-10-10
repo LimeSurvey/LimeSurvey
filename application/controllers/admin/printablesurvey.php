@@ -54,7 +54,7 @@ class printablesurvey extends Survey_Common_Action
         // Setting the selected language for printout
         $clang = new limesurvey_lang($surveyprintlang);
 
-        $desrow = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByAttributes(array('sid' => $surveyid, 'language' => $surveyprintlang));
+        $desrow = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=:language','params'=>array(':language'=>$surveyprintlang))))->findByAttributes(array('sid' => $surveyid));
 
         if (is_null($desrow))
             $this->getController()->error('Invalid survey ID');
