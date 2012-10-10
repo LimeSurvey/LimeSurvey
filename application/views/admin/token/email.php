@@ -1,69 +1,69 @@
 <?php echo PrepareEditorScript(true, $this); ?>
 <div class='header ui-widget-header'>
-    <?php $clang->eT("Send email invitations"); ?></div>
+<?php $clang->eT("Send email invitations"); ?></div>
 <div><br/>
 
     <?php if ($thissurvey['active'] != 'Y')
-    { ?>
+        { ?>
         <div class='messagebox ui-corner-all'><div class='warningheader'><?php $clang->eT('Warning!'); ?></div><?php $clang->eT("This survey is not yet activated and so your participants won't be able to fill out the survey."); ?></div>
-    <?php } ?>
+        <?php } ?>
     <div id='tabs'>
         <ul>
             <?php
-            foreach ($surveylangs as $language)
-            {
-                echo '<li><a href="#' . $language . '">' . getLanguageNameFromCode($language, false);
-                if ($language == $baselang)
+                foreach ($surveylangs as $language)
                 {
-                    echo "(" . $clang->gT("Base language") . ")";
+                    echo '<li><a href="#' . $language . '">' . getLanguageNameFromCode($language, false);
+                    if ($language == $baselang)
+                    {
+                        echo "(" . $clang->gT("Base language") . ")";
+                    }
+                    echo "</a></li>";
                 }
-                echo "</a></li>";
-            }
             ?>
         </ul>
         <form id='sendinvitation' class='form30' method='post' action='<?php echo $this->createUrl("admin/tokens/email/surveyid/$surveyid"); ?>'>
 
             <?php
-            foreach ($surveylangs as $language)
-            {
-                //GET SURVEY DETAILS
-                $bplang = new limesurvey_lang($language);
+                foreach ($surveylangs as $language)
+                {
+                    //GET SURVEY DETAILS
+                    $bplang = new limesurvey_lang($language);
 
-                if ($ishtml === true)
-                {
-                    $aDefaultTexts = templateDefaultTexts($bplang);
-                }
-                else
-                {
-                    $aDefaultTexts = templateDefaultTexts($bplang, 'unescaped');
-                }
-                if (!$thissurvey['email_invite'])
-                {
                     if ($ishtml === true)
                     {
-                        $thissurvey['email_invite'] = HTMLEscape($aDefaultTexts['invitation']);
+                        $aDefaultTexts = templateDefaultTexts($bplang);
                     }
                     else
                     {
-                        $thissurvey['email_invite'] = $aDefaultTexts['invitation'];
+                        $aDefaultTexts = templateDefaultTexts($bplang, 'unescaped');
                     }
-                }
-                if (!$thissurvey['email_invite_subj'])
-                {
-                    $thissurvey['email_invite_subj'] = $aDefaultTexts['invitation_subject'];
-                }
-                $fieldsarray["{ADMINNAME}"] = $thissurvey['adminname'];
-                $fieldsarray["{ADMINEMAIL}"] = $thissurvey['adminemail'];
-                $fieldsarray["{SURVEYNAME}"] = $thissurvey['name'];
-                $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey['description'];
-                $fieldsarray["{EXPIRY}"] = $thissurvey["expiry"];
+                    if (!$thissurvey['email_invite'])
+                    {
+                        if ($ishtml === true)
+                        {
+                            $thissurvey['email_invite'] = HTMLEscape($aDefaultTexts['invitation']);
+                        }
+                        else
+                        {
+                            $thissurvey['email_invite'] = $aDefaultTexts['invitation'];
+                        }
+                    }
+                    if (!$thissurvey['email_invite_subj'])
+                    {
+                        $thissurvey['email_invite_subj'] = $aDefaultTexts['invitation_subject'];
+                    }
+                    $fieldsarray["{ADMINNAME}"] = $thissurvey['adminname'];
+                    $fieldsarray["{ADMINEMAIL}"] = $thissurvey['adminemail'];
+                    $fieldsarray["{SURVEYNAME}"] = $thissurvey['name'];
+                    $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey['description'];
+                    $fieldsarray["{EXPIRY}"] = $thissurvey["expiry"];
 
-                $subject = Replacefields($thissurvey['email_invite_subj'], $fieldsarray, false);
-                $textarea = Replacefields($thissurvey['email_invite'], $fieldsarray, false);
-                if ($ishtml !== true)
-                {
-                    $textarea = str_replace(array('<x>', '</x>'), array(''), $textarea);
-                }
+                    $subject = Replacefields($thissurvey['email_invite_subj'], $fieldsarray, false);
+                    $textarea = Replacefields($thissurvey['email_invite'], $fieldsarray, false);
+                    if ($ishtml !== true)
+                    {
+                        $textarea = str_replace(array('<x>', '</x>'), array(''), $textarea);
+                    }
                 ?>
                 <div id="<?php echo $language; ?>">
 
@@ -75,13 +75,11 @@
                             <input type='text' size='83' id='subject_<?php echo $language; ?>' name='subject_<?php echo $language; ?>' value="<?php echo $subject; ?>" /></li>
 
                         <li><label for='message_<?php echo $language; ?>'><?php $clang->eT("Message"); ?>:</label>
-                            <textarea name='message_<?php echo $language; ?>' id='message_<?php echo $language; ?>' rows='20' cols='80'>
-                                <?php echo htmlspecialchars($textarea); ?>
-                            </textarea>
+                            <textarea name='message_<?php echo $language; ?>' id='message_<?php echo $language; ?>' rows='20' cols='80'><?php echo htmlspecialchars($textarea); ?></textarea>
                             <?php echo getEditor("email-inv", "message_$language", "[" . $clang->gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                         </li>
                     </ul></div>
-            <?php } ?>
+                <?php } ?>
 
             <p>
                 <label for='bypassbademails'><?php $clang->eT("Bypass token with failing email addresses"); ?>:</label>
@@ -95,8 +93,8 @@
                 <input type='hidden' name='ok' value='absolutely' />
                 <input type='hidden' name='subaction' value='email' />
                 <?php if (!empty($tokenids)) { ?>
-                <input type='hidden' name='tokenids' value='<?php echo implode('|', (array) $tokenids); ?>' />
-                <?php } ?>
+                    <input type='hidden' name='tokenids' value='<?php echo implode('|', (array) $tokenids); ?>' />
+                    <?php } ?>
             </p>
         </form>
     </div>
