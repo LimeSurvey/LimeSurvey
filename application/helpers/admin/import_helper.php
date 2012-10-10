@@ -3623,7 +3623,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata[(string)$key]=(string)$value;
             }
             if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
-            if (trim($insertdata['mandatory'])=='')
+            if (!isset($insertdata['mandatory']) || trim($insertdata['mandatory'])=='')
             {
                 $insertdata['mandatory']='N';
             }
