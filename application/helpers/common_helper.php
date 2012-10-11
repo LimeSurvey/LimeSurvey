@@ -6544,7 +6544,9 @@ function fixLanguageConsistency($sid, $availlangs='')
                 'language' => $lang
 
                 );
+                switchMSSQLIdentityInsert('groups',true);
                 Yii::app()->db->createCommand()->insert('{{groups}}', $data);
+                switchMSSQLIdentityInsert('groups',false);
             }
         }
         reset($langs);
