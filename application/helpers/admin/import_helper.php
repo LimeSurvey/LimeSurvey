@@ -850,7 +850,11 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
         {
             $insertdata['gid']=$aGIDReplacements[$oldgid];
         }
+        if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups',true);
+        
         $result = Yii::app()->db->createCommand()->insert('{{groups}}', $insertdata);
+
+        if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups',false);
         $results['groups']++;
 
         if (!isset($aGIDReplacements[$oldgid]))
@@ -890,7 +894,10 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
         {
             $insertdata['qid']=$aQIDReplacements[$oldqid];
         }
+        if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',true);
+        
         $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
+        if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',false);
         if (!isset($aQIDReplacements[$oldqid]))
         {
             $newqid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
@@ -924,9 +931,12 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
             if (isset($aQIDReplacements[$oldsqid])){
                 $insertdata['qid']=$aQIDReplacements[$oldsqid];
             }
+            if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',true);
 
             $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
             $newsqid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
+            if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',true);
+            
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array
