@@ -57,6 +57,26 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.00+ (build 121009) to 2.00+ (build 121011) Oct 11, 2012
+-Fixed issue #6658: Cannot resume saved survey from "Load a previously saved survey" screen (Carsten Schmitz)
+-Fixed issue #6665: Spaces inserted at the beginning of invitation/reminder email body when using plain text format (Carsten Schmitz)
+-Fixed issue #6673: Admin cannot view statistics of responses when using MSSQL (Carsten Schmitz)
+-Fixed issue #6675: Print preview broken on additional languages (Carsten Schmitz)
+-Fixed issue #6680: Impossible to translate using "Quick translation" (Carsten Schmitz)
+-Fixed issue #6681: Error updating when trying to save email templates (Carsten Schmitz)
+-Fixed issue #6683: Advanced multilingual settings not saved for new question (Carsten Schmitz)
+-Fixed issue: Error when adding an additional language to the survey using MSSQL (Carsten Schmitz)
+-Fixed issue: Mandatory field error at import (Carsten Schmitz)
+-Fixed issue: Problem when importing results from survey archive and using MSSQL (Carsten Schmitz)
+-Fixed issue: Randomization groups for questions not working when using MSSQL (Carsten Schmitz)
+-Fixed issue: Various problems when using MSSQL or Postgres (Carsten Schmitz)
+#Updated translation: Estonian by klaster
+#Updated translation: Italian by lfanfoni
+#Updated translation: Polish by elisa
+#Updated translation: Serbian by MilaVeljovic
+
+
 Changes from 2.00+ (build 121006) to 2.00+ (build 121009) Oct 09, 2012
 -Fixed issue #6179: Files with umlauts in filename do not upload on some browsers (Carsten Schmitz)
 -Fixed issue #6441: Public statistics is missing result data and charts (Carsten Schmitz)
