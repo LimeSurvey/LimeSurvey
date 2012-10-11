@@ -791,10 +791,9 @@ class index extends CAction {
         if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 )
             return true;
 
-        $sQuery = dbExecuteAssoc(
-        "SELECT uid
+        $sQuery = "SELECT uid
         FROM {{survey_permissions}}
-        WHERE sid = ".$iSurveyID." AND uid = ".$_SESSION['loginID']);
+        WHERE sid = ".$iSurveyID." AND uid = ".$_SESSION['loginID'];
         $aRow = Yii::app()->db->createCommand($sQuery)->queryRow();
         if ( $aRow )
             return true;
