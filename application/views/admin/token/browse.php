@@ -40,6 +40,8 @@
     /* Build the javasript variables to pass to the jqGrid */
 ?>
 <script type="text/javascript">
+    var sRecordText = '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
+    var sPageText = '<?php $clang->eT("Page {0} of {1}",'js');?>';
     var imageurl = "<?php echo Yii::app()->getConfig('adminimageurl'); ?>";
     var mapButton = "<?php $clang->eT("Next") ?>";
     var error = "<?php $clang->eT("Error") ?>";

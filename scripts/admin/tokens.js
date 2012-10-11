@@ -92,7 +92,9 @@ $(document).ready(function() {
     });
     var lastSel,lastSel2;
     jQuery("#displaytokens").jqGrid({
+        recordtext: sRecordText,
         emptyrecords: sEmptyRecords,
+        pgtext: sPageText,
         align:"center",
         headertitles: true,
         url: jsonUrl,
