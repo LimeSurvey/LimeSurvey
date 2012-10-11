@@ -1800,3 +1800,9 @@ td.LEMerror  {
 	border: 2px solid #FF00FF;
 	color: red;
 }
+
+.dd .ddTitle
+{
+    background-color:#fff !important;
+    color:#000 !important;
+}
