@@ -3678,7 +3678,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($insertdata)
                 XSSFilterArray($insertdata);
-            $result=Answers::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $result=Answers::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[6]<br />");
             $results['answers']++;
         }
     }
@@ -3706,12 +3706,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                     $insertdata['language']=$sLanguage;
                     if ($insertdata)
                         XSSFilterArray($insertdata);
-                    $result=Question_attributes::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+                    $result=Question_attributes::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[7]<br />");
                 }
             }
             else
             {
-                $result=Question_attributes::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+                $result=Question_attributes::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[8]<br />");
             }
             $results['question_attributes']++;
         }
@@ -3735,7 +3735,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             if ($insertdata)
                 XSSFilterArray($insertdata);
             // now translate any links
-            $result=Defaultvalues::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $result=Defaultvalues::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[9]<br />");
             $results['defaultvalues']++;
         }
     }
@@ -3812,7 +3812,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
 
             // now translate any links
-            $result=Conditions::model()->insertRecords($insertdata) or safeDie ($clang->gT("Error").": Failed to insert data<br />");
+            $result=Conditions::model()->insertRecords($insertdata) or safeDie ($clang->gT("Error").": Failed to insert data[10]<br />");
             $results['conditions']++;
         }
     }
@@ -3838,7 +3838,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['sid']=$iNewSID; // remap the survey id
 
             // now translate any links
-            $result=Assessment::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $result=Assessment::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[11]<br />");
             $results['assessments']++;
         }
     }
@@ -3859,7 +3859,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $oldid=$insertdata['id'];
             unset($insertdata['id']);
             // now translate any links
-            $result=Quota::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $result=Quota::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[12]<br />");
             $aQuotaReplacements[$oldid] = Yii::app()->db->getCommandBuilder()->getLastInsertID('{{quota}}');
             $results['quota']++;
         }
@@ -3881,7 +3881,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['quota_id']=$aQuotaReplacements[(int)$insertdata['quota_id']]; // remap the qid
             unset($insertdata['id']);
             // now translate any links
-            $result=Quota_members::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $result=Quota_members::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[13]<br />");
             $results['quotamembers']++;
         }
     }
@@ -3925,7 +3925,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['targetqid'] =$aQIDReplacements[(int)$insertdata['targetqid']]; // remap the qid
             }
             unset($insertdata['id']);
-            $result=Survey_url_parameters::model()->insertRecord($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $result=Survey_url_parameters::model()->insertRecord($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[14]<br />");
             $results['survey_url_parameters']++;
         }
     }
@@ -4030,7 +4030,7 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
             $insertdata[(string)$key]=(string)$value;
         }
 
-        $result = Tokens_dynamic::model($iSurveyID)->insertToken($iSurveyID,$insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+        $result = Tokens_dynamic::model($iSurveyID)->insertToken($iSurveyID,$insertdata) or safeDie($clang->gT("Error").": Failed to insert data[15]<br />");
 
         $results['tokens']++;
     }
@@ -4045,7 +4045,7 @@ function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
     Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
 
-    switchMSSQLIdentityInsert('survey_'.$iSurveyID,false);
+    switchMSSQLIdentityInsert('survey_'.$iSurveyID, true);
     $results['responses']=0;
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilepath);
@@ -4086,7 +4086,8 @@ function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
                                 $aInsertData[$sFieldname]='';
                         }
                     }
-                    $result = Survey_dynamic::model($iSurveyID)->insertRecords($aInsertData) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+                    
+                    $result = Survey_dynamic::model($iSurveyID)->insertRecords($aInsertData) or safeDie($clang->gT("Error").": Failed to insert data[16]<br />");
                     $results['responses']++;
                 }
             }
@@ -4141,7 +4142,7 @@ function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
             $insertdata[$key]=(string)$value;
         }
 
-        $result = Survey_timings::model($iSurveyID)->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+        $result = Survey_timings::model($iSurveyID)->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[17]<br />");
 
         $results['responses']++;
     }
