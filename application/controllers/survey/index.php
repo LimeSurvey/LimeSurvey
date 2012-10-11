@@ -794,7 +794,7 @@ class index extends CAction {
         $sQuery = dbExecuteAssoc(
         "SELECT uid
         FROM {{survey_permissions}}
-        WHERE sid = ".$iSurveyID." AND uid = '".$_SESSION['loginID']);
+        WHERE sid = ".$iSurveyID." AND uid = ".$_SESSION['loginID']);
         $aRow = Yii::app()->db->createCommand($sQuery)->queryRow();
         if ( $aRow )
             return true;
