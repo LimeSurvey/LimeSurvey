@@ -52,16 +52,17 @@
         }
 
 
-		/**
-		* Returns this model's validation rules
-		*
-		*/
-		public function rules()
-		{
-			return array(
-			array('group_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
-			);  
-		}
+    /**
+    * Returns this model's validation rules
+    *
+    */
+    public function rules()
+    {
+        return array(
+        array('group_name,description','LSYii_Validators'),
+        array('group_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+        );
+    }
 
         /**
         * Defines the relations for this model
