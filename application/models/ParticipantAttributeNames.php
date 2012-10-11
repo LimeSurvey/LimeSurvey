@@ -312,7 +312,7 @@ class ParticipantAttributeNames extends CActiveRecord
                             'visible' => $data['visible']);
         Yii::app()->db->createCommand()
                   ->insert('{{participant_attribute_names}}',$insertnames);
-        $attribute_id = Yii::app()->db->getCommandBuilder()->getLastInsertID($this->tableName());
+        $attribute_id = getLastInsertID($this->tableName());
         $insertnameslang = array('attribute_id' => intval($attribute_id),
                                  'attribute_name'=> $data['attribute_name'],
                                  'lang' => Yii::app()->session['adminlang']);
@@ -442,7 +442,7 @@ class ParticipantAttributeNames extends CActiveRecord
                             'visible' => $data['visible']);
 		Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}', $insertnames);
 
-        $insertid = Yii::app()->db->getCommandBuilder()->getLastInsertID($this->tableName());
+        $insertid = getLastInsertID($this->tableName());
         $insertnameslang = array('attribute_id' => $insertid,
                                  'attribute_name'=>$data['attribute_name'],
                                  'lang' => Yii::app()->session['adminlang']);

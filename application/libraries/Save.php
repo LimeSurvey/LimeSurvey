@@ -154,7 +154,7 @@ class Save {
                 );
                 if (Survey_dynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
                 {
-                    $srid = Yii::app()->db->getCommandBuilder()->getLastInsertID('{{survey_' . $surveyid . '}}');
+                    $srid = getLastInsertID('{{survey_' . $surveyid . '}}');
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
                 }
                 else
@@ -178,7 +178,7 @@ class Save {
 
             if ($saved_control->save())
             {
-                $scid = Yii::app()->db->getCommandBuilder()->getLastInsertID('{{saved_control}}');
+                $scid = getLastInsertID('{{saved_control}}');
                 $_SESSION['survey_'.$surveyid]['scid'] = $scid;
             }
             else

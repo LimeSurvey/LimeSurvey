@@ -447,7 +447,7 @@ class dataentry extends Survey_Common_Action
                     $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("dbQuoteID", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll",array_values($row))).")";
                     $result = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
 
-                    $aSRIDConversions[$iOldID] = Yii::app()->db->getCommandBuilder()->getLastInsertID($activetable);
+                    $aSRIDConversions[$iOldID] = getLastInsertID($activetable);
                     $iRecordCount++;
                 }
 

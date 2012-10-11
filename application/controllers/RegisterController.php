@@ -198,7 +198,7 @@ class RegisterController extends LSYii_Controller {
         //                             $postattribute1,   $postattribute2)
         ) or safeDie ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
         */
-        $tid = Yii::app()->db->getCommandBuilder()->getLastInsertID($token->tableName());;
+        $tid = getLastInsertID($token->tableName());;
 
 
         $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];

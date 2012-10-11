@@ -303,7 +303,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
             $lsiresult=Yii::app()->db->createCommand($lsainsert)->query();
             $results['labelsets']++;
             // Get the new insert id for the labels inside this labelset
-            $newlid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{labelsets}}');
+            $newlid=getLastInsertID('{{labelsets}}');
 
             if ($labelsarray) {
                 $count=0;
@@ -435,7 +435,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
             //GET NEW GID  .... if is not done before and we count a group if a new gid is required
             if ($newgid == 0)
             {
-                $newgid = Yii::apps()->db->getCommandBuilder()->getLastInsertID('{{groups}}');
+                $newgid = getLastInsertID('{{groups}}');
                 $countgroups++;
             }
         }
@@ -517,7 +517,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                 }
                 else
                 {
-                    $aQIDReplacements[$oldqid]=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
+                    $aQIDReplacements[$oldqid]=getLastInsertID('{{questions}}');
                     $saveqid=$aQIDReplacements[$oldqid];
                 }
                 $qtypes = getQuestionTypeList("" ,"array");
@@ -556,7 +556,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                                 $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
                                 if ($fieldname=='')
                                 {
-                                    $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
+                                    $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=getLastInsertID('{{questions}}');
                                 }
                             }
                         }
@@ -639,7 +639,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                     $qres = Yii::app()->db->createCommand()->insert('{{questions}}', $questionrowdata);
                     if (!isset($questionrowdata['qid']))
                     {
-                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
+                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=getLastInsertID('{{questions}}');
                     }
 
                     $results['subquestions']++;
@@ -859,7 +859,8 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
 
         if (!isset($aGIDReplacements[$oldgid]))
         {
-            $newgid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{groups}}');
+        $result = Yii::app()->db->createCommand()->insert('{{groups}}', $insertdata);
+            $newgid=getLastInsertID('{{groups}}');
             $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
         }
     }
@@ -900,7 +901,7 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
         if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',false);
         if (!isset($aQIDReplacements[$oldqid]))
         {
-            $newqid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
+            $newqid=getLastInsertID('{{questions}}');
             $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
             $results['questions']++;
         }
@@ -934,7 +935,7 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
             if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',true);
 
             $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
-            $newsqid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
+            $newsqid=getLastInsertID('{{questions}}');
             if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',true);
             
             if (!isset($insertdata['qid']))
@@ -1327,7 +1328,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
             $lsiresult=Yii::app()->db->createCommand($lsainsert)->query();
 
             // Get the new insert id for the labels inside this labelset
-            $newlid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{labelsets}}');
+            $newlid=getLastInsertID('{{labelsets}}');
 
             if ($labelsarray) {
                 $count=0;
@@ -1532,7 +1533,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                         $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie ("Error: Failed to insert subquestion <br />\n$qinsert<br />\n");
                         if ($fieldname=='')
                         {
-                            $aSQIDReplacements[$labelrow['code']]=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
+                            $aSQIDReplacements[$labelrow['code']]=getLastInsertID('{{questions}}');
                         }
 
                     }
@@ -1621,7 +1622,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                     $qres = $question->save();
                     if (!isset($questionrowdata['qid']))
                     {
-                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=Yii::app()->db->getCommandBuilder()->getLastInsertID($question->tableName());
+                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=getLastInsertID($question->tableName());
                     }
                     $results['subquestions']++;
                     // also convert default values subquestions for multiple choice
@@ -1779,7 +1780,7 @@ function XMLImportQuestion($sFullFilepath, $iNewSID, $newgid)
         $result = $ques->save();
         if (!isset($aQIDReplacements[$oldqid]))
         {
-            $newqid=Yii::app()->db->getCommandBuilder()->getLastInsertID($ques->tableName());
+            $newqid=getLastInsertID($ques->tableName());
             $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
         }
     }
@@ -1815,7 +1816,7 @@ function XMLImportQuestion($sFullFilepath, $iNewSID, $newgid)
             foreach ($insertdata as $k => $v)
                 $ques->$k = $v;
             $result = $ques->save();
-            $newsqid=Yii::app()->db->getCommandBuilder()->getLastInsertID($ques->tableName());
+            $newsqid=getLastInsertID($ques->tableName());
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array
@@ -2145,7 +2146,7 @@ function XMLImportLabelsets($sFullFilepath, $options)
         $result = Yii::app()->db->createCommand()->insert('{{labelsets}}', $insertdata);
         $results['labelsets']++;
 
-        $newlsid=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{labelsets}}');
+        $newlsid=getLastInsertID('{{labelsets}}');
         $aLSIDReplacements[$oldlsid]=$newlsid; // add old and new lsid to the mapping array
     }
 
@@ -2967,7 +2968,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                             $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
                             if ($fieldname=='')
                             {
-                                $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=Yii::app()->db->getCommandBuilder()->getLastInsertID('{{questions}}');
+                                $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=getLastInsertID('{{questions}}');
                             }
                         }
                     }
@@ -3870,7 +3871,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             unset($insertdata['id']);
             // now translate any links
             $result=Quota::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[12]<br />");
-            $aQuotaReplacements[$oldid] = Yii::app()->db->getCommandBuilder()->getLastInsertID('{{quota}}');
+            $aQuotaReplacements[$oldid] = getLastInsertID('{{quota}}');
             $results['quota']++;
         }
     }

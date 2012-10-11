@@ -6704,6 +6704,24 @@ function switchMSSQLIdentityInsert($table,$state)
     }
 }
 
+/**
+* Retrieves the last Insert ID realiable for cross-DB applications
+* 
+* @param string $sTableName Needed for Postgres and MSSQL
+*/
+function getLastInsertID($sTableName)
+{
+    $sDBDriver=Yii::app()->db->getDriverName();
+    if ($sDBDriver=='mysql' || $sDBDriver=='mysqli')
+    {
+        return Yii::app()->db->getLastInsertID();
+    }
+    else
+    {
+        return getLastInsertID('{{groups}}');
+    }
+}
+
 // TMSW Conditions->Relevance:  This function is not needed?  Optionally replace this with call to EM to get similar info
 /**
 * getGroupDepsForConditions() get Dependencies between groups caused by conditions
