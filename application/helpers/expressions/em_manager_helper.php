@@ -3343,7 +3343,7 @@
                 $this->qcode2sgq[$fielddata['title']] = $surveyid . 'X' . $groupNum . 'X' . $questionNum;
 
                 // Create JavaScript arrays
-                $this->alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'");
+                $this->alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . addslashes($varName) . "':'" . $jsVarName . "'");
                 $this->alias2varName[$sgqa] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $sgqa . "':'" . $jsVarName . "'");
 
                 $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{ "

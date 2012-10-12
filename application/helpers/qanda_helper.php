@@ -4444,7 +4444,7 @@ function do_array_10point($ia)
         $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
     }
     $answer .= "</tr>\n</thead>";
-    $answer_t_content = '<tbody';
+    $answer_t_content = '<tbody>';
     $trbc = '';
     foreach ($aSubquestions as $ansrow)
     {
