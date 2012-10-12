@@ -115,7 +115,7 @@ class ExportSurveyResultsService
         while ($bMoreRecords)
         {
  
-            $iExported= $surveyDao->loadSurveyResults($survey, $iBatchSize, $iCurrentRecord, $sFilter);
+            $iExported= $surveyDao->loadSurveyResults($survey, $iBatchSize, $iCurrentRecord, $oOptions->responseMaxRecord, $sFilter);
             $iCurrentRecord+=$iExported;
             $writer->write($survey, $sLanguageCode, $oOptions,$first);
             $first=false;
@@ -301,7 +301,7 @@ class SurveyDao
     * @param int $iOffset 
     * @param int $iLimit 
     */
-    public function loadSurveyResults(SurveyObj $survey, $iLimit, $iOffset, $sFilter='' )
+    public function loadSurveyResults(SurveyObj $survey, $iLimit, $iOffset, $iMaximum, $sFilter='' )
     {
 
         $oRecordSet = Yii::app()->db->createCommand()->select()->from('{{survey_' . $survey->id . '}}');
@@ -311,6 +311,11 @@ class SurveyDao
         }
         if ($sFilter!='')
             $oRecordSet->where($sFilter);
+            if ($iOffset+$iLimit>$iMaximum)
+            {
+                $iLimit=$iMaximum-$iOffset;
+            }
+            
         $survey->responses=$oRecordSet->order('id')->limit($iLimit, $iOffset)->query()->readAll();
 
         return count($survey->responses);

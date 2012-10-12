@@ -5426,8 +5426,11 @@ function getTokenFieldsAndNames($surveyid, $onlyAttributes = false)
     $extra_attrs_and_names = array();
     // !!! This is actually deprecated, use Survey::model()->findByPk($surveyid)->tokenAttributes instead
     $attdescriptiondata = Survey::model()->findByPk($surveyid)->tokenAttributes;
-    foreach ($attdescriptiondata as $attname => $attdata)
-        $attributedescriptions[$attname] = $attdata['description'];
+    if (!is_null($attdescriptiondata))
+    {
+        foreach ($attdescriptiondata as $attname => $attdata)
+            $attributedescriptions[$attname] = $attdata['description'];
+    }
     foreach ($extra_attrs as $fieldname)
     {
         if (isset($attributedescriptions[$fieldname]))
