@@ -1583,9 +1583,6 @@ class dataentry extends Survey_Common_Action
             $updateqr .= " WHERE id=$id";
 
             $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
-            while (ob_get_level() > 0) {
-                ob_end_flush();
-            }
 
             $onerecord_link = $this->getController()->createUrl('/').'/admin/responses/index/surveyid/'.$surveyid.'/id/'.$id;
             $allrecords_link = $this->getController()->createUrl('/').'/admin/responses/index/surveyid/'.$surveyid;
