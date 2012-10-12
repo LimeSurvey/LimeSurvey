@@ -1869,14 +1869,13 @@ class dataentry extends Survey_Common_Action
                         $utresult = dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
 
                         // save submitdate into survey table
-                        $srid = Yii::app()->db->getLastInsertID(); // Yii::app()->db->getLastInsertID();
-                        $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$srid}\n";
+                        $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$new_response}\n";
                         $sdresult = dbExecuteAssoc($sdquery) or safeDie ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
-                        $last_db_id = Yii::app()->db->getLastInsertID();
+                        $last_db_id = getLastInsertID("{{survey_$surveyid}}");
                     }
                     if (isset($_POST['save']) && $_POST['save'] == "on")
                     {
-                        $srid = Yii::app()->db->getLastInsertID(); //Yii::app()->db->getLastInsertID();
+                        $srid = $last_db_id;
                         $aUserData=Yii::app()->session;
                         //CREATE ENTRY INTO "saved_control"
 
@@ -1906,13 +1905,12 @@ class dataentry extends Survey_Common_Action
                         $this->load->model('saved_control_model');*/
                         if (dbExecuteAssoc($SQL))
                         {
-                            $scid =  Yii::app()->db->getLastInsertID(); // Yii::app()->db->getLastInsertID("{{saved_control}}","scid");
+                            $scid =  getLastInsertID('{{saved_control}}');
 
                             $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
                             //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
 
                             $tokens_table = "{{tokens_$surveyid}}";
-                            $last_db_id = Yii::app()->db->getLastInsertID();
                             if (tableExists($tokens_table)) //If the query fails, assume no tokens table exists
                             {
                                 $tkquery = "SELECT * FROM {$tokens_table}";
@@ -1940,8 +1938,6 @@ class dataentry extends Survey_Common_Action
                                 //Yii::app()->db->AutoExecute(db_table_name("tokens_".$surveyid), $tokendata,'INSERT');
                                 $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("A token entry for the saved survey has been created too."));
                                 //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
-                                $last_db_id = Yii::app()->db->getLastInsertID();
-
                             }
                             if ($saver['email'])
                             {

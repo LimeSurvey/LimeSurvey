@@ -6714,7 +6714,7 @@ function getLastInsertID($sTableName)
     $sDBDriver=Yii::app()->db->getDriverName();
     if ($sDBDriver=='mysql' || $sDBDriver=='mysqli')
     {
-        return Yii::app()->db->getLastInsertID();
+        return getLastInsertID();
     }
     else
     {
