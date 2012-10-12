@@ -551,7 +551,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => TRUE,
 					'qid' => TRUE,
-					'description' => "",
+					'description' => $clang->gT("Question help"),
 					'HTMLeditorType' => "question_help",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => ""
@@ -596,7 +596,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Invitation email"),
+					'description' => $clang->gT("Invitation email subject"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => "emailinvitebody"
@@ -611,7 +611,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => "",
+					'description' => $clang->gT("Invitation email"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => ""
@@ -626,7 +626,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Reminder email"),
+					'description' => $clang->gT("Reminder email subject"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => "emailreminderbody"
@@ -641,7 +641,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => "",
+					'description' => $clang->gT("Reminder email"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => ""
@@ -656,7 +656,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Confirmation email"),
+					'description' => $clang->gT("Confirmation email subject"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => "emailconfirmationbody"
@@ -671,7 +671,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => "",
+					'description' => $clang->gT("Confirmation email"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => ""
@@ -686,7 +686,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Registration email"),
+					'description' => $clang->gT("Registration email subject"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => "emailregistrationbody"
@@ -701,7 +701,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => "",
+                    'description' => $clang->gT("Registration email"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => ""
@@ -716,7 +716,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Confirmation email"),
+					'description' => $clang->gT("Confirmation email subject"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => "email_confirmbody"
@@ -731,7 +731,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => "",
+                    'description' => $clang->gT("Confirmation email"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => ""
@@ -904,7 +904,7 @@ class translate extends Survey_Common_Action {
 									'class' => '_from_',
 									'id' => "${type}_from_${i}"
 								),
-								"$textfrom"
+								showJavaScript($textfrom)
 							);
         $translateoutput .= CHtml::openTag('td');
 		$translateoutput .= CHtml::hiddenField("{$type}_id1_{$i}", $value1);
@@ -912,8 +912,8 @@ class translate extends Survey_Common_Action {
 
         $nrows = max($this->calc_nrows($textfrom), $this->calc_nrows($textto));
 
-		$translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$i}", htmlspecialchars($textto, ENT_QUOTES));
-		$translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", htmlspecialchars($textto),
+		$translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$i}", $textto);
+		$translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,
 								array(
 									'cols' => '75',
 									'rows' => $nrows,

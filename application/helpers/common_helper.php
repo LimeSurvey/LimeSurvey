@@ -5482,13 +5482,29 @@ function getAttributeValue($surveyid,$attrName,$token)
 }
 
 /**
-* This function strips any content between and including <style>  & <javascript> tags
+* This function strips any content between and including <javascript> tags
 *
 * @param string $sContent String to clean
 * @return string  Cleaned string
 */
 function stripJavaScript($sContent){
     $text = preg_replace('@<script[^>]*?>.*?</script>@si', '', $sContent);
+    return $text;
+}
+
+/**
+* This function converts emebedded Javascript to Text
+*
+* @param string $sContent String to clean
+* @return string  Cleaned string
+*/
+function showJavaScript($sContent){
+    $text = preg_replace_callback ('@<script[^>]*?>.*?</script>@si',         create_function(
+            // single quotes are essential here,
+            // or alternative escape all $ as \$
+            '$matches',
+            'return htmlspecialchars($matches[0]);'
+        ), $sContent);
     return $text;
 }
 
