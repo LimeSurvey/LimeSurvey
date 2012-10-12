@@ -412,7 +412,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
         if (returnGlobal('token'))
         {
-            $_clearall .= "&amp;token=" . urlencode(trim(sanitize_token(strip_tags(returnGlobal('token')))));
+            $_clearall .= "?token=" . urlencode(trim(sanitize_token(strip_tags(returnGlobal('token')))));
         }
         $_clearall .= "', '_self')}\" />";
     }

@@ -358,7 +358,7 @@ class SurveyRuntimeHelper {
                 //field for limereplace stuff, and do transformations!
                 $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
                 $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'],array('SID'=>$thissurvey['sid'],
-                                                                                                'SAVEDID'=>$_SESSION[$LEMsessid]['srid'],
+                                                                                                'SAVEDID'=>(isset($_SESSION[$LEMsessid]['srid']) ? $_SESSION[$LEMsessid]['srid'] : ''),
                                                                                                 'TOKEN'=>(isset($clienttoken) ? $clienttoken : ''),
                                                                                                 ));   // to do INSERTANS substitutions
                 
