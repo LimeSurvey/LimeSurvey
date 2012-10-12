@@ -771,7 +771,7 @@ class translate extends Survey_Common_Action {
                         return Groups::model()->findAllByAttributes(array('sid'=>$iSurveyID, 'language'=>$baselang), array('order' => 'gid'));
                     case 'question':
                     case 'question_help':
-                        return Questions::model()->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang,'parent_qid' => 0), array('order' => 'question_order, scale_id'));
+                        return Questions::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang,'parent_qid' => 0), array('order' => 'groups.group_order, t.question_order, t.scale_id'));
                     case 'subquestion':
                         return Questions::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang), array('order' => 'groups.group_order, parents.question_order, t.scale_id, t.question_order', 'condition'=>'parents.language=:baselang1 AND groups.language=:baselang2 AND t.parent_qid>0', 'params'=>array(':baselang1'=>$baselang,':baselang2'=>$baselang)));
                     case 'answer':
