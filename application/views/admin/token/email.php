@@ -3,7 +3,7 @@
 <?php $clang->eT("Send email invitations"); ?></div>
 <div><br/>
 
-    <?php if ($thissurvey['active'] != 'Y')
+    <?php if ($thissurvey[$baselang]['active'] != 'Y')
         { ?>
         <div class='messagebox ui-corner-all'><div class='warningheader'><?php $clang->eT('Warning!'); ?></div><?php $clang->eT("This survey is not yet activated and so your participants won't be able to fill out the survey."); ?></div>
         <?php } ?>
@@ -37,29 +37,29 @@
                     {
                         $aDefaultTexts = templateDefaultTexts($bplang, 'unescaped');
                     }
-                    if (!$thissurvey['email_invite'])
+                    if (!$thissurvey[$language]['email_invite'])
                     {
                         if ($ishtml === true)
                         {
-                            $thissurvey['email_invite'] = HTMLEscape($aDefaultTexts['invitation']);
+                            $thissurvey[$language]['email_invite'] = HTMLEscape($aDefaultTexts['invitation']);
                         }
                         else
                         {
-                            $thissurvey['email_invite'] = $aDefaultTexts['invitation'];
+                            $thissurvey[$language]['email_invite'] = $aDefaultTexts['invitation'];
                         }
                     }
-                    if (!$thissurvey['email_invite_subj'])
+                    if (!$thissurvey[$language]['email_invite_subj'])
                     {
-                        $thissurvey['email_invite_subj'] = $aDefaultTexts['invitation_subject'];
+                        $thissurvey[$language]['email_invite_subj'] = $aDefaultTexts['invitation_subject'];
                     }
-                    $fieldsarray["{ADMINNAME}"] = $thissurvey['adminname'];
-                    $fieldsarray["{ADMINEMAIL}"] = $thissurvey['adminemail'];
-                    $fieldsarray["{SURVEYNAME}"] = $thissurvey['name'];
-                    $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey['description'];
-                    $fieldsarray["{EXPIRY}"] = $thissurvey["expiry"];
+                    $fieldsarray["{ADMINNAME}"] = $thissurvey[$baselang]['adminname'];
+                    $fieldsarray["{ADMINEMAIL}"] = $thissurvey[$baselang]['adminemail'];
+                    $fieldsarray["{SURVEYNAME}"] = $thissurvey[$language]['name'];
+                    $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey[$language]['description'];
+                    $fieldsarray["{EXPIRY}"] = $thissurvey[$baselang]["expiry"];
 
-                    $subject = Replacefields($thissurvey['email_invite_subj'], $fieldsarray, false);
-                    $textarea = Replacefields($thissurvey['email_invite'], $fieldsarray, false);
+                    $subject = Replacefields($thissurvey[$language]['email_invite_subj'], $fieldsarray, false);
+                    $textarea = Replacefields($thissurvey[$language]['email_invite'], $fieldsarray, false);
                     if ($ishtml !== true)
                     {
                         $textarea = str_replace(array('<x>', '</x>'), array(''), $textarea);
@@ -69,7 +69,7 @@
 
                     <ul>
                         <li><label for='from_<?php echo $language; ?>'><?php $clang->eT("From"); ?>:</label>
-                            <input type='text' size='50' id='from_<?php echo $language; ?>' name='from_<?php echo $language; ?>' value="<?php echo "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>"; ?>" /></li>
+                            <input type='text' size='50' id='from_<?php echo $language; ?>' name='from_<?php echo $language; ?>' value="<?php echo "{$thissurvey[$baselang]['adminname']} <{$thissurvey[$baselang]['adminemail']}>"; ?>" /></li>
 
                         <li><label for='subject_<?php echo $language; ?>'><?php $clang->eT("Subject"); ?>:</label>
                             <input type='text' size='83' id='subject_<?php echo $language; ?>' name='subject_<?php echo $language; ?>' value="<?php echo $subject; ?>" /></li>

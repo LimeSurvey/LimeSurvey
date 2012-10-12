@@ -1280,6 +1280,10 @@ class tokens extends Survey_Common_Action
         $timeadjust = Yii::app()->getConfig("timeadjust");
 
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
+        foreach($aSurveyLangs as $sSurveyLanguage)
+        {
+            $aData['thissurvey'][$sSurveyLanguage] = getSurveyInfo($iSurveyId, $sSurveyLanguage);    
+        }
         $aData['surveyid'] = $iSurveyId;
         $aData['sSubAction'] = $sSubAction;
         $aData['bEmail'] = $bEmail;
