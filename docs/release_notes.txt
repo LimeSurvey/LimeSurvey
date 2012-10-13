@@ -57,6 +57,24 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121011) to 2.00+ (build 121013) Oct 13, 2012
+-Fixed issue #6654: Group import or TSV import are not XSS filtered for non super-admin (Denis Chenu)
+-Fixed issue #6659: Missing translations when browsing tokens (Carsten Schmitz)
+-Fixed issue #6671: Impossible to import correctly a group of question (Carsten Schmitz)
+-Fixed issue #6672: Error when a user without admin access try to visualise a survey (Carsten Schmitz)
+-Fixed issue #6682: Quick translation function for questions not showing texts properly (Carsten Schmitz)
+-Fixed issue #6682: Quick Translation function for questions not showing texts properly (Carsten Schmitz)
+-Fixed issue #6685: Export of results broken (Denis Chenu)
+-Fixed issue #6686: "Restart this survey" link is incorrect (Carsten Schmitz)
+-Fixed issue #6687: Unable to select email template of different languages when sending email (Carsten Schmitz)
+-Fixed issue #6688: Apostrophe (single quote) in question code for File upload questions disrupts EM logic (Carsten Schmitz)
+-Fixed issue #6691: Unable to edit response if debug mode is active (Carsten Schmitz)
+-Fixed issue #6692: Upper range limit ignored on exporting results (Carsten Schmitz)
+-Fixed issue: Dumping large database tables causes script to run out of memory (Carsten Schmitz)
+-Fixed issue: Missing databasename when dumping database (Carsten Schmitz)
+-Fixed issue: Problem importing question group when using MSSQL (Carsten Schmitz)
+#Updated translation: Estonian by klaster
+#Updated translation: German by c_schmitz
 
 Changes from 2.00+ (build 121009) to 2.00+ (build 121011) Oct 11, 2012
 -Fixed issue #6658: Cannot resume saved survey from "Load a previously saved survey" screen (Carsten Schmitz)
