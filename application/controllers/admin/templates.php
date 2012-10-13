@@ -863,11 +863,11 @@ class templates extends Survey_Common_Action
         // FAKE DATA FOR TEMPLATES
         $thissurvey['name'] = $clang->gT("Template Sample");
         $thissurvey['description'] =
-        $clang->gT('This is a sample survey description. It could be quite long.') . '<br /><br />' .
-        $clang->gT("But this one isn't.");
+            "<p>".$clang->gT('This is a sample survey description. It could be quite long.')."</p>".
+            "<p>".$clang->gT("But this one isn't.")."<p>";
         $thissurvey['welcome'] =
-        $clang->gT('Welcome to this sample survey') . '<br />' .
-        $clang->gT('You should have a great time doing this') . '<br />';
+            "<p>".$clang->gT('Welcome to this sample survey')."<p>" .
+            "<p>".$clang->gT('You should have a great time doing this')."<p>";
         $thissurvey['allowsave'] = "Y";
         $thissurvey['active'] = "Y";
         $thissurvey['tokenanswerspersistence'] = "Y";
@@ -959,42 +959,42 @@ class templates extends Survey_Common_Action
                 foreach ($Question as $qs)
                     $files[] = array("name" => $qs);
 
-                $myoutput[] = $this->getController()->render('/admin/templates/templateeditor_question_meta_view', array(), true);
+                $myoutput[] = $this->getController()->render('/admin/templates/templateeditor_question_meta_view', array('clang' => $clang), true);
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startpage.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/survey.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startgroup.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/groupdescription.pstpl", $aData));
 
                 $question = array(
-                'all' => 'How many roads must a man walk down?',
-                'text' => 'How many roads must a man walk down?',
+                'all' => $clang->gT("How many roads must a man walk down?"),// Still in use ?
+                'text' => $clang->gT("How many roads must a man walk down?"),
                 'code' => '1a',
                 'help' => 'helpful text',
-                'mandatory' => '',
+                'mandatory' => $clang->gT("*"),
+                'man_class' => ' mandatory',
                 'man_message' => '',
                 'valid_message' => '',
                 'file_valid_message' => '',
                 'essentials' => 'id="question1"',
                 'class' => 'list-radio',
-                'man_class' => '',
                 'input_error_class' => '',
                 'number' => '1',
                 'type' => 'L'
                 );
                 $aData['question'] = $question;
 
-                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array(), true);
+                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('clang' => $clang), true);
                 $aData['answer'] = $answer;
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/question.pstpl", $aData));
 
-                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
+                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true,'clang' => $clang), true);
                 $aData['answer'] = $answer;
                 $question = array(
-                'all' => '<span class="asterisk">*</span>' . $clang->gT("Please explain something in detail:"),
+                'all' => $clang->gT("Please explain something in detail:"),// Still in use ?
                 'text' => $clang->gT('Please explain something in detail:'),
                 'code' => '2a',
                 'help' => '',
-                'mandatory' => $clang->gT('*'),
+                'mandatory' => '',
                 'man_message' => '',
                 'valid_message' => '',
                 'file_valid_message' => '',
