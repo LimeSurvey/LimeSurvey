@@ -727,8 +727,6 @@ class templates extends Survey_Common_Action
     */
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
-        global $siteadminname, $siteadminemail;
-
         $clang = $this->getController()->lang;
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
@@ -856,6 +854,11 @@ class templates extends Survey_Common_Action
 
         foreach ($cssfiles as $fl)
             $normalfiles[] = $fl["name"];
+
+        // Some global data
+        $aData['sitename'] = Yii::app()->getConfig('sitename');
+        $siteadminname = Yii::app()->getConfig('siteadminname');
+        $siteadminemail = Yii::app()->getConfig('siteadminemail');
 
         // Set this so common.php doesn't throw notices about undefined variables
         $thissurvey['active'] = 'N';
