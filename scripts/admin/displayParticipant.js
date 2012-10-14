@@ -209,7 +209,6 @@ $(document).ready(function() {
                     }
                 }
             });
-
             /* Subgrid that displays user attributes */
             jQuery("#"+subgrid_table_id).jqGrid( {
                 url: getAttribute_json+'/'+row_id,
@@ -219,13 +218,14 @@ $(document).ready(function() {
                 caption: attributesHeadingTxt,
                 editable: true,
                 loadonce : true,
-                colNames: [actionsColTxt,participantIdColTxt,attributeTypeColTxt,attributeNameColTxt,attributeValueColTxt,attributePosValColTxt],
+                colNames: [actionsColTxt,participantIdColTxt,attributeTypeColTxt,attributeIdColTxt,attributeNameColTxt,attributeValueColTxt,attributePosValColTxt],
                 colModel: [ { name:'act',index:'act',width:55,align:'center',search: false,sortable:false,formatter:'actions',formatoptions : { keys:true,onEdit:function(id){
                     var iRow = $('#' + $.jgrid.jqID(id))[0].rowIndex;
                     editModifier(id,iRow, method='edit');
                 }}},
                 { name:'participant_id',index:'participant_id', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
                 { name:'atttype',index:'atttype', width:150, sorttype:"string",align:"center",editable:false,hidden:true},
+                { name:'attid',index:'attid', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
                 { name:'attname',index:'attname', width:150, sorttype:"string",align:"center",editable:false},
                 { name:'attvalue',index:'attvalue', width:150, sorttype:"string",align:"center",editable:true},
                 { name:'attpvalues',index:'attpvalues', width:150, sorttype:"string",align:"center",editable:false,hidden:true}],
