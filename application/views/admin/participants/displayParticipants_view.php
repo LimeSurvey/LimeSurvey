@@ -96,6 +96,7 @@ else
     var actionsColTxt="<?php $clang->eT("Actions") ?>";
     var participantIdColTxt="<?php $clang->eT("Participant ID") ?>";
     var attributeTypeColTxt="<?php $clang->eT("Attribute type") ?>";
+    var attributeIdColTxt="<?php $clang->eT("Attribute ID") ?>";
     var attributeNameColTxt="<?php $clang->eT("Attribute name") ?>";
     var attributeValueColTxt="<?php $clang->eT("Attribute value") ?>";
     var attributePosValColTxt="<?php $clang->eT("Possible attribute values") ?>";
