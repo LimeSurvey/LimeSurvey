@@ -57,6 +57,18 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121013) to 2.00+ (build 121014) Oct 14, 2012
+-Fixed issue #6671: Impossible to import correctly a group of question (Carsten Schmitz)
+-Fixed issue #6693: Error whan saving global settings with IE8 only (Denis Chenu)
+-Fixed issue #6695: Error when trying to create a new user group (Carsten Schmitz)
+-Fixed issue: Site name, site admin email and siteadminname are not used in template editor (Denis Chenu)
+-Fixed issue: Template editor button are not the same the survey button (Denis Chenu)
+-Fixed issue: Unable to edit template if debug>1 (Denis Chenu)
+#Updated translation: German by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+
+
 Changes from 2.00+ (build 121011) to 2.00+ (build 121013) Oct 13, 2012
 -Fixed issue #6654: Group import or TSV import are not XSS filtered for non super-admin (Denis Chenu)
 -Fixed issue #6659: Missing translations when browsing tokens (Carsten Schmitz)
@@ -94,7 +106,6 @@ Changes from 2.00+ (build 121009) to 2.00+ (build 121011) Oct 11, 2012
 #Updated translation: Polish by elisa
 #Updated translation: Serbian by MilaVeljovic
 
-
 Changes from 2.00+ (build 121006) to 2.00+ (build 121009) Oct 09, 2012
 -Fixed issue #6179: Files with umlauts in filename do not upload on some browsers (Carsten Schmitz)
 -Fixed issue #6441: Public statistics is missing result data and charts (Carsten Schmitz)
@@ -116,7 +127,6 @@ Changes from 2.00+ (build 121006) to 2.00+ (build 121009) Oct 09, 2012
 #Updated translation: Serbian by MilaVeljovic
 #Updated translation: Slovenian by Aambro
 #Updated translation: Spanish (Mexican) by pedrogk
-
 
 Changes from 2.00+ (build 121005) to 2.00+ (build 121006) Oct 05, 2012
 -Fixed issue #6596: Cant send invitation email with SQL DB (Spiros Trougakos)
@@ -170,7 +180,6 @@ Changes from 2.00+ (build 121002) to 2.00+ (build 121005) Oct 05, 2012
 #Updated translation: Swedish by klaster
 #Updated translation: Turkish by kayazeren
 
-
 Changes from 2.00+ (build 120931) to 2.00+ (build 121002) Oct 02, 2012
 -Fixed issue #6554: Show logic file always lists "time_limit_action" question attribute though it was not changed (Carsten Schmitz)
 -Fixed issue #6559: Batch emails to selected boxes not batching but trying to send to everyone (Carsten Schmitz)
@@ -194,14 +203,12 @@ Changes from 2.00+ (build 120931) to 2.00+ (build 121002) Oct 02, 2012
 #Updated translation: Serbian by MilaVeljovic
 #Updated translation: Turkish by kayazeren
 
-
 Changes from 2.00+ (build 120930) to 2.00+ (build 120931) Sept 30, 2012
 -Fixed issue #6610: Security captcha does not accept valid values (Carsten Schmitz)
 -Fixed issue #6611: Limesurvey only processing first of multiple bounced emails (Carsten Schmitz)
 -Fixed issue #6614: Editing a question not possible (Carsten Schmitz)
 -Fixed issue: Reset password not properly working (Carsten Schmitz)
 #Updated translation: Estonian by klaster
-
 
 Changes from 2.00+ (build 120926) to 2.00+ (build 120930) Sept 30, 2012
 -Fixed issue #6582: Export data to SPSS does not export value labels correctly (Menno Dekker)
