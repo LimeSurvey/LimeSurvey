@@ -6733,11 +6733,11 @@ function getLastInsertID($sTableName)
     $sDBDriver=Yii::app()->db->getDriverName();
     if ($sDBDriver=='mysql' || $sDBDriver=='mysqli')
     {
-        return getLastInsertID();
+        return Yii::app()->db->getLastInsertID();
     }
     else
     {
-        return getLastInsertID('{{groups}}');
+        return Yii::app()->db->getCommandBuilder()->getLastInsertID($sTableName);
     }
 }
 
