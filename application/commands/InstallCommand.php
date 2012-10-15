@@ -34,7 +34,7 @@
                     $this->connection->active=true;
                 }
                 catch(Exception $e){
-                    echo "Invalid access data. Check your config.php db access data";
+                    echo "Invalid access data. Check your config.php db access data"; die();
                 }
 
             };
@@ -103,6 +103,7 @@
                 }
             }
 
+            $this->connection->charset = 'utf8';
             switch ($sDatabaseType) {
                 case 'mysql':
                 case 'mysqli':
@@ -121,8 +122,7 @@
                 default:
                     throw new Exception(sprintf('Unkown database type "%s".', $sDatabaseType));
             }
-
-            return $this->_executeSQLFile(dirname(Yii::app()->basePath).'/installer/sql/create-'.$sql_file.'.sql', $this->connection->tablePrefix);        
+            return $this->_executeSQLFile(dirname(Yii::app()->basePath).'/installer/sql/create-'.$sql_file.'.sql', $aConfig['db']['tablePrefix']);        
 
         }
 
