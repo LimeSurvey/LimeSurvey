@@ -35,7 +35,6 @@ return array(
 	),
 
 	'components' => array(
-        /*
 		'db' => array(
 			'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey',
 			'emulatePrepare' => true,
@@ -44,7 +43,7 @@ return array(
 			'charset' => 'utf8',
 			'tablePrefix' => 'lime_',
 		),
-
+/*
 		'session' => array (
 			'class' => 'system.web.CDbHttpSession',
 			'connectionID' => 'db',
