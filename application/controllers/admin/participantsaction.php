@@ -1186,7 +1186,7 @@ class participantsaction extends Survey_Common_Action
         /* Iterate through each attribute owned by this user */
         foreach ($records as $row)
         {
-            $outputs[$i] = array("", $row['participant_id'], $row['attribute_type'], $row['attribute_id'], $row['attribute_name'], $row['value']);
+            $outputs[$i] = array("", $row['participant_id']."_".$row['attribute_id'], $row['attribute_type'], $row['attribute_id'], $row['attribute_name'], $row['value']);
             /* Collect allowed values for a DropDown attribute */
             if ($row['attribute_type'] == "DD")
             {
@@ -1231,7 +1231,7 @@ class participantsaction extends Survey_Common_Action
         /* Go through the empty attributes and build an entry in the output for them */
         foreach ($attributenotdone as $row)
         {
-            $outputs[$i] = array("", $iParticipantId, $row['attribute_type'], $row['attribute_id'], $row['attribute_name'], "");
+            $outputs[$i] = array("", $iParticipantId."_".$row['attribute_id'], $row['attribute_type'], $row['attribute_id'], $row['attribute_name'], "");
             if ($row['attribute_type'] == "DD")
             {
                 $attvalues = ParticipantAttributeNames::model()->getAttributesValues($row['attribute_id']);
@@ -1397,10 +1397,9 @@ class participantsaction extends Survey_Common_Action
     {
         if (Yii::app()->request->getPost('oper') == "edit" && (Yii::app()->request->getPost('attvalue') || Yii::app()->request->getPost('attvalue')=="0"))
         {
-        	
+        	$pid = explode('_',Yii::app()->request->getPost('participant_id'));
             $iAttributeId =  Yii::app()->request->getPost('attid');
-			
-            $aData = array('participant_id' => Yii::app()->request->getPost('participant_id'), 'attribute_id' => $iAttributeId, 'value' => Yii::app()->request->getPost('attvalue'));
+            $aData = array('participant_id' => $pid[0], 'attribute_id' => $iAttributeId, 'value' => Yii::app()->request->getPost('attvalue'));
             ParticipantAttributeNames::model()->editParticipantAttributeValue($aData);
         }
     }
