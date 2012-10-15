@@ -859,7 +859,6 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
 
         if (!isset($aGIDReplacements[$oldgid]))
         {
-        $result = Yii::app()->db->createCommand()->insert('{{groups}}', $insertdata);
             $newgid=getLastInsertID('{{groups}}');
             $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
         }

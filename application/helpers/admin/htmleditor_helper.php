@@ -44,7 +44,7 @@
                     $_SESSION['KCFINDER']['disabled'] = false;
                     if (preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
                     {
-                        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getRequest()->getHostInfo($schema).Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
+                        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getRequest()->getHostInfo().Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
                     }
                     else
                     {

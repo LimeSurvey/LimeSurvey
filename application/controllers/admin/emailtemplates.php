@@ -37,7 +37,7 @@ class emailtemplates extends Survey_Common_Action {
         Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->loadHelper('surveytranslator');
 
-        Yii::app()->session['FileManagerContext'] = "edit:assessments:{$iSurveyId}";
+        Yii::app()->session['FileManagerContext'] = "edit:emailsettings:{$iSurveyId}";
 
         if(isset($iSurveyId) && getEmailFormat($iSurveyId) == 'html')
         {
