@@ -14,9 +14,10 @@
     */
   if (!isset($argv[0])) die();
   define('BASEPATH','.');
-  $config=require ('..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
+  $sCurrentDir=dirname(__FILE__);
+  $config=require (dirname($sCurrentDir).DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
   unset ($config['defaultController']);
   unset ($config['config']);
-  require ('..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'framework'.DIRECTORY_SEPARATOR.'yiic.php');
+  require (dirname(dirname($sCurrentDir)).DIRECTORY_SEPARATOR.'framework'.DIRECTORY_SEPARATOR.'yiic.php');
 
 ?>
