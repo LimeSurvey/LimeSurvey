@@ -122,6 +122,7 @@ class RegisterController extends LSYii_Controller {
         }
         if ($register_errormsg != "")
         {
+            $_SESSION['survey_'.$surveyid]['register_errormsg']=$register_errormsg;
             Yii::app()->request->redirect(Yii::app()->createUrl('survey/index/sid/'.$surveyid));
         }
 
@@ -132,6 +133,7 @@ class RegisterController extends LSYii_Controller {
         if ($usrow)
         {
             $register_errormsg=$clang->gT("The email you used has already been registered.");
+            $_SESSION['survey_'.$surveyid]['register_errormsg']=$register_errormsg;
             Yii::app()->request->redirect(Yii::app()->createUrl('survey/index/sid/'.$surveyid));
             //include "index.php";
             //exit;

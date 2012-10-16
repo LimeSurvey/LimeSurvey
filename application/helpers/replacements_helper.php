@@ -768,10 +768,14 @@ EOD;
     {
         $_endtext = $thissurvey['surveyls_endtext'];
     }
+    if (isset($_SESSION['survey_'.$surveyid]) && isset($_SESSION['survey_'.$surveyid]['register_errormsg']))
+    {
+        $register_errormsg=$_SESSION['survey_'.$surveyid]['register_errormsg'];
+        unset($_SESSION['survey_'.$surveyid]['register_errormsg']);
+    }
 
 
     // Set the array of replacement variables here - don't include curly braces
-
     $coreReplacements = array();
 	$coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['AID'] = isset($questiondetails['aid']) ? $questiondetails['aid'] : '';

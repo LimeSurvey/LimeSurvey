@@ -16,10 +16,10 @@ $(document).ready(function(){
         if ( key==null || key==0 || key==8 || key==9  || key==27 )
             return true;
         thischar=String.fromCharCode(key);
-        returnvalue=(thischar==thischar.replace(/['`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,''));
+        returnvalue=(thischar==thischar.replace(/['`~!@#$%^&*()|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,''));
         return returnvalue;
     });
     $("body").delegate("#title", "keyup", function() {
-        $(this).val($(this).val().replace(/['`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,''));
+        $(this).val($(this).val().replace(/['`~!@#$%^&*()|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,''));
     });
 });
