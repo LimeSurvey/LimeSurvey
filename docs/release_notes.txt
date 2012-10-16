@@ -57,6 +57,9 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121016) to 2.00+ (build 121017) Oct 16, 2012
+-Fixed #6712: Layout of form "Add question group" is broken (mennodekker)
+-Fixed issue: Template editor not working (Carsten Schmitz)
 
 Changes from 2.00+ (build 121014) to 2.00+ (build 121016) Oct 16, 2012
 -Fixed issue #6606: Participant attribute grid - can only edit the first attribute (Aniessh Sethh)
