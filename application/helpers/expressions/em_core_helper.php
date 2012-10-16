@@ -3136,7 +3136,7 @@ EOD;
             $pre .= "</td><td>" . $value . "</td><td><input type='text' id='relevance" . $i . "' value='1' onchange='recompute()'/>\n";
             $pre .= "<input type='hidden' id='" . $jsVarName . "' name='" . $jsVarName . "' value='" . $value . "'/>\n";
             $pre .= "</td></tr>\n";
-            $LEMalias2varName[] = "'" . addslashes(substr($jsVarName,5)) . "':'" . $jsVarName . "'";
+            $LEMalias2varName[] = "'" . substr($jsVarName,5) . "':'" . $jsVarName . "'";
             $LEMalias2varName[] = "'" . $jsVarName . "':'" . $jsVarName . "'";
             $attrInfo = "'" . $jsVarName .  "': {'jsName':'" . $jsVarName . "'";
 
