@@ -791,6 +791,7 @@ tr.editedrow {
     width:210px;
 }
 
+.ui-jqgrid a.imagelink,
 .ui-jqgrid td input[type="image"] {
     padding:2px;
 }
