@@ -305,9 +305,9 @@ class SurveyDao
     {
 
         $oRecordSet = Yii::app()->db->createCommand()->select()->from('{{survey_' . $survey->id . '}}');
-        if (tableExists('tokens_'.$survey->id) && in_array('token',Survey_dynamic::model($survey->id)->attributes))
+        if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',Survey_dynamic::model($survey->id)->attributes))
         {
-            $oRecordSet->join('{{tokens_' . $survey->id . '}}','{{tokens_' . $survey->id . '}}.token={{survey_' . $survey->id . '}}.token');
+            $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}}','{{tokens_' . $survey->id . '}}.token={{survey_' . $survey->id . '}}.token');
         }
         if ($sFilter!='')
             $oRecordSet->where($sFilter);
@@ -1278,18 +1278,22 @@ abstract class Writer implements IWriter
             foreach ($oOptions->selectedColumns as $column)
             {
                 $value = $response[$column];
-
-                switch ($oOptions->answerFormat) {
-                    case 'long':
-                        $elementArray[] = $this->transformResponseValue($survey->getFullAnswer(
-                        $column, $value, $this->translator, $this->languageCode),
-                        $survey->fieldMap[$column]['type'], $oOptions);
-                        break;
-                    default:
-                    case 'short':
-                        $elementArray[] = $this->transformResponseValue($value,
-                        $survey->fieldMap[$column]['type'], $oOptions);
-                        break;
+                if (isset($survey->fieldMap[$column]))
+                {
+                    switch ($oOptions->answerFormat) {
+                        case 'long':
+                            $elementArray[] = $this->transformResponseValue($survey->getFullAnswer($column, $value, $this->translator, $this->languageCode), $survey->fieldMap[$column]['type'], $oOptions);
+                            break;
+                        default:
+                        case 'short':
+                            $elementArray[] = $this->transformResponseValue($value,
+                            $survey->fieldMap[$column]['type'], $oOptions);
+                            break;
+                    }
+                }
+                else //Token table value
+                {     
+                    $elementArray[]=$value;
                 }
             }
 
