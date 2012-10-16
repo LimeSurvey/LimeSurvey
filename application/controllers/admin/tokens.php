@@ -2352,6 +2352,7 @@ class tokens extends Survey_Common_Action
             //Rebuild attributedescription value for the surveys table
             $table = Yii::app()->db->schema->getTable(Yii::app()->request->getPost('oldtable'));
             $fields=array_filter(array_keys($table->columns), 'filterForAttributes');
+            $fieldcontents=array();
             foreach ($fields as $fieldname)
             {
                 $name=$fieldname;
