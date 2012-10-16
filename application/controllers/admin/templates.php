@@ -144,19 +144,26 @@ class templates extends Survey_Common_Action
                 // Delete temporary folder
                 rmdir($extractdir);
 
-                if (count($aErrorFilesInfo) == 0 && count($aImportedFilesInfo) == 0)
-                    $this->getController()->error($clang->gT("This ZIP archive contains no valid template files. Import failed."));
+            if (count($aErrorFilesInfo) == 0 && count($aImportedFilesInfo) == 0)
+                $this->getController()->error($clang->gT("This ZIP archive contains no valid template files. Import failed."));
             }
             else
                 $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
-
-
+            if (count($aImportedFilesInfo) > 0)
+            {
+                $templateFixes= $this->_templateFixes($newdir);
+            }
+            else
+            {
+                $templateFixes= array();
+            }
             $aViewUrls = 'importuploaded_view';
             $aData = array(
             'aImportedFilesInfo' => $aImportedFilesInfo,
             'aErrorFilesInfo' => $aErrorFilesInfo,
             'lid' => $lid,
             'newdir' => $newdir,
+            'templateFixes' => $templateFixes,
             );
         }
         else
@@ -167,6 +174,53 @@ class templates extends Survey_Common_Action
 
         $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
     }
+    /**
+    * Try to correct a template with new funcyionnality.
+    *
+    * @access private
+    * @param string $templatename
+    * @return array $correction ($success,$number,array($information))
+    */
+
+    private function _templateFixes($templatename)
+    {
+        $clang = $this->getController()->lang;
+        $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+        $templateFixes=array();
+        $templateFixes['success']=true;
+        $templateFixes['details']=array();
+        // TEMPLATEJS control
+        $fname="$usertemplaterootdir/$templatename/startpage.pstpl";
+        if(is_file($fname))
+        {
+
+            $fhandle = fopen($fname,"r");
+            $content = fread($fhandle,filesize($fname));
+            if(strpos($content, "{TEMPLATEJS}")===false)
+            {
+                $content = str_replace("<script type=\"text/javascript\" src=\"{TEMPLATEURL}template.js\"></script>", "{TEMPLATEJS}", $content);
+                $fhandle = fopen($fname,"w");
+                fwrite($fhandle,$content);
+                fclose($fhandle);
+                if(strpos($content, "{TEMPLATEJS}")===false)
+                {
+                    $templateFixes['success']=false;
+                    $templateFixes['details']['templatejs']="Unable to adding {TEMPLATEJS} placeholder, please control your startpage.pstpl.";
+                }
+                else
+                {
+                    $templateFixes['details']['templatejs']="Placeholder {TEMPLATEJS} added to your startpage.pstpl.";
+                }
+            }
+        }
+        else
+        {
+            $templateFixes['success']=false;
+            $templateFixes['details']['templatejs']="Unable to find startpage.pstpl to add {TEMPLATEJS} placeholder, please control your template.";
+        }
+        return $templateFixes;
+    }
+
     /**
     * Responsible to import a template file.
     *
@@ -218,6 +272,7 @@ class templates extends Survey_Common_Action
         }
         $this->getController()->redirect(array("admin/templates/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
+
     /**
     * Generates a random temp directory
     *
@@ -672,8 +727,6 @@ class templates extends Survey_Common_Action
     */
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
-        global $siteadminname, $siteadminemail;
-
         $clang = $this->getController()->lang;
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
@@ -802,17 +855,22 @@ class templates extends Survey_Common_Action
         foreach ($cssfiles as $fl)
             $normalfiles[] = $fl["name"];
 
+        // Some global data
+        $aData['sitename'] = Yii::app()->getConfig('sitename');
+        $siteadminname = Yii::app()->getConfig('siteadminname');
+        $siteadminemail = Yii::app()->getConfig('siteadminemail');
+
         // Set this so common.php doesn't throw notices about undefined variables
         $thissurvey['active'] = 'N';
 
         // FAKE DATA FOR TEMPLATES
         $thissurvey['name'] = $clang->gT("Template Sample");
         $thissurvey['description'] =
-        $clang->gT('This is a sample survey description. It could be quite long.') . '<br /><br />' .
-        $clang->gT("But this one isn't.");
+            "<p>".$clang->gT('This is a sample survey description. It could be quite long.')."</p>".
+            "<p>".$clang->gT("But this one isn't.")."<p>";
         $thissurvey['welcome'] =
-        $clang->gT('Welcome to this sample survey') . '<br />' .
-        $clang->gT('You should have a great time doing this') . '<br />';
+            "<p>".$clang->gT('Welcome to this sample survey')."<p>" .
+            "<p>".$clang->gT('You should have a great time doing this')."<p>";
         $thissurvey['allowsave'] = "Y";
         $thissurvey['active'] = "Y";
         $thissurvey['tokenanswerspersistence'] = "Y";
@@ -867,6 +925,7 @@ class templates extends Survey_Common_Action
         $aData['notanswered'] = $notanswered;
         $aData['privacy'] = $privacy;
         $aData['surveyid'] = $surveyid;
+        $aData['sid'] = $surveyid;
         $aData['token'] = $token;
         $aData['assessments'] = $assessments;
         $aData['printoutput'] = $printoutput;
@@ -903,41 +962,41 @@ class templates extends Survey_Common_Action
                 foreach ($Question as $qs)
                     $files[] = array("name" => $qs);
 
-                $myoutput[] = $this->getController()->render('/admin/templates/templateeditor_question_meta_view', array(), true);
+                $myoutput[] = $this->getController()->render('/admin/templates/templateeditor_question_meta_view', array('clang' => $clang), true);
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startpage.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/survey.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startgroup.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/groupdescription.pstpl", $aData));
 
                 $question = array(
-                'all' => 'How many roads must a man walk down?',
-                'text' => 'How many roads must a man walk down?',
+                'all' => $clang->gT("How many roads must a man walk down?"),// Still in use ?
+                'text' => $clang->gT("How many roads must a man walk down?"),
                 'code' => '1a',
                 'help' => 'helpful text',
-                'mandatory' => '',
+                'mandatory' => $clang->gT("*"),
+                'man_class' => ' mandatory',
                 'man_message' => '',
                 'valid_message' => '',
                 'file_valid_message' => '',
                 'essentials' => 'id="question1"',
                 'class' => 'list-radio',
-                'man_class' => '',
                 'input_error_class' => '',
                 'number' => '1',
                 );
                 $aData['question'] = $question;
 
-                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array(), true);
+                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('clang' => $clang), true);
                 $aData['answer'] = $answer;
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/question.pstpl", $aData));
 
-                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
+                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true,'clang' => $clang), true);
                 $aData['answer'] = $answer;
                 $question = array(
-                'all' => '<span class="asterisk">*</span>' . $clang->gT("Please explain something in detail:"),
+                'all' => $clang->gT("Please explain something in detail:"),// Still in use ?
                 'text' => $clang->gT('Please explain something in detail:'),
                 'code' => '2a',
                 'help' => '',
-                'mandatory' => $clang->gT('*'),
+                'mandatory' => '',
                 'man_message' => '',
                 'valid_message' => '',
                 'file_valid_message' => '',

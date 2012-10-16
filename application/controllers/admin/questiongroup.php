@@ -309,7 +309,9 @@ class questiongroup extends Survey_Common_Action
                     $group = new Groups;
                     foreach ($basesettings as $k => $v)
                         $group->$k = $v;
+                    switchMSSQLIdentityInsert('groups', true);
                     $group->save();
+                    switchMSSQLIdentityInsert('groups', false);
                 }
             }
             $first = true;

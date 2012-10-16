@@ -34,7 +34,7 @@
         ?>
     </ul>
     <form name='frmeditquestion' id='frmeditquestion' class='form30' action='<?php echo $this->createUrl("admin/database/index"); ?>' method='post' onsubmit="return isEmpty(document.getElementById('title'), '<?php $clang->eT("Error: You have to enter a question code.",'js'); ?>');">
-            <div id='questionactioncopy' style='float: right; margin-top: -60px'>
+            <div id='questionactioncopy'>
                 <p><input type='button' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
                 <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
             </div>

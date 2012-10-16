@@ -149,42 +149,42 @@ class Statistics_userController extends LSYii_Controller {
 
 
 
-        $chartfontfile = Yii::app()->getConfig("chartfontfile");
-        //pick the best font file if font setting is 'auto'
-        if ($chartfontfile=='auto')
-        {
-            $chartfontfile='vera.ttf';
-            if ( $language=='ar')
-            {
-                $chartfontfile='KacstOffice.ttf';
-            }
-            elseif  ($language=='fa' )
-            {
-                $chartfontfile='KacstFarsi.ttf';
-            }
-        }
+		$chartfontfile = Yii::app()->getConfig("chartfontfile");
+		//pick the best font file if font setting is 'auto'
+		if ($chartfontfile=='auto')
+		{
+		    $chartfontfile='vera.ttf';
+		    if ( $language=='ar')
+		    {
+		        $chartfontfile='KacstOffice.ttf';
+		    }
+		    elseif  ($language=='fa' )
+		    {
+		        $chartfontfile='KacstFarsi.ttf';
+		    }
+		}
 
-        //set survey language for translations
-        $clang = SetSurveyLanguage($iSurveyID, $language);
+		//set survey language for translations
+		$clang = SetSurveyLanguage($iSurveyID, $language);
 
 
-        //Create header (fixes bug #3097)
-        $surveylanguage= $language;
-        sendCacheHeaders();
-        $condition = false;
-        $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-        . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
-        if (getLanguageRTL($surveylanguage))
-        {
-            $condition = true;
-            $header.=" dir=\"rtl\" ";
-        }
-        $sitename = Yii::app()->getConfig("sitename");
+		//Create header (fixes bug #3097)
+		$surveylanguage= $language;
+		sendCacheHeaders();
+		$condition = false;
+		$header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+		. "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
+		if (getLanguageRTL($surveylanguage))
+		{
+			$condition = true;
+		    $header.=" dir=\"rtl\" ";
+		}
+		$sitename = Yii::app()->getConfig("sitename");
 
-        $data['surveylanguage'] = $surveylanguage;
-        $data['sitename'] = $sitename;
-        $data['condition'] = $condition;
-        $data['thisSurveyCssPath'] = $thisSurveyCssPath;
+		$data['surveylanguage'] = $surveylanguage;
+		$data['sitename'] = $sitename;
+		$data['condition'] = $condition;
+		$data['thisSurveyCssPath'] = $thisSurveyCssPath;
 
         //number of records for this survey
         $totalrecords = 0;
@@ -206,88 +206,107 @@ class Statistics_userController extends LSYii_Controller {
             $totalrecords = reset($row);
         }
 
-        //---------- CREATE SGQA OF ALL QUESTIONS WHICH USE "PUBLIC_STATISTICS" ----------
+		//---------- CREATE SGQA OF ALL QUESTIONS WHICH USE "PUBLIC_STATISTICS" ----------
         $summary = createCompleteSGQA($iSurveyID,$surveylanguage,true);
 
-        //---------- CREATE STATISTICS ----------
+		//---------- CREATE STATISTICS ----------
 
 
-        //some progress bar stuff
+		//some progress bar stuff
 
-        // Create progress bar which is shown while creating the results
-        $prb = new ProgressBar();
-        $prb->pedding = 2; // Bar Pedding
-        $prb->brd_color = "#404040 #dfdfdf #dfdfdf #404040"; // Bar Border Color
+		// Create progress bar which is shown while creating the results
+		$prb = new ProgressBar();
+		$prb->pedding = 2;	// Bar Pedding
+		$prb->brd_color = "#404040 #dfdfdf #dfdfdf #404040";	// Bar Border Color
 
-        $prb->setFrame(); // set ProgressBar Frame
-        $prb->frame['left'] = 50; // Frame position from left
-        $prb->frame['top'] = 80; // Frame position from top
-        $prb->addLabel('text','txt1',$clang->gT("Please wait ...")); // add Text as Label 'txt1' and value 'Please wait'
-        $prb->addLabel('percent','pct1'); // add Percent as Label 'pct1'
-        $prb->addButton('btn1',$clang->gT('Go back'),'?action=statistics&amp;sid='.$iSurveyID); // add Button as Label 'btn1' and action '?restart=1'
+		$prb->setFrame();	// set ProgressBar Frame
+		$prb->frame['left'] = 50;	// Frame position from left
+		$prb->frame['top'] = 	80;	// Frame position from top
+		$prb->addLabel('text','txt1',$clang->gT("Please wait ..."));	// add Text as Label 'txt1' and value 'Please wait'
+		$prb->addLabel('percent','pct1');	// add Percent as Label 'pct1'
+		$prb->addButton('btn1',$clang->gT('Go back'),'?action=statistics&amp;sid='.$iSurveyID);	// add Button as Label 'btn1' and action '?restart=1'
 
-        //progress bar starts with 35%
-        $process_status = 35;
-        $prb->show(); // show the ProgressBar
+		//progress bar starts with 35%
+		$process_status = 35;
+		$prb->show();	// show the ProgressBar
 
 
-        // 1: Get list of questions with answers chosen
-        //"Getting Questions and Answers ..." is shown above the bar
-        $prb->setLabelValue('txt1',$clang->gT('Getting questions and answers ...'));
-        $prb->moveStep(5);
+		// 1: Get list of questions with answers chosen
+		//"Getting Questions and Answers ..." is shown above the bar
+		$prb->setLabelValue('txt1',$clang->gT('Getting questions and answers ...'));
+		$prb->moveStep(5);
 
-        // creates array of post variable names
-        for (reset($_POST); $key=key($_POST); next($_POST))
+		// creates array of post variable names
+		for (reset($_POST); $key=key($_POST); next($_POST))
+		{
+		    $postvars[]=$key;
+		}
+		$data['thisSurveyTitle'] = $thisSurveyTitle;
+		$data['totalrecords'] = $totalrecords;
+		$data['clang'] = $clang;
+		$data['summary'] = $summary;
+		//show some main data at the beginnung
+		// CHANGE JSW_NZ - let's allow html formatted questions to show
+
+
+		//push progress bar from 35 to 40
+		$process_status = 40;
+
+		//Show Summary results
+		if (isset($summary) && $summary)
+		{
+		    //"Generating Summaries ..." is shown above the progress bar
+		    $prb->setLabelValue('txt1',$clang->gT('Generating summaries ...'));
+		    $prb->moveStep($process_status);
+
+		    //let's run through the survey // Fixed bug 3053 with array_unique
+		    $runthrough=array_unique($summary);
+
+		    //loop through all selected questions
+		    foreach ($runthrough as $rt)
+		    {
+
+		        //update progress bar
+		        if ($process_status < 100) $process_status++;
+		        $prb->moveStep($process_status);
+
+		    }	// end foreach -> loop through all questions
+
+		    $statisticsoutput .= generate_statistics($iSurveyID, $summary, $summary, $publicgraphs, 'html', null,$language,false);
+
+		}	//end if -> show summary results
+
+        $data['statisticsoutput']=$statisticsoutput;
+		//done! set progress bar to 100%
+		if (isset($prb))
+		{
+		    $prb->setLabelValue('txt1',$clang->gT('Completed'));
+		    $prb->moveStep(100);
+		    $prb->hide();
+		}
+
+        // Get the survey inforamtion
+        $thissurvey = getSurveyInfo($surveyid,$language);
+
+        //SET THE TEMPLATE DIRECTORY
+        if (!isset($thissurvey['templatedir']) || !$thissurvey['templatedir'])
         {
-            $postvars[]=$key;
+            $data['sTemplatePath'] = validateTemplateDir("default");
         }
-        $data['thisSurveyTitle'] = $thisSurveyTitle;
-        $data['totalrecords'] = $totalrecords;
-        $data['clang'] = $clang;
-        $data['summary'] = $summary;
-        //show some main data at the beginnung
-        // CHANGE JSW_NZ - let's allow html formatted questions to show
-
-
-        //push progress bar from 35 to 40
-        $process_status = 40;
-
-        //Show Summary results
-        //"Generating Summaries ..." is shown above the progress bar
-        $prb->setLabelValue('txt1',$clang->gT('Generating summaries ...'));
-        $prb->moveStep($process_status);
-
-        //let's run through the survey // Fixed bug 3053 with array_unique
-        $runthrough=array_unique($summary);
-
-        //loop through all selected questions
-        foreach ($runthrough as $rt)
+        else
         {
-
-            //update progress bar
-            if ($process_status < 100) $process_status++;
-            $prb->moveStep($process_status);
-
-        } // end foreach -> loop through all questions
-
-        $statisticsoutput .= generate_statistics($iSurveyID, $summary, $publicgraphs, 'html',null,$language,false);
-
-
-        //done! set progress bar to 100%
-        if (isset($prb))
-        {
-            $prb->setLabelValue('txt1',$clang->gT('Completed'));
-            $prb->moveStep(100);
-            $prb->hide();
+            $data['sTemplatePath'] = validateTemplateDir($thissurvey['templatedir']);
         }
+        
+        
+        header_includes('statistics_user.js');
+		$this->render('/statistics_user_view',$data);
 
-        $this->render('/statistics_user_view',$data);
+		//output footer
+		echo getFooter();
 
-        //output footer
-        echo getFooter();
-
-        //Delete all Session Data
-        Yii::app()->session['finished'] = true;
-    }
+		//Delete all Session Data
+		Yii::app()->session['finished'] = true;
+	}
 
 }

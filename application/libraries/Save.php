@@ -136,7 +136,7 @@ class Save {
         }
 
         $duplicate = Saved_control::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $_POST['savename']));
-        if (!empty($duplicate) && $duplicate->count() > 0)
+        if (!empty($duplicate) && $duplicate->count() > 0)  // OK - AR count
         {
             $errormsg.=$clang->gT("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
             return;
@@ -155,7 +155,7 @@ class Save {
                 );
                 if (Survey_dynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
                 {
-                    $srid = Yii::app()->db->getCommandBuilder()->getLastInsertID('{{survey_' . $surveyid . '}}');
+                    $srid = getLastInsertID('{{survey_' . $surveyid . '}}');
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
                 }
                 else
@@ -179,7 +179,7 @@ class Save {
 
             if ($saved_control->save())
             {
-                $scid = Yii::app()->db->getCommandBuilder()->getLastInsertID('{{saved_control}}');
+                $scid = getLastInsertID('{{saved_control}}');
                 $_SESSION['survey_'.$surveyid]['scid'] = $scid;
             }
             else
@@ -199,7 +199,7 @@ class Save {
                 $message .= $clang->gT("Name").": ".$_POST['savename']."\n";
                 $message .= $clang->gT("Password").": ".$_POST['savepass']."\n\n";
                 $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reaload/scid/{$scid}/loadname/".urlencode($_POST['savename'])."/loadpass/".urlencode($_POST['savepass']));
+                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$scid}/loadname/".urlencode($_POST['savename'])."/loadpass/".urlencode($_POST['savepass']));
                 if ($clienttoken) $message .= "/token/{$clienttoken}";
 
                 $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";

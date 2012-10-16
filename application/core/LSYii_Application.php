@@ -34,11 +34,20 @@ class LSYii_Application extends CWebApplication
         }
         parent::__construct($config);
         // Load the default and environmental settings from different files into self.
-        $ls_config = require(APPPATH . '/config/config-defaults.php');
-        $email_config = require(APPPATH . '/config/email.php');
-        $version_config = require(APPPATH . '/config/version.php');
-
+        $ls_config = require(APPPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config-defaults.php');
+        $email_config = require(APPPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'email.php');
+        $version_config = require(APPPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'version.php');
         $settings = array_merge($ls_config, $version_config, $email_config);
+        
+        if(file_exists(APPPATH . DIRECTORY_SEPARATOR. 'config' . DIRECTORY_SEPARATOR . 'config.php'))
+        {
+            $ls_config = require(APPPATH . DIRECTORY_SEPARATOR. 'config' . DIRECTORY_SEPARATOR . 'config.php');
+            if(is_array($ls_config['config']))
+            {
+                $settings = array_merge($settings, $ls_config['config']);
+            }
+        }
+
         foreach ($settings as $key => $value)
             $this->setConfig($key, $value);
     }

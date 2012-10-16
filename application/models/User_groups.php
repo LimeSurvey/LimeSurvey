@@ -89,58 +89,61 @@ class User_groups extends CActiveRecord {
         return $this->db->insert('user_groups',$data);
     }
 
-    function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
-    {
-        $user = Yii::app()->db->createCommand();
-        foreach ($fields as $field)
-        {
-            $user->select($field);
-        }
+	function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
+	{
+	    $user = Yii::app()->db->createCommand();
+		foreach ($fields as $field)
+		{
+			$user->select($field);
+		}
 
-        $user->from($from);
+		$user->from($from);
 
-        if ($condition != FALSE)
-        {
-            $user->where($condition);
-        }
+		if ($condition != FALSE)
+		{
+			$user->where($condition);
+		}
 
-        if ($order != FALSE)
-        {
-            $user->order($order);
-        }
+		if ($order != FALSE)
+		{
+			$user->order($order);
+		}
 
-        if (isset($join['where'], $join['on']))
-        {
-            if (isset($join['left'])) {
-                $user->leftjoin($join['where'], $join['on']);
-            }else
-            {
-                $user->join($join['where'], $join['on']);
-            }
-        }
+		if (isset($join['where'], $join['on']))
+		{
+		    if (isset($join['left'])) {
+			    $user->leftjoin($join['where'], $join['on']);
+			}else
+			{
+			    $user->join($join['where'], $join['on']);
+			}
+		}
 
-        $data = $user->queryRow();
-        return $data;
-    }
+		$data = $user->queryRow();
+		return $data;
+	}
 
-    function addGroup($group_name, $group_description) {
+ 	function addGroup($group_name, $group_description) {
+        $iLoginID=intval(Yii::app()->session['loginID']);
 	    $iquery = "INSERT INTO {{user_groups}} (name, description, owner_id) VALUES(:group_name, :group_desc, :loginID)";
-        $command = Yii::app()->db->createCommand($iquery)->bindParam(":group_name", $group_name, PDO::PARAM_STR)->bindParam(":group_desc", $group_description, PDO::PARAM_STR)->bindParam(":loginID", intval(Yii::app()->session['loginID']), PDO::PARAM_INT);
-        $result = $command->query();
-        if($result) { //Checked
-	    	$id = Yii::app()->db->getCommandBuilder()->getLastInsertID($this->tableName()); //Yii::app()->db->Insert_Id(db_table_name_nq('user_groups'),'ugid');
-            if($id > 0) {
-                $user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES (:ugid, :uid)';
-                $command = Yii::app()->db->createCommand($user_in_groups_query)->bindParam(":ugid", $id, PDO::PARAM_INT)->bindParam(":uid", intval(Yii::app()->session['loginID']), PDO::PARAM_INT)->query();
-            }
-            return $id;
-        }
-        else
-            return -1;
+	    $command = Yii::app()->db->createCommand($iquery)->bindParam(":group_name", $group_name, PDO::PARAM_STR)
+                                                         ->bindParam(":group_desc", $group_description, PDO::PARAM_STR)
+                                                         ->bindParam(":loginID", $iLoginID, PDO::PARAM_INT);
+	    $result = $command->query();
+	    if($result) { //Checked
+	    	$id = getLastInsertID($this->tableName()); //Yii::app()->db->Insert_Id(db_table_name_nq('user_groups'),'ugid');
+	        if($id > 0) {
+	           	$user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES (:ugid, :uid)';
+	           	$command = Yii::app()->db->createCommand($user_in_groups_query)->bindParam(":ugid", $id, PDO::PARAM_INT)->bindParam(":uid", $iLoginID, PDO::PARAM_INT)->query();
+	        }
+	        return $id;
+		}
+	    else
+	    	return -1;
 
-        }
+    	}
 
-    function updateGroup($name, $description, $ugid)
+	function updateGroup($name, $description, $ugid)
     {
         $group = User_groups::model()->findByPk($ugid);
         $group->name=$name;

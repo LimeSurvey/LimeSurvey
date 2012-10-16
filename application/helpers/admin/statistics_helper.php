@@ -945,11 +945,7 @@ function buildOutputList($q, $language, $outputType, $sql, $oLanguage) {
             //if $sql values have been passed to the statistics script from another script, incorporate them
             if ($sql != "NULL") {$querystarter .= " AND $sql";}
 
-            //we just count the number of records returned
-            $medcount=$result->getRowCount();
 
-            //put the total number of records at the beginning of this array
-            array_unshift($showem, array($statlang->gT("Count"), $medcount));
 
 
             //no more comment from Mazi regarding the calculation
@@ -2890,9 +2886,9 @@ function displayResults($outputs, $results, $q, $outputType, $surveyid, $sql, $u
             ."<img class='stats-hidemap' src='$sImgUrl/map.png' title='". $statlang->gT("Enable map display") ."' />"
                         ."</div></td></tr>";
 
-                    }
-                    $statisticsoutput .= "</table><br /> \n";
-                }
+        }
+        $statisticsoutput .= "</td></tr></table><br /> \n";
+    }
 
     return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$pdf, "astatdata"=>$astatdata);
 
@@ -3168,7 +3164,7 @@ function generate_statistics($surveyid, $summary, $usegraph=0, $outputType='pdf'
         if($outputType=='html' && $browse === true)
         {
             //add a buttons to browse results
-            $statisticsoutput .= "<form action='".Yii::app()->getController()->createUrl("admin/responses/index/surveyid/$surveyid/type/all")."' method='post' target='_blank'>\n"
+            $statisticsoutput .= "<form action='".Yii::app()->getController()->createUrl("admin/responses/index/surveyid/$surveyid")."' method='post' target='_blank'>\n"
             ."\t\t<p>"
             ."\t\t\t<input type='submit' value='".$statlang->gT("Browse")."'  />\n"
             ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"

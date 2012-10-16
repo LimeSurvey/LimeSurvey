@@ -29,9 +29,9 @@ function loadanswers()
         {
             $query .= "AND {{saved_control}}.scid={$scid}\n";
         }
-        $query .="AND {{saved_control}}.identifier = '".autoEscape($_SESSION['survey_'.$surveyid]['holdname'])."' ";
+            $query .="AND {{saved_control}}.identifier = '".autoEscape($_SESSION['survey_'.$surveyid]['holdname'])."' ";
 
-        if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
+            if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
         {
             $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(autoUnescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
         }
@@ -49,8 +49,9 @@ function loadanswers()
     {
         return;
     }
-    $result = dbExecuteAssoc($query) or safeDie ("Error loading results<br />$query<br />");   //Checked
-    if ($result->count() < 1)
+
+        $aRow = Yii::app()->db->createCommand($query)->queryRow();
+        if (!$aRow)
     {
         safeDie($clang->gT("There is no matching saved survey")."<br />\n");
     }
@@ -60,10 +61,9 @@ function loadanswers()
         //If this is from an email, build surveysession first
         $_SESSION['LEMtokenResume']=true;
 
-        $row=$result->read();
-        foreach ($row as $column => $value)
-        {
-            if ($column == "token")
+            foreach ($aRow as $column => $value)
+            {
+                if ($column == "token")
             {
                 $clienttoken=$value;
                 $token=$value;
@@ -351,12 +351,37 @@ function checkconfield($value)
 
             foreach($resulttoken->readAll() as $Condrow)
             {
-                $aAllCondrows[] = $Condrow;
-            }
-            foreach($result->readAll() as $Condrow)
-            {
-                $aAllCondrows[] = $Condrow;
-            }
+                $sConditionsQuery1 = "SELECT {{conditions}}.*, {{questions}}.type "
+                . "FROM {{conditions}}, {{questions}} "
+                . "WHERE {{conditions}}.cqid={{questions}}.qid "
+                . "AND {{conditions}}.qid=$value_qid "
+                . "AND {{conditions}}.scenario=$scenario "
+                . "AND {{conditions}}.cfieldname NOT LIKE '{%' "
+                . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
+                $oResult1=dbExecuteAssoc($sConditionsQuery1) or safeDie($query."<br />");         //Checked
+                $aConditionsResult1=$oResult2->readAll();         //Checked
+                $conditionsfound = count($aConditionsResult1);
+
+                $sConditionsQuery2 = "SELECT {{conditions}}.*, '' as type "
+                . "FROM {{conditions}} "
+                . "WHERE "
+                . " {{conditions}}.qid=$value_qid "
+                . "AND {{conditions}}.scenario=$scenario "
+                . "AND {{conditions}}.cfieldname LIKE '{%' "
+                . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
+                $oResult2=dbExecuteAssoc($sConditionsQuery2) or safeDie($querytoken."<br />");
+                $aConditionsResult2=$oResult2->readAll();         //Checked
+                $conditionsfoundtoken = count($aConditionsResult2);
+                $conditionsfound = $conditionsfound + $conditionsfoundtoken;
+
+                foreach($aConditionsResult2 as $Condrow)
+                {
+                    $aAllCondrows[] = $Condrow;
+                }
+                foreach($aConditionsResult1 as $Condrow)
+                {
+                    $aAllCondrows[] = $Condrow;
+                }
 
 
             foreach ($aAllCondrows as $rows)
@@ -1429,17 +1454,17 @@ function buildsurveysession($surveyid,$previewGroup=false)
             //check if tokens actually haven't been already used
             $areTokensUsed = usedTokens(trim(strip_tags($clienttoken)),$surveyid);
             //check if token actually does exist
+            $oTokenEntry = Tokens_dynamic::model($surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
+
             if ($thissurvey['alloweditaftercompletion'] == 'Y' )
             {
-                $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token='".trim(sanitize_xss_string(strip_tags($clienttoken)))."'";
+                $oTokenEntry = Tokens_dynamic::model($surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
             }
             else
             {
-                $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token='".trim(sanitize_xss_string(strip_tags($clienttoken)))."' AND (completed = 'N' or completed='')";
-            }
-            $tkresult = dbExecuteAssoc($tkquery);     //Checked
-            list($tkexist) = $tkresult->read();
-            if (!$tkexist || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
+                $oTokenEntry = Tokens_dynamic::model($surveyid)->find("token=:token  AND (completed = 'N' or completed='')", array(':token'=>trim(strip_tags($clienttoken))));
+           }
+            if (is_null($oTokenEntry) || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
             {
                 sendCacheHeaders();
                 doHeader();
@@ -1603,6 +1628,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     $totalquestions = count($unique);
     $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - count($display);
 
+    $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
     // Fix totalquestions by substracting Test Display questions
     $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
@@ -1750,7 +1776,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     $randomGroups=array();
     if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
     {
-        $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
+        $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) as value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
     }
     else
     {
@@ -2057,9 +2083,10 @@ function doAssessment($surveyid, $returndataonly=false)
     ORDER BY scope, id";
     if ($result = dbExecuteAssoc($query))   //Checked
     {
-        if ($result->count() > 0)
+        $aResultSet=$result->readAll();
+        if (count($aResultSet) > 0)
         {
-            foreach($result->readAll() as $row)
+            foreach($aResultSet as $row)
             {
                 if ($row['scope'] == "G")
                 {
@@ -2237,38 +2264,63 @@ function checkQuota($checkaction,$surveyid)
     $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
     $global_matched = false;
-    $quota = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+    $quota_info = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+    $x=0;
 
     $clang = Yii::app()->lang;
 
-    if(!$quota) return false;
-
+    if(count($quota_info) > 0) // Quota's have to exist
+    {
     // Check each quota on saved data to see if it is full
     $querycond = array();
+        foreach ($quota_info as $quota)
+        {
     if (count($quota['members']) > 0) // Quota can't be empty
     {
         $fields_list = array(); // Keep a list of fields for easy reference
+                $y=0;
         // We need to make the conditions for the select statement here
+                unset($querycond);
         // fill the array of value and query for each fieldnames
         $fields_value_array = array();
         $fields_query_array = array();
-        foreach($quota['members'] as $fieldname => $member)
+                foreach($quota['members'] as $member)
+                {
+                    foreach($member['fieldnames'] as $fieldname)
         {
+
             if (!in_array($fieldname,$fields_list))
             {
                 $fields_list[] = $fieldname;
                 $fields_value_array[$fieldname] = array();
                 $fields_query_array[$fieldname] = array();
             }
-            $fields_value_array[$fieldname][]=$member;
-            $fields_query_array[$fieldname][]= dbQuoteID($fieldname)." = '{$member}'";
+                        $fields_value_array[$fieldname][]=$member['value'];
+                        $fields_query_array[$fieldname][]= dbQuoteID($fieldname)." = '{$member['value']}'";
         }
+
+                }
         // fill the $querycond array with each fields_query grouped by fieldname
         foreach($fields_list as $fieldname)
         {
             $select_query = " ( ".implode(' OR ',$fields_query_array[$fieldname]).' )';
             $querycond[] = $select_query;
         }
+                // Test if the fieldname is in the array of value in the session
+                foreach($quota['members'] as $member)
+                {
+                    foreach($member['fieldnames'] as $fieldname)
+                    {
+                        if (isset($_SESSION['survey_'.$surveyid][$fieldname]))
+                        {
+                            if (in_array($_SESSION['survey_'.$surveyid][$fieldname],$fields_value_array[$fieldname])){
+                                $quota_info[$x]['members'][$y]['insession'] = "true";
+                            }
+                        }
+                    }
+                    $y++;
+                }
+                unset($fields_query_array);unset($fields_value_array);
 
         // Lets only continue if any of the quota fields is in the posted page
         $matched_fields = false;
@@ -2291,58 +2343,65 @@ function checkQuota($checkaction,$surveyid)
         {
 
             // Check the status of the quota, is it full or not
-            $querysel = "SELECT id FROM {{survey_".$surveyid."}}
-            WHERE ".implode(' AND ',$querycond)." "."
-            AND submitdate IS NOT NULL";
+                    $sQuery = "SELECT count(id) FROM {{survey_".$surveyid."}}
+                    WHERE ".implode(' AND ',$querycond)." "."
+                    AND submitdate IS NOT NULL";
 
-            $result = dbExecuteAssoc($querysel) or safeDie();    //Checked
-            $quota_check = $result->readAll();
+                    $iRowCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
+                    
 
-            if ($result->count() >= $quota['Limit']) // Quota is full!!
+                    if ($iRowCount >= $quota['Limit']) // Quota is full!!
 
-            {
-                // Now we have to check if the quota matches in the current session
-                // This will let us know if this person is going to exceed the quota
+                    {
+                        // Now we have to check if the quota matches in the current session
+                        // This will let us know if this person is going to exceed the quota
 
                 $counted_matches = 0;
-                foreach($quota['members'] as $fieldname => $member)
+                        foreach($quota_info[$x]['members'] as $member)
                 {
-                    if (isset($_SESSION['survey_'.$surveyid][$fieldname]))
-                    {
-                        if (in_array($_SESSION['survey_'.$surveyid][$fieldname],$fields_value_array[$fieldname]))
-                        {
-                            $counted_matches++;
-                        }
-                    }
+                            if (isset($member['insession']) && $member['insession'] == "true") $counted_matches++;
                 }
                 if($counted_matches == count($quota['members']))
                 {
                     // They are going to exceed the quota if data is submitted
-                    $quota['status']="matched";
+                            $quota_info[$x]['status']="matched";
 
                 } else
                 {
-                    $quota['status']="notmatched";
+                            $quota_info[$x]['status']="notmatched";
                 }
 
             } else
             {
                 // Quota is no in danger of being exceeded.
-                $quota['status']="notmatched";
+                        $quota_info[$x]['status']="notmatched";
             }
         }
+
+            }
+            $x++;
+        }
+
+    } else
+    {
+        return false;
     }
 
     // Now we have all the information we need about the quotas and their status.
     // Lets see what we should do now
     if ($checkaction == 'return')
     {
-        return $quota;
-    } else if ($global_matched == true && $checkaction == 'enforce') {
+        return $quota_info;
+    }
+    else if ($global_matched == true && $checkaction == 'enforce')
+        {
         // Need to add Quota action enforcement here.
+            reset($quota_info);
 
         $tempmsg ="";
         $found = false;
+            foreach($quota_info as $quota)
+            {
         if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "1"))
         {
             // If a token is used then mark the token as completed
@@ -2392,7 +2451,11 @@ function checkQuota($checkaction,$surveyid)
             doFooter();
             exit;
         }
-    } else {
+        }
+
+
+    } else
+    {
         // Unknown value
         return false;
     }

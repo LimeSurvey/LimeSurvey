@@ -45,9 +45,10 @@ class Dumpdb extends Survey_Common_Action {
      */
     public function index()
     {
+        Yii::app()->loadHelper("admin/backupdb");
+        $sDbName=_getDbName();
         $sFileName = 'LimeSurvey_'.$sDbName.'_dump_'.dateShift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')).'.sql';
         $this->_outputHeaders($sFileName);
-        Yii::app()->loadHelper("admin/backupdb");
         outputDatabase();
         exit;
     }

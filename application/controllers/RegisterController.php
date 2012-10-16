@@ -61,10 +61,9 @@ class RegisterController extends LSYii_Controller {
         }
 
         $usquery = "SELECT stg_value FROM {{settings_global}} where stg_name='SessionName'";
-        $usresult = dbExecuteAssoc($usquery,'',true);          //Checked
-        if ($usresult->count() > 0)
+        $usrow = Yii::app()->db->createCommand($usquery)->queryRow();
+        if ($usrow)
         {
-            $usrow = $usresult->read();
             $stg_SessionName=$usrow['stg_value'];
             Yii::app()->session->setSessionName("$stg_SessionName-runtime-$surveyid");
         }
@@ -123,16 +122,18 @@ class RegisterController extends LSYii_Controller {
         }
         if ($register_errormsg != "")
         {
+            $_SESSION['survey_'.$surveyid]['register_errormsg']=$register_errormsg;
             Yii::app()->request->redirect(Yii::app()->createUrl('survey/index/sid/'.$surveyid));
         }
 
         //Check if this email already exists in token database
         $query = "SELECT email FROM {{tokens_$surveyid}}\n"
         . "WHERE email = '".sanitize_email(Yii::app()->request->getPost('register_email'))."'";
-        $result = dbExecuteAssoc($query) or show_error("Unable to execute this query : \n <br/>".$query."<br />");   //Checked)
-        if (($result->count()) > 0)
+        $usrow = Yii::app()->db->createCommand($query)->queryRow();
+        if ($usrow)
         {
             $register_errormsg=$clang->gT("The email you used has already been registered.");
+            $_SESSION['survey_'.$surveyid]['register_errormsg']=$register_errormsg;
             Yii::app()->request->redirect(Yii::app()->createUrl('survey/index/sid/'.$surveyid));
             //include "index.php";
             //exit;
@@ -161,8 +162,8 @@ class RegisterController extends LSYii_Controller {
         {
             $newtoken = randomChars($tokenlength);
             $ntquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token='$newtoken'";
-            $ntresult = dbExecuteAssoc($ntquery); //Checked
-            if (!$ntresult->count()) {$mayinsert = true;}
+            $usrow = Yii::app()->db->createCommand($ntquery)->queryRow();
+            if (!$usrow) {$mayinsert = true;}
         }
 
         $postfirstname=sanitize_xss_string(strip_tags(Yii::app()->request->getPost('register_firstname')));
@@ -199,7 +200,7 @@ class RegisterController extends LSYii_Controller {
         //                             $postattribute1,   $postattribute2)
         ) or safeDie ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
         */
-        $tid = Yii::app()->db->getCommandBuilder()->getLastInsertID($token->tableName());;
+        $tid = getLastInsertID($token->tableName());;
 
 
         $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
@@ -219,9 +220,9 @@ class RegisterController extends LSYii_Controller {
         if (getEmailFormat($surveyid) == 'html')
         {
             $useHtmlEmail = true;
-            $surveylink = $this->createUrl(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
-            $optoutlink = $this->createUrl('optout/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
-            $optinlink = $this->createUrl('optin/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
+            $surveylink = $this->createAbsoluteUrl(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
+            $optoutlink = $this->createAbsoluteUrl('optout/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
+            $optinlink = $this->createAbsoluteUrl('optin/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
             $fieldsarray["{SURVEYURL}"]="<a href='$surveylink'>".$surveylink."</a>";
             $fieldsarray["{OPTOUTURL}"]="<a href='$optoutlink'>".$optoutlink."</a>";
             $fieldsarray["{OPTINURL}"]="<a href='$optinlink'>".$optinlink."</a>";
@@ -229,9 +230,9 @@ class RegisterController extends LSYii_Controller {
         else
         {
             $useHtmlEmail = false;
-            $fieldsarray["{SURVEYURL}"]= $this->createUrl(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
-            $fieldsarray["{OPTOUTURL}"]= $this->createUrl('optout/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
-            $fieldsarray["{OPTINURL}"]= $this->createUrl('optin/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
+            $fieldsarray["{SURVEYURL}"]= $this->createAbsoluteUrl(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
+            $fieldsarray["{OPTOUTURL}"]= $this->createAbsoluteUrl('optout/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
+            $fieldsarray["{OPTINURL}"]= $this->createAbsoluteUrl('optin/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
         }
 
         $message=ReplaceFields($message, $fieldsarray);

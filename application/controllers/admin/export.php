@@ -136,7 +136,6 @@ class export extends Survey_Common_Action {
         if ( ! isset($convertyto1) ) { $convertyto1 = returnGlobal('convertyto1'); }
         if ( ! isset($convertnto2) ) { $convertnto2 = returnGlobal('convertnto2'); }
         if ( ! isset($convertspacetous) ) { $convertspacetous = returnGlobal('convertspacetous'); }
-
         $clang = Yii::app()->lang;
 
         if ( ! hasSurveyPermission($iSurveyID, 'responses', 'export') )
@@ -174,6 +173,7 @@ class export extends Survey_Common_Action {
                 $selectshow = "selected='selected'";
             }
 
+            $data['SingleResponse']=(int)returnGlobal('id');
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
             $data['selectinc'] = $selectinc;
@@ -228,44 +228,42 @@ class export extends Survey_Common_Action {
         $options->headerSpacesToUnderscores = $convertspacetous;
         $options->headingFormat = $exportstyle;
         $options->responseCompletionState = incompleteAnsFilterState();
+        if ( $options->responseCompletionState =='all' ){$options->responseCompletionState =='show';}
 
-        //If we have no data for the filter state then default to show all.
-        if ( $options->responseCompletionState =='all' )
+        // Replace token information by the column name
+        if ( in_array('first_name', Yii::app()->request->getPost('attribute_select', array())) )
         {
-            if ( ! isset($_POST['attribute_select']) )
-            {
-                $_POST['attribute_select'] = array();
-            }
+            $options->selectedColumns[]="firstname";
+        }
 
-            $dquery = '';
-            if ( in_array('first_name', Yii::app()->request->getPost('attribute_select')) )
-            {
-                $options->selectedColumns[]="firstname";
-            }
+        if ( in_array('last_name', Yii::app()->request->getPost('attribute_select', array())) )
+        {
+            $options->selectedColumns[]="lastname";
+        }
 
-            if ( in_array('last_name', Yii::app()->request->getPost('attribute_select')) )
+        if ( in_array('email_address', Yii::app()->request->getPost('attribute_select', array())) )
+        {
+            $options->selectedColumns[]="email";
+        }
+        $attributeFields = getTokenFieldsAndNames($iSurveyID, TRUE);
+        foreach ($attributeFields as $attr_name => $attr_desc)
+        {
+            if ( in_array($attr_name, Yii::app()->request->getPost('attribute_select',array())) )
             {
-                $options->selectedColumns[]="lastname";
-            }
-
-            if ( in_array('email_address', Yii::app()->request->getPost('attribute_select')) )
-            {
-                $options->selectedColumns[]="email";
-            }
-
-            $attributeFields = getTokenFieldsAndNames($iSurveyID, TRUE);
-
-            foreach ($attributeFields as $attr_name => $attr_desc)
-            {
-                if ( in_array($attr_name, Yii::app()->request->getPost('attribute_select')) )
-                {
-                    $options->selectedColumns[]=$attr_name;
-                }
+                $options->selectedColumns[]=$attr_name;
             }
         }
 
+        if (Yii::app()->request->getPost('response_id'))
+        {
+            $sFilter='id='.(int)Yii::app()->request->getPost('response_id');
+        }
+        else
+        {
+            $sFilter='';
+        }
         $resultsService = new ExportSurveyResultsService();
-        $resultsService->exportSurvey($iSurveyID, $explang, $type, $options);
+        $resultsService->exportSurvey($iSurveyID, $explang, $type, $options, $sFilter);
 
         exit;
     }

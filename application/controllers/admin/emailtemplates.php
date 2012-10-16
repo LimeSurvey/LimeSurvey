@@ -37,7 +37,7 @@ class emailtemplates extends Survey_Common_Action {
         Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->loadHelper('surveytranslator');
 
-        Yii::app()->session['FileManagerContext'] = "edit:assessments:{$iSurveyId}";
+        Yii::app()->session['FileManagerContext'] = "edit:emailsettings:{$iSurveyId}";
 
         if(isset($iSurveyId) && getEmailFormat($iSurveyId) == 'html')
         {
@@ -106,8 +106,6 @@ class emailtemplates extends Survey_Common_Action {
                         'email_admin_responses' => $_POST['email_admin_responses_'.$langname]
                         );
                 $usquery = Surveys_languagesettings::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
-                if ($usquery <= 0)
-                    die("Error updating<br />".$usquery."<br /><br />");
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Email templates successfully saved.");
         }

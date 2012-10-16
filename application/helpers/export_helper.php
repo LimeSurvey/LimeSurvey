@@ -76,7 +76,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $qs='\'', $header=FALSE
     {
         $i = 1;
         foreach ($fields as $field) {
-            echo $qs.strtoupper($field['sql_name']).$qs;
+            if (!$field['hide'] ) echo $q.strtoupper($field['sql_name']).$q;
             if ($i<$num_fields && !$field['hide']) echo ',';
             $i++;
         }
@@ -174,15 +174,9 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
 
     #Lookup the names of the attributes
     $query="SELECT sid, anonymized, language FROM {{surveys}} WHERE sid=$iSurveyID";
-    $result=Yii::app()->db->createCommand($query)->query();  //Checked
-    $num_results = $result->getRowCount();
-    $num_fields = $num_results;
-    # Build array that has to be returned
-    for ($i=0; $i < $num_results; $i++) {
-        $row = $result->read();
-        $surveyprivate=$row['anonymized'];
-        $language=$row['language'];
-    }
+    $aRow=Yii::app()->db->createCommand($query)->queryRow();  //Checked
+    $surveyprivate=$aRow['anonymized'];
+    $language=$aRow['language'];
 
     $fieldno=0;
 
@@ -373,7 +367,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
     {
         $QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
         $result = $QueryResult->readAll();
-        if ($iStart==0 && $QueryResult->getRowCount()>0)
+        if ($iStart==0 && count($result)>0)
         {
             $exclude = array_flip($excludes);    //Flip key/value in array for faster checks
             $xmlwriter->startElement($TableName);
@@ -409,8 +403,8 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
             $xmlwriter->endElement(); // close row
         }
         $iStart=$iStart+$iChunkSize;
-    } while ($QueryResult->getRowCount()==$iChunkSize);
-    if ($QueryResult->getRowCount()>0)
+    } while (count($result)==$iChunkSize);
+    if (count($result)>0)
     {
         $xmlwriter->endElement(); // close rows
         $xmlwriter->endElement(); // close tablename
@@ -1113,7 +1107,7 @@ function group_export($action, $iSurveyID, $gid)
     $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
     $xml->startElement('languages');
 
-    $lresult = Groups::model()->findAllByAttributes(array('gid' => $gid), array('group' => 'language'));
+    $lresult = Groups::model()->findAllByAttributes(array('gid' => $gid), array('select'=>'language','group' => 'language'));
     foreach($lresult as $row)
     {
         $xml->writeElement('language',$row->language);
@@ -1334,15 +1328,14 @@ function tokensExport($iSurveyID)
     $bquery .= " ORDER BY tid";
     Yii::app()->loadHelper('database');
 
-    $bresult = Yii::app()->db->createCommand($bquery)->query(); //dbExecuteAssoc($bquery) is faster but deprecated!
-
+    $bresult = Yii::app()->db->createCommand($bquery)->query()->readAll(); //dbExecuteAssoc($bquery) is faster but deprecated!
     //HEADERS should be after the above query else timeout errors in case there are lots of tokens!
     header("Content-Disposition: attachment; filename=tokens_".$iSurveyID.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: cache");
 
-    $bfieldcount=$bresult->getRowCount();
+    $bfieldcount=count($bresult);
     // Export UTF8 WITH BOM
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
     $tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,language,validfrom,validuntil,invited,reminded,remindercount,completed,usesleft";
@@ -1360,7 +1353,7 @@ function tokensExport($iSurveyID)
 
     $aExportedTokens = array();
 
-    foreach($bresult->readAll() as $brow)
+    foreach($bresult as $brow)
     {
 
         if (trim($brow['validfrom']!=''))

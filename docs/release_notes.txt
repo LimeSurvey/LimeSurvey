@@ -45,11 +45,192 @@ HOW TO UPGRADE from LimeSurvey 1.50 or later (<=1.70)
    It is usually easier to customize a default templates, again, instead of fixing your old template! 
 8. Done.
 
+TEMPLATE modification between LimeSurvey 1.8
+------------------------------------------------------
+LimeSurvey 2 use a new placeholder for javascript inclusion: {TEMPLATEJS}.
+Old template can be incompatible with the new javascript inclusion system. LimeSurvey need a placeholder to include js file for public survey.
+The update process and the template upload process try to update your template. If there are javascript issue with your custom template, control you have the placeholder {TEMPLACEJS} in your starpage.pstpl.
+
 Thank you to everyone who helped with this new release!
 
 
 CHANGE LOG
 ------------------------------------------------------
+
+
+Changes from 2.00+ (build 121014) to 2.00+ (build 121016) Oct 16, 2012
+-Fixed issue #6606: Participant attribute grid - can only edit the first attribute (Aniessh Sethh)
+-Fixed issue #6669: Paticipants panel Attribute error on add (Aniessh Sethh)
+-Fixed issue #6688: Apostrophe (single quote) in question code for File upload questions disrupts EM logic (Carsten Schmitz)
+-Fixed issue #6696: Unable to add users to user groups (Carsten Schmitz)
+-Fixed issue #6697: Question group import creates empty group (Carsten Schmitz)
+-Fixed issue #6708: Error messages not displaying at survey signup when user did not completely/correctly fill out the form (Carsten Schmitz)
+-Fixed issue #6709: Export results - token values missing (Carsten Schmitz)
+-Fixed issue #6668: Images not shown in emails (Sam Mousa)
+-New feature: Console installation scripts (Carsten Schmitz)
+#Updated translation: Bulgarian by klaster
+#Updated translation: Czech by slansky
+#Updated translation: Danish by nielsb
+#Updated translation: Estonian by klaster
+#Updated translation: Finnish by klaster, hirvojo1
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by hunkissleslie
+#Updated translation: Japanese by nomoto
+#Updated translation: Latvian by vipgroup
+#Updated translation: Malay by xbonize
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad, peterhol
+#Updated translation: Portuguese (Brazil) by wagner, mauriciofurtado
+#Updated translation: Russian by vipgroup, ldemeschew
+#Updated translation: Slovenian by Aambro
+#Updated translation: Spanish (Spain) by larjona, xtingray, jaimealvarezv, jbermudezperez, Nodens
+
+
+Changes from 2.00+ (build 121013) to 2.00+ (build 121014) Oct 14, 2012
+-Fixed issue #6671: Impossible to import correctly a group of question (Carsten Schmitz)
+-Fixed issue #6693: Error whan saving global settings with IE8 only (Denis Chenu)
+-Fixed issue #6695: Error when trying to create a new user group (Carsten Schmitz)
+-Fixed issue: Site name, site admin email and siteadminname are not used in template editor (Denis Chenu)
+-Fixed issue: Template editor button are not the same the survey button (Denis Chenu)
+-Fixed issue: Unable to edit template if debug>1 (Denis Chenu)
+#Updated translation: German by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+
+
+Changes from 2.00+ (build 121011) to 2.00+ (build 121013) Oct 13, 2012
+-Fixed issue #6654: Group import or TSV import are not XSS filtered for non super-admin (Denis Chenu)
+-Fixed issue #6659: Missing translations when browsing tokens (Carsten Schmitz)
+-Fixed issue #6671: Impossible to import correctly a group of question (Carsten Schmitz)
+-Fixed issue #6672: Error when a user without admin access try to visualise a survey (Carsten Schmitz)
+-Fixed issue #6682: Quick translation function for questions not showing texts properly (Carsten Schmitz)
+-Fixed issue #6682: Quick Translation function for questions not showing texts properly (Carsten Schmitz)
+-Fixed issue #6685: Export of results broken (Denis Chenu)
+-Fixed issue #6686: "Restart this survey" link is incorrect (Carsten Schmitz)
+-Fixed issue #6687: Unable to select email template of different languages when sending email (Carsten Schmitz)
+-Fixed issue #6688: Apostrophe (single quote) in question code for File upload questions disrupts EM logic (Carsten Schmitz)
+-Fixed issue #6691: Unable to edit response if debug mode is active (Carsten Schmitz)
+-Fixed issue #6692: Upper range limit ignored on exporting results (Carsten Schmitz)
+-Fixed issue: Dumping large database tables causes script to run out of memory (Carsten Schmitz)
+-Fixed issue: Missing databasename when dumping database (Carsten Schmitz)
+-Fixed issue: Problem importing question group when using MSSQL (Carsten Schmitz)
+#Updated translation: Estonian by klaster
+#Updated translation: German by c_schmitz
+
+Changes from 2.00+ (build 121009) to 2.00+ (build 121011) Oct 11, 2012
+-Fixed issue #6658: Cannot resume saved survey from "Load a previously saved survey" screen (Carsten Schmitz)
+-Fixed issue #6665: Spaces inserted at the beginning of invitation/reminder email body when using plain text format (Carsten Schmitz)
+-Fixed issue #6673: Admin cannot view statistics of responses when using MSSQL (Carsten Schmitz)
+-Fixed issue #6675: Print preview broken on additional languages (Carsten Schmitz)
+-Fixed issue #6680: Impossible to translate using "Quick translation" (Carsten Schmitz)
+-Fixed issue #6681: Error updating when trying to save email templates (Carsten Schmitz)
+-Fixed issue #6683: Advanced multilingual settings not saved for new question (Carsten Schmitz)
+-Fixed issue: Error when adding an additional language to the survey using MSSQL (Carsten Schmitz)
+-Fixed issue: Mandatory field error at import (Carsten Schmitz)
+-Fixed issue: Problem when importing results from survey archive and using MSSQL (Carsten Schmitz)
+-Fixed issue: Randomization groups for questions not working when using MSSQL (Carsten Schmitz)
+-Fixed issue: Various problems when using MSSQL or Postgres (Carsten Schmitz)
+#Updated translation: Estonian by klaster
+#Updated translation: Italian by lfanfoni
+#Updated translation: Polish by elisa
+#Updated translation: Serbian by MilaVeljovic
+
+Changes from 2.00+ (build 121006) to 2.00+ (build 121009) Oct 09, 2012
+-Fixed issue #6179: Files with umlauts in filename do not upload on some browsers (Carsten Schmitz)
+-Fixed issue #6441: Public statistics is missing result data and charts (Carsten Schmitz)
+-Fixed issue #6572: On chrome browser submenu's disappear (tpartner)
+-Fixed issue #6595: Data restore from old_survey_... table fails when using Postgres (Carsten Schmitz)
+-Fixed issue #6635: Export to R headers include hidden fields (Carsten Schmitz)
+-Fixed issue #6648: Advanced date/time input with dropdown box of only "year" creates "date is not valid" error (Carsten Schmitz)
+-Fixed issue #6659: Missing translations in token administration (Carsten Schmitz)
+-Fixed issue: Export results not working if survey is set to anonymized responses (Carsten Schmitz)
+#Updated translation: Czech by slansky
+#Updated translation: Danish by docl
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by BenoitBouvarel
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (BokmÃ¥l) by peterhol, pmonstad
+#Updated translation: Portuguese (Brazil) by mauriciofurtado, wagner, marciojv
+#Updated translation: Russian by ldemeschew
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Slovenian by Aambro
+#Updated translation: Spanish (Mexican) by pedrogk
+
+Changes from 2.00+ (build 121005) to 2.00+ (build 121006) Oct 05, 2012
+-Fixed issue #6596: Cant send invitation email with SQL DB (Spiros Trougakos)
+-Fixed issue #6657: Impossible to recover survey (Carsten Schmitz)
+
+Changes from 2.00+ (build 121002) to 2.00+ (build 121005) Oct 05, 2012
+-Fixed issue #6361: tab on date with drop-down throw javascript error (Denis Chenu)
+-Fixed issue #6592: Import of question with equation converts special characters to HTML entitities (Denis Chenu)
+-Fixed issue #6593: Displays HTML Quote for Question type List (dropdown) (Denis Chenu)
+-Fixed issue #6623: imported tab delimited surveys are not visible (Thomas White)
+-Fixed issue #6625: Question type Array not working (Carsten Schmitz)
+-Fixed issue #6626: Editing of question groups not possible after adding a language to the survey and using MSSQL (Carsten Schmitz)
+-Fixed issue #6628: Passthrough values not being handled (Carsten Schmitz)
+-Fixed issue #6631: Questions conditional on a previous yes/no question are not displaying after navigating back to a question group. (Thomas White)
+-Fixed issue #6636: New token attributes not showing up in add new token page. (Carsten Schmitz)
+-Fixed issue #6637: default template settings aren't used with endpage.pstpl for surveylist (Denis Chenu)
+-Fixed issue #6638: Unable to change config-default in config.php (Carsten Schmitz)
+-Fixed issue #6640: ReminderSent status is still 'N' after sending reminder (Carsten Schmitz)
+-Fixed issue #6641: Send reminder to one token function sends reminder to all tokens (Carsten Schmitz)
+-Fixed issue #6642: unable to use limereplacementfields in popup HTML editor (Denis Chenu)
+-Fixed issue #6643: Can not export one response from survey to an application and translate problem (Carsten Schmitz)
+-Fixed issue #6645: Mandatory Multi numeric question type show error for line with 0 (Denis Chenu)
+-Fixed issue #6646 : HTML entities shown when answering survey and not filling a mandatory Multiple choice questions (Denis Chenu)
+-Fixed issue #6649: When trying to browse last 50 responses instead it shows first 50 responses (Carsten Schmitz)
+-Fixed issue #6652: Additional slahs in template paths in page header (Carsten Schmitz)
+-Fixed issue #6652: Question type Array not working on MSSQL (Carsten Schmitz)
+-Fixed issue: Conditions editor not properly working (Carsten Schmitz)
+-Fixed issue: Error exporting question group on MSSQL (Carsten Schmitz)
+-Fixed issue: Incorrect DB Version on install causing an unnecessary update on a fresh installation (Carsten Schmitz)
+-Fixed issue: JavaScript error when editing locale survey settings (Carsten Schmitz)
+-Fixed issue: Problems importing URL parameters (Carsten Schmitz)
+-Fixed issue: Unable to add subquestion without number (Denis Chenu)
+-Fixed issue: Unsupported database types being offered on installation (Carsten Schmitz)
+-Fixed issue: URL parameters empty on repeated editing (Carsten Schmitz)
+#Updated translation: Arabic by ysaad
+#Updated translation: Bulgarian by klaster
+#Updated translation: Danish by docl
+#Updated translation: Estonian by klaster
+#Updated translation: Finnish by klaster
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz, PDrews
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Latvian by vipgroup
+#Updated translation: Norwegian (Bokmal) by pmonstad, peterhol
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado, wagner, marciojv
+#Updated translation: Russian by ldemeschew, vipgroup
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Slovak by jmi239
+#Updated translation: Swedish by klaster
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.00+ (build 120931) to 2.00+ (build 121002) Oct 02, 2012
+-Fixed issue #6554: Show logic file always lists "time_limit_action" question attribute though it was not changed (Carsten Schmitz)
+-Fixed issue #6559: Batch emails to selected boxes not batching but trying to send to everyone (Carsten Schmitz)
+-Fixed issue #6599 :  Old custom templates incompatibility : replace template.js by {TEMPLATEJS} when upload (Denis Chenu)
+-Fixed issue #6604: The survey URL sent with the registration mail is wrong (Carsten Schmitz)
+-Fixed issue #6610: Security captcha does not accept valid values (Carsten Schmitz)
+-Fixed issue #6615: Browsing text answer results with the "browse" button does nothing. (Carsten Schmitz)
+-Fixed issue #6618: Untranslated texts in survey list (Carsten Schmitz)
+-Fixed issue #6621: Incorrect number of radio list display columns (Carsten Schmitz)
+-Fixed issue #6622: Error when opening template editor (Carsten Schmitz)
+-Fixed issue: Problem with updating survey timings on postgresql db (Guillaume Luchet)
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by mdekker
+#Updated translation: Estonian by klaster
+#Updated translation: German by c_schmitz, Ebenezer_Arvigenius
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad, peterhol
+#Updated translation: Polish by elisa
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Turkish by kayazeren
 
 Changes from 2.00+ (build 120930) to 2.00+ (build 120931) Sept 30, 2012
 -Fixed issue #6610: Security captcha does not accept valid values (Carsten Schmitz)
@@ -57,7 +238,6 @@ Changes from 2.00+ (build 120930) to 2.00+ (build 120931) Sept 30, 2012
 -Fixed issue #6614: Editing a question not possible (Carsten Schmitz)
 -Fixed issue: Reset password not properly working (Carsten Schmitz)
 #Updated translation: Estonian by klaster
-
 
 Changes from 2.00+ (build 120926) to 2.00+ (build 120930) Sept 30, 2012
 -Fixed issue #6582: Export data to SPSS does not export value labels correctly (Menno Dekker)

@@ -260,7 +260,12 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 #questiondetails td+td {
     text-align:left;
 }
-
+#questionactioncopy{
+    float: right;
+}
+#questionactioncopy p{
+    margin: 0
+}
 .outlinetable {
     border: 1px solid #111;
 }
@@ -1158,6 +1163,7 @@ textarea.updater-changelog {
     text-align: right;
     margin-right: 0.5em;
     float: left;
+    clear:left;
     font-weight: bold;
     color: #1d2d45;
 }
@@ -1177,6 +1183,7 @@ textarea.updater-changelog {
     text-align: right;
     margin-right: 0.5em;
     float: left;
+    clear:left;
     font-weight: bold;
     color: #121A28;
 }

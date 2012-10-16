@@ -127,11 +127,11 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $css_header_includes=Yii::app()->getConfig("css_header_includes");
         if (file_exists($templatedir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
         {
-            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui-custom.css' />\n";
+            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}jquery-ui-custom.css' />\n";
         }
         elseif(file_exists($templatedir.DIRECTORY_SEPARATOR.'jquery-ui.css'))
         {
-            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui.css' />\n";
+            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}jquery-ui.css' />\n";
         }
         else
         {
@@ -149,7 +149,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                 {
                     if(file_exists($templatedir.DIRECTORY_SEPARATOR.$cssinclude))
                     {
-                        $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='{$$templateurl}/{$cssinclude}' />\n";
+                        $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}{$cssinclude}' />\n";
                     }
                     else
                     {
@@ -405,7 +405,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
         if (returnGlobal('token'))
         {
-            $_clearall .= "&amp;token=" . urlencode(trim(sanitize_token(strip_tags(returnGlobal('token')))));
+            $_clearall .= "?token=" . urlencode(trim(sanitize_token(strip_tags(returnGlobal('token')))));
         }
         $_clearall .= "', '_self')}\" />";
     }
@@ -564,7 +564,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_saveform .= HTMLEscape(autoUnescape($_POST['saveemail']));
     }
     $_saveform .= "' /></td></tr>\n";
-    if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
+    if ( isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {                                                                                                                                                                                                     
         $_saveform .="<tr><td align='right'>" . $clang->gT("Security question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt6='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
     }
@@ -587,7 +587,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_loadform .= "' /></td></tr>\n";
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_loadform .="<tr><td align='right'>" . $clang->gT("Security question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
+        $_loadform .="<tr><td align='right'>" . $clang->gT("Security question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
     }
     $_loadform .="<tr><td align='right'></td><td></td></tr>\n"
     . "<tr><td></td><td><input type='submit' id='loadbutton' value='" . $clang->gT("Load now") . "' /></td></tr></table>\n";
@@ -761,10 +761,14 @@ EOD;
     {
         $_endtext = $thissurvey['surveyls_endtext'];
     }
+    if (isset($_SESSION['survey_'.$surveyid]) && isset($_SESSION['survey_'.$surveyid]['register_errormsg']))
+    {
+        $register_errormsg=$_SESSION['survey_'.$surveyid]['register_errormsg'];
+        unset($_SESSION['survey_'.$surveyid]['register_errormsg']);
+    }
 
 
     // Set the array of replacement variables here - don't include curly braces
-
     $coreReplacements = array();
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['AID'] = isset($questiondetials->aid) ? $questiondetails->aid : '';
@@ -794,8 +798,6 @@ EOD;
     $coreReplacements['NAVIGATOR'] = isset($navigator) ? $navigator : '';    // global
     $coreReplacements['NOSURVEYID'] = (isset($surveylist))?$surveylist['nosid']:'';
     $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
-    $coreReplacements['PASSTHRULABEL'] = '';
-    $coreReplacements['PASSTHRUVALUE'] = '';
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
     $coreReplacements['PRIVACY'] = isset($privacy) ? $privacy : '';    // global
     $coreReplacements['PRIVACYMESSAGE'] = "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey.");
@@ -944,16 +946,16 @@ function PassthruReplace($line, $thissurvey)
     {
         $p1 = strpos($line,"{PASSTHRU:"); // startposition
         $p2 = $p1 + 10; // position of the first arg char
-        $p3 = strpos($line,"}",10); // position of the last arg char
+        $p3 = strpos($line,"}",$p1); // position of the last arg char
 
         $cmd=substr($line,$p1,$p3-$p1+1); // extract the complete passthru like "{PASSTHRU:myarg}"
         $arg=substr($line,$p2,$p3-$p2); // extract the arg to passthru (like "myarg")
 
         // lookup for the fitting arg
         $sValue='';
-        if (isset(Yii::app()->session['urlparams'][$arg]))
+        if (isset($_SESSION['survey_'.$thissurvey['sid']]['urlparams'][$arg]))
         {
-            $sValue=urlencode(Yii::app()->session['urlparams'][$arg]);
+            $sValue=urlencode($_SESSION['survey_'.$thissurvey['sid']]['urlparams'][$arg]);
         }
         $line=str_replace($cmd, $sValue, $line); // replace
     }

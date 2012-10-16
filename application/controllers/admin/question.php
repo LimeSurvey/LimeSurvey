@@ -826,6 +826,7 @@ class question extends Survey_Common_Action
                 $baselang = Survey::model()->findByPk($surveyid)->language;
                 $oqresult = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang, 'parent_qid'=> 0), array('order' => 'question_order'));
                 $aData['oqresult'] = $oqresult;
+                $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'questions.js');
             }
 
             $aViewUrls['editQuestion_view'][] = $aData;

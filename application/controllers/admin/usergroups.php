@@ -144,7 +144,7 @@ class Usergroups extends Survey_Common_Action
 
                 if (!empty($ugid) && ($ugid > -1)) {
                     $result = User_groups::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
-                    if ($result->count() > 0) {
+                    if ($result->count() > 0) {  // OK - AR count
                         $delquery_result = User_groups::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
 
                         // $del_user_in_groups_query = "DELETE FROM {{user_in_groups}} WHERE ugid=$ugid AND uid=".Yii::app()->session['loginID'];
@@ -197,7 +197,7 @@ class Usergroups extends Survey_Common_Action
                         {
                             $ugid = User_groups::model()->addGroup($db_group_name, $db_group_description);
                             Yii::app()->session['flashmessage'] = $clang->gT("User group successfully added!");
-                            list($aViewUrls, $aData) = $this->index($ugid);
+                            list($aViewUrls, $aData) = $this->index($ugid, true);
                         }
                     }
                     else
@@ -378,7 +378,7 @@ class Usergroups extends Survey_Common_Action
                 switch ($action)
                 {
                     case 'add' :
-                        if (empty($user_in_group) && User_in_groups::model()->insert(array('ugid' => $ugid, 'uid' => $uid)))
+                        if (empty($user_in_group) && User_in_groups::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid)))
                         {
                             list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => $clang->gT('User added.')));
                         }

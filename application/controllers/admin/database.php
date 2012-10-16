@@ -473,20 +473,70 @@ class database extends Survey_Common_Action
                         }
                     } else {
                         $q = tidToQuestion(Yii::app()->request->getPost('type'));
+                        $aLanguages=array_merge(array(Survey::model()->findByPk($surveyid)->language),Survey::model()->findByPk($surveyid)->additionalLanguages);
+
                         foreach ($q->availableAttributes() as $validAttribute)
                         {
-                            if (Yii::app()->request->getPost($validAttribute))
+                            if ($validAttribute['i18n'])
                             {
-                                $data = array(
-                                'qid' => $qid,
-                                'value' => Yii::app()->request->getPost($validAttribute),
-                                'attribute' => $validAttribute
-                                );
+                                foreach ($aLanguages as $sLanguage)
+                                {// TODO sanitise XSS
+                                    $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
+                                    $result = Question_attributes::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$qid, 'language'=>$sLanguage));
+                                    if (count($result)>0)
+                                    {
+                                        if ($value!='')
+                                        {
+                                            Question_attributes::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid, ':language'=>$sLanguage));
+                                        }
+                                        else
+                                        {
+                                            Question_attributes::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid, ':language'=>$sLanguage));
+                                        }
+                                    }
+                                    elseif($value!='')
+                                    {
+                                        $attribute = new Question_attributes;
+                                        $attribute->qid = $qid;
+                                        $attribute->value = $value;
+                                        $attribute->attribute = $validAttribute['name'];
+                                        $attribute->language = $sLanguage;
+                                        $attribute->save();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                $value=Yii::app()->request->getPost($validAttribute['name']);
 
-                                Question_attributes::model()->insertRecords($data);
+                                if ($validAttribute['name']=='multiflexible_step' && trim($value)!='') {
+                                    $value=floatval($value);
+                                    if ($value==0) $value=1;
+                                };
 
+                                $result = Question_attributes::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$qid));
+                                if (count($result)>0)
+                                {
+                                    if($value!=$validAttribute['default'] && trim($value)!="")
+                                    {
+                                        Question_attributes::model()->updateAll(array('value'=>$value),'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid));
+                                    }
+                                    else
+                                    {
+                                        Question_attributes::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid));
+                                    }
+                                }
+                                elseif($value!=$validAttribute['default'] && trim($value)!="")
+                                {
+                                    $attribute = new Question_attributes;
+                                    $attribute->qid = $qid;
+                                    $attribute->value = $value;
+                                    $attribute->attribute = $validAttribute['name'];
+                                    $attribute->save();
+                                }
                             }
                         }
+
                     }
                     Questions::model()->updateQuestionOrder($gid, $surveyid);
                     Yii::app()->session['flashmessage'] =  $clang->gT("Question was successfully added.");

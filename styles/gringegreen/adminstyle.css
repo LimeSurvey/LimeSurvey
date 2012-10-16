@@ -263,7 +263,10 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 #questiondetails td+td {
     text-align:left;
 }
-
+#questionactioncopy{
+    float: right;
+    margin-top: -60px
+}
 .outlinetable {
     border: 1px solid #111;
 }
@@ -1796,4 +1799,10 @@ td.LEMerror  {
 .highlighterror {
 	border: 2px solid #FF00FF;
 	color: red;
+}
+
+.dd .ddTitle
+{
+    background-color:#fff !important;
+    color:#000 !important;
 }

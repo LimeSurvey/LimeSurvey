@@ -384,17 +384,20 @@ class dataentry extends Survey_Common_Action
 
                 $queryOldValues = "SELECT ".implode(", ",array_map("dbQuoteID", $aValidFields))." FROM {$oldtable} ";
                 $resultOldValues = dbExecuteAssoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
-                $iRecordCount = $resultOldValues->count();
+                $iRecordCount = 0;
                 $aSRIDConversions=array();
                 foreach ($resultOldValues->readAll() as $row)
                 {
                     $iOldID=$row['id'];
                     unset($row['id']);
-
+                    // Remove NULL values
+                    $row=array_filter($row, 'strlen'); 
                     //$sInsertSQL=Yii::app()->db->GetInsertSQL($activetable, $row);
                     $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("dbQuoteID", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll",array_values($row))).")";
                     $result = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
-                    $aSRIDConversions[$iOldID]=Yii::app()->db->getLastInsertID();
+
+                    $aSRIDConversions[$iOldID] = getLastInsertID($activetable);
+                    $iRecordCount++;
                 }
 
                 Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) were successfully imported."), $iRecordCount);
@@ -412,7 +415,7 @@ class dataentry extends Survey_Common_Action
 
                     $queryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {$sOldTimingsTable} ";
                     $resultOldValues = dbExecuteAssoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
-                    $iRecordCountT=$resultOldValues->count();
+                    $iRecordCountT=0;
                     $aSRIDConversions=array();
                     foreach ($resultOldValues->readAll() as $row)
                     {
@@ -424,6 +427,7 @@ class dataentry extends Survey_Common_Action
                         //$sInsertSQL=Yii::app()->db->GetInsertSQL($sNewTimingsTable,$row);
                         $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",", array_map("dbQuoteID", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll", array_values($row))).")";
                         $result = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
+                        $iRecordCountT++;
                     }
                     Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
                 }
@@ -472,11 +476,11 @@ class dataentry extends Survey_Common_Action
             {{questions}}.sid={{surveys}}.sid AND {{questions}}.sid='$surveyid'
             order by group_order, question_order";
             $fnresult = dbExecuteAssoc($fnquery);
-
-            $fncount = $fnresult->getRowCount();
+            $fnresult=$fnresult->readAll();
+            $fncount = count($fnresult);
 
             $fnrows = array(); //Create an empty array in case FetchRow does not return any rows
-            foreach ($fnresult->readAll() as $fnrow)
+            foreach ($fnresult as $fnrow)
             {
                 $fnrows[] = $fnrow;
                 $private=$fnrow['anonymized'];
@@ -777,12 +781,9 @@ class dataentry extends Survey_Common_Action
             $updateqr .= " WHERE id=$id";
 
             $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
-            while (ob_get_level() > 0) {
-                ob_end_flush();
-            }
 
             $onerecord_link = $this->getController()->createUrl('/').'/admin/responses/index/surveyid/'.$surveyid.'/id/'.$id;
-            $allrecords_link = $this->getController()->createUrl('/').'/admin/responses/index/surveyid/'.$surveyid.'/all';
+            $allrecords_link = $this->getController()->createUrl('/').'/admin/responses/index/surveyid/'.$surveyid;
             $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>\n"
             .$clang->gT("Record has been updated.")."<br /><br />\n"
             ."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
@@ -835,8 +836,9 @@ class dataentry extends Survey_Common_Action
                     $tokencompleted = "";
                     $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token='{$_POST['token']}'"; //dbQuoteAll($_POST['token'],true);
                     $tcresult = dbExecuteAssoc($tcquery);
-                    $tccount = $tcresult->getRowCount();
-                    foreach ($tcresult->readAll() as $tcrow)
+                    $tcresult = $tcresult->readAll();
+                    $tccount = count($tcresult);
+                    foreach ($tcresult as $tcrow)
                     {
                         $tokencompleted = $tcrow['completed'];
                     }
@@ -1014,14 +1016,13 @@ class dataentry extends Survey_Common_Action
                         $utresult = dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
 
                         // save submitdate into survey table
-                        $srid = Yii::app()->db->getLastInsertID(); // Yii::app()->db->getLastInsertID();
-                        $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$srid}\n";
+                        $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$new_response}\n";
                         $sdresult = dbExecuteAssoc($sdquery) or safeDie ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
-                        $last_db_id = Yii::app()->db->getLastInsertID();
+                        $last_db_id = getLastInsertID("{{survey_$surveyid}}");
                     }
                     if (isset($_POST['save']) && $_POST['save'] == "on")
                     {
-                        $srid = Yii::app()->db->getLastInsertID(); //Yii::app()->db->getLastInsertID();
+                        $srid = $last_db_id;
                         $aUserData=Yii::app()->session;
                         //CREATE ENTRY INTO "saved_control"
 
@@ -1051,13 +1052,12 @@ class dataentry extends Survey_Common_Action
                         $this->load->model('saved_control_model');*/
                         if (dbExecuteAssoc($SQL))
                         {
-                            $scid =  Yii::app()->db->getLastInsertID(); // Yii::app()->db->getLastInsertID("{{saved_control}}","scid");
+                            $scid =  getLastInsertID('{{saved_control}}');
 
                             $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
                             //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
 
                             $tokens_table = "{{tokens_$surveyid}}";
-                            $last_db_id = Yii::app()->db->getLastInsertID();
                             if (tableExists($tokens_table)) //If the query fails, assume no tokens table exists
                             {
                                 $tkquery = "SELECT * FROM {$tokens_table}";
@@ -1085,8 +1085,6 @@ class dataentry extends Survey_Common_Action
                                 //Yii::app()->db->AutoExecute(db_table_name("tokens_".$surveyid), $tokendata,'INSERT');
                                 $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("A token entry for the saved survey has been created too."));
                                 //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
-                                $last_db_id = Yii::app()->db->getLastInsertID();
-
                             }
                             if ($saver['email'])
                             {

@@ -2,8 +2,8 @@
 if ($screenname != 'welcome')
 {
 ?>
-    <input class="submit" type="submit" value="&lt;&lt;<?php $clang->eT('Previous') ?>" name="move" />
+    <button id="moveprevbtn" name="move2" value="<?php $clang->eT('Previous') ?>" type="button" accesskey="p" class="submit"><?php $clang->eT('Previous') ?></button>
 <?php
 }
 ?>
-<input class="submit" type="submit" value="<?php $clang->eT('Next') ?>&gt;&gt;" name="move" />
+<button id="movenextbtn" name="move2" value="<?php $clang->eT('Next') ?>" accesskey="n" type="submit" class="submit"><?php $clang->eT('Next') ?></button>

@@ -48,12 +48,10 @@ class InstallerConfigForm extends CFormModel
         {
             $drivers=CDbConnection::getAvailableDrivers();
         }
-        foreach($drivers as $driver) {
-            if (isset($this->db_names[$driver]))
-                $this->supported_db_types[$driver] = $this->db_names[$driver];
-            else
-                $this->supported_db_types[$driver] = $driver;
-        }
+		foreach($drivers as $driver) {
+			if (isset($this->db_names[$driver]))
+				$this->supported_db_types[$driver] = $this->db_names[$driver];
+		}
 
         asort($this->supported_db_types);
 

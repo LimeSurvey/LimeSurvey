@@ -78,44 +78,44 @@ class User_in_groups extends CActiveRecord {
         return $data;
     }
 
-    function insert($data)
-    {
-        $user = Yii::app()->db->createCommand()->insert($this->tableName(), $data);
-        return (bool) $user;
-    }
+	function insertRecords($data)
+	{
+		$user = Yii::app()->db->createCommand()->insert($this->tableName(), $data);
+		return (bool) $user;
+	}
 
-    function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
-    {
-        $user = Yii::app()->db->createCommand();
-        foreach ($fields as $field)
-        {
-            $user->select($field);
-        }
+	function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
+	{
+	    $user = Yii::app()->db->createCommand();
+		foreach ($fields as $field)
+		{
+			$user->select($field);
+		}
 
-        $user->from($from);
+		$user->from($from);
 
-        if ($condition != FALSE)
-        {
-            $user->where($condition);
-        }
+		if ($condition != FALSE)
+		{
+			$user->where($condition);
+		}
 
-        if ($order != FALSE)
-        {
-            $user->order($order);
-        }
+		if ($order != FALSE)
+		{
+			$user->order($order);
+		}
 
-        if (isset($join['where'], $join['on']))
-        {
-            if (isset($join['left'])) {
-                $user->leftjoin($join['where'], $join['on']);
-            }else
-            {
-                $user->join($join['where'], $join['on']);
-            }
-        }
+		if (isset($join['where'], $join['on']))
+		{
+		    if (isset($join['left'])) {
+			    $user->leftjoin($join['where'], $join['on']);
+			}else
+			{
+			    $user->join($join['where'], $join['on']);
+			}
+		}
 
-        $data = $user->queryRow();
-        return $data;
-    }
+		$data = $user->queryRow();
+		return $data;
+	}
 
 }

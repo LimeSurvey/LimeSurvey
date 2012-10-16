@@ -15,22 +15,22 @@
                     <img src='<?php echo $sImageURL; ?>summary.png' title='' alt='<?php $clang->eT("Show summary information"); ?>' /></a>
                 <?php if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
                     { ?>
-                    <a href='<?php echo $this->createUrl("admin/responses/browse/surveyid/$surveyid/all"); ?>'>
+                    <a href='<?php echo $this->createUrl("admin/responses/browse/surveyid/$surveyid"); ?>'>
                         <img src='<?php echo $sImageURL; ?>document.png' title='' alt='<?php $clang->eT("Display Responses"); ?>' /></a>
                     <?php }
                     else
                     { ?>
-                    <a href="<?php echo $this->createUrl("admin/responses/browse/surveyid/$surveyid/all"); ?>" accesskey='b' id='browseresponses'>
+                    <a href="<?php echo $this->createUrl("admin/responses/browse/surveyid/$surveyid"); ?>" accesskey='b' id='browseresponses'>
                         <img src='<?php echo $sImageURL; ?>document.png' alt='<?php $clang->eT("Display Responses"); ?>' /></a>
 
                     <div class="langpopup" id="browselangpopup"><?php $clang->eT("Please select a language:"); ?><ul>
                             <?php foreach ($tmp_survlangs as $tmp_lang)
                                 { ?>
-                                <li><a href="<?php echo $this->createUrl("admin/responses/index/surveyid/$surveyid/all/start/0/limit/50/order/asc/browselang/$tmp_lang"); ?>" accesskey='b'><?php echo getLanguageNameFromCode($tmp_lang, false); ?></a></li>
+                                <li><a href="<?php echo $this->createUrl("admin/responses/index/surveyid/$surveyid/start/0/limit/50/order/asc/browselang/$tmp_lang"); ?>" accesskey='b'><?php echo getLanguageNameFromCode($tmp_lang, false); ?></a></li>
                                 <?php } ?>
                         </ul></div>
                     <?php } ?>
-                <a href='<?php echo $this->createUrl("admin/responses/browse/surveyid/$surveyid/all/start/0/limit/50/order/desc"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/responses/browse/surveyid/$surveyid/start/0/limit/50/order/desc"); ?>'>
                     <img src='<?php echo $sImageURL; ?>viewlast.png' alt='<?php $clang->eT("Display Last 50 Responses"); ?>' /></a>
                 <?php }
                 if (hasSurveyPermission($surveyid, 'responses', 'create'))

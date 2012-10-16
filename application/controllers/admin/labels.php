@@ -397,7 +397,7 @@ class labels extends Survey_Common_Action
             $lset->languages = sanitize_xss_string($language);
             $lset->save();
 
-            $lid = Yii::app()->db->getCommandBuilder()->getLastInsertID($lset->tableName());
+            $lid = getLastInsertID($lset->tableName());
         }
         else
         {

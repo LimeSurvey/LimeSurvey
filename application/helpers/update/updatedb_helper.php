@@ -1488,7 +1488,7 @@ function upgradeQuestionAttributes142()
         foreach ($questionids as $questionid)
         {
             //Select all affected question attributes
-            $attributevalues=dbSelectColumn("SELECT value from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid);
+            $attributevalues=Yii::app()->db->createCommand("SELECT value from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid)->queryColumn();
             modifyDatabase("","delete from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid); echo $modifyoutput; flush();@ob_flush();
             $record['value']=implode(';',$attributevalues);
             $record['attribute']='exclude_all_other';
@@ -1867,31 +1867,42 @@ function replaceTemplateJS(){
     if (!$usertemplaterootdir) {return false;}
     $countstartpage=0;
     $counterror=0;
+    $errortemplate=array();
     if ($handle = opendir($usertemplaterootdir))
     {
         while (false !== ($file = readdir($handle)))
         {
-            $fname = "$usertemplaterootdir/$file/startpage.pstpl";
-            if (is_file("$usertemplaterootdir/$file/startpage.pstpl"))
-            {
-                if(is_writable("$usertemplaterootdir/$file/startpage.pstpl")){
-                    $fhandle = fopen($fname,"r");
-                    $content = fread($fhandle,filesize($fname));
-                    $content = str_replace("<script type=\"text/javascript\" src=\"{TEMPLATEURL}template.js\"></script>", "{TEMPLATEJS}", $content);
-                    $fhandle = fopen($fname,"w");
-                    fwrite($fhandle,$content);
-                    fclose($fhandle);
-                }else{
-                    $counterror++;
+            if ($file != "." && $file != ".." && is_dir("{$usertemplaterootdir}/{$file}")) {
+                $fname = "$usertemplaterootdir/$file/startpage.pstpl";
+                if (is_file($fname))
+                {
+                    if(is_writable($fname)){
+                        $fhandle = fopen($fname,"r");
+                        $content = fread($fhandle,filesize($fname));
+                        $content = str_replace("<script type=\"text/javascript\" src=\"{TEMPLATEURL}template.js\"></script>", "{TEMPLATEJS}", $content);
+                        $fhandle = fopen($fname,"w");
+                        fwrite($fhandle,$content);
+                        fclose($fhandle);
+                        if(strpos($content, "{TEMPLATEJS}")===false)
+                        {
+                            $counterror++;
+                            $errortemplate[]=$file;
+                        }
+                    }else{
+                        $counterror++;
+                    }
+                    $countstartpage++;
                 }
-                $countstartpage++;
             }
         }
         closedir($handle);
     }
         if($counterror)
         {
-            echo sprintf($clang->gT("%s user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually."),$counterror);
+            echo $clang->gT("Some user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually.");
+            echo "<br />";
+            echo $clang->gT("Template(s) to be verified :");
+            echo implode(",",$errortemplate);
         }
         else
         {

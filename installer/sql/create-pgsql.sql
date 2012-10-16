@@ -91,7 +91,7 @@ CREATE TABLE prefix_expression_errors (
 --
 CREATE TABLE prefix_failed_login_attempts (
   id serial PRIMARY KEY NOT NULL,
-  ip character varying(37) NOT NULL,
+  ip character varying(40) NOT NULL,
   last_attempt character varying(20) NOT NULL,
   number_attempts integer NOT NULL
 );
@@ -222,7 +222,7 @@ CREATE TABLE prefix_question_attributes (
 
 --
 -- Table structure for table questions
---//AJSL
+--
 CREATE TABLE prefix_questions (
     qid serial NOT NULL,
     parent_qid integer DEFAULT 0 NOT NULL,
@@ -287,7 +287,7 @@ CREATE TABLE prefix_quota_members (
     code character varying(11),
     CONSTRAINT prefix_quota_members_pkey PRIMARY KEY (id)
 );
-CREATE INDEX prefix_quota_members_ixcode_idx ON prefix_quota_members USING btree (sid,qid,quota_id,code);
+CREATE INDEX prefix_quota_members_ixcode_idx ON prefix_quota_members USING btree (sid, qid, quota_id, code);
 
 
 
@@ -339,6 +339,8 @@ CREATE TABLE prefix_survey_links (
   "token_id" integer NOT NULL,
   "survey_id" integer NOT NULL,
   "date_created" timestamp,
+  "date_invited" timestamp,
+  "date_completed" timestamp,
   CONSTRAINT prefix_survey_links_pkey PRIMARY KEY (participant_id,token_id,survey_id)
 );
 

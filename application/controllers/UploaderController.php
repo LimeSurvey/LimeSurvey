@@ -14,8 +14,8 @@
  */
 
 class UploaderController extends AdminController {
-    function run()
-    {
+	function run($actionID)
+	{
 
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");

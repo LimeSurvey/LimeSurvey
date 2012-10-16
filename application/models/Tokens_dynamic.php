@@ -43,48 +43,49 @@ class Tokens_dynamic extends LSActiveRecord
         if (!is_null($sid))
             self::sid($sid);
 
-        return parent::model(__CLASS__);
-    }
+		return parent::model(__CLASS__);
+	}
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
-    public function tableName()
-    {
-        return '{{tokens_' . self::$sid . '}}';
-    }
+	/**
+	 * Returns the setting's table name to be used by the model
+	 *
+	 * @access public
+	 * @return string
+	 */
+	public function tableName()
+	{
+		return '{{tokens_' . self::$sid . '}}';
+	}
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
-     */
-    public function primaryKey()
-    {
-        return 'tid';
-    }
+	/**
+	 * Returns the primary key of this table
+	 *
+	 * @access public
+	 * @return string
+	 */
+	public function primaryKey()
+	{
+		return 'tid';
+	}
+	
+	
+	/**
+	* Returns this model's validation rules
+	*
+	*/
+	public function rules()
+	{
+		return array(
+		array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
+		array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+		array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 	
+		array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
+        array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
+        array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),             			 
+		);  
+	}	
 
-    /**
-    * Returns this model's validation rules
-    *
-    */
-    public function rules()
-    {
-        return array(
-        array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-        array('remindersent' ,'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-        array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-        array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-        array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-        );
-    }
-
+    
     /**
      * Returns summary information of this token table
      *
@@ -143,17 +144,37 @@ class Tokens_dynamic extends LSActiveRecord
 
     public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
-        $emquery = "SELECT * FROM {{tokens_" . self::$sid . "}} WHERE ((completed ='N') or (completed='')) AND token <> '' AND email <> ''";
+		$command = new CDbCriteria;
+		$command->condition = '';	
+		$command->addCondition("(completed ='N') or (completed='')");
+		$command->addCondition("token <> ''");
+		$command->addCondition("email <> ''");
 
-        if ($bEmail) { $emquery .= " AND ((sent = 'N') or (sent = ''))"; } else { $emquery .= " AND sent <> 'N' AND sent <> ''"; }
-        if ($SQLemailstatuscondition) {$emquery .= " $SQLemailstatuscondition";}
-        if ($SQLremindercountcondition) {$emquery .= " $SQLremindercountcondition";}
-        if ($SQLreminderdelaycondition) {$emquery .= " $SQLreminderdelaycondition";}
-        if ($aTokenIds) {$emquery .= " AND tid IN ('".implode("', '", $aTokenIds)."')";}
-        $emquery .= " ORDER BY tid";
-        if ($iMaxEmails) {$emquery .= " LIMIT $iMaxEmails"; }
+		if ($bEmail) { 
+			$command->addCondition("(sent = 'N') or (sent = '')");
+		} else {
+			$command->addCondition("(sent <> 'N') AND (sent <> '')");
+		}
 
-        return Yii::app()->db->createCommand($emquery)->queryAll();
+		if ($SQLemailstatuscondition)
+			$command->addCondition($SQLemailstatuscondition);
+			
+		if ($SQLremindercountcondition)
+			$command->addCondition($SQLremindercountcondition);
+			
+		if ($SQLreminderdelaycondition)
+			$command->addCondition($SQLreminderdelaycondition);
+			
+		if ($aTokenIds) 	
+			$command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')" );
+			
+		if ($iMaxEmails)
+			$command->limit = $iMaxEmails;
+			
+		$command->order = 'tid';	
+
+		$oResult = Tokens_dynamic::model()->findAll($command);
+		return $oResult;
     }
 
     function insertParticipant($data)

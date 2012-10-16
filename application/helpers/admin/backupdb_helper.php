@@ -19,7 +19,7 @@
     */
     function outputDatabase($sDbName='', $bEchoOutput=true, $sFileName=null)
     {
-        if($sDbName='')
+        if($sDbName=='')
         {
             $sDbName=_getDbName();
         }
@@ -62,7 +62,6 @@
         {
             if ($bAllowExportAllDb && Yii::app()->db->tablePrefix == substr($sTableName, 0, strlen(Yii::app()->db->tablePrefix))) {
                 $sOutput=_outputTableDescription($sTableName);
-                $sOutput.=_outputTableData($sTableName, $oTableData);
                 if ($bEchoOutput)
                 {
                     echo $sOutput;
@@ -71,6 +70,7 @@
                 {
                     fwrite($oFile,$sOutput);
                 }                
+                _outputTableData($sTableName, $oTableData, $bEchoOutput, $sFileName, $oFile);
             }
         }
     }
@@ -94,7 +94,7 @@
     /**
     * Outputs the table data in sql format
     */
-    function _outputTableData($sTableName, $oTableData)
+    function _outputTableData($sTableName, $oTableData, $bEchoOutput, $sFileName, $oFile)
     {
         $sOutput= '--'."\n";
         $sOutput.= '-- Dumping data for table `'.$sTableName.'`'."\n";
@@ -114,11 +114,29 @@
                 ->query()->readAll();
 
                 $sOutput.=_outputRecords($sTableName, $aFieldNames, $aRecords);
+                if ($bEchoOutput)
+                {
+                    echo $sOutput;
+                }
+                if (!is_null($sFileName))
+                {
+                    fwrite($oFile,$sOutput);
+                }                     
+                $sOutput='';
+                
 
             }
             $sOutput.= "\n";
+            
         }
-        return $sOutput; 
+        if ($bEchoOutput)
+        {
+            echo $sOutput;
+        }
+        if (!is_null($sFileName))
+        {
+            fwrite($oFile,$sOutput);
+        }                     
     }
 
     function _outputRecords($sTableName, $aFieldNames, $aRecords)
@@ -128,7 +146,13 @@
         foreach ($aRecords as $aRecord)
         {
             if ($i==0){
-                $sOutput.= 'INSERT INTO `' . $sTableName . "` VALUES\n";
+                $sOutput.= 'INSERT INTO `' . $sTableName . "` (";
+                foreach ($aFieldNames as $sFieldName)
+                {
+                    $sOutput.=  '`'.$sFieldName.'`,';
+                }
+                $sOutput=substr($sOutput,0,-1);
+                $sOutput.=") VALUES\n";
             }
             $sOutput.= '(';
             foreach ($aFieldNames as $sFieldName)

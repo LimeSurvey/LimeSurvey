@@ -82,7 +82,7 @@ CREATE TABLE [prefix_expression_errors] (
 --
 CREATE TABLE [prefix_failed_login_attempts] (
   [id] int NOT NULL IDENTITY (1,1) PRIMARY KEY,
-  [ip] varchar(37) NOT NULL,
+  [ip] varchar(40) NOT NULL,
   [last_attempt] varchar(20) NOT NULL,
   [number_attempts] int NOT NULL
 );
@@ -327,7 +327,9 @@ CREATE TABLE [prefix_survey_links] (
   [participant_id] varchar(50) NOT NULL,
   [token_id] int NOT NULL,
   [survey_id] int NOT NULL,
-  [date_created] datetime
+  [date_created] datetime,
+  [date_invited] datetime,
+  [date_completed] datetime
   PRIMARY KEY  ([participant_id],[token_id],[survey_id])
 );
 

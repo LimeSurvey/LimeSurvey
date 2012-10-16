@@ -22,9 +22,10 @@
 |
 */
 return array(
-    'basePath' => dirname(dirname(__FILE__)),
-    'name' => 'LimeSurvey',
-    'defaultController' => 'survey',
+	'basePath' => dirname(dirname(__FILE__)),
+	'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
+	'name' => 'LimeSurvey',
+	'defaultController' => 'survey',
 
     'import' => array(
         'application.core.*',
@@ -33,22 +34,21 @@ return array(
         'application.modules.*',
     ),
 
-    'components' => array(
-        /*
-        'db' => array(
-            'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey',
-            'emulatePrepare' => true,
-            'username' => 'root',
-            'password' => 'root',
-            'charset' => 'utf8',
-            'tablePrefix' => 'lime_',
-        ),
-
-        'session' => array (
-            'class' => 'system.web.CDbHttpSession',
-            'connectionID' => 'db',
-            'sessionTableName' => '{{sessions}}',
-        ),
+	'components' => array(
+		'db' => array(
+			'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey',
+			'emulatePrepare' => true,
+			'username' => 'root',
+			'password' => '',
+			'charset' => 'utf8',
+			'tablePrefix' => 'lime_',
+		),
+/*
+		'session' => array (
+			'class' => 'system.web.CDbHttpSession',
+			'connectionID' => 'db',
+			'sessionTableName' => '{{sessions}}',
+		),
         */
         'urlManager' => array(
             'urlFormat' => 'path',

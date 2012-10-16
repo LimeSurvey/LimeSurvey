@@ -890,7 +890,7 @@ class Participants extends CActiveRecord
                 Yii::app()->db
                           ->createCommand()
                           ->insert('{{tokens_' . $surveyid . '}}', $writearray);
-                $insertedtokenid = Yii::app()->db->getCommandBuilder()->getLastInsertID('{{tokens_' . $surveyid . '}}');
+                $insertedtokenid = getLastInsertID('{{tokens_' . $surveyid . '}}');
 
                 $time = time();
 
@@ -1065,7 +1065,7 @@ class Participants extends CActiveRecord
                 Yii::app()->db
                           ->createCommand()
                           ->insert('{{participant_attribute_names}}', $insertnames);
-                $attid[$key] = Yii::app()->db->getCommandBuilder()->getLastInsertID('{{participant_attribute_names}}'); /* eg $attid['attribute_1']='8372' */
+                $attid[$key] = getLastInsertID('{{participant_attribute_names}}'); /* eg $attid['attribute_1']='8372' */
                 $insertnameslang = array(
                                          'attribute_id' => $attid[$key],
                                          'attribute_name' => urldecode($value),

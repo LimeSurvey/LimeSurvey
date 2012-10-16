@@ -900,21 +900,22 @@
 
             if (!empty($ugid)) {
                 $grpquery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=" . Yii::app()->session['loginID'];
-                $grpresult = Yii::app()->db->createCommand($grpquery)->query();  //Checked
-                $grpresultcount = $grpresult->getRowCount();
+            $grpresult = Yii::app()->db->createCommand($grpquery)->queryRow();  //Checked
 
-                if ($grpresultcount > 0) {
-                    $grow = array_map('htmlspecialchars', $grpresult->read());
-                }
-                else
-                {
-                    $grow = false;
-                }
-
-                $data['grow'] = $grow;
-                $data['grpresultcount'] = $grpresultcount;
-
+            if ($grpresult) {
+                $grpresultcount=1;
+                $grow = array_map('htmlspecialchars', $grpresult);
             }
+            else
+            {
+                $grpresultcount=0;
+                $grow = false;
+            }
+
+            $data['grow'] = $grow;
+            $data['grpresultcount'] = $grpresultcount;
+
+        }
 
             $data['ugid'] = $ugid;
             $data['imageurl'] = Yii::app()->getConfig("adminimageurl"); // Don't came from rendertemplate ?

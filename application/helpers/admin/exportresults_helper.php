@@ -49,9 +49,10 @@ class ExportSurveyResultsService
     * @param mixed $iSurveyId
     * @param mixed $sLanguageCode
     * @param FormattingOptions $oOptions
+    * @param string $sFilter 
     * @param mixed $sOutputStyle  'display' or 'file'  Default: display (send to browser)
     */
-    function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions)
+    function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter)
     {
         //Do some input validation.
         if (empty($iSurveyId))
@@ -114,15 +115,12 @@ class ExportSurveyResultsService
         $bMoreRecords=true; $first=true;
         while ($bMoreRecords)
         {
-            if($iBatchSize > (int)$oOptions->responseMaxRecord-$iCurrentRecord)
-            {
-               $iBatchSize=(int)$oOptions->responseMaxRecord-$iCurrentRecord;
-        }
-            $iExported= $surveyDao->loadSurveyResults($survey, $iBatchSize, $iCurrentRecord);
+ 
+            $iExported= $surveyDao->loadSurveyResults($survey, $iBatchSize, $iCurrentRecord, $oOptions->responseMaxRecord, $sFilter);
             $iCurrentRecord+=$iExported;
             $writer->write($survey, $sLanguageCode, $oOptions,$first);
             $first=false;
-            $bMoreRecords=($iCurrentRecord < (int)$oOptions->responseMaxRecord);
+            $bMoreRecords= ($iExported == $iBatchSize);
         }
 
         $writer->close();
@@ -304,14 +302,21 @@ class SurveyDao
     * @param int $iOffset 
     * @param int $iLimit 
     */
-    public function loadSurveyResults(SurveyObj $survey, $iLimit, $iOffset )
+    public function loadSurveyResults(SurveyObj $survey, $iLimit, $iOffset, $iMaximum, $sFilter='' )
     {
 
         $oRecordSet = Yii::app()->db->createCommand()->select()->from('{{survey_' . $survey->id . '}}');
-        if (tableExists('tokens_'.$survey->id))
+        if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',Survey_dynamic::model($survey->id)->attributes))
         {
-            $oRecordSet->join('{{tokens_' . $survey->id . '}}','{{tokens_' . $survey->id . '}}.token={{survey_' . $survey->id . '}}.token');
+            $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}}','{{tokens_' . $survey->id . '}}.token={{survey_' . $survey->id . '}}.token');
         }
+        if ($sFilter!='')
+            $oRecordSet->where($sFilter);
+            if ($iOffset+$iLimit>$iMaximum)
+            {
+                $iLimit=$iMaximum-$iOffset;
+            }
+            
         $survey->responses=$oRecordSet->order('id')->limit($iLimit, $iOffset)->query()->readAll();
 
         return count($survey->responses);
@@ -519,17 +524,17 @@ class Translator
     //internationalization layer. <fieldname> => <internationalization key>
     private $headerTranslationKeys = array(
     'id' => 'id',
-    'lastname' => 'Last Name',
-    'firstname' => 'First Name',
-    'email' => 'Email Address',
+    'lastname' => 'Last name',
+    'firstname' => 'First name',
+    'email' => 'Email address',
     'token' => 'Token',
-    'datestamp' => 'Date Last Action',
-    'startdate' => 'Date Started',
+    'datestamp' => 'Date last action',
+    'startdate' => 'Date started',
     'submitdate' => 'Completed',
     //'completed' => 'Completed',
-    'ipaddr' => 'IP-Address',
+    'ipaddr' => 'IP address',
     'refurl' => 'Referring URL',
-    'lastpage' => 'Last page seen',
+    'lastpage' => 'Last page',
     'startlanguage' => 'Start language'//,
     //'tid' => 'Token ID'
     );
@@ -829,22 +834,22 @@ abstract class Writer implements IWriter
             foreach ($oOptions->selectedColumns as $column)
             {
                 $value = $response[$column];
-                $q = $survey->fieldMap[$column];
-
-                if (!is_a($q, 'QuestionModule'))
+                if (isset($survey->fieldMap[$column]))
                 {
-                    $elementArray[] = $this->stripTagsFull($value);
-                    continue;
+                    switch ($oOptions->answerFormat) {
+                        case 'long':
+                            $elementArray[] = $this->transformResponseValue($survey->getFullAnswer($column, $value, $this->translator, $this->languageCode), $survey->fieldMap[$column]['type'], $oOptions);
+                            break;
+                        default:
+                        case 'short':
+                            $elementArray[] = $this->transformResponseValue($value,
+                            $survey->fieldMap[$column]['type'], $oOptions);
+                            break;
+                    }
                 }
-
-                switch ($oOptions->answerFormat) {
-                    case 'long':
-                        $elementArray[] = $elementArray[] = $q->transformResponseValue($this, $q->getFullAnswer($value, $this, $survey), $oOptions);
-                        break;
-                    default:
-                    case 'short':
-                        $elementArray[] = $q->transformResponseValue($this, $value, $oOptions);
-                        break;
+                else //Token table value
+                {     
+                    $elementArray[]=$value;
                 }
             }
 

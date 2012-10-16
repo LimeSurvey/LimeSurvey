@@ -585,28 +585,6 @@ function getGroupSum($surveyid, $lang)
 
 
 /**
-* Gets number of questions inside a particular group
-*
-* @param string $surveyid
-* @param mixed $groupid
-*/
-function getQuestionSum($surveyid, $groupid)
-{
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-    //$condn = "WHERE gid=$groupid and sid=$surveyid AND language='{$s_lang}'"; //Getting a count of questions for this survey
-    $condn = array(
-    'gid' => $groupid,
-    'sid' => $surveyid,
-    'language' => $s_lang
-
-    );
-    $sumresult3 = Questions::model()->getAllRecords($condn); //Checked
-    $questionscount = $sumresult3->count();
-    return $questionscount ;
-}
-
-
-/**
 * getMaxGroupOrder($surveyid) queries the database for the maximum sortorder of a group and returns the next higher one.
 *
 * @param mixed $surveyid
@@ -756,10 +734,6 @@ function setupColumns($columns, $answer_count,$wrapperclass="",$itemclass="")
         $columns = $answer_count;
     };
 
-    if ($answer_count>0 && $columns>0)
-    {
-        $columns = ceil($answer_count/ceil($answer_count/$columns)); // # of columns is # of answers divided by # of rows (all rounded up)
-    }
 
     $class_first = ' class="'.$wrapperclass.'"';
     if($columns > 1 && !is_null($column_style))
@@ -1069,19 +1043,19 @@ function getUserList($outputformat='fullinfoarray')
         $uquery = "SELECT * FROM {{users}} ORDER BY uid";
     }
 
-    $uresult = Yii::app()->db->createCommand($uquery)->query(); //Checked
+    $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
 
-    if ($uresult->getRowCount()==0)
+    if (count($uresult)==0)
     //user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
     {
         $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=".$myuid;
-        $uresult = Yii::app()->db->createCommand($uquery)->query();//Checked
+        $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll();//Checked
     }
 
     $userlist = array();
     $userlist[0] = "Reserved for logged in user";
     //while ($srow = $uresult->readAll())
-    foreach ($uresult->readAll() as $srow)
+    foreach ($uresult as $srow)
     {
         if ($outputformat != 'onlyuidarray')
         {
@@ -2324,6 +2298,7 @@ function questionAttributes()
     'category'=>$clang->gT('Location'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
+    'default'=>0,
     'options'=>array(0=>$clang->gT('Yes'),
     1=>$clang->gT('No')),
     "help"=>$clang->gT("Store the city?"),
@@ -2333,6 +2308,7 @@ function questionAttributes()
     'readonly_when_active'=>true,
     'category'=>$clang->gT('Location'),
     'sortorder'=>100,
+    'default'=>0,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('Yes'),
     1=>$clang->gT('No')),
@@ -2344,6 +2320,7 @@ function questionAttributes()
     'category'=>$clang->gT('Location'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
+    'default'=>0,
     'options'=>array(0=>$clang->gT('Yes'),
     1=>$clang->gT('No')),
     "help"=>$clang->gT("Store the postal code?"),
@@ -2354,6 +2331,7 @@ function questionAttributes()
     'category'=>$clang->gT('Location'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
+    'default'=>0,
     'options'=>array(0=>$clang->gT('Yes'),
     1=>$clang->gT('No')),
     "help"=>$clang->gT("Store the country?"),
@@ -3141,7 +3119,7 @@ function categorySort($a, $b)
 // is safe to use in MySQL.  This does nothing if gpc_magic_quotes is on.
 function autoEscape($str) {
     if (!get_magic_quotes_gpc()) {
-        return mysql_real_escape_string($str);
+        return addslashes ($str);
     }
     return $str;
 }
@@ -4237,8 +4215,11 @@ function getTokenFieldsAndNames($surveyid, $onlyAttributes = false)
     $extra_attrs_and_names = array();
     // !!! This is actually deprecated, use Survey::model()->findByPk($surveyid)->tokenAttributes instead
     $attdescriptiondata = Survey::model()->findByPk($surveyid)->tokenAttributes;
-    foreach ($attdescriptiondata as $attname => $attdata)
-        $attributedescriptions[$attname] = $attdata['description'];
+    if (!is_null($attdescriptiondata))
+    {
+        foreach ($attdescriptiondata as $attname => $attdata)
+            $attributedescriptions[$attname] = $attdata['description'];
+    }
     foreach ($extra_attrs as $fieldname)
     {
         if (isset($attributedescriptions[$fieldname]))
@@ -4279,29 +4260,43 @@ function getAttributeValue($surveyid,$attrName,$token)
     $surveyid=sanitize_int($surveyid);
 
     Tokens_dynamic::sid($surveyid);
-    $query=Tokens_dynamic::model()->getAllRecords($attrName, array("token"=>$token));
+    $query=Tokens_dynamic::model()->find(array("token"=>$token));
 
-    //$result=db_execute_num($query);
-    $count=$query->count(); //$result->RecordCount();
+    $count=$query->count(); // OK  - AR count
     if ($count != 1)
     {
         return null;
     }
     else
     {
-        $row=$query->readAll();//$result->FetchRow();
-        return $row[$attrName];//[0]
+        return $row->$attrName;//[0]
     }
 }
 
 /**
-* This function strips any content between and including <style>  & <javascript> tags
+* This function strips any content between and including <javascript> tags
 *
 * @param string $sContent String to clean
 * @return string  Cleaned string
 */
 function stripJavaScript($sContent){
     $text = preg_replace('@<script[^>]*?>.*?</script>@si', '', $sContent);
+    return $text;
+}
+
+/**
+* This function converts emebedded Javascript to Text
+*
+* @param string $sContent String to clean
+* @return string  Cleaned string
+*/
+function showJavaScript($sContent){
+    $text = preg_replace_callback ('@<script[^>]*?>.*?</script>@si',         create_function(
+            // single quotes are essential here,
+            // or alternative escape all $ as \$
+            '$matches',
+            'return htmlspecialchars($matches[0]);'
+        ), $sContent);
     return $text;
 }
 
@@ -5294,48 +5289,47 @@ function fixLanguageConsistency($sid, $availlangs='')
     $baselang = Survey::model()->findByPk($sid)->language;
     $query = "SELECT * FROM {{groups}} WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
     $result = Yii::app()->db->createCommand($query)->query();
-    if ($result->getRowCount() > 0)
+    foreach($result->readAll() as $group)
     {
-        foreach($result->readAll() as $group)
+        foreach ($langs as $lang)
         {
-            foreach ($langs as $lang)
+
+            $query = "SELECT count(gid) FROM {{groups}} WHERE sid='{$sid}' AND gid='{$group['gid']}' AND language='{$lang}'";
+            $gresult = Yii::app()->db->createCommand($query)->queryScalar();
+            if ($gresult < 1)
             {
+                $data = array(
+                'gid' => $group['gid'],
+                'sid' => $group['sid'],
+                'group_name' => $group['group_name'],
+                'group_order' => $group['group_order'],
+                'description' => $group['description'],
+                'randomization_group' => $group['randomization_group'],
+                'grelevance' => $group['grelevance'],
+                'language' => $lang
 
-                $query = "SELECT gid FROM {{groups}} WHERE sid='{$sid}' AND gid='{$group['gid']}' AND language='{$lang}'";
-                $gresult = Yii::app()->db->createCommand($query)->query();
-                if ($gresult->getRowCount() < 1)
-                {
-                    $data = array(
-                    'gid' => $group['gid'],
-                    'sid' => $group['sid'],
-                    'group_name' => $group['group_name'],
-                    'group_order' => $group['group_order'],
-                    'description' => $group['description'],
-                    'randomization_group' => $group['randomization_group'],
-                    'grelevance' => $group['grelevance'],
-                    'language' => $lang
-
-                    );
-                    Yii::app()->db->createCommand()->insert('{{groups}}', $data);
-                }
+                );
+                switchMSSQLIdentityInsert('groups',true);
+                Yii::app()->db->createCommand()->insert('{{groups}}', $data);
+                switchMSSQLIdentityInsert('groups',false);
             }
-            reset($langs);
         }
+        reset($langs);
     }
 
     $quests = array();
     $query = "SELECT * FROM {{questions}} WHERE sid='{$sid}' AND language='{$baselang}' ORDER BY question_order";
-    $result = Yii::app()->db->createCommand($query)->query();
-    if ($result->getRowCount() > 0)
+    $result = Yii::app()->db->createCommand($query)->query()->readAll();
+    if (count($result) > 0)
     {
-        foreach($result->readAll() as $question)
+        foreach($result as $question)
         {
             array_push($quests,$question['qid']);
             foreach ($langs as $lang)
             {
-                $query = "SELECT qid FROM {{questions}} WHERE sid='{$sid}' AND qid='{$question['qid']}' AND language='{$lang}' AND scale_id={$question['scale_id']}";
-                $gresult = Yii::app()->db->createCommand($query)->query();
-                if ($gresult->getRowCount() < 1)
+                $query = "SELECT count(qid) FROM {{questions}} WHERE sid='{$sid}' AND qid='{$question['qid']}' AND language='{$lang}' AND scale_id={$question['scale_id']}";
+                $gresult = Yii::app()->db->createCommand($query)->queryScalar();
+                if ($gresult < 1)
                 {
                     switchMSSQLIdentityInsert('questions',true);
                     $data = array(
@@ -5368,92 +5362,82 @@ function fixLanguageConsistency($sid, $availlangs='')
         }
         $query = "SELECT * FROM {{answers}} WHERE language='{$baselang}' and (".trim($sqlans,' OR').") ORDER BY qid, code";
         $result = Yii::app()->db->createCommand($query)->query();
-        if ($result->getRowCount() > 0)
+        foreach($result->readAll() as $answer)
         {
-            foreach($result->readAll() as $answer)
+            foreach ($langs as $lang)
             {
-                foreach ($langs as $lang)
+                $query = "SELECT count(qid) FROM {{answers}} WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}' AND scale_id={$answer['scale_id']}";
+                $gresult = Yii::app()->db->createCommand($query)->queryScalar();
+                if ($gresult < 1)
                 {
-                    $query = "SELECT qid FROM {{answers}} WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}' AND scale_id={$answer['scale_id']}";
-                    $gresult = Yii::app()->db->createCommand($query)->query();
-                    if ($gresult->getRowCount() < 1)
-                    {
-                        $data = array(
-                        'qid' => $answer['qid'],
-                        'code' => $answer['code'],
-                        'answer' => $answer['answer'],
-                        'scale_id' => $answer['scale_id'],
-                        'sortorder' => $answer['sortorder'],
-                        'language' => $lang,
-                        'assessment_value' =>  $answer['assessment_value']
-                        );
-                        Yii::app()->db->createCommand()->insert('{{answers}}', $data);
-                    }
+                    $data = array(
+                    'qid' => $answer['qid'],
+                    'code' => $answer['code'],
+                    'answer' => $answer['answer'],
+                    'scale_id' => $answer['scale_id'],
+                    'sortorder' => $answer['sortorder'],
+                    'language' => $lang,
+                    'assessment_value' =>  $answer['assessment_value']
+                    );
+                    Yii::app()->db->createCommand()->insert('{{answers}}', $data);
                 }
-                reset($langs);
             }
+            reset($langs);
         }
     }
 
 
     $query = "SELECT * FROM {{assessments}} WHERE sid='{$sid}' AND language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
-    if ($result->getRowCount() > 0)
+    foreach($result->readAll() as $assessment)
     {
-        foreach($result->readAll() as $assessment)
+        foreach ($langs as $lang)
         {
-            foreach ($langs as $lang)
+            $query = "SELECT count(id) FROM {{assessments}} WHERE sid='{$sid}' AND id='{$assessment['id']}' AND language='{$lang}'";
+            $gresult = Yii::app()->db->createCommand($query)->queryScalar();
+            if ($gresult < 1)
             {
-                $query = "SELECT id FROM {{assessments}} WHERE sid='{$sid}' AND id='{$assessment['id']}' AND language='{$lang}'";
-                $gresult = Yii::app()->db->createCommand($query)->query();
-                if ($gresult->getRowCount() < 1)
-                {
-                    $data = array(
-                    'id' => $assessment['id'],
-                    'sid' => $assessment['sid'],
-                    'scope' => $assessment['scope'],
-                    'gid' => $assessment['gid'],
-                    'name' => $assessment['name'],
-                    'minimum' => $assessment['minimum'],
-                    'maximum' => $assessment['maximum'],
-                    'message' => $assessment['message'],
-                    'language' => $lang
-                    );
-                    Yii::app()->db->createCommand()->insert('{{assessments}}', $data);
-                }
+                $data = array(
+                'id' => $assessment['id'],
+                'sid' => $assessment['sid'],
+                'scope' => $assessment['scope'],
+                'gid' => $assessment['gid'],
+                'name' => $assessment['name'],
+                'minimum' => $assessment['minimum'],
+                'maximum' => $assessment['maximum'],
+                'message' => $assessment['message'],
+                'language' => $lang
+                );
+                Yii::app()->db->createCommand()->insert('{{assessments}}', $data);
             }
-            reset($langs);
         }
+        reset($langs);
     }
 
 
     $query = "SELECT * FROM {{quota_languagesettings}} join {{quota}} q on quotals_quota_id=q.id WHERE q.sid='{$sid}' AND quotals_language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
-    if ($result->getRowCount() > 0)
+    foreach($result->readAll() as $qls)
     {
-        foreach($result->readAll() as $qls)
+        foreach ($langs as $lang)
         {
-            foreach ($langs as $lang)
+            $query = "SELECT count(quotals_id) FROM {{quota_languagesettings}} WHERE quotals_quota_id='{$qls['quotals_quota_id']}' AND quotals_language='{$lang}'";
+            $gresult = Yii::app()->db->createCommand($query)->queryScalar();
+            if ($gresult < 1)
             {
-                $query = "SELECT quotals_id FROM {{quota_languagesettings}} WHERE quotals_quota_id='{$qls['quotals_quota_id']}' AND quotals_language='{$lang}'";
-                $gresult = Yii::app()->db->createCommand($query)->query();
-                if ($gresult->getRowCount() < 1)
-                {
-                    $data = array(
-                    'quotals_quota_id' => $qls['quotals_quota_id'],
-                    'quotals_name' => $qls['quotals_name'],
-                    'quotals_message' => $qls['quotals_message'],
-                    'quotals_url' => $qls['quotals_url'],
-                    'quotals_urldescrip' => $qls['quotals_urldescrip'],
-                    'quotals_language' => $lang
-                    );
-                    Yii::app()->db->createCommand()->insert('{{quota_languagesettings}}', $data);
-                }
+                $data = array(
+                'quotals_quota_id' => $qls['quotals_quota_id'],
+                'quotals_name' => $qls['quotals_name'],
+                'quotals_message' => $qls['quotals_message'],
+                'quotals_url' => $qls['quotals_url'],
+                'quotals_urldescrip' => $qls['quotals_urldescrip'],
+                'quotals_language' => $lang
+                );
+                Yii::app()->db->createCommand()->insert('{{quota_languagesettings}}', $data);
             }
-            reset($langs);
         }
+        reset($langs);
     }
-
 
     return true;
 }
@@ -5470,12 +5454,32 @@ function switchMSSQLIdentityInsert($table,$state)
     {
         if ($state == true)
         {
-            Yii::app()->db->createCommand('SET IDENTITY_INSERT {{'.$table.'}} ON')->execute();
+            // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
+            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' ON');  
         }
         else
         {
-            Yii::app()->db->createCommand('SET IDENTITY_INSERT {{'.$table.'}} OFF')->execute();
+            // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
+            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' OFF'); 
         }
+    }
+}
+
+/**
+* Retrieves the last Insert ID realiable for cross-DB applications
+* 
+* @param string $sTableName Needed for Postgres and MSSQL
+*/
+function getLastInsertID($sTableName)
+{
+    $sDBDriver=Yii::app()->db->getDriverName();
+    if ($sDBDriver=='mysql' || $sDBDriver=='mysqli')
+    {
+        return Yii::app()->db->getLastInsertID();
+    }
+    else
+    {
+        return Yii::app()->db->getCommandBuilder()->getLastInsertID($sTableName);
     }
 }
 
@@ -5563,10 +5567,10 @@ function getGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
     . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tg.language='{$baselang}' AND tg2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
     . "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
     . "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid $sqldepgid $sqltarggid";
-    $condresult = Yii::app()->db->createCommand($condquery)->query();
+    $condresult = Yii::app()->db->createCommand($condquery)->query()->readAll();
 
-    if ($condresult->getRowCount() > 0) {
-        foreach ($condresult->readAll() as $condrow)
+    if (count($condresult) > 0) {
+        foreach ($condresult as $condrow)
         {
 
             switch ($indexby)
@@ -5649,9 +5653,9 @@ function getQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
     FROM {{conditions}} AS tc, {{questions}} AS tq, {{questions}} AS tq2
     WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid='$sid'
     AND  tq2.qid=tc.cqid $sqlsearchscope $sqlgid $sqldepqid $sqltargqid";
-    $condresult=Yii::app()->db->createCommand($condquery)->query();
-    if ($condresult->getRowCount() > 0) {
-        foreach ($condresult->readAll() as $condrow)
+    $condresult=Yii::app()->db->createCommand($condquery)->query()->readAll();
+    if (count($condresult) > 0) {
+        foreach ($condresult as $condrow)
         {
             $depqid=$condrow['depqid'];
             $targetqid=$condrow['targqid'];
@@ -5733,30 +5737,27 @@ function checkMoveQuestionConstraintsForConditions($sid,$qid,$newgid="all")
 
     $condresult=Yii::app()->db->createCommand($condquery)->query();
 
-    if ($condresult->getRowCount() > 0) {
-
-        foreach ($condresult->readAll() as $condrow )
-        {
-            // This Question can go up to the minimum GID on the 1st row
-            $depqid=$condrow['depqid'];
-            $depgid=$condrow['depgid'];
-            $depgorder=$condrow['depgorder'];
-            $targetqid=$condrow['targqid'];
-            $targetgid=$condrow['targgid'];
-            $targetgorder=$condrow['targgorder'];
-            $condid=$condrow['cid'];
-            //echo "This question can't go above to GID=$targetgid/order=$targetgorder because of CID=$condid";
-            if ($newgid != "all")
-            { // Get only constraints when trying to move to this group
-                if ($newgorder < $targetgorder)
-                {
-                    $resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
-                }
-            }
-            else
-            { // get all moves constraints
+    foreach ($condresult->readAll() as $condrow )
+    {
+        // This Question can go up to the minimum GID on the 1st row
+        $depqid=$condrow['depqid'];
+        $depgid=$condrow['depgid'];
+        $depgorder=$condrow['depgorder'];
+        $targetqid=$condrow['targqid'];
+        $targetgid=$condrow['targgid'];
+        $targetgorder=$condrow['targgorder'];
+        $condid=$condrow['cid'];
+        //echo "This question can't go above to GID=$targetgid/order=$targetgorder because of CID=$condid";
+        if ($newgid != "all")
+        { // Get only constraints when trying to move to this group
+            if ($newgorder < $targetgorder)
+            {
                 $resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
             }
+        }
+        else
+        { // get all moves constraints
+            $resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
         }
     }
 
@@ -5773,30 +5774,27 @@ function checkMoveQuestionConstraintsForConditions($sid,$qid,$newgid="all")
 
     $condresult=Yii::app()->db->createCommand($condquery)->query();
 
-    if ($condresult->getRowCount() > 0) {
-
-        foreach ($condresult->readAll() as $condrow)
-        {
-            // This Question can go down to the maximum GID on the 1st row
-            $depqid=$condrow['depqid'];
-            $depgid=$condrow['depgid'];
-            $depgorder=$condrow['depgorder'];
-            $targetqid=$condrow['targqid'];
-            $targetgid=$condrow['targgid'];
-            $targetgorder=$condrow['targgorder'];
-            $condid=$condrow['cid'];
-            //echo "This question can't go below to GID=$depgid/order=$depgorder because of CID=$condid";
-            if ($newgid != "all")
-            { // Get only constraints when trying to move to this group
-                if ($newgorder > $depgorder)
-                {
-                    $resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
-                }
-            }
-            else
-            { // get all moves constraints
+    foreach ($condresult->readAll() as $condrow)
+    {
+        // This Question can go down to the maximum GID on the 1st row
+        $depqid=$condrow['depqid'];
+        $depgid=$condrow['depgid'];
+        $depgorder=$condrow['depgorder'];
+        $targetqid=$condrow['targqid'];
+        $targetgid=$condrow['targgid'];
+        $targetgorder=$condrow['targgorder'];
+        $condid=$condrow['cid'];
+        //echo "This question can't go below to GID=$depgid/order=$depgorder because of CID=$condid";
+        if ($newgid != "all")
+        { // Get only constraints when trying to move to this group
+            if ($newgorder > $depgorder)
+            {
                 $resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
             }
+        }
+        else
+        { // get all moves constraints
+            $resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
         }
     }
     return $resarray;
@@ -6245,9 +6243,7 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
     $sSurveyIDQuery.= 'ORDER BY a.users_name';
     $surveyidresult = Yii::app()->db->createCommand($sSurveyIDQuery)->query();  //Checked
 
-    //if ($surveyidresult->count() == 0) {return "Database Error";}
     $surveyselecter = "";
-    //$surveynames = $surveyidresult->GetRows();
 
     if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
     {
@@ -6255,8 +6251,6 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
         $authorizedUsersList = getUserList('onlyuidarray');
     }
 
-    if ($surveyidresult->getRowCount() > 0)
-    {
         foreach($surveyidresult->readAll() as $sv)
         {
             if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
@@ -6266,7 +6260,6 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
                 $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
             }
         }
-    }
     if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;}
     else {$surveyselecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
 
@@ -6288,28 +6281,24 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
     ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL";
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query();  //Checked
 
-    //if ($surveyidresult->count() == 0) {return "Database Error";}
     $surveyselecter = "";
-    //$surveynames = $surveyidresult->GetRows();
 
     if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
     {
         $authorizedGroupsList=getUserGroupList(NULL, 'simplegidarray');
     }
 
-    if ($surveyidresult->getRowCount() > 0)
+    foreach($surveyidresult->readAll() as $sv)
     {
-        foreach($surveyidresult->readAll() as $sv)
+        if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
+        in_array($sv['ugid'],$authorizedGroupsList))
         {
-            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
-            in_array($sv['ugid'],$authorizedGroupsList))
-            {
-                $surveyselecter .= "<option";
-                $surveyselecter .=" value='{$sv['ugid']}'>{$sv['name']}</option>\n";
-                $simpleugidarray[] = $sv['ugid'];
-            }
+            $surveyselecter .= "<option";
+            $surveyselecter .=" value='{$sv['ugid']}'>{$sv['name']}</option>\n";
+            $simpleugidarray[] = $sv['ugid'];
         }
     }
+
     if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;}
     else {$surveyselecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
 

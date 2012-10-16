@@ -544,19 +544,19 @@ class translate extends Survey_Common_Action {
             break;
 
             case 'question_help':
-                $aData = array(
-                    'type' => 3,
-                    'dbColumn' => 'help',
-                    'id1' => 'qid',
-                    'id2' => '',
-                    'gid' => TRUE,
-                    'qid' => TRUE,
-                    'description' => "",
-                    'HTMLeditorType' => "question_help",
-                    'HTMLeditorDisplay' => "Popup",
-                    'associated' => ""
-                );
-            break;
+				$aData = array(
+					'type' => 3,
+					'dbColumn' => 'help',
+					'id1' => 'qid',
+					'id2' => '',
+					'gid' => TRUE,
+					'qid' => TRUE,
+					'description' => $clang->gT("Question help"),
+					'HTMLeditorType' => "question_help",
+					'HTMLeditorDisplay' => "Popup",
+					'associated' => ""
+				);
+			break;
 
             case 'subquestion':
                 $aData = array(
@@ -589,154 +589,154 @@ class translate extends Survey_Common_Action {
             break;
 
             case 'emailinvite':
-                $aData = array(
-                    'type' => 1,
-                    'dbColumn' => 'surveyls_email_invite_subj',
-                    'id1' => '',
-                    'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
-                    'description' => $clang->gT("Invitation email"),
-                    'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "Popup",
-                    'associated' => "emailinvitebody"
-                );
-            break;
+				$aData = array(
+					'type' => 1,
+					'dbColumn' => 'surveyls_email_invite_subj',
+					'id1' => '',
+					'id2' => '',
+					'gid' => FALSE,
+					'qid' => FALSE,
+					'description' => $clang->gT("Invitation email subject"),
+					'HTMLeditorType' => "email",
+					'HTMLeditorDisplay' => "Popup",
+					'associated' => "emailinvitebody"
+				);
+			break;
 
             case 'emailinvitebody':
-                $aData = array(
-                    'type' => 1,
-                    'dbColumn' => 'surveyls_email_invite',
-                    'id1' => '',
-                    'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
-                    'description' => "",
-                    'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
-                    'associated' => ""
-                );
-            break;
+				$aData = array(
+					'type' => 1,
+					'dbColumn' => 'surveyls_email_invite',
+					'id1' => '',
+					'id2' => '',
+					'gid' => FALSE,
+					'qid' => FALSE,
+					'description' => $clang->gT("Invitation email"),
+					'HTMLeditorType' => "email",
+					'HTMLeditorDisplay' => "",
+					'associated' => ""
+				);
+			break;
 
             case 'emailreminder':
-                $aData = array(
-                    'type' => 1,
-                    'dbColumn' => 'surveyls_email_remind_subj',
-                    'id1' => '',
-                    'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
-                    'description' => $clang->gT("Reminder email"),
-                    'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
-                    'associated' => "emailreminderbody"
-                );
-            break;
+				$aData = array(
+					'type' => 1,
+					'dbColumn' => 'surveyls_email_remind_subj',
+					'id1' => '',
+					'id2' => '',
+					'gid' => FALSE,
+					'qid' => FALSE,
+					'description' => $clang->gT("Reminder email subject"),
+					'HTMLeditorType' => "email",
+					'HTMLeditorDisplay' => "",
+					'associated' => "emailreminderbody"
+				);
+			break;
 
             case 'emailreminderbody':
-                $aData = array(
-                    'type' => 1,
-                    'dbColumn' => 'surveyls_email_remind',
-                    'id1' => '',
-                    'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
-                    'description' => "",
-                    'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
-                    'associated' => ""
-                );
-            break;
+				$aData = array(
+					'type' => 1,
+					'dbColumn' => 'surveyls_email_remind',
+					'id1' => '',
+					'id2' => '',
+					'gid' => FALSE,
+					'qid' => FALSE,
+					'description' => $clang->gT("Reminder email"),
+					'HTMLeditorType' => "email",
+					'HTMLeditorDisplay' => "",
+					'associated' => ""
+				);
+			break;
 
             case 'emailconfirmation':
-                $aData = array(
-                    'type' => 1,
-                    'dbColumn' => 'surveyls_email_confirm_subj',
-                    'id1' => '',
-                    'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
-                    'description' => $clang->gT("Confirmation email"),
-                    'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
-                    'associated' => "emailconfirmationbody"
-                );
-            break;
+				$aData = array(
+					'type' => 1,
+					'dbColumn' => 'surveyls_email_confirm_subj',
+					'id1' => '',
+					'id2' => '',
+					'gid' => FALSE,
+					'qid' => FALSE,
+					'description' => $clang->gT("Confirmation email subject"),
+					'HTMLeditorType' => "email",
+					'HTMLeditorDisplay' => "",
+					'associated' => "emailconfirmationbody"
+				);
+			break;
 
             case 'emailconfirmationbody':
-                $aData = array(
-                    'type' => 1,
-                    'dbColumn' => 'surveyls_email_confirm',
-                    'id1' => '',
-                    'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
-                    'description' => "",
-                    'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
-                    'associated' => ""
-                );
-            break;
+				$aData = array(
+					'type' => 1,
+					'dbColumn' => 'surveyls_email_confirm',
+					'id1' => '',
+					'id2' => '',
+					'gid' => FALSE,
+					'qid' => FALSE,
+					'description' => $clang->gT("Confirmation email"),
+					'HTMLeditorType' => "email",
+					'HTMLeditorDisplay' => "",
+					'associated' => ""
+				);
+			break;
 
             case 'emailregistration':
-                $aData = array(
-                    'type' => 1,
-                    'dbColumn' => 'surveyls_email_register_subj',
-                    'id1' => '',
-                    'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
-                    'description' => $clang->gT("Registration email"),
-                    'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
-                    'associated' => "emailregistrationbody"
-                );
-            break;
+				$aData = array(
+					'type' => 1,
+					'dbColumn' => 'surveyls_email_register_subj',
+					'id1' => '',
+					'id2' => '',
+					'gid' => FALSE,
+					'qid' => FALSE,
+					'description' => $clang->gT("Registration email subject"),
+					'HTMLeditorType' => "email",
+					'HTMLeditorDisplay' => "",
+					'associated' => "emailregistrationbody"
+				);
+			break;
 
             case 'emailregistrationbody':
-                $aData = array(
-                    'type' => 1,
-                    'dbColumn' => 'surveyls_email_register',
-                    'id1' => '',
-                    'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
-                    'description' => "",
-                    'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
-                    'associated' => ""
-                );
-            break;
+				$aData = array(
+					'type' => 1,
+					'dbColumn' => 'surveyls_email_register',
+					'id1' => '',
+					'id2' => '',
+					'gid' => FALSE,
+					'qid' => FALSE,
+                    'description' => $clang->gT("Registration email"),
+					'HTMLeditorType' => "email",
+					'HTMLeditorDisplay' => "",
+					'associated' => ""
+				);
+			break;
 
             case 'email_confirm':
-                $aData = array(
-                    'type' => 1,
-                    'dbColumn' => 'surveyls_email_confirm_subj',
-                    'id1' => '',
-                    'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
-                    'description' => $clang->gT("Confirmation email"),
-                    'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
-                    'associated' => "email_confirmbody"
-                );
-            break;
+				$aData = array(
+					'type' => 1,
+					'dbColumn' => 'surveyls_email_confirm_subj',
+					'id1' => '',
+					'id2' => '',
+					'gid' => FALSE,
+					'qid' => FALSE,
+					'description' => $clang->gT("Confirmation email subject"),
+					'HTMLeditorType' => "email",
+					'HTMLeditorDisplay' => "",
+					'associated' => "email_confirmbody"
+				);
+			break;
 
             case 'email_confirmbody':
-                $aData = array(
-                    'type' => 1,
-                    'dbColumn' => 'surveyls_email_confirm',
-                    'id1' => '',
-                    'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
-                    'description' => "",
-                    'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
-                    'associated' => ""
-                );
-            break;
+				$aData = array(
+					'type' => 1,
+					'dbColumn' => 'surveyls_email_confirm',
+					'id1' => '',
+					'id2' => '',
+					'gid' => FALSE,
+					'qid' => FALSE,
+                    'description' => $clang->gT("Confirmation email"),
+					'HTMLeditorType' => "email",
+					'HTMLeditorDisplay' => "",
+					'associated' => ""
+				);
+			break;
         }
         return $aData;
     }
@@ -771,11 +771,11 @@ class translate extends Survey_Common_Action {
                         return Groups::model()->findAllByAttributes(array('sid'=>$iSurveyID, 'language'=>$baselang), array('order' => 'gid'));
                     case 'question':
                     case 'question_help':
-                        return Questions::model()->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang,'parent_qid' => 0), array('order' => 'question_order, scale_id'));
+                        return Questions::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang,'parent_qid' => 0), array('order' => 'groups.group_order, t.question_order, t.scale_id'));
                     case 'subquestion':
-                        return Questions::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang), array('order' => 'groups.group_order, parents.question_order, t.scale_id, t.question_order', 'condition'=>'parents.language=:baselang AND groups.language=:baselang AND t.parent_qid>0', 'params'=>array(':baselang'=>$baselang)));
+                        return Questions::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang), array('order' => 'groups.group_order, parents.question_order, t.scale_id, t.question_order', 'condition'=>'parents.language=:baselang1 AND groups.language=:baselang2 AND t.parent_qid>0', 'params'=>array(':baselang1'=>$baselang,':baselang2'=>$baselang)));
                     case 'answer':
-                        return Answers::model()->with('questions', 'groups')->findAllByAttributes(array('language' => $baselang), array('order' => 'groups.group_order, questions.question_order, t.scale_id, t.sortorder', 'condition'=>'questions.sid=:sid AND questions.language=:baselang AND groups.language=:baselang', 'params'=>array(':baselang'=>$baselang, ':sid' => $iSurveyID)));
+                        return Answers::model()->with('questions', 'groups')->findAllByAttributes(array('language' => $baselang), array('order' => 'groups.group_order, questions.question_order, t.scale_id, t.sortorder', 'condition'=>'questions.sid=:sid AND questions.language=:baselang1 AND groups.language=:baselang2', 'params'=>array(':baselang1'=>$baselang, ':baselang2'=>$baselang, ':sid' => $iSurveyID)));
                 }
             case "queryupdate":
                 switch ( $type )
@@ -819,7 +819,8 @@ class translate extends Survey_Common_Action {
                     case 'subquestion':
                         return Questions::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang),array('question' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
                     case 'answer':
-                        return Answers::model()->updateByPk(array('qid'=>$id1, 'code'=>$id2, 'language'=>$tolang),array('answer' => $new));
+                        return Answers::model()->updateByPk(array('qid'=>$id1, 'code'=>$id2, 'language'=>$tolang, 'scale_id'=>0),array('answer' => $new));
+                        // @todo: FIXME for dual scale answer options
                 }
 
         }
@@ -897,38 +898,38 @@ class translate extends Survey_Common_Action {
             $translateoutput .= "<td>".htmlspecialchars($rowfrom->parents->title)." ({$rowfrom->parents->qid})</td>\n";
         }
 
-        $translateoutput .= CHtml::tag(
-                                'td',
-                                array(
-                                    'class' => '_from_',
-                                    'id' => "${type}_from_${i}"
-                                ),
-                                "$textfrom"
-                            );
+		$translateoutput .= CHtml::tag(
+								'td',
+								array(
+									'class' => '_from_',
+									'id' => "${type}_from_${i}"
+								),
+								showJavaScript($textfrom)
+							);
         $translateoutput .= CHtml::openTag('td');
         $translateoutput .= CHtml::hiddenField("{$type}_id1_{$i}", $value1);
         $translateoutput .= CHtml::hiddenField("{$type}_id2_{$i}", $value2);
 
         $nrows = max($this->calc_nrows($textfrom), $this->calc_nrows($textto));
 
-        $translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$i}", htmlspecialchars($textto, ENT_QUOTES));
-        $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", htmlspecialchars($textto),
-                                array(
-                                    'cols' => '75',
-                                    'rows' => $nrows,
-                                )
-                            );
+		$translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$i}", $textto);
+		$translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,
+								array(
+									'cols' => '75',
+									'rows' => $nrows,
+								)
+							);
 
-        $htmleditor_data = array(
-            "edit" . $type ,
-            $type . "_newvalue_" . $i,
-            htmlspecialchars($textto),
-            $iSurveyID,
-            $gid,
-            $qid,
-            "translate" . $amTypeOptions["HTMLeditorType"]
-        );
-        $translateoutput .= $this->_loadEditor($amTypeOptions, $htmleditor_data);
+		$htmleditor_data = array(
+			"edit" . $type ,
+			$type . "_newvalue_" . $i,
+			htmlspecialchars($textto),
+			$iSurveyID,
+			$gid,
+			$qid,
+			"translate" . $amTypeOptions["HTMLeditorType"]
+		);
+		$translateoutput .= $this->_loadEditor($amTypeOptions, $htmleditor_data);
 
         $translateoutput .= CHtml::closeTag("td");
         $translateoutput .= CHtml::closeTag("tr");

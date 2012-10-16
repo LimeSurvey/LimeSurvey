@@ -440,9 +440,9 @@ class tokens extends Survey_Common_Action
                 if($token['completed'] == 'N' && $token['usesleft'] > 0)
                 {
                     if ($token['sent'] == 'N')
-                        $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_invite.png" name="sendinvitations" id="sendinvitations" title="' . $clang->gT("Send invitation email to this person (if they have not yet been sent an invitation email)") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("admin/tokens/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid']) . '", "_blank")\' />';
+                        $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_invite.png" name="sendinvitations" id="sendinvitations" title="' . $clang->gT("Send invitation email to this person (if they have not yet been sent an invitation email)") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("admin/tokens/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid']) . '")\' />';
                     else
-                        $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_remind.png" name="sendreminders" id="sendreminders" title="' . $clang->gT("Send reminder email to this person (if they have already received the invitation email)") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("admin/tokens/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $token['tid']) . '", "_blank")\' />';
+                        $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_remind.png" name="sendreminders" id="sendreminders" title="' . $clang->gT("Send reminder email to this person (if they have already received the invitation email)") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("admin/tokens/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $token['tid']) . '")\' />';
                 } else {
                     $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
                 }
@@ -1085,7 +1085,7 @@ class tokens extends Survey_Common_Action
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
             $aData['tokenlength'] = $tokenlength;
-            $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+            $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'],$clang->langcode);
 
             $this->_renderWrappedTemplate('token', array('tokenbar', 'dummytokenform'), $aData);
         }
@@ -1225,15 +1225,15 @@ class tokens extends Survey_Common_Action
     /**
     * Handle email action
     */
-    function email($iSurveyId, $tids = null)
+    function email($iSurveyId, $tokenids = null)
     {
         /* Check permissions */
         if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
         {
             die("You do not have permission to view this page"); // TODO Replace
         }
-        $aTokenIds=$tids;
-        if (empty($tids))
+        $aTokenIds=$tokenids;
+        if (empty($tokenids))
         {
             $aTokenIds = Yii::app()->request->getPost('tokenids', false);
         }
@@ -1279,6 +1279,10 @@ class tokens extends Survey_Common_Action
         $timeadjust = Yii::app()->getConfig("timeadjust");
 
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
+        foreach($aSurveyLangs as $sSurveyLanguage)
+        {
+            $aData['thissurvey'][$sSurveyLanguage] = getSurveyInfo($iSurveyId, $sSurveyLanguage);    
+        }
         $aData['surveyid'] = $iSurveyId;
         $aData['sSubAction'] = $sSubAction;
         $aData['bEmail'] = $bEmail;
@@ -1293,11 +1297,11 @@ class tokens extends Survey_Common_Action
 
         if (Yii::app()->request->getPost('bypassbademails') == 'Y')
         {
-            $SQLemailstatuscondition = " AND emailstatus = 'OK'";
+            $SQLemailstatuscondition = "emailstatus = 'OK'";
         }
         else
         {
-            $SQLemailstatuscondition = " AND emailstatus <> 'OptOut'";
+            $SQLemailstatuscondition = "emailstatus <> 'OptOut'";
         }
 
         if (!Yii::app()->request->getPost('ok'))
@@ -1323,7 +1327,7 @@ class tokens extends Survey_Common_Action
                 Yii::app()->request->getPost('maxremindercount') != '' &&
                 intval(Yii::app()->request->getPost('maxremindercount')) != 0)
                 {
-                    $SQLremindercountcondition = " AND remindercount < " . intval(Yii::app()->request->getPost('maxremindercount'));
+                    $SQLremindercountcondition = "remindercount < " . intval(Yii::app()->request->getPost('maxremindercount'));
                 }
 
                 if (Yii::app()->request->getPost('minreminderdelay') &&
@@ -1333,7 +1337,7 @@ class tokens extends Survey_Common_Action
                     // Yii::app()->request->getPost('minreminderdelay') in days (86400 seconds per day)
                     $compareddate = dateShift(
                     date("Y-m-d H:i:s", time() - 86400 * intval(Yii::app()->request->getPost('minreminderdelay'))), "Y-m-d H:i", $timeadjust);
-                    $SQLreminderdelaycondition = " AND ( "
+                    $SQLreminderdelaycondition = " ( "
                     . " (remindersent = 'N' AND sent < '" . $compareddate . "') "
                     . " OR "
                     . " (remindersent < '" . $compareddate . "'))";
@@ -1715,9 +1719,9 @@ class tokens extends Survey_Common_Action
                                 $invalidemail = false;
                                 if ($filterduplicatetoken)
                                 {
-                                    $dupquery = "SELECT firstname, lastname from {{tokens_".intval($iSurveyId)."}} where email=:email and firstname=:firstname and lastname=:lastname";
-                                    $dupresult = Yii::app()->db->createCommand($dupquery)->bindParam(":email", $myemail, PDO::PARAM_STR)->bindParam(":firstname", $myfirstname, PDO::PARAM_STR)->bindParam(":lastname", $mylastname, PDO::PARAM_STR)->query();
-                                    if ($dupresult->getRowCount() > 0)
+                                    $dupquery = "SELECT count(tid) from {{tokens_".intval($iSurveyId)."}} where email=:email and firstname=:firstname and lastname=:lastname";
+                                    $dupresult = Yii::app()->db->createCommand($dupquery)->bindParam(":email", $myemail, PDO::PARAM_STR)->bindParam(":firstname", $myfirstname, PDO::PARAM_STR)->bindParam(":lastname", $mylastname, PDO::PARAM_STR)->queryScalar();
+                                    if ($dupresult > 0)
                                     {
                                         $dupfound = true;
                                         $duplicatelist[] = $myfirstname . " " . $mylastname . " (" . $myemail . ")";
@@ -1990,7 +1994,7 @@ class tokens extends Survey_Common_Action
 
                         if ($filterduplicatetoken != false)
                         {
-                            $dupquery = "SELECT tid from {{tokens_".intval($iSurveyId)."}} where 1=1";
+                            $dupquery = "SELECT count(tid) from {{tokens_".intval($iSurveyId)."}} where 1=1";
                             foreach ($filterduplicatefields as $field)
                             {
                                 if (isset($writearray[$field]))
@@ -1998,8 +2002,8 @@ class tokens extends Survey_Common_Action
                                     $dupquery.= " and ".Yii::app()->db->quoteColumnName($field)." = " . Yii::app()->db->quoteValue($writearray[$field]);
                                 }
                             }
-                            $dupresult = Yii::app()->db->createCommand($dupquery)->query();
-                            if ($dupresult->getRowCount() > 0)
+                            $dupresult = Yii::app()->db->createCommand($dupquery)->queryScalar();
+                            if ($dupresult > 0)
                             {
                                 $dupfound = true;
                                 $duplicatelist[] = Yii::app()->db->quoteValue($writearray['firstname']) . " " . Yii::app()->db->quoteValue($writearray['lastname']) . " (" . Yii::app()->db->quoteValue($writearray['email']) . ")";
@@ -2297,14 +2301,25 @@ class tokens extends Survey_Common_Action
         $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyId}}",true);
         $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
         $aData['attrfieldnames']=array();
-        foreach ($aAdditionalAttributeFields as $sField=>$aData)
+        foreach ($aAdditionalAttributeFields as $sField=>$aAttrData)
         {
             if (in_array($sField,$aTokenFieldNames))
             {
-                $aData['attrfieldnames'][$sField]=$aData;
+                if ($aAttrData['description']=='')
+                {
+                    $aAttrData['description']=$sField;
+                }
+                $aData['attrfieldnames'][(string)$sField]=$aAttrData;
             }
         }
-
+        foreach ($aTokenFieldNames as $sTokenFieldName)
+        {
+            if (strpos($sTokenFieldName,'attribute_')===0 && (!isset($aData['attrfieldnames']) || !isset($aData['attrfieldnames'][$sTokenFieldName])))
+            {
+                $aData['attrfieldnames'][$sTokenFieldName]=array('description'=>$sTokenFieldName,'mandatory'=>'N');    
+            }
+        } 
+        
         $aData['thissurvey'] = $thissurvey;
         $aData['surveyid'] = $iSurveyId;
         $aData['subaction'] = $subaction;

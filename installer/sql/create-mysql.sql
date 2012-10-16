@@ -82,7 +82,7 @@ CREATE TABLE `prefix_expression_errors` (
 --
 CREATE TABLE `prefix_failed_login_attempts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ip` varchar(37) NOT NULL,
+  `ip` varchar(40) NOT NULL,
   `last_attempt` varchar(20) NOT NULL,
   `number_attempts` int(11) NOT NULL,
   PRIMARY KEY (`id`)
@@ -217,7 +217,7 @@ CREATE TABLE `prefix_question_attributes` (
 
 --
 -- Table structure for table questions
---//AJSL
+--
 CREATE TABLE `prefix_questions` (
   `qid` int(11) NOT NULL auto_increment,
   `parent_qid` int(11) NOT NULL default '0',
@@ -332,6 +332,8 @@ CREATE TABLE `prefix_survey_links` (
   `token_id` int(11) NOT NULL,
   `survey_id` int(11) NOT NULL,
   `date_created` datetime,
+  `date_invited` datetime,
+  `date_completed` datetime,
    PRIMARY KEY  (`participant_id`,`token_id`,`survey_id`)
  ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
