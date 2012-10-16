@@ -128,14 +128,14 @@ $(document).ready(function() {
                 var func = function()
                 {
                     jQuery('#displaytokens').restoreRow(row.attr('id'));
-                    row.find('input').show();
+                    row.find('a.imagelink').show();
                     row.find('.drop_editing').remove();
                     row.find('.save').remove();
                     window.editing = false;
                 }
 
                 jQuery('#displaytokens').editRow(row.attr('id'), true, null, null, null, null, func);
-                jQuery(this).parent().find('input').hide();
+                jQuery(this).parent().find('a.imagelink').hide();
                 window.editing = true;
 
                 var validfrom = row.find('[aria-describedby="displaytokens_validfrom"]');
@@ -149,7 +149,7 @@ $(document).ready(function() {
                     dateFormat: userdateformat
                 });
 
-                jQuery('<input type="image" class="drop_editing" src="' + jQuery(this).parent().find('input:eq(1)').attr('src') + '" />')
+                jQuery('<input type="image" class="drop_editing" src="' + jQuery(this).parent().find('a.imagelink.btnDelete img').attr('src') + '" />')
                 .appendTo(jQuery(this).parent())
                 .click(func);
                 jQuery('<input type="image" class="save" src="' + imageurl + '/ok.png" width="16" />')

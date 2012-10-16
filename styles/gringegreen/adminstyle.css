@@ -1682,6 +1682,7 @@ ol.organizer {
     margin:0;
 }
 
+.ui-jqgrid a.imagelink,
 .ui-jqgrid td input[type="image"]
 {
     padding:2px;
