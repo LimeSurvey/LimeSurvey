@@ -57,6 +57,35 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.00+ (build 121014) to 2.00+ (build 121016) Oct 16, 2012
+-Fixed issue #6606: Participant attribute grid - can only edit the first attribute (Aniessh Sethh)
+-Fixed issue #6669: Paticipants panel Attribute error on add (Aniessh Sethh)
+-Fixed issue #6688: Apostrophe (single quote) in question code for File upload questions disrupts EM logic (Carsten Schmitz)
+-Fixed issue #6696: Unable to add users to user groups (Carsten Schmitz)
+-Fixed issue #6697: Question group import creates empty group (Carsten Schmitz)
+-Fixed issue #6708: Error messages not displaying at survey signup when user did not completely/correctly fill out the form (Carsten Schmitz)
+-Fixed issue #6709: Export results - token values missing (Carsten Schmitz)
+-Fixed issue #6668: Images not shown in emails (Sam Mousa)
+-New feature: Console installation scripts (Carsten Schmitz)
+#Updated translation: Bulgarian by klaster
+#Updated translation: Czech by slansky
+#Updated translation: Danish by nielsb
+#Updated translation: Estonian by klaster
+#Updated translation: Finnish by klaster, hirvojo1
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by hunkissleslie
+#Updated translation: Japanese by nomoto
+#Updated translation: Latvian by vipgroup
+#Updated translation: Malay by xbonize
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad, peterhol
+#Updated translation: Portuguese (Brazil) by wagner, mauriciofurtado
+#Updated translation: Russian by vipgroup, ldemeschew
+#Updated translation: Slovenian by Aambro
+#Updated translation: Spanish (Spain) by larjona, xtingray, jaimealvarezv, jbermudezperez, Nodens
+
+
 Changes from 2.00+ (build 121013) to 2.00+ (build 121014) Oct 14, 2012
 -Fixed issue #6671: Impossible to import correctly a group of question (Carsten Schmitz)
 -Fixed issue #6693: Error whan saving global settings with IE8 only (Denis Chenu)
