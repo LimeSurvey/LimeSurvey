@@ -25,19 +25,12 @@
 */
 class Survey_Common_Action extends CAction
 {
-    /**
-     * Helper class that contains all kinds of html related output
-     *
-     * @var viewHelper
-     */
-    public $viewHelper;
-
     public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
 
+        // Make sure viewHelper can be autoloaded
         Yii::import('application.helpers.viewHelper');
-        $this->viewHelper = new viewHelper();
     }
 
     /**
