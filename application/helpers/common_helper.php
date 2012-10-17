@@ -12,6 +12,45 @@
 */
 Yii::import('application.helpers.sanitize_helper', true);
 
+class common_helper
+{
+    /**
+     * Sorts an array of subarrays by a key in the subarray
+     *
+     * When having multiple db records, this function can sort them for you
+     * on one of the fields. Ofcourse this is done better and more efficient
+     * by the Db.
+     *
+     * @param array $inArray array of subarrays
+     * @param mixed $sortKey key of subarray to sort on
+     * @param string $order asc|desc default when omitted is desc
+     * @return array
+     */
+    public static function subval_sort($inArray, $sortKey, $order = 'desc')
+    {
+        // First create an array with the value we like to sort on
+        // and preserve the index
+        foreach ($inArray as $index => $row) {
+            $tmpArray[$index] = strtolower($row[$sortKey]);
+        }
+
+        // Find out desired sortorder and sort accordingly
+        if ($order == "asc") {
+            asort($tmpArray, SORT_REGULAR);
+        } else {
+            arsort($tmpArray, SORT_REGULAR);
+        }
+
+        // Now create the output array using the sorted keys
+        foreach ($tmpArray as $index => $row) {
+            $outArray[] = $inArray[$index];
+        }
+
+        return $outArray;
+    }
+
+}
+
 /**
 * Simple function to sort the permissions by title
 *

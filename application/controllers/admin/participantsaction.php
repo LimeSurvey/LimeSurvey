@@ -885,27 +885,6 @@ class participantsaction extends Survey_Common_Action
                 $i++;
             }
 
-            function subval_sort($a, $subkey, $order)
-            {
-                foreach ($a as $k => $v)
-                {
-                    $b[$k] = strtolower($v[$subkey]);
-                }
-                if ($order == "asc")
-                {
-                    asort($b, SORT_REGULAR);
-                }
-                else
-                {
-                    arsort($b, SORT_REGULAR);
-                }
-                foreach ($b as $key => $val)
-                {
-                    $c[] = $a[$key];
-                }
-                return $c;
-            }
-
             if (!empty($sortablearray))
             {
                 $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
@@ -913,7 +892,7 @@ class participantsaction extends Survey_Common_Action
 
                 }
                 //var_dump($sortablearray);echo "\r\n\r\n";
-                $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
+                $sortedarray = common_helper::subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
                 $i = 0;
                 $count = count($sortedarray[0]);
 
@@ -967,33 +946,12 @@ class participantsaction extends Survey_Common_Action
                 }
             }
 
-            function subval_sort($a, $subkey, $order)
-            {
-                foreach ($a as $k => $v)
-                {
-                    $b[$k] = strtolower($v[$subkey]);
-                }
-                if ($order == "asc")
-                {
-                    asort($b, SORT_REGULAR);
-                }
-                else
-                {
-                    arsort($b, SORT_REGULAR);
-                }
-                foreach ($b as $key => $val)
-                {
-                    $c[] = $a[$key];
-                }
-                return $c;
-            }
-
             if (!empty($sortablearray))
             {
                 $aData->records = count($sortablearray);
                 $aData->total = ceil(count($sortablearray) / $limit);
                 $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
-                $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
+                $sortedarray = common_helper::subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
                 $i = 0;
                 $count = count($sortedarray[0]);
                 foreach ($sortedarray as $key => $value)
@@ -1016,27 +974,6 @@ class participantsaction extends Survey_Common_Action
     */
     function getParticipants_json()
     {
-        function subval_sort($a, $subkey, $order)
-        {
-            foreach ($a as $k => $v)
-            {
-                $b[$k] = strtolower($v[$subkey]);
-            }
-            if ($order == "asc")
-            {
-                asort($b, SORT_REGULAR);
-            }
-            else
-            {
-                arsort($b, SORT_REGULAR);
-            }
-            foreach ($b as $key => $val)
-            {
-                $c[] = $a[$key];
-            }
-            return $c;
-        }
-
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
         $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
@@ -1081,7 +1018,7 @@ class participantsaction extends Survey_Common_Action
 
             $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
             if(!empty($sortablearray)) {
-                $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
+                $sortedarray = common_helper::subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
                 $i = 0;
                 $count = count($sortedarray[0]);
                 foreach ($sortedarray as $key => $value)
@@ -1130,7 +1067,7 @@ class participantsaction extends Survey_Common_Action
 
             $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
             if(!empty($sortablearray)) {
-                $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
+                $sortedarray = common_helper::subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
                 $i = 0;
                 $count = count($sortedarray[0]);
                 foreach ($sortedarray as $key => $value)
@@ -1153,31 +1090,10 @@ class participantsaction extends Survey_Common_Action
      */
     function getAttribute_json()
     {
-        function subval_sort($a, $subkey, $order)
-        {
-            foreach ($a as $k => $v)
-            {
-                $b[$k] = strtolower($v[$subkey]);
-            }
-            if ($order == "asc")
-            {
-                asort($b, SORT_REGULAR);
-            }
-            else
-            {
-                arsort($b, SORT_REGULAR);
-            }
-            foreach ($b as $key => $val)
-            {
-                $c[] = $a[$key];
-            }
-            return $c;
-        }
-
         $iParticipantId = Yii::app()->request->getQuery('pid');
         $records = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($iParticipantId);
         //$getallattributes = ParticipantAttributeNames::model()->with('participant_attribute_names_lang')->findAll();
-        $records = subval_sort($records, "attribute_name", "asc");
+        $records = common_helper::subval_sort($records, "attribute_name", "asc");
 
         $i = 0;
 
@@ -1257,7 +1173,7 @@ class participantsaction extends Survey_Common_Action
             }
             $i++;
         }
-        $outputs=subval_sort($outputs, 3, "asc");
+        $outputs=common_helper::subval_sort($outputs, 3, "asc");
 
         $aData = new stdClass();
         $aData->page = 1;

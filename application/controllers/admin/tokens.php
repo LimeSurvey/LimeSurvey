@@ -546,7 +546,7 @@ class tokens extends Survey_Common_Action
         if (!empty($sortablearray))
         {
             $indexsort = array_search(Yii::app()->request->getPost('sidx'), $fields);
-            $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
+            $sortedarray = common_helper::subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
             $i = 0;
             $count = count($sortedarray[0]);
             foreach ($sortedarray as $key => $value)
