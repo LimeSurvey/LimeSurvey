@@ -325,7 +325,7 @@ class export extends Survey_Common_Action {
                 $iLength	 = '16384'; // Set the max text length of the Value
         }
 
-        $headerComment = '*$Rev: 10193 $' . " $filterstate $spssver.\n";
+        $headerComment = '*$Rev: 121017 $' . " $filterstate $spssver.\n";
 
         if ( isset($_POST['dldata']) ) $subaction = "dldata";
         if ( isset($_POST['dlstructure']) ) $subaction = "dlstructure";
@@ -445,6 +445,10 @@ class export extends Survey_Common_Action {
                 echo "SET UNICODE=ON.\n";
             }
 
+            echo "SHOW LOCALE.\n";
+            echo "PRESERVE LOCALE.\n";
+            echo "SET LOCALE='en_UK'.\n";
+
             echo "GET DATA\n"
             ." /TYPE=TXT\n"
             ." /FILE='survey_" . $iSurveyID . "_SPSS_data_file.dat'\n"
@@ -555,6 +559,7 @@ class export extends Survey_Common_Action {
                     echo "RENAME VARIABLE ( " . $field['id'] . ' = ' . $ftitle . " ).\n";
                 }
             }
+            echo "RESTORE LOCALE.\n";
             exit;
         }
     }
