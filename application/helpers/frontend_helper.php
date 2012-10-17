@@ -1373,7 +1373,6 @@
         global $thissurvey, $secerror, $clienttoken;
         global $tokensexist;
         //global $surveyid;
-        global $register_errormsg;
         global $templang, $move, $rooturl;
 
         $clang = Yii::app()->lang;
