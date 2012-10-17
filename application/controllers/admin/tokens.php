@@ -380,7 +380,6 @@ class tokens extends Survey_Common_Action
         {
             self::_newtokentable($iSurveyId);
         }
-        $clang = $this->getController()->lang;
         $page  = Yii::app()->request->getPost('page');
         $sidx = Yii::app()->request->getPost('sidx');
         $sidx = !empty($sidx) ? $sidx : "lastname";
@@ -398,71 +397,15 @@ class tokens extends Survey_Common_Action
         {
             $limit=$aData->records;
         }
-        $aData->total = ceil($aData->records / $limit);
-
-        Yii::app()->loadHelper("surveytranslator");
-
-        $format = getDateFormatData(Yii::app()->session['dateformat']);
+        $aData->total = ceil($aData->records / $limit);      
 
         for ($i = 0, $j = 0; $i < $limit && $j < $limit; $i++, $j++)
         {
             $token = $tokens[$j];
-            if ((int) $token['validfrom'])
-                $token['validfrom'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validfrom'])));
-            else
-                $token['validfrom'] = '';
-            if ((int) $token['validuntil'])
-                $token['validuntil'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validuntil'])));
-            else
-                $token['validuntil'] = '';
 
             $aData->rows[$i]['id'] = $token['tid'];
-            $prow = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
 
-            $action="";
-            if($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] =="")) {
-                //$action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$token['token']}") . '", "_blank")\'>';
-                $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}", $clang->gT("Do survey"), '_blank');
-            } elseif ($token['completed'] != "N" && $token['completed'] != "" && $prow['anonymized'] == "N" ) {
-                //Get the survey response id of the matching entry
-                $id=Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$token['token']));
-                if (count($id)>0)
-                {
-                    //$action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_viewanswer.png" title="' . $clang->gT("View response details"). '" alt="' . $clang->gT("View response details"). '" onClick=\'window.open("'. Yii::app()->getController()->createUrl("admin/responses/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}").'", "_top")\'>';
-                    $action .= viewHelper::getImageLink('token_viewanswer.png', "admin/responses/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}", $clang->gT("View response details"), null, '_top');
-                } else {
-                    $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-                }
-            } else {
-                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-            }
-            //$action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_delete.png" title="' . $clang->gT("Delete token entry") . '" alt="' . $clang->gT("Delete token entry") . '" onclick=\'if (confirm("' . $clang->gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}\'>';
-            $attribs = array ('onclick' => 'if (confirm("' . $clang->gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}');
-            $action .= viewHelper::getImageLink('token_delete.png', null, $clang->gT("Delete token entry"), null, 'imagelink btnDelete', $attribs);
-            if (strtolower($token['emailstatus']) == 'ok')
-            {
-                if($token['completed'] == 'N' && $token['usesleft'] > 0)
-                {
-                    if ($token['sent'] == 'N')
-                        //$action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_invite.png" name="sendinvitations" id="sendinvitations" title="' . $clang->gT("Send invitation email to this person (if they have not yet been sent an invitation email)") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("admin/tokens/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid']) . '")\' />';
-                        $action .= viewHelper::getImageLink('token_invite.png', "admin/tokens/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], $clang->gT("Send invitation email to this person (if they have not yet been sent an invitation email)"), "_blank");
-                    else
-                        //$action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_remind.png" name="sendreminders" id="sendreminders" title="' . $clang->gT("Send reminder email to this person (if they have already received the invitation email)") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("admin/tokens/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $token['tid']) . '")\' />';
-                        $action .= viewHelper::getImageLink('token_remind.png', "admin/tokens/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], $clang->gT("Send reminder email to this person (if they have already received the invitation email)"), "_blank");
-                } else {
-                    $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-                }
-            } else {
-                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-            }
-            //$action .= '<input style="float: left; height: 16; width: 16px; font-size: 8; font-family: verdana" type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'edit_16.png" class="token_edit" title="' . $clang->gT("Edit token entry") . '" alt="' . $clang->gT("Edit token entry") . '">';
-            $action .= viewHelper::getImageLink('edit_16.png', null, $clang->gT("Edit token entry"), null, 'imagelink token_edit');
-            if(!empty($token['participant_id']) && $token['participant_id'] != "") {
-                //$action .= '<input type="image" style="float: left" src="'.Yii::app()->getConfig('adminimageurl').'cpdb_16.png" name="viewparticipant" id="viewparticipant" title="'.$clang->gT("View this person in the central participants database").'" alt="'.$clang->gT("View this person in the central participants database").'" onClick=\'window.open("'.Yii::app()->getController()->createUrl("admin/participants/displayParticipants/searchurl/participant_id||equal||".$token['participant_id']).'", "_top")\'>';
-                $action .= viewHelper::getImageLink('cpdb_16.png', "admin/participants/displayParticipants/searchurl/participant_id||equal||".$token['participant_id'], $clang->gT("View this person in the central participants database"), '_top');
-            } else {
-                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-            }
+            $action = $this->_tokenToActionRow($token, $iSurveyId);
             $aData->rows[$i]['cell'] = array($token['tid'], $action, $token['firstname'], $token['lastname'], $token['email'], $token['emailstatus'], $token['token'], $token['language'], $token['sent'], $token['remindersent'], $token['remindercount'], $token['completed'], $token['usesleft'], $token['validfrom'], $token['validuntil']);
             $attributes = getAttributeFieldNames($iSurveyId);
             foreach ($attributes as $attribute)
@@ -476,14 +419,12 @@ class tokens extends Survey_Common_Action
 
     function getSearch_json($iSurveyId)
     {
-        $clang = $this->getController()->lang;
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
         {
             self::_newtokentable($iSurveyId);
         }
-        $prow = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
         $page = (Yii::app()->request->getPost('page') != "") ? Yii::app()->request->getPost('page') : 1;
         $limit = (Yii::app()->request->getPost('rows') != "") ? Yii::app()->request->getPost('rows') : 25 ;
         $fields = array('tid', 'firstname', 'lastname', 'email', 'emailstatus', 'token', 'language', 'sent', 'sentreminder', 'remindercount', 'completed', 'usesleft', 'validfrom', 'validuntil');
@@ -508,36 +449,7 @@ class tokens extends Survey_Common_Action
         $i = 0;
         foreach ($records as $row => $value)
         {
-            $action="";
-            if($value['token'] != "" && ($value['completed'] == "N" || $value['completed'] =="")) {
-                $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$value['token']}") . '", "_blank")\'>';
-            } elseif ($value['completed'] != "N" && $value['completed'] != "" && $prow['anonymized'] == "N" ) {
-                //Get the survey response id of the matching entry
-                $id=Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$value['token']));
-                $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_viewanswer.png" title="' . $clang->gT("View response details"). '" alt="' . $clang->gT("View response details"). '" onClick=\'window.open("'. Yii::app()->getController()->createUrl("admin/responses/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}").'", "_top")\'>';
-
-            } else {
-                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-            }
-            $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_delete.png" title="' . $clang->gT("Delete token entry") . '" alt="' . $clang->gT("Delete token entry") . '" onclick=\'if (confirm("' . $clang->gT("Are you sure you want to delete this entry?") . ' (' . $value['tid'] . ')")) {$("#displaytokens").delRowData(' . $value['tid'] . ');$.post(delUrl,{tid:' . $value['tid'] . '});}\'>';
-            if (strtolower($value['emailstatus']) == 'ok')
-            {
-            if($value['completed'] == 'N' && $value['usesleft'] > 0)
-                {
-                    if ($value['sent'] == 'N')
-                        $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_invite.png" name="sendinvitations" id="sendinvitations" title="' . $clang->gT("Send invitation email to this person (if they have not yet been sent an invitation email)") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("admin/tokens/email/surveyid/{$iSurveyId}/tokenids/" . $value['tid']) . '", "_blank")\' />';
-                    else
-                        $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_remind.png" name="sendreminders" id="sendreminders" title="' . $clang->gT("Send reminder email to this person (if they have already received the invitation email)") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("admin/tokens/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $value['tid']) . '", "_blank")\' />';
-                } else {
-                    $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-                }
-            }
-            $action .= '<input style="float: left; height: 16; width: 16px; font-size: 8; font-family: verdana" type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'edit_16.png" class="token_edit" title="' . $clang->gT("Edit token entry") . '" alt="' . $clang->gT("Edit token entry") . '">';
-            if(!empty($value['participant_id']) && $value['participant_id'] != "") {
-                $action .= '<input type="image" style="float: left" src="'.Yii::app()->getConfig('adminimageurl').'cpdb_16.png" name="viewparticipant" id="viewparticipant" title="'.$clang->gT("View this person in the central participants database").'" alt="'.$clang->gT("View this person in the central participants database").'" onClick=\'window.open("'.Yii::app()->getController()->createUrl("admin/participants/displayParticipants/searchurl/participant_id||equal||".$value['participant_id']).'", "_top")\'>';
-            } else {
-                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-            }
+            $action = $this->_tokenToActionRow($value, $iSurveyId);
 
             $sortablearray[$i] = array($value['tid'], $action, $value['firstname'], $value['lastname'], $value['email'], $value['emailstatus'], $value['token'], $value['language'], $value['sent'], $value['remindersent'], $value['remindercount'], $value['completed'], $value['usesleft'], $value['validfrom'], $value['validuntil']);
             $i++;
@@ -561,6 +473,92 @@ class tokens extends Survey_Common_Action
             }
         }
         echo ls_json_encode($aData);
+    }
+
+    /**
+     * Internal helper for getSearch_json en getToken_json
+     *
+     * Takes care of converting a token to a row of action buttons
+     *
+     * @param type $token
+     * @param type $iSurveyId
+     * @return string
+     */
+    protected function _tokenToActionRow($token, $iSurveyId) 
+    {
+        Yii::app()->loadHelper("surveytranslator"); // For getDateFormatData
+        $clang  = $this->getController()->lang;
+        $prow   = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
+        $format = getDateFormatData(Yii::app()->session['dateformat']);
+
+        if ((int) $token['validfrom'])
+        {
+            $token['validfrom'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validfrom'])));
+        } else
+        {
+            $token['validfrom'] = '';
+        }
+        if ((int) $token['validuntil'])
+        {
+            $token['validuntil'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validuntil'])));
+        } else
+        {
+            $token['validuntil'] = '';
+        }
+
+        $action = "";
+        if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == ""))
+        {
+            //$action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$token['token']}") . '", "_blank")\'>';
+            $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}", $clang->gT("Do survey"), '_blank');
+        } elseif ($token['completed'] != "N" && $token['completed'] != "" && $prow['anonymized'] == "N")
+        {
+            //Get the survey response id of the matching entry
+            $id = Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token' => $token['token']));
+            if (count($id) > 0)
+            {
+                //$action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_viewanswer.png" title="' . $clang->gT("View response details"). '" alt="' . $clang->gT("View response details"). '" onClick=\'window.open("'. Yii::app()->getController()->createUrl("admin/responses/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}").'", "_top")\'>';
+                $action .= viewHelper::getImageLink('token_viewanswer.png', "admin/responses/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}", $clang->gT("View response details"), null, '_top');
+            } else
+            {
+                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
+            }
+        } else
+        {
+            $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
+        }
+        //$action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_delete.png" title="' . $clang->gT("Delete token entry") . '" alt="' . $clang->gT("Delete token entry") . '" onclick=\'if (confirm("' . $clang->gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}\'>';
+        $attribs = array('onclick' => 'if (confirm("' . $clang->gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}');
+        $action .= viewHelper::getImageLink('token_delete.png', null, $clang->gT("Delete token entry"), null, 'imagelink btnDelete', $attribs);
+        if (strtolower($token['emailstatus']) == 'ok')
+        {
+            if ($token['completed'] == 'N' && $token['usesleft'] > 0)
+            {
+                if ($token['sent'] == 'N')
+                //$action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_invite.png" name="sendinvitations" id="sendinvitations" title="' . $clang->gT("Send invitation email to this person (if they have not yet been sent an invitation email)") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("admin/tokens/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid']) . '")\' />';
+                    $action .= viewHelper::getImageLink('token_invite.png', "admin/tokens/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], $clang->gT("Send invitation email to this person (if they have not yet been sent an invitation email)"), "_blank");
+                else
+                //$action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_remind.png" name="sendreminders" id="sendreminders" title="' . $clang->gT("Send reminder email to this person (if they have already received the invitation email)") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("admin/tokens/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $token['tid']) . '")\' />';
+                    $action .= viewHelper::getImageLink('token_remind.png', "admin/tokens/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], $clang->gT("Send reminder email to this person (if they have already received the invitation email)"), "_blank");
+            } else
+            {
+                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
+            }
+        } else
+        {
+            $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
+        }
+        //$action .= '<input style="float: left; height: 16; width: 16px; font-size: 8; font-family: verdana" type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'edit_16.png" class="token_edit" title="' . $clang->gT("Edit token entry") . '" alt="' . $clang->gT("Edit token entry") . '">';
+        $action .= viewHelper::getImageLink('edit_16.png', null, $clang->gT("Edit token entry"), null, 'imagelink token_edit');
+        if (!empty($token['participant_id']) && $token['participant_id'] != "")
+        {
+            //$action .= '<input type="image" style="float: left" src="'.Yii::app()->getConfig('adminimageurl').'cpdb_16.png" name="viewparticipant" id="viewparticipant" title="'.$clang->gT("View this person in the central participants database").'" alt="'.$clang->gT("View this person in the central participants database").'" onClick=\'window.open("'.Yii::app()->getController()->createUrl("admin/participants/displayParticipants/searchurl/participant_id||equal||".$token['participant_id']).'", "_top")\'>';
+            $action .= viewHelper::getImageLink('cpdb_16.png', "admin/participants/displayParticipants/searchurl/participant_id||equal||" . $token['participant_id'], $clang->gT("View this person in the central participants database"), '_top');
+        } else
+        {
+            $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
+        }
+        return $action;
     }
 
     function editToken($iSurveyId)
