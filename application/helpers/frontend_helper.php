@@ -242,7 +242,7 @@
             return false;
         }
 
-    }
+    }                                                                   
 
     /**
     * This function creates the language selector for the public survey index page
@@ -1055,8 +1055,11 @@
                 {
                     //Update the survey_links table if necessary
                     $slquery = Survey_links::model()->find('participant_id = "'.$participant_id.'" AND survey_id = '.$surveyid.' AND token_id = '.$token_id);
-                    $slquery->date_completed = $today;
-                    $slquery->save();
+                    if (!is_null($slquery))
+                    {
+                        $slquery->date_completed = $today;
+                        $slquery->save();
+                    }
                 }
             }
             else
