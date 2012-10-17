@@ -16,18 +16,18 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   // Actually a table : move it to a list is a good idea, but need reviewing template a lot.
   var htmlCode = '<div class="dragDropTable"> \
       <div class="columns2">\
-        <strong class="SortableTitle">'+translt.choicetitle+'</strong>\
+        <strong class="SortableTitle">'+aRankingTranslations.choicetitle+'</strong>\
         <div class="ui-state-default dragDropChoices"> \
           <ul id="sortable-choice-'+qID+'" class="connectedSortable'+qID+' dragDropChoiceList"> \
-            <li>'+translt.choicetitle+'</li> \
+            <li>'+aRankingTranslations.choicetitle+'</li> \
           </ul> \
         </div> \
       </div>\
       <div class="columns2">\
-        <strong class="SortableTitle">'+translt.ranktitle+'</strong>\
+        <strong class="SortableTitle">'+aRankingTranslations.ranktitle+'</strong>\
         <div class="ui-state-default dragDropRanks"> \
           <ol id="sortable-rank-'+qID+'" class="connectedSortable'+qID+' dragDropRankList selectionSortable"> \
-            <li>'+translt.ranktitle+'</li> \
+            <li>'+aRankingTranslations.ranktitle+'</li> \
           </ol> \
         </div> \
       </div> \

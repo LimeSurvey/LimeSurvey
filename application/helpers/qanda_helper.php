@@ -2174,7 +2174,7 @@ function do_ranking($ia)
     }
     $answer .= "<script type='text/javascript'>\n"
     . "  <!--\n"
-    . "var translt = {
+    . "var aRankingTranslations = {
              choicetitle: '{$choice_title}',
              ranktitle: '{$rank_title}'
             };\n"

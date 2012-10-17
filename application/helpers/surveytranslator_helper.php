@@ -177,7 +177,7 @@
 
         // Czech informal
         $supportedLanguages['cs-informal']['description'] = $clang->gT('Czech (informal)');
-        $supportedLanguages['cs-informal']['nativedescription'] = '&#x010c;esky neformální';
+        $supportedLanguages['cs-informal']['nativedescription'] = '&#x010c;esky neform&aacute;ln&iacute;';
         $supportedLanguages['cs-informal']['rtl'] = false;
         $supportedLanguages['cs-informal']['dateformat'] = 4;
         $supportedLanguages['cs-informal']['radixpoint'] = 1;
