@@ -450,12 +450,19 @@
         $supportedLanguages['sl']['radixpoint'] = 1;
 
         // Serbian
-        $supportedLanguages['sr']['description'] = $clang->gT('Serbian');
-        $supportedLanguages['sr']['nativedescription'] = 'Srpski';
+        $supportedLanguages['sr']['description'] = $clang->gT('Serbian (Cyrillic)');
+        $supportedLanguages['sr']['nativedescription'] = '&#1057;&#1088;&#1087;&#1089;&#1082;&#1080;';
         $supportedLanguages['sr']['rtl'] = false;
         $supportedLanguages['sr']['dateformat'] = 4;
         $supportedLanguages['sr']['radixpoint'] = 1;
 
+        // Serbian (Latin script)
+        $supportedLanguages['sr-Latn']['description'] = $clang->gT('Serbian (Latin)');
+        $supportedLanguages['sr-Latn']['nativedescription'] = 'Srpski';
+        $supportedLanguages['sr-Latn']['rtl'] = false;
+        $supportedLanguages['sr-Latn']['dateformat'] = 4;
+        $supportedLanguages['sr-Latn']['radixpoint'] = 1;
+        
         // Spanish
         $supportedLanguages['es']['description'] = $clang->gT('Spanish');
         $supportedLanguages['es']['nativedescription'] = 'Espa&#241;ol';
