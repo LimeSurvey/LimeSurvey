@@ -327,30 +327,6 @@ function checkconfield($value)
 
             $scenario = $scenariorow['scenario'];
             $currentcfield="";
-            $query = "SELECT {{conditions}}.*, {{question_types}}.clas "
-            . "FROM {{conditions}}, {{questions}} "
-            . "WHERE {{conditions}}.cqid={{questions}}.qid "
-            . "AND {{questions}}.tid={{question_types}}.tid "
-            . "AND {{conditions}}.qid=$value_question->id "
-            . "AND {{conditions}}.scenario=$scenario "
-            . "AND {{conditions}}.cfieldname NOT LIKE '{%' "
-            . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
-            $result=dbExecuteAssoc($query) or safeDie($query."<br />");         //Checked
-            $conditionsfound = $result->count();
-
-            $querytoken = "SELECT {{conditions}}.*, 'Display' as class "
-            . "FROM {{conditions}} "
-            . "WHERE "
-            . " {{conditions}}.qid=$value_question->id "
-            . "AND {{conditions}}.scenario=$scenario "
-            . "AND {{conditions}}.cfieldname LIKE '{%' "
-            . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
-            $resulttoken=dbExecuteAssoc($querytoken) or safeDie($querytoken."<br />");         //Checked
-            $conditionsfoundtoken = $resulttoken->count();
-            $conditionsfound = $conditionsfound + $conditionsfoundtoken;
-
-            foreach($resulttoken->readAll() as $Condrow)
-            {
                 $sConditionsQuery1 = "SELECT {{conditions}}.*, {{questions}}.type "
                 . "FROM {{conditions}}, {{questions}} "
                 . "WHERE {{conditions}}.cqid={{questions}}.qid "
