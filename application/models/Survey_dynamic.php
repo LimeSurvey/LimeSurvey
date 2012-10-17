@@ -30,8 +30,10 @@ class Survey_dynamic extends LSActiveRecord
     {         
         $refresh = false;
         if (!is_null($sid)) {
-            self::sid($sid);
-            $refresh = true;
+            if (self::$sid <> $sid) { // did we change sid? then refresh
+                self::sid($sid);
+                $refresh = true;
+            }
         }
         
         $model = parent::model(__CLASS__);
