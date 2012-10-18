@@ -947,8 +947,10 @@ class database extends Survey_Common_Action
                     'surveyls_dateformat' => Yii::app()->request->getPost('dateformat_'.$langname),
                     'surveyls_numberformat' => Yii::app()->request->getPost('numberformat_'.$langname)
                     );
+                    $Surveys_languagesettings=Surveys_languagesettings::model()->findByPk(array('surveyls_survey_id'=>$postsid, 'surveyls_language'=>$langname));
+                    $Surveys_languagesettings->attributes=$data;
+                    $Surveys_languagesettings->save(); // save the change to database
 
-                    Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$postsid, 'surveyls_language'=>$langname), $data);
                 }
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Survey text elements successfully saved.");

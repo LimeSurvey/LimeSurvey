@@ -1398,7 +1398,7 @@ class tokens extends Survey_Common_Action
                     $fieldsarray["{OPTINURL}"] = $this->getController()
                                                       ->createAbsoluteUrl("/optin/tokens/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
                     $fieldsarray["{SURVEYURL}"] = $this->getController()
-                                                       ->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}/token/{$emrow['token']}/langcode/" . trim($emrow['language']) . "/");
+                                                       ->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}/token/{$emrow['token']}/lang/" . trim($emrow['language']) . "/");
 
                     foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
                     {
