@@ -65,7 +65,7 @@ Yii::import('system.gii.CCodeForm');
  * @property string $assetsUrl The base URL that contains all published asset files of gii.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: GiiModule.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id$
  * @package system.gii
  * @since 1.1.2
  */
@@ -125,6 +125,10 @@ class GiiModule extends CWebModule
 				'stateKeyPrefix'=>'gii',
 				'loginUrl'=>Yii::app()->createUrl($this->getId().'/default/login'),
 			),
+			'widgetFactory' => array(
+				'class'=>'CWidgetFactory',
+				'widgets' => array()
+			)
 		), false);
 		$this->generatorPaths[]='gii.generators';
 		$this->controllerMap=$this->findGenerators();

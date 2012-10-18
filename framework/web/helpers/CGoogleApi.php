@@ -9,15 +9,19 @@
  */
 
 /**
- * CGoogleApi provides helper methods to easily access {@link http://code.google.com/apis/ajax/ Google AJAX APIs}.
+ * CGoogleApi provides helper methods to easily access the {@link https://developers.google.com/loader/ Google API loader}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGoogleApi.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.web.helpers
  */
 class CGoogleApi
 {
-	public static $bootstrapUrl='http://www.google.com/jsapi';
+	/**
+	* @var string Protocol relative url to the Google API loader which allows easy access 
+	* to most of the Google AJAX APIs
+	*/
+	public static $bootstrapUrl='//www.google.com/jsapi';
 
 	/**
 	 * Renders the jsapi script file.

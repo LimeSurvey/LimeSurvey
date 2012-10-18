@@ -25,7 +25,7 @@
  * @property CMarkdownParser $markdownParser The parser instance.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMarkdown.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.web.widgets
  * @since 1.0
  */

@@ -29,7 +29,7 @@
  * @property array $keys The key list.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMap.php 3518 2011-12-28 23:31:29Z alexander.makarow $
+ * @version $Id$
  * @package system.collections
  * @since 1.0
  */

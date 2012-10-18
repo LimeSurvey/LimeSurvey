@@ -12,7 +12,7 @@
  * CCodeForm represents the form for collecting code generation parameters.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCodeForm.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id$
  * @package system.gii
  * @since 1.1.2
  */

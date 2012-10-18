@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 3564 2012-02-13 01:29:03Z qiang.xue $
+ * @version $Id$
  * @package system
  * @since 1.0
  */
@@ -49,7 +49,7 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
  * you can customize methods of YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 3564 2012-02-13 01:29:03Z qiang.xue $
+ * @version $Id$
  * @package system
  * @since 1.0
  */
@@ -82,7 +82,7 @@ class YiiBase
 	 */
 	public static function getVersion()
 	{
-		return '1.1.10';
+		return '1.1.12';
 	}
 
 	/**
@@ -281,7 +281,7 @@ class YiiBase
 					if(is_file($classFile))
 						require($classFile);
 					else
-						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file.',array('{alias}'=>$alias)));
+						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file and the file is readable.',array('{alias}'=>$alias)));
 					self::$_imports[$alias]=$alias;
 				}
 				else
@@ -315,7 +315,7 @@ class YiiBase
 					if(is_file($path.'.php'))
 						require($path.'.php');
 					else
-						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file.',array('{alias}'=>$alias)));
+						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file and the file is readable.',array('{alias}'=>$alias)));
 					self::$_imports[$alias]=$className;
 				}
 				else
@@ -410,6 +410,11 @@ class YiiBase
 						if(is_file($classFile))
 						{
 							include($classFile);
+							if(YII_DEBUG && basename(realpath($classFile))!==$className.'.php')
+								throw new CException(Yii::t('yii','Class name "{class}" does not match class file "{file}".', array(
+									'{class}'=>$className,
+									'{file}'=>$classFile,
+								)));
 							break;
 						}
 					}
@@ -557,6 +562,7 @@ class YiiBase
 	 * an appropriate message translation.
 	 * Starting from version 1.1.6 you can pass parameter for {@link CChoiceFormat::format}
 	 * or plural forms format without wrapping it with array.
+	 * This parameter is then available as <code>{n}</code> in the message translation string.
 	 * @param string $source which message source application component to use.
 	 * Defaults to null, meaning using 'coreMessages' for messages belonging to
 	 * the 'yii' category and using 'messages' for the rest messages.
@@ -676,6 +682,8 @@ class YiiBase
 		'CTypedMap' => '/collections/CTypedMap.php',
 		'CConsoleApplication' => '/console/CConsoleApplication.php',
 		'CConsoleCommand' => '/console/CConsoleCommand.php',
+		'CConsoleCommandBehavior' => '/console/CConsoleCommandBehavior.php',
+		'CConsoleCommandEvent' => '/console/CConsoleCommandEvent.php',
 		'CConsoleCommandRunner' => '/console/CConsoleCommandRunner.php',
 		'CHelpCommand' => '/console/CHelpCommand.php',
 		'CDbCommand' => '/db/CDbCommand.php',
@@ -799,6 +807,7 @@ class YiiBase
 		'CWebUser' => '/web/auth/CWebUser.php',
 		'CFilter' => '/web/filters/CFilter.php',
 		'CFilterChain' => '/web/filters/CFilterChain.php',
+		'CHttpCacheFilter' => '/web/filters/CHttpCacheFilter.php',
 		'CInlineFilter' => '/web/filters/CInlineFilter.php',
 		'CForm' => '/web/form/CForm.php',
 		'CFormButtonElement' => '/web/form/CFormButtonElement.php',
@@ -810,6 +819,7 @@ class YiiBase
 		'CHtml' => '/web/helpers/CHtml.php',
 		'CJSON' => '/web/helpers/CJSON.php',
 		'CJavaScript' => '/web/helpers/CJavaScript.php',
+		'CJavaScriptExpression' => '/web/helpers/CJavaScriptExpression.php',
 		'CPradoViewRenderer' => '/web/renderers/CPradoViewRenderer.php',
 		'CViewRenderer' => '/web/renderers/CViewRenderer.php',
 		'CWebService' => '/web/services/CWebService.php',

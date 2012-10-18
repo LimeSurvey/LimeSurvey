@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: ShellCommand.php 3477 2011-12-06 22:33:37Z alexander.makarow $
+ * @version $Id$
  */
 
 /**
@@ -15,7 +15,7 @@
  * @property string $help The help information for the shell command.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: ShellCommand.php 3477 2011-12-06 22:33:37Z alexander.makarow $
+ * @version $Id$
  * @package system.cli.commands
  * @since 1.0
  */

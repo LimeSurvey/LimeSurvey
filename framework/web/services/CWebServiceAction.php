@@ -26,7 +26,7 @@
  * @property CWebService $service The Web service instance.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebServiceAction.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id$
  * @package system.web.services
  * @since 1.0
  */

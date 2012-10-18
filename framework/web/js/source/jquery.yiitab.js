@@ -5,7 +5,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: jquery.yiitab.js 1827 2010-02-20 00:43:32Z qiang.xue $
+ * @version $Id$
  */
 
 ;(function($) {

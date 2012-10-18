@@ -66,7 +66,7 @@
  * @property array $keys The list of session variable names.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpSession.php 3511 2011-12-27 00:02:53Z alexander.makarow $
+ * @version $Id$
  * @package system.web
  * @since 1.0
  */

@@ -31,7 +31,7 @@
  * @property string $baseUrl The base URL for all themes. Defaults to "/WebRoot/themes".
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CThemeManager.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id$
  * @package system.web
  * @since 1.0
  */
@@ -81,7 +81,7 @@ class CThemeManager extends CApplicationComponent
 			$folder=@opendir($basePath);
 			while(($file=@readdir($folder))!==false)
 			{
-				if($file!=='.' && $file!=='..' && $file!=='.svn' && is_dir($basePath.DIRECTORY_SEPARATOR.$file))
+				if($file!=='.' && $file!=='..' && $file!=='.svn' && $file!=='.gitignore' && is_dir($basePath.DIRECTORY_SEPARATOR.$file))
 					$themes[]=$file;
 			}
 			closedir($folder);

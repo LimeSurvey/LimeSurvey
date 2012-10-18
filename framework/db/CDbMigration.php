@@ -30,7 +30,7 @@
  * @property CDbConnection $dbConnection The currently active database connection.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbMigration.php 3514 2011-12-27 20:28:26Z alexander.makarow $
+ * @version $Id$
  * @package system.db
  * @since 1.1.6
  */
@@ -50,7 +50,7 @@ abstract class CDbMigration extends CComponent
 		{
 			if($this->safeUp()===false)
 			{
-				$transaction->rollBack();
+				$transaction->rollback();
 				return false;
 			}
 			$transaction->commit();
@@ -59,7 +59,7 @@ abstract class CDbMigration extends CComponent
 		{
 			echo "Exception: ".$e->getMessage().' ('.$e->getFile().':'.$e->getLine().")\n";
 			echo $e->getTraceAsString()."\n";
-			$transaction->rollBack();
+			$transaction->rollback();
 			return false;
 		}
 	}
@@ -77,7 +77,7 @@ abstract class CDbMigration extends CComponent
 		{
 			if($this->safeDown()===false)
 			{
-				$transaction->rollBack();
+				$transaction->rollback();
 				return false;
 			}
 			$transaction->commit();
@@ -86,7 +86,7 @@ abstract class CDbMigration extends CComponent
 		{
 			echo "Exception: ".$e->getMessage().' ('.$e->getFile().':'.$e->getLine().")\n";
 			echo $e->getTraceAsString()."\n";
-			$transaction->rollBack();
+			$transaction->rollback();
 			return false;
 		}
 	}

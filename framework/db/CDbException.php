@@ -12,7 +12,7 @@
  * CDbException represents an exception that is caused by some DB-related operations.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbException.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id$
  * @package system.db
  * @since 1.0
  */

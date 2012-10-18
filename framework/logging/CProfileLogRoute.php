@@ -23,7 +23,7 @@
  * @property string $report The type of the profiling report to display. Defaults to 'summary'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CProfileLogRoute.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.logging
  * @since 1.0
  */

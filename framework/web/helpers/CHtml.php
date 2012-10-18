@@ -13,7 +13,7 @@
  * CHtml is a static class that provides a collection of helper methods for creating HTML views.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHtml.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.web.helpers
  * @since 1.0
  */
@@ -55,18 +55,18 @@ class CHtml
 
 	/**
 	 * Sets the default style for attaching jQuery event handlers.
-	 * 
-	 * If set to true (default), live/delegated style is used. Event handlers 
-	 * are attached to the document body and can process events from descendant 
-	 * elements that are added to the document at a later time.
-	 * 
-	 * If set to false, direct style is used. Event handlers are attached directly 
-	 * to the DOM element, that must already exist on the page. Elements injected 
-	 * into the page at a later time will not be processed.
-	 * 
-	 * You can override this setting for a particular element by setting the htmlOptions live attribute
+	 *
+	 * If set to true (default), event handlers are delegated.
+	 * Event handlers are attached to the document body and can process events
+	 * from descendant elements that are added to the document at a later time.
+	 *
+	 * If set to false, event handlers are directly bound.
+	 * Event handlers are attached directly to the DOM element, that must already exist
+	 * on the page. Elements injected into the page at a later time will not be processed.
+	 *
+	 * You can override this setting for a particular element by setting the htmlOptions delegate attribute
 	 * (see {@link clientChange}).
-	 * 
+	 *
 	 * For more information about attaching jQuery event handler see {@link http://api.jquery.com/on/}
 	 * @since 1.1.9
 	 * @see clientChange
@@ -843,6 +843,8 @@ class CHtml
 	 * the checkbox list.</li>
 	 * <li>labelOptions: array, specifies the additional HTML attributes to be rendered
 	 * for every label tag in the list.</li>
+	 * <li>container: string, specifies the checkboxes enclosing tag. Defaults to 'span'.
+	 * If the value is an empty string, no enclosing tag will be generated</li>
 	 * </ul>
 	 * @return string the generated check box list
 	 */
@@ -850,7 +852,8 @@ class CHtml
 	{
 		$template=isset($htmlOptions['template'])?$htmlOptions['template']:'{input} {label}';
 		$separator=isset($htmlOptions['separator'])?$htmlOptions['separator']:"<br/>\n";
-		unset($htmlOptions['template'],$htmlOptions['separator']);
+		$container=isset($htmlOptions['container'])?$htmlOptions['container']:'span';
+		unset($htmlOptions['template'],$htmlOptions['separator'],$htmlOptions['container']);
 
 		if(substr($name,-2)!=='[]')
 			$name.='[]';
@@ -907,7 +910,10 @@ EOD;
 			$cs->registerScript($id,$js);
 		}
 
-		return self::tag('span',array('id'=>$baseID),implode($separator,$items));
+		if(empty($container))
+			return implode($separator,$items);
+		else
+			return self::tag($container,array('id'=>$baseID),implode($separator,$items));
 	}
 
 	/**
@@ -928,6 +934,8 @@ EOD;
 	 * <li>separator: string, specifies the string that separates the generated radio buttons. Defaults to new line (<br/>).</li>
 	 * <li>labelOptions: array, specifies the additional HTML attributes to be rendered
 	 * for every label tag in the list.</li>
+	 * <li>container: string, specifies the radio buttons enclosing tag. Defaults to 'span'.
+	 * If the value is an empty string, no enclosing tag will be generated</li>
 	 * </ul>
 	 * @return string the generated radio button list
 	 */
@@ -935,7 +943,8 @@ EOD;
 	{
 		$template=isset($htmlOptions['template'])?$htmlOptions['template']:'{input} {label}';
 		$separator=isset($htmlOptions['separator'])?$htmlOptions['separator']:"<br/>\n";
-		unset($htmlOptions['template'],$htmlOptions['separator']);
+		$container=isset($htmlOptions['container'])?$htmlOptions['container']:'span';
+		unset($htmlOptions['template'],$htmlOptions['separator'],$htmlOptions['container']);
 
 		$labelOptions=isset($htmlOptions['labelOptions'])?$htmlOptions['labelOptions']:array();
 		unset($htmlOptions['labelOptions']);
@@ -952,7 +961,10 @@ EOD;
 			$label=self::label($label,$htmlOptions['id'],$labelOptions);
 			$items[]=strtr($template,array('{input}'=>$option,'{label}'=>$label));
 		}
-		return self::tag('span',array('id'=>$baseID),implode($separator,$items));
+		if(empty($container))
+			return implode($separator,$items);
+		else
+			return self::tag($container,array('id'=>$baseID),implode($separator,$items));
 	}
 
 	/**
@@ -1026,28 +1038,28 @@ EOD;
 	{
 		Yii::app()->getClientScript()->registerCoreScript('jquery');
 		if(!isset($options['url']))
-			$options['url']='js:location.href';
+			$options['url']=new CJavaScriptExpression('location.href');
 		else
 			$options['url']=self::normalizeUrl($options['url']);
 		if(!isset($options['cache']))
 			$options['cache']=false;
 		if(!isset($options['data']) && isset($options['type']))
-			$options['data']='js:jQuery(this).parents("form").serialize()';
+			$options['data']=new CJavaScriptExpression('jQuery(this).parents("form").serialize()');
 		foreach(array('beforeSend','complete','error','success') as $name)
 		{
-			if(isset($options[$name]) && strpos($options[$name],'js:')!==0)
-				$options[$name]='js:'.$options[$name];
+			if(isset($options[$name]) && !($options[$name] instanceof CJavaScriptExpression))
+				$options[$name]=new CJavaScriptExpression($options[$name]);
 		}
 		if(isset($options['update']))
 		{
 			if(!isset($options['success']))
-				$options['success']='js:function(html){jQuery("'.$options['update'].'").html(html)}';
+				$options['success']=new CJavaScriptExpression('function(html){jQuery("'.$options['update'].'").html(html)}');
 			unset($options['update']);
 		}
 		if(isset($options['replace']))
 		{
 			if(!isset($options['success']))
-				$options['success']='js:function(html){jQuery("'.$options['replace'].'").replaceWith(html)}';
+				$options['success']=new CJavaScriptExpression('function(html){jQuery("'.$options['replace'].'").replaceWith(html)}');
 			unset($options['replace']);
 		}
 		return 'jQuery.ajax('.CJavaScript::encode($options).');';
@@ -1204,6 +1216,107 @@ EOD;
 		self::clientChange('change',$htmlOptions);
 		return self::activeInputField('text',$model,$attribute,$htmlOptions);
 	}
+
+	/**
+	 * Generates a url field input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see activeInputField
+	 * @since 1.1.11
+	 */
+	public static function activeUrlField($model,$attribute,$htmlOptions=array())
+	{
+		self::resolveNameID($model,$attribute,$htmlOptions);
+		self::clientChange('change',$htmlOptions);
+		return self::activeInputField('url',$model,$attribute,$htmlOptions);
+	}
+
+	/**
+	 * Generates an email field input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see activeInputField
+	 * @since 1.1.11
+	 */
+	public static function activeEmailField($model,$attribute,$htmlOptions=array())
+	{
+		self::resolveNameID($model,$attribute,$htmlOptions);
+		self::clientChange('change',$htmlOptions);
+		return self::activeInputField('email',$model,$attribute,$htmlOptions);
+	}
+
+	/**
+	 * Generates a number field input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see activeInputField
+	 * @since 1.1.11
+	 */
+	public static function activeNumberField($model,$attribute,$htmlOptions=array())
+	{
+		self::resolveNameID($model,$attribute,$htmlOptions);
+		self::clientChange('change',$htmlOptions);
+		return self::activeInputField('number',$model,$attribute,$htmlOptions);
+	}
+
+	/**
+	 * Generates a range field input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see activeInputField
+	 * @since 1.1.11
+	 */
+	public static function activeRangeField($model,$attribute,$htmlOptions=array())
+	{
+		self::resolveNameID($model,$attribute,$htmlOptions);
+		self::clientChange('change',$htmlOptions);
+		return self::activeInputField('range',$model,$attribute,$htmlOptions);
+	}
+
+	/**
+	 * Generates a date field input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see activeInputField
+	 * @since 1.1.11
+	 */
+	public static function activeDateField($model,$attribute,$htmlOptions=array())
+	{
+		self::resolveNameID($model,$attribute,$htmlOptions);
+		self::clientChange('change',$htmlOptions);
+		return self::activeInputField('date',$model,$attribute,$htmlOptions);
+	}
+
 
 	/**
 	 * Generates a hidden input for a model attribute.
@@ -1709,7 +1822,7 @@ EOD;
 	 */
 	public static function getIdByName($name)
 	{
-		return str_replace(array('[]', '][', '[', ']'), array('', '_', '_', ''), $name);
+		return str_replace(array('[]', '][', '[', ']', ' '), array('', '_', '_', '', '_'), $name);
 	}
 
 	/**
@@ -1886,7 +1999,8 @@ EOD;
 	 * javascript would not cause the default behavior of the event.</li>
 	 * <li>confirm: string, specifies the message that should show in a pop-up confirmation dialog.</li>
 	 * <li>ajax: array, specifies the AJAX options (see {@link ajax}).</li>
-	 * <li>live: boolean, whether the event handler should be attached with live/delegate or direct style. If not set, {@link liveEvents} will be used. This option has been available since version 1.1.6.</li>
+	 * <li>live: boolean, whether the event handler should be delegated or directly bound.
+	 * If not set, {@link liveEvents} will be used. This option has been available since version 1.1.11.</li>
 	 * </ul>
 	 * This parameter has been available since version 1.1.1.
 	 */
@@ -2022,10 +2136,10 @@ EOD;
 	{
 		if(($pos=strpos($attribute,'['))!==false)
 		{
-			if($pos===0)  // [a]name[b][c], should ignore [a]
+			if($pos===0) // [a]name[b][c], should ignore [a]
 			{
-				if(preg_match('/\](\w+)/',$attribute,$matches))
-					$attribute=$matches[1];
+				if(preg_match('/\](\w+(\[.+)?)/',$attribute,$matches))
+					$attribute=$matches[1]; // we get: name[b][c]
 				if(($pos=strpos($attribute,'['))===false)
 					return $model->$attribute;
 			}
@@ -2033,7 +2147,7 @@ EOD;
 			$value=$model->$name;
 			foreach(explode('][',rtrim(substr($attribute,$pos+1),']')) as $id)
 			{
-				if(is_array($value) && isset($value[$id]))
+				if((is_array($value) || $value instanceof ArrayAccess) && isset($value[$id]))
 					$value=$value[$id];
 				else
 					return null;
@@ -2091,32 +2205,17 @@ EOD;
 		else
 			$raw=false;
 
-		if($raw)
+		foreach($htmlOptions as $name=>$value)
 		{
-			foreach($htmlOptions as $name=>$value)
+			if(isset($specialAttributes[$name]))
 			{
-				if(isset($specialAttributes[$name]))
-				{
-					if($value)
-						$html .= ' ' . $name . '="' . $name . '"';
-				}
-				else if($value!==null)
-					$html .= ' ' . $name . '="' . $value . '"';
+				if($value)
+					$html .= ' ' . $name . '="' . $name . '"';
 			}
+			else if($value!==null)
+				$html .= ' ' . $name . '="' . ($raw ? $value : self::encode($value)) . '"';
 		}
-		else
-		{
-			foreach($htmlOptions as $name=>$value)
-			{
-				if(isset($specialAttributes[$name]))
-				{
-					if($value)
-						$html .= ' ' . $name . '="' . $name . '"';
-				}
-				else if($value!==null)
-					$html .= ' ' . $name . '="' . self::encode($value) . '"';
-			}
-		}
+
 		return $html;
 	}
 }

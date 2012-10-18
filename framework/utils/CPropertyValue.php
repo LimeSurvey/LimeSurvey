@@ -37,7 +37,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPropertyValue.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id$
  * @package system.utils
  * @since 1.0
  */

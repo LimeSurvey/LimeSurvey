@@ -25,7 +25,7 @@
  * to {@link CFormElement} objects.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFormElementCollection.php 3054 2011-03-12 21:30:21Z qiang.xue $
+ * @version $Id$
  * @package system.web.form
  * @since 1.1
  */

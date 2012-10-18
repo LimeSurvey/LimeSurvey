@@ -12,7 +12,7 @@
  * CGettextFile is the base class for representing a Gettext message file.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGettextFile.php 2798 2011-01-01 19:29:03Z qiang.xue $
+ * @version $Id$
  * @package system.i18n.gettext
  * @since 1.0
  */

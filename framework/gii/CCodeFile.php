@@ -15,7 +15,7 @@
  * @property string $type The code file extension (e.g. php, txt).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCodeFile.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id$
  * @package system.gii
  * @since 1.1.2
  */

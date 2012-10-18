@@ -54,7 +54,7 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CNumberFormatter.php 2798 2011-01-01 19:29:03Z qiang.xue $
+ * @version $Id$
  * @package system.i18n
  * @since 1.0
  */

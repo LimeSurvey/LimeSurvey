@@ -43,7 +43,7 @@
  * CSort::SORT_DESC for descending order.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CSort.php 3554 2012-02-08 16:31:30Z alexander.makarow $
+ * @version $Id$
  * @package system.web
  */
 class CSort extends CComponent
@@ -168,6 +168,8 @@ class CSort extends CComponent
 	 *     'price'=>CSort::SORT_DESC,
 	 * )
 	 * </pre>
+	 * `SORT_DESC` and `SORT_ASC` are available since 1.1.10. In earlier Yii versions you should use
+	 * `true` and `false` respectively.
 	 *
 	 * Please note when using array to specify the default order, the corresponding attributes
 	 * will be put into {@link directions} and thus affect how the sort links are rendered
@@ -213,7 +215,7 @@ class CSort extends CComponent
 	 */
 	public function applyOrder($criteria)
 	{
-		$order=$this->getOrderBy();
+		$order=$this->getOrderBy($criteria);
 		if(!empty($order))
 		{
 			if(!empty($criteria->order))
@@ -223,11 +225,12 @@ class CSort extends CComponent
 	}
 
 	/**
+	 * @param CDbCriteria $criteria the query criteria
 	 * @return string the order-by columns represented by this sort object.
 	 * This can be put in the ORDER BY clause of a SQL statement.
 	 * @since 1.1.0
 	 */
-	public function getOrderBy()
+	public function getOrderBy($criteria=null)
 	{
 		$directions=$this->getDirections();
 		if(empty($directions))
@@ -255,7 +258,7 @@ class CSort extends CComponent
 						if(($pos=strpos($attribute,'.'))!==false)
 							$attribute=$schema->quoteTableName(substr($attribute,0,$pos)).'.'.$schema->quoteColumnName(substr($attribute,$pos+1));
 						else
-							$attribute=CActiveRecord::model($this->modelClass)->getTableAlias(true).'.'.$schema->quoteColumnName($attribute);
+							$attribute=($criteria===null || $criteria->alias===null ? CActiveRecord::model($this->modelClass)->getTableAlias(true) : $criteria->alias).'.'.$schema->quoteColumnName($attribute);
 					}
 					$orders[]=$descending?$attribute.' DESC':$attribute;
 				}

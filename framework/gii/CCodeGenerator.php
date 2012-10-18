@@ -22,7 +22,7 @@
  * @property string $viewPath The view path of the generator.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCodeGenerator.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id$
  * @package system.gii
  * @since 1.1.2
  */
@@ -76,6 +76,7 @@ class CCodeGenerator extends CController
 	/**
 	 * The code preview action.
 	 * This action shows up the specified generated code.
+	 * @throws CHttpException if unable to find code generated.
 	 */
 	public function actionCode()
 	{
@@ -93,6 +94,7 @@ class CCodeGenerator extends CController
 	/**
 	 * The code diff action.
 	 * This action shows up the difference between the newly generated code and the corresponding existing code.
+	 * @throws CHttpException if unable to find code generated.
 	 */
 	public function actionDiff()
 	{

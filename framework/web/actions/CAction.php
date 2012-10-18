@@ -23,7 +23,7 @@
  * @property string $id Id of this action.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAction.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id$
  * @package system.web.actions
  * @since 1.0
  */

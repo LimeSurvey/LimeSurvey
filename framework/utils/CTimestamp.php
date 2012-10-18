@@ -27,7 +27,7 @@
  * to the PHP manual for more information.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CTimestamp.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.utils
  * @since 1.0
  */

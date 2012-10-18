@@ -26,7 +26,7 @@
  * This is in the format of 'path.to.view'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CViewAction.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id$
  * @package system.web.actions
  * @since 1.0
  */

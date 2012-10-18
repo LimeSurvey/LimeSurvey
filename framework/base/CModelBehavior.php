@@ -15,7 +15,7 @@
  * @property CModel $owner The owner model that this behavior is attached to.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModelBehavior.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.base
  */
 class CModelBehavior extends CBehavior
