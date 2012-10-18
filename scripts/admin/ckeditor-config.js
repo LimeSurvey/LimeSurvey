@@ -9,7 +9,7 @@ CKEDITOR.editorConfig = function( config )
     config.filebrowserImageUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=images';
     config.filebrowserFlashUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=flash';
 
-    config.skin = 'office2003';
+    config.skin = 'ls-office2003';
     config.toolbarCanCollapse = false;
     config.resize_enabled = false;
     config.autoParagraph = false;
