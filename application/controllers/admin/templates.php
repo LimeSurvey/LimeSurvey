@@ -61,6 +61,21 @@ class templates extends Survey_Common_Action
         }
     }
 
+   /**
+   * Retrieves a temporary template file from disk
+   * 
+   * @param mixed $id ID of the template file
+   */
+    public function tmp($id)
+    {
+      $iTime= preg_replace("/[^0-9]$/", '', $id);
+      $sFile = Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR."template_temp_{$iTime}.html";
+      
+      if(!is_file($sFile) || !file_exists($sFile)) die(); 
+      readfile($sFile);
+        
+    }
+    
     /**
     * Responsible to import a template archive.
     *
