@@ -188,6 +188,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."survey_runtime.js'></script>\n";
         $_templatejs.= "<script type='text/javascript' src='{$templateurl}template.js'></script>\n";
         $_templatejs.= useFirebug();
+
+	/*
+        * Added support for the Yii CClientScript object to insert its registered scripts.
+        * @todo Completely move to using CClientScript instead of our own solution for including javascript files.
+	*/
+        Yii::app()->clientScript->render($_templatejs);
+
     }
 
     // surveyformat
