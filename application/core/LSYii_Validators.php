@@ -19,6 +19,11 @@ class LSYii_Validators extends CValidator {
     * @var boolean
     */
     public $xssfilter=true;
+    /**
+    * Filter attribute for url
+    * @var boolean
+    */
+    public $isUrl=false;
 
     public function __construct()
     {
@@ -30,6 +35,10 @@ class LSYii_Validators extends CValidator {
         if($this->xssfilter)
         {
             $object->$attribute=$this->xssFilter($object->$attribute);
+        }
+        if($this->isUrl)
+        {
+            if ($object->$attribute== 'http://' || $object->$attribute=='https://') {$object->$attribute="";}
         }
     }
     
