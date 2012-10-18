@@ -1603,8 +1603,9 @@ function buildsurveysession($surveyid,$previewGroup=false)
     }
     $totalquestions = count($unique);
     $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - count($display);
-
-    $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
+     
+    // Fixed undefined variable by commenting this since $totalquestions is already set above.
+    //$totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
     // Fix totalquestions by substracting Test Display questions
     $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
