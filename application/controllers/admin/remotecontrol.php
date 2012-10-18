@@ -1473,6 +1473,10 @@ class remotecontrol_handle
 
 				$aBasicDestinationFields=Questions::model()->tableSchema->columnNames;
 				array_push($aBasicDestinationFields,'available_answers')	;
+				array_push($aBasicDestinationFields,'subquestions')	;
+				array_push($aBasicDestinationFields,'attributes')	;
+				array_push($aBasicDestinationFields,'attributes_lang')	;
+				array_push($aBasicDestinationFields,'answeroptions')	;
 				$aQuestionSettings=array_intersect($aQuestionSettings,$aBasicDestinationFields);
 
 				if (empty($aQuestionSettings))	
@@ -1481,18 +1485,73 @@ class remotecontrol_handle
                 $aResult=array();
                 foreach ($aQuestionSettings as $sPropertyName )
                 {
-					if ($sPropertyName == 'available_answers')
+					if ($sPropertyName == 'available_answers' || $sPropertyName == 'subquestions')
 					{
 						$oSubQuestions =  Questions::model()->findAllByAttributes(array('parent_qid' => $iQuestionID,'language'=>$sLanguage ),array('order'=>'title') );
 						if (count($oSubQuestions)>0)
 						{
+	    					$aData = array();
 							foreach($oSubQuestions as $oSubQuestion)
-								$aData[$oSubQuestion['title']]= $oSubQuestion['question'];
+							{
+								if($sPropertyName == 'available_answers')
+									$aData[$oSubQuestion['title']]= $oSubQuestion['question'];
+								else
+								{
+									$aData[$oSubQuestion['qid']]['title']= $oSubQuestion['title'];
+									$aData[$oSubQuestion['qid']]['question']= $oSubQuestion['question'];
+									$aData[$oSubQuestion['qid']]['scale_id']= $oSubQuestion['scale_id'];
+								}
+									
+							}
 							
-							$aResult['available_answers']=$aData;
+							$aResult[$sPropertyName]=$aData;
 						}
 						else
-							$aResult['available_answers']='No available answers';
+							$aResult[$sPropertyName]='No available answers';
+					} 	
+					else if ($sPropertyName == 'attributes')
+					{
+						$oAttributes =  Question_attributes::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> null ),array('order'=>'attribute') );
+						if (count($oAttributes)>0)
+						{
+							$aData = array();
+							foreach($oAttributes as $oAttribute)
+								$aData[$oAttribute['attribute']]= $oAttribute['value'];
+							
+							$aResult['attributes']=$aData;
+						}
+						else
+							$aResult['attributes']='No available attributes';
+					}
+					else if ($sPropertyName == 'attributes_lang')
+					{
+						$oAttributes =  Question_attributes::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage ),array('order'=>'attribute') );
+						if (count($oAttributes)>0)
+						{
+							$aData = array();
+							foreach($oAttributes as $oAttribute)
+								$aData[$oAttribute['attribute']]= $oAttribute['value'];
+							
+							$aResult['attributes_lang']=$aData;
+						}
+						else
+							$aResult['attributes_lang']='No available attributes';
+					}
+					else if ($sPropertyName == 'answeroptions')
+					{
+						$oAttributes = Answers::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage ),array('order'=>'sortorder') );
+						if (count($oAttributes)>0)
+						{
+							$aData = array();
+							foreach($oAttributes as $oAttribute) {
+								$aData[$oAttribute['code']]['answer']=$oAttribute['answer'];
+								$aData[$oAttribute['code']]['assessment_value']=$oAttribute['assessment_value'];
+								$aData[$oAttribute['code']]['scale_id']=$oAttribute['scale_id'];
+							}
+							$aResult['answeroptions']=$aData;
+						}
+						else
+							$aResult['answeroptions']='No available answer options';
 					}
 					else
 					{	
