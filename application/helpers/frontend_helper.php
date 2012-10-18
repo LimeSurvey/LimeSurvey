@@ -2245,7 +2245,7 @@ function checkQuota($checkaction,$surveyid)
 
     $clang = Yii::app()->lang;
 
-    if(count($quota_info) > 0) // Quota's have to exist
+    if(is_array($quota_info) && count($quota_info) > 0) // Quota's have to exist
     {
     // Check each quota on saved data to see if it is full
     $querycond = array();
