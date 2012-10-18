@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  *
- * @version $Id: yii.php 3525 2012-01-01 03:05:53Z qiang.xue $
+ * @version $Id$
  */
 return array (
   'Powered by {yii}.' => 'Powered by {yii}.',
@@ -28,7 +28,7 @@ return array (
   'Active record "{class}" has an invalid configuration for relation "{relation}". It must specify the relation type, the related active record class and the foreign key.' => 'ActiveRecord-Klasse "{class}" hat eine ungültige Konfiguration für die Relation "{relation}". Relations-Typ, verknüpftes ActiveRecord und Fremdschlüssel müssen angegeben werden.',
   'Active record "{class}" is trying to select an invalid column "{column}". Note, the column must exist in the table or be an expression with alias.' => 'ActiveRecord "{class}" benutzt das ungültige Feld "{column}" in SELECT. Beachten Sie, dass dieses Feld in der Tabelle existieren oder ein Alias-Ausdruck sein muss.',
   'Adding a foreign key constraint to an existing table is not supported by SQLite.' => 'SQLite unterstützt das Hinzufügen eines Fremdschüssel zu einer bestehenden Tabelle nicht.',
-  'Alias "{alias}" is invalid. Make sure it points to an existing PHP file.' => 'Alias "{alias}" ist ungültig. Stellen Sie sicher, dass er auf eine existierende PHP-Datei verweist.',
+  'Alias "{alias}" is invalid. Make sure it points to an existing PHP file and the file is readable.' => 'Alias "{alias}" ist ungültig. Stellen Sie sicher, dass er auf eine existierende PHP-Datei verweist und die Datei lesbar ist.',
   'Alias "{alias}" is invalid. Make sure it points to an existing directory or file.' => 'Der Alias "{alias}" ist ungültig. Stellen Sie sicher, dass er auf ein existierendes Verzeichnis oder eine existierende Datei verweist.',
   'Alias "{alias}" is invalid. Make sure it points to an existing directory.' => 'Alias "{alias}" ist ungültig. Stellen Sie sicher, dass er auf ein existierendes Verzeichnis verweist.',
   'Altering a DB column is not supported by SQLite.' => 'SQLite unterstützt das Verändern einer DB-Spalte nicht.',
