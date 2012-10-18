@@ -59,7 +59,7 @@
         {
             //A match has been found. Let's load the values!
             //If this is from an email, build surveysession first
-            $_SESSION['LEMtokenResume']=true;
+            $_SESSION['survey_'.$surveyid]['LEMtokenResume']=true;
 
             foreach ($aRow as $column => $value)
             {

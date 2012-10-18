@@ -161,7 +161,6 @@ class SurveyRuntimeHelper {
                 LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
                 unset($_SESSION[$LEMsessid]['LEMtokenResume']);
-                unset($_SESSION[$LEMsessid]['LEMreload']);
             }
             else if (!$LEMskipReprocessing)
                 {
@@ -177,16 +176,7 @@ class SurveyRuntimeHelper {
                 }
                 if (isset($move) && $move == "movenext")
                 {
-                    if (isset($_SESSION[$LEMsessid]['LEMreload']))
-                    {
-                        LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false, $LEMdebugLevel);
-                        $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);   // if late in the survey, will re-validate contents, which may be overkill
-                        unset($_SESSION[$LEMsessid]['LEMreload']);
-                    }
-                    else
-                    {
-                        $moveResult = LimeExpressionManager::NavigateForwards();
-                    }
+                    $moveResult = LimeExpressionManager::NavigateForwards();
                 }
                 if (isset($move) && ($move == 'movesubmit'))
                 {
