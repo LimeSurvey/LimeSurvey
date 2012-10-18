@@ -23,7 +23,7 @@
  * To specify the filter method, set {@link filter} property to be the function name.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFilterValidator.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id$
  * @package system.validators
  * @since 1.0
  */

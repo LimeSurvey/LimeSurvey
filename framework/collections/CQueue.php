@@ -26,7 +26,7 @@
  * @property integer $count The number of items in the queue.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CQueue.php 3427 2011-10-25 00:03:52Z alexander.makarow $
+ * @version $Id$
  * @package system.collections
  * @since 1.0
  */
@@ -138,7 +138,7 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 	public function enqueue($item)
 	{
 		++$this->_c;
-		array_push($this->_d,$item);
+		$this->_d[]=$item;
 	}
 
 	/**

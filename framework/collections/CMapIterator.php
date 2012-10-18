@@ -14,7 +14,7 @@
  * It allows CMap to return a new iterator for traversing the items in the map.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMapIterator.php 3186 2011-04-15 22:34:55Z alexander.makarow $
+ * @version $Id$
  * @package system.collections
  * @since 1.0
  */

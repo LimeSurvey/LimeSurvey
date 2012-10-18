@@ -12,7 +12,7 @@
  * CFileHelper provides a set of helper methods for common file system operations.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileHelper.php 3289 2011-06-18 21:20:13Z qiang.xue $
+ * @version $Id$
  * @package system.utils
  * @since 1.0
  */
@@ -216,7 +216,7 @@ class CFileHelper
 	 * This will be passed as the second parameter to {@link http://php.net/manual/en/function.finfo-open.php finfo_open}.
 	 * This parameter has been available since version 1.1.3.
 	 * @param boolean $checkExtension whether to check the file extension in case the MIME type cannot be determined
-	 * based on finfo and mim_content_type. Defaults to true. This parameter has been available since version 1.1.4.
+	 * based on finfo and mime_content_type. Defaults to true. This parameter has been available since version 1.1.4.
 	 * @return string the MIME type. Null is returned if the MIME type cannot be determined.
 	 */
 	public static function getMimeType($file,$magicFile=null,$checkExtension=true)

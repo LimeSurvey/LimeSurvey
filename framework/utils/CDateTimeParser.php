@@ -21,6 +21,7 @@
  * dd      | Day of month 01 to 31, zero leading
  * M       | Month digit 1 to 12, no padding
  * MM      | Month digit 01 to 12, zero leading
+ * MMM     | Short textual representation of month, three letters (since version 1.1.11)
  * yy      | 2 year digit, e.g., 96, 05
  * yyyy    | 4 year digit, e.g., 2005
  * h       | Hour in 0 to 23, no padding
@@ -32,6 +33,7 @@
  * s       | Seconds in 0 to 59, no padding
  * ss      | Seconds in 00 to 59, zero leading
  * a       | AM or PM, case-insensitive (since version 1.1.5)
+ * ?       | matches any character (wildcard) (since version 1.1.11)
  * ----------------------------------------------------
  * </pre>
  * All other characters must appear in the date string at the corresponding positions.
@@ -45,7 +47,7 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDateTimeParser.php 2928 2011-02-01 17:41:51Z alexander.makarow $
+ * @version $Id$
  * @package system.utils
  * @since 1.0
  */
@@ -84,6 +86,13 @@ class CDateTimeParser
 					if(($year=self::parseInteger($value,$i,1,2))===false)
 						return false;
 					$i+=strlen($year);
+					break;
+				}
+				case 'MMM':
+				{
+					if(($month=self::parseShortMonth($value,$i))===false)
+						return false;
+					$i+=3;
 					break;
 				}
 				case 'MM':
@@ -175,7 +184,7 @@ class CDateTimeParser
 				default:
 				{
 					$tn=strlen($token);
-					if($i>=$n || substr($value,$i,$tn)!==$token)
+					if($i>=$n || ($token{0}!='?' && substr($value,$i,$tn)!==$token))
 						return false;
 					$i+=$tn;
 					break;
@@ -248,7 +257,7 @@ class CDateTimeParser
 		return $tokens;
 	}
 
-	/*
+	/**
 	 * @param string $value the date string to be parsed
 	 * @param integer $offset starting offset
 	 * @param integer $minLength minimum length
@@ -265,7 +274,7 @@ class CDateTimeParser
 		return false;
 	}
 
-	/*
+	/**
 	 * @param string $value the date string to be parsed
 	 * @param integer $offset starting offset
 	 */
@@ -273,5 +282,17 @@ class CDateTimeParser
 	{
 		$v=strtolower(substr($value,$offset,2));
 		return $v==='am' || $v==='pm' ? $v : false;
+	}
+
+	/**
+	 * @param string $value the date string to be parsed
+	 * @param integer $offset starting offset
+	 * @since 1.1.11
+	 */
+	protected static function parseShortMonth($value, $offset)
+	{
+		static $titles=array('jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec');
+		$v=array_search(strtolower(substr($value,$offset,3)), $titles);
+		return $v===false ? false : $v+1;
 	}
 }

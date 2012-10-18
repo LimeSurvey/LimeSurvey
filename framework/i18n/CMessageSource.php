@@ -21,7 +21,7 @@
  * Defaults to {@link CApplication::language application language}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMessageSource.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.i18n
  * @since 1.0
  */
@@ -132,7 +132,7 @@ abstract class CMessageSource extends CApplicationComponent
  * CMissingTranslationEvent represents the parameter for the {@link CMessageSource::onMissingTranslation onMissingTranslation} event.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMessageSource.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.i18n
  * @since 1.0
  */

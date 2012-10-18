@@ -25,7 +25,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CNumberValidator.php 3491 2011-12-17 05:17:57Z jefftulsa $
+ * @version $Id$
  * @package system.validators
  * @since 1.0
  */

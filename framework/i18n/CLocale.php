@@ -31,7 +31,7 @@
  * @property array $pluralRules Plural forms expressions.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLocale.php 3518 2011-12-28 23:31:29Z alexander.makarow $
+ * @version $Id$
  * @package system.i18n
  * @since 1.0
  */

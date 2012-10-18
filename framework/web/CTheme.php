@@ -19,7 +19,7 @@
  * @property string $skinPath The path for widget skins. Defaults to 'ThemeRoot/views/skins'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTheme.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id$
  * @package system.web
  * @since 1.0
  */

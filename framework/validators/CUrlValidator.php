@@ -12,7 +12,7 @@
  * CUrlValidator validates that the attribute value is a valid http or https URL.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUrlValidator.php 3242 2011-05-28 14:31:04Z qiang.xue $
+ * @version $Id$
  * @package system.validators
  * @since 1.0
  */

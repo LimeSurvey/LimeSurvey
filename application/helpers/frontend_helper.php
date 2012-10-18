@@ -1603,8 +1603,9 @@ function buildsurveysession($surveyid,$previewGroup=false)
     }
     $totalquestions = count($unique);
     $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - count($display);
-
-    $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
+     
+    // Fixed undefined variable by commenting this since $totalquestions is already set above.
+    //$totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
     // Fix totalquestions by substracting Test Display questions
     $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
@@ -2245,7 +2246,7 @@ function checkQuota($checkaction,$surveyid)
 
     $clang = Yii::app()->lang;
 
-    if(count($quota_info) > 0) // Quota's have to exist
+    if(is_array($quota_info) && count($quota_info) > 0) // Quota's have to exist
     {
     // Check each quota on saved data to see if it is full
     $querycond = array();

@@ -55,7 +55,7 @@
  * @author	 Michal Migurski <mike-json@teczno.com>
  * @author	 Matt Knapp <mdknapp[at]gmail[dot]com>
  * @author	 Brett Stimmerman <brettstimmerman[at]gmail[dot]com>
- * @version $Id: CJSON.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id$
  * @package	system.web.helpers
  * @since 1.0
  */
@@ -324,7 +324,13 @@ class CJSON
 	public static function decode($str, $useArray=true)
 	{
 		if(function_exists('json_decode'))
-			return json_decode($str,$useArray);
+			$json = json_decode($str,$useArray);
+
+		// based on investigation, native fails sometimes returning null.
+		// see: http://gggeek.altervista.org/sw/article_20070425.html
+		// As of PHP 5.3.6 it still fails on some valid JSON strings
+		if(!is_null($json))
+			return $json;
 
 		$str = self::reduceString($str);
 
@@ -464,9 +470,7 @@ class CJSON
 						}
 					}
 
-					array_push($stk, array('what'  => self::JSON_SLICE,
-										   'where' => 0,
-										   'delim' => false));
+					$stk[] = array('what' => self::JSON_SLICE, 'where' => 0, 'delim' => false);
 
 					$chrs = substr($str, 1, -1);
 					$chrs = self::reduceString($chrs);
@@ -494,12 +498,12 @@ class CJSON
 							// found a comma that is not inside a string, array, etc.,
 							// OR we've reached the end of the character list
 							$slice = substr($chrs, $top['where'], ($c - $top['where']));
-							array_push($stk, array('what' => self::JSON_SLICE, 'where' => ($c + 1), 'delim' => false));
+							$stk[] = array('what' => self::JSON_SLICE, 'where' => ($c + 1), 'delim' => false);
 							//print("Found split at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
 
 							if (reset($stk) == self::JSON_IN_ARR) {
 								// we are in an array, so just push an element onto the stack
-								array_push($arr, self::decode($slice,$useArray));
+								$arr[] = self::decode($slice,$useArray);
 
 							} elseif (reset($stk) == self::JSON_IN_OBJ) {
 								// we are in an object, so figure
@@ -532,7 +536,7 @@ class CJSON
 
 						} elseif ((($chrs{$c} == '"') || ($chrs{$c} == "'")) && ($top['what'] != self::JSON_IN_STR)) {
 							// found a quote, and we are not inside a string
-							array_push($stk, array('what' => self::JSON_IN_STR, 'where' => $c, 'delim' => $chrs{$c}));
+							$stk[] = array('what' => self::JSON_IN_STR, 'where' => $c, 'delim' => $chrs{$c});
 							//print("Found start of string at {$c}\n");
 
 						} elseif (($chrs{$c} == $top['delim']) &&
@@ -546,7 +550,7 @@ class CJSON
 						} elseif (($chrs{$c} == '[') &&
 								 in_array($top['what'], array(self::JSON_SLICE, self::JSON_IN_ARR, self::JSON_IN_OBJ))) {
 							// found a left-bracket, and we are in an array, object, or slice
-							array_push($stk, array('what' => self::JSON_IN_ARR, 'where' => $c, 'delim' => false));
+							$stk[] = array('what' => self::JSON_IN_ARR, 'where' => $c, 'delim' => false);
 							//print("Found start of array at {$c}\n");
 
 						} elseif (($chrs{$c} == ']') && ($top['what'] == self::JSON_IN_ARR)) {
@@ -557,7 +561,7 @@ class CJSON
 						} elseif (($chrs{$c} == '{') &&
 								 in_array($top['what'], array(self::JSON_SLICE, self::JSON_IN_ARR, self::JSON_IN_OBJ))) {
 							// found a left-brace, and we are in an array, object, or slice
-							array_push($stk, array('what' => self::JSON_IN_OBJ, 'where' => $c, 'delim' => false));
+							$stk[] = array('what' => self::JSON_IN_OBJ, 'where' => $c, 'delim' => false);
 							//print("Found start of object at {$c}\n");
 
 						} elseif (($chrs{$c} == '}') && ($top['what'] == self::JSON_IN_OBJ)) {
@@ -568,7 +572,7 @@ class CJSON
 						} elseif (($substr_chrs_c_2 == '/*') &&
 								 in_array($top['what'], array(self::JSON_SLICE, self::JSON_IN_ARR, self::JSON_IN_OBJ))) {
 							// found a comment start, and we are in an array, object, or slice
-							array_push($stk, array('what' => self::JSON_IN_CMT, 'where' => $c, 'delim' => false));
+							$stk[] = array('what' => self::JSON_IN_CMT, 'where' => $c, 'delim' => false);
 							$c++;
 							//print("Found start of comment at {$c}\n");
 

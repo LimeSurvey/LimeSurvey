@@ -15,7 +15,7 @@
  * CFilterChain executes the filter list by {@link run()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFilterChain.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id$
  * @package system.web.filters
  * @since 1.0
  */

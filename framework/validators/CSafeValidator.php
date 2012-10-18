@@ -12,7 +12,7 @@
  * CSafeValidator marks the associated attributes to be safe for massive assignments.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CSafeValidator.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id$
  * @package system.validators
  * @since 1.1
  */

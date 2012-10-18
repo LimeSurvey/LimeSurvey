@@ -14,7 +14,7 @@
  * It allows CList to return a new iterator for traversing the items in the list.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CListIterator.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id$
  * @package system.collections
  * @since 1.0
  */

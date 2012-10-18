@@ -32,7 +32,7 @@
  * is returned if {@link name} does not have an extension name.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUploadedFile.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.web
  * @since 1.0
  */

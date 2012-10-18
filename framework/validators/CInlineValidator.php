@@ -12,7 +12,7 @@
  * CInlineValidator represents a validator which is defined as a method in the object being validated.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CInlineValidator.php 3517 2011-12-28 23:22:21Z mdomba $
+ * @version $Id$
  * @package system.validators
  * @since 1.0
  */

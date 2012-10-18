@@ -20,7 +20,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CRequiredValidator.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.validators
  * @since 1.0
  */

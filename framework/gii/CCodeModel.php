@@ -31,7 +31,7 @@
  * @property string $stickyFile The file path that stores the sticky attribute values.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCodeModel.php 3547 2012-01-24 10:07:28Z mdomba $
+ * @version $Id$
  * @package system.gii
  * @since 1.1.2
  */
