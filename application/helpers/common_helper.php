@@ -4235,7 +4235,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Other'),
     'sortorder'=>130,
     "inputtype"=>"text",
-    'default'=>1,
+    'default'=>'1',
     "help"=>$clang->gT("Maximum number of files that the participant can upload for this question"),
     "caption"=>$clang->gT("Max number of files"));
 
@@ -4244,7 +4244,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Other'),
     'sortorder'=>132,
     "inputtype"=>"text",
-    'default'=>0,
+    'default'=>'0',
     "help"=>$clang->gT("Minimum number of files that the participant must upload for this question"),
     "caption"=>$clang->gT("Min number of files"));
 
