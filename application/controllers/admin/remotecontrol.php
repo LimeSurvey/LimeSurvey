@@ -2130,10 +2130,10 @@ class remotecontrol_handle
 
             Survey_dynamic::sid($iSurveyID);
             $survey_dynamic = new Survey_dynamic;
-            $result = $survey_dynamic->insert($aResponseData);
+            $result_id = $survey_dynamic->insertRecords($aResponseData);
 
-            if ($result)
-                return $survey_dynamic->primaryKey;
+            if ($result_id)
+                return $result_id;
             else
                 return array('status' => 'Unable to add response');
         }
