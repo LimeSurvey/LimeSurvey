@@ -286,9 +286,7 @@ class export extends Survey_Common_Action {
     {
         global $length_vallabel;
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
-        $subaction = Yii::app()->request->getParam('subaction');
-
-        $clang = $this->getController()->lang;
+        $clang = $this->getController()->lang; 
         //for scale 1=nominal, 2=ordinal, 3=scale
 
         //		$typeMap = $this->_getTypeMap();
@@ -329,7 +327,7 @@ class export extends Survey_Common_Action {
 
         if ( isset($_POST['dldata']) ) $subaction = "dldata";
         if ( isset($_POST['dlstructure']) ) $subaction = "dlstructure";
-
+        
         if  ( ! isset($subaction) )
         {
             $selecthide = "";
@@ -356,15 +354,13 @@ class export extends Survey_Common_Action {
             $data['display']['menu_bars']['browse'] = $clang->gT('Export results');
 
             $this->_renderWrappedTemplate('export', 'spss_view', $data);
+            return;
         }
-        else
-        {
-            // Get Base language:
-
-            $language = Survey::model()->findByPk($iSurveyID)->language;
-            $clang = new limesurvey_lang($language);
-            Yii::app()->loadHelper("admin/exportresults");
-        }
+        
+        // Get Base language:
+        $language = Survey::model()->findByPk($iSurveyID)->language;
+        $clang = new limesurvey_lang($language);
+        Yii::app()->loadHelper("admin/exportresults");
 
         if ( $subaction == 'dldata' )
         {
