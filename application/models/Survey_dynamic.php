@@ -29,8 +29,10 @@ class Survey_dynamic extends LSActiveRecord
     public static function model($sid = NULL)
     {         
         $refresh = false;
+        $sid = (int) $sid;  // sanitize
+        
         if (!is_null($sid)) {
-            if (self::$sid <> $sid) { // did we change sid? then refresh
+            if (self::$sid !== $sid) { // did we change sid? then refresh
                 self::sid($sid);
                 $refresh = true;
             }
