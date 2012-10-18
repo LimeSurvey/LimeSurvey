@@ -13,6 +13,8 @@
 			title : lang.title,
 			minWidth : 300,
 			minHeight : 80,
+			height : 'auto',
+			resizable : CKEDITOR.DIALOG_RESIZE_NONE,
 			contents :
 			[
 				{
