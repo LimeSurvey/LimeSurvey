@@ -133,9 +133,10 @@ class Survey extends CActiveRecord
         array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true),                 
         array('bouncetime','numerical', 'integerOnly'=>true,'allowEmpty'=>true),                 
         array('navigationdelay','numerical', 'integerOnly'=>true,'allowEmpty'=>true),                     
-        array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
-        array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-		array('datecreated','date', 'format'=>'yyyy-MM-dd', 'allowEmpty'=>true),    
+      //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
+      //  array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
+	  //	array('datecreated','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),    
+      // Date rules currently don't work properly with MSSQL, deactivating for now
         array('template', 'tmplfilter'),
         );
     }
