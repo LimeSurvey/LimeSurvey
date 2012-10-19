@@ -57,6 +57,51 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121017) to 2.00+ (build 121019) Oct 19, 2012
+-New translation: Serbian (Latin script) (OnSpot)
+-Fixed issue #5490: Spss export should now handle different decimal separator (locale) better (mennodekker)
+-Fixed issue #6737: Browsing and export of timings no longer working (Menno Dekker)
+-Fixed issue #6738: Save button invisible in tabs other than import when creating a new survey (Menno Dekker)
+-Fixed issue #6739: small empty div visible when jquery datepicker enabled (Menno Dekker)
+-Fixed issue #6740: Excel export starts with an empty line (Menno Dekker)
+-Fixed issue #6650: LimeReplacementField dialog is ugly in 2.00 (tpartner)
+-Fixed issue #6690: Question type 'File upload' doesn't work appropriately when used on the same page with ranking question type (Carsten Schmitz)
+-Fixed issue #6701: Export survey in .txt (Thomas White)
+-Fixed issue #6702: Blank page after filling out survey and using tokens with an invalid participant ID (Carsten Schmitz)
+-Fixed issue #6703: No xssfilter in langage settings (Denis Chenu)
+-Fixed issue #6711: Template preview not working with strange umask PHP configurations (Carsten Schmitz)
+-Fixed issue #6715: Minimum number of files to upload cannot be an expression (Carsten Schmitz)
+-Fixed issue #6719: Language parameter is incorrect in survey url (Carsten Schmitz)
+-Fixed issue #6721: Can't delete user (Carsten Schmitz)
+-Fixed issue #6723: Survey does not deactivate properly on MSSQL (Carsten Schmitz)
+-Fixed issue #6724: Survey Resume Link Erases Saved Responses (Carsten Schmitz)
+-Fixed issue #6726: Incorrect text when sending reminders "Sending invitations..." instead of "Sending reminders..." (Carsten Schmitz)
+-Fixed issue #6727: Button continue does not send next batch of reminders but returns to Token Summary (Carsten Schmitz)
+-Fixed issue #6728: Opt-in URL is broken (Carsten Schmitz)
+-Fixed issue #6729: OptOut URL shows some error message (Carsten Schmitz)
+-Fixed issue #6732: Unable to import survey using assessments in MSSQL (Carsten Schmitz)
+-Fixed issue #6733: CDbException When User Attempts to View Statistics (Denis Chenu)
+-Fixed issue #6734: Bad URLs for admin notification email. (Carsten Schmitz)
+-Fixed issue #6735: remove a response line doesn't remove timings (Denis Chenu)
+-Fixed issue: Download files in zip in browse response broken (Denis Chenu)
+#Updated translation: Amharic by addis_1001
+#Updated translation: Croatian by rambo
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by kris, mdekker
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by DenisChenu, riqcles, titoun31
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by Basil
+#Updated translation: Italian by lfanfoni
+#Updated translation: Latvian by vipgroup
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by arthurassuncao
+#Updated translation: Russian by vipgroup
+#Updated translation: Serbian by OnSpot
+#Updated translation: Serbian (Latin script) by OnSpot
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.00+ (build 121016) to 2.00+ (build 121017) Oct 16, 2012
 -Fixed #6712: Layout of form "Add question group" is broken (mennodekker)
 -Fixed issue: Template editor not working (Carsten Schmitz)
