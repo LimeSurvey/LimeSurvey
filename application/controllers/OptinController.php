@@ -24,7 +24,7 @@
  */
 class OptinController extends LSYii_Controller {
 
-    function actionLocal($surveyid, $token, $langcode = '')
+    function actiontokens($surveyid, $token, $langcode = '')
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
@@ -59,13 +59,13 @@ class OptinController extends LSYii_Controller {
 
         $thissurvey=getSurveyInfo($iSurveyID,$baselang);
 
-        if ($thissurvey == false || Yii::app()->db->schema->getTable("{{tokens_{$iSurveyID}}}") == null)
+        if ($thissurvey == false || !tableExists("{{tokens_{$iSurveyID}}}"))
         {
             $html = $clang->gT('This survey does not seem to exist.');
         }
         else
         {
-            $row = Tokens_dynamic::getEmailStatus($iSurveyID, $sToken);
+            $row = Tokens_dynamic::model($iSurveyID)->getEmailStatus($iSurveyID, $sToken);
 
             if ($row == false)
             {
@@ -76,7 +76,7 @@ class OptinController extends LSYii_Controller {
                 $usresult = $row['emailstatus'];
                 if ($usresult=='OptOut')
                 {
-                    $usresult = Tokens_dynamic::updateEmailStatus($iSurveyID, $sToken, 'OK');
+                    $usresult = Tokens_dynamic::model($iSurveyID)->updateEmailStatus($iSurveyID, $sToken, 'OK');
                     $html = $clang->gT('You have been successfully added back to this survey.');
                 }
                 else if ($usresult=='OK')
