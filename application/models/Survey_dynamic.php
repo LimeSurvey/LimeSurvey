@@ -73,7 +73,7 @@ class Survey_dynamic extends LSActiveRecord
      */
     public function primaryKey()
     {
-        return 'sid';
+        return 'id';
     }
 
     /**

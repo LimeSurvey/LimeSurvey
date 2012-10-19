@@ -48,6 +48,30 @@ class Survey_timings extends LSActiveRecord
 	}
 
     /**
+     * Returns the primary key of this table
+     *
+     * @access public
+     * @return string
+     */
+    public function primaryKey()
+    {
+        return 'id';
+    }
+
+    /**
+    * Defines the relations for this model
+    *
+    * @access public
+    * @return array
+    */
+    public function relations()
+    {
+        return array(
+        'id' => array(self::BELONGS_TO, 'Survey_dynamic', 'id'),
+        );
+    }
+
+    /**
      * Returns the setting's table name to be used by the model
      *
      * @access public
@@ -87,7 +111,7 @@ class Survey_timings extends LSActiveRecord
                     ->queryAll();
                 $middleval = intval($statistics['count'] / 2);
                 $statistics['middleval'] = $middleval;
-                if ($statistics['count'] % 2)
+                if ($statistics['count'] % 2 && $statistics['count']>1)
                 {
                     $median=($queryAll[$middleval]['interviewtime'] + $queryAll[$middleval-1]['interviewtime']) / 2;
                 }

@@ -320,80 +320,32 @@ class responses extends Survey_Common_Action
         if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked' && hasSurveyPermission($iSurveyID, 'responses', 'delete'))
         {
             $iResponseID = (int) Yii::app()->request->getPost('deleteanswer'); // sanitize the value
-            // delete the files as well if its a fuqt
-
-            $fieldmap = createFieldMap($iSurveyID,'full',false,false,$oBrowseLanguage->langcode);
-            $fuqtquestions = array();
-            // find all fuqt questions
-            foreach ($fieldmap as $field)
-            {
-                if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
-                    $fuqtquestions[] = $field['fieldname'];
-            }
-
-            if (!empty($fuqtquestions))
-            {
-                // find all responses (filenames) to the fuqt questions
-                $responses = Survey_dynamic::model($iSurveyID)->findAllByAttributes(array('id' => Yii::app()->request->getPost('deleteanswer')));
-
-                foreach ($responses as $json)
-                {
-                    foreach ($fuqtquestions as $fieldname)
-                    {
-                        $phparray = json_decode_ls($json[$fieldname]);
-                        foreach ($phparray as $metadata)
-                        {
-                            $path = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/";
-                            unlink($path . $metadata->filename); // delete the file
-                        }
-                    }
-                }
-            }
-
+            // delete the files 
+            $this->_deleteFiles($iSurveyID,array($iResponseID),$aData['language']);
             // delete the row
-            Survey_dynamic::model($iSurveyID)->deleteAllByAttributes(array('id' => $iResponseID));
+            Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
+            // delete timings if savetimings is set
+            if($aData['surveyinfo']['savetimings'] == "Y"){
+                Survey_timings::model($iSurveyID)->deleteByPk($iResponseID);
+            }
             Yii::app()->session['flashmessage'] = sprintf($clang->gT("Response ID %s was successfully deleted."),$iResponseID);
 
         }
         // Marked responses -> deal with the whole batch of marked responses
-        if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0 && hasSurveyPermission($iSurveyID, 'responses', 'delete'))
+        if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0)
         {
             // Delete the marked responses - checked
-            if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked')
+            if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked' && hasSurveyPermission($iSurveyID, 'responses', 'delete'))
             {
-                $fieldmap = createFieldMap($iSurveyID,'full',false,false,$oBrowseLanguage->langcode);
-                $fuqtquestions = array();
-                // find all fuqt questions
-                foreach ($fieldmap as $field)
-                {
-                    if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
-                        $fuqtquestions[] = $field['fieldname'];
-                }
-
+                $this->_deleteFiles($iSurveyID,Yii::app()->request->getPost('markedresponses'),$aData['language']);
                 foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
                 {
-                    $iResponseID = (int) $iResponseID; // sanitize the value
-
-                    if (!empty($fuqtquestions))
-                    {
-                        // find all responses (filenames) to the fuqt questions
-                        $responses = Survey_dynamic::model($iSurveyID)->findAllByAttributes(array('id' => $iResponseID));
-
-                        foreach ($responses as $json)
-                        {
-                            foreach ($fuqtquestions as $fieldname)
-                            {
-                                $phparray = json_decode_ls($json[$fieldname]);
-                                foreach ($phparray as $metadata)
-                                {
-                                    $path = $this->getController()->getConfig('uploaddir') . "/surveys/{$iSurveyID}/files/";
-                                    unlink($path . $metadata->filename); // delete the file
-                                }
-                            }
-                        }
+                    $iResponseID= (int) $iResponseID;
+                    Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
+                    // delete timings if savetimings is set
+                    if($aData['surveyinfo']['savetimings'] == "Y"){
+                        Survey_timings::model($iSurveyID)->deleteByPk($iResponseID);
                     }
-
-                    Survey_dynamic::model($iSurveyID)->deleteAllByAttributes(array('id' => $iResponseID));
                 }
                 Yii::app()->session['flashmessage'] = sprintf($clang->ngT("%s response was successfully deleted.","%s responses were successfully deleted.",count(Yii::app()->request->getPost('markedresponses'))),count(Yii::app()->request->getPost('markedresponses')));
 
@@ -403,7 +355,7 @@ class responses extends Survey_Common_Action
             {
                 // Now, zip all the files in the filelist
                 $zipfilename = "Responses_for_survey_{$iSurveyID}.zip";
-                $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('markedresponses'), $zipfilename);
+                $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('markedresponses'), $zipfilename,$aData['language']);
             }
         }
         // Download all files for this entry - checked
@@ -411,7 +363,7 @@ class responses extends Survey_Common_Action
         {
             // Now, zip all the files in the filelist
             $zipfilename = "Files_for_responses_" . Yii::app()->request->getPost('downloadfile') . ".zip";
-            $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('downloadfile'), $zipfilename);
+            $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('downloadfile'), $zipfilename,$aData['language']);
         }
         else if (Yii::app()->request->getPost('downloadindividualfile') != '')
         {
@@ -624,16 +576,23 @@ class responses extends Survey_Common_Action
         if ($aData['surveyinfo']['savetimings'] != "Y")
             die();
 
-        if (Yii::app()->request->getPost('deleteanswer') != '')
+        if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked' && hasSurveyPermission($iSurveyID, 'responses', 'delete'))
         {
-            Survey_dynamic::model($iSurveyID)->deleteByAttributes(array('id' => (int) Yii::app()->request->getPost('deleteanswer'))) or die("Could not delete response");
+            $iResponseID=(int) Yii::app()->request->getPost('deleteanswer');
+            Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
+            Survey_timings::model($iSurveyID)->deleteByPk($iResponseID);
         }
 
         if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0)
         {
-            foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
+            if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked' && hasSurveyPermission($iSurveyID, 'responses', 'delete'))
             {
-                Survey_dynamic::model($iSurveyID)->deleteByAttributes(array('id' => (int) $iResponseID)) or die("Could not delete response");
+                foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
+                {
+                    $iResponseID=(int) $iResponseID;
+                    Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
+                    Survey_timings::model($iSurveyID)->deleteByPk($iResponseID);
+                }
             }
         }
 
@@ -775,13 +734,59 @@ class responses extends Survey_Common_Action
     }
 
     /**
+     * Supply an array with the responseIds and all files of this responses was deleted
+     *
+     * @param array $responseIds
+     * @param string $language
+     */
+    private function _deleteFiles($iSurveyID, $responseIds,$language)
+    {
+        $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$iSurveyID}/files/";
+        $fieldmap = createFieldMap($iSurveyID, 'full' ,false, false, $language);
+        $fuqtquestions = array();
+        // find all fuqt questions
+        foreach ($fieldmap as $field)
+        {
+            if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
+                $fuqtquestions[] = $field['fieldname'];
+        }
+
+        foreach ($responseIds as $responseId)
+        {
+            $responseId = (int) $responseId; // sanitize the value
+
+            if (!empty($fuqtquestions))
+            {
+                // find all responses (filenames) to the fuqt questions
+                $filearray = Survey_dynamic::model($iSurveyID)->findAllByAttributes(array('id' => $responseId));
+                $filecount = 0;
+                foreach ($filearray as $metadata)
+                {
+                    foreach ($metadata as $aData)
+                    {
+                        $phparray = json_decode_ls($aData);
+                        if (is_array($phparray))
+                        {
+                            foreach ($phparray as $file)
+                            {
+                                @unlink($uploaddir . $file['filename']);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    /**
      * Supply an array with the responseIds and all files will be added to the zip
      * and it will be be spit out on success
      *
      * @param array $responseIds
+     * @param string $zipfilename
+     * @param string $language
      * @return ZipArchive
      */
-    private function _zipFiles($iSurveyID, $responseIds, $zipfilename)
+    private function _zipFiles($iSurveyID, $responseIds, $zipfilename,$language)
     {
 
         Yii::app()->loadLibrary('admin/pclzip/pclzip');
@@ -789,7 +794,7 @@ class responses extends Survey_Common_Action
         $tmpdir = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR."surveys". DIRECTORY_SEPARATOR . $iSurveyID . DIRECTORY_SEPARATOR."files".DIRECTORY_SEPARATOR;
 
         $filelist = array();
-        $fieldmap = createFieldMap($iSurveyID, 'full' ,false, false, Yii::app()->session['browselang']);
+        $fieldmap = createFieldMap($iSurveyID, 'full' ,false, false, $language);
 
         foreach ($fieldmap as $field)
         {
