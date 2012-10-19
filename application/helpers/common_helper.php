@@ -2258,6 +2258,7 @@ return $allfields;
 * @param mixed $style 'short' (default) or 'full' - full creates extra information like default values
 * @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
+* @param string $sQuestionLanguage The language to use
 * @return array
 */
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sLanguage) {
@@ -2265,7 +2266,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
     $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = sanitize_int($surveyid);
-    $clang = new Limesurvey_lang($sLanguage); ;
+    $clang = new Limesurvey_lang($sLanguage);
 
     //checks to see if fieldmap has already been built for this page.
     if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid == false) {
@@ -2885,6 +2886,7 @@ function hasFileUploadQuestion($surveyid) {
 * @param mixed $style 'short' (default) or 'full' - full creates extra information like default values
 * @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
+* @param string $sQuestionLanguage The language to use
 * @return array
 */
 function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
@@ -2892,9 +2894,10 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
     global $aDuplicateQIDs;
     static $timingsFieldMap;
 
-    $clang = Yii::app()->lang;
-
-    $surveyid=sanitize_int($surveyid);
+    $sLanguage = sanitize_languagecode($sQuestionLanguage);
+    $surveyid = sanitize_int($surveyid);
+    $clang = new Limesurvey_lang($sLanguage);
+    
     //checks to see if fieldmap has already been built for this page.
     if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
         return $timingsFieldMap[$surveyid][$style][$clang->langcode];

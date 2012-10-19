@@ -235,13 +235,18 @@ class SurveyDao
     {
         $survey = new SurveyObj();
         $clang = Yii::app()->lang;
-
+        
         $intId = sanitize_int($id);
         $survey->id = $intId;
+        $survey->info = getSurveyInfo($survey->id);
         $lang = Survey::model()->findByPk($intId)->language;
         $clang = new limesurvey_lang($lang);
 
         $survey->fieldMap = createFieldMap($intId,'full',false,false,getBaseLanguageFromSurveyID($intId));
+        // Check to see if timings are present and add to fieldmap if needed
+        if ($survey->info['savetimings']=="Y") {
+            $survey->fieldMap = $survey->fieldMap + createTimingsFieldMap($intId,'full',false,false,getBaseLanguageFromSurveyID($intId));
+        }
 
         if (empty($intId))
         {
@@ -303,12 +308,16 @@ class SurveyDao
     */
     public function loadSurveyResults(SurveyObj $survey, $iLimit, $iOffset, $iMaximum, $sFilter='' )
     {
-
+        // Get info about the survey
         $oRecordSet = Yii::app()->db->createCommand()->select()->from('{{survey_' . $survey->id . '}}');
         if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',Survey_dynamic::model($survey->id)->attributes))
         {
             $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}}','{{tokens_' . $survey->id . '}}.token={{survey_' . $survey->id . '}}.token');
         }
+        if ($survey->info['savetimings']=="Y") {
+            $oRecordSet->leftJoin("{{survey_" . $survey->id . "_timings}} survey_timings", "{{survey_" . $survey->id . "}}.id = survey_timings.id");
+        }
+        
         if ($sFilter!='')
             $oRecordSet->where($sFilter);
             if ($iOffset+$iLimit>$iMaximum)
@@ -316,7 +325,7 @@ class SurveyDao
                 $iLimit=$iMaximum-$iOffset;
             }
             
-        $survey->responses=$oRecordSet->order('id')->limit($iLimit, $iOffset)->query()->readAll();
+        $survey->responses=$oRecordSet->order('{{survey_' . $survey->id . '}}.id')->limit($iLimit, $iOffset)->query()->readAll();
 
         return count($survey->responses);
     }
@@ -357,6 +366,13 @@ class SurveyObj
     * @var array[int][string]mixed
     */
     public $groups;
+    
+    /**
+     * info about the survey
+     * 
+     * @var array
+     */
+    public $info;
 
     /**
     * The questions in the survey.

@@ -130,6 +130,30 @@ class Survey_dynamic extends LSActiveRecord
 
         return $survey->deleteAll($criteria);
     }
+    
+    /**
+     * Return criteria updated with the ones needed for including results from the timings table
+     *
+     * @param CDbCriteria|string $criteria
+     *
+     * @return CDbCriteria
+     */
+    public function addTimingCriteria($condition)
+    {
+        $newCriteria = new CDbCriteria();
+        $criteria = $this->getCommandBuilder()->createCriteria($condition);
+
+        if ($criteria->select == '*')
+        {
+            $criteria->select = 't.*';
+        }
+
+        $newCriteria->join = "LEFT JOIN {{survey_" . self::$sid . "_timings}} survey_timings ON t.id = survey_timings.id";
+        $newCriteria->select = 'tokens.*';  // Otherwise we don't get records from the token table
+        $newCriteria->mergeWith($criteria);
+
+        return $newCriteria;
+    }
 
     /**
      * Return criteria updated with the ones needed for including results from the token table
