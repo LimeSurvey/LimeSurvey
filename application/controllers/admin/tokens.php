@@ -997,7 +997,7 @@ class tokens extends Survey_Common_Action
             'validuntil' => Yii::app()->request->getPost('validuntil'));
 
             // add attributes
-            $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
+            $attrfieldnames = getTokenFieldsAndNames($iSurveyId,true);
             foreach ($attrfieldnames as $attr_name => $desc)
             {
                 $value = Yii::app()->request->getPost($attr_name);
@@ -1087,7 +1087,7 @@ class tokens extends Survey_Common_Action
             $aData['surveyid'] = $iSurveyId;
             $aData['tokenlength'] = $tokenlength;
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'],$clang->langcode);
-
+            $aData['aAttributeFields']=GetParticipantAttributes($iSurveyId);
             $this->_renderWrappedTemplate('token', array('tokenbar', 'dummytokenform'), $aData);
         }
     }

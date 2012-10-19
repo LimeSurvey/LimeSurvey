@@ -5385,6 +5385,25 @@ function GetAttributeFieldNames($iSurveyID,$filter=true)
 }
 
 /**
+* Returns the full list of attribute token fields including the properties for each field
+* Use this instead of plain Survey::model()->findByPk($iSurveyID)->tokenAttributes calls because Survey::model()->findByPk($iSurveyID)->tokenAttributes may contain old descriptions where the fields does not physically exist
+* 
+* @param integer $iSurveyID The Survey ID
+*/
+function GetParticipantAttributes($iSurveyID)
+{
+    if (!tableExists("{{tokens_{$iSurveyID}}}") || !$table = Yii::app()->db->schema->getTable('{{tokens_'.$iSurveyID.'}}'))
+        return Array();
+    $aFields= array_filter(array_keys($table->columns), 'filterForAttributes');
+    $aTokenAttributes=Survey::model()->findByPk($iSurveyID)->tokenAttributes;
+    return array_intersect_key($aTokenAttributes,array_flip($aFields));
+}
+
+
+
+
+
+/**
 * Retrieves the token field names usable for conditions from the related token table
 *
 * @param mixed $surveyid  The survey ID
@@ -5402,7 +5421,6 @@ function getTokenConditionsFieldNames($surveyid)
 *
 * @param mixed $surveyid  The survey ID
 * @param boolean $onlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false
-*                               Use Survey::model()->findByPk($surveyid)->tokenAttributes instead
 * @return array The fieldnames as key and names as value in an Array
 */
 function getTokenFieldsAndNames($surveyid, $onlyAttributes = false)
