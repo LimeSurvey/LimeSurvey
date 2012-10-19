@@ -195,11 +195,11 @@ class Statistics_userController extends LSYii_Controller {
         $databasetype = Yii::app()->db->getDriverName();
         if ($databasetype=='mssql' || $databasetype=="sqlsrv")
         {
-            $query .="AND CAST(CAST(qa.value as varchar) as int)='1'\n";
+            $query .=" AND CAST(CAST(qa.value as varchar) as int)='1'\n";
         }
         else
         {
-            $query .="AND qa.value='1'\n";
+            $query .=" AND qa.value='1'\n";
         }
 
 		//execute query
