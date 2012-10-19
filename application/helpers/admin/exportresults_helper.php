@@ -1535,7 +1535,7 @@ class ExcelWriter extends Writer
         Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
         $this->separator = '~|';
         $this->hasOutputHeader = false;
-        $this->rowCounter = 1;
+        $this->rowCounter = 0;
     }
 
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
