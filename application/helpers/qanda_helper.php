@@ -2824,11 +2824,11 @@ function do_file_upload($ia)
 
     $answer = "<script type='text/javascript'>
         function upload_$ia[1]() {
-            var uploadurl = '{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}';
-            uploadurl += '&amp;preview={$questgrppreview}&amp;show_title={$aQuestionAttributes['show_title']}';
-            uploadurl += '&amp;show_comment={$aQuestionAttributes['show_comment']}&amp;pos=".($pos?1:0)."';
-            uploadurl += '&amp;minfiles=' + LEMval('{$aQuestionAttributes['min_num_of_files']}');
-            uploadurl += '&amp;maxfiles=' + LEMval('{$aQuestionAttributes['max_num_of_files']}');
+            var uploadurl = '{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&fieldname={$ia[1]}&qid={$ia[0]}';
+            uploadurl += '&preview={$questgrppreview}&show_title={$aQuestionAttributes['show_title']}';
+            uploadurl += '&show_comment={$aQuestionAttributes['show_comment']}&pos=".($pos?1:0)."';
+            uploadurl += '&minfiles=' + LEMval('{$aQuestionAttributes['min_num_of_files']}');
+            uploadurl += '&maxfiles=' + LEMval('{$aQuestionAttributes['max_num_of_files']}');
             $('#upload_$ia[1]').attr('href',uploadurl);
         }
         var translt = {
