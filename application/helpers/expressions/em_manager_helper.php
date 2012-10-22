@@ -7958,6 +7958,8 @@ EOD;
             // End Message
 
             $LEM =& LimeExpressionManager::singleton();
+            
+            $aSurveyInfo=getSurveyInfo($sid);
 
             $allErrors = array();
             $warnings = 0;
@@ -7999,35 +8001,35 @@ EOD;
                 );
             }
 
-            $surveyname = templatereplace('{SURVEYNAME}');
+            $surveyname = templatereplace('{SURVEYNAME}',array('SURVEYNAME'=>$aSurveyInfo['surveyls_title']));
 
             $out = '<div id="showlogicfilediv" ><H3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</H3>\n";
             $out .= "<table id='logicfiletable'>";
 
             if (is_null($gid) && is_null($qid))
             {
-                $description = templatereplace('{SURVEYDESCRIPTION}');
+                $description = templatereplace('{SURVEYDESCRIPTION}', array('SURVEYDESCRIPTION'=>$aSurveyInfo['surveyls_description']));
                 $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                 if ($description != '')
                 {
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Description:") . "</td><td colspan=2>" . $description . "</td></tr>";
                 }
 
-                $welcome = templatereplace('{WELCOME}');
+                $welcome = templatereplace('{WELCOME}', array('WELCOME'=>$aSurveyInfo['surveyls_welcometext']));
                 $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                 if ($welcome != '')
                 {
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Welcome:") . "</td><td colspan=2>" . $welcome . "</td></tr>";
                 }
 
-                $endmsg = templatereplace('{ENDTEXT}');
+                $endmsg = templatereplace('{ENDTEXT}', array('ENDTEXT'=>$aSurveyInfo['surveyls_endtext']));
                 $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                 if ($endmsg != '')
                 {
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End message:") . "</td><td colspan=2>" . $endmsg . "</td></tr>";
                 }
 
-                $_linkreplace = templatereplace('{URL}');
+                $_linkreplace = templatereplace('{URL}', array('URL'=>$aSurveyInfo['surveyls_url']));
                 $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                 if ($_linkreplace != '')
                 {
