@@ -770,7 +770,6 @@ EOD;
     if (isset($surveyid) && isset($_SESSION['survey_'.$surveyid]) && isset($_SESSION['survey_'.$surveyid]['register_errormsg']))
     {
         $register_errormsg=$_SESSION['survey_'.$surveyid]['register_errormsg'];
-        unset($_SESSION['survey_'.$surveyid]['register_errormsg']);
     }
 
 

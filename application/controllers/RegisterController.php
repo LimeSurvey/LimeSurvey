@@ -38,6 +38,7 @@ class RegisterController extends LSYii_Controller {
         Yii::import('application.libraries.Limesurvey_lang');
         Yii::app()->lang = new Limesurvey_lang($baselang);
         echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata,'register.php',false,NULL,$data);
+        unset($_SESSIOn['survey_'.$surveyid]['register_errormsg']);
 
     }
 
