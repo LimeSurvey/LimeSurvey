@@ -1063,195 +1063,24 @@ class statistics_helper {
                 }
 
 
-
                 //CALCULATE QUARTILES
-
-                //get data
-                $query ="SELECT COUNT(".Yii::app()->db->quoteColumnName($fieldname).") FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT null";
-                //NO ZEROES
-                if(!$excludezeros)
-                {
-                    $query .= " AND ".Yii::app()->db->quoteColumnName($fieldname)." != 0";
-                }
-
-                //filtering enabled?
-                if (incompleteAnsFilterState() == "inc") {$query .= " AND submitdate is null";}
-                elseif (incompleteAnsFilterState() == "filter") {$query .= " AND submitdate is not null";}
-
-                //if $sql values have been passed to the statistics script from another script, incorporate them
-                if ($sql != "NULL") {$query .= " AND $sql";}
-
+                $medcount = $this->getQuartile(0, $fieldname, $surveyid, $sql, $excludezeros); // Get the recordcount
+                $quartiles = array();
+                $quartiles[1] = $this->getQuartile(1, $fieldname, $surveyid, $sql, $excludezeros);
+                $quartiles[2] = $this->getQuartile(2, $fieldname, $surveyid, $sql, $excludezeros);
+                $quartiles[3] = $this->getQuartile(3, $fieldname, $surveyid, $sql, $excludezeros);
+                
                 //we just put the total number of records at the beginning of this array
-                $medcount = Yii::app()->db->createCommand($query)->queryScalar();
                 array_unshift($showem, array($statlang->gT("Count"), $medcount));
-
-
-                $querystarter="SELECT ".Yii::app()->db->quoteColumnName($fieldname)." FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT null";
-                //No Zeroes
-                if(!$excludezeros)
-                {
-                    $querystart .= " AND ".Yii::app()->db->quoteColumnName($fieldname)." != 0";
-                }
-                //filtering enabled?
-                if (incompleteAnsFilterState() == "inc") {$querystarter .= " AND submitdate is null";}
-                elseif (incompleteAnsFilterState() == "filter") {$querystarter .= " AND submitdate is not null";}
-
-                //if $sql values have been passed to the statistics script from another script, incorporate them
-                if ($sql != "NULL") {$querystarter .= " AND $sql";}
-
-
-
-
-                //no more comment from Mazi regarding the calculation
 
                 /* IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT */
                 /* IF YOU DON'T UNDERSTAND WHAT QUARTILES ARE DO NOT MODIFY THIS CODE */
                 /* Quartiles and Median values are NOT related to average, and the sum is irrelevent */
 
-                // Calculating only makes sense with more than one result
-                if ($medcount>1)
-                {
-                    //1ST QUARTILE (Q1)
-                    /*  L=(1/4)(n+1), U=(3/4)(n+1) */
-                    /*  Minitab linear interpolation between the two
-                        closest data points. Minitab would let L = 2.5 and find the value half way between the
-                        2nd and 3rd data points. In our example, that would be (4+9)/2 =
-                        6.5. Similarly, the upper quartile value would be half way between
-                        the 7th and 8th data points, which would be (49+64)/2 = 56.5. If L
-                        were 2.25, Minitab would find the value one fourth of the way
-                        between the 2nd and 3rd data points and if L were 2.75, Minitab
-                        would find the value three fourths of the way between the 2nd and
-                        3rd data points. */
-                    $q1=(1/4)*($medcount+1);
-                    $q1b=(int)((1/4)*($medcount+1));
-                    $q1c=$q1b-1;
-                    $q1diff=$q1-$q1b;
-                    $total=0;
-                    $secondlastnumber = 0;
-
-                    // fix if there are too few values to evaluate.
-                    if ($q1c<0) {$q1c=0;}
-
-                    if ($q1 != $q1b) //The value will be between two of the individual results
-                    {
-                        $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1 ";
-                        $result = Yii::app()->db->createCommand($query)->query();
-                        $i=0;
-                        foreach ($result as $row)
-                        {
-                            if($row[$fieldname]) {$i++;}
-                            if($i==$q1c) {$secondlastnumber=$row[$fieldname];}
-                            if($i==$q1b) {$lastnumber=$row[$fieldname];}
-                        }
-                        $q1total=$lastnumber-((1-$q1diff)*$secondlastnumber);
-                        //if ($q3total < $maximum) {$q1total=$maximum;} //What the? If the 3rd quartiel is higher than the highest, then make the 1st quartile the highest? This makes no sense!
-
-                        $showem[]=array($statlang->gT("1st quartile (Q1)"), $q1total);
-                    }
-                    else
-                    {
-                        $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1";
-                        $result = Yii::app()->db->createCommand($query)->query();
-
-                        $i=0;
-                        foreach ($result as $row)
-                        {
-                            if($row[$fieldname]) {$i++;}
-                            if($i==$q1b) {$showem[]=array($statlang->gT("1st quartile (Q1)"), $row[$fieldname]);}
-                        }
-                    }
-
-                    $total=0;
-
-
-                    //MEDIAN (Q2)
-                    $median=(1/2)*($medcount+1);
-                    $medianb=(int)((1/2)*($medcount+1));
-                    $medianc=$medianb-1;
-                    $mediandiff=$median-$medianb;
-
-                    if ($median != $medianb)
-                    {
-                        //remainder
-                        $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1 ";
-                        $result=Yii::app()->db->createCommand($query)->query();
-
-                        $i=0;
-                        foreach ($result as $row) {
-                            if($row[$fieldname]) {$i++;}
-                            if($i==$medianc) {$secondlastnumber=$row[$fieldname];}
-                            if($i==$medianb) {$lastnumber=$row[$fieldname];}
-
-                        }
-                        $mediantotal=$lastnumber-((1-$mediandiff)*$secondlastnumber);
-                        //if ($q3total < $maximum) {$q1total=$maximum;} //What the? If the 3rd quartiel is higher than the highest, then make the 1st quartile the highest? This makes no sense!
-
-                        $showem[]=array($statlang->gT("2nd quartile (Median)"), $mediantotal);
-
-                    }
-
-                    else
-                    {
-                        $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1";
-                        $result = Yii::app()->db->createCommand($query)->query();
-
-                        foreach ($result as $row)
-                        {
-                            if($row[$fieldname]) {$i++;}
-                            if($i==$medianb) {$showem[]=array($statlang->gT("2nd quartile (Median)"), $row[$fieldname]);}
-                        }
-                    }
-
-                    $total=0;
-
-
-                    //3RD QUARTILE (Q3)
-                    /*  L=(1/4)(n+1), U=(3/4)(n+1) */
-                    /*  Minitab linear interpolation between the two
-                        closest data points. Minitab would let L = 2.5 and find the value half way between the
-                        2nd and 3rd data points. In our example, that would be (4+9)/2 =
-                        6.5. Similarly, the upper quartile value would be half way between
-                        the 7th and 8th data points, which would be (49+64)/2 = 56.5. If L
-                        were 2.25, Minitab would find the value one fourth of the way
-                        between the 2nd and 3rd data points and if L were 2.75, Minitab
-                        would find the value three fourths of the way between the 2nd and
-                        3rd data points. */
-                    $q3=(3/4)*($medcount+1); //Find the 75th percentile according to count of items
-                    $q3b=(int)((3/4)*($medcount+1)); //The int version of $q3
-                    $q3c=$q3b-1; //The number before the int version of $q3
-                    $q3diff=$q3-$q3b;
-
-                    if ($q3 != $q3b) //The value will be between two of the individual results
-                    {
-                        $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1 ";
-                        $result = Yii::app()->db->createCommand($query)->query();
-                        $i=0;
-                        foreach ($result as $row)
-                        {
-                            if($row[$fieldname]) {$i++;}
-                            if($i==$q3c) {$secondlastnumber=$row[$fieldname];}
-                            if($i==$q3b) {$lastnumber=$row[$fieldname];}
-                        }
-                        $q3total=$lastnumber-((1-$q3diff)*$secondlastnumber);
-                        //if ($q3total < $maximum) {$q1total=$maximum;} //What the? If the 3rd quartiel is higher than the highest, then make the 1st quartile the highest? This makes no sense!
-
-                        $showem[]=array($statlang->gT("3rd quartile (Q3)"), $q3total);
-                    }
-                    else
-                    {
-                        $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1";
-                        $result = Yii::app()->db->createCommand($query)->query();
-
-                        foreach ($result as $row)
-                        {
-                            if($row[$fieldname]) {$i++;}
-                            if($i==$q3b) {$showem[]=array($statlang->gT("3rd quartile (Q3)"), $row[$fieldname]);}
-                        }
-                    }
-
-                    $total=0;
-
-                    $showem[]=array($statlang->gT("Maximum"), $maximum);
+                if (isset($quartiles[1])) $showem[]=array($statlang->gT("1st quartile (Q1)"), $quartiles[1]);
+                if (isset($quartiles[2])) $showem[]=array($statlang->gT("2nd quartile (Median)"), $quartiles[3]);
+                if (isset($quartiles[3])) $showem[]=array($statlang->gT("3rd quartile (Q3)"), $quartiles[4]);
+                $showem[]=array($statlang->gT("Maximum"), $maximum);
 
                     //output results
                     foreach ($showem as $shw)
@@ -1341,10 +1170,9 @@ class statistics_helper {
                     //clean up
                     unset($showem);
 
-                }    //end if (enough results?)
 
                 //not enough (<1) results for calculation
-                else
+                if ($medcount<1)
                 {
                     switch($outputType)
                     {
@@ -3522,5 +3350,103 @@ class statistics_helper {
                 break;
         }
 
+    }
+    
+    /**
+     * Get the quartile using minitab method
+     * 
+     * L=(1/4)(n+1), U=(3/4)(n+1)
+     * Minitab linear interpolation between the two
+     * closest data points. Minitab would let L = 2.5 and find the value half way between the
+     * 2nd and 3rd data points. In our example, that would be (4+9)/2 =
+     * 6.5. Similarly, the upper quartile value would be half way between
+     * the 7th and 8th data points, which would be (49+64)/2 = 56.5. If L
+     * were 2.25, Minitab would find the value one fourth of the way
+     * between the 2nd and 3rd data points and if L were 2.75, Minitab
+     * would find the value three fourths of the way between the 2nd and
+     * 3rd data points.
+     * 
+     * @staticvar null $sid
+     * @staticvar int $recordCount
+     * @staticvar null $field
+     * @staticvar null $allRows
+     * @param 0|1|2|3 $quartile use 0 for return of recordcount, otherwise will return Q1,Q2,Q3
+     * @param string $fieldname
+     * @param int $surveyid
+     * @param string $sql
+     * @param bool $excludezeros
+     * @return null|float
+     */
+    protected function getQuartile($quartile, $fieldname, $surveyid, $sql, $excludezeros) {
+        static $sid = null;
+        static $recordCount = 0;
+        static $field = null;
+        static $allRows = null;
+        
+        if ($surveyid !== $sid || $fieldname !== $field) {
+            //get data
+            $query =" FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT null";
+            //NO ZEROES
+            if(!$excludezeros)
+            {
+                $query .= " AND ".Yii::app()->db->quoteColumnName($fieldname)." != 0";
+            }
+
+            //filtering enabled?
+            if (incompleteAnsFilterState() == "inc")
+            {
+                $query .= " AND submitdate is null";
+            } elseif (incompleteAnsFilterState() == "filter")
+            {
+                $query .= " AND submitdate is not null";
+            }
+
+            //if $sql values have been passed to the statistics script from another script, incorporate them
+            if ($sql != "NULL") {$query .= " AND $sql";}
+        }
+        
+        if ($surveyid !== $sid) {
+            $sid = $surveyid;
+            $recordCount = 0;
+            $field = null;      // Reset cache
+
+            //we just put the total number of records at the beginning of this array
+            $recordCount = Yii::app()->db->createCommand("SELECT COUNT(".Yii::app()->db->quoteColumnName($fieldname).")" .$query)->queryScalar();
+        }
+        
+        if ($fieldname !== $field) {
+            $field = $fieldname;
+            $allRows = Yii::app()->db->createCommand("SELECT ".Yii::app()->db->quoteColumnName($fieldname) . $query . ' ORDER BY ' . Yii::app()->db->quoteColumnName($fieldname))->queryAll();
+        }
+        
+        // Qx = (x/4) * (n+1) if not integer, interpolate
+        switch ($quartile)
+        {
+            case 1:
+            case 3:
+                // Need at least 4 records
+                if ($recordCount<4) return;
+                break;
+            case 2:
+                // Need at least 2 records
+                if ($recordCount<2) return;
+                break;
+                
+            case 0:
+                return $recordCount;
+                
+            default:
+                return;
+                break;
+        }        
+        
+        $q1 = $quartile/4 * ($recordCount+1);
+        $row = $q1-1; // -1 since we start counting at 0
+        if ($q1 === (int) $q1) {
+            return $allRows[$row][$fieldname];
+        } else {
+            $diff = ($q1 - (int) $q1);
+            return $allRows[$row][$fieldname] + $diff * ($allRows[$row+1][$fieldname]-$allRows[$row][$fieldname]);
+        }        
     }
 }
