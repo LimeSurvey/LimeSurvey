@@ -461,16 +461,17 @@ class statistics extends Survey_Common_Action {
             $aData['usegraph'] = $usegraph;
 		    $outputType = $_POST['outputtype'];
 
+            $helper = new statistics_helper();
 		    switch($outputType){
 		        case 'html':
-		            $statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+		            $statisticsoutput .= $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
 		            break;
 		        case 'pdf':
-		            generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'I',$statlang);
+		            $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'I',$statlang);
 		            exit;
 		            break;
 		        case 'xls':
-		            generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+		            $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
 		            exit;
 		            break;
 		        default:

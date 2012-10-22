@@ -591,20 +591,21 @@ class remotecontrol_handle
 		$oAllQuestions = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid'=>'0','language'=>$sLanguage));
 		$aSummary = createCompleteSGQA($iSurveyID,$oAllQuestions,$sLanguage);
 
+        $helper = new statistics_helper();
 		switch ($docType)
 		{
 			case 'pdf':
-				$sTempFile = generate_statistics($iSurveyID,$aSummary,$aSummary,$graph,$docType,'F',$sLanguage);
+				$sTempFile = $helper->generate_statistics($iSurveyID,$aSummary,$aSummary,$graph,$docType,'F',$sLanguage);
 				$sResult = file_get_contents($sTempFile);
 				unlink($sTempFile);
 				break;
 			case 'xls':
-				$sTempFile = generate_statistics($iSurveyID,$aSummary,$aSummary,'0',$docType, 'F',$sLanguage);
+				$sTempFile = $helper->generate_statistics($iSurveyID,$aSummary,$aSummary,'0',$docType, 'F',$sLanguage);
 				$sResult = file_get_contents($sTempFile);
 				unlink($sTempFile);
 				break;
 			case 'html':
-				$sResult = generate_statistics($iSurveyID,$aSummary,$aSummary,'0',$docType, 'DD',$sLanguage);
+				$sResult = $helper->generate_statistics($iSurveyID,$aSummary,$aSummary,'0',$docType, 'DD',$sLanguage);
 				break;
 		}
 		
