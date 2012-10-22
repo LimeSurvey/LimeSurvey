@@ -172,6 +172,9 @@ $(document).ready(function() {
             }
         },
         pager: "#pager",
+        pgtext: pageViewTxt,
+        emptyrecords: emptyRecordsTxt,
+        recordtext: viewRecordTxt,
         caption: "Participants",
         subGrid: true,
         subGridRowExpanded: function(subgrid_id,row_id) {
@@ -264,7 +267,8 @@ $(document).ready(function() {
     jQuery("#displayparticipants").jqGrid(
         'navGrid',
         '#pager',
-        {add:true,del:true,edit:false,refresh: true,search: false},
+        {add:true,del:true,edit:false,refresh: true,search: false,
+         addtitle: createParticipantTxt, deltitle: deleteParticipantTxt, refreshtitle: refreshListTxt},
         {},
         {width : 400},
         {msg:deleteMsg, width : 700,
