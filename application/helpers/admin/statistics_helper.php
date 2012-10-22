@@ -1078,8 +1078,8 @@ class statistics_helper {
                 /* Quartiles and Median values are NOT related to average, and the sum is irrelevent */
 
                 if (isset($quartiles[1])) $showem[]=array($statlang->gT("1st quartile (Q1)"), $quartiles[1]);
-                if (isset($quartiles[2])) $showem[]=array($statlang->gT("2nd quartile (Median)"), $quartiles[3]);
-                if (isset($quartiles[3])) $showem[]=array($statlang->gT("3rd quartile (Q3)"), $quartiles[4]);
+                if (isset($quartiles[2])) $showem[]=array($statlang->gT("2nd quartile (Median)"), $quartiles[2]);
+                if (isset($quartiles[3])) $showem[]=array($statlang->gT("3rd quartile (Q3)"), $quartiles[3]);
                 $showem[]=array($statlang->gT("Maximum"), $maximum);
 
                     //output results
