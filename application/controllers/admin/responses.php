@@ -371,20 +371,20 @@ class responses extends Survey_Common_Action
             $downloadindividualfile = Yii::app()->request->getPost('downloadindividualfile');
             $fieldname = Yii::app()->request->getPost('fieldname');
 
-            $row = Survey_dynamic::model($iSurveyID)->findByAttributes(array('id' => $iId));
-            $phparray = json_decode_ls(reset($row));
+            $oRow = Survey_dynamic::model($iSurveyID)->findByAttributes(array('id' => $iId));
+            $phparray = json_decode_ls($oRow->$fieldname);
 
             for ($i = 0; $i < count($phparray); $i++)
             {
-                if ($phparray[$i]->name == $downloadindividualfile)
+                if ($phparray[$i]['name'] == $downloadindividualfile)
                 {
-                    $file = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $phparray[$i]->filename;
+                    $file = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $phparray[$i]['filename'];
 
                     if (file_exists($file))
                     {
                         header('Content-Description: File Transfer');
                         header('Content-Type: application/octet-stream');
-                        header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]->name) . '"');
+                        header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]['name']) . '"');
                         header('Content-Transfer-Encoding: binary');
                         header('Expires: 0');
                         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
