@@ -1631,7 +1631,7 @@ class PdfWriter extends Writer
         global $pdforientation, $pdfdefaultfont, $pdffontsize;
 
         Yii::import('application.libraries.admin.pdf', true);
-        $this->pdf = new PDF(Yii::app()->getConfig('pdforientation'),'mm','A4');
+        $this->pdf = new pdf();
         $this->pdf->SetFont(Yii::app()->getConfig('pdfdefaultfont'), '', Yii::app()->getConfig('pdffontsize'));
         $this->pdf->AddPage();
         $this->pdf->intopdf("PDF export ".date("Y.m.d-H:i", time()));

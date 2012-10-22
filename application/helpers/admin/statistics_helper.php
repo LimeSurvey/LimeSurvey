@@ -1127,6 +1127,7 @@ class statistics_helper {
                     $q1c=$q1b-1;
                     $q1diff=$q1-$q1b;
                     $total=0;
+                    $secondlastnumber = 0;
 
                     // fix if there are too few values to evaluate.
                     if ($q1c<0) {$q1c=0;}
@@ -1152,6 +1153,7 @@ class statistics_helper {
                         $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1";
                         $result = Yii::app()->db->createCommand($query)->query();
 
+                        $i=0;
                         foreach ($result as $row)
                         {
                             if($row[$fieldname]) {$i++;}
@@ -1302,7 +1304,7 @@ class statistics_helper {
 
                             $footPDF[] = array($statlang->gT("Null values are ignored in calculations"));
                             $footPDF[] = array(sprintf($statlang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$statlang->gT("minitab method")."</a>"));
-                            $this->pdf->addPage('P','A4');
+                            $this->pdf->AddPage('P','A4');
                             $this->pdf->Bookmark($this->pdf->delete_html($qquestion), 1, 0);
                             $this->pdf->titleintopdf($pdfTitle,$titleDesc);
 
@@ -1361,7 +1363,7 @@ class statistics_helper {
 
                             $tablePDF = array();
                             $tablePDF[] = array($statlang->gT("Not enough values for calculation"));
-                            $this->pdf->addPage('P','A4');
+                            $this->pdf->AddPage('P','A4');
                             $this->pdf->Bookmark($this->pdf->delete_html($qquestion), 1, 0);
                             $this->pdf->titleintopdf($pdfTitle,$titleDesc);
 
@@ -1817,7 +1819,7 @@ class statistics_helper {
                 $pdfTitle = $this->pdf->delete_html(sprintf($statlang->gT("Field summary for %s"),html_entity_decode($outputs['qtitle'],ENT_QUOTES,'UTF-8')));
                 $titleDesc = $sPDFQuestion;
 
-                $this->pdf->addPage('P','A4');
+                $this->pdf->AddPage('P','A4');
                 $this->pdf->Bookmark($sPDFQuestion, 1, 0);
                 $this->pdf->titleintopdf($pdfTitle,$sPDFQuestion);
                 $tablePDF = array();
@@ -1843,7 +1845,7 @@ class statistics_helper {
 
                 break;
         }
-        echo '';
+        //echo '';
 
         //loop thorugh the array which contains all answer data
         foreach ($outputs['alist'] as $al)
@@ -3246,15 +3248,12 @@ class statistics_helper {
         */
         if($outputType=='pdf')
         {
-            //require_once('classes/tcpdf/config/lang/eng.php');
-            global $l;
-            $l['w_page'] = $statlang->gT("Page",'unescaped');
             //require_once('classes/tcpdf/mypdf.php');
             Yii::import('application.libraries.admin.pdf', true);
+            
             // create new PDF document
-            $this->pdf = new Pdf();
-            $this->pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
-
+            $this->pdf = new pdf();
+           
             $surveyInfo = getSurveyInfo($surveyid,$language);
 
             // set document information
@@ -3269,26 +3268,14 @@ class statistics_helper {
             $this->pdf->setHeaderFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_MAIN));
             $this->pdf->setFooterFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_DATA));
 
-            // set default header data
-            $this->pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
-
+            // set default header data 
+            $headerlogo = 'statistics.png';
+            // when png crashes, try uncommenting next line
+            //$headerlogo = '';
+            $this->pdf->SetHeaderData($headerlogo, 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");          
 
             // set default monospaced font
             $this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-            //set margins
-            $this->pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-            $this->pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-            $this->pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-            //set auto page breaks
-            $this->pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-            //set image scale factor
-            $this->pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-            //set some language-dependent strings
-            $this->pdf->setLanguageArray($l);
         }
         if($outputType=='xls')
         {
@@ -3386,7 +3373,7 @@ class statistics_helper {
 
                 break;
             case 'pdf':
-
+                
                 // add summary to pdf
                 $array = array();
                 //$array[] = array($statlang->gT("Results"),"");
@@ -3396,13 +3383,13 @@ class statistics_helper {
                 if($total)
                     $array[] = array($statlang->gT("Percentage of total:",'unescaped'), $percent."%");
 
-                $this->pdf->addPage('P','A4');
+                $this->pdf->AddPage('P', ' A4');
 
                 $this->pdf->Bookmark($this->pdf->delete_html($statlang->gT("Results",'unescaped')), 0, 0);
                 $this->pdf->titleintopdf($statlang->gT("Results",'unescaped'),$statlang->gT("Survey",'unescaped')." ".$surveyid);
                 $this->pdf->tableintopdf($array);
 
-                $this->pdf->addPage('P','A4');
+                $this->pdf->AddPage('P','A4');
 
                 break;
             case 'html':
@@ -3537,4 +3524,3 @@ class statistics_helper {
 
     }
 }
-
