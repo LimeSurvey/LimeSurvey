@@ -479,7 +479,7 @@
 
         // Spanish (Mexico)
         $supportedLanguages['es-MX']['description'] = $clang->gT('Spanish (Mexico)');
-        $supportedLanguages['es-MX']['nativedescription'] = 'Espa&#241;ol Mejicano';
+        $supportedLanguages['es-MX']['nativedescription'] = 'Espa&#241;ol mexicano';
         $supportedLanguages['es-MX']['rtl'] = false;
         $supportedLanguages['es-MX']['dateformat'] = 5;
         $supportedLanguages['es-MX']['radixpoint'] = 0;
