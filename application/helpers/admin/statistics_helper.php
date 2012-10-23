@@ -3215,7 +3215,7 @@ class statistics_helper {
             if($outputType=='html' && $browse === true)
             {
                 //add a buttons to browse results
-                $statisticsoutput .= "<form action='".Yii::app()->getController()->createUrl("admin/responses/index/surveyid/$surveyid")."' method='post' target='_blank'>\n"
+                $statisticsoutput .= "<form action='".Yii::app()->getController()->createUrl("admin/responses/browse/surveyid/$surveyid")."' method='post' target='_blank'>\n"
                 ."\t\t<p>"
                 ."\t\t\t<input type='submit' value='".$statlang->gT("Browse")."'  />\n"
                 ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
