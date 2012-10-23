@@ -1349,7 +1349,7 @@
 }
 
 .ui-progressbar .ui-progressbar-value {
-  margin: -1px;
+  margin: 0px;
   height: 100%;
 }  /* Resizable
 ----------------------------------*/
@@ -1565,3 +1565,7 @@
 
 /* initially hide datepicker */
 #ui-datepicker-div { display:none;}
+
+.ui-widget-content {
+    border: 1px solid #8CCE00;
+}
