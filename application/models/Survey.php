@@ -251,26 +251,26 @@ class Survey extends CActiveRecord
      * Returns true in a token table exists for the given $surveyId
      * 
      * @staticvar array $tokens
-     * @param int $surveyId
+     * @param int $iSurveyID
      * @return boolean
      */
-    public function hasTokens($surveyId) {
+    public function hasTokens($iSurveyID) {
         static $tokens = array();
-        $sid = (int) $sid;
+        $iSurveyID = (int) $iSurveyID;
          
-        if (!isset($tokens[$sid])) {
+        if (!isset($tokens[$iSurveyID])) {
             // Make sure common_helper is loaded
             Yii::import('application.helpers.common_helper', true);
             
-            $tokens_table = "{{tokens_$surveyId}}";
+            $tokens_table = "{{tokens_{$iSurveyID}}}";
             if (tableExists($tokens_table)) {
-                $tokens[$sid] = true;
+                $tokens[$iSurveyID] = true;
             } else {
-                $tokens[$sid] = false;
+                $tokens[$iSurveyID] = false;
             }            
         }
         
-        return $tokens[$sid];
+        return $tokens[$iSurveyID];
     }
 
 
