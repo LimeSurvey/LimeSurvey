@@ -48,9 +48,9 @@ class ExportSurveyResultsService
     *
     * @param mixed $iSurveyId
     * @param mixed $sLanguageCode
+    * @param csv|doc|pdf|xls $sExportPlugin Type of export
     * @param FormattingOptions $oOptions
     * @param string $sFilter 
-    * @param mixed $sOutputStyle  'display' or 'file'  Default: display (send to browser)
     */
     function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter)
     {
@@ -84,21 +84,13 @@ class ExportSurveyResultsService
 
         switch ( $sExportPlugin ) {
             case "doc":
-                    $writer = new DocWriter();
+                $writer = new DocWriter();
                 break;
             case "xls":
-                    $writer = new ExcelWriter();
+                $writer = new ExcelWriter();
                 break;
             case "pdf":
-                if ($oOptions->output=='return')
-                {
-                    $sRandomFileName=Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
-                    $writer = new PdfWriter($sRandomFileName);
-                }
-                else
-                {
-                    $writer = new PdfWriter();
-                }
+                $writer = new PdfWriter();
                 break;
             case "csv":
             default:
@@ -1613,15 +1605,16 @@ class PdfWriter extends Writer
     private $fileName;
     private $surveyName;
 
-    public function __construct($filename = null)
+    public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
-        if (!empty($filename))
+        parent::init($survey, $sLanguageCode, $oOptions);
+        
+        if ($oOptions->output=='return') 
         {
+            $sRandomFileName=Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
             $this->pdfDestination = 'F';
-            $this->fileName = $filename;
-        }
-        else
-        {
+            $this->fileName = $sRandomFileName;
+        } else {
             $this->pdfDestination = 'D';
         }
 
@@ -1639,12 +1632,7 @@ class PdfWriter extends Writer
 
         $this->separator="\t";
 
-        $this->rowCounter = 0;
-    }
-
-    public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
-    {
-        parent::init($survey, $sLanguageCode, $oOptions);
+        $this->rowCounter = 0;        
         $this->surveyName = $survey->languageSettings[0]['surveyls_title'];
         $this->pdf->titleintopdf($this->surveyName, $survey->languageSettings[0]['surveyls_description']);
     }

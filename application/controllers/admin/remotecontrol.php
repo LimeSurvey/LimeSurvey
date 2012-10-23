@@ -2172,15 +2172,15 @@ class remotecontrol_handle
            $aFields=array_slice($aFields,0,255);
         }
         $oFomattingOptions=new FormattingOptions();
-        $oFomattingOptions->format=$sDocumentType;
         $oFomattingOptions->responseMinRecord=$iFromResponseID;
         $oFomattingOptions->responseMaxRecord=$iToResponseID;
         $oFomattingOptions->selectedColumns=$aFields;
         $oFomattingOptions->responseCompletionState=$sCompletionStatus;
         $oFomattingOptions->headingFormat=$sHeadingType;
         $oFomattingOptions->answerFormat=$sResponseType;
+        $oFomattingOptions->output='return';
         $oExport=new ExportSurveyResultsService();
-        $sFileData=$oExport->exportSurvey($iSurveyID,$sLanguageCode,$oFomattingOptions,'return');
+        $sFileData=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions,'return');
         return base64_encode($sFileData);
     }
 

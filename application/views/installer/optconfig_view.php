@@ -8,7 +8,7 @@
 
 <div class="grid_4 table">
 
-<p class="title"><?php echo $title; ?></p>
+<p class="maintitle"><?php echo $title; ?></p>
 
 <div style="-moz-border-radius:15px; border-radius:15px;" >
 <p><?php echo $descp; ?></p>

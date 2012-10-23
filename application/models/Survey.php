@@ -46,7 +46,7 @@ class Survey extends CActiveRecord
     * @static
     * @access public
     * @param string $class
-    * @return CActiveRecord
+    * @return Survey
     */
     public static function model($class = __CLASS__)
     {
@@ -245,6 +245,32 @@ class Survey extends CActiveRecord
             $attdescriptiondata = $fields;
         }
         return $attdescriptiondata;
+    }
+    
+    /**
+     * Returns true in a token table exists for the given $surveyId
+     * 
+     * @staticvar array $tokens
+     * @param int $surveyId
+     * @return boolean
+     */
+    public function hasTokens($surveyId) {
+        static $tokens = array();
+        $sid = (int) $sid;
+         
+        if (!isset($tokens[$sid])) {
+            // Make sure common_helper is loaded
+            Yii::import('application.helpers.common_helper', true);
+            
+            $tokens_table = "{{tokens_$surveyId}}";
+            if (tableExists($tokens_table)) {
+                $tokens[$sid] = true;
+            } else {
+                $tokens[$sid] = false;
+            }            
+        }
+        
+        return $tokens[$sid];
     }
 
 
