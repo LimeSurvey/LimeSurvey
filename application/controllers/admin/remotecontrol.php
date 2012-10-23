@@ -49,7 +49,7 @@ class remotecontrol extends Survey_Common_Action
         {
             Yii::app()->loadLibrary('jsonRPCServer');
             $oHandler=new remotecontrol_handle($this->controller);
-            jsonRPCServer::handle($oHandler);
+                                    jsonRPCServer::handle($oHandler);
         }
         exit;
     }
@@ -72,7 +72,7 @@ class remotecontrol extends Survey_Common_Action
         }
 
         $sLSSData=base64_encode(file_get_contents($sFileToImport));
-        $iSurveyID=$myJSONRPCClient->import_survey($sSessionKey, $sLSSData, 'zip','Test import by JSON_RPC',1000);
+        $iSurveyID=$myJSONRPCClient->import_survey($sSessionKey, $sLSSData, 'lss','Test import by JSON_RPC',1000);
         echo 'Created new survey SID:'.$iSurveyID.'<br>';
 
 /*
@@ -87,33 +87,33 @@ class remotecontrol extends Survey_Common_Action
         {
             echo 'Survey '.$iSurveyID.' successfully activated.<br>';
         }
-        $aResult=$myJSONRPCClient->activate_participant_tokens($sSessionKey, $iSurveyID,array(1,2));
+        $aResult=$myJSONRPCClient->activate_tokens($sSessionKey, $iSurveyID,array(1,2));
         if ($aResult['status']=='OK')
         {
             echo 'Tokens for Survey ID '.$iSurveyID.' successfully activated.<br>';
         }
         $aResult=$myJSONRPCClient->set_survey_properties($sSessionKey, $iSurveyID,array('faxto'=>'0800-LIMESURVEY'));
-        if ($aResult['status']=='OK')
+        if (!array_key_exists('status', $aResult))
         {
             echo 'Modified survey settings for survey '.$iSurveyID.'<br>';
         }
-        $aResult=$myJSONRPCClient->add_survey_language($sSessionKey, $iSurveyID,'ar');
+        $aResult=$myJSONRPCClient->add_language($sSessionKey, $iSurveyID,'ar');
         if ($aResult['status']=='OK')
         {
             echo 'Added Arabian as additional language'.'<br>';
         }
-        $aResult=$myJSONRPCClient->set_survey_language_properties($sSessionKey, $iSurveyID,array('surveyls_welcometext'=>'An Arabian welcome text!'),'ar');
+        $aResult=$myJSONRPCClient->set_language_properties($sSessionKey, $iSurveyID,array('surveyls_welcometext'=>'An Arabian welcome text!'),'ar');
         if ($aResult['status']=='OK')
         {
             echo 'Modified survey locale setting welcometext for Arabian in survey ID '.$iSurveyID.'<br>';
         }
 
-        $aResult=$myJSONRPCClient->delete_survey_language($sSessionKey, $iSurveyID,'ar');
+        $aResult=$myJSONRPCClient->delete_language($sSessionKey, $iSurveyID,'ar');
         if ($aResult['status']=='OK')
         {
             echo 'Removed Arabian as additional language'.'<br>';
         }
-        die();
+        
         $aResult=$myJSONRPCClient->delete_survey($sSessionKey, $iSurveyID);
         echo 'Deleted survey SID:'.$iSurveyID.'-'.$aResult['status'].'<br>';
 
@@ -938,6 +938,7 @@ class remotecontrol_handle
 						$oSurveyLocale->$sFieldName=$aLangAttributes[$sFieldName];
 					}
                 }
+                $aResult['status'] = 'OK';
                 return $aResult;
             }
             else
