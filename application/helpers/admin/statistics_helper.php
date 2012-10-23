@@ -867,65 +867,20 @@ class statistics_helper {
             else
             {
                 $showem = array();
-                //create SGQ identifier
-                list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
-
-                //multiple numerical input
-                if($firstletter == "K")
-                {
-                    //Build an array of legitimate qid's for testing later
-                    $qidquery = Questions::model()->findAll("sid=:surveyid AND parent_qid=0", array(":surveyid"=>$surveyid));
-                    foreach ($qidquery as $row) { $legitqids[] = $row['qid']; }
-                    // This is a multiple numerical question so we need to strip of the answer id to find the question title
-                    $tmpqid=substr($qqid, 0, strlen($qqid)-1);
-
-                    //did we get a valid ID?
-                    while (!in_array ($tmpqid,$legitqids,true))
-                    {
-                        $tmpqid=(int)substr($tmpqid, 0, strlen($tmpqid)-1);
-                    }
-
-                    //check lenght of ID
-                    $iQuestionIDlength=strlen($tmpqid);
-
-                    //get answer ID from qid
-                    $qaid=substr($qqid, $iQuestionIDlength, strlen($qqid)-$iQuestionIDlength);
-
-                    //get question details from DB
-                    $nresult=Questions::model()->findAll('parent_qid=0 AND qid=:qid AND language=:language', array(':qid'=>substr($qqid, 0, $iQuestionIDlength), ':language'=>$language));
-                    /* $nquery = "SELECT title, type, question, qid, parent_qid
-                    FROM {{questions}}
-                    WHERE parent_qid=0 AND qid='".substr($qqid, 0, $iQuestionIDlength)."'
-                    AND language='{$language}'";
-                    $nresult = Yii::app()->db->createCommand($nquery)->query(); */
-                }
-
-                //probably question type "N" = numerical input
-                else
-                {
-                    $nresult=Questions::model()->findAll('parent_qid=0 AND qid=:qid AND language=:language', array(':qid'=>$qqid, ':language'=>$language));
-                    //we can use the qqid without any editing
-                    /* $nquery = "SELECT title, type, question, qid, parent_qid FROM {{questions}} WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
-                    $nresult = Yii::app()->db->createCommand($nquery)->query(); */
-                }
-
-                //loop through results
-                foreach ($nresult as $nrow)
-                {
-                    $qtitle=flattenText($nrow->title); //clean up title
-                    $qtype=$nrow->type;
-                    $qquestion=flattenText($nrow->question);
-                    $qiqid=$nrow->qid;
-                    $qlid=$nrow->parent_qid;
-                }
+                $fld = substr($rt, 1, strlen($rt));
+                $fielddata=$fieldmap[$fld];
+                
+                $qtitle = flattenText($fielddata['title']);
+                $qtype = $fielddata['type'];
+                $qquestion = $fielddata['question'];
+                $qiqid = $fielddata['qid'];
+                $qlid = $fielddata['parent_qid'];
 
                 //Get answer texts for multiple numerical
                 if(substr($rt, 0, 1) == "K")
                 {
-                    //get answer data
-                    $atext=Yii::app()->db->createCommand("SELECT question FROM {{questions}} WHERE parent_qid='{$qiqid}' AND scale_id=0 AND title='{$qaid}' AND language='{$language}'")->queryScalar();
                     //put single items in brackets at output
-                    $qtitle .= " [$atext]";
+                    $qtitle .= " [" . $fielddata['subquestion'] . "]";
                 }
 
                 //outputting
