@@ -149,7 +149,7 @@ class Survey_dynamic extends LSActiveRecord
         }
 
         $newCriteria->join = "LEFT JOIN {{survey_" . self::$sid . "_timings}} survey_timings ON t.id = survey_timings.id";
-        $newCriteria->select = 'tokens.*';  // Otherwise we don't get records from the token table
+        $newCriteria->select = 'survey_timings.*';  // Otherwise we don't get records from the token table
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
@@ -178,7 +178,7 @@ class Survey_dynamic extends LSActiveRecord
 
         return $newCriteria;
     }
-
+    
     /**
      * Return true if actual survey is completed
      *
