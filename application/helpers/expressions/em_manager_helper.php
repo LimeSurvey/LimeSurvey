@@ -3443,6 +3443,19 @@
             $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);   // group-level relevance based upon grelevance equation
             return ($grel && $qrel);
         }
+        
+        /**
+         * Returns true if the group is relevant and should be shown
+         * 
+         * @param int $gid
+         * @return boolean
+         */
+        static function GroupIsRelevant($gid)
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            $gseq = $LEM->GetGroupSeq($gid);
+            return !$LEM->GroupIsIrrelevantOrHidden($gseq);
+        }
 
         /**
         * Return whether group $gseq is relevant
