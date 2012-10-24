@@ -57,6 +57,45 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121019) to 2.00+ (build 121024) Oct 24, 2012
+-Fixed issue #4335: Quartile calculations are off (Menno Dekker)
+-Fixed issue #6644: Creating PDF statistics containing questions of multi numeric value type cause infinite loop (Menno Dekker)
+-Fixed issue #6644: Statistics export to both PDF and Excel is working again (Menno Dekker)
+-Fixed issue #6761: Remote control demo is not working (Menno Dekker)
+-Fixed issue #6764: Empty fields not showing in print answers (Menno Dekker)
+-Fixed issue #5907: User first see filtered question, hidden after by javascript (Denis Chenu)
+-Fixed issue #6679 - missing translations strings, also fixed language translations to account for javascript (jcleeland)
+-Fixed issue #6679 - missing translation strings in blacklist control (jcleeland)
+-Fixed issue #6717: Show logic file does not show the survey description, welcome, or end pages (Carsten Schmitz)
+-Fixed issue #6736: Survey resume link does not contain language information (Carsten Schmitz)
+-Fixed issue #6741: File upload question: dialog box unresponsive when editing uploaded files (Carsten Schmitz)
+-Fixed issue #6742: File upload question: individual download of uploaded files not working (Carsten Schmitz)
+-Fixed issue #6747: Double click on limereplacement field list not working (Carsten Schmitz)
+-Fixed issue #6749: Registration error message not appearing on registration page (Carsten Schmitz)
+-Fixed issue #6752: Misspelled word (Carsten Schmitz)
+-Fixed issue #6757: Double encoded quotes in hints for "other" selections within multiple choices (Carsten Schmitz)
+-Fixed issue #6644: Excel export of statistics should be working again (PDF still to be fixed) (Menno Dekker)
+-Fixed issue: memory_limit setting being ignored (Carsten Schmitz)
+#Updated translation: Croatian by rovinj
+#Updated translation: Czech by slansky
+#Updated translation: Danish by docl
+#Updated translation: Dutch by mdekker
+#Updated translation: French (France) by DenisChenu, riqcles
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by mele_lime
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad, peterhol
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by wagner, arthurassuncao, mauriciofurtado
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Serbian by OnSpot
+#Updated translation: Serbian (Latin script) by OnSpot
+#Updated translation: Slovak by wargo, c_schmitz
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.00+ (build 121017) to 2.00+ (build 121019) Oct 19, 2012
 -New translation: Serbian (Latin script) (OnSpot)
 -Fixed issue #5490: Spss export should now handle different decimal separator (locale) better (mennodekker)
