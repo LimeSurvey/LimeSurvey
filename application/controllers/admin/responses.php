@@ -475,7 +475,7 @@ class responses extends Survey_Common_Action
 
             $start = Yii::app()->request->getParam('start', 0);
             $limit = Yii::app()->request->getParam('limit', 50);
-
+            if(!$limit){$limit=50;}
             $oCriteria = new CDbCriteria;
             //Create the query
             if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}"))
@@ -637,7 +637,7 @@ class responses extends Survey_Common_Action
         $aData['fnames'] = $fnames;
         $start = Yii::app()->request->getParam('start', 0);
         $limit = Yii::app()->request->getParam('limit', 50);
-
+        if(!$limit){$limit=50;}
         //LETS COUNT THE DATA
         $oCriteria = new CdbCriteria();
         $oCriteria->select = 'tid';

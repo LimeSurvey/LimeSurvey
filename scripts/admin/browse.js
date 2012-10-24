@@ -18,7 +18,12 @@ $(document).ready(function(){
     $("#selectall").click(function(){
         $('.cbResponseMarker').attr('checked',$(this).attr('checked'));
     });
-
+    // Update the responses table if completionstate change
+    $("#browseresults #completionstate").change(function(){
+        $("#limit").val('');
+        $("#browseresults").submit();
+    });
+    
     $('#browseresponses').qtip({
         content:{
             text:$('#browselangpopup')
