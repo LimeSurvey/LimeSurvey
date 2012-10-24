@@ -505,7 +505,15 @@ $config['iSessionExpirationTime'] = 28800;
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
 
-$config['publicurl']               = Yii::app()->baseUrl . '/';                          // The public website location (url) of the public survey script
+if(!isset($argv[0]))
+{
+    $config['publicurl'] = Yii::app()->baseUrl . '/';                          // The public website location (url) of the public survey script
+}
+else
+{
+    $config['publicurl'] =  '/';
+}
+
 $config['homeurl']                 = $config['publicurl'].'admin';          // The website location (url) of the admin scripts
 $config['tempurl']                 = $config['publicurl'].'tmp';
 $config['imageurl']                = $config['publicurl'].'images';         // Location of button bar files for admin script
@@ -537,7 +545,7 @@ $config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'sty
 // $relativeurl  is the url relative to you DocumentRoot where is installed LimeSurvey.
 // Usually same as $rooturl without http://{$_SERVER['HTTP_HOST']}.
 // $relativeurl  is now automatically computed from $rooturl
-if(!isset($cmd_install) || !$cmd_install==true)
+if(!isset($argv[0]))
 {
     $parsedurl = parse_url(Yii::app()->createUrl('/'));
     $config['relativeurl'] = isset($parsedurl['path']) ? $parsedurl['path'] : "";
