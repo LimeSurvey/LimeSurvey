@@ -63,7 +63,8 @@ class AdminController extends LSYii_Controller
         $clang = $this->lang;
 
         $this->_getAdminHeader();
-        $output = '<div class="warningheader">'.$clang->gT('Error').'</div><br />'."\n";
+        $output = "<div class='messagebox ui-corner-all'>\n";
+        $output .= '<div class="warningheader">'.$clang->gT('Error').'</div><br />'."\n";
         $output .= $message . '<br /><br />'."\n";
         if (!empty($url) && !is_array($url))
         {
@@ -88,7 +89,7 @@ class AdminController extends LSYii_Controller
         }
         $output .= '<input type="submit" value="'.$title.'" onclick=\'window.open("'.$url.'", "_top")\' /><br /><br />'."\n";
         $output .= '</div>'."\n";
-
+        $output .= '</div>'."\n";
         echo $output;
 
         $this->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));

@@ -164,11 +164,11 @@ class export extends Survey_Common_Action {
             $selecthide = "";
             $selectshow = "";
             $selectinc = "";
-            if ( incompleteAnsFilterState() == "filter" )
+            if ( incompleteAnsFilterState() == "complete" )
             {
                 $selecthide = "selected='selected'";
             }
-            elseif ( incompleteAnsFilterState() == "inc" )
+            elseif ( incompleteAnsFilterState() == "incomplete" )
             {
                 $selectinc = "selected='selected'";
             }
@@ -232,7 +232,6 @@ class export extends Survey_Common_Action {
         $options->headerSpacesToUnderscores = $convertspacetous;
         $options->headingFormat = $exportstyle;
         $options->responseCompletionState = incompleteAnsFilterState();
-        if ( $options->responseCompletionState =='all' ){$options->responseCompletionState =='show';}
 
         // Replace token information by the column name
         if ( in_array('first_name', Yii::app()->request->getPost('attribute_select', array())) )
@@ -340,10 +339,10 @@ class export extends Survey_Common_Action {
 
             switch ($filterstate)
             {
-                case "inc":
+                case "incomplete":
                     $selectinc="selected='selected'";
                     break;
-                case "filter":
+                case "complete":
                     $selecthide="selected='selected'";
                     break;
                 default:
@@ -611,10 +610,10 @@ class export extends Survey_Common_Action {
 
             switch ( $filterstate )
             {
-                case "inc":
+                case "incomplete":
                     $selectinc = "selected='selected'";
                     break;
-                case "filter":
+                case "complete":
                     $selecthide = "selected='selected'";
                     break;
                 default:
@@ -849,11 +848,11 @@ class export extends Survey_Common_Action {
             $selecthide = "";
             $selectshow = "";
             $selectinc = "";
-            if( incompleteAnsFilterState() == "inc" )
+            if( incompleteAnsFilterState() == "incomplete" )
             {
                 $selectinc = "selected='selected'";
             }
-            elseif ( incompleteAnsFilterState() == "filter" )
+            elseif ( incompleteAnsFilterState() == "complete" )
             {
                 $selecthide = "selected='selected'";
             }
@@ -910,11 +909,11 @@ class export extends Survey_Common_Action {
             $vvoutput .= $secondline . "\n";
             $query = "SELECT * FROM ".Yii::app()->db->quoteTableName($surveytable);
 
-            if (incompleteAnsFilterState() == "inc")
+            if (incompleteAnsFilterState() == "incomplete")
             {
                 $query .= " WHERE submitdate IS NULL ";
             }
-            elseif (incompleteAnsFilterState() == "filter")
+            elseif (incompleteAnsFilterState() == "complete")
             {
                 $query .= " WHERE submitdate >= '01/01/1980' ";
             }

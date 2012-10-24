@@ -137,9 +137,9 @@ class FormattingOptions
 
     /**
     * Acceptable values are:
-    * "filter" = do not include incomplete answers
+    * "complete" = include only incomplete answers
     * "incomplete" = only include incomplete answers
-    * "show" = include ALL answers
+    * "all" = include ALL answers
     *
     * @var mixed
     */
@@ -880,15 +880,13 @@ abstract class Writer implements IWriter
         switch ($oOptions->responseCompletionState)
         {
             default:
-            case 'show':
+            case 'all':
                 return true;
                 break;
-
             case 'incomplete':
                 return !isset($response['submitdate']);
                 break;
-
-            case 'filter':
+            case 'complete':
                 return isset($response['submitdate']);
                 break;
 

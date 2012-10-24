@@ -994,8 +994,8 @@ class statistics_helper {
                 }
 
                 //filter incomplete answers if set
-                if (incompleteAnsFilterState() == "inc") {$query .= " AND submitdate is null";}
-                elseif (incompleteAnsFilterState() == "filter") {$query .= " AND submitdate is not null";}
+                if (incompleteAnsFilterState() == "incomplete") {$query .= " AND submitdate is null";}
+                elseif (incompleteAnsFilterState() == "complete") {$query .= " AND submitdate is not null";}
 
                 //$sql was set somewhere before
                 if ($sql != "NULL") {$query .= " AND $sql";}
@@ -1744,8 +1744,8 @@ class statistics_helper {
             }
 
             //check filter option
-            if (incompleteAnsFilterState() == "inc") {$query .= " AND submitdate is null";}
-            elseif (incompleteAnsFilterState() == "filter") {$query .= " AND submitdate is not null";}
+            if (incompleteAnsFilterState() == "incomplete") {$query .= " AND submitdate is null";}
+            elseif (incompleteAnsFilterState() == "complete") {$query .= " AND submitdate is not null";}
 
             //check for any "sql" that has been passed from another script
             if ($sql != "NULL") {$query .= " AND $sql";}
@@ -3106,8 +3106,8 @@ class statistics_helper {
         $query = "SELECT count(*) FROM {{survey_$surveyid}}";
 
         //if incompleted answers should be filtert submitdate has to be not null
-        if (incompleteAnsFilterState() == "inc") {$query .= " WHERE submitdate is null";}
-        elseif (incompleteAnsFilterState() == "filter") {$query .= " WHERE submitdate is not null";}
+        if (incompleteAnsFilterState() == "incomplete") {$query .= " WHERE submitdate is null";}
+        elseif (incompleteAnsFilterState() == "complete") {$query .= " WHERE submitdate is not null";}
         $result = Yii::app()->db->createCommand($query)->query();
 
         //$total = total number of answers
@@ -3117,7 +3117,7 @@ class statistics_helper {
         if (isset($selects) && $selects)
         {
             //filter incomplete answers?
-            if (incompleteAnsFilterState() == "filter" || incompleteAnsFilterState() == "inc") {$query .= " AND ";}
+            if (incompleteAnsFilterState() == "complete" || incompleteAnsFilterState() == "incomplete") {$query .= " AND ";}
 
             else {$query .= " WHERE ";}
 
@@ -3348,10 +3348,10 @@ class statistics_helper {
             }
 
             //filtering enabled?
-            if (incompleteAnsFilterState() == "inc")
+            if (incompleteAnsFilterState() == "incomplete")
             {
                 $query .= " AND submitdate is null";
-            } elseif (incompleteAnsFilterState() == "filter")
+            } elseif (incompleteAnsFilterState() == "complete")
             {
                 $query .= " AND submitdate is not null";
             }

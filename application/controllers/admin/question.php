@@ -861,17 +861,24 @@ class question extends Survey_Common_Action
             // Check if any other questions have conditions which rely on this question. Don't delete if there are.
             // TMSW Conditions->Relevance:  Allow such deletes - can warn about missing relevance separately.
             $ccresult = Conditions::model()->findAllByAttributes(array('cqid' => $qid));
-
             $cccount = count($ccresult);
-            foreach ($ccresult as $ccr)
-                $qidarray[] = $ccr->qid;
-
-            if (isset($qidarray))
-                $qidlist = implode(", ", $qidarray);
 
             // There are conditions dependent on this question
             if ($cccount)
-                $this->getController()->error($clang->gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"));
+            {
+                foreach ($ccresult as $ccr)
+                {
+                    $qidarray[] = $ccr->qid;
+                }
+                if (isset($qidarray))
+                    $qidlist = implode(", ", $qidarray);
+                $message =$clang->gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
+                $message .="<br /><a href='". $this->getController()->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}")."' >".$clang->gT("Look at survey logic files")."</a>.";
+                $this->getController()->error(
+                    $message,
+                    $this->getController()->createUrl("admin/survey/view/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}")
+                    );
+            }
             else
             {
                 $row = Questions::model()->findByAttributes(array('qid' => $qid))->attributes;
