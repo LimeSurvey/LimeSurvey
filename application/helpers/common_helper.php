@@ -5399,6 +5399,7 @@ function GetParticipantAttributes($iSurveyID)
         return Array();
     $aFields= array_filter(array_keys($table->columns), 'filterForAttributes');
     $aTokenAttributes=Survey::model()->findByPk($iSurveyID)->tokenAttributes;
+    if (count($aFields)==0) return  array();
     return array_intersect_key($aTokenAttributes,array_flip($aFields));
 }
 

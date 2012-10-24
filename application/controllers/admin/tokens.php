@@ -484,16 +484,10 @@ class tokens extends Survey_Common_Action
         $finalcondition = array();
         $condition = explode("||", $searchcondition);
         $aData = new stdClass();
-        if (count($condition) == 3)
-        {
-            $records = Tokens_dynamic::model($iSurveyId)->getSearch($condition, $page, $limit);
-            $aData->records = count(Tokens_dynamic::model($iSurveyId)->getSearch($condition, 0, 0));
-        }
-        else
-        {
-            $records = Tokens_dynamic::model($iSurveyId)->getSearchMultiple($condition, $page, $limit);
-            $aData->records = count(Tokens_dynamic::model($iSurveyId)->getSearchMultiple($condition, 0, 0));
-        }
+
+        $records = Tokens_dynamic::model($iSurveyId)->getSearchMultiple($condition, $page, $limit);
+        $aData->records = count(Tokens_dynamic::model($iSurveyId)->getSearchMultiple($condition, 0, 0));
+
         $aData->page = $page;
         $aData->total = ceil($aData->records / $limit);
 
@@ -624,7 +618,7 @@ class tokens extends Survey_Common_Action
             'usesleft' => Yii::app()->request->getPost('usesleft'),
             'validfrom' => $from,
             'validuntil' => $until);
-            $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
+            $attrfieldnames = GetParticipantAttributes($iSurveyId);
             foreach ($attrfieldnames as $attr_name => $desc)
             {
                 $value = Yii::app()->request->getPost($attr_name);
