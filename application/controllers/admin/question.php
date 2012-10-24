@@ -375,7 +375,7 @@ class question extends Survey_Common_Action
             $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$baselang'");
             $cacount = Answers::model()->count($ans);
             if (!empty($cacount))
-                Answers::updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
+                Answers::model()->updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
         }
 
         Yii::app()->loadHelper('admin/htmleditor');
@@ -573,7 +573,7 @@ class question extends Survey_Common_Action
             ));
 
             if ($cacount)
-                Answers::updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
+                Answers::model()->updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
         }
 
         Yii::app()->loadHelper('admin/htmleditor');
@@ -884,14 +884,15 @@ class question extends Survey_Common_Action
                 Answers::model()->deleteAllByAttributes(array('qid' => $qid));
 
                 $criteria = new CDbCriteria;
-                $criteria->addCondition('qid = :qid or parent_qid = :qid');
-                $criteria->params[':qid'] = $qid;
+                $criteria->addCondition('qid = :qid1 or parent_qid = :qid2');
+                $criteria->params[':qid1'] = $qid;
+                $criteria->params[':qid2'] = $qid;
                 Questions::model()->deleteAll($criteria);
 
                 Defaultvalues::model()->deleteAllByAttributes(array('qid' => $qid));
                 Quota_members::model()->deleteAllByAttributes(array('qid' => $qid));
 
-                Questions::updateQuestionOrder($gid, $surveyid);
+                Questions::model()->updateQuestionOrder($gid, $surveyid);
 
                 $qid = "";
                 $postqid = "";
