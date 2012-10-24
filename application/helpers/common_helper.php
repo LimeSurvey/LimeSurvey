@@ -1398,7 +1398,7 @@ function getSurveyInfo($surveyid, $languagecode='')
     // if no language code is set then get the base language one
     if (!isset($languagecode) || $languagecode=='')
     {
-        $languagecode=Survey::model()->findByPk($surveyid)->language;;
+        $languagecode=Survey::model()->findByPk($surveyid)->language;
     }
 
     //$query="SELECT * FROM ".db_table_name('surveys').",".db_table_name('surveys_languagesettings')." WHERE sid=$surveyid and surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
@@ -5439,13 +5439,13 @@ function getTokenFieldsAndNames($surveyid, $onlyAttributes = false)
     $clang->gT('Total numbers of sent reminders'),
     $clang->gT('Uses left')
     );
-    $thissurvey=getSurveyInfo($surveyid);
     $attdescriptiondata = array();
     $attributedescriptions = array();
     $basic_attrs_and_names = array();
     $extra_attrs_and_names = array();
     // !!! This is actually deprecated, use Survey::model()->findByPk($surveyid)->tokenAttributes instead
-    $attdescriptiondata = Survey::model()->findByPk($surveyid)->tokenAttributes;
+    if ($surveyid)
+        $attdescriptiondata = Survey::model()->findByPk($surveyid)->tokenAttributes;
     if (!is_null($attdescriptiondata))
     {
         foreach ($attdescriptiondata as $attname => $attdata)
