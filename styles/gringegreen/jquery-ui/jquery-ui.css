@@ -1566,6 +1566,10 @@
 /* initially hide datepicker */
 #ui-datepicker-div { display:none;}
 
-.ui-widget-content {
+.ui-widget-content.ui-progressbar { 
     border: 1px solid #8CCE00;
+}
+
+.ui-progressbar-value {
+    background-color: #8CCE00;
 }
