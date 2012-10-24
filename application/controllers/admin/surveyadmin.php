@@ -127,6 +127,7 @@ class SurveyAdmin extends Survey_Common_Action
         $esrow = $this->_fetchSurveyInfo('newsurvey');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         Yii::app()->loadHelper('admin/htmleditor');
+        $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 
         $aData = $this->_generalTabNewSurvey();
         $aData['esrow'] = $esrow;
@@ -135,8 +136,9 @@ class SurveyAdmin extends Survey_Common_Action
         $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
         $aData = array_merge($aData, $this->_tabTokens($esrow));
         $arrayed_data['data'] = $aData;
+        $aViewUrls[] = 'newSurvey_view';
 
-        $this->_renderWrappedTemplate('survey', 'newSurvey_view', $arrayed_data);
+        $this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
     }
 
     /**
