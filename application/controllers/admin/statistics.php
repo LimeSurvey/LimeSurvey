@@ -196,13 +196,13 @@ class statistics extends Survey_Common_Action {
 
 
 		//pre-selection of filter forms
-		if (incompleteAnsFilterState() == "filter")
+		if (incompleteAnsFilterState() == "complete")
 		{
 		    $selecthide="selected='selected'";
 		    $selectshow="";
 		    $selectinc="";
 		}
-		elseif (incompleteAnsFilterState() == "inc")
+		elseif (incompleteAnsFilterState() == "incomplete")
 		{
 		    $selecthide="";
 		    $selectshow="";

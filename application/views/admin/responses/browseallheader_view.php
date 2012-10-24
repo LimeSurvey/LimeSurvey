@@ -28,11 +28,11 @@
                 $selectinc = '';
                 $selecthide = '';
 
-                if (incompleteAnsFilterState() == "inc")
+                if (incompleteAnsFilterState() == "incomplete")
                 {
                     $selectinc = "selected='selected'";
                 }
-                elseif (incompleteAnsFilterState() == "filter")
+                elseif (incompleteAnsFilterState() == "complete")
                 {
                     $selecthide = "selected='selected'";
                 }

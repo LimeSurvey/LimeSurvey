@@ -4942,11 +4942,15 @@ function CSVUnquote($field)
     return $field;
 }
 
+/**
+* This function return actual completion state
+*
+* @return string (complete|incomplete|all) or false
+*/
 function incompleteAnsFilterState()
 {
     $letsfilter='';
     $letsfilter = returnGlobal('completionstate'); //read get/post completionstate
-
 
     // first let's initialize the incompleteanswers session variable
     if ($letsfilter != '')
