@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-10-24 10:56:19+00:00\n"
+"POT-Creation-Date: 2012-10-24 11:04:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2506,7 +2506,7 @@ msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:936
 #: application/helpers/expressions/em_manager_helper.php:2915
-#: application/helpers/expressions/em_manager_helper.php:5468
+#: application/helpers/expressions/em_manager_helper.php:5481
 #: application/helpers/qanda_helper.php:1399
 #: application/helpers/qanda_helper.php:1725
 #: application/helpers/qanda_helper.php:2234
@@ -3061,29 +3061,29 @@ msgstr ""
 #: application/controllers/admin/tokens.php:2346
 #: application/controllers/admin/tokens.php:2382
 #: application/controllers/admin/useraction.php:722
-#: application/helpers/common_helper.php:6368
-#: application/helpers/common_helper.php:6373
-#: application/helpers/common_helper.php:6378
-#: application/helpers/common_helper.php:6383
-#: application/helpers/common_helper.php:6388
-#: application/helpers/common_helper.php:6393
-#: application/helpers/common_helper.php:6398
-#: application/helpers/common_helper.php:6403
-#: application/helpers/common_helper.php:6408
-#: application/helpers/common_helper.php:6414
-#: application/helpers/common_helper.php:6420
-#: application/helpers/common_helper.php:6425
-#: application/helpers/common_helper.php:6430
-#: application/helpers/common_helper.php:6435
-#: application/helpers/common_helper.php:6440
-#: application/helpers/common_helper.php:6445
-#: application/helpers/common_helper.php:6451
-#: application/helpers/common_helper.php:6456
-#: application/helpers/common_helper.php:6465
-#: application/helpers/common_helper.php:6470
-#: application/helpers/common_helper.php:6477
-#: application/helpers/common_helper.php:6481
-#: application/helpers/common_helper.php:6485
+#: application/helpers/common_helper.php:6370
+#: application/helpers/common_helper.php:6375
+#: application/helpers/common_helper.php:6380
+#: application/helpers/common_helper.php:6385
+#: application/helpers/common_helper.php:6390
+#: application/helpers/common_helper.php:6395
+#: application/helpers/common_helper.php:6400
+#: application/helpers/common_helper.php:6405
+#: application/helpers/common_helper.php:6410
+#: application/helpers/common_helper.php:6416
+#: application/helpers/common_helper.php:6422
+#: application/helpers/common_helper.php:6427
+#: application/helpers/common_helper.php:6432
+#: application/helpers/common_helper.php:6437
+#: application/helpers/common_helper.php:6442
+#: application/helpers/common_helper.php:6447
+#: application/helpers/common_helper.php:6453
+#: application/helpers/common_helper.php:6458
+#: application/helpers/common_helper.php:6467
+#: application/helpers/common_helper.php:6472
+#: application/helpers/common_helper.php:6479
+#: application/helpers/common_helper.php:6483
+#: application/helpers/common_helper.php:6487
 #: application/helpers/frontend_helper.php:1449
 #: application/helpers/frontend_helper.php:1526
 #: application/helpers/frontend_helper.php:1696
@@ -3705,10 +3705,10 @@ msgstr ""
 #: application/helpers/common_helper.php:621
 #: application/helpers/common_helper.php:1229
 #: application/helpers/common_helper.php:1299
-#: application/helpers/common_helper.php:7113
-#: application/helpers/common_helper.php:7150
-#: application/helpers/common_helper.php:7541
-#: application/helpers/common_helper.php:7580
+#: application/helpers/common_helper.php:7115
+#: application/helpers/common_helper.php:7152
+#: application/helpers/common_helper.php:7543
+#: application/helpers/common_helper.php:7582
 #: application/helpers/qanda_helper.php:1361
 #: application/helpers/qanda_helper.php:1542
 #: application/helpers/qanda_helper.php:2125
@@ -3725,7 +3725,7 @@ msgid "Survey title and description"
 msgstr ""
 
 #: application/controllers/admin/translate.php:464
-#: application/helpers/expressions/em_manager_helper.php:8015
+#: application/helpers/expressions/em_manager_helper.php:8028
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:33
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:36
 #: application/views/admin/survey/QuestionGroups/editGroup_view.php:19
@@ -3746,7 +3746,7 @@ msgid "Welcome and end text"
 msgstr ""
 
 #: application/controllers/admin/translate.php:494
-#: application/helpers/expressions/em_manager_helper.php:8029
+#: application/helpers/expressions/em_manager_helper.php:8042
 #: application/views/admin/survey/editLocalSettings_view.php:17
 #: application/views/admin/survey/editLocalSettings_view.php:21
 #: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:33
@@ -4121,8 +4121,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1230
 #: application/helpers/common_helper.php:1300
 #: application/helpers/common_helper.php:3983
-#: application/helpers/common_helper.php:7542
-#: application/helpers/common_helper.php:7581
+#: application/helpers/common_helper.php:7544
+#: application/helpers/common_helper.php:7583
 #: application/views/admin/token/bounce.php:14
 #: application/views/admin/token/bounce.php:56
 msgid "None"
@@ -6296,102 +6296,102 @@ msgstr ""
 msgid "Attribute %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:6362
+#: application/helpers/common_helper.php:6364
 msgid "Access denied!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6367
+#: application/helpers/common_helper.php:6369
 msgid "You are not allowed dump the database!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6372
+#: application/helpers/common_helper.php:6374
 msgid "You are not allowed export a label set!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6377
+#: application/helpers/common_helper.php:6379
 msgid "You are not allowed to change user data!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6382
+#: application/helpers/common_helper.php:6384
 msgid "You are not allowed to create new surveys!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6387
+#: application/helpers/common_helper.php:6389
 msgid "You are not allowed to delete this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6392
+#: application/helpers/common_helper.php:6394
 msgid "You are not allowed to add new questions for this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6397
+#: application/helpers/common_helper.php:6399
 msgid "You are not allowed to activate this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6402
+#: application/helpers/common_helper.php:6404
 msgid "You are not allowed to stop this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6407
+#: application/helpers/common_helper.php:6409
 msgid "You are not allowed to add a group to this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6413
+#: application/helpers/common_helper.php:6415
 msgid "You are not allowed to order groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6419
+#: application/helpers/common_helper.php:6421
 msgid "You are not allowed to edit this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6424
+#: application/helpers/common_helper.php:6426
 msgid "You are not allowed to edit groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6429
+#: application/helpers/common_helper.php:6431
 msgid "You are not allowed to browse responses!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6434
+#: application/helpers/common_helper.php:6436
 msgid "You are not allowed to set assessment rules!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6439
+#: application/helpers/common_helper.php:6441
 msgid "You are not allowed to delete this group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6444
+#: application/helpers/common_helper.php:6446
 msgid "You are not allowed to import a survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6450
+#: application/helpers/common_helper.php:6452
 msgid "You are not allowed to import a group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6455
+#: application/helpers/common_helper.php:6457
 msgid "You are not allowed to to import a question!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6464
-#: application/helpers/common_helper.php:6469
+#: application/helpers/common_helper.php:6466
+#: application/helpers/common_helper.php:6471
 msgid "Security alert"
 msgstr ""
 
-#: application/helpers/common_helper.php:6464
-#: application/helpers/common_helper.php:6469
+#: application/helpers/common_helper.php:6466
+#: application/helpers/common_helper.php:6471
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr ""
 
-#: application/helpers/common_helper.php:6464
-#: application/helpers/common_helper.php:6469
+#: application/helpers/common_helper.php:6466
+#: application/helpers/common_helper.php:6471
 msgid "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
 msgstr ""
 
-#: application/helpers/common_helper.php:6474
+#: application/helpers/common_helper.php:6476
 msgid "You are not allowed to perform this operation!"
 msgstr ""
 
-#: application/helpers/common_helper.php:7224
+#: application/helpers/common_helper.php:7226
 msgid "SQL command failed: %s"
 msgstr ""
 
@@ -6920,7 +6920,7 @@ msgid "other"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:2531
-#: application/helpers/expressions/em_manager_helper.php:5470
+#: application/helpers/expressions/em_manager_helper.php:5483
 msgid "If you choose '%s' please also specify your choice in the accompanying text field."
 msgstr ""
 
@@ -6928,76 +6928,76 @@ msgstr ""
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4451
+#: application/helpers/expressions/em_manager_helper.php:4464
 msgid "Unable to insert record into survey table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4470
+#: application/helpers/expressions/em_manager_helper.php:4483
 msgid "Unable to insert record into timings table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4551
+#: application/helpers/expressions/em_manager_helper.php:4564
 msgid "Error in SQL update"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5445
+#: application/helpers/expressions/em_manager_helper.php:5458
 msgid "This question is mandatory"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5459
+#: application/helpers/expressions/em_manager_helper.php:5472
 msgid "Please check at least one item."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5492
-#: application/helpers/expressions/em_manager_helper.php:5529
+#: application/helpers/expressions/em_manager_helper.php:5505
+#: application/helpers/expressions/em_manager_helper.php:5542
 msgid "Please complete all parts"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5521
+#: application/helpers/expressions/em_manager_helper.php:5534
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5537
+#: application/helpers/expressions/em_manager_helper.php:5550
 msgid "Please rank all items"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8000
+#: application/helpers/expressions/em_manager_helper.php:8013
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8006
+#: application/helpers/expressions/em_manager_helper.php:8019
 msgid "Logic File for Survey # "
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8022
+#: application/helpers/expressions/em_manager_helper.php:8035
 #: application/views/admin/survey/editLocalSettings_view.php:15
 #: application/views/admin/survey/surveySummary_view.php:40
 msgid "Welcome:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8036
+#: application/helpers/expressions/em_manager_helper.php:8049
 #: application/views/admin/survey/surveySummary_view.php:117
 msgid "End URL"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8040
+#: application/helpers/expressions/em_manager_helper.php:8053
 msgid "Name [ID]"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8040
+#: application/helpers/expressions/em_manager_helper.php:8053
 msgid "Relevance [Validation] (Default)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8040
+#: application/helpers/expressions/em_manager_helper.php:8053
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8092
-#: application/helpers/expressions/em_manager_helper.php:8342
+#: application/helpers/expressions/em_manager_helper.php:8105
+#: application/helpers/expressions/em_manager_helper.php:8355
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8100
+#: application/helpers/expressions/em_manager_helper.php:8113
 #: application/views/admin/survey/Question/editQuestion_view.php:53
 #: application/views/admin/survey/Question/editQuestion_view.php:57
 #: application/views/admin/survey/Question/editQuestion_view.php:81
@@ -7008,47 +7008,47 @@ msgstr ""
 msgid "Help:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8101
+#: application/helpers/expressions/em_manager_helper.php:8114
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8118
+#: application/helpers/expressions/em_manager_helper.php:8131
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8118
+#: application/helpers/expressions/em_manager_helper.php:8131
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8244
+#: application/helpers/expressions/em_manager_helper.php:8257
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8256
+#: application/helpers/expressions/em_manager_helper.php:8269
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8414
+#: application/helpers/expressions/em_manager_helper.php:8427
 msgid "This question has at least %s error."
 msgid_plural "This question has at least %s errors."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/helpers/expressions/em_manager_helper.php:8453
+#: application/helpers/expressions/em_manager_helper.php:8466
 msgid "%s question contains errors that need to be corrected"
 msgid_plural "%s questions contain errors that need to be corrected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/helpers/expressions/em_manager_helper.php:8459
+#: application/helpers/expressions/em_manager_helper.php:8472
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8462
+#: application/helpers/expressions/em_manager_helper.php:8475
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8465
+#: application/helpers/expressions/em_manager_helper.php:8478
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 

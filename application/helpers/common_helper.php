@@ -5948,7 +5948,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
 
     foreach ($aFieldMap as $sKey=>$fname)
     {
-        if (!is_null($idrow[$fname['fieldname']]))
+        if (LimeExpressionManager::QuestionIsRelevant($fname['qid']))
         {
             $aRelevantFields[$sKey]=$fname;
         }
@@ -5974,7 +5974,9 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
             if ($oldgid !== $fname['gid'])
             {
                 $oldgid = $fname['gid'];
-                $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
+                if (LimeExpressionManager::GroupIsRelevant($fname['gid'])) {
+                    $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
+                }
             }
         }
         if (!empty($fname['qid']))
