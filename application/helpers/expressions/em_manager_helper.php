@@ -2528,7 +2528,7 @@
                     else {
                         $othertext = $this->gT('other');
                     }
-                    $qtips['other_comment_mandatory']=sprintf($this->gT("If necessary, please specify the ‘%s’ text field"),$othertext);
+                    $qtips['other_comment_mandatory']=sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
                 }
 
                 // regular expression validation
@@ -5467,7 +5467,7 @@
                             else {
                                 $othertext = $LEM->gT('Other:');
                             }
-                            $mandatoryTip .= "<br />\n".sprintf($this->gT("If necessary, please specify the ‘%s’ text field"),$othertext);
+                            $mandatoryTip .= "<br />\n".sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
                         }
                         break;
                     case 'X':   // Boilerplate can never be mandatory
@@ -7158,12 +7158,12 @@ EOD;
             }
         }
 
-        private function gT($string)
+        private function gT($string,  $escapemode = 'html')
         {
             // eventually replace this with i8n
             if (isset(Yii::app()->lang))
             {
-                return htmlspecialchars(Yii::app()->lang->gT($string),ENT_QUOTES);
+                return Yii::app()->lang->gT($string, $escapemode);
             }
             else
             {
