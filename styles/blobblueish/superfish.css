@@ -36,8 +36,8 @@
 	z-index:		99;
 }
 
-.sf-menu.sf-js-enabled li:hover ul,
-.sf-menu.sf-js-enabled li.sfHover ul {
+.sf-menu li:hover ul,
+.sf-menu li.sfHover ul {
 	top:			44px; 
 }
 
