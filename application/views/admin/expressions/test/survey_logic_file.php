@@ -8,11 +8,6 @@ if (count($_GET) > 0) {
     }
     $_REQUEST['LEM_PRETTY_PRINT_ALL_SYNTAX'] = 'Y';
 
-    $surveyinfo = getSurveyInfo(sanitize_int($_REQUEST['sid']));
-    if (isset($surveyinfo['assessments']) && $surveyinfo['assessments']=='Y')
-    {
-        $_REQUEST['assessments'] = 'Y';
-    }
 }
 
 $clang = Yii::app()->lang;
