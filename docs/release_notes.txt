@@ -57,6 +57,33 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.00+ (build 121024) to 2.00+ (build 121025) Oct 25, 2012
+-Fixed issue #6775: If a closed survey with tokens is de-activated and then re-activated you cannot take the survey anymore (Menno Dekker)
+-Fixed issue #6732: Unable to register for survey after attribute fields were removed from token table (Carsten Schmitz)
+-Fixed issue #6741: File upload question: Unable to remove uploaded file (Carsten Schmitz)
+-Fixed issue #6745: Bad return url when trying to delete a question with condition (Denis Chenu)
+-Fixed issue #6746: Ckeditor limereplacment field crash at survey creation when debug mode is activated (Carsten Schmitz)
+-Fixed issue #6765: Database export is not available when 'debug'>0 (Carsten Schmitz)
+-Fixed issue #6766 : Export filtered results not working (Denis Chenu)
+-Fixed issue #6767: Error when attempting to view survey logic file. (Carsten Schmitz)
+-Fixed issue #6769: In tokens list, searching by more than one criteria does not work (Carsten Schmitz)
+-Fixed issue #6772: Unable to delete question on MSSQL (Carsten Schmitz)
+-Fixed issue #6774: Multiple ranking questions produce max-answers error (Denis Chenu)
+-Fixed issue: Bad emplacement for sub sub menu in surveybar menu (Denis Chenu)
+-Fixed issue: Change completionstate in browse can show no answer if existing (Denis Chenu)
+-Fixed issue: Error on survey reactivation (Carsten Schmitz)
+-Fixed issue: Statistics take all responses, even if select complete or incomplete response (Denis Chenu)
+-Fixed issue: Unable to use Popup HTML editor at survey creation (Denis Chenu)
+-Fixed issue: Unlink error in ComfortUpdate if to be deleted file is writable but the directory permissions are set to read-only (Carsten Schmitz)
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Italian by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Serbian by OnSpot
+#Updated translation: Serbian (Latin script) by OnSpot
+
+
 Changes from 2.00+ (build 121019) to 2.00+ (build 121024) Oct 24, 2012
 -Fixed issue #4335: Quartile calculations are off (Menno Dekker)
 -Fixed issue #6644: Creating PDF statistics containing questions of multi numeric value type cause infinite loop (Menno Dekker)
