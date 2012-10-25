@@ -190,7 +190,7 @@ class update extends Survey_Common_Action
 
     private function _checkReadOnlyFile($file, $rootdir, &$readonlyfiles)
     {
-        if ($file['type'] == 'A' && !file_exists($rootdir . $file['file'])) {
+        if ($file['type'] == 'A' && !file_exists($rootdir . $file['file']) || ($file['type'] == 'D' && file_exists($rootdir . $file['file']))) {
             $searchpath = $rootdir . $file['file'];
             $is_writable = is_writable(dirname($searchpath));
             while (!$is_writable && strlen($searchpath) > strlen($rootdir))
