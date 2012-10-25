@@ -261,8 +261,12 @@ function activateSurvey($iSurveyID, $simulate = false)
 
     //Get list of questions for the base language
     $fieldmap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($iSurveyID));
-
+    
     $createsurvey = array();
+    if ($prow->anonymized == 'N') {
+        $createsurvey['token'] = "VARCHAR(36)";
+    }
+    
     foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)
     {
         switch($arow['type'])
@@ -340,12 +344,6 @@ function activateSurvey($iSurveyID, $simulate = false)
             case "url":
                 if ($prow->refurl == "Y")
                     $createsurvey[$arow['fieldname']] = "text";
-                break;
-            case "token":
-                if ($prow->anonymized == "N")
-                {
-                    $createsurvey[$arow['fieldname']] = "VARCHAR(36)";
-                }
                 break;
             case '*': // Equation
                 $createsurvey[$arow['fieldname']] = "text";
