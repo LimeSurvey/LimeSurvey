@@ -65,13 +65,14 @@ $(document).ready(function() {
         <option value='email'>"+colNames[4]+"</option>\n\
         <option value='emailstatus'>"+colNames[5]+"</option>\n\
         <option value='token'>"+colNames[6]+"</option>\n\
-        <option value='sent'>"+colNames[7]+"</option>\n\
-        <option value='remindersent'>"+colNames[8]+"</option>\n\
-        <option value='remindercount'>"+colNames[9]+"</option>\n\
-        <option value='completed'>"+colNames[10]+"</option>\n\
-        <option value='usesleft'>"+colNames[11]+"</option>\n\
-        <option value='validfrom'>"+colNames[12]+"</option>\n\
-        <option value='validuntil'>"+colNames[13]+"</option>\n\
+        <option value='language'>"+colNames[7]+"</option>\n\
+        <option value='sent'>"+colNames[8]+"</option>\n\
+        <option value='remindersent'>"+colNames[9]+"</option>\n\
+        <option value='remindercount'>"+colNames[10]+"</option>\n\
+        <option value='completed'>"+colNames[11]+"</option>\n\
+        <option value='usesleft'>"+colNames[12]+"</option>\n\
+        <option value='validfrom'>"+colNames[13]+"</option>\n\
+        <option value='validuntil'>"+colNames[14]+"</option>\n\
         </select>\n\</td>\n\<td>\n\
         <select name='condition_"+id+"' id='condition_"+id+"'>\n\
         <option value='equal'>"+searchtypes[0]+"</option>\n\
@@ -279,7 +280,7 @@ $(document).ready(function() {
                 $(this).dialog("close");
             };
             dialog_buttons[resetBtn]=function(){
-                $("#displaytokens").jqGrid('setGridParam', { search: false, postData: { "filters": ""} }).trigger("reloadGrid");
+                $("#displaytokens").jqGrid('setGridParam', { url:jsonUrl, search: false, postData: { "filters": ""} }).trigger("reloadGrid");
                 $(this).dialog("close");
             };
             /* End of building array for button functions */
