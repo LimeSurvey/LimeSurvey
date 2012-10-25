@@ -111,7 +111,7 @@ class RegisterController extends LSYii_Controller {
 
         // Check for additional fields
         $attributeinsertdata = array();
-        foreach ($thissurvey['attributedescriptions'] as $field => $data)
+        foreach (GetParticipantAttributes($surveyid) as $field => $data)
         {
             if (empty($data['show_register']) || $data['show_register'] != 'Y')
                 continue;
