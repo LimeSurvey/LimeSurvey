@@ -8,7 +8,7 @@
     <br /><br />
     <?php echo $resultnum; ?>
     <?php $clang->eT("Results from LDAP Query."); ?><br />
-    <?php echo $xv; ?> <?php $clang->eT("Records met minumum requirements"); ?>.<br />
+    <?php printf($clang->gT("%s records met minimum requirements"),$xv); ?><br />
     <?php echo $xz; ?> <?php $clang->eT("Records imported"); ?>.<br />
     <?php echo $xy; ?> <?php $clang->eT("Duplicate records removed"); ?>
     [<a href='#' onclick='$("#duplicateslist").toggle();'><?php $clang->eT("List"); ?></a>]
