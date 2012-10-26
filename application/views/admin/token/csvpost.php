@@ -14,7 +14,7 @@
 
     <ul>
         <li><?php printf($clang->gT("%s records in CSV"), $recordcount); ?></li>
-        <li><?php printf($clang->gT("%s records met minumum requirements"), $xv); ?></li>
+        <li><?php printf($clang->gT("%s records met minimum requirements"), $xv); ?></li>
         <li><?php printf($clang->gT("%s records imported"), $xz); ?></li>
     </ul>
 
