@@ -27,6 +27,9 @@ $(document).ready(function() {
         rowList: [25,50,100,250,500,1000,5000],
         multiselect: true,
         pager: "#pager",
+        pgtext: pagerMsg,
+        emptyrecords: emptyRecordsTxt,
+        recordtext: viewRecordTxt
     });
 
     jQuery.extend($.fn.fmatter , {
@@ -52,7 +55,11 @@ $(document).ready(function() {
     jQuery('#attributeControl').jqGrid('navGrid', '#pager',
                                        { add:true,
                                          edit:false,
-                                         del:true},
+                                         del:true,
+                                         addtitle: addCaption,
+                                         deltitle: deleteCaption,
+                                         searchtitle: searchMsg,
+                                         refreshtitle: refreshMsg},
                                        {}, //Default settings for edit
                                        { addCaption: addCaption,
                                          closeAfterAdd: true,
@@ -86,6 +93,12 @@ $(document).ready(function() {
                                          closeAfterReset: true}, //Default settings for search
                                        {closeAfterAdd:true}
                                       );
+    jQuery('#attributeControl').jqGrid = {
+        del: {
+            caption: "Delete oh yeah!",
+            addCaption: "Blah blah",
+        }
+    };
 
 });
 

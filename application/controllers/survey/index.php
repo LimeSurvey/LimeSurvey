@@ -356,7 +356,7 @@ class index extends CAction {
             sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
 
-            $this->_niceExit($redata, __LINE__, $thistpl, $asMessage);
+            $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
         }
 
         //MAKE SURE SURVEY IS ALREADY VALID
@@ -369,7 +369,7 @@ class index extends CAction {
             sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
 
-            $this->_niceExit($redata, __LINE__, $thistpl, $asMessage);
+            $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
         }
 
         //CHECK FOR PREVIOUSLY COMPLETED COOKIE
@@ -384,7 +384,7 @@ class index extends CAction {
             sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
 
-            $this->_niceExit($redata, __LINE__, $thistpl, $asMessage);
+            $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
         }
 
         if (isset($_GET['loadall']) && $_GET['loadall'] == "reload")

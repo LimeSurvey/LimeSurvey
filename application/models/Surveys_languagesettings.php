@@ -84,25 +84,26 @@ class Surveys_languagesettings extends CActiveRecord
             array('email_admin_responses_subj','lsdefault'),
             array('email_admin_responses','lsdefault'),
 
-            array('surveyls_email_invite_subj','xssfilter'),
-            array('surveyls_email_invite','xssfilter'),
-            array('surveyls_email_remind_subj','xssfilter'),
-            array('surveyls_email_remind','xssfilter'),
-            array('surveyls_email_confirm_subj','xssfilter'),
-            array('surveyls_email_confirm','xssfilter'),
-            array('surveyls_email_register_subj','xssfilter'),
-            array('surveyls_email_register','xssfilter'),
-            array('email_admin_notification_subj','xssfilter'),
-            array('email_admin_notification','xssfilter'),
-            array('email_admin_responses_subj','xssfilter'),
-            array('email_admin_responses','xssfilter'),
+            array('surveyls_email_invite_subj','LSYii_Validators'),
+            array('surveyls_email_invite','LSYii_Validators'),
+            array('surveyls_email_remind_subj','LSYii_Validators'),
+            array('surveyls_email_remind','LSYii_Validators'),
+            array('surveyls_email_confirm_subj','LSYii_Validators'),
+            array('surveyls_email_confirm','LSYii_Validators'),
+            array('surveyls_email_register_subj','LSYii_Validators'),
+            array('surveyls_email_register','LSYii_Validators'),
+            array('email_admin_notification_subj','LSYii_Validators'),
+            array('email_admin_notification','LSYii_Validators'),
+            array('email_admin_responses_subj','LSYii_Validators'),
+            array('email_admin_responses','LSYii_Validators'),
 
-            array('surveyls_title','xssfilter'),
-            array('surveyls_description','xssfilter'),
-            array('surveyls_welcometext','xssfilter'),
-            array('surveyls_endtext','xssfilter'),
-            array('surveyls_urldescription','xssfilter'),
-            
+            array('surveyls_title','LSYii_Validators'),
+            array('surveyls_description','LSYii_Validators'),
+            array('surveyls_welcometext','LSYii_Validators'),
+            array('surveyls_endtext','LSYii_Validators'),
+            array('surveyls_url','LSYii_Validators','isUrl'=>true),
+            array('surveyls_urldescription','LSYii_Validators'),
+
             array('surveyls_dateformat', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'12', 'allowEmpty'=>true), 
             array('surveyls_numberformat', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true), 
         );
@@ -139,26 +140,6 @@ class Surveys_languagesettings extends CActiveRecord
         }
 
          if (empty($this->$attribute)) $this->$attribute=$aDefaultTextData[$attribute];
-    }
-
-
-    /**
-    * Defines the customs validation rule xssfilter
-    *
-    * @param mixed $attribute
-    * @param mixed $params
-    */
-    public function xssfilter($attribute,$params)
-    {
-        if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-        {
-            $filter = new CHtmlPurifier();
-            $filter->options = array('URI.AllowedSchemes'=>array(
-            'http' => true,
-            'https' => true,
-            ));
-            $this->$attribute = $filter->purify($this->$attribute);
-        }
     }
 
 

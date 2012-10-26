@@ -2,10 +2,10 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
 // TODO : advanced setting in attributes
   if (typeof showpopups === 'undefined'){showpopups=true;}
   if (typeof samechoiceheight === 'undefined'){samechoiceheight=true;}
-  if (typeof samelistheight === 'undefined'){samelistheight=true;}
-  maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
-  rankingname= $("#ranking-"+qID+"-name").text();
-  rankingnamewidth=rankingname.length;
+  if (typeof samelistheight === 'undefined'){ samelistheight=true;}
+  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
+  var rankingname= $("#ranking-"+qID+"-name").text();
+  var rankingnamewidth=rankingname.length;
   //Add a class to the question
   $('#question'+qID+'').addClass('dragDropRanking');
   // Hide the default answers list
@@ -101,6 +101,9 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   }
 
 function updateDragDropRank(qID){
+  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
+  var rankingname= $("#ranking-"+qID+"-name").text();
+  var rankingnamewidth=rankingname.length;
   $('#question'+qID+' .select-item select').val('');
   $('#sortable-rank-'+qID+' li').each(function(index) {
     // Get value of ranked item
@@ -124,6 +127,9 @@ function sortableAlert (qID,showpopups)
     }
 }
 function loadDragDropRank(qID){
+  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
+  var rankingname= $("#ranking-"+qID+"-name").text();
+  var rankingnamewidth=rankingname.length;
   $('#question'+qID+' .select-item select').each(function(){
     if($(this).val()!=''){
         $('#sortable-choice-'+qID+' li#'+rankingname+$(this).val()).appendTo('#sortable-rank-'+qID);

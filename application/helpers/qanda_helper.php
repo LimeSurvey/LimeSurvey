@@ -583,7 +583,8 @@ function return_timer_script($aQuestionAttributes, $q, $disable=null) {
 function return_array_filter_strings($q, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
     $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
     $htmltbody2 .= ($class !== null) ? " class='$class'": "";
-    if (isset($_SESSION['relevanceStatus'][$rowname]) && !$_SESSION['relevanceStatus'][$rowname])
+    $surveyid=$thissurvey['sid'];
+    if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname])
     {
         // If using exclude_all_others, then need to know whether irrelevant rows should be hidden or disabled
         if (isset($aQuestionAttributes['exclude_all_others']))

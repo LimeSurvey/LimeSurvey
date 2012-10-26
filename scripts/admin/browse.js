@@ -18,7 +18,12 @@ $(document).ready(function(){
     $("#selectall").click(function(){
         $('.cbResponseMarker').attr('checked',$(this).attr('checked'));
     });
-
+    // Update the responses table if completionstate change
+    $("#browseresults #completionstate").change(function(){
+        $("#limit").val('');
+        $("#browseresults").submit();
+    });
+    
     $('#browseresponses').qtip({
         content:{
             text:$('#browselangpopup')
@@ -32,7 +37,7 @@ $(document).ready(function(){
                 color: '#EADF95'}
         },
         position: { adjust: {
-                screen: true, scroll:true },
+            screen: true, scroll:true },
             corner: {
                 target: 'bottomMiddle',
                 tooltip: 'topMiddle'}
@@ -89,7 +94,7 @@ $(document).ready(function(){
         thisid=removechars($(this).attr('id'));
         answer = confirm(strdeleteconfirm);
         if (answer==true)
-            {
+        {
             $('#deleteanswer').val(thisid);
             $('.cbResponseMarker').attr('checked',false);
             $('#resulttableform').submit();
@@ -98,11 +103,11 @@ $(document).ready(function(){
     // Delete all marked responses
     $("#imgDeleteMarkedResponses").click(function(){
         if ($('.cbResponseMarker:checked').size()>0)
-            {
+        {
             thisid=removechars($(this).attr('id'));
             answer = confirm(strDeleteAllConfirm);
             if (answer==true)
-                {
+            {
                 $('#deleteanswer').val('marked');
                 $('#resulttableform').submit();
             }
@@ -122,7 +127,7 @@ $(document).ready(function(){
     // Download all marked files
     $("#imgDownloadMarkedFiles").click(function() {
         if ($('.cbResponseMarker:checked').size() > 0)
-            {
+        {
             $('#downloadfile').val('marked');
             $('#resulttableform').submit();
         }
@@ -201,23 +206,21 @@ Send a post request to the server to download a file
 @param data         parameters for $_POST
 
 */
-function sendPost(myaction, data)
+function sendPost(myaction, checkcode, arrayparam, arrayval)
 {
     var myform = document.createElement('form');
     document.body.appendChild(myform);
-    myform.action = myaction;
+    myform.action =myaction;
     myform.method = 'POST';
-
-    for (var key in data) {
-        var myel = document.createElement('input');
-        myel.type = 'hidden';
-        myel.name = key;
-        myform.appendChild(myel);
-        myel.value = data[key];
+    for (i=0;i<arrayparam.length;i++)
+    {
+        addHiddenElement(myform,arrayparam[i],arrayval[i])
     }
-
+    addHiddenElement(myform,'checksessionbypost',checkcode)
     myform.submit();
 }
+
+
 
 
 /**
@@ -228,12 +231,19 @@ Dowload a file from a response
 */
 function getFile(id, field, filename)
 {
-    sendPost(siteURL + "/admin/responses/" + surveyID + "/grid", {
-        'id': id,
-        'fieldname': field,
-        'oper': 'downloadfile',
-        'filename': filename
-    });
+    sendPost(siteURL + "/admin/responses/" + surveyID + "/grid", 
+        new Array(
+            'id',
+            'fieldname',
+            'oper',
+            'filename'
+        ),
+        new Array(
+            id,
+            field,
+            'downloadfile',
+            filename
+    ));
 }
 
 
@@ -243,9 +253,13 @@ Get an archive containing all the file from a response
 */
 function getArchive(id)
 {
-    sendPost(siteURL + "/admin/responses/" + surveyID + "/grid", {
-        'oper': 'downloadarchive',
-        'id': id
-    });
+    sendPost(siteURL + "/admin/responses/" + surveyID + "/grid", 
+        new Array(
+            'oper',
+            'id'),
+        new Array(
+            'downloadarchive',
+            id)        
+    );
 }
 

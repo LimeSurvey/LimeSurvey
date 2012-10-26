@@ -205,8 +205,12 @@ function activateSurvey($iSurveyID, $simulate = false)
 
     //Get list of questions for the base language
     $fieldmap = createFieldMap($iSurveyID,true,false,getBaseLanguageFromSurveyID($iSurveyID));
-
+    
     $createsurvey = array();
+    if ($prow->anonymized == 'N') {
+        $createsurvey['token'] = "VARCHAR(36)";
+    }
+    
     foreach ($fieldmap as $q) //With each question, create the appropriate field(s)
     {
         switch($q->fieldname)

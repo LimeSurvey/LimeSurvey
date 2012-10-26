@@ -9,8 +9,6 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-*
-*   $Id$
 */
 
 class SurveyRuntimeHelper {
@@ -161,7 +159,6 @@ class SurveyRuntimeHelper {
                 LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
                 unset($_SESSION[$LEMsessid]['LEMtokenResume']);
-                unset($_SESSION[$LEMsessid]['LEMreload']);
             }
             else if (!$LEMskipReprocessing)
                 {
@@ -177,16 +174,7 @@ class SurveyRuntimeHelper {
                 }
                 if (isset($move) && $move == "movenext")
                 {
-                    if (isset($_SESSION[$LEMsessid]['LEMreload']))
-                    {
-                        LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false, $LEMdebugLevel);
-                        $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);   // if late in the survey, will re-validate contents, which may be overkill
-                        unset($_SESSION[$LEMsessid]['LEMreload']);
-                    }
-                    else
-                    {
-                        $moveResult = LimeExpressionManager::NavigateForwards();
-                    }
+                    $moveResult = LimeExpressionManager::NavigateForwards();
                 }
                 if (isset($move) && ($move == 'movesubmit'))
                 {
@@ -408,8 +396,7 @@ class SurveyRuntimeHelper {
                 {
                     if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
                     {
-                        $cookiename = "PHPSID" . returnGlobal('sid') . "STATUS";
-                        //                        setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days   //@todo fix - sometimes results in headers already sent error
+                        setcookie("LS_" . $surveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days   
                     }
 
 

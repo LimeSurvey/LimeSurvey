@@ -162,5 +162,9 @@ class jsonRPCClient {
 			return true;
 		}
 	}
+        
+        public function call($method, $params) {
+            return $this->__call($method, $params);
+        }
 }
 ?>

@@ -9,7 +9,7 @@
             <tr>
                 <td align='center'>
                     <?php $clang->eT("Showing Filtered Results"); ?><br />
-                    [<a href=\"javascript:window.close()\"><?php $clang->eT("Close"); ?></a>]
+                    [<a href="javascript:window.close()"><?php $clang->eT("Close"); ?></a>]
                 </td>
             </tr>
         </table>

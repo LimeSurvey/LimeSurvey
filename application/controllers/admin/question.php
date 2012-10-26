@@ -376,7 +376,7 @@ class question extends Survey_Common_Action
             $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$baselang'");
             $cacount = Answers::model()->count($ans);
             if (!empty($cacount))
-                Answers::updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
+                Answers::model()->updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
         }
 
         Yii::app()->loadHelper('admin/htmleditor');
@@ -573,7 +573,7 @@ class question extends Survey_Common_Action
             ));
 
             if ($cacount)
-                Answers::updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
+                Answers::model()->updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
         }
 
         Yii::app()->loadHelper('admin/htmleditor');
@@ -865,17 +865,24 @@ class question extends Survey_Common_Action
             // Check if any other questions have conditions which rely on this question. Don't delete if there are.
             // TMSW Conditions->Relevance:  Allow such deletes - can warn about missing relevance separately.
             $ccresult = Conditions::model()->findAllByAttributes(array('cqid' => $qid));
-
             $cccount = count($ccresult);
-            foreach ($ccresult as $ccr)
-                $qidarray[] = $ccr->qid;
-
-            if (isset($qidarray))
-                $qidlist = implode(", ", $qidarray);
 
             // There are conditions dependent on this question
             if ($cccount)
-                $this->getController()->error($clang->gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"));
+            {
+                foreach ($ccresult as $ccr)
+                {
+                    $qidarray[] = $ccr->qid;
+                }
+                if (isset($qidarray))
+                    $qidlist = implode(", ", $qidarray);
+                $message =$clang->gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
+                $message .="<br /><a href='". $this->getController()->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}")."' >".$clang->gT("Look at survey logic files")."</a>.";
+                $this->getController()->error(
+                    $message,
+                    $this->getController()->createUrl("admin/survey/view/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}")
+                    );
+            }
             else
             {
                 $row = Questions::model()->findByAttributes(array('qid' => $qid))->attributes;
@@ -888,14 +895,15 @@ class question extends Survey_Common_Action
                 Answers::model()->deleteAllByAttributes(array('qid' => $qid));
 
                 $criteria = new CDbCriteria;
-                $criteria->addCondition('qid = :qid or parent_qid = :qid');
-                $criteria->params[':qid'] = $qid;
+                $criteria->addCondition('qid = :qid1 or parent_qid = :qid2');
+                $criteria->params[':qid1'] = $qid;
+                $criteria->params[':qid2'] = $qid;
                 Questions::model()->deleteAll($criteria);
 
                 Defaultvalues::model()->deleteAllByAttributes(array('qid' => $qid));
                 Quota_members::model()->deleteAllByAttributes(array('qid' => $qid));
 
-                Questions::updateQuestionOrder($gid, $surveyid);
+                Questions::model()->updateQuestionOrder($gid, $surveyid);
 
                 $qid = "";
                 $postqid = "";

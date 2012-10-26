@@ -39,8 +39,7 @@
         </li>
         <?php
             // now the attribute fieds
-            $attrfieldnames = $thissurvey['attributedescriptions'];
-            foreach ($attrfieldnames as $attr_name => $attr_description)
+            foreach ($aAttributeFields as $attr_name => $attr_description)
             {
             ?>
             <li>

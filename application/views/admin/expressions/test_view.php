@@ -38,6 +38,6 @@
     </tr>
     <tr>
         <td><a href="<?php echo $this->createUrl('admin/expressions/survey_logic_file'); ?>">Show Survey logic file</a></td>
-        <td>Shows the logic for the survey (e.g. relevance, validation), and all tailoring</td>
+        <td>Shows the logic for a survey (e.g. relevance, validation), and all tailoring</td>
     </tr>
 </table>
