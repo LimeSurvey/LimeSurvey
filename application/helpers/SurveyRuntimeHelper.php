@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*    $Id$
 */
 
 class SurveyRuntimeHelper {
@@ -112,8 +112,8 @@ class SurveyRuntimeHelper {
                 LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
             }
 
-			$totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
-			
+            $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
+            
             if (!isset($_SESSION[$LEMsessid]['totalsteps']))
             {
                 $_SESSION[$LEMsessid]['totalsteps'] = 0;
@@ -398,8 +398,7 @@ class SurveyRuntimeHelper {
                 {
                     if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
                     {
-                        $cookiename = "PHPSID" . returnGlobal('sid') . "STATUS";
-                        //                        setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days   //@todo fix - sometimes results in headers already sent error
+                        setcookie("LS_" . $surveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days   
                     }
 
 
