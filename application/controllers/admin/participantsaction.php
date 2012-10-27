@@ -977,7 +977,7 @@ class participantsaction extends Survey_Common_Action
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
         $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
-
+        
         $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
         foreach ($attid as $key => $value)
@@ -1000,7 +1000,7 @@ class participantsaction extends Survey_Common_Action
                 $username = User::model()->getName($row['owner_uid']); //for conversion of uid to human readable names
                 $surveycount = Participants::model()->getSurveyCount($row['participant_id']);
                 $sortablearray[$i] = array($row['participant_id'], "true", $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $username[0]['full_name']); // since it's the admin he has access to all editing on the participants inspite of what can_edit option is
-                $attributes = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($row['participant_id']);
+                
                 foreach ($attid as $iAttributeId)
                 {
                     $answer = ParticipantAttributeNames::model()->getAttributeValue($row['participant_id'], $iAttributeId['attribute_id']);
@@ -1049,7 +1049,7 @@ class participantsaction extends Survey_Common_Action
                 $surveycount = Participants::model()->getSurveyCount($row['participant_id']);
                 $ownername = User::model()->getName($row['owner_uid']); //for conversion of uid to human readable names
                 $sortablearray[$i] = array($row['participant_id'], $row['can_edit'], $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $ownername[0]['full_name']);
-                $attributes = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($row['participant_id']);
+                
                 foreach ($attid as $iAttributeId)
                 {
                     $answer = ParticipantAttributeNames::model()->getAttributeValue($row['participant_id'], $iAttributeId['attribute_id']);
