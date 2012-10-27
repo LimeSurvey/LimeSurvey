@@ -160,11 +160,11 @@ class export extends Survey_Common_Action {
             $selecthide = "";
             $selectshow = "";
             $selectinc = "";
-            if ( incompleteAnsFilterState() == "filter" )
+            if ( incompleteAnsFilterState() == "complete" )
             {
                 $selecthide = "selected='selected'";
             }
-            elseif ( incompleteAnsFilterState() == "inc" )
+            elseif ( incompleteAnsFilterState() == "incomplete" )
             {
                 $selectinc = "selected='selected'";
             }
@@ -228,7 +228,6 @@ class export extends Survey_Common_Action {
         $options->headerSpacesToUnderscores = $convertspacetous;
         $options->headingFormat = $exportstyle;
         $options->responseCompletionState = incompleteAnsFilterState();
-        if ( $options->responseCompletionState =='all' ){$options->responseCompletionState =='show';}
 
         // Replace token information by the column name
         if ( in_array('first_name', Yii::app()->request->getPost('attribute_select', array())) )
@@ -286,9 +285,7 @@ class export extends Survey_Common_Action {
     {
         global $length_vallabel;
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
-        $subaction = Yii::app()->request->getParam('subaction');
-
-        $clang = $this->getController()->lang;
+        $clang = $this->getController()->lang; 
         //for scale 1=nominal, 2=ordinal, 3=scale
 
         $filterstate = incompleteAnsFilterState();
@@ -323,11 +320,11 @@ class export extends Survey_Common_Action {
                 $iLength = '16384'; // Set the max text length of the Value
         }
 
-        $headerComment = '*$Rev: 10193 $' . " $filterstate $spssver.\n";
+        $headerComment = '*$Rev: 121017 $' . " $filterstate $spssver.\n";
 
         if ( isset($_POST['dldata']) ) $subaction = "dldata";
         if ( isset($_POST['dlstructure']) ) $subaction = "dlstructure";
-
+        
         if  ( ! isset($subaction) )
         {
             $selecthide = "";
@@ -336,10 +333,10 @@ class export extends Survey_Common_Action {
 
             switch ($filterstate)
             {
-                case "inc":
+                case "incomplete":
                     $selectinc="selected='selected'";
                     break;
-                case "filter":
+                case "complete":
                     $selecthide="selected='selected'";
                     break;
                 default:
@@ -354,15 +351,13 @@ class export extends Survey_Common_Action {
             $data['display']['menu_bars']['browse'] = $clang->gT('Export results');
 
             $this->_renderWrappedTemplate('export', 'spss_view', $data);
+            return;
         }
-        else
-        {
-            // Get Base language:
-
-            $language = Survey::model()->findByPk($iSurveyID)->language;
-            $clang = new limesurvey_lang($language);
-            Yii::app()->loadHelper("admin/exportresults");
-        }
+        
+        // Get Base language:
+        $language = Survey::model()->findByPk($iSurveyID)->language;
+        $clang = new limesurvey_lang($language);
+        Yii::app()->loadHelper("admin/exportresults");
 
         if ( $subaction == 'dldata' )
         {
@@ -442,6 +437,10 @@ class export extends Survey_Common_Action {
             {
                 echo "SET UNICODE=ON.\n";
             }
+
+            echo "SHOW LOCALE.\n";
+            echo "PRESERVE LOCALE.\n";
+            echo "SET LOCALE='en_UK'.\n";
 
             echo "GET DATA\n"
             ." /TYPE=TXT\n"
@@ -553,6 +552,7 @@ class export extends Survey_Common_Action {
                     echo "RENAME VARIABLE ( " . $field['id'] . ' = ' . $ftitle . " ).\n";
                 }
             }
+            echo "RESTORE LOCALE.\n";
             exit;
         }
     }
@@ -602,10 +602,10 @@ class export extends Survey_Common_Action {
 
             switch ( $filterstate )
             {
-                case "inc":
+                case "incomplete":
                     $selectinc = "selected='selected'";
                     break;
-                case "filter":
+                case "complete":
                     $selecthide = "selected='selected'";
                     break;
                 default:
@@ -841,11 +841,11 @@ class export extends Survey_Common_Action {
             $selecthide = "";
             $selectshow = "";
             $selectinc = "";
-            if( incompleteAnsFilterState() == "inc" )
+            if( incompleteAnsFilterState() == "incomplete" )
             {
                 $selectinc = "selected='selected'";
             }
-            elseif ( incompleteAnsFilterState() == "filter" )
+            elseif ( incompleteAnsFilterState() == "complete" )
             {
                 $selecthide = "selected='selected'";
             }
@@ -901,11 +901,11 @@ class export extends Survey_Common_Action {
             $vvoutput .= $secondline . "\n";
             $query = "SELECT * FROM ".Yii::app()->db->quoteTableName($surveytable);
 
-            if (incompleteAnsFilterState() == "inc")
+            if (incompleteAnsFilterState() == "incomplete")
             {
                 $query .= " WHERE submitdate IS NULL ";
             }
-            elseif (incompleteAnsFilterState() == "filter")
+            elseif (incompleteAnsFilterState() == "complete")
             {
                 $query .= " WHERE submitdate >= '01/01/1980' ";
             }

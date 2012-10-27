@@ -87,7 +87,7 @@ $config['allowedtemplateuploads'] = 'gif,ico,jpg,png';  // File types allowed to
 
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
-$config['memorylimit']        =  '32M';   // This sets how much memory LimeSurvey can access. 32M is the minimum (M=mb) recommended - if you are using PDF functions up to 64M may be needed
+$config['memorylimit']        =  '32';   // This sets how much memory LimeSurvey can access in megabytes. 32 mb is the minimum recommended - if you are using PDF functions up to 64 mb may be needed
 
 $config['showpopups']         =   1;                // Show popup messages if mandatory or conditional questions have not been answered correctly.
 // 1=Show popup message, 0=Show message on page instead.
@@ -505,7 +505,15 @@ $config['iSessionExpirationTime'] = 28800;
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
 
-$config['publicurl']               = Yii::app()->baseUrl . '/';                          // The public website location (url) of the public survey script
+if(!isset($argv[0]))
+{
+    $config['publicurl'] = Yii::app()->baseUrl . '/';                          // The public website location (url) of the public survey script
+}
+else
+{
+    $config['publicurl'] =  '/';
+}
+
 $config['homeurl']                 = $config['publicurl'].'admin';          // The website location (url) of the admin scripts
 $config['tempurl']                 = $config['publicurl'].'tmp';
 $config['imageurl']                = $config['publicurl'].'images';         // Location of button bar files for admin script
@@ -537,7 +545,7 @@ $config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'sty
 // $relativeurl  is the url relative to you DocumentRoot where is installed LimeSurvey.
 // Usually same as $rooturl without http://{$_SERVER['HTTP_HOST']}.
 // $relativeurl  is now automatically computed from $rooturl
-if(!isset($cmd_install) || !$cmd_install==true)
+if(!isset($argv[0]))
 {
     $parsedurl = parse_url(Yii::app()->createUrl('/'));
     $config['relativeurl'] = isset($parsedurl['path']) ? $parsedurl['path'] : "";

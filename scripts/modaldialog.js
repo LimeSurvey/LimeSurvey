@@ -192,9 +192,9 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
             }
             if (show_title != 0)
                 display += '<td class="upload title">'+jsonobj[i].title+'</td>';
-            if (show_comment != 0)
+            if (show_comment != 0)                                                                                                  
                 display += '<td class="upload comment">'+jsonobj[i].comment+'</td>';
-            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<img src="'+imageurl+'/edit.png" onclick="$(\'#upload_'+fieldname+'\').click()" style="cursor:pointer"></td></tr>';
+            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<img src="'+imageurl+'/edit.png" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();" style="cursor:pointer"></td></tr>';
         }
         display += '</tbody></table>';
 

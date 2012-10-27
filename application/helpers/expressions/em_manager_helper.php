@@ -2003,28 +2003,13 @@
                     $_minA = (($min_answers == '') ? "''" : $min_answers);
                     $_maxA = (($max_answers == '') ? "''" : $max_answers    );
                     $qtips['num_answers']=
-                        "{if((is_empty($_minA) && is_empty($_maxA)),".
-                            "'',".
-                            "if(is_empty($_maxA),".
-                                "if(($_minA)==1,".
-                                    "'".$this->gT("Please select at least one answer")."',".
-                                    "sprintf('".$this->gT("Please select at least %s answers")."',fixnum($_minA))".
-                                    "),".
-                                "if(is_empty($_minA),".
-                                    "if(($_maxA)==1,".
-                                        "'".$this->gT("Please select at most one answer")."',".
-                                        "sprintf('".$this->gT("Please select at most %s answers")."',fixnum($_maxA))".
-                                        "),".
-                                    "if(($_minA)==($_maxA),".
-                                        "if(($_minA)==1,".
-                                            "'".$this->gT("Please select one answer")."',".
-                                            "sprintf('".$this->gT("Please select %s answers")."',fixnum($_minA))".
-                                            "),".
-                                        "sprintf('".$this->gT("Please select between %s and %s answers")."',fixnum($_minA),fixnum($_maxA))".
-                                    ")".
-                                ")".
-                            ")".
-                        ")}";
+                        "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)!=1,sprintf('".$this->gT("Please select at least %s answers")."',fixnum($_minA)),'')}" .
+                        "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)==1,sprintf('".$this->gT("Please select at least one answer")."',fixnum($_minA)),'')}" .
+                        "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)!=1,sprintf('".$this->gT("Please select at most %s answers")."',fixnum($_maxA)),'')}" .
+                        "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)==1,sprintf('".$this->gT("Please select at most one answer")."',fixnum($_maxA)),'')}" .
+                        "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) == 1,'".$this->gT("Please select one answer")."','')}" .
+                        "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) != 1,sprintf('".$this->gT("Please select %s answers")."',fixnum($_minA)),'')}" .
+                        "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) != ($_maxA),sprintf('".$this->gT("Please select between %s and %s answers")."',fixnum($_minA),fixnum($_maxA)),'')}";
                 }
 
                 // min/max value for each numeric entry
@@ -2033,19 +2018,10 @@
                     $_minV = (($min_num_value_n == '') ? "''" : $min_num_value_n);
                     $_maxV = (($max_num_value_n == '') ? "''" : $max_num_value_n);
                     $qtips['value_range']=
-                        "{if((is_empty($_minV) && is_empty($_maxV)),".
-                            "'',".
-                            "if(is_empty($_maxV),".
-                                "sprintf('".$this->gT("Each answer must be at least %s")."',fixnum($_minV)),".
-                                "if(is_empty($_minV),".
-                                    "sprintf('".$this->gT("Each answer must be at most %s")."',fixnum($_maxV)),".
-                                    "if(($_minV)==($_maxV),".
-                                        "sprintf('".$this->gT("Each answer must be %s")."',fixnum($_minV)),".
-                                        "sprintf('".$this->gT("Each answer must be between %s and %s")."',fixnum($_minV),fixnum($_maxV))".
-                                    ")".
-                                ")".
-                            ")".
-                        ")}";
+                        "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('".$this->gT("Each answer must be at least %s")."',fixnum($_minV)), '')}" .
+                        "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('".$this->gT("Each answer must be at most %s")."',fixnum($_maxV)), '')}" .
+                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('".$this->gT("Each answer must be %s")."', fixnum($_minV)), '')}" .
+                        "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('".$this->gT("Each answer must be between %s and %s")."', fixnum($_minV), fixnum($_maxV)), '')}";
                 }
 
                 // min/max value for each numeric entry - for multi-flexible question type
@@ -2054,19 +2030,10 @@
                     $_minV = (($multiflexible_min == '') ? "''" : $multiflexible_min);
                     $_maxV = (($multiflexible_max == '') ? "''" : $multiflexible_max);
                     $qtips['value_range']=
-                        "{if((is_empty($_minV) && is_empty($_maxV)),".
-                            "'',".
-                            "if(is_empty($_maxV),".
-                                "sprintf('".$this->gT("Each answer must be at least %s")."',fixnum($_minV)),".
-                                "if(is_empty($_minV),".
-                                    "sprintf('".$this->gT("Each answer must be at most %s")."',fixnum($_maxV)),".
-                                    "if(($_minV)==($_maxV),".
-                                        "sprintf('".$this->gT("Each answer must be %s")."',fixnum($_minV)),".
-                                        "sprintf('".$this->gT("Each answer must be between %s and %s")."',fixnum($_minV),fixnum($_maxV))".
-                                    ")".
-                                ")".
-                            ")".
-                        ")}";
+                        "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('".$this->gT("Each answer must be at least %s")."',fixnum($_minV)), '')}" .
+                        "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('".$this->gT("Each answer must be at most %s")."',fixnum($_maxV)), '')}" .
+                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('".$this->gT("Each answer must be %s")."', fixnum($_minV)), '')}" .
+                        "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('".$this->gT("Each answer must be between %s and %s")."', fixnum($_minV), fixnum($_maxV)), '')}";
                 }
 
                 // min/max sum value
@@ -2075,19 +2042,10 @@
                     $_minV = (($min_num_value == '') ? "''" : $min_num_value);
                     $_maxV = (($max_num_value == '') ? "''" : $max_num_value);
                     $qtips['sum_range']=
-                        "{if((is_empty($_minV) && is_empty($_maxV)),".
-                            "'',".
-                            "if(is_empty($_maxV),".
-                                "sprintf('".$this->gT("The sum must be at least %s")."',fixnum($_minV)),".
-                                "if(is_empty($_minV),".
-                                    "sprintf('".$this->gT("The sum must be at most %s")."',fixnum($_maxV)),".
-                                    "if(($_minV)==($_maxV),".
-                                        "sprintf('".$this->gT("The sum must equal %s")."',fixnum($_minV)),".
-                                        "sprintf('".$this->gT("The sum must be between %s and %s")."',fixnum($_minV),fixnum($_maxV))".
-                                    ")".
-                                ")".
-                            ")".
-                        ")}";
+                        "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('".$this->gT("The sum must be at least %s")."',fixnum($_minV)), '')}" .
+                        "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('".$this->gT("The sum must be at most %s")."',fixnum($_maxV)), '')}" .
+                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('".$this->gT("The sum must equal %s")."', fixnum($_minV)), '')}" .
+                        "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('".$this->gT("The sum must be between %s and %s")."', fixnum($_minV), fixnum($_maxV)), '')}";
                 }
 
                 // min/max num files
@@ -2097,28 +2055,13 @@
                     $_maxA = (($max_num_of_files == '') ? "''" : $max_num_of_files    );
                     // TODO - create em_num_files class so can sepately style num_files vs. num_answers
                     $qtips['num_answers']=
-                        "{if((is_empty($_minA) && is_empty($_maxA)),".
-                            "'',".
-                            "if(is_empty($_maxA),".
-                                "if(($_minA)==1,".
-                                    "'".$this->gT("Please upload at least one file")."',".
-                                    "sprintf('".$this->gT("Please upload at least %s files")."',fixnum($_minA))".
-                                    "),".
-                                "if(is_empty($_minA),".
-                                    "if(($_maxA)==1,".
-                                        "'".$this->gT("Please upload at most one file")."',".
-                                        "sprintf('".$this->gT("Please upload at most %s files")."',fixnum($_maxA))".
-                                        "),".
-                                    "if(($_minA)==($_maxA),".
-                                        "if(($_minA)==1,".
-                                            "'".$this->gT("Please upload one file")."',".
-                                            "sprintf('".$this->gT("Please upload %s files")."',fixnum($_minA))".
-                                            "),".
-                                        "sprintf('".$this->gT("Please upload between %s and %s files")."',fixnum($_minA),fixnum($_maxA))".
-                                    ")".
-                                ")".
-                            ")".
-                        ")}";
+                        "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)!=1,sprintf('".$this->gT("Please upload at least %s files")."',fixnum($_minA)),'')}" .
+                        "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)==1,sprintf('".$this->gT("Please upload at least one file")."',fixnum($_minA)),'')}" .
+                        "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)!=1,sprintf('".$this->gT("Please upload at most %s files")."',fixnum($_maxA)),'')}" .
+                        "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)==1,sprintf('".$this->gT("Please upload at most one file")."',fixnum($_maxA)),'')}" .
+                        "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) == 1,'".$this->gT("Please upload one file")."','')}" .
+                        "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) != 1,sprintf('".$this->gT("Please upload %s files")."',fixnum($_minA)),'')}" .
+                        "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) != ($_maxA),sprintf('".$this->gT("Please upload between %s and %s files")."',fixnum($_minA),fixnum($_maxA)),'')}";
                 }
 
                 // equals_num_value
@@ -2136,7 +2079,7 @@
                     else {
                         $othertext = $this->gT('other');
                     }
-                    $qtips['other_comment_mandatory']=sprintf($this->gT("If necessary, please specify the ‘%s’ text field"),$othertext);
+                    $qtips['other_comment_mandatory']=sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
                 }
 
                 // regular expression validation
@@ -2711,6 +2654,19 @@
             $gseq = (isset($LEM->questionId2groupSeq[$qid]) ? $LEM->questionId2groupSeq[$qid] : -1);
             $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);   // group-level relevance based upon grelevance equation
             return ($grel && $qrel);
+        }
+        
+        /**
+         * Returns true if the group is relevant and should be shown
+         * 
+         * @param int $gid
+         * @return boolean
+         */
+        static function GroupIsRelevant($gid)
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            $gseq = $LEM->GetGroupSeq($gid);
+            return !$LEM->GroupIsIrrelevantOrHidden($gseq);
         }
 
         /**
@@ -6063,12 +6019,12 @@ EOD;
             }
         }
 
-        public function gT($string)
+        private function gT($string,  $escapemode = 'html')
         {
             // eventually replace this with i8n
             if (isset(Yii::app()->lang))
             {
-                return htmlspecialchars(Yii::app()->lang->gT($string),ENT_QUOTES);
+                return Yii::app()->lang->gT($string, $escapemode);
             }
             else
             {
@@ -6655,6 +6611,8 @@ EOD;
             // End Message
 
             $LEM =& LimeExpressionManager::singleton();
+            
+            $aSurveyInfo=getSurveyInfo($sid);
 
             $allErrors = array();
             $warnings = 0;
@@ -6694,35 +6652,35 @@ EOD;
                 );
             }
 
-            $surveyname = templatereplace('{SURVEYNAME}');
+            $surveyname = templatereplace('{SURVEYNAME}',array('SURVEYNAME'=>$aSurveyInfo['surveyls_title']));
 
             $out = '<div id="showlogicfilediv" ><H3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</H3>\n";
             $out .= "<table id='logicfiletable'>";
 
             if (is_null($gid) && is_null($qid))
             {
-                $description = templatereplace('{SURVEYDESCRIPTION}');
+                $description = templatereplace('{SURVEYDESCRIPTION}', array('SURVEYDESCRIPTION'=>$aSurveyInfo['surveyls_description']));
                 $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                 if ($description != '')
                 {
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Description:") . "</td><td colspan=2>" . $description . "</td></tr>";
                 }
 
-                $welcome = templatereplace('{WELCOME}');
+                $welcome = templatereplace('{WELCOME}', array('WELCOME'=>$aSurveyInfo['surveyls_welcometext']));
                 $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                 if ($welcome != '')
                 {
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Welcome:") . "</td><td colspan=2>" . $welcome . "</td></tr>";
                 }
 
-                $endmsg = templatereplace('{ENDTEXT}');
+                $endmsg = templatereplace('{ENDTEXT}', array('ENDTEXT'=>$aSurveyInfo['surveyls_endtext']));
                 $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                 if ($endmsg != '')
                 {
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End message:") . "</td><td colspan=2>" . $endmsg . "</td></tr>";
                 }
 
-                $_linkreplace = templatereplace('{URL}');
+                $_linkreplace = templatereplace('{URL}', array('URL'=>$aSurveyInfo['surveyls_url']));
                 $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                 if ($_linkreplace != '')
                 {

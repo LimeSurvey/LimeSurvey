@@ -28,14 +28,14 @@
 function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array())
 {
     /*
-    global $clienttoken,$token,$sitename,$move,$showxquestions,$showqnumcode,$questioncode,$register_errormsg;
+    global $clienttoken,$token,$sitename,$move,$showxquestions,$showqnumcode,$questioncode;
     global $s_lang,$errormsg,$saved_id, $relativeurl, $languagechanger,$captchapath,$loadname;
     */
     /*
     $allowedvars = array('surveylist', 'sitename', 'clienttoken', 'rooturl', 'thissurvey', 'imageurl', 'defaulttemplate',
     'percentcomplete', 'move', 'groupname', 'groupdescription', 'question', 'showxquestions',
     'showgroupinfo', 'showqnumcode', 'questioncode', 'answer', 'navigator', 'help', 'totalquestions',
-    'surveyformat', 'completed', 'register_errormsg', 'notanswered', 'privacy', 'surveyid', 'publicurl',
+    'surveyformat', 'completed', 'notanswered', 'privacy', 'surveyid', 'publicurl',
     'templatedir', 'token', 'assessments', 's_lang', 'errormsg', 'clang', 'saved_id', 'usertemplaterootdir',
     'relativeurl', 'languagechanger', 'printoutput', 'captchapath', 'loadname');
     */
@@ -57,7 +57,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     'percentcomplete',
     'privacy',
     'question',
-    'register_errormsg',
     'relativeurl',
     's_lang',
     'saved_id',
@@ -771,7 +770,6 @@ EOD;
     if (isset($surveyid) && isset($_SESSION['survey_'.$surveyid]) && isset($_SESSION['survey_'.$surveyid]['register_errormsg']))
     {
         $register_errormsg=$_SESSION['survey_'.$surveyid]['register_errormsg'];
-        unset($_SESSION['survey_'.$surveyid]['register_errormsg']);
     }
 
 

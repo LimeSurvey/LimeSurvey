@@ -17,6 +17,7 @@
 
         public function run($sArgument)
         {
+            if (!isset($sArgument) || !isset($sArgument[0]) || !isset($sArgument[1]) || !isset($sArgument[2]) || !isset($sArgument[3])) die('You have to set admin/password/full name and email address on the command line like this: php starter.php adminname mypassword fullname emailaddress');
             Yii::import('application.helpers.common_helper', true);
             $aConfig=Yii::app()->getComponents(false);
             $bDatabaseExists=true;
@@ -122,7 +123,23 @@
                 default:
                     throw new Exception(sprintf('Unkown database type "%s".', $sDatabaseType));
             }
-            return $this->_executeSQLFile(dirname(Yii::app()->basePath).'/installer/sql/create-'.$sql_file.'.sql', $aConfig['db']['tablePrefix']);        
+            $this->_executeSQLFile(dirname(Yii::app()->basePath).'/installer/sql/create-'.$sql_file.'.sql', $aConfig['db']['tablePrefix']);        
+            $this->connection->createCommand()->insert($aConfig['db']['tablePrefix'].'users', array(
+            'users_name'=>$sArgument[0],
+            'password'=>hash('sha256',$sArgument[1]),
+            'full_name'=>$sArgument[2],
+            'parent_id'=>0,
+            'lang'=>'auto',
+            'email'=>$sArgument[3],
+            'create_survey'=>1,
+            'participant_panel'=>1,
+            'create_user'=>1,
+            'delete_user'=>1,
+            'superadmin'=>1,
+            'configurator'=>1,
+            'manage_template'=>1,
+            'manage_label'=>1
+            ));
 
         }
 

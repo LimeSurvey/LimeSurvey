@@ -232,6 +232,8 @@ class UserAction extends Survey_Common_Action
                         $aData['current_user'] = $current_user;
 
                         $aViewUrls['deluser'][] = $aData;
+                        $this->_renderWrappedTemplate('user', $aViewUrls);
+                        
                     }
                 }
                 else

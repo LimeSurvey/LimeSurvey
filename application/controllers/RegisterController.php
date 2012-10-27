@@ -38,6 +38,7 @@ class RegisterController extends LSYii_Controller {
         Yii::import('application.libraries.Limesurvey_lang');
         Yii::app()->lang = new Limesurvey_lang($baselang);
         echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata,'register.php',false,NULL,$data);
+        unset($_SESSIOn['survey_'.$surveyid]['register_errormsg']);
 
     }
 
@@ -110,7 +111,7 @@ class RegisterController extends LSYii_Controller {
 
         // Check for additional fields
         $attributeinsertdata = array();
-        foreach ($thissurvey['attributedescriptions'] as $field => $data)
+        foreach (GetParticipantAttributes($surveyid) as $field => $data)
         {
             if (empty($data['show_register']) || $data['show_register'] != 'Y')
                 continue;
@@ -220,7 +221,7 @@ class RegisterController extends LSYii_Controller {
         if (getEmailFormat($surveyid) == 'html')
         {
             $useHtmlEmail = true;
-            $surveylink = $this->createAbsoluteUrl(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
+            $surveylink = $this->createAbsoluteUrl($surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
             $optoutlink = $this->createAbsoluteUrl('optout/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
             $optinlink = $this->createAbsoluteUrl('optin/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
             $fieldsarray["{SURVEYURL}"]="<a href='$surveylink'>".$surveylink."</a>";

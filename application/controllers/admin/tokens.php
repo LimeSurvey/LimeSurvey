@@ -433,16 +433,10 @@ class tokens extends Survey_Common_Action
         $finalcondition = array();
         $condition = explode("||", $searchcondition);
         $aData = new stdClass();
-        if (count($condition) == 3)
-        {
-            $records = Tokens_dynamic::model($iSurveyId)->getSearch($condition, $page, $limit);
-            $aData->records = count(Tokens_dynamic::model($iSurveyId)->getSearch($condition, 0, 0));
-        }
-        else
-        {
-            $records = Tokens_dynamic::model($iSurveyId)->getSearchMultiple($condition, $page, $limit);
-            $aData->records = count(Tokens_dynamic::model($iSurveyId)->getSearchMultiple($condition, 0, 0));
-        }
+
+        $records = Tokens_dynamic::model($iSurveyId)->getSearchMultiple($condition, $page, $limit);
+        $aData->records = count(Tokens_dynamic::model($iSurveyId)->getSearchMultiple($condition, 0, 0));
+
         $aData->page = $page;
         $aData->total = ceil($aData->records / $limit);
 
@@ -606,7 +600,7 @@ class tokens extends Survey_Common_Action
             'usesleft' => Yii::app()->request->getPost('usesleft'),
             'validfrom' => $from,
             'validuntil' => $until);
-            $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
+            $attrfieldnames = GetParticipantAttributes($iSurveyId);
             foreach ($attrfieldnames as $attr_name => $desc)
             {
                 $value = Yii::app()->request->getPost($attr_name);
@@ -979,7 +973,7 @@ class tokens extends Survey_Common_Action
             'validuntil' => Yii::app()->request->getPost('validuntil'));
 
             // add attributes
-            $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
+            $attrfieldnames = getTokenFieldsAndNames($iSurveyId,true);
             foreach ($attrfieldnames as $attr_name => $desc)
             {
                 $value = Yii::app()->request->getPost($attr_name);
@@ -1069,7 +1063,7 @@ class tokens extends Survey_Common_Action
             $aData['surveyid'] = $iSurveyId;
             $aData['tokenlength'] = $tokenlength;
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'],$clang->langcode);
-
+            $aData['aAttributeFields']=GetParticipantAttributes($iSurveyId);
             $this->_renderWrappedTemplate('token', array('tokenbar', 'dummytokenform'), $aData);
         }
     }
@@ -1380,7 +1374,7 @@ class tokens extends Survey_Common_Action
                     $fieldsarray["{OPTINURL}"] = $this->getController()
                                                       ->createAbsoluteUrl("/optin/tokens/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
                     $fieldsarray["{SURVEYURL}"] = $this->getController()
-                                                       ->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}/token/{$emrow['token']}/langcode/" . trim($emrow['language']) . "/");
+                                                       ->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}/token/{$emrow['token']}/lang/" . trim($emrow['language']) . "/");
 
                     foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
                     {

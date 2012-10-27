@@ -325,11 +325,11 @@ function SPSSGetQuery($iSurveyID) {
         FROM {{survey_$iSurveyID}} s";
     }
     switch (incompleteAnsFilterState()) {
-        case 'inc':
+        case 'incomplete':
             //Inclomplete answers only
             $query .= ' WHERE s.submitdate is null ';
             break;
-        case 'filter':
+        case 'complete':
             //Inclomplete answers only
             $query .= ' WHERE s.submitdate is not null ';
             break;

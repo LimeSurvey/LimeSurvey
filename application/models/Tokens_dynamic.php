@@ -80,8 +80,9 @@ class Tokens_dynamic extends LSActiveRecord
 		array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
 		array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 	
 		array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
-        array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
-        array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),             			 
+//        array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
+//        array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),             			 
+// Date rules currently don't work properly with MSSQL, deactivating for now
 		);  
 	}	
 
@@ -345,245 +346,65 @@ class Tokens_dynamic extends LSActiveRecord
         ));
     }
 
-    function getSearch($condition,$page,$limit)
-    {
+
+
+	function getSearchMultiple($condition,$page,$limit)
+	{
+        $i=0;
+        $j=1;
+        $tobedonelater =array();
         $start = $limit*$page - $limit;
-        if($condition[1]=='equal')
-        {
-            $command = Yii::app()->db
-                                 ->createCommand()
-                                 ->select('*')
-                                 ->from(Tokens_dynamic::tableName())
-                                 ->where( $condition[0]." = :condition2", array(':condition2'=>$condition[2]));
-            if($page == 0 && $limit == 0)
-              {
-            $data=$command->select('*')->from(Tokens_dynamic::tableName())->queryAll();
-              }
-              else
-              {
-                  $data = $command->select('*')->from(Tokens_dynamic::tableName())->limit($limit,$start)->queryAll();
-              }
-            return $data;
-        }
-        else if($condition[1]=='contains')
-        {
-            $condition[2] = '%'.$condition[2].'%';
-            $command = Yii::app()->db
-                                 ->createCommand()
-                                 ->select('*')
-                                 ->from(Tokens_dynamic::tableName())
-                                 ->where(array('like',$condition[0],$condition[2]));
-            if($page == 0 && $limit == 0)
-              {
-                  $data=$command->queryAll();
-              }
-              else
-              {
-                  $data = $command->limit($limit,$start)->queryAll();
-              }
-            return $data;
-        }
-        else if($condition[1]=='notequal')
-        {
-            $command = Yii::app()->db
-                                 ->createCommand()
-                                 ->select('*')
-                                 ->from(Tokens_dynamic::tableName())
-                                 ->where(array('not in',$condition[0],$condition[2]));
-            if($page == 0 && $limit == 0)
-                  {
-            $data=$command->queryAll();
-                  }
-                  else
-                  {
-                  $data = $command->limit($limit,$start)->queryAll();
-                    }
-            return $data;
-        }
-        else if($condition[1]=='notcontains')
-        {
-            $condition[2] = '%'.$condition[2].'%';
-            $command = Yii::app()->db
-                                 ->createCommand()
-                                 ->where(array('not like',$condition[0],$condition[2]))
-                                 ->from(Tokens_dynamic::tableName())
-                                 ->select('*');
-            if($page == 0 && $limit == 0)
-                  {
-            $data=$command->queryAll();
-                  }
-                  else
-                  {
-                  $data = $command->limit($limit,$start)->queryAll();
-                    }
-            return $data;
-        }
-        else if($condition[1]=='greaterthan')
-        {
-            $command = Yii::app()->db
-                                 ->createCommand()
-                                 ->where($condition[0]." > :condition2", array(':condition2'=>$condition[2]))
-                                 ->order("lastname", "asc")
-                                 ->select('*')
-                                 ->from(Tokens_dynamic::tableName());
-            if($page == 0 && $limit == 0)
-                  {
-            $data=$command->queryAll();
-                  }
-                  else
-                  {
-                  $data = $command->limit($limit,$start)->queryAll();
-                    }
-            return $data;
-        }
-        else if($condition[1]=='lessthan')
-        {
-            $command = Yii::app()->db
-                                 ->createCommand()
-                                 ->where($condition[0]." < :condition2", array(':condition2'=>$condition[2]))
-                                 ->order("lastname", "asc")
-                                 ->select('*')
-                                 ->from(Tokens_dynamic::tableName());
-            if($page == 0 && $limit == 0)
+        $command = new CDbCriteria;
+        $command->condition = '';
+        $iNumberOfConditions = (count($condition)+1)/4;
+        $sConnectingOperator = 'AND';
+        $aParams=array();
+        while($i < $iNumberOfConditions){
+            $sFieldname=$condition[$i*4];
+            $sOperator=$condition[($i*4)+1];
+            $sValue=$condition[($i*4)+2];
+            switch ($sOperator)
             {
-            $data= $command->queryAll();
+                case 'equal': 
+                    $command->addCondition($sFieldname.' = :condition_'.$i, $sConnectingOperator);
+                    $aParams[':condition_'.$i] = $sValue;
+                    break;
+                case 'contains': 
+                    $command->addCondition($sFieldname.' LIKE :condition_'.$i, $sConnectingOperator);
+                    $aParams[':condition_'.$i] = '%'.$sValue.'%';
+                    break;
+                case 'notequal': 
+                    $command->addCondition($sFieldname.' <> :condition_'.$i, $sConnectingOperator);
+                    $aParams[':condition_'.$i] = $sValue;
+                    break;
+                case 'notcontains': 
+                    $command->addCondition($sFieldname.' NOT LIKE :condition_'.$i, $sConnectingOperator);
+                    $aParams[':condition_'.$i] = '%'.$sValue.'%';
+                    break;
+                case 'greaterthan': 
+                    $command->addCondition($sFieldname.' > :condition_'.$i, $sConnectingOperator);
+                    $aParams[':condition_'.$i] = $sValue;
+                    break;
+                case 'lessthan': 
+                    $command->addCondition($sFieldname.' < :condition_'.$i, $sConnectingOperator);
+                    $aParams[':condition_'.$i] = $sValue;
+                    break;
+            }
+            if (isset($condition[($i*4)+3]))
+            {
+                $sConnectingOperator=$condition[($i*4)+3];
             }
             else
             {
-                $data = $command->limit($limit,$start)->queryAll();
+                $sConnectingOperator='AND';
             }
-            return $data;
-        }
-    }
+            $i++;
 
-    function getSearchMultiple($condition,$page,$limit)
-    {
-       $i=0;
-       $j=1;
-       $tobedonelater =array();
-       $start = $limit*$page - $limit;
-       $command = new CDbCriteria;
-       $command->condition = '';
-       $con= count($condition);
-       while($i < $con){
-           if($i<3){
-                $i+=3;
-                if($condition[1]=='equal')
-                {
-                    $command->addCondition($condition[0].' = :condition_2')
-                            ->params = array(':condition_2'=>$condition[2]);
-                }
-                else if($condition[1]=='contains')
-                {
-                    $command->addCondition($condition[0].' LIKE :condition_2')
-                            ->params = array(':condition_2'=>"%".$condition[2]."%");
-                }
-                else if($condition[1]=='notequal')
-                {
-                    $command->addCondition($condition[0].' != (:condition_2)')
-                            ->params = array(':condition_2'=>$condition[2]);
-                }
-                else if($condition[1]=='notcontains')
-                {
-                    $command->addCondition($condition[0].' NOT LIKE :condition_2')
-                            ->params = array(':condition_2'=>"%".$condition[2]."%");
-                }
-                else if($condition[1]=='greaterthan')
-                {
-                    $command->addCondition($condition[0].' > :condition_2')
-                            ->params = array(':condition_2'=>$condition[2]);
-                }
-                else if($condition[1]=='lessthan')
-                {
-                    $command->addCondition($condition[0].' < :condition_2')
-                            ->params = array(':condition_2'=>$condition[2]);
-                }
-            }
-            else if($condition[$i]!='')
-            {
-               if($condition[$i+2]=='equal')
-               {
-                    if($condition[$i]=='and')
-                    {
-                        $command->addCondition($condition[$i+1].' = :condition_2')
-                                ->params = array(':condition_2'=>$condition[$i+3]);
-                    }
-                    else
-                    {
-                        $command->addCondition($condition[$i+1].' = :condition_2', 'OR')
-                                ->params = array(':condition_2'=>$condition[$i+3]);
-                    }
-                }
-                else if($condition[$i+2]=='contains')
-                {
-                    if($condition[$i]=='and')
-                    {
-                        $command->addCondition($condition[$i+1].' LIKE :condition_2')
-                                ->params = array(':condition_2'=>"%".$condition[$i+3]."%");
-                    }
-                    else
-                    {
-                        $command->addCondition($condition[$i+1].' LIKE :condition_2', 'OR')
-                                ->params = array(':condition_2'=>"%".$condition[$i+3]."%");
-                    }
-                }
-                else if($condition[$i+2]=='notequal')
-                {
-                    if($condition[$i]=='and')
-                    {
-                        $command->addCondition($condition[$i+1].' != :condition_2')
-                                ->params = array(':condition_2'=>$condition[$i+3]);
-                    }
-                    else
-                    {
-                        $command->addCondition($condition[$i+1].' != :condition_2', 'OR')
-                                ->params = array(':condition_2'=>$condition[$i+3]);
-                    }
-                }
-               else if($condition[$i+2]=='notcontains')
-                {
-                    if($condition[$i]=='and')
-                    {
-                        $command->addCondition($condition[$i+1].' NOT LIKE :condition_2')
-                                ->params = array(':condition_2'=>"%".$condition[$i+3]."%");
-                    }
-                    else
-                    {
-                        $command->addCondition($condition[$i+1].' NOT LIKE :condition_2', 'OR')
-                                ->params = array(':condition_2'=>"%".$condition[$i+3]."%");
-                    }
-                }
-                else if($condition[$i+2]=='greaterthan')
-                {
-                    if($condition[$i]=='and')
-                    {
-                        $command->addCondition($condition[$i+1].' > :condition_2')
-                                ->params = array(':condition_2'=>$condition[$i+3]);
-                    }
-                    else
-                    {
-                        $command->addCondition($condition[$i+1].' > :condition_2', 'OR')
-                                ->params = array(':condition_2'=>$condition[$i+3]);
-                    }
-                }
-                else if($condition[$i+2]=='lessthan')
-                {
-                    if($condition[$i]=='and')
-                    {
-                        $command->addCondition($condition[$i+1].' < :condition_2')
-                                ->params = array(':condition_2'=>$condition[$i+3]);
-                    }
-                    else
-                    {
-                        $command->addCondition($condition[$i+1].' < :condition_2', 'OR')
-                                ->params = array(':condition_2'=>$condition[$i+3]);
-                    }
-                }
-                $i=$i+4;
-            }
-            else{$i=$i+4;}
         }
-
+        if (count($aParams)>0)
+        {
+            $command->params = $aParams;
+        }
         if($page == 0 && $limit == 0)
         {
             $arr = Tokens_dynamic::model()->findAll($command);
@@ -606,7 +427,7 @@ class Tokens_dynamic extends LSActiveRecord
         }
 
         return $data;
-    }
+	}
     function deleteToken($tokenid)
     {
         $dlquery = "DELETE FROM ".Tokens_dynamic::tableName()." WHERE tid=:tokenid";

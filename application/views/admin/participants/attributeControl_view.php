@@ -1,7 +1,12 @@
 <script type="text/javascript">
-    var deleteCaption = "<?php $clang->eT("Delete attribute") ?>";
-    var deleteMsg = "<?php $clang->eT("Delete selected attribute(s) and it's associated data?") ?>";
-    var addCaption = "<?php $clang->eT("Add attribute") ?>";
+    var deleteCaption = "<?php $clang->eT("Delete attribute", 'js') ?>";
+    var deleteMsg = "<?php $clang->eT("Delete selected attribute(s) and associated data?", 'js') ?>";
+    var addCaption = "<?php $clang->eT("Add attribute", 'js') ?>";
+    var refreshMsg = "<?php $clang->eT("Refresh list", 'js') ?>";
+    var searchMsg = "<?php $clang->eT("Search attributes", 'js') ?>";
+    var pagerMsg = "<?php $clang->eT("Page {0} of {1}", 'js') ?>";
+    var viewRecordTxt= '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
+    var emptyRecordsTxt= "<?php $clang->eT("No attributes to view", 'js') ?>";
 
     var attributeInfoUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getAttributeInfo_json"); ?>";
     var editAttributeUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/editAttributeInfo"); ?>";

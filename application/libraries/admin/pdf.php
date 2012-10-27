@@ -19,7 +19,8 @@ if(!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 
 # include TCPDF
 require(APPPATH.'config/tcpdf'.EXT);
-require_once($tcpdf['base_directory'].'/mypdf.php');
+
+require_once($tcpdf['base_directory'].'/tcpdf.php');
 
 
 /**
@@ -166,7 +167,7 @@ define('K_TCPDF_CALLS_IN_HTML', true);
  * @version 1.0
  * @package tcpdf_ci
  ***********************************************************/
-class pdf extends MyPDF {
+class pdf extends TCPDF {
 
 
     /**
@@ -284,6 +285,115 @@ class pdf extends MyPDF {
 
     }
 
+    /**
+        *
+        * obsolete
+        * @param $text
+        * @param $format
+        * @return unknown_type
+        */
+        function intopdf($text,$format='')
+        {
+            $text = $this->delete_html($text);
+            $oldformat = $this->FontStyle;
+            $this->SetFont('',$format,$this->FontSizePt);
+            $this->Write(5,$text);
+            $this->ln(5);
+            $this->SetFont('',$oldformat,$this->FontSizePt);
+        }
+        /**
+        *
+        * obsolete
+        * @param $text
+        * @return unknown_type
+        */
+        function helptextintopdf($text)
+        {
+            $oldsize = $this->FontSizePt;
+            $this->SetFontSize($oldsize-2);
+            $this->Write(5,$this->delete_html($text));
+            $this->ln(5);
+            $this->SetFontSize($oldsize);
+        }
+        /**
+        *
+        * writes a big title in the page + description
+        * @param $title
+        * @param $description
+        * @return unknown_type
+        */
+        function titleintopdf($title,$description='')
+        {
+            if(!empty($title))
+            {
+                $title = $this->delete_html($title);
+                $oldsize = $this->FontSizePt;
+                $this->SetFontSize($oldsize+4);
+                $this->Line(5,$this->y,($this->w-5),$this->y);
+                $this->ln(3);
+                $this->MultiCell('','',$title,'','C',0);
+                if(!empty($description) && isset($description))
+                {
+                    $description = $this->delete_html($description);
+                    $this->ln(7);
+                    $this->SetFontSize($oldsize+2);
+                    $this->MultiCell('','',$description,'','C',0);
+                    $this->ln(2);
+                }
+                else
+                {
+                    $this->ln(4);
+                }
+                $this->Line(5,$this->y,($this->w-5),$this->y);
+                $this->ln(5);
+                $this->SetFontSize($oldsize);
+            }
+        }
+        /**
+        *
+        * Creates a Table with equal cell width and Bold text. Used as Head for equalTable()
+        * @param $array(0=>)
+        * @return unknown_type
+        */
+        function tablehead($array)
+        {
+            //$maxwidth = array();
+            $maxwidth = $this->getEqualWidth($array);
+            $oldStyle = $this->FontStyle;
+            $this->SetFont($this->FontFamily, 'B', $this->FontSizePt);
+            for($a=0;$a<sizeof($array);$a++)
+            {
+                for($b=0;$b<sizeof($array[$a]);$b++)
+                {
+                    $this->Cell($maxwidth,4,$this->delete_html($array[$a][$b]),0,0,'L');
+                }
+                $this->ln();
+            }
+            $this->ln(5);
+            $this->SetFont($this->FontFamily, $oldStyle, $this->FontSizePt);
+        }
+        /**
+        *
+        * Creates a Table with equal cell width.
+        * @param $array - table array( 0=> array("td", "td", "td"),
+        * 								1=> array("td", "td", "td"))
+        * @param $modulo - fills each second row with a light-grey for better visibility. Default is on turn off with 0
+        * @return unknown_type
+        */
+        function equalTable($array, $modulo=1)
+        {
+            //$maxwidth = array();
+            $maxwidth = $this->getEqualWidth($array);
+            $this->SetFillColor(220, 220, 220);
+            for($a=0;$a<sizeof($array);$a++)
+            {
+                if($modulo){
+                    if($a%2 === 0){$fill=0;}
+                    else{$fill=1;}
+                }
+                else{$fill=0;}
+                for($b=0;$b<sizeof($array[$a]);$b++)
+                {
 
 
 }

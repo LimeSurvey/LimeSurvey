@@ -48,9 +48,9 @@ class ExportSurveyResultsService
     *
     * @param mixed $iSurveyId
     * @param mixed $sLanguageCode
+    * @param csv|doc|pdf|xls $sExportPlugin Type of export
     * @param FormattingOptions $oOptions
     * @param string $sFilter 
-    * @param mixed $sOutputStyle  'display' or 'file'  Default: display (send to browser)
     */
     function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter)
     {
@@ -87,19 +87,10 @@ class ExportSurveyResultsService
                 $writer = new DocWriter();
                 break;
             case "xls":
-                    $writer = new ExcelWriter();
+                $writer = new ExcelWriter();
                 break;
             case "pdf":
-                Yii::import("application.libraries.admin.pdf", true);
-                if ($oOptions->output=='return')
-                {
-                    $sRandomFileName=Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
-                    $writer = new PdfWriter($sRandomFileName);
-                }
-                else
-                {
-                    $writer = new PdfWriter();
-                }
+                $writer = new PdfWriter();
                 break;
             case "csv":
             default:
@@ -146,9 +137,9 @@ class FormattingOptions
 
     /**
     * Acceptable values are:
-    * "filter" = do not include incomplete answers
+    * "complete" = include only incomplete answers
     * "incomplete" = only include incomplete answers
-    * "show" = include ALL answers
+    * "all" = include ALL answers
     *
     * @var mixed
     */
@@ -236,14 +227,18 @@ class SurveyDao
     {
         $survey = new SurveyObj();
         $clang = Yii::app()->lang;
-
+        
         $intId = sanitize_int($id);
         $survey->id = $intId;
+        $survey->info = getSurveyInfo($survey->id);
         $lang = Survey::model()->findByPk($intId)->language;
         $clang = new limesurvey_lang($lang);
 
         $survey->fieldMap = createFieldMap($intId,false,false,getBaseLanguageFromSurveyID($intId));
-
+        if ($survey->info['savetimings']=="Y") {
+            $survey->fieldMap = $survey->fieldMap + createTimingsFieldMap($intId,'full',false,false,getBaseLanguageFromSurveyID($intId));
+        }
+        
         if (empty($intId))
         {
             //The id given to us is not an integer, croak.
@@ -304,12 +299,16 @@ class SurveyDao
     */
     public function loadSurveyResults(SurveyObj $survey, $iLimit, $iOffset, $iMaximum, $sFilter='' )
     {
-
+        // Get info about the survey
         $oRecordSet = Yii::app()->db->createCommand()->select()->from('{{survey_' . $survey->id . '}}');
         if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',Survey_dynamic::model($survey->id)->attributes))
         {
             $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}}','{{tokens_' . $survey->id . '}}.token={{survey_' . $survey->id . '}}.token');
         }
+        if ($survey->info['savetimings']=="Y") {
+            $oRecordSet->leftJoin("{{survey_" . $survey->id . "_timings}} survey_timings", "{{survey_" . $survey->id . "}}.id = survey_timings.id");
+        }
+        
         if ($sFilter!='')
             $oRecordSet->where($sFilter);
             if ($iOffset+$iLimit>$iMaximum)
@@ -317,7 +316,7 @@ class SurveyDao
                 $iLimit=$iMaximum-$iOffset;
             }
             
-        $survey->responses=$oRecordSet->order('id')->limit($iLimit, $iOffset)->query()->readAll();
+        $survey->responses=$oRecordSet->order('{{survey_' . $survey->id . '}}.id')->limit($iLimit, $iOffset)->query()->readAll();
 
         return count($survey->responses);
         }
@@ -358,6 +357,13 @@ class SurveyObj
     * @var array[int][string]mixed
     */
     public $groups;
+    
+    /**
+     * info about the survey
+     * 
+     * @var array
+     */
+    public $info;
 
     /**
     * The questions in the survey.
@@ -679,15 +685,13 @@ abstract class Writer implements IWriter
         switch ($oOptions->responseCompletionState)
         {
             default:
-            case 'show':
+            case 'all':
                 return true;
                 break;
-
             case 'incomplete':
                 return !isset($response['submitdate']);
                 break;
-
-            case 'filter':
+            case 'complete':
                 return isset($response['submitdate']);
                 break;
 
@@ -1075,13 +1079,12 @@ class ExcelWriter extends Writer
         Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
         $this->separator = '~|';
         $this->hasOutputHeader = false;
-        $this->rowCounter = 1;
+        $this->rowCounter = 0;
     }
 
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
         {
         parent::init($survey, $sLanguageCode, $oOptions);
-                            $sRandomFileName=Yii::app()->getConfig("tempdir"). DIRECTORY_SEPARATOR . randomChars(40);
 
         if ($oOptions->output=='file')
         {
@@ -1092,15 +1095,13 @@ class ExcelWriter extends Writer
         {
             $this->workbook = new xlswriter;
         }
+        $this->workbook->setTempDir(Yii::app()->getConfig("tempdir"));
 
         $this->workbook->send('results-survey'.$survey->id.'.xls');
         $worksheetName = $survey->languageSettings[0]['surveyls_title'];
         $worksheetName=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$worksheetName),0,31); // Remove invalid characters
 
         $this->workbook->setVersion(8);
-        if (!empty($tempdir)) {
-            $this->$workbook->setTempDir($tempdir);
-        }
         $sheet =$this->workbook->addWorksheet($worksheetName); // do not translate/change this - the library does not support any special chars in sheet name
         $sheet->setInputEncoding('utf-8');
         $this->currentSheet = $sheet;
@@ -1153,15 +1154,16 @@ class PdfWriter extends Writer
     private $fileName;
     private $surveyName;
 
-    public function __construct($filename = null)
+    public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
-        if (!empty($filename))
+        parent::init($survey, $sLanguageCode, $oOptions);
+        
+        if ($oOptions->output=='return') 
         {
+            $sRandomFileName=Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
             $this->pdfDestination = 'F';
-            $this->fileName = $filename;
-        }
-        else
-        {
+            $this->fileName = $sRandomFileName;
+        } else {
             $this->pdfDestination = 'D';
         }
 
@@ -1171,20 +1173,15 @@ class PdfWriter extends Writer
         global $pdforientation, $pdfdefaultfont, $pdffontsize;
 
         Yii::import('application.libraries.admin.pdf', true);
-        $this->pdf = new PDF($pdforientation,'mm','A4');
-        $this->pdf->SetFont($pdfdefaultfont, '', $pdffontsize);
+        $this->pdf = new pdf();
+        $this->pdf->SetFont(Yii::app()->getConfig('pdfdefaultfont'), '', Yii::app()->getConfig('pdffontsize'));
         $this->pdf->AddPage();
         $this->pdf->intopdf("PDF export ".date("Y.m.d-H:i", time()));
 
 
         $this->separator="\t";
 
-        $this->rowCounter = 0;
-    }
-
-    public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
-    {
-        parent::init($survey, $sLanguageCode, $oOptions);
+        $this->rowCounter = 0;        
         $this->surveyName = $survey->languageSettings[0]['surveyls_title'];
         $this->pdf->titleintopdf($this->surveyName, $survey->languageSettings[0]['surveyls_description']);
     }

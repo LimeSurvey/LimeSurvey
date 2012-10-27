@@ -28,30 +28,44 @@ class remotecontrol extends Survey_Common_Action
     */
     public function run()
     {
-        $RPCType=Yii::app()->getConfig("RPCInterface");
-
-        if ($RPCType=='xml')
-        {
-            $cur_path = get_include_path();
-
-            set_include_path($cur_path . PATH_SEPARATOR . APPPATH . 'helpers');
-
-            // Yii::import was causing problems for some odd reason
-            require_once('Zend/XmlRpc/Server.php');
-            require_once('Zend/XmlRpc/Server/Exception.php');
-            require_once('Zend/XmlRpc/Value/Exception.php');
-            $this->xmlrpc = new Zend_XmlRpc_Server();
-            $this->xmlrpc->sendArgumentsToAllMethods(false);
-            $this->xmlrpc->setClass('remotecontrol_handle', '', $this->controller);
-            echo $this->xmlrpc->handle();
+        $oHandler=new remotecontrol_handle($this->controller);
+        
+        if (Yii::app()->getRequest()->isPostRequest) {
+            $RPCType=Yii::app()->getConfig("RPCInterface");
+            if ($RPCType=='xml')
+            {
+                $cur_path = get_include_path();
+                set_include_path($cur_path . PATH_SEPARATOR . APPPATH . 'helpers');
+                // Yii::import was causing problems for some odd reason
+                require_once('Zend/XmlRpc/Server.php');
+                require_once('Zend/XmlRpc/Server/Exception.php');
+                require_once('Zend/XmlRpc/Value/Exception.php');
+                $this->xmlrpc = new Zend_XmlRpc_Server();
+                $this->xmlrpc->sendArgumentsToAllMethods(false);
+                $this->xmlrpc->setClass($oHandler);
+                echo $this->xmlrpc->handle();
+            }
+            elseif($RPCType=='json')
+            {
+                Yii::app()->loadLibrary('jsonRPCServer');
+                
+                jsonRPCServer::handle($oHandler);
+            }
+            exit;
+        } else {
+            $reflector = new ReflectionObject($oHandler);
+            foreach ($reflector->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+                /* @var $method ReflectionMethod */
+                if (substr($method->getName(),0,1) !== '_') {
+                    $list[$method->getName()] = array(
+                        'description' => $method->getDocComment(),
+                        'parameters'  => $method->getParameters()
+                    );
+                }
+            }
+            ksort($list);
+            //print_r($list); no output for now
         }
-        elseif($RPCType=='json')
-        {
-            Yii::app()->loadLibrary('jsonRPCServer');
-            $oHandler=new remotecontrol_handle($this->controller);
-            jsonRPCServer::handle($oHandler);
-        }
-        exit;
     }
 
     /**
@@ -60,19 +74,27 @@ class remotecontrol extends Survey_Common_Action
     */
     public function test()
     {
-        $sFileToImport=dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR.'limesurvey2_sample_survey_english.lss';
-//        $sFileToImport=dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR.'survey_archive_example_feedback_survey.zip';
-        Yii::app()->loadLibrary('jsonRPCClient');
-        $myJSONRPCClient = new jsonRPCClient(Yii::app()->getBaseUrl(true).'/'.dirname(Yii::app()->request->getPathInfo()));
-        $sSessionKey= $myJSONRPCClient->get_session_key('admin','password');
+        $RPCType=Yii::app()->getConfig("RPCInterface");
+        $serverUrl = Yii::app()->getBaseUrl(true).'/'.dirname(Yii::app()->request->getPathInfo());
+        
+        if ($RPCType == 'xml') {        
+            require_once('Zend/XmlRpc/Client.php');
+            $client = new Zend_XmlRpc_Client($serverUrl);
+        } elseif ($RPCType == 'json') {
+            $sFileToImport=dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR.'limesurvey2_sample_survey_english.lss';
+            Yii::app()->loadLibrary('jsonRPCClient');
+            $client = new jsonRPCClient(Yii::app()->getBaseUrl(true).'/'.dirname(Yii::app()->request->getPathInfo()));
+        }
+
+        $sSessionKey= $client->call('get_session_key', array('admin','password'));
         if (is_array($sSessionKey)) {echo $sSessionKey['status']; die();}
         else
         {
             echo 'Retrieved session key'.'<br>';
         }
-
+        die();
         $sLSSData=base64_encode(file_get_contents($sFileToImport));
-        $iSurveyID=$myJSONRPCClient->import_survey($sSessionKey, $sLSSData, 'zip','Test import by JSON_RPC',1000);
+        $iSurveyID=$client->import_survey($sSessionKey, $sLSSData, 'lss','Test import by JSON_RPC',1000);
         echo 'Created new survey SID:'.$iSurveyID.'<br>';
 
 /*
@@ -82,43 +104,43 @@ class remotecontrol extends Survey_Common_Action
 */
 
 
-        $aResult=$myJSONRPCClient->activate_survey($sSessionKey, $iSurveyID);
+        $aResult=$client->activate_survey($sSessionKey, $iSurveyID);
         if ($aResult['status']=='OK')
         {
             echo 'Survey '.$iSurveyID.' successfully activated.<br>';
         }
-        $aResult=$myJSONRPCClient->activate_participant_tokens($sSessionKey, $iSurveyID,array(1,2));
+        $aResult=$client->activate_tokens($sSessionKey, $iSurveyID,array(1,2));
         if ($aResult['status']=='OK')
         {
             echo 'Tokens for Survey ID '.$iSurveyID.' successfully activated.<br>';
         }
-        $aResult=$myJSONRPCClient->set_survey_properties($sSessionKey, $iSurveyID,array('faxto'=>'0800-LIMESURVEY'));
-        if ($aResult['status']=='OK')
+        $aResult=$client->set_survey_properties($sSessionKey, $iSurveyID,array('faxto'=>'0800-LIMESURVEY'));
+        if (!array_key_exists('status', $aResult))
         {
             echo 'Modified survey settings for survey '.$iSurveyID.'<br>';
         }
-        $aResult=$myJSONRPCClient->add_survey_language($sSessionKey, $iSurveyID,'ar');
+        $aResult=$client->add_language($sSessionKey, $iSurveyID,'ar');
         if ($aResult['status']=='OK')
         {
             echo 'Added Arabian as additional language'.'<br>';
         }
-        $aResult=$myJSONRPCClient->set_survey_language_properties($sSessionKey, $iSurveyID,array('surveyls_welcometext'=>'An Arabian welcome text!'),'ar');
+        $aResult=$client->set_language_properties($sSessionKey, $iSurveyID,array('surveyls_welcometext'=>'An Arabian welcome text!'),'ar');
         if ($aResult['status']=='OK')
         {
             echo 'Modified survey locale setting welcometext for Arabian in survey ID '.$iSurveyID.'<br>';
         }
 
-        $aResult=$myJSONRPCClient->delete_survey_language($sSessionKey, $iSurveyID,'ar');
+        $aResult=$client->delete_language($sSessionKey, $iSurveyID,'ar');
         if ($aResult['status']=='OK')
         {
             echo 'Removed Arabian as additional language'.'<br>';
         }
-        die();
-        $aResult=$myJSONRPCClient->delete_survey($sSessionKey, $iSurveyID);
+        
+        $aResult=$client->delete_survey($sSessionKey, $iSurveyID);
         echo 'Deleted survey SID:'.$iSurveyID.'-'.$aResult['status'].'<br>';
 
         // Release the session key - close the session
-        $Result= $myJSONRPCClient->release_session_key($sSessionKey);
+        $Result= $client->release_session_key($sSessionKey);
         echo 'Closed the session'.'<br>';
 
     }
@@ -936,6 +958,7 @@ class remotecontrol_handle
                         $oSurveyLocale->$sFieldName=$aLangAttributes[$sFieldName];
                     }
                 }
+                $aResult['status'] = 'OK';
                 return $aResult;
             }
             else
@@ -2170,15 +2193,15 @@ class remotecontrol_handle
            $aFields=array_slice($aFields,0,255);
         }
         $oFomattingOptions=new FormattingOptions();
-        $oFomattingOptions->format=$sDocumentType;
         $oFomattingOptions->responseMinRecord=$iFromResponseID;
         $oFomattingOptions->responseMaxRecord=$iToResponseID;
         $oFomattingOptions->selectedColumns=$aFields;
         $oFomattingOptions->responseCompletionState=$sCompletionStatus;
         $oFomattingOptions->headingFormat=$sHeadingType;
         $oFomattingOptions->answerFormat=$sResponseType;
+        $oFomattingOptions->output='return';
         $oExport=new ExportSurveyResultsService();
-        $sFileData=$oExport->exportSurvey($iSurveyID,$sLanguageCode,$oFomattingOptions,'return');
+        $sFileData=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions,'return');
         return base64_encode($sFileData);
     }
 

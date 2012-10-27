@@ -335,7 +335,19 @@ class CheckIntegrity extends Survey_Common_Action
         $criteria->addNotInCondition('sid', $sids, 'OR');
 
         Survey_permissions::model()->deleteAll($criteria);
+        
 
+        // Deactivate surveys that have a missing response table
+        foreach ($surveys as $survey) 
+        {
+            if ($survey['active']=='Y' && !tableExists("{{survey_{$survey['sid']}}}"))
+            {
+                Survey::model()->updateByPk($survey['sid'],array('active'=>'N'));
+            }
+        }
+        
+        
+        
         // Fix subquestions
         fixSubquestions();
 

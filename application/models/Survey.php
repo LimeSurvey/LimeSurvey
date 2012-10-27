@@ -46,7 +46,7 @@ class Survey extends CActiveRecord
     * @static
     * @access public
     * @param string $class
-    * @return CActiveRecord
+    * @return Survey
     */
     public static function model($class = __CLASS__)
     {
@@ -133,9 +133,10 @@ class Survey extends CActiveRecord
         array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
         array('bouncetime','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
         array('navigationdelay','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-        array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-        array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-        array('datecreated','date', 'format'=>'yyyy-MM-dd', 'allowEmpty'=>true),
+      //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
+      //  array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
+	  //	array('datecreated','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),    
+      // Date rules currently don't work properly with MSSQL, deactivating for now
         array('template', 'tmplfilter'),
         );
     }
@@ -244,6 +245,32 @@ class Survey extends CActiveRecord
             $attdescriptiondata = $fields;
         }
         return $attdescriptiondata;
+    }
+    
+    /**
+     * Returns true in a token table exists for the given $surveyId
+     * 
+     * @staticvar array $tokens
+     * @param int $iSurveyID
+     * @return boolean
+     */
+    public function hasTokens($iSurveyID) {
+        static $tokens = array();
+        $iSurveyID = (int) $iSurveyID;
+         
+        if (!isset($tokens[$iSurveyID])) {
+            // Make sure common_helper is loaded
+            Yii::import('application.helpers.common_helper', true);
+            
+            $tokens_table = "{{tokens_{$iSurveyID}}}";
+            if (tableExists($tokens_table)) {
+                $tokens[$iSurveyID] = true;
+            } else {
+                $tokens[$iSurveyID] = false;
+            }            
+        }
+        
+        return $tokens[$iSurveyID];
     }
 
 

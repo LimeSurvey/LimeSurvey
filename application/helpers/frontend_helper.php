@@ -52,14 +52,14 @@ function loadanswers()
 
         $aRow = Yii::app()->db->createCommand($query)->queryRow();
         if (!$aRow)
-    {
-        safeDie($clang->gT("There is no matching saved survey")."<br />\n");
-    }
-    else
-    {
-        //A match has been found. Let's load the values!
-        //If this is from an email, build surveysession first
-        $_SESSION['LEMtokenResume']=true;
+        {
+            safeDie($clang->gT("There is no matching saved survey")."<br />\n");
+        }
+        else
+        {
+            //A match has been found. Let's load the values!
+            //If this is from an email, build surveysession first
+            $_SESSION['survey_'.$surveyid]['LEMtokenResume']=true;
 
             foreach ($aRow as $column => $value)
             {
@@ -222,13 +222,13 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
                 $sHTMLCode .= ">".$aAllLanguages[$sLanguage]['nativedescription']."</option>\n";
 
         }
-        $sHTMLCode .= "</select>\n";
-        return $sHTMLCode;
-    }
-    else
-    {
-        return false;
-    }
+            $sHTMLCode .= "</select>\n";
+            return $sHTMLCode;
+        }
+        else
+        {
+            return false;
+        }
 
 }
 
@@ -905,8 +905,11 @@ function submittokens($quotaexit=false)
                 {
                     //Update the survey_links table if necessary
                     $slquery = Survey_links::model()->find('participant_id = "'.$participant_id.'" AND survey_id = '.$surveyid.' AND token_id = '.$token_id);
-                    $slquery->date_completed = $today;
-                    $slquery->save();
+                    if (!is_null($slquery))
+                    {
+                        $slquery->date_completed = $today;
+                        $slquery->save();
+                    }
                 }
             }
         else
@@ -1033,8 +1036,8 @@ function sendSubmitNotifications($surveyid)
     }
     else
     {
-        $aReplacementVars['RELOADURL']='';
-    }
+            $aReplacementVars['RELOADURL']='';
+        }
 
     if (!isset($_SESSION['survey_'.$surveyid]['srid']))
         $srid = null;
@@ -1060,7 +1063,7 @@ function sendSubmitNotifications($surveyid)
     {
         $aRecipient=explode(";", $thissurvey['emailnotificationto']);
         {
-            foreach($aRecipient as $sRecipient)
+                foreach($aRecipient as $sRecipient)
             {
                 $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN
                 if(validateEmailAddress($sRecipient))
@@ -1078,8 +1081,8 @@ function sendSubmitNotifications($surveyid)
             //Gather token data for tokenised surveys
             $_SESSION['survey_'.$surveyid]['thistoken']=getTokenData($surveyid, $_SESSION['survey_'.$surveyid]['token']);
         }
-        // there was no token used so lets remove the token field from insertarray
-        elseif ($_SESSION['survey_'.$surveyid]['insertarray'][0]=='token')
+            // there was no token used so lets remove the token field from insertarray
+            elseif ($_SESSION['survey_'.$surveyid]['insertarray'][0]=='token')
         {
             unset($_SESSION['survey_'.$surveyid]['insertarray'][0]);
         }
@@ -1222,9 +1225,8 @@ function buildsurveysession($surveyid,$previewGroup=false)
 {
     global $thissurvey, $secerror, $clienttoken;
         global $tokensexist;
-    //global $surveyid;
-    global $register_errormsg;
-    global $templang, $move, $rooturl;
+        //global $surveyid;
+        global $templang, $move, $rooturl;
 
     $clang = Yii::app()->lang;
 

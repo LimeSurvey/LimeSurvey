@@ -1,6 +1,6 @@
 <div class='messagebox ui-corner-all'>
     <div class='header ui-widget-header'>
-        <?php $clang->eT("Sending invitations..."); ?>
+        <?php if ($bEmail) $clang->eT("Sending invitations..."); else $clang->eT("Sending reminders...");?>
     </div>
     <?php
     if ($tokenids)

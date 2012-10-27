@@ -1141,7 +1141,7 @@ function getSurveyInfo($surveyid, $languagecode='')
     // if no language code is set then get the base language one
     if (!isset($languagecode) || $languagecode=='')
     {
-        $languagecode=Survey::model()->findByPk($surveyid)->language;;
+        $languagecode=Survey::model()->findByPk($surveyid)->language;
     }
 
     //$query="SELECT * FROM ".db_table_name('surveys').",".db_table_name('surveys_languagesettings')." WHERE sid=$surveyid and surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
@@ -1736,13 +1736,14 @@ function createCompleteSGQA($iSurveyID, $sLanguage, $public  = false)
 * @param mixed $style 'short' (default) or 'full' - full creates extra information like default values
 * @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
+* @param string $sQuestionLanguage The language to use
 * @return array
 */
 
 function createFieldMap($surveyid, $force_refresh=false, $questionid=false, $sLanguage) {
     $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = sanitize_int($surveyid);
-    $clang = new Limesurvey_lang($sLanguage); ;
+    $clang = new Limesurvey_lang($sLanguage);
 
     //checks to see if fieldmap has already been built for this page.
     if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid == false) {
@@ -1796,7 +1797,7 @@ function createFieldMap($surveyid, $force_refresh=false, $questionid=false, $sLa
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked
 
-    if ($prow['anonymized'] == "N")
+    if ($prow['anonymized'] == "N" && Survey::model()->hasTokens($surveyid)) 
     {
         $q = new StdClass;
         $q->fieldname="token";
@@ -3081,7 +3082,7 @@ function questionAttributes()
     'category'=>$clang->gT('Other'),
     'sortorder'=>130,
     "inputtype"=>"text",
-    'default'=>1,
+    'default'=>'1',
     "help"=>$clang->gT("Maximum number of files that the participant can upload for this question"),
     "caption"=>$clang->gT("Max number of files"));
 
@@ -3089,7 +3090,7 @@ function questionAttributes()
     'category'=>$clang->gT('Other'),
     'sortorder'=>132,
     "inputtype"=>"text",
-    'default'=>0,
+    'default'=>'0',
     "help"=>$clang->gT("Minimum number of files that the participant must upload for this question"),
     "caption"=>$clang->gT("Min number of files"));
 
@@ -3768,11 +3769,15 @@ function CSVUnquote($field)
     return $field;
 }
 
+/**
+* This function return actual completion state
+*
+* @return string (complete|incomplete|all) or false
+*/
 function incompleteAnsFilterState()
 {
     $letsfilter='';
     $letsfilter = returnGlobal('completionstate'); //read get/post completionstate
-
 
     // first let's initialize the incompleteanswers session variable
     if ($letsfilter != '')
@@ -4210,6 +4215,26 @@ function GetAttributeFieldNames($iSurveyID,$filter=true)
 }
 
 /**
+* Returns the full list of attribute token fields including the properties for each field
+* Use this instead of plain Survey::model()->findByPk($iSurveyID)->tokenAttributes calls because Survey::model()->findByPk($iSurveyID)->tokenAttributes may contain old descriptions where the fields does not physically exist
+* 
+* @param integer $iSurveyID The Survey ID
+*/
+function GetParticipantAttributes($iSurveyID)
+{
+    if (!tableExists("{{tokens_{$iSurveyID}}}") || !$table = Yii::app()->db->schema->getTable('{{tokens_'.$iSurveyID.'}}'))
+        return Array();
+    $aFields= array_filter(array_keys($table->columns), 'filterForAttributes');
+    $aTokenAttributes=Survey::model()->findByPk($iSurveyID)->tokenAttributes;
+    if (count($aFields)==0) return  array();
+    return array_intersect_key($aTokenAttributes,array_flip($aFields));
+}
+
+
+
+
+
+/**
 * Retrieves the token field names usable for conditions from the related token table
 *
 * @param mixed $surveyid  The survey ID
@@ -4227,7 +4252,6 @@ function getTokenConditionsFieldNames($surveyid)
 *
 * @param mixed $surveyid  The survey ID
 * @param boolean $onlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false
-*                               Use Survey::model()->findByPk($surveyid)->tokenAttributes instead
 * @return array The fieldnames as key and names as value in an Array
 */
 function getTokenFieldsAndNames($surveyid, $onlyAttributes = false)
@@ -4247,13 +4271,13 @@ function getTokenFieldsAndNames($surveyid, $onlyAttributes = false)
     $clang->gT('Total numbers of sent reminders'),
     $clang->gT('Uses left')
     );
-    $thissurvey=getSurveyInfo($surveyid);
     $attdescriptiondata = array();
     $attributedescriptions = array();
     $basic_attrs_and_names = array();
     $extra_attrs_and_names = array();
     // !!! This is actually deprecated, use Survey::model()->findByPk($surveyid)->tokenAttributes instead
-    $attdescriptiondata = Survey::model()->findByPk($surveyid)->tokenAttributes;
+    if ($surveyid)
+        $attdescriptiondata = Survey::model()->findByPk($surveyid)->tokenAttributes;
     if (!is_null($attdescriptiondata))
     {
         foreach ($attdescriptiondata as $attname => $attdata)

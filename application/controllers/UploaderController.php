@@ -16,7 +16,16 @@
 class UploaderController extends AdminController {
 	function run($actionID)
 	{
-
+        $surveyid= $_SESSION['LEMsid'];
+        if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
+        {
+            $sLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
+        }
+        else
+        {
+            $sLanguage='';
+        }
+        $clang = SetSurveyLanguage( $surveyid, $sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
 
@@ -80,29 +89,6 @@ class UploaderController extends AdminController {
             exit();
         }
 
-        if (!isset($surveyid))
-        {
-            $surveyid=sanitize_int(@$param['sid']);
-        }
-        else
-        {
-            //This next line ensures that the $surveyid value is never anything but a number.
-            $surveyid=sanitize_int($surveyid);
-        }
-
-        if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
-        {
-            $sLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
-        }
-        else
-        {
-            $sLanguage='';
-        }
-        $clang = SetSurveyLanguage( $surveyid, $sLanguage);
-        $aFieldMap = createFieldMap($surveyid,false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
-        if (!isset($aFieldMap[$param['fieldname']])) die();
-        $q = $aFieldMap[$param['fieldname']];
-        $aAttributes = $q->getAttributeValues();
 
         if(isset($param['mode']) && $param['mode'] == "upload")
         {

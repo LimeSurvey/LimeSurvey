@@ -8,7 +8,7 @@
 
 <div class="grid_4 table">
 
-<p class="title"><?php echo $title; ?></p>
+<p class="maintitle"><?php echo $title; ?></p>
 
 
 

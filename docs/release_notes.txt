@@ -58,6 +58,120 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.00+ (build 121024) to 2.00+ (build 121025) Oct 25, 2012
+-Fixed issue #6775: If a closed survey with tokens is de-activated and then re-activated you cannot take the survey anymore (Menno Dekker)
+-Fixed issue #6732: Unable to register for survey after attribute fields were removed from token table (Carsten Schmitz)
+-Fixed issue #6741: File upload question: Unable to remove uploaded file (Carsten Schmitz)
+-Fixed issue #6745: Bad return url when trying to delete a question with condition (Denis Chenu)
+-Fixed issue #6746: Ckeditor limereplacment field crash at survey creation when debug mode is activated (Carsten Schmitz)
+-Fixed issue #6765: Database export is not available when 'debug'>0 (Carsten Schmitz)
+-Fixed issue #6766 : Export filtered results not working (Denis Chenu)
+-Fixed issue #6767: Error when attempting to view survey logic file. (Carsten Schmitz)
+-Fixed issue #6769: In tokens list, searching by more than one criteria does not work (Carsten Schmitz)
+-Fixed issue #6772: Unable to delete question on MSSQL (Carsten Schmitz)
+-Fixed issue #6774: Multiple ranking questions produce max-answers error (Denis Chenu)
+-Fixed issue: Bad emplacement for sub sub menu in surveybar menu (Denis Chenu)
+-Fixed issue: Change completionstate in browse can show no answer if existing (Denis Chenu)
+-Fixed issue: Error on survey reactivation (Carsten Schmitz)
+-Fixed issue: Statistics take all responses, even if select complete or incomplete response (Denis Chenu)
+-Fixed issue: Unable to use Popup HTML editor at survey creation (Denis Chenu)
+-Fixed issue: Unlink error in ComfortUpdate if to be deleted file is writable but the directory permissions are set to read-only (Carsten Schmitz)
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Italian by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Serbian by OnSpot
+#Updated translation: Serbian (Latin script) by OnSpot
+
+
+Changes from 2.00+ (build 121019) to 2.00+ (build 121024) Oct 24, 2012
+-Fixed issue #4335: Quartile calculations are off (Menno Dekker)
+-Fixed issue #6644: Creating PDF statistics containing questions of multi numeric value type cause infinite loop (Menno Dekker)
+-Fixed issue #6644: Statistics export to both PDF and Excel is working again (Menno Dekker)
+-Fixed issue #6761: Remote control demo is not working (Menno Dekker)
+-Fixed issue #6764: Empty fields not showing in print answers (Menno Dekker)
+-Fixed issue #5907: User first see filtered question, hidden after by javascript (Denis Chenu)
+-Fixed issue #6679 - missing translations strings, also fixed language translations to account for javascript (jcleeland)
+-Fixed issue #6679 - missing translation strings in blacklist control (jcleeland)
+-Fixed issue #6717: Show logic file does not show the survey description, welcome, or end pages (Carsten Schmitz)
+-Fixed issue #6736: Survey resume link does not contain language information (Carsten Schmitz)
+-Fixed issue #6741: File upload question: dialog box unresponsive when editing uploaded files (Carsten Schmitz)
+-Fixed issue #6742: File upload question: individual download of uploaded files not working (Carsten Schmitz)
+-Fixed issue #6747: Double click on limereplacement field list not working (Carsten Schmitz)
+-Fixed issue #6749: Registration error message not appearing on registration page (Carsten Schmitz)
+-Fixed issue #6752: Misspelled word (Carsten Schmitz)
+-Fixed issue #6757: Double encoded quotes in hints for "other" selections within multiple choices (Carsten Schmitz)
+-Fixed issue #6644: Excel export of statistics should be working again (PDF still to be fixed) (Menno Dekker)
+-Fixed issue: memory_limit setting being ignored (Carsten Schmitz)
+#Updated translation: Croatian by rovinj
+#Updated translation: Czech by slansky
+#Updated translation: Danish by docl
+#Updated translation: Dutch by mdekker
+#Updated translation: French (France) by DenisChenu, riqcles
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by mele_lime
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad, peterhol
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by wagner, arthurassuncao, mauriciofurtado
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Serbian by OnSpot
+#Updated translation: Serbian (Latin script) by OnSpot
+#Updated translation: Slovak by wargo, c_schmitz
+#Updated translation: Turkish by kayazeren
+
+
+Changes from 2.00+ (build 121017) to 2.00+ (build 121019) Oct 19, 2012
+-New translation: Serbian (Latin script) (OnSpot)
+-Fixed issue #5490: Spss export should now handle different decimal separator (locale) better (mennodekker)
+-Fixed issue #6737: Browsing and export of timings no longer working (Menno Dekker)
+-Fixed issue #6738: Save button invisible in tabs other than import when creating a new survey (Menno Dekker)
+-Fixed issue #6739: small empty div visible when jquery datepicker enabled (Menno Dekker)
+-Fixed issue #6740: Excel export starts with an empty line (Menno Dekker)
+-Fixed issue #6650: LimeReplacementField dialog is ugly in 2.00 (tpartner)
+-Fixed issue #6690: Question type 'File upload' doesn't work appropriately when used on the same page with ranking question type (Carsten Schmitz)
+-Fixed issue #6701: Export survey in .txt (Thomas White)
+-Fixed issue #6702: Blank page after filling out survey and using tokens with an invalid participant ID (Carsten Schmitz)
+-Fixed issue #6703: No xssfilter in langage settings (Denis Chenu)
+-Fixed issue #6711: Template preview not working with strange umask PHP configurations (Carsten Schmitz)
+-Fixed issue #6715: Minimum number of files to upload cannot be an expression (Carsten Schmitz)
+-Fixed issue #6719: Language parameter is incorrect in survey url (Carsten Schmitz)
+-Fixed issue #6721: Can't delete user (Carsten Schmitz)
+-Fixed issue #6723: Survey does not deactivate properly on MSSQL (Carsten Schmitz)
+-Fixed issue #6724: Survey Resume Link Erases Saved Responses (Carsten Schmitz)
+-Fixed issue #6726: Incorrect text when sending reminders "Sending invitations..." instead of "Sending reminders..." (Carsten Schmitz)
+-Fixed issue #6727: Button continue does not send next batch of reminders but returns to Token Summary (Carsten Schmitz)
+-Fixed issue #6728: Opt-in URL is broken (Carsten Schmitz)
+-Fixed issue #6729: OptOut URL shows some error message (Carsten Schmitz)
+-Fixed issue #6732: Unable to import survey using assessments in MSSQL (Carsten Schmitz)
+-Fixed issue #6733: CDbException When User Attempts to View Statistics (Denis Chenu)
+-Fixed issue #6734: Bad URLs for admin notification email. (Carsten Schmitz)
+-Fixed issue #6735: remove a response line doesn't remove timings (Denis Chenu)
+-Fixed issue: Download files in zip in browse response broken (Denis Chenu)
+#Updated translation: Amharic by addis_1001
+#Updated translation: Croatian by rambo
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by kris, mdekker
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by DenisChenu, riqcles, titoun31
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by Basil
+#Updated translation: Italian by lfanfoni
+#Updated translation: Latvian by vipgroup
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by arthurassuncao
+#Updated translation: Russian by vipgroup
+#Updated translation: Serbian by OnSpot
+#Updated translation: Serbian (Latin script) by OnSpot
+#Updated translation: Turkish by kayazeren
+
+
+Changes from 2.00+ (build 121016) to 2.00+ (build 121017) Oct 16, 2012
+-Fixed #6712: Layout of form "Add question group" is broken (mennodekker)
+-Fixed issue: Template editor not working (Carsten Schmitz)
+
 Changes from 2.00+ (build 121014) to 2.00+ (build 121016) Oct 16, 2012
 -Fixed issue #6606: Participant attribute grid - can only edit the first attribute (Aniessh Sethh)
 -Fixed issue #6669: Paticipants panel Attribute error on add (Aniessh Sethh)

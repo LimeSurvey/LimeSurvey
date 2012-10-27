@@ -1240,9 +1240,9 @@ textarea.updater-changelog {
     clear:left;
     padding-bottom:5px;
 }
-#tabs li{
+/*#tabs li{
     clear:none;
-}
+}*/
 .editorLink {
 	vertical-align: top;
 }
