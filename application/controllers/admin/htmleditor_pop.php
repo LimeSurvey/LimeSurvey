@@ -19,6 +19,9 @@ class htmleditor_pop extends Survey_Common_Action
 
     function index()
     {
+        Yii::app()->loadHelper('admin/htmleditor');
+        $ckLanguage = sTranslateLangCode2CK(Yii::app()->session['adminlang']);
+
         $sFieldName = isset($_GET['name']) ? $_GET['name'] : 0;
         $sFieldText = isset($_GET['text']) ? $_GET['text'] : 0;
         $sFieldType = isset($_GET['type']) ? $_GET['type'] : 0;
@@ -47,6 +50,7 @@ class htmleditor_pop extends Survey_Common_Action
             $aData['iQuestionId'] = sanitize_int($iQuestionId);
             $aData['sControlIdEna'] = $sFieldName . '_popupctrlena';
             $aData['sControlIdDis'] = $sFieldName . '_popupctrldis';
+            $aData['ckLanguage'] = $ckLanguage;
 
             $aData['toolbarname'] = 'popup';
             $aData['htmlformatoption'] = '';
