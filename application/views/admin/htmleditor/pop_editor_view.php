@@ -41,7 +41,8 @@
                         LimeReplacementFieldsType: "<?php echo $sFieldType; ?>",
                         LimeReplacementFieldsAction: "<?php echo $sAction; ?>",
                         smiley_path: "<?php echo Yii::app()->getConfig('rooturl') . '/upload/images/smiley/msn/'; ?>",
-                        LimeReplacementFieldsPath : "<?php echo Yii::app()->getConfig('rooturl') . '/index.php/admin/limereplacementfields/index'; ?>"
+                        LimeReplacementFieldsPath : "<?php echo Yii::app()->getConfig('rooturl') . '/index.php/admin/limereplacementfields/index'; ?>",
+                        language : "<?php echo $ckLanguage ?>"
                         <?php echo $htmlformatoption; ?> });
                 });
 
