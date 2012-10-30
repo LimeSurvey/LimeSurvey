@@ -205,11 +205,28 @@ class Participants extends CActiveRecord
         return count(Yii::app()->db->createCommand()->select('{{participants}}.*, {{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll());
     }
 
-    function getParticipants($page, $limit)
+    function getParticipants($page, $limit,$attid)
     {
         $start = $limit * $page - $limit;
-        $data = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->limit($limit, $start)->queryAll();
-        return $data;
+        $selectValue = array();
+        $joinValue = array();
+        array_push($selectValue,"p.*");
+        array_push($selectValue,"luser.full_name as ownername");
+        array_push($joinValue,"left join lime_users luser ON luser.uid=p.owner_uid");
+        foreach($attid as $key=>$attid)
+        {
+            $attid = $attid['attribute_id'];
+            array_push($selectValue,"attribute".$attid.".value as a".$attid);
+            array_push($joinValue,"LEFT JOIN {{participant_attribute}} attribute".$attid." ON attribute".$attid.".participant_id=p.participant_id AND attribute".$attid.".attribute_id=".$attid);
+        }
+        $data = Yii::app()->db->createCommand()
+              ->select($selectValue)
+              ->from('{{participants}} p')
+              ->limit($limit, $start);
+        $data->setJoin($joinValue);
+        $allData = $data->queryAll();
+        return $allData;
+
     }
 
     function getSurveyCount($participant_id)
