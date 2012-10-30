@@ -4870,7 +4870,7 @@ function do_array($ia)
             $labelcode[]=$lrow->code;
         }
 
-        $sQuery = "SELECT question FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
+        $sQuery = "SELECT count(qid) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
         
         if ($iCount>0) {
