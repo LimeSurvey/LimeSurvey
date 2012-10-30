@@ -15,13 +15,15 @@ if (!isset( Yii::app()->session['updateinfo']))
 
 if ($new_files)
 {
-    $clang->eT('New files were successfully installed.').'<br />';
+	$clang->eT('New files were successfully installed.');
 }
 else
 {
-    $clang->eT('There was a problem downloading the update file. Please try to restart the update process.').'<br />';
+	$clang->eT('There was a problem downloading the update file. Please try to restart the update process.');
 }
-
+?>
+<br>
+<?
 if (!$downloaderror)
 {
     echo sprintf($clang->gT('Buildnumber was successfully updated to %s.'),Yii::app()->session['updateinfo']['toversion']).'<br />';
