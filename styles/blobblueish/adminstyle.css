@@ -48,7 +48,7 @@ p {
     color: #9C0;
     height: 30px;
     background: #121a28;
-    margin: 0;
+    margin: 0 auto;
     padding: 5px;
     clear: both;
 }
