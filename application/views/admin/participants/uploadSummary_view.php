@@ -31,7 +31,7 @@
             {
                 $uploadSummary .= "<li>" . sprintf($clang->gT("%s records have empty mandatory fields"), $mandatory) . "</li>";
             }
-            $uploadSummary .= "<li>" . sprintf($clang->gT("%s records met minumum requirements"), $mincriteria) . "</li>";
+            $uploadSummary .= "<li>" . sprintf($clang->gT("%s records met minimum requirements"), $mincriteria) . "</li>";
             $uploadSummary .= "<li>" . sprintf($clang->gT("%s new participants were created"), $imported) . "</li>";
             if($overwritten > 0) {
                 $uploadSummary .= "<li>".sprintf($clang->gT("%s records were duplicate but had attributes updated"), $overwritten)."</li>";
