@@ -53,6 +53,12 @@ class GlobalSettings extends Survey_Common_Action
         }
     }
 
+    public function updatecheck()
+    {
+        updateCheck();
+        $this->getController()->redirect('admin/globalsettings');
+    }
+        
     private function _displaySettings()
     {
         Yii::app()->loadHelper('surveytranslator');
@@ -69,12 +75,12 @@ class GlobalSettings extends Survey_Common_Action
             $data[$key] = $row;
         }
         $data['thisupdatecheckperiod'] = getGlobalSetting('updatecheckperiod');
-        $data['updatelastcheck'] = Yii::app()->getConfig("updatelastcheck");
-        $data['updateavailable'] = (Yii::app()->getConfig("updateavailable") &&  Yii::app()->getConfig("updatable"));
+        $data['updatelastcheck'] = getGlobalSetting("updatelastcheck");
+        $data['updateavailable'] = (getGlobalSetting("updateavailable") &&  Yii::app()->getConfig("updatable"));
         $data['updatable'] = Yii::app()->getConfig("updatable");
-        $data['updateinfo'] = Yii::app()->getConfig("updateinfo");
-        $data['updatebuild'] = Yii::app()->getConfig("updatebuild");
-        $data['updateversion'] = Yii::app()->getConfig("updateversion");
+        $data['updateinfo'] = getGlobalSetting("updateinfo");
+        $data['updatebuild'] = getGlobalSetting("updatebuild");
+        $data['updateversion'] = getGlobalSetting("updateversion");
         $data['allLanguages'] = getLanguageData(false, Yii::app()->session['adminlang']);
         if (trim(Yii::app()->getConfig('restrictToLanguages')) == '') {
             $data['restrictToLanguages'] = array_keys($data['allLanguages']);

@@ -6,7 +6,7 @@
  *
  */
 
-class http
+class httpRequest
 {
     var $host_name="";
     var $host_port=0;
