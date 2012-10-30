@@ -988,7 +988,8 @@ class participantsaction extends Survey_Common_Action
         //If super admin all the participants will be visible
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
-            $records = Participants::model()->getParticipants($page, $limit);
+            $records = Participants::model()->getParticipants($page, $limit,$attid);
+
             $aData =  new stdClass;
             $aData->page = $page;
             $aData->records = Participants::model()->count();
@@ -996,23 +997,14 @@ class participantsaction extends Survey_Common_Action
             $i = 0;
             $sortablearray=array();
             foreach ($records as $key => $row)
-            {
-                $username = User::model()->getName($row['owner_uid']); //for conversion of uid to human readable names
+            {            
                 $surveycount = Participants::model()->getSurveyCount($row['participant_id']);
-                $sortablearray[$i] = array($row['participant_id'], "true", $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $username[0]['full_name']); // since it's the admin he has access to all editing on the participants inspite of what can_edit option is
-                
-                foreach ($attid as $iAttributeId)
+                $sortablearray[$i] = array($row['participant_id'], "true", $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $row['ownername']); // since it's the admin he has access to all editing on the participants inspite of what can_edit option is
+                unset($row['participant_id'], $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $row['language'],$row['ownername'],$row['owner_uid']);
+                foreach($row as $key=>$attvalue)
                 {
-                    $answer = ParticipantAttributeNames::model()->getAttributeValue($row['participant_id'], $iAttributeId['attribute_id']);
-                    if (isset($answer['value']))
-                    {
-                        array_push($sortablearray[$i], $answer['value']);
-                    }
-                    else
-                    {
-                        array_push($sortablearray[$i], "");
-                    }
-                }
+                  array_push($sortablearray[$i], $attvalue);
+                }         
                 $i++;
             }
 
