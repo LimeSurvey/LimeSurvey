@@ -57,6 +57,12 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121030) to 2.00+ (build 121031) Oct 30, 2012
+-Fixed issue #6567: Performance issue (Aniessh Sethh)
+-Fixed issue #6782: Welcome screen should be hidden (Carsten Schmitz)
+-Fixed issue #6792: Problems with navigation delay (Carsten Schmitz)
+-Fixed issue: Updater not showing new updates (Carsten Schmitz)
+
 
 Changes from 2.00+ (build 121025) to 2.00+ (build 121030) Oct 30, 2012
 -New feature: Added subquestions, attributes, attributes_lang and answeroptions properties for RemoteControl get_question_properties (Diogo Gonçalves)
