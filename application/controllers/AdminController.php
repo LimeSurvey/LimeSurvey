@@ -27,7 +27,7 @@ class AdminController extends LSYii_Controller
     protected function _init()
     {
         parent::_init();
-        $updatelastcheck = '';
+        $updatelastcheck = getGlobalSetting('updatelastcheck');
 
         $this->_sessioncontrol();
 
