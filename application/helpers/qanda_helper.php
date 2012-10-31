@@ -1434,12 +1434,12 @@ function do_list_dropdown($ia)
     }
 
     $ansresult = Yii::app()->db->createCommand($ansquery)->query() or safeDie('Couldn\'t get answers<br />'.$ansquery.'<br />');    //Checked
-
+    $ansresult= $ansresult->readAll();
     $dropdownSize = '';
     if (isset($aQuestionAttributes['dropdown_size']) && $aQuestionAttributes['dropdown_size'] > 0)
     {
         $_height = sanitize_int($aQuestionAttributes['dropdown_size']) ;
-        $_maxHeight = $ansresult->RowCount();
+        $_maxHeight = count($ansresult);
         if ((!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])) && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
             ++$_maxHeight;  // for No Answer
         }
@@ -1466,7 +1466,7 @@ function do_list_dropdown($ia)
 
     if (!isset($optCategorySeparator))
     {
-        foreach ($ansresult->readAll() as $ansrow)
+        foreach ($ansresult as $ansrow)
         {
             $opt_select = '';
             if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code'])
@@ -1483,7 +1483,7 @@ function do_list_dropdown($ia)
     {
         $defaultopts = Array();
         $optgroups = Array();
-        foreach ($ansresult->readAll() as $ansrow)
+        foreach ($ansresult as $ansrow)
         {
             // Let's sort answers in an array indexed by subcategories
             @list ($categorytext, $answertext) = explode($optCategorySeparator,$ansrow['answer']);
@@ -4870,7 +4870,7 @@ function do_array($ia)
             $labelcode[]=$lrow->code;
         }
 
-        $sQuery = "SELECT question FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
+        $sQuery = "SELECT count(qid) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
         
         if ($iCount>0) {

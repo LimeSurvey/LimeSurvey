@@ -1531,7 +1531,6 @@ class ExcelWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
-                            $sRandomFileName=Yii::app()->getConfig("tempdir"). DIRECTORY_SEPARATOR . randomChars(40);
 
         if ($oOptions->output=='file')
         {
@@ -1542,15 +1541,13 @@ class ExcelWriter extends Writer
         {
             $this->workbook = new xlswriter;
         }
+        $this->workbook->setTempDir(Yii::app()->getConfig("tempdir"));
 
         $this->workbook->send('results-survey'.$survey->id.'.xls');
         $worksheetName = $survey->languageSettings[0]['surveyls_title'];
         $worksheetName=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$worksheetName),0,31); // Remove invalid characters
 
         $this->workbook->setVersion(8);
-        if (!empty($tempdir)) {
-            $this->$workbook->setTempDir($tempdir);
-        }
         $sheet =$this->workbook->addWorksheet($worksheetName); // do not translate/change this - the library does not support any special chars in sheet name
         $sheet->setInputEncoding('utf-8');
         $this->currentSheet = $sheet;

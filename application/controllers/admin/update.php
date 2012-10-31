@@ -27,11 +27,12 @@ class update extends Survey_Common_Action
     function index($sSubAction = null)
     {
         $this->_RunUpdaterUpdate();
+        Yii::import('application.libraries.admin.http.httpRequest');
 
         $clang = $this->getController()->lang;
         $iCurrentBuildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
-        $iDestinationBuild= Yii::app()->getConfig("updatebuild");
+        $iDestinationBuild= getGlobalSetting("updatebuild");
 
         $updatekey = $this->_getUpdateKey($sSubAction);
         $error = false;
@@ -58,7 +59,8 @@ class update extends Survey_Common_Action
 
     private function _getChangedFiles($buildnumber, $updaterversion, $updatekey)
     {
-        $http = new http;
+        Yii::import('application.libraries.admin.http.httpRequest');
+        $http = new httpRequest;
         $httperror = $this->_requestChangedFiles($http, $buildnumber, $updaterversion, $updatekey);
 
         if ($httperror != '') {
@@ -69,7 +71,8 @@ class update extends Survey_Common_Action
     
     private function _getChangelog($buildnumber, $updaterversion, $updatekey)
     {
-        $http = new http;
+        Yii::import('application.libraries.admin.http.httpRequest');
+        $http = new httpRequest;
         $httperror = $this->_requestChangelog($http, $buildnumber, $updaterversion, $updatekey);
 
         if ($httperror != '') {
@@ -78,7 +81,7 @@ class update extends Survey_Common_Action
         return $this->_readChangelog($http);
     }
 
-    private function _readChangelog(http $http)
+    private function _readChangelog(httpRequest $http)
     {
         $szLines = '';
         $szResponse = '';
@@ -93,7 +96,7 @@ class update extends Survey_Common_Action
         }
     }
 
-    private function _requestChangelog(http $http, $buildnumber, $updaterversion, $updatekey)
+    private function _requestChangelog(httpRequest $http, $buildnumber, $updaterversion, $updatekey)
     {
         $http->timeout = 0;
         $http->data_timeout = 0;
@@ -105,7 +108,7 @@ class update extends Survey_Common_Action
         return $http->SendRequest($arguments);
     }
     
-    private function _requestChangedFiles(http $http, $buildnumber, $updaterversion, $updatekey)
+    private function _requestChangedFiles(httpRequest $http, $buildnumber, $updaterversion, $updatekey)
     {
         $http->timeout = 0;
         $http->data_timeout = 0;
@@ -120,7 +123,7 @@ class update extends Survey_Common_Action
 
     private function _getUpdateKey($sSubAction)
     {
-        $updatekey = Yii::app()->getConfig("updatekey");
+        $updatekey = getGlobalSetting("updatekey");
         if ($sSubAction == 'keyupdate') {
             $updatekey = sanitize_paranoid_string($_POST['updatekey']);
             setGlobalSetting('updatekey', $updatekey);
@@ -133,10 +136,11 @@ class update extends Survey_Common_Action
 
     function step2()
     {
+        
         $clang = $this->getController()->lang;
         $buildnumber = Yii::app()->getConfig("buildnumber");
-        $updatebuild = Yii::app()->getConfig("updatebuild");
-        $updatekey = Yii::app()->getConfig("updatekey");
+        $updatebuild = getGlobalSetting("updatebuild");
+        $updatekey =getGlobalSetting("updatekey");
 
         list($error, $updateinfo, $cookies) = $this->_getChangedFiles($buildnumber, $updatebuild, $updatekey);
         $aData = $this->_getFileStatus($updateinfo);
@@ -217,8 +221,8 @@ class update extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
-        $updatekey = Yii::app()->getConfig("updatekey");
-        $updatebuild = Yii::app()->getConfig("updatebuild");
+        $updatekey = getGlobalSetting("updatekey");
+        $updatebuild = getGlobalSetting("updatebuild");
         //$_POST=$this->input->post();
         $rootdir = Yii::app()->getConfig("rootdir");
         $publicdir = Yii::app()->getConfig("publicdir");
@@ -226,7 +230,6 @@ class update extends Survey_Common_Action
         $aDatabasetype = Yii::app()->db->getDriverName();
         $aData = array('clang' => $clang);
         // Request the list with changed files from the server
-        $updatekey=getGlobalSetting('updatekey');
 
         if (!isset( Yii::app()->session['updateinfo']))
         {
@@ -299,15 +302,14 @@ class update extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
-        $updatekey = Yii::app()->getConfig("updatekey");
-        $updatebuild = Yii::app()->getConfig("updatebuild");
+        $updatekey = getGlobalSetting("updatekey");
+        $updatebuild = getGlobalSetting("updatebuild");
 
         $rootdir = Yii::app()->getConfig("rootdir");
         $publicdir = Yii::app()->getConfig("publicdir");
         $tempdir = Yii::app()->getConfig("tempdir");
         $aDatabasetype = Yii::app()->db->getDriverName();
         // Request the list with changed files from the server
-        $updatekey=getGlobalSetting('updatekey');
         $aData = array('clang' => $clang);
 
         if (!isset( Yii::app()->session['updateinfo']))
@@ -325,7 +327,8 @@ class update extends Survey_Common_Action
         // Create DB and file backups now
 
         $downloaderror=false;
-        $http=new http;
+        Yii::import('application.libraries.admin.http.httpRequest');
+        $http=new httpRequest;
 
         // Allow redirects
         $http->follow_redirect=1;
@@ -430,33 +433,34 @@ class update extends Survey_Common_Action
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
 
-        $http=new http;
-
+        Yii::import('application.libraries.admin.http.httpRequest');
+        $oHTTPRequest=new httpRequest;
+        
         /* Connection timeout */
-        $http->timeout=0;
+        $oHTTPRequest->timeout=0;
         /* Data transfer timeout */
-        $http->data_timeout=0;
-        $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $http->GetRequestArguments("http://update.limesurvey.org?updaterbuild={$buildnumber}",$arguments);
+        $oHTTPRequest->data_timeout=0;
+        $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
+        $oHTTPRequest->GetRequestArguments("http://update.limesurvey.org?updaterbuild={$buildnumber}",$arguments);
 
         $updateinfo=false;
-        $error=$http->Open($arguments);
-        $error=$http->SendRequest($arguments);
+        $error=$oHTTPRequest->Open($arguments);
+        $error=$oHTTPRequest->SendRequest($arguments);
 
-        $http->ReadReplyHeaders($headers);
+        $oHTTPRequest->ReadReplyHeaders($headers);
 
 
         if($error=="") {
             $body=''; $full_body='';
             for(;;){
-                $error = $http->ReadReplyBody($body,10000);
+                $error = $oHTTPRequest->ReadReplyBody($body,10000);
                 if($error != "" || strlen($body)==0) break;
                 $full_body .= $body;
             }
             $updateinfo=json_decode($full_body,true);
-            if ($http->response_status!='200')
+            if ($oHTTPRequest->response_status!='200')
             {
-                $updateinfo['errorcode']=$http->response_status;
+                $updateinfo['errorcode']=$oHTTPRequest->response_status;
                 $updateinfo['errorhtml']=$full_body;
             }
         }
@@ -465,7 +469,7 @@ class update extends Survey_Common_Action
             $updateinfo['errorcode']=$error;
             $updateinfo['errorhtml']=$error;
         }
-        unset( $http );
+        unset( $oHTTPRequest );
         if ((int)$updateinfo['UpdaterRevision']<=$buildnumber)
         {
             // There is no newer updater version on the server
@@ -481,34 +485,35 @@ class update extends Survey_Common_Action
         // Create DB and file backups now
 
         $downloaderror=false;
-        $http=new http;
+        Yii::import('application.libraries.admin.http.httpRequest');
+        $oHTTPRequest=new httpRequest;
 
         // Allow redirects
-        $http->follow_redirect=1;
+        $oHTTPRequest->follow_redirect=1;
         /* Connection timeout */
-        $http->timeout=0;
+        $oHTTPRequest->timeout=0;
         /* Data transfer timeout */
-        $http->data_timeout=0;
-        $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $http->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/{$this->updaterversion}",$arguments);
+        $oHTTPRequest->data_timeout=0;
+        $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
+        $oHTTPRequest->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/{$this->updaterversion}",$arguments);
 
-        $httperror=$http->Open($arguments);
-        $httperror=$http->SendRequest($arguments);
-        $http->ReadReplyHeaders($headers);
+        $oHTTPRequesterror=$oHTTPRequest->Open($arguments);
+        $oHTTPRequesterror=$oHTTPRequest->SendRequest($arguments);
+        $oHTTPRequest->ReadReplyHeaders($headers);
         if ($headers['content-type']=='text/html')
         {
             @unlink($tempdir.'/updater.zip');
         }
-        elseif($httperror=='') {
+        elseif($oHTTPRequesterror=='') {
             $body=''; $full_body='';
             for(;;){
-                $httperror = $http->ReadReplyBody($body,100000);
-                if($httperror != "" || strlen($body)==0) break;
+                $oHTTPRequesterror = $oHTTPRequest->ReadReplyBody($body,100000);
+                if($oHTTPRequesterror != "" || strlen($body)==0) break;
                 $full_body .= $body;
             }
             file_put_contents($tempdir.'/updater.zip',$full_body);
         }
-        $aData['httperror'] = $httperror;
+        $aData['httperror'] = $oHTTPRequesterror;
 
         //Now unzip the new updater over the existing ones.
         if (file_exists($tempdir.'/updater.zip')){

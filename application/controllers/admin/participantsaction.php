@@ -840,7 +840,7 @@ class participantsaction extends Survey_Common_Action
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
         $page=($page) ? $page : 1;
-    	$limit=($limit) ? $limit : 25;
+    	  $limit=($limit) ? $limit : 25;
 
         $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
@@ -1039,7 +1039,7 @@ class participantsaction extends Survey_Common_Action
 
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
-    	$limit = isset($limit) ? $limit : 50; //Stop division by zero errors
+    	  $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
 
         $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
@@ -1051,36 +1051,27 @@ class participantsaction extends Survey_Common_Action
         //If super admin all the participants will be visible
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
-            $records = Participants::model()->getParticipants($page, $limit);
+            $records = Participants::model()->getParticipants($page, $limit,$attid);
             $aData =  new stdClass;
             $aData->page = $page;
             $aData->records = Participants::model()->count();
             $aData->total = ceil($aData->records / $limit);
             $i = 0;
-        	$sortablearray=array();
-        	foreach ($records as $key => $row)
-            {
-                $username = User::model()->getName($row['owner_uid']); //for conversion of uid to human readable names
+        	  $sortablearray=array();
+            foreach ($records as $key => $row)
+            {            
                 $surveycount = Participants::model()->getSurveyCount($row['participant_id']);
-                $sortablearray[$i] = array($row['participant_id'], "true", $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $username[0]['full_name']); // since it's the admin he has access to all editing on the participants inspite of what can_edit option is
-                $attributes = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($row['participant_id']);
-                foreach ($attid as $iAttributeId)
+                $sortablearray[$i] = array($row['participant_id'], "true", $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $row['ownername']); // since it's the admin he has access to all editing on the participants inspite of what can_edit option is
+                unset($row['participant_id'], $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $row['language'],$row['ownername'],$row['owner_uid']);
+                foreach($row as $key=>$attvalue)
                 {
-                    $answer = ParticipantAttributeNames::model()->getAttributeValue($row['participant_id'], $iAttributeId['attribute_id']);
-                    if (isset($answer['value']))
-                    {
-                        array_push($sortablearray[$i], $answer['value']);
-                    }
-                    else
-                    {
-                        array_push($sortablearray[$i], "");
-                    }
-                }
+                  array_push($sortablearray[$i], $attvalue);
+                }         
                 $i++;
             }
 
             $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
-        	if(!empty($sortablearray)) {
+        	  if(!empty($sortablearray)) {
         		$sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
         		$i = 0;
         		$count = count($sortedarray[0]);
@@ -1112,7 +1103,6 @@ class participantsaction extends Survey_Common_Action
                 $surveycount = Participants::model()->getSurveyCount($row['participant_id']);
                 $ownername = User::model()->getName($row['owner_uid']); //for conversion of uid to human readable names
                 $sortablearray[$i] = array($row['participant_id'], $row['can_edit'], $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $ownername[0]['full_name']);
-                $attributes = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($row['participant_id']);
                 foreach ($attid as $iAttributeId)
                 {
                     $answer = ParticipantAttributeNames::model()->getAttributeValue($row['participant_id'], $iAttributeId['attribute_id']);

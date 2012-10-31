@@ -234,7 +234,7 @@
         ,LimeReplacementFieldsAction : \"".$action."\"
         ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/index/")."\"
         ,width:'660'
-        ,language:'".sTranslateLangCode2CK(Yii::app()->getConfig('adminlang'))."'
+        ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'
         ,smiley_path : \"".Yii::app()->getConfig('uploadurl')."/images/smiley/msn/\"\n"
         . $htmlformatoption
         . $toolbaroption

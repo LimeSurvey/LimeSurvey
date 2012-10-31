@@ -57,6 +57,47 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121030) to 2.00+ (build 121031) Oct 30, 2012
+-Fixed issue #6567: Performance issue (Aniessh Sethh)
+-Fixed issue #6782: Welcome screen should be hidden (Carsten Schmitz)
+-Fixed issue #6792: Problems with navigation delay (Carsten Schmitz)
+-Fixed issue: Updater not showing new updates (Carsten Schmitz)
+
+
+Changes from 2.00+ (build 121025) to 2.00+ (build 121030) Oct 30, 2012
+-New feature: Added subquestions, attributes, attributes_lang and answeroptions properties for RemoteControl get_question_properties (Diogo Gonçalves)
+-Fixed issue #6685: Export of results to excel format does not work- creates empty files (Carsten Schmitz)
+-Fixed issue #6744: Expressionmanager show false error if admin lang are not in default survey lang (Denis Chenu)
+-Fixed issue #6769: In tokens list, searching by more than one criteria does not work (Carsten Schmitz)
+-Fixed issue #6777: LimeReplacementField dialog don't take title from admin lang (Denis Chenu)
+-Fixed issue #6785: Spelling error (Carsten Schmitz)
+-Fixed issue #6791: LS2 admin screen (list surveys screen) doesn't spread over whole screen width (tpartner)
+-Fixed issue: Cookie feature to prevent repeated participation not working (Carsten Schmitz)
+-Fixed issue: RemoteControl add_response not working (Diogo Gonçalves)
+-Fixed issue: Rowcount error when using List(Dropdown) question (Carsten Schmitz)
+-Fixed issue: Update check running repeatedly (Carsten Schmitz)
+#Updated translation: Amharic by addis_1001
+#Updated translation: Chinese (Simplified) by yanglaw, siyang1982
+#Updated translation: Czech by slansky, wargo
+#Updated translation: Dutch by Erik_Inn
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by hunkissleslie
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Latvian by vipgroup
+#Updated translation: Norwegian (Bokmål) by pmonstad, peterhol
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado, wagner
+#Updated translation: Russian by vipgroup
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Slovak by wargo
+#Updated translation: Spanish (Spain) by larjona
+#Updated translation: Turkish by kayazeren
+
 
 Changes from 2.00+ (build 121024) to 2.00+ (build 121025) Oct 25, 2012
 -Fixed issue #6775: If a closed survey with tokens is de-activated and then re-activated you cannot take the survey anymore (Menno Dekker)

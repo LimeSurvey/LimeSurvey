@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*    $Id$
 */
 
 class SurveyRuntimeHelper {
@@ -91,7 +91,7 @@ class SurveyRuntimeHelper {
         }
         else
         {
-
+                                       
             //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
             if (!isset($_SESSION[$LEMsessid]['step'])) // || !$_SESSION[$LEMsessid]['step']) - don't do this for step0, else rebuild the session
             {
@@ -103,17 +103,22 @@ class SurveyRuntimeHelper {
 
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
                 $_SESSION[$LEMsessid]['step'] = 0;
-                if ($surveyMode == 'survey' || (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N'))
+                if ($surveyMode == 'survey')
                 {
                     $move = "movenext"; // to force a call to NavigateForwards()
+                }
+                elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')                
+                {
+                    $move = "movenext";
+                    $_SESSION[$LEMsessid]['step']=1;
                 }
             } else if($surveyid != LimeExpressionManager::getLEMsurveyId()) {
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
                 LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
             }
 
-			$totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
-			
+            $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
+            
             if (!isset($_SESSION[$LEMsessid]['totalsteps']))
             {
                 $_SESSION[$LEMsessid]['totalsteps'] = 0;
@@ -398,8 +403,7 @@ class SurveyRuntimeHelper {
                 {
                     if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
                     {
-                        $cookiename = "PHPSID" . returnGlobal('sid') . "STATUS";
-                        //                        setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days   //@todo fix - sometimes results in headers already sent error
+                        setcookie("LS_" . $surveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days   
                     }
 
 
