@@ -435,15 +435,11 @@ class CheckIntegrity extends Survey_Common_Action
         /**********************************************************************/
         /*     Check question attributes                                      */
         /**********************************************************************/
-        $question_attributes = Question_attributes::model()->findAll();
+        $question_attributes = Question_attributes::model()->findAllBySql('select qid from {{question_attributes}} where qid not in (select qid from {{questions}})');
         if (Question_attributes::model()->hasErrors()) safeDie(Question_attributes::model()->getError());
         foreach ($question_attributes as $question_attribute)
         {
-            $iRowCount = Questions::model()->countByAttributes(array('qid' => $question_attribute['qid']));
-            if (Questions::model()->hasErrors()) safeDie(Questions::model()->getError());
-            if (!$iRowCount) {
-                $aDelete['questionattributes'][] = array('qid' => $question_attribute['qid']);
-            }
+            $aDelete['questionattributes'][] = array('qid' => $question_attribute['qid']);
         } // foreach
 
 
