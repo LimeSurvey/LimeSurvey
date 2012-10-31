@@ -18,7 +18,30 @@ class Tokens_dynamic extends LSActiveRecord
 {
 	protected static $sid = 0;
 
-	/**
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
+     * @param int $surveyid
+     * @return Tokens_dynamic
+     */
+    public static function model($sid = NULL)
+    {
+        $refresh = false;
+        if (!is_null($sid)) {
+            self::sid($sid);
+            $refresh = true;
+        }
+        
+        $model = parent::model(__CLASS__);
+        
+        //We need to refresh if we changed sid
+        if ($refresh === true) $model->refreshMetaData();
+        return $model;
+    }
+    
+    /**
 	 * Sets the survey ID for the next model
 	 *
 	 * @static
@@ -29,22 +52,6 @@ class Tokens_dynamic extends LSActiveRecord
 	public static function sid($sid)
 	{
 		self::$sid = (int) $sid;
-	}
-
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-	 * @param int $surveyid
-	 * @return Tokens_dynamic
-	 */
-	public static function model($sid = null)
-	{
-        if (!is_null($sid))
-            self::sid($sid);
-
-		return parent::model(__CLASS__);
 	}
 
 	/**
