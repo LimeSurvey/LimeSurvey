@@ -2042,7 +2042,7 @@ function getSavedCount($surveyid)
 {
     $surveyid=(int)$surveyid;
 
-    return Saved_control::getCountOfAll($surveyid);
+    return Saved_control::model()->getCountOfAll($surveyid);
 }
 
 /**
