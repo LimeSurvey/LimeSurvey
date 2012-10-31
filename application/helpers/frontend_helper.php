@@ -1169,6 +1169,11 @@
         // @todo: Remove globals
         global $thissurvey, $maildebug, $tokensexist;
         
+        if (trim($thissurvey['adminemail'])=='')
+        {
+            return;
+        }
+        
         $homeurl=Yii::app()->createAbsoluteUrl('/admin');
         $clang = Yii::app()->lang;
         $sitename = Yii::app()->getConfig("sitename");
@@ -1289,7 +1294,8 @@
         }
 
         $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
-
+    
+        
         $redata=compact(array_keys(get_defined_vars()));
         if (count($aEmailNotificationTo)>0)
         {
