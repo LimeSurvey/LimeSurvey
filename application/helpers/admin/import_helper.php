@@ -3997,6 +3997,12 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
         return $results;
     }
 
+    if (!isset($xml->tokens->fields))
+    {
+        $results['tokens']=0;
+        return $results;
+    }
+    
     $results['tokens']=0;
     $results['tokenfieldscreated']=0;
 
