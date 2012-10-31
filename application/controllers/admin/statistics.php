@@ -524,7 +524,8 @@ class statistics extends Survey_Common_Action {
         $MyCache = new pCache($tempdir.'/');
 
 	    $aData['success'] = 1;
-
+        $sStatisticsLanguage=sanitize_languagecode($_POST['sStatisticsLanguage']);
+        $oStatisticsLanguage = new Limesurvey_lang($sStatisticsLanguage);        
 	    if (isset($_POST['cmd']) && isset($_POST['id'])) {
 	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);
 	        $qtype = substr($_POST['id'], 0, 1);
@@ -567,7 +568,7 @@ class statistics extends Survey_Common_Action {
                     $bChartType = $qtype != "M" && $qtype != "P" && $aattr["statistics_graphtype"] == "1";
 
                     $adata = Yii::app()->session['stats'][$_POST['id']];
-	                $aData['chartdata'] = createChart($qqid, $qsid, $bChartType, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache);
+	                $aData['chartdata'] = createChart($qqid, $qsid, $bChartType, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache, $oStatisticsLanguage);
 
 
                     Question_attributes::model()->setAttribute($qqid, 'statistics_showgraph', 1);
@@ -584,7 +585,7 @@ class statistics extends Survey_Common_Action {
                     Question_attributes::model()->setAttribute($qqid, 'statistics_graphtype', 0);
 
                     $adata = Yii::app()->session['stats'][$_POST['id']];
-	                $aData['chartdata'] =  createChart($qqid, $qsid, 0, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache);
+	                $aData['chartdata'] =  createChart($qqid, $qsid, 0, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache, $oStatisticsLanguage);
 
 	                break;
 	            case 'showpie':
@@ -597,7 +598,7 @@ class statistics extends Survey_Common_Action {
                     Question_attributes::model()->setAttribute($qqid, 'statistics_graphtype', 1);
 
                     $adata = Yii::app()->session['stats'][$_POST['id']];
-	                $aData['chartdata'] =  createChart($qqid, $qsid, 1, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache);
+	                $aData['chartdata'] =  createChart($qqid, $qsid, 1, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache, $oStatisticsLanguage);
 
 
 	                break;

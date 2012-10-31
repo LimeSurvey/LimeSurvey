@@ -264,6 +264,7 @@ function graphQuery (id, cmd, success) {
         data: {
             'id': id,
             'cmd': cmd,
+            'sStatisticsLanguage': sStatisticsLanguage
         },
         success: success,
         error: function (res)
