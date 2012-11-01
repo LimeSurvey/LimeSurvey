@@ -1505,7 +1505,7 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            $aData['resultr'] = Tokens_dynamic::model($iSurveyId)->find(array('select' => 'language', 'group' => 'language'));
+            $aData['resultr'] = Tokens_dynamic::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
 
