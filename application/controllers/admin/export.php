@@ -313,7 +313,7 @@ class export extends Survey_Common_Action {
             Yii::app()->session['spssversion'] = $spssver;
         }
 
-        $length_varlabel = '255'; // Set the max text length of Variable Labels
+        $length_varlabel = '231'; // Set the max text length of Variable Labels
         $length_vallabel = '120'; // Set the max text length of Value Labels
 
         switch ( $spssver )
@@ -482,7 +482,17 @@ class export extends Survey_Common_Action {
             {
                 if ( ! $field['hide'] )
                 {
-                    echo "VARIABLE LABELS " . $field['id'] . " \"" . str_replace('"','""',mb_substr(stripTagsFull($field['VariableLabel']), 0, $length_varlabel)) . "\".\n";
+                    $label_parts = strSplitUnicode(str_replace('"','""',stripTagsFull($field['VariableLabel'])), $length_varlabel-strlen($field['id']));
+                    //if replaced quotes are splitted by, we need to mve the first quote to the next row
+                    foreach($label_parts as $idx => $label_part)
+                    {
+                        if($idx != count($label_parts) && substr($label_part,-1) == '"' && substr($label_part,-2) != '"')
+                        {
+                            $label_parts[$idx] = rtrim($label_part, '"');
+                            $label_parts[$idx + 1] = '"' . $label_parts[$idx + 1];
+                        }
+                    }
+                    echo "VARIABLE LABELS " . $field['id'] . " \"" . implode("\"+\n\"", $label_parts) . "\".\n";
                 }
             }
 
