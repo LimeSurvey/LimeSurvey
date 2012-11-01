@@ -27,7 +27,7 @@
 if($resultr){
     foreach ($resultr as $lrow)
     {
-        echo "<option value='{$lrow['language']}'>" . getLanguageNameFromCode($lrow['language']) . "</option>";
+        echo "<option value='{$lrow->language}'>" . getLanguageNameFromCode($lrow->language,false) . "</option>";
     }
 }
 ?>

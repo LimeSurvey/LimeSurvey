@@ -5828,8 +5828,7 @@ function getXMLWriter() {
 function usedTokens($token, $surveyid)
 {
     $utresult = true;
-    Tokens_dynamic::sid($surveyid);
-    $query=Tokens_dynamic::model()->findAllByAttributes(array("token"=>$token));
+    $query=Tokens_dynamic::model($surveyid)->findAllByAttributes(array("token"=>$token));
     if (count($query) > 0) {
         $row = $query[0];
         if ($row->usesleft > 0) $utresult = false;
