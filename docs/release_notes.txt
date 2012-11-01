@@ -57,6 +57,36 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121031) to 2.00+ (build 121101) Nov 1, 2012
+-Fixed issue #6567: Performance issue (Aniessh Sethh)
+-Fixed issue #6779: Detailed summary of surveys not shown if a survey owner was deleted (Carsten Schmitz)
+-Fixed issue #6781: Text 'invalid address' on completed page (Carsten Schmitz)
+-Fixed issue #6789: Wrong number of TH elements for semantic differential array question type (Carsten Schmitz)
+-Fixed issue #6790: Certain advanced question settings are lost when importing question/question group/survey file from version 1.92 (Carsten Schmitz)
+-Fixed issue #6796: "Get order from previous question" functionality does not work (Carsten Schmitz)
+-Fixed issue #6801: Reporting graph issue (Carsten Schmitz)
+-Fixed issue #6803: Unable to use decimal step value in Array (Numbers) question type if separator is set to ',' (Carsten Schmitz)
+-Fixed issue #6804: missing space after . (Carsten Schmitz)
+-Fixed issue #6805: Notice Non-static method Saved_control::getCountOfAll() should not be called statically when browsing partial responses (Carsten Schmitz)
+-Fixed issue #6809: Notice on data entry screen when using multiple choice question (Carsten Schmitz)
+-Fixed issue #6810: When you add a group to a survey's permissions list and set the permissions you get a SQL error on the permissions page - patch by jtate (Carsten Schmitz)
+-Fixed issue #6818: Yes / No is not exported to 1 / 2 if selected (Carsten Schmitz)
+-Fixed issue: Memory usage on integrity check too big (Carsten Schmitz)
+-Fixed issue: Problem importing survey archive if token table was completely empty on export (Carsten Schmitz)
+-Fixed issue: Token information in survey list incorrect (Carsten Schmitz)
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by coeneisma, Han
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Portuguese (Brazil) by wagner, mauriciofurtado
+#Updated translation: Spanish (Mexican) by k001
+#Updated translation: Swedish by Basse
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.00+ (build 121030) to 2.00+ (build 121031) Oct 30, 2012
 -Fixed issue #6567: Performance issue (Aniessh Sethh)
 -Fixed issue #6782: Welcome screen should be hidden (Carsten Schmitz)
