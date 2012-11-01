@@ -2981,7 +2981,7 @@ function getSavedCount($surveyid)
 {
     $surveyid=(int)$surveyid;
 
-    return Saved_control::getCountOfAll($surveyid);
+    return Saved_control::model()->getCountOfAll($surveyid);
 }
 
 /**
@@ -3842,7 +3842,7 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Force the choice list and the rank list to have the same height'));
 
     $qattributes["parent_order"]=array(
-    "types"=>"!ABCEFHKLMOPQRWZ1:;",
+    "types"=>":",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'text',

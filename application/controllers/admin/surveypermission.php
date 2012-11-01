@@ -83,10 +83,9 @@ class surveypermission extends Survey_Common_Action {
 
                     if(isset($group_ids) && $group_ids[0] != NULL)
                     {
-                        $group_ids_query = implode(" OR ugid=", $group_ids);
+                        $group_ids_query = implode(",", $group_ids);
                         unset($group_ids);
-
-                        $result4 = User_groups::model()->findAll('ugid = :ugid',array(':ugid' => $group_ids_query));
+                        $result4 = User_groups::model()->findAll("ugid IN ($group_ids_query)");                        
 
                         foreach ($result4 as $resul4row)
                         {

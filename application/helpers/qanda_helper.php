@@ -4870,7 +4870,7 @@ function do_array($ia)
             $labelcode[]=$lrow->code;
         }
 
-        $sQuery = "SELECT question FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
+        $sQuery = "SELECT count(qid) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
         
         if ($iCount>0) {
@@ -5809,6 +5809,8 @@ function do_array_multiflexi($ia)
                     . "<label for=\"answer{$myfname2}\">\n"
                     . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n";
 
+                    $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+                    $sSeperator = $sSeperator['seperator'];
                     if($inputboxlayout == false) {
                         $answer .= "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
                         . HTMLEscape($labelans[$thiskey]).'"'
@@ -5816,24 +5818,21 @@ function do_array_multiflexi($ia)
                         . "<option value=\"\">".$clang->gT('...')."</option>\n";
 
                         for($ii=$minvalue; ($reverse? $ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue) {
-                            $answer .= "<option value=\"$ii\"";
+                            $answer .= '<option value="'.str_replace('.',$sSeperator,$ii).'"';
                             if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == $ii) {
                                 $answer .= SELECTED;
                             }
-                            $answer .= ">$ii</option>\n";
+                            $answer .= ">".str_replace('.',$sSeperator,$ii)."</option>\n";
                         }
                         $answer .= "\t</select>\n";
                     } elseif ($inputboxlayout == true)
                     {
-                        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-                        $sSeperator = $sSeperator['seperator'];
                         $answer .= "\t<input type='text' class=\"multiflexitext $kpclass\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 title=\""
                         . HTMLEscape($labelans[$thiskey]).'"'
                         . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\""
                         . " value=\"";
                         if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) {
-                            $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]);
-                            $answer .= $dispVal;
+                            $answer .= str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]);
                         }
                         $answer .= "\" />\n";
                     }

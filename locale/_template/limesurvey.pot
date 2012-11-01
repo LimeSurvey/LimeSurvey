@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-10-28 23:05:52+00:00\n"
+"POT-Creation-Date: 2012-10-30 23:05:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -101,7 +101,7 @@ msgid "Back"
 msgstr ""
 
 #: application/controllers/AdminController.php:87
-#: application/controllers/admin/surveyadmin.php:462
+#: application/controllers/admin/surveyadmin.php:468
 #: application/controllers/admin/tokens.php:2219
 #: application/helpers/admin/import_helper.php:2600
 #: application/views/admin/authentication/forgotpassword.php:15
@@ -582,7 +582,7 @@ msgid "Assessment mode for this survey is not activated. You can activate it in 
 msgstr ""
 
 #: application/controllers/admin/assessments.php:136
-#: application/controllers/admin/surveyadmin.php:635
+#: application/controllers/admin/surveyadmin.php:641
 #: application/views/admin/assessments_view.php:24
 #: application/views/admin/quotas/viewquotasrow_view.php:28
 msgid "Edit"
@@ -844,7 +844,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1185
 #: application/controllers/admin/printablesurvey.php:1190
 #: application/controllers/admin/quotas.php:526
-#: application/controllers/admin/surveyadmin.php:650
+#: application/controllers/admin/surveyadmin.php:656
 #: application/controllers/admin/tokens.php:2136
 #: application/core/Survey_Common_Action.php:816
 #: application/helpers/admin/statistics_helper.php:1284
@@ -1063,7 +1063,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1187
 #: application/controllers/admin/printablesurvey.php:1190
 #: application/controllers/admin/quotas.php:527
-#: application/controllers/admin/surveyadmin.php:654
+#: application/controllers/admin/surveyadmin.php:660
 #: application/controllers/admin/tokens.php:2138
 #: application/core/Survey_Common_Action.php:812
 #: application/helpers/admin/statistics_helper.php:1285
@@ -1397,7 +1397,7 @@ msgid "and"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1362
-#: application/helpers/SurveyRuntimeHelper.php:468
+#: application/helpers/SurveyRuntimeHelper.php:473
 msgid "or"
 msgstr ""
 
@@ -1655,11 +1655,11 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:306
 #: application/controllers/admin/labels.php:100
 #: application/controllers/admin/labels.php:133
-#: application/controllers/admin/participantsaction.php:1421
+#: application/controllers/admin/participantsaction.php:1411
 #: application/controllers/admin/question.php:55
 #: application/controllers/admin/questiongroup.php:55
 #: application/controllers/admin/surveyadmin.php:248
-#: application/controllers/admin/surveyadmin.php:867
+#: application/controllers/admin/surveyadmin.php:873
 #: application/controllers/admin/templates.php:166
 #: application/controllers/admin/templates.php:279
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
@@ -2159,7 +2159,7 @@ msgstr ""
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:175
+#: application/controllers/admin/globalsettings.php:181
 msgid "Global settings were saved."
 msgstr ""
 
@@ -2379,31 +2379,31 @@ msgstr ""
 msgid "%s participant(s) are to be copied "
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1790
+#: application/controllers/admin/participantsaction.php:1780
 msgid "%s participants have been shared"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1810
+#: application/controllers/admin/participantsaction.php:1800
 msgid "%s participants have been copied to the central participants table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1813
-#: application/controllers/admin/participantsaction.php:1837
-#: application/controllers/admin/participantsaction.php:1867
+#: application/controllers/admin/participantsaction.php:1803
+#: application/controllers/admin/participantsaction.php:1827
+#: application/controllers/admin/participantsaction.php:1857
 msgid "%s entries were not copied because they already existed"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1817
+#: application/controllers/admin/participantsaction.php:1807
 msgid "Attribute values for existing participants have been updated from the token records"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1834
-#: application/controllers/admin/participantsaction.php:1864
+#: application/controllers/admin/participantsaction.php:1824
+#: application/controllers/admin/participantsaction.php:1854
 msgid "%s participants have been copied to the survey token table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1841
-#: application/controllers/admin/participantsaction.php:1871
+#: application/controllers/admin/participantsaction.php:1831
+#: application/controllers/admin/participantsaction.php:1861
 msgid "Attribute values for existing participants have been updated from the participants records"
 msgstr ""
 
@@ -2768,82 +2768,82 @@ msgstr ""
 msgid "Question codes were successfully regenerated."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:450
-#: application/controllers/admin/surveyadmin.php:467
+#: application/controllers/admin/surveyadmin.php:456
+#: application/controllers/admin/surveyadmin.php:473
 #: application/views/admin/survey/activateSurvey_view.php:5
 #: application/views/admin/survey/activateSurvey_view.php:35
 msgid "Activate Survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:453
+#: application/controllers/admin/surveyadmin.php:459
 msgid "Survey table could not be created."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:457
+#: application/controllers/admin/surveyadmin.php:463
 msgid "Timings table could not be created."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:460
+#: application/controllers/admin/surveyadmin.php:466
 msgid "Database error!!"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:468
+#: application/controllers/admin/surveyadmin.php:474
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:473
+#: application/controllers/admin/surveyadmin.php:479
 msgid "The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:479
+#: application/controllers/admin/surveyadmin.php:485
 msgid "This survey allows public registration. A token table must also be created."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:480
+#: application/controllers/admin/surveyadmin.php:486
 #: application/views/admin/token/tokenwarning.php:23
 msgid "Initialise tokens"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:484
+#: application/controllers/admin/surveyadmin.php:490
 msgid "This survey is now active, and responses can be recorded."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:485
+#: application/controllers/admin/surveyadmin.php:491
 msgid "Open-access mode"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:485
+#: application/controllers/admin/surveyadmin.php:491
 msgid "No invitation code is needed to complete the survey."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:485
+#: application/controllers/admin/surveyadmin.php:491
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:486
+#: application/controllers/admin/surveyadmin.php:492
 msgid "Switch to closed-access mode"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:487
+#: application/controllers/admin/surveyadmin.php:493
 #: application/views/admin/token/tokenwarning.php:24
 msgid "No, thanks."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:590
+#: application/controllers/admin/surveyadmin.php:596
 #: application/views/admin/survey/surveybar_view.php:19
 msgid "This survey is active but expired."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:594
+#: application/controllers/admin/surveyadmin.php:600
 #: application/views/admin/survey/surveybar_view.php:21
 msgid "This survey is active but has a start date."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:600
+#: application/controllers/admin/surveyadmin.php:606
 msgid "This survey is active - click here to stop this survey."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:604
+#: application/controllers/admin/surveyadmin.php:610
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:105
 #: application/views/admin/survey/surveybar_view.php:23
 #: application/views/admin/survey/surveybar_view.php:230
@@ -2851,66 +2851,66 @@ msgstr ""
 msgid "This survey is currently active."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:614
+#: application/controllers/admin/surveyadmin.php:620
 msgid "This survey is currently not active - click here to activate this survey."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:618
+#: application/controllers/admin/surveyadmin.php:624
 msgid "This survey is currently not active."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:640
+#: application/controllers/admin/surveyadmin.php:646
 #: application/views/admin/survey/listSurveys_view.php:67
 msgid "Closed"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:644
+#: application/controllers/admin/surveyadmin.php:650
 #: application/views/admin/survey/listSurveys_view.php:66
 msgid "Open"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:715
+#: application/controllers/admin/surveyadmin.php:721
 msgid "Survey deleted."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:788
+#: application/controllers/admin/surveyadmin.php:794
 #: application/views/admin/survey/Question/answerOptions_view.php:43
 #: application/views/admin/survey/Question/subQuestion_view.php:41
 #: application/views/admin/token/managetokenattributes.php:12
 msgid "Base Language"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:849
+#: application/controllers/admin/surveyadmin.php:855
 msgid "Import survey data"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:850
+#: application/controllers/admin/surveyadmin.php:856
 msgid "Survey structure import summary"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:855
+#: application/controllers/admin/surveyadmin.php:861
 #: application/views/admin/survey/copySurvey_view.php:1
 #: application/views/admin/survey/subview/tabCopy_view.php:21
 msgid "Copy survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:856
+#: application/controllers/admin/surveyadmin.php:862
 msgid "Survey copy summary"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:886
+#: application/controllers/admin/surveyadmin.php:892
 msgid "Import failed. You specified an invalid file type '%s'."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:923
+#: application/controllers/admin/surveyadmin.php:929
 msgid "No survey ID has been provided. Cannot copy survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1058
+#: application/controllers/admin/surveyadmin.php:1064
 msgid "The new question group/question order was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1322
+#: application/controllers/admin/surveyadmin.php:1328
 #: application/views/admin/labels/labelview_view.php:136
 #: application/views/admin/labels/labelview_view.php:148
 #: application/views/admin/survey/Question/editQuestion_view.php:283
@@ -2922,26 +2922,26 @@ msgstr ""
 msgid "Please select a file to import!"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1325
+#: application/controllers/admin/surveyadmin.php:1331
 #: application/views/admin/labels/labelview_view.php:148
 #: application/views/admin/templates/importform_view.php:16
 msgid "zip library not supported by PHP, Import ZIP Disabled"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1350
+#: application/controllers/admin/surveyadmin.php:1356
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1393
+#: application/controllers/admin/surveyadmin.php:1399
 #: application/views/admin/survey/editSurvey_view.php:37
 msgid "(No target question)"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1476
+#: application/controllers/admin/surveyadmin.php:1482
 msgid "Survey could not be created because it did not have a title"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1608
+#: application/controllers/admin/surveyadmin.php:1614
 msgid "Survey was successfully added."
 msgstr ""
 
@@ -3824,7 +3824,7 @@ msgstr ""
 msgid "Question code / ID"
 msgstr ""
 
-#: application/controllers/admin/update.php:374
+#: application/controllers/admin/update.php:377
 msgid "File deleted: %s"
 msgstr ""
 
@@ -4207,90 +4207,90 @@ msgstr ""
 msgid "You need to add questions"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:145
+#: application/helpers/SurveyRuntimeHelper.php:150
 msgid "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:249
+#: application/helpers/SurveyRuntimeHelper.php:254
 msgid "Save your responses so far"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:383
+#: application/helpers/SurveyRuntimeHelper.php:388
 #: application/helpers/frontend_helper.php:1338
 msgid "Did Not Save"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:384
+#: application/helpers/SurveyRuntimeHelper.php:389
 msgid "Your survey responses have not been recorded. This survey is not yet active."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:389
+#: application/helpers/SurveyRuntimeHelper.php:394
 msgid "Clear Responses"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:447
+#: application/helpers/SurveyRuntimeHelper.php:452
 #: application/helpers/replacements_helper.php:842
 #: application/views/admin/templates/templateeditor_completed_view.php:2
 msgid "Thank you!"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:448
+#: application/helpers/SurveyRuntimeHelper.php:453
 #: application/views/admin/templates/templateeditor_completed_view.php:4
 msgid "Your survey responses have been recorded."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:461
+#: application/helpers/SurveyRuntimeHelper.php:466
 msgid "Print your answers."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:477
+#: application/helpers/SurveyRuntimeHelper.php:482
 msgid "View the statistics for this survey."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:528
+#: application/helpers/SurveyRuntimeHelper.php:533
 msgid "Sorry. There is no matching survey."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:545
+#: application/helpers/SurveyRuntimeHelper.php:550
 msgid "Invalid group number for this survey: "
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:551
+#: application/helpers/SurveyRuntimeHelper.php:556
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:569
+#: application/helpers/SurveyRuntimeHelper.php:574
 msgid "Submit your answers"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:570
+#: application/helpers/SurveyRuntimeHelper.php:575
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:884
+#: application/helpers/SurveyRuntimeHelper.php:889
 #: application/helpers/qanda_helper.php:474
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:890
+#: application/helpers/SurveyRuntimeHelper.php:895
 #: application/helpers/qanda_helper.php:504
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:896
+#: application/helpers/SurveyRuntimeHelper.php:901
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1034
+#: application/helpers/SurveyRuntimeHelper.php:1039
 #: application/helpers/frontend_helper.php:2746
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1042
+#: application/helpers/SurveyRuntimeHelper.php:1047
 msgid "Question index"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1110
+#: application/helpers/SurveyRuntimeHelper.php:1115
 #: application/helpers/frontend_helper.php:2210
 #: application/helpers/replacements_helper.php:381
 #: application/views/admin/dataentry/active_html_view.php:67
@@ -7863,7 +7863,7 @@ msgstr ""
 
 #: application/helpers/update/update_helper.php:37
 #: application/views/admin/token/tokenwarning.php:31
-#: application/views/admin/update/step4.php:31
+#: application/views/admin/update/step4.php:33
 msgid "Back to main menu"
 msgstr ""
 
@@ -13924,11 +13924,11 @@ msgstr ""
 msgid "There was a problem downloading the update file. Please try to restart the update process."
 msgstr ""
 
-#: application/views/admin/update/step4.php:27
+#: application/views/admin/update/step4.php:29
 msgid "Buildnumber was successfully updated to %s."
 msgstr ""
 
-#: application/views/admin/update/step4.php:28
+#: application/views/admin/update/step4.php:30
 msgid "Please check any problems above - update was done."
 msgstr ""
 

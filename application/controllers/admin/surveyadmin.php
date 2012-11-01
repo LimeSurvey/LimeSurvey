@@ -584,9 +584,11 @@ class SurveyAdmin extends Survey_Common_Action
         $surveys = $surveys->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
         $aSurveyEntries = new stdClass();
         $aSurveyEntries->page = 1;
+        
         foreach ($surveys as $rows)
         {
-            $rows = array_merge($rows->attributes, $rows->languagesettings[0]->attributes, $rows->owner->attributes);
+            if (!isset($rows->owner->attributes)) $aOwner=array('users_name'=>$clang->gT('(None)')); else $aOwner=$rows->owner->attributes;
+            $rows = array_merge($rows->attributes, $rows->languagesettings[0]->attributes, $aOwner);
             if($rows['users_name'] == Yii::app()->session['user'] || Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)//If is owner or superadmin show survey.
             {
                 $aSurveyEntry = array();
