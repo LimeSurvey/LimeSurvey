@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-10-31 23:05:53+00:00\n"
+"POT-Creation-Date: 2012-11-01 12:05:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -268,7 +268,7 @@ msgid "Optional settings to give you a head start"
 msgstr ""
 
 #: application/controllers/InstallerController.php:639
-#: application/controllers/admin/surveypermission.php:497
+#: application/controllers/admin/surveypermission.php:496
 #: application/controllers/admin/useraction.php:293
 #: application/controllers/admin/useraction.php:365
 #: application/controllers/admin/useraction.php:383
@@ -1690,7 +1690,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:519
 #: application/controllers/admin/dataentry.php:1503
 #: application/controllers/admin/dataentry.php:1627
-#: application/controllers/admin/dataentry.php:2614
+#: application/controllers/admin/dataentry.php:2612
 #: application/views/admin/dataentry/caption_view.php:1
 #: application/views/admin/dataentry/dataentry_header_view.php:1
 #: application/views/admin/dataentry/delete.php:1
@@ -1903,234 +1903,234 @@ msgstr ""
 msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2496
+#: application/controllers/admin/dataentry.php:2494
 #: application/controllers/admin/tokens.php:1828
 #: application/views/admin/participants/importCSV_view.php:17
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2497
+#: application/controllers/admin/dataentry.php:2495
 #: application/controllers/admin/tokens.php:1829
 #: application/views/admin/participants/importCSV_view.php:18
 msgid "US ASCII"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2498
+#: application/controllers/admin/dataentry.php:2496
 #: application/controllers/admin/tokens.php:1830
 #: application/views/admin/participants/importCSV_view.php:19
 msgid "Automatic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2499
+#: application/controllers/admin/dataentry.php:2497
 #: application/controllers/admin/tokens.php:1831
 #: application/views/admin/participants/importCSV_view.php:20
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2500
+#: application/controllers/admin/dataentry.php:2498
 #: application/controllers/admin/tokens.php:1832
 #: application/views/admin/participants/importCSV_view.php:21
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2501
+#: application/controllers/admin/dataentry.php:2499
 #: application/controllers/admin/tokens.php:1833
 #: application/views/admin/participants/importCSV_view.php:22
 msgid "Windows Central European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2502
+#: application/controllers/admin/dataentry.php:2500
 #: application/controllers/admin/tokens.php:1834
 #: application/views/admin/participants/importCSV_view.php:23
 msgid "Windows Cyrillic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2503
+#: application/controllers/admin/dataentry.php:2501
 #: application/controllers/admin/tokens.php:1835
 #: application/views/admin/participants/importCSV_view.php:24
 msgid "Windows Arabic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2504
+#: application/controllers/admin/dataentry.php:2502
 #: application/controllers/admin/tokens.php:1836
 #: application/views/admin/participants/importCSV_view.php:25
 msgid "Windows Baltic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2505
+#: application/controllers/admin/dataentry.php:2503
 #: application/controllers/admin/tokens.php:1837
 #: application/views/admin/participants/importCSV_view.php:26
 msgid "DOS West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2506
+#: application/controllers/admin/dataentry.php:2504
 #: application/controllers/admin/tokens.php:1838
 #: application/views/admin/participants/importCSV_view.php:27
 msgid "DOS Central European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2507
+#: application/controllers/admin/dataentry.php:2505
 #: application/controllers/admin/tokens.php:1839
 #: application/views/admin/participants/importCSV_view.php:28
 msgid "DOS Russian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2508
+#: application/controllers/admin/dataentry.php:2506
 #: application/controllers/admin/tokens.php:1840
 #: application/views/admin/participants/importCSV_view.php:29
 msgid "SJIS for Windows Japanese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2509
+#: application/controllers/admin/dataentry.php:2507
 #: application/controllers/admin/tokens.php:1841
 #: application/views/admin/participants/importCSV_view.php:30
 msgid "DEC West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2510
+#: application/controllers/admin/dataentry.php:2508
 #: application/controllers/admin/tokens.php:1842
 #: application/views/admin/participants/importCSV_view.php:31
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2511
+#: application/controllers/admin/dataentry.php:2509
 #: application/controllers/admin/tokens.php:1843
 #: application/views/admin/participants/importCSV_view.php:32
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2512
+#: application/controllers/admin/dataentry.php:2510
 #: application/controllers/admin/tokens.php:1844
 #: application/views/admin/participants/importCSV_view.php:33
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2513
+#: application/controllers/admin/dataentry.php:2511
 #: application/controllers/admin/tokens.php:1845
 #: application/views/admin/participants/importCSV_view.php:34
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2514
+#: application/controllers/admin/dataentry.php:2512
 #: application/controllers/admin/tokens.php:1846
 #: application/views/admin/participants/importCSV_view.php:35
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2515
+#: application/controllers/admin/dataentry.php:2513
 #: application/controllers/admin/tokens.php:1847
 #: application/views/admin/participants/importCSV_view.php:36
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2516
+#: application/controllers/admin/dataentry.php:2514
 #: application/controllers/admin/tokens.php:1848
 #: application/views/admin/participants/importCSV_view.php:37
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2517
+#: application/controllers/admin/dataentry.php:2515
 #: application/controllers/admin/tokens.php:1849
 #: application/views/admin/participants/importCSV_view.php:38
 msgid "HP West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2518
+#: application/controllers/admin/dataentry.php:2516
 #: application/controllers/admin/tokens.php:1850
 #: application/views/admin/participants/importCSV_view.php:39
 msgid "DOS Kamenicky Czech-Slovak"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2519
+#: application/controllers/admin/dataentry.php:2517
 #: application/controllers/admin/tokens.php:1851
 #: application/views/admin/participants/importCSV_view.php:40
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2520
+#: application/controllers/admin/dataentry.php:2518
 #: application/controllers/admin/tokens.php:1852
 #: application/views/admin/participants/importCSV_view.php:41
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2521
+#: application/controllers/admin/dataentry.php:2519
 #: application/controllers/admin/tokens.php:1853
 #: application/views/admin/participants/importCSV_view.php:42
 msgid "cp1252 West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2522
+#: application/controllers/admin/dataentry.php:2520
 #: application/controllers/admin/tokens.php:1854
 #: application/views/admin/participants/importCSV_view.php:43
 msgid "ISO 8859-2 Central European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2523
+#: application/controllers/admin/dataentry.php:2521
 #: application/controllers/admin/tokens.php:1855
 #: application/views/admin/participants/importCSV_view.php:44
 msgid "ISO 8859-9 Turkish"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2524
+#: application/controllers/admin/dataentry.php:2522
 #: application/controllers/admin/tokens.php:1856
 #: application/views/admin/participants/importCSV_view.php:45
 msgid "ISO 8859-13 Baltic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2525
+#: application/controllers/admin/dataentry.php:2523
 #: application/controllers/admin/tokens.php:1857
 #: application/views/admin/participants/importCSV_view.php:46
 msgid "Mac Central European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2526
+#: application/controllers/admin/dataentry.php:2524
 #: application/controllers/admin/tokens.php:1858
 #: application/views/admin/participants/importCSV_view.php:47
 msgid "Mac West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2527
+#: application/controllers/admin/dataentry.php:2525
 #: application/controllers/admin/tokens.php:1859
 #: application/views/admin/participants/importCSV_view.php:48
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2528
+#: application/controllers/admin/dataentry.php:2526
 #: application/controllers/admin/tokens.php:1860
 #: application/views/admin/participants/importCSV_view.php:49
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2529
+#: application/controllers/admin/dataentry.php:2527
 #: application/controllers/admin/tokens.php:1861
 #: application/views/admin/participants/importCSV_view.php:50
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2530
+#: application/controllers/admin/dataentry.php:2528
 #: application/controllers/admin/tokens.php:1862
 #: application/views/admin/participants/importCSV_view.php:51
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2531
+#: application/controllers/admin/dataentry.php:2529
 #: application/controllers/admin/tokens.php:1863
 #: application/views/admin/participants/importCSV_view.php:52
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2532
+#: application/controllers/admin/dataentry.php:2530
 #: application/controllers/admin/tokens.php:1864
 #: application/views/admin/participants/importCSV_view.php:53
 msgid "UTF-8 Unicode"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2589
+#: application/controllers/admin/dataentry.php:2587
 #: application/controllers/admin/printablesurvey.php:1956
 msgid "Only answer this question for the items you selected in question %s ('%s')"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2597
+#: application/controllers/admin/dataentry.php:2595
 #: application/controllers/admin/printablesurvey.php:1964
 msgid "Only answer this question for the items you did not select in question %s ('%s')"
 msgstr ""
@@ -2143,19 +2143,19 @@ msgstr ""
 msgid "Email templates successfully saved."
 msgstr ""
 
-#: application/controllers/admin/export.php:195
-#: application/controllers/admin/export.php:357
-#: application/controllers/admin/export.php:628
+#: application/controllers/admin/export.php:197
+#: application/controllers/admin/export.php:359
+#: application/controllers/admin/export.php:630
 #: application/views/admin/export/exportresults_view.php:1
 #: application/views/admin/export/vv_view.php:21
 msgid "Export results"
 msgstr ""
 
-#: application/controllers/admin/export.php:868
+#: application/controllers/admin/export.php:870
 msgid "Export VV file"
 msgstr ""
 
-#: application/controllers/admin/export.php:1023
+#: application/controllers/admin/export.php:1025
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr ""
 
@@ -2966,7 +2966,7 @@ msgid "Action"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:50
-#: application/controllers/admin/surveypermission.php:496
+#: application/controllers/admin/surveypermission.php:495
 #: application/controllers/admin/useraction.php:125
 #: application/controllers/admin/useraction.php:146
 #: application/controllers/admin/useraction.php:364
@@ -2990,12 +2990,12 @@ msgstr ""
 msgid "Full name"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:103
+#: application/controllers/admin/surveypermission.php:102
 msgid "Edit permissions"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:109
-#: application/controllers/admin/surveypermission.php:403
+#: application/controllers/admin/surveypermission.php:108
+#: application/controllers/admin/surveypermission.php:402
 #: application/views/admin/assessments_view.php:32
 #: application/views/admin/survey/listSurveys_view.php:12
 #: application/views/admin/templates/templatesummary_view.php:72
@@ -3003,7 +3003,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:109
+#: application/controllers/admin/surveypermission.php:108
 #: application/controllers/admin/tokens.php:437
 #: application/controllers/admin/tokens.php:508
 #: application/views/admin/assessments_view.php:32
@@ -3016,56 +3016,56 @@ msgstr ""
 msgid "Are you sure you want to delete this entry?"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:169
+#: application/controllers/admin/surveypermission.php:168
 msgid "User"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:172
-#: application/controllers/admin/surveypermission.php:296
+#: application/controllers/admin/surveypermission.php:171
+#: application/controllers/admin/surveypermission.php:295
 #: application/views/admin/user/editusers.php:131
 #: application/views/admin/usergroup/viewUserGroup_view.php:85
 msgid "Add User"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:172
+#: application/controllers/admin/surveypermission.php:171
 msgid "Please select a user first"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:176
+#: application/controllers/admin/surveypermission.php:175
 #: application/views/admin/survey/QuestionGroups/import_view.php:9
 msgid "Groups"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:179
-#: application/controllers/admin/surveypermission.php:215
+#: application/controllers/admin/surveypermission.php:178
+#: application/controllers/admin/surveypermission.php:214
 #: application/views/admin/usergroup/addUserGroup_view.php:1
 msgid "Add user group"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:179
+#: application/controllers/admin/surveypermission.php:178
 msgid "Please select a user group first"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:235
+#: application/controllers/admin/surveypermission.php:234
 msgid "User group added."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:238
+#: application/controllers/admin/surveypermission.php:237
 msgid "Set Survey Rights"
+msgstr ""
+
+#: application/controllers/admin/surveypermission.php:245
+#: application/controllers/admin/surveypermission.php:252
+msgid "Failed to add user group."
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:246
 #: application/controllers/admin/surveypermission.php:253
-msgid "Failed to add user group."
-msgstr ""
-
-#: application/controllers/admin/surveypermission.php:247
-#: application/controllers/admin/surveypermission.php:254
-#: application/controllers/admin/surveypermission.php:261
-#: application/controllers/admin/surveypermission.php:323
-#: application/controllers/admin/surveypermission.php:330
-#: application/controllers/admin/surveypermission.php:503
-#: application/controllers/admin/surveypermission.php:596
+#: application/controllers/admin/surveypermission.php:260
+#: application/controllers/admin/surveypermission.php:322
+#: application/controllers/admin/surveypermission.php:329
+#: application/controllers/admin/surveypermission.php:502
+#: application/controllers/admin/surveypermission.php:595
 #: application/controllers/admin/tokens.php:2340
 #: application/controllers/admin/tokens.php:2376
 #: application/controllers/admin/useraction.php:722
@@ -3106,97 +3106,97 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:259
-#: application/controllers/admin/surveypermission.php:321
-#: application/controllers/admin/surveypermission.php:328
+#: application/controllers/admin/surveypermission.php:258
+#: application/controllers/admin/surveypermission.php:320
+#: application/controllers/admin/surveypermission.php:327
 #: application/controllers/admin/usergroups.php:387
 msgid "Failed to add user."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:260
-#: application/controllers/admin/surveypermission.php:329
+#: application/controllers/admin/surveypermission.php:259
+#: application/controllers/admin/surveypermission.php:328
 msgid "No Username selected."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:311
+#: application/controllers/admin/surveypermission.php:310
 #: application/controllers/admin/usergroups.php:383
 msgid "User added."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:313
+#: application/controllers/admin/surveypermission.php:312
 msgid "Set survey permissions"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:322
+#: application/controllers/admin/surveypermission.php:321
 msgid "Username already exists."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:386
+#: application/controllers/admin/surveypermission.php:385
 msgid "Edit survey permissions for user %s"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:392
+#: application/controllers/admin/surveypermission.php:391
 msgid "Edit survey permissions for group %s"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:398
+#: application/controllers/admin/surveypermission.php:397
 msgid "Permission"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:400
+#: application/controllers/admin/surveypermission.php:399
 msgid "Create"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:401
+#: application/controllers/admin/surveypermission.php:400
 msgid "View/read"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:402
+#: application/controllers/admin/surveypermission.php:401
 #: application/views/admin/labels/editlabel_view.php:51
 msgid "Update"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:404
+#: application/controllers/admin/surveypermission.php:403
 #: application/views/admin/dataentry/vvimport.php:35
 #: application/views/admin/survey/subview/tab_view.php:18
 msgid "Import"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:405
+#: application/controllers/admin/surveypermission.php:404
 #: application/views/admin/export/vv_view.php:9
 #: application/views/admin/participants/displayParticipants_view.php:132
 #: application/views/admin/token/browse.php:50
 msgid "Export"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:440
+#: application/controllers/admin/surveypermission.php:439
 #: application/helpers/replacements_helper.php:578
 #: application/views/admin/user/setuserrights.php:119
 msgid "Save Now"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:487
+#: application/controllers/admin/surveypermission.php:486
 msgid "Deleting User"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:501
+#: application/controllers/admin/surveypermission.php:500
 #: application/controllers/admin/useraction.php:247
 msgid "Could not delete user. User was not supplied."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:536
+#: application/controllers/admin/surveypermission.php:535
 msgid "Edit survey permissions"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:581
+#: application/controllers/admin/surveypermission.php:580
 msgid "Survey permissions for all users in this group were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:588
+#: application/controllers/admin/surveypermission.php:587
 msgid "Survey permissions were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:592
+#: application/controllers/admin/surveypermission.php:591
 msgid "Failed to update survey permissions!"
 msgstr ""
 
