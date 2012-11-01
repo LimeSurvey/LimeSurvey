@@ -135,6 +135,8 @@ class export extends Survey_Common_Action {
         if ( ! isset($type) ) { $type = returnGlobal('type'); }
         if ( ! isset($convertyto1) ) { $convertyto1 = returnGlobal('convertyto1'); }
         if ( ! isset($convertnto2) ) { $convertnto2 = returnGlobal('convertnto2'); }
+        if ( ! isset($convertyto) ) { $convertyto = returnGlobal('convertyto'); }
+        if ( ! isset($convertnto) ) { $convertnto = returnGlobal('convertnto'); }
         if ( ! isset($convertspacetous) ) { $convertspacetous = returnGlobal('convertspacetous'); }
         $clang = Yii::app()->lang;
 
@@ -219,14 +221,14 @@ class export extends Survey_Common_Action {
 
         if ( $options->convertN )
         {
-            $options->nValue = $convertnto2;
+            $options->nValue = $convertnto;
         }
 
         $options->convertY = $convertyto1;
 
         if ( $options->convertY )
         {
-            $options->yValue = $convertyto1;
+            $options->yValue = $convertyto;
         }
 
         $options->headerSpacesToUnderscores = $convertspacetous;
