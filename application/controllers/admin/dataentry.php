@@ -2324,7 +2324,6 @@ class dataentry extends Survey_Common_Action
                             unset($answers);
                             break;
                         case "M": //Multiple choice checkbox (Quite tricky really!)
-                            //                            $qidattributes=getQuestionAttributeValues($deqrow['qid']);
                             if (trim($qidattributes['display_columns'])!='')
                             {
                                 $dcols=$qidattributes['display_columns'];
@@ -2336,11 +2335,10 @@ class dataentry extends Survey_Common_Action
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult = dbExecuteAssoc($meaquery);
                             
-
-                            $cdata['dcols'] = $dcols;
-                            $cdata['meacount'] = $meacount;
                             $cdata['mearesult'] = $mearesult->readAll();
                             $meacount = count($cdata['mearesult']);
+                            $cdata['meacount'] = $meacount;
+                            $cdata['dcols'] = $dcols;
 
                             break;
                         case "I": //Language Switch
