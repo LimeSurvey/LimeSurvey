@@ -3353,7 +3353,7 @@
             else
             {
                 // Read list of available tokens from the tokens table so that preview and error checking works correctly
-                $attrs = GetAttributeFieldNames($surveyid,false);
+                $attrs = array_keys(getTokenFieldsAndNames($surveyid));
 
                 $blankVal = array(
                 'code'=>'',

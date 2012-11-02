@@ -2137,7 +2137,6 @@ class remotecontrol_handle
 			$SQLemailstatuscondition = "emailstatus = 'OK'";	
 			$SQLremindercountcondition = '';
             $SQLreminderdelaycondition = '';	
-			$attributes = getTokenFieldsAndNames($iSurveyID);	
 			$iMaxEmails = (int)Yii::app()->getConfig("maxemails");
 			
 			if(!is_null($iMinDaysBetween))

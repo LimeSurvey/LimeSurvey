@@ -19,7 +19,7 @@
     $langnames = implode(";", $lname);
     /* Build the columnNames for the extra attributes */
     /* and, build the columnModel */
-    $names = getTokenFieldsAndNames($surveyid, true);
+    $names = array_keys(getTokenFieldsAndNames($surveyid, true));
     $attributes = getAttributeFieldNames($surveyid);
     if (count($attributes) > 0)
     {

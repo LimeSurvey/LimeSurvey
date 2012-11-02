@@ -250,8 +250,8 @@ class export extends Survey_Common_Action {
         {
             $options->selectedColumns[]="email";
         }
-        $attributeFields = getTokenFieldsAndNames($iSurveyID, TRUE);
-        foreach ($attributeFields as $attr_name => $attr_desc)
+        $attributeFields = array_keys(getTokenFieldsAndNames($iSurveyID, TRUE));
+        foreach ($attributeFields as $attr_name)
         {
             if ( in_array($attr_name, Yii::app()->request->getPost('attribute_select',array())) )
             {

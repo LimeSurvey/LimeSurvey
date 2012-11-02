@@ -916,7 +916,7 @@ class Participants extends CActiveRecord
                     'participant_id' => $participant,
                     'token_id' => $insertedtokenid,
                     'survey_id' => $surveyid,
-                    'date_created' => date(DATE_W3C, $time));
+                    'date_created' => date('Y-m-d H:i:s', $time));
                 Yii::app()->db->createCommand()->insert('{{survey_links}}', $data);
 
                 //If there are new attributes created, add those values to the token entry for this participant
@@ -1187,7 +1187,7 @@ class Participants extends CActiveRecord
                             'participant_id' => $pid,
                             'token_id' => $tid,
                             'survey_id' => $surveyid,
-                            'date_created' => date(DATE_W3C, time())
+                            'date_created' => date('Y-m-d H:i:s', time())
                         );
                     Yii::app()->db
                               ->createCommand()

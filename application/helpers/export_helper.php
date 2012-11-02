@@ -354,14 +354,14 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $fields=array();
     if (isset($tokensexist) && $tokensexist == true && $surveyprivate == 'N') {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
-        foreach ($tokenattributes as $attributefield=>$attributedescription)
+        foreach ($tokenattributes as $attributefield=>$attributedescription['description'])
         {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
                 $fieldno++;
                 $fields[] = array('id'=>"$prefix$fieldno",'name'=>mb_substr($attributefield, 0, 8),
                 'qid'=>0,'code'=>'','SPSStype'=>'A','LStype'=>'Undef',
-                'VariableLabel'=>$attributedescription,'sql_name'=>$attributefield,'size'=>'100',
+                'VariableLabel'=>$attributedescription['description'],'sql_name'=>$attributefield,'size'=>'100',
                 'title'=>$attributefield,'hide'=>0, 'scale'=>'');
             }
         }
@@ -496,8 +496,8 @@ function SPSSGetQuery($iSurveyID) {
     #See if tokens are being used
     if (isset($tokensexist) && $tokensexist == true && !$bDataAnonymized) {
         $query="SELECT ";
-        $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
-        foreach ($tokenattributes as $attributefield=>$attributedescription) {
+        $tokenattributes=array_keys(getTokenFieldsAndNames($iSurveyID,false));
+        foreach ($tokenattributes as $attributefield) {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
                 $query .= "t.{$attributefield}, ";
@@ -1689,7 +1689,7 @@ function tokensExport($iSurveyID)
     {
         $tokenoutput .=", $attr_name";
         if (isset($attrfielddescr[$attr_name]))
-            $tokenoutput .=" <".str_replace(","," ",$attrfielddescr[$attr_name]).">";
+            $tokenoutput .=" <".str_replace(","," ",$attrfielddescr[$attr_name]['description']).">";
     }
     $tokenoutput .="\n";
 
