@@ -1011,24 +1011,31 @@ function submittokens($quotaexit=false)
     }
 }
 
-/**
-* Send a submit notification to the email address specified in the notifications tab in the survey settings
-*/
-function sendSubmitNotifications($surveyid)
-{
-    global $thissurvey, $debug;
-    global $homeurl, $maildebug, $tokensexist;
+    /**
+    * Send a submit notification to the email address specified in the notifications tab in the survey settings
+    */
+    function sendSubmitNotifications($surveyid)
+    {
+        // @todo: Remove globals
+        global $thissurvey, $maildebug, $tokensexist;
+        
+        if (trim($thissurvey['adminemail'])=='')
+        {
+            return;
+        }
+        
+        $homeurl=Yii::app()->createAbsoluteUrl('/admin');
+        $clang = Yii::app()->lang;
+        $sitename = Yii::app()->getConfig("sitename");
 
-    $clang = Yii::app()->lang;
-    $sitename = Yii::app()->getConfig("sitename");
-
-    $bIsHTML = ($thissurvey['htmlemail'] == 'Y');
+        $debug=Yii::app()->getConfig('debug');
+        $bIsHTML = ($thissurvey['htmlemail'] == 'Y');
 
     $aReplacementVars=array();
 
     if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['survey_'.$surveyid]['scid']))
     {
-        $aReplacementVars['RELOADURL']="".Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['survey_'.$surveyid]['scid']."/loadname/".urlencode($_SESSION['survey_'.$surveyid]['holdname'])."/loadpass/".urlencode($_SESSION['survey_'.$surveyid]['holdpass']));
+            $aReplacementVars['RELOADURL']="".Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['survey_'.$surveyid]['scid']."/loadname/".urlencode($_SESSION['survey_'.$surveyid]['holdname'])."/loadpass/".urlencode($_SESSION['survey_'.$surveyid]['holdpass'])."/lang/".urlencode($clang->langcode));
         if ($bIsHTML)
         {
             $aReplacementVars['RELOADURL']="<a href='{$aReplacementVars['RELOADURL']}'>{$aReplacementVars['RELOADURL']}</a>";
@@ -1045,9 +1052,9 @@ function sendSubmitNotifications($surveyid)
         $srid = $_SESSION['survey_'.$surveyid]['srid'];
     $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
     $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
-    $aReplacementVars['VIEWRESPONSEURL']="{$homeurl}/admin.php?action=browse&sid={$surveyid}&subaction=id&id=".$srid;
-    $aReplacementVars['EDITRESPONSEURL']="{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&subaction=edit&surveytable=survey_{$surveyid}&id=".$srid;
-    $aReplacementVars['STATISTICSURL']="{$homeurl}/admin.php?action=statistics&sid={$surveyid}";
+        $aReplacementVars['VIEWRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/responses/view/surveyid/{$surveyid}/id/{$srid}");
+        $aReplacementVars['EDITRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$srid}");
+        $aReplacementVars['STATISTICSURL']=Yii::app()->createAbsoluteUrl("/admin/statistics/index/surveyid/{$surveyid}");
     if ($bIsHTML)
     {
         $aReplacementVars['VIEWRESPONSEURL']="<a href='{$aReplacementVars['VIEWRESPONSEURL']}'>{$aReplacementVars['VIEWRESPONSEURL']}</a>";
@@ -1124,26 +1131,27 @@ function sendSubmitNotifications($surveyid)
             }
         }
 
-        $ResultTableHTML .= "</table>\n";
-        $ResultTableText .= "\n\n";
-        if ($bIsHTML)
-        {
-            $aReplacementVars['ANSWERTABLE']=$ResultTableHTML;
+            $ResultTableHTML .= "</table>\n";
+            $ResultTableText .= "\n\n";
+            if ($bIsHTML)
+            {
+                $aReplacementVars['ANSWERTABLE']=$ResultTableHTML;
+            }
+            else
+            {
+                $aReplacementVars['ANSWERTABLE']=$ResultTableText;
+            }
         }
-        else
+
+        $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
+    
+        
+        $redata=compact(array_keys(get_defined_vars()));
+        if (count($aEmailNotificationTo)>0)
         {
-            $aReplacementVars['ANSWERTABLE']=$ResultTableText;
-        }
-    }
-
-    $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
-
-    $redata=compact(array_keys(get_defined_vars()));
-    if (count($aEmailNotificationTo)>0)
-    {
-        $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars,$redata,'frontend_helper[1398]',($thissurvey['anonymized'] == "Y"));
-        $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,$redata,'frontend_helper[1399]',($thissurvey['anonymized'] == "Y"));
-        foreach ($aEmailNotificationTo as $sRecipient)
+            $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars,$redata,'frontend_helper[1398]',($thissurvey['anonymized'] == "Y"));
+            $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,$redata,'frontend_helper[1399]',($thissurvey['anonymized'] == "Y"));
+            foreach ($aEmailNotificationTo as $sRecipient)
         {
                 if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid)))
             {
@@ -1606,8 +1614,6 @@ function buildsurveysession($surveyid,$previewGroup=false)
     $totalquestions = count($unique);
     $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - count($display);
      
-    // Fixed undefined variable by commenting this since $totalquestions is already set above.
-    //$totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
     // Fix totalquestions by substracting Test Display questions
     $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
