@@ -4354,7 +4354,7 @@ function HTMLEscape($str) {
 */
 function dbQuoteAll($value)
 {
-    return '\'' . addslashes($value) . '\'';
+    return Yii::app()->db->quoteValue($value);
 }
 
 // make a string safe to include in a JavaScript String parameter.
