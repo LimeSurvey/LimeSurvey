@@ -65,6 +65,9 @@ class statistics extends Survey_Common_Action {
 
         // This gets all the 'to be shown questions' from the POST and puts these into an array
 		$fieldlist=returnGlobal('summary');
+        if (empty($fieldlist)) {
+            $fieldlist = array();
+        }
 		$statlang=returnGlobal('statlang');
 
         //if $summary isn't an array we create one
