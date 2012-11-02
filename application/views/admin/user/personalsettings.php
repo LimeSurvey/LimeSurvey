@@ -1,5 +1,5 @@
-<div class='formheader'>
-    <strong><?php $clang->eT("Your personal settings"); ?></strong>
+<div class='header'>
+    <?php $clang->eT("Your personal settings"); ?>
 </div>
 <br />
 <div>
@@ -60,7 +60,7 @@
                 <?php echo CHtml::label($clang->gT("Date format"), 'dateformat'); ?>:
                 <select name='dateformat' id='dateformat'>
                 <?php
-                foreach (getDateFormatData() as $index => $dateformatdata)
+                foreach (getDateFormatData(0,Yii::app()->session['adminlang']) as $index => $dateformatdata)
                 {
                     echo "<option value='{$index}'";
                     if ($index == Yii::app()->session['dateformat'])

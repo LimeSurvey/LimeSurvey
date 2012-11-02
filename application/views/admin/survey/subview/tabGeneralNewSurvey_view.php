@@ -44,7 +44,7 @@
         <li><label for='dateformat'><?php $clang->eT("Date format:") ; ?></label>
         <select size='1' id='dateformat' name='dateformat'>
 
-        <?php foreach (getDateFormatData () as $index => $dateformatdata) { ?>
+        <?php foreach (getDateFormatData (0,Yii::app()->session['adminlang']) as $index => $dateformatdata) { ?>
         <option value='<?php echo $index; ?>'> <?php echo $dateformatdata['dateformat'] ; ?>
         </option>
         <?php } ?>
