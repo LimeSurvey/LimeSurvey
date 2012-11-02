@@ -273,7 +273,7 @@ class Statistics_userController extends LSYii_Controller {
 		    }	// end foreach -> loop through all questions
 
             $helper = new statistics_helper();
-		    $statisticsoutput .= $helper->generate_statistics($iSurveyID, $summary, $summary, $publicgraphs, 'html', null,$language,false);
+		    $statisticsoutput .= $helper->generate_statistics($iSurveyID, $summary, $publicgraphs, 'html', null,$language,false);
 
 		}	//end if -> show summary results
 

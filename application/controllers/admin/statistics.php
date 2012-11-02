@@ -64,7 +64,7 @@ class statistics extends Survey_Common_Action {
         $cr_statisticsoutput = '';
 
         // This gets all the 'to be shown questions' from the POST and puts these into an array
-		$summary=returnGlobal('summary');
+		$fieldlist=returnGlobal('summary');
 		$statlang=returnGlobal('statlang');
 
         //if $summary isn't an array we create one
@@ -83,6 +83,14 @@ class statistics extends Survey_Common_Action {
         $language = Survey::model()->findByPk($surveyid)->language;
         $aData['language'] = $language;
 
+        $fieldmap = createCompleteSGQA($surveyid, $language);
+
+        $summary = array();
+        foreach ($fieldmap as $fieldname => $q)
+        {
+            if (in_array($fieldname, $fieldlist)) $summary[$fieldname] = $q;
+            else if (in_array($fieldname, $fieldlist)) $summary[$fieldname] = $q;
+        }
         
         //Call the javascript file
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'statistics.js');
@@ -417,14 +425,14 @@ class statistics extends Survey_Common_Action {
             $helper = new statistics_helper();
         switch($outputType){
             case 'html':
-		            $statisticsoutput .= $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+		            $statisticsoutput .= $helper->generate_statistics($surveyid,$summary,$usegraph,$outputType,'DD',$statlang);
                 break;
             case 'pdf':
-		            $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'I',$statlang);
+		            $helper->generate_statistics($surveyid,$summary,$usegraph,$outputType,'I',$statlang);
                 exit;
                 break;
             case 'xls':
-		            $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+		            $helper->generate_statistics($surveyid,$summary,$usegraph,$outputType,'DD',$statlang);
                 exit;
                 break;
             default:
@@ -480,7 +488,7 @@ class statistics extends Survey_Common_Action {
         $sStatisticsLanguage=sanitize_languagecode($_POST['sStatisticsLanguage']);
         $oStatisticsLanguage = new Limesurvey_lang($sStatisticsLanguage);        
         if (isset($_POST['cmd']) && isset($_POST['id'])) {
-            list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);
+            list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 1), 3);
             $qtype = substr($_POST['id'], 0, 1); //AJS
             $aattr = getQuestionAttributeValues($qqid); //AJS
             $field = substr($_POST['id'], 1);

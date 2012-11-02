@@ -1733,7 +1733,6 @@ function createCompleteSGQA($iSurveyID, $sLanguage, $public  = false)
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
 *
 * @param string $surveyid The Survey ID
-* @param mixed $style 'short' (default) or 'full' - full creates extra information like default values
 * @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
 * @param string $sQuestionLanguage The language to use
