@@ -7978,7 +7978,7 @@ EOD;
             $warnings = 0;
 
             $surveyOptions = array(
-            'assessments'=>$assessments,
+            'assessments'=>($aSurveyInfo['assessments']=='Y'),
             'hyperlinkSyntaxHighlighting'=>true,
             );
 
