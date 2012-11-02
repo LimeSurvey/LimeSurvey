@@ -27,12 +27,6 @@
  *  @return                Name
  */
 function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $grawdata, $cache, $oLanguage) {
-    /* This is a lazy solution to bug #6389. A better solution would be to find out how
-      the "T" gets passed to this function from the statistics.js file in the first place! */
-    if (substr($iSurveyID, 0, 1) == "T") {
-        $iSurveyID = substr($iSurveyID, 1);
-    }
-
     $rootdir = Yii::app()->getConfig("rootdir");
     $homedir = Yii::app()->getConfig("homedir");
     $homeurl = Yii::app()->getConfig("homeurl");
