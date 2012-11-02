@@ -57,6 +57,25 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121101) to 2.00+ (build 121102) Nov 2, 2012
+-Fixed issue #6801: Reporting Graph Issue (Menno Dekker)
+-Fixed issue #6733: Exception when viewing public statistics using MSSQL (Carsten Schmitz)
+-Fixed issue #6748: In PDF export the token table fields placeholders are not replaced (Carsten Schmitz)
+-Fixed issue #6768: Relevance equation works at question level but not at the group level (Thomas White)
+-Fixed issue #6799: Dummy token generation fails (Carsten Schmitz)
+-Fixed issue #6800: No report timings results for individual questions when using MSSQL (Carsten Schmitz)
+-Fixed issue #6819: Unable to export tokens to CSV file (Carsten Schmitz)
+-Fixed issue #6820: Date formats not translated (Carsten Schmitz)
+-Fixed issue #6825: Long free text field improper escape sequence for Microsoft SQL (Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Indonesian by sys_sby
+#Updated translation: Italian by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Serbian by MilaVeljovic
+
 Changes from 2.00+ (build 121031) to 2.00+ (build 121101) Nov 1, 2012
 -Fixed issue #6567: Performance issue (Aniessh Sethh)
 -Fixed issue #6779: Detailed summary of surveys not shown if a survey owner was deleted (Carsten Schmitz)
