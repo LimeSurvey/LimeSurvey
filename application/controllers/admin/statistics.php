@@ -495,10 +495,11 @@ class statistics extends Survey_Common_Action {
     function listcolumn($surveyid, $column, $sortby="", $sortmethod="", $sorttype="")
     {
         $search['condition']=$column." != ''";
-        if($sql != "") {$search['condition'].= " AND ($sql)";}
+        //if($sql != "") {$search['condition'].= " AND ($sql)";}
         if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
         if($sortby != "") $search['order']=$sortby.' '.$sortmethod;
         $results=Survey_dynamic::model($surveyid)->findAll($search);
+        $output=array();
         foreach($results as $row) {
             $output[]=array("id"=>$row['id'], "value"=>$row[$column]);
         }
@@ -527,9 +528,9 @@ class statistics extends Survey_Common_Action {
         $sStatisticsLanguage=sanitize_languagecode($_POST['sStatisticsLanguage']);
         $oStatisticsLanguage = new Limesurvey_lang($sStatisticsLanguage);        
 	    if (isset($_POST['cmd']) && isset($_POST['id'])) {
-	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);
+	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 1), 3);
 	        $qtype = substr($_POST['id'], 0, 1);
-            $aattr = getQuestionAttributeValues($qqid, substr($_POST['id'], 0, 1));
+            $aattr = getQuestionAttributeValues($qqid);
             $field = substr($_POST['id'], 1);
 
 	        switch ($_POST['cmd']) {

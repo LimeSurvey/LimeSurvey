@@ -243,8 +243,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
 */
 function getQuestionMapData($sField, $qsid)
 {
-    Survey_dynamic::sid($qsid);
-    $aresult = Survey_dynamic::model()->findAll();
+    $aresult = Survey_dynamic::model($qsid)->findAll();
 
     $d = array ();
 
@@ -873,8 +872,6 @@ class statistics_helper {
                 $qtitle = flattenText($fielddata['title']);
                 $qtype = $fielddata['type'];
                 $qquestion = $fielddata['question'];
-                $qiqid = $fielddata['qid'];
-                $qlid = $fielddata['parent_qid'];
 
                 //Get answer texts for multiple numerical
                 if(substr($rt, 0, 1) == "K")
