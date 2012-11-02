@@ -2051,63 +2051,62 @@ class remotecontrol_handle
      * @param int $iMaxReminders Optional parameter Maximum reminders count
      * @return array Result of the action
      */
-    public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween=null, $iMaxReminders=null )
-    {
-        Yii::app()->loadHelper('admin/token');
-        if (!$this->_checkSessionKey($sSessionKey))
-            return array('status' => 'Invalid session key');
+	public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween=null, $iMaxReminders=null ) 
+	{
+		Yii::app()->loadHelper('admin/token');
+		if (!$this->_checkSessionKey($sSessionKey)) 
+			return array('status' => 'Invalid session key');
 
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-        if (!isset($oSurvey))
-            return array('status' => 'Error: Invalid survey ID');
+		$oSurvey = Survey::model()->findByPk($iSurveyID);		   
+		if (!isset($oSurvey))
+			return array('status' => 'Error: Invalid survey ID');	
 
-        if (hasSurveyPermission($iSurveyID, 'tokens', 'update'))
-        {
-            $timeadjust = Yii::app()->getConfig("timeadjust");
+		if (hasSurveyPermission($iSurveyID, 'tokens', 'update'))
+		{	
+			$timeadjust = Yii::app()->getConfig("timeadjust");
+			
+			if(!tableExists("{{tokens_$iSurveyID}}"))
+				return array('status' => 'Error: No token table');
+			
+			if (getEmailFormat($iSurveyID) == 'html')
+				$bHtml = true;
+			else
+				$bHtml = false;
+			
+			$SQLemailstatuscondition = "emailstatus = 'OK'";	
+			$SQLremindercountcondition = '';
+            $SQLreminderdelaycondition = '';	
+			$iMaxEmails = (int)Yii::app()->getConfig("maxemails");
+			
+			if(!is_null($iMinDaysBetween))
+			{
+				$compareddate = dateShift(date("Y-m-d H:i:s", time() - 86400 * $iMinDaysBetween), "Y-m-d H:i", $timeadjust);
+                $SQLreminderdelaycondition = " ((remindersent = 'N' AND sent < '" . $compareddate . "')  OR  (remindersent < '" . $compareddate . "'))";	
+			}
 
-            if(!tableExists("{{tokens_$iSurveyID}}"))
-                return array('status' => 'Error: No token table');
+			if(!is_null($iMaxReminders))
+				$SQLremindercountcondition = "remindercount < " . $iMaxReminders;
 
-            if (getEmailFormat($iSurveyID) == 'html')
-                $bHtml = true;
-            else
-                $bHtml = false;
+			$oTokens = Tokens_dynamic::model($iSurveyID);
+			$aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+			$aAllTokens = $oTokens->findUninvited(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+			
+			if (empty($aResultTokens))
+				return array('status' => 'Error: No candidate tokens');				
 
-            $SQLemailstatuscondition = " AND emailstatus = 'OK'";
-            $SQLremindercountcondition = '';
-            $SQLreminderdelaycondition = '';
-            $attributes = getTokenFieldsAndNames($iSurveyID);
-            $iMaxEmails = (int)Yii::app()->getConfig("maxemails");
+			$aResult = emailTokens($iSurveyID, $aResultTokens, 'remind');
 
-            if(!is_null($iMinDaysBetween))
-            {
-                $compareddate = dateShift(date("Y-m-d H:i:s", time() - 86400 * $iMinDaysBetween), "Y-m-d H:i", $timeadjust);
-                $SQLreminderdelaycondition = " AND ((remindersent = 'N' AND sent < '" . $compareddate . "')  OR  (remindersent < '" . $compareddate . "'))";
-            }
+			$iLeft = count($aAllTokens) - count($aResultTokens);
+			$aResult['status'] =$iLeft. " left to send";
+			return $aResult;
+		}
+		else
+			return array('status' => 'No permission'); 
 
-            if(!is_null($iMaxReminders))
-                $SQLremindercountcondition = " AND remindercount < " . $iMaxReminders;
+	}
+	
 
-            $oTokens = Tokens_dynamic::model($iSurveyID);
-            $aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
-            $aAllTokens = $oTokens->findUninvited(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
-
-            if (empty($aResultTokens))
-                return array('status' => 'Error: No candidate tokens');
-
-            $aResult = emailTokens($iSurveyID, $aResultTokens, 'remind');
-
-            $iLeft = count($aAllTokens) - count($aResultTokens);
-            $aResult['status'] =$iLeft. " left to send";
-            return $aResult;
-        }
-        else
-            return array('status' => 'No permission');
-
-    }
-
-
-    /* Response specific functions */
+	/* Response specific functions */
 
 
     /**
@@ -2152,10 +2151,10 @@ class remotecontrol_handle
 
             Survey_dynamic::sid($iSurveyID);
             $survey_dynamic = new Survey_dynamic;
-            $result = $survey_dynamic->insert($aResponseData);
+            $result_id = $survey_dynamic->insertRecords($aResponseData);
 
-            if ($result)
-                return $survey_dynamic->primaryKey;
+            if ($result_id)
+                return $result_id;
             else
                 return array('status' => 'Unable to add response');
         }

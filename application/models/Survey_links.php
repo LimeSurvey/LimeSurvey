@@ -66,7 +66,7 @@ class Survey_links extends CActiveRecord
     function rebuildLinksFromTokenTable($iSurveyId) {
         $this->deleteLinksBySurvey($iSurveyId);
         $tableName="{{tokens_".$iSurveyId."}}";
-        $dateCreated=date(DATE_W3C, time());
+        $dateCreated=date('Y-m-d H:i:s', time());
         $query = "INSERT INTO ".Survey_links::tableName()." (participant_id, token_id, survey_id, date_created) SELECT participant_id, tid, '".$iSurveyId."', '".$dateCreated."' FROM ".$tableName." WHERE participant_id IS NOT NULL";
         return Yii::app()->db->createCommand($query)
                              ->query();

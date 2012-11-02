@@ -214,7 +214,7 @@ class limereplacementfields extends Survey_Common_Action
                 $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
                 {
-                    $replFields[] = array('TOKEN:' . strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription));
+                    $replFields[] = array('TOKEN:' . strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription['description']));
                 }
                 $replFields[] = array('EXPIRY', $clang->gT("Survey expiration date"));
                 return array($replFields, false);
@@ -232,7 +232,7 @@ class limereplacementfields extends Survey_Common_Action
                 $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
                 {
-                    $replFields[] = array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription));
+                    $replFields[] = array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription['description']));
                 }
                 $replFields[] = array('ADMINNAME', $clang->gT("Name of the survey administrator"));
                 $replFields[] = array('ADMINEMAIL', $clang->gT("Email address of the survey administrator"));
@@ -252,7 +252,7 @@ class limereplacementfields extends Survey_Common_Action
                 $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
                 {
-                    $replFields[] = array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription));
+                    $replFields[] = array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription['description']));
                 }
                 $replFields[] = array('ADMINNAME', $clang->gT("Name of the survey administrator"));
                 $replFields[] = array('ADMINEMAIL', $clang->gT("Email address of the survey administrator"));
@@ -274,7 +274,7 @@ class limereplacementfields extends Survey_Common_Action
                 $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
                 {
-                    $replFields[] = array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription));
+                    $replFields[] = array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription['description']));
                 }
                 $replFields[] = array('ADMINNAME', $clang->gT("Name of the survey administrator"));
                 $replFields[] = array('ADMINEMAIL', $clang->gT("Email address of the survey administrator"));
@@ -291,7 +291,7 @@ class limereplacementfields extends Survey_Common_Action
                 $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
                 {
-                    $replFields[] = array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription));
+                    $replFields[] = array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription['description']));
                 }
                 $replFields[] = array('ADMINNAME', $clang->gT("Name of the survey administrator"));
                 $replFields[] = array('ADMINEMAIL', $clang->gT("Email address of the survey administrator"));
@@ -324,7 +324,7 @@ class limereplacementfields extends Survey_Common_Action
                 $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
                 {
-                    $replFields[] = array('TOKEN:' . strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription));
+                    $replFields[] = array('TOKEN:' . strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription['description']));
                 }
                 $replFields[] = array('EXPIRY', $clang->gT("Survey expiration date"));
             case 'editanswer':

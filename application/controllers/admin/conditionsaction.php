@@ -1001,7 +1001,7 @@ class conditionsaction extends Survey_Common_Action {
                                 $aTokenAttrNames=getTokenFieldsAndNames($iSurveyID);
                                 if (count($aTokenAttrNames) != 0)
                                 {
-                                    $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("From token table")."]";
+                                    $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description'])." [".$clang->gT("From token table")."]";
                                 }
                                 else
                                 {
@@ -1074,7 +1074,7 @@ class conditionsaction extends Survey_Common_Action {
                                 $aTokenAttrNames=getTokenFieldsAndNames($iSurveyID);
                                 if (count($aTokenAttrNames) != 0)
                                 {
-                                    $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("From token table")."]";
+                                    $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description'])." [".$clang->gT("From token table")."]";
                                 }
                                 else
                                 {
@@ -1401,7 +1401,7 @@ class conditionsaction extends Survey_Common_Action {
                 {
                     $selectThisSrcTokenAttr = "";
                 }
-                $aViewUrls['output'] .= "<option value='{TOKEN:".strtoupper($tokenattr)."}' $selectThisSrcTokenAttr>".HTMLEscape($tokenattrName)."</option>\n";
+                $aViewUrls['output'] .= "<option value='{TOKEN:".strtoupper($tokenattr)."}' $selectThisSrcTokenAttr>".HTMLEscape($tokenattrName['description'])."</option>\n";
             }
 
             $aViewUrls['output'] .= "</select>\n"
@@ -1520,7 +1520,7 @@ class conditionsaction extends Survey_Common_Action {
             ."\t\t<select name='tokenAttr' id='tokenAttr' size='7'>\n";
             foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
             {
-                $aViewUrls['output'] .= "\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".HTMLEscape($tokenattrName)."</option>\n";
+                $aViewUrls['output'] .= "\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".HTMLEscape($tokenattrName['description'])."</option>\n";
             }
 
             $aViewUrls['output'] .= "\t\t</select>\n"

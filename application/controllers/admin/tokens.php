@@ -1265,7 +1265,7 @@ class tokens extends Survey_Common_Action
         $aData['bEmail'] = $bEmail;
         $aData['aSurveyLangs'] = $aData['surveylangs'] = $aSurveyLangs;
         $aData['baselang'] = $sBaseLanguage;
-        $aData['tokenfields'] = $aTokenFields;
+        $aData['tokenfields'] = array_keys($aTokenFields);
         $aData['nrofattributes'] = $iAttributes;
         $aData['examplerow'] = $aExampleRow;
         $aData['tokenids'] = $aTokenIds;
@@ -1335,7 +1335,7 @@ class tokens extends Survey_Common_Action
                     $_POST['message_' . $language] = html_entity_decode(Yii::app()->request->getPost('message_' . $language), ENT_QUOTES, Yii::app()->getConfig("emailcharset"));
             }
 
-            $attributes = getTokenFieldsAndNames($iSurveyId);
+            $attributes = array_keys(getTokenFieldsAndNames($iSurveyId));
             $tokenoutput = "";
 
             if ($emcount > 0)
@@ -1354,7 +1354,7 @@ class tokens extends Survey_Common_Action
                     $fieldsarray["{TOKEN}"] = $emrow['token'];
                     $fieldsarray["{LANGUAGE}"] = $emrow['language'];
 
-                    foreach ($attributes as $attributefield => $attributedescription)
+                    foreach ($attributes as $attributefield)
                     {
                         $fieldsarray['{' . strtoupper($attributefield) . '}'] = $emrow[$attributefield];
                         $fieldsarray['{TOKEN:'.strtoupper($attributefield).'}']=$emrow[$attributefield];

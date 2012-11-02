@@ -4203,15 +4203,13 @@ function filterForAttributes ($fieldname)
 * @param mixed $iSurveyID  The survey ID
 * @return array The fieldnames
 */
-function GetAttributeFieldNames($iSurveyID,$filter=true)
+function GetAttributeFieldNames($iSurveyID)
 {
     if (!tableExists("{{tokens_{$iSurveyID}}}") || !$table = Yii::app()->db->schema->getTable('{{tokens_'.$iSurveyID.'}}'))
         return Array();
-    if ($filter)
-    {
-        return array_filter(array_keys($table->columns), 'filterForAttributes');
-    }
-    return array_keys($table->columns);
+
+    return array_filter(array_keys($table->columns), 'filterForAttributes');
+
 }
 
 /**
@@ -4251,57 +4249,85 @@ function getTokenConditionsFieldNames($surveyid)
 * Retrieves the attribute names from the related token table
 *
 * @param mixed $surveyid  The survey ID
-* @param boolean $onlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false
+* @param boolean $bOnlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false
 * @return array The fieldnames as key and names as value in an Array
 */
-function getTokenFieldsAndNames($surveyid, $onlyAttributes = false)
+function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
 {
     $clang = Yii::app()->lang;
 
-    $extra_attrs=getAttributeFieldNames($surveyid);
-    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount','usesleft');
-    $basic_attrs_names=Array(
-    $clang->gT('First name'),
-    $clang->gT('Last name'),
-    $clang->gT('Email address'),
-    $clang->gT('Token code'),
-    $clang->gT('Language code'),
-    $clang->gT('Invitation sent date'),
-    $clang->gT('Last Reminder sent date'),
-    $clang->gT('Total numbers of sent reminders'),
-    $clang->gT('Uses left')
+    $aBasicTokenFields=array('firstname'=>array(
+        'description'=>$clang->gT('First name'),
+        'mandatory'=>'N',
+        'showregister'=>'Y'
+        ),
+        'lastname'=>array(
+            'description'=>$clang->gT('Last name'),
+            'mandatory'=>'N',
+            'showregister'=>'Y'
+        ),                                                
+        'email'=>array(
+            'description'=>$clang->gT('Email address'),
+            'mandatory'=>'N',
+            'showregister'=>'Y'
+        ),                                                
+        'token'=>array(
+            'description'=>$clang->gT('Token'),
+            'mandatory'=>'N',
+            'showregister'=>'Y'
+        ),                                                
+        'language'=>array(
+            'description'=>$clang->gT('Language code'),
+            'mandatory'=>'N',
+            'showregister'=>'Y'
+        ),                                                
+        'sent'=>array(
+            'description'=>$clang->gT('Invitation sent date'),
+            'mandatory'=>'N',
+            'showregister'=>'Y'
+        ),                                                
+        'remindersent'=>array(
+            'description'=>$clang->gT('Last reminder sent date'),
+            'mandatory'=>'N',
+            'showregister'=>'Y'
+        ),                                                
+        'remindercount'=>array(
+            'description'=>$clang->gT('Total numbers of sent reminders'),
+            'mandatory'=>'N',
+            'showregister'=>'Y'
+        ),                                                
+        'usesleft'=>array(
+            'description'=>$clang->gT('Uses left'),
+            'mandatory'=>'N',
+            'showregister'=>'Y'
+        ),                                                
     );
-    $attdescriptiondata = array();
-    $attributedescriptions = array();
-    $basic_attrs_and_names = array();
-    $extra_attrs_and_names = array();
-    // !!! This is actually deprecated, use Survey::model()->findByPk($surveyid)->tokenAttributes instead
-    if ($surveyid)
-        $attdescriptiondata = Survey::model()->findByPk($surveyid)->tokenAttributes;
-    if (!is_null($attdescriptiondata))
+
+    $aExtraTokenFields=getAttributeFieldNames($surveyid);  
+    $aSavedExtraTokenFields = Survey::model()->findByPk($surveyid)->tokenAttributes;
+
+    // Drop all fields that are in the saved field description but not in the table definition
+    $aSavedExtraTokenFields=array_intersect_key($aSavedExtraTokenFields,array_flip($aExtraTokenFields));
+    
+    // Now add all fields that are in the table but not in the field description
+    foreach ($aExtraTokenFields as $sField)
     {
-        foreach ($attdescriptiondata as $attname => $attdata)
-            $attributedescriptions[$attname] = $attdata['description'];
-    }
-    foreach ($extra_attrs as $fieldname)
-    {
-        if (isset($attributedescriptions[$fieldname]))
+        if (!isset($aSavedExtraTokenFields[$sField]))
         {
-            $extra_attrs_and_names[$fieldname] = $attributedescriptions[$fieldname];
-        }
-        else
-        {
-            $extra_attrs_and_names[$fieldname] = sprintf($clang->gT('Attribute %s'),substr($fieldname,10));
+            $aSavedExtraTokenFields[$sField]=array(
+            'description'=>$sField,
+            'mandatory'=>'N',
+            'showregister'=>'N'
+            );
         }
     }
-    if ($onlyAttributes===false)
+    if ($bOnlyAttributes)
     {
-        $basic_attrs_and_names=array_combine($basic_attrs,$basic_attrs_names);
-        return array_merge($basic_attrs_and_names,$extra_attrs_and_names);
+        return $aSavedExtraTokenFields;
     }
     else
     {
-        return $extra_attrs_and_names;
+        return array_merge($aBasicTokenFields,$aSavedExtraTokenFields);
     }
 }
 

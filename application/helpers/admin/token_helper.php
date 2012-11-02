@@ -74,7 +74,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 	else
 		$bHtml = false;
 	
-	$attributes = getTokenFieldsAndNames($iSurveyID);	
+	$attributes = array_keys(getTokenFieldsAndNames($iSurveyID));	
 	$oSurveyLocale=Surveys_languagesettings::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
 	$oTokens = Tokens_dynamic::model($iSurveyID);		
 	$aSurveyLangs = $oSurvey->additionalLanguages;
@@ -127,7 +127,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		if($from ==  '')
 			$from = Yii::app()->getConfig('siteadminemail');		
 	
-		foreach ($attributes as $attributefield => $attributedescription)
+		foreach ($attributes as $attributefield)
 		{
 			$fieldsarray['{' . strtoupper($attributefield) . '}'] = $aTokenRow[$attributefield];
 			$fieldsarray['{TOKEN:'.strtoupper($attributefield).'}']=$aTokenRow[$attributefield];

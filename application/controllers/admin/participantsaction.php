@@ -1689,7 +1689,7 @@ class participantsaction extends Survey_Common_Action
             $time = time();
             $aData = array('participant_id' => $iId,
                 'share_uid' => $iShareUserId,
-                'date_added' => date(DATE_W3C, $time),
+                'date_added' => date('Y-m-d H:i:s', $time),
                 'can_edit' => $bCanEdit);
             ParticipantShares::model()->storeParticipantShare($aData);
             $i++;
@@ -1822,7 +1822,7 @@ class participantsaction extends Survey_Common_Action
         {
             if (is_numeric($key[10])) //Assumes that if the 11th character is a number, it must be a token-table created attribute
             {
-                $selectedattribute[$key] = $value;
+                $selectedattribute[$key] = $value['description'];
                 $i++;
             }
             else
@@ -1879,7 +1879,7 @@ class participantsaction extends Survey_Common_Action
         {
             if (is_numeric($key[10]))
             {
-                $selectedattribute[$value] = $key;
+                $selectedattribute[$value['description']] = $key;
             }
             else
             {
@@ -1893,9 +1893,9 @@ class participantsaction extends Survey_Common_Action
                 if($continue) {
                     array_push($alreadymappedattid, $attributeid);
                     array_push($alreadymappedattdisplay, $key);
-                    $alreadymappedattnames[$key]=$value;
+                    $alreadymappedattnames[$key]=$value['description'];
                 } else {
-                    $selectedattribute[$value]=$key;
+                    $selectedattribute[$value['description']]=$key;
                 }
             }
         }
