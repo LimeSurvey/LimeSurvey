@@ -10,25 +10,11 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-   *    $Id$
-   *    Files Purpose: lots of common functions
 */
 
 class Tokens_dynamic extends LSActiveRecord
-{    protected static $sid = 0;
-
-    /**
-     * Sets the survey ID for the next model
-     *
-     * @static
-     * @access public
-     * @param int $sid
-     * @return void
-     */
-    public static function sid($sid)
-    {
-        self::$sid = (int) $sid;
-    }
+{
+	protected static $sid = 0;
 
     /**
      * Returns the static model of Settings table
@@ -38,12 +24,32 @@ class Tokens_dynamic extends LSActiveRecord
      * @param int $surveyid
      * @return Tokens_dynamic
      */
-    public static function model($sid = null)
+    public static function model($sid = NULL)
     {
-        if (!is_null($sid))
+        $refresh = false;
+        if (!is_null($sid)) {
             self::sid($sid);
-
-		return parent::model(__CLASS__);
+            $refresh = true;
+        }
+        
+        $model = parent::model(__CLASS__);
+        
+        //We need to refresh if we changed sid
+        if ($refresh === true) $model->refreshMetaData();
+        return $model;
+    }
+    
+    /**
+	 * Sets the survey ID for the next model
+	 *
+	 * @static
+	 * @access public
+	 * @param int $sid
+	 * @return void
+	 */
+	public static function sid($sid)
+	{
+		self::$sid = (int) $sid;
 	}
 
 	/**
