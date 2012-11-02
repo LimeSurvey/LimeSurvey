@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-11-02 13:09:43+00:00\n"
+"POT-Creation-Date: 2012-11-02 23:05:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2506,7 +2506,7 @@ msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:936
 #: application/helpers/expressions/em_manager_helper.php:2915
-#: application/helpers/expressions/em_manager_helper.php:5481
+#: application/helpers/expressions/em_manager_helper.php:5474
 #: application/helpers/qanda_helper.php:1399
 #: application/helpers/qanda_helper.php:1725
 #: application/helpers/qanda_helper.php:2234
@@ -3733,7 +3733,7 @@ msgid "Survey title and description"
 msgstr ""
 
 #: application/controllers/admin/translate.php:464
-#: application/helpers/expressions/em_manager_helper.php:8028
+#: application/helpers/expressions/em_manager_helper.php:8021
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:33
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:36
 #: application/views/admin/survey/QuestionGroups/editGroup_view.php:19
@@ -3754,7 +3754,7 @@ msgid "Welcome and end text"
 msgstr ""
 
 #: application/controllers/admin/translate.php:494
-#: application/helpers/expressions/em_manager_helper.php:8042
+#: application/helpers/expressions/em_manager_helper.php:8035
 #: application/views/admin/survey/editLocalSettings_view.php:17
 #: application/views/admin/survey/editLocalSettings_view.php:21
 #: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:33
@@ -6921,7 +6921,7 @@ msgid "other"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:2531
-#: application/helpers/expressions/em_manager_helper.php:5483
+#: application/helpers/expressions/em_manager_helper.php:5476
 msgid "If you choose '%s' please also specify your choice in the accompanying text field."
 msgstr ""
 
@@ -6933,72 +6933,68 @@ msgstr ""
 msgid "Unable to insert record into survey table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4483
-msgid "Unable to insert record into timings table"
-msgstr ""
-
-#: application/helpers/expressions/em_manager_helper.php:4564
+#: application/helpers/expressions/em_manager_helper.php:4557
 msgid "Error in SQL update"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5458
+#: application/helpers/expressions/em_manager_helper.php:5451
 msgid "This question is mandatory"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5472
+#: application/helpers/expressions/em_manager_helper.php:5465
 msgid "Please check at least one item."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5505
-#: application/helpers/expressions/em_manager_helper.php:5542
+#: application/helpers/expressions/em_manager_helper.php:5498
+#: application/helpers/expressions/em_manager_helper.php:5535
 msgid "Please complete all parts"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5534
+#: application/helpers/expressions/em_manager_helper.php:5527
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5550
+#: application/helpers/expressions/em_manager_helper.php:5543
 msgid "Please rank all items"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8013
+#: application/helpers/expressions/em_manager_helper.php:8006
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8019
+#: application/helpers/expressions/em_manager_helper.php:8012
 msgid "Logic File for Survey # "
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8035
+#: application/helpers/expressions/em_manager_helper.php:8028
 #: application/views/admin/survey/editLocalSettings_view.php:15
 #: application/views/admin/survey/surveySummary_view.php:40
 msgid "Welcome:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8049
+#: application/helpers/expressions/em_manager_helper.php:8042
 #: application/views/admin/survey/surveySummary_view.php:117
 msgid "End URL"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8053
+#: application/helpers/expressions/em_manager_helper.php:8046
 msgid "Name [ID]"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8053
+#: application/helpers/expressions/em_manager_helper.php:8046
 msgid "Relevance [Validation] (Default)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8053
+#: application/helpers/expressions/em_manager_helper.php:8046
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8105
-#: application/helpers/expressions/em_manager_helper.php:8355
+#: application/helpers/expressions/em_manager_helper.php:8098
+#: application/helpers/expressions/em_manager_helper.php:8348
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8113
+#: application/helpers/expressions/em_manager_helper.php:8106
 #: application/views/admin/survey/Question/editQuestion_view.php:53
 #: application/views/admin/survey/Question/editQuestion_view.php:57
 #: application/views/admin/survey/Question/editQuestion_view.php:81
@@ -7009,47 +7005,47 @@ msgstr ""
 msgid "Help:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8114
+#: application/helpers/expressions/em_manager_helper.php:8107
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8131
+#: application/helpers/expressions/em_manager_helper.php:8124
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8131
+#: application/helpers/expressions/em_manager_helper.php:8124
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8257
+#: application/helpers/expressions/em_manager_helper.php:8250
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8269
+#: application/helpers/expressions/em_manager_helper.php:8262
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8427
+#: application/helpers/expressions/em_manager_helper.php:8420
 msgid "This question has at least %s error."
 msgid_plural "This question has at least %s errors."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/helpers/expressions/em_manager_helper.php:8466
+#: application/helpers/expressions/em_manager_helper.php:8459
 msgid "%s question contains errors that need to be corrected"
 msgid_plural "%s questions contain errors that need to be corrected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/helpers/expressions/em_manager_helper.php:8472
+#: application/helpers/expressions/em_manager_helper.php:8465
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8475
+#: application/helpers/expressions/em_manager_helper.php:8468
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8478
+#: application/helpers/expressions/em_manager_helper.php:8471
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
