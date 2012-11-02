@@ -28,7 +28,7 @@
     </li>
     <li><label for='dateformat_<?php echo $esrow['surveyls_language']; ?>'><?php $clang->eT("Date format:"); ?></label>
         <select size='1' id='dateformat_<?php echo $esrow['surveyls_language']; ?>' name='dateformat_<?php echo $esrow['surveyls_language']; ?>'>
-            <?php foreach (getDateFormatData() as $index=>$dateformatdata)
+            <?php foreach (getDateFormatData(0,Yii::app()->session['adminlang']) as $index=>$dateformatdata)
                 { ?>
                 <option value='<?php echo $index; ?>'
                     <?php if ($esrow['surveyls_dateformat']==$index) { ?>
