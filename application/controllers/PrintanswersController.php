@@ -209,7 +209,7 @@ class PrintanswersController extends LSYii_Controller {
             {
                 if($printableexport == 'pdf')
                 {
-                    $pdf->intopdf(flattenText($fname[0].$fname[1],false,true).": ".$fname[2]);
+                    $pdf->intopdf(flattenText(templatereplace($fname[0]).$fname[1],false,true).": ".$fname[2]);
                     $pdf->ln(2);
                 }
                 else
