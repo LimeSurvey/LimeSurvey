@@ -16,8 +16,8 @@
 
 class Survey_timings extends LSActiveRecord
 {
-
     protected static $sid = 0;
+    
 	/**
 	 * Returns the static model
 	 *
@@ -26,14 +26,21 @@ class Survey_timings extends LSActiveRecord
 	 * @param int $surveyid
 	 * @return CActiveRecord
 	 */
-	public static function model($sid = null)
-	{
-        if (!is_null($sid))
+    public static function model($sid = NULL)
+    {         
+        $refresh = false;
+        if (!is_null($sid)) {
             self::sid($sid);
-
-		return parent::model(__CLASS__);
-	}
-
+            $refresh = true;
+        }
+        
+        $model = parent::model(__CLASS__);
+        
+        //We need to refresh if we changed sid
+        if ($refresh === true) $model->refreshMetaData();
+        return $model;
+    }
+    
 	/**
 	 * Sets the survey ID for the next model
 	 *

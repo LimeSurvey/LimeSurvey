@@ -4472,16 +4472,9 @@
                     'id'=>$srid,
                     'interviewtime'=>0
                     );
-                    $tdata = array_filter($tdata);
+                    switchMSSQLIdentityInsert("survey_{$this->sid}_timings", true);
                     $iNewID = $oSurveyTimings->insertRecords($tdata); 
-                    if ($iNewID)  // Checked
-                    {
-                        $trid = $iNewID;
-                    }
-                    else
-                    {
-                        $message .= $this->gT("Unable to insert record into timings table");    // TODO  - add SQL error?
-                    }
+                    switchMSSQLIdentityInsert("survey_{$this->sid}_timings", false);
                 }
             }
 
