@@ -129,7 +129,7 @@
                         <?php $attrfieldnames=getTokenFieldsAndNames($surveyid,true);
                             foreach ($attrfieldnames as $attr_name=>$attr_desc)
                             {
-                                echo "<option value='$attr_name' id='$attr_name' />".$attr_desc."</option>\n";
+                                echo "<option value='$attr_name' id='$attr_name' />".$attr_desc['description']."</option>\n";
                         } ?>
                     </select></fieldset>
                 <?php } ?>
