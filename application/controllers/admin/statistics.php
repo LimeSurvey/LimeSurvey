@@ -64,13 +64,12 @@ class statistics extends Survey_Common_Action {
         $cr_statisticsoutput = '';
 
         // This gets all the 'to be shown questions' from the POST and puts these into an array
-        $fieldlist = returnGlobal('summary');
-        if (!$fieldlist) $fieldlist = array();
-        $statlang = returnGlobal('statlang');
+		$summary=returnGlobal('summary');
+		$statlang=returnGlobal('statlang');
 
         //if $summary isn't an array we create one
-        if (isset($fieldlist) && !is_array($fieldlist)) {
-            $fieldlist = explode("+", $fieldlist);
+		if (isset($summary) && !is_array($summary)) {
+		    $summary = explode("+", $summary);
         }
 
         //no survey ID? -> come and get one
@@ -85,15 +84,6 @@ class statistics extends Survey_Common_Action {
         $aData['language'] = $language;
 
         
-        $fieldmap = createCompleteSGQA($surveyid, $language);
-
-        $summary = array();
-        foreach ($fieldmap as $fieldname => $q)
-        {
-            if (in_array($fieldname, $fieldlist)) $summary[$fieldname] = $q;
-            else if (in_array($fieldname, $fieldlist)) $summary[$fieldname] = $q;
-        }
-
         //Call the javascript file
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'statistics.js');
 
@@ -175,13 +165,13 @@ class statistics extends Survey_Common_Action {
 
 
         //pre-selection of filter forms
-        if (incompleteAnsFilterState() == "filter")
+		if (incompleteAnsFilterState() == "complete")
         {
             $selecthide="selected='selected'";
             $selectshow="";
             $selectinc="";
         }
-        elseif (incompleteAnsFilterState() == "inc")
+		elseif (incompleteAnsFilterState() == "incomplete")
         {
             $selecthide="";
             $selectshow="";
@@ -215,7 +205,7 @@ class statistics extends Survey_Common_Action {
 
         /*
          * let's go through the filter array which contains
-         ['qid'],
+		 * 	['qid'],
          ['gid'],
          ['type'],
          ['title'],
@@ -418,25 +408,30 @@ class statistics extends Survey_Common_Action {
         $aData['showtextinline'] = $showtextinline;
 
         //Show Summary results
+		if (isset($summary) && $summary)
+		{
         $usegraph=isset($_POST['usegraph']) ? 1 : 0;
         $aData['usegraph'] = $usegraph;
-        $outputType = isset($_POST['outputtype']) ? $_POST['outputtype'] : false;
+		    $outputType = $_POST['outputtype'];
 
+            $helper = new statistics_helper();
         switch($outputType){
             case 'html':
-                $statisticsoutput .= generate_statistics($surveyid,$summary,$usegraph,$outputType,'DD',$statlang); //AJS
+		            $statisticsoutput .= $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
                 break;
             case 'pdf':
-                generate_statistics($surveyid,$summary,$usegraph,$outputType,'I',$statlang); //AJS
+		            $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'I',$statlang);
                 exit;
                 break;
             case 'xls':
-                generate_statistics($surveyid,$summary,$usegraph,$outputType,'DD',$statlang); //AJS
+		            $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
                 exit;
                 break;
             default:
                 break;
         }
+
+		}	//end if -> show summary results
 
         $aData['sStatisticsLanguage']=$statlang;
         $aData['output'] = $statisticsoutput;
@@ -482,7 +477,8 @@ class statistics extends Survey_Common_Action {
         $MyCache = new pCache($tempdir.'/');
 
         $aData['success'] = 1;
-
+        $sStatisticsLanguage=sanitize_languagecode($_POST['sStatisticsLanguage']);
+        $oStatisticsLanguage = new Limesurvey_lang($sStatisticsLanguage);        
         if (isset($_POST['cmd']) && isset($_POST['id'])) {
             list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);
             $qtype = substr($_POST['id'], 0, 1); //AJS

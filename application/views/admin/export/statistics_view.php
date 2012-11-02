@@ -8,6 +8,7 @@
 ?>
 <script type='text/javascript'>
     var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/graph"); ?>";
+    var sStatisticsLanguage="<?php echo $sStatisticsLanguage; ?>";
     var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/listcolumn/surveyid/".$surveyid."/column/"); ?>";
     var showTextInline="<?php echo $showtextinline ?>";
 </script>
