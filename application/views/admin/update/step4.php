@@ -23,7 +23,7 @@ else
 }
 ?>
 <br>
-<?
+<?php
 if (!$downloaderror)
 {
 	echo sprintf($clang->gT('Buildnumber was successfully updated to %s.'),Yii::app()->session['updateinfo']['toversion']).'<br />';
