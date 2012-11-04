@@ -205,5 +205,98 @@ class Survey_dynamic extends LSActiveRecord
         return $completed;
     }
 
+    /**
+     * Return true if actual respnse exist in database
+     *
+     * @param $srid : actual save survey id
+     *
+     * @return boolean
+     */
+    public function exist($srid)
+    {
+        $sid = self::$sid;
+        $exist=false;
+
+        if(Yii::app()->db->schema->getTable($this->tableName())){
+            $data=Yii::app()->db->createCommand()
+                ->select("id")
+                ->from($this->tableName())
+                ->where('id=:id', array(':id'=>$srid))
+                ->queryRow();
+            if($data)
+            {
+                $exist=true;
+            }
+        }
+        return $exist;
+    }
+
+    /**
+     * Return next id if next response exist in database
+     *
+     * @param integer $srid : actual save survey id
+     * @param boolean $usefilterstate
+     *
+     * @return integer
+     */
+    public function next($srid,$usefilterstate=false)
+    {
+        $sid = self::$sid;
+        $next=false;
+        if ($usefilterstate && incompleteAnsFilterState() == 'incomplete')
+            $wherefilterstate='submitdate IS NULL';
+        elseif ($usefilterstate && incompleteAnsFilterState() == 'complete')
+            $wherefilterstate='submitdate IS NOT NULL';
+        else
+            $wherefilterstate='true';
+
+        if(Yii::app()->db->schema->getTable($this->tableName())){
+            $data=Yii::app()->db->createCommand()
+                ->select("id")
+                ->from($this->tableName())
+                ->where(array('and',$wherefilterstate,'id > :id'), array(':id'=>$srid))
+                ->order('id ASC')
+                ->queryRow();
+            if($data)
+            {
+                $next=$data['id'];
+            }
+        }
+        return $next;
+    }
+
+    /**
+     * Return previous id if previous response exist in database
+     *
+     * @param integer $srid : actual save survey id
+     * @param boolean $usefilterstate
+     *
+     * @return integer
+     */
+    public function previous($srid,$usefilterstate=false)
+    {
+        $sid = self::$sid;
+        $previous=false;
+        if ($usefilterstate && incompleteAnsFilterState() == 'incomplete')
+            $wherefilterstate='submitdate IS NULL';
+        elseif ($usefilterstate && incompleteAnsFilterState() == 'complete')
+            $wherefilterstate='submitdate IS NOT NULL';
+        else
+            $wherefilterstate='true';
+
+        if(Yii::app()->db->schema->getTable($this->tableName())){
+            $data=Yii::app()->db->createCommand()
+                ->select("id")
+                ->from($this->tableName())
+                ->where(array('and',$wherefilterstate,'id < :id'), array(':id'=>$srid))
+                ->order('id DESC')
+                ->queryRow();
+            if($data)
+            {
+                $previous=$data['id'];
+            }
+        }
+        return $previous;
+    }
 }
 ?>

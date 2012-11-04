@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-11-02 23:05:45+00:00\n"
+"POT-Creation-Date: 2012-11-03 23:05:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -363,7 +363,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:1739
 #: application/controllers/admin/conditionsaction.php:2099
 #: application/controllers/admin/conditionsaction.php:2102
-#: application/controllers/admin/responses.php:612
+#: application/controllers/admin/responses.php:624
 #: application/views/admin/export/statistics_view.php:1336
 #: application/views/admin/export/statistics_view.php:1339
 #: application/views/admin/survey/Question/questionbar_view.php:12
@@ -429,7 +429,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:156
 #: application/controllers/admin/responses.php:132
 #: application/controllers/admin/responses.php:133
-#: application/controllers/admin/responses.php:421
+#: application/controllers/admin/responses.php:433
 #: application/views/admin/quotas/viewquotas_view.php:17
 #: application/views/admin/token/exportdialog.php:5
 msgid "Completed"
@@ -1796,7 +1796,7 @@ msgid "View This Record"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1592
-#: application/controllers/admin/responses.php:879
+#: application/controllers/admin/responses.php:891
 #: application/views/admin/dataentry/delete.php:5
 #: application/views/admin/dataentry/vvimport_upload.php:22
 #: application/views/admin/responses/browseallfiltered_view.php:3
@@ -1820,8 +1820,8 @@ msgid "Follow the following link to update it"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1692
-#: application/views/admin/responses/browseidheader_view.php:9
 #: application/views/admin/responses/browseidheader_view.php:10
+#: application/views/admin/responses/browseidheader_view.php:11
 msgid "Edit this entry"
 msgstr ""
 
@@ -2665,13 +2665,13 @@ msgid "Invalid survey ID"
 msgstr ""
 
 #: application/controllers/admin/responses.php:127
-#: application/controllers/admin/responses.php:415
+#: application/controllers/admin/responses.php:427
 #: application/views/admin/participants/displayParticipants_view.php:88
 msgid "Token ID"
 msgstr ""
 
 #: application/controllers/admin/responses.php:128
-#: application/controllers/admin/responses.php:416
+#: application/controllers/admin/responses.php:428
 #: application/helpers/common_helper.php:5433
 #: application/helpers/replacements_helper.php:625
 #: application/views/admin/export/exportresults_view.php:125
@@ -2687,7 +2687,7 @@ msgid "First name"
 msgstr ""
 
 #: application/controllers/admin/responses.php:129
-#: application/controllers/admin/responses.php:417
+#: application/controllers/admin/responses.php:429
 #: application/helpers/common_helper.php:5438
 #: application/helpers/replacements_helper.php:632
 #: application/views/admin/export/exportresults_view.php:126
@@ -2703,7 +2703,7 @@ msgid "Last name"
 msgstr ""
 
 #: application/controllers/admin/responses.php:130
-#: application/controllers/admin/responses.php:418
+#: application/controllers/admin/responses.php:430
 #: application/controllers/admin/useraction.php:146
 #: application/views/admin/authentication/forgotpassword.php:9
 #: application/views/admin/participants/displayParticipants_view.php:64
@@ -2722,22 +2722,26 @@ msgstr ""
 msgid "Submission date"
 msgstr ""
 
-#: application/controllers/admin/responses.php:331
+#: application/controllers/admin/responses.php:283
+msgid "This answer doesn't exist."
+msgstr ""
+
+#: application/controllers/admin/responses.php:343
 msgid "Response ID %s was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/responses.php:350
+#: application/controllers/admin/responses.php:362
 msgid "%s response was successfully deleted."
 msgid_plural "%s responses were successfully deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/responses.php:608
+#: application/controllers/admin/responses.php:620
 #: application/helpers/common_helper.php:2907
 msgid "Total time"
 msgstr ""
 
-#: application/controllers/admin/responses.php:610
+#: application/controllers/admin/responses.php:622
 #: application/views/admin/assessments_view.php:65
 msgid "Group"
 msgstr ""
@@ -3007,7 +3011,7 @@ msgstr ""
 #: application/controllers/admin/tokens.php:437
 #: application/controllers/admin/tokens.php:508
 #: application/views/admin/assessments_view.php:32
-#: application/views/admin/responses/browseidheader_view.php:14
+#: application/views/admin/responses/browseidheader_view.php:15
 #: application/views/admin/saved/savedlist_view.php:29
 #: application/views/admin/user/editusers.php:24
 #: application/views/admin/user/editusers.php:93
@@ -11006,32 +11010,32 @@ msgstr ""
 msgid "View response ID %d"
 msgstr ""
 
-#: application/views/admin/responses/browseidheader_view.php:14
 #: application/views/admin/responses/browseidheader_view.php:15
+#: application/views/admin/responses/browseidheader_view.php:16
 msgid "Delete this entry"
 msgstr ""
 
-#: application/views/admin/responses/browseidheader_view.php:19
+#: application/views/admin/responses/browseidheader_view.php:20
 msgid "You don't have permission to delete this entry."
 msgstr ""
 
-#: application/views/admin/responses/browseidheader_view.php:23
 #: application/views/admin/responses/browseidheader_view.php:24
+#: application/views/admin/responses/browseidheader_view.php:25
 msgid "Download files for this entry"
 msgstr ""
 
-#: application/views/admin/responses/browseidheader_view.php:27
 #: application/views/admin/responses/browseidheader_view.php:28
+#: application/views/admin/responses/browseidheader_view.php:29
 msgid "Export this Response"
 msgstr ""
 
-#: application/views/admin/responses/browseidheader_view.php:31
-#: application/views/admin/responses/browseidheader_view.php:32
+#: application/views/admin/responses/browseidheader_view.php:34
+#: application/views/admin/responses/browseidheader_view.php:35
 msgid "Show previous..."
 msgstr ""
 
-#: application/views/admin/responses/browseidheader_view.php:33
-#: application/views/admin/responses/browseidheader_view.php:34
+#: application/views/admin/responses/browseidheader_view.php:38
+#: application/views/admin/responses/browseidheader_view.php:39
 #: application/views/admin/responses/browsetimeheader_view.php:20
 msgid "Show next..."
 msgstr ""
