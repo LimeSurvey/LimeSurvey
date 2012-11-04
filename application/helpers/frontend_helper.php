@@ -934,10 +934,14 @@
                         }
                         elseif ($fieldinfo['type'] == 'D')
                         {
-                            // $_SESSION['survey_'.$surveyid][$fieldinfo['fieldname']] now contains the crappy value parsed by
+                            // $_SESSION['survey_'.$surveyid][$fieldinfo['fieldname']] now contains the value parsed by
                             // Date_Time_Converter in save.php. We can leave it there. We just do validation here.
-                            $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
-                            $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'], $_POST[$field]);
+
+                            // deactivated this for now because DateTime::createFromFormat is only available in 5.3 or later
+                            // @todo: Find a strict date validation routine for 5.1.8 or later that understands the standard PHP datetime format
+                            $datetimeobj = true;
+                            //$dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
+                            //$datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'], $_POST[$field]);
                             if(!$datetimeobj)
                             {
                                 $notvalidated[]=$field;

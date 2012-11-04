@@ -1096,12 +1096,12 @@ function do_date($ia)
     if (trim($aQuestionAttributes['dropdown_dates'])==1) {
         if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
         {
-            $datetimeobj = getdate(DateTime::createFromFormat("Y-m-d H:i:s", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])->getTimeStamp());
-            $currentyear = $datetimeobj['year'];
-            $currentmonth = $datetimeobj['mon'];
-            $currentdate = $datetimeobj['mday'];
-            $currenthour = $datetimeobj['hours'];
-            $currentminute = $datetimeobj['minutes'];
+            $datetimeobj = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], "Y-m-d H:i:s");
+            $currentyear = $datetimeobj->years;
+            $currentmonth = $datetimeobj->months;
+            $currentdate = $datetimeobj->days;
+            $currenthour = $datetimeobj->hours;
+            $currentminute = $datetimeobj->minutes;
         } else {
             $currentdate='';
             $currentmonth='';

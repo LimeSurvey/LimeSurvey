@@ -715,7 +715,8 @@ class dataentry extends Survey_Common_Action
                             ;
                             if ($idrow[$fname['fieldname']]!='')
                             {
-                                $thisdate = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']])->format($dateformatdetails['phpdate']);
+                                $datetimeobj = new Date_Time_Converter($idrow[$fname['fieldname']], "Y-m-d H:i:s");
+                                $thisdate = $datetimeobj->convert($dateformatdetails['phpdate']);
                             }
                             else
                             {
