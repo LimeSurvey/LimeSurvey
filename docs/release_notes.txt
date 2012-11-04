@@ -57,6 +57,26 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121102) to 2.00+ (build 121104) Nov 4, 2012
+-Fixed issue #6815: Data entry in backend not possible if there is date question type (Carsten Schmitz)
+-Fixed issue #6816 : browse individual response navigation buttons don't test if srid exist (Denis Chenu)
+-Fixed issue #6827: Can not link between survey response and token (Denis Chenu)
+-Fixed issue: Code fragment shown when ComfortUpdater finishes (Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: English by c_schmitz
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Indonesian by sys_sby
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Serbian (Latin) by OnSpot
+
 Changes from 2.00+ (build 121101) to 2.00+ (build 121102) Nov 2, 2012
 -Fixed issue #6801: Reporting Graph Issue (Menno Dekker)
 -Fixed issue #6733: Exception when viewing public statistics using MSSQL (Carsten Schmitz)
