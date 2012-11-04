@@ -278,7 +278,7 @@ class responses extends Survey_Common_Action
         }
         else
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("This answer doesn't exist.");
+            Yii::app()->session['flashmessage'] = $clang->gT("This response ID is invalid.");
         }
         $aViewUrls['browseidfooter_view'][] = $aData;
 
