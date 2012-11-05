@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-11-04 23:05:53+00:00\n"
+"POT-Creation-Date: 2012-11-05 23:05:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1231,12 +1231,12 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:634
 #: application/helpers/admin/statistics_helper.php:683
 #: application/helpers/admin/statistics_helper.php:1538
-#: application/helpers/admin/statistics_helper.php:1768
-#: application/helpers/admin/statistics_helper.php:2263
-#: application/helpers/admin/statistics_helper.php:2277
-#: application/helpers/admin/statistics_helper.php:2338
-#: application/helpers/admin/statistics_helper.php:2401
-#: application/helpers/admin/statistics_helper.php:2468
+#: application/helpers/admin/statistics_helper.php:1763
+#: application/helpers/admin/statistics_helper.php:2257
+#: application/helpers/admin/statistics_helper.php:2271
+#: application/helpers/admin/statistics_helper.php:2332
+#: application/helpers/admin/statistics_helper.php:2395
+#: application/helpers/admin/statistics_helper.php:2462
 #: application/helpers/common_helper.php:1782
 #: application/helpers/common_helper.php:1790
 #: application/helpers/qanda_helper.php:976
@@ -1320,7 +1320,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:607
 #: application/helpers/admin/statistics_helper.php:1526
 #: application/helpers/admin/statistics_helper.php:1638
-#: application/helpers/admin/statistics_helper.php:1772
+#: application/helpers/admin/statistics_helper.php:1767
 #: application/helpers/common_helper.php:1766
 #: application/helpers/common_helper.php:1829
 #: application/helpers/common_helper.php:2505
@@ -1487,19 +1487,19 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:1816
 #: application/helpers/admin/statistics_helper.php:633
 #: application/helpers/admin/statistics_helper.php:682
-#: application/helpers/admin/statistics_helper.php:1795
-#: application/helpers/admin/statistics_helper.php:1830
-#: application/helpers/admin/statistics_helper.php:1833
+#: application/helpers/admin/statistics_helper.php:1790
+#: application/helpers/admin/statistics_helper.php:1825
+#: application/helpers/admin/statistics_helper.php:1828
+#: application/helpers/admin/statistics_helper.php:1837
 #: application/helpers/admin/statistics_helper.php:1842
-#: application/helpers/admin/statistics_helper.php:1847
-#: application/helpers/admin/statistics_helper.php:1870
-#: application/helpers/admin/statistics_helper.php:1873
+#: application/helpers/admin/statistics_helper.php:1865
+#: application/helpers/admin/statistics_helper.php:1868
+#: application/helpers/admin/statistics_helper.php:1877
 #: application/helpers/admin/statistics_helper.php:1882
-#: application/helpers/admin/statistics_helper.php:1887
-#: application/helpers/admin/statistics_helper.php:1976
-#: application/helpers/admin/statistics_helper.php:1979
+#: application/helpers/admin/statistics_helper.php:1971
+#: application/helpers/admin/statistics_helper.php:1974
+#: application/helpers/admin/statistics_helper.php:1982
 #: application/helpers/admin/statistics_helper.php:1987
-#: application/helpers/admin/statistics_helper.php:1992
 #: application/helpers/qanda_helper.php:1286
 #: application/helpers/qanda_helper.php:3728
 #: application/helpers/qanda_helper.php:3829
@@ -1675,7 +1675,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:400
 #: application/controllers/admin/statistics.php:121
-#: application/helpers/admin/statistics_helper.php:3055
+#: application/helpers/admin/statistics_helper.php:3049
 msgid "Quick statistics"
 msgstr ""
 
@@ -4497,7 +4497,7 @@ msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:166
 #: application/helpers/admin/statistics_helper.php:1531
-#: application/helpers/admin/statistics_helper.php:1772
+#: application/helpers/admin/statistics_helper.php:1767
 msgid "Comments"
 msgstr ""
 
@@ -4561,22 +4561,22 @@ msgid "Result"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:1007
-#: application/helpers/admin/statistics_helper.php:1830
-#: application/helpers/admin/statistics_helper.php:1836
-#: application/helpers/admin/statistics_helper.php:1842
-#: application/helpers/admin/statistics_helper.php:1853
-#: application/helpers/admin/statistics_helper.php:2557
-#: application/helpers/admin/statistics_helper.php:2561
+#: application/helpers/admin/statistics_helper.php:1825
+#: application/helpers/admin/statistics_helper.php:1831
+#: application/helpers/admin/statistics_helper.php:1837
+#: application/helpers/admin/statistics_helper.php:1848
+#: application/helpers/admin/statistics_helper.php:2551
+#: application/helpers/admin/statistics_helper.php:2555
+#: application/helpers/admin/statistics_helper.php:2567
 #: application/helpers/admin/statistics_helper.php:2573
-#: application/helpers/admin/statistics_helper.php:2579
 msgid "Sum"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:1008
-#: application/helpers/admin/statistics_helper.php:2738
-#: application/helpers/admin/statistics_helper.php:2745
-#: application/helpers/admin/statistics_helper.php:2752
-#: application/helpers/admin/statistics_helper.php:2759
+#: application/helpers/admin/statistics_helper.php:2732
+#: application/helpers/admin/statistics_helper.php:2739
+#: application/helpers/admin/statistics_helper.php:2746
+#: application/helpers/admin/statistics_helper.php:2753
 msgid "Standard deviation"
 msgstr ""
 
@@ -4585,20 +4585,20 @@ msgid "Average"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:1026
-#: application/helpers/admin/statistics_helper.php:1795
-#: application/helpers/admin/statistics_helper.php:1811
-#: application/helpers/admin/statistics_helper.php:1830
-#: application/helpers/admin/statistics_helper.php:1834
-#: application/helpers/admin/statistics_helper.php:1842
-#: application/helpers/admin/statistics_helper.php:1849
-#: application/helpers/admin/statistics_helper.php:1870
-#: application/helpers/admin/statistics_helper.php:1874
-#: application/helpers/admin/statistics_helper.php:1882
-#: application/helpers/admin/statistics_helper.php:1889
-#: application/helpers/admin/statistics_helper.php:1976
-#: application/helpers/admin/statistics_helper.php:1980
-#: application/helpers/admin/statistics_helper.php:1987
-#: application/helpers/admin/statistics_helper.php:1994
+#: application/helpers/admin/statistics_helper.php:1790
+#: application/helpers/admin/statistics_helper.php:1806
+#: application/helpers/admin/statistics_helper.php:1825
+#: application/helpers/admin/statistics_helper.php:1829
+#: application/helpers/admin/statistics_helper.php:1837
+#: application/helpers/admin/statistics_helper.php:1844
+#: application/helpers/admin/statistics_helper.php:1865
+#: application/helpers/admin/statistics_helper.php:1869
+#: application/helpers/admin/statistics_helper.php:1877
+#: application/helpers/admin/statistics_helper.php:1884
+#: application/helpers/admin/statistics_helper.php:1971
+#: application/helpers/admin/statistics_helper.php:1975
+#: application/helpers/admin/statistics_helper.php:1982
+#: application/helpers/admin/statistics_helper.php:1989
 msgid "Count"
 msgstr ""
 
@@ -4636,9 +4636,9 @@ msgid "minitab method"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:1110
-#: application/helpers/admin/statistics_helper.php:1781
-#: application/helpers/admin/statistics_helper.php:1802
-#: application/helpers/admin/statistics_helper.php:3217
+#: application/helpers/admin/statistics_helper.php:1776
+#: application/helpers/admin/statistics_helper.php:1797
+#: application/helpers/admin/statistics_helper.php:3211
 msgid "Browse"
 msgstr ""
 
@@ -4655,37 +4655,37 @@ msgstr ""
 msgid "Label %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1795
-#: application/helpers/admin/statistics_helper.php:1813
+#: application/helpers/admin/statistics_helper.php:1790
+#: application/helpers/admin/statistics_helper.php:1808
+#: application/helpers/admin/statistics_helper.php:1825
 #: application/helpers/admin/statistics_helper.php:1830
-#: application/helpers/admin/statistics_helper.php:1835
-#: application/helpers/admin/statistics_helper.php:1842
-#: application/helpers/admin/statistics_helper.php:1851
+#: application/helpers/admin/statistics_helper.php:1837
+#: application/helpers/admin/statistics_helper.php:1846
+#: application/helpers/admin/statistics_helper.php:1865
 #: application/helpers/admin/statistics_helper.php:1870
-#: application/helpers/admin/statistics_helper.php:1875
-#: application/helpers/admin/statistics_helper.php:1882
-#: application/helpers/admin/statistics_helper.php:1891
+#: application/helpers/admin/statistics_helper.php:1877
+#: application/helpers/admin/statistics_helper.php:1886
+#: application/helpers/admin/statistics_helper.php:1971
 #: application/helpers/admin/statistics_helper.php:1976
-#: application/helpers/admin/statistics_helper.php:1981
-#: application/helpers/admin/statistics_helper.php:1987
-#: application/helpers/admin/statistics_helper.php:1996
+#: application/helpers/admin/statistics_helper.php:1982
+#: application/helpers/admin/statistics_helper.php:1991
 msgid "Percentage"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2108
-#: application/helpers/admin/statistics_helper.php:2140
+#: application/helpers/admin/statistics_helper.php:2102
+#: application/helpers/admin/statistics_helper.php:2134
 msgid "Not completed or Not displayed"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2112
-#: application/helpers/admin/statistics_helper.php:2144
+#: application/helpers/admin/statistics_helper.php:2106
+#: application/helpers/admin/statistics_helper.php:2138
 msgid "Not displayed"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2557
-#: application/helpers/admin/statistics_helper.php:2561
+#: application/helpers/admin/statistics_helper.php:2551
+#: application/helpers/admin/statistics_helper.php:2555
+#: application/helpers/admin/statistics_helper.php:2567
 #: application/helpers/admin/statistics_helper.php:2573
-#: application/helpers/admin/statistics_helper.php:2579
 #: application/views/admin/quotas/viewquotasrow_view.php:48
 #: application/views/admin/survey/Question/import_view.php:11
 #: application/views/admin/survey/QuestionGroups/import_view.php:12
@@ -4694,76 +4694,76 @@ msgstr ""
 msgid "Answers"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2558
-#: application/helpers/admin/statistics_helper.php:2566
-#: application/helpers/admin/statistics_helper.php:2574
-#: application/helpers/admin/statistics_helper.php:2585
+#: application/helpers/admin/statistics_helper.php:2552
+#: application/helpers/admin/statistics_helper.php:2560
+#: application/helpers/admin/statistics_helper.php:2568
+#: application/helpers/admin/statistics_helper.php:2579
 msgid "Number of cases"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2737
-#: application/helpers/admin/statistics_helper.php:2741
+#: application/helpers/admin/statistics_helper.php:2731
+#: application/helpers/admin/statistics_helper.php:2735
+#: application/helpers/admin/statistics_helper.php:2745
 #: application/helpers/admin/statistics_helper.php:2751
-#: application/helpers/admin/statistics_helper.php:2757
 msgid "Arithmetic mean"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2877
+#: application/helpers/admin/statistics_helper.php:2871
 msgid "Disable chart"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2878
+#: application/helpers/admin/statistics_helper.php:2872
 msgid "Enable chart"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2879
+#: application/helpers/admin/statistics_helper.php:2873
 msgid "Display as bar chart"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2880
+#: application/helpers/admin/statistics_helper.php:2874
 msgid "Display as pie chart"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2881
+#: application/helpers/admin/statistics_helper.php:2875
 msgid "Disable map display"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2882
+#: application/helpers/admin/statistics_helper.php:2876
 msgid "Enable map display"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3055
-#: application/helpers/admin/statistics_helper.php:3169
-#: application/helpers/admin/statistics_helper.php:3286
-#: application/helpers/admin/statistics_helper.php:3287
-#: application/helpers/admin/statistics_helper.php:3290
+#: application/helpers/admin/statistics_helper.php:3049
+#: application/helpers/admin/statistics_helper.php:3163
+#: application/helpers/admin/statistics_helper.php:3280
+#: application/helpers/admin/statistics_helper.php:3281
+#: application/helpers/admin/statistics_helper.php:3284
 #: application/views/admin/participants/displayParticipants_view.php:292
 #: application/views/admin/survey/listSurveys_view.php:42
 #: application/views/admin/survey/surveybar_view.php:3
 msgid "Survey"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3141
-#: application/helpers/admin/statistics_helper.php:3160
-#: application/helpers/admin/statistics_helper.php:3179
+#: application/helpers/admin/statistics_helper.php:3135
+#: application/helpers/admin/statistics_helper.php:3154
+#: application/helpers/admin/statistics_helper.php:3173
 msgid "Number of records in this query:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3144
-#: application/helpers/admin/statistics_helper.php:3161
-#: application/helpers/admin/statistics_helper.php:3181
+#: application/helpers/admin/statistics_helper.php:3138
+#: application/helpers/admin/statistics_helper.php:3155
+#: application/helpers/admin/statistics_helper.php:3175
 msgid "Total records in survey:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3150
-#: application/helpers/admin/statistics_helper.php:3164
-#: application/helpers/admin/statistics_helper.php:3188
+#: application/helpers/admin/statistics_helper.php:3144
+#: application/helpers/admin/statistics_helper.php:3158
+#: application/helpers/admin/statistics_helper.php:3182
 msgid "Percentage of total:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3168
-#: application/helpers/admin/statistics_helper.php:3169
-#: application/helpers/admin/statistics_helper.php:3178
+#: application/helpers/admin/statistics_helper.php:3162
+#: application/helpers/admin/statistics_helper.php:3163
+#: application/helpers/admin/statistics_helper.php:3172
 msgid "Results"
 msgstr ""
 
