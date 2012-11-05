@@ -248,7 +248,7 @@ class Survey_dynamic extends LSActiveRecord
         elseif ($usefilterstate && incompleteAnsFilterState() == 'complete')
             $wherefilterstate='submitdate IS NOT NULL';
         else
-            $wherefilterstate='true';
+            $wherefilterstate='1=1';
 
         if(Yii::app()->db->schema->getTable($this->tableName())){
             $data=Yii::app()->db->createCommand()
