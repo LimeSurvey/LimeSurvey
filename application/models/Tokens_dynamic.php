@@ -450,20 +450,20 @@ class Tokens_dynamic extends LSActiveRecord
         return Yii::app()->db->createCommand($dlquery)->query();
     }
 
-    function getEmailStatus($sid,$token)
+    function getEmailStatus($token)
     {
         $command = Yii::app()->db->createCommand()
             ->select('emailstatus')
-            ->from('{{tokens_'.intval($sid).'}}')
+            ->from('{{tokens_'.intval(self::$sid).'}}')
             ->where('token=:token')
             ->bindParam(':token', $token, PDO::PARAM_STR);
 
         return $command->queryRow();
     }
 
-    function updateEmailStatus($sid,$token,$status)
+    function updateEmailStatus($token,$status)
     {
-        return Yii::app()->db->createCommand()->update('{{tokens_'.intval($sid).'}}',array('emailstatus' => $status),'token = :token',array(':token' => $token ));
+        return Yii::app()->db->createCommand()->update('{{tokens_'.intval(self::$sid).'}}',array('emailstatus' => $status),'token = :token',array(':token' => $token ));
     }
 }
 ?>
