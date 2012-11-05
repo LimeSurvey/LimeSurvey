@@ -467,11 +467,11 @@ class responses extends Survey_Common_Action
 
             if (incompleteAnsFilterState() == "incomplete")
             {
-                $oCriteria->addCondition("`submitdate` IS NULL");
+                $oCriteria->addCondition("submitdate IS NULL");
             }
             elseif (incompleteAnsFilterState() == "complete")
             {
-                $oCriteria->addCondition("`submitdate` IS NOT NULL");
+                $oCriteria->addCondition("submitdate IS NOT NULL");
             }
 
             $dtcount = Survey_dynamic::model($iSurveyID)->count($oCriteria);// or die("Couldn't get response data<br />");
