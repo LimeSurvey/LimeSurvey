@@ -528,7 +528,11 @@ class statistics extends Survey_Common_Action {
         $sStatisticsLanguage=sanitize_languagecode($_POST['sStatisticsLanguage']);
         $oStatisticsLanguage = new Limesurvey_lang($sStatisticsLanguage);        
 	    if (isset($_POST['cmd']) && isset($_POST['id'])) {
-	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 1), 3);
+	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);
+            if(!is_numeric(substr($qsid,0,1))) {
+                // Strip first char when not numeric (probably T or D)
+                $qsid=substr($qsid,1);
+            }
 	        $qtype = substr($_POST['id'], 0, 1);
             $aattr = getQuestionAttributeValues($qqid);
             $field = substr($_POST['id'], 1);
