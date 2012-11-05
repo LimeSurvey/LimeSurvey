@@ -1748,252 +1748,104 @@ class statistics_helper {
             if ($sql != "NULL") {$query .= " AND $sql";}
 
             //get data
-            $result=Yii::app()->db->createCommand($query)->query();
+            $row=Yii::app()->db->createCommand($query)->queryScalar();
 
             // $statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
 
-            // this just extracts the data, after we present
-            foreach ($result->readAll() as $row)
-            {
-                $row=array_values($row);
+            //store temporarily value of answer count of question type '5' and 'A'.
+            $tempcount = -1; //count can't be less han zero
 
-                //store temporarily value of answer count of question type '5' and 'A'.
-                $tempcount = -1; //count can't be less han zero
+            //increase counter
+            $TotalCompleted += $row;
 
-                //increase counter
-                $TotalCompleted += $row[0];
-
-                //"no answer" handling
-                if ($al[0] === "")
+            //"no answer" handling
+            if ($al[0] === "")
                 {$fname=$statlang->gT("No answer");}
 
-                //"other" handling
-                //"Answers" means that we show an option to list answer to "other" text field
-                elseif ($al[0] === $statlang->gT("Other") || $al[0] === "Answers" || ($outputs['qtype'] === "O" && $al[0] === $statlang->gT("Comments")) || $outputs['qtype'] === "P")
+            //"other" handling
+            //"Answers" means that we show an option to list answer to "other" text field
+            elseif ($al[0] === $statlang->gT("Other") || $al[0] === "Answers" || ($outputs['qtype'] === "O" && $al[0] === $statlang->gT("Comments")) || $outputs['qtype'] === "P")
+            {
+                if ($outputs['qtype'] == "P") $ColumnName_RM = $al[2]."comment";
+                else  $ColumnName_RM = $al[2];
+                if ($outputs['qtype']=='O') {
+                    $TotalCompleted -=$row;
+                }
+                $fname="$al[1]";
+                if ($browse===true) $fname .= " <input type='button' class='statisticsbrowsebutton' value='"
+                    .$statlang->gT("Browse")."' id='$ColumnName_RM' />";
+            }
+
+            /*
+            * text questions:
+            *
+            * U = huge free text
+            * T = long free text
+            * S = short free text
+            * Q = multiple short text
+            */
+            elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q")
+            {
+                $headPDF = array();
+                $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+
+                //show free text answers
+                if ($al[0] == "Answers")
                 {
-                    if ($outputs['qtype'] == "P") $ColumnName_RM = $al[2]."comment";
-                    else  $ColumnName_RM = $al[2];
-                    if ($outputs['qtype']=='O') {
-                        $TotalCompleted -=$row[0];
-                    }
-                    $fname="$al[1]";
-                    if ($browse===true) $fname .= " <input type='button' class='statisticsbrowsebutton' value='"
-                                                .$statlang->gT("Browse")."' id='$ColumnName_RM' />";
+                    $fname= "$al[1]";
+                    if ($browse===true) $fname .= " <input type='button'  class='statisticsbrowsebutton' value='"
+                        . $statlang->gT("Browse")."' id='$ColumnName_RM' />";
+                }
+                elseif ($al[0] == "NoAnswer")
+                {
+                    $fname= "$al[1]";
                 }
 
-                /*
-                * text questions:
-                *
-                * U = huge free text
-                * T = long free text
-                * S = short free text
-                * Q = multiple short text
-                */
-                elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q")
+                $statisticsoutput .= "</th>\n"
+                ."\t\t<th width='25%' align='center' >"
+                ."<strong>".$statlang->gT("Count")."</strong></th>\n"
+                ."\t\t<th width='25%' align='center' >"
+                ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
+                ."\t</tr></thead>\n";
+            }
+
+
+            //check if aggregated results should be shown
+            elseif (Yii::app()->getConfig('showaggregateddata') == 1)
+            {
+                if(!isset($showheadline) || $showheadline != false)
                 {
-                    $headPDF = array();
-                    $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
-
-                    //show free text answers
-                    if ($al[0] == "Answers")
-                    {
-                        $fname= "$al[1]";
-                        if ($browse===true) $fname .= " <input type='button'  class='statisticsbrowsebutton' value='"
-                            . $statlang->gT("Browse")."' id='$ColumnName_RM' />";
-                    }
-                    elseif ($al[0] == "NoAnswer")
-                    {
-                        $fname= "$al[1]";
-                    }
-
-                    $statisticsoutput .= "</th>\n"
-                    ."\t\t<th width='25%' align='center' >"
-                    ."<strong>".$statlang->gT("Count")."</strong></th>\n"
-                    ."\t\t<th width='25%' align='center' >"
-                    ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
-                    ."\t</tr></thead>\n";
-                }
-
-
-                //check if aggregated results should be shown
-                elseif (Yii::app()->getConfig('showaggregateddata') == 1)
-                {
-                    if(!isset($showheadline) || $showheadline != false)
-                    {
-                        if($outputs['qtype'] == "5" || $outputs['qtype'] == "A")
-                        {
-                            switch($outputType)
-                            {
-                                case 'xls':
-
-                                    $headXLS = array();
-                                    $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"),$statlang->gT("Sum"));
-
-                                    $this->xlsRow++;
-                                    $this->sheet->write($this->xlsRow,0,$statlang->gT("Answer"));
-                                    $this->sheet->write($this->xlsRow,1,$statlang->gT("Count"));
-                                    $this->sheet->write($this->xlsRow,2,$statlang->gT("Percentage"));
-                                    $this->sheet->write($this->xlsRow,3,$statlang->gT("Sum"));
-
-                                    break;
-                                case 'pdf':
-
-                                    $headPDF = array();
-                                    $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"),$statlang->gT("Sum"));
-
-                                    break;
-                                case 'html':
-                                    //four columns
-                                    $statisticsoutput .= "<strong>".$statlang->gT("Answer")."</strong></th>\n"
-                                    ."\t\t<th width='15%' align='center' >"
-                                    ."<strong>".$statlang->gT("Count")."</strong></th>\n"
-                                    ."\t\t<th width='20%' align='center' >"
-                                    ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
-                                    ."\t\t<th width='15%' align='center' >"
-                                    ."<strong>".$statlang->gT("Sum")."</strong></th>\n"
-                                    ."\t</tr></thead>\n";
-                                    break;
-                                default:
-
-
-                                    break;
-                            }
-
-                            $showheadline = false;
-                        }
-                        else
-                        {
-                            switch($outputType)
-                            {
-                                case 'xls':
-                                    $headXLS = array();
-                                    $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
-
-                                    $this->xlsRow++;
-                                    $this->sheet->write($this->xlsRow,0,$statlang->gT("Answer"));
-                                    $this->sheet->write($this->xlsRow,1,$statlang->gT("Count"));
-                                    $this->sheet->write($this->xlsRow,2,$statlang->gT("Percentage"));
-
-                                    break;
-
-                                case 'pdf':
-
-                                    $headPDF = array();
-                                    $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
-
-                                    break;
-                                case 'html':
-                                    //three columns
-                                    $statisticsoutput .= "<strong>".$statlang->gT("Answer")."</strong></td>\n"
-                                    ."\t\t<th width='25%' align='center' >"
-                                    ."<strong>".$statlang->gT("Count")."</strong></th>\n"
-                                    ."\t\t<th width='25%' align='center' >"
-                                    ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
-                                    ."\t</tr></thead>\n";
-                                    break;
-                                default:
-
-                                    break;
-                            }
-
-                            $showheadline = false;
-                        }
-
-                    }
-
-                    //text for answer column is always needed
-                    $fname="$al[1] ($al[0])";
-
-                    //these question types get special treatment by Yii::app()->getConfig('showaggregateddata')
                     if($outputs['qtype'] == "5" || $outputs['qtype'] == "A")
-                    {
-                        //put non-edited data in here because $row will be edited later
-                        $grawdata[]=$row[0];
-                        $showaggregated_indice=count($grawdata) - 1;
-                        $showaggregated_indice_table[$showaggregated_indice]="aggregated";
-                        $showaggregated_indice=-1;
-
-                        //keep in mind that we already added data (will be checked later)
-                        $justadded = true;
-
-                        //we need a counter because we want to sum up certain values
-                        //reset counter if 5 items have passed
-                        if(!isset($testcounter) || $testcounter >= 4)
-                        {
-                            $testcounter = 0;
-                        }
-                        else
-                        {
-                            $testcounter++;
-                        }
-
-                        //beside the known percentage value a new aggregated value should be shown
-                        //therefore this item is marked in a certain way
-
-                        if($testcounter == 0 )    //add 300 to original value
-                        {
-                            //store the original value!
-                            $tempcount = $row[0];
-                            //HACK: add three times the total number of results to the value
-                            //This way we get a 300 + X percentage which can be checked later
-                            $row[0] += (3*$results);
-                        }
-
-                        //the third value should be shown twice later -> mark it
-                        if($testcounter == 2)    //add 400 to original value
-                        {
-                            //store the original value!
-                            $tempcount = $row[0];
-                            //HACK: add four times the total number of results to the value
-                            //This way there should be a 400 + X percentage which can be checked later
-                            $row[0] += (4*$results);
-                        }
-
-                        //the last value aggregates the data of item 4 + item 5 later
-                        if($testcounter == 4 )    //add 200 to original value
-                        {
-                            //store the original value!
-                            $tempcount = $row[0];
-                            //HACK: add two times the total number of results to the value
-                            //This way there should be a 200 + X percentage which can be checked later
-                            $row[0] += (2*$results);
-                        }
-
-                    }    //end if -> question type = "5"/"A"
-
-                }    //end if -> show aggregated data
-
-                //handling what's left
-                else
-                {
-                    if(!isset($showheadline) || $showheadline != false)
                     {
                         switch($outputType)
                         {
                             case 'xls':
 
                                 $headXLS = array();
-                                $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+                                $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"),$statlang->gT("Sum"));
 
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow,0,$statlang->gT("Answer"));
                                 $this->sheet->write($this->xlsRow,1,$statlang->gT("Count"));
                                 $this->sheet->write($this->xlsRow,2,$statlang->gT("Percentage"));
+                                $this->sheet->write($this->xlsRow,3,$statlang->gT("Sum"));
 
                                 break;
                             case 'pdf':
 
                                 $headPDF = array();
-                                $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+                                $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"),$statlang->gT("Sum"));
 
                                 break;
                             case 'html':
-                                //three columns
+                                //four columns
                                 $statisticsoutput .= "<strong>".$statlang->gT("Answer")."</strong></th>\n"
-                                ."\t\t<th width='25%' align='center' >"
+                                ."\t\t<th width='15%' align='center' >"
                                 ."<strong>".$statlang->gT("Count")."</strong></th>\n"
-                                ."\t\t<th width='25%' align='center' >"
+                                ."\t\t<th width='20%' align='center' >"
                                 ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
+                                ."\t\t<th width='15%' align='center' >"
+                                ."<strong>".$statlang->gT("Sum")."</strong></th>\n"
                                 ."\t</tr></thead>\n";
                                 break;
                             default:
@@ -2003,59 +1855,201 @@ class statistics_helper {
                         }
 
                         $showheadline = false;
-
                     }
-                    //answer text
-                    $fname="$al[1] ($al[0])";
+                    else
+                    {
+                        switch($outputType)
+                        {
+                            case 'xls':
+                                $headXLS = array();
+                                $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+
+                                $this->xlsRow++;
+                                $this->sheet->write($this->xlsRow,0,$statlang->gT("Answer"));
+                                $this->sheet->write($this->xlsRow,1,$statlang->gT("Count"));
+                                $this->sheet->write($this->xlsRow,2,$statlang->gT("Percentage"));
+
+                                break;
+
+                            case 'pdf':
+
+                                $headPDF = array();
+                                $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+
+                                break;
+                            case 'html':
+                                //three columns
+                                $statisticsoutput .= "<strong>".$statlang->gT("Answer")."</strong></td>\n"
+                                ."\t\t<th width='25%' align='center' >"
+                                ."<strong>".$statlang->gT("Count")."</strong></th>\n"
+                                ."\t\t<th width='25%' align='center' >"
+                                ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
+                                ."\t</tr></thead>\n";
+                                break;
+                            default:
+
+                                break;
+                        }
+
+                        $showheadline = false;
+                    }
+
                 }
 
-                //are there some results to play with?
-                if ($results > 0)
+                //text for answer column is always needed
+                $fname="$al[1] ($al[0])";
+
+                //these question types get special treatment by Yii::app()->getConfig('showaggregateddata')
+                if($outputs['qtype'] == "5" || $outputs['qtype'] == "A")
                 {
-                    //calculate percentage
-                    $gdata[] = ($row[0]/$results)*100;
-                }
-                //no results
-                else
+                    //put non-edited data in here because $row will be edited later
+                    $grawdata[]=$row;
+                    $showaggregated_indice=count($grawdata) - 1;
+                    $showaggregated_indice_table[$showaggregated_indice]="aggregated";
+                    $showaggregated_indice=-1;
+
+                    //keep in mind that we already added data (will be checked later)
+                    $justadded = true;
+
+                    //we need a counter because we want to sum up certain values
+                    //reset counter if 5 items have passed
+                    if(!isset($testcounter) || $testcounter >= 4)
+                    {
+                        $testcounter = 0;
+                    }
+                    else
+                    {
+                        $testcounter++;
+                    }
+
+                    //beside the known percentage value a new aggregated value should be shown
+                    //therefore this item is marked in a certain way
+
+                    if($testcounter == 0 )    //add 300 to original value
+                    {
+                        //store the original value!
+                        $tempcount = $row;
+                        //HACK: add three times the total number of results to the value
+                        //This way we get a 300 + X percentage which can be checked later
+                        $row += (3*$results);
+                    }
+
+                    //the third value should be shown twice later -> mark it
+                    if($testcounter == 2)    //add 400 to original value
+                    {
+                        //store the original value!
+                        $tempcount = $row;
+                        //HACK: add four times the total number of results to the value
+                        //This way there should be a 400 + X percentage which can be checked later
+                        $row += (4*$results);
+                    }
+
+                    //the last value aggregates the data of item 4 + item 5 later
+                    if($testcounter == 4 )    //add 200 to original value
+                    {
+                        //store the original value!
+                        $tempcount = $row;
+                        //HACK: add two times the total number of results to the value
+                        //This way there should be a 200 + X percentage which can be checked later
+                        $row += (2*$results);
+                    }
+
+                }    //end if -> question type = "5"/"A"
+
+            }    //end if -> show aggregated data
+
+            //handling what's left
+            else
+            {
+                if(!isset($showheadline) || $showheadline != false)
                 {
-                    //no data!
-                    $gdata[] = "N/A";
+                    switch($outputType)
+                    {
+                        case 'xls':
+
+                            $headXLS = array();
+                            $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+
+                            $this->xlsRow++;
+                            $this->sheet->write($this->xlsRow,0,$statlang->gT("Answer"));
+                            $this->sheet->write($this->xlsRow,1,$statlang->gT("Count"));
+                            $this->sheet->write($this->xlsRow,2,$statlang->gT("Percentage"));
+
+                            break;
+                        case 'pdf':
+
+                            $headPDF = array();
+                            $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+
+                            break;
+                        case 'html':
+                            //three columns
+                            $statisticsoutput .= "<strong>".$statlang->gT("Answer")."</strong></th>\n"
+                            ."\t\t<th width='25%' align='center' >"
+                            ."<strong>".$statlang->gT("Count")."</strong></th>\n"
+                            ."\t\t<th width='25%' align='center' >"
+                            ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
+                            ."\t</tr></thead>\n";
+                            break;
+                        default:
+
+
+                            break;
+                    }
+
+                    $showheadline = false;
+
                 }
+                //answer text
+                $fname="$al[1] ($al[0])";
+            }
 
-                //only add this if we don't handle question type "5"/"A"
-                if(!isset($justadded))
-                {
-                    //put absolute data into array
-                    $grawdata[]=$row[0];
-                }
-                else
-                {
-                    //unset to handle "no answer" data correctly
-                    unset($justadded);
-                }
+            //are there some results to play with?
+            if ($results > 0)
+            {
+                //calculate percentage
+                $gdata[] = ($row/$results)*100;
+            }
+            //no results
+            else
+            {
+                //no data!
+                $gdata[] = "N/A";
+            }
 
-                //put question title and code into array
-                $label[]=$fname;
+            //only add this if we don't handle question type "5"/"A"
+            if(!isset($justadded))
+            {
+                //put absolute data into array
+                $grawdata[]=$row;
+            }
+            else
+            {
+                //unset to handle "no answer" data correctly
+                unset($justadded);
+            }
 
-                //put only the code into the array
-                $justcode[]=$al[0];
+            //put question title and code into array
+            $label[]=$fname;
 
-                //edit labels and put them into antoher array
+            //put only the code into the array
+            $justcode[]=$al[0];
 
-                //first check if $tempcount is > 0. If yes, $row[0] has been modified and $tempcount has the original count.
-                if ($tempcount > 0)
-                {
-                    $lbl[] = wordwrap(FlattenText("$al[1] ($tempcount)"), 25, "\n"); // NMO 2009-03-24
-                    $lblrtl[] = UTF8Strrev(wordwrap(FlattenText("$al[1] )$tempcount("), 25, "\n")); // NMO 2009-03-24
-                }
-                else
-                {
-                    $lbl[] = wordwrap(FlattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
-                    $lblrtl[] = UTF8Strrev(wordwrap(FlattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
+            //edit labels and put them into antoher array
 
-                }
+            //first check if $tempcount is > 0. If yes, $row has been modified and $tempcount has the original count.
+            if ($tempcount > -1)
+            {
+                $lbl[] = wordwrap(FlattenText("$al[1] ($tempcount)"), 25, "\n"); // NMO 2009-03-24
+                $lblrtl[] = UTF8Strrev(wordwrap(FlattenText("$al[1] )$tempcount("), 25, "\n")); // NMO 2009-03-24
+            }
+            else
+            {
+                $lbl[] = wordwrap(FlattenText("$al[1] ($row)"), 25, "\n"); // NMO 2009-03-24
+                $lblrtl[] = UTF8Strrev(wordwrap(FlattenText("$al[1] )$row("), 25, "\n")); // NMO 2009-03-24
 
-            }    //end while -> loop through results
+            }
+
 
         }    //end foreach -> loop through answer data
 

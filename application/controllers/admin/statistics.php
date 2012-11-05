@@ -523,7 +523,6 @@ class statistics extends Survey_Common_Action {
         require_once(Yii::app()->basePath . '/third_party/pchart/pchart/pCache.class');
         $tempdir = Yii::app()->getConfig("tempdir");
         $MyCache = new pCache($tempdir.'/');
-
 	    $aData['success'] = 1;
         $sStatisticsLanguage=sanitize_languagecode($_POST['sStatisticsLanguage']);
         $oStatisticsLanguage = new Limesurvey_lang($sStatisticsLanguage);        
