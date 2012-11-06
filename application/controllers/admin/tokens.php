@@ -421,7 +421,7 @@ class tokens extends Survey_Common_Action
 
             $action="";
             if($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] =="")) {
-                $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$token['token']}") . '", "_blank")\'>';
+                $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$token['token']}/newtest/Y") . '", "_blank")\'>';
             } elseif ($token['completed'] != "N" && $token['completed'] != "" && $prow['anonymized'] == "N" ) {
                 //Get the survey response id of the matching entry
                 $id=Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$token['token']));
@@ -496,7 +496,7 @@ class tokens extends Survey_Common_Action
         {
             $action="";
             if($value['token'] != "" && ($value['completed'] == "N" || $value['completed'] =="")) {
-                $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$value['token']}") . '", "_blank")\'>';
+                $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$value['token']}/newtest/Y") . '", "_blank")\'>';
             } elseif ($value['completed'] != "N" && $value['completed'] != "" && $prow['anonymized'] == "N" ) {
                 //Get the survey response id of the matching entry
                 $id=Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$value['token']));
