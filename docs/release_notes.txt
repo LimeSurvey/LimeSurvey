@@ -56,6 +56,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 2.00+ (build 121102) to 2.00+ (build 121104) Nov 4, 2012
+-Fixed issue #6801: Reporting graph issue (Menno Dekker)
+-Fixed issue #6331: Opt-in and opt-out links not working (Carsten Schmitz)
+-Fixed issue #6806: If one of a 1-5 answer is never selected, there is a random value in statistics graph legend (Carsten Schmitz)
+-Fixed issue #6808: Inconsistent access to information from the token table (Carsten Schmitz)
+-Fixed issue #6824: Problems with admin default language (Carsten Schmitz)
+-Fixed issue #6829: Exception when attempting to browse responses on MSSQL (Carsten Schmitz)
+-Fixed issue #6831: Exception when attempting to view individual survey result on MSSQL (Carsten Schmitz)
+-Fixed issue: Missing image when browsing timings (Carsten Schmitz)
+-Fixed issue: Testing from token table does not enforce a new session (Carsten Schmitz)
+#Updated translation: Czech by slansky
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Portuguese (Brazil) by wagner, mauriciofurtado
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Turkish by kayazeren
 
 Changes from 2.00+ (build 121102) to 2.00+ (build 121104) Nov 4, 2012
 -Fixed issue #6815: Data entry in backend not possible if there is date question type (Carsten Schmitz)
