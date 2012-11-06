@@ -380,6 +380,7 @@ class tokens extends Survey_Common_Action
         {
             self::_newtokentable($iSurveyId);
         }
+        $clang = $this->getController()->lang;
         $page  = Yii::app()->request->getPost('page');
         $sidx = Yii::app()->request->getPost('sidx');
         $sidx = !empty($sidx) ? $sidx : "lastname";
@@ -399,11 +400,24 @@ class tokens extends Survey_Common_Action
         }
         $aData->total = ceil($aData->records / $limit);      
 
+        Yii::app()->loadHelper("surveytranslator");
+
+        $format = getDateFormatData(Yii::app()->session['dateformat']);
+
         for ($i = 0, $j = 0; $i < $limit && $j < $limit; $i++, $j++)
         {
             $token = $tokens[$j];
+            if ((int) $token['validfrom'])
+                $token['validfrom'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validfrom'])));
+            else
+                $token['validfrom'] = '';
+            if ((int) $token['validuntil'])
+                $token['validuntil'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validuntil'])));
+            else
+                $token['validuntil'] = '';
 
             $aData->rows[$i]['id'] = $token['tid'];
+            $prow = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
 
             $action = $this->_tokenToActionRow($token, $iSurveyId);
             $aData->rows[$i]['cell'] = array($token['tid'], $action, $token['firstname'], $token['lastname'], $token['email'], $token['emailstatus'], $token['token'], $token['language'], $token['sent'], $token['remindersent'], $token['remindercount'], $token['completed'], $token['usesleft'], $token['validfrom'], $token['validuntil']);
