@@ -298,16 +298,15 @@ class Authentication extends Survey_Common_Action
     */
     private function _setLanguageSettings($user)
     {
-
-        if ($user->lang=='auto')
-        {
-            $sLanguage= getBrowserLanguage();
-        }
-        elseif (Yii::app()->request->getPost('loginlang') != 'default')
+        if (Yii::app()->request->getPost('loginlang') != 'default')
         {
             $user->lang = sanitize_languagecode(Yii::app()->request->getPost('loginlang'));
             $user->save();
             $sLanguage=$user->lang;
+        }
+        else if ($user->lang=='auto')
+        {
+            $sLanguage= getBrowserLanguage();
         }
         else
         {
