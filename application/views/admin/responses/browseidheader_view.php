@@ -2,8 +2,8 @@
     <div class='menubar-title ui-widget-header'><strong><?php echo sprintf($clang->gT("View response ID %d"), $id); ?></strong></div>
     <div class='menubar-main'>
         <div class='menubar-left'>
-            <img src='<?php echo $sImageURL; ?>/blank.gif' width='31' height='16' alt='' />
-            <img src='<?php echo $sImageURL; ?>/separator.gif' class='separator' alt='' />
+            <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='16' alt='' />
+            <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
             <?php if($exist) { ?>
                 <?php if (isset($rlanguage))
                     { ?>
@@ -26,10 +26,10 @@
                     <?php } ?>
 
                 <a href='<?php echo $this->createUrl("admin/export/exportresults/surveyid/$surveyid/id/$id"); ?>' title='<?php $clang->eT("Export this Response"); ?>' >
-                    <img src='<?php echo $sImageURL; ?>/export.png' alt='<?php $clang->eT("Export this Response"); ?>'/></a>
-                <img src='<?php echo $sImageURL; ?>/separator.gif' class='separator' alt='' />
+                    <img src='<?php echo $sImageURL; ?>export.png' alt='<?php $clang->eT("Export this Response"); ?>'/></a>
+                <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
             <?php } ?>
-            <img src='<?php echo $sImageURL; ?>/blank.gif' width='20' height='20' alt='' />
+            <img src='<?php echo $sImageURL; ?>blank.gif' width='20' height='20' alt='' />
             <?php if($previous) { ?>
             <a href='<?php echo $this->createUrl("admin/responses/view/surveyid/$surveyid/id/$previous"); ?>' title='<?php $clang->eT("Show previous..."); ?>' >
                 <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous..."); ?>' /></a>
