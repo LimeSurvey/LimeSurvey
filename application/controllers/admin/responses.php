@@ -124,10 +124,10 @@ class responses extends Survey_Common_Action
         //add token to top of list if survey is not private
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID))
         {
-            $fnames[] = array("token", "Token");
-            $fnames[] = array("firstname", "First name");
-            $fnames[] = array("lastname", "Last name");
-            $fnames[] = array("email", "Email");
+            $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
+            $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
+            $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
+            $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
         }
         $fnames[] = array("submitdate", $clang->gT("Submission date"));
         $fnames[] = array("completed", $clang->gT("Completed"));
@@ -135,6 +135,12 @@ class responses extends Survey_Common_Action
         foreach ($fieldmap as $q)
         {
             if ($q->fieldname == 'lastpage' || $q->fieldname == 'submitdate')
+                continue;
+            if ($q->type == 'interview_time')
+                continue;
+            if ($q->type == 'page_time')
+                continue;
+            if ($q->type == 'answer_time')
                 continue;
 
             $question = $q->text;
@@ -171,100 +177,112 @@ class responses extends Survey_Common_Action
             }
         }
 
-        //SHOW INDIVIDUAL RECORD
-        $oCriteria = new CDbCriteria();
-        if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}"))
-        {
-            $oCriteria = Survey_dynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
-        }
-        if (incompleteAnsFilterState() == 'incomplete')
-            $oCriteria->addCondition('submitdate = ' . mktime(0, 0, 0, 1, 1, 1980) . ' OR submitdate IS NULL');
-        elseif (incompleteAnsFilterState() == 'complete')
-            $oCriteria->addCondition('submitdate >= ' . mktime(0, 0, 0, 1, 1, 1980));
         if ($iId < 1)
         {
             $iId = 1;
         }
-        $oCriteria->addCondition("id = {$iId}");
 
-        $iIdresult = Survey_dynamic::model($iSurveyID)->findAllAsArray($oCriteria) or die("Couldn't get entry");
-        foreach ($iIdresult as $iIdrow)
-        {
-            $iId = $iIdrow['id'];
-            $rlanguage = $iIdrow['startlanguage'];
-        }
-        $next = $iId + 1;
-        $last = $iId - 1;
-
-        $aData['id'] = $iId;
-        if (isset($rlanguage))
-        {
-            $aData['rlanguage'] = $rlanguage;
-        }
+        $exist = Survey_dynamic::model($iSurveyID)->exist($iId);
+        $next = Survey_dynamic::model($iSurveyID)->next($iId,true);
+        $previous = Survey_dynamic::model($iSurveyID)->previous($iId,true);
+        $aData['exist'] = $exist;
         $aData['next'] = $next;
-        $aData['last'] = $last;
+        $aData['previous'] = $previous;
+        $aData['id'] = $iId;
 
-        $aViewUrls['browseidheader_view'][] =  $aData;
-
-        foreach ($iIdresult as $iIdrow)
+        $aViewUrls[] = 'browseidheader_view';
+        //SHOW INDIVIDUAL RECORD
+        if($exist)
         {
-            $highlight = false;
-            foreach ($fnames as $fn)
+            $oCriteria = new CDbCriteria();
+            if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}"))
             {
-                if ($fn[0] != 'completed' && is_null($iIdrow[$fn[0]]))
-                {
-                    continue;   // irrelevant, so don't show
-                }
-                $inserthighlight = '';
-                if ($highlight)
-                    $inserthighlight = "class='highlight'";
+                $oCriteria = Survey_dynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
+            }
+            // If admin ask an specific response, then show it
+            // Don't add incompleteAnsFilterState
+#            if (incompleteAnsFilterState() == 'incomplete')
+#                $oCriteria->addCondition('submitdate = ' . mktime(0, 0, 0, 1, 1, 1980) . ' OR submitdate IS NULL');
+#            elseif (incompleteAnsFilterState() == 'complete')
+#                $oCriteria->addCondition('submitdate >= ' . mktime(0, 0, 0, 1, 1, 1980));
+            $oCriteria->addCondition("id = {$iId}");
+            $iIdresult = Survey_dynamic::model($iSurveyID)->findAllAsArray($oCriteria) or die("Couldn't get entry");
+            foreach ($iIdresult as $iIdrow)
+            {
+                $iId = $iIdrow['id'];
+                $rlanguage = $iIdrow['startlanguage'];
+            }
+            $next = Survey_dynamic::model($iSurveyID)->next($iId);
+            $previous = Survey_dynamic::model($iSurveyID)->previous($iId);
 
-                if ($fn[0] == 'completed')
-                {
-                    if ($iIdrow['submitdate'] == NULL || $iIdrow['submitdate'] == "N")
-                    {
-                        $answervalue = "N";
-                    }
-                    else
-                    {
-                        $answervalue = "Y";
-                    }
-                }
-                else
-                {
-                    if (count($fn) > 2)
-                    {
-                        $index = $fn[2];
-                        $metadata = $fn[3];
-                        $phparray = json_decode_ls($iIdrow[$fn[0]]);
+            if (isset($rlanguage))
+            {
+                $aData['rlanguage'] = $rlanguage;
+            }
 
-                        if (isset($phparray[$index]))
+            foreach ($iIdresult as $iIdrow)
+            {
+                $highlight = false;
+                foreach ($fnames as $fn)
+                {
+                    if ($fn[0] != 'completed' && is_null($iIdrow[$fn[0]]))
+                    {
+                        continue;   // irrelevant, so don't show
+                    }
+                    $inserthighlight = '';
+                    if ($highlight)
+                        $inserthighlight = "class='highlight'";
+
+                    if ($fn[0] == 'completed')
+                    {
+                        if ($iIdrow['submitdate'] == NULL || $iIdrow['submitdate'] == "N")
                         {
-                            if ($metadata === "size")
-                                $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
-                            else if ($metadata === "name")
-                                $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fn[0]}/id/{$iId}/surveyid/{$iSurveyID}"));
-                            else
-                                $answervalue = rawurldecode($phparray[$index][$metadata]);
+                            $answervalue = "N";
                         }
                         else
-                            $answervalue = "";
+                        {
+                            $answervalue = "Y";
+                        }
                     }
                     else
                     {
-                        $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyID, $fn[0], $iIdrow[$fn[0]], $oBrowseLanguage))), ENT_QUOTES);
+                        if (count($fn) > 2)
+                        {
+                            $index = $fn[2];
+                            $metadata = $fn[3];
+                            $phparray = json_decode_ls($iIdrow[$fn[0]]);
+
+                            if (isset($phparray[$index]))
+                            {
+                                if ($metadata === "size")
+                                    $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
+                                else if ($metadata === "name")
+                                    $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fn[0]}/id/{$iId}/surveyid/{$iSurveyID}"));
+                                else
+                                    $answervalue = rawurldecode($phparray[$index][$metadata]);
+                            }
+                            else
+                                $answervalue = "";
+                        }
+                        else
+                        {
+                            $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyID, $fn[0], $iIdrow[$fn[0]], $oBrowseLanguage))), ENT_QUOTES);
+                        }
                     }
+                    $aDataRow['answervalue'] = $answervalue;
+                    $aDataRow['inserthighlight'] = $inserthighlight;
+                    $aDataRow['fname'] = $fn;
+                    $aViewUrls['browseidrow_view'][] = $aDataRow;
                 }
-                $aDataRow['answervalue'] = $answervalue;
-                $aDataRow['inserthighlight'] = $inserthighlight;
-                $aDataRow['fname'] = $fn;
-                $aViewUrls['browseidrow_view'][] = $aDataRow;
             }
         }
-
+        else
+        {
+            Yii::app()->session['flashmessage'] = $clang->gT("This answer doesn't exist.");
+        }
         $aViewUrls['browseidfooter_view'][] = $aData;
 
-        $this->_renderWrappedTemplate('',$aViewUrls);
+        $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
 
     public function index($iSurveyID)
