@@ -1447,7 +1447,7 @@ function upgradeTables143()
             $aInsert['question_order']=$lrow['sortorder'];
             $aInsert['language']=$lrow['language'];
             $aInsert['scale_id']=1;
-            $iLastInsertID=Question::model()->insertRecords($aInsert);
+            $iLastInsertID=Questions::model()->insertRecords($aInsert);
 
             if (isset($aInsert['qid']))
             {
