@@ -289,6 +289,7 @@ class participantsaction extends Survey_Common_Action
             'TB' => $clang->gT("Text box")
         );
 
+        $aData = new stdClass();
         $aData->page = $page;
         $aData->records = count($records);
         $aData->total = ceil(ParticipantAttributeNames::model()->getAttributes(true) / $limit);
