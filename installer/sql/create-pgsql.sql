@@ -562,4 +562,4 @@ create index labels_code_idx on prefix_labels (code);
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '163');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '164');
