@@ -267,11 +267,28 @@ $(document).ready(function() {
     jQuery("#displayparticipants").jqGrid(
         'navGrid',
         '#pager',
-        {add:true,del:true,edit:false,refresh: true,search: false,
-         addtitle: createParticipantTxt, deltitle: deleteParticipantTxt, refreshtitle: refreshListTxt},
-        {},
-        {width : 400},
-        {msg:deleteMsg, width : 700,
+        {add:true,
+        del:true,
+        edit:false,
+        refresh: true,
+        search: false,
+            addtitle: createParticipantTxt, 
+            deltitle: deleteParticipantTxt, 
+            refreshtitle: refreshListTxt},
+        {}, //Default settings for edit
+        {
+            width : 500,
+            addCaption: sAddCaption,
+            bSubmit: sAddButtonCaption,
+            bCancel: sCancel,
+            afterShowForm: function(form) {
+                form.closest('div.ui-jqdialog').center();
+            }            
+        }, //default settings for add
+        {msg:deleteMsg, 
+            bCancel: sCancel,
+            bSubmit: sDeleteButtonCaption,
+            width : 900,
             afterShowForm: function($form) {
                 /* This code sets the position of the delete dialog to just below the last selected item */
                 /* Unless this would put the delete dialog off the page, in which case it will be pushed up a bit */
@@ -279,7 +296,7 @@ $(document).ready(function() {
                 selRowId = jQuery("#displayparticipants").jqGrid('getGridParam', 'selrow'),
                 selRowCoordinates = $('#'+selRowId).offset();
                 selRowCoordinates.top=selRowCoordinates.top+25;
-                selRowCoordinates.left=50;
+                selRowCoordinates.left=100;
                 if(selRowCoordinates.top+325 > $(window).height()) {
                     selRowCoordinates.top=selRowCoordinates.top-325;
                 }

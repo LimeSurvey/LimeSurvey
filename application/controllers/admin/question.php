@@ -980,7 +980,6 @@ class question extends Survey_Common_Action
         $labelsetlanguages=explode(' ',$labelsetdata->languages);
         foreach  ($labelsetlanguages as $language){
 
-            //$query='select * from lime_labels where lid='.$lid." and language='{$language}' order by sortorder";
             $criteria=new CDbCriteria;
             $criteria->condition='lid=:lid and language=:language';
             $criteria->params=array(':lid'=>$lid, ':language'=>$language);
