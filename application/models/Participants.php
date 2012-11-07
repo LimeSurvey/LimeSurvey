@@ -212,7 +212,7 @@ class Participants extends CActiveRecord
         $joinValue = array();
         array_push($selectValue,"p.*");
         array_push($selectValue,"luser.full_name as ownername");
-        array_push($joinValue,"left join lime_users luser ON luser.uid=p.owner_uid");
+        array_push($joinValue,"left join {{users}} luser ON luser.uid=p.owner_uid");
         foreach($attid as $key=>$attid)
         {
             $attid = $attid['attribute_id'];

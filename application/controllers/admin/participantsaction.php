@@ -288,7 +288,7 @@ class participantsaction extends Survey_Common_Action
             'DP' => $clang->gT("Date"),
             'TB' => $clang->gT("Text box")
         );
-
+        
         $aData = new stdClass();
         $aData->page = $page;
         $aData->records = count($records);
@@ -306,7 +306,7 @@ class participantsaction extends Survey_Common_Action
             $i++;
         }
 
-
+        
         echo ls_json_encode($aData);
     }
 
@@ -1146,6 +1146,8 @@ class participantsaction extends Survey_Common_Action
     {
         function subval_sort($a, $subkey, $order)
         {
+            $b = array();
+            $c = array();
             foreach ($a as $k => $v)
             {
                 $b[$k] = strtolower($v[$subkey]);
@@ -1168,6 +1170,8 @@ class participantsaction extends Survey_Common_Action
         $iParticipantId = Yii::app()->request->getQuery('pid');
         $records = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($iParticipantId);
         //$getallattributes = ParticipantAttributeNames::model()->with('participant_attribute_names_lang')->findAll();
+        Yii::trace(CVarDumper::dumpAsString($records), 'vardump');
+        $records = array();
         $records = subval_sort($records, "attribute_name", "asc");
 
         $i = 0;
@@ -1343,9 +1347,9 @@ class participantsaction extends Survey_Common_Action
         if (Yii::app()->request->getPost('attribute_value_name_1') || Yii::app()->request->getPost('attribute_value_name_1') == "0")
         {
             $i = 1;
-            do
+            $attvaluename = 'attribute_value_name_' . $i;
+            while (array_key_exists($attvaluename, $_POST) && $_POST[$attvaluename] != "")
             {
-                $attvaluename = 'attribute_value_name_' . $i;
                 if ($_POST[$attvaluename] != "")
                 {
                     $aDatavalues[$i] = array(
@@ -1353,8 +1357,8 @@ class participantsaction extends Survey_Common_Action
                         'value' => Yii::app()->request->getPost($attvaluename)
                     );
                 }
-                $i++;
-            } while ($_POST[$attvaluename] != "");
+                $attvaluename = 'attribute_value_name_' . ++$i;
+            };
             ParticipantAttributeNames::model()->storeAttributeValues($aDatavalues);
         }
         /* Save updated attribute values */
