@@ -13,7 +13,7 @@ if ( !defined('BASEPATH')) exit('No direct script access allowed');
 *
 *   $Id$
 */
-function dbExecuteAssoc($sql,$inputarr=false,$silent=false)
+function dbExecuteAssoc($sql,$inputarr=false,$silent=true)
 {
     $error = '';
     try {
@@ -31,7 +31,7 @@ function dbExecuteAssoc($sql,$inputarr=false,$silent=false)
         $dataset=false;
     }
 
-    if (!$silent && !$dataset)
+    if (!$dataset && (Yii::app()->getConfig('debug') >0 || !$silent))
     {
         throw new Exception($error);
         //safeDie('Error executing query in dbExecuteAssoc:'.$error);
