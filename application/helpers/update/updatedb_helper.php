@@ -1024,6 +1024,14 @@ function db_upgrade_all($oldversion) {
         $replacedTemplate=replaceTemplateJS();
 
     }
+    
+    if ($oldversion < 164)
+    {
+        // fix survey tables for missing or incorrect token field
+        upgradeSurveyTables164();
+        
+        // Not updating settings table as upgrade process takes care of that step now
+    }
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
 }
@@ -1823,5 +1831,34 @@ function replaceTemplateJS(){
         return false;
     }else{
         return $countstartpage;
+    }
+}
+
+/**
+ *  Make sure all active tables have the right sized token field
+ * 
+ *  During a small period in the 2.0 cycle some survey tables got no
+ *  token field or a token field that was too small. This patch makes
+ *  sure all surveys that are not anonymous have a token field with the
+ *  right size
+ * 
+ * @return void
+ */
+function upgradeSurveyTables164()
+{
+    $surveyidquery = "SELECT sid FROM {{surveys}} WHERE active='Y' and anonymized='N'";
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
+    if (!$surveyidresult) {
+        return "Database Error";
+    } else {
+        foreach ( $surveyidresult as $sv )
+        {
+            $token = Survey_dynamic::model($sv['sid'])->getTableSchema()->getColumn('token');
+            if (is_null($token)) {
+                addColumn('{{survey_'.$sv['sid'].'}}','token','varchar(36)');
+            } elseif ($token->size < 36) {
+                alterColumn('{{survey_'.$sv['sid'].'}}','token','varchar(36)');
+            }
+        }
     }
 }
