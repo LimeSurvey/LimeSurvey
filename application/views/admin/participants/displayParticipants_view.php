@@ -59,6 +59,7 @@ else
 ?>
 <script type="text/javascript">
     /* Search form titles */
+    var sLoadText = '<?php $clang->eT("Loading...",'js');?>';
     var sAddCaption = "<?php $clang->eT("Add participant", 'js') ?>";
     var sAddButtonCaption = "<?php $clang->eT("Add", 'js') ?>";
     var sDeleteButtonCaption = "<?php $clang->eT("Delete", 'js') ?>";

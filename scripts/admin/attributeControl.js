@@ -9,6 +9,7 @@ $(document).ready(function() {
     $("#flashinfo").css("opacity", 0); //Make sure the flash message doesn't display in IE
 
     jQuery("#attributeControl").jqGrid({
+        loadtext : sLoadText,
         align:"center",
         url: attributeInfoUrl,
         editurl : editAttributeUrl,
@@ -35,6 +36,8 @@ $(document).ready(function() {
     jQuery.extend($.fn.fmatter , {
         rowactions : function(rid,gid,act, pos) {
             var delOptions = {
+                bCancel: sCancel,
+                bSubmit: sDeleteButtonCaption,                
                 caption: deleteCaption,
                 msg: deleteMsg,
                 reloadAfterSubmit: true,
@@ -53,52 +56,62 @@ $(document).ready(function() {
     });
 
     jQuery('#attributeControl').jqGrid('navGrid', '#pager',
-                                       { add:true,
-                                         edit:false,
-                                         del:true,
-                                         addtitle: addCaption,
-                                         deltitle: deleteCaption,
-                                         searchtitle: searchMsg,
-                                         refreshtitle: refreshMsg},
-                                       {}, //Default settings for edit
-                                       { addCaption: addCaption,
-                                         closeAfterAdd: true,
-                                         width: 400,
-                                         afterSubmit: function () {
-                                             $(this).jqGrid('setGridParam', {datatype: 'json'});
-                                             return [true,'',false]; //no error and no new rowid
-                                         },
-                                           }, //default settings for add
-                                       {    reloadAfterSubmit: true,
-                                            caption: deleteCaption,
-                                            msg: deleteMsg,
-                                            width: 500,
-                                            afterShowForm: function($form) {
-                                                /* This code sets the position of the delete dialog to just below the last selected item */
-                                                /* Unless this would put the delete dialog off the page, in which case it will be pushed up a bit */
-                                                var dialog = $form.closest('div.ui-jqdialog'),
-                                                selRowId = jQuery("#attributeControl").jqGrid('getGridParam', 'selrow'),
-                                                selRowCoordinates = $('#'+selRowId).offset();
-                                                selRowCoordinates.top=selRowCoordinates.top+25;
-                                                selRowCoordinates.left=50;
-                                                if(selRowCoordinates.top+325 > jQuery(window).height()) {
-                                                    selRowCoordinates.top=selRowCoordinates.top-325;
-                                                }
-                                                dialog.offset(selRowCoordinates);
-                                            }
-                                           }, //Default settings for delete
-                                       { multipleSearch:true,
-                                         width:600,
-                                         closeAfterSearch: true,
-                                         closeAfterReset: true}, //Default settings for search
-                                       {closeAfterAdd:true}
-                                      );
-    jQuery('#attributeControl').jqGrid = {
-        del: {
-            caption: "Delete oh yeah!",
-            addCaption: "Blah blah",
-        }
-    };
+        { add:true,
+            edit:false,
+            del:true,
+            alertcap: sWarningMsg,
+            alerttext: sSelectRowMsg,
+            addtitle: addCaption,
+            deltitle: deleteCaption,
+            edittitle: sEditAttributeMsg,
+            searchtitle: searchMsg,
+            refreshtitle: refreshMsg},
+        {
+            edittitle: sEditAttributeMsg
+        }, //Default settings for edit
+        { addCaption: addCaption,
+            bCancel: sCancel,
+            bSubmit: sSaveButtonCaption,                
+            closeAfterAdd: true,
+            width: 400,
+            afterSubmit: function () {
+                $(this).jqGrid('setGridParam', {datatype: 'json'});
+                return [true,'',false]; //no error and no new rowid
+            },
+        }, //default settings for add
+        {    reloadAfterSubmit: true,
+
+            caption: deleteCaption,
+            msg: deleteMsg,
+            width: 500,
+            afterShowForm: function($form) {
+                /* This code sets the position of the delete dialog to just below the last selected item */
+                /* Unless this would put the delete dialog off the page, in which case it will be pushed up a bit */
+                var dialog = $form.closest('div.ui-jqdialog'),
+                selRowId = jQuery("#attributeControl").jqGrid('getGridParam', 'selrow'),
+                selRowCoordinates = $('#'+selRowId).offset();
+                selRowCoordinates.top=selRowCoordinates.top+25;
+                selRowCoordinates.left=50;
+                if(selRowCoordinates.top+325 > jQuery(window).height()) {
+                    selRowCoordinates.top=selRowCoordinates.top-325;
+                }
+                dialog.offset(selRowCoordinates);
+            }
+        }, //Default settings for delete
+        { multipleSearch:true,
+            Find: sFindButtonCaption,
+            Reset: sResetButtonCaption,
+            width:600,
+            caption: sSearchTitle,
+            odata : [ sOperator1, sOperator2, sOperator3, sOperator4, sOperator5, sOperator6, sOperator7, sOperator8, sOperator9, sOperator10, sOperator11, sOperator12, sOperator13, sOperator14 ],
+            groupOps: [    { op: "AND", text: sOptionAnd },    { op: "OR",  text: sOptionOr }    ],
+            
+            closeAfterSearch: true,
+            closeAfterReset: true
+        }, //Default settings for search
+        {closeAfterAdd:true}
+    );
+
 
 });
 

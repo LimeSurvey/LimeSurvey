@@ -194,7 +194,7 @@ echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants
 <br/>
 <p>
     <?php
-    echo CHtml::submitButton('submit', array('value' => 'Save'));
+    echo CHtml::submitButton('submit', array('value' => $clang->gT('Save')));
     echo CHtml::endForm();
     ?>
 </p>
