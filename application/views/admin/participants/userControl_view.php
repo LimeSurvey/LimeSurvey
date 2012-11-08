@@ -32,7 +32,7 @@
             </ul>
             <p>
                 <?php
-                echo CHtml::submitButton('submit', array('value' => 'Submit'));
+                echo CHtml::submitButton('submit', array('value' => $clang->gT('Save')));
                 ?>
             </p>
             <?php
