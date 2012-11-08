@@ -12,6 +12,31 @@
  *
  *	$Id$
  */
+
+function subval_sort($a, $subkey, $order)
+{
+    $b = array();
+    $c = array();
+    foreach ($a as $k => $v)
+    {
+        $b[$k] = strtolower($v[$subkey]);
+    }
+    if ($order == "asc")
+    {
+        asort($b, SORT_REGULAR);
+    }
+    else
+    {
+        arsort($b, SORT_REGULAR);
+    }
+    foreach ($b as $key => $val)
+    {
+        $c[] = $a[$key];
+    }
+    return $c;
+}
+
+
 /*
  * This is the main controller for Participants Panel
  */
@@ -886,27 +911,6 @@ class participantsaction extends Survey_Common_Action
                 $i++;
             }
 
-            function subval_sort($a, $subkey, $order)
-            {
-                foreach ($a as $k => $v)
-                {
-                    $b[$k] = strtolower($v[$subkey]);
-                }
-                if ($order == "asc")
-                {
-                    asort($b, SORT_REGULAR);
-                }
-                else
-                {
-                    arsort($b, SORT_REGULAR);
-                }
-                foreach ($b as $key => $val)
-                {
-                    $c[] = $a[$key];
-                }
-                return $c;
-            }
-
             if (!empty($sortablearray))
             {
                 $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
@@ -968,27 +972,6 @@ class participantsaction extends Survey_Common_Action
                 }
             }
 
-            function subval_sort($a, $subkey, $order)
-            {
-                foreach ($a as $k => $v)
-                {
-                    $b[$k] = strtolower($v[$subkey]);
-                }
-                if ($order == "asc")
-                {
-                    asort($b, SORT_REGULAR);
-                }
-                else
-                {
-                    arsort($b, SORT_REGULAR);
-                }
-                foreach ($b as $key => $val)
-                {
-                    $c[] = $a[$key];
-                }
-                return $c;
-            }
-
             if (!empty($sortablearray))
             {
                 $aData->records = count($sortablearray);
@@ -1017,27 +1000,6 @@ class participantsaction extends Survey_Common_Action
 	*/
     function getParticipants_json()
     {
-    	function subval_sort($a, $subkey, $order)
-    	{
-    		foreach ($a as $k => $v)
-    		{
-    			$b[$k] = strtolower($v[$subkey]);
-    		}
-    		if ($order == "asc")
-    		{
-    			asort($b, SORT_REGULAR);
-    		}
-    		else
-    		{
-    			arsort($b, SORT_REGULAR);
-    		}
-    		foreach ($b as $key => $val)
-    		{
-    			$c[] = $a[$key];
-    		}
-    		return $c;
-    	}
-
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
     	  $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
@@ -1144,29 +1106,6 @@ class participantsaction extends Survey_Common_Action
      */
     function getAttribute_json()
     {
-        function subval_sort($a, $subkey, $order)
-        {
-            $b = array();
-            $c = array();
-            foreach ($a as $k => $v)
-            {
-                $b[$k] = strtolower($v[$subkey]);
-            }
-            if ($order == "asc")
-            {
-                asort($b, SORT_REGULAR);
-            }
-            else
-            {
-                arsort($b, SORT_REGULAR);
-            }
-            foreach ($b as $key => $val)
-            {
-                $c[] = $a[$key];
-            }
-            return $c;
-        }
-
         $iParticipantId = Yii::app()->request->getQuery('pid');
         $records = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($iParticipantId);
         //$getallattributes = ParticipantAttributeNames::model()->with('participant_attribute_names_lang')->findAll();
