@@ -143,3 +143,22 @@ function is_template_editable($templatename)
         return true;
     }
 }
+
+/**
+* This is a PCLZip callback function that ensures only files are extracted that have a valid extension
+* 
+* @param mixed $p_event
+* @param mixed $p_header
+* @return int Return 1 for yes (file can be extracted), 0 for no
+*/
+function templateExtractFilter($p_event, &$p_header)
+{
+    $aAllowExtensions=explode(',',Yii::app()->getConfig('allowedresourcesuploads'));    
+    $info = pathinfo($p_header['filename']);
+    if ($p_header['folder'] || in_array($info['extension'],$aAllowExtensions)) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}

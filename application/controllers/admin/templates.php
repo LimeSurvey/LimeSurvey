@@ -12,8 +12,6 @@ if (!defined('BASEPATH'))
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-*
-* 	$Id$
 */
 
 /**
@@ -36,20 +34,20 @@ class templates extends Survey_Common_Action
     */
     public function templatezip($templatename)
     {
-        Yii::import('application.libraries.admin.Phpzip', true);
-        $zip = new PHPZip();
+
         $templatedir = getTemplatePath($templatename) . DIRECTORY_SEPARATOR;
         $tempdir = Yii::app()->getConfig('tempdir');
 
         $zipfile = "$tempdir/$templatename.zip";
-        $zip->Zip($templatedir, $zipfile);
+        Yii::app()->loadLibrary('admin.pclzip.pclzip');
+        $zip = new PclZip($zipfile);
+        $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, getTemplatePath($templatename));
 
         if (is_file($zipfile)) {
             // Send the file for download!
             header("Pragma: public");
             header("Expires: 0");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-
             header("Content-Type: application/force-download");
             header("Content-Disposition: attachment; filename=$templatename.zip");
             header("Content-Description: File Transfer");
@@ -96,77 +94,57 @@ class templates extends Survey_Common_Action
             if (Yii::app()->getConfig('demoMode'))
                 $this->getController()->error($clang->gT("Demo mode: Uploading templates is disabled."));
 
-            Yii::import('application.libraries.admin.Phpzip', true);
+            Yii::app()->loadLibrary('admin.pclzip.pclzip');
 
-            $zipfile = $_FILES['the_file']['tmp_name'];
-            $zip = new PHPZip();
-
+            $zip = new PclZip($_FILES['the_file']['tmp_name']);
+        
             // Create temporary directory so that if dangerous content is unzipped it would be unaccessible
-            $extractdir = self::_tempdir(Yii::app()->getConfig('tempdir'));
-            $basedestdir = Yii::app()->getConfig('usertemplaterootdir');
-            $newdir = str_replace('.', '', self::_strip_ext(sanitize_paranoid_string($_FILES['the_file']['name'])));
-            $destdir = $basedestdir . '/' . $newdir . '/';
+            $sNewDirectoryName=str_replace('.', '', self::_strip_ext(sanitize_paranoid_string($_FILES['the_file']['name'])));
+            $destdir = Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
 
-            if (!is_writeable($basedestdir))
-                $this->getController()->error(sprintf($clang->gT("Incorrect permissions in your %s folder."), $basedestdir));
+            if (!is_writeable(dirname($destdir)))
+                $this->getController()->error(sprintf($clang->gT("Incorrect permissions in your %s folder."), dirname($destdir)));
 
             if (!is_dir($destdir))
                 mkdir($destdir);
             else
-                $this->getController()->error(sprintf($clang->gT("Template '%s' does already exist."), $newdir));
+                $this->getController()->error(sprintf($clang->gT("Template '%s' does already exist."), $sNewDirectoryName));
 
             $aImportedFilesInfo = array();
             $aErrorFilesInfo = array();
 
-            if (is_file($zipfile)) {
-                if ($zip->extract($extractdir, $zipfile) != 'OK')
+
+
+            if (is_file($_FILES['the_file']['tmp_name'])) {
+                $aExtractResult=$zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
+                if ($aExtractResult==0)
+                {
                     $this->getController()->error($clang->gT("This file is not a valid ZIP file archive. Import failed."));
 
-                // Now read tempdir and copy authorized files only
-                $dh = opendir($extractdir);
-                while ($direntry = readdir($dh))
-                    if (($direntry != ".") && ($direntry != ".."))
-                        if (is_file($extractdir . "/" . $direntry)) {
-                            // Is a file
-                            $extfile = substr(strrchr($direntry, '.'), 1);
+                }
+                else
+                {
 
-                            if (!(stripos(',' . Yii::app()->getConfig('allowedresourcesuploads') . ',', ',' . $extfile . ',') === false)
-                            )
-                                // Extension allowed
-                                if (!copy($extractdir . "/" . $direntry, $destdir . $direntry))
-                                    $aErrorFilesInfo[] = Array(
-                                    "filename" => $direntry,
-                                    "status" => $clang->gT("Copy failed")
-                                    );
-                                else
-                                    $aImportedFilesInfo[] = Array(
-                                    "filename" => $direntry,
-                                    "status" => $clang->gT("OK")
-                                    );
-                            else
-                                // Extension forbidden
-                                $aErrorFilesInfo[] = Array(
-                                "filename" => $direntry,
-                                "status" => $clang->gT("Error") . " (" . $clang->gT("Forbidden Extension") . ")"
-                                );
-                            unlink($extractdir . "/" . $direntry);
-                        }
+                    foreach($aExtractResult as $sFile)
+                    {
+                        $aImportedFilesInfo[] = Array(
+                            "filename" => $sFile['stored_filename'],
+                            "status" => $clang->gT("OK"),
+                            'is_folder' => $sFile['folder']
+                        );                    
+                    }
+                }
 
-                        // Delete the temporary file
-                        unlink($zipfile);
-                closedir($dh);
-
-                // Delete temporary folder
-                rmdir($extractdir);
-
-            if (count($aErrorFilesInfo) == 0 && count($aImportedFilesInfo) == 0)
-                $this->getController()->error($clang->gT("This ZIP archive contains no valid template files. Import failed."));
+                if (count($aErrorFilesInfo) == 0 && count($aImportedFilesInfo) == 0)
+                    $this->getController()->error($clang->gT("This ZIP archive contains no valid template files. Import failed."));
             }
             else
                 $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
+                
+                
             if (count($aImportedFilesInfo) > 0)
             {
-                $templateFixes= $this->_templateFixes($newdir);
+                $templateFixes= $this->_templateFixes($sNewDirectoryName);
             }
             else
             {
@@ -177,7 +155,7 @@ class templates extends Survey_Common_Action
             'aImportedFilesInfo' => $aImportedFilesInfo,
             'aErrorFilesInfo' => $aErrorFilesInfo,
             'lid' => $lid,
-            'newdir' => $newdir,
+            'newdir' => $sNewDirectoryName,
             'templateFixes' => $templateFixes,
             );
         }
@@ -452,18 +430,14 @@ class templates extends Survey_Common_Action
             $newname= sanitize_paranoid_string(returnGlobal('newname'));
             $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
             $copydirname = getTemplatePath(returnGlobal('copydir'));
+            
+            $oFileHelper=new CFileHelper;
+            
+
             $mkdirresult = mkdir_p($newdirname);
 
             if ($mkdirresult == 1) {
-                $copyfiles = getListOfFiles($copydirname);
-                foreach ($copyfiles as $file)
-                {
-                    $copyfile = $copydirname . "/" . $file;
-                    $newfile = $newdirname . "/" . $file;
-                    if (!copy($copyfile, $newfile))
-                        $this->getController()->error(sprintf($clang->gT("Failed to copy %s to new template directory.", "js"), $file));
-                }
-
+                $oFileHelper->copyDirectory($copydirname,$newdirname);
                 $templatename = $newname;
                 $this->index("startpage.pstpl", "welcome", $templatename);
             }
