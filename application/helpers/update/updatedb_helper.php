@@ -1023,8 +1023,16 @@ function db_upgrade_all($oldversion) {
         //Replace  by <script type="text/javascript" src="{TEMPLATEURL}template.js"></script> by {TEMPLATEJS}
         $replacedTemplate=replaceTemplateJS();
     }
-
+    
     if ($oldversion < 164)
+    {
+        // fix survey tables for missing or incorrect token field
+        upgradeSurveyTables164();
+        
+        // Not updating settings table as upgrade process takes care of that step now
+    }
+
+    if ($oldversion < 165)
     {
         Yii::app()->db->createCommand()->createTable('{{question_types}}',array(
         'tid' => 'pk',
@@ -1049,15 +1057,15 @@ function db_upgrade_all($oldversion) {
 
         Yii::app()->db->createCommand()->addColumn('{{questions}}','tid',"integer NOT NULL DEFAULT '0' AFTER `gid`");
 
-        upgradeSurveys164();
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>164),"stg_name='DBVersion'");
+        upgradeSurveys165();
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>165),"stg_name='DBVersion'");
     }
 
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
 }
 
-function upgradeSurveys164()
+function upgradeSurveys165()
 {
     $types = array(
         array(1, 1, 1, '5 point choice', 'FiveList', '5', 'Y'),
@@ -1914,5 +1922,34 @@ function replaceTemplateJS(){
         return false;
     }else{
         return $countstartpage;
+    }
+}
+
+/**
+ *  Make sure all active tables have the right sized token field
+ * 
+ *  During a small period in the 2.0 cycle some survey tables got no
+ *  token field or a token field that was too small. This patch makes
+ *  sure all surveys that are not anonymous have a token field with the
+ *  right size
+ * 
+ * @return void
+ */
+function upgradeSurveyTables164()
+{
+    $surveyidquery = "SELECT sid FROM {{surveys}} WHERE active='Y' and anonymized='N'";
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
+    if (!$surveyidresult) {
+        return "Database Error";
+    } else {
+        foreach ( $surveyidresult as $sv )
+        {
+            $token = Survey_dynamic::model($sv['sid'])->getTableSchema()->getColumn('token');
+            if (is_null($token)) {
+                addColumn('{{survey_'.$sv['sid'].'}}','token','varchar(36)');
+            } elseif ($token->size < 36) {
+                alterColumn('{{survey_'.$sv['sid'].'}}','token','varchar(36)');
+            }
+        }
     }
 }
