@@ -28,6 +28,8 @@ class common_helper
      */
     public static function subval_sort($inArray, $sortKey, $order = 'desc')
     {
+        $tmpArray = array();
+        $outArray = array();
         // First create an array with the value we like to sort on
         // and preserve the index
         foreach ($inArray as $index => $row) {

@@ -289,6 +289,7 @@ class participantsaction extends Survey_Common_Action
             'TB' => $clang->gT("Text box")
         );
 
+        $aData = new stdClass();
         $aData->page = $page;
         $aData->records = count($records);
         $aData->total = ceil(ParticipantAttributeNames::model()->getAttributes(true) / $limit);
@@ -1260,9 +1261,9 @@ class participantsaction extends Survey_Common_Action
         if (Yii::app()->request->getPost('attribute_value_name_1') || Yii::app()->request->getPost('attribute_value_name_1') == "0")
         {
             $i = 1;
-            do
+            $attvaluename = 'attribute_value_name_' . $i;
+            while (array_key_exists($attvaluename, $_POST) && $_POST[$attvaluename] != "")
             {
-                $attvaluename = 'attribute_value_name_' . $i;
                 if ($_POST[$attvaluename] != "")
                 {
                     $aDatavalues[$i] = array(
@@ -1270,8 +1271,8 @@ class participantsaction extends Survey_Common_Action
                         'value' => Yii::app()->request->getPost($attvaluename)
                     );
                 }
-                $i++;
-            } while ($_POST[$attvaluename] != "");
+                $attvaluename = 'attribute_value_name_' . ++$i;
+            };
             ParticipantAttributeNames::model()->storeAttributeValues($aDatavalues);
         }
         /* Save updated attribute values */

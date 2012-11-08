@@ -280,6 +280,7 @@ class ParticipantAttributeNames extends CActiveRecord
     // this is a very specific function used to get the attributes that are not present for the participant
     function getnotaddedAttributes($attributeid)
     {
+        $output = array();
         $notin=array();
         foreach($attributeid as $row)
         {
