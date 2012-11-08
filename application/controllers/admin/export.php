@@ -1016,10 +1016,10 @@ class export extends Survey_Common_Action {
         file_put_contents($f3, $quexml);
         file_put_contents($f4, $clang->gT('This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys.'));
 
-        Yii::import('application.libraries.admin.Phpzip', TRUE);
-        $z = new Phpzip;
+        Yii::app()->loadLibrary('admin.pclzip.pclzip');
         $zipfile="$tempdir/quexmlpdf_{$qid}_{$surveyprintlang}.zip";
-        $z->Zip($zipdir, $zipfile);
+        $z = new PclZip($zipfile);
+        $z->create($zipdir, PCLZIP_OPT_REMOVE_PATH, $zipdir);
 
         unlink($f1);
         unlink($f2);
