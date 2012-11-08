@@ -130,7 +130,7 @@ class UserAction extends Survey_Common_Action
                     }
                     else
                     {
-                        $body .= $clang->gT("Password") . ": " . $clang->gT("Please ask your password to your LimeSurvey administrator") . "<br />\n";
+                        $body .= $clang->gT("Password") . ": " . $clang->gT("Please contact your LimeSurvey administrator for your password.") . "<br />\n";
                     }
                 }
 
