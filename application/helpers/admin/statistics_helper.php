@@ -11,6 +11,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
+ * 	$Id$
  */
 
 /**
@@ -1758,7 +1759,7 @@ class statistics_helper {
             } //end while -> loop through results
         } //end foreach -> loop through answer data
         //no filtering of incomplete answers and NO multiple option questions
-        //if ((incompleteAnsFilterState() != "complete") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
+        //if ((incompleteAnsFilterState() != "filter") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
         //error_log("TIBO ".print_r($showaggregated_indice_table,true));
         if (($outputs['qtype'] != "M") and ($outputs['qtype'] != "P")) { //AJS
             //is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
@@ -1790,7 +1791,7 @@ class statistics_helper {
                 $TotalIncomplete = $results - $TotalCompleted;
 
                 //output
-                if ((incompleteAnsFilterState() != "complete")) {
+                if ((incompleteAnsFilterState() != "filter")) {
                     $fname = $statlang->gT("Not completed or Not displayed");
                 } else {
                     $fname = $statlang->gT("Not displayed");
@@ -1817,79 +1818,13 @@ class statistics_helper {
                 $justcode[] = $fname;
 
                 //edit labels and put them into antoher array
-                if ((incompleteAnsFilterState() != "complete")) {
+                if ((incompleteAnsFilterState() != "filter")) {
                     $lbl[] = wordwrap(flattenText($statlang->gT("Not completed or Not displayed") . " ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
                 } else {
                     $lbl[] = wordwrap(flattenText($statlang->gT("Not displayed") . " ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
                 }
             } //end else -> noncompleted NOT checked
         } //end if -> no filtering of incomplete answers and no multiple option questions
-
-        // For multi question type, we have to check non completed with all sub question set to NULL
-        if(($outputs['qtype'] == "M") or ($outputs['qtype'] == "P"))
-        {
-            $criteria = new CDbCriteria;
-            foreach ($outputs['alist'] as $al)
-            {
-                $criteria->addCondition($al[2] . " IS NULL");
-            }
-            if (incompleteAnsFilterState() == "incomplete") {$criteria->addCondition("submitdate IS NULL");}
-            elseif (incompleteAnsFilterState() == "complete") {$criteria->addCondition("submitdate IS NOT NULL");}
-            // Don't count not displayed by array filter/array filter exclusion : all sub question are not displayed
-            $multiNotDisplayed=Survey_dynamic::model($surveyid)->count($criteria);
-
-            if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == "on") )
-            {
-                //counter
-                $i=0;
-                while (isset($gdata[$i]))
-                {
-                    //we want to have some "real" data here
-                    if ($gdata[$i] != "N/A")
-                    {
-                        //calculate percentage
-                        if($results>$multiNotDisplayed)
-                        {
-                            $gdata[$i] = ($grawdata[$i]/($results-$multiNotDisplayed))*100;
-                        }
-                        else
-                        {
-                            $gdata[$i] = "N/A";
-                        }
-                    }
-                    $i++;
-
-                }
-            }
-            else
-            {
-                if($multiNotDisplayed>0)
-                {
-                    if ((incompleteAnsFilterState() != "complete"))
-                    {
-                        $fname=$statlang->gT("Not completed or Not displayed");
-                    }
-                    else
-                    {
-                        $fname=$statlang->gT("Not displayed");
-                    }
-                    $label[]= $fname;
-                    //we need some data
-                    if ($results > 0)
-                    {
-                        //calculate percentage
-                        $gdata[] = ($multiNotDisplayed/$results)*100;
-                    }
-                    //no data :(
-                    else
-                    {
-                        $gdata[] = "N/A";
-                    }
-                    //put data of incompleted records into array
-                    $grawdata[]=$multiNotDisplayed;
-                }
-            }
-        }
         //counter
         $i = 0;
 
