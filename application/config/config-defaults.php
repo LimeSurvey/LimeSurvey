@@ -99,21 +99,20 @@ $config['enableLdap'] = false;
 
 // Experimental parameters, only change if you know what you're doing
 //
-// $filterout_incomplete_answers
+// filterout_incomplete_answers
 //  * default behaviour of LimeS regarding answer records with no submitdate
 //  * can be overwritten by module parameters choose one of the following://
 //		* filter: 		Show only complete answers
 //		* show: 		Show both complete and incomplete answers
 //		* incomplete: 	Show only incomplete answers
-
 $config['filterout_incomplete_answers'] = 'show';
-//
-// $stripQueryFromRefurl (default is false)
-//  * default behaviour is to record the full referer url when requested
-//  * set to true in order to remove the parameter part of the referrer url
-//  $stripQueryFromRefurl = false;
 
-// $defaulthtmleditormode
+// strip_query_from_referer_url (default is false)
+//  * default behaviour is to record the full referer url when requested
+//  * set to true in order to remove the parameter part of the referer url
+$config['strip_query_from_referer_url'] = false;
+
+// defaulthtmleditormode
 //  * sets the default mode for htmleditor: none, inline, popup
 //    users without specific preference inherit this setup
 //  * inline: inline replacement of fields by an HTML editor:
@@ -123,14 +122,13 @@ $config['filterout_incomplete_answers'] = 'show';
 //  * none: no html editor
 $config['defaulthtmleditormode'] = 'inline';
 
-// $surveyPreview_require_Auth
-// Enforce Authentication to the LS system
-// before beeing able to preview a survey (testing a non active survey)
+// surveyPreview_require_Auth
+// Enforce Authentication to the LS system before beeing able to preview a survey (testing a non active survey)
 // Default is true
 $config['surveyPreview_require_Auth'] = true;
 
 
-// $use_one_time_passwords
+// use_one_time_passwords
 // Activate One time passwords
 // The user can call the limesurvey login at /limesurvey/admin and pass username and
 // a one time password which was previously written into the users table (column one_time_pw) by
@@ -139,74 +137,72 @@ $config['surveyPreview_require_Auth'] = true;
 $config['use_one_time_passwords'] = false;
 
 
-// $display_user_password_in_html
+// display_user_password_in_html
 // Option to tell LS to display the automatically generated user password in the html GUI or not
 $config['display_user_password_in_html'] = false;
 
 
-// $display_user_password_in_email
+// display_user_password_in_email
 // Option to tell LS to display the automatically generated user password in the welcome email or not
 $config['display_user_password_in_email'] = true;
 
 
-// $useWebserverAuth
+// auth_webserver
 // Enable delegation of authentication to the webserver.
 // If you set this parameter to true and set your webserver to authenticate
 // users accessing the /admin subdirectory, then the username returned by
 // the webserver will be trusted by LimeSurvey and used for authentication
-// unless a username mapping is used see $userArrayMap below
+// unless a username mapping is used see auth_webserver_user_map below
 //
 // The user still needs to be defined in the limesurvey database in order to
-// login and get his permissions (unless $WebserverAuth_autocreateUser is set to true)
-$config['useWebserverAuth'] = false;
+// login and get his permissions (unless auth_webserver_autocreate_user is set to true)
+$config['auth_webserver'] = false;
 
-// $userArrayMap
+// auth_webserver_user_map
 // Enable username mapping
 // This parameter is an array mapping username from the webserver to username
 // defined in LimeSurvey
 // Can be usefull if you have no way to add an 'admin' user to the database
 // used by the webserver, then you could map your true loginame to admin with
-// $userArrayMap = Array ('mylogin' => 'admin');
+// $config['auth_webserver_user_map'] = array ('mylogin' => 'admin');
+$config['auth_webserver_user_map'] = array();
 //
-// $WebserverAuth_autocreateUser
+// auth_webserver_autocreate_user
 // Enable this if you want to automatically create users authenticated by the
 // webserver in LS
 // Default is false (commenting this options also means false)
-// $WebserverAuth_autocreateUser = false;
-//
-// $WebserverAuth_autouserprofile
-// This parameter MUST be defined if you set $WebserverAuth_autocreateUser to true
-// otherwise autocreateUser will be disabled.
+$config['auth_webserver_autocreate_user'] = false;
+
+// auth_webserver_autocreate_profile
 // This is an array describing the default profile to use for auto-created users
 // This profile will be the same for all users (unless you define the optionnal
-// 'hook_get_autouserprofile' function).
+// 'hook_get_auth_webserver_profile' function).
 //
-//$WebserverAuth_autouserprofile = Array(
-//					'full_name' => 'autouser',
-//					'email' => $siteadminemail,
-//					'lang' => 'en',
-//					'htmleditormode' => $defaulthtmleditormode,
-//					'templatelist' => 'default,basic',
-//					'create_survey' => 1,
-//					'create_user' => 0,
-//					'delete_user' => 0,
-//					'superadmin' => 0,
-//					'configurator' =>0,
-//					'manage_template' => 0,
-//					'manage_label' => 0);
-//
-//
-// The optionnal 'hook_get_autouserprofile' function
-// is for advanced user usage only.
+$config['auth_webserver_autocreate_profile'] = Array(
+    'full_name' => 'autouser',
+    'email' => 'autouser@test.test',
+    'lang' => 'en',
+    'htmleditormode' => $defaulthtmleditormode,
+    'templatelist' => 'default,basic',
+    'create_survey' => 1,
+    'create_user' => 0,
+    'delete_user' => 0,
+    'superadmin' => 0,
+    'configurator' =>0,
+    'manage_template' => 0,
+    'manage_label' => 0
+);
+
+// hook_get_auth_webserver_profile
+// The optionnal 'hook_get_auth_webserver_profile' function is for advanced user usage only.
 // It is used to customize the profile of the imported user
-// If set, the this function will overwrite the $WebserverAuth_autouserprofile
+// If set, the this function will overwrite the auth_webserver_autocreate_profile
 // defined above by its return value
 //
-// You can use any external DB in order to fill the profile for the user_name
-// passed as the first parameter
-// A dummy example for the 'hook_get_autouserprofile' function is given
-// below:
-//function hook_get_autouserprofile($user_name)
+// You can use any external DB in order to fill the profile for the user_name passed as the first parameter
+// A dummy example for the 'hook_get_autouserprofile' function is given below:
+//
+//function hook_get_auth_webserver_profile($user_name)
 //{
 //	return Array(
 //			'full_name' => '$user_name',
@@ -224,7 +220,7 @@ $config['useWebserverAuth'] = false;
 //}
 
 
-//$filterxsshtml
+// filterxsshtml
 // Enables filtering of suspicious html tags in survey, group, questions
 // and answer texts in the administration interface
 // Only set this to false if you absolutely trust the users
@@ -232,13 +228,14 @@ $config['useWebserverAuth'] = false;
 // allow these users to be able to use Javascript etc. .
 $config['filterxsshtml'] = true;
 
-// $usercontrolSameGroupPolicy
+// usercontrolSameGroupPolicy
 // If this option is set to true, then limesurvey operators will only 'see'
 // users that belong to at least one of their groups
 // Otherwise they can see all operators defines in LimeSurvey
 $config['usercontrolSameGroupPolicy'] = true;
 
-// $demoMode
+
+// demoMode
 // If this option is set to true, then LimeSurvey will go into demo mode.
 // Demo mode disables the following things:
 //
@@ -250,7 +247,8 @@ $config['usercontrolSameGroupPolicy'] = true;
 
 $config['demoMode'] = false;
 
-/** -----------------------------------------------------
+/** 
+* column_style
 * Because columns are tricky things, in terms of balancing visual
 * layout against semantic markup. The choice has been left to the
 * system administrator or designer. (Who ever cares most.)
@@ -266,7 +264,7 @@ columns (see template style sheet for details).
 $config['column_style'] = 'ul';
 
 /**
-* $hide_groupdescr_allinone.
+* hide_groupdescr_allinone.
 * This parameter 'hide_groupdescr_allinone' can be set to control
 * if the group description should be hidden if the group description of a group of questions
 * with all questions hidden by conditions is displayed in all-in-one survey mode.
@@ -276,6 +274,7 @@ $config['hide_groupdescr_allinone']=true;
 
 
 /**
+* use_firebug_lite
 * Use FireBug Lite for JavaScript and template development and testing.
 * This allows you to use all the features of Firebug in any browser.
 * see http://getfirebug.com/lite.html for more info.
@@ -283,6 +282,7 @@ $config['hide_groupdescr_allinone']=true;
 $config['use_firebug_lite'] = false;
 
 /*
+* showaggregateddata
 * When activated there are additional values like arithmetic mean and standard deviation at statistics.
 * This only affects question types "A" (5 point array) and "5" (5 point choice).
 * Furthermore data is aggregated to get a faster overview.

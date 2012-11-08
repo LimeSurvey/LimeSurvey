@@ -2690,7 +2690,7 @@ function encodeEmail($mail, $text="", $class="", $params=array())
 */
 function GetReferringUrl()
 {
-    global $clang,$stripQueryFromRefurl;
+    global $clang;
 
     $clang = Yii::app()->lang;
 
@@ -2699,7 +2699,7 @@ function GetReferringUrl()
     {
         if(!preg_match('/'.$_SERVER["SERVER_NAME"].'/', $_SERVER["HTTP_REFERER"]))
         {
-            if (!isset($stripQueryFromRefurl) || !$stripQueryFromRefurl)
+            if (!Yii::app()->getConfig('strip_query_from_referer_url'))
             {
                 return $_SERVER["HTTP_REFERER"];
             }
