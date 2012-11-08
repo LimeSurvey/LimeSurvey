@@ -2261,7 +2261,7 @@ class remotecontrol_handle
         $oFomattingOptions->answerFormat=$sResponseType;
         $oFomattingOptions->output='return';
         $oExport=new ExportSurveyResultsService();
-        $sFileData=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions,'return');
+        $sFileData=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions);
         return base64_encode($sFileData);
     }
 
