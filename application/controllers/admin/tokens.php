@@ -530,6 +530,8 @@ class tokens extends Survey_Common_Action
         }
         function subval_sort($a, $subkey, $order)
         {
+            $b = array();
+            $c = array();
             foreach ($a as $k => $v)
             {
                 $b[$k] = strtolower($v[$subkey]);
