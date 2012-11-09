@@ -393,10 +393,7 @@ class SurveyRuntimeHelper {
                         // in other cases the session is cleared at submit time
                         $completed .= "<a href='" . Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}/move/clearall") . "'>" . $clang->gT("Clear Responses") . "</a><br /><br />\n";
                     }
-                    if ($thissurvey['printanswers'] != 'Y')
-                    {
-                        killSurveySession($surveyid);
-                    }
+
 
                 }
                 else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
@@ -494,13 +491,6 @@ class SurveyRuntimeHelper {
                         header("Location: {$thissurvey['surveyls_url']}");
                     }
 
-
-                    //if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
-                    if ($thissurvey['printanswers'] != 'Y')
-                    {
-                        killSurveySession($surveyid);
-                    }
-
                     doHeader();
                     echo $content;
                 }
@@ -517,6 +507,12 @@ class SurveyRuntimeHelper {
                 }
                 echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"));
                 doFooter();
+                
+                // The session cannot be killed until the page is completely rendered
+                if ($thissurvey['printanswers'] != 'Y')
+                {
+                    killSurveySession($surveyid);
+                }                
                 exit;
             }
         }
