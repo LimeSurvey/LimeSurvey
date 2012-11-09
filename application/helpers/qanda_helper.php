@@ -1293,7 +1293,6 @@ function do_date($ia)
     }
     else
     {
-        header_includes(Yii::app()->getConfig("generalscripts").'jquery/lime-calendar.js');
         if ($clang->langcode !== 'en')
         {
             header_includes(Yii::app()->getConfig("generalscripts").'jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js');
