@@ -40,18 +40,6 @@
     var sOperator13= '<?php $clang->eT("contains",'js');?>';
     var sOperator14= '<?php $clang->eT("does not contain",'js');?>';
 </script>
-<div class="ui-notify" id="flashmessage">
-    <div id="flashinfo" style="opacity: 0; overflow: hidden; height: 40px; margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px;" class="ui-state-highlight ui-corner-all ui-notify-message">
-        <!-- close link -->
-        <a class="ui-notify-close" href="#">
-            <span class="ui-icon ui-icon-close" style="float:right">&nbsp;</span>
-        </a>
-
-        <!-- alert icon -->
-        <span style="float:left; margin:2px 5px 0 0;" class="ui-icon ui-icon-info">&nbsp;</span>
-        <p id='flashmessagetext'></p><br>
-    </div>
-</div>
 <div class='header ui-widget-header'><strong><?php $clang->eT("Attribute management"); ?></strong></div>
 
 <br/>
