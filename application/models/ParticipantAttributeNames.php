@@ -226,7 +226,8 @@ class ParticipantAttributeNames extends CActiveRecord
         $data = Yii::app()->db->createCommand()
                               ->select('*')
                               ->from('{{participant_attribute}}')
-                              ->where('participant_id = "'.$participantid.'" AND attribute_id = '.$attributeid)
+                              ->where('participant_id = :participant_id AND attribute_id = :attribute_id')
+                              ->bindValues(array(':participant_id'=>$participantid, ':attribute_id'=>$attributeid))
                               ->queryRow();
         return $data;
     }
