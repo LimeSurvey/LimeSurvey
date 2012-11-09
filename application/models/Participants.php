@@ -517,8 +517,8 @@ class Participants extends CActiveRecord
                 }
                 elseif($condition[0]=="surveys") //Search by quantity of linked surveys
                 {
-                    $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM lime_survey_links)" : "";
-                    $command->addCondition('participant_id IN (SELECT participant_id FROM lime_survey_links GROUP BY participant_id HAVING count(*) '.$operator.' :param2 ORDER BY count(*))'.$addon);
+                    $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM {{survey_links}})" : "";
+                    $command->addCondition('participant_id IN (SELECT participant_id FROM {{survey_links}} GROUP BY participant_id HAVING count(*) '.$operator.' :param2 ORDER BY count(*))'.$addon);
                     $command->params=array(':param2'=>$condition[2]);
                 }
                 elseif($condition[0]=="owner_name")
@@ -584,8 +584,8 @@ class Participants extends CActiveRecord
                     $command->params=array_merge($command->params, array(':lang'=>$lang, $condition2name=>$condition[$i+3]));
                 } elseif ($condition[$i+1]=="surveys") //search by quantity of linked surveys
                 {
-                    $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM lime_survey_links)" : "";
-                    $command->addCondition('participant_id IN (SELECT participant_id FROM lime_survey_links GROUP BY participant_id HAVING count(*) '.$operator.' '.$condition2name.' ORDER BY count(*))'.$addon);
+                    $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM {{survey_links}})" : "";
+                    $command->addCondition('participant_id IN (SELECT participant_id FROM {{survey_links}} GROUP BY participant_id HAVING count(*) '.$operator.' '.$condition2name.' ORDER BY count(*))'.$addon);
                     $command->params=array_merge($command->params, array($condition2name=>$condition[$i+3]));
                 }
                 elseif($condition[$i+1]=="owner_name")
