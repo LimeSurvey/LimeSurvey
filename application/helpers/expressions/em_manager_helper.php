@@ -7498,9 +7498,10 @@ EOD;
                                 }
                                 else
                                 {
-                                    $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
-                                    $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
-                                    $value=$datetimeobj->convert("Y-m-d");
+                                    $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $qid,$_SESSION['LEMlang']);
+                                    $aDateFormatData=getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
+                                    $oDateTimeConverter = new Date_Time_Converter($value, $aDateFormatData['phpdate']);
+                                    $value=$oDateTimeConverter->convert("Y-m-d");
                                 }
                                 break;
                             case 'N': //NUMERICAL QUESTION TYPE

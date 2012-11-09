@@ -1327,7 +1327,7 @@ function do_date($ia)
         }
 
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
-        $goodchars = "0123456789".$goodchars[0];
+        $goodchars = "0123456789".substr($goodchars,0,1);
 
         $answer ="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Date picker')}</label>
         <input class='popupdate' type=\"text\" size=\"10\" name=\"{$ia[1]}\" title='".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."' id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
