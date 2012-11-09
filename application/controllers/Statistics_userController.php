@@ -148,22 +148,6 @@ class Statistics_userController extends LSYii_Controller {
             $language = Survey::model()->findByPk($iSurveyID)->language;
 
 
-
-		$chartfontfile = Yii::app()->getConfig("chartfontfile");
-		//pick the best font file if font setting is 'auto'
-		if ($chartfontfile=='auto')
-		{
-		    $chartfontfile='vera.ttf';
-		    if ( $language=='ar')
-		    {
-		        $chartfontfile='KacstOffice.ttf';
-		    }
-		    elseif  ($language=='fa' )
-		    {
-		        $chartfontfile='KacstFarsi.ttf';
-		    }
-		}
-
 		//set survey language for translations
 		$clang = SetSurveyLanguage($iSurveyID, $language);
 

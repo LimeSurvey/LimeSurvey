@@ -39,8 +39,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     $scriptname = Yii::app()->getConfig("scriptname");
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
-    $language = Survey::model()->findByPk($iSurveyID)->language;
-    $statlang = $oLanguage;
+    $language = $oLanguage->langcode;
     $cachefilename = "";
 
     /* Set the fonts for the chart */
@@ -163,7 +162,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             $i = 0;
             while (isset ($gdata[$i]))
             {
-                if ($gdata[$i] == 0 || ($type == "O" && substr($lbl[$i],0,strlen($statlang->gT("Comments")))==$statlang->gT("Comments")))
+                if ($gdata[$i] == 0 || ($type == "O" && substr($lbl[$i],0,strlen($oLanguage->gT("Comments")))==$oLanguage->gT("Comments")))
                 {
                     array_splice ($gdata, $i, 1);
                     array_splice ($lbl, $i, 1);
@@ -176,7 +175,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             if ($language=='ar')
             {
                 $lblout=$lbl; //reset text order to original
-                Yii::import('application.libraries.admin.Arabic', true);
+                Yii::import('application.libraries.Arabic', true);
                 $Arabic = new Arabic('ArGlyphs');
                 foreach($lblout as $kkey => $kval){
                     if (preg_match("^[A-Za-z]^", $kval)) { //auto detect if english
