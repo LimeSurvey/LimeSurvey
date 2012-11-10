@@ -123,7 +123,7 @@ class Arabic
      */
     public function __construct($library)
     {
-        if($library[0]) $this->load($library[0]);
+        $this->load($library);
     }
 
     public function load($library)
