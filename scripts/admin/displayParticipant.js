@@ -127,7 +127,7 @@ $(document).ready(function() {
         sortname: 'firstname',
         sortorder: 'asc',
         viewrecords : true,
-        rowList: [25,50,100,250,500,1000,2000,5000],
+        rowList: [25,50,100,250,500,1000],
         multiselect: true,
         loadonce : false,
         loadComplete : function() {
@@ -220,6 +220,7 @@ $(document).ready(function() {
                 datatype: "json",
                 mtype: "post",
                 caption: attributesHeadingTxt,
+                ignoreCase: true,
                 editable: true,
                 loadonce : true,
                 colNames: [actionsColTxt,participantIdColTxt,attributeTypeColTxt,attributeIdColTxt,attributeNameColTxt,attributeValueColTxt,attributePosValColTxt],
@@ -243,7 +244,7 @@ $(document).ready(function() {
                 recordtext:'',
                 pgtext:'',
                 rowNum:10,
-                rowList:[10,25,50,100000],
+                rowList:[10,25,50,100,250,500],
                 gridComplete: function () {
                     /* Removes the delete icon from the actions bar */
                     $('div.ui-inline-del').html('');
@@ -257,7 +258,7 @@ $(document).ready(function() {
 
             /* Pager for attribute subgrid */
             jQuery("#"+subgrid_table_id).jqGrid('navGrid',"#"+pager_id,{refresh: false, edit:false,add:false,del:false,search:false})
-            jQuery("#"+subgrid_table_id).jqGrid('filterToolbar', {searchOnEnter : false,defaultSearch: 'cn'});
+            jQuery("#"+subgrid_table_id).jqGrid('filterToolbar', {searchOnEnter : false, defaultSearch: 'cn'});
         }
     });
 

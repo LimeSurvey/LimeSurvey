@@ -1118,7 +1118,7 @@ class participantsaction extends Survey_Common_Action
             }
             else
             {
-                array_push($output[$i], "");
+                array_push($outputs[$i], "");
             }
             array_push($doneattributes, $row['attribute_id']);
             $i++;
