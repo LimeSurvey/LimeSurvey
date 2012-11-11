@@ -91,9 +91,9 @@
             foreach ( $surveyidresult as $sv )
             {
                 $sv = reset($sv);
-                if (strpos($sv, 'survey_links')===false && strpos($sv, 'survey_permissions')===false)
+                if (strpos($sv, 'survey_links')===false && strpos($sv, 'survey_permissions')===false && strpos($sv, 'survey_url_parameters')===false)
                     Yii::app()->db->createCommand("drop table ".$sv)->execute();
             }
         }
-
+                                                                                                     
 }
