@@ -4460,8 +4460,8 @@ function removeBOM($str=""){
 function getUpdateInfo()
 {
     //require_once($homedir."/classes/http/http.php");
-    Yii::import('application.libraries.admin.http.httpRequest');
-    $http=new httpRequest;
+    Yii::import('application.libraries.admin.http.httpRequestIt');
+    $http=new httpRequestIt;
 
     $http->timeout=0;
     $http->data_timeout=0;
