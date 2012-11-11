@@ -28,13 +28,12 @@ class LSYii_Application extends CWebApplication
     */
     public function __construct($config = null)
     {
-        if (!file_exists($config))
+        if (is_string($config) && !file_exists($config))
         {
             $config = APPPATH . 'config/config-sample' . EXT;
-        } else {
-            if(is_string($config)) {
-                $config = require($config);
-            }
+        } 
+        if(is_string($config)) {
+            $config = require($config);
         }
         
         if ($config['config']['debug'] == 2)
