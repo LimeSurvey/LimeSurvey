@@ -192,7 +192,12 @@ class Survey_dynamic extends LSActiveRecord
      */
     public function isCompleted($srid)
     {
+        static $resultCache = array();
+        
         $sid = self::$sid;
+        if (array_key_exists($sid, $resultCache) && array_key_exists($srid, $resultCache[$sid])) {
+            return $resultCache[$sid][$srid];
+        }
         $completed=false;
 
         if(Yii::app()->db->schema->getTable($this->tableName())){
@@ -206,6 +211,7 @@ class Survey_dynamic extends LSActiveRecord
                 $completed=true;
             }
         }
+        $resultCache[$sid][$srid] = $completed;
         return $completed;
     }
 

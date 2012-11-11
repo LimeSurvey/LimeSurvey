@@ -2054,7 +2054,7 @@ function surveymover()
 */
 function doAssessment($surveyid, $returndataonly=false)
 {
-
+    static $assesmentQuery = array();
     $clang = Yii::app()->lang;
 
     $baselang=Survey::model()->findByPk($surveyid)->language;
@@ -2063,10 +2063,17 @@ function doAssessment($surveyid, $returndataonly=false)
     {
         $_SESSION['survey_'.$surveyid]['s_lang']=$baselang;
     }
-    $query = "SELECT * FROM {{assessments}}
-    WHERE sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'
-    ORDER BY scope, id";
-    if ($result = dbExecuteAssoc($query))   //Checked
+    if (array_key_exists($surveyid, $assesmentQuery) && array_key_exists($_SESSION['survey_'.$surveyid]['s_lang'], $assesmentQuery[$surveyid])) {
+        $result = $assesmentQuery[$surveyid][$_SESSION['survey_'.$surveyid]['s_lang']];
+    } else {
+        $query = "SELECT * FROM {{assessments}}
+            WHERE sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'
+            ORDER BY scope, id";
+        $result = dbExecuteAssoc($query);
+        $assesmentQuery[$surveyid][$_SESSION['survey_'.$surveyid]['s_lang']] = $result;
+    }
+    
+    if ($result)   //Checked
     {
         $aResultSet=$result->readAll();
         if (count($aResultSet) > 0)
