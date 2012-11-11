@@ -27,7 +27,7 @@ class update extends Survey_Common_Action
     function index($sSubAction = null)
     {
         $this->_RunUpdaterUpdate();
-        Yii::import('application.libraries.admin.http.httpRequest');
+        Yii::import('application.libraries.admin.http.httpRequestIt');
 
         $clang = $this->getController()->lang;
         $iCurrentBuildnumber = Yii::app()->getConfig("buildnumber");
@@ -59,8 +59,8 @@ class update extends Survey_Common_Action
 
     private function _getChangedFiles($buildnumber, $updaterversion, $updatekey)
     {
-        Yii::import('application.libraries.admin.http.httpRequest');
-        $http = new httpRequest;
+        Yii::import('application.libraries.admin.http.httpRequestIt');
+        $http = new httpRequestIt;
         $httperror = $this->_requestChangedFiles($http, $buildnumber, $updaterversion, $updatekey);
 
         if ($httperror != '') {
@@ -71,8 +71,8 @@ class update extends Survey_Common_Action
     
     private function _getChangelog($buildnumber, $updaterversion, $updatekey)
     {
-        Yii::import('application.libraries.admin.http.httpRequest');
-        $http = new httpRequest;
+        Yii::import('application.libraries.admin.http.httpRequestIt');
+        $http = new httpRequestIt;
         $httperror = $this->_requestChangelog($http, $buildnumber, $updaterversion, $updatekey);
 
         if ($httperror != '') {
@@ -81,7 +81,7 @@ class update extends Survey_Common_Action
         return $this->_readChangelog($http);
     }
 
-    private function _readChangelog(httpRequest $http)
+    private function _readChangelog(httpRequestIt $http)
     {
         $szLines = '';
         $szResponse = '';
@@ -96,7 +96,7 @@ class update extends Survey_Common_Action
         }
     }
 
-    private function _requestChangelog(httpRequest $http, $buildnumber, $updaterversion, $updatekey)
+    private function _requestChangelog(httpRequestIt $http, $buildnumber, $updaterversion, $updatekey)
     {
         $http->timeout = 0;
         $http->data_timeout = 0;
@@ -108,7 +108,7 @@ class update extends Survey_Common_Action
         return $http->SendRequest($arguments);
     }
     
-    private function _requestChangedFiles(httpRequest $http, $buildnumber, $updaterversion, $updatekey)
+    private function _requestChangedFiles(httpRequestIt $http, $buildnumber, $updaterversion, $updatekey)
     {
         $http->timeout = 0;
         $http->data_timeout = 0;
@@ -327,8 +327,8 @@ class update extends Survey_Common_Action
         // Create DB and file backups now
 
         $downloaderror=false;
-        Yii::import('application.libraries.admin.http.httpRequest');
-        $http=new httpRequest;
+        Yii::import('application.libraries.admin.http.httpRequestIt');
+        $http=new httpRequestIt;
 
         // Allow redirects
         $http->follow_redirect=1;
@@ -433,8 +433,8 @@ class update extends Survey_Common_Action
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
 
-        Yii::import('application.libraries.admin.http.httpRequest');
-        $oHTTPRequest=new httpRequest;
+        Yii::import('application.libraries.admin.http.httpRequestIt');
+        $oHTTPRequest=new httpRequestIt;
         
         /* Connection timeout */
         $oHTTPRequest->timeout=0;
@@ -485,8 +485,8 @@ class update extends Survey_Common_Action
         // Create DB and file backups now
 
         $downloaderror=false;
-        Yii::import('application.libraries.admin.http.httpRequest');
-        $oHTTPRequest=new httpRequest;
+        Yii::import('application.libraries.admin.http.httpRequestIt');
+        $oHTTPRequest=new httpRequestIt;
 
         // Allow redirects
         $oHTTPRequest->follow_redirect=1;
