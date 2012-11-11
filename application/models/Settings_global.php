@@ -16,6 +16,7 @@
 
 class Settings_global extends CActiveRecord
 {
+    protected $resultCache = array();
     /**
      * Returns the static model of Settings table
      *
@@ -71,6 +72,26 @@ class Settings_global extends CActiveRecord
             return $user2->update('{{settings_global}}', array('stg_value' => $settingvalue));
         }
 
+    }
+    
+    public function findAll($condition = '', $params = array()) {
+        $result = parent::findAll($condition, $params);
+        if (empty($condition) && empty($params)) {
+            // Only is there a re no conditions, we cache the results
+            foreach($result as $row) {
+                $this->resultCache[$row['stg_name']] = $row;
+            }
+        }
+        return $result;
+    }
+    
+    public function findByPk($pk, $condition = '', $params = array()) {
+        if (empty($condition) && empty($params)) {
+            if (!empty($this->resultCache) && array_key_exists($pk, $this->resultCache)) {
+                return $this->resultCache[$pk];
+            }
+        }
+        return parent::findByPk($pk, $condition, $params);
     }
 }
 ?>
