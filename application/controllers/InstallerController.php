@@ -1030,6 +1030,7 @@ class InstallerController extends CController {
             ."\t"     . "// on your webspace.". "\n"
             ."\t"     . "// LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates". "\n"
             ."\t\t"   . "'debug'=>0"                                . "\n"
+            ."\t\t"   . "'debugsql'=>0 // Set this to 1 to enanble sql logging, only active when debug = 2" . "\n"
             ."\t"     . ")"                                         . "\n"
             . ");"                                        . "\n"
             . "/* End of file config.php */"              . "\n"

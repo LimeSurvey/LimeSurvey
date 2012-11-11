@@ -38,25 +38,38 @@ class LSYii_Application extends CWebApplication
         
         if ($config['config']['debug'] == 2)
         {
-            // If debug = 2 we add firebug / console logging for all db queries and also output debug
+            // If debug = 2 we add firebug / console logging for all trace messages
             // If you want to var_dump $someObject you could do:
             // Yii::trace(CVarDumper::dumpAsString($someObject), 'vardump')
             // This statement won't cause any harm or output when debug is 1 or 0 
             $config['preload'][] = 'log';
-            $config['components']['log'] = array(
-                'class' => 'CLogRouter',
-                'routes' => array(
-                    array(
-                        'class' => 'CWebLogRoute',
-                        // you can include more levels separated by commas... trace is shown on debug only
-                        'levels' => 'trace',
-                        // you can include more separated by commas
-                        'categories' => 'vardump,system.db.*',
-                        // show in firebug/console
-                        'showInFireBug' => true
-                )));
-            $config['components']['db']['enableProfiling'] = true;
-            $config['components']['db']['enableParamLogging'] = true;
+            if (array_key_exists('components', $config) && array_key_exists('log', $config['components'])) {
+                // We already have some custom logging, only add our own
+            } else {
+                // No logging yet, set it up
+                $config['components']['log'] = array(
+                    'class' => 'CLogRouter');
+            }
+            // Add logging of trace
+            $config['components']['log']['routes'][] = array(
+                'class'                      => 'CWebLogRoute', // you can include more levels separated by commas... trace is shown on debug only
+                'levels'                     => 'trace',        // you can include more separated by commas
+                'categories'                 => 'vardump',      // show in firebug/console
+                'showInFireBug'              => true
+            );
+            
+            // if debugsql = 1 we add sql logging to the output
+            if (array_key_exists('debugsql', $config['config']) && $config['config']['debugsql'] == 1) {
+                // Add logging of trace
+                $config['components']['log']['routes'][] = array(
+                    'class'                      => 'CWebLogRoute', // you can include more levels separated by commas... trace is shown on debug only
+                    'levels'                     => 'trace',        // you can include more separated by commas
+                    'categories'                 => 'system.db.*',      // show in firebug/console
+                    'showInFireBug'              => true
+                );
+                $config['components']['db']['enableProfiling'] = true;
+                $config['components']['db']['enableParamLogging'] = true;
+            }
         }
         
         parent::__construct($config);
