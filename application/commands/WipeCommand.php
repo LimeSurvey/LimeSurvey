@@ -15,7 +15,7 @@
 
         public function run($sArgument)
         {
-            if (!isset($sArgument) || !isset($sArgument[0]) || $sArgument[0]!='yes') die('This CLI command wipes a LimeSurvey installation clean (including all user except for the user ID 1). For security reasons this command can only started if you add the parameter \'yes\' to the command line.');
+            if (!isset($sArgument) || !isset($sArgument[0]) || $sArgument[0]!='yes') die('This CLI command wipes a LimeSurvey installation clean (including all user except for the user ID 1 and user-uploaded content). For security reasons this command can only started if you add the parameter \'yes\' to the command line.');
             Yii::import('application.helpers.common_helper', true);
             Yii::import('application.helpers.database_helper', true);
 
@@ -69,11 +69,14 @@
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery="truncate table {{failed_login_attempts}}";
             Yii::app()->db->createCommand($actquery)->execute();
+            $actquery="truncate table {{saved_control}}";
+            Yii::app()->db->createCommand($actquery)->execute();
+            $actquery="truncate table {{survey_links}}";
+            Yii::app()->db->createCommand($actquery)->execute();
             $actquery="delete from {{users}} where uid<>1";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery="update {{users}} set lang='en'";
             Yii::app()->db->createCommand($actquery)->execute();
-            debugbreak();
 
             $surveyidresult = dbGetTablesLike("tokens%");
             foreach ( $surveyidresult as $sv )
@@ -94,6 +97,26 @@
                 if (strpos($sv, 'survey_links')===false && strpos($sv, 'survey_permissions')===false && strpos($sv, 'survey_url_parameters')===false)
                     Yii::app()->db->createCommand("drop table ".$sv)->execute();
             }
+            $sBaseUploadDir=dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'upload';
+
+            SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'surveys',false);
+            SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'templates',false);
+
         }
+        
                                                                                                      
+}
+
+
+function SureRemoveDir($dir, $DeleteMe) {
+    if(!$dh = @opendir($dir)) return;
+    while (false !== ($obj = readdir($dh))) {
+        if($obj=='.' || $obj=='..') continue;
+        if (!@unlink($dir.'/'.$obj)) SureRemoveDir($dir.'/'.$obj, true);
+    }
+
+    closedir($dh);
+    if ($DeleteMe){
+        @rmdir($dir);
+    }
 }
