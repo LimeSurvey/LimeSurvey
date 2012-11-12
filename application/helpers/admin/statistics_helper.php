@@ -39,28 +39,28 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     $scriptname = Yii::app()->getConfig("scriptname");
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
+    $alternatechartfontfile = Yii::app()->getConfig("alternatechartfontfile");
     $language = $oLanguage->langcode;
+    $clang = $oLanguage;
     $cachefilename = "";
 
     /* Set the fonts for the chart */
     if ($chartfontfile=='auto')
     {
-        $chartfontfile='vera.ttf';
-        if ( $language=='ar')
+        // Tested with ar,be,el,fa,hu,he,is,lt,mt,sr, and en (english)
+        // Not working for hi, si, zh, th, ko, ja : see $config['alternatechartfontfile'] to add some specific language font
+        $chartfontfile='DejaVuSans.ttf';
+        if(array_key_exists($language,$alternatechartfontfile))
         {
-            $chartfontfile='KacstOffice.ttf';
-        }
-        elseif  ($language=='fa' )
-        {
-            $chartfontfile='KacstFarsi.ttf';
-        }
-        elseif  ($language=='el' )
-        {
-            $chartfontfile='DejaVuLGCSans.ttf';
-        }
-        elseif  ($language=='zh-Hant-HK' || $language=='zh-Hant-TW' || $language=='zh-Hans')
-        {
-            $chartfontfile='fireflysung.ttf';
+            $neededfontfile = $alternatechartfontfile[$language];
+            if(is_file($rootdir."/fonts/".$neededfontfile))
+            {
+                $chartfontfile=$neededfontfile;
+            }
+            else
+            {
+                Yii::app()->session['flashmessage'] = sprintf($clang->gT('The fonts file %s was not found in <limesurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory.'),$neededfontfile);
+            }
         }
     }
 
