@@ -40,18 +40,6 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
     $cachefilename = "";
 
     /* Set the fonts for the chart */
-<<<<<<< HEAD
-    if ($chartfontfile == 'auto') {
-        $chartfontfile = 'vera.ttf';
-        if ($language == 'ar') {
-            $chartfontfile = 'KacstOffice.ttf';
-        } elseif ($language == 'fa') {
-            $chartfontfile = 'KacstFarsi.ttf';
-        } elseif ($language == 'el') {
-            $chartfontfile = 'DejaVuLGCSans.ttf';
-        } elseif ($language == 'zh-Hant-HK' || $language == 'zh-Hant-TW' || $language == 'zh-Hans') {
-            $chartfontfile = 'fireflysung.ttf';
-=======
     if ($chartfontfile=='auto')
     {
         // Tested with ar,be,el,fa,hu,he,is,lt,mt,sr, and en (english)
@@ -68,15 +56,16 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             {
                 Yii::app()->session['flashmessage'] = sprintf($clang->gT('The fonts file %s was not found in <limesurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory.'),$neededfontfile);
             }
->>>>>>> 54c41e7... Fixed issue #06849: Bad caracter for statistics graph in some language
         }
     }
 
-    if (array_sum($gdata) > 0) { //Make sure that the percentages add up to more than 0
+    if (array_sum($gdata) > 0) //Make sure that the percentages add up to more than 0
+    {
         $graph = "";
         $p1 = "";
         $i = 0;
-        foreach ($gdata as $data) {
+        foreach ($gdata as $data)
+        {
             if ($data != 0) {
                 $i++;
             }
