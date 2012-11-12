@@ -1136,60 +1136,93 @@ span.qnumcode {
 }
 
 /* Question Index */
-.withindex .outerframe{
-  margin-left: 1em;
-  margin-right: 26em;
-}
-.allinone .outerframe{
-  margin:0;
-}
 
 #index {
-  position: absolute;
-  right: 0;
-  width: 25em;
-  top: 0;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  height: 100%;
-  background: #fff;
+	margin: 1em auto 0 auto;
+	width: 80%;
+	padding-bottom: 1em;
+	background-color: #FFFFFF;
+	border: 1px solid #000000;
 }
-
-#index h2 { 
-  text-align: right;
-}
-
-#index h3 { margin: 0.5em 0 0 0.5em; }
 
 #index .container {
-  width: 24em;
+	margin: 0 auto 0 auto;
+}
+
+#index h2 {
+	margin: 0;
+	padding: 0.5em 0;
+	font-size: 14px;
+	text-align: center;
+	background-color: #8FE0DD;
+}
+
+.groupbygroup  #index h2 {
+	margin-bottom: 1.25em;
+}
+
+#index h3 {
+	margin: 1em 0 0.25em 0;
+	font-size: 14px;
+    font-weight: bold;
+	text-align: center;
 }
 
 #index .container .row {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-align: left;
-  border-top: 1px solid #fff;
+	margin: 0 10px;
+	padding: 0.2em 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: left;
+	border-top: 2px solid #FFFFFF;
+	background-color: #EEEEEE;
+}
+
+#index .container .row.odd { 
+	background: #EFE5CA; 
+}
+#index .container .row.current {
+	font-weight: bold; 
+}
+#index .container .row.missing { 
+	color: #FF0000; 
 }
 
 #index .container .row:hover {
-  text-decoration: underline;
-  cursor: pointer;
-  color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+	background-color: #A7A9D1;
+}
+
+#index .container .row.current:hover {
+	text-decoration: none;
+	cursor: default;
 }
 
 #index .container .row .hdr {
-  width: 3em;
-  text-align: right;
-  display: inline-block;
-  padding: 0 0.5em 0 0;
+	width: 2.5em;
+	display: inline-block;
+	padding: 0 0 0 0.5em;
+	font-style: italic;
+}
+#index .container input {
+	display: block;
+	margin: 1em auto 0 auto;
+	padding: 3px 5px;
+	border: 1px solid #A0A0A0;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+#index .container input:hover {
+	background-color: #DADADA;
 }
 
-#index .container .row.odd { background: #EFE5CA; }
-#index .container .row.current { background: #000; color: #fff; }
-#index .container .row.missing { background: #CC0000; color: #fff; }
-#index .container input { margin: 1em; }
+.outerframe.withindex div.missing td.questiontext {
+	/*color: #FF0000;*/
+}
 
 /* Tips / Validation Messages */
 /* If the question is invalid, but has not been submitted, give it a pleasant warning color */

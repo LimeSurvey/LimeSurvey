@@ -1354,71 +1354,92 @@ td.statsImageholder {
 }
 
 /* Question Index */
-.withindex .outerframe{
-  margin-left: 1em;
-  margin-right: 26em;
-}
-.allinone .outerframe{
-  margin:0;
-}
 
 #index {
-  position: absolute;
-  right: 0;
-  width: 25em;
-  top: 0;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  height: 100%;
-  background: #F5FEFF;
-  border-left: 1px solid #00677D;
-}
-
-#index h2 { 
-  margin-top: 0;
-  padding: 10px;
-  background: #00677D;
-  color: #fff;
-  text-align: center;
-  font-size: 1.3em;
-  font-weight: normal;
-}
-
-#index h3 {
-  margin: 0.5em 0 0 0.5em;
-  color: #00677D;
-  font-size: 100%;
+    margin-bottom: 1em;
+    width: 98.5%;
+	padding: 5px 5px 10px 5px;
+	background-color: #FAFEFF;
+	border: 1px solid #86B8BC;
+	font-size: 0.9em;
 }
 
 #index .container {
-  width: 24em;
+	margin: 0 auto 0 auto;
+}
+
+#index h2 {
+	margin: 0;
+	padding: 0.5em 0;
+	color: #FFFFFF;
+    font-size: 110%;
+    font-weight: bold;
+	text-align: center;
+	background-color: #00677D;
+}
+
+.groupbygroup  #index h2 {
+	margin-bottom: 0.75em;
+}
+
+#index h3 {
+	margin: 1em 0 0.25em 0;
+	font-size: 100%;
+    font-weight: bold;
+	text-align: center;
+	color: #000080;
 }
 
 #index .container .row {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-align: left;
-  border-top: 1px solid #fff;
+	margin: 0;
+	padding: 0.2em 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: left;
+	border-top: 2px solid #FFFFFF;
+	background-color: #CBEFF2;
+}
+
+#index .container .row.odd { 
+	background: #E0FBFF; 
+}
+#index .container .row.current {
+	font-weight: bold; 
+}
+#index .container .row.missing { 
+	color: #FF0000; 
 }
 
 #index .container .row:hover {
-  text-decoration: underline;
-  cursor: pointer;
-  color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+	background: #A5D6DA;
+}
+
+#index .container .row.current:hover {
+	text-decoration: none;
+	cursor: default;
 }
 
 #index .container .row .hdr {
-  width: 3em;
-  text-align: right;
-  display: inline-block;
-  padding: 0 0.5em 0 0;
+	width: 2.5em;
+	display: inline-block;
+	padding: 0 0 0 0.5em;
+	font-style: italic;
+}
+#index .container input {
+	display: block;
+	margin: 1em auto 0 auto;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	cursor: pointer;
 }
 
-#index .container .row.odd { background: #FFF; }
-#index .container .row.current { background: #00407A; color: #fff; }
-#index .container .row.missing { background: #CC0000; color: #fff; }
-#index .container input { margin: 1em; }
+.outerframe.withindex div.missing td.questiontext {
+	/*color: #FF0000;*/
+}
 
 /* Tips / Validation Messages */
 /* If the question is invalid, but has not been submitted, give it a pleasant warning color */

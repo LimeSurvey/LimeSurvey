@@ -792,10 +792,6 @@ table.clearall-result td {
   margin: 0% 0% 0.5em 0.5em;
 }
 
-.outerframe.withindex div.missing td.questiontext {
-  background: red;
-}
-
 /* END:  General list styles - - - -  - - -  - - - -
 - - - - -  - - -  - - -  - - - - - -  - - -  - - - - */
   /* STYLES NOT YET DEFINED - - - - -
@@ -1428,63 +1424,112 @@ div.questionTitle {
 }
 
 /* Question Index */
-.withindex .outerframe {
-  margin-left: 1em;
-  margin-right: 26em;
-}
-.allinone .outerframe{
-  margin:0;
-}
 
 #index {
-  position: absolute;
-  right: 0;
-  width: 25em;
-  top: 0;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  height: 100%;
-  background: #fff;
-  border-left: 1px solid #ccc;
+	margin-top: 2px;
+	padding-bottom: 1em;
+	background: #EEF6FF;
+}
+
+.page-odd #index {
+	background: #EFFFEE;
+}
+
+#index .container {
+	width: 75%;
+	margin: 0 auto 0 auto;
+	padding-bottom: 1em;
+	background-color: #FFFFFF;
 }
 
 #index h2 {
-  padding: 1em;
-  background: #eef6ff;
-  text-align: center;
+	padding: 0.75em;
+	background: #eef6ff;
+	text-align: center;
 }
 
-#index h3 { margin: 0.5em 0 0 0.5em; }
+.page-odd #index h2 {
+	background: #EFFFEE;
+}
 
-#index .container {
-  width: 24em;
+.groupbygroup  #index h2 {
+	margin-bottom: 1.25em;
+}
+
+#index h3 {
+	margin: 0.45em 0 0 0;
+	padding: 0.35em 0 0.2em 0;
+	font-size: 12px; 
 }
 
 #index .container .row {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-align: left;
-  border-top: 1px solid #fff;
+	margin: 0 2em;
+	padding: 0.2em 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: left;
+	border-top: 1px solid #fff;
+	background-color: #F7F7F7;
+}
+
+#index .container .row.odd { 
+	background: #EEEEEE; 
+}
+#index .container .row.current {
+	font-weight: bold; 
+}
+#index .container .row.missing { 
+	color: #FF0000; 
 }
 
 #index .container .row:hover {
-  text-decoration: underline;
-  cursor: pointer;
-  color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+	background-color: #A7A9D1;
+}
+
+#index .container .row.current:hover {
+	text-decoration: none;
+	cursor: default;
 }
 
 #index .container .row .hdr {
-  width: 3em;
-  text-align: right;
-  display: inline-block;
-  padding: 0 0.5em 0 0;
+	width: 2.5em;
+	display: inline-block;
+	padding: 0 0 0 0.5em;
+	font-style: italic;
+}
+#index .container input { 
+	margin: 1em 0 0 0;
+	padding: 2px 5px; 
+	background-color: #D7EBF9;
+	border: 1px solid #AED0EA;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	cursor: pointer;
+	color: #2E648B;
+}
+#index .container input:hover {
+	background-color: #E4F1FB;
+	color: #0070A3;
+	border: 1px solid #74B2E2;
+}
+.page-odd #index .container input { 
+	background-color: #E6E6E6;
+	border: 1px solid #D3D3D3;
+	color: #555555;
+}
+.page-odd #index .container input:hover {
+	background-color: #DADADA;
+	color: #212121;
+	border: 1px solid #999;
 }
 
-#index .container .row.odd { background: #EEF6FF; }
-#index .container .row.current { background: #1D2D45; color: #fff; }
-#index .container .row.missing { background: #CC0000; color: #fff; }
-#index .container input { margin: 1em; }
+.outerframe.withindex div.missing td.questiontext {
+	/*color: #FF0000;*/
+}
 
 /* Tips / Validation Messages */
 /* If the question is invalid, but has not been submitted, give it a pleasant warning color */

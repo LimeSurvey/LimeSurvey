@@ -1241,70 +1241,86 @@ td.statsImageholder {
 }
 
 /* Question Index */
-.withindex .outerframe{
-  margin-left: 1em;
-  margin-right: 26em;
-}
-.allinone .outerframe{
-  margin:0;
-}
 
 #index {
-  position: absolute;
-  right: 0;
-  width: 25em;
-  top: 0;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  height: 100%;
-  background: #fff;
-  border-left: 4px double #999;
-}
-
-#index h2 { 
-  margin: 0;
-  padding: 3px;
-  height: 23px;
-  background: url("box_bg.gif") repeat-x;
-  text-align: center;
-  font-family: "Verdana,Geneva,Arial,Helvetica,sans-serif";
-  font-size: 13px;
-}
-
-#index h3 {
-  color: #000099;
-  margin: 0.5em 0 0 0.5em;
+	background-color: #F5F9F9;
+    border: 1px solid #DDDDDD;
+    margin: 0 0 0 5px;
+    padding: 0 0 5px 0;
 }
 
 #index .container {
-  width: 24em;
+	margin: 0 auto 0 auto;
+}
+
+#index h2 {
+	margin: 0;
+	padding: 0.5em 0;
+	font-size: 14px;
+	text-align: center;
+	background-color: #EEEEEE;
+}
+
+.groupbygroup  #index h2 {
+	margin-bottom: 0.75em;
+}
+
+#index h3 {
+	margin: 1em 0 0.25em 3px;
+	color: #000099;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 #index .container .row {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-align: left;
-  border-top: 1px solid #fff;
+	margin: 0 3px;
+	padding: 0.2em 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: left;
+	border-top: 1px solid #fff;
+	background-color: #AABBCC;
+}
+
+#index .container .row.odd { 
+	background: #EFEFEF; 
+}
+#index .container .row.current {
+	font-weight: bold; 
+}
+#index .container .row.missing { 
+	color: #FF0000; 
 }
 
 #index .container .row:hover {
-  text-decoration: underline;
-  cursor: pointer;
-  color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+	background: #A7A9D1;
+}
+
+#index .container .row.current:hover {
+	text-decoration: none;
+	cursor: default;
 }
 
 #index .container .row .hdr {
-  width: 3em;
-  text-align: right;
-  display: inline-block;
-  padding: 0 0.5em 0 0;
+	width: 2.5em;
+	display: inline-block;
+	padding: 0 0 0 0.5em;
+	font-style: italic;
+}
+#index .container input {
+	display: block;
+	margin: 1em auto 0 auto;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
 }
 
-#index .container .row.odd { background: #EEE; }
-#index .container .row.current { background: #000099; color: #fff; }
-#index .container .row.missing { background: #CC0000; color: #fff; }
-#index .container input { margin: 1em; }
+.outerframe.withindex div.missing td.questiontext {
+	/*color: #FF0000;*/
+}
 
 /* Tips / Validation Messages */
 /* If the question is invalid, but has not been submitted, give it a pleasant warning color */
