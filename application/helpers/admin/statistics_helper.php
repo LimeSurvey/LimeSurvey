@@ -2958,7 +2958,6 @@ class statistics_helper {
     */
     public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$statlangcode=null, $browse = true)
     {
-        global $pdfdefaultfont, $pdffontsize;
 
         $astatdata=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
 
