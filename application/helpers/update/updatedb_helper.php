@@ -1022,14 +1022,14 @@ function db_upgrade_all($oldversion) {
     {
         //Replace  by <script type="text/javascript" src="{TEMPLATEURL}template.js"></script> by {TEMPLATEJS}
         $replacedTemplate=replaceTemplateJS();
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>163,"stg_name='DBVersion'");
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>163,"stg_name='DBVersion'"));
     }
     
     if ($oldversion < 164)
     {
         // fix survey tables for missing or incorrect token field
         upgradeSurveyTables164();
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>164,"stg_name='DBVersion'");
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>164,"stg_name='DBVersion'"));
     }
 
     if ($oldversion < 165)
@@ -1079,7 +1079,9 @@ function db_upgrade_all($oldversion) {
 
 function upgradeTokenTables166()
 {
+    debugbreak();
     $sVarchar = Yii::app()->getConfig('varchar');
+    $oSchema=Yii::app()->db->schema;
     $sDBDriverName=setsDBDriverName();
     if($sDBDriverName=='mssql') $sSubstringCommand='substring'; else $sSubstringCommand='substr';
 
@@ -1090,10 +1092,18 @@ function upgradeTokenTables166()
         foreach ( $surveyidresult as $sv )
         {
             $sTableName=reset($sv);
+            $oSchema=$oSchema->getTable($sTableName);
+            foreach ($oSchema->columnNames as $sColumnName)
+            {
+                if (strpos($sColumnName,'attribute_')===0)
+                {
+                    alterColumn($sTableName, $sColumnName, "text");
+                }
+            }
             Yii::app()->db->createCommand("UPDATE {$sTableName} set email={$sSubstringCommand}(email,0,254)")->execute();
-            alterColumn($sTableName, 'email', "{$sVarchar}(254)", false);
-            alterColumn($sTableName, 'firstname', "{$sVarchar}(150)", false);
-            alterColumn($sTableName, 'lastname', "{$sVarchar}(150)", false);
+            alterColumn($sTableName, 'email', "{$sVarchar}(254)");
+            alterColumn($sTableName, 'firstname', "{$sVarchar}(150)");
+            alterColumn($sTableName, 'lastname', "{$sVarchar}(150)");
         }
     }
 }

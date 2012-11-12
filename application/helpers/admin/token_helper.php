@@ -45,7 +45,7 @@ function createTokenTable($iSurveyID, $aAttributeFields=array())
     );
     foreach ($aAttributeFields as $sAttributeField)
     {
-        $fields[$sAttributeField]='string';
+        $fields[$sAttributeField]='text';
     }
     try{
         createTable("{{tokens_".intval($iSurveyID)."}}", $fields);
