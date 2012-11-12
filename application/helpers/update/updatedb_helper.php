@@ -1022,14 +1022,14 @@ function db_upgrade_all($oldversion) {
     {
         //Replace  by <script type="text/javascript" src="{TEMPLATEURL}template.js"></script> by {TEMPLATEJS}
         $replacedTemplate=replaceTemplateJS();
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>163,"stg_name='DBVersion'");
     }
     
     if ($oldversion < 164)
     {
         // fix survey tables for missing or incorrect token field
         upgradeSurveyTables164();
-        
-        // Not updating settings table as upgrade process takes care of that step now
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>164,"stg_name='DBVersion'");
     }
 
     if ($oldversion < 165)
@@ -1060,10 +1060,44 @@ function db_upgrade_all($oldversion) {
         upgradeSurveys165();
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>165),"stg_name='DBVersion'");
     }
+    
+    if ($oldversion < 166)
+    {
+        upgradeTokenTables166();
+        alterColumn('{{participants}}', 'email', "{$sVarchar}(254)", false);
+        alterColumn('{{participants}}', 'firstname', "{$sVarchar}(150)", false);
+        alterColumn('{{participants}}', 'lastname', "{$sVarchar}(150)", false);
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>166),"stg_name='DBVersion'");
+    }
 
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
 }
+
+
+
+
+function upgradeTokenTables166()
+{
+    $sVarchar = Yii::app()->getConfig('varchar');
+    $sDBDriverName=setsDBDriverName();
+    if($sDBDriverName=='mssql') $sSubstringCommand='substring'; else $sSubstringCommand='substr';
+
+    $surveyidresult = dbGetTablesLike("tokens%");
+    if (!$surveyidresult) {return "Database Error";}
+    else
+    {
+        foreach ( $surveyidresult as $sv )
+        {
+            $sTableName=reset($sv);
+            Yii::app()->db->createCommand("UPDATE {$sTableName} set email={$sSubstringCommand}(email,0,254)")->execute();
+            alterColumn($sTableName, 'email', "{$sVarchar}(254)", false);
+            alterColumn($sTableName, 'firstname', "{$sVarchar}(150)", false);
+            alterColumn($sTableName, 'lastname', "{$sVarchar}(150)", false);
+        }
+    }
+}
+
 
 function upgradeSurveys165()
 {

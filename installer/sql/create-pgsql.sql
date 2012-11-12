@@ -198,9 +198,9 @@ CREATE TABLE prefix_participant_shares (
 --
 CREATE TABLE prefix_participants (
   "participant_id" character varying(50) PRIMARY KEY NOT NULL,
-  "firstname" character varying(40),
-  "lastname" character varying(40),
-  "email" character varying(80),
+  "firstname" character varying(150),
+  "lastname" character varying(150),
+  "email" character varying(254),
   "language" character varying(40),
   "blacklisted" character varying(1) NOT NULL,
   "owner_uid" integer NOT NULL
@@ -586,11 +586,6 @@ create index saved_control_idx2 on prefix_saved_control (sid);
 create index parent_qid_idx on prefix_questions (parent_qid);
 create index labels_code_idx on prefix_labels (code);
 
-
---
--- Version Info
---
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '165');
 INSERT INTO prefix_question_types (tid, "order", "group", name, "class", legacy, system) VALUES
 (1, 1, 1, '5 point choice', 'FiveList', '5', 'Y'),
 (2, 2, 1, 'List (dropdown)', 'Select', '!', 'Y'),
@@ -627,3 +622,8 @@ INSERT INTO prefix_question_type_groups (id, name, "order", system) VALUES
 (3, 'Mask questions', 3, 'Y'),
 (4, 'Text questions', 4, 'Y'),
 (5, 'Multiple choice questions', 5, 'Y');
+
+--
+-- Version Info
+--
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '166');

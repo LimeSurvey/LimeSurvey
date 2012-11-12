@@ -192,9 +192,9 @@ CREATE TABLE `prefix_participant_shares` (
 --
 CREATE TABLE `prefix_participants` (
   `participant_id` varchar(50) NOT NULL,
-  `firstname` varchar(40) DEFAULT NULL,
-  `lastname` varchar(40) DEFAULT NULL,
-  `email` varchar(80) DEFAULT NULL,
+  `firstname` varchar(150) DEFAULT NULL,
+  `lastname` varchar(150) DEFAULT NULL,
+  `email` varchar(254) DEFAULT NULL,
   `language` varchar(40) DEFAULT NULL,
   `blacklisted` varchar(1) NOT NULL,
   `owner_uid` int(11) NOT NULL,
@@ -585,12 +585,6 @@ create index `quota_idx2` on `prefix_quota` (`sid`);
 create index `saved_control_idx2` on `prefix_saved_control` (`sid`);
 create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 
-
---
--- Version Info
---
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '165');
-
 INSERT INTO `prefix_question_types` (`tid`, `order`, `group`, `name`, `class`, `legacy`, `system`) VALUES
 (1, 1, 1, '5 point choice', 'FiveList', '5', 'Y'),
 (2, 2, 1, 'List (dropdown)', 'Select', '!', 'Y'),
@@ -628,3 +622,8 @@ INSERT INTO `prefix_question_type_groups` (`id`, `name`, `order`, `system`) VALU
 (3, 'Mask questions', 3, 'Y'),
 (4, 'Text questions', 4, 'Y'),
 (5, 'Multiple choice questions', 5, 'Y');
+
+--
+-- Version Info
+--
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '166');
