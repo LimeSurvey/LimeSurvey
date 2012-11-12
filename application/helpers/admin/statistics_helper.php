@@ -2599,7 +2599,6 @@ class statistics_helper {
         $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
 
-        $fieldmap=createFieldMap($surveyid, "full", false, false, $statlangcode); // HEAD
 
         // Set language for questions and answers to base language of this survey
         $language = $statlangcode;
