@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-11-11 23:05:51+00:00\n"
+"POT-Creation-Date: 2012-11-12 23:06:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1679,7 +1679,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:400
 #: application/controllers/admin/statistics.php:121
-#: application/helpers/admin/statistics_helper.php:3108
+#: application/helpers/admin/statistics_helper.php:3129
 msgid "Quick statistics"
 msgstr ""
 
@@ -4499,6 +4499,10 @@ msgstr ""
 msgid "Can't update labels because you are using duplicated codes"
 msgstr ""
 
+#: application/helpers/admin/statistics_helper.php:62
+msgid "The fonts file %s was not found in <limesurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory."
+msgstr ""
+
 #: application/helpers/admin/statistics_helper.php:165
 #: application/helpers/admin/statistics_helper.php:1530
 #: application/helpers/admin/statistics_helper.php:1764
@@ -4642,7 +4646,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1109
 #: application/helpers/admin/statistics_helper.php:1773
 #: application/helpers/admin/statistics_helper.php:1794
-#: application/helpers/admin/statistics_helper.php:3270
+#: application/helpers/admin/statistics_helper.php:3291
 msgid "Browse"
 msgstr ""
 
@@ -4738,38 +4742,54 @@ msgstr ""
 msgid "Enable map display"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3108
-#: application/helpers/admin/statistics_helper.php:3222
-#: application/helpers/admin/statistics_helper.php:3339
-#: application/helpers/admin/statistics_helper.php:3340
-#: application/helpers/admin/statistics_helper.php:3343
+#: application/helpers/admin/statistics_helper.php:3101
+msgid "Statistic survey %s"
+msgstr ""
+
+#: application/helpers/admin/statistics_helper.php:3103
+msgid "Statistic"
+msgstr ""
+
+#: application/helpers/admin/statistics_helper.php:3103
+msgid "Survey %s"
+msgstr ""
+
+#: application/helpers/admin/statistics_helper.php:3118
+msgid "page"
+msgstr ""
+
+#: application/helpers/admin/statistics_helper.php:3129
+#: application/helpers/admin/statistics_helper.php:3243
+#: application/helpers/admin/statistics_helper.php:3360
+#: application/helpers/admin/statistics_helper.php:3361
+#: application/helpers/admin/statistics_helper.php:3364
 #: application/views/admin/participants/displayParticipants_view.php:297
 #: application/views/admin/survey/listSurveys_view.php:42
 #: application/views/admin/survey/surveybar_view.php:3
 msgid "Survey"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3194
-#: application/helpers/admin/statistics_helper.php:3213
-#: application/helpers/admin/statistics_helper.php:3232
+#: application/helpers/admin/statistics_helper.php:3215
+#: application/helpers/admin/statistics_helper.php:3234
+#: application/helpers/admin/statistics_helper.php:3253
 msgid "Number of records in this query:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3197
-#: application/helpers/admin/statistics_helper.php:3214
-#: application/helpers/admin/statistics_helper.php:3234
+#: application/helpers/admin/statistics_helper.php:3218
+#: application/helpers/admin/statistics_helper.php:3235
+#: application/helpers/admin/statistics_helper.php:3255
 msgid "Total records in survey:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3203
-#: application/helpers/admin/statistics_helper.php:3217
-#: application/helpers/admin/statistics_helper.php:3241
+#: application/helpers/admin/statistics_helper.php:3224
+#: application/helpers/admin/statistics_helper.php:3238
+#: application/helpers/admin/statistics_helper.php:3262
 msgid "Percentage of total:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3221
-#: application/helpers/admin/statistics_helper.php:3222
-#: application/helpers/admin/statistics_helper.php:3231
+#: application/helpers/admin/statistics_helper.php:3242
+#: application/helpers/admin/statistics_helper.php:3243
+#: application/helpers/admin/statistics_helper.php:3252
 msgid "Results"
 msgstr ""
 
