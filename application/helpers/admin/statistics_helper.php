@@ -2981,10 +2981,7 @@ class statistics_helper {
         {
             $statlangcode =  getBaseLanguageFromSurveyID($surveyid);
         }
-        else
-        {
-            $statlang = new Limesurvey_lang($statlangcode);
-        }
+        $statlang = new Limesurvey_lang($statlangcode);
 
         /*
         * this variable is used in the function shortencode() which cuts off a question/answer title
@@ -3007,7 +3004,7 @@ class statistics_helper {
         $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
 
-        $fieldmap=createFieldMap($surveyid, "full", false, false, $statlang->getlangcode());
+        $fieldmap=createFieldMap($surveyid, "full", false, false, $statlangcode);
 
         // Set language for questions and answers to base language of this survey
         $language=$statlangcode;
@@ -3083,19 +3080,44 @@ class statistics_helper {
         {
             //require_once('classes/tcpdf/mypdf.php');
             Yii::import('application.libraries.admin.pdf', true);
-            
+            $pdfdefaultfont=Yii::app()->getConfig('pdfdefaultfont');
+            $pdffontsize=Yii::app()->getConfig('pdffontsize');
+
             // create new PDF document
             $this->pdf = new pdf();
-           
+            if ($pdfdefaultfont=='auto')
+            {
+                $pdfdefaultfont=PDF_FONT_NAME_DATA;
+            }
+            if ($pdffontsize=='auto')
+            {
+                $pdffontsize=PDF_FONT_SIZE_MAIN;
+            }
+
             $surveyInfo = getSurveyInfo($surveyid,$language);
 
             // set document information
             $this->pdf->SetCreator(PDF_CREATOR);
             $this->pdf->SetAuthor('LimeSurvey');
-            $this->pdf->SetTitle('Statistic survey '.$surveyid);
+            $this->pdf->SetTitle(sprintf($statlang->gT("Statistic survey %s"),$surveyid));
             $this->pdf->SetSubject($surveyInfo['surveyls_title']);
-            $this->pdf->SetKeywords('LimeSurvey, Statistics, Survey '.$surveyid.'');
+            $this->pdf->SetKeywords('LimeSurvey,'.$statlang->gT("Statistic").', '.sprintf($statlang->gT("Survey %s"),$surveyid));
             $this->pdf->SetDisplayMode('fullpage', 'two');
+
+            //Set some pdf metadata
+            $lg=array();
+            $lg['a_meta_charset'] = 'UTF-8';
+            if (getLanguageRTL($statlangcode))
+            {
+                $lg['a_meta_dir'] = 'rtl';
+            }
+            else
+            {
+                $lg['a_meta_dir'] = 'ltr';
+            }
+            $lg['a_meta_language'] = $statlangcode;
+            $lg['w_page']=$statlang->gT("page");
+            $this->pdf->setLanguageArray($lg);
 
             // set header and footer fonts
             $this->pdf->setHeaderFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_MAIN));
@@ -3105,8 +3127,8 @@ class statistics_helper {
             $headerlogo = 'statistics.png';
             // when png crashes, try uncommenting next line
             //$headerlogo = '';
-            $this->pdf->SetHeaderData($headerlogo, 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");          
-
+            $this->pdf->SetHeaderData($headerlogo, 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
+            $this->pdf->SetFont($pdfdefaultfont, '', $pdffontsize);
             // set default monospaced font
             $this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
         }
