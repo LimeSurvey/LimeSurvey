@@ -1079,7 +1079,6 @@ function db_upgrade_all($oldversion) {
 
 function upgradeTokenTables166()
 {
-    debugbreak();
     $sVarchar = Yii::app()->getConfig('varchar');
     $oSchema=Yii::app()->db->schema;
     $sDBDriverName=setsDBDriverName();
