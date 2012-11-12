@@ -354,6 +354,20 @@ $config['casAuthUri'] = '/cas-server/';
 *  Set this to specific font-file (for example 'vera.ttf') or set it to 'auto' and LimeSurvey tried to pick the best font depending on your survey base language
 */
 $config['chartfontfile']='auto';
+/**
+*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific langage - this font must reside in <limesurvey root folder>/fonts
+*  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/fonts, an alert is sent to admin
+*/
+$config['alternatechartfontfile']=array(
+    'hi'=>'FreeSans.ttf',
+    'ja'=> 'migmix-1p-regular.ttf',
+    'ko'=>'UnBatang.ttf',
+    'si'=>'FreeSans.ttf',
+    'th'=>'TlwgTypist.ttf',
+    'zh-Hant-HK'=>'fireflysung.ttf',
+    'zh-Hant-HK'=>'fireflysung.ttf',
+    'zh-Hant-HK'=>'fireflysung.ttf',
+);
 
 /**
 *  $chartfontsize - set the size of the font to created the charts in statistics
