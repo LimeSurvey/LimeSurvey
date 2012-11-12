@@ -5,8 +5,8 @@
 <script src="<?php echo Yii::app()->getConfig('generalscripts') . "jquery/jquery.ui.nestedSortable.js" ?>" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "attributeMapToken.js" ?>" type="text/javascript"></script>
 <script type="text/javascript">
-    var redUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/displayParticipants"; ?>";
-    var copyUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/addToCentral"; ?>";
+    var redUrl = "<?php echo Yii::app()->createUrl("/admin/participants/displayParticipants"); ?>";
+    var copyUrl = "<?php echo Yii::app()->createUrl("/admin/participants/addToCentral"); ?>";
     var surveyId = "<?php echo Yii::app()->request->getQuery('sid'); ?>";
 
     /* LANGUAGE */
