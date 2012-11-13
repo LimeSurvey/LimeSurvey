@@ -1136,7 +1136,7 @@ span.qnumcode {
 }
 
 /* Question Index */
-.withindex .outerframe{
+.withindex.outerframe{
   margin-left: 1em;
   margin-right: 26em;
 }
