@@ -58,6 +58,9 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.00+ (build 121113) to 2.00+ (build 121114) Nov 13, 2012
+Fixed issue: AcceptPathInfo directory in .htaccess makes application inaccessible on older apache versions
+
 Changes from 2.00+ (build 121106) to 2.00+ (build 121113) Nov 13, 2012
 -Fixed issue #6605: Saving global settings returns to invalid referer URL (Carsten Schmitz)
 -Fixed issue #6720: Attribute search in participant grid case-sensitive and needs enter to run (Carsten Schmitz)
