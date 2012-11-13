@@ -39,9 +39,15 @@ class LSYii_Application extends CWebApplication
         if ($config['config']['debug'] == 2)
         {
             // If debug = 2 we add firebug / console logging for all trace messages
-            // If you want to var_dump $someObject you could do:
-            // Yii::trace(CVarDumper::dumpAsString($someObject), 'vardump')
-            // This statement won't cause any harm or output when debug is 1 or 0 
+            // If you want to var_dump $config you could do:
+            // 
+            // Yii::trace(CVarDumper::dumpAsString($config), 'vardump');
+            // 
+            // or shorter:
+            // 
+            //traceVar($config);
+            // 
+            // This statement won't cause any harm or output when debug is 1 or 0             
             $config['preload'][] = 'log';
             if (array_key_exists('components', $config) && array_key_exists('log', $config['components'])) {
                 // We already have some custom logging, only add our own
@@ -173,4 +179,21 @@ class LSYii_Application extends CWebApplication
         $this->lang = $lang;
     }
 
+}
+
+/**
+ * If debug = 2 in application/config.php this will produce output in the console / firebug
+ * similar to var_dump. It will also include the filename and line that called this method.
+ * 
+ * @param mixed $variable The variable to be dumped
+ * @param int $depth Maximum depth to go into the variable, default is 10
+ */
+function traceVar($variable, $depth = 10) {
+    $msg = CVarDumper::dumpAsString($variable, $depth, false);
+    $trace=array_shift(debug_backtrace());
+	if(isset($trace['file'],$trace['line']) && strpos($trace['file'],YII_PATH)!==0)
+	{
+        $msg = $trace['file'].' ('.$trace['line']."):\n" . $msg;
+    }
+    Yii::trace($msg, 'vardump');
 }
