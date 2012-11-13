@@ -286,11 +286,29 @@ function sanitize_labelname($string)
 function sanitize_float($float, $min='', $max='')
 {
     $float = str_replace(',','.',$float);
-    $float = floatval($float);
-    if((($min != '') && ($float < $min)) || (($max != '') && ($float > $max)))
-    return FALSE;
-    return $float;
+    // GMP library allows for high precision and high value numbers
+    if (function_exists('gmp_init'))
+    {
+        $gNumber = gmp_init($float);
+        if(($min != '' && gmp_cmp($gNumber,$min)<0) || ($max != '' && gmp_cmp($gNumber,$max)>0))
+        {
+            return FALSE;
+        }
+        else
+        {
+            return gmp_strval($gNumber);
+        }
+    }
+    else
+    {
+        $fNumber = str_replace(',','.',$float);
+        $fNumber = floatval($fNumber);
+        if((($min != '') && ($fNumber < $min)) || (($max != '') && ($fNumber > $max)))
+            return FALSE;
+        return $fNumber; 
+    }
 }
+
 
 // glue together all the other functions
 function sanitize($input, $flags, $min='', $max='')
