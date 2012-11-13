@@ -127,23 +127,17 @@ ul.cols-2 li,ul.cols-2-ul,ul.cols-3 li,ul.cols-3-ul,ul.cols-4 li,ul.cols-4-ul,ul
 #tokenform input.submit {
   margin-right: 18em;margin-left: 0;
 }
-.outerframe.withindex,.withindex .outerframe{
-  margin-left: 26em;
-  margin-right: 1em;
-}
-#index {
-  left: 0;
-}
-#index h3 {
-  margin: 0.5em 0.5em 0 0;
-}
+
+/* Question Index */
+
 #index .container .row {
-  text-align: right;
+	text-align: right;
 }
+
 #index .container .row .hdr {
-  text-align: left;
-  padding: 0 0 0 0.5em;
+	padding: 0 0.5em 0 0;
 }
+
 /* ranking questions */
 .dragDropTable .dragDropChoiceList li,
 .dragDropTable .dragDropRankList li {

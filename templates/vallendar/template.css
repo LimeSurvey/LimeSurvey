@@ -1228,7 +1228,7 @@ table.statisticstable strong {
 
 #index h2 {
 	margin: 1px;
-	padding: 0.5em 0 0.5em 3px;
+	padding: 0.5em 3px 0.5em 3px;
 	color: #17479E;
     font-size: small;
 	background-color: #CCCCCC;
@@ -1240,7 +1240,7 @@ table.statisticstable strong {
 
 #index h3 {
 	margin: 1em 0 0.25em 0;
-	padding: 0 0 0 3px;
+	padding: 0 3px;
     font-size: small;
     font-weight: bold;
 }

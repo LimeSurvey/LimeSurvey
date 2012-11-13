@@ -52,3 +52,13 @@ td.questiontext {
 .choice-5-pt-radio .answer ul, .yes-no .answer ul, .gender .answer ul {
     text-align: right;
 }
+
+/* Question Index */
+
+#index .container .row {
+	text-align: right;
+}
+
+#index .container .row .hdr {
+	padding: 0 0.5em 0 0;
+}

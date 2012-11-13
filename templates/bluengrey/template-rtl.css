@@ -180,22 +180,13 @@ table.statisticstable {
   margin-right:5px;margin-left: 0;
 }
 /* Question Index */
-.outerframe.withindex,.withindex .outerframe{
-  margin-right: 1em;
-  margin-left: 26em;
-}
-#index {
-  left: 0;
-  width: 25em;
-  border-left: 0px none #FFF;
-  border-right: 1px solid #000;
-}
+
 #index .container .row {
-  text-align: right;
+	text-align: right;
 }
+
 #index .container .row .hdr {
-  text-align: left;
-  padding: 0 0 0 0.5em;
+	padding: 0 0.5em 0 0;
 }
 
 /*** Start jQuery UI Theme Styles ***/

@@ -131,22 +131,15 @@ table.rank td.helptext {
 #tokenform input.submit {
   margin:1em 18em 1em 0;
 }
-.outerframe.withindex, .withindex .outerframe{
-  margin-left: 26em;
-  margin-right: 1em;
-}
-#index {
-  left: 0;
-  border-right: 1px solid #000;
-}
-#index h3 {
-  margin: 0.5em 0.5em 0 0;
-}
+
+/* Question Index */
+
 #index .container .row {
-  text-align: right;
+	text-align: right;
 }
+
 #index .container .row .hdr {
-  text-align: left;
+	padding: 0 0.5em 0 0;
 }
 
 /* ranking questions */

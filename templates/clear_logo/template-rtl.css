@@ -116,22 +116,13 @@ table.rank td.helptext {
 }
 
 /* Question Index */
-.outerframe.withindex,.withindex .outerframe{
-  margin-right: 1em;
-  margin-left: 26em;
-}
-#index {
-  left: 0;
-}
-#index h2 { 
-  text-align: left;
-}
+
 #index .container .row {
-  text-align: right;
+	text-align: right;
 }
+
 #index .container .row .hdr {
-  text-align: left;
-  padding: 0 0 0 0.5em;
+	padding: 0 0.5em 0 0;
 }
 
 /* ranking questions */
