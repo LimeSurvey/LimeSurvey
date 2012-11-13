@@ -56,7 +56,54 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
-Changes from 2.00+ (build 121102) to 2.00+ (build 121104) Nov 4, 2012
+
+
+Changes from 2.00+ (build 121106) to 2.00+ (build 121113) Nov 13, 2012
+-Fixed issue #6605: Saving global settings returns to invalid referer URL (Carsten Schmitz)
+-Fixed issue #6720: Attribute search in participant grid case-sensitive and needs enter to run (Carsten Schmitz)
+-Fixed issue #6773: Missing translations in CPDB (Carsten Schmitz)
+-Fixed issue #6828: Web server authentication not working (Carsten Schmitz)
+-Fixed issue #6830: Missing images in administration when using IE (Carsten Schmitz)
+-Fixed issue #6834: "Subtotals based on displayed questions" doesn't work with Multiple Choices questions (Denis Chenu)
+-Fixed issue #6836: In PDF export the field placeholders are not replaced (Carsten Schmitz)
+-Fixed issue #6837: Unable to use {QCode} or {INSERTANS:SGQA} in end url (Carsten Schmitz)
+-Fixed issue #6838: RemoteControl export_responses returns an error (Carsten Schmitz)
+-Fixed issue #6840: When copying a shipped template the "images" folder is missing (Carsten Schmitz)
+-Fixed issue #6843: Date/Time question type yields wrong values when using a custom date format (Carsten Schmitz)
+-Fixed issue #6845: PDF statistics don't get pdfdefaultfont and pdffontsize (Denis Chenu)
+-Fixed issue #6846: Graph statistics in Arabic are bad (Carsten Schmitz)
+-Fixed issue #6848: Unable to use administration if PECL http extension is installed on the server (Carsten Schmitz)
+-Fixed issue #6849: Bad caracter for statistics graph in some language (Denis Chenu)
+-Fixed issue: Bad label for Not displayed (Denis Chenu)
+-Fixed issue: CPDB CSV export not functional (Carsten Schmitz)
+-Fixed issue: JavaScript errors in CPDB share panel and attribute control (Carsten Schmitz)
+-Fixed issue: Problem on database upgrade (Carsten Schmitz)
+-Fixed issue: SPSS export VARIABLE LABELS error fixed (misnyo)
+-Fixed issue: SQL statement shown when invalid SID is given (Carsten Schmitz)
+-Fixed issue: strip_query_from_referrer_url config parameter not working (Carsten Schmitz)
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Croatian by daniflo
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by hirvojo1, shrike
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Indonesian by sys_sby
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by peterhol, pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by wagner, mauriciofurtado
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Turkish by kayazeren
+#Updated translation: Ukrainian by myksyd
+
+
+Changes from 2.00+ (build 121104) to 2.00+ (build 121106) Nov 6, 2012
 -Fixed issue #6801: Reporting graph issue (Menno Dekker)
 -Fixed issue #6331: Opt-in and opt-out links not working (Carsten Schmitz)
 -Fixed issue #6806: If one of a 1-5 answer is never selected, there is a random value in statistics graph legend (Carsten Schmitz)
