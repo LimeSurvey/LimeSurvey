@@ -101,7 +101,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     Yii::app()->loadHelper('surveytranslator');
     $questiondetails = array('sid' => 0, 'gid' => 0, 'qid' => 0, 'aid' =>0);
-    if(isset($question) && isset($question['sgq'])) $questiondetails=getSIDGIDQIDAIDType($question['sgq']); //Gets an array containing SID, GID, QID, AID and Question Type)
+    if(isset($question) && isset($question['sgq'])) {
+        $searchCode = $question['sgq'];
+        if (isset($question['aid'])) {
+            $searchCode .= $question['aid'];
+        }
+        $questiondetails=getSIDGIDQIDAIDType($searchCode); //Gets an array containing SID, GID, QID, AID and Question Type)
+    }
 
     if (isset($thissurvey['sid'])) {
         $surveyid = $thissurvey['sid'];
