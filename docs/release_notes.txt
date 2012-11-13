@@ -58,6 +58,11 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.00+ (build 121114) to 2.00+ (build 121115) Nov 13, 2012
+-Fixed issue #6299: Slow on randomization groups (Menno Dekker)
+-Fixed issue #6793: Button is only partly shown (tpartner)
+-Fixed issue: Invalid configuration written when installer finishes (Menno Dekker)
+
 Changes from 2.00+ (build 121113) to 2.00+ (build 121114) Nov 13, 2012
 Fixed issue: AcceptPathInfo directory in .htaccess makes application inaccessible on older apache versions
 
