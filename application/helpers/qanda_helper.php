@@ -3701,16 +3701,18 @@ function do_numerical($ia)
         $acomma="";
         $extraclass .=" integeronly";
         $answertypeclass = " integeronly";
+        $fValue=number_format($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], 0, '', '');
     }
     else
     {
         $acomma=getRadixPointData($thissurvey['surveyls_numberformat']);
         $acomma = $acomma['seperator'];
+        $fValue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
 
     }
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeperator = $sSeperator['seperator'];
-    $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+    $fValue = str_replace('.',$sSeperator,$fValue);
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -3726,7 +3728,7 @@ function do_numerical($ia)
     $answer = "<p class='question answer-item text-item numeric-item {$extraclass}'>"
     . " <label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>\n$prefix\t"
     . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\"  title=\"".$clang->gT('Only numbers may be entered in this field.')."\" "
-    . "id=\"answer{$ia[1]}\" value=\"{$dispVal}\" onkeyup='$checkconditionFunction(this.value, this.name, this.type)' "
+    . "id=\"answer{$ia[1]}\" value=\"{$fValue}\" onkeyup='$checkconditionFunction(this.value, this.name, this.type)' "
     . " {$maxlength} />\t{$suffix}\n</p>\n";
     if ($aQuestionAttributes['hide_tip']==0)
     {

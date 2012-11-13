@@ -1750,6 +1750,17 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                     $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
                 }
                 break;
+            case 'N':
+                if (trim($sValue)!='')
+                {
+                    $qidattributes = getQuestionAttributeValues($fields['qid']);
+                    if($qidattributes['num_value_int_only'])
+                    {
+                        $sValue=number_format($sValue, 0, '', '');
+
+                    }
+                }
+                break;
             case "L":
             case "!":
             case "O":
