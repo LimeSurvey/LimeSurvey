@@ -1,5 +1,5 @@
 <?php
-abstract class QuestionModule
+abstract class QuestionModule extends CComponent
 {
     protected $data;
     protected $attributes;
