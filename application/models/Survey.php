@@ -353,4 +353,20 @@ class Survey extends CActiveRecord
             Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
         }
     }
+    
+    public function findByPk($pk, $condition = '', $params = array()) {
+        static $lastResult = array();
+        if (empty($condition) && empty($params)) {
+            if (array_key_exists($pk, $lastResult)) {
+                return $lastResult[$pk];
+            } else {
+                $result = parent::findByPk($pk, $condition, $params);
+                $lastResult[$pk] = $result;
+                
+                return $result;
+            }
+        }
+        
+        return parent::findByPk($pk, $condition, $params);        
+    }
 }

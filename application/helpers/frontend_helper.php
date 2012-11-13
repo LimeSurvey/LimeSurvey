@@ -1929,7 +1929,7 @@
     // If we have randomization groups set, then lets cycle through each group and
     // replace questions in the group with a randomly chosen one from the same group
     if (count($randomGroups) > 0)
-    {
+    {       
         $copyFieldMap = array();
         $oldQuestOrder = array();
         $newQuestOrder = array();
@@ -1944,7 +1944,7 @@
         }
 
         // Loop through the fieldmap and swap each question as they come up
-        while (list($fieldkey,$fieldval) = each($fieldmap))
+        foreach ($fieldmap as $fieldkey => $fieldval)
         {
             $found = 0;
             foreach ($randomGroups as $gkey=>$gval)
@@ -1954,19 +1954,11 @@
                 {
                     // Get the swapped question
                     $oldQuestFlip = array_flip($oldQuestOrder[$gkey]);
-                    $qfieldmap = createFieldMap($surveyid,'full',true,$newQuestOrder[$gkey][$oldQuestFlip[$fieldval['qid']]],$_SESSION['survey_'.$surveyid]['s_lang']);
-                    unset($qfieldmap['id']);
-                    unset($qfieldmap['submitdate']);
-                    unset($qfieldmap['lastpage']);
-                    unset($qfieldmap['lastpage']);
-                    unset($qfieldmap['token']);
-                    unset($qfieldmap['startlanguage']);
-                    foreach ($qfieldmap as $tkey=>$tval)
-                    {
-                        // Assign the swapped question (Might be more than one field)
-                        $tval['random_gid'] = $fieldval['gid'];
-                        //$tval['gid'] = $fieldval['gid'];
-                        $copyFieldMap[$tkey]=$tval;
+                    foreach($fieldmap as $key => $field) {
+                        if (isset($field['qid']) && $field['qid'] == $newQuestOrder[$gkey][$oldQuestFlip[$fieldval['qid']]]) {
+                            $field['random_gid'] = $fieldval['gid'];
+                            $copyFieldMap[$key] = $field;
+                        }
                     }
                     $found = 1;
                     break;
