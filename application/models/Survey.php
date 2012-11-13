@@ -361,7 +361,9 @@ class Survey extends CActiveRecord
                 return $lastResult[$pk];
             } else {
                 $result = parent::findByPk($pk, $condition, $params);
-                $lastResult[$pk] = $result;
+                if (!is_null($result)) {
+                    $lastResult[$pk] = $result;
+                }
                 
                 return $result;
             }
