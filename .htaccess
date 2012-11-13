@@ -9,4 +9,4 @@
     RewriteRule . index.php
 </IfModule>
 # General setting to properly handle LimeSurvey paths
-AcceptPathInfo on
+# AcceptPathInfo on
