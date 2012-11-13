@@ -1688,13 +1688,23 @@ function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
 
     $resultdata=Yii::app()->db->createCommand("select * from {{labelsets}}");
     foreach ($resultdata->queryAll() as $datarow){
-        $toreplace=str_replace($sOldLanguageCode,$sNewLanguageCode,$datarow['languages']);
+        $aLanguages=explode(' ',$datarow['languages']);
+        foreach ($aLanguages as &$sLanguage)
+        {
+            if ($sLanguage==$sOldLanguageCode) $sLanguage=$sNewLanguageCode; 
+        }
+        $toreplace=implode(' ',$aLanguages);
         Yii::app()->db->createCommand()->update('{{labelsets}}',array('languages'=>$toreplace),'lid=:lid',array(':lid'=>$datarow['lid']));
     }
 
     $resultdata=Yii::app()->db->createCommand("select * from {{surveys}}");
     foreach ($resultdata->queryAll() as $datarow){
-        $toreplace=str_replace($sOldLanguageCode,$sNewLanguageCode,$datarow['additional_languages']);
+        $aLanguages=explode(' ',$datarow['additional_languages']);
+        foreach ($aLanguages as &$sLanguage)
+        {
+            if ($sLanguage==$sOldLanguageCode) $sLanguage=$sNewLanguageCode; 
+        }
+        $toreplace=implode(' ',$aLanguages);
         Yii::app()->db->createCommand()->update('{{surveys}}',array('additional_languages'=>$toreplace),'sid=:sid',array(':sid'=>$datarow['sid']));
     }
 }
