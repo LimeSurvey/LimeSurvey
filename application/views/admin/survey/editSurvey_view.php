@@ -47,5 +47,5 @@
             </li>
         </ul>
     </div>
-    <p><button id='btnSave'>Save</button> <button id='btnCancel'>Cancel</button> </p>
+    <p><button id='btnSaveParams'><?php $clang->eT('Save'); ?></button> <button id='btnCancelParams'><?php $clang->eT('Cancel'); ?></button> </p>
 </div>

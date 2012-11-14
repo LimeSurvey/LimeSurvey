@@ -46,11 +46,11 @@ $(document).ready(function(){
                                               onClickButton: newParameter});
     $("#dlgEditParameter").dialog({ autoOpen: false,
                                     width: 700 });
-    $('#btnCancel').click(function(){
+    $('#btnCancelParams').click(function(){
         $("#dlgEditParameter").dialog("close");
     });
 
-    $('#btnSave').click(saveParameter);
+    $('#btnSaveParams').click(saveParameter);
     $('#addnewsurvey').submit(PostParameterGrid);
     $( "#tabs" ).bind( "tabsselect", function(event, ui) {
         if (ui.index>4)    // Hide on import and copy tab, otherwise show
