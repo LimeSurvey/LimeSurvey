@@ -7602,6 +7602,7 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
     WHERE sid = {$surveyid}) AS c ON b.uid = c.uid WHERE c.uid IS NULL
     ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL";
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query();  //Checked
+    $aResult=$surveyidresult->readAll();
 
     $surveyselecter = "";
 
@@ -7610,7 +7611,7 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
         $authorizedGroupsList=getUserGroupList(NULL, 'simplegidarray');
     }
 
-    foreach($surveyidresult->readAll() as $sv)
+    foreach($aResult as $sv)
     {
         if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
         in_array($sv['ugid'],$authorizedGroupsList))
