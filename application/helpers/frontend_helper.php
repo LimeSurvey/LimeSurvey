@@ -2534,7 +2534,10 @@ function display_first_page() {
 
     $clang = Yii::app()->lang;
 
+    // Fill some necessary var for template
     $navigator = surveymover();
+    $sitename = Yii::app()->getConfig('sitename');
+    $languagechanger=makeLanguageChangerSurvey($clang->langcode);
 
     sendCacheHeaders();
     doHeader();
