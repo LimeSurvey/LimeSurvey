@@ -298,13 +298,14 @@ class Usergroups extends Survey_Common_Action
                 //$this->user_in_groups_model = new User_in_groups;
                 $eguquery = "SELECT * FROM {{user_in_groups}} AS a INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
                 $eguresult = dbExecuteAssoc($eguquery);
+                $aUserInGroupsResult = $eguresult->readAll();
                 $query2 = "SELECT ugid FROM {{user_groups}} WHERE ugid = " . $ugid . " AND owner_id = " . Yii::app()->session['loginID'];
                 $result2 = dbSelectLimitAssoc($query2, 1);
                 $row2 = $result2->readAll();
                 $row = 1;
                 $userloop = array();
                 $bgcc = "oddrow";
-                foreach ($eguresult->readAll() as $egurow)
+                foreach ($aUserInGroupsResult as $egurow)
                 {
                     if ($bgcc == "evenrow")
                         $bgcc = "oddrow";

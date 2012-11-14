@@ -7562,8 +7562,9 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
         $sSurveyIDQuery.='and superadmin=0 ';
     }
     $sSurveyIDQuery.= 'ORDER BY a.users_name';
-    $surveyidresult = Yii::app()->db->createCommand($sSurveyIDQuery)->query();  //Checked
-
+    $oSurveyIDResult = Yii::app()->db->createCommand($sSurveyIDQuery)->query();  //Checked
+    $aSurveyIDResult = $oSurveyIDResult->readAll();
+    
     $surveyselecter = "";
 
     if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
@@ -7572,7 +7573,7 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
         $authorizedUsersList = getUserList('onlyuidarray');
     }
 
-        foreach($surveyidresult->readAll() as $sv)
+        foreach($aSurveyIDResult as $sv)
         {
             if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
             in_array($sv['uid'],$authorizedUsersList))
