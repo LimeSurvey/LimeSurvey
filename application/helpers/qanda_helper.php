@@ -3696,7 +3696,7 @@ function do_numerical($ia)
         $tiwidth=10;
     }
 
-    if (trim($aQuestionAttributes['num_value_int_only'])==1)
+    if (trim($aQuestionAttributes['num_value_int_only'])==1 && is_float($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
     {
         $acomma="";
         $extraclass .=" integeronly";

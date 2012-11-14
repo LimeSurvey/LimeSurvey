@@ -138,8 +138,8 @@
                 <?php if ($activated != "Y")
                     { ?>
                     <li>
-                        <label for='gid'><?php $clang->eT("Question group:"); ?></label>
-                        <select name='gid' id='gid'>
+                        <label for='copygid'><?php $clang->eT("Question group:"); ?></label>
+                        <select name='copygid' id='copygid'>
 
                             <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
                         </select></li>
