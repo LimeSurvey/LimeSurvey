@@ -64,15 +64,12 @@ class VerificationController extends LSYii_Controller
             $font_color = $blue;
         }
 
-        $font_rand = rand(1,3);
+        $font_rand = rand(1,2);//Maybe add other specific hard font
         if ($font_rand == 1)
         {
-            $font = $rootdir.DIRECTORY_SEPARATOR."fonts".DIRECTORY_SEPARATOR."verabd.ttf";
-        } else if ($font_rand == 2) {
-            $font = $rootdir.DIRECTORY_SEPARATOR."fonts".DIRECTORY_SEPARATOR."vera.ttf";
-        } else if ($font_rand == 3)
-        {
-            $font = $rootdir.DIRECTORY_SEPARATOR."fonts".DIRECTORY_SEPARATOR."verait.ttf";
+            $font = $rootdir."/fonts/FreeSans.ttf";
+        } else {
+            $font = $rootdir."/fonts/DejaVuSans.ttf";
         }
 
         $line_rand = rand(1,3);
