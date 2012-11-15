@@ -71,7 +71,6 @@ class ExportSurveyResultsService
         {
             safeDie('At least one column must be selected for export.');
         }
-        
         //echo $oOptions->toString().PHP_EOL;
         $writer = null;
 
@@ -104,20 +103,21 @@ class ExportSurveyResultsService
 
         $iBatchSize=100; $iCurrentRecord=$oOptions->responseMinRecord-1;
         $bMoreRecords=true; $first=true;
+        $sFile='';
         while ($bMoreRecords)
         {
- 
             $iExported= $surveyDao->loadSurveyResults($survey, $iBatchSize, $iCurrentRecord, $oOptions->responseMaxRecord, $sFilter);
             $iCurrentRecord+=$iExported;
-            $writer->write($survey, $sLanguageCode, $oOptions,$first);
+            $sFile.=$writer->write($survey, $sLanguageCode, $oOptions,$first);
             $first=false;
             $bMoreRecords= ($iExported == $iBatchSize);
         }
-
         $writer->close();
         if ($oOptions->output=='file')
         {
             return $writer->filename;
+        } else {
+            return $sFile;
         }
     }
 }
@@ -822,8 +822,8 @@ abstract class Writer implements IWriter
             $headers[] = $value;
         }
         }
-
         //Output the results.
+        $sFile='';
         foreach($survey->responses as $response)
         {
             $elementArray = array();
@@ -834,7 +834,6 @@ abstract class Writer implements IWriter
             {
                 continue;
             }
-
             foreach ($oOptions->selectedColumns as $column)
             {
                 $value = $response[$column];
@@ -852,13 +851,18 @@ abstract class Writer implements IWriter
                     }
                 }
                 else //Token table value
-                {     
+                {
                     $elementArray[]=$value;
                 }
             }
-
-            $this->outputRecord($headers, $elementArray, $oOptions);
+            if ($oOptions->output=='display')
+            {
+                $this->outputRecord($headers, $elementArray, $oOptions);
+            } else {
+                $sFile.=$this->outputRecord($headers, $elementArray, $oOptions);
+            }
         }
+        return $sFile;
     }
 
     public function stripTagsFull($string)
@@ -907,6 +911,7 @@ class CsvWriter extends Writer
     
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
+        $sRecord='';
         if(!$this->hasOutputHeader)
         {
             $index = 0;
@@ -915,14 +920,8 @@ class CsvWriter extends Writer
                 $headers[$index] = $this->csvEscape($header);
                 $index++;
             }
-
             //Output the header...once and only once.
-            $sRecord=implode($this->separator, $headers);
-            if ($oOptions->output='display')
-            {
-                echo $sRecord; 
-            }
-
+            $sRecord.=implode($this->separator, $headers);
             $this->hasOutputHeader = true;
         }
         //Output the values.
@@ -932,11 +931,13 @@ class CsvWriter extends Writer
             $values[$index] = $this->csvEscape($value);
             $index++;
         }
-        $sRecord=PHP_EOL.implode($this->separator, $values);
-        if ($oOptions->output='display')
+        $sRecord.=PHP_EOL.implode($this->separator, $values);
+        if ($oOptions->output=='display')
         {
             echo $sRecord; 
-    }
+        } else {
+            return $sRecord;
+        }
     }
 
     public function close()
