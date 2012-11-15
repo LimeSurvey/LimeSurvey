@@ -12,15 +12,13 @@
 $userlist = getUserList();
 foreach ($userlist as $usr) {
     if ($usr['uid'] == $postuserid) {
-        $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, participant_panel,manage_template, manage_label FROM {{users}} WHERE uid=".Yii::app()->session['loginID'];	//		added by Dennis
-        $sresult = dbSelectLimitAssoc($squery); //Checked
-        $parent = $sresult->read();
+        $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, participant_panel,manage_template, manage_label FROM {{users}} WHERE uid=".Yii::app()->session['loginID'];    //        added by Dennis
+        $parent = Yii::app()->db->createCommand($squery)->queryRow();
 
         // Initial SuperAdmin has parent_id == 0
         $adminquery = "SELECT uid FROM {{users}} WHERE parent_id=0";
-        $adminresult = dbSelectLimitAssoc($adminquery, 1);
-        $row=$adminresult->read();
-		?>
+        $row = Yii::app()->db->createCommand($adminquery)->queryRow();
+        ?>
 
         <tr>
 
@@ -48,7 +46,7 @@ foreach ($userlist as $usr) {
         if($parent['manage_label']) {
             echo "<th align='center'>".$clang->gT("Manage labels")."</th>\n";
         }
-		?>
+        ?>
 
         </tr>
         <tr>
@@ -111,7 +109,7 @@ foreach ($userlist as $usr) {
             }
             echo " /></td>\n";
         }
-		?>
+        ?>
         </tr>
 
         <tr>
@@ -124,6 +122,6 @@ foreach ($userlist as $usr) {
         </table>
         </form>
         <?php continue;
-    }	// if
-}	// foreach
+    }    // if
+}    // foreach
 ?>
