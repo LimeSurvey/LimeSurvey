@@ -1448,7 +1448,7 @@ class tokens extends Survey_Common_Action
                             //Update central participant survey_links
                             if(!empty($emrow['participant_id']))
                             {
-                                $slquery = Survey_links::model()->find('participant_id = "'.$emrow['participant_id'].'" AND survey_id = '.$iSurveyId.' AND token_id = '.$emrow['tid']);
+                                $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid',array(':pid'=>$emrow['participant_id'],':sid'=>$iSurveyId,':tid'=>$emrow['tid']));
                                 $slquery->date_invited = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
                                 $slquery->save();
                             }

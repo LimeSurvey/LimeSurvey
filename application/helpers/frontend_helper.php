@@ -1058,7 +1058,7 @@
                 if(!empty($participant_id))
                 {
                     //Update the survey_links table if necessary
-                    $slquery = Survey_links::model()->find('participant_id = "'.$participant_id.'" AND survey_id = '.$surveyid.' AND token_id = '.$token_id);
+                    $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$token_id));
                     if (!is_null($slquery))
                     {
                         $slquery->date_completed = $today;
@@ -1079,7 +1079,7 @@
                 if(!empty($participant_id))
                 {
                     //Update the survey_links table if necessary, to protect anonymity, use the date_created field date
-                    $slquery = Survey_links::model()->find('participant_id = "'.$participant_id.'" AND survey_id = '.$surveyid.' AND token_id = '.$token_id);
+                    $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$token_id));
                     $slquery->date_completed = $slquery->date_created;
                     $slquery->save();
                 }
