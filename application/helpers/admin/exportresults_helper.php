@@ -309,13 +309,14 @@ class SurveyDao
         if ($survey->info['savetimings']=="Y") {
             $oRecordSet->leftJoin("{{survey_" . $survey->id . "_timings}} survey_timings", "{{survey_" . $survey->id . "}}.id = survey_timings.id");
         }
-        
+
         if ($sFilter!='')
             $oRecordSet->where($sFilter);
-            if ($iOffset+$iLimit>$iMaximum)
-            {
-                $iLimit=$iMaximum-$iOffset;
-            }
+            
+        if ($iOffset+$iLimit>$iMaximum)
+        {
+            $iLimit=$iMaximum-$iOffset;
+        }
             
         $survey->responses=$oRecordSet->order('{{survey_' . $survey->id . '}}.id')->limit($iLimit, $iOffset)->query()->readAll();
 
@@ -912,7 +913,7 @@ abstract class Writer implements IWriter
             $aid = $survey->fieldMap[$fieldName]['aid'];
             if (!empty($aid))
             {
-                $heading .= '['.$aid.']';
+                $heading .= '['.$this->stripTagsFull($aid).']';
             }
             return $heading;
         }
@@ -929,7 +930,7 @@ abstract class Writer implements IWriter
     * @return string (or false)
     */
     public function getFullHeading(SurveyObj $survey, FormattingOptions $oOptions, $fieldName)
-    {
+    {                                                  
         $question = $survey->fieldMap[$fieldName];
         
         $heading = $question['question'];
@@ -1032,7 +1033,7 @@ abstract class Writer implements IWriter
         }
 
         //rtrim the result since it could be an empty string ' ' which
-        //should be removed.
+        //should be removed.                          
         return rtrim($subHeading);
     }
 
@@ -1094,7 +1095,7 @@ abstract class Writer implements IWriter
                     }
                     if (!empty($value))
                     {
-                        $subHeading .= ' ['.$value.']';
+                        $subHeading .= ' ['.$this->stripTagsFull($value).']';
                     }
                 }
                 if (isset($isComment) && $isComment == true)
