@@ -9,15 +9,13 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- *
- *  $Id$
  */
+ 
 /**
 * surveypermission
 *
 * @package LimeSurvey
 * @copyright 2011
-* @version $Id$
 * @access public
 */
 class surveypermission extends Survey_Common_Action {
@@ -66,7 +64,7 @@ class surveypermission extends Survey_Common_Action {
             $surveysecurity .= "<tbody>\n";
             if(count($result2) > 0)
             {
-                // output users
+                //    output users
                 $row = 0;
 
                 foreach ($result2 as $PermissionRow)
@@ -369,8 +367,8 @@ class surveypermission extends Survey_Common_Action {
                 $where.=  "AND owner_id != :postuserid";
                 $params[':postuserid'] = $postuserid;
             }
-            $result = Survey::model()->findAll($where,$params);
-            if(count($result) > 0 || Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+            $result = Survey::model()->count($where,$params);
+            if($result > 0 || Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
             {
                 //$js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
                 //$js_admin_includes[]='scripts/surveysecurity.js';
@@ -379,8 +377,7 @@ class surveypermission extends Survey_Common_Action {
                 if ($action == "setsurveysecurity")
                 {
                     $query = "select users_name from {{users}} where uid=:uid";
-                    $res = Yii::app()->db->createCommand($query)->bindParam(":uid", $postuserid, PDO::PARAM_INT)->query();
-                    $resrow = $res->read();
+                    $resrow = Yii::app()->db->createCommand($query)->bindParam(":uid", $postuserid, PDO::PARAM_INT)->queryRow();
                     $sUsername=$resrow['users_name'];
                     $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for user %s"),"<span style='font-style:italic'>".$sUsername."</span>")."</div>";
                 }
@@ -405,6 +402,7 @@ class surveypermission extends Survey_Common_Action {
                 . "</tr></thead>\n";
 
                 //content
+                
                 $aBasePermissions=Survey_permissions::model()->getBasePermissions();
 
                 $oddcolumn=false;
