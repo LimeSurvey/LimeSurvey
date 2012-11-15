@@ -308,13 +308,14 @@ class SurveyDao
         if ($survey->info['savetimings']=="Y") {
             $oRecordSet->leftJoin("{{survey_" . $survey->id . "_timings}} survey_timings", "{{survey_" . $survey->id . "}}.id = survey_timings.id");
         }
-        
+
         if ($sFilter!='')
             $oRecordSet->where($sFilter);
-            if ($iOffset+$iLimit>$iMaximum)
-            {
-                $iLimit=$iMaximum-$iOffset;
-            }
+            
+        if ($iOffset+$iLimit>$iMaximum)
+        {
+            $iLimit=$iMaximum-$iOffset;
+        }
             
         $survey->responses=$oRecordSet->order('{{survey_' . $survey->id . '}}.id')->limit($iLimit, $iOffset)->query()->readAll();
 
@@ -716,7 +717,7 @@ abstract class Writer implements IWriter
             $heading = mb_substr($heading, 0, 15).'.. ';
             if (isset($q->aid))
             {
-                $heading .= '['.$q->aid.']';
+                $heading .= '['.$this->stripTagsFull($aid).']';
             }
             return $heading;
         }
