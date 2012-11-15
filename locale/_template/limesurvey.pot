@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-11-13 23:05:52+00:00\n"
+"POT-Creation-Date: 2012-11-14 23:05:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -582,7 +582,7 @@ msgid "Assessment mode for this survey is not activated. You can activate it in 
 msgstr ""
 
 #: application/controllers/admin/assessments.php:136
-#: application/controllers/admin/surveyadmin.php:643
+#: application/controllers/admin/surveyadmin.php:642
 #: application/views/admin/assessments_view.php:24
 #: application/views/admin/quotas/viewquotasrow_view.php:28
 msgid "Edit"
@@ -844,7 +844,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1185
 #: application/controllers/admin/printablesurvey.php:1190
 #: application/controllers/admin/quotas.php:526
-#: application/controllers/admin/surveyadmin.php:658
+#: application/controllers/admin/surveyadmin.php:657
 #: application/controllers/admin/tokens.php:2138
 #: application/core/Survey_Common_Action.php:816
 #: application/helpers/admin/statistics_helper.php:1280
@@ -969,6 +969,7 @@ msgstr ""
 #: application/views/admin/survey/Question/subQuestion_view.php:176
 #: application/views/admin/survey/Question/subQuestion_view.php:184
 #: application/views/admin/survey/deleteSurvey_view.php:36
+#: application/views/admin/survey/editSurvey_view.php:50
 #: application/views/admin/survey/listSurveys_view.php:33
 #: application/views/admin/token/browse.php:49
 #: application/views/admin/token/browse.php:62
@@ -1066,7 +1067,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1187
 #: application/controllers/admin/printablesurvey.php:1190
 #: application/controllers/admin/quotas.php:527
-#: application/controllers/admin/surveyadmin.php:662
+#: application/controllers/admin/surveyadmin.php:661
 #: application/controllers/admin/tokens.php:2140
 #: application/core/Survey_Common_Action.php:812
 #: application/helpers/admin/statistics_helper.php:1281
@@ -1597,54 +1598,54 @@ msgstr ""
 msgid "Subquestions were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:369
+#: application/controllers/admin/database.php:373
 msgid "The question could not be added. You must enter at least a question code."
 msgstr ""
 
-#: application/controllers/admin/database.php:447
+#: application/controllers/admin/database.php:449
 #: application/views/admin/database/database_view.php:40
 msgid "Question in language %s could not be created."
 msgstr ""
 
-#: application/controllers/admin/database.php:456
+#: application/controllers/admin/database.php:458
 #: application/views/admin/database/database_view.php:46
 msgid "Question could not be created."
 msgstr ""
 
-#: application/controllers/admin/database.php:577
+#: application/controllers/admin/database.php:579
 msgid "Question was successfully added."
 msgstr ""
 
-#: application/controllers/admin/database.php:724
+#: application/controllers/admin/database.php:726
 #: application/views/admin/database/database_view.php:52
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr ""
 
-#: application/controllers/admin/database.php:807
-#: application/controllers/admin/database.php:871
+#: application/controllers/admin/database.php:809
+#: application/controllers/admin/database.php:873
 #: application/views/admin/database/database_view.php:4
 #: application/views/admin/database/database_view.php:58
 #: application/views/admin/database/database_view.php:71
 msgid "Question could not be updated"
 msgstr ""
 
-#: application/controllers/admin/database.php:834
+#: application/controllers/admin/database.php:836
 msgid "Question was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:956
+#: application/controllers/admin/database.php:958
 msgid "Survey text elements successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:1126
+#: application/controllers/admin/database.php:1128
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:1130
+#: application/controllers/admin/database.php:1132
 msgid "Error:"
 msgstr ""
 
-#: application/controllers/admin/database.php:1130
+#: application/controllers/admin/database.php:1132
 msgid "Survey could not be updated."
 msgstr ""
 
@@ -1663,7 +1664,7 @@ msgstr ""
 #: application/controllers/admin/question.php:55
 #: application/controllers/admin/questiongroup.php:55
 #: application/controllers/admin/surveyadmin.php:248
-#: application/controllers/admin/surveyadmin.php:875
+#: application/controllers/admin/surveyadmin.php:874
 #: application/controllers/admin/templates.php:142
 #: application/controllers/admin/templates.php:257
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
@@ -1757,6 +1758,7 @@ msgstr ""
 #: application/views/admin/survey/QuestionGroups/editGroup_view.php:43
 #: application/views/admin/survey/editLocalSettings_main_view.php:8
 #: application/views/admin/survey/editSurvey_view.php:28
+#: application/views/admin/survey/editSurvey_view.php:50
 #: application/views/admin/survey/listSurveys_view.php:31
 #: application/views/admin/survey/listSurveys_view.php:36
 #: application/views/admin/survey/newSurvey_view.php:29
@@ -2841,25 +2843,25 @@ msgstr ""
 msgid "No, thanks."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:590
+#: application/controllers/admin/surveyadmin.php:589
 msgid "(None)"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:598
+#: application/controllers/admin/surveyadmin.php:597
 #: application/views/admin/survey/surveybar_view.php:19
 msgid "This survey is active but expired."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:602
+#: application/controllers/admin/surveyadmin.php:601
 #: application/views/admin/survey/surveybar_view.php:21
 msgid "This survey is active but has a start date."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:608
+#: application/controllers/admin/surveyadmin.php:607
 msgid "This survey is active - click here to stop this survey."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:612
+#: application/controllers/admin/surveyadmin.php:611
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:105
 #: application/views/admin/survey/surveybar_view.php:23
 #: application/views/admin/survey/surveybar_view.php:230
@@ -2867,66 +2869,66 @@ msgstr ""
 msgid "This survey is currently active."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:622
+#: application/controllers/admin/surveyadmin.php:621
 msgid "This survey is currently not active - click here to activate this survey."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:626
+#: application/controllers/admin/surveyadmin.php:625
 msgid "This survey is currently not active."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:648
+#: application/controllers/admin/surveyadmin.php:647
 #: application/views/admin/survey/listSurveys_view.php:67
 msgid "Closed"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:652
+#: application/controllers/admin/surveyadmin.php:651
 #: application/views/admin/survey/listSurveys_view.php:66
 msgid "Open"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:723
+#: application/controllers/admin/surveyadmin.php:722
 msgid "Survey deleted."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:796
+#: application/controllers/admin/surveyadmin.php:795
 #: application/views/admin/survey/Question/answerOptions_view.php:43
 #: application/views/admin/survey/Question/subQuestion_view.php:41
 #: application/views/admin/token/managetokenattributes.php:12
 msgid "Base Language"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:857
+#: application/controllers/admin/surveyadmin.php:856
 msgid "Import survey data"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:858
+#: application/controllers/admin/surveyadmin.php:857
 msgid "Survey structure import summary"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:863
+#: application/controllers/admin/surveyadmin.php:862
 #: application/views/admin/survey/copySurvey_view.php:1
 #: application/views/admin/survey/subview/tabCopy_view.php:21
 msgid "Copy survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:864
+#: application/controllers/admin/surveyadmin.php:863
 msgid "Survey copy summary"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:894
+#: application/controllers/admin/surveyadmin.php:893
 msgid "Import failed. You specified an invalid file type '%s'."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:931
+#: application/controllers/admin/surveyadmin.php:930
 msgid "No survey ID has been provided. Cannot copy survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1066
+#: application/controllers/admin/surveyadmin.php:1065
 msgid "The new question group/question order was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1330
+#: application/controllers/admin/surveyadmin.php:1329
 #: application/views/admin/labels/labelview_view.php:136
 #: application/views/admin/labels/labelview_view.php:148
 #: application/views/admin/survey/Question/editQuestion_view.php:283
@@ -2938,26 +2940,26 @@ msgstr ""
 msgid "Please select a file to import!"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1333
+#: application/controllers/admin/surveyadmin.php:1332
 #: application/views/admin/labels/labelview_view.php:148
 #: application/views/admin/templates/importform_view.php:16
 msgid "zip library not supported by PHP, Import ZIP Disabled"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1358
+#: application/controllers/admin/surveyadmin.php:1357
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1401
+#: application/controllers/admin/surveyadmin.php:1400
 #: application/views/admin/survey/editSurvey_view.php:37
 msgid "(No target question)"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1484
+#: application/controllers/admin/surveyadmin.php:1483
 msgid "Survey could not be created because it did not have a title"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1616
+#: application/controllers/admin/surveyadmin.php:1615
 msgid "Survey was successfully added."
 msgstr ""
 
@@ -3123,7 +3125,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:258
 #: application/controllers/admin/surveypermission.php:320
 #: application/controllers/admin/surveypermission.php:327
-#: application/controllers/admin/usergroups.php:387
+#: application/controllers/admin/usergroups.php:388
 msgid "Failed to add user."
 msgstr ""
 
@@ -3133,7 +3135,7 @@ msgid "No Username selected."
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:310
-#: application/controllers/admin/usergroups.php:383
+#: application/controllers/admin/usergroups.php:384
 msgid "User added."
 msgstr ""
 
@@ -3715,8 +3717,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1299
 #: application/helpers/common_helper.php:7156
 #: application/helpers/common_helper.php:7193
-#: application/helpers/common_helper.php:7584
-#: application/helpers/common_helper.php:7623
+#: application/helpers/common_helper.php:7585
+#: application/helpers/common_helper.php:7625
 #: application/helpers/qanda_helper.php:1360
 #: application/helpers/qanda_helper.php:1541
 #: application/helpers/qanda_helper.php:2124
@@ -3994,37 +3996,37 @@ msgstr ""
 msgid "Failed to edit user group!"
 msgstr ""
 
-#: application/controllers/admin/usergroups.php:365
-#: application/controllers/admin/usergroups.php:373
-#: application/controllers/admin/usergroups.php:406
+#: application/controllers/admin/usergroups.php:366
+#: application/controllers/admin/usergroups.php:374
+#: application/controllers/admin/usergroups.php:407
 msgid "Failed."
 msgstr ""
 
-#: application/controllers/admin/usergroups.php:365
+#: application/controllers/admin/usergroups.php:366
 msgid "Group not found."
 msgstr ""
 
-#: application/controllers/admin/usergroups.php:373
+#: application/controllers/admin/usergroups.php:374
 msgid "You can not add or remove the group owner from the group."
 msgstr ""
 
-#: application/controllers/admin/usergroups.php:387
+#: application/controllers/admin/usergroups.php:388
 msgid "User already exists in the group."
 msgstr ""
 
-#: application/controllers/admin/usergroups.php:394
+#: application/controllers/admin/usergroups.php:395
 msgid "User removed."
 msgstr ""
 
-#: application/controllers/admin/usergroups.php:398
+#: application/controllers/admin/usergroups.php:399
 msgid "Failed to remove user."
 msgstr ""
 
-#: application/controllers/admin/usergroups.php:398
+#: application/controllers/admin/usergroups.php:399
 msgid "User does not exist in the group."
 msgstr ""
 
-#: application/controllers/admin/usergroups.php:406
+#: application/controllers/admin/usergroups.php:407
 msgid "User not found."
 msgstr ""
 
@@ -4129,8 +4131,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1230
 #: application/helpers/common_helper.php:1300
 #: application/helpers/common_helper.php:3994
-#: application/helpers/common_helper.php:7585
-#: application/helpers/common_helper.php:7624
+#: application/helpers/common_helper.php:7586
+#: application/helpers/common_helper.php:7626
 #: application/views/admin/token/bounce.php:14
 #: application/views/admin/token/bounce.php:56
 msgid "None"
@@ -4294,7 +4296,7 @@ msgid "One or more uploaded files are not in proper format/size. You cannot proc
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1035
-#: application/helpers/frontend_helper.php:2748
+#: application/helpers/frontend_helper.php:2751
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 
