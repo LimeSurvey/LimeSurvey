@@ -99,6 +99,7 @@ $(document).ready(function()
 function navbuttonsJqueryUi(){
     if ($.browser.msie && $.browser.version.substr(0,1)<8 && $('button.submit').length > 0) { // Get rid of the focus outline in IE7
         $('#movenextbtn, #movesubmitbtn').focus().blur(); 
+        $(this).scrollTop(0); 
     }
 
     $('[dir!="rtl"] #moveprevbtn').button({
