@@ -325,6 +325,10 @@ class database extends Survey_Common_Action
 
         if (in_array($action, array('insertquestion', 'copyquestion')) && hasSurveyPermission($surveyid, 'surveycontent','create'))
         {
+            if ($action=='copyquestion')
+            {
+                $gid=intval(Yii::app()->request->getPost('copygid'));
+            }
             $baselang = Survey::model()->findByPk($surveyid)->language;
             if (strlen(Yii::app()->request->getPost('title')) < 1)
             {
@@ -334,8 +338,6 @@ class database extends Survey_Common_Action
             }
             else
             {
-                if (!Yii::app()->request->getPost('lid') || Yii::app()->request->getPost('lid') == '') {$_POST['lid']="0";}
-                if (!Yii::app()->request->getPost('lid1') || Yii::app()->request->getPost('lid1') == '') {$_POST['lid1']="0";}
                 if (Yii::app()->request->getPost('questionposition',"")!="")
                 {
                     $question_order= intval(Yii::app()->request->getPost('questionposition'));
