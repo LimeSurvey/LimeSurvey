@@ -37,9 +37,10 @@ class Authentication extends Survey_Common_Action
 
         if ($bCanLogin && !is_array($bCanLogin))
         {
-            if (Yii::app()->request->getPost('action'))
+            if (Yii::app()->request->getPost('action') ||  !is_null(Yii::app()->request->getQuery('onepass')))
             {
-                $aData = $this->_doLogin(Yii::app()->request->getPost('user'), Yii::app()->request->getPost('password'));
+
+                $aData = $this->_doLogin(Yii::app()->request->getParam('user'), Yii::app()->request->getPost('password'),Yii::app()->request->getQuery('onepass',''));
 
                 if (!isset($aData['errormsg']))
                 {
@@ -247,11 +248,11 @@ class Authentication extends Survey_Common_Action
     * @param string $sPassword The password to login with
     * @return Array of data containing errors for the view
     */
-    private function _doLogin($sUsername, $sPassword)
+    private function _doLogin($sUsername, $sPassword, $sOneTimePassword)
     {
         $identity = new UserIdentity(sanitize_user($sUsername), $sPassword);
 
-        if (!$identity->authenticate())
+        if (!$identity->authenticate($sOneTimePassword))
         {
             return $this->_getAuthenticationFailedErrorMessage();
         }
@@ -324,7 +325,7 @@ class Authentication extends Survey_Common_Action
     {
         $clang = $this->getController()->lang;
         Yii::app()->session['pw_notify'] = false;
-        if (strtolower($_POST['password']) === 'password')
+        if (strtolower(Yii::app()->request->getPost('password','') ) === 'password')
         {
             Yii::app()->session['pw_notify'] = true;
             Yii::app()->session['flashmessage'] = $clang->gT('Warning: You are still using the default password (\'password\'). Please change your password and re-login again.');

@@ -17,6 +17,7 @@ class UserIdentity extends CUserIdentity
 {
     protected $id;
     protected $user;
+    protected $sOneTimePassword;
 
     /**
     * Checks whether this user has correctly entered password or not
@@ -24,7 +25,7 @@ class UserIdentity extends CUserIdentity
     * @access public
     * @return bool
     */
-    public function authenticate()
+    public function authenticate($sOneTimePassword='')
     {    
         if (Yii::app()->getConfig("auth_webserver")==false)
         {
@@ -41,11 +42,21 @@ class UserIdentity extends CUserIdentity
                     $sStoredPassword=$user->password;
                 }
             }
-            if ($user === null)
+            else
             {
                 $this->errorCode = self::ERROR_USERNAME_INVALID;
+                return !$this->errorCode;
             }
-            else if ($sStoredPassword !== hash('sha256', $this->password))
+            
+            if ($sOneTimePassword!='' && Yii::app()->getConfig("use_one_time_passwords") && md5($sOneTimePassword)==$user->one_time_pw)
+            {
+                $user->one_time_pw='';
+                $user->save();
+                $this->id = $user->uid;
+                $this->user = $user;
+                $this->errorCode = self::ERROR_NONE;
+            }
+            elseif ($sStoredPassword !== hash('sha256', $this->password))
             {
                 $this->errorCode = self::ERROR_PASSWORD_INVALID;
             }
