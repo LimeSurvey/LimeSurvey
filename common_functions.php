@@ -1067,7 +1067,7 @@ function setup_columns($columns, $answer_count)
 
 
     global $column_style;
-    if ( !in_array($column_style,array('css','ul','table')) && !is_null($column_style) )
+    if ( !in_array($column_style,array('css','ul','table')) || is_null($column_style))
     {
         $column_style = 'ul';
     };
