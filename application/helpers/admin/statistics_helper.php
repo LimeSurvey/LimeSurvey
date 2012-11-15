@@ -1840,7 +1840,7 @@ class statistics_helper {
             $criteria = new CDbCriteria;
             foreach ($outputs['alist'] as $al)
             {
-                $criteria->addCondition($al[2] . " IS NULL");
+                $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2]) . " IS NULL");
             }
             if (incompleteAnsFilterState() == "incomplete") {$criteria->addCondition("submitdate IS NULL");}
             elseif (incompleteAnsFilterState() == "complete") {$criteria->addCondition("submitdate IS NOT NULL");}
