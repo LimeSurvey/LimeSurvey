@@ -265,7 +265,7 @@ class Participants extends CActiveRecord
         $rowid = explode(",", $rows);
         foreach ($rowid as $row)
         {
-        	$tokens = Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = "' . $row .'"')->queryAll();
+            $tokens = Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = :pid')->bindParam(":pid", $row, PDO::PARAM_INT)->queryAll();
 
 			foreach ($tokens as $key => $value)
             {
@@ -274,7 +274,7 @@ class Participants extends CActiveRecord
                 if (Yii::app()->db->schema->getTable($tokentable))
                 {
                     Yii::app()->db->createCommand()
-                                  ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = "' . $row . '"'); // Deletes matching token table entries
+                                  ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = :pid',array(':pid'=>$row)); // Deletes matching token table entries
                     //Yii::app()->db->createCommand()->delete(Tokens::model()->tableName(), array('in', 'participant_id', $row));
 				}
             }
@@ -294,7 +294,6 @@ class Participants extends CActiveRecord
 		$rowid = explode(",", $rows);
 		foreach ($rowid as $row)
 		{
-			//ORIGINAL LINE: $tokens = Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = "' . $row . '"')->queryAll();
 			$tokens = Yii::app()->db->createCommand()
                                     ->select('*')
                                     ->from('{{survey_links}}')
@@ -310,7 +309,8 @@ class Participants extends CActiveRecord
 					$tokenid = Yii::app()->db->createCommand()
                                              ->select('token')
                                              ->from('{{tokens_' . intval($value['survey_id']) . '}}')
-                                             ->where('participant_id = "' . $value['participant_id'] . '"')
+                                             ->where('participant_id = :pid')
+                                             ->bindParam(":pid", $value['participant_id'], PDO::PARAM_INT)
                                              ->queryAll();
 					$token = $tokenid[0];
                     $surveytable='{{survey_'.intval($value['survey_id']).'}}';
@@ -331,7 +331,7 @@ class Participants extends CActiveRecord
 						}
 					}
 					Yii::app()->db->createCommand()
-                                  ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = "' . $value['participant_id'] . '"'); // Deletes matching token table entries
+                                  ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = :pid' , array(':pid'=>$value['participant_id'])); // Deletes matching token table entries
 				}
 			}
 			Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
@@ -841,10 +841,12 @@ class Participants extends CActiveRecord
         foreach ($participantid as $key => $participant)
         {
             $writearray = array();
-            $participantdata = Yii::app()->db->createCommand()->select('firstname,lastname,email,language,blacklisted')->where('participant_id = "' . $participant . '"')->from('{{participants}}');
+            $participantdata = Yii::app()->db->createCommand()->select('firstname,lastname,email,language,blacklisted')->where('participant_id = :pid')->from('{{participants}}')->bindParam(":pid", $participant, PDO::PARAM_INT);
             $tobeinserted = $participantdata->queryRow();
             /* Search for matching participant name/email in the survey token table */
-            $query = Yii::app()->db->createCommand()->select('*')->from('{{tokens_' . $surveyid . '}}')->where('firstname = "' . $tobeinserted['firstname'] . '" AND lastname = "' . $tobeinserted['lastname'] . '" AND email = "' . $tobeinserted['email'] . '"')->queryAll();
+            $query = Yii::app()->db->createCommand()->select('*')->from('{{tokens_' . $surveyid . '}}')
+                    ->where('firstname = :firstname AND lastname = :lastname AND email = :email')
+                    ->bindParam(":firstname", $tobeinserted['firstname'], PDO::PARAM_STR)->bindParam(":lastname", $tobeinserted['lastname'], PDO::PARAM_STR)->bindParam(":email", $tobeinserted['email'], PDO::PARAM_STR)->queryAll();
             if (count($query) > 0)
             {
                 //Participant already exists in token table - don't copy
