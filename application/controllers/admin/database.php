@@ -362,10 +362,6 @@ class database extends Survey_Common_Action
 
         if (in_array($action, array('insertquestion', 'copyquestion')) && hasSurveyPermission($surveyid, 'surveycontent','create'))
         {
-            if ($action=='copyquestion')
-            {
-                $gid=intval(Yii::app()->request->getPost('copygid'));
-            }
             $baselang = Survey::model()->findByPk($surveyid)->language;
             if (strlen(Yii::app()->request->getPost('title')) < 1)
             {
