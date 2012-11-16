@@ -1793,7 +1793,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
 
         // Loop through the fieldmap and swap each question as they come up
         foreach ($fieldmap as $q)
-        {
+        {          
             $found = 0;
             foreach ($randomGroups as $gkey=>$gval)
             {
@@ -1802,21 +1802,14 @@ function buildsurveysession($surveyid,$previewGroup=false)
                 {
                     // Get the swapped question
                     $oldQuestFlip = array_flip($oldQuestOrder[$gkey]);
-                    $qfieldmap = createFieldMap($surveyid,true,$newQuestOrder[$gkey][$oldQuestFlip[$q->id]],$_SESSION['survey_'.$surveyid]['s_lang']);
-                    unset($qfieldmap['id']);
-                    unset($qfieldmap['submitdate']);
-                    unset($qfieldmap['lastpage']);
-                    unset($qfieldmap['lastpage']);
-                    unset($qfieldmap['token']);
-                    unset($qfieldmap['startlanguage']);
-                    foreach ($qfieldmap as $qq)
-                    {
-                        // Assign the swapped question (Might be more than one field)
-                        $qq = clone $qq;
-                        $qq->randomgid = $q->gid;
-                        //$tval['gid'] = $fieldval['gid'];
-                        $copyFieldMap[$qq->fieldname]=$qq;
-                    }
+                    foreach($fieldmap as $key => $field) { 	
+                        if ($field->id == $newQuestOrder[$gkey][$oldQuestFlip[$q->id]]) {
+                            $qq = clone $field;
+                            $qq->randomgid = $q->gid;
+                            $copyFieldMap[$qq->fieldname]=$qq;
+                         }
+                     }
+                    
                     $found = 1;
                     break;
                 } else

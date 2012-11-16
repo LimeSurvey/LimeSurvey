@@ -1890,7 +1890,7 @@ function createFieldMap($surveyid, $force_refresh=false, $questionid=false, $sLa
     $cond = "t.sid=$surveyid AND t.language='$sLanguage' AND groups.language='$sLanguage'";
     if ($questionid!==false)
     {
-        $cond.=" AND {{questions}}.qid=$questionid";
+        $cond.=" AND t.qid=$questionid";
     }
     $aresult = Questions::model()->with('groups')->with('question_types')->findAll(array('condition'=>$cond, 'order'=>'groups.group_order, question_order', 'index' => 'qid'));
     $questionSeq=-1; // this is incremental question sequence across all groups
