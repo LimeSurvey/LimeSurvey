@@ -154,7 +154,16 @@ class User extends CActiveRecord
         }
     }
 
-
+    public function beforeSave()
+    {
+         // Postgres delivers bytea fields as streams :-o - if this is not done it looks like Postgres saves something unexpected
+        if (gettype($this->password)=='resource')
+        {
+            $this->password=stream_get_contents($this->password); 
+        }
+    }
+    
+    
     /**
     * Delete user
     *
