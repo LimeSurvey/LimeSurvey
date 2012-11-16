@@ -151,8 +151,8 @@
                 <?php if ($activated != "Y")
                     { ?>
                     <li>
-                        <label for='copygid'><?php $clang->eT("Question group:"); ?></label>
-                        <select name='copygid' id='copygid'>
+                        <label for='gid'><?php $clang->eT("Question group:"); ?></label>
+                        <select name='gid' id='gid'>
 
                             <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
                         </select></li>
@@ -269,7 +269,6 @@
                     elseif ($copying)
                     { ?>
                     <input type='hidden' name='action' value='copyquestion' />
-                    <input type='hidden' name='gid' value='<?php echo $eqrow['gid']; ?>' />
                     <input type='hidden' id='oldqid' name='oldqid' value='<?php echo $qid; ?>' />
                     <p><input type='submit' value='<?php $clang->eT("Copy question"); ?>' />
                     <?php }
