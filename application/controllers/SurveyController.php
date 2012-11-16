@@ -25,11 +25,8 @@ class SurveyController extends LSYii_Controller
     protected function _init()
     {
         parent::_init();
-        $updatelastcheck = Yii::app()->getConfig('updatelastcheck');
 
         $this->_sessioncontrol();
-        if (Yii::app()->getConfig('buildnumber') != "" && Yii::app()->getConfig('updatecheckperiod') > 0 && $updatelastcheck < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-". Yii::app()->getConfig('updatecheckperiod')." days"))
-            updateCheck();
 
         unset(Yii::app()->session['FileManagerContext']);
 
