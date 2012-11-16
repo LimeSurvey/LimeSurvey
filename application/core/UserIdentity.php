@@ -109,7 +109,7 @@ class UserIdentity extends CUserIdentity
                 if ($oUser->save())
                 {
                     $aTemplates=explode(",",$aUserProfile['templatelist']);
-                    foreach ($arrayTemplates as $sTemplateName)
+                    foreach ($aTemplates as $sTemplateName)
                     {
                         $oRecord=new Templates_rights;
                         $oRecord->uid = $oUser->uid;
