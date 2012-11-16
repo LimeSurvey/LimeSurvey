@@ -378,8 +378,8 @@ class Participants extends CActiveRecord
         if($condition[0]=="survey")
         {
             $lang = Yii::app()->session['adminlang'];
-            $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' :param2 OR {{survey_links}}.survey_id '.$operator.' :param2))');
-            $command->params=array(':lang'=>$lang, ':param2'=>$condition[2]);
+            $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' :param1 OR {{survey_links}}.survey_id '.$operator.' :param2))');
+            $command->params=array(':lang'=>$lang, ':param1'=>$condition[2] , ':param2'=>$condition[2]);
         }
         elseif($condition[0]=="owner_name")
         {
@@ -511,8 +511,8 @@ class Participants extends CActiveRecord
                 if($condition[0]=="survey")
                 {
                     $lang = Yii::app()->session['adminlang'];
-                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' :param2 OR {{survey_links}}.survey_id '.$operator.' :param2))');
-                    $command->params=array(':lang'=>$lang, ':param2'=>$condition[2]);
+                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' :param1 OR {{survey_links}}.survey_id '.$operator.' :param2))');
+                    $command->params=array(':lang'=>$lang,  ':param1'=>$condition[2], ':param2'=>$condition[2]);
                 }
                 elseif($condition[0]=="surveys") //Search by quantity of linked surveys
                 {
@@ -579,8 +579,8 @@ class Participants extends CActiveRecord
                 if($condition[$i+1]=="survey")
                 {
                     $lang = Yii::app()->session['adminlang'];
-                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' '.$condition2name.' OR {{survey_links}}.survey_id '.$operator.' '.$condition2name.'))', $booloperator);
-                    $command->params=array_merge($command->params, array(':lang'=>$lang, $condition2name=>$condition[$i+3]));
+                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' '.$condition2name.'1 OR {{survey_links}}.survey_id '.$operator.' '.$condition2name.'2))', $booloperator);
+                    $command->params=array_merge($command->params, array(':lang'=>$lang, $condition2name.'1'=>$condition[$i+3], $condition2name.'2'=>$condition[$i+3]));
                 } elseif ($condition[$i+1]=="surveys") //search by quantity of linked surveys
                 {
                     $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM {{survey_links}})" : "";
