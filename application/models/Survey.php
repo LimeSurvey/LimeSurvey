@@ -19,6 +19,15 @@ if (!defined('BASEPATH'))
 class Survey extends CActiveRecord
 {
     /**
+     * This is a static cache, it lasts only during the active request. If you ever need
+     * to clear it, like on activation of a survey when in the same request a row is read,
+     * saved and read again you can use resetCache() method.
+     * 
+     * @var array
+     */
+    protected $findByPkCache = array();
+    
+    /**
     * Returns the table's name
     *
     * @access public
@@ -355,18 +364,26 @@ class Survey extends CActiveRecord
     }
     
     public function findByPk($pk, $condition = '', $params = array()) {
-        static $lastResult = array();
         if (empty($condition) && empty($params)) {
-            if (array_key_exists($pk, $lastResult)) {
-                return $lastResult[$pk];
+            if (array_key_exists($pk, $this->findByPkCache)) {
+                return $this->findByPkCache[$pk];
             } else {
                 $result = parent::findByPk($pk, $condition, $params);
-                $lastResult[$pk] = $result;
+                if (!is_null($result)) {
+                    $this->findByPkCache[$pk] = $result;
+                }
                 
                 return $result;
             }
         }
         
         return parent::findByPk($pk, $condition, $params);        
+    }
+    
+    /**
+     * findByPk uses a cache to store a result. Use this method to force clearing that cache.
+     */
+    public function resetCache() {
+        $this->findByPkCache = array();
     }
 }
