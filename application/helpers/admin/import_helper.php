@@ -1644,7 +1644,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                     $questionrowdata['language']=$answerrowdata['language'];
                     $questionrowdata['tid']=$typeresult['tid'];
                     $questionrowdata['type']=$typeresult['type']; //AJSL
-                    if ($xssfilter)
+                    if ($questionrowdata)
                         XSSFilterArray($questionrowdata);
                     $question = new Questions;
                     foreach ($questionrowdata as $k => $v)
@@ -1854,7 +1854,7 @@ function XMLImportQuestion($sFullFilepath, $iNewSID, $newgid)
                 $insertdata['tid'] = Question_types::model()->findByAttributes(array('class' => $insertdata['class']))->getAttribute('tid');
                 unset($insertdata['class']);
             }
-            if ($xssfilter)
+            if ($insertdata)
                 XSSFilterArray($insertdata);
             $ques = new Questions;
             foreach ($insertdata as $k => $v)
@@ -3654,7 +3654,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['tid'] = Question_types::model()->findByAttributes(array('class' => $insertdata['class']))->getAttribute('tid');
                 unset($insertdata['class']);
             }
-            if ($xssfilter)
+            if ($insertdata)
                 XSSFilterArray($insertdata);
             $newqid = Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [4]<br />");
             if (!isset($aQIDReplacements[$oldqid]))
@@ -3707,7 +3707,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['tid'] = Question_types::model()->findByAttributes(array('class' => $insertdata['class']))->getAttribute('tid');
                 unset($insertdata['class']);
             }
-            if ($xssfilter)
+            if ($insertdata)
                 XSSFilterArray($insertdata);
             $newsqid =Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [5]<br />");
             if (!isset($insertdata['qid']))
