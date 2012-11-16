@@ -57,6 +57,45 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121115) to 2.00+ (build 121116) Nov 16, 2012
+-Fixed issue #6590: Multiple numeric input questions set Expression Manager clauses in italics in default template (tpartner)
+-Fixed issue #6854: Invalid question codes can be used when editing a question (Carsten Schmitz)
+-Fixed issue #6857: Survey language code changes not properly executed for Italian on upgrade from 1.x (Carsten Schmitz)
+-Fixed issue #6858: Large number inputs get truncated (Carsten Schmitz)
+-Fixed issue #6859: Integer values displayed as floating point numbers (Carsten Schmitz)
+-Fixed issue #6862: Question cannot be copied to different group (Carsten Schmitz)
+-Fixed issue #6863: Captcha not working (Denis Chenu)
+-Fixed issue #6867: Modification of user and survey rights results in an error (Carsten Schmitz)
+-Fixed issue #6869: Status icon broken / not shown on list of active survey with start date set (Carsten Schmitz)
+-Fixed issue #6873: Administration login using  one-time password not working (Carsten Schmitz)
+-Fixed issue #6876: Error when taking survey with datestamps on answers enabled
+-Fixed issue #6878: unable to save survey settings under some PHP version (Denis Chenu)
+-Fixed issue #6881: SQL Error when sending e-mail invite from survey tokens/participants list and using MSSQL (Carsten Schmitz)
+-Fixed issue #6883: Can't load statistics if survey contains Multiple choice questions and using MS SQL server (Carsten Schmitz)
+-Fixed issue #6885: Long survey pages jump down the page in IE8 compatibility view (tpartner)
+-Fixed issue #6886: Admin password re-set after language changed and using Postgres
+-Fixed issue: HTML tags in CSV headers on export (Carsten Schmitz)
+-Fixed issue: Language changer not display in firt page of survey (Denis Chenu)
+-Fixed issue: Save button for URL params not showing up (Carsten Schmitz)
+-Fixed issue: Update check on survey taking (Carsten Schmitz)
+-Fixed issue: Faulty cvs-export via remote-control (weberhofer)
+#Updated translation: Catalan by valdomir
+#Updated translation: Danish by marvindk
+#Updated translation: Finnish by hirvojo1, tigger
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Hungarian by hunkissleslie
+#Updated translation: Japanese by nomoto
+#Updated translation: Malay by ayahanda
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Spanish (Spain) by valdomir, jaimealvarezv
+#Updated translation: Turkish by kayazeren
+
 
 Changes from 2.00+ (build 121114) to 2.00+ (build 121115) Nov 13, 2012
 -Fixed issue #6299: Slow on randomization groups (Menno Dekker)
