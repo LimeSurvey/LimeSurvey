@@ -178,7 +178,8 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aData['questions'] = $oResult;
         $aData['display']['menu_bars']['surveysummary'] = "editsurveysettings";
-        $aData['data'] = $aData;
+        $tempData = $aData;
+        $aData['data'] = $tempData;
 
         $this->_renderWrappedTemplate('survey', 'editSurvey_view', $aData);
     }
