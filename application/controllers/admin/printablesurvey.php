@@ -654,7 +654,12 @@ class printablesurvey extends Survey_Common_Action
                     {
                         $question['QUESTION_MANDATORY'] = $clang->gT('*');
                         $question['QUESTION_CLASS'] .= ' mandatory';
-                        $pdfoutput .= $clang->gT("*");
+                        //$pdfoutput .= $clang->gT("*"); 
+                        /*
+                         * mdekker 20121116: 
+                         * commented out since sometimes it is array instead of string and is reset to empty in the next
+                         * line anyway
+                         */
                     }
 
                     $pdfoutput ='';
