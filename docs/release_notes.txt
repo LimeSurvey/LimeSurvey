@@ -57,6 +57,14 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.00+ (build 121116) to 2.00+ (build 121117) Nov 16, 2012
+-Fixed #6890: Can't Print Survey - 'Array to String Conversion' Error (Menno Dekker)
+-Fixed issue #6871: auth_webserver_autocreate_user doesn't work (Carsten Schmitz)
+-Fixed issue #6889: Clicking view participants in central participant list from a survey gives error in MSSQL (Carsten Schmitz)
+-Fixed issue: Error in CPDB when opening with MSSQL (Carsten Schmitz)
+-Fixed issue: Not possible to save  a question after editing (Carsten Schmitz)
+
 Changes from 2.00+ (build 121115) to 2.00+ (build 121116) Nov 16, 2012
 -Fixed issue #6590: Multiple numeric input questions set Expression Manager clauses in italics in default template (tpartner)
 -Fixed issue #6854: Invalid question codes can be used when editing a question (Carsten Schmitz)
