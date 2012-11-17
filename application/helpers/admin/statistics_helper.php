@@ -662,7 +662,7 @@ class statistics_helper {
             //more substrings
             $count = substr($qqid, strlen($qqid)-1);
 
-            //get answers
+            //get answers / subquestion text
             $nresult = Questions::model()->find(array('order'=>'question_order',
                                                       'condition'=>'language=:language AND parent_qid=:parent_qid AND title=:title',
                                                       'params'=>array(':language'=>$language, ':parent_qid'=>substr($qqid, 0, $iQuestionIDlength), ':title'=>$qaid)
@@ -1638,11 +1638,12 @@ class statistics_helper {
                     {
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
+                        /* This query selects a count of responses where "other" has been selected */
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName(substr($al[2],0,strlen($al[2])-5))."='-oth-'";
                     }
                     else
                     {
-                        //get data
+                        //get data - select a count of responses where no answer is provided 
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
                         $query .= ($sDatabaseType == "mysql")?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
                     }
@@ -3187,6 +3188,8 @@ class statistics_helper {
         //are there any filters that have to be taken care of?
         if (isset($selects) && $selects)
         {
+            //Save the filters to session for use in browsing text & other features (statistics.php function listcolumn())
+            Yii::app()->session['statistics_selects_'.$surveyid] = $selects;
             //filter incomplete answers?
             if (incompleteAnsFilterState() == "complete" || incompleteAnsFilterState() == "incomplete") {$query .= " AND ";}
 

@@ -495,7 +495,10 @@ class statistics extends Survey_Common_Action {
     function listcolumn($surveyid, $column, $sortby="", $sortmethod="", $sorttype="")
     {
         $search['condition']=$column." != ''";
-        //if($sql != "") {$search['condition'].= " AND ($sql)";}
+        //Look for any selects/filters set in the original statistics query, and apply them to the column listing
+        foreach(Yii::app()->session['statistics_selects_'.$surveyid] as $sql) {
+             $search['condition'] .= " AND $sql";
+        }
         if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
         if($sortby != "") $search['order']=$sortby.' '.$sortmethod;
         $results=Survey_dynamic::model($surveyid)->findAll($search);
