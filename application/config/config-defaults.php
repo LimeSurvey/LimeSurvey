@@ -539,7 +539,6 @@ $config['adminstyleurl']           = $config['styleurl'].$config['admintheme'].'
 
 
 $config['rootdir']                 = getcwd();                                             // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
-$config['homedir']                 = $config['rootdir'];                                   // The directory path of the admin scripts
 $config['tempdir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
 $config['imagedir']                = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
 $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upload";

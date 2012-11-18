@@ -12,8 +12,7 @@
  *
  *  $Id$
  */
-//Ensure script is not run directly, avoid path disclosure
-//if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
+ 
 injectglobalsettings();
 
 

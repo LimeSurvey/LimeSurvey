@@ -390,11 +390,6 @@ class AdminController extends LSYii_Controller
     * _showadminmenu() function returns html text for the administration button bar
     *
     * @access public
-    * @global string $homedir
-    * @global string $scriptname
-    * @global string $surveyid
-    * @global string $setfont
-    * @global string $imageurl
     * @param int $surveyid
     * @return string $adminmenu
     */
