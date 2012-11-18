@@ -4010,13 +4010,13 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
     if ($sType == 'survey')
     {
         $sPattern = "([^'\"]*)/upload/surveys/{$iOldSurveyID}/";
-        $sReplace = Yii::app()->getConfig("relativeurl")."/upload/surveys/{$iNewSurveyID}/";
+        $sReplace = Yii::app()->getConfig("publicurl")."upload/surveys/{$iNewSurveyID}/";
         return preg_replace('#'.$sPattern.'#', $sReplace, $sString);
     }
     elseif ($sType == 'label')
     {
         $pattern = "([^'\"]*)/upload/labels/{$iOldSurveyID}/";
-        $replace = Yii::app()->getConfig("relativeurl")."/upload/labels/{$iNewSurveyID}/";
+        $replace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
         return preg_replace('#'.$pattern.'#', $replace, $sString);
     }
     else // unkown type
