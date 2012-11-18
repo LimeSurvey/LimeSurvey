@@ -10,7 +10,8 @@ $(document).ready(function(){
         return returnvalue;
     });
     $("body").delegate(".code", "keyup", function() {
-        $(this).val($(this).val().replace(/[^a-zA-Z0-9_]/,''));
+        if ($(this).val().replace(/[^a-zA-Z0-9_]/,'')!=$(this).val())
+            $(this).val($(this).val().replace(/[^a-zA-Z0-9_]/,''));
     });
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         start:startmove,
