@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-11-17 23:05:53+00:00\n"
+"POT-Creation-Date: 2012-11-18 23:05:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -341,7 +341,7 @@ msgstr ""
 #: application/controllers/survey/index.php:347
 #: application/controllers/survey/index.php:360
 #: application/controllers/survey/index.php:375
-#: application/helpers/replacements_helper.php:228
+#: application/helpers/replacements_helper.php:227
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
@@ -1873,7 +1873,7 @@ msgid "Thank you for saving your survey in progress.  The following details can 
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1948
-#: application/helpers/replacements_helper.php:555
+#: application/helpers/replacements_helper.php:554
 #: application/libraries/Save.php:198
 msgid "Name"
 msgstr ""
@@ -1883,8 +1883,8 @@ msgstr ""
 #: application/controllers/admin/useraction.php:133
 #: application/controllers/admin/useraction.php:364
 #: application/controllers/admin/useraction.php:382
-#: application/helpers/replacements_helper.php:561
-#: application/helpers/replacements_helper.php:594
+#: application/helpers/replacements_helper.php:560
+#: application/helpers/replacements_helper.php:593
 #: application/libraries/Save.php:199
 #: application/views/admin/authentication/login.php:8
 #: application/views/admin/user/modifyuser.php:7
@@ -2682,7 +2682,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:128
 #: application/controllers/admin/responses.php:428
 #: application/helpers/common_helper.php:5444
-#: application/helpers/replacements_helper.php:631
+#: application/helpers/replacements_helper.php:630
 #: application/views/admin/export/exportresults_view.php:125
 #: application/views/admin/participants/displayParticipants_view.php:70
 #: application/views/admin/participants/displayParticipants_view.php:170
@@ -2698,7 +2698,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:129
 #: application/controllers/admin/responses.php:429
 #: application/helpers/common_helper.php:5449
-#: application/helpers/replacements_helper.php:638
+#: application/helpers/replacements_helper.php:637
 #: application/views/admin/export/exportresults_view.php:126
 #: application/views/admin/participants/displayParticipants_view.php:71
 #: application/views/admin/participants/displayParticipants_view.php:170
@@ -3110,7 +3110,7 @@ msgstr ""
 #: application/helpers/frontend_helper.php:1459
 #: application/helpers/frontend_helper.php:1536
 #: application/helpers/frontend_helper.php:1706
-#: application/helpers/replacements_helper.php:667
+#: application/helpers/replacements_helper.php:666
 #: application/views/admin/authentication/message.php:3
 #: application/views/admin/participants/attributeMapCSV_view.php:76
 #: application/views/admin/participants/attributeMap_view.php:106
@@ -3185,7 +3185,7 @@ msgid "Export"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:437
-#: application/helpers/replacements_helper.php:584
+#: application/helpers/replacements_helper.php:583
 #: application/views/admin/user/setuserrights.php:117
 msgid "Save Now"
 msgstr ""
@@ -4089,8 +4089,8 @@ msgstr ""
 
 #: application/controllers/survey/index.php:429
 #: application/controllers/survey/index.php:433
-#: application/helpers/replacements_helper.php:444
-#: application/helpers/replacements_helper.php:456
+#: application/helpers/replacements_helper.php:443
+#: application/helpers/replacements_helper.php:455
 msgid "Load unfinished survey"
 msgstr ""
 
@@ -4242,7 +4242,7 @@ msgid "Clear Responses"
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:449
-#: application/helpers/replacements_helper.php:848
+#: application/helpers/replacements_helper.php:847
 #: application/views/admin/templates/templateeditor_completed_view.php:2
 msgid "Thank you!"
 msgstr ""
@@ -4305,7 +4305,7 @@ msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1111
 #: application/helpers/frontend_helper.php:2212
-#: application/helpers/replacements_helper.php:387
+#: application/helpers/replacements_helper.php:386
 #: application/views/admin/dataentry/active_html_view.php:67
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
 #: application/views/admin/dataentry/insert.php:41
@@ -6298,7 +6298,7 @@ msgid "SMTP debug output:"
 msgstr ""
 
 #: application/helpers/common_helper.php:5454
-#: application/helpers/replacements_helper.php:645
+#: application/helpers/replacements_helper.php:644
 #: application/views/admin/export/exportresults_view.php:127
 #: application/views/admin/saved/savedlist_view.php:10
 #: application/views/admin/token/browse.php:85
@@ -7154,7 +7154,7 @@ msgstr ""
 
 #: application/helpers/frontend_helper.php:1532
 #: application/helpers/frontend_helper.php:1703
-#: application/helpers/replacements_helper.php:665
+#: application/helpers/replacements_helper.php:664
 msgid "Security Question"
 msgstr ""
 
@@ -7370,7 +7370,7 @@ msgid "Upload your files"
 msgstr ""
 
 #: application/helpers/qanda_helper.php:2836
-#: application/helpers/replacements_helper.php:547
+#: application/helpers/replacements_helper.php:546
 msgid "Return to survey"
 msgstr ""
 
@@ -7424,147 +7424,147 @@ msgstr ""
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:344
+#: application/helpers/replacements_helper.php:343
 msgid "There are no questions in this survey"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:348
+#: application/helpers/replacements_helper.php:347
 msgid "There is 1 question in this survey"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:352
+#: application/helpers/replacements_helper.php:351
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:415
+#: application/helpers/replacements_helper.php:414
 msgid "Exit and clear survey"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:416
+#: application/helpers/replacements_helper.php:415
 msgid "Are you sure you want to clear all your responses?"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:445
-#: application/helpers/replacements_helper.php:449
-#: application/helpers/replacements_helper.php:469
+#: application/helpers/replacements_helper.php:444
+#: application/helpers/replacements_helper.php:448
+#: application/helpers/replacements_helper.php:468
 msgid "Resume later"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:508
+#: application/helpers/replacements_helper.php:507
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:515
+#: application/helpers/replacements_helper.php:514
 msgid "Restart this survey"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:524
+#: application/helpers/replacements_helper.php:523
 msgid "Restart this Survey"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:533
+#: application/helpers/replacements_helper.php:532
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:567
+#: application/helpers/replacements_helper.php:566
 msgid "Repeat password"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:573
+#: application/helpers/replacements_helper.php:572
 msgid "Your email address"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:581
-#: application/helpers/replacements_helper.php:602
+#: application/helpers/replacements_helper.php:580
+#: application/helpers/replacements_helper.php:601
 #: application/views/entertoken_view.php:41
 msgid "Security question"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:588
+#: application/helpers/replacements_helper.php:587
 msgid "Saved name"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:605
+#: application/helpers/replacements_helper.php:604
 msgid "Load now"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:787
+#: application/helpers/replacements_helper.php:786
 msgid "Answers cleared"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:790
+#: application/helpers/replacements_helper.php:789
 msgid "Your assessment"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:791
+#: application/helpers/replacements_helper.php:790
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:793
+#: application/helpers/replacements_helper.php:792
 msgid "Close this window"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:807
+#: application/helpers/replacements_helper.php:806
 msgid "Load a previously saved survey"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:808
+#: application/helpers/replacements_helper.php:807
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:808
+#: application/helpers/replacements_helper.php:807
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:814
+#: application/helpers/replacements_helper.php:813
 msgid "A Note On Privacy"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:814
+#: application/helpers/replacements_helper.php:813
 msgid "This survey is anonymous."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:814
+#: application/helpers/replacements_helper.php:813
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:833
+#: application/helpers/replacements_helper.php:832
 msgid "You must be registered to complete this survey"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:834
+#: application/helpers/replacements_helper.php:833
 msgid "You may register for this survey if you wish to take part."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:834
+#: application/helpers/replacements_helper.php:833
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:842
+#: application/helpers/replacements_helper.php:841
 msgid "Save your unfinished survey"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:843
+#: application/helpers/replacements_helper.php:842
 msgid "Enter a name and password for this survey and click save below."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:843
+#: application/helpers/replacements_helper.php:842
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:843
+#: application/helpers/replacements_helper.php:842
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:843
+#: application/helpers/replacements_helper.php:842
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:848
+#: application/helpers/replacements_helper.php:847
 msgid "You have completed answering the questions in this survey."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:848
+#: application/helpers/replacements_helper.php:847
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr ""
 
