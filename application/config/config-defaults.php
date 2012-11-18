@@ -27,6 +27,7 @@ $config = array();
 /**
 * sitename
 * The official name of the site (appears in the Window title)
+* This setting is overridden by the global settings in the administration.
 */
 $config['sitename']           =   'LimeSurvey';
 
@@ -81,13 +82,15 @@ $config['defaultlang']        =   'en';
 $config['timeadjust']         =   0;         
 
 /**
-* @todo The following settings need to be moved to question attributes / advanced question settings:
+* @todo The following settings need to be moved to question attributes / advanced question settings / survey settings:
 * 
 * repeatheadings
 * minrepeatheadings
+* shownoanswer
 */
-$config['repeatheadings']     =   '25';             // The number of answers to show before repeating the headings in array questions. Set to 0 to turn this feature off
+$config['repeatheadings']     =   25;             // The number of answers to show before repeating the headings in array questions. Set to 0 to turn this feature off
 $config['minrepeatheadings']  =   3;                // The minimum number of remaining answers that are required before repeating the headings in array questions.
+$config['shownoanswer']       =   1;                // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
 
 /**
 * allowexportalldb
@@ -114,8 +117,14 @@ $config['allowmandbackwards'] =   1;
 */
 $config['deletenonvalues']    =   1;
 
-$config['stringcomparizonoperators']   =   0;       // By default, LimeSurvey assumes the numerical order for comparison operators in conditions. If you need string comparison operators, set this parameter to 1
-$config['shownoanswer']       =   1;                // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
+/**
+* stringcomparizonoperators
+* By default, LimeSurvey assumes the numerical order for comparison operators in conditions. If you need string comparison operators, set this parameter to 1
+*/
+$config['stringcomparizonoperators']   =   0;
+
+
+
 $config['blacklistallsurveys']     =  'N';          // Blacklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']     =  'N';          // Blacklist participant for any new added survey once the global field is set
 $config['blockaddingtosurveys']     =  'N';         // Don't allow blacklisted participants to be added to new survey
@@ -136,8 +145,6 @@ $config['showpopups']         =   1;                // Show popup messages if ma
 
 $config['maxemails']          = 50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
-// Enable or Disable LDAP feature
-$config['enableLdap'] = false;
 
 // Experimental parameters, only change if you know what you're doing
 //
@@ -150,9 +157,11 @@ $config['enableLdap'] = false;
 
 $config['filterout_incomplete_answers'] = 'show';
 
-// strip_query_from_referer_url (default is false)
-//  * default behaviour is to record the full referer url when requested
-//  * set to true in order to remove the parameter part of the referer url
+/**
+* strip_query_from_referer_url
+* The default behaviour is to record the full referer url when configured.
+* Set to true in order to remove the parameter part of the referer url
+*/
 $config['strip_query_from_referer_url'] = false;
 
 // defaulthtmleditormode
@@ -236,14 +245,16 @@ $config['auth_webserver_autocreate_profile'] = Array(
     'manage_label' => 0
 );
 
-// hook_get_auth_webserver_profile
-// The optionnal 'hook_get_auth_webserver_profile' function is for advanced user usage only.
-// It is used to customize the profile of the imported user
-// If set, the this function will overwrite the auth_webserver_autocreate_profile
-// defined above by its return value
-//
-// You can use any external DB in order to fill the profile for the user_name passed as the first parameter
-// A dummy example for the 'hook_get_autouserprofile' function is given below:
+/**
+* 
+* hook_get_auth_webserver_profile
+* The optionnal 'hook_get_auth_webserver_profile' function is for advanced user usage only.
+* It is used to customize the profile of the imported user
+* If set, this function will overwrite the auth_webserver_autocreate_profile defined above by its return value
+* 
+*  You can use any external DB in order to fill the profile for the user_name passed as the first parameter
+*  A dummy example for the 'hook_get_autouserprofile' function is given below:
+*/
 /*
 function hook_get_auth_webserver_profile($user_name)
 {
@@ -264,12 +275,12 @@ function hook_get_auth_webserver_profile($user_name)
 */
 
 
-// filterxsshtml
-// Enables filtering of suspicious html tags in survey, group, questions
-// and answer texts in the administration interface
-// Only set this to false if you absolutely trust the users
-// you created for the administration of  LimeSurvey and if you want to
-// allow these users to be able to use Javascript etc. .
+/**
+* filterxsshtml
+* Enables filtering of suspicious html tags in survey, group, questions and answer texts in the administration interface
+* Only set this to false if you absolutely trust the users you created for the administration of  LimeSurvey and if you want to
+* allow these users to be able to use Javascript etc. .
+*/
 $config['filterxsshtml'] = true;
 
 // usercontrolSameGroupPolicy
