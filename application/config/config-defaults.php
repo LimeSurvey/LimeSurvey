@@ -34,14 +34,6 @@ $config = array();
 // * edit these lines in config.php
 
 
-// FILE LOCATIONS
-
-$config['rootdir']            =   getcwd(); //dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
-// If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
-// Some IIS installations also require to use forward slashes instead of backslashes, e.g.  $rootDir="C:/Inetpub/wwwroot/limesurvey"!
-// If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir="c:/limesurvey";!
-
-
 // Site Info
 $config['sitename']           =   'LimeSurvey';     // The official name of the site (appears in the Window title)
 $config['scriptname']         =   'admin.php';      // The name of the admin script
@@ -546,8 +538,8 @@ $config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'
 $config['adminstyleurl']           = $config['styleurl'].$config['admintheme'].'/';         // Location of button bar files for admin script
 
 
-$config['publicdir']               = $config['rootdir'];                                   // The directory path of the public scripts
-$config['homedir']                 = $config['rootdir'];       // The directory path of the admin scripts
+$config['rootdir']                 = getcwd();                                             // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
+$config['homedir']                 = $config['rootdir'];                                   // The directory path of the admin scripts
 $config['tempdir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
 $config['imagedir']                = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
 $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
