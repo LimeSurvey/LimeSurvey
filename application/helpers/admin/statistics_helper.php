@@ -30,7 +30,6 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
     $rootdir = Yii::app()->getConfig("rootdir");
     $homeurl = Yii::app()->getConfig("homeurl");
     $admintheme = Yii::app()->getConfig("admintheme");
-    $scriptname = Yii::app()->getConfig("scriptname");
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $alternatechartfontfile = Yii::app()->getConfig("alternatechartfontfile");

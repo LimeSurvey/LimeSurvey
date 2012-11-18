@@ -3,7 +3,6 @@ class ListQuestion extends QuestionModule
 {
     public function getAnswerHTML()
     {
-        global $dropdownthreshold;
         global $thissurvey;
         $clang=Yii::app()->lang;
         if ($thissurvey['nokeyboard']=='Y')

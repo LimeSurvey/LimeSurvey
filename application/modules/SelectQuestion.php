@@ -3,7 +3,6 @@ class SelectQuestion extends ListQuestion
 {
     public function getAnswerHTML()
     {
-        global $dropdownthreshold;
 
         $clang=Yii::app()->lang;
         $answer='';

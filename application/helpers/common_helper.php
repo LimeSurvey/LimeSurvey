@@ -943,42 +943,6 @@ function getNotificationList($notificationcode)
     return $ntypeselector;
 }
 
-
-/**
-* getGroupList() queries the database for a list of all groups matching the current survey sid
-*
-*
-* @param string $gid - the currently selected gid/group
-*
-* @return This string is returned containing <option></option> formatted list of groups to current survey
-*/
-function getGroupList($gid,$surveyid)
-{
-    $clang = Yii::app()->lang;
-    $groupselecter="";
-    $gid=sanitize_int($gid);
-    $surveyid=sanitize_int($surveyid);
-    if (!$surveyid) {$surveyid=returnGlobal('sid');}
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-
-    $gidquery = "SELECT gid, group_name FROM {{groups}} WHERE sid='{$surveyid}' AND  language='{$s_lang}' ORDER BY group_order";
-    $gidresult = Yii::app()->db->createCommand($gidquery)->query(); //Checked
-    foreach ($gidresult->readAll() as $gv)
-    {
-        $groupselecter .= "<option";
-        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
-        $groupselecter .= " value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid=".$gv['gid']."'>".htmlspecialchars($gv['group_name'])."</option>\n";
-    }
-    if ($groupselecter)
-    {
-        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$groupselecter;}
-        else {$groupselecter .= "<option value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid='>".$clang->gT("None")."</option>\n";}
-    }
-    return $groupselecter;
-}
-
-
-
 function getGroupList3($gid,$surveyid)
 {
     //$clang = Yii::app()->lang;
@@ -5170,7 +5134,7 @@ function accessDenied($action,$sid='')
     {
         $ugid = Yii::app()->getConfig('ugid');
         $accesssummary = "<p><strong>".$clang->gT("Access denied!")."</strong><br />\n";
-        $scriptname = Yii::app()->getConfig('scriptname');
+        $scriptname = Yii::app()->getController()->createUrl('/admin');
         //$action=returnGlobal('action');
         if  (  $action == "dumpdb"  )
         {
