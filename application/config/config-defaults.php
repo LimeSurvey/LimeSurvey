@@ -547,16 +547,5 @@ $config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."tem
 $config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
 $config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
 
-
-// Computing relative url
-// $relativeurl  is the url relative to you DocumentRoot where is installed LimeSurvey.
-// Usually same as $rooturl without http://{$_SERVER['HTTP_HOST']}.
-// $relativeurl  is now automatically computed from $rooturl
-if(!isset($argv[0]))
-{
-    $parsedurl = parse_url(Yii::app()->createUrl('/'));
-    $config['relativeurl'] = isset($parsedurl['path']) ? $parsedurl['path'] : "";
-}
-
 return $config;
 //settings deleted

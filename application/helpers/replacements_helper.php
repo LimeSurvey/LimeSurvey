@@ -29,7 +29,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 {
     /*
     global $clienttoken,$token,$sitename,$move,$showxquestions,$showqnumcode,$questioncode;
-    global $s_lang,$errormsg,$saved_id, $relativeurl, $languagechanger,$captchapath,$loadname;
+    global $s_lang,$errormsg,$saved_id, $languagechanger,$captchapath,$loadname;
     */
     /*
     $allowedvars = array('surveylist', 'sitename', 'clienttoken', 'rooturl', 'thissurvey', 'imageurl', 'defaulttemplate',
@@ -37,7 +37,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     'showgroupinfo', 'showqnumcode', 'questioncode', 'answer', 'navigator', 'help', 'totalquestions',
     'surveyformat', 'completed', 'notanswered', 'privacy', 'surveyid', 'publicurl',
     'templatedir', 'token', 'assessments', 's_lang', 'errormsg', 'clang', 'saved_id', 'usertemplaterootdir',
-    'relativeurl', 'languagechanger', 'printoutput', 'captchapath', 'loadname');
+    'languagechanger', 'printoutput', 'captchapath', 'loadname');
     */
     $allowedvars = array(
     'answer',
@@ -57,7 +57,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     'percentcomplete',
     'privacy',
     'question',
-    'relativeurl',
     's_lang',
     'saved_id',
     'showgroupinfo',

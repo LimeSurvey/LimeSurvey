@@ -73,7 +73,7 @@ class RegisterController extends LSYii_Controller {
             Yii::app()->setSessionName("LimeSurveyRuntime-$surveyid");
         }
 
-        Yii::app()->session->setCookieParams(array(0, Yii::app()->getConfig('relativeurl').'/'));
+        Yii::app()->session->setCookieParams(array(0, Yii::app()->getConfig('publicurl')));
 
         // Get passed language from form, so that we dont loose this!
         if (!isset($postlang) || $postlang == "" || !$postlang )
