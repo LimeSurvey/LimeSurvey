@@ -781,7 +781,7 @@ class index extends CAction {
 
     function _surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $bIsSurveyActive, $bSurveyExists)
     {
-        $bSurveyPreviewRequireAuth = Yii::app()->getConfig('surveyPreview_require_Auth');
+        $bSurveyPreviewRequireAuth = Yii::app()->getConfig('survey_preview_admin_only');
         return $surveyid && $bIsSurveyActive === false && $bSurveyExists && isset($bSurveyPreviewRequireAuth) && $bSurveyPreviewRequireAuth == true &&  !$this->_canUserPreviewSurvey($surveyid);
     }
 

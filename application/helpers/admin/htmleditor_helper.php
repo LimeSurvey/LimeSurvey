@@ -25,7 +25,7 @@
             'images' => $sAllowedExtensions
         );
 
-        if (Yii::app()->getConfig('demoMode') === false &&
+        if (Yii::app()->getConfig('demo_mode') === false &&
                 isset(Yii::app()->session['loginID']) &&
                 isset(Yii::app()->session['FileManagerContext']))
         {

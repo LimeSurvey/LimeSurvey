@@ -64,7 +64,7 @@ class conditionsaction extends Survey_Common_Action {
 
         // this array will be used soon,
         // to explain wich conditions is used to evaluate the question
-        if (Yii::app()->getConfig('stringcomparizonoperators') == 1)
+        if (Yii::app()->getConfig('stringcomparizonoperators'))
         {
             $method = array(
             "<"     => $clang->gT("Less than"),

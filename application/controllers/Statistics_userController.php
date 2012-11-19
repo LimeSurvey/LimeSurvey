@@ -46,10 +46,6 @@ class Statistics_userController extends LSYii_Controller {
 
         $data = array();
 
-        //XXX enable/disable this for testing
-        //$publicgraphs = 1;
-        //$showaggregateddata = 1;
-
         /*
          * List of important settings:
          * - publicstatistics: General survey setting which determines if public statistics for this survey

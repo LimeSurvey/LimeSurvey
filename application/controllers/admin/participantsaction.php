@@ -438,7 +438,7 @@ class participantsaction extends Survey_Common_Action
      */
     function storeUserControlValues()
     {
-        if ($find = Settings_global::model()->findByPk('userideditable'))
+        if (Settings_global::model()->findByPk('userideditable'))
         {
             Settings_global::model()->updateByPk('userideditable', array('stg_value'=>Yii::app()->request->getPost('userideditable')));
         }

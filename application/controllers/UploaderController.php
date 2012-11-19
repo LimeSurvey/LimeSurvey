@@ -161,7 +161,7 @@ class UploaderController extends AdminController {
             else
             {    // if everything went fine and the file was uploaded successfuly,
                  // send the file related info back to the client
-                 $iFileUploadTotalSpaceMB = Yii::app()->getConfig("iFileUploadTotalSpaceMB");
+                 $file_upload_total_space_mb = Yii::app()->getConfig("file_upload_total_space_mb");
                 if ($size > $maxfilesize)
                 {
                     $return = array(
@@ -171,7 +171,7 @@ class UploaderController extends AdminController {
                     echo ls_json_encode($return);
                     exit ();
                 }
-                elseif ($iFileUploadTotalSpaceMB>0 && ((calculateTotalFileUploadUsage()+($size/1024/1024))>$iFileUploadTotalSpaceMB))
+                elseif ($file_upload_total_space_mb>0 && ((calculateTotalFileUploadUsage()+($size/1024/1024))>$file_upload_total_space_mb))
                 {
                     $return = array(
                         "success" => false,

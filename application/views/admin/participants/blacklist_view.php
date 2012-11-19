@@ -20,7 +20,7 @@
         {
             $attribute = array('class' => 'form44');
             echo CHtml::beginForm($this->createUrl('/admin/participants/storeBlacklistValues'), 'post', $attribute);
-            $options = array('Y' => $clang->gT('Yes'), 'N' => $clang->gT('No'));
+            $options = array('1' => $clang->gT('Yes'), '0' => $clang->gT('No'));
             ?>
             <ul>
                 <li>

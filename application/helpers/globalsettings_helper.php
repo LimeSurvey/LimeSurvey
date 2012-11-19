@@ -67,7 +67,7 @@ function getGlobalSetting($settingname)
 
 function setGlobalSetting($settingname, $settingvalue)
 {
-    if (Yii::app()->getConfig("demoMode")==true && ($settingname=='sitename' || $settingname=='defaultlang' || $settingname=='defaulthtmleditormode' || $settingname=='filterxsshtml'))
+    if (Yii::app()->getConfig("demo_mode")==true && ($settingname=='sitename' || $settingname=='defaultlang' || $settingname=='defaulthtmleditormode' || $settingname=='filterxsshtml'))
     {
         return; //don't save
     }

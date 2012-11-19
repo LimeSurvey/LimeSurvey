@@ -3221,7 +3221,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     {
         $customheaders=array();
     }
-    if (Yii::app()->getConfig('demoMode'))
+    if (Yii::app()->getConfig('demo_mode'))
     {
         $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
         $maildebugbody='';

@@ -208,14 +208,14 @@ function validation_message($q,$show)
 // TMSW Validation -> EM
 function validation_popup($notvalidated=null)
 {
-    global $showpopups;
+    $showpopups = Yii::app()->getConfig('showpopups');
 
     $clang = Yii::app()->lang;
     //This sets the validation popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notvalidated === null) {unset($notvalidated);}
     $qtitle="";
-    if (isset($notvalidated) && is_array($notvalidated) && isset($showpopups) && $showpopups == 1)  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
+    if (isset($notvalidated) && is_array($notvalidated) && $showpopups)  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
     {
         global $validationpopup, $vpopup;
         //POPUP WARNING
@@ -238,11 +238,11 @@ function validation_popup($notvalidated=null)
 // TMSW Validation -> EM
 function file_validation_popup($filenotvalidated = null)
 {
-    global $showpopups;
+    $showpopups = Yii::app()->getConfig('showpopups');
 
     $clang = Yii::app()->lang;
     if ($filenotvalidated === null) { unset($filenotvalidated); }
-    if (isset($filenotvalidated) && is_array($filenotvalidated) && isset($showpopups) && $showpopups == 1)
+    if (isset($filenotvalidated) && is_array($filenotvalidated) && $showpopups)
     {
         global $filevalidationpopup, $fpopup;
 
@@ -638,9 +638,9 @@ define('SELECTED' , ' selected="selected"' , true);
 
 function getLatLongFromIp($ip){
 
-    $ipInfoDbAPIKey = Yii::app()->getConfig("ipInfoDbAPIKey");
+    $ipinfodb_api_key = Yii::app()->getConfig("ipinfodb_api_key");
 
-    $xml = simplexml_load_file("http://api.ipinfodb.com/v2/ip_query.php?key=$ipInfoDbAPIKey&ip=$ip&timezone=false");
+    $xml = simplexml_load_file("http://api.ipinfodb.com/v2/ip_query.php?key=$ipinfodb_api_key&ip=$ip&timezone=false");
     if ($xml->{'Status'} == "OK"){
         $lat = (float)$xml->{'Latitude'};
         $lng = (float)$xml->{'Longitude'};

@@ -50,7 +50,7 @@ class labels extends Survey_Common_Action
 
         if (!empty($lid))
         {
-            if (Yii::app()->getConfig('demoMode'))
+            if (Yii::app()->getConfig('demo_mode'))
                 $this->getController()->error($clang->gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/view/lid/{$lid}"));
 
             // Create temporary directory

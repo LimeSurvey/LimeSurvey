@@ -28,7 +28,7 @@ class remotecontrol extends Survey_Common_Action
     */
     public function run()
     {
-        $RPCType=Yii::app()->getConfig("RPCInterface");
+        $RPCType=Yii::app()->getConfig("rpc_interface");
 
         if ($RPCType=='xml')
         {
@@ -165,7 +165,7 @@ class remotecontrol_handle
 
             $session = new Sessions;
             $session->id = $sSessionKey;
-            $session->expire = time() + Yii::app()->getConfig('iSessionExpirationTime');
+            $session->expire = time() + Yii::app()->getConfig('session_expiration_time');
             $session->data = $username;
             $session->save();
 

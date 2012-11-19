@@ -91,7 +91,7 @@ class templates extends Survey_Common_Action
         $action = returnGlobal('action');
 
         if ($action == 'templateupload') {
-            if (Yii::app()->getConfig('demoMode'))
+            if (Yii::app()->getConfig('demo_mode'))
                 $this->getController()->error($clang->gT("Demo mode: Uploading templates is disabled."));
 
             Yii::app()->loadLibrary('admin.pclzip.pclzip');
@@ -237,7 +237,7 @@ class templates extends Survey_Common_Action
 
         if($action=="templateuploadfile")
         {
-            if(Yii::app()->getConfig('demoMode'))
+            if(Yii::app()->getConfig('demo_mode'))
             {
                 $uploadresult = $clang->gT("Demo mode: Uploading template files is disabled.");
             }

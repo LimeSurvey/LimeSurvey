@@ -3,11 +3,9 @@ abstract class TextQuestion extends QuestionModule
 {
     public function getPopup($notanswered=null)
     {
-        global $showpopups;
-
         $clang = Yii::app()->lang;
 
-        if (is_array($notanswered) && isset($showpopups) && $showpopups == 1) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
+        if (is_array($notanswered) && Yii::app()->getConfig('showpopups')) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
         {
             global $mandatorypopup, $popup;
             //POPUP WARNING

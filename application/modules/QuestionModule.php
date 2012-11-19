@@ -121,9 +121,7 @@ abstract class QuestionModule extends CComponent
 
     public function mandatoryPopup($notanswered=null)
     {
-        global $showpopups;
-
-        if (is_array($notanswered) && isset($showpopups) && $showpopups == 1) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
+        if (is_array($notanswered) && Yii::app()->getConfig('showpopups')) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
         {
             global $mandatorypopup;
             return $mandatorypopup="Y";
@@ -133,11 +131,9 @@ abstract class QuestionModule extends CComponent
 
     public function getPopup($notanswered=null)
     {
-        global $showpopups;
-
         $clang = Yii::app()->lang;
 
-        if (is_array($notanswered) && isset($showpopups) && $showpopups == 1) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
+        if (is_array($notanswered) && Yii::app()->getConfig('showpopups')) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
         {
             global $popup;
             //POPUP WARNING

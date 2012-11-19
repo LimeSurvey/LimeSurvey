@@ -1556,7 +1556,7 @@ class statistics_helper {
 
 
                 //check if aggregated results should be shown
-                elseif (Yii::app()->getConfig('showaggregateddata') == 1) {
+                elseif (Yii::app()->getConfig('showaggregateddata')) {
                     if (!isset($showheadline) || $showheadline != false) {
                         if ($outputs['qtype'] == "5" || $outputs['qtype'] == "A") { //AJS
                             switch ($outputType) {
@@ -1962,7 +1962,7 @@ class statistics_helper {
                         $gdata[$i] = 0;
 
                         //check if we have to adjust ouput due to Yii::app()->getConfig('showaggregateddata') setting
-                        if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A")) { //AJS
+                        if (Yii::app()->getConfig('showaggregateddata') && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A")) { //AJS
                             $statisticsoutput .= "\t\t</td>";
                         } elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q") { //AJS
                             $statisticsoutput .= "</td>\n\t";
@@ -1982,7 +1982,7 @@ class statistics_helper {
             //data available
             else {
                 //check if data should be aggregated
-                if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A")) { //AJS
+                if (Yii::app()->getConfig('showaggregateddata') && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A")) { //AJS
                     //mark that we have done soemthing special here
                     $aggregated = true;
 
@@ -2330,7 +2330,7 @@ class statistics_helper {
             unset($extraline);
         } //end while
         //only show additional values when this setting is enabled
-        if (Yii::app()->getConfig('showaggregateddata') == 1) {
+        if (Yii::app()->getConfig('showaggregateddata')) {
             //it's only useful to calculate standard deviation and arithmetic means for question types
             //5 = 5 Point Scale
             //A = Array (5 Point Choice)
