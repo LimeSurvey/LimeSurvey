@@ -22,7 +22,7 @@
      [<a href='#' onclick='$("#invalidemaillist").toggle();'><?php $clang->eT("List"); ?></a>]
     <div class='badtokenlist' id='invalidemaillist' style='display: none;'>
     <?php foreach ($invalidemaillist as $aData) { ?>
-        <li>$aData</li>
+        <li><?php echo $aData; ?></li>
     <?php } ?>
     </div>
     <br />

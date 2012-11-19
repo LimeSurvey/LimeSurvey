@@ -29,11 +29,11 @@ else
     </p>
     <p>
         <label for='filterblankemail'><?php echo $clang->eT("Filter blank email addresses:"); ?></label>
-        <input type='checkbox' id='filterblankemail' checked='checked' />
+        <input type='checkbox' id='filterblankemail' name='filterblankemail' checked='checked' />
     </p>
     <p>
         <label for='filterduplicatetoken'><?php echo $clang->eT("Filter duplicate records:"); ?></label>
-        <input type='checkbox' id='filterduplicatetoken' checked='checked' />
+        <input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked' />
     </p>
     <input type='hidden' name='subaction' value='uploadldap' />
     <p><input type='submit' name='submit' /></p>
