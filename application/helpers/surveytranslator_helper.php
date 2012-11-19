@@ -649,7 +649,7 @@
     */
     function getDateFormatDataForQID($aQidAttributes, $mThisSurvey)
     {
-        if (trim($aQidAttributes['date_format'])!='')
+        if (isset($aQidAttributes['date_format']) && trim($aQidAttributes['date_format'])!='')
         {
             $aDateFormatDetails = array();
             $aDateFormatDetails['dateformat'] = trim($aQidAttributes['date_format']);
