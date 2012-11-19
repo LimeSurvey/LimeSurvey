@@ -66,7 +66,6 @@ class PrintanswersController extends LSYii_Controller {
             $surveyid=0;
             $language = Yii::app()->getConfig("defaultlang");
         }
-        die($surveyid);
         $clang = SetSurveyLanguage($surveyid, $language);
         $thissurvey = getSurveyInfo($surveyid,$language);
         //SET THE TEMPLATE DIRECTORY
