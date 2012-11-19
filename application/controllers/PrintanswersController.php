@@ -49,68 +49,54 @@ class PrintanswersController extends LSYii_Controller {
         }
         else
         {
-            die('Invalid survey/session');
+            //die('Invalid survey/session');
         }
+        // Get the survey inforamtion
+        // Set the language for dispay
+        if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
+        {
+            $language = $_SESSION['survey_'.$surveyid]['s_lang'];
+        }
+        elseif(Survey::model()->findByPk($surveyid))// survey exist
+        {
+            $language = Survey::model()->findByPk($surveyid)->language;
+        }
+        else
+        {
+            $surveyid=0;
+            $language = Yii::app()->getConfig("defaultlang");
+        }
+        die($surveyid);
+        $clang = SetSurveyLanguage($surveyid, $language);
+        $thissurvey = getSurveyInfo($surveyid,$language);
+        //SET THE TEMPLATE DIRECTORY
+        if (!isset($thissurvey['templatedir']) || !$thissurvey['templatedir'])
+        {
+            $thissurvey['templatedir']=Yii::app()->getConfig('defaulttemplate');
+        }
+        $thistpl = validateTemplateDir($thissurvey['templatedir']);
 
-        //Debut session time out
+        //Survey is not finished or don't exist
         if (!isset($_SESSION['survey_'.$surveyid]['finished']) || !isset($_SESSION['survey_'.$surveyid]['srid']))
-        // Argh ... a session time out! RUN!
         //display "sorry but your session has expired"
         {
-            //require_once($rootdir.'/classes/core/language.php');
-            $baselang = Survey::model()->findByPk($surveyid)->language;
-            Yii::import('application.libraries.Limesurvey_lang', true);
-            $clang = new Limesurvey_lang($baselang);
-            //A nice exit
-
             sendCacheHeaders();
             doHeader();
-
-            echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir("default"))."/startpage.pstpl"),array(),array());
+            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/startpage.pstpl'),array(),$redata);
             echo "<center><br />\n"
             ."\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
             ."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
             ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
             ."</center><br />\n";
-
-            echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir("default"))."/endpage.pstpl"),array(),array());
+            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/endpage.pstpl'),array(),$redata);
             doFooter();
             exit;
         }
         //Fin session time out
-
         $id = $_SESSION['survey_'.$surveyid]['srid']; //I want to see the answers with this id
-        $clang = $_SESSION['survey_'.$surveyid]['s_lang'];
 
         //Ensure script is not run directly, avoid path disclosure
         //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
-
-        // Set the language for dispay
-        //require_once($rootdir.'/classes/core/language.php');  // has been secured
-        if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
-        {
-
-            $clang = SetSurveyLanguage( $surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-            $language = $_SESSION['survey_'.$surveyid]['s_lang'];
-        }
-        else
-        {
-            $language = Survey::model()->findByPk($surveyid)->language;
-            $clang = SetSurveyLanguage( $surveyid, $language);
-        }
-
-        // Get the survey inforamtion
-        $thissurvey = getSurveyInfo($surveyid,$language);
-
-        //SET THE TEMPLATE DIRECTORY
-        if (!isset($thissurvey['templatedir']) || !$thissurvey['templatedir'])
-        {
-            $thistpl = validateTemplateDir("default");
-        }
-        else
-        {
-            $thistpl = validateTemplateDir($thissurvey['templatedir']);
-        }
 
         if ($thissurvey['printanswers'] == 'N')
         {
@@ -177,7 +163,7 @@ class PrintanswersController extends LSYii_Controller {
                 {
                    $printoutput .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
                 }
-        	}
+            }
             elseif (substr($sFieldname,0,4)=='qid_')
             {
                 if($printableexport == 'pdf')
@@ -203,7 +189,7 @@ class PrintanswersController extends LSYii_Controller {
                    {
                        $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]} {$sFieldname}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
                    }
-	            }
+                }
             }
             else
             {
@@ -218,29 +204,23 @@ class PrintanswersController extends LSYii_Controller {
                 }
             }
         }
-
         $printoutput .= "</table>\n";
 
         if($printableexport == 'pdf')
         {
-
             header("Pragma: public");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-
             $sExportFileName = sanitize_filename($surveyname);
-   			$pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
+            $pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
         }
-
-        //Display the page with user answers
-        if(!$printableexport)
+        else//Display the page with user answers
         {
-
             sendCacheHeaders();
             doHeader();
-
-            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/startpage.pstpl'));
-            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>$printoutput));
-            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/endpage.pstpl'));
+            $redata['thissurvey']=$thissurvey;
+            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/startpage.pstpl'),array(),$redata);
+            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>$printoutput),$redata);
+            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/endpage.pstpl'),array(),$redata);
             echo "</body></html>";
         }
 
