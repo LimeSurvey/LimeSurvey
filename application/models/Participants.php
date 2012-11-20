@@ -512,8 +512,8 @@ class Participants extends CActiveRecord
                 if($condition[0]=="survey")
                 {
                     $lang = Yii::app()->session['adminlang'];
-                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' :param1 OR {{survey_links}}.survey_id '.$operator.' :param2))');
-                    $command->params=array(':lang'=>$lang,  ':param1'=>$condition[2], ':param2'=>$condition[2]);
+                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND {{survey_links}}.survey_id '.$operator.' :param)');
+                    $command->params=array(':lang'=>$lang,  ':param'=>$condition[2]);
                 }
                 elseif($condition[0]=="surveys") //Search by quantity of linked surveys
                 {
