@@ -3679,12 +3679,12 @@ function do_numerical($ia)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
         $maximum_chars= intval(trim($aQuestionAttributes['maximum_chars']));
-        $maxlength= "maxlength='{$maximum_chars}' ";
+        $maxlength= " maxlength='{$maximum_chars}' ";
         $extraclass .=" maxchars maxchars-".$maximum_chars;
     }
     else
     {
-        $maxlength= "maxlength='20' ";
+        $maxlength= " maxlength='20' ";
     }
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
@@ -3696,20 +3696,22 @@ function do_numerical($ia)
         $tiwidth=10;
     }
 
-    if (trim($aQuestionAttributes['num_value_int_only'])==1 && is_float($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
+    $fValue=rtrim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],'0.');// Remove ending . and extra 0
+    if (trim($aQuestionAttributes['num_value_int_only'])==1 && is_numeric($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
     {
         $acomma="";
         $extraclass .=" integeronly";
-        $answertypeclass = " integeronly";
+        $answertypeclass .= " integeronly";
         $fValue=number_format($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], 0, '', '');
+        $integeronly=1;
     }
     else
     {
         $acomma=getRadixPointData($thissurvey['surveyls_numberformat']);
         $acomma = $acomma['seperator'];
-        $fValue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-
+        $integeronly=0;
     }
+
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeperator = $sSeperator['seperator'];
     $fValue = str_replace('.',$sSeperator,$fValue);
@@ -3718,7 +3720,7 @@ function do_numerical($ia)
     {
         includeKeypad();
         $extraclass .=" inputkeypad";
-        $answertypeclass = "num-keypad";
+        $answertypeclass .= " num-keypad";
     }
     else
     {
@@ -3728,13 +3730,12 @@ function do_numerical($ia)
     $answer = "<p class='question answer-item text-item numeric-item {$extraclass}'>"
     . " <label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>\n$prefix\t"
     . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\"  title=\"".$clang->gT('Only numbers may be entered in this field.')."\" "
-    . "id=\"answer{$ia[1]}\" value=\"{$fValue}\" onkeyup='$checkconditionFunction(this.value, this.name, this.type)' "
+    . "id=\"answer{$ia[1]}\" value=\"{$fValue}\" onkeyup=\"{$checkconditionFunction}(this.value, this.name, this.type,'onchange',{$integeronly})\" "
     . " {$maxlength} />\t{$suffix}\n</p>\n";
     if ($aQuestionAttributes['hide_tip']==0)
     {
         $answer .= "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field.')."</p>\n";
     }
-
     // --> END NEW FEATURE - SAVE
 
     $inputnames[]=$ia[1];
