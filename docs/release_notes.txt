@@ -57,6 +57,29 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121117) to 2.00+ (build 121120) Nov 20, 2012
+-Fixed issue #6896: cannot add users to a fresh LimeSurvey installation (Menno Dekker)
+-fixed issue #6899: LDAP Import Filter Blank E-mail and Filter Duplicates ignored (thanks to pfpDave) (Menno Dekker)
+-Fixed issue #6615 - Browsing text answer results with the browse button does nothing. Fixed filtering for text browsing (Jason Cleeland)
+-Fixed issue #6859: Integer values displayed as floating point numbers (Denis Chenu)
+-Fixed issue #6893: Image path malformed on import of survey structure (Carsten Schmitz)
+-Fixed issue #6901: Can't add a label with apostrophe (Carsten Schmitz)
+-Fixed issue: Can add dot on integer only numerci question type (Denis Chenu)
+-Fixed issue: Jumping display if subquestion code exceeds input box display width (Carsten Schmitz)
+-Fixed issue: Parameter stringcomparizonoperators being ignored (Carsten Schmitz)
+-Fixed issue: PHP error on public survey with date question type (Denis Chenu)
+-Fixed issue: public print answer don't get template css for survey (Denis Chenu)
+#Updated translation: Catalan by valdomir
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Latvian by klaster
+#Updated translation: Lithuanian by simasj
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Romanian by izbieta
+#Updated translation: Spanish (Spain) by valdomir
 
 Changes from 2.00+ (build 121116) to 2.00+ (build 121117) Nov 16, 2012
 -Fixed #6890: Can't Print Survey - 'Array to String Conversion' Error (Menno Dekker)
