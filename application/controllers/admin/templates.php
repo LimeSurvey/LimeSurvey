@@ -398,7 +398,8 @@ class templates extends Survey_Common_Action
     {
         if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
             $clang = Yii::app()->lang;
-            $newname=sanitize_paranoid_string(returnGlobal('newname'));
+            $oldname = sanitize_paranoid_string(returnGlobal('copydir'));
+            $newname = sanitize_paranoid_string(returnGlobal('newname'));
             $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
             $olddirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
             if (isStandardTemplate(returnGlobal('newname')))
@@ -407,8 +408,8 @@ class templates extends Survey_Common_Action
                 $this->getController()->error(sprintf($clang->gT("Directory could not be renamed to `%s`.", "js"), $newname) . " " . $clang->gT("Maybe you don't have permission.", "js"));
             else
             {
-                $templatename = $newname;
-                $this->index("startpage.pstpl", "welcome", $templatename);
+                Survey::model()->updateAll(array( 'template' => $newname ), "template = '{$oldname}'" );
+                $this->index("startpage.pstpl", "welcome", $newname);
             }
         }
     }
