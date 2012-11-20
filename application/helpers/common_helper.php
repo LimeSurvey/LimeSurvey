@@ -1718,7 +1718,6 @@ function getSIDGIDQIDAIDType($fieldcode)
 }
 
 /**
-*
 * @param type $iSurveyID The Survey ID
 * @param type $sFieldCode Field code of the particular field
 * @param type $sValue The stored response value
@@ -1753,11 +1752,11 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
             case 'N':
                 if (trim($sValue)!='')
                 {
+                    $sValue=rtrim($sValue,"0.");
                     $qidattributes = getQuestionAttributeValues($fields['qid']);
                     if($qidattributes['num_value_int_only'])
                     {
                         $sValue=number_format($sValue, 0, '', '');
-
                     }
                 }
                 break;
