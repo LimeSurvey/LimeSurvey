@@ -58,8 +58,8 @@ CHANGE LOG
 ------------------------------------------------------
 
 Changes from 2.00+ (build 121120) to 2.00+ (build 121121) Nov 20, 2012
-Fixed issue #6864: Reason not apparent if email not working when saving survey and admin email address is empty
-Fixed issue: Installation not starting
+-Fixed issue #6864: Reason not apparent if email not working when saving survey and admin email address is empty
+-Fixed issue: Installation not starting
 
 Changes from 2.00+ (build 121117) to 2.00+ (build 121120) Nov 20, 2012
 -Fixed issue #6896: cannot add users to a fresh LimeSurvey installation (Menno Dekker)

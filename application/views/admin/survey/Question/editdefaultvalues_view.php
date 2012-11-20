@@ -108,7 +108,7 @@
                                                     foreach ($aSubquestion['options'] as $value => $label)
                                                     {
                                                     ?>
-                                                    <option value="<?php echo $value ?>"<?php $value == $aSubquestion['defaultvalue'] ? ' selected="selected"' : '' ?>><?php echo $label ?></option>
+                                                    <option value="<?php echo $value ?>"<?php echo ($value == $aSubquestion['defaultvalue'] ? ' selected="selected"' : ''); ?>><?php echo $label ?></option>
                                                     <?php
                                                     }
                                                 ?>

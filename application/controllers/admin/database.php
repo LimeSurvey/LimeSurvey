@@ -100,7 +100,7 @@ class database extends Survey_Common_Action
 
                         foreach ($sqresult as $aSubquestionrow)
                         {
-                            if (Yii::app()->request->getPost('defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']))
+                            if (!is_null(Yii::app()->request->getPost('defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid'])))
                             {
                                 $this->_updateDefaultValues($qid,$aSubquestionrow['qid'],$scale_id,'',$language,Yii::app()->request->getPost('defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']),true);
                             }
