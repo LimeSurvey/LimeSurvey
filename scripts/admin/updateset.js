@@ -61,8 +61,9 @@ $(document).ready(function(){
             });
         });
         $("input[name=dataToSend]").remove();
-        var encodedData = htmlspecialchars(js2php(dataToSend));
-        $("#mainform").append("<input type='hidden' name='dataToSend' value='"+encodedData+"' />");
+
+        $("#mainform").append("<input type='hidden' id='dataToSend' name='dataToSend' value='' />");
+        $('#dataToSend').val($.toJSON(dataToSend));
     });
 
     fix_highlighting();
