@@ -423,7 +423,7 @@
 
         // Romanian
         $supportedLanguages['ro']['description'] = $clang->gT('Romanian');
-        $supportedLanguages['ro']['nativedescription'] = 'Rom&#226;nesc';
+        $supportedLanguages['ro']['nativedescription'] = 'Rom&#226;nia';
         $supportedLanguages['ro']['rtl'] = false;
         $supportedLanguages['ro']['dateformat'] = 1;
         $supportedLanguages['ro']['radixpoint'] = 1;
