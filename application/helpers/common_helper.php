@@ -1383,7 +1383,6 @@ function getQuestion($fieldcode)
 }
 
 /**
-*
 * @param type $iSurveyID The Survey ID
 * @param type $sFieldCode Field code of the particular field
 * @param type $sValue The stored response value
