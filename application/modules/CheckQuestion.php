@@ -585,7 +585,7 @@ class CheckQuestion extends QuestionModule
     public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
     {
         $code = parent::getVarAttributeShown($name,'code',$default,$gseq,$qseq);
-        if ($code == 'Y')
+        if ($code == 'Y' && isset($this->sq))
         {
             return $this->sq;
         }
