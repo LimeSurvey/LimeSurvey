@@ -24,14 +24,22 @@
  */
 class OptinController extends LSYii_Controller {
 
+    /**
+    * put your comment there...
+    * 
+    * @param string $surveyid
+    * @param string $token
+    * @param string $langcode
+    */
     function actiontokens($surveyid, $token, $langcode = '')
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
+
         $sLanguageCode = $langcode;
         $iSurveyID = $surveyid;
-        $sToken = $token;
-        $sToken = sanitize_token($sToken);
+        $sToken = sanitize_token($token);
+
 
         if (!$iSurveyID)
         {
@@ -43,73 +51,78 @@ class OptinController extends LSYii_Controller {
         // Get passed language from form, so that we dont loose this!
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
         {
-            $baselang = Survey::model()->findByPk($iSurveyID)->language;
+            $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
             Yii::import('application.libraries.Limesurvey_lang', true);
-            $clang = new Limesurvey_lang($baselang);
+            $clang = new Limesurvey_lang($sBaseLanguage);
         }
         else
         {
             $sLanguageCode = sanitize_languagecode($sLanguageCode);
             Yii::import('application.libraries.Limesurvey_lang', true);
             $clang = new Limesurvey_lang($sLanguageCode);
-            $baselang = $sLanguageCode;
+            $sBaseLanguage = $sLanguageCode;
         }
 
         Yii::app()->lang = $clang;
 
-        $thissurvey=getSurveyInfo($iSurveyID,$baselang);
+        $aSurveyInfo=getSurveyInfo($iSurveyID,$sBaseLanguage);
 
-        if ($thissurvey == false || !tableExists("{{tokens_{$iSurveyID}}}"))
+        if ($aSurveyInfo == false || !tableExists("{{tokens_{$iSurveyID}}}"))
         {
-            $html = $clang->gT('This survey does not seem to exist.');
+            $sHTML = $clang->gT('This survey does not seem to exist.');
         }
         else
         {
-            $row = Tokens_dynamic::model($iSurveyID)->getEmailStatus($sToken);
+            $aRow = Tokens_dynamic::model($iSurveyID)->getEmailStatus($sToken);
 
-            if ($row == false)
+            if ($aRow == false)
             {
-                $html = $clang->gT('You are not a participant in this survey.');
+                $sHTML = $clang->gT('You are not a participant in this survey.');
             }
             else
             {
-                $usresult = $row['emailstatus'];
-                if ($usresult=='OptOut')
+                if ($aRow['emailstatus']=='OptOut')
                 {
                     $usresult = Tokens_dynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OK');
-                    $html = $clang->gT('You have been successfully added back to this survey.');
+                    $sHTML = $clang->gT('You have been successfully added back to this survey.');
                 }
-                else if ($usresult=='OK')
+                else if ($aRow['emailstatus']=='OK')
                 {
-                    $html = $clang->gT('You are already a part of this survey.');
+                    $sHTML = $clang->gT('You are already a part of this survey.');
                 }
                 else
                 {
-                    $html = $clang->gT('You have been already removed from this survey.');
+                    $sHTML = $clang->gT('You have been already removed from this survey.');
                 }
             }
         }
 
         //PRINT COMPLETED PAGE
-        if (!$thissurvey['templatedir'])
+        if (!$aSurveyInfo['templatedir'])
         {
-            $thistpl=getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
+            $sTemplate=getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
         }
         else
         {
-            $thistpl=getTemplatePath($thissurvey['templatedir']);
+            $sTemplate=getTemplatePath($aSurveyInfo['templatedir']);
         }
-        $this->_renderHtml($html,$thistpl,$clang);
+        $this->_renderHtml($sHTML,$sTemplate,$clang);
     }
-
-    private function _renderHtml($html,$thistpl,$clang)
+    /**
+    * put your comment there...
+    * 
+    * @param string $sHTML
+    * @param string $sTemplate
+    * @param object $oLanguage
+    */
+    private function _renderHtml($sHTML,$sTemplate,$oLanguage)
     {
         sendCacheHeaders();
         doHeader();
-        $data['html'] = $html;
-        $data['thistpl'] = $thistpl;
-        $data['clang'] = $clang;
-        $this->render('/opt_view',$data);
+        $aData['html'] = $sHTML;
+        $aData['thistpl'] = $sTemplate;
+        $aData['clang'] = $oLanguage;
+        $this->render('/opt_view',$aData);
         doFooter();
     }
 }

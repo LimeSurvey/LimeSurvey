@@ -23,23 +23,19 @@
  */
 class OptoutController extends LSYii_Controller {
 
-    /* This function is run when opting out of an individual token table. The other function /optout/participants
-     * opts the user out of ALL survey invitations from the system
-     *
-     *
-     * */
+    /**
+    *  This function is run when opting out of an individual token table. The other function /optout/participants
+    *  opts the user out of ALL survey invitations from the system
+    */
     function actiontokens()
     {
-        $surveyid=Yii::app()->request->getQuery('surveyid');
-        $langcode=Yii::app()->request->getQuery('langcode');
-        $token=Yii::app()->request->getQuery('token');
+        $iSurveyID=Yii::app()->request->getQuery('surveyid');
+        $sLanguageCode=Yii::app()->request->getQuery('langcode');
+        $sToken=Yii::app()->request->getQuery('token');
 
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
-        $sLanguageCode = $langcode;
 
-        $iSurveyID = $surveyid;
-        $sToken = $token;
         $sToken = sanitize_token($sToken);
 
         if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
@@ -48,81 +44,76 @@ class OptoutController extends LSYii_Controller {
         }
         $iSurveyID = (int)$iSurveyID; //Make sure it's an integer (protect from SQL injects)
         //Check that there is a SID
-        // Get passed language from form, so that we dont lose this!
+        //Get passed language from form, so that we dont lose this!
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
         {
-            $baselang = Survey::model()->findByPk($iSurveyID)->language;
+            $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
             Yii::import('application.libraries.Limesurvey_lang', true);
-            $clang = new Limesurvey_lang($baselang);
+            $clang = new Limesurvey_lang($sBaseLanguage);
         }
         else
         {
             $sLanguageCode = sanitize_languagecode($sLanguageCode);
             Yii::import('application.libraries.Limesurvey_lang', true);
             $clang = new Limesurvey_lang($sLanguageCode);
-            $baselang = $sLanguageCode;
+            $sBaseLanguage = $sLanguageCode;
         }
 
         Yii::app()->lang = $clang;
 
-        $thissurvey=getSurveyInfo($iSurveyID,$baselang);
+        $aSurveyInfo=getSurveyInfo($iSurveyID,$sBaseLanguage);
 
-        if ($thissurvey==false || !tableExists("{{tokens_{$iSurveyID}}}")){
-            $html = $clang->gT('This survey does not seem to exist.');
+        if ($aSurveyInfo==false || !tableExists("{{tokens_{$iSurveyID}}}")){
+            $sHTML = $clang->gT('This survey does not seem to exist.');
         }
         else
         {
-            $row = Tokens_dynamic::model($iSurveyID)->getEmailStatus($sToken);
+            $aRow = Tokens_dynamic::model($iSurveyID)->getEmailStatus($sToken);
 
-            if ($row == false)
+            if ($aRow == false)
             {
-                $html = $clang->gT('You are not a participant in this survey.');
+                $sHTML = $clang->gT('You are not a participant in this survey.');
             }
             else
             {
-                $usresult = $row['emailstatus'];
-                if ($usresult == 'OK')
+                if ($aRow['emailstatus'] == 'OK')
                 {
-                    $usresult = Tokens_dynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OptOut');
-                    $html = $clang->gT('You have been successfully removed from this survey.');
+                    Tokens_dynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OptOut');
+                    $sHTML = $clang->gT('You have been successfully removed from this survey.');
                 }
                 else
                 {
-                    $html = $clang->gT('You have been already removed from this survey.');
+                    $sHTML = $clang->gT('You have been already removed from this survey.');
                 }
             }
         }
 
         //PRINT COMPLETED PAGE
-        if (!$thissurvey['templatedir'])
+        if (!$aSurveyInfo['templatedir'])
         {
-            $thistpl=getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
+            $sTemplate=getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
         }
         else
         {
-            $thistpl=getTemplatePath($thissurvey['templatedir']);
+            $sTemplate=getTemplatePath($aSurveyInfo['templatedir']);
         }
 
-        $this->_renderHtml($html,$thistpl);
+        $this->_renderHtml($sHTML,$sTemplate);
     }
 
-    /* This function is run when opting out of the participants system. The other function /optout/token
-     * opts the user out of just a single token/survey invite list
-     *
-     *
-     * */
+    /** 
+    * This function is run when opting out of the participants system. The other function /optout/token
+    * opts the user out of just a single token/survey invite list
+    */
     function actionparticipants()
     {
-        $surveyid=Yii::app()->request->getQuery('surveyid');
-        $langcode=Yii::app()->request->getQuery('langcode');
-        $token=Yii::app()->request->getQuery('token');
+        $iSurveyID=Yii::app()->request->getQuery('surveyid');
+        $sLanguageCode=Yii::app()->request->getQuery('langcode');
+        $sToken=Yii::app()->request->getQuery('token');
 
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
-        $sLanguageCode = $langcode;
 
-        $iSurveyID = $surveyid;
-        $sToken = $token;
         $sToken = sanitize_token($sToken);
 
         if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
@@ -134,84 +125,83 @@ class OptoutController extends LSYii_Controller {
         // Get passed language from form, so that we dont lose this!
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
         {
-            $baselang = Survey::model()->findByPk($iSurveyID)->language;
+            $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
             Yii::import('application.libraries.Limesurvey_lang', true);
-            $clang = new Limesurvey_lang($baselang);
+            $clang = new Limesurvey_lang($sBaseLanguage);
         }
         else
         {
             $sLanguageCode = sanitize_languagecode($sLanguageCode);
             Yii::import('application.libraries.Limesurvey_lang', true);
             $clang = new Limesurvey_lang($sLanguageCode);
-            $baselang = $sLanguageCode;
+            $sBaseLanguage = $sLanguageCode;
         }
 
         Yii::app()->lang = $clang;
 
-        $thissurvey=getSurveyInfo($iSurveyID,$baselang);
+        $aSurveyInfo=getSurveyInfo($iSurveyID,$sBaseLanguage);
 
-        if ($thissurvey==false || !tableExists("{{tokens_{$iSurveyID}}}")){
-            $html = $clang->gT('This survey does not seem to exist.');
+        if ($aSurveyInfo==false || !tableExists("{{tokens_{$iSurveyID}}}")){
+            $sHTML = $clang->gT('This survey does not seem to exist.');
         }
         else
         {
-            $row = Tokens_dynamic::model($iSurveyID)->getEmailStatus($sToken);
-            $datas = Tokens_dynamic::model($iSurveyID)->find('token = :token', array(":token"=>$sToken));
+            $aRow = Tokens_dynamic::model($iSurveyID)->getEmailStatus($sToken);
+            $oToken = Tokens_dynamic::model($iSurveyID)->find('token = :token', array(":token"=>$sToken));
 
-            if ($row == false)
+            if ($aRow == false)
             {
-                $html = $clang->gT('You are not a participant in this survey.');
+                $sHTML = $clang->gT('You are not a participant in this survey.');
             }
             else
             {
-                $usresult = $row['emailstatus'];
-                if ($usresult == 'OK')
+                if ($aRow['emailstatus'] == 'OK')
                 {
-                    $usresult = Tokens_dynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OptOut');
-                    $html = $clang->gT('You have been successfully removed from this survey.');
+                    Tokens_dynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OptOut');
+                    $sHTML = $clang->gT('You have been successfully removed from this survey.');
                 }
                 else
                 {
-                    $html = $clang->gT('You have been already removed from this survey.');
+                    $sHTML = $clang->gT('You have been already removed from this survey.');
                 }
-                if(!empty($datas->participant_id) && $datas->participant_id != "")
+                if(!empty($oToken->participant_id) && $oToken->participant_id != "")
                 {
                     //Participant also exists in central db
-                    $cpdb = Participants::model()->find('participant_id = :participant_id', array(":participant_id"=>$datas->participant_id));
+                    $cpdb = Participants::model()->find('participant_id = :participant_id', array(":participant_id"=>$oToken->participant_id));
                     if($cpdb->blacklisted=="Y")
                     {
-                        $html .= "<br />";
-                        $html .= $clang->gt("You have already been removed from the central participants list for this site");
+                        $sHTML .= "<br />";
+                        $sHTML .= $clang->gt("You have already been removed from the central participants list for this site");
                     } else
                     {
                         $cpdb->blacklisted='Y';
                         $cpdb->save();
-                        $html .= "<br />";
-                        $html .= $clang->gT("You have been removed from the central participants list for this site");
+                        $sHTML .= "<br />";
+                        $sHTML .= $clang->gT("You have been removed from the central participants list for this site");
                     }
                 }
             }
         }
 
         //PRINT COMPLETED PAGE
-        if (!$thissurvey['templatedir'])
+        if (!$aSurveyInfo['templatedir'])
         {
-            $thistpl=getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
+            $sTemplate=getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
         }
         else
         {
-            $thistpl=getTemplatePath($thissurvey['templatedir']);
+            $sTemplate=getTemplatePath($aSurveyInfo['templatedir']);
         }
 
-        $this->_renderHtml($html,$thistpl);
+        $this->_renderHtml($sHTML,$sTemplate);
     }
 
-    private function _renderHtml($html,$thistpl)
+    private function _renderHtml($sHTML, $sTemplate)
     {
         sendCacheHeaders();
         doHeader();
-        $data['html'] = $html;
-        $data['thistpl'] = $thistpl;
+        $data['html'] = $sHTML;
+        $data['thistpl'] = $sTemplate;
         $this->render('/opt_view',$data);
         doFooter();
     }
