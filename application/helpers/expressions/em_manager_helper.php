@@ -6481,7 +6481,7 @@ EOD;
                     {
                         $q = $var['q'];
                         $ansArray = isset($var['ansArray']) ? $var['ansArray'] : null;
-                        return $q->getVarAttributeValueNAOK($name, $default, $gseq, $qseq, $ansArray);
+                        return $q->getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray);
                     }
                 case 'relevanceStatus':
                     $gseq = (isset($var['gseq'])) ? $var['gseq'] : -1;
