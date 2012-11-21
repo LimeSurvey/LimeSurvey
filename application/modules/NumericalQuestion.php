@@ -95,6 +95,17 @@ class NumericalQuestion extends QuestionModule
         ."onkeypress=\"return goodchars(event,'0123456789.,')\" />\n";
     }
 
+    public function getExtendedAnswer($value, $language)
+    {
+        echo Yii::trace(CVarDumper::dumpAsString($value),'vardump');
+        $value=rtrim($value,"0.");
+        $aQuestionAttributes = $this->getAttributeValues();
+        if($aQuestionAttributes['num_value_int_only'])
+        {
+            $sValue=number_format($sValue, 0, '', '');
+        }
+    }
+
     public function filter($value, $type)
     {
         if (trim($value)=="")
