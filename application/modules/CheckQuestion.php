@@ -584,13 +584,10 @@ class CheckQuestion extends QuestionModule
 
     public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
     {
-        $code = LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
-        if ($code == 'Y' && isset($this->sq) && !preg_match('/comment$/',$this->fieldname))
+        $code = parent::getVarAttributeShown($name,'code',$default,$gseq,$qseq);
+        if ($code == 'Y' && isset($this->sq))
         {
             return $this->sq;
-        }
-        elseif (preg_match('/comment$/',$this->fieldname) && isset($_SESSION[$this->fieldname])) {
-            return $_SESSION[$this->fieldname];
         }
         else
         {
