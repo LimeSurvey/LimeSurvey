@@ -52,7 +52,7 @@ class ExportSurveyResultsService
     * @param FormattingOptions $oOptions
     * @param string $sFilter 
     */
-    function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter)
+    function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter = '')
     {
         //Do some input validation.
         if (empty($iSurveyId))
@@ -103,21 +103,20 @@ class ExportSurveyResultsService
 
         $iBatchSize=100; $iCurrentRecord=$oOptions->responseMinRecord-1;
         $bMoreRecords=true; $first=true;
-        $sFile='';
         while ($bMoreRecords)
         {
             $iExported= $surveyDao->loadSurveyResults($survey, $iBatchSize, $iCurrentRecord, $oOptions->responseMaxRecord, $sFilter);
             $iCurrentRecord+=$iExported;
-            $sFile.=$writer->write($survey, $sLanguageCode, $oOptions,$first);
+            $writer->write($survey, $sLanguageCode, $oOptions,$first);
             $first=false;
             $bMoreRecords= ($iExported == $iBatchSize);
         }
-        $writer->close();
+        $result = $writer->close();
         if ($oOptions->output=='file')
         {
             return $writer->filename;
         } else {
-            return $sFile;
+            return $result;
         }
     }
 }
@@ -840,7 +839,8 @@ abstract class Writer implements IWriter
 {
     protected $sLanguageCode;
     protected $translator;
-
+    public $filename;
+    
     protected function translate($key, $sLanguageCode)
     {
         return $this->translator->translate($key, $sLanguageCode);
@@ -865,6 +865,10 @@ abstract class Writer implements IWriter
     {
         $this->languageCode = $sLanguageCode;
         $this->translator = new Translator();
+        if ($oOptions->output == 'file') {
+            $sRandomFileName=Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
+            $this->filename = $sRandomFileName;
+        }
     }
 
     
@@ -1337,6 +1341,10 @@ class CsvWriter extends Writer
     private $output;
     private $separator;
     private $hasOutputHeader;
+    /**
+     * The open filehandle
+     */
+    private $file = null;
 
     function __construct()
     {
@@ -1348,12 +1356,13 @@ class CsvWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
-        if ($oOptions->output=='display')
-            {
-                header("Content-Disposition: attachment; filename=results-survey".$survey->id.".csv");
-                header("Content-type: text/comma-separated-values; charset=UTF-8");
-            }
-
+        if ($oOptions->output=='display') {
+            header("Content-Disposition: attachment; filename=results-survey".$survey->id.".csv");
+            header("Content-type: text/comma-separated-values; charset=UTF-8");
+        } elseif ($oOptions->output == 'file') {
+            $this->file = fopen($this->filename, 'w');
+        }
+        
     }
     
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
@@ -1382,14 +1391,19 @@ class CsvWriter extends Writer
         if ($oOptions->output=='display')
         {
             echo $sRecord; 
-        } else {
-            return $sRecord;
-        }
+            $this->output = '';
+        } elseif ($oOptions->output == 'file') {
+            $this->output .= $sRecord;
+            fwrite($this->file, $this->output);
+            $this->output='';
+        } 
     }
 
     public function close()
     {
-        return $this->output;
+        if (!is_null($this->file)) {
+            fclose($this->file);
+        }
     }
 
     /**
@@ -1409,6 +1423,10 @@ class DocWriter extends Writer
     private $output;
     private $separator;
     private $isBeginning;
+    /**
+     * The open filehandle
+     */
+    private $file = null;
 
     public function __construct()
     {
@@ -1441,6 +1459,9 @@ class DocWriter extends Writer
         </style>';
         if ($oOptions->output=='display'){
             echo  $sOutput;
+        } elseif ($oOptions->output == 'file') {
+            $this->file = fopen($this->filename, 'w');
+            $this->output = $sOutput;
         }
     }
 
@@ -1454,11 +1475,7 @@ class DocWriter extends Writer
         if ($oOptions->answerFormat == 'short')
         {
             //No headers at all, only output values.
-            $this->output .= implode($this->separator, $values).PHP_EOL;
-            if ($oOptions->output=='display'){
-                echo  $this->output;
-                $this->output='';
-            }            
+            $this->output .= implode($this->separator, $values).PHP_EOL;          
         }
         elseif ($oOptions->answerFormat == 'long')
         {
@@ -1479,21 +1496,26 @@ class DocWriter extends Writer
                 $this->output .= "<tr><td>".$header."</td><td>".$values[$counter]."</td></tr>".PHP_EOL;
                 $counter++;
             }
-            $this->output .= "</table>".PHP_EOL;
-            if ($oOptions->output=='display'){
-                echo  $this->output;
-                $this->output='';
-            }
-            
+            $this->output .= "</table>".PHP_EOL;           
         }
         else
         {
             safeDie('An invalid answer format was selected.  Only \'short\' and \'long\' are valid.');
         }
+        if ($oOptions->output=='display'){
+            echo  $this->output;
+            $this->output='';
+        } elseif ($oOptions->output == 'file') {
+            fwrite($this->file, $this->output);
+            $this->output='';
+        }
     }
 
     public function close()
     {
+        if (!is_null($this->file)) {
+            fclose($this->file);
+        }
     }
 }
 
@@ -1512,8 +1534,7 @@ class ExcelWriter extends Writer
     private $rowCounter;
 
     //Indicates if the Writer is outputting to a file rather than sending via HTTP.
-    private $fileName;
-    private $outputToFile;
+    private $outputToFile = false;
 
     /**
     * The presence of a filename will cause the writer to output to
@@ -1536,8 +1557,8 @@ class ExcelWriter extends Writer
 
         if ($oOptions->output=='file')
         {
-            $oOptions['filename']=Yii::app()->getConfig("tempdir"). DIRECTORY_SEPARATOR . randomChars(40);            
-            $this->workbook = new xlswriter($oOptions['filename']);
+            $this->workbook = new xlswriter($this->filename);
+            $this->outputToFile = true;
         }
         else
         {
@@ -1545,7 +1566,10 @@ class ExcelWriter extends Writer
         }
         $this->workbook->setTempDir(Yii::app()->getConfig("tempdir"));
 
-        $this->workbook->send('results-survey'.$survey->id.'.xls');
+        if ($oOptions->output=='display') {
+            $this->workbook->send('results-survey'.$survey->id.'.xls');
+  
+        }
         $worksheetName = $survey->languageSettings[0]['surveyls_title'];
         $worksheetName=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$worksheetName),0,31); // Remove invalid characters
 
@@ -1599,18 +1623,15 @@ class PdfWriter extends Writer
     private $separator;
     private $rowCounter;
     private $pdfDestination;
-    private $fileName;
     private $surveyName;
 
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
         
-        if ($oOptions->output=='return') 
+        if ($oOptions->output=='file') 
         {
-            $sRandomFileName=Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
             $this->pdfDestination = 'F';
-            $this->fileName = $sRandomFileName;
         } else {
             $this->pdfDestination = 'D';
         }
@@ -1675,7 +1696,7 @@ class PdfWriter extends Writer
         if ($this->pdfDestination == 'F')
         {
             //Save to file on filesystem.
-            $filename = $this->fileName;
+            $filename = $this->filename;
         }
         else
         {
