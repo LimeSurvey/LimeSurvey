@@ -170,7 +170,8 @@
                         <?php }
                         else
                         {
-                            echo "[{$eqrow['other']}] - ".$clang->gT("Cannot be changed (survey is active)"); ?>
+                            if($eqrow['other']=='Y') $clang->eT("Yes"); else $clang->eT("No");
+                            echo " - ".$clang->gT("Cannot be changed (survey is active)"); ?>
                         <input type='hidden' name='other' value="<?php echo $eqrow['other']; ?>" />
                         <?php } ?>
                 </li>
