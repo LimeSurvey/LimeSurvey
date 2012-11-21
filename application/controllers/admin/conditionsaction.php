@@ -1234,7 +1234,7 @@ class conditionsaction extends Survey_Common_Action {
                 $aViewUrls['output'] .= "\t<div class='conditioncopy-tbl-row'>\n"
                 ."\t<div class='condition-tbl-left'>".$clang->gT("Copy the selected conditions to").":</div>\n"
                 ."\t<div class='condition-tbl-right'>\n"
-                ."\t\t<select name='copyconditionsto[]'id='copytomultiselect'  multiple='multiple' \n";
+                ."\t\t<select name='copyconditionsto[]' id='copytomultiselect'  multiple='multiple' >\n";
                 if (isset($pquestions) && count($pquestions) != 0)
                 {
                     foreach ($pquestions as $pq)
