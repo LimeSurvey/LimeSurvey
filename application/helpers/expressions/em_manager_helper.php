@@ -7813,8 +7813,9 @@ EOD;
                                 {
                                     $shown = $var['question'];
                                 }
-                                elseif (preg_match('/comment$/',$sgqa) && isset($_SESSION[$sgqa])) {
-                                    $shown = $_SESSION[$sgqa];
+                                elseif (preg_match('/comment$/',$sgqa)) {
+                                    //$shown = $_SESSION[$this->sessid][$sgqa]; This one work and i understand it
+                                    $shown=$code; // This one is OK, and i think it's best but don't really understand it
                                 }
                                 else
                                 {
