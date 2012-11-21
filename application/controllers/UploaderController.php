@@ -14,49 +14,48 @@
  */
 
 class UploaderController extends AdminController {
-	function run($actionID)
-	{
-        $surveyid= $_SESSION['LEMsid'];
-        if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
+    function run($actionID)
+    {
+        $iSurveyID = $_SESSION['LEMsid'];
+        if (isset($_SESSION['survey_'.$iSurveyID]['s_lang']))
         {
-            $sLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
+            $sLanguage = $_SESSION['survey_'.$iSurveyID]['s_lang'];
         }
         else
         {
             $sLanguage='';
         }
-        $clang = SetSurveyLanguage( $surveyid, $sLanguage);
-        $uploaddir = Yii::app()->getConfig("uploaddir");
-        $tempdir = Yii::app()->getConfig("tempdir");
+        $clang = SetSurveyLanguage( $iSurveyID, $sLanguage);
+        $sUploadDir = Yii::app()->getConfig("uploaddir");
+        $sTempDir = Yii::app()->getConfig("tempdir");
 
         Yii::app()->loadHelper("database");
-        $param = $_REQUEST;
-
-        if (isset($param['filegetcontents']))
+        $aRequest = $_REQUEST;
+        if (isset($aRequest['filegetcontents']))
         {
-            $sFileName=$param['filegetcontents'];
+            $sFileName=$aRequest['filegetcontents'];
             if (substr($sFileName,0,6)=='futmp_')
             {
-                $sFileDir = $tempdir.'/upload/';
+                $sFileDir = $sTempDir.'/upload/';
             }
             elseif(substr($sFileName,0,3)=='fu_'){
-                $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
+                $sFileDir = "{$sUploadDir}/surveys/{$iSurveyID}/files/";
             }
             header('Content-Type: '. CFileHelper::getMimeType($sFileDir.$sFileName));
             readfile($sFileDir.$sFileName);
             exit();
         }
-        elseif (isset($param['delete']))
+        elseif (isset($aRequest['delete']))
         {
-            $sFieldname = $param['fieldname'];
-            $sFilename = sanitize_filename($param['filename']);
-            $sOriginalFileName=sanitize_filename($param['name']);
+            $sFieldname = $aRequest['fieldname'];
+            $sFilename = sanitize_filename($aRequest['filename']);
+            $sOriginalFileName=sanitize_filename($aRequest['name']);
             if (substr($sFilename,0,6)=='futmp_')
             {
-                $sFileDir = $tempdir.'/upload/';
+                $sFileDir = $sTempDir.'/upload/';
             }
             elseif(substr($sFilename,0,3)=='fu_'){
-                $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
+                $sFileDir = "{$sUploadDir}/surveys/{$iSurveyID}/files/";
             }
             else die('Invalid filename');
 
@@ -66,17 +65,17 @@ class UploaderController extends AdminController {
 
                 if(substr($sFilename,0,3)=='fu_'){
                     $iFileIndex=0;
-                    $found=false;
+                    $bFound=false;
                     foreach ($aFiles as $aFile)
                     {
                        if ($aFile['filename']==$sFilename)
                        {
-                        $found=true;
+                        $bFound=true;
                         break;
                        }
                        $iFileIndex++;
                     }
-                    if ($found==true) unset($aFiles[$iFileIndex]);
+                    if ($bFound==true) unset($aFiles[$iFileIndex]);
                    $_SESSION[$sFieldname] = ls_json_encode($aFiles);
                 }
             }
@@ -90,69 +89,68 @@ class UploaderController extends AdminController {
         }
 
 
-        if(isset($param['mode']) && $param['mode'] == "upload")
+        if(isset($aRequest['mode']) && $aRequest['mode'] == "upload")
         {
             $clang = Yii::app()->lang;
 
-            $sTempUploadDir = $tempdir.'/upload/';
+            $sTempUploadDir = $sTempDir.'/upload/';
             // Check if exists and is writable
             if (!file_exists($sTempUploadDir)) {
                 // Try to create
                 mkdir($sTempUploadDir);
             }
-            $filename = $_FILES['uploadfile']['name'];
-            $size = 0.001 * $_FILES['uploadfile']['size'];
-            $valid_extensions = strtolower($_POST['valid_extensions']);
-            $maxfilesize = (int) $_POST['max_filesize'];
-            $preview = $_POST['preview'];
-            $fieldname = $_POST['fieldname'];
+            $sFileName = $_FILES['uploadfile']['name'];
+            $fSize = 0.001 * $_FILES['uploadfile']['size'];
+            $sValidExtensions = strtolower($_POST['valid_extensions']);
+            $iMaximumFileSize = (int) $_POST['max_filesize'];
+            $bIsPreview = $_POST['preview'];
 
-            $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
-            $valid_extensions_array = array_map('trim',$valid_extensions_array);
+            $aValidExtensions = explode(",", $aAttributes['allowed_filetypes']);
+            $aValidExtensions = array_map('trim',$aValidExtensions);
 
-            $pathinfo = pathinfo($_FILES['uploadfile']['name']);
-            $ext = $pathinfo['extension'];
-            $randfilename = 'futmp_'.randomChars(15).'_'.$pathinfo['extension'];
-            $randfileloc = $sTempUploadDir . $randfilename;
+            $aPathInfo = pathinfo($_FILES['uploadfile']['name']);
+            $sExtension = $aPathInfo['extension'];
+            $sRandomFileName = 'futmp_'.randomChars(15).'_'.$aPathInfo['extension'];
+            $sRandomFileNameLocation = $sTempUploadDir . $sRandomFileName;
 
             // check to see that this file type is allowed
             // it is also  checked at the client side, but jst double checking
-            if (!in_array(strtolower($ext), $valid_extensions_array))
+            if (!in_array(strtolower($sExtension), $aValidExtensions))
             {
-                $return = array(
+                $aReturn = array(
                                 "success" => false,
-                                "msg" => sprintf($clang->gT("Sorry, this file extension (%s) is not allowed!"),$ext)
+                                "msg" => sprintf($clang->gT("Sorry, this file extension (%s) is not allowed!"),$sExtension)
                             );
-                echo ls_json_encode($return);
+                echo ls_json_encode($aReturn);
                 exit ();
             }
 
             // If this is just a preview, don't save the file
-            if ($preview)
+            if ($bIsPreview)
             {
-                if ($size > $maxfilesize)
+                if ($fSize > $iMaximumFileSize)
                 {
-                    $return = array(
+                    $aReturn = array(
                         "success" => false,
-                        "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
+                        "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $iMaximumFileSize)
                     );
-                    echo ls_json_encode($return);
+                    echo ls_json_encode($aReturn);
                     exit ();
                 }
 
-                else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
+                else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $sRandomFileNameLocation))
                 {
 
-                    $return = array(
+                    $aReturn = array(
                                 "success"       => true,
                                 "file_index"    => $filecount,
-                                "size"          => $size,
-                                "name"          => rawurlencode(basename($filename)),
-                                "ext"           => $ext,
-                                "filename"      => $randfilename,
+                                "size"          => $fSize,
+                                "name"          => rawurlencode(basename($sFileName)),
+                                "ext"           => $sExtension,
+                                "filename"      => $sRandomFileName,
                                 "msg"           => $clang->gT("The file has been successfuly uploaded.")
                             );
-                    echo ls_json_encode($return);
+                    echo ls_json_encode($aReturn);
                     // TODO : unlink this file since this is just a preview
                     // unlink($randfileloc);
                     exit ();
@@ -161,39 +159,39 @@ class UploaderController extends AdminController {
             else
             {    // if everything went fine and the file was uploaded successfuly,
                  // send the file related info back to the client
-                 $file_upload_total_space_mb = Yii::app()->getConfig("file_upload_total_space_mb");
-                if ($size > $maxfilesize)
+                $iFileUploadTotalSpaceMB = Yii::app()->getConfig("file_upload_total_space_mb");
+                if ($fSize > $iMaximumFileSize)
                 {
-                    $return = array(
+                    $aReturn = array(
                         "success" => false,
-                         "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files up to %s KB are allowed.",'unescaped'), $maxfilesize)
+                         "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files up to %s KB are allowed.",'unescaped'), $iMaximumFileSize)
                     );
-                    echo ls_json_encode($return);
+                    echo ls_json_encode($aReturn);
                     exit ();
                 }
-                elseif ($file_upload_total_space_mb>0 && ((calculateTotalFileUploadUsage()+($size/1024/1024))>$file_upload_total_space_mb))
+                elseif ($iFileUploadTotalSpaceMB>0 && ((calculateTotalFileUploadUsage()+($fSize/1024/1024))>$iFileUploadTotalSpaceMB))
                 {
-                    $return = array(
+                    $aReturn = array(
                         "success" => false,
                          "msg" => $clang->gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.",'unescaped')
                     );
-                    echo ls_json_encode($return);
+                    echo ls_json_encode($aReturn);
                     exit ();
                 }
-                elseif (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
+                elseif (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $sRandomFileNameLocation))
                 {
 
 
-                    $return = array(
+                    $aReturn = array(
                         "success" => true,
-                        "size"    => $size,
-                        "name"    => rawurlencode(basename($filename)),
-                        "ext"     => $ext,
-                        "filename"      => $randfilename,
+                        "size"    => $fSize,
+                        "name"    => rawurlencode(basename($sFileName)),
+                        "ext"     => $sExtension,
+                        "filename"=> $sRandomFileName,
                         "msg"     => $clang->gT("The file has been successfuly uploaded.")
                     );
 
-                    echo ls_json_encode($return);
+                    echo ls_json_encode($aReturn);
                     exit ();
                 }
                 // if there was some error, report error message
@@ -202,55 +200,53 @@ class UploaderController extends AdminController {
                     // check for upload error
                     if ($_FILES['uploadfile']['error'] > 2)
                     {
-                        $return = array(
+                        $aReturn = array(
                                         "success" => false,
                                         "msg" => $clang->gT("Sorry, there was an error uploading your file")
                                     );
 
-                        echo ls_json_encode($return);
+                        echo ls_json_encode($aReturn);
                         exit ();
                     }
                     // check to ensure that the file does not cross the maximum file size
-                    else if ( $_FILES['uploadfile']['error'] == 1 ||  $_FILES['uploadfile']['error'] == 2 || $size > $maxfilesize)
+                    else if ( $_FILES['uploadfile']['error'] == 1 ||  $_FILES['uploadfile']['error'] == 2 || $fSize > $iMaximumFileSize)
                     {
-                        $return = array(
+                        $aReturn = array(
                                         "success" => false,
-                                        "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
+                                        "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $iMaximumFileSize)
                                     );
 
-                        echo ls_json_encode($return);
+                        echo ls_json_encode($aReturn);
                         exit ();
                     }
                     else
                     {
-                        $return = array(
+                        $aReturn = array(
                                     "success" => false,
                                     "msg" => $clang->gT("Unknown error")
                                 );
-                        echo ls_json_encode($return);
+                        echo ls_json_encode($aReturn);
                         exit ();
                     }
                 }
             }
         return;
         }
-        $meta ='<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'jquery/jquery.js"></script>';
-        $meta .= '<script type="text/javascript">
+        $sAdditionalHeaders ='<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'jquery/jquery.js"></script>';
+        $sAdditionalHeaders .= '<script type="text/javascript">
             var uploadurl = "'.$this->createUrl('/uploader/index/mode/upload/').'";
             var imageurl = "'.Yii::app()->getConfig('imageurl').'/";
-            var surveyid = "'.$surveyid.'";
-            var fieldname = "'.$param['fieldname'].'";
-            var questgrppreview  = '.$param['preview'].';
+            var surveyid = "'.$iSurveyID.'";
+            var fieldname = "'.$aRequest['fieldname'].'";
+            var questgrppreview  = '.$aRequest['preview'].';
         </script>';
-        $meta .='<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/ajaxupload.js"></script>
+        $sAdditionalHeaders .='<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/ajaxupload.js"></script>
         <script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/uploader.js"></script>
         <link type="text/css" href="'.Yii::app()->getConfig("publicstyleurl").'uploader.css" rel="stylesheet" />';
 
         $clang = Yii::app()->lang;
 
-        $header = getHeader($meta);
-
-        echo $header;
+        echo getHeader($sAdditionalHeaders);
 
         echo "<script type='text/javascript'>
                 var translt = {
@@ -268,22 +264,22 @@ class UploaderController extends AdminController {
                     };
             </script>\n";
 
-        $fn = $param['fieldname'];
-        $minfiles = sanitize_int($param['minfiles']);
-        $maxfiles = sanitize_int($param['maxfiles']);
+        $sFieldName = $aRequest['fieldname'];
+        $iMinFiles = sanitize_int($aRequest['minfiles']);
+        $iMaxFiles = sanitize_int($aRequest['maxfiles']);
 
-        $body = '
+        $sBody = '
                 <div id="notice"></div>
-                <input type="hidden" id="ia"                value="'.$fn.'" />
-                <input type="hidden" id="'.$fn.'_minfiles"          value="'.$minfiles.'" />
-                <input type="hidden" id="'.$fn.'_maxfiles"          value="'.$maxfiles.'" />
-                <input type="hidden" id="'.$fn.'_maxfilesize"       value="'.$aAttributes['max_filesize'].'" />
-                <input type="hidden" id="'.$fn.'_allowed_filetypes" value="'.$aAttributes['allowed_filetypes'].'" />
-                <input type="hidden" id="preview"                   value="'.Yii::app()->session['preview'].'" />
-                <input type="hidden" id="'.$fn.'_show_comment"      value="'.$aAttributes['show_comment'].'" />
-                <input type="hidden" id="'.$fn.'_show_title"        value="'.$aAttributes['show_title'].'" />
-                <input type="hidden" id="'.$fn.'_licount"           value="0" />
-                <input type="hidden" id="'.$fn.'_filecount"         value="0" />
+                <input type="hidden" id="ia" value="'.$sFieldName.'" />
+                <input type="hidden" id="'.$sFieldName.'_minfiles" value="'.$iMinFiles.'" />
+                <input type="hidden" id="'.$sFieldName.'_maxfiles" value="'.$iMaxFiles.'" />
+                <input type="hidden" id="'.$sFieldName.'_maxfilesize" value="'.$aAttributes['max_filesize'].'" />
+                <input type="hidden" id="'.$sFieldName.'_allowed_filetypes" value="'.$aAttributes['allowed_filetypes'].'" />
+                <input type="hidden" id="preview" value="'.Yii::app()->session['preview'].'" />
+                <input type="hidden" id="'.$sFieldName.'_show_comment" value="'.$aAttributes['show_comment'].'" />
+                <input type="hidden" id="'.$sFieldName.'_show_title" value="'.$aAttributes['show_title'].'" />
+                <input type="hidden" id="'.$sFieldName.'_licount" value="0" />
+                <input type="hidden" id="'.$sFieldName.'_filecount" value="0" />
 
                 <!-- The upload button -->
                 <div align="center" class="upload-div">
@@ -294,11 +290,11 @@ class UploaderController extends AdminController {
                 <div class="uploadstatus" id="uploadstatus"></div>
 
                 <!-- The list of uploaded files -->
-                <ul id="'.$fn.'_listfiles"></ul>
+                <ul id="'.$sFieldName.'_listfiles"></ul>
 
             </body>
         </html>';
-        echo $body;
+        echo $sBody;
 
 
     }
