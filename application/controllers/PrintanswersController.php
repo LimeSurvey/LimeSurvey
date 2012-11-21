@@ -23,29 +23,26 @@
  */
 class PrintanswersController extends LSYii_Controller {
 
-
-
     /**
      * printanswers::view()
-     * View answers at the end of a survey in one place. To export as pdf, set 'usepdfexport' = 1 in lsconfig.php and $printableexport='pdf'.
+     * View answers at the end of a survey in one place. To export as pdf, set 'usepdfexport' = 1 in lsconfig.php and $bPrintableRxport='pdf'.
      * @param mixed $surveyid
-     * @param bool $printableexport
+     * @param bool $bPrintableRxport
      * @return
      */
-    function actionView($surveyid,$printableexport=FALSE)
+    function actionView($surveyid, $printablexport='')
     {
-
-        global $siteadminname, $siteadminemail;
+        $sPrintableExport=$printablexport;
         Yii::app()->loadHelper("frontend");
 
         Yii::import('application.libraries.admin.pdf');
 
-        $surveyid = (int)($surveyid);
+        $iSurveyID = (int)($surveyid);
         Yii::app()->loadHelper('database');
 
-        if (isset($_SESSION['survey_'.$surveyid]['sid']))
+        if (isset($_SESSION['survey_'.$iSurveyID]['sid']))
         {
-            $surveyid = $_SESSION['survey_'.$surveyid]['sid'];
+            $iSurveyID = $_SESSION['survey_'.$iSurveyID]['sid'];
         }
         else
         {
@@ -53,12 +50,12 @@ class PrintanswersController extends LSYii_Controller {
         }
 
         //Debut session time out
-        if (!isset($_SESSION['survey_'.$surveyid]['finished']) || !isset($_SESSION['survey_'.$surveyid]['srid']))
+        if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))
         // Argh ... a session time out! RUN!
         //display "sorry but your session has expired"
         {
             //require_once($rootdir.'/classes/core/language.php');
-            $baselang = Survey::model()->findByPk($surveyid)->language;
+            $baselang = Survey::model()->findByPk($iSurveyID)->language;
             Yii::import('application.libraries.Limesurvey_lang', true);
             $clang = new Limesurvey_lang($baselang);
             //A nice exit
@@ -70,7 +67,7 @@ class PrintanswersController extends LSYii_Controller {
             echo "<center><br />\n"
             ."\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
             ."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
-            ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
+            ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),Yii::app()->getConfig("siteadminname"),Yii::app()->getConfig("siteadminemail"))."\n"
             ."</center><br />\n";
 
             echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir("default"))."/endpage.pstpl"),array(),array());
@@ -79,37 +76,37 @@ class PrintanswersController extends LSYii_Controller {
         }
         //Fin session time out
 
-        $id = $_SESSION['survey_'.$surveyid]['srid']; //I want to see the answers with this id
-        $clang = $_SESSION['survey_'.$surveyid]['s_lang'];
+        $iResponseID = $_SESSION['survey_'.$iSurveyID]['srid']; //I want to see the answers with this id
+        $clang = $_SESSION['survey_'.$iSurveyID]['s_lang'];
 
         //Ensure script is not run directly, avoid path disclosure
         //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
 
         // Set the language for dispay
         //require_once($rootdir.'/classes/core/language.php');  // has been secured
-        if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
+        if (isset($_SESSION['survey_'.$iSurveyID]['s_lang']))
         {
 
-            $clang = SetSurveyLanguage( $surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-            $language = $_SESSION['survey_'.$surveyid]['s_lang'];
+            $clang = SetSurveyLanguage( $iSurveyID, $_SESSION['survey_'.$iSurveyID]['s_lang']);
+            $sLanguageCode = $_SESSION['survey_'.$iSurveyID]['s_lang'];
         }
         else
         {
-            $language = Survey::model()->findByPk($surveyid)->language;
-            $clang = SetSurveyLanguage( $surveyid, $language);
+            $sLanguageCode = Survey::model()->findByPk($iSurveyID)->language;
+            $clang = SetSurveyLanguage( $iSurveyID, $sLanguageCode);
         }
 
         // Get the survey inforamtion
-        $thissurvey = getSurveyInfo($surveyid,$language);
+        $thissurvey = getSurveyInfo($iSurveyID,$sLanguageCode);
 
         //SET THE TEMPLATE DIRECTORY
         if (!isset($thissurvey['templatedir']) || !$thissurvey['templatedir'])
         {
-            $thistpl = validateTemplateDir("default");
+            $Template = validateTemplateDir("default");
         }
         else
         {
-            $thistpl = validateTemplateDir($thissurvey['templatedir']);
+            $Template = validateTemplateDir($thissurvey['templatedir']);
         }
 
         if ($thissurvey['printanswers'] == 'N')
@@ -119,33 +116,31 @@ class PrintanswersController extends LSYii_Controller {
 
         //CHECK IF SURVEY IS ACTIVATED AND EXISTS
 
-        $surveytable = "{{survey_{$surveyid}}}";
-        $surveyname = $thissurvey['surveyls_title'];
-        $anonymized = $thissurvey['anonymized'];
+        $sSurveyTitle = $thissurvey['surveyls_title'];
+        $bAnonymized = $thissurvey['anonymized'];
 
 
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
         //SHOW HEADER
-        $printoutput = '';
-        $printoutput .= "<form action='".Yii::app()->getController()->createUrl('printanswers/view/surveyid/'.$surveyid.'/printableexport/pdf')."' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
-        if($printableexport == 'pdf')
+        $sPrintOutput = "<form action='".Yii::app()->getController()->createUrl('printanswers/view/surveyid/'.$iSurveyID.'/printableexport/pdf')."' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+        if($sPrintableExport == 'pdf')
         {
             require (Yii::app()->getConfig('rootdir').'/application/config/tcpdf.php');
             Yii::import('application.libraries.admin.pdf', true);
-            $pdf = new pdf();
-            $pdf->setConfig($tcpdf);
+            $oPDF = new pdf();
+            $oPDF->setConfig($tcpdf);
             //$pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
-            $pdf->AddPage();
+            $oPDF->AddPage();
             //$pdf->titleintopdf($clang->gT("Survey name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
-            $pdf->SetTitle($clang->gT("Survey name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
+            $oPDF->SetTitle($clang->gT("Survey name (ID)",'unescaped').": {$sSurveyTitle} ({$iSurveyID})");
         }
-        $printoutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $surveyname ($surveyid)</div><p>&nbsp;\n";
+        $sPrintOutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $sSurveyTitle ($iSurveyID)</div><p>&nbsp;\n";
 
         LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
         // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
-        LimeExpressionManager::StartProcessingGroup(1,($thissurvey['anonymized']!="N"),$surveyid);
+        LimeExpressionManager::StartProcessingGroup(1,($thissurvey['anonymized']!="N"),$iSurveyID);
 
-        $aFullResponseTable = getFullResponseTable($surveyid,$id,$language,true);
+        $aFullResponseTable = getFullResponseTable($iSurveyID,$iResponseID,$sLanguageCode,true);
 
         //Get the fieldmap @TODO: do we need to filter out some fields?
         unset ($aFullResponseTable['id']);
@@ -155,92 +150,90 @@ class PrintanswersController extends LSYii_Controller {
         unset ($aFullResponseTable['datestamp']);
         unset ($aFullResponseTable['startdate']);
 
-        $printoutput .= "<table class='printouttable' >\n";
-        if($printableexport == 'pdf')
+        $sPrintOutput .= "<table class='printouttable' >\n";
+        if($sPrintableExport == 'pdf')
         {
-            $pdf->intopdf($clang->gT("Question",'unescaped').": ".$clang->gT("Your answer",'unescaped'));
+            $oPDF->intopdf($clang->gT("Question",'unescaped').": ".$clang->gT("Your answer",'unescaped'));
         }
 
-        $oldgid = 0;
-        $oldqid = 0;
         foreach ($aFullResponseTable as $sFieldname=>$fname)
         {
             if (substr($sFieldname,0,4) == 'gid_')
             {
 
-                if($printableexport)
+                if($sPrintableExport == 'pdf')
                 {
-        		    $pdf->intopdf(flattenText(templatereplace($fname[0]),false,true));
-                    $pdf->ln(2);
+                    $oPDF->intopdf(flattenText(templatereplace($fname[0]),false,true));
+                    $oPDF->ln(2);
                 }
                 else
                 {
-                   $printoutput .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
+                   $sPrintOutput .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
                 }
             }
             elseif (substr($sFieldname,0,4)=='qid_')
             {
-                if($printableexport == 'pdf')
+                if($sPrintableExport == 'pdf')
                 {
-                    $pdf->intopdf(flattenText(templatereplace($fname[0]).templatereplace($fname[1]),false,true).": ".$fname[2]);
-                    $pdf->ln(2);
+                    $oPDF->intopdf(flattenText(templatereplace($fname[0]).templatereplace($fname[1]),false,true).": ".$fname[2]);
+                    $oPDF->ln(2);
                 }
                 else
                 {
-                    $printoutput .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>{$fname[0]}</td></tr>\n";
+                    $sPrintOutput .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>{$fname[0]}</td></tr>\n";
                 }
             }
             elseif ($sFieldname=='submitdate')
             {
-                if($anonymized != 'Y')
+                if($bAnonymized != 'Y')
                 {
-                   if($printableexport == 'pdf')
+                   if($sPrintableExport == 'pdf')
                    {
-                       $pdf->intopdf(flattenText($fname[0].$fname[1],false,true).": ".$fname[2]);
-                       $pdf->ln(2);
+                       $oPDF->intopdf(flattenText($fname[0].$fname[1],false,true).": ".$fname[2]);
+                       $oPDF->ln(2);
                    }
                    else
                    {
-                       $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]} {$sFieldname}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+                       $sPrintOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]} {$sFieldname}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
                    }
                 }
             }
             else
             {
-                if($printableexport == 'pdf')
+                if($sPrintableExport == 'pdf')
                 {
-                    $pdf->intopdf(flattenText(templatereplace($fname[0]).templatereplace($fname[1]),false,true).": ".$fname[2]);
-                    $pdf->ln(2);
+                    $oPDF->intopdf(flattenText(templatereplace($fname[0]).templatereplace($fname[1]),false,true).": ".$fname[2]);
+                    $oPDF->ln(2);
                 }
                 else
                 {
-                    $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+                    $sPrintOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
                 }
             }
         }
 
-        $printoutput .= "</table>\n";
+        $sPrintOutput .= "</table>\n";
 
-        if($printableexport == 'pdf')
+        if($sPrintableExport == 'pdf')
         {
 
             header("Pragma: public");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 
-            $sExportFileName = sanitize_filename($surveyname);
-            $pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
+            $sExportFileName = sanitize_filename($sSurveyTitle);
+            $oPDF->Output($sExportFileName."-".$iSurveyID.".pdf","D");
         }
 
         //Display the page with user answers
-        if(!$printableexport)
+        if($sPrintableExport=='')
         {
 
             sendCacheHeaders();
             doHeader();
 
-            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/startpage.pstpl'));
-            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>$printoutput));
-            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/endpage.pstpl'));
+            echo templatereplace(file_get_contents(getTemplatePath($Template).'/startpage.pstpl'));
+            echo templatereplace(file_get_contents(getTemplatePath($Template).'/printanswers.pstpl'),array('ANSWERTABLE'=>$sPrintOutput));
+            echo templatereplace(file_get_contents(getTemplatePath($Template).'/endpage.pstpl'));
             echo "</body></html>";
         }
 
