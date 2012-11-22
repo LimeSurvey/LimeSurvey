@@ -1,6 +1,5 @@
 <?php
-    $uidNames = array();
-    /* Build the options for additional languages */
+    // Build the options for additional languages
     $j = 1;
     $getlangvalues = getLanguageData(false,Yii::app()->session['adminlang']);
     if (Yii::app()->session['adminlang'] != 'auto')
@@ -17,27 +16,22 @@
         }
     }
     $langnames = implode(";", $lname);
-    /* Build the columnNames for the extra attributes */
-    /* and, build the columnModel */
+    // Build the columnNames for the extra attributes 
+    // and, build the columnModel
     $names = array_keys(getTokenFieldsAndNames($surveyid, true));
-    $attributes = getAttributeFieldNames($surveyid);
+    $attributes = getTokenFieldsAndNames($surveyid,true);
+    $uidNames=$columnNames=$aColumnHeader=array();
     if (count($attributes) > 0)
     {
-        foreach ($names as $name)
+        foreach ($attributes as $sFieldname=>$aData)
         {
-            $attnames[] = '"' . $name . '"';
+            $uidNames[] = '{ "name":"' . $sFieldname . '", "index":"' . $sFieldname . '", "sorttype":"string", "sortable": true, "align":"center", "editable":true, "width":75}';
+            $aColumnHeaders[]=$aData['description'];
         }
-        foreach ($attributes as $row)
-        {
-            $uidNames[] = '{ "name":"' . $row . '", "index":"' . $row . '", "sorttype":"string", "sortable": true, "align":"center", "editable":true, "width":75}';
-        }
-        $columnNames = implode(',', $attnames); //Add to the end of the standard list of columnNames
+        $columnNames='"'.implode('","',$aColumnHeaders).'"';
     }
-    else
-    {
-        $columnNames = "";
-    }
-    /* Build the javasript variables to pass to the jqGrid */
+
+    // Build the javasript variables to pass to the jqGrid
 ?>
 <script type="text/javascript">
     var sRecordText = '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
@@ -82,7 +76,7 @@
     var sBounceProcessingURL = "<?php echo Yii::app()->getController()->createUrl('admin/tokens/bounceprocessing/surveyid/' . $surveyid); ?>";
     var participantlinkUrl="<?php echo Yii::app()->getController()->createUrl("admin/participants/displayParticipants/searchurl/survey||equal||".$surveyid); ?>";
     var searchtypes = ["<?php $clang->eT("Equals") ?>","<?php $clang->eT("Contains") ?>","<?php $clang->eT("Not equal") ?>","<?php $clang->eT("Not contains") ?>","<?php $clang->eT("Greater than") ?>","<?php $clang->eT("Less than") ?>"]
-    var colNames = ["ID","<?php $clang->eT("Action") ?>","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("Email address") ?>","<?php $clang->eT("Email status") ?>","<?php $clang->eT("Token") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Invitation sent?") ?>","<?php $clang->eT("Reminder sent?") ?>","<?php $clang->eT("Reminder count") ?>","<?php $clang->eT("Completed?") ?>","<?php $clang->eT("Uses left") ?>","<?php $clang->eT("Valid from") ?>","<?php $clang->eT("Valid until") ?>",<?php echo $columnNames; ?>];
+    var colNames = ["ID","<?php $clang->eT("Action") ?>","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("Email address") ?>","<?php $clang->eT("Email status") ?>","<?php $clang->eT("Token") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Invitation sent?") ?>","<?php $clang->eT("Reminder sent?") ?>","<?php $clang->eT("Reminder count") ?>","<?php $clang->eT("Completed?") ?>","<?php $clang->eT("Uses left") ?>","<?php $clang->eT("Valid from") ?>","<?php $clang->eT("Valid until") ?>"<?php if (count($columnNames)) echo ','.$columnNames; ?>];
     var colModels = [
     { "name":"tid", "index":"tid", "width":30, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":false},
     { "name":"action", "index":"action", "sorttype":"string", "sortable": false, "width":100, "align":"center", "editable":false},
@@ -98,8 +92,8 @@
     { "name":"completed", "index":"completed","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
     { "name":"usesleft", "index":"usesleft","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
     { "name":"validfrom", "index":"validfrom","align":"center", "sorttype":"int", "sortable": true,"width":160,"editable":true},
-    { "name":"validuntil", "index":"validuntil","align":"center", "sorttype":"int", "sortable": true,"width":160,"editable":true},
-    <?php echo implode(",\n", $uidNames); ?>];
+    { "name":"validuntil", "index":"validuntil","align":"center", "sorttype":"int", "sortable": true,"width":160,"editable":true}
+    <?php if (count($uidNames)) echo ','.implode(",\n", $uidNames); ?>];
     <!--
     for(i=0; i<document.forms.length; i++)
         {
