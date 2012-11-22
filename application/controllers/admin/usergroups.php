@@ -307,25 +307,29 @@ class Usergroups extends Survey_Common_Action
                 $bgcc = "oddrow";
                 foreach ($aUserInGroupsResult as $egurow)
                 {
-                    if ($bgcc == "evenrow")
+                    if ($bgcc == "evenrow") {
                         $bgcc = "oddrow";
-                    else
+                    } else {
                         $bgcc = "evenrow";
+                    }
                     $userloop[$row]["userid"] = $egurow['uid'];
                     if ($egurow['uid'] == $crow['owner_id']) {
                         $userloop[$row]["username"] = "<strong>{$egurow['users_name']}</strong>";
                         $userloop[$row]["email"] = "<strong>{$egurow['email']}</strong>";
                         $userloop[$row]["rowclass"] = $bgcc;
                         $userloop[$row]["displayactions"] = false;
-                        continue;
-                    }
+                    } else {
                         //	output users
                         $userloop[$row]["rowclass"] = $bgcc;
-                    if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+                        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
                             $userloop[$row]["displayactions"] = true;
+                        } else {
+                            $userloop[$row]["displayactions"] = false;
+                        }
 
                         $userloop[$row]["username"] = $egurow['users_name'];
                         $userloop[$row]["email"] = $egurow['email'];
+                    }
                     $row++;
                 }
                 $aData["userloop"] = $userloop;
