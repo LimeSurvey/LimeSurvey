@@ -319,13 +319,13 @@ class Usergroups extends Survey_Common_Action
                         $userloop[$row]["displayactions"] = false;
                         continue;
                     }
-                    //	output users
-                    $userloop[$row]["rowclass"] = $bgcc;
+                        //	output users
+                        $userloop[$row]["rowclass"] = $bgcc;
                     if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
-                        $userloop[$row]["displayactions"] = true;
+                            $userloop[$row]["displayactions"] = true;
 
-                    $userloop[$row]["username"] = $egurow['users_name'];
-                    $userloop[$row]["email"] = $egurow['email'];
+                        $userloop[$row]["username"] = $egurow['users_name'];
+                        $userloop[$row]["email"] = $egurow['email'];
                     $row++;
                 }
                 $aData["userloop"] = $userloop;
@@ -421,6 +421,7 @@ class Usergroups extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array())
     {
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts').'users.js');
 
         $aData['display']['menu_bars']['user_group'] = true;
