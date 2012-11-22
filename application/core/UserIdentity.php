@@ -35,7 +35,7 @@ class UserIdentity extends CUserIdentity
             {
                 if (gettype($user->password)=='resource')
                 {
-                    $sStoredPassword=stream_get_contents($user->password);  // Postgres delivers bytea fields as streams :-o
+                    $sStoredPassword=stream_get_contents($user->password,-1,0);  // Postgres delivers bytea fields as streams :-o
                 }
                 else
                 {
