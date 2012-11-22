@@ -421,6 +421,7 @@ class Usergroups extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array())
     {
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts').'users.js');
 
         $aData['display']['menu_bars']['user_group'] = true;
