@@ -2715,6 +2715,8 @@ class statistics_helper {
 
         //are there any filters that have to be taken care of?
         if (isset($selects) && $selects) {
+            //Save the filters to session for use in browsing text & other features (statistics.php function listcolumn())
+            Yii::app()->session['statistics_selects_'.$surveyid] = $selects;
             //filter incomplete answers?
             if (incompleteAnsFilterState() == "complete" || incompleteAnsFilterState() == "incomplete") {
                 $query .= " AND ";
