@@ -229,20 +229,19 @@ class Usergroups extends Survey_Common_Action
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
             if ($action == "editusergroupindb") {
 
-                $ugid = $_POST['ugid'];
+                $ugid = (int)$_POST['ugid'];
 
                 $db_name = $_POST['name'];
                 $db_description = $_POST['description'];
                 if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
                     Yii::app()->session['flashmessage'] = $clang->gT("User group successfully saved!");
 					$aData['ugid'] = $ugid;
-					list($aViewUrls) = $this->index($ugid);
+                    Yii::app()->request->redirect($this->getController()->createUrl('admin/usergroups/view/ugid/'.$ugid));
                 }
                 else
                 {
-                    $headercfg["message"] = $clang->gT("Failed to edit user group!");
-                    $headercfg["type"] = "warning";
-                    list($aViewUrls, $aData) = $this->index($ugid, $headercfg);
+                    Yii::app()->session['flashmessage'] = $clang->gT("Failed to edit user group!");
+                    Yii::app()->request->redirect($this->getController()->createUrl('admin/usergroups/edit/ugid/'.$ugid));
                 }
 
             }
@@ -255,7 +254,7 @@ class Usergroups extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
+        $this->_renderWrappedTemplate('usergroup', 'editUserGroup_view', $aData);
     }
 
 
