@@ -168,7 +168,7 @@ class User extends CActiveRecord
          // Postgres delivers bytea fields as streams :-o - if this is not done it looks like Postgres saves something unexpected
         if (gettype($this->password)=='resource')
         {
-            $this->password=stream_get_contents($this->password); 
+            $this->password=stream_get_contents($this->password,-1,0); 
         }
         
         return parent::beforeSave();
