@@ -211,7 +211,7 @@ class SurveyAdmin extends Survey_Common_Action
         {
             $aData['display']['menu_bars']['surveysummary'] = 'importsurveyresources';
 
-            if (Yii::app()->getConfig('demoMode'))
+            if (Yii::app()->getConfig('demo_mode'))
                 $this->getController()->error($clang->gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/survey/view/surveyid/{$iSurveyID}"));
 
             // Create temporary directory
@@ -1455,9 +1455,9 @@ class SurveyAdmin extends Survey_Common_Action
         if (empty($files))
         {
             $generalscripts_path = Yii::app()->getConfig('generalscripts');
-        $adminscripts_path = Yii::app()->getConfig('adminscripts');
+	        $adminscripts_path = Yii::app()->getConfig('adminscripts');
             $styleurl = Yii::app()->getConfig('styleurl');
-
+                                                                            
             $js_files = array(
             $adminscripts_path . 'surveysettings.js',
             $generalscripts_path . 'jquery/jqGrid/js/i18n/grid.locale-en.js',

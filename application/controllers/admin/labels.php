@@ -50,7 +50,7 @@ class labels extends Survey_Common_Action
 
         if (!empty($lid))
         {
-            if (Yii::app()->getConfig('demoMode'))
+            if (Yii::app()->getConfig('demo_mode'))
                 $this->getController()->error($clang->gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/view/lid/{$lid}"));
 
             // Create temporary directory
@@ -237,7 +237,7 @@ class labels extends Survey_Common_Action
         // Includes some javascript files
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'labels.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'updateset.js');
-
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.json.min.js');
         // Checks if user have the sufficient rights to manage the labels
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1)
         {

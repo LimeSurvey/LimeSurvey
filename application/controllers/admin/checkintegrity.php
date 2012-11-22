@@ -421,7 +421,7 @@ class CheckIntegrity extends Survey_Common_Action
             {
                 if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', $condition['cfieldname'])) { // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token
                     list ($surveyid, $gid, $rest) = explode('X', $condition['cfieldname']);
-                    $iRowCount = count(Groups::model()->findAllByPk($gid));
+                    $iRowCount = count(Groups::model()->findAllByAttributes(array('gid'=>$gid)));
                     if (Groups::model()->hasErrors()) safeDie(Groups::model()->getError());
                     if (!$iRowCount) $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => $clang->gT('No matching CFIELDNAME group!') . " ($gid) ({$condition['cfieldname']})");
                 }
@@ -526,7 +526,7 @@ class CheckIntegrity extends Survey_Common_Action
         if (Assessment::model()->hasErrors()) safeDie(Assessment::model()->getError());
         foreach ($assessments as $assessment)
         {
-            $iAssessmentCount = count(Groups::model()->findAllByPk($assessment['gid']));
+            $iAssessmentCount = count(Groups::model()->findAllByPk(array('gid'=>$assessment['gid'], 'language'=>$assessment['language'])));
             if (Groups::model()->hasErrors()) safeDie(Groups::model()->getError());
             if (!$iAssessmentCount) {
                 $aDelete['assessments'][] = array('id' => $assessment['id'], 'assessment' => $assessment['name'], 'reason' => $clang->gT('No matching group'));

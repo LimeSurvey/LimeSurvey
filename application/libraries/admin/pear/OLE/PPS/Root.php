@@ -19,7 +19,6 @@
 //
 // $Id: Root.php,v 1.7 2003/12/12 21:10:10 xnoguer Exp $
 
-if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'PPS.php';
 
 

@@ -6,7 +6,7 @@ class ShortTextQuestion extends TextQuestion
         global $thissurvey;
 
         $clang = Yii::app()->lang;
-        $googleMapsAPIKey = Yii::app()->getConfig("googleMapsAPIKey");
+        $googlemaps_api_key = Yii::app()->getConfig("googlemaps_api_key");
         $extraclass ="";
         $aQuestionAttributes = $this->getAttributeValues();
 

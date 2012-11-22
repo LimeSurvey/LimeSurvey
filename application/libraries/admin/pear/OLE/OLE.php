@@ -30,7 +30,6 @@ define('OLE_DATA_SIZE_SMALL', 0x1000);
 define('OLE_LONG_INT_SIZE',        4);
 define('OLE_PPS_SIZE',          0x80);
 
-if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'PEAR.php';
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'PPS.php';
 

@@ -423,7 +423,7 @@
 
         // Romanian
         $supportedLanguages['ro']['description'] = $clang->gT('Romanian');
-        $supportedLanguages['ro']['nativedescription'] = 'Rom&#226;nesc';
+        $supportedLanguages['ro']['nativedescription'] = 'Rom&#226;na';
         $supportedLanguages['ro']['rtl'] = false;
         $supportedLanguages['ro']['dateformat'] = 1;
         $supportedLanguages['ro']['radixpoint'] = 1;
@@ -796,9 +796,9 @@
     function getLanguageDataRestricted($bOrderByNative=false,$sLanguageCode='en') {
         $aLanguageData=getLanguageData($bOrderByNative, $sLanguageCode);
 
-        if (trim(Yii::app()->getConfig('restrictToLanguages'))!='')
+        if (trim(Yii::app()->getConfig('restrict_to_languages'))!='')
         {
-            foreach(explode(' ',trim(Yii::app()->getConfig('restrictToLanguages'))) AS $key) {
+            foreach(explode(' ',trim(Yii::app()->getConfig('restrict_to_languages'))) AS $key) {
                 $aArray[$key] = $aLanguageData[$key];
             }
         }

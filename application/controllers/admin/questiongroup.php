@@ -390,10 +390,6 @@ class questiongroup extends Survey_Common_Action
                     foreach ($aData as $k => $v)
                         $group->$k = $v;
                     $ugresult = $group->save();
-                    if ($ugresult)
-                    {
-                        $groupsummary = getGroupList($gid, $surveyid);
-                    }
                 }
             }
 

@@ -316,6 +316,18 @@ class CommentCheckQuestion extends CheckQuestion
                 . 'return htmlspecialchars_decode(attr.question);';
     }
 
+    public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
+    {
+        $name=preg_replace('/\.shown$/','',$name);
+        if (preg_match('/comment$/',$name)) {
+            return LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
+        }
+        else
+        {
+            return parent::getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray);
+        }
+    }
+
     public function getDataEntryView($language)
     {
         $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY question_order, question";

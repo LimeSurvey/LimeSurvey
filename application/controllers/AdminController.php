@@ -9,8 +9,6 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-*
-*   $Id$
 */
 
 class AdminController extends LSYii_Controller
@@ -27,11 +25,11 @@ class AdminController extends LSYii_Controller
     protected function _init()
     {
         parent::_init();
-        $updatelastcheck = getGlobalSetting('updatelastcheck');
+        $dUpdateLastCheck = getGlobalSetting('updatelastcheck');
 
         $this->_sessioncontrol();
 
-        if (Yii::app()->getConfig('buildnumber') != "" && Yii::app()->getConfig('updatecheckperiod') > 0 && $updatelastcheck < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-". Yii::app()->getConfig('updatecheckperiod')." days"))
+        if (Yii::app()->getConfig('buildnumber') != "" && Yii::app()->getConfig('updatecheckperiod') > 0 && $dUpdateLastCheck < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-". Yii::app()->getConfig('updatecheckperiod')." days"))
             updateCheck();
 
         //unset(Yii::app()->session['FileManagerContext']);
@@ -60,37 +58,39 @@ class AdminController extends LSYii_Controller
     */
     public function error($message, $url = array())
     {
+        $sURL = $url;
+        $sMessage= $message;
         $clang = $this->lang;
 
         $this->_getAdminHeader();
-        $output = "<div class='messagebox ui-corner-all'>\n";
-        $output .= '<div class="warningheader">'.$clang->gT('Error').'</div><br />'."\n";
-        $output .= $message . '<br /><br />'."\n";
-        if (!empty($url) && !is_array($url))
+        $sOutput = "<div class='messagebox ui-corner-all'>\n";
+        $sOutput .= '<div class="warningheader">'.$clang->gT('Error').'</div><br />'."\n";
+        $sOutput .= $sMessage . '<br /><br />'."\n";
+        if (!empty($sURL) && !is_array($sURL))
         {
-            $title = $clang->gT('Back');
+            $sTitle = $clang->gT('Back');
         }
-        elseif (!empty($url['url']))
+        elseif (!empty($sURL['url']))
         {
-            if (!empty($url['title']))
+            if (!empty($sURL['title']))
             {
-                $title = $url['title'];
+                $sTitle = $sURL['title'];
             }
             else
             {
-                $title = $clang->gT('Back');
+                $sTitle = $clang->gT('Back');
             }
-            $url = $url['url'];
+            $sURL = $sURL['url'];
         }
         else
         {
-            $title = $clang->gT('Main Admin Screen');
-            $url = $this->createUrl('/admin');
+            $sTitle = $clang->gT('Main Admin Screen');
+            $sURL = $this->createUrl('/admin');
         }
-        $output .= '<input type="submit" value="'.$title.'" onclick=\'window.open("'.$url.'", "_top")\' /><br /><br />'."\n";
-        $output .= '</div>'."\n";
-        $output .= '</div>'."\n";
-        echo $output;
+        $sOutput .= '<input type="submit" value="'.$sTitle.'" onclick=\'window.open("'.$sURL.'", "_top")\' /><br /><br />'."\n";
+        $sOutput .= '</div>'."\n";
+        $sOutput .= '</div>'."\n";
+        echo $sOutput;
 
         $this->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
 
@@ -137,18 +137,19 @@ class AdminController extends LSYii_Controller
     */
     public function run($action)
     {
+        $sAction = $action;
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}'))
         {
-            $usrow = getGlobalSetting('DBVersion');
-            if ((int) $usrow < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
+            $iCurrentDBVersion = (int)getGlobalSetting('DBVersion');
+            if ( $iCurrentDBVersion < Yii::app()->getConfig('dbversionnumber') && $sAction != 'update' && $sAction != 'authentication')
                 $this->redirect($this->createUrl('/admin/update/db'));
         }
 
-        if ($action != "update" && $action != "db")
-            if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
+        if ($sAction != "update" && $sAction != "db")
+            if (empty($this->user_id) && $sAction != "authentication"  && $sAction != "remotecontrol")
             {
-                if (!empty($action) && $action != 'index')
+                if (!empty($sAction) && $sAction != 'index')
                     Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
 
                 Yii::app()->session['redirectopage'] = Yii::app()->request->requestUri;
@@ -156,7 +157,7 @@ class AdminController extends LSYii_Controller
                 $this->redirect($this->createUrl('/admin/authentication/login'));
             }
 
-            return parent::run($action);
+            return parent::run($sAction);
     }
 
     /**
@@ -167,14 +168,14 @@ class AdminController extends LSYii_Controller
     */
     public function actions()
     {
-        $actions = $this->getActionClasses();
+        $sActions = $this->getActionClasses();
 
-        foreach ($actions as $action => $class)
+        foreach ($sActions as $sAction => $sClass)
         {
-            $actions[$action] = "application.controllers.admin.{$class}";
+            $sActions[$sAction] = "application.controllers.admin.{$sClass}";
         }
 
-        return $actions;
+        return $sActions;
     }
 
     public function getActionClasses()
@@ -220,22 +221,23 @@ class AdminController extends LSYii_Controller
     * Set Session User Rights
     *
     * @access public
+    * @param integer $iLoginID
     * @return void
     */
-    public function _GetSessionUserRights($loginID)
+    public function _GetSessionUserRights($iLoginID)
     {
-        $user = User::model()->findByPk($loginID);
+        $oUser = User::model()->findByPk($iLoginID);
 
-        if (!empty($user))
+        if (!empty($oUser))
         {
-            Yii::app()->session['USER_RIGHT_SUPERADMIN']        = $user->superadmin;
-            Yii::app()->session['USER_RIGHT_CREATE_SURVEY']     = ($user->create_survey || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] = ($user->participant_panel || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_CONFIGURATOR']      = ($user->configurator || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_CREATE_USER']       = ($user->create_user || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_DELETE_USER']       = ($user->delete_user || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE']   = ($user->manage_template || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_MANAGE_LABEL']      = ($user->manage_label || $user->superadmin);
+            Yii::app()->session['USER_RIGHT_SUPERADMIN']        = $oUser->superadmin;
+            Yii::app()->session['USER_RIGHT_CREATE_SURVEY']     = ($oUser->create_survey || $oUser->superadmin);
+            Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] = ($oUser->participant_panel || $oUser->superadmin);
+            Yii::app()->session['USER_RIGHT_CONFIGURATOR']      = ($oUser->configurator || $oUser->superadmin);
+            Yii::app()->session['USER_RIGHT_CREATE_USER']       = ($oUser->create_user || $oUser->superadmin);
+            Yii::app()->session['USER_RIGHT_DELETE_USER']       = ($oUser->delete_user || $oUser->superadmin);
+            Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE']   = ($oUser->manage_template || $oUser->superadmin);
+            Yii::app()->session['USER_RIGHT_MANAGE_LABEL']      = ($oUser->manage_label || $oUser->superadmin);
         }
 
         // SuperAdmins
@@ -245,9 +247,9 @@ class AdminController extends LSYii_Controller
 
         // Let's check if I am the Initial SuperAdmin
 
-        $user = User::model()->findByAttributes(array('parent_id' => 0));
+        $oUser = User::model()->findByAttributes(array('parent_id' => 0));
 
-        if (!is_null($user) && $user->uid == $loginID)
+        if (!is_null($oUser) && $oUser->uid == $iLoginID)
             $initialSuperadmin=true;
         else
             $initialSuperadmin=false;
@@ -265,75 +267,71 @@ class AdminController extends LSYii_Controller
     * Prints Admin Header
     *
     * @access protected
-    * @param bool $meta
-    * @param bool $return
+    * @param string $sMetaHeaders
     * @return mixed
     */
-    public function _getAdminHeader($meta = false, $return = false)
+    public function _getAdminHeader($sMetaHeaders = false)
     {
         if (empty(Yii::app()->session['adminlang']))
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
-        $data = array();
-        $data['adminlang'] = Yii::app()->session['adminlang'];
-
-        //$data['admin'] = getLanguageRTL;
-        $data['test'] = "t";
-        $data['languageRTL']="";
-        $data['styleRTL']="";
+        $aData = array();
+        $aData['adminlang'] = Yii::app()->session['adminlang'];
+        $aData['test'] = "t";
+        $aData['languageRTL']="";
+        $aData['styleRTL']="";
 
         Yii::app()->loadHelper("surveytranslator");
 
         if (getLanguageRTL(Yii::app()->session["adminlang"]))
         {
-            $data['languageRTL'] = " dir=\"rtl\" ";
-            $data['bIsRTL']=true;
+            $aData['languageRTL'] = " dir=\"rtl\" ";
+            $aData['bIsRTL']=true;
         }
         else
         {
-            $data['bIsRTL']=false;
+            $aData['bIsRTL']=false;
         }
 
-        $data['meta']="";
-        if ($meta)
+        $aData['meta']="";
+        if ($sMetaHeaders)
         {
-            $data['meta']=$meta;
+            $aData['meta']=$sMetaHeaders;
         }
 
-        $data['baseurl'] = Yii::app()->baseUrl . '/';
-        $data['datepickerlang']="";
+        $aData['baseurl'] = Yii::app()->baseUrl . '/';
+        $aData['datepickerlang']="";
         if (Yii::app()->session["adminlang"] != 'en')
-            $data['datepickerlang'] = "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."jquery/locale/jquery.ui.datepicker-".Yii::app()->session["adminlang"].".js\"></script>\n";
+            $aData['datepickerlang'] = "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."jquery/locale/jquery.ui.datepicker-".Yii::app()->session["adminlang"].".js\"></script>\n";
 
-        $data['sitename'] = Yii::app()->getConfig("sitename");
-        $data['admintheme'] = Yii::app()->getConfig("admintheme");
-        $data['firebug'] = useFirebug();
+        $aData['sitename'] = Yii::app()->getConfig("sitename");
+        $aData['admintheme'] = Yii::app()->getConfig("admintheme");
+        $aData['firebug'] = useFirebug();
 
         if (!empty(Yii::app()->session['dateformat']))
-            $data['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
+            $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         // Prepare flashmessage
         if (!empty(Yii::app()->session['flashmessage']) && Yii::app()->session['flashmessage'] != '')
         {
-            $data['flashmessage'] = Yii::app()->session['flashmessage'];
+            $aData['flashmessage'] = Yii::app()->session['flashmessage'];
             unset(Yii::app()->session['flashmessage']);
         }
 
-        $data['css_admin_includes'] = $this->_css_admin_includes(array(), true);
+        $aData['css_admin_includes'] = $this->_css_admin_includes(array(), true);
 
-        return $this->renderPartial("/admin/super/header", $data, $return);
+        return $this->renderPartial("/admin/super/header", $aData);
     }
 
     /**
     * Prints Admin Footer
     *
     * @access protected
-    * @param string $url
-    * @param string $explanation
-    * @param bool $return
+    * @param string $sURL
+    * @param string $sExplanation
     * @return mixed
     */
-    public function _getAdminFooter($url, $explanation, $return = false)
+    public function _getAdminFooter($sURL, $sExplanation)
     {
         $clang = $this->lang;
         $data['clang'] = $clang;
@@ -358,12 +356,12 @@ class AdminController extends LSYii_Controller
         }
 
         $data['imageurl'] = Yii::app()->getConfig("imageurl");
-        $data['url'] = $url;
+        $data['url'] = $sURL;
 
         $data['js_admin_includes']  = $this->_js_admin_includes(array(), true);
         $data['css_admin_includes'] = $this->_css_admin_includes(array(), true);
 
-        return $this->render("/admin/super/footer", $data, $return);
+        return $this->render("/admin/super/footer", $data);
 
     }
 
@@ -371,59 +369,57 @@ class AdminController extends LSYii_Controller
     * Shows a message box
     *
     * @access public
-    * @param string $title
-    * @param string $message
-    * @param string $class
+    * @param string $sTitle
+    * @param string $sMessage
+    * @param string $sClass
     * @return void
     */
-    public function _showMessageBox($title,$message,$class="header ui-widget-header")
+    public function _showMessageBox($sTitle, $sMessage, $sClass="header ui-widget-header")
     {
-        $data['title'] = $title;
-        $data['message'] = $message;
-        $data['class'] = $class;
-        $data['clang'] = $this->lang;
+        $aData['title'] = $sTitle;
+        $aData['message'] = $sMessage;
+        $aData['class'] = $sClass;
+        $aData['clang'] = $this->lang;
 
-        $this->render('/admin/super/messagebox', $data);
+        $this->render('/admin/super/messagebox', $aData);
     }
 
     /**
     * _showadminmenu() function returns html text for the administration button bar
     *
     * @access public
-    * @global string $homedir
-    * @global string $scriptname
-    * @global string $surveyid
-    * @global string $setfont
-    * @global string $imageurl
-    * @param int $surveyid
-    * @return string $adminmenu
+    * @param int $iSurveyID
+    * @return void
     */
-    public function _showadminmenu($surveyid = false)
+    public function _showadminmenu($iSurveyID = false)
     {
 
         $clang = $this->lang;
-        $data['clang']= $clang;
+        $aData['clang']= $clang;
 
         if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug")<2)  {
             Yii::app()->session['flashmessage'] = $clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
         }
 
-        $data['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && getGlobalSetting("updatelastcheck")>0 && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );
-        $data['updateversion'] = getGlobalSetting("updateversion");
-        $data['updatebuild'] = getGlobalSetting("updatebuild");
-        $data['surveyid'] = $surveyid;
-        $data['iconsize'] = Yii::app()->getConfig('adminthemeiconsize');
-        $data['sImageURL'] = Yii::app()->getConfig('adminimageurl');
-        $this->render("/admin/super/adminmenu", $data);
-
+        $aData['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && getGlobalSetting("updatelastcheck")>0 && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );
+        $aData['updateversion'] = getGlobalSetting("updateversion");
+        $aData['updatebuild'] = getGlobalSetting("updatebuild");
+        $aData['surveyid'] = $iSurveyID;
+        $aData['iconsize'] = Yii::app()->getConfig('adminthemeiconsize');
+        $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
+        $this->render("/admin/super/adminmenu", $aData);
     }
 
+    /**
+    * put your comment there...
+    * 
+    */
     public function _loadEndScripts()
     {
-        static $out = false;
-        if ($out)
+        static $bOut = false;
+        if ($bOut)
             return true;
-        $out = true;
+        $bOut = true;
         if (empty(Yii::app()->session['metaHeader']))
             Yii::app()->session['metaHeader'] = '';
 
@@ -432,38 +428,57 @@ class AdminController extends LSYii_Controller
         if(empty(Yii::app()->session['checksessionpost']))
             Yii::app()->session['checksessionpost'] = '';
 
-        $data['checksessionpost'] = Yii::app()->session['checksessionpost'];
+        $aData['checksessionpost'] = Yii::app()->session['checksessionpost'];
 
-        return $this->render('/admin/endScripts_view', $data);
+        return $this->render('/admin/endScripts_view', $aData);
+    }
+    
+    /**
+    * put your comment there...
+    * 
+    * @param array $aIncludes
+    * @param boolean $bReset
+    */
+    public function _css_admin_includes($aIncludes = array(), $bReset = false)
+    {
+        return $this->_admin_includes('css', $aIncludes, $bReset);
     }
 
-    public function _css_admin_includes($includes = array(), $reset = false)
+    /**
+    * put your comment there...
+    * 
+    * @param array $aIncludes
+    * @param boolean $bReset
+    */
+    public function _js_admin_includes($aIncludes = array(), $bReset = false)
     {
-        return $this->_admin_includes('css', $includes, $reset);
+        return $this->_admin_includes('js', $aIncludes, $bReset);
     }
 
-    public function _js_admin_includes($includes = array(), $reset = false)
+    /**
+    * put your comment there...
+    * 
+    * @param string $sMethod
+    * @param array $aIncludes
+    * @param boolean $bReset
+    */
+    private function _admin_includes($sMethod, $aIncludes = array(), $bReset = false)
     {
-        return $this->_admin_includes('js', $includes, $reset);
-    }
-
-    private function _admin_includes($method, $includes = array(), $reset = false)
-    {
-        $method = in_array($method, array('js', 'css')) ? $method : 'js';
-        $includes = (array) $includes;
-        $admin_includes = (array) Yii::app()->getConfig("{$method}_admin_includes");
-        $admin_includes = array_merge($admin_includes, $includes);
-        $admin_includes = array_filter($admin_includes);
-        $admin_includes = array_unique($admin_includes);
-        if ($reset == true)
+        $sMethod = in_array($sMethod, array('js', 'css')) ? $sMethod : 'js';
+        $aIncludes = (array) $aIncludes;
+        $aAdminIncludes = (array) Yii::app()->getConfig("{$sMethod}_admin_includes");
+        $aAdminIncludes = array_merge($aAdminIncludes, $aIncludes);
+        $aAdminIncludes = array_filter($aAdminIncludes);
+        $aAdminIncludes = array_unique($aAdminIncludes);
+        if ($bReset)
         {
-            Yii::app()->setConfig("{$method}_admin_includes", array());
+            Yii::app()->setConfig("{$sMethod}_admin_includes", array());
         }
         else
         {
-            Yii::app()->setConfig("{$method}_admin_includes", $admin_includes);
+            Yii::app()->setConfig("{$sMethod}_admin_includes", $aAdminIncludes);
         }
 
-        return $admin_includes;
+        return $aAdminIncludes;
     }
 }

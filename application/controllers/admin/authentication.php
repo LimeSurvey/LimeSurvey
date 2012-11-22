@@ -356,7 +356,7 @@ class Authentication extends Survey_Common_Action
         {
             $aData['maxattempts'] = sprintf(
             $clang->gT('You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again.'),
-            Yii::app()->getConfig('timeOutTime') / 60
+            Yii::app()->getConfig('login_lockout_time') / 60
             );
         }
 

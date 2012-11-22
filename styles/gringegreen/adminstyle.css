@@ -1193,7 +1193,6 @@ textarea.updater-changelog {
     text-align: right;
     margin-right: 0.5em;
     float: left;
-    font-weight: bold;
     color: #666;
 }
 
@@ -1682,7 +1681,6 @@ ol.organizer {
     margin:0;
 }
 
-.ui-jqgrid a.imagelink,
 .ui-jqgrid td input[type="image"]
 {
     padding:2px;

@@ -47,21 +47,22 @@ class NumericalQuestion extends QuestionModule
             $tiwidth=10;
         }
 
+        $fValue=rtrim($_SESSION['survey_'.$this->surveyid][$this->fieldname],'0.');// Remove ending . and extra 0
+        $integeronly=0;
         if (trim($aQuestionAttributes['num_value_int_only'])==1)
         {
-            $acomma="";
+            $integeronly=1;
             $extraclass .=" integeronly";
-            $answertypeclass = " integeronly";
+            $answertypeclass .= " integeronly";
+            if(is_numeric($fValue))
+            {
+                $fValue=number_format($fValue, 0, '', '');
+            }
         }
-        else
-        {
-            $acomma=getRadixPointData($thissurvey['surveyls_numberformat']);
-            $acomma = $acomma['seperator'];
 
-        }
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
-        $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.$this->surveyid][$this->fieldname]);
+        $fValue = str_replace('.',$sSeperator,$fValue);
 
         if ($thissurvey['nokeyboard']=='Y')
         {
@@ -77,7 +78,7 @@ class NumericalQuestion extends QuestionModule
         $answer = "<p class='question answer-item text-item numeric-item {$extraclass}'>"
         . " <label for='answer{$this->fieldname}' class='hide label'>{$clang->gT('Answer')}</label>\n$prefix\t"
         . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$this->fieldname\"  title=\"".$clang->gT('Only numbers may be entered in this field.')."\" "
-        . "id=\"answer{$this->fieldname}\" value=\"{$dispVal}\" onkeyup='$checkconditionFunction(this.value, this.name, this.type)' "
+        . "id=\"answer{$this->fieldname}\" value=\"{$fValue}\" onkeyup=\"{$checkconditionFunction}(this.value, this.name, this.type,'onchange',{$integeronly})\" "
         . " {$maxlength} />\t{$suffix}\n</p>\n";
         if ($aQuestionAttributes['hide_tip']==0)
         {
@@ -93,6 +94,17 @@ class NumericalQuestion extends QuestionModule
     {
         return "\t<input type='text' name='{$this->fieldname}' value='{$idrow[$this->fieldname]}' "
         ."onkeypress=\"return goodchars(event,'0123456789.,')\" />\n";
+    }
+
+    public function getExtendedAnswer($value, $language)
+    {
+        $value=rtrim($value,"0.");
+        $aQuestionAttributes = $this->getAttributeValues();
+        if($aQuestionAttributes['num_value_int_only'])
+        {
+            $value=number_format($value, 0, '', '');
+        }
+        return $value;
     }
 
     public function filter($value, $type)

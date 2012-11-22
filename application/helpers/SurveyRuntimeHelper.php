@@ -251,7 +251,7 @@ class SurveyRuntimeHelper {
             (isset($move) && ($move == "moveprev" || (is_int($move) && $_SESSION[$LEMsessid]['prevstep'] == $_SESSION[$LEMsessid]['maxstep']) || $_SESSION[$LEMsessid]['prevstep'] == $_SESSION[$LEMsessid]['step'])) ||
             (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far")))
             {
-                if (Yii::app()->getConfig('allowmandbackwards') == 1)
+                if (Yii::app()->getConfig('allowmandbackwards'))
                 {
                     $backok = "Y";
                 }
@@ -862,19 +862,20 @@ END;
 END;
 
         //Display the "mandatory" message on page if necessary
-        if (isset($showpopups) && $showpopups == 0 && $stepInfo['mandViolation'] && $okToShowErrors)
+        $showpopups = Yii::app()->getConfig('showpopups');
+        if (!$showpopups && $stepInfo['mandViolation'] && $okToShowErrors)
         {
             echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
         }
 
         //Display the "validation" message on page if necessary
-        if (isset($showpopups) && $showpopups == 0 && !$stepInfo['valid'] && $okToShowErrors)
+        if (!$showpopups && !$stepInfo['valid'] && $okToShowErrors)
         {
             echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
         }
 
         //Display the "file validation" message on page if necessary
-        if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filenotvalidated == true && $okToShowErrors)
+        if (!$showpopups && isset($filenotvalidated) && $filenotvalidated == true && $okToShowErrors)
         {
             echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
         }

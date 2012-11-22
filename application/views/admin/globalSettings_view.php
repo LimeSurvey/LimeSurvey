@@ -36,12 +36,12 @@
                     <th ><?php $clang->eT("Deactivated token tables"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
                 </tr>
                 <?php
-                    if (Yii::app()->getConfig('iFileUploadTotalSpaceMB')>0)
+                    if (Yii::app()->getConfig('file_upload_total_space_mb')>0)
                     {
                         $fUsed=calculateTotalFileUploadUsage();
                     ?>
                     <tr>
-                        <th ><?php $clang->eT("Used/free space for file uploads"); ?>:</th><td><?php echo sprintf('%01.2F',$fUsed); ?> MB / <?php echo sprintf('%01.2F',Yii::app()->getConfig('iFileUploadTotalSpaceMB')-$fUsed); ?> MB</td>
+                        <th ><?php $clang->eT("Used/free space for file uploads"); ?>:</th><td><?php echo sprintf('%01.2F',$fUsed); ?> MB / <?php echo sprintf('%01.2F',Yii::app()->getConfig('file_upload_total_space_mb')-$fUsed); ?> MB</td>
                     </tr>
                     <?php
                     }
@@ -101,7 +101,7 @@
 
         <div id='general'>
             <ul>
-                <li><label for='sitename'><?php $clang->eT("Site name:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                <li><label for='sitename'><?php $clang->eT("Site name:").((Yii::app()->getConfig("demo_mode")==true)?'*':''); ?></label>
                     <input type='text' size='50' id='sitename' name='sitename' value="<?php echo htmlspecialchars(getGlobalSetting('sitename')); ?>" /></li>
                 <?php
 
@@ -143,7 +143,7 @@
 
 
                 <?php $thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode'); ?>
-                <li><label for='defaulthtmleditormode'><?php $clang->eT("Default HTML editor mode:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                <li><label for='defaulthtmleditormode'><?php $clang->eT("Default HTML editor mode:").((Yii::app()->getConfig("demo_mode")==true)?'*':''); ?></label>
                     <select name='defaulthtmleditormode' id='defaulthtmleditormode'>
                         <option value='none'
                             <?php if ($thisdefaulthtmleditormode=='none') { echo "selected='selected'";} ?>
@@ -156,7 +156,7 @@
                             ><?php $clang->eT("Popup HTML editor"); ?></option>
                     </select></li>
                 <?php $thisdefaultquestionselectormode=getGlobalSetting('defaultquestionselectormode'); ?>
-                <li><label for='defaultquestionselectormode'><?php $clang->eT("Question type selector:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                <li><label for='defaultquestionselectormode'><?php $clang->eT("Question type selector:").((Yii::app()->getConfig("demo_mode")==true)?'*':''); ?></label>
                     <select name='defaultquestionselectormode' id='defaultquestionselectormode'>
                         <option value='default'
                             <?php if ($thisdefaultquestionselectormode=='default') { echo "selected='selected'";} ?>
@@ -166,7 +166,7 @@
                             ><?php $clang->eT("Simple selector"); ?></option>
                     </select></li>
                 <?php $thisdefaulttemplateeditormode=getGlobalSetting('defaulttemplateeditormode'); ?>
-                <li><label for='defaulttemplateeditormode'><?php $clang->eT("Template editor:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                <li><label for='defaulttemplateeditormode'><?php $clang->eT("Template editor:").((Yii::app()->getConfig("demo_mode")==true)?'*':''); ?></label>
                     <select name='defaulttemplateeditormode' id='defaulttemplateeditormode'>
                         <option value='default'
                             <?php if ($thisdefaulttemplateeditormode=='default') { echo "selected='selected'";} ?>
@@ -181,12 +181,12 @@
                         <?php echo $clang->gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ". $clang->gT("Corrected time :").' '.convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
                     </span></li>
 
-                <li><label for='iSessionExpirationTime'><?php $clang->eT("Session lifetime (seconds):"); ?></label>
-                    <input type='text' size='10' id='iSessionExpirationTime' name='iSessionExpirationTime' value="<?php echo htmlspecialchars(getGlobalSetting('iSessionExpirationTime')); ?>" /></li>
-                <li><label for='ipInfoDbAPIKey'><?php $clang->eT("IP Info DB API Key:"); ?></label>
-                    <input type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value="<?php echo htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey')); ?>" /></li>
-                <li><label for='googleMapsAPIKey'><?php $clang->eT("Google Maps API key:"); ?></label>
-                    <input type='text' size='35' id='googleMapsAPIKey' name='googleMapsAPIKey' value="<?php echo htmlspecialchars(getGlobalSetting('googleMapsAPIKey')); ?>" /></li>
+                <li><label for='session_expiration_time'><?php $clang->eT("Session lifetime (seconds):"); ?></label>
+                    <input type='text' size='10' id='session_expiration_time' name='session_expiration_time' value="<?php echo htmlspecialchars(getGlobalSetting('session_expiration_time')); ?>" /></li>
+                <li><label for='ipinfodb_api_key'><?php $clang->eT("IP Info DB API Key:"); ?></label>
+                    <input type='text' size='35' id='ipinfodb_api_key' name='ipinfodb_api_key' value="<?php echo htmlspecialchars(getGlobalSetting('ipinfodb_api_key')); ?>" /></li>
+                <li><label for='googlemaps_api_key'><?php $clang->eT("Google Maps API key:"); ?></label>
+                    <input type='text' size='35' id='googlemaps_api_key' name='googlemaps_api_key' value="<?php echo htmlspecialchars(getGlobalSetting('googlemaps_api_key')); ?>" /></li>
                 <li><label for='googleanalyticsapikey'><?php $clang->eT("Google Analytics API key:"); ?></label>
                     <input type='text' size='35' id='googleanalyticsapikey' name='googleanalyticsapikey' value="<?php echo htmlspecialchars(getGlobalSetting('googleanalyticsapikey')); ?>" /></li>
                 <li><label for='googletranslateapikey'><?php $clang->eT("Google Translate API key:"); ?></label>
@@ -291,19 +291,19 @@
         </div>
 
         <div id='security'><ul>
-                <?php $thissurveyPreview_require_Auth=getGlobalSetting('surveyPreview_require_Auth'); ?>
-                <li><label for='surveyPreview_require_Auth'><?php $clang->eT("Survey preview only for administration users"); ?></label>
-                    <select id='surveyPreview_require_Auth' name='surveyPreview_require_Auth'>
+                <?php $thissurvey_preview_admin_only=getGlobalSetting('survey_preview_admin_only'); ?>
+                <li><label for='survey_preview_admin_only'><?php $clang->eT("Survey preview only for administration users"); ?></label>
+                    <select id='survey_preview_admin_only' name='survey_preview_admin_only'>
                         <option value='1'
-                            <?php if ($thissurveyPreview_require_Auth == true) { echo " selected='selected'";}?>
+                            <?php if ($thissurvey_preview_admin_only == true) { echo " selected='selected'";}?>
                             ><?php $clang->eT("Yes"); ?></option>
                         <option value='0'
-                            <?php if ($thissurveyPreview_require_Auth == false) { echo " selected='selected'";}?>
+                            <?php if ($thissurvey_preview_admin_only == false) { echo " selected='selected'";}?>
                             ><?php $clang->eT("No"); ?></option>
                     </select></li>
 
                 <?php $thisfilterxsshtml=getGlobalSetting('filterxsshtml'); ?>
-                <li><label for='filterxsshtml'><?php $clang->eT("Filter HTML for XSS:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                <li><label for='filterxsshtml'><?php $clang->eT("Filter HTML for XSS:").((Yii::app()->getConfig("demo_mode")==true)?'*':''); ?></label>
                     <select id='filterxsshtml' name='filterxsshtml'>
                         <option value='1'
                             <?php if ( $thisfilterxsshtml == true) { echo " selected='selected'";}?>
@@ -427,7 +427,7 @@
         </div>
         <div id='language'>
             <ul>
-                <li><label for='defaultlang'><?php $clang->eT("Default site language:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                <li><label for='defaultlang'><?php $clang->eT("Default site language:").((Yii::app()->getConfig("demo_mode")==true)?'*':''); ?></label>
                     <select name='defaultlang' id='defaultlang'>
                         <?php
                             $actuallang=getGlobalSetting('defaultlang');
@@ -448,7 +448,7 @@
                         <tr>
                             <td>
                                 <select style='min-width:220px;' size='5' id='includedLanguages' name='includedLanguages' multiple='multiple'><?php
-                                        foreach ($restrictToLanguages as $sLanguageCode) {?>
+                                        foreach ($restrict_to_languages as $sLanguageCode) {?>
                                         <option value='<?php echo $sLanguageCode; ?>'><?php echo $allLanguages[$sLanguageCode]['description']; ?></option>
                                         <?php
                                     }?>
@@ -472,29 +472,29 @@
         </div>
         <div id='interfaces'>
             <ul>
-                <?php $RPCInterface=getGlobalSetting('RPCInterface'); ?>
-                <li><label for='RPCInterface'><?php $clang->eT("RPC interface enabled:"); ?></label>
-                    <select id='RPCInterface' name='RPCInterface'>
+                <?php $rpc_interface=getGlobalSetting('rpc_interface'); ?>
+                <li><label for='rpc_interface'><?php $clang->eT("RPC interface enabled:"); ?></label>
+                    <select id='rpc_interface' name='rpc_interface'>
                         <option value='off'
-                            <?php if ($RPCInterface == 'off') { echo " selected='selected'";}?>
+                            <?php if ($rpc_interface == 'off') { echo " selected='selected'";}?>
                             ><?php $clang->eT("Off"); ?></option>
                         <option value='json'
-                            <?php if ($RPCInterface == 'json') { echo " selected='selected'";}?>
+                            <?php if ($rpc_interface == 'json') { echo " selected='selected'";}?>
                             ><?php $clang->eT("JSON-RPC"); ?></option>
                         <option value='xml'
-                            <?php if ($RPCInterface == 'xml') { echo " selected='selected'";}?>
+                            <?php if ($rpc_interface == 'xml') { echo " selected='selected'";}?>
                             ><?php $clang->eT("XML-RPC"); ?></option>
                     </select></li>
             </ul>
         </div>
-        <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ',$restrictToLanguages); ?>'/>
+        <input type='hidden' name='restrict_to_languages' id='restrict_to_languages' value='<?php implode(' ',$restrict_to_languages); ?>'/>
         <input type='hidden' name='action' value='globalsettingssave'/>
     </form>
 
 </div>
 
 <p><br/><input type='button' onclick='$("#frmglobalsettings").submit();' class='standardbtn' value='<?php $clang->eT("Save settings"); ?>' /><br /></p>
-<?php if (Yii::app()->getConfig("demoMode")==true)
+<?php if (Yii::app()->getConfig("demo_mode")==true)
     { ?>
     <p><?php $clang->eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
     <?php } ?>

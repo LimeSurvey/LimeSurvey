@@ -25,81 +25,80 @@ class VerificationController extends LSYii_Controller
     {
         $iSurveyID=(int)$sid;
         Yii::app()->loadHelper('database');
-        $rootdir = Yii::app()->getConfig('rootdir');
+        $sRootDir = Yii::app()->getConfig('rootdir');
 
         // header for png
         Header("Content-Type: image/png");
 
         // Create Image
-        $im = ImageCreate(75, 20);
-        $white = ImageColorAllocate($im, 255, 255, 255);
-        $black = ImageColorAllocate($im, 0, 0, 0);
-        $red = ImageColorAllocate($im, 255, 0, 0);
-        $blue = ImageColorAllocate($im, 0, 0, 255);
-        $grey_shade = ImageColorAllocate($im, 204, 204, 204);
+        $oImage = ImageCreate(75, 20);
+        $oColorBlack = ImageColorAllocate($oImage, 0, 0, 0);
+        $oColorRed = ImageColorAllocate($oImage, 255, 0, 0);
+        $oColorBlue = ImageColorAllocate($oImage, 0, 0, 255);
+        $oColorGrey = ImageColorAllocate($oImage, 204, 204, 204);
 
         // Create the random numberes
         srand((double)microtime()*1000000);
 
-        $num1 = rand(1,5);
-        $found = false;
-        while ($found == false)
+        $iRandomNumber1 = rand(1,5);
+        $bFound = false;
+        while ($bFound == false)
         {
-            $num2 = rand(1,100);
-            if (preg_match('/^[0-9]+$/', $num2/5))
+            $iRandomNumber2 = rand(1,100);
+            if (preg_match('/^[0-9]+$/', $iRandomNumber2/5))
             {
-                $found = true;
+                $bFound = true;
                 break;
             }
         }
-        $font_c_rand = rand(1,3);
-        if ($font_c_rand == 1)
+        $iRandomFontColor = rand(1,3);
+        if ($iRandomFontColor == 1)
         {
-            $font_color = $black;
-        } else if ($font_c_rand == 2)
+            $oFontColor = $oColorBlack;
+        } else if ($iRandomFontColor == 2)
         {
-            $font_color = $red;
-        } else if ($font_c_rand == 3)
+            $oFontColor = $oColorRed;
+        } else if ($iRandomFontColor == 3)
         {
-            $font_color = $blue;
+            $oFontColor = $oColorBlue;
         }
 
-        $font_rand = rand(1,2);//Maybe add other specific hard font
-        if ($font_rand == 1)
+        $iRandomFontName = rand(1,2);//Maybe add other specific hard font
+        if ($iRandomFontName == 1)
         {
-            $font = $rootdir."/fonts/FreeSans.ttf";
+            $sFont = $sRootDir."/fonts/FreeSans.ttf";
         } else {
-            $font = $rootdir."/fonts/DejaVuSans.ttf";
+            $sFont = $sRootDir."/fonts/DejaVuSans.ttf";
         }
 
-        $line_rand = rand(1,3);
-        if ($line_rand == 1)
+        $iRandomLineColor = rand(1,3);
+        if ($iRandomLineColor == 1)
         {
-            $line_color = $black;
-        } else if ($line_rand == 2)
+            $oLineColor = $oColorBlack;
+        } else if ($iRandomLineColor == 2)
         {
-            $line_color = $red;
-        } else if ($line_rand == 3)
+            $oLineColor = $oColorRed;
+        } else if ($iRandomLineColor == 3)
         {
-            $line_color = $blue;
+            $oLineColor = $oColorBlue;
         }
 
         // Fill image, make transparent
-        ImageFill($im, 0, 0, $grey_shade);
+        ImageFill($oImage, 0, 0, $oColorGrey);
         //imagecolortransparent ($im, $white);
-        imageline($im,0,0,0,20,$line_color);
-        imageline($im,74,0,74,19,$line_color);
-        imageline($im,0,0,74,0,$line_color);
-        imageline($im,0,19,74,19,$line_color);
+        imageline($oImage,0,0,0,20,$oLineColor);
+        imageline($oImage,74,0,74,19,$oLineColor);
+        imageline($oImage,0,0,74,0,$oLineColor);
+        imageline($oImage,0,19,74,19,$oLineColor);
         // Write math question in a nice TTF Font
-        ImageTTFText($im, 10, 0, 3, 16,$font_color, $font,  $num1." + ".$num2." =" );
+        ImageTTFText($oImage, 10, 0, 3, 16,$oFontColor, $sFont,  $iRandomNumber1." + ".$iRandomNumber2." =" );
 
         // Display Image
-        ImagePNG($im);
-        ImageDestroy($im);
+        ImagePNG($oImage);
+        ImageDestroy($oImage);
 
         // Add the answer to the session
-        $_SESSION['survey_'.$iSurveyID]['secanswer']  = $num1+$num2;
+        $_SESSION['survey_'.$iSurveyID]['secanswer']  = $iRandomNumber1+$iRandomNumber2;
     }
 }
 

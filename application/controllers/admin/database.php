@@ -95,7 +95,7 @@ class database extends Survey_Common_Action
 
                         foreach ($sqresult as $aSubquestionrow)
                         {
-                            if (Yii::app()->request->getPost('defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']))
+                            if (!is_null(Yii::app()->request->getPost('defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid'])))
                             {
                                 $this->_updateDefaultValues($qid,$aSubquestionrow['qid'],$scale_id,'',$language,Yii::app()->request->getPost('defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']),true);
                             }
@@ -325,10 +325,6 @@ class database extends Survey_Common_Action
 
         if (in_array($action, array('insertquestion', 'copyquestion')) && hasSurveyPermission($surveyid, 'surveycontent','create'))
         {
-            if ($action=='copyquestion')
-            {
-                $gid=intval(Yii::app()->request->getPost('copygid'));
-            }
             $baselang = Survey::model()->findByPk($surveyid)->language;
             if (strlen(Yii::app()->request->getPost('title')) < 1)
             {

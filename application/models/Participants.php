@@ -264,7 +264,7 @@ class Participants extends CActiveRecord
         $rowid = explode(",", $rows);
         foreach ($rowid as $row)
         {
-            $tokens = Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = "' . $row .'"')->queryAll();
+            $tokens = Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = :pid')->bindParam(":pid", $row, PDO::PARAM_INT)->queryAll();
 
             foreach ($tokens as $key => $value)
             {
@@ -273,7 +273,7 @@ class Participants extends CActiveRecord
                 if (Yii::app()->db->schema->getTable($tokentable))
                 {
                     Yii::app()->db->createCommand()
-                                  ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = "' . $row . '"'); // Deletes matching token table entries
+                                  ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = :pid',array(':pid'=>$row)); // Deletes matching token table entries
                     //Yii::app()->db->createCommand()->delete(Tokens::model()->tableName(), array('in', 'participant_id', $row));
                 }
             }
@@ -284,17 +284,16 @@ class Participants extends CActiveRecord
         }
     }
 
-    function deleteParticipantTokenAnswer($rows)
-    {
-        /* This function deletes the participant from the participants table,
-           the participant from any tokens table they're in (using the survey_links table to find them),
-           all responses in surveys they've been linked to,
-           and then all the participants attributes. */
-        $rowid = explode(",", $rows);
-        foreach ($rowid as $row)
-        {
-            //ORIGINAL LINE: $tokens = Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = "' . $row . '"')->queryAll();
-            $tokens = Yii::app()->db->createCommand()
+	function deleteParticipantTokenAnswer($rows)
+	{
+		/* This function deletes the participant from the participants table,
+		   the participant from any tokens table they're in (using the survey_links table to find them),
+		   all responses in surveys they've been linked to,
+		   and then all the participants attributes. */
+		$rowid = explode(",", $rows);
+		foreach ($rowid as $row)
+		{
+			$tokens = Yii::app()->db->createCommand()
                                     ->select('*')
                                     ->from('{{survey_links}}')
                                     ->where('participant_id = :row')
@@ -309,7 +308,8 @@ class Participants extends CActiveRecord
                     $tokenid = Yii::app()->db->createCommand()
                                              ->select('token')
                                              ->from('{{tokens_' . intval($value['survey_id']) . '}}')
-                                             ->where('participant_id = "' . $value['participant_id'] . '"')
+                                             ->where('participant_id = :pid')
+                                             ->bindParam(":pid", $value['participant_id'], PDO::PARAM_INT)
                                              ->queryAll();
                     $token = $tokenid[0];
                     $surveytable='{{survey_'.intval($value['survey_id']).'}}';
@@ -327,17 +327,17 @@ class Participants extends CActiveRecord
                             Yii::app()->db->createCommand()
                                           ->delete('{{survey_' . intval($value['survey_id']) . '}}', 'token = :token')
                                           ->bindParam(":token", $gettoken['token'], PDO::PARAM_STR); // Deletes matching responses from surveys
-                        }
-                    }
-                    Yii::app()->db->createCommand()
-                                  ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = "' . $value['participant_id'] . '"'); // Deletes matching token table entries
-                }
-            }
-            Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
-            Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
-            Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
-        }
-    }
+						}
+					}
+					Yii::app()->db->createCommand()
+                                  ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = :pid' , array(':pid'=>$value['participant_id'])); // Deletes matching token table entries
+				}
+			}
+			Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
+			Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
+			Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
+		}
+	}
 
     /*
      * Builds a select query for searching through participants limited to searches with only one line (no more than 3 entries in condition array)
@@ -378,8 +378,8 @@ class Participants extends CActiveRecord
         if($condition[0]=="survey")
         {
             $lang = Yii::app()->session['adminlang'];
-            $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' :param2 OR {{survey_links}}.survey_id '.$operator.' :param2))');
-            $command->params=array(':lang'=>$lang, ':param2'=>$condition[2]);
+            $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' :param1 OR {{survey_links}}.survey_id '.$operator.' :param2))');
+            $command->params=array(':lang'=>$lang, ':param1'=>$condition[2] , ':param2'=>$condition[2]);
         }
         elseif($condition[0]=="owner_name")
         {
@@ -511,8 +511,8 @@ class Participants extends CActiveRecord
                 if($condition[0]=="survey")
                 {
                     $lang = Yii::app()->session['adminlang'];
-                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' :param2 OR {{survey_links}}.survey_id '.$operator.' :param2))');
-                    $command->params=array(':lang'=>$lang, ':param2'=>$condition[2]);
+                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND {{survey_links}}.survey_id '.$operator.' :param)');
+                    $command->params=array(':lang'=>$lang,  ':param'=>$condition[2]);
                 }
                 elseif($condition[0]=="surveys") //Search by quantity of linked surveys
                 {
@@ -579,8 +579,8 @@ class Participants extends CActiveRecord
                 if($condition[$i+1]=="survey")
                 {
                     $lang = Yii::app()->session['adminlang'];
-                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' '.$condition2name.' OR {{survey_links}}.survey_id '.$operator.' '.$condition2name.'))', $booloperator);
-                    $command->params=array_merge($command->params, array(':lang'=>$lang, $condition2name=>$condition[$i+3]));
+                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' '.$condition2name.'1 OR {{survey_links}}.survey_id '.$operator.' '.$condition2name.'2))', $booloperator);
+                    $command->params=array_merge($command->params, array(':lang'=>$lang, $condition2name.'1'=>$condition[$i+3], $condition2name.'2'=>$condition[$i+3]));
                 } elseif ($condition[$i+1]=="surveys") //search by quantity of linked surveys
                 {
                     $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM {{survey_links}})" : "";
@@ -840,10 +840,12 @@ class Participants extends CActiveRecord
         foreach ($participantid as $key => $participant)
         {
             $writearray = array();
-            $participantdata = Yii::app()->db->createCommand()->select('firstname,lastname,email,language,blacklisted')->where('participant_id = "' . $participant . '"')->from('{{participants}}');
+            $participantdata = Yii::app()->db->createCommand()->select('firstname,lastname,email,language,blacklisted')->where('participant_id = :pid')->from('{{participants}}')->bindParam(":pid", $participant, PDO::PARAM_INT);
             $tobeinserted = $participantdata->queryRow();
             /* Search for matching participant name/email in the survey token table */
-            $query = Yii::app()->db->createCommand()->select('*')->from('{{tokens_' . $surveyid . '}}')->where('firstname = "' . $tobeinserted['firstname'] . '" AND lastname = "' . $tobeinserted['lastname'] . '" AND email = "' . $tobeinserted['email'] . '"')->queryAll();
+            $query = Yii::app()->db->createCommand()->select('*')->from('{{tokens_' . $surveyid . '}}')
+                    ->where('firstname = :firstname AND lastname = :lastname AND email = :email')
+                    ->bindParam(":firstname", $tobeinserted['firstname'], PDO::PARAM_STR)->bindParam(":lastname", $tobeinserted['lastname'], PDO::PARAM_STR)->bindParam(":email", $tobeinserted['email'], PDO::PARAM_STR)->queryAll();
             if (count($query) > 0)
             {
                 //Participant already exists in token table - don't copy

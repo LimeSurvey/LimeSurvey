@@ -12,8 +12,7 @@
  *
  *  $Id$
  */
-//Ensure script is not run directly, avoid path disclosure
-//if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
+ 
 injectglobalsettings();
 
 
@@ -68,7 +67,7 @@ function getGlobalSetting($settingname)
 
 function setGlobalSetting($settingname, $settingvalue)
 {
-    if (Yii::app()->getConfig("demoMode")==true && ($settingname=='sitename' || $settingname=='defaultlang' || $settingname=='defaulthtmleditormode' || $settingname=='filterxsshtml'))
+    if (Yii::app()->getConfig("demo_mode")==true && ($settingname=='sitename' || $settingname=='defaultlang' || $settingname=='defaulthtmleditormode' || $settingname=='filterxsshtml'))
     {
         return; //don't save
     }

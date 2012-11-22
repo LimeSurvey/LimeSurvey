@@ -225,7 +225,6 @@ class update extends Survey_Common_Action
         $updatebuild = getGlobalSetting("updatebuild");
         //$_POST=$this->input->post();
         $rootdir = Yii::app()->getConfig("rootdir");
-        $publicdir = Yii::app()->getConfig("publicdir");
         $tempdir = Yii::app()->getConfig("tempdir");
         $aDatabasetype = Yii::app()->db->getDriverName();
         $aData = array('clang' => $clang);
@@ -255,16 +254,16 @@ class update extends Survey_Common_Action
 
         foreach ($updateinfo['files'] as $file)
         {
-            if (is_file($publicdir.$file['file'])===true) // Sort out directories
+            if (is_file($rootdir.$file['file'])===true) // Sort out directories
             {
-                $filestozip[]=$publicdir.$file['file'];
+                $filestozip[]=$rootdir.$file['file'];
             }
         }
 
         Yii::app()->loadLibrary("admin/pclzip/pclzip");
         $archive = new PclZip($tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip');
 
-        $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
+        $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $rootdir);
 
         if ($v_list == 0) {
             die("Error : ".$archive->errorInfo(true));
@@ -276,7 +275,7 @@ class update extends Survey_Common_Action
         //TODO: Yii provides no function to backup the database. To be done after dumpdb is ported
         if (in_array($aDatabasetype, array('mysql', 'mysqli')))
         {
-            if ((in_array($aDatabasetype, array('mysql', 'mysqli'))) && Yii::app()->getConfig('demoMode') != true) {
+            if ((in_array($aDatabasetype, array('mysql', 'mysqli'))) && Yii::app()->getConfig('demo_mode') != true) {
                 Yii::app()->loadHelper("admin/backupdb");
                 $sfilename = $tempdir.DIRECTORY_SEPARATOR."backup_db_".randomChars(20)."_".dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql";
                 $dfilename = $tempdir.DIRECTORY_SEPARATOR."LimeSurvey_database_backup_".$basefilename.".sql.gz";
@@ -306,7 +305,6 @@ class update extends Survey_Common_Action
         $updatebuild = getGlobalSetting("updatebuild");
 
         $rootdir = Yii::app()->getConfig("rootdir");
-        $publicdir = Yii::app()->getConfig("publicdir");
         $tempdir = Yii::app()->getConfig("tempdir");
         $aDatabasetype = Yii::app()->db->getDriverName();
         // Request the list with changed files from the server

@@ -31,7 +31,7 @@ function UpdateRestrictedLanguages(){
     $("#includedLanguages option").each(function(){
        aString=aString+' '+$(this).val();
     });
-    $('#restrictToLanguages').val($.trim(aString));
+    $('#restrict_to_languages').val($.trim(aString));
 }
 
 function Emailchange(ui,evt)

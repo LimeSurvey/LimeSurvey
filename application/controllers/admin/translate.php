@@ -991,14 +991,14 @@ class translate extends Survey_Common_Action {
     * @param string $jsMenuText
     * @return string
     */
-    private function menuItem( $jsMenuText, $menuImageText, $menuImageFile, $scriptname)
+    private function menuItem( $jsMenuText, $menuImageText, $menuImageFile, $sScriptname)
     {
 
         $imageurl = Yii::app()->getConfig("adminimageurl");
 
         $img_tag = CHtml::image($imageurl . "/" . $menuImageFile, $jsMenuText, array('name'=>$menuImageText));
         $menuitem = CHtml::link($img_tag, '#', array(
-            'onclick' => "window.open('{$scriptname}', '_top')"
+            'onclick' => "window.open('{$sScriptname}', '_top')"
         ));
         return $menuitem;
     }

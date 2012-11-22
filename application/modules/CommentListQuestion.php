@@ -5,7 +5,6 @@ class CommentListQuestion extends ListQuestion
     {
         global $maxoptionsize, $thissurvey;
         $clang=Yii::app()->lang;
-        $dropdownthreshold = Yii::app()->getConfig("dropdownthreshold");
 
         if ($thissurvey['nokeyboard']=='Y')
         {
@@ -44,7 +43,7 @@ class CommentListQuestion extends ListQuestion
 
 
         $hint_comment = $clang->gT('Please enter your comment here');
-        if ($aQuestionAttributes['use_dropdown']!=1 && $anscount <= $dropdownthreshold)
+        if ($aQuestionAttributes['use_dropdown']!=1)
         {
             $answer .= '<div class="list">
             <ul class="answers-list radio-list">

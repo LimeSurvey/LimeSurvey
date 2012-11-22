@@ -28,10 +28,8 @@
  */
 function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $grawdata, $cache, $oLanguage) {
     $rootdir = Yii::app()->getConfig("rootdir");
-    $homedir = Yii::app()->getConfig("homedir");
     $homeurl = Yii::app()->getConfig("homeurl");
     $admintheme = Yii::app()->getConfig("admintheme");
-    $scriptname = Yii::app()->getConfig("scriptname");
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $alternatechartfontfile = Yii::app()->getConfig("alternatechartfontfile");
@@ -117,7 +115,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
 
                 if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
                 $graph = new pChart(690 + $legendsize[0], $gheight);
-                $graph->loadColorPalette($homedir . DIRECTORY_SEPARATOR . 'styles' . DIRECTORY_SEPARATOR . $admintheme . DIRECTORY_SEPARATOR . 'limesurvey.pal');
+                $graph->loadColorPalette($rootdir . DIRECTORY_SEPARATOR . 'styles' . DIRECTORY_SEPARATOR . $admintheme . DIRECTORY_SEPARATOR . 'limesurvey.pal');
                 $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
                 $graph->setGraphArea(50, 30, 500, $gheight - 60);
                 $graph->drawFilledRoundedRectangle(7, 7, 523 + $legendsize[0], $gheight - 7, 5, 254, 255, 254);
@@ -190,7 +188,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
 
                 $gheight = ceil($gheight);
                 $graph = new pChart(690, $gheight);
-                $graph->loadColorPalette($homedir . '/styles/' . $admintheme . '/limesurvey.pal');
+                $graph->loadColorPalette($rootdir . '/styles/' . $admintheme . '/limesurvey.pal');
                 $graph->drawFilledRoundedRectangle(7, 7, 687, $gheight - 3, 5, 254, 255, 254);
                 $graph->drawRoundedRectangle(5, 5, 689, $gheight - 1, 5, 230, 230, 230);
 
@@ -1558,7 +1556,7 @@ class statistics_helper {
 
 
                 //check if aggregated results should be shown
-                elseif (Yii::app()->getConfig('showaggregateddata') == 1) {
+                elseif (Yii::app()->getConfig('showaggregateddata')) {
                     if (!isset($showheadline) || $showheadline != false) {
                         if ($outputs['qtype'] == "5" || $outputs['qtype'] == "A") { //AJS
                             switch ($outputType) {
@@ -1964,7 +1962,7 @@ class statistics_helper {
                         $gdata[$i] = 0;
 
                         //check if we have to adjust ouput due to Yii::app()->getConfig('showaggregateddata') setting
-                        if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A")) { //AJS
+                        if (Yii::app()->getConfig('showaggregateddata') && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A")) { //AJS
                             $statisticsoutput .= "\t\t</td>";
                         } elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q") { //AJS
                             $statisticsoutput .= "</td>\n\t";
@@ -1984,7 +1982,7 @@ class statistics_helper {
             //data available
             else {
                 //check if data should be aggregated
-                if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A")) { //AJS
+                if (Yii::app()->getConfig('showaggregateddata') && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A")) { //AJS
                     //mark that we have done soemthing special here
                     $aggregated = true;
 
@@ -2332,7 +2330,7 @@ class statistics_helper {
             unset($extraline);
         } //end while
         //only show additional values when this setting is enabled
-        if (Yii::app()->getConfig('showaggregateddata') == 1) {
+        if (Yii::app()->getConfig('showaggregateddata')) {
             //it's only useful to calculate standard deviation and arithmetic means for question types
             //5 = 5 Point Scale
             //A = Array (5 Point Choice)

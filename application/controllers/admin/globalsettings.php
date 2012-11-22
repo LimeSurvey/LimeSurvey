@@ -48,7 +48,7 @@ class GlobalSettings extends Survey_Common_Action
 
     public function showphpinfo()
     {
-        if (!Yii::app()->getConfig('demoMode')) {
+        if (!Yii::app()->getConfig('demo_mode')) {
             phpinfo();
         }
     }
@@ -87,14 +87,14 @@ class GlobalSettings extends Survey_Common_Action
         $data['updatebuild'] = getGlobalSetting("updatebuild");
         $data['updateversion'] = getGlobalSetting("updateversion");
         $data['allLanguages'] = getLanguageData(false, Yii::app()->session['adminlang']);
-        if (trim(Yii::app()->getConfig('restrictToLanguages')) == '') {
-            $data['restrictToLanguages'] = array_keys($data['allLanguages']);
+        if (trim(Yii::app()->getConfig('restrict_to_languages')) == '') {
+            $data['restrict_to_languages'] = array_keys($data['allLanguages']);
             $data['excludedLanguages'] = array();
         }
         else
         {
-            $data['restrictToLanguages'] = explode(' ', trim(Yii::app()->getConfig('restrictToLanguages')));
-            $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
+            $data['restrict_to_languages'] = explode(' ', trim(Yii::app()->getConfig('restrict_to_languages')));
+            $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrict_to_languages']);
         }
 
         $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
@@ -118,18 +118,18 @@ class GlobalSettings extends Survey_Common_Action
         }
 
         $defaultlang = sanitize_languagecode($_POST['defaultlang']);
-        $aRestrictToLanguages = explode(' ', sanitize_languagecodeS($_POST['restrictToLanguages']));
-        if (!in_array($defaultlang,$aRestrictToLanguages)){ // Force default language in restrictToLanguages
-            $aRestrictToLanguages[]=$defaultlang;
+        $arestrict_to_languages = explode(' ', sanitize_languagecodeS($_POST['restrict_to_languages']));
+        if (!in_array($defaultlang,$arestrict_to_languages)){ // Force default language in restrict_to_languages
+            $arestrict_to_languages[]=$defaultlang;
         }
-        if (count(array_diff(array_keys(getLanguageData(false,Yii::app()->session['adminlang'])), $aRestrictToLanguages)) == 0) {
-            $aRestrictToLanguages = '';
+        if (count(array_diff(array_keys(getLanguageData(false,Yii::app()->session['adminlang'])), $arestrict_to_languages)) == 0) {
+            $arestrict_to_languages = '';
         } else {
-            $aRestrictToLanguages = implode(' ', $aRestrictToLanguages);
+            $arestrict_to_languages = implode(' ', $arestrict_to_languages);
         }
 
         setGlobalSetting('defaultlang', $defaultlang);
-        setGlobalSetting('restrictToLanguages', trim($aRestrictToLanguages));
+        setGlobalSetting('restrict_to_languages', trim($arestrict_to_languages));
         setGlobalSetting('sitename', strip_tags($_POST['sitename']));
         setGlobalSetting('updatecheckperiod', (int)($_POST['updatecheckperiod']));
         setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string($_POST['defaulthtmleditormode']));
@@ -166,16 +166,16 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('repeatheadings', $repeatheadingstemp);
 
         setGlobalSetting('maxemails', sanitize_int($maxemails));
-        $iSessionExpirationTime = (int)($_POST['iSessionExpirationTime']);
-        if ($iSessionExpirationTime == 0) $iSessionExpirationTime = 3600;
-        setGlobalSetting('iSessionExpirationTime', $iSessionExpirationTime);
-        setGlobalSetting('ipInfoDbAPIKey', $_POST['ipInfoDbAPIKey']);
-        setGlobalSetting('googleMapsAPIKey', $_POST['googleMapsAPIKey']);
+        $session_expiration_time = (int)($_POST['session_expiration_time']);
+        if ($session_expiration_time == 0) $session_expiration_time = 3600;
+        setGlobalSetting('session_expiration_time', $session_expiration_time);
+        setGlobalSetting('ipinfodb_api_key', $_POST['ipinfodb_api_key']);
+        setGlobalSetting('googlemaps_api_key', $_POST['googlemaps_api_key']);
         setGlobalSetting('googleanalyticsapikey',$_POST['googleanalyticsapikey']);
         setGlobalSetting('googletranslateapikey',$_POST['googletranslateapikey']);
         setGlobalSetting('force_ssl', $_POST['force_ssl']);
-        setGlobalSetting('surveyPreview_require_Auth', $_POST['surveyPreview_require_Auth']);
-        setGlobalSetting('RPCInterface', $_POST['RPCInterface']);
+        setGlobalSetting('survey_preview_admin_only', $_POST['survey_preview_admin_only']);
+        setGlobalSetting('rpc_interface', $_POST['rpc_interface']);
         $savetime = trim(strip_tags((float)$_POST['timeadjust']) . ' hours'); //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+' . $savetime;

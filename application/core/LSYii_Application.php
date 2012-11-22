@@ -28,6 +28,10 @@ class LSYii_Application extends CWebApplication
     */
     public function __construct($config = null)
     {
+        if (is_string($config) && !file_exists($config))
+        {
+            $config = APPPATH . 'config/config-sample-mysql' . EXT;
+        } 
         if(is_string($config)) {
             $config = require($config);
         }

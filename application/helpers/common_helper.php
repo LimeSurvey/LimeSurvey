@@ -943,42 +943,6 @@ function getNotificationList($notificationcode)
     return $ntypeselector;
 }
 
-
-/**
-* getGroupList() queries the database for a list of all groups matching the current survey sid
-*
-*
-* @param string $gid - the currently selected gid/group
-*
-* @return This string is returned containing <option></option> formatted list of groups to current survey
-*/
-function getGroupList($gid,$surveyid)
-{
-    $clang = Yii::app()->lang;
-    $groupselecter="";
-    $gid=sanitize_int($gid);
-    $surveyid=sanitize_int($surveyid);
-    if (!$surveyid) {$surveyid=returnGlobal('sid');}
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-
-    $gidquery = "SELECT gid, group_name FROM {{groups}} WHERE sid='{$surveyid}' AND  language='{$s_lang}' ORDER BY group_order";
-    $gidresult = Yii::app()->db->createCommand($gidquery)->query(); //Checked
-    foreach ($gidresult->readAll() as $gv)
-    {
-        $groupselecter .= "<option";
-        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
-        $groupselecter .= " value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid=".$gv['gid']."'>".htmlspecialchars($gv['group_name'])."</option>\n";
-    }
-    if ($groupselecter)
-    {
-        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$groupselecter;}
-        else {$groupselecter .= "<option value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid='>".$clang->gT("None")."</option>\n";}
-    }
-    return $groupselecter;
-}
-
-
-
 function getGroupList3($gid,$surveyid)
 {
     //$clang = Yii::app()->lang;
@@ -3257,7 +3221,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     {
         $customheaders=array();
     }
-    if (Yii::app()->getConfig('demoMode'))
+    if (Yii::app()->getConfig('demo_mode'))
     {
         $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
         $maildebugbody='';
@@ -4010,13 +3974,13 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
     if ($sType == 'survey')
     {
         $sPattern = "([^'\"]*)/upload/surveys/{$iOldSurveyID}/";
-        $sReplace = Yii::app()->getConfig("relativeurl")."/upload/surveys/{$iNewSurveyID}/";
+        $sReplace = Yii::app()->getConfig("publicurl")."upload/surveys/{$iNewSurveyID}/";
         return preg_replace('#'.$sPattern.'#', $sReplace, $sString);
     }
     elseif ($sType == 'label')
     {
         $pattern = "([^'\"]*)/upload/labels/{$iOldSurveyID}/";
-        $replace = Yii::app()->getConfig("relativeurl")."/upload/labels/{$iNewSurveyID}/";
+        $replace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
         return preg_replace('#'.$pattern.'#', $replace, $sString);
     }
     else // unkown type
@@ -4459,14 +4423,13 @@ function removeBOM($str=""){
 /**********************************************/
 function getUpdateInfo()
 {
-    //require_once($homedir."/classes/http/http.php");
     Yii::import('application.libraries.admin.http.httpRequestIt');
     $http=new httpRequestIt;
 
     $http->timeout=0;
     $http->data_timeout=0;
     $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-    $http->GetRequestArguments("http://update.limesurvey.org?build=".Yii::app()->getConfig("buildnumber"),$arguments);
+    $http->GetRequestArguments("http://update.limesurvey.org?build=".Yii::app()->getConfig("buildnumber").'&id='.md5(getGlobalSetting('SessionName')),$arguments);
 
     $updateinfo=false;
     $error=$http->Open($arguments);
@@ -5171,7 +5134,7 @@ function accessDenied($action,$sid='')
     {
         $ugid = Yii::app()->getConfig('ugid');
         $accesssummary = "<p><strong>".$clang->gT("Access denied!")."</strong><br />\n";
-        $scriptname = Yii::app()->getConfig('scriptname');
+        $scriptname = Yii::app()->getController()->createUrl('/admin');
         //$action=returnGlobal('action');
         if  (  $action == "dumpdb"  )
         {

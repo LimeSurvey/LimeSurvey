@@ -45,7 +45,7 @@
                 if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
                 {
 
-                    if (in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli')) || Yii::app()->getConfig('demoMode') == true)
+                    if (in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli')) || Yii::app()->getConfig('demo_mode') == true)
                     {
 
                     ?>
