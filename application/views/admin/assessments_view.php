@@ -67,18 +67,18 @@ else {echo "<tr class='evenrow'>\n";} ?>
         <?php 
         if (isset($groups))
         { ?>
-            <select name='gid' id='gid'>
-                <?php
-                foreach ($groups as $groupId => $groupName) {
-                    echo '<option value="' . $groupId . '"'.($editId == $groupId ? ' selected' : '').'>' . $groupName . '</option>';
-                }
-                ?>
-            </select>
-        <?php
-        }
-        else
-            echo $clang->eT("No question group found.");
-        ?> 
+	        <select name='gid' id='gid'>
+	            <?php
+	            foreach ($groups as $groupId => $groupName) {
+	                echo '<option value="' . $groupId . '"'.(isset($editdata['gid']) && $editdata['gid']== $groupId ? ' selected' : '').'>' . $groupName . '</option>';
+	            }
+	            ?>
+	        </select>
+    	<?php
+		}
+		else
+			echo $clang->eT("No question group found."); 	 
+    	?> 
     </li>
     <li><label for='minimum'><?php $clang->eT("Minimum");?></label><input type='text' id='minimum' name='minimum' class='numbersonly'<?php
     if (isset($editdata)) {echo " value='{$editdata['minimum']}' ";} ?>/></li>

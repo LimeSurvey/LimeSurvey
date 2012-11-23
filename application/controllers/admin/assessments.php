@@ -197,11 +197,6 @@ class Assessments extends Survey_Common_Action
         if (!isset($_POST['gid']))
             $_POST['gid'] = 0;
 
-        if (Yii::app()->getConfig('filterxsshtml')) {
-            $_POST['name_' . $language] = htmlspecialchars($_POST['name_' . $language]);
-            $_POST['assessmentmessage_' . $language] = htmlspecialchars($_POST['assessmentmessage_' . $language]);
-        }
-
         return array(
             'sid' => $iSurveyID,
             'scope' => sanitize_paranoid_string($_POST['scope']),
