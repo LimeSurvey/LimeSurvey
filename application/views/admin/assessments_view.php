@@ -70,7 +70,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
 	        <select name='gid' id='gid'>
 	            <?php
 	            foreach ($groups as $groupId => $groupName) {
-	                echo '<option value="' . $groupId . '"'.($editId == $groupId ? ' selected' : '').'>' . $groupName . '</option>';
+	                echo '<option value="' . $groupId . '"'.(isset($editdata['gid']) && $editdata['gid']== $groupId ? ' selected' : '').'>' . $groupName . '</option>';
 	            }
 	            ?>
 	        </select>
