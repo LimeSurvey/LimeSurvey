@@ -27,7 +27,7 @@ class UserIdentity extends CUserIdentity
     */
     public function authenticate($sOneTimePassword='')
     {    
-        if (Yii::app()->getConfig("auth_webserver")==false)
+        if (Yii::app()->getConfig("auth_webserver")==false || $this->username != "")         
         {
             $user = User::model()->findByAttributes(array('users_name' => $this->username));
 
@@ -67,9 +67,14 @@ class UserIdentity extends CUserIdentity
                 $this->errorCode = self::ERROR_NONE;
             }
         }
-        elseif(Yii::app()->getConfig("auth_webserver") === true && isset($_SERVER['PHP_AUTH_USER']))    // normal login through webserver authentication
+        elseif(Yii::app()->getConfig("auth_webserver") === true && (isset($_SERVER['PHP_AUTH_USER'])||isset($_SERVER['LOGON_USER']))) // normal login through webserver authentication        
         {
-            $sUser=$_SERVER['PHP_AUTH_USER'];
+            if (isset($_SERVER['PHP_AUTH_USER'])) {
+                $sUser=$_SERVER['PHP_AUTH_USER'];
+            } else {
+                $sUser = $_SERVER['LOGON_USER'];
+                $sUser = substr($sUser, strrpos($sUser, "\\")+1);
+            }            
             $aUserMappings=Yii::app()->getConfig("auth_webserver_user_map");
             if (isset($aUserMappings[$sUser])) $sUser= $aUserMappings[$sUser];
 
@@ -85,6 +90,10 @@ class UserIdentity extends CUserIdentity
                 elseif (Yii::app()->getConfig("auth_webserver_autocreate_user"))
                 {
                     $aUserProfile=Yii::app()->getConfig("auth_webserver_autocreate_profile");
+                } else {
+                    $this->id = $oUser->uid;
+                    $this->user = $oUser;
+                    $this->errorCode = self::ERROR_NONE;
                 }
             }
             
