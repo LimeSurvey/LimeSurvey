@@ -623,7 +623,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
 {
     $sdump = "";
-    if ((!isset($exclude) && $exclude['answers'] !== true) || empty($exclude))
+    if (!isset($exclude['answers']))
     {
         //Answers table
         $aquery = "SELECT {{answers}}.*
@@ -640,7 +640,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
     WHERE {{assessments}}.sid=$iSurveyID";
     buildXMLFromQuery($xmlwriter,$query);
 
-    if ((!isset($exclude) && $exclude['conditions'] !== true) || empty($exclude))
+    if (!isset($exclude['conditions']))
     {
         //Conditions table
         $cquery = "SELECT DISTINCT {{conditions}}.*
@@ -694,7 +694,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
 
     buildXMLFromQuery($xmlwriter,$query,'question_attributes');
 
-    if ((!isset($exclude) && $exclude['quotas'] !== true) || empty($exclude))
+    if (!isset($exclude['quotas']))
     {
         //Quota
         $query = "SELECT {{quota}}.*
