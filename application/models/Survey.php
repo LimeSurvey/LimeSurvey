@@ -101,76 +101,50 @@ class Survey extends CActiveRecord
         array('datecreated', 'default','value'=>date("Y-m-d")),
         array('startdate', 'default','value'=>NULL),
         array('expires', 'default','value'=>NULL),
-        array('admin', 'xssfilter'),
-        array('adminemail', 'xssfilter'),
-        array('bounce_email', 'xssfilter'),
-        array('faxto', 'xssfilter'),
+        array('admin,adminemail,bounce_email,faxto','LSYii_Validators'),
         array('active', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('anonymized', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),        
-        array('savetimings', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),        
-        array('datestamp', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
-        array('usecookie', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),   
+        array('anonymized', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('savetimings', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('datestamp', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('usecookie', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('allowregister', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('allowsave', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('autoredirect', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('allowprev', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('printanswers', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),                          
-        array('ipaddr', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),        
+        array('printanswers', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('ipaddr', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('refurl', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('publicstatistics', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('publicgraphs', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('listpublic', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('htmlemail', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),   
-		array('sendconfirmation', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),  
-		array('tokenanswerspersistence', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),                                                     
-		array('assessments', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),                                                     
-		array('usetokens', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
-		array('showxquestions', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),                                                     
-		array('shownoanswer', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),                                                     
-		array('showwelcome', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),                                                     
-		array('showprogress', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),                                                     
-		array('allowjumps', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),                                                     
-		array('nokeyboard', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),                                                     
-		array('alloweditaftercompletion', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),                                                     
-		array('bounceprocessing', 'in','range'=>array('L','N','G'), 'allowEmpty'=>true),                                                     
-		array('usecaptcha', 'in','range'=>array('A','B','C','D','X','R','S','N'), 'allowEmpty'=>true),                                                    
+        array('htmlemail', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('sendconfirmation', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('tokenanswerspersistence', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('assessments', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('usetokens', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('showxquestions', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('shownoanswer', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('showwelcome', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('showprogress', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('allowjumps', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('nokeyboard', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('alloweditaftercompletion', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('bounceprocessing', 'in','range'=>array('L','N','G'), 'allowEmpty'=>true),
+        array('usecaptcha', 'in','range'=>array('A','B','C','D','X','R','S','N'), 'allowEmpty'=>true),
         array('showgroupinfo', 'in','range'=>array('B','N','D','X'), 'allowEmpty'=>true),
-        array('showqnumcode', 'in','range'=>array('B','N','C','X'), 'allowEmpty'=>true), 
-        array('format', 'in','range'=>array('G','S','A'), 'allowEmpty'=>true),         
+        array('showqnumcode', 'in','range'=>array('B','N','C','X'), 'allowEmpty'=>true),
+        array('format', 'in','range'=>array('G','S','A'), 'allowEmpty'=>true),
         array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true), 
-        array('autonumber_start','numerical', 'integerOnly'=>true,'allowEmpty'=>true),      
-        array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true),                 
-        array('bouncetime','numerical', 'integerOnly'=>true,'allowEmpty'=>true),                 
-        array('navigationdelay','numerical', 'integerOnly'=>true,'allowEmpty'=>true),                     
-      //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
+        array('autonumber_start','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+        array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+        array('bouncetime','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+        array('navigationdelay','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+      //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
       //  array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-	  //	array('datecreated','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),    
+      //  array('datecreated','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
       // Date rules currently don't work properly with MSSQL, deactivating for now
         array('template', 'tmplfilter'),
         );
-    }
-
-
-
-
-
-    /**
-    * Defines the customs validation rule xssfilter
-    *
-    * @param mixed $attribute
-    * @param mixed $params
-    */
-    public function xssfilter($attribute,$params)
-    {
-        if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-        {
-            $filter = new CHtmlPurifier();
-            $filter->options = array('URI.AllowedSchemes'=>array(
-            'http' => true,
-            'https' => true,
-            ));
-            $this->$attribute = $filter->purify($this->$attribute);
-        }
     }
 
     /**

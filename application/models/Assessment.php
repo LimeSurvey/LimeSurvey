@@ -32,30 +32,10 @@ class Assessment extends CActiveRecord
     public function rules()
     {
         return array(
-        array('name', 'xssfilter'),
-        array('message', 'xssfilter')
+            array('name,message','LSYii_Validators'),
         );
     }
 
-    /**
-    * Defines the customs validation rule xssfilter
-    *
-    * @param mixed $attribute
-    * @param mixed $params
-    */
-    public function xssfilter($attribute,$params)
-    {
-        if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-        {
-            $filter = new CHtmlPurifier();
-            $filter->options = array('URI.AllowedSchemes'=>array(
-            'http' => true,
-            'https' => true,
-            ));
-            $this->$attribute = $filter->purify($this->$attribute);
-        }
-    }    
-    
 	/**
 	 * Returns the setting's table name to be used by the model
 	 *
