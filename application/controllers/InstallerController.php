@@ -940,7 +940,15 @@ class InstallerController extends CController {
             //{
             $showScriptName = 'true';
             //}
-
+            if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false)
+            {
+                $sURLFormat='path';
+            }
+            else
+            {
+                $sURLFormat='get'; // Fall back to get if an Apache server cannot be determined reliably
+            }
+            
             $dbdata = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
             ."/*"."\n"
             ."| -------------------------------------------------------------------"."\n"
@@ -1016,7 +1024,7 @@ class InstallerController extends CController {
             */
 
             ."\t\t"   . "'urlManager' => array("                    . "\n"
-            ."\t\t\t" . "'urlFormat' => 'path',"                    . "\n"
+            ."\t\t\t" . "'urlFormat' => '{$sURLFormat}',"           . "\n"
             ."\t\t\t" . "'rules' => require('routes.php'),"         . "\n"
             ."\t\t\t" . "'showScriptName' => $showScriptName,"      . "\n"
             ."\t\t"   . "),"                                        . "\n"
