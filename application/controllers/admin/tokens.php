@@ -2361,6 +2361,8 @@ class tokens extends Survey_Common_Action
 
 
             Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), Yii::app()->db->tablePrefix."tokens_".intval($iSurveyId));
+            //Check that the tokens table has the required fields
+            Tokens_dynamic::model($iSurveyId)->checkColumns();
 
             //Add any survey_links from the renamed table
             Survey_links::model()->rebuildLinksFromTokenTable($iSurveyId);

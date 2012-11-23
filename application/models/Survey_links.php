@@ -23,7 +23,7 @@ class Survey_links extends CActiveRecord
      * @static
      * @access public
      * @param string $class
-     * @return CActiveRecord
+     * @return Survey_links
      */
     public static function model($class = __CLASS__)
     {
