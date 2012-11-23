@@ -727,7 +727,7 @@ class InstallerController extends CController {
         function check_PHPFunction($sFunction, &$sImage)
         {
             $bResult = function_exists($sFunction);
-            $sImage = check_HTML_image($result);
+            $sImage = check_HTML_image($bResult);
             return $bResult;
         }
 
