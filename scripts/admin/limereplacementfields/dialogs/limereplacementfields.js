@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.html or http://ckeditor.com/license
  */
@@ -13,7 +13,7 @@
 			title : lang.title,
 			minWidth : 300,
 			minHeight : 80,
-			height : 'auto',
+			height : 200,
 			resizable : CKEDITOR.DIALOG_RESIZE_NONE,
 			contents :
 			[
