@@ -623,8 +623,15 @@ class InstallerController extends CController {
                         $this->connection->createCommand()->insert('{{users}}', array('users_name' => $sDefaultUser, 'password' => $sPasswordHash, 'full_name' => $sSiteAdminName, 'parent_id' => 0, 'lang' => $sDefaultLanguage, 'email' => $sSiteAdminEmail, 'create_survey' => 1, 'create_user' => 1, 'participant_panel' => 1, 'delete_user' => 1, 'superadmin' => 1, 'configurator' => 1, 'manage_template' => 1, 'manage_label' => 1));
                         $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => 'ls'.self::_getRandomID().self::_getRandomID().self::_getRandomID()));
 
-                        foreach(array('sitename', 'siteadminname', 'siteadminemail', 'siteadminbounce', 'defaultlang') as $insert) {
-                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => $insert, 'stg_value' => $$insert));
+                        $aSettingsGlobalData = array(
+                            'sitename'        => $oModel->siteName,
+                            'siteadminname'   => $oModel->adminName,
+                            'siteadminemail'  => $oModel->adminEmail,
+                            'siteadminbounce' => $oModel->adminEmail,
+                            'defaultlang'     => $oModel->surveylang
+                        );
+                        foreach($aSettingsGlobalData as $key => $value) {
+                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => $key, 'stg_value' => $value));
                         }
                         // only continue if we're error free otherwise setup is broken.
                     } catch (Exception $e) {
