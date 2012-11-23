@@ -484,7 +484,8 @@ class ListQuestion extends QuestionModule
                     $othertext = trim($_qattr['other_replace_text']);
                 }
                 else {
-                    $othertext = $em->gT('Other:');
+                    $clang=Yii::app()->lang;
+                    $othertext = $clang->gT('Other:');
                 }
                 $ansArray['0~-oth-'] = '0|' . $othertext;
             }

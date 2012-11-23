@@ -200,7 +200,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     $answer_head1 .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
                     $answer_head1 .= "\t<th class=\"header_no_answer\">&nbsp;</th>\n";
                 }
-                $myheader1 .= "</tr>\n";
+                $answer_head1 .= "</tr>\n";
             }
             else
             {
