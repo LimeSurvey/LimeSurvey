@@ -46,8 +46,16 @@ else {echo "<tr class='evenrow'>\n";} ?>
 
 <td><?php echo $assess['minimum'];?></td>
 <td><?php echo $assess['maximum'];?></td>
-<td><?php echo stripslashes($assess['name']);?></td>
-<td><?php echo strip_tags(stripJavaScript($assess['message']));?></td>
+<td><?php 
+    $aReplacementData=array();
+    templatereplace($assess['name'],array(),$aReplacementData,'Unspecified', false ,$assess['sid']);
+    echo FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), true);
+    ?></td>
+<td><?php 
+    $aReplacementData=array();
+    templatereplace($assess['message'],array(),$aReplacementData,'Unspecified', false ,$assess['sid']);
+    echo FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), true);
+    ?></td>
 
 </tr>
 <?php } ?>
