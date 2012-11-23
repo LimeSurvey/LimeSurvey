@@ -398,7 +398,14 @@ class tokens extends Survey_Common_Action
         {
             $limit=$aData->records;
         }
-        $aData->total = ceil($aData->records / $limit);      
+        if ($limit!=0)
+        {
+            $aData->total = ceil($aData->records / $limit);
+        }
+        else
+        {
+            $aData->total = 0;
+        }
 
         Yii::app()->loadHelper("surveytranslator");
 
