@@ -484,7 +484,19 @@
                         <option value='xml'
                             <?php if ($rpc_interface == 'xml') { echo " selected='selected'";}?>
                             ><?php $clang->eT("XML-RPC"); ?></option>
-                    </select></li>
+                    </select>
+                </li>
+                <?php $rpc_publish_api=getGlobalSetting('rpc_publish_api'); ?>
+                <li><label for='rpc_publish_api'><?php $clang->eT("Publish API on /admin/remotecontrol:"); ?></label>
+                    <select id='rpc_publish_api' name='rpc_publish_api'>
+                        <option value='1'
+                            <?php if ($rpc_publish_api == true) { echo " selected='selected'";}?>
+                            ><?php $clang->eT("Yes"); ?></option>
+                        <option value='0'
+                            <?php if ($rpc_publish_api == false) { echo " selected='selected'";}?>
+                            ><?php $clang->eT("No"); ?></option>
+                    </select>
+                </li>
             </ul>
         </div>
         <input type='hidden' name='restrict_to_languages' id='restrict_to_languages' value='<?php implode(' ',$restrict_to_languages); ?>'/>

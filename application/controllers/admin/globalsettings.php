@@ -176,6 +176,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('force_ssl', $_POST['force_ssl']);
         setGlobalSetting('survey_preview_admin_only', $_POST['survey_preview_admin_only']);
         setGlobalSetting('rpc_interface', $_POST['rpc_interface']);
+        setGlobalSetting('rpc_publish_api', (bool) $_POST['rpc_publish_api']);
         $savetime = trim(strip_tags((float)$_POST['timeadjust']) . ' hours'); //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+' . $savetime;

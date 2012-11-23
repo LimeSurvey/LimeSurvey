@@ -628,6 +628,13 @@ $config['restrict_to_languages'] = '';
 */
 $config['rpc_interface'] = 'off';
 
+/**
+* rpc_publish_api (boolean)
+* This parameter enables/disables publishing the API of the RPC interface
+* when one visits the admin/remotecontrol page
+*/
+$config['rpc_publish_api'] = 0;
+
 
 /**
 * session_expiration_time (integer)

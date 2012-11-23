@@ -52,7 +52,7 @@ class ExportSurveyResultsService
     * @param FormattingOptions $oOptions
     * @param string $sFilter 
     */
-    function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter)
+    function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter = '')
     {
         //Do some input validation.
         if (empty($iSurveyId))
@@ -103,21 +103,20 @@ class ExportSurveyResultsService
 
         $iBatchSize=100; $iCurrentRecord=$oOptions->responseMinRecord-1;
         $bMoreRecords=true; $first=true;
-        $sFile='';
         while ($bMoreRecords)
         {
             $iExported= $surveyDao->loadSurveyResults($survey, $iBatchSize, $iCurrentRecord, $oOptions->responseMaxRecord, $sFilter);
             $iCurrentRecord+=$iExported;
-            $sFile.=$writer->write($survey, $sLanguageCode, $oOptions,$first);
+            $writer->write($survey, $sLanguageCode, $oOptions,$first);
             $first=false;
             $bMoreRecords= ($iExported == $iBatchSize);
         }
-        $writer->close();
+        $result = $writer->close();
         if ($oOptions->output=='file')
         {
             return $writer->filename;
         } else {
-            return $sFile;
+            return $result;
         }
     }
 }
@@ -190,7 +189,7 @@ class FormattingOptions
     public $convertN;
 
     public $nValue;
-
+    
     /**
     * Destination format - either 'display' (send to browser) or 'file' (send to file)
     * 
@@ -235,10 +234,11 @@ class SurveyDao
         $clang = new limesurvey_lang($lang);
 
         $survey->fieldMap = createFieldMap($intId,false,false,getBaseLanguageFromSurveyID($intId));
+        // Check to see if timings are present and add to fieldmap if needed
         if ($survey->info['savetimings']=="Y") {
             $survey->fieldMap = $survey->fieldMap + createTimingsFieldMap($intId,'full',false,false,getBaseLanguageFromSurveyID($intId));
         }
-        
+
         if (empty($intId))
         {
             //The id given to us is not an integer, croak.
@@ -320,8 +320,8 @@ class SurveyDao
         $survey->responses=$oRecordSet->order('{{survey_' . $survey->id . '}}.id')->limit($iLimit, $iOffset)->query()->readAll();
 
         return count($survey->responses);
-        }
-        }
+    }
+}
 
 class SurveyObj
 {
@@ -393,7 +393,7 @@ class SurveyObj
     * @var array[int][string]mixed
     */
     public $languageSettings;
-
+    
     /**
     * Returns question arrays ONLY for questions that are part of the
     * indicated group and are top level (i.e. no subquestions will be
@@ -492,8 +492,8 @@ class SurveyObj
         }
         return $results;
     }
-
-    /**
+    
+   /**
     * Returns an array of possible answers to the question.  If $scaleId is
     * specified then only answers that match the $scaleId value will be
     * returned. An empty array
@@ -643,9 +643,10 @@ interface IWriter
 */
 abstract class Writer implements IWriter
 {
-    public $sLanguageCode;
-    public $translator;
-
+    protected $sLanguageCode;
+    protected $translator;
+    public $filename;
+    
     public function translate($key, $sLanguageCode)
     {
         return $this->translator->translate($key, $sLanguageCode);
@@ -670,6 +671,10 @@ abstract class Writer implements IWriter
     {
         $this->languageCode = $sLanguageCode;
         $this->translator = new Translator();
+        if ($oOptions->output == 'file') {
+            $sRandomFileName=Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
+            $this->filename = $sRandomFileName;
+        }
     }
 
     
@@ -717,7 +722,7 @@ abstract class Writer implements IWriter
             $heading = mb_substr($heading, 0, 15).'.. ';
             if (isset($q->aid))
             {
-                $heading .= '['.$this->stripTagsFull($aid).']';
+                $heading .= '['.$this->stripTagsFull($q->aid).']';
             }
             return $heading;
         }
@@ -729,23 +734,29 @@ abstract class Writer implements IWriter
     * False is returned if no matching question is found.
     *
     * @param Survey $survey
-    * @param FormattingOptions $oOptions
-    * @param string $fieldName
+    * @param QuestionModule $q
     * @return string (or false)
     */
     public function getFullHeading(SurveyObj $survey, $q)
-    {
-        $question = $survey->fieldMap[$q->fieldname];
-        $heading = $question['question'];
+    {                                                  
+        $heading = $q->text;
         $heading = $this->stripTagsFull($heading);
         $heading.= $q->getFieldSubHeading($survey, $this, false);
         return $heading;
     }
 
+    /**
+    * Returns a full heading for the question that matches the $fieldName.
+    * False is returned if no matching question is found.
+    *
+    * @param Survey $survey
+    * @param QuestionModule $q
+    * @return string (or false)
+    */
     public function getCodeHeading(SurveyObj $survey, $q)
     {
         $question = $survey->fieldMap[$q->fieldname];
-        $heading = $question['title'];
+        $heading = $q->title;
         $heading = $this->stripTagsFull($heading);
         $heading.= $q->getFieldSubHeading($survey, $this, true);
         return $heading;
@@ -760,7 +771,7 @@ abstract class Writer implements IWriter
     {
         return '- comment';
     }
-
+    
     /**
     * This method is made final to prevent extending code from circumventing the
     * initialization process that must take place prior to any of the translation
@@ -786,42 +797,42 @@ abstract class Writer implements IWriter
         if ($bOutputHeaders)
         {
             
-        foreach ($oOptions->selectedColumns as $column)
-        {
-            //Output the header.
-            $value = $this->translateHeading($column, $sLanguageCode);
-            if($value===false)
+            foreach ($oOptions->selectedColumns as $column)
             {
-                //This branch may be reached erroneously if columns are added to the LimeSurvey product
-                //but are not updated in the Writer->headerTranslationKeys array.  We should trap for this
-                //condition and do a safeDie.
-                //FIXME fix the above condition
-
-                //Survey question field, $column value is a field name from the getFieldMap function.
-
-                $q = $survey->fieldMap[$column];
-                switch ($oOptions->headingFormat)
+                //Output the header.
+                $value = $this->translateHeading($column, $sLanguageCode);
+                if($value===false)
                 {
-                    case 'abbreviated':
-                        $value = $this->getAbbreviatedHeading($survey, $q);
-                        break;
-                    case 'full':
-                        $value = $this->getFullHeading($survey, $q);
-                        break;
-                    default:
-                    case 'code':
-                        $value = $this->getCodeHeading($survey, $q);
-                        break;
-                }
-            }
-            if ($oOptions->headerSpacesToUnderscores)
-            {
-                $value = str_replace(' ', '_', $value);
-            }
+                    //This branch may be reached erroneously if columns are added to the LimeSurvey product
+                    //but are not updated in the Writer->headerTranslationKeys array.  We should trap for this
+                    //condition and do a safeDie.
+                    //FIXME fix the above condition
 
-            //$this->output.=$this->csvEscape($value).$this->separator;
-            $headers[] = $value;
-        }
+                    //Survey question field, $column value is a field name from the getFieldMap function.
+
+                    $q = $survey->fieldMap[$column];
+                    switch ($oOptions->headingFormat)
+                    {
+                        case 'abbreviated':
+                            $value = $this->getAbbreviatedHeading($survey, $q);
+                            break;
+                        case 'full':
+                            $value = $this->getFullHeading($survey, $q);
+                            break;
+                        default:
+                        case 'code':
+                            $value = $this->getCodeHeading($survey, $q);
+                            break;
+                    }
+                }
+                if ($oOptions->headerSpacesToUnderscores)
+                {
+                    $value = str_replace(' ', '_', $value);
+                }
+
+                //$this->output.=$this->csvEscape($value).$this->separator;
+                $headers[] = $value;
+            }
         }
         //Output the results.
         $sFile='';
@@ -891,6 +902,10 @@ class CsvWriter extends Writer
     private $output;
     private $separator;
     private $hasOutputHeader;
+    /**
+     * The open filehandle
+     */
+    private $file = null;
 
     function __construct()
     {
@@ -902,12 +917,13 @@ class CsvWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
-        if ($oOptions->output=='display')
-            {
-                header("Content-Disposition: attachment; filename=results-survey".$survey->id.".csv");
-                header("Content-type: text/comma-separated-values; charset=UTF-8");
-            }
-
+        if ($oOptions->output=='display') {
+            header("Content-Disposition: attachment; filename=results-survey".$survey->id.".csv");
+            header("Content-type: text/comma-separated-values; charset=UTF-8");
+        } elseif ($oOptions->output == 'file') {
+            $this->file = fopen($this->filename, 'w');
+        }
+        
     }
     
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
@@ -936,14 +952,19 @@ class CsvWriter extends Writer
         if ($oOptions->output=='display')
         {
             echo $sRecord; 
-        } else {
-            return $sRecord;
-        }
+            $this->output = '';
+        } elseif ($oOptions->output == 'file') {
+            $this->output .= $sRecord;
+            fwrite($this->file, $this->output);
+            $this->output='';
+        } 
     }
 
     public function close()
     {
-        return $this->output;
+        if (!is_null($this->file)) {
+            fclose($this->file);
+        }
     }
 
     /**
@@ -963,6 +984,10 @@ class DocWriter extends Writer
     private $output;
     private $separator;
     private $isBeginning;
+    /**
+     * The open filehandle
+     */
+    private $file = null;
 
     public function __construct()
     {
@@ -995,7 +1020,10 @@ class DocWriter extends Writer
         </style>';
         if ($oOptions->output=='display'){
             echo  $sOutput;
-    }
+        } elseif ($oOptions->output == 'file') {
+            $this->file = fopen($this->filename, 'w');
+            $this->output = $sOutput;
+        }
     }
 
     /**
@@ -1008,11 +1036,7 @@ class DocWriter extends Writer
         if ($oOptions->answerFormat == 'short')
         {
             //No headers at all, only output values.
-            $this->output .= implode($this->separator, $values).PHP_EOL;
-            if ($oOptions->output=='display'){
-                echo  $this->output;
-                $this->output='';
-        }
+            $this->output .= implode($this->separator, $values).PHP_EOL;          
         }
         elseif ($oOptions->answerFormat == 'long')
         {
@@ -1033,21 +1057,26 @@ class DocWriter extends Writer
                 $this->output .= "<tr><td>".$header."</td><td>".$values[$counter]."</td></tr>".PHP_EOL;
                 $counter++;
             }
-            $this->output .= "</table>".PHP_EOL;
-            if ($oOptions->output=='display'){
-                echo  $this->output;
-                $this->output='';
-        }
-            
+            $this->output .= "</table>".PHP_EOL;           
         }
         else
         {
             safeDie('An invalid answer format was selected.  Only \'short\' and \'long\' are valid.');
         }
+        if ($oOptions->output=='display'){
+            echo  $this->output;
+            $this->output='';
+        } elseif ($oOptions->output == 'file') {
+            fwrite($this->file, $this->output);
+            $this->output='';
+        }
     }
 
     public function close()
     {
+        if (!is_null($this->file)) {
+            fclose($this->file);
+        }
     }
 }
 
@@ -1066,8 +1095,7 @@ class ExcelWriter extends Writer
     private $rowCounter;
 
     //Indicates if the Writer is outputting to a file rather than sending via HTTP.
-    private $fileName;
-    private $outputToFile;
+    private $outputToFile = false;
 
     /**
     * The presence of a filename will cause the writer to output to
@@ -1085,13 +1113,13 @@ class ExcelWriter extends Writer
     }
 
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
-        {
+    {
         parent::init($survey, $sLanguageCode, $oOptions);
 
         if ($oOptions->output=='file')
         {
-            $oOptions['filename']=Yii::app()->getConfig("tempdir"). DIRECTORY_SEPARATOR . randomChars(40);            
-            $this->workbook = new xlswriter($oOptions['filename']);
+            $this->workbook = new xlswriter($this->filename);
+            $this->outputToFile = true;
         }
         else
         {
@@ -1099,7 +1127,10 @@ class ExcelWriter extends Writer
         }
         $this->workbook->setTempDir(Yii::app()->getConfig("tempdir"));
 
-        $this->workbook->send('results-survey'.$survey->id.'.xls');
+        if ($oOptions->output=='display') {
+            $this->workbook->send('results-survey'.$survey->id.'.xls');
+  
+        }
         $worksheetName = $survey->languageSettings[0]['surveyls_title'];
         $worksheetName=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$worksheetName),0,31); // Remove invalid characters
 
@@ -1153,18 +1184,15 @@ class PdfWriter extends Writer
     private $separator;
     private $rowCounter;
     private $pdfDestination;
-    private $fileName;
     private $surveyName;
 
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
         
-        if ($oOptions->output=='return') 
+        if ($oOptions->output=='file') 
         {
-            $sRandomFileName=Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
             $this->pdfDestination = 'F';
-            $this->fileName = $sRandomFileName;
         } else {
             $this->pdfDestination = 'D';
         }
@@ -1229,7 +1257,7 @@ class PdfWriter extends Writer
         if ($this->pdfDestination == 'F')
         {
             //Save to file on filesystem.
-            $filename = $this->fileName;
+            $filename = $this->filename;
         }
         else
         {
