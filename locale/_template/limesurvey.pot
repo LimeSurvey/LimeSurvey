@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-11-23 23:05:52+00:00\n"
+"POT-Creation-Date: 2012-11-24 12:20:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -952,7 +952,7 @@ msgid "Yes"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:150
-#: application/controllers/admin/tokens.php:2208
+#: application/controllers/admin/tokens.php:2211
 #: application/views/admin/assessments_view.php:130
 #: application/views/admin/conditions/includes/conditions_scenario.php:13
 #: application/views/admin/labels/labelview_view.php:161
@@ -1639,15 +1639,15 @@ msgstr ""
 msgid "Survey text elements successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:1124
+#: application/controllers/admin/database.php:1127
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:1128
+#: application/controllers/admin/database.php:1131
 msgid "Error:"
 msgstr ""
 
-#: application/controllers/admin/database.php:1128
+#: application/controllers/admin/database.php:1131
 msgid "Survey could not be updated."
 msgstr ""
 
@@ -2929,7 +2929,7 @@ msgstr ""
 msgid "The new question group/question order was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1331
+#: application/controllers/admin/surveyadmin.php:1326
 #: application/views/admin/labels/labelview_view.php:136
 #: application/views/admin/labels/labelview_view.php:148
 #: application/views/admin/survey/Question/editQuestion_view.php:283
@@ -2941,26 +2941,26 @@ msgstr ""
 msgid "Please select a file to import!"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1334
+#: application/controllers/admin/surveyadmin.php:1329
 #: application/views/admin/labels/labelview_view.php:148
 #: application/views/admin/templates/importform_view.php:16
 msgid "zip library not supported by PHP, Import ZIP Disabled"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1359
+#: application/controllers/admin/surveyadmin.php:1354
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1402
+#: application/controllers/admin/surveyadmin.php:1397
 #: application/views/admin/survey/editSurvey_view.php:37
 msgid "(No target question)"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1485
+#: application/controllers/admin/surveyadmin.php:1480
 msgid "Survey could not be created because it did not have a title"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1617
+#: application/controllers/admin/surveyadmin.php:1612
 msgid "Survey was successfully added."
 msgstr ""
 
@@ -3618,20 +3618,20 @@ msgid_plural "%s tokens have been created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:2202
+#: application/controllers/admin/tokens.php:2205
 #: application/controllers/admin/tokens.php:2224
 msgid "Delete Tokens Table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2203
+#: application/controllers/admin/tokens.php:2206
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2203
+#: application/controllers/admin/tokens.php:2206
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2206
+#: application/controllers/admin/tokens.php:2209
 msgid "Delete Tokens"
 msgstr ""
 
