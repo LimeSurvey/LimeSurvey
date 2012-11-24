@@ -2196,12 +2196,15 @@ class tokens extends Survey_Common_Action
         $date = date('YmdHis');
         /* If there is not a $_POST value of 'ok', then ask if the user is sure they want to
            delete the tokens table */
+        $oldtable = "tokens_$iSurveyId";
+        $newtable = "old_tokens_{$iSurveyId}_$date";
+        $newtableDisplay =  Yii::app()->db->tablePrefix . $newtable;
         if (!Yii::app()->request->getPost('ok'))
         {
             $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => $clang->gT("Delete Tokens Table"),
             'message' => $clang->gT("If you delete this table tokens will no longer be required to access this survey.") . "<br />" . $clang->gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.") . "<br />\n"
-            . "( \"old_tokens_{$iSurveyId}_$date\" )<br /><br />\n"
+            . sprintf('("%s")<br /><br />', $newtableDisplay)
             . "<input type='submit' value='"
             . $clang->gT("Delete Tokens") . "' onclick=\"" . convertGETtoPOST($this->getController()->createUrl("admin/tokens/kill/surveyid/$iSurveyId") . "?ok=y") . "\" />\n"
             . "<input type='submit' value='"
@@ -2211,9 +2214,6 @@ class tokens extends Survey_Common_Action
         else
         /* The user has confirmed they want to delete the tokens table */
         {
-            $oldtable = "tokens_$iSurveyId";
-            $newtable = "old_tokens_{$iSurveyId}_$date";
-
             Yii::app()->db->createCommand()->renameTable("{{{$oldtable}}}", "{{{$newtable}}}");
             Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => "a:0:{}"));
 
@@ -2223,7 +2223,7 @@ class tokens extends Survey_Common_Action
             $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => $clang->gT("Delete Tokens Table"),
             'message' => '<br />' . $clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.") . "<br /> " . $clang->gT("A backup of this table has been made and can be accessed by your system administrator.") . "<br />\n"
-            . "(\"old_tokens_{$iSurveyId}_$date\")" . "<br /><br />\n"
+            . sprintf('("%s")<br /><br />', $newtableDisplay)
             . "<input type='submit' value='"
             . $clang->gT("Main Admin Screen") . "' onclick=\"window.open('" . Yii::app()->getController()->createUrl("admin/survey/view/surveyid/".$iSurveyId) . "', '_top')\" />"
             )), $aData);
