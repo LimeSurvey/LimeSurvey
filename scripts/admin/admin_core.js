@@ -635,3 +635,13 @@ jQuery.fn.center = function () {
     this.css("left", ( $(window).width() - this.width() ) / 2+$(window).scrollLeft() + "px");
     return this;
 }
+
+// Fix broken substr function with negative start value (in older IE)
+if ('ab'.substr(-1) != 'b') {
+	String.prototype.substr = function(substr) {
+		return function(start, length) {
+			if (start < 0) start = this.length + start;
+			return substr.call(this, start, length);
+		}
+	}(String.prototype.substr);
+}
