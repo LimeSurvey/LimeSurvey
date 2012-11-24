@@ -1001,7 +1001,6 @@ class database extends Survey_Common_Action
                 $tokenlength = 15;
             }
 
-
             cleanLanguagesFromSurvey($surveyid,Yii::app()->request->getPost('languageids'));
 
             fixLanguageConsistency($surveyid,Yii::app()->request->getPost('languageids'));
@@ -1076,8 +1075,12 @@ class database extends Survey_Common_Action
             'googleanalyticsstyle'=>trim(Yii::app()->request->getPost('googleanalyticsstyle')),
             'tokenlength'=>$tokenlength
             );
-
-            Survey::model()->updateByPk($surveyid, $updatearray);
+            // use model
+            $Survey=Survey::model()->findByPk($surveyid);
+            foreach ($updatearray as $k => $v)
+                $Survey->$k = $v;
+            $Survey->save();
+#            Survey::model()->updateByPk($surveyid, $updatearray);
             $sqlstring = "surveyls_survey_id=:sid AND surveyls_language <> :base ";
             $params = array(':sid'=>$surveyid, ':base'=>Survey::model()->findByPk($surveyid)->language);
 

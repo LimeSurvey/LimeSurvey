@@ -156,7 +156,7 @@ class Survey extends CActiveRecord
     public function tmplfilter($attribute,$params)
     {
         if(!array_key_exists($this->$attribute,getTemplateList()))
-			$this->$attribute = 'default';
+            $this->$attribute = 'default';
     }
 
 

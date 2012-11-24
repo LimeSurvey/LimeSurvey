@@ -1145,24 +1145,19 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _generalTabNewSurvey()
     {
-        global $siteadminname, $siteadminemail;
         $clang = $this->getController()->lang;
 
-        $condition = array('users_name' => Yii::app()->session['user']);
-
         //Use the current user details for the default administrator name and email for this survey
-        $owner = User::model()->findAllByAttributes($condition);
+        $user=User::model()->findByPk(Yii::app()->session['loginID']);
+        $owner =$user->attributes;
 
         //Degrade gracefully to $siteadmin details if anything is missing.
-
         if (empty($owner['full_name']))
-            $owner['full_name'] = $siteadminname;
+            $owner['full_name'] = getGlobalSetting('siteadminname');
         if (empty($owner['email']))
-            $owner['email'] = $siteadminemail;
+            $owner['email'] = getGlobalSetting('siteadminemail');
 
         //Bounce setting by default to global if it set globally
-        Yii::app()->loadHelper('globalsettings');
-
         if (getGlobalSetting('bounceaccounttype') != 'off')
         {
             $owner['bounce_email'] = getGlobalSetting('siteadminbounce');
