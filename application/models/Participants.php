@@ -171,9 +171,10 @@ class Participants extends CActiveRecord
             ->select('{{participants}}.*,{{participant_shares}}.can_edit')
             ->from('{{participants}}')
             ->leftJoin('{{participant_shares}}', ' {{participants}}.participant_id={{participant_shares}}.participant_id')
-            ->where('owner_uid = :userid OR share_uid = :userid')
+            ->where('owner_uid = :userid1 OR share_uid = :userid2')
             ->group('{{participants}}.participant_id')
-            ->bindParam(":userid", $userid, PDO::PARAM_INT)
+            ->bindParam(":userid1", $userid, PDO::PARAM_INT)
+            ->bindParam(":userid2", $userid, PDO::PARAM_INT)
             ->queryAll();
     }
 
@@ -184,8 +185,9 @@ class Participants extends CActiveRecord
                                ->select('{{participants}}.*,{{participant_shares}}.can_edit')
                                ->from('{{participants}}')
                                ->leftJoin('{{participant_shares}}', '{{participants}}.participant_id={{participant_shares}}.participant_id')
-                               ->where('owner_uid = :userid OR share_uid = :userid')
-                               ->bindParam(":userid", $userid, PDO::PARAM_INT)
+                               ->where('owner_uid = :userid1 OR share_uid = :userid2')
+                               ->bindParam(":userid1", $userid, PDO::PARAM_INT)
+                               ->bindParam(":userid2", $userid, PDO::PARAM_INT)
                                ->queryAll());
     }
 
