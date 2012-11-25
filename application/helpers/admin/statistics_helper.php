@@ -3099,9 +3099,9 @@ class statistics_helper {
             // set document information
             $this->pdf->SetCreator(PDF_CREATOR);
             $this->pdf->SetAuthor('LimeSurvey');
-            $this->pdf->SetTitle(sprintf($statlang->gT("Statistic survey %s"),$surveyid));
+            $this->pdf->SetTitle(sprintf($statlang->gT("Statistics survey %s"),$surveyid));
             $this->pdf->SetSubject($surveyInfo['surveyls_title']);
-            $this->pdf->SetKeywords('LimeSurvey,'.$statlang->gT("Statistic").', '.sprintf($statlang->gT("Survey %s"),$surveyid));
+            $this->pdf->SetKeywords('LimeSurvey,'.$statlang->gT("Statistics").', '.sprintf($statlang->gT("Survey %s"),$surveyid));
             $this->pdf->SetDisplayMode('fullpage', 'two');
 
             //Set some pdf metadata
