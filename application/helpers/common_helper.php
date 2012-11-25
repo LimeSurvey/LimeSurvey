@@ -1026,22 +1026,32 @@ function getUserList($outputformat='fullinfoarray')
     {
         if (isset($myuid))
         {
+            $sDatabaseType = Yii::app()->db->getDriverName();
+            if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv")
+            {
+                $sSelectFields = 'users_name,uid,email,full_name,parent_id,create_survey,participant_panel,configurator,create_user,delete_user,superadmin,manage_template,manage_label,CAST(password as varchar)';
+            }
+            else
+            {
+                $sSelectFields = 'users_name,uid,email,full_name,parent_id,create_survey,participant_panel,configurator,create_user,delete_user,superadmin,manage_template,manage_label,password';
+            }
+
             // List users from same group as me + all my childs
             // a subselect is used here because MSSQL does not like to group by text
             // also Postgres does like this one better
-            $uquery = " SELECT * from {{users}} where uid in (
-            SELECT uid from {{user_in_groups}} where ugid in (
-            SELECT ugid from {{user_in_groups}} where uid=$myuid
-            )
-            )
+            $uquery = " SELECT {$sSelectFields} from {{users}} where uid in (
+                SELECT uid from {{user_in_groups}} where ugid in (
+                    SELECT ugid from {{user_in_groups}} where uid={$myuid}
+                    )
+                )
             UNION
-            SELECT * from {{users}} v where v.parent_id=$myuid";
+            SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}";
         }
         else
         {
             return array(); // Or die maybe
         }
-
+                                                        
     }
     else
     {
