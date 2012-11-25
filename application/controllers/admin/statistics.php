@@ -458,7 +458,7 @@ class statistics extends Survey_Common_Action {
      * */
     function listcolumn($surveyid, $column, $sortby="", $sortmethod="", $sorttype="")
     {
-        $search['condition']=$column." != ''";
+        $search['condition']=Yii::app()->db->quoteColumnName($column)." != ''";
         //Look for any selects/filters set in the original statistics query, and apply them to the column listing
         foreach(Yii::app()->session['statistics_selects_'.$surveyid] as $sql) {
              $search['condition'] .= " AND $sql";
