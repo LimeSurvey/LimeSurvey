@@ -12,8 +12,6 @@ if (!defined('BASEPATH'))
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-*
-*   $Id: surveyaction.php 12301 2012-02-02 08:51:43Z c_schmitz $
 */
 
 /**
@@ -593,7 +591,6 @@ class SurveyAdmin extends Survey_Common_Action
         //!!! Is this even possible to execute?
         if (empty(Yii::app()->session['USER_RIGHT_SUPERADMIN']))
             $surveys->permission(Yii::app()->user->getId());
-
         $surveys = $surveys->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
         $aSurveyEntries = new stdClass();
         $aSurveyEntries->page = 1;
@@ -601,112 +598,109 @@ class SurveyAdmin extends Survey_Common_Action
         {
             if (!isset($rows->owner->attributes)) $aOwner=array('users_name'=>$clang->gT('(None)')); else $aOwner=$rows->owner->attributes;
             $rows = array_merge($rows->attributes, $rows->languagesettings[0]->attributes, $aOwner);
-            if($rows['users_name'] == Yii::app()->session['user'] || Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)//If is owner or superadmin show survey.
+            $aSurveyEntry = array();
+            // Set status
+            if ($rows['active'] == "Y" && $rows['expires'] != '' && $rows['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
             {
-                $aSurveyEntry = array();
-                // Set status
-                if ($rows['active'] == "Y" && $rows['expires'] != '' && $rows['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
+                $aSurveyEntry[] = '<!--a--><img src="' . Yii::app()->getConfig('adminimageurl') . 'expired.png" alt="' . $clang->gT("This survey is active but expired.") . '" />';
+            }
+            elseif ($rows['active'] == "Y" && $rows['startdate'] != '' && $rows['startdate'] > dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
+            {
+                $aSurveyEntry[] = '<!--b--><img src="' . Yii::app()->getConfig('adminimageurl') . 'notyetstarted.png" alt="' . $clang->gT("This survey is active but has a start date.") . '" />';
+            }
+            elseif ($rows['active'] == "Y")
+            {
+                if (hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
-                    $aSurveyEntry[] = '<!--a--><img src="' . Yii::app()->getConfig('adminimageurl') . 'expired.png" alt="' . $clang->gT("This survey is active but expired.") . '" />';
-                }
-                elseif ($rows['active'] == "Y" && $rows['startdate'] != '' && $rows['startdate'] > dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
-                {
-                    $aSurveyEntry[] = '<!--b--><img src="' . Yii::app()->getConfig('adminimageurl') . 'notyetstarted.png" alt="' . $clang->gT("This survey is active but has a start date.") . '" />';
-                }
-                elseif ($rows['active'] == "Y")
-                {
-                    if (hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
-                    {
-                        $aSurveyEntry[] = '<!--c--><a href="' . $this->getController()->createUrl('admin/survey/deactivate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'active.png" alt="' . $clang->gT("This survey is active - click here to stop this survey.") . '"/></a>';
-                    }
-                    else
-                    {
-                        $aSurveyEntry[] = '<!--d--><img src="' . Yii::app()->getConfig('adminimageurl') . 'active.png" alt="' . $clang->gT("This survey is currently active.") . '" />';
-                    }
+                    $aSurveyEntry[] = '<!--c--><a href="' . $this->getController()->createUrl('admin/survey/deactivate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'active.png" alt="' . $clang->gT("This survey is active - click here to stop this survey.") . '"/></a>';
                 }
                 else
                 {
-                    $condition = "sid={$rows['sid']} AND language='" . $rows['language'] . "'";
-                    $questionsCountResult = Questions::model()->findAll($condition);
-
-                    if (count($questionsCountResult) && hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
-                    {
-                        $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'inactive.png" title="" alt="' . $clang->gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
-                    }
-                    else
-                    {
-                        $aSurveyEntry[] = '<!--f--><img src="' . Yii::app()->getConfig('adminimageurl') . 'inactive.png" title="' . $clang->gT("This survey is currently not active.") . '" alt="' . $clang->gT("This survey is currently not active.") . '" />';
-                    }
+                    $aSurveyEntry[] = '<!--d--><img src="' . Yii::app()->getConfig('adminimageurl') . 'active.png" alt="' . $clang->gT("This survey is currently active.") . '" />';
                 }
+            }
+            else
+            {
+                $condition = "sid={$rows['sid']} AND language='" . $rows['language'] . "'";
+                $questionsCountResult = Questions::model()->findAll($condition);
 
-                //Set SID
-                $aSurveyEntry[] = $rows['sid'];
-                '<a href="' . $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']) . '">' . $rows['sid'] . '</a>';
+                if (count($questionsCountResult) && hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
+                {
+                    $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'inactive.png" title="" alt="' . $clang->gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
+                }
+                else
+                {
+                    $aSurveyEntry[] = '<!--f--><img src="' . Yii::app()->getConfig('adminimageurl') . 'inactive.png" title="' . $clang->gT("This survey is currently not active.") . '" alt="' . $clang->gT("This survey is currently not active.") . '" />';
+                }
+            }
 
-                //Set Title
-                $aSurveyEntry[] = '<!--' . $rows['surveyls_title'] . '--><a href="' . $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']) . '" title="' . $rows['surveyls_title'] . '">' . $rows['surveyls_title'] . '</a>';
+            //Set SID
+            $aSurveyEntry[] = $rows['sid'];
+            '<a href="' . $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']) . '">' . $rows['sid'] . '</a>';
 
-                //Set Date
-                Yii::import('application.libraries.Date_Time_Converter', true);
-                $datetimeobj = new Date_Time_Converter($rows['datecreated'], "Y-m-d H:i:s");
-                $aSurveyEntry[] = '<!--' . $rows['datecreated'] . '-->' . $datetimeobj->convert($dateformatdetails['phpdate']);
+            //Set Title
+            $aSurveyEntry[] = '<!--' . $rows['surveyls_title'] . '--><a href="' . $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']) . '" title="' . $rows['surveyls_title'] . '">' . $rows['surveyls_title'] . '</a>';
 
-                //Set Owner
-                $aSurveyEntry[] = $rows['users_name'] . ' (<a href="#" class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
+            //Set Date
+            Yii::import('application.libraries.Date_Time_Converter', true);
+            $datetimeobj = new Date_Time_Converter($rows['datecreated'], "Y-m-d H:i:s");
+            $aSurveyEntry[] = '<!--' . $rows['datecreated'] . '-->' . $datetimeobj->convert($dateformatdetails['phpdate']);
 
-                //Set Access
+            //Set Owner
+            $aSurveyEntry[] = $rows['users_name'] . ' (<a href="#" class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
+
+            //Set Access
+            if (tableExists('tokens_' . $rows['sid'] ))
+            {
+                $aSurveyEntry[] = $clang->gT("Closed");
+            }
+            else
+            {
+                $aSurveyEntry[] = $clang->gT("Open");
+            }
+
+            //Set Anonymous
+            if ($rows['anonymized'] == "Y")
+            {
+                $aSurveyEntry[] = $clang->gT("Yes");
+            }
+            else
+            {
+                $aSurveyEntry[] = $clang->gT("No");
+            }
+
+            //Set Responses
+            if ($rows['active'] == "Y")
+            {
+                $partial = Survey_dynamic::model($rows['sid'])->countByAttributes(array('submitdate' => null));
+                $all = Survey_dynamic::model($rows['sid'])->count();
+
+                $aSurveyEntry[] = $all - $partial;
+                $aSurveyEntry[] = $partial;
+                $aSurveyEntry[] = $all;
+
+
+                $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']);
                 if (tableExists('tokens_' . $rows['sid'] ))
                 {
-                    $aSurveyEntry[] = $clang->gT("Closed");
+                    $tokens = Tokens_dynamic::model($rows['sid'])->count();
+                    $tokenscompleted = Tokens_dynamic::model($rows['sid'])->count(array(
+                    'condition' => "completed <> 'N'"
+                    ));
+
+                    $aSurveyEntry[] = $tokens;
+                    $aSurveyEntry[] = ($tokens == 0) ? 0 : round($tokenscompleted / $tokens * 100, 1);
                 }
                 else
                 {
-                    $aSurveyEntry[] = $clang->gT("Open");
+                    $aSurveyEntry[] = $aSurveyEntry[] = '';
                 }
-
-                //Set Anonymous
-                if ($rows['anonymized'] == "Y")
-                {
-                    $aSurveyEntry[] = $clang->gT("Yes");
-                }
-                else
-                {
-                    $aSurveyEntry[] = $clang->gT("No");
-                }
-
-                //Set Responses
-                if ($rows['active'] == "Y")
-                {
-                    $partial = Survey_dynamic::model($rows['sid'])->countByAttributes(array('submitdate' => null));
-                    $all = Survey_dynamic::model($rows['sid'])->count();
-
-                    $aSurveyEntry[] = $all - $partial;
-                    $aSurveyEntry[] = $partial;
-                    $aSurveyEntry[] = $all;
-
-
-                    $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']);
-                    if (tableExists('tokens_' . $rows['sid'] ))
-                    {
-                        $tokens = Tokens_dynamic::model($rows['sid'])->count();
-                        $tokenscompleted = Tokens_dynamic::model($rows['sid'])->count(array(
-                        'condition' => "completed <> 'N'"
-                        ));
-
-                        $aSurveyEntry[] = $tokens;
-                        $aSurveyEntry[] = ($tokens == 0) ? 0 : round($tokenscompleted / $tokens * 100, 1);
-                    }
-                    else
-                    {
-                        $aSurveyEntry[] = $aSurveyEntry[] = '';
-                    }
-                }
-                else
-                {
-                    $aSurveyEntry[] = $aSurveyEntry[] = $aSurveyEntry[] = $aSurveyEntry[] = $aSurveyEntry[] = '';
-                }
-                $aSurveyEntries->rows[] = array('id' => $rows['sid'], 'cell' => $aSurveyEntry);
             }
+            else
+            {
+                $aSurveyEntry[] = $aSurveyEntry[] = $aSurveyEntry[] = $aSurveyEntry[] = $aSurveyEntry[] = '';
+            }
+            $aSurveyEntries->rows[] = array('id' => $rows['sid'], 'cell' => $aSurveyEntry);
         }
 
         echo ls_json_encode($aSurveyEntries);
