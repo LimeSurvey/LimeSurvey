@@ -171,6 +171,7 @@ class tokens extends Survey_Common_Action
             {
                 case "OFF":
                     $flags.="/notls"; // Really Off
+                    break;
                 case "SSL":
                     $flags.="/ssl/novalidate-cert";
                     break;
