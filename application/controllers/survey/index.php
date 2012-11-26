@@ -488,6 +488,7 @@ class index extends CAction {
             }
             $tkresult = dbExecuteAssoc($tkquery); //Checked
             $tokendata = $tkresult->read();
+            $tkresult->close(); //Close the result in case there are more result rows, we are only interested in one and don't want unbuffered query errors
             if (isset($tokendata['validfrom']) && (trim($tokendata['validfrom'])!='' && $tokendata['validfrom']>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) ||
             isset($tokendata['validuntil']) && (trim($tokendata['validuntil'])!='' && $tokendata['validuntil']<dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)))
             {
