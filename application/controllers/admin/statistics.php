@@ -459,10 +459,20 @@ class statistics extends Survey_Common_Action {
     function listcolumn($surveyid, $column, $sortby="", $sortmethod="", $sorttype="")
     {
         $search['condition']=Yii::app()->db->quoteColumnName($column)." != ''";
-        //Look for any selects/filters set in the original statistics query, and apply them to the column listing
-        foreach(Yii::app()->session['statistics_selects_'.$surveyid] as $sql) {
-             $search['condition'] .= " AND $sql";
+        $sDBDriverName=Yii::app()->db->getDriverName();
+        if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql')
+        {
+            $search['condition']="CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
         }
+        
+        //Look for any selects/filters set in the original statistics query, and apply them to the column listing
+        if (isset(Yii::app()->session['statistics_selects_'.$surveyid]) && is_array(Yii::app()->session['statistics_selects_'.$surveyid]))
+        {
+            foreach(Yii::app()->session['statistics_selects_'.$surveyid] as $sql) {
+                 $search['condition'] .= " AND $sql";
+            }
+        }
+        
         if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
         if($sortby != "") $search['order']=$sortby.' '.$sortmethod;
         $results=Survey_dynamic::model($surveyid)->findAll($search);
