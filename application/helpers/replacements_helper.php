@@ -103,10 +103,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $questiondetails = array('sid' => 0, 'gid' => 0, 'qid' => 0, 'aid' =>0);
     if(isset($question) && isset($question['sgq'])) {
         $searchCode = $question['sgq'];
-        if (isset($question['aid'])) {
+        if (isset($question['aid']) && $question['aid']) { // See BUG #6947 and #6954
             $searchCode .= $question['aid'];
         }
-        $questiondetails=getSIDGIDQIDAIDType($searchCode); //Gets an array containing SID, GID, QID, AID and Question Type)
+        $questiondetails=getSIDGIDQIDAIDType($searchCode); //Gets an array containing SID, GID, QID and Question Type)
     }
 
     if (isset($thissurvey['sid'])) {
@@ -812,7 +812,7 @@ EOD;
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
     $coreReplacements['PRIVACY'] = isset($privacy) ? $privacy : '';    // global
     $coreReplacements['PRIVACYMESSAGE'] = "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey.");
-    $coreReplacements['QID'] = isset($questiondetails['qid']) ? $questiondetails['qid'] : '';
+    $coreReplacements['QID'] = isset($questiondetails['qid']) ? $questiondetails['qid'] : '';// $questiondetails['qid'] or $questionNum, see bug #06954
     $coreReplacements['QUESTION'] = $_question;
     $coreReplacements['QUESTIONHELP'] = $_questionhelp;
     $coreReplacements['QUESTIONHELPPLAINTEXT'] = strip_tags(addslashes($help)); // global
