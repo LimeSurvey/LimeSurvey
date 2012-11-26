@@ -637,8 +637,8 @@ class CheckIntegrity extends Survey_Common_Action
             $aFullOldSIDs[$iSurveyID][] = $sTable;
         }
         $aOldSIDs = array_unique($aOldSIDs);
-        $sQuery = 'SELECT sid FROM {{surveys}} ORDER BY sid';
-        $oResult = dbExecuteAssoc($sQuery) or safeDie('Couldn\'t get unique survey ids');
+        //$sQuery = 'SELECT sid FROM {{surveys}} ORDER BY sid';
+        //$oResult = dbExecuteAssoc($sQuery) or safeDie('Couldn\'t get unique survey ids');
         $surveys = Survey::model()->findAll();
         if (Survey::model()->hasErrors()) safeDie(Survey::model()->getError());
         $aSIDs = array();
@@ -717,10 +717,6 @@ class CheckIntegrity extends Survey_Common_Action
         foreach ($surveys as $survey)
         {
             $aSIDs[] = $survey['sid'];
-        }
-        foreach ($oResult->readAll() as $aRow)
-        {
-            $aTokenSIDs[] = $aRow['sid'];
         }
         foreach ($aOldTokenSIDs as $iOldTokenSID)
         {
