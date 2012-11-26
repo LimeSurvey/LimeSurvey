@@ -1047,6 +1047,9 @@ class InstallerController extends CController {
             if (is_writable(APPPATH . 'config')) {
                 file_put_contents(APPPATH . 'config/config.php', $dbdata);
                 Yii::app()->session['configFileWritten'] = true;
+                $oUrlManager = Yii::app()->getComponent('urlManager');
+                /* @var $oUrlManager CUrlManager */
+                $oUrlManager->setUrlFormat($sURLFormat);
             } else {
                 header('refresh:5;url='.$this->createUrl("installer/welcome"));
                 echo "<b>".$clang->gT("Configuration directory is not writable")."</b><br/>";
