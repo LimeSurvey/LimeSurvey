@@ -13,6 +13,15 @@ if ( !defined('BASEPATH')) exit('No direct script access allowed');
 *
 *   $Id$
 */
+
+
+/**
+ * 
+ * @param type $sql
+ * @param type $inputarr
+ * @param type $silent
+ * @return CDbDataReader
+ */
 function dbExecuteAssoc($sql,$inputarr=false,$silent=true)
 {
     $error = '';

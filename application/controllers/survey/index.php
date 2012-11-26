@@ -312,7 +312,7 @@ class index extends CAction {
         $thissurvey=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
         //SEE IF SURVEY USES TOKENS
-        if ($surveyExists == 1 && tableExists('{{tokens_'.$thissurvey['sid'].'}}'))
+        if ($surveyExists == 1 && Survey::model()->hasTokens($surveyid))
         {
             $tokensexist = 1;
         }
@@ -445,7 +445,7 @@ class index extends CAction {
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
         if ($tokensexist == 1 && isset($token) && $token &&
-        isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
+        isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0)
         {
             //check if tokens actually haven't been already used
             $areTokensUsed = usedTokens(trim(strip_tags(returnGlobal('token'))),$surveyid);
@@ -477,16 +477,20 @@ class index extends CAction {
                 $this->_niceExit($redata, __LINE__, $thistpl, $aMessage, true);
             }
         }
-        if ($tokensexist == 1 && isset($token) && $token && tableExists("{{tokens_".$surveyid."}}")) //check if token is in a valid time frame
+        if ($tokensexist == 1 && isset($token) && $token) //check if token is in a valid time frame
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."'";
+                $condition = '';
             } else {
-                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."' AND (completed = 'N' or completed='')";
+                $condition = "(completed = 'N' or completed='')";
             }
-            $tkresult = dbExecuteAssoc($tkquery); //Checked
-            $tokendata = $tkresult->read();
+            $tkresult = Tokens_dynamic::model($surveyid)->findAllByAttributes(array('token'=>$token), $condition);
+            if (count($tkresult)>0) {
+                $tokendata = array_shift($tkresult);
+            } else {
+                $tokendata = array();
+            }
             if (isset($tokendata['validfrom']) && (trim($tokendata['validfrom'])!='' && $tokendata['validfrom']>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) ||
             isset($tokendata['validuntil']) && (trim($tokendata['validuntil'])!='' && $tokendata['validuntil']<dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)))
             {
