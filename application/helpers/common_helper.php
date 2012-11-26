@@ -1320,7 +1320,7 @@ function getUserList($outputformat='fullinfoarray')
             $sDatabaseType = Yii::app()->db->getDriverName();
             if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv")
             {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,create_survey,participant_panel,configurator,create_user,delete_user,superadmin,manage_template,manage_label,CAST(password as varchar)';
+                $sSelectFields = 'users_name,uid,email,full_name,parent_id,create_survey,participant_panel,configurator,create_user,delete_user,superadmin,manage_template,manage_label,CAST(password as varchar) as password';
             }
             else
             {
