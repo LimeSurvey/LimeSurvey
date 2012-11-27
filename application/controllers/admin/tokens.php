@@ -373,7 +373,7 @@ class tokens extends Survey_Common_Action
     * @param it takes the session user data loginID
     * @return JSON encoded string containg sharing information
     */
-    function getTokens_json($iSurveyId)
+    function getTokens_json($iSurveyId, $search = null)
     {
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
@@ -390,11 +390,25 @@ class tokens extends Survey_Common_Action
         $limit = Yii::app()->request->getPost('rows');
         $limit = isset($limit) ? $limit : 25; //Stop division by zero errors
         $page = isset($page) ? $page : 1; //Stop division by zero errors
-        $tokens = Tokens_dynamic::model($iSurveyId)->findAll(array("order"=>$sidx. " ". $sord, "offset"=>($page - 1) * $limit, "limit"=>$limit));
-
+        
         $aData = new stdClass;
         $aData->page = $page;
-        $aData->records = Tokens_dynamic::model($iSurveyId)->count();
+        
+        if (!empty($search)) {
+            $condition = Tokens_dynamic::model($iSurveyId)->getSearchMultipleCondition($search);
+        } else { 
+            $condition = new CDbCriteria();
+        }
+                
+        $condition->order = $sidx. " ". $sord;
+        $condition->offset = ($page - 1) * $limit;
+        $condition->limit = $limit;
+        $tokens = Tokens_dynamic::model($iSurveyId)->findAll($condition);
+        
+        $condition->offset=0;
+        $condition->limit=0;        
+        $aData->records = Tokens_dynamic::model($iSurveyId)->count($condition);
+        
         if ($limit>$aData->records)
         {
             $limit=$aData->records;
@@ -412,28 +426,64 @@ class tokens extends Survey_Common_Action
 
         $format = getDateFormatData(Yii::app()->session['dateformat']);
 
-        for ($i = 0, $j = 0; $i < $limit && $j < $limit; $i++, $j++)
+        $aSurveyInfo = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
+        $attributes  = getAttributeFieldNames($iSurveyId);
+        foreach ($tokens as $token)
         {
-            $token = $tokens[$j];
-            if ((int) $token['validfrom'])
+            $aRowToAdd = array();
+            if ((int) $token['validfrom']) {
                 $token['validfrom'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validfrom'])));
-            else
+            } else {
                 $token['validfrom'] = '';
-            if ((int) $token['validuntil'])
-                $token['validuntil'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validuntil'])));
-            else
-                $token['validuntil'] = '';
-
-            $aData->rows[$i]['id'] = $token['tid'];
-            $prow = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
-
-            $action = $this->_tokenToActionRow($token, $iSurveyId);
-            $aData->rows[$i]['cell'] = array($token['tid'], $action, $token['firstname'], $token['lastname'], $token['email'], $token['emailstatus'], $token['token'], $token['language'], $token['sent'], $token['remindersent'], $token['remindercount'], $token['completed'], $token['usesleft'], $token['validfrom'], $token['validuntil']);
-            $attributes = getAttributeFieldNames($iSurveyId);
-            foreach ($attributes as $attribute)
-            {
-                $aData->rows[$i]['cell'][] = $token[$attribute];
             }
+            if ((int) $token['validuntil']) {
+                $token['validuntil'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validuntil'])));
+            } else {
+                $token['validuntil'] = '';
+            }
+
+            $aRowToAdd['id'] = $token['tid'];
+
+            $action = "";
+            if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "")) {
+                $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}", $clang->gT("Do survey"), '_blank');
+            } elseif ($token['completed'] != "N" && $token['completed'] != "" && $prow['anonymized'] == "N") {
+                //Get the survey response id of the matching entry
+                $id = Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token' => $token['token']));
+                if (count($id) > 0) {
+                    $action .= viewHelper::getImageLink('token_viewanswer.png', "admin/responses/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}", $clang->gT("View response details"), null, '_top');
+                } else {
+                    $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
+                }
+            } else {
+                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
+            }
+            $attribs = array('onclick' => 'if (confirm("' . $clang->gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}');
+            $action .= viewHelper::getImageLink('token_delete.png', null, $clang->gT("Delete token entry"), null, 'imagelink btnDelete', $attribs);
+            if (strtolower($token['emailstatus']) == 'ok') {
+                if ($token['completed'] == 'N' && $token['usesleft'] > 0) {
+                    if ($token['sent'] == 'N') {
+                        $action .= viewHelper::getImageLink('token_invite.png', "admin/tokens/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], $clang->gT("Send invitation email to this person (if they have not yet been sent an invitation email)"), "_blank");
+                    } else {
+                        $action .= viewHelper::getImageLink('token_remind.png', "admin/tokens/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], $clang->gT("Send reminder email to this person (if they have already received the invitation email)"), "_blank");
+                    }
+                } else {
+                    $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
+                }
+            } else {
+                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
+            }
+            $action .= viewHelper::getImageLink('edit_16.png', null, $clang->gT("Edit token entry"), null, 'imagelink token_edit');
+            if (!empty($token['participant_id']) && $token['participant_id'] != "") {
+                $action .= viewHelper::getImageLink('cpdb_16.png', "admin/participants/displayParticipants/searchurl/participant_id||equal||" . $token['participant_id'], $clang->gT("View this person in the central participants database"), '_top');
+            } else {
+                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
+            }
+            $aRowToAdd['cell'] = array($token['tid'], $action, $token['firstname'], $token['lastname'], $token['email'], $token['emailstatus'], $token['token'], $token['language'], $token['sent'], $token['remindersent'], $token['remindercount'], $token['completed'], $token['usesleft'], $token['validfrom'], $token['validuntil']);
+            foreach ($attributes as $attribute) {
+                $aRowToAdd['cell'][] = $token[$attribute];
+            }
+            $aData->rows[]       = $aRowToAdd;
         }
 
         echo ls_json_encode($aData);
@@ -441,137 +491,12 @@ class tokens extends Survey_Common_Action
 
     function getSearch_json($iSurveyId)
     {
-        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
-        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
-        if (!$bTokenExists) //If no tokens table exists
-        {
-            self::_newtokentable($iSurveyId);
-        }
-        $page = (Yii::app()->request->getPost('page') != "") ? Yii::app()->request->getPost('page') : 1;
-        $limit = (Yii::app()->request->getPost('rows') != "") ? Yii::app()->request->getPost('rows') : 25 ;
-        $fields = array('tid', 'firstname', 'lastname', 'email', 'emailstatus', 'token', 'language', 'sent', 'sentreminder', 'remindercount', 'completed', 'usesleft', 'validfrom', 'validuntil');
         $searchcondition = Yii::app()->request->getQuery('search');
         $searchcondition = urldecode($searchcondition);
         $finalcondition = array();
         $condition = explode("||", $searchcondition);
-        $aData = new stdClass();
-
-        $records = Tokens_dynamic::model($iSurveyId)->getSearchMultiple($condition, $page, $limit);
-        $aData->records = count(Tokens_dynamic::model($iSurveyId)->getSearchMultiple($condition, 0, 0));
-
-        $aData->page = $page;
-        $aData->total = ceil($aData->records / $limit);
-
-        $i = 0;
-        foreach ($records as $row => $value)
-        {
-            $action = $this->_tokenToActionRow($value, $iSurveyId);
-
-            $sortablearray[$i] = array($value['tid'], $action, $value['firstname'], $value['lastname'], $value['email'], $value['emailstatus'], $value['token'], $value['language'], $value['sent'], $value['remindersent'], $value['remindercount'], $value['completed'], $value['usesleft'], $value['validfrom'], $value['validuntil']);
-            $i++;
-        }
         
-        if (!empty($sortablearray))
-        {
-            $indexsort = array_search(Yii::app()->request->getPost('sidx'), $fields);
-            $sortedarray = common_helper::subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
-            $i = 0;
-            $count = count($sortedarray[0]);
-            foreach ($sortedarray as $key => $value)
-            {
-                $aData->rows[$i]['id'] = $value[0];
-                $aData->rows[$i]['cell'] = array();
-                for ($j = 0; $j < $count; $j++)
-                {
-                    array_push($aData->rows[$i]['cell'], $value[$j]);
-                }
-                $i++;
-            }
-        }
-        echo ls_json_encode($aData);
-    }
-
-    /**
-     * Internal helper for getSearch_json en getToken_json
-     *
-     * Takes care of converting a token to a row of action buttons
-     *
-     * @param type $token
-     * @param type $iSurveyId
-     * @return string
-     */
-    protected function _tokenToActionRow($token, $iSurveyId) 
-    {
-        Yii::app()->loadHelper("surveytranslator"); // For getDateFormatData
-
-        $clang  = $this->getController()->lang;
-        $prow   = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
-        $format = getDateFormatData(Yii::app()->session['dateformat']);
-
-        if ((int) $token['validfrom'])
-        {
-            $token['validfrom'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validfrom'])));
-        } else
-        {
-            $token['validfrom'] = '';
-        }
-        if ((int) $token['validuntil'])
-        {
-            $token['validuntil'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validuntil'])));
-        } else
-        {
-            $token['validuntil'] = '';
-        }
-
-        $action = "";
-        if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == ""))
-        {
-            $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}", $clang->gT("Do survey"), '_blank');
-        } elseif ($token['completed'] != "N" && $token['completed'] != "" && $prow['anonymized'] == "N")
-        {
-            //Get the survey response id of the matching entry
-            $id = Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token' => $token['token']));
-            if (count($id) > 0)
-            {
-                $action .= viewHelper::getImageLink('token_viewanswer.png', "admin/responses/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}", $clang->gT("View response details"), null, '_top');
-            } else
-            {
-                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-            }
-        } else
-        {
-            $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-        }
-        $attribs = array('onclick' => 'if (confirm("' . $clang->gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}');
-        $action .= viewHelper::getImageLink('token_delete.png', null, $clang->gT("Delete token entry"), null, 'imagelink btnDelete', $attribs);
-        if (strtolower($token['emailstatus']) == 'ok')
-        {
-            if ($token['completed'] == 'N' && $token['usesleft'] > 0)
-            {
-                if ($token['sent'] == 'N')
-                {
-                    $action .= viewHelper::getImageLink('token_invite.png', "admin/tokens/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], $clang->gT("Send invitation email to this person (if they have not yet been sent an invitation email)"), "_blank");
-                } else
-                {
-                    $action .= viewHelper::getImageLink('token_remind.png', "admin/tokens/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], $clang->gT("Send reminder email to this person (if they have already received the invitation email)"), "_blank");
-                }
-            } else
-            {
-                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-            }
-        } else
-        {
-            $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-        }
-        $action .= viewHelper::getImageLink('edit_16.png', null, $clang->gT("Edit token entry"), null, 'imagelink token_edit');
-        if (!empty($token['participant_id']) && $token['participant_id'] != "")
-        {
-            $action .= viewHelper::getImageLink('cpdb_16.png', "admin/participants/displayParticipants/searchurl/participant_id||equal||" . $token['participant_id'], $clang->gT("View this person in the central participants database"), '_top');
-        } else
-        {
-            $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-        }
-        return $action;
+        return $this->getTokens_json($iSurveyId, $condition);
     }
 
     function editToken($iSurveyId)

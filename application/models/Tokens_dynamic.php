@@ -352,14 +352,17 @@ class Tokens_dynamic extends LSActiveRecord
         ));
     }
 
-
-
-	function getSearchMultiple($condition,$page,$limit)
+    /**
+     * Get CDbCriteria for a json search string
+     * 
+     * @param array $condition
+     * @return \CDbCriteria
+     */
+    function getSearchMultipleCondition($condition)
 	{
         $i=0;
         $j=1;
-        $tobedonelater =array();
-        $start = $limit*$page - $limit;
+        $tobedonelater =array(); 
         $command = new CDbCriteria;
         $command->condition = '';
         $iNumberOfConditions = (count($condition)+1)/4;
@@ -411,29 +414,10 @@ class Tokens_dynamic extends LSActiveRecord
         {
             $command->params = $aParams;
         }
-        if($page == 0 && $limit == 0)
-        {
-            $arr = Tokens_dynamic::model()->findAll($command);
-            $data = array();
-            foreach($arr as $t)
-            {
-                $data[$t->tid] = $t->attributes;
-            }
-        }
-        else
-        {
-            $command->limit = $limit;
-            $command->offset = $start;
-            $arr = Tokens_dynamic::model()->findAll($command);
-            $data = array();
-            foreach($arr as $t)
-            {
-                $data[$t->tid] = $t->attributes;
-            }
-        }
-
-        return $data;
+        
+        return $command;
 	}
+    
     function deleteToken($tokenid)
     {
         $dlquery = "DELETE FROM ".Tokens_dynamic::tableName()." WHERE tid=:tokenid";
