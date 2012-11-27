@@ -57,6 +57,63 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121121) to 2.00+ (build 121127) Nov 27, 2012
+-Fixed issue #6653: Invalid alignment in Opera (tpartner)
+-Fixed issue #6754: column style for citronade template (Denis Chenu)
+-Fixed issue #6854: INSERTANS or .shown not working for comment on Multiple options with comments (Denis Chenu)
+-Fixed issue #6882: Renaming a template lose the parameters of a questionnaire (machaven)
+-Fixed issue #6886: Admin password re-set after language changed and using Postgres (Carsten Schmitz)
+-Fixed issue #6889: Clicking view participants in central participant list from a survey gives error in MSSQL (Carsten Schmitz)
+-Fixed issue #6895: Default values can not be set for Multiple choice question type (Carsten Schmitz)
+-Fixed issue #6905: Additional token attributes are displayed by fieldname when browsing tokens (Carsten Schmitz)
+-Fixed issue #6907: Fixed bold captions in gringegreen (Carsten Schmitz)
+-Fixed issue #6908: The adjacent question doesn't show in Copy conditions (Carsten Schmitz)
+-Fixed issue #6909: Incorrect group order while copying question (Carsten Schmitz)
+-Fixed issue #6913: RemoteControl export responses is not working (Menno Dekker)
+-Fixed issue #6915: Error 'Cannot modify header information' when editing group name (Carsten Schmitz)
+-Fixed issue #6916: HTML not properly saved when editing an assessment rule (Carsten Schmitz)
+-Fixed issue #6917: Token list not refreshing when deleting last token(s) (Carsten Schmitz)
+-Fixed issue #6919: Save as label set from within survey doesn't work in IE (tpartner)
+-Fixed issue #6920: CDbException when checking data integrity (Menno Dekker)
+-Fixed issue #6921: Limesurvey replacement field properties button doesn't work in IE7 (Carsten Schmitz)
+-Fixed issue #6926: CDbException when attempting to access 'Manage Survey Administrators' as a restricted user (Menno Dekker)
+-Fixed issue #6926: Error when attempting to access 'Manage survey administrators' as a restricted user in MSSQL (Carsten Schmitz)
+-Fixed issue #6927: Undefined Index error when restricted users attempts to access 'Create/edit user groups' (Menno Dekker)
+-Fixed issue #6928: Error when attempting to access 'Participant Panel' as a restricted user and using MSSQL (Carsten Schmitz)
+-Fixed issue #6929: Survey list does not show all permitted surveys to restricted user (Carsten Schmitz)
+-Fixed issue #6932: Clicking browse on text entries returns no results in statistics screen in MSSQL (Carsten Schmitz)
+-Fixed issue #6935: users.js error in group edit (Menno Dekker)
+-Fixed issue #6938: Web server auth doesn't work - patch by pfpDave (Carsten Schmitz)
+-Fixed issue #6943: Restoring a Token Table of an pre 2.x Survey results in MySQL Error (Menno Dekker)
+-Fixed issue #6944: Copying a survey the options to exclude elements do not work properly (Carsten Schmitz)
+-Fixed issue #6947: {QID} does not work consistently in different question types (Denis Chenu)
+-Fixed issue #6951: Cannot add quota to survey (Carsten Schmitz)
+-Fixed issue #6961: CDbException unbuffered queries active when accessing survey or db analysis (Menno Dekker)
+-Fixed issue #6961: CDbException unbuffered queries active when accessing survey or db analysis (Menno Dekker)
+-Fixed issue: Bounce setting without encryption are broken (Thanks to Civette) (Denis Chenu)
+-Fixed issue: New survey don't get admin information (Denis Chenu)
+-Fixed issue: Trying to install on IIS results in a 404 error (Carsten Schmitz)
+-Fixed issue: Wrong native language name for Romanian (Carsten Schmitz)
+#Updated translation: Bulgarian by miljord
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw, yooyooh
+#Updated translation: Chinese (Taiwan) (Traditional) by katy50306
+#Updated translation: Croatian by rovinj, markec
+#Updated translation: Czech by pavelwil, sedlacev, slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Italian by lfanfoni
+#Updated translation: Lithuanian by serzas, simasj
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by oberdan
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Romanian by izbieta
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Spanish (Spain) by valdomir, larjona
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.00+ (build 121120) to 2.00+ (build 121121) Nov 20, 2012
 -Fixed issue #6864: Reason not apparent if email not working when saving survey and admin email address is empty
 -Fixed issue: Installation not starting
