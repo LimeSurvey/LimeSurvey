@@ -885,6 +885,7 @@ function submittokens($quotaexit=false)
         $usesquery = "SELECT usesleft, participant_id, tid FROM {{tokens_$surveyid}} WHERE token='".$clienttoken."'";
     $usesresult = dbExecuteAssoc($usesquery);
     $usesrow = $usesresult->read();
+    $usesresult->close();
         if (isset($usesrow)) {
                 $usesleft = $usesrow['usesleft'];
                 $participant_id=$usesrow['participant_id'];
