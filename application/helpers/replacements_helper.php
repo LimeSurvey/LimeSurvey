@@ -95,10 +95,12 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (!isset($showxquestions)) { $showxquestions = Yii::app()->getConfig('showxquestions'); }
     if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
     if (!isset($captchapath)) { $captchapath = ''; }
+    if (!isset($sitename)) { $sitename=Yii::app()->getConfig('sitename'); }
 
     $clang = Yii::app()->lang;
 
     Yii::app()->loadHelper('surveytranslator');
+
     $questiondetails = false;
     if(isset($question) && isset($question['sgq'])) $questiondetails=getQuestion($question['sgq']); //Gets an array containing SID, GID, QID, AID and Question Type)
 
