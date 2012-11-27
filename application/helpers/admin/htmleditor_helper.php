@@ -91,6 +91,7 @@
         $clang = Yii::app()->lang;
         $data['clang'] = $clang;
         $js_admin_includes[]=Yii::app()->getConfig('sCKEditorURL').'/ckeditor.js';
+        $js_admin_includes[]=Yii::app()->getConfig('sCKEditorURL').'/adapters/jquery.js';
         Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
         if ($controller == null)
         {
@@ -224,7 +225,7 @@
 
         $htmlcode .= ""
         . "<script type=\"text/javascript\">\n"
-        . "$(document).ready(function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
+        . "$(document).ready(function(){ var $oCKeditorVarName = $('#$fieldname').ckeditor({
         customConfig : \"".Yii::app()->getConfig('adminscripts')."ckeditor-config.js\"
         ,LimeReplacementFieldsType : \"".$fieldtype."\"
         ,LimeReplacementFieldsSID : \"".$surveyID."\"
