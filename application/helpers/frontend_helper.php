@@ -869,141 +869,114 @@ function remove_nulls_from_array($array)
 *
 * @param mixed $quotaexit
 */
-function submittokens($quotaexit=false)
-{
-        global $thissurvey;
+function submittokens($quotaexit = false) {
+    global $thissurvey;
     global $surveyid;
-        global $clienttoken;
+    global $clienttoken;
 
-    $clang = Yii::app()->lang;
-    $sitename = Yii::app()->getConfig("sitename");
-        $emailcharset = Yii::app()->getConfig("emailcharset");
+    $clang        = Yii::app()->lang;
+    $sitename     = Yii::app()->getConfig("sitename");
+    $emailcharset = Yii::app()->getConfig("emailcharset");
     // Shift the date due to global timeadjust setting
-        $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+    $today        = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
     // check how many uses the token has left
-        $usesquery = "SELECT usesleft, participant_id, tid FROM {{tokens_$surveyid}} WHERE token='".$clienttoken."'";
+    $usesquery  = "SELECT usesleft, participant_id, tid FROM {{tokens_$surveyid}} WHERE token='" . $clienttoken . "'";
     $usesresult = dbExecuteAssoc($usesquery);
-    $usesrow = $usesresult->read();
-        if (isset($usesrow)) {
-                $usesleft = $usesrow['usesleft'];
-                $participant_id=$usesrow['participant_id'];
-                $token_id=$usesrow['tid'];
-        }
+    $usesrow    = $usesresult->read();
+    $usesresult->close();
+    if (isset($usesrow)) {
+        $usesleft       = $usesrow['usesleft'];
+        $participant_id = $usesrow['participant_id'];
+        $token_id       = $usesrow['tid'];
+    }
 
     $utquery = "UPDATE {{tokens_$surveyid}}\n";
-    if ($quotaexit==true)
-    {
+    if ($quotaexit == true) {
         $utquery .= "SET completed='Q', usesleft=usesleft-1\n";
-    }
-    elseif (isTokenCompletedDatestamped($thissurvey))
-    {
-        if (isset($usesleft) && $usesleft<=1)
-        {
+    } elseif (isTokenCompletedDatestamped($thissurvey)) {
+        if (isset($usesleft) && $usesleft <= 1) {
             $utquery .= "SET usesleft=usesleft-1, completed='$today'\n";
-                if(!empty($participant_id))
-                {
-                    //Update the survey_links table if necessary
-                    $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$token_id));
-                    if (!is_null($slquery))
-                    {
-                        $slquery->date_completed = $today;
-                        $slquery->save();
-                    }
-                }
-            }
-        else
-        {
-            $utquery .= "SET usesleft=usesleft-1\n";
-        }
-    }
-    else
-    {
-        if (isset($usesleft) && $usesleft<=1)
-        {
-            $utquery .= "SET usesleft=usesleft-1, completed='Y'\n";
-                if(!empty($participant_id))
-                {
-                    //Update the survey_links table if necessary, to protect anonymity, use the date_created field date
-                    $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$token_id));
-                    $slquery->date_completed = $slquery->date_created;
+            if (!empty($participant_id)) {
+                //Update the survey_links table if necessary
+                $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid' => $participant_id, ':sid' => $surveyid, ':tid' => $token_id));
+                if (!is_null($slquery)) {
+                    $slquery->date_completed = $today;
                     $slquery->save();
                 }
             }
-        else
-        {
+        } else {
+            $utquery .= "SET usesleft=usesleft-1\n";
+        }
+    } else {
+        if (isset($usesleft) && $usesleft <= 1) {
+            $utquery .= "SET usesleft=usesleft-1, completed='Y'\n";
+            if (!empty($participant_id)) {
+                //Update the survey_links table if necessary, to protect anonymity, use the date_created field date
+                $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'                   => $participant_id, ':sid'                   => $surveyid, ':tid'                   => $token_id));
+                $slquery->date_completed = $slquery->date_created;
+                $slquery->save();
+            }
+        } else {
             $utquery .= "SET usesleft=usesleft-1\n";
         }
     }
-    $utquery .= "WHERE token='".$clienttoken."'";
+    $utquery .= "WHERE token='" . $clienttoken . "'";
 
-    $utresult = dbExecuteAssoc($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n");     //Checked
+    $utresult = dbExecuteAssoc($utquery) or safeDie("Couldn't update tokens table!<br />\n$utquery<br />\n");     //Checked
 
-    if ($quotaexit==false)
-    {
+    if ($quotaexit == false) {
         // TLR change to put date into sent and completed
-        $cnfquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token='".$clienttoken."' AND completed!='N' AND completed!=''";
+        $cnfquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token='" . $clienttoken . "' AND completed!='N' AND completed!=''";
 
         $cnfresult = dbExecuteAssoc($cnfquery);       //Checked
-        $cnfrow = $cnfresult->read();
-        if (isset($cnfrow))
-        {
-            $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-            $to = $cnfrow['email'];
-            $subject=$thissurvey['email_confirm_subj'];
+        $cnfrow    = $cnfresult->read();
+        if (isset($cnfrow)) {
+            $from    = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
+            $to      = $cnfrow['email'];
+            $subject = $thissurvey['email_confirm_subj'];
 
-            $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
-            $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
-            $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
-            $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
-            $fieldsarray["{FIRSTNAME}"]=$cnfrow['firstname'];
-            $fieldsarray["{LASTNAME}"]=$cnfrow['lastname'];
-            $fieldsarray["{TOKEN}"]=$clienttoken;
-            $attrfieldnames=getAttributeFieldNames($surveyid);
-            foreach ($attrfieldnames as $attr_name)
-            {
-                $fieldsarray["{".strtoupper($attr_name)."}"]=$cnfrow[$attr_name];
+            $fieldsarray["{ADMINNAME}"]         = $thissurvey['adminname'];
+            $fieldsarray["{ADMINEMAIL}"]        = $thissurvey['adminemail'];
+            $fieldsarray["{SURVEYNAME}"]        = $thissurvey['name'];
+            $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey['description'];
+            $fieldsarray["{FIRSTNAME}"]         = $cnfrow['firstname'];
+            $fieldsarray["{LASTNAME}"]          = $cnfrow['lastname'];
+            $fieldsarray["{TOKEN}"]             = $clienttoken;
+            $attrfieldnames                     = getAttributeFieldNames($surveyid);
+            foreach ($attrfieldnames as $attr_name) {
+                $fieldsarray["{" . strtoupper($attr_name) . "}"] = $cnfrow[$attr_name];
             }
 
-            $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
-            $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
-            $fieldsarray["{EXPIRY}"]=convertDateTimeFormat($thissurvey["expiry"],'Y-m-d H:i:s',$dateformatdatat['phpdate']);
+            $dateformatdatat         = getDateFormatData($thissurvey['surveyls_dateformat']);
+            $numberformatdatat       = getRadixPointData($thissurvey['surveyls_numberformat']);
+            $fieldsarray["{EXPIRY}"] = convertDateTimeFormat($thissurvey["expiry"], 'Y-m-d H:i:s', $dateformatdatat['phpdate']);
 
-            $subject=ReplaceFields($subject, $fieldsarray, true);
+            $subject = ReplaceFields($subject, $fieldsarray, true);
 
-            $subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
+            $subject = html_entity_decode($subject, ENT_QUOTES, $emailcharset);
 
-            if (getEmailFormat($surveyid) == 'html')
-            {
-                $ishtml=true;
-            }
-            else
-            {
-                $ishtml=false;
+            if (getEmailFormat($surveyid) == 'html') {
+                $ishtml = true;
+            } else {
+                $ishtml = false;
             }
 
-            if (trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y")
-            {
-                $message=$thissurvey['email_confirm'];
-                $message=ReplaceFields($message, $fieldsarray, true);
+            if (trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
+                $message = $thissurvey['email_confirm'];
+                $message = ReplaceFields($message, $fieldsarray, true);
 
-                if (!$ishtml)
-                {
-                    $message=strip_tags(breakToNewline(html_entity_decode($message,ENT_QUOTES,$emailcharset)));
-                }
-                else
-                {
-                    $message=html_entity_decode($message,ENT_QUOTES, $emailcharset );
+                if (!$ishtml) {
+                    $message = strip_tags(breakToNewline(html_entity_decode($message, ENT_QUOTES, $emailcharset)));
+                } else {
+                    $message = html_entity_decode($message, ENT_QUOTES, $emailcharset);
                 }
 
                 //Only send confirmation email if there is a valid email address
-                if (validateEmailAddress($cnfrow['email']))
-                {
-                    SendEmailMessage($message, $subject, $to, $from, $sitename,$ishtml);
+                if (validateEmailAddress($cnfrow['email'])) {
+                    SendEmailMessage($message, $subject, $to, $from, $sitename, $ishtml);
                 }
-            }
-            else
-            {
+            } else {
                 //There is nothing in the message or "Send confirmation emails" is set to "No" , so don't send a confirmation email
                 //This section only here as placeholder to indicate new feature :-)
             }

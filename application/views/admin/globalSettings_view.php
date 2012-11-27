@@ -191,6 +191,85 @@
                     <input type='text' size='35' id='googleanalyticsapikey' name='googleanalyticsapikey' value="<?php echo htmlspecialchars(getGlobalSetting('googleanalyticsapikey')); ?>" /></li>
                 <li><label for='googletranslateapikey'><?php $clang->eT("Google Translate API key:"); ?></label>
                     <input type='text' size='35' id='googletranslateapikey' name='googletranslateapikey' value="<?php echo htmlspecialchars(getGlobalSetting('googletranslateapikey')); ?>" /></li>
+            <li>
+                    <label for='characterset'><?php $clang->eT("Character set for file import/export:") ?></label>
+                    <?php //echo CHtml::dropDownList('csvcharset', 'auto', $data['charactersets'], array('size' => '1')); ?>
+                    <select name='characterset' id='characterset'>
+                        <?php
+                        //get current setting from DB
+                        $thischaracterset=getGlobalSetting('characterset');
+
+                        //list of available encodings
+                        $aEncodings = array(
+				        "armscii8" => $clang->gT("ARMSCII-8 Armenian")
+				        , "ascii" => $clang->gT("US ASCII")
+				        , "auto" => $clang->gT("Automatic")
+				        , "big5" => $clang->gT("Big5 Traditional Chinese")
+				        , "binary" => $clang->gT("Binary pseudo charset")
+				        , "cp1250" => $clang->gT("Windows Central European")
+				        , "cp1251" => $clang->gT("Windows Cyrillic")
+				        , "cp1256" => $clang->gT("Windows Arabic")
+				        , "cp1257" => $clang->gT("Windows Baltic")
+				        , "cp850" => $clang->gT("DOS West European")
+				        , "cp852" => $clang->gT("DOS Central European")
+				        , "cp866" => $clang->gT("DOS Russian")
+				        , "cp932" => $clang->gT("SJIS for Windows Japanese")
+				        , "dec8" => $clang->gT("DEC West European")
+				        , "eucjpms" => $clang->gT("UJIS for Windows Japanese")
+				        , "euckr" => $clang->gT("EUC-KR Korean")
+				        , "gb2312" => $clang->gT("GB2312 Simplified Chinese")
+				        , "gbk" => $clang->gT("GBK Simplified Chinese")
+				        , "geostd8" => $clang->gT("GEOSTD8 Georgian")
+				        , "greek" => $clang->gT("ISO 8859-7 Greek")
+				        , "hebrew" => $clang->gT("ISO 8859-8 Hebrew")
+				        , "hp8" => $clang->gT("HP West European")
+				        , "keybcs2" => $clang->gT("DOS Kamenicky Czech-Slovak")
+				        , "koi8r" => $clang->gT("KOI8-R Relcom Russian")
+				        , "koi8u" => $clang->gT("KOI8-U Ukrainian")
+				        , "latin1" => $clang->gT("cp1252 West European")
+				        , "latin2" => $clang->gT("ISO 8859-2 Central European")
+				        , "latin5" => $clang->gT("ISO 8859-9 Turkish")
+				        , "latin7" => $clang->gT("ISO 8859-13 Baltic")
+				        , "macce" => $clang->gT("Mac Central European")
+				        , "macroman" => $clang->gT("Mac West European")
+				        , "sjis" => $clang->gT("Shift-JIS Japanese")
+				        , "swe7" => $clang->gT("7bit Swedish")
+				        , "tis620" => $clang->gT("TIS620 Thai")
+				        , "ucs2" => $clang->gT("UCS-2 Unicode")
+				        , "ujis" => $clang->gT("EUC-JP Japanese")
+				        , "utf8" => $clang->gT("UTF-8 Unicode"));
+
+				        //sort list of encodings
+				        asort($aEncodings);
+
+				        //create list elements and pre-select an item
+				         foreach ($aEncodings as $code => $charset)
+                         {
+                                echo "<option value='{$code}'";
+
+                                //check if setting already exists at the DB
+                                if (array_key_exists($thischaracterset, $aEncodings))
+                                {
+                                	if($code == $thischaracterset)
+                                	{
+                                		echo " selected='selected' ";
+                                	}
+                                }
+                                //if no setting exists yet, use the old "auto" setting as default value
+                                else
+                                {
+                                	if($code == "auto")
+                                	{
+                                		echo " selected='selected' ";
+                                	}
+                                }
+
+                                echo ">{$charset}</option>";
+                         }
+                ?>
+                    </select>
+                    </li>
+
             </ul></div>
 
 

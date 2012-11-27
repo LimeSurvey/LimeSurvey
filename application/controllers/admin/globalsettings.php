@@ -58,14 +58,14 @@ class GlobalSettings extends Survey_Common_Action
         updateCheck();
         $this->getController()->redirect('admin/globalsettings');
     }
-        
+
     private function _displaySettings()
     {
         Yii::app()->loadHelper('surveytranslator');
 
         //save refurl from where global settings screen is called!
         $refurl = Yii::app()->getRequest()->getUrlReferrer();
-        
+
         // Some URLs are not to be allowed to refered back to.
         // These exceptions can be added to the $aReplacements array
         $aReplacements=array('admin/user/adduser'=>'admin/user/index');
@@ -149,7 +149,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('bounceaccountuser', strip_tags(returnGlobal('bounceaccountuser')));
 
         if (returnGlobal('bounceaccountpass') != 'enteredpassword') setGlobalSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
-        
+
         setGlobalSetting('emailsmtpssl', sanitize_paranoid_string(Yii::app()->request->getPost('emailsmtpssl','')));
         setGlobalSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug','0')));
         setGlobalSetting('emailsmtpuser', strip_tags(returnGlobal('emailsmtpuser')));
@@ -173,6 +173,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('googlemaps_api_key', $_POST['googlemaps_api_key']);
         setGlobalSetting('googleanalyticsapikey',$_POST['googleanalyticsapikey']);
         setGlobalSetting('googletranslateapikey',$_POST['googletranslateapikey']);
+        setGlobalSetting('characterset',$_POST['characterset']);
         setGlobalSetting('force_ssl', $_POST['force_ssl']);
         setGlobalSetting('survey_preview_admin_only', $_POST['survey_preview_admin_only']);
         setGlobalSetting('rpc_interface', $_POST['rpc_interface']);
