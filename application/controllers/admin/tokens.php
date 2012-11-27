@@ -412,26 +412,29 @@ class tokens extends Survey_Common_Action
 
         $format = getDateFormatData(Yii::app()->session['dateformat']);
 
-        for ($i = 0, $j = 0; $i < $limit && $j < $limit; $i++, $j++)
+        $aSurveyInfo = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
+        $attributes  = getAttributeFieldNames($iSurveyId);
+        foreach ($tokens as $token)
         {
-            $token = $tokens[$j];
-            if ((int) $token['validfrom'])
+            $aRowToAdd = array();
+            if ((int) $token['validfrom']) {
                 $token['validfrom'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validfrom'])));
-            else
+            } else {
                 $token['validfrom'] = '';
-            if ((int) $token['validuntil'])
+            }
+            if ((int) $token['validuntil']) {
                 $token['validuntil'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validuntil'])));
-            else
+            } else {
                 $token['validuntil'] = '';
+            }
 
-            $aData->rows[$i]['id'] = $token['tid'];
-            $prow = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
+            $aRowToAdd['id'] = $token['tid'];
 
             $action="";
             if($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] =="")) {
                 $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$token['token']}/newtest/Y") . '", "_blank")\'>';
-            } elseif ($token['completed'] != "N" && $token['completed'] != "" && $prow['anonymized'] == "N" ) {
-                //Get the survey response id of the matching entry
+            } elseif ($token['completed'] != "N" && $token['completed'] != "" && $aSurveyInfo['anonymized'] == "N" && $aSurveyInfo['active'] == 'Y') {
+                // Get the survey response id of the matching entry, can be optimised into 1 call leaving for now
                 $id=Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$token['token']));
                 if (count($id)>0)
                 {
@@ -463,12 +466,12 @@ class tokens extends Survey_Common_Action
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
-            $aData->rows[$i]['cell'] = array($token['tid'], $action, $token['firstname'], $token['lastname'], $token['email'], $token['emailstatus'], $token['token'], $token['language'], $token['sent'], $token['remindersent'], $token['remindercount'], $token['completed'], $token['usesleft'], $token['validfrom'], $token['validuntil']);
-            $attributes = getAttributeFieldNames($iSurveyId);
+            $aRowToAdd['cell'] = array($token['tid'], $action, $token['firstname'], $token['lastname'], $token['email'], $token['emailstatus'], $token['token'], $token['language'], $token['sent'], $token['remindersent'], $token['remindercount'], $token['completed'], $token['usesleft'], $token['validfrom'], $token['validuntil']);
             foreach ($attributes as $attribute)
             {
-                $aData->rows[$i]['cell'][] = $token[$attribute];
+                $aRowToAdd['cell'][] = $token[$attribute];
             }
+            $aData->rows[] = $aRowToAdd;
         }
 
         echo ls_json_encode($aData);
