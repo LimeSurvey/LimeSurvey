@@ -9,7 +9,20 @@
             <input type='file' id='the_file' name='the_file' /></li>
         <li>
             <label for='csvcharset'><?php $clang->eT("Character set of the file:"); ?></label>
-            <?php echo CHtml::dropDownList('csvcharset', 'auto', $aEncodings, array('size' => '1')); ?>
+            <?php
+            //get default character set from global settings
+	        $thischaracterset=getGlobalSetting('characterset');
+
+	        //if no encoding was set yet, use the old "auto" default
+	        if($thischaracterset == "")
+	        {
+	            $thischaracterset = "auto";
+	        }
+
+            //sort list of available encodings
+            asort($aEncodings);
+
+            echo CHtml::dropDownList('csvcharset', $thischaracterset, $aEncodings, array('size' => '1')); ?>
         </li>
         <li>
             <label for='separator'><?php $clang->eT("Separator used:"); ?> </label>

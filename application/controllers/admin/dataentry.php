@@ -265,10 +265,20 @@ class dataentry extends Survey_Common_Action
 
     private function _showUploadForm($aEncodings, $surveyid, $aData)
     {
+        //sort list of available encodings
         asort($aEncodings);
 
+        //get default character set from global settings
+        $thischaracterset=getGlobalSetting('characterset');
+
+        //if no encoding was set yet, use the old "utf8" default
+        if($thischaracterset == "")
+        {
+            $thischaracterset = "utf8";
+        }
+
         // Create encodings list using the Yii's CHtml helper
-        $charsetsout = CHtml::listOptions('utf8', $aEncodings, $aEncodings);
+        $charsetsout = CHtml::listOptions($thischaracterset, $aEncodings, $aEncodings);
 
         $aData['tableExists'] = tableExists("{{survey_$surveyid}}");
         $aData['charsetsout'] = $charsetsout;
@@ -391,7 +401,7 @@ class dataentry extends Survey_Common_Action
                     $iOldID=$row['id'];
                     unset($row['id']);
                     // Remove NULL values
-                    $row=array_filter($row, 'strlen'); 
+                    $row=array_filter($row, 'strlen');
                     //$sInsertSQL=Yii::app()->db->GetInsertSQL($activetable, $row);
                     $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("dbQuoteID", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll",array_values($row))).")";
                     $result = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
