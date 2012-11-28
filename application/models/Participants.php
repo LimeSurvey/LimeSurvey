@@ -756,7 +756,7 @@ class Participants extends CActiveRecord
                     $previousattribute[$newname]=$previousattribute[$key];
                     unset($previousattribute[$key]);
                     //Rename the token field the name of the participant_attribute
-                    $attributedetails=ParticipantAttributeNames::getAttributeNames($val);
+                    $attributedetails=ParticipantAttributeNames::model()->getAttributeNames($val);
                     $previousattribute[$newname]['description']=$attributedetails[0]['attribute_name'];
                     $previousattribute=serialize($previousattribute);
 
@@ -1267,7 +1267,7 @@ class Participants extends CActiveRecord
                     $previousattribute[$newname]=$previousattribute[$tatt];
                     unset($previousattribute[$tatt]);
                     //Rename the token field the name of the participant_attribute
-                    $attributedetails=ParticipantAttributeNames::getAttributeNames($cpdbatt);
+                    $attributedetails=ParticipantAttributeNames::model()->getAttributeNames($cpdbatt);
                     $previousattribute[$newname]['description']=$attributedetails[0]['attribute_name'];
                     $previousattribute = serialize($previousattribute);
                     //$newstring = str_replace($tatt, $newname, $previousattribute['attributedescriptions']);

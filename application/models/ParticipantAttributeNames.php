@@ -23,35 +23,31 @@
 class ParticipantAttributeNames extends CActiveRecord
 {
     /**
-     * Returns the static model of Participant Attribute Names table
+     * Returns the primary key of this table
+     *
+     * @access public
+     * @return string
+     */
+    public function primaryKey() {
+        return 'attribute_id';
+    }
+
+    /**
+     * Returns the static model of ParticipantAttributeNames table
      *
      * @static
      * @access public
      * @param string $class
-     * @return CActiveRecord
+     * @return ParticipantAttributeNames
      */
-
-    /**
-    * Returns the primary key of this table
-    *
-    * @access public
-    * @return string
-    */
-    public function primaryKey()
-    {
-        return 'attribute_id';
-    }
-
-    public static function model($class = __CLASS__)
-    {
+    public static function model($class = __CLASS__) {
         return parent::model($class);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName()
-    {
+    public function tableName() {
         return '{{participant_attribute_names}}';
     }
 
