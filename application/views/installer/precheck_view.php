@@ -68,9 +68,14 @@ function dirReport($dir, $write, $clang)
        <?php } else { ?><?php echo implode(', ',$dbtypes); ?> <?php } ?></td>
 </tr>
 <tr>
-       <td style="width: 209px;"><?php $clang->eT("PHP5 mbstring library"); ?></td>
+       <td style="width: 209px;"><?php $clang->eT("PHP mbstring library"); ?></td>
        <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Yes" /></td>
        <td align="center" style="width: 225px;"><?php echo $mbstringPresent; ?></td>
+</tr>
+<tr>
+       <td style="width: 209px;"><?php $clang->eT("PHP/PECL JSON library"); ?></td>
+       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Yes" /></td>
+       <td align="center" style="width: 225px;"><?php echo $bJSONPresent; ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">/application/config <?php $clang->eT("directory"); ?></td>
@@ -99,27 +104,27 @@ function dirReport($dir, $write, $clang)
        <td align="center" style="width: 225px;"><b><?php $clang->eT('Current'); ?></b></td>
 </tr>
 <tr>
-       <td style="width: 209px;">PHP5 GD library</td>
+       <td style="width: 209px;">PHP GD library</td>
        <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
        <td align="center" style="width: 225px;"><?php echo $gdPresent ; ?></td>
 </tr>
 <tr>
-       <td style="width: 209px;">PHP5 LDAP library</td>
+       <td style="width: 209px;">PHP LDAP library</td>
        <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
        <td align="center" style="width: 225px;"><?php echo $ldapPresent ; ?></td>
 </tr>
 <tr>
-       <td style="width: 209px;">PHP5 zip library</td>
+       <td style="width: 209px;">PHP zip library</td>
        <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
        <td align="center" style="width: 225px;"><?php echo $zipPresent ; ?></td>
 </tr>
 <tr>
-       <td style="width: 209px;">PHP5 zlib library</td>
+       <td style="width: 209px;">PHP zlib library</td>
        <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
        <td align="center" style="width: 225px;"><?php echo $zlibPresent ; ?></td>
 </tr>
 <tr>
-       <td style="width: 209px;">PHP5 imap library</td>
+       <td style="width: 209px;">PHP imap library</td>
        <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
        <td align="center" style="width: 225px;"><?php echo $bIMAPPresent ; ?></td>
 </tr>
