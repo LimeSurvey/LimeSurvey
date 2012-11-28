@@ -14,8 +14,11 @@ HOW TO INSTALL
 ---------------
 This release does have the following requirements:
 
--One of these databases:  MySQL 4.1 or higher, Microsoft SQL Server 2008 or higher, Postgres 8.1 or higher 
--PHP 5.1.6 or higher
+*MySQL 4.1.0 or later OR Microsoft SQL Server 2005 or later OR Postgres 8.1 or later
+*PHP 5.1.6 or later with the following modules/libraries enabled:
+    *mbstring (Multibyte String Functions) extension library (see also Installation FAQ(external link))
+    *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv)
+    *For PHP versions <5.2 you will need to have the PECL JSON library( see http://pecl.php.net/package/json(external link)) installed 
 
 If you are doing a complete new installation please refer to the manual at
 http://docs.limesurvey.org/Installation
@@ -59,7 +62,7 @@ CHANGE LOG
 
 Changes from 2.00+ (build 121121) to 2.00+ (build 121127) Nov 27, 2012
 -Fixed issue #6653: Invalid alignment in Opera (tpartner)
--Fixed issue #6754: column style for citronade template (Denis Chenu)
+-Fixed issue #6754: Column style for citronade template (Denis Chenu)
 -Fixed issue #6854: INSERTANS or .shown not working for comment on Multiple options with comments (Denis Chenu)
 -Fixed issue #6882: Renaming a template lose the parameters of a questionnaire (machaven)
 -Fixed issue #6886: Admin password re-set after language changed and using Postgres (Carsten Schmitz)
@@ -114,9 +117,11 @@ Changes from 2.00+ (build 121121) to 2.00+ (build 121127) Nov 27, 2012
 #Updated translation: Spanish (Spain) by valdomir, larjona
 #Updated translation: Turkish by kayazeren
 
+
 Changes from 2.00+ (build 121120) to 2.00+ (build 121121) Nov 20, 2012
 -Fixed issue #6864: Reason not apparent if email not working when saving survey and admin email address is empty
 -Fixed issue: Installation not starting
+
 
 Changes from 2.00+ (build 121117) to 2.00+ (build 121120) Nov 20, 2012
 -Fixed issue #6896: cannot add users to a fresh LimeSurvey installation (Menno Dekker)
@@ -142,12 +147,14 @@ Changes from 2.00+ (build 121117) to 2.00+ (build 121120) Nov 20, 2012
 #Updated translation: Romanian by izbieta
 #Updated translation: Spanish (Spain) by valdomir
 
+
 Changes from 2.00+ (build 121116) to 2.00+ (build 121117) Nov 16, 2012
--Fixed #6890: Can't Print Survey - 'Array to String Conversion' Error (Menno Dekker)
+-Fixed #6890: Can't print survey - 'Array to String Conversion' Error (Menno Dekker)
 -Fixed issue #6871: auth_webserver_autocreate_user doesn't work (Carsten Schmitz)
 -Fixed issue #6889: Clicking view participants in central participant list from a survey gives error in MSSQL (Carsten Schmitz)
 -Fixed issue: Error in CPDB when opening with MSSQL (Carsten Schmitz)
 -Fixed issue: Not possible to save  a question after editing (Carsten Schmitz)
+
 
 Changes from 2.00+ (build 121115) to 2.00+ (build 121116) Nov 16, 2012
 -Fixed issue #6590: Multiple numeric input questions set Expression Manager clauses in italics in default template (tpartner)
@@ -194,8 +201,10 @@ Changes from 2.00+ (build 121114) to 2.00+ (build 121115) Nov 13, 2012
 -Fixed issue #6793: Button is only partly shown (tpartner)
 -Fixed issue: Invalid configuration written when installer finishes (Menno Dekker)
 
+
 Changes from 2.00+ (build 121113) to 2.00+ (build 121114) Nov 13, 2012
 Fixed issue: AcceptPathInfo directory in .htaccess makes application inaccessible on older apache versions
+
 
 Changes from 2.00+ (build 121106) to 2.00+ (build 121113) Nov 13, 2012
 -Fixed issue #6605: Saving global settings returns to invalid referer URL (Carsten Schmitz)
@@ -262,6 +271,7 @@ Changes from 2.00+ (build 121104) to 2.00+ (build 121106) Nov 6, 2012
 #Updated translation: Serbian by MilaVeljovic
 #Updated translation: Turkish by kayazeren
 
+
 Changes from 2.00+ (build 121102) to 2.00+ (build 121104) Nov 4, 2012
 -Fixed issue #6815: Data entry in backend not possible if there is date question type (Carsten Schmitz)
 -Fixed issue #6816 : browse individual response navigation buttons don't test if srid exist (Denis Chenu)
@@ -282,6 +292,7 @@ Changes from 2.00+ (build 121102) to 2.00+ (build 121104) Nov 4, 2012
 #Updated translation: Serbian by MilaVeljovic
 #Updated translation: Serbian (Latin) by OnSpot
 
+
 Changes from 2.00+ (build 121101) to 2.00+ (build 121102) Nov 2, 2012
 -Fixed issue #6801: Reporting Graph Issue (Menno Dekker)
 -Fixed issue #6733: Exception when viewing public statistics using MSSQL (Carsten Schmitz)
@@ -300,6 +311,7 @@ Changes from 2.00+ (build 121101) to 2.00+ (build 121102) Nov 2, 2012
 #Updated translation: Norwegian (Bokmål) by pmonstad
 #Updated translation: Norwegian (Nynorsk) by pmonstad
 #Updated translation: Serbian by MilaVeljovic
+
 
 Changes from 2.00+ (build 121031) to 2.00+ (build 121101) Nov 1, 2012
 -Fixed issue #6567: Performance issue (Aniessh Sethh)
