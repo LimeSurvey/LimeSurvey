@@ -1509,10 +1509,10 @@ class participantsaction extends Survey_Common_Action
                 //HACK - converting into SQL instead of doing an array search
                 if(in_array('participant_id', $firstline)) {
                     $dupreason="participant_id";
-                    $aData = "participant_id = '".mysql_real_escape_string($writearray['participant_id'])."'";
+                    $aData = "participant_id = ".Yii::app()->db->quoteValue($writearray['participant_id']);
                 } else {
                     $dupreason="nameemail";
-                    $aData = "firstname = '".mysql_real_escape_string($writearray['firstname'])."' AND lastname = '".mysql_real_escape_string($writearray['lastname'])."' AND email = '".mysql_real_escape_string($writearray['email'])."' AND owner_uid = '".Yii::app()->session['loginID']."'";
+                    $aData = "firstname = ".Yii::app()->db->quoteValue($writearray['firstname'])." AND lastname = ".Yii::app()->db->quoteValue($writearray['lastname'])." AND email = ".Yii::app()->db->quoteValue($writearray['email'])." AND owner_uid = '".Yii::app()->session['loginID']."'";
                 }
                 //End of HACK
                 $aData = Participants::model()->checkforDuplicate($aData, "participant_id");
