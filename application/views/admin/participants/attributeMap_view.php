@@ -6,7 +6,7 @@
     {
         redUrl = "<?php echo Yii::app()->createUrl("/admin/tokens/browse/surveyid/$survey_id") ?>";
     }
-    var copyUrl = "<?php echo Yii::app()->createUrl("/admin/participants/addToTokenattmap)"; ?>";
+    var copyUrl = "<?php echo Yii::app()->createUrl("/admin/participants/addToTokenattmap"); ?>";
     var participant_id = "<?php echo $participant_id; ?>";
 
     /* SCRIPT TEXT */

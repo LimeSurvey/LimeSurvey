@@ -1860,6 +1860,8 @@ class participantsaction extends Survey_Common_Action
     function attributeMapToken()
     {
         Yii::app()->loadHelper('common');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "attributeMapToken.js");
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') ."attributeMapToken.css");
 
         $iSurveyId = Yii::app()->request->getQuery('sid');
         $attributes = ParticipantAttributeNames::model()->getAttributes();
