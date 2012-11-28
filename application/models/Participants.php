@@ -867,7 +867,7 @@ class Participants extends CActiveRecord
                         $numberofattributes = count($attributesadded);
                         for ($a = 0; $a < $numberofattributes; $a++)
                         {
-                            Participants::updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
+                            Participants::model()->updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
                         }
                     }
                     //If there are automapped attributes, add those values to the token entry for this participant
@@ -876,7 +876,7 @@ class Participants extends CActiveRecord
                         foreach ($mapped as $key => $value)
                         {
                             if ($key[10] == 'c') { //We know it's automapped because the 11th letter is 'c'
-                                Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                                Participants::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
                             }
                         }
                     }
@@ -888,7 +888,7 @@ class Participants extends CActiveRecord
                         foreach ($mapped as $key => $value)
                         {
                             if ($key[10] != 'c' && $key[9]=='_') { //It's not an auto field because it's 11th character isn't 'c'
-                                Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                                Participants::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
                             }
                         }
                     }
@@ -899,7 +899,7 @@ class Participants extends CActiveRecord
                         foreach($mapped as $key=>$value)
                         {
                             if((strlen($key) > 8 && $key[10] != 'c' && $key[9] !='_') || strlen($key) < 9) {
-                                Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                                Participants::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
                             }
                         }
                     }
@@ -935,7 +935,7 @@ class Participants extends CActiveRecord
                     $numberofattributes = count($attributesadded);
                     for ($a = 0; $a < $numberofattributes; $a++)
                     {
-                        Participants::updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
+                        Participants::model()->updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
                     }
                 }
                 //If there are any automatically mapped attributes, add those values to the token entry for this participant
@@ -943,7 +943,7 @@ class Participants extends CActiveRecord
                 {
                     foreach ($mapped as $key => $value)
                     {
-                        Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                        Participants::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
                     }
                 }
                 $sucessfull++;
@@ -953,7 +953,7 @@ class Participants extends CActiveRecord
         return $returndata;
     }
 
-    /*
+    /**
      * Updates a field in the token table with a value from the participant attributes table
      *
      * @param int $surveyId Survey ID number
@@ -962,7 +962,7 @@ class Participants extends CActiveRecord
      * @param int $tokenFieldName fieldname in the token table
      *
      * @return bool true/false
-     * */
+     */
     function updateTokenAttributeValue($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
         //Get the value from the participant_attribute field
         $val = Yii::app()->db
@@ -984,7 +984,7 @@ class Participants extends CActiveRecord
         return true;
     }
 
-    /*
+    /**
      * Updates or creates a field in the token table with a value from the participant attributes table
      *
      * @param int $surveyId Survey ID number
@@ -993,7 +993,7 @@ class Participants extends CActiveRecord
      * @param int $tokenFieldName fieldname in the token table
      *
      * @return bool true/false
-     * */
+     */
      function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
         $val = Yii::app()->db
                          ->createCommand()
@@ -1137,7 +1137,7 @@ class Participants extends CActiveRecord
                         {
                             foreach ($newarr as $key => $value)
                             {
-                                Participants::updateAttributeValueToken($surveyid, $query[0]['participant_id'], $attid[$key], $key);
+                                Participants::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $attid[$key], $key);
                             }
                         }
                     }
@@ -1147,7 +1147,7 @@ class Participants extends CActiveRecord
                         {
                             foreach ($mapped as $cpdbatt => $tatt)
                             {
-                                Participants::updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
+                                Participants::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
                             }
                         }
                     }
@@ -1179,7 +1179,7 @@ class Participants extends CActiveRecord
                     {
                         foreach ($newarr as $key => $value)
                         {
-                            Participants::updateAttributeValueToken($surveyid, $pid, $attid[$key], $key);
+                            Participants::model()->updateAttributeValueToken($surveyid, $pid, $attid[$key], $key);
                         }
                     }
                     /* Now add mapped attribute values */
@@ -1187,7 +1187,7 @@ class Participants extends CActiveRecord
                     {
                         foreach ($mapped as $cpdbatt => $tatt)
                         {
-                            Participants::updateAttributeValueToken($surveyid,$pid,$cpdbatt,$tatt);
+                            Participants::model()->updateAttributeValueToken($surveyid,$pid,$cpdbatt,$tatt);
                         }
                     }
                     $sucessfull++;
