@@ -1,9 +1,3 @@
-
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl') . "attributeMapToken.css" ?>" />
-<script src="<?php echo Yii::app()->getConfig('generalscripts') . "jquery/jquery.js" ?>" type="text/javascript"></script>
-<script src="<?php echo Yii::app()->getConfig('generalscripts') . "jquery/jquery-ui.js" ?>" type="text/javascript"></script>
-<script src="<?php echo Yii::app()->getConfig('generalscripts') . "jquery/jquery.ui.nestedSortable.js" ?>" type="text/javascript"></script>
-<script src="<?php echo Yii::app()->getConfig('adminscripts') . "attributeMapToken.js" ?>" type="text/javascript"></script>
 <script type="text/javascript">
     var redUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/displayParticipants"; ?>";
     var copyUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/addToCentral"; ?>";
