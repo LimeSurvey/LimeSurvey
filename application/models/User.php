@@ -21,7 +21,7 @@ class User extends CActiveRecord
     * @static
     * @access public
     * @param string $class
-    * @return CActiveRecord
+    * @return User
     */
     public static function model($class = __CLASS__)
     {

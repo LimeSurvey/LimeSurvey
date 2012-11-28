@@ -218,6 +218,7 @@ class participantsaction extends Survey_Common_Action
      */
     function getShareInfo_json()
     {
+        $aData = new stdClass();
         $aData->page = 1;
 
         // If super administrator all the share info in the links table will be shown
@@ -242,7 +243,7 @@ class participantsaction extends Survey_Common_Action
         // otherwise only the shared participants by that user
         else
         {
-            $records = User::model()->getParticipantShared(Yii::app()->session['loginID']);
+            $records = Participants::model()->getParticipantShared(Yii::app()->session['loginID']);
             $aData->records = count($records);
             $aData->total = ceil($aData->records / 10);
             $i = 0;
