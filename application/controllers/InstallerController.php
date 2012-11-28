@@ -813,6 +813,10 @@ class InstallerController extends CController {
         if (!check_PHPFunction('mb_convert_encoding', $data['mbstringPresent']))
             $bProceed = false;
 
+        // JSON library check
+        if (!check_PHPFunction('json_encode', $data['bJSONPresent']))
+            $bProceed = false;
+            
         // ** file and directory permissions checking **
 
         // config directory
