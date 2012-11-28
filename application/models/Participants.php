@@ -35,7 +35,7 @@ class Participants extends CActiveRecord
      * @static
      * @access public
      * @param string $class
-     * @return CActiveRecord
+     * @return Participants
      */
     public static function model($class = __CLASS__)
     {
@@ -167,15 +167,21 @@ class Participants extends CActiveRecord
      */
     function getParticipantsOwner($userid)
     {
-        return Yii::app()->db->createCommand()
-            ->select('{{participants}}.*,{{participant_shares}}.can_edit')
+        $subquery = Yii::app()->db->createCommand()
+            ->select('{{participants}}.participant_id,{{participant_shares}}.can_edit')
             ->from('{{participants}}')
             ->leftJoin('{{participant_shares}}', ' {{participants}}.participant_id={{participant_shares}}.participant_id')
             ->where('owner_uid = :userid1 OR share_uid = :userid2')
-            ->group('{{participants}}.participant_id')
-            ->bindParam(":userid1", $userid, PDO::PARAM_INT)
-            ->bindParam(":userid2", $userid, PDO::PARAM_INT)
-            ->queryAll();
+            ->group('{{participants}}.participant_id');
+        
+        $command = Yii::app()->db->createCommand()
+                ->select('p.*, ps.can_edit')
+                ->from('{{participants}} p')
+                ->join('(' . $subquery->getText() . ') ps', 'ps.participant_id = p.participant_id')
+                ->bindParam(":userid1", $userid, PDO::PARAM_INT)
+                ->bindParam(":userid2", $userid, PDO::PARAM_INT);
+        
+        return $command->queryAll();
     }
 
     function getParticipantsOwnerCount($userid)
