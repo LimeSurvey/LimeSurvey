@@ -703,10 +703,18 @@ function ajaxreqsave() {
 
     // get code for the current scale
     var code = new Array();
-    $('.code').each(function(index) {
-        if($(this).attr('id').substr(-1) === scale_id)
-            code.push($(this).val());
-    });
+    if($('.code').length > 0) { // Deactivated survey
+		$('.code').each(function(index) {
+			if($(this).attr('id').substr(-1) === scale_id)
+				code.push($(this).val());
+		});
+	}
+    else { // Activated survey
+		$('.answertable input[name^="code_"]').each(function(index) {
+			if($(this).attr('name').substr(-1) === scale_id)
+				code.push($(this).attr('value'));
+		});
+	}
 
     answers = new Object();
     languages = langs.split(';');
