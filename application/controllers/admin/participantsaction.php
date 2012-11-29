@@ -1012,7 +1012,6 @@ class participantsaction extends Survey_Common_Action
         $aRowToAdd=array();
         foreach ($records as $key => $row)
         {            
-            $surveycount = Participants::model()->getSurveyCount($row['participant_id']);
             if (array_key_exists('can_edit', $row)) {
                 $sCanEdit = $row['can_edit'];
                 if (is_null($sCanEdit)) {
@@ -1022,7 +1021,7 @@ class participantsaction extends Survey_Common_Action
                 // Super admin
                 $sCanEdit = "true";
             }
-            $aRowToAdd['cell'] = array($row['participant_id'], $sCanEdit, $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $row['ownername']);
+            $aRowToAdd['cell'] = array($row['participant_id'], $sCanEdit, $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $row['survey'], $row['language'], $row['ownername']);
             $aRowToAdd['id'] = $row['participant_id'];
             unset($row['participant_id'], $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $row['language'],$row['ownername'],$row['owner_uid'], $row['can_edit']);
             foreach($row as $key=>$attvalue)
