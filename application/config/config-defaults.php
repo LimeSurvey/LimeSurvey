@@ -41,26 +41,26 @@ $config['defaultuser'] = 'admin';
 * defaultpass (string)
 * The password for the default administration username when LimeSurvey is installed
 */
-$config['defaultpass'] = 'password';       
+$config['defaultpass'] = 'password';
 
 /**
 * admintheme (string)
 * This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
 * This setting is overridden by the global settings in the administration.
 */
-$config['admintheme'] =  'gringegreen'; 
+$config['admintheme'] =  'gringegreen';
 
 /**
 * adminthemeiconsize (integer)
 * This settings describes the icon size for a normal toolbar icon - default for gringegreen is 32
 */
-$config['adminthemeiconsize'] =  32;             
-     
+$config['adminthemeiconsize'] =  32;
+
 /**
 * login_max_attempts (integer)
 * If the user enters password incorrectly lock them out after this many attempts
 */
-$config['login_max_attempts'] = 3;                
+$config['login_max_attempts'] = 3;
 
 /**
 * login_lockout_time (integer)
@@ -73,18 +73,18 @@ $config['login_lockout_time'] = 600;
 * The default language to use - the available languages are the directory names in the /locale dir - for example de = German
 * This setting is overridden by the global settings in the administration.
 */
-$config['defaultlang'] = 'en'; 
+$config['defaultlang'] = 'en';
 
 /**
 * timeadjust (integer)
 * The number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
 * This setting is overridden by the global settings in the administration.
 */
-$config['timeadjust'] = 0;         
+$config['timeadjust'] = 0;
 
 /**
 * @todo The following settings need to be moved to question attributes / advanced question settings / survey settings:
-* 
+*
 * repeatheadings
 * minrepeatheadings
 * shownoanswer
@@ -95,15 +95,15 @@ $config['shownoanswer']       =   1;                // Show 'no answer' for non 
 
 /**
 * allowexportalldb  (boolean)
-* Setting this to false will only export prefixed tables when doing a database dump. If set to true ALL tables in the database will be exported 
+* Setting this to false will only export prefixed tables when doing a database dump. If set to true ALL tables in the database will be exported
 */
-$config['allowexportalldb'] = false;       
+$config['allowexportalldb'] = false;
 
 /**
 * maxdumpdbrecords (integer)
 * The maximum number of records that would be output in a go (and held in memory)during a database backup. Reduce this number if you're getting errors while backing up the entire database.
 */
-$config['maxdumpdbrecords'] = 2500; 
+$config['maxdumpdbrecords'] = 2500;
 
 /**
 * allowmandbackwards (boolean)
@@ -113,7 +113,7 @@ $config['allowmandbackwards'] = true;
 
 /**
 * deletenonvalues (boolean)
-* By default, LimeSurvey does not save responses to conditional questions that haven't been or shouldn't have been answered/shown due to conditions. 
+* By default, LimeSurvey does not save responses to conditional questions that haven't been or shouldn't have been answered/shown due to conditions.
 * To have LimeSurvey save these responses change this value to false.
 * @todo Value not in use anymore ? has to be checked.
 */
@@ -169,7 +169,7 @@ $config['userideditable'] = false;
 
 /**
 * defaulttemplate (string)
-* This setting specifys the default theme used for the 'public list' of surveys 
+* This setting specifys the default theme used for the 'public list' of surveys
 */
 $config['defaulttemplate'] = 'default';
 
@@ -177,13 +177,13 @@ $config['defaulttemplate'] = 'default';
 * allowedtemplateuploads (string)
 * File types allowed to be uploaded in the templates section.
 */
-$config['allowedtemplateuploads'] = 'gif,ico,jpg,png'; 
+$config['allowedtemplateuploads'] = 'gif,ico,jpg,png';
 
 /**
 * allowedresourcesuploads (string)
 * File types allowed to be uploaded in the resources sections, and with the HTML Editor
 */
-$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip,pstpl,css,js';   
+$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip,pstpl,css,js';
 
 /**
 * memorylimit (string)
@@ -273,7 +273,7 @@ $config['display_user_password_in_email'] = true;
 * users accessing the /admin subdirectory, then the username returned by
 * the webserver will be trusted by LimeSurvey and used for authentication
 * unless a username mapping is used see auth_webserver_user_map below
-* 
+*
 * The user still needs to be defined in the limesurvey database in order to
 * login and get his permissions (unless auth_webserver_autocreate_user is set to true)
 */
@@ -324,7 +324,7 @@ $config['auth_webserver_autocreate_profile'] = Array(
 * The optionnal 'hook_get_auth_webserver_profile' function is for advanced user usage only.
 * It is used to customize the profile of the imported user
 * If set, this function will overwrite the auth_webserver_autocreate_profile defined above by its return value
-* 
+*
 *  You can use any external DB in order to fill the profile for the user_name passed as the first parameter
 *  A dummy example for the 'hook_get_autouserprofile' function is given below:
 */
@@ -355,7 +355,7 @@ function hook_get_auth_webserver_profile($user_name)
 */
 $config['filterxsshtml'] = true;
 
-/** 
+/**
 * usercontrolSameGroupPolicy (boolean)
 * If this option is set to true, then limesurvey operators will only 'see'
 * users that belong to at least one of their groups
@@ -367,7 +367,7 @@ $config['usercontrolSameGroupPolicy'] = true;
 * demo_mode (boolean)
 * If this option is set to true, then LimeSurvey will go into demo mode.
 * Demo mode disables the following things:
-* 
+*
 *  * Disables changing of the admin user's details and password
 *  * Disables uploading files on the Template Editor
 *  * Disables sending email invitations and reminders
@@ -376,7 +376,7 @@ $config['usercontrolSameGroupPolicy'] = true;
 */
 $config['demo_mode'] = false;
 
-/** 
+/**
 * column_style (string)
 * Because columns are tricky things, in terms of balancing visual
 * layout against semantic markup. The choice has been left to the
@@ -463,7 +463,7 @@ $config['notsupportlanguages'] = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja',
 * pdforientation (string)
 * PDF export responses settings - Set L for Landscape or P for portrait format
 */
-$config['pdforientation'] = 'P'; 
+$config['pdforientation'] = 'P';
 
 
 /**
@@ -472,7 +472,7 @@ $config['pdforientation'] = 'P';
 */
 
 /**
-* chartfontfile (string) 
+* chartfontfile (string)
 * Set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/fonts
 * Set this to specific font-file (for example 'DejaVuSans.ttf') or set it to 'auto' and LimeSurvey tried to pick the best font depending on your survey base language
 */
@@ -509,22 +509,22 @@ $config['chartfontsize'] = 10;
 $config['updatecheckperiod'] = 7;
 
 /**
-* updatekey (string) 
+* updatekey (string)
 * Sets the default update key for the ComfortUpdater
 */
 $config['updatekey'] = '';
 
 /**
-* showxquestions (string) 
+* showxquestions (string)
 * Allows you to control whether or not {THEREAREXQUESTIONS} is displayed (if it is included in a template)
 *   hide = always hide {THEREAREXQUESTIONS}
 *   show = always show {THEREAREXQUESTIONS}
 *   choose = allow survey admins to choose
 */
 $config['showxquestions'] = 'choose';
- 
+
 /**
-* showgroupinfo (string) 
+* showgroupinfo (string)
 * Allows you to control whether or not {GROUPNAME} and/or {GROUPDESCRIPTION} are displayed (if they are
 * included in a template)
 *   none = always hide both title and description
@@ -534,9 +534,9 @@ $config['showxquestions'] = 'choose';
 *   choose = allow survey admins to choose
 */
 $config['showgroupinfo'] = 'choose';
-  
+
 /**
-* showqnumcode (string) 
+* showqnumcode (string)
 * Allows you to control whether or not {QUESTION_NUMBER} and/or {QUESTION_CODE} are displayed (if they
 * are included in a template)
 *   none = always hide both {QUESTION_NUMBER} and {QUESTION_CODE}
@@ -546,9 +546,9 @@ $config['showgroupinfo'] = 'choose';
 *   choose = allow survey admins to choose
 */
 $config['showqnumcode'] = 'choose';
- 
+
 /**
-* force_ssl string (string) 
+* force_ssl string (string)
 * Forces LimeSurvey to run through HTTPS or to block HTTPS
 *   'on' =  force SSL/HTTPS to be on (This will cause LimeSurvey
 *       to fail in SSL is turned off)
@@ -568,9 +568,9 @@ $config['force_ssl'] = ''; // DO not turn on unless you are sure your server sup
 
 /**
 * ssl_emergency_override (boolean)
-* Forces SSL off if you've turned  HTTPS/SSL on in the global settings but your server doesn't have HTTPS 
+* Forces SSL off if you've turned  HTTPS/SSL on in the global settings but your server doesn't have HTTPS
 * enabled, the only way to turn it off is by changing a value in the database
-* directly. This allows you to force HTTPS off while you change the global 
+* directly. This allows you to force HTTPS off while you change the global
 * settings for Force Secure.
 *
 *     false = do nothing;
@@ -600,6 +600,12 @@ $config['googlemaps_api_key'] = '';
 * Google Translate API key:  https://code.google.com/apis/language/translate/v2/getting_started.html
 */
 $config['googletranslateapikey'] = '';
+
+/**
+* characterset (string)
+* Default character set for file import/export
+*/
+$config['characterset'] = 'auto';
 
 /**
 * file_upload_total_space_mb (integer)
@@ -645,7 +651,7 @@ $config['session_expiration_time'] = 28800;
 /**
  === Advanced Setup ===================================================================================
 The following URL and directory locations do not need to be modified unless you have a non-standard
-LimeSurvey installation. Do not change unless you know what you are doing.   
+LimeSurvey installation. Do not change unless you know what you are doing.
 */
 
 if(!isset($argv[0]))
