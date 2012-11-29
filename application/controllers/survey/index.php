@@ -37,7 +37,7 @@ class index extends CAction {
         $move = $param['move'];
         $clienttoken = $param['token'];
         $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
-        if (is_null($thissurvey)) $thissurvey = getSurveyInfo($surveyid);
+        if (is_null($thissurvey) && !is_null($surveyid)) $thissurvey = getSurveyInfo($surveyid);
 
         // unused vars in this method (used in methods using compacted method vars)
         @$loadname = $param['loadname'];
