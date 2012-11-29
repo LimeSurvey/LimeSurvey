@@ -1537,7 +1537,7 @@ class dataentry extends Survey_Common_Action
                 {
                     if ($thisvalue == "")
                     {
-                        $updateqr .= $fieldname." = NULL, \n"; //dbQuoteID($fieldname)." = NULL, \n";
+                        $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
                     }
                     else
                     {
@@ -1549,35 +1549,35 @@ class dataentry extends Survey_Common_Action
                         //need to check if library get initialized with new value of constructor or not.
 
                         //$datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
-                        $updateqr .= $fieldname." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";// dbQuoteID($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";
+                        $updateqr .= dbQuoteID($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";
                     }
                 }
                 elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "")
                 {
-                    $updateqr .= $fieldname." = NULL, \n"; //dbQuoteID($fieldname)." = NULL, \n";
+                    $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
                 }
                 elseif ($irow['type'] == '|' && strpos($irow['fieldname'], '_filecount') && $thisvalue == "")
                 {
-                    $updateqr .= $fieldname." = NULL, \n"; //dbQuoteID($fieldname)." = NULL, \n";
+                    $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
                 }
                 elseif ($irow['type'] == 'submitdate')
                 {
                     if (isset($_POST['completed']) && ($_POST['completed']== "N"))
                     {
-                        $updateqr .= $fieldname." = NULL, \n"; //dbQuoteID($fieldname)." = NULL, \n";
+                        $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
                     }
                     elseif (isset($_POST['completed']) && $thisvalue=="")
                     {
-                        $updateqr .= $fieldname." = '" . $_POST['completed'] . "', \n";// dbQuoteID($fieldname)." = " . dbQuoteAll($_POST['completed'],true) . ", \n";
+                        $updateqr .= dbQuoteID($fieldname)." = " . dbQuoteAll($_POST['completed']) . ", \n";
                     }
                     else
                     {
-                        $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; //dbQuoteID($fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
+                        $updateqr .= dbQuoteID($fieldname)." = " . dbQuoteAll($thisvalue) . ", \n";
                     }
                 }
                 else
                 {
-                    $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; // dbQuoteID($fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
+                    $updateqr .= dbQuoteID($fieldname)." = " . dbQuoteAll($thisvalue) . ", \n";
                 }
             }
             $updateqr = substr($updateqr, 0, -3);
@@ -1585,7 +1585,7 @@ class dataentry extends Survey_Common_Action
 
             $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
 
-            $onerecord_link = $this->getController()->createUrl('/').'/admin/responses/index/surveyid/'.$surveyid.'/id/'.$id;
+            $onerecord_link = $this->getController()->createUrl('/').'/admin/responses/view/surveyid/'.$surveyid.'/id/'.$id;
             $allrecords_link = $this->getController()->createUrl('/').'/admin/responses/index/surveyid/'.$surveyid;
             $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>\n"
             .$clang->gT("Record has been updated.")."<br /><br />\n"
