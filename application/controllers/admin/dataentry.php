@@ -766,25 +766,25 @@ class dataentry extends Survey_Common_Action
                 {
                     if (isset($_POST['completed']) && ($_POST['completed']== "N"))
                     {
-                        $updateqr .= $q->fieldname." = NULL, \n"; //dbQuoteID($q->fieldname)." = NULL, \n";
+                        $updateqr .= dbQuoteID($q->fieldname) . " = NULL, \n";
                     }
                     elseif (isset($_POST['completed']) && $thisvalue=="")
                     {
-                        $updateqr .= $q->fieldname." = '" . $_POST['completed'] . "', \n";// dbQuoteID($q->fieldname)." = " . dbQuoteAll($_POST['completed'],true) . ", \n";
+                        $updateqr .= dbQuoteID($q->fieldname)." = " . dbQuoteAll($_POST['completed']) . ", \n";
                     }
                     else
                     {
-                        $updateqr .= $q->fieldname." = '" . $thisvalue . "', \n"; //dbQuoteID($q->fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
+                        $updateqr .= dbQuoteID($q->fieldname)." = " . dbQuoteAll($thisvalue) . ", \n";
                     }
                 }
                 elseif(!is_a($q, 'QuestionModule'))
                 {
                     $thisvalue = $q->filter($thisvalue, 'dataentry');
-                    $updateqr .= $q->fieldname . ' = ' . $thisvalue == null ? 'NULL' : $thisvalue . ', \n';
+                    $updateqr .= dbQuoteID($q->fieldname) . ' = ' . $thisvalue == null ? 'NULL' : dbQuoteAll($thisvalue) . ', \n';
                 }
                 else
                 {
-                    $updateqr .= $q->fieldname." = '" . $thisvalue . "', \n"; // dbQuoteID($q->fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
+                    $updateqr .= dbQuoteID($q->fieldname)." = " . dbQuoteAll($thisvalue) . ", \n";
                 }
             }
             $updateqr = substr($updateqr, 0, -3);
@@ -792,7 +792,7 @@ class dataentry extends Survey_Common_Action
 
             $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
 
-            $onerecord_link = $this->getController()->createUrl('/').'/admin/responses/index/surveyid/'.$surveyid.'/id/'.$id;
+            $onerecord_link = $this->getController()->createUrl('/').'/admin/responses/view/surveyid/'.$surveyid.'/id/'.$id;
             $allrecords_link = $this->getController()->createUrl('/').'/admin/responses/index/surveyid/'.$surveyid;
             $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>\n"
             .$clang->gT("Record has been updated.")."<br /><br />\n"

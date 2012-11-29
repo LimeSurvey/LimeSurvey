@@ -230,8 +230,16 @@ class Participants extends CActiveRecord
         $start = $limit * $page - $limit;
         $selectValue = array();
         $joinValue = array();
-        array_push($selectValue,"p.*");
-        array_push($selectValue,"luser.full_name as ownername");
+        
+        $selectValue[] = "p.*";
+        $selectValue[] = "luser.full_name as ownername";
+        
+        // Add survey count subquery
+        $subQuery = Yii::app()->db->createCommand()
+                ->select('count(*) survey')
+                ->from('{{survey_links}} sl')
+                ->where('sl.participant_id = p.participant_id');
+        $selectValue[] = sprintf('(%s) survey',$subQuery->getText());
         array_push($joinValue,"left join {{users}} luser ON luser.uid=p.owner_uid");
         foreach($attid as $key=>$attid)
         {
@@ -254,12 +262,7 @@ class Participants extends CActiveRecord
         $data->setJoin($joinValue);
         
         if (!empty($order)) {
-            list($field, $sortOrder) = explode(' ' , $order);
-            // survey field is not sortable (and searchable) right now until we include it in the query just skip to prevent ugly errors
-            $aNotSortable = array('survey');
-            if (!in_array($field, $aNotSortable)) {
-                $data->setOrder($order);
-            }
+            $data->setOrder($order);
         }
         
         if (!is_null($userid)) {
