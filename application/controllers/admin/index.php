@@ -35,7 +35,7 @@ class Index extends Survey_Common_Action
 		}
         else
         {
-            Yii::app()->request->redirect(Yii::app()->getController()->createUrl('admin/survey/index'));
+            Yii::app()->request->redirect(Yii::app()->getController()->createUrl('admin/survey/sa/index'));
         }
 
     }

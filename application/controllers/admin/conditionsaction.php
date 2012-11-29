@@ -148,7 +148,7 @@ class conditionsaction extends Survey_Common_Action {
                 'onclick' => "window.open('".$this->getController()->createUrl("admin/conditions/index/subaction/resetsurveylogic/surveyid/$iSurveyID")."?ok=Y"."', '_top')"
                 ));
                 $button_cancel = CHtml::submitButton($clang->gT("Cancel"), array(
-                'onclick' => "window.open('".$this->getController()->createUrl("admin/survey/view/surveyid/$iSurveyID")."', '_top')"
+                'onclick' => "window.open('".$this->getController()->createUrl("admin/survey/sa/view/surveyid/$iSurveyID")."', '_top')"
                 ));
 
                 $messagebox_content = $clang->gT("You are about to delete all conditions on this survey's questions")."($iSurveyID)"
@@ -167,7 +167,7 @@ class conditionsaction extends Survey_Common_Action {
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
                 Conditions::model()->deleteRecords("qid in (select qid from {{questions}} where sid={$iSurveyID})");
                 Yii::app()->session['flashmessage']=$clang->gT("All conditions in this survey have been deleted.");
-                $this->getController()->redirect($this->getController()->createUrl('/admin/survey/view/surveyid/'.$iSurveyID));
+                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyID));
 
             }
         }

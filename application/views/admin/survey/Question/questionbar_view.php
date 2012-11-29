@@ -51,7 +51,7 @@ if (isset($tmp_survlangs)) { ?>
             <?php }
             else
             { ?>
-            <a href='<?php echo $this->createUrl('admin/survey/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
+            <a href='<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
                 onclick="alert('<?php $clang->eT("You can't delete this question because the survey is currently active.","js"); ?>')">
                 <img src='<?php echo $sImageURL; ?>delete_disabled.png' alt='<?php $clang->eT("Disabled - Delete current question"); ?>' /></a>
             <?php }
@@ -144,7 +144,7 @@ if (isset($tmp_survlangs)) { ?>
             title='<?php $clang->eT("Hide details of this question"); ?>'  alt='<?php $clang->eT("Hide details of this question"); ?>' onclick='document.getElementById("questiondetails").style.display="none";' />
         <input type='image' src='<?php echo $sImageURL; ?>maximize.png' title='<?php $clang->eT("Show details of this question"); ?>'  alt='<?php $clang->eT("Show Details of this Question"); ?>' onclick='document.getElementById("questiondetails").style.display="";' />
         <input type='image' src='<?php echo $sImageURL; ?>close.png' title='<?php $clang->eT("Close this question"); ?>' alt='<?php $clang->eT("Close this question"); ?>'
-            onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid/gid/$gid"); ?>','_top');" />
+            onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid/gid/$gid"); ?>','_top');" />
     </div>
 </div>
 </div>

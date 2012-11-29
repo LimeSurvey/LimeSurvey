@@ -20,5 +20,5 @@
         <li><?php echo $clang->gT("Question attributes:") . $aImportResults['question_attributes'] ?></li>
     </ul>
     <strong><?php $clang->eT("Question import is complete.") ?></strong><br />
-    <input type='submit' value='<?php $clang->eT("Go to question") ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/view/surveyid/' . $surveyid . '/gid/' . $gid . '/qid/' . $aImportResults['newqid']) ?>', '_top')" />
+    <input type='submit' value='<?php $clang->eT("Go to question") ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid . '/qid/' . $aImportResults['newqid']) ?>', '_top')" />
 </div>

@@ -66,7 +66,7 @@ class responses extends Survey_Common_Action
                 if ($actrow['active'] == 'N') //SURVEY IS NOT ACTIVE YET
                 {
                     Yii::app()->session['flashmessage'] = $clang->gT("This survey has not been activated. There are no results to browse.");
-                    $this->getController()->redirect($this->getController()->createUrl("/admin/survey/view/surveyid/{$iSurveyId}"));
+                    $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
                 }
             }
         }

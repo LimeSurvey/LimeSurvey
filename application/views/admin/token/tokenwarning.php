@@ -21,14 +21,14 @@
         ?>
         <br /><br />
         <input type='submit' value='<?php $clang->eT("Initialise tokens"); ?>' onclick="<?php echo convertGETtoPOST($this->createUrl("admin/tokens/index/surveyid/$surveyid") . "?action=tokens&amp;sid=$surveyid&amp;createtable=Y"); ?>" />
-        <input type='submit' value='<?php $clang->eT("No, thanks."); ?>' onclick="window.open('<?php echo$this->createUrl("admin/survey/view/surveyid/$surveyid"); ?>', '_top')" /></div>
+        <input type='submit' value='<?php $clang->eT("No, thanks."); ?>' onclick="window.open('<?php echo$this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>', '_top')" /></div>
     <?php
     }
     else
     {
         $clang->eT("You don't have the permission to activate tokens.");
     ?>
-    <input type='submit' value='<?php $clang->eT("Back to main menu"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid"); ?>', '_top')" /></div>
+    <input type='submit' value='<?php $clang->eT("Back to main menu"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>', '_top')" /></div>
 
     <?php
     }

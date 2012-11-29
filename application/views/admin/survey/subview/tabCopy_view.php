@@ -1,5 +1,5 @@
 <div id='copy'>
-    <form class='form30' action='<?php echo $this->createUrl('admin/survey/copy'); ?>' id='copysurveyform' method='post'>
+    <form class='form30' action='<?php echo $this->createUrl('admin/survey/sa/copy'); ?>' id='copysurveyform' method='post'>
         <ul>
             <li><label for='copysurveylist'><?php $clang->eT("Select survey to copy:"); ?> </label>
                 <select id='copysurveylist' name='copysurveylist' required="required">

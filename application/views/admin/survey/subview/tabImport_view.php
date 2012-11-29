@@ -1,5 +1,5 @@
 <div id='import'>
-    <form enctype='multipart/form-data' class='form30' id='importsurvey' name='importsurvey' action='<?php echo $this->createUrl('admin/survey/copy'); ?>' method='post' onsubmit='return validatefilename(this,"<?php $clang->eT('Please select a file to import!', 'js'); ?> ");'>
+    <form enctype='multipart/form-data' class='form30' id='importsurvey' name='importsurvey' action='<?php echo $this->createUrl('admin/survey/sa/copy'); ?>' method='post' onsubmit='return validatefilename(this,"<?php $clang->eT('Please select a file to import!', 'js'); ?> ");'>
         <ul>
             <li><label for='the_file'><?php $clang->eT("Select survey structure file (*.lss, *.csv, *.txt) or survey archive (*.lsa):");  ?> </label>
                 <input id='the_file' name="the_file" type="file" /></li>

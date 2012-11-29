@@ -15,7 +15,7 @@
             </li>
         </ul>
     </form>
-    <form enctype='multipart/form-data'  class='form30' id='importsurveyresources' name='importsurveyresources' action='<?php echo $this->createUrl('admin/survey/importsurveyresources/'); ?>' method='post' onsubmit='return validatefilename(this,"<?php $clang->eT('Please select a file to import!', 'js'); ?>");'>
+    <form enctype='multipart/form-data'  class='form30' id='importsurveyresources' name='importsurveyresources' action='<?php echo $this->createUrl('admin/survey/sa/importsurveyresources/'); ?>' method='post' onsubmit='return validatefilename(this,"<?php $clang->eT('Please select a file to import!', 'js'); ?>");'>
         <input type='hidden' name='surveyid' value='<?php echo $surveyid; ?>' />
         <input type='hidden' name='action' value='importsurveyresources' />
         <ul>

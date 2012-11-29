@@ -19,20 +19,20 @@
     <div id='templateleft' style="float:left;padding-left:1em;width:12%;">
         <div >
             <?php $clang->eT("Standard files:"); ?><br>
-            <select size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
+            <select size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                 <?php echo makeoptions($files, "name", "name", $editfile); ?>
             </select>
         </div>
         <div style='margin-top:1em;'>
             <?php $clang->eT("CSS & Javascript files:"); ?>
-            <br/><select size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
+            <br/><select size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                 <?php echo makeoptions($cssfiles, "name", "name", $editfile); ?>
             </select>
         </div>
     </div>
 
     <div style='float:left;width:70%; padding:1.3em;' >
-        <form name='editTemplate' id='editTemplate' method='post' action='<?php echo $this->createUrl("admin/templates/templatesavechanges"); ?>'>
+        <form name='editTemplate' id='editTemplate' method='post' action='<?php echo $this->createUrl("admin/templates/sa/templatesavechanges"); ?>'>
             <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
             <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
             <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
@@ -65,7 +65,7 @@
     <div style="float:left;">
         <div>
             <?php $clang->eT("Other files:"); ?>
-            <form action='<?php echo $this->createUrl("admin/templates/templatefiledelete"); ?>' method='post'>
+            <form action='<?php echo $this->createUrl("admin/templates/sa/templatefiledelete"); ?>' method='post'>
                 <select size='11' style='min-width:130px;' name='otherfile' id='otherfile'>
                     <?php echo makeoptions($otherfiles, "name", "name", ""); ?>
                 </select><br>
@@ -116,6 +116,6 @@
     <?php }
     else
     { ?>
-    <p><iframe id='previewiframe' src='<?php echo $this->createUrl('admin/templates/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe></p>
+    <p><iframe id='previewiframe' src='<?php echo $this->createUrl('admin/templates/sa/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe></p>
     </div>
     <?php } ?>

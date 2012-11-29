@@ -8,7 +8,7 @@
             <?php if(!$activated) { ?>
                 <img src='<?php echo $sImageURL;?>inactive.png' alt='<?php $clang->eT("This survey is currently not active"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/>
                 <?php if($canactivate) { ?>
-                    <a href="<?php echo $this->createurl("admin/survey/activate/surveyid/$surveyid"); ?>">
+                    <a href="<?php echo $this->createUrl("admin/survey/sa/activate/surveyid/$surveyid"); ?>">
                         <img src='<?php echo $sImageURL; ?>activate.png' alt='<?php $clang->eT("Activate this Survey"); ?>'/></a>
                     <?php } else { ?>
                     <img src='<?php echo $sImageURL; ?>activate_disabled.png'
@@ -23,7 +23,7 @@
                     <img src='<?php echo $sImageURL; ?>active.png' title='' alt='<?php $clang->eT("This survey is currently active."); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/>
                     <?php }
                     if($canactivate) { ?>
-                    <a href="<?php echo $this->createUrl("admin/survey/deactivate/surveyid/$surveyid"); ?>">
+                    <a href="<?php echo $this->createUrl("admin/survey/sa/deactivate/surveyid/$surveyid"); ?>">
                         <img src='<?php echo $sImageURL;?>deactivate.png' alt='<?php $clang->eT("Stop this survey"); ?>' /></a>
                     <?php } else { ?>
                     <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='14' />
@@ -52,11 +52,11 @@
             <li><a href='#'>
                     <img src='<?php echo $sImageURL;?>edit.png' alt='<?php $clang->eT("Survey properties");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
                     <?php if($surveylocale) { ?>
-                        <li><a href='<?php echo $this->createUrl("admin/survey/editlocalsettings/surveyid/$surveyid");?>'>
+                        <li><a href='<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/$surveyid");?>'>
                             <img src='<?php echo $sImageURL;?>edit_30.png' alt=''/> <?php $clang->eT("Edit text elements");?></a></li>
                         <?php } ?>
                     <?php if($surveysettings) { ?>
-                        <li><a href='<?php echo $this->createUrl("admin/survey/editsurveysettings/surveyid/$surveyid");?>' >
+                        <li><a href='<?php echo $this->createUrl("admin/survey/sa/editsurveysettings/surveyid/$surveyid");?>' >
                             <img src='<?php echo $sImageURL;?>survey_settings_30.png' alt=''/> <?php $clang->eT("General settings");?></a></li>
                         <?php } ?>
                     <?php if($surveysecurity) { ?>
@@ -93,7 +93,7 @@
             <li><a href="#">
                     <img src='<?php echo $sImageURL;?>tools.png' alt='<?php $clang->eT("Tools");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
                     <?php if ($surveydelete) { ?>
-                        <li><a href="<?php echo $this->createUrl("admin/survey/delete/surveyid/{$surveyid}"); ?>">
+                        <li><a href="<?php echo $this->createUrl("admin/survey/sa/delete/surveyid/{$surveyid}"); ?>">
                             <img src='<?php echo $sImageURL;?>delete_30.png' alt=''/> <?php $clang->eT("Delete survey");?></a></li>
                         <?php } ?>
                     <?php if ($surveytranslate) {
@@ -233,7 +233,7 @@
                     else
                     { ?><li>
 
-                        <a href="<?php echo $this->createUrl("admin/survey/organize/surveyid/$surveyid"); ?>">
+                        <a href="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>">
                             <img src='<?php echo $sImageURL; ?>organize.png' alt='<?php $clang->eT("Reorder question groups / questions"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a></li>
                     <?php }
             } ?>
@@ -257,7 +257,7 @@
                 <span class='arrow-wrapper' style='font-size:0;'>
                     <?php if ($GidPrev != "")
                         { ?>
-                        <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid/gid/$GidPrev"); ?>'>
+                        <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid/gid/$GidPrev"); ?>'>
                         <img src='<?php echo $sImageURL; ?>previous_20.png' title='' alt='<?php $clang->eT("Previous question group"); ?>'/> </a>
                         <?php }
                         else
@@ -270,7 +270,7 @@
                         { ?>
 
 
-                        <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid/gid/$GidNext"); ?>'>
+                        <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid/gid/$GidNext"); ?>'>
                         <img src='<?php echo $sImageURL; ?>next_20.png' title='' alt='<?php $clang->eT("Next question group"); ?>'/> </a>
                         <?php }
                         else

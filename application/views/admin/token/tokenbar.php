@@ -4,7 +4,7 @@
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
-            <a href="<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid"); ?>"><img src='<?php echo $imageurl; ?>home.png' alt='<?php $clang->eT("Return to survey administration"); ?>' /></a>
+            <a href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>"><img src='<?php echo $imageurl; ?>home.png' alt='<?php $clang->eT("Return to survey administration"); ?>' /></a>
             <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
             <a href="<?php echo $this->createUrl("admin/tokens/index/surveyid/$surveyid"); ?>"><img src='<?php echo $imageurl; ?>summary.png' alt='<?php $clang->eT("Show token summary"); ?>'/></a>
             <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />

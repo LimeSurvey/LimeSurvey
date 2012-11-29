@@ -1,5 +1,5 @@
 <div class='header ui-widget-header'><?php $clang->eT("Editing user");?></div><br />
-<form action='<?php echo $this->createUrl("admin/user/moduser");?>' method='post'>
+<form action='<?php echo $this->createUrl("admin/user/sa/moduser");?>' method='post'>
 <table class='edituser'><thead><tr>
 <th><?php $clang->eT("Username");?></th>
 <th><?php $clang->eT("Email");?></th>

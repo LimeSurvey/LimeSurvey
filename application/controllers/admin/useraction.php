@@ -158,7 +158,7 @@ class UserAction extends Survey_Common_Action
                 }
 
                 $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Add user"), $sHeader, $classMsg, $extra,
-                $this->getController()->createUrl("admin/user/setUserRights"), $clang->gT("Set user permissions"),
+                $this->getController()->createUrl("admin/user/sa/setUserRights"), $clang->gT("Set user permissions"),
                 array('action' => 'setUserRights', 'user' => $new_user, 'uid' => $iNewUID));
             }
             else

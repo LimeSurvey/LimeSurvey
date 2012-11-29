@@ -260,7 +260,7 @@ class translate extends Survey_Common_Action {
 							$clang->gT("Return to survey administration"),
 							"Administration",
 							"home.png",
-							$this->getController()->createUrl("admin/survey/view/surveyid/{$iSurveyID}/")
+							$this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}/")
 						);
 
         // Separator

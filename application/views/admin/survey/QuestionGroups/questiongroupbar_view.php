@@ -75,7 +75,7 @@
             <?php if ($QidPrev != "")
                 { ?>
 
-                <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$QidPrev); ?>'>
+                <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$QidPrev); ?>'>
                     <img src='<?php echo $imageurl; ?>previous_20.png' title='' alt='<?php $clang->eT("Previous question"); ?>'/></a>
                 <?php }
                 else
@@ -89,7 +89,7 @@
             <?php if ($QidNext != "")
                 { ?>
 
-                <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$QidNext); ?>'>
+                <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$QidNext); ?>'>
                 <img src='<?php echo $imageurl; ?>next_20.png' title='' alt='<?php $clang->eT("Next question"); ?>'/> </a>
                 <?php }
                 else
@@ -115,7 +115,7 @@
         <input id='MinimizeGroupWindow' type='image' src='<?php echo $imageurl; ?>minimize.png' title='<?php $clang->eT("Hide details of this group"); ?>' alt='<?php $clang->eT("Hide details of this group"); ?>' />
         <input type='image' id='MaximizeGroupWindow' src='<?php echo $imageurl; ?>maximize.png' title='<?php $clang->eT("Show details of this group"); ?>' alt='<?php $clang->eT("Show details of this group"); ?>' />
         <input type='image' src='<?php echo $imageurl; ?>close.png' title='<?php $clang->eT("Close this group"); ?>' alt='<?php $clang->eT("Close this group"); ?>'
-            onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid); ?>','_top');"
+            onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/".$surveyid); ?>','_top');"
             <?php if (!$qid){?>
                 style='visibility:hidden;'
                 <?php } ?>

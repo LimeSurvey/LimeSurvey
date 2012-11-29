@@ -47,6 +47,6 @@
         <div class='warningheader'><?php $clang->eT("Cannot import the VVExport file."); ?></div>
         <?php $clang->eT("This survey is not active. You must activate the survey before attempting to import a VVexport file."); ?>
         <br /> <br />
-        [<a href='<?php echo $this->createUrl('/admin/survey/view/'.$surveyid); ?>'><?php $clang->eT("Return to survey administration"); ?></a>]
+        [<a href='<?php echo $this->createUrl('admin/survey/sa/view/'.$surveyid); ?>'><?php $clang->eT("Return to survey administration"); ?></a>]
     </div>
     <?php } ?>

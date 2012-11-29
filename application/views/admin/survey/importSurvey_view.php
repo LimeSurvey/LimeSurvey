@@ -5,7 +5,7 @@
         <div class='errorheader'><?php $clang->eT("Error");?></div>
         <?php echo $sErrorMessage; ?><br /><br />
 		<input type='submit' value='<?php $clang->eT("Main Admin Screen");?>' onclick="window.open('<?php echo $this->createUrl('/admin');?>', '_top')"> 
-        <input type='submit' value='<?php $clang->eT("Import again");?>' onclick="window.open('<?php echo $this->createUrl('/admin/survey/newsurvey#import');?>', '_top')"><br /><br /></div>
+        <input type='submit' value='<?php $clang->eT("Import again");?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/newsurvey#import');?>', '_top')"><br /><br /></div>
     <?php } else
     {?>
     <div class='successheader'><?php $clang->eT("Success");?></div>&nbsp;<br />

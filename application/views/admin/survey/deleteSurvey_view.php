@@ -32,7 +32,7 @@
         <?php } ?>
 
         <p>
-        <input type='submit' value='<?php $clang->eT("Delete survey"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/delete/surveyid/$surveyid/delete/yes"); ?>', '_top')" />
-        <input type='submit' value='<?php $clang->eT("Cancel"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/view/$surveyid"); ?>', '_top')" />
+        <input type='submit' value='<?php $clang->eT("Delete survey"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/delete/surveyid/$surveyid/delete/yes"); ?>', '_top')" />
+        <input type='submit' value='<?php $clang->eT("Cancel"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/$surveyid"); ?>', '_top')" />
     <?php } ?>
 </div><br />&nbsp;

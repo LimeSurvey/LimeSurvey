@@ -23,4 +23,4 @@
         <li><a href='#resources'><?php $clang->eT("Resources"); ?></a></li>
         <?php } ?>
     </ul>
-    <form class='form30' name='addnewsurvey' id='addnewsurvey' action='<?php if ($action == "newsurvey") echo $this->createUrl("admin/survey/insert"); if ($action == "editsurveysettings") echo $this->createUrl("admin/database/index/updatesurveysettings"); ?>' method='post' >
+    <form class='form30' name='addnewsurvey' id='addnewsurvey' action='<?php if ($action == "newsurvey") echo $this->createUrl("admin/survey/sa/insert"); if ($action == "editsurveysettings") echo $this->createUrl("admin/database/index/updatesurveysettings"); ?>' method='post' >

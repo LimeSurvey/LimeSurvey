@@ -4,7 +4,7 @@
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
-            <a href="<?php echo $this->createUrl("/admin/survey/view/surveyid/{$surveyid}$extraGetParams"); ?>">
+            <a href="<?php echo $this->createUrl("/admin/survey/sa/view/surveyid/{$surveyid}$extraGetParams"); ?>">
                 <img src='<?php echo $sImageURL;?>home.png' alt='<?php $clang->eT("Return to survey administration");?>' /></a>
             <img src='<?php echo $sImageURL;?>blank.gif' alt='' width='11' />
             <img src='<?php echo $sImageURL;?>separator.gif' alt='' />
