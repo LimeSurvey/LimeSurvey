@@ -48,7 +48,7 @@ class NumericalQuestion extends QuestionModule
         }
 
         $fValue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-        if(strpos(".",$fValue))
+        if(strpos($fValue,"."))
         {
             $fValue=rtrim(rtrim($fValue,"0"),".");
         }
@@ -102,7 +102,7 @@ class NumericalQuestion extends QuestionModule
 
     public function getExtendedAnswer($value, $language)
     {
-        if(strpos(".",$value))
+        if(strpos($value,".")!==false)
         {
             $value=rtrim(rtrim($value,"0"),".");
         }
