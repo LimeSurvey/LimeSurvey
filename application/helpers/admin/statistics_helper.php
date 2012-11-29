@@ -175,8 +175,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             if ($language=='ar')
             {
                 $lblout=$lbl; //reset text order to original
-                Yii::import('application.libraries.Arabic', true);
-                $Arabic = new Arabic('ArGlyphs');
+                Yii::import('application.third_party.ar-php.Arabic', true);
+                $Arabic = new I18N_Arabic('Glyphs');
                 foreach($lblout as $kkey => $kval){
                     if (preg_match("^[A-Za-z]^", $kval)) { //auto detect if english
                         //eng
