@@ -553,19 +553,21 @@ class participantsaction extends Survey_Common_Action
             {
                 $condition = explode("||", $searchcondition);
                 $query = Participants::model()->getParticipantsSearchMultiple($condition, 0, 0);
+                $count = count($query);
             }
             else // if no search criteria all the participants will be counted
             {
-                $query = Participants::model()->getParticipantsWithoutLimit();
+                $count = Participants::model()->getParticipantsCountWithoutLimit();
             }
         }
         else // If no search criteria it will simply return the number of participants
         {
             $iUserID = Yii::app()->session['loginID'];
             $query = Participants::model()->getParticipantsOwner($iUserID);
+            $count = count($query);
         }
 
-        echo sprintf($clang->gT("Export %s participant(s) to CSV"), count($query));
+        echo sprintf($clang->gT("Export %s participant(s) to CSV"), $count);
     }
 
     /**
@@ -575,21 +577,22 @@ class participantsaction extends Survey_Common_Action
     {
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants in the central table will be counted
         {
-            $query = Participants::model()->getParticipantsWithoutLimit();
+            $count = Participants::model()->getParticipantsCountWithoutLimit();
         }
         else // otherwise only the participants on which the logged in user has the rights
         {
             $iUserID = Yii::app()->session['loginID'];
             $query = Participants::model()->getParticipantsOwner($iUserID);
+            $count = count($query);
         }
 
-        if (count($query) > 0) // If count is greater than 0 it will show the message
+        if ($count > 0) // If count is greater than 0 it will show the message
         {
-            printf($clang->gT("Export %s participant(s) to CSV"), count($query));
+            printf($clang->gT("Export %s participant(s) to CSV"), $count);
         }
         else // else it will return a numeric count which will tell that there is no participant to be exported
         {
-            echo count($query);
+            echo $count;
         }
     }
 
@@ -693,14 +696,15 @@ class participantsaction extends Survey_Common_Action
         {
             if (Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be visible
             {
-                $query = Participants::model()->getParticipantsWithoutLimit();
+                $count = Participants::model()->getParticipantsCountWithoutLimit();
             }
             else
             {
                 $query = Participants::model()->getParticipantsOwner(Yii::app()->session['loginID']);
+                $count = count($query);
             }
 
-            printf($this->getController()->lang->gT("%s participant(s) are to be copied "), count($query));
+            printf($this->getController()->lang->gT("%s participant(s) are to be copied "), $count);
         }
     }
 
@@ -855,6 +859,9 @@ class participantsaction extends Survey_Common_Action
         }
     }
 
+    /**
+     * Equal to getParticipants_json() but now with a search
+     */
     function getParticipantsResults_json()
     {
     	///admin/participants/getParticipantsResults_json/search/email||contains||com
@@ -999,7 +1006,7 @@ class participantsaction extends Survey_Common_Action
     {
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
-    	  $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
+    	$limit = isset($limit) ? $limit : 50; //Stop division by zero errors
 
         $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
@@ -1007,94 +1014,48 @@ class participantsaction extends Survey_Common_Action
         {
             array_push($participantfields, $value['attribute_id']);
         }
+        $sidx = Yii::app()->request->getPost('sidx');
+        $sidx = !empty($sidx) ? $sidx : "lastname";
+        $sord = Yii::app()->request->getPost('sord');
+        $sord = !empty($sord) ? $sord : "asc";
+        $order = $sidx. " ". $sord;
+        
         $aData = new stdClass;
+        $aData->page = $page;
+        
         //If super admin all the participants will be visible
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
-            $records = Participants::model()->getParticipants($page, $limit,$attid);
-            $aData =  new stdClass;
-            $aData->page = $page;
+            $iUserID = null;
             $aData->records = Participants::model()->count();
-            $aData->total = ceil($aData->records / $limit);
-            $i = 0;
-        	  $sortablearray=array();
-            foreach ($records as $key => $row)
-            {            
-                $surveycount = Participants::model()->getSurveyCount($row['participant_id']);
-                $sortablearray[$i] = array($row['participant_id'], "true", $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $row['ownername']); // since it's the admin he has access to all editing on the participants inspite of what can_edit option is
-                unset($row['participant_id'], $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $row['language'],$row['ownername'],$row['owner_uid']);
-                foreach($row as $key=>$attvalue)
-                {
-                  array_push($sortablearray[$i], $attvalue);
-                }         
-                $i++;
-            }
-
-            $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
-        	  if(!empty($sortablearray)) {
-        		$sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
-        		$i = 0;
-        		$count = count($sortedarray[0]);
-        		foreach ($sortedarray as $key => $value)
-        		{
-        			$aData->rows[$i]['id'] = $value[0];
-        			$aData->rows[$i]['cell'] = array();
-        			for ($j = 0; $j < $count; $j++)
-        			{
-        				array_push($aData->rows[$i]['cell'], $value[$j]);
-        			}
-        			$i++;
-        		}
-        	}
-        }
-        // Only the owned and shared participants will be visible
-        else
-        {
+        } else {
             $iUserID = Yii::app()->session['loginID'];
-            $records = Participants::model()->getParticipantsOwner($iUserID);
-            $aData->page = $page;
-            $aData->records = count($records);
-            $aData->total = ceil($aData->records / $limit);
-            $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
-            $i = 0;
-        	$sortablearray=array();
-            foreach ($records as $row)
-            {
-                $surveycount = Participants::model()->getSurveyCount($row['participant_id']);
-                $ownername = User::model()->getName($row['owner_uid']); //for conversion of uid to human readable names
-                $sortablearray[$i] = array($row['participant_id'], $row['can_edit'], $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $ownername[0]['full_name']);
-                foreach ($attid as $iAttributeId)
-                {
-                    $answer = ParticipantAttributeNames::model()->getAttributeValue($row['participant_id'], $iAttributeId['attribute_id']);
-                    if (isset($answer['value']))
-                    {
-                        array_push($sortablearray[$i], $answer['value']);
-                    }
-                    else
-                    {
-                        array_push($sortablearray[$i], "");
-                    }
-                }
-                $i++;
-            }
-
-            $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
-        	if(!empty($sortablearray)) {
-        		$sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
-	            $i = 0;
-	            $count = count($sortedarray[0]);
-	            foreach ($sortedarray as $key => $value)
-	            {
-	                $aData->rows[$i]['id'] = $value[0];
-	                $aData->rows[$i]['cell'] = array();
-	                for ($j = 0; $j < $count; $j++)
-	                {
-	                    array_push($aData->rows[$i]['cell'], $value[$j]);
-	                }
-	                $i++;
-	            }
-        	}
+            $aData->records = Participants::model()->getParticipantsOwnerCount($iUserID);
         }
+        $records = Participants::model()->getParticipants($page, $limit,$attid, $order, $iUserID);
+        $aData->total = ceil($aData->records / $limit);
+        $aRowToAdd=array();
+        foreach ($records as $key => $row)
+        {            
+            $surveycount = Participants::model()->getSurveyCount($row['participant_id']);
+            if (array_key_exists('can_edit', $row)) {
+                $sCanEdit = $row['can_edit'];
+                if (is_null($sCanEdit)) {
+                    $sCanEdit = 'true';
+                }
+            } else {
+                // Super admin
+                $sCanEdit = "true";
+            }
+            $aRowToAdd = array($row['participant_id'], $sCanEdit, $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $row['ownername']);
+            unset($row['participant_id'], $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $row['language'],$row['ownername'],$row['owner_uid'], $row['can_edit']);
+            foreach($row as $key=>$attvalue)
+            {
+              $aRowToAdd[] = $attvalue;
+            }
+            $aData->rows[]['cell'] = $aRowToAdd;
+        }
+
         echo ls_json_encode($aData);
     }
 

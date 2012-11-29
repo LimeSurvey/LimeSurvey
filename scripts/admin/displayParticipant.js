@@ -154,7 +154,7 @@ $(document).ready(function() {
             if(can_edit == 'false') {
                 var dialog_buttons={};
                 dialog_buttons[okBtn]=function() {
-                    $( this ).dialog( clostTxt );
+                    $( this ).dialog( "close" );
                 };
                 /* End of building array for button functions */
                 $('#notauthorised').dialog({
@@ -711,7 +711,7 @@ $(document).ready(function() {
         if(can_edit == 'false') {
             var dialog_buttons={};
             dialog_buttons[okBtn]=function(){
-                $( this ).dialog( closeTxt );
+                $( this ).dialog( "close" );
             };
             /* End of building array for button functions */
             $('#notauthorised').dialog({

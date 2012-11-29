@@ -186,34 +186,46 @@ class Participants extends CActiveRecord
 
     function getParticipantsOwnerCount($userid)
     {
-
-        return count(Yii::app()->db->createCommand()
-                               ->select('{{participants}}.*,{{participant_shares}}.can_edit')
-                               ->from('{{participants}}')
-                               ->leftJoin('{{participant_shares}}', '{{participants}}.participant_id={{participant_shares}}.participant_id')
-                               ->where('owner_uid = :userid1 OR share_uid = :userid2')
-                               ->bindParam(":userid1", $userid, PDO::PARAM_INT)
-                               ->bindParam(":userid2", $userid, PDO::PARAM_INT)
-                               ->queryAll());
+        $command = Yii::app()->db->createCommand()
+                        ->select('count(*)')
+                        ->from('{{participants}} p')
+                        ->leftJoin('{{participant_shares}} ps', 'ps.participant_id = p.participant_id')
+                        ->where('p.owner_uid = :userid1 OR ps.share_uid = :userid2')
+                        ->bindParam(":userid1", $userid, PDO::PARAM_INT)
+                        ->bindParam(":userid2", $userid, PDO::PARAM_INT);
+        return $command->queryScalar();
     }
 
+    /**
+     * Get the number of participants, no restrictions
+     * 
+     * @return int
+     */
+    function getParticipantsCountWithoutLimit()
+    {
+        return Participants::model()->count();    
+    }
+    
     function getParticipantsWithoutLimit()
     {
         return Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
     }
 
-    /*
+    /**
      * This function combines the shared participant and the central participant
      * table and searches for any reference of owner id in the combined record
      * of the two tables
-     */
-
+     * 
+     * @param  int $userid The id of the owner
+     * @return int The number of participants owned by $userid who are shared
+     */  
     function getParticipantsSharedCount($userid)
     {
-        return count(Yii::app()->db->createCommand()->select('{{participants}}.*, {{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll());
+        $count = Yii::app()->db->createCommand()->select('count(*)')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
+        return $count;
     }
 
-    function getParticipants($page, $limit,$attid)
+    function getParticipants($page, $limit,$attid, $order = null, $userid = null)
     {
         $start = $limit * $page - $limit;
         $selectValue = array();
@@ -227,11 +239,28 @@ class Participants extends CActiveRecord
             array_push($selectValue,"attribute".$attid.".value as a".$attid);
             array_push($joinValue,"LEFT JOIN {{participant_attribute}} attribute".$attid." ON attribute".$attid.".participant_id=p.participant_id AND attribute".$attid.".attribute_id=".$attid);
         }
+        if (!is_null($userid)) {
+            // We are not superadmin so we need to limit to our own or shared with us
+            $selectValue[] = '{{participant_shares}}.can_edit';
+            $joinValue[]   = 'LEFT JOIN {{participant_shares}} ON p.participant_id={{participant_shares}}.participant_id';
+            $where = 'p.owner_uid = :userid1 OR {{participant_shares}}.share_uid = :userid2';
+        }
+        
         $data = Yii::app()->db->createCommand()
               ->select($selectValue)
               ->from('{{participants}} p')
               ->limit($limit, $start);
         $data->setJoin($joinValue);
+        
+        if (!empty($order)) {
+            $data->setOrder($order);
+        }
+        
+        if (!is_null($userid)) {
+            $data->setWhere($where);
+            $data->bindParam(":userid1", $userid, PDO::PARAM_INT)
+                 ->bindParam(":userid2", $userid, PDO::PARAM_INT);
+        }
         $allData = $data->queryAll();
         return $allData;
 
@@ -349,95 +378,6 @@ class Participants extends CActiveRecord
 	}
 
     /*
-     * Builds a select query for searching through participants limited to searches with only one line (no more than 3 entries in condition array)
-     *
-     * Deprecated, use "getParticipantsSearchMultiple()" instead.
-     *
-     * */
-    function getParticipantsSearch($condition, $page, $limit)
-    {
-        $start = $limit * $page - $limit;
-        $command = new CDbCriteria;
-        $command->condition = '';
-        $lang = Yii::app()->session['adminlang'];
-        $start = $limit * $page - $limit;
-        if(is_numeric($condition[2])) $condition[2]=intval($condition[2]);
-        switch($condition[1])
-        {
-            case 'equal':
-                $operator="=";
-                break;
-            case 'contains':
-                $operator="LIKE";
-                $condition[2]="%".$condition[2]."%";
-                break;
-            case 'notequal':
-                $operator="!=";
-                break;
-            case 'notcontains':
-                $operator="NOT LIKE";
-                $condition[2]="%".$condition[2]."%";
-                break;
-            case 'greaterthan':
-                $operator=">";
-                break;
-            case 'lessthan':
-                $operator="<";
-        }
-        if($condition[0]=="survey")
-        {
-            $lang = Yii::app()->session['adminlang'];
-            $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' :param1 OR {{survey_links}}.survey_id '.$operator.' :param2))');
-            $command->params=array(':lang'=>$lang, ':param1'=>$condition[2] , ':param2'=>$condition[2]);
-        }
-        elseif($condition[0]=="owner_name")
-        {
-            $userid = Yii::app()->db->createCommand()
-                                ->select('uid')
-                                ->where('full_name '.$operator.' :condition_2')
-                                ->from('{{users}}')
-                                ->bindParam("condition_2", $condition[2], PDO::PARAM_STR)
-                                ->queryAll();
-            $uid = $userid[0];
-            $command->addCondition('owner_uid = :uid');
-            $command->params=array(':uid'=>$uid['uid']);
-        }
-        elseif (is_numeric($condition[0])) //Searching for an attribute
-        {
-            $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value '.$operator.' :condition_2)');
-            $command->params=array(':condition_0'=>$condition[0], ':condition_2'=>$condition[2]);
-        }
-        else
-        {
-            $command->addCondition($condition[0] . ' '.$operator.' :condition_2');
-            $command->params=array(':condition_2'=>$condition[2]);
-        }
-
-        if ($page == 0 && $limit == 0)
-        {
-            $arr = Participants::model()->findAll($command);
-            $data = array();
-            foreach ($arr as $t)
-            {
-                $data[$t->participant_id] = $t->attributes;
-            }
-        }
-        else
-        {
-            $command->limit = $limit;
-            $command->offset = $start;
-            $arr = Participants::model()->findAll($command);
-            $data = array();
-            foreach ($arr as $t)
-            {
-                $data[$t->participant_id] = $t->attributes;
-            }
-        }
-
-        return $data;
-    }
-
-    /*
      * Function builds a select query for searches through participants using the $condition field passed
      * which is in the format "firstfield||sqloperator||value||booleanoperator||secondfield||sqloperator||value||booleanoperator||etc||etc||etc"
      * for example: "firstname||equal||Jason||and||lastname||equal||Cleeland" will produce SQL along the lines of "WHERE firstname = 'Jason' AND lastname=='Cleeland'"
@@ -486,7 +426,7 @@ class Participants extends CActiveRecord
         }
 
         $con = count($condition);
-        while ($i < $con)
+        while ($i < $con && $con > 2)
         {
             if ($i < 3) //Special set just for the first query/condition
             {
@@ -659,9 +599,9 @@ class Participants extends CActiveRecord
     function is_owner($participant_id)
     {
         $userid = Yii::app()->session['loginID'];
-        $is_owner = Yii::app()->db->createCommand()->select('participant_id')->where('participant_id = :participant_id AND owner_uid = :userid')->from('{{participants}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
-        $is_shared = Yii::app()->db->createCommand()->select('participant_id')->where('participant_id = :participant_id AND share_uid = :userid')->from('{{participant_shares}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
-        if (count($is_shared) || count($is_owner))
+        $is_owner = Yii::app()->db->createCommand()->select('count(*)')->where('participant_id = :participant_id AND owner_uid = :userid')->from('{{participants}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
+        $is_shared = Yii::app()->db->createCommand()->select('count(*)')->where('participant_id = :participant_id AND share_uid = :userid')->from('{{participant_shares}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
+        if ($is_shared > 0 || $is_owner > 0)
         {
             return true;
         }
