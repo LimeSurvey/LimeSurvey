@@ -3698,7 +3698,11 @@ function do_numerical($ia)
         $tiwidth=10;
     }
 
-    $fValue=rtrim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],'0.');// Remove ending . and extra 0
+    $fValue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+    if(strpos(".",$fValue))
+    {
+        $fValue=rtrim(rtrim($sValue,"0"),".");
+    }
     if (trim($aQuestionAttributes['num_value_int_only'])==1 && is_numeric($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
     {
         $acomma="";
