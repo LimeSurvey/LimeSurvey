@@ -50,7 +50,7 @@ class NumericalQuestion extends QuestionModule
         $fValue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         if(strpos(".",$fValue))
         {
-            $fValue=rtrim(rtrim($sValue,"0"),".");
+            $fValue=rtrim(rtrim($fValue,"0"),".");
         }
         $integeronly=0;
         if (trim($aQuestionAttributes['num_value_int_only'])==1)
@@ -104,7 +104,7 @@ class NumericalQuestion extends QuestionModule
     {
         if(strpos(".",$value))
         {
-            $fValue=rtrim(rtrim($value,"0"),".");
+            $value=rtrim(rtrim($value,"0"),".");
         }
         $aQuestionAttributes = $this->getAttributeValues();
         if($aQuestionAttributes['num_value_int_only'])
