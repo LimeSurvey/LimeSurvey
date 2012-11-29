@@ -1,4 +1,15 @@
 <?php
+/*
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*/
 
 /*
  * LimeSurvey
@@ -97,21 +108,59 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                     $maxyvalue = $datapoint;
             }
 
-            if ($maxyvalue < 10) {
-                ++$maxyvalue;
+                if ($datapoint>$maxyvalue) $maxyvalue=$datapoint;
             }
-            $counter = 0;
-            foreach ($lbl as $label) {
-                $DataSet->SetSerieName($label, "Serie$counter");
+
+            if ($maxyvalue<10) {++$maxyvalue;}
+
+
+            if ($language=='ar')
+            {
+                if(!class_exists('I18N_Arabic_Glyphs',false)) $Arabic = new I18N_Arabic('Glyphs');
+                 else $Arabic=new I18N_Arabic_Glyphs();
+
+                foreach($lbl as $kkey => $kval){
+                    if (preg_match("^[A-Za-z]^", $kkey)) { //auto detect if english
+                        $lblout[]=$kkey.' ('.$kval.')';
+                    }
+                    else{
+                        $lblout[]= $Arabic->utf8Glyphs( $kkey.' )'.$kval.'(');
+                     }
+                }
+            }
+            elseif (getLanguageRTL($language))
+            {
+                foreach($lbl as $kkey => $kval){
+                    $lblout[]= UTF8Strrev($kkey.' )'.$kval.'(');
+                }
+            }
+            else
+            {
+                foreach($lbl as $kkey => $kval){
+                    $lblout[]= $kkey.' ('.$kval.')';
+                }
+            }
+
+            $counter=0;
+            foreach ($lblout as $sLabelName)
+            {
+                $DataSet->SetSerieName($sLabelName, "Serie$counter");
                 $counter++;
             }
 
-            if ($cache->IsInCache("graph" . $language . $iSurveyID, $DataSet->GetData())) {
-                $cachefilename = basename($cache->GetFileFromCache("graph" . $language . $iSurveyID, $DataSet->GetData()));
-            } else {
-                $graph = new pChart(1, 1);
-                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-                $legendsize = $graph->getLegendBoxSize($DataSet->GetDataDescription());
+            
+            
+            
+            
+            if ($cache->IsInCache("graph".$language.$iSurveyID,$DataSet->GetData()))
+            {
+                $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
+            }
+            else
+            {
+                $graph = new pChart(1,1);
+                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
 
                 if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
                 $graph = new pChart(690 + $legendsize[0], $gheight);
@@ -153,25 +202,31 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                 }
             }
 
-            $lblout=array();
             if ($language=='ar')
             {
-                $lblout=$lbl; //reset text order to original
-                Yii::import('application.libraries.Arabic', true);
-                $Arabic = new Arabic('ArGlyphs');
-                foreach ($lblout as $kkey => $kval) {
-                    if (preg_match("^[A-Za-z]^", $kval)) { //auto detect if english
-                        //eng
-                        //no reversing
-                    } else {
-                        $kval = $Arabic->utf8Glyphs($kval, 50, false);
-                        $lblout[$kkey] = $kval;
+                if(!class_exists('I18N_Arabic_Glyphs',false)) $Arabic = new I18N_Arabic('Glyphs');
+                 else $Arabic=new I18N_Arabic_Glyphs();
+
+                foreach($lbl as $kkey => $kval){
+                    if (preg_match("^[A-Za-z]^", $kkey)) { //auto detect if english
+                        $lblout[]=$kkey.' ('.$kval.')';
                     }
+                    else{
+                        $lblout[]= $Arabic->utf8Glyphs( $kkey.' )'.$kval.'(');
+                     }
                 }
-            } elseif (getLanguageRTL($language)) {
-                $lblout = $lblrtl;
-            } else {
-                $lblout = $lbl;
+            }
+            elseif (getLanguageRTL($language))
+            {
+                foreach($lbl as $kkey => $kval){
+                    $lblout[]= UTF8Strrev($kkey.' )'.$kval.'(');
+                }
+            }
+            else
+            {
+                foreach($lbl as $kkey => $kval){
+                    $lblout[]= $kkey.' ('.$kval.')';
+                }
             }
 
 
@@ -1754,15 +1809,17 @@ class statistics_helper {
                 $justcode[] = $al[0];
 
                 //edit labels and put them into antoher array
-                //first check if $tempcount is > 0. If yes, $row[0] has been modified and $tempcount has the original count.
-                if ($tempcount > 0) {
-                    $lbl[] = wordwrap(FlattenText("$al[1] ($tempcount)"), 25, "\n"); // NMO 2009-03-24
-                    $lblrtl[] = UTF8Strrev(wordwrap(FlattenText("$al[1] )$tempcount("), 25, "\n")); // NMO 2009-03-24
-                } else {
-                    $lbl[] = wordwrap(FlattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
-                    $lblrtl[] = UTF8Strrev(wordwrap(FlattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
+            //first check if $tempcount is > 0. If yes, $row has been modified and $tempcount has the original count.
+            if ($tempcount > -1)
+            {
+                $lbl[wordwrap(FlattenText("$al[1]"), 25, "\n")] = $tempcount;
+            }
+            else
+            {
+                $lbl[wordwrap(FlattenText("$al[1]"), 25, "\n")] = $row;
                 }
-            } //end while -> loop through results
+
+
         } //end foreach -> loop through answer data
         //no filtering of incomplete answers and NO multiple option questions
         //if ((incompleteAnsFilterState() != "complete") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
@@ -1823,14 +1880,17 @@ class statistics_helper {
                 //put the code ("Not completed") into the array
                 $justcode[] = $fname;
 
-                //edit labels and put them into antoher array
-                if ((incompleteAnsFilterState() != "complete")) {
-                    $lbl[] = wordwrap(flattenText($statlang->gT("Not completed or Not displayed") . " ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
-                } else {
-                    $lbl[] = wordwrap(flattenText($statlang->gT("Not displayed") . " ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
+                //edit labels and put them into another array
+                if ((incompleteAnsFilterState() != "complete"))
+                {
+                    $lbl[wordwrap(flattenText($statlang->gT("Not completed or Not displayed")), 20, "\n")] = $TotalIncomplete;
                 }
-            } //end else -> noncompleted NOT checked
-        } //end if -> no filtering of incomplete answers and no multiple option questions
+                else
+                {
+                    $lbl[wordwrap(flattenText($statlang->gT("Not displayed")), 20, "\n")] = $TotalIncomplete;
+                }
+            }    //end else -> noncompleted NOT checked
+        }
 
         // For multi question type, we have to check non completed with ALL sub question set to NULL
         if(($outputs['qtype'] == "M") or ($outputs['qtype'] == "P"))
@@ -2558,6 +2618,7 @@ class statistics_helper {
         $astatdata = array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
         Yii::import('application.helpers.surveytranslator_helper', true);
+        Yii::import('application.third_party.ar-php.Arabic', true);
 
         $statisticsoutput = ""; //This string carries all the actual HTML code to print.
         $imagedir = Yii::app()->getConfig("imagedir");

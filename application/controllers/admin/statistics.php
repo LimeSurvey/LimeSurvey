@@ -497,6 +497,10 @@ class statistics extends Survey_Common_Action {
         require_once(Yii::app()->basePath . '/third_party/pchart/pchart/pChart.class');
         require_once(Yii::app()->basePath . '/third_party/pchart/pchart/pData.class');
         require_once(Yii::app()->basePath . '/third_party/pchart/pchart/pCache.class');
+
+
+        Yii::import('application.third_party.ar-php.Arabic', true);
+        
         $tempdir = Yii::app()->getConfig("tempdir");
         $MyCache = new pCache($tempdir.'/');
 
