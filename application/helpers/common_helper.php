@@ -5748,7 +5748,6 @@ function getTokenData($surveyid, $token)
 
     return $thistokenarray;
 }
-}
 
 /**
 * This function returns the complete directory path to a given template name
