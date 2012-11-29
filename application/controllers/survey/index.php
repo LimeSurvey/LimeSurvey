@@ -20,8 +20,8 @@ class index extends CAction {
 
     function action()
     {
-        global $surveyid, $thistpl;
-        global $thissurvey, $thisstep;
+        global $surveyid;
+        global $thisstep;
         global $clienttoken, $tokensexist, $token;
         global $clang;
         $clang = Yii::app()->lang;
@@ -30,13 +30,13 @@ class index extends CAction {
         $this->_loadRequiredHelpersAndLibraries();
 
         $param = $this->_getParameters(func_get_args(), $_POST);
-
         $surveyid = $param['sid'];
         Yii::app()->setConfig('surveyID',$surveyid);
         $thisstep = $param['thisstep'];
         $move = $param['move'];
         $clienttoken = $param['token'];
         $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
+        $thissurvey = getSurveyInfo($surveyid);
 
         // unused vars in this method (used in methods using compacted method vars)
         @$loadname = $param['loadname'];
@@ -81,7 +81,7 @@ class index extends CAction {
         {
             $aMessage = array(
             $clang->gT('Error'),
-            $clang->gT('We are sorry but you don\'t have permissions to do this.')
+            $clang->gT("We are sorry but you don't have permissions to do this.")
             );
             $this->_niceExit($redata, __LINE__, null, $aMessage);
         }
