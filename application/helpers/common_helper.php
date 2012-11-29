@@ -1762,7 +1762,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
             case 'N':
                 if (trim($sValue)!='')
                 {
-                    if(strpos(".",$sValue))
+                    if(strpos($sValue,".")!==false)
                     {
                         $sValue=rtrim(rtrim($sValue,"0"),".");
                     }

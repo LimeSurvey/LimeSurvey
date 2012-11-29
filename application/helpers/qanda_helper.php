@@ -3699,9 +3699,9 @@ function do_numerical($ia)
     }
 
     $fValue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-    if(strpos(".",$fValue))
+    if(strpos($fValue,"."))
     {
-        $fValue=rtrim(rtrim($sValue,"0"),".");
+        $fValue=rtrim(rtrim($fValue,"0"),".");
     }
     if (trim($aQuestionAttributes['num_value_int_only'])==1 && is_numeric($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
     {
