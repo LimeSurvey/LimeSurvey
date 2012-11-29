@@ -1022,13 +1022,15 @@ class participantsaction extends Survey_Common_Action
                 // Super admin
                 $sCanEdit = "true";
             }
-            $aRowToAdd = array($row['participant_id'], $sCanEdit, $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $row['ownername']);
+            $aRowToAdd['cell'] = array($row['participant_id'], $sCanEdit, $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $row['ownername']);
+            $aRowToAdd['id'] = $row['participant_id'];
             unset($row['participant_id'], $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $row['language'],$row['ownername'],$row['owner_uid'], $row['can_edit']);
             foreach($row as $key=>$attvalue)
             {
-              $aRowToAdd[] = $attvalue;
+              $aRowToAdd['cell'][] = $attvalue;
             }
-            $aData->rows[]['cell'] = $aRowToAdd;
+            
+            $aData->rows[] = $aRowToAdd;
         }
 
         echo ls_json_encode($aData);
