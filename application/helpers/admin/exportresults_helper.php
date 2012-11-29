@@ -265,8 +265,13 @@ class SurveyDao
         'JOIN {{questions}} AS q ON a.qid = q.qid '.
         'WHERE q.sid = '.$intId.' AND a.language = \''.$lang.'\' '.
         'ORDER BY a.qid, a.sortorder;';
-        $survey->answers = Yii::app()->db->createCommand($sQuery)->query()->readAll();
-
+        //$survey->answers = Yii::app()->db->createCommand($sQuery)->queryAll();
+        $aAnswers= Yii::app()->db->createCommand($sQuery)->queryAll();
+        foreach($aAnswers as $aAnswer)
+        {
+             $aAnswer['answer']=stripTagsFull($aAnswer['answer']);
+             $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']]=$aAnswer;
+        }
         //Load tokens
         if (tableExists('{{tokens_' . $intId . '}}'))
         {
@@ -516,7 +521,7 @@ class SurveyObj
         if ($questionId)
         {
             $answers = $this->getAnswers($questionId);
-            if (array_key_exists($answerCode, $answers))
+            if (isset($answers[$answerCode]))
             {
                 $answer = $answers[$answerCode]['answer'];
             }
@@ -690,29 +695,20 @@ class SurveyObj
     /**
     * Returns an array of possible answers to the question.  If $scaleId is
     * specified then only answers that match the $scaleId value will be
-    * returned. An empty array
-    * may be returned by this function if answers are found that match the
-    * questionId.
+    * returned. An empty array may be returned by this function if answers 
+    * are found that match the questionId.
     *
     * @param int $questionId
     * @param int $scaleId
     * @return array[string]array[string]mixed (or false)
     */
-    public function getAnswers($questionId, $scaleId = null)
+    public function getAnswers($questionId, $scaleId = '0')
     {
-        $answers = array();
-        foreach ($this->answers as $answer)
+        if(isset($this->answers[$questionId]) && isset($this->answers[$questionId][$scaleId]))
         {
-            if (null == $scaleId && $answer['qid'] == $questionId)
-            {
-                $answers[$answer['code']] = $answer;
-            }
-            else if ($answer['qid'] == $questionId && $answer['scale_id'] == $scaleId)
-                {
-                    $answers[$answer['code']] = $answer;
-                }
+            return $this->answers[$questionId][$scaleId];
         }
-        return $answers;
+        return array();
     }
 }
 
@@ -1210,7 +1206,7 @@ abstract class Writer implements IWriter
         }
 
         //This spot should only be reached if no transformation occurs.
-        return $this->stripTagsFull($value);
+        return $value;
     }
 
     /**
