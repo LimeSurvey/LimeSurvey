@@ -46,7 +46,7 @@ if (isset($attributes) && count($attributes) > 0)
     foreach ($attributes as $row)
     {
         $attnames[] = '"' . $row['attribute_name'] . '"';
-        $uidNames[] = '{ "name": "' . $row['attribute_name'] . '", "index":"' . $row['attribute_id'] . '", "sorttype":"string", "sortable": true, "align":"center"}';
+        $uidNames[] = '{ "name": "' . $row['attribute_name'] . '", "index":"a' . $row['attribute_id'] . '", "sorttype":"string", "sortable": true, "align":"center"}';
     }
     $columnNames = ',' . implode(",", $attnames) . ''; //Add to the end of the standard list of columnNames
     if(count($attributes) > 5) $autowidth='false';

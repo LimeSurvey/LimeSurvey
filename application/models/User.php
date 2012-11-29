@@ -21,7 +21,7 @@ class User extends CActiveRecord
     * @static
     * @access public
     * @param string $class
-    * @return CActiveRecord
+    * @return User
     */
     public static function model($class = __CLASS__)
     {
@@ -209,8 +209,18 @@ class User extends CActiveRecord
     */
     public function getName($userid)
     {
-        return Yii::app()->db->createCommand()->select('full_name')->from('{{users}}')->where("uid = :userid")->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
+        static $aOwnerCache = array();
+        
+        if (array_key_exists($userid, $aOwnerCache)) {
+            $result = $aOwnerCache[$userid];
+        } else {
+            $result = Yii::app()->db->createCommand()->select('full_name')->from('{{users}}')->where("uid = :userid")->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
+            $aOwnerCache[$userid] = $result;
+        }
+        
+        return $result;
     }
+    
     public function getuidfromparentid($parentid)
     {
         return Yii::app()->db->createCommand()->select('uid')->from('{{users}}')->where('parent_id = :parent_id')->bindParam(":parent_id", $parentid, PDO::PARAM_INT)->queryRow();

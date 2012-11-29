@@ -35,7 +35,7 @@ class Participants extends CActiveRecord
      * @static
      * @access public
      * @param string $class
-     * @return CActiveRecord
+     * @return Participants
      */
     public static function model($class = __CLASS__)
     {
@@ -167,53 +167,79 @@ class Participants extends CActiveRecord
      */
     function getParticipantsOwner($userid)
     {
-        return Yii::app()->db->createCommand()
-            ->select('{{participants}}.*,{{participant_shares}}.can_edit')
+        $subquery = Yii::app()->db->createCommand()
+            ->select('{{participants}}.participant_id,{{participant_shares}}.can_edit')
             ->from('{{participants}}')
             ->leftJoin('{{participant_shares}}', ' {{participants}}.participant_id={{participant_shares}}.participant_id')
             ->where('owner_uid = :userid1 OR share_uid = :userid2')
-            ->group('{{participants}}.participant_id')
-            ->bindParam(":userid1", $userid, PDO::PARAM_INT)
-            ->bindParam(":userid2", $userid, PDO::PARAM_INT)
-            ->queryAll();
+            ->group('{{participants}}.participant_id');
+        
+        $command = Yii::app()->db->createCommand()
+                ->select('p.*, ps.can_edit')
+                ->from('{{participants}} p')
+                ->join('(' . $subquery->getText() . ') ps', 'ps.participant_id = p.participant_id')
+                ->bindParam(":userid1", $userid, PDO::PARAM_INT)
+                ->bindParam(":userid2", $userid, PDO::PARAM_INT);
+        
+        return $command->queryAll();
     }
 
     function getParticipantsOwnerCount($userid)
     {
-
-        return count(Yii::app()->db->createCommand()
-                               ->select('{{participants}}.*,{{participant_shares}}.can_edit')
-                               ->from('{{participants}}')
-                               ->leftJoin('{{participant_shares}}', '{{participants}}.participant_id={{participant_shares}}.participant_id')
-                               ->where('owner_uid = :userid1 OR share_uid = :userid2')
-                               ->bindParam(":userid1", $userid, PDO::PARAM_INT)
-                               ->bindParam(":userid2", $userid, PDO::PARAM_INT)
-                               ->queryAll());
+        $command = Yii::app()->db->createCommand()
+                        ->select('count(*)')
+                        ->from('{{participants}} p')
+                        ->leftJoin('{{participant_shares}} ps', 'ps.participant_id = p.participant_id')
+                        ->where('p.owner_uid = :userid1 OR ps.share_uid = :userid2')
+                        ->bindParam(":userid1", $userid, PDO::PARAM_INT)
+                        ->bindParam(":userid2", $userid, PDO::PARAM_INT);
+        return $command->queryScalar();
     }
 
+    /**
+     * Get the number of participants, no restrictions
+     * 
+     * @return int
+     */
+    function getParticipantsCountWithoutLimit()
+    {
+        return Participants::model()->count();    
+    }
+    
     function getParticipantsWithoutLimit()
     {
         return Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
     }
 
-    /*
+    /**
      * This function combines the shared participant and the central participant
      * table and searches for any reference of owner id in the combined record
      * of the two tables
-     */
-
+     * 
+     * @param  int $userid The id of the owner
+     * @return int The number of participants owned by $userid who are shared
+     */  
     function getParticipantsSharedCount($userid)
     {
-        return count(Yii::app()->db->createCommand()->select('{{participants}}.*, {{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll());
+        $count = Yii::app()->db->createCommand()->select('count(*)')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
+        return $count;
     }
 
-    function getParticipants($page, $limit,$attid)
+    function getParticipants($page, $limit,$attid, $order = null, $userid = null)
     {
         $start = $limit * $page - $limit;
         $selectValue = array();
         $joinValue = array();
-        array_push($selectValue,"p.*");
-        array_push($selectValue,"luser.full_name as ownername");
+        
+        $selectValue[] = "p.*";
+        $selectValue[] = "luser.full_name as ownername";
+        
+        // Add survey count subquery
+        $subQuery = Yii::app()->db->createCommand()
+                ->select('count(*) survey')
+                ->from('{{survey_links}} sl')
+                ->where('sl.participant_id = p.participant_id');
+        $selectValue[] = sprintf('(%s) survey',$subQuery->getText());
         array_push($joinValue,"left join {{users}} luser ON luser.uid=p.owner_uid");
         foreach($attid as $key=>$attid)
         {
@@ -221,18 +247,37 @@ class Participants extends CActiveRecord
             array_push($selectValue,"attribute".$attid.".value as a".$attid);
             array_push($joinValue,"LEFT JOIN {{participant_attribute}} attribute".$attid." ON attribute".$attid.".participant_id=p.participant_id AND attribute".$attid.".attribute_id=".$attid);
         }
+        if (!is_null($userid)) {
+            // We are not superadmin so we need to limit to our own or shared with us
+            $selectValue[] = '{{participant_shares}}.can_edit';
+            $joinValue[]   = 'LEFT JOIN {{participant_shares}} ON p.participant_id={{participant_shares}}.participant_id';
+            $where = 'p.owner_uid = :userid1 OR {{participant_shares}}.share_uid = :userid2';
+        }
+        
         $data = Yii::app()->db->createCommand()
               ->select($selectValue)
               ->from('{{participants}} p')
-              ->limit($limit, $start);
+              ->offset($offset)
+              ->limit($limit);
         $data->setJoin($joinValue);
+        
+        if (!empty($order)) {
+            $data->setOrder($order);
+        }
+        
+        if (!is_null($userid)) {
+            $data->setWhere($where);
+            $data->bindParam(":userid1", $userid, PDO::PARAM_INT)
+                 ->bindParam(":userid2", $userid, PDO::PARAM_INT);
+        }
         $allData = $data->queryAll();
+        
         return $allData;
     }
 
     function getSurveyCount($participant_id)
     {
-        $count = count(Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $participant_id, PDO::PARAM_INT)->queryAll());
+        $count = Yii::app()->db->createCommand()->select('count(*)')->from('{{survey_links}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $participant_id, PDO::PARAM_INT)->queryScalar();
         return $count;
     }
 
@@ -342,95 +387,6 @@ class Participants extends CActiveRecord
 	}
 
     /*
-     * Builds a select query for searching through participants limited to searches with only one line (no more than 3 entries in condition array)
-     *
-     * Deprecated, use "getParticipantsSearchMultiple()" instead.
-     *
-     * */
-    function getParticipantsSearch($condition, $page, $limit)
-    {
-        $start = $limit * $page - $limit;
-        $command = new CDbCriteria;
-        $command->condition = '';
-        $lang = Yii::app()->session['adminlang'];
-        $start = $limit * $page - $limit;
-        if(is_numeric($condition[2])) $condition[2]=intval($condition[2]);
-        switch($condition[1])
-        {
-            case 'equal':
-                $operator="=";
-                break;
-            case 'contains':
-                $operator="LIKE";
-                $condition[2]="%".$condition[2]."%";
-                break;
-            case 'notequal':
-                $operator="!=";
-                break;
-            case 'notcontains':
-                $operator="NOT LIKE";
-                $condition[2]="%".$condition[2]."%";
-                break;
-            case 'greaterthan':
-                $operator=">";
-                break;
-            case 'lessthan':
-                $operator="<";
-        }
-        if($condition[0]=="survey")
-        {
-            $lang = Yii::app()->session['adminlang'];
-            $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' :param1 OR {{survey_links}}.survey_id '.$operator.' :param2))');
-            $command->params=array(':lang'=>$lang, ':param1'=>$condition[2] , ':param2'=>$condition[2]);
-        }
-        elseif($condition[0]=="owner_name")
-        {
-            $userid = Yii::app()->db->createCommand()
-                                ->select('uid')
-                                ->where('full_name '.$operator.' :condition_2')
-                                ->from('{{users}}')
-                                ->bindParam("condition_2", $condition[2], PDO::PARAM_STR)
-                                ->queryAll();
-            $uid = $userid[0];
-            $command->addCondition('owner_uid = :uid');
-            $command->params=array(':uid'=>$uid['uid']);
-        }
-        elseif (is_numeric($condition[0])) //Searching for an attribute
-        {
-            $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value '.$operator.' :condition_2)');
-            $command->params=array(':condition_0'=>$condition[0], ':condition_2'=>$condition[2]);
-        }
-        else
-        {
-            $command->addCondition($condition[0] . ' '.$operator.' :condition_2');
-            $command->params=array(':condition_2'=>$condition[2]);
-        }
-
-        if ($page == 0 && $limit == 0)
-        {
-            $arr = Participants::model()->findAll($command);
-            $data = array();
-            foreach ($arr as $t)
-            {
-                $data[$t->participant_id] = $t->attributes;
-            }
-        }
-        else
-        {
-            $command->limit = $limit;
-            $command->offset = $start;
-            $arr = Participants::model()->findAll($command);
-            $data = array();
-            foreach ($arr as $t)
-            {
-                $data[$t->participant_id] = $t->attributes;
-            }
-        }
-
-        return $data;
-    }
-
-    /*
      * Function builds a select query for searches through participants using the $condition field passed
      * which is in the format "firstfield||sqloperator||value||booleanoperator||secondfield||sqloperator||value||booleanoperator||etc||etc||etc"
      * for example: "firstname||equal||Jason||and||lastname||equal||Cleeland" will produce SQL along the lines of "WHERE firstname = 'Jason' AND lastname=='Cleeland'"
@@ -479,7 +435,7 @@ class Participants extends CActiveRecord
         }
 
         $con = count($condition);
-        while ($i < $con)
+        while ($i < $con && $con > 2)
         {
             if ($i < 3) //Special set just for the first query/condition
             {
@@ -652,9 +608,9 @@ class Participants extends CActiveRecord
     function is_owner($participant_id)
     {
         $userid = Yii::app()->session['loginID'];
-        $is_owner = Yii::app()->db->createCommand()->select('participant_id')->where('participant_id = :participant_id AND owner_uid = :userid')->from('{{participants}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
-        $is_shared = Yii::app()->db->createCommand()->select('participant_id')->where('participant_id = :participant_id AND share_uid = :userid')->from('{{participant_shares}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
-        if (count($is_shared) || count($is_owner))
+        $is_owner = Yii::app()->db->createCommand()->select('count(*)')->where('participant_id = :participant_id AND owner_uid = :userid')->from('{{participants}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
+        $is_shared = Yii::app()->db->createCommand()->select('count(*)')->where('participant_id = :participant_id AND share_uid = :userid')->from('{{participant_shares}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
+        if ($is_shared > 0 || $is_owner > 0)
         {
             return true;
         }
@@ -750,7 +706,7 @@ class Participants extends CActiveRecord
                     $previousattribute[$newname]=$previousattribute[$key];
                     unset($previousattribute[$key]);
                     //Rename the token field the name of the participant_attribute
-                    $attributedetails=ParticipantAttributeNames::getAttributeNames($val);
+                    $attributedetails=ParticipantAttributeNames::model()->getAttributeNames($val);
                     $previousattribute[$newname]['description']=$attributedetails[0]['attribute_name'];
                     $previousattribute=serialize($previousattribute);
 
@@ -860,7 +816,7 @@ class Participants extends CActiveRecord
                         $numberofattributes = count($attributesadded);
                         for ($a = 0; $a < $numberofattributes; $a++)
                         {
-                            Participants::updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
+                            Participants::model()->updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
                         }
                     }
                     //If there are automapped attributes, add those values to the token entry for this participant
@@ -869,7 +825,7 @@ class Participants extends CActiveRecord
                         foreach ($mapped as $key => $value)
                         {
                             if ($key[10] == 'c') { //We know it's automapped because the 11th letter is 'c'
-                                Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                                Participants::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
                             }
                         }
                     }
@@ -881,7 +837,7 @@ class Participants extends CActiveRecord
                         foreach ($mapped as $key => $value)
                         {
                             if ($key[10] != 'c' && $key[9]=='_') { //It's not an auto field because it's 11th character isn't 'c'
-                                Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                                Participants::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
                             }
                         }
                     }
@@ -892,7 +848,7 @@ class Participants extends CActiveRecord
                         foreach($mapped as $key=>$value)
                         {
                             if((strlen($key) > 8 && $key[10] != 'c' && $key[9] !='_') || strlen($key) < 9) {
-                                Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                                Participants::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
                             }
                         }
                     }
@@ -928,7 +884,7 @@ class Participants extends CActiveRecord
                     $numberofattributes = count($attributesadded);
                     for ($a = 0; $a < $numberofattributes; $a++)
                     {
-                        Participants::updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
+                        Participants::model()->updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
                     }
                 }
                 //If there are any automatically mapped attributes, add those values to the token entry for this participant
@@ -936,7 +892,7 @@ class Participants extends CActiveRecord
                 {
                     foreach ($mapped as $key => $value)
                     {
-                        Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                        Participants::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
                     }
                 }
                 $sucessfull++;
@@ -946,7 +902,7 @@ class Participants extends CActiveRecord
         return $returndata;
     }
 
-    /*
+    /**
      * Updates a field in the token table with a value from the participant attributes table
      *
      * @param int $surveyId Survey ID number
@@ -955,7 +911,7 @@ class Participants extends CActiveRecord
      * @param int $tokenFieldName fieldname in the token table
      *
      * @return bool true/false
-     * */
+     */
     function updateTokenAttributeValue($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
         //Get the value from the participant_attribute field
         $val = Yii::app()->db
@@ -977,7 +933,7 @@ class Participants extends CActiveRecord
         return true;
     }
 
-    /*
+    /**
      * Updates or creates a field in the token table with a value from the participant attributes table
      *
      * @param int $surveyId Survey ID number
@@ -986,7 +942,7 @@ class Participants extends CActiveRecord
      * @param int $tokenFieldName fieldname in the token table
      *
      * @return bool true/false
-     * */
+     */
      function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
         $val = Yii::app()->db
                          ->createCommand()
@@ -1130,7 +1086,7 @@ class Participants extends CActiveRecord
                         {
                             foreach ($newarr as $key => $value)
                             {
-                                Participants::updateAttributeValueToken($surveyid, $query[0]['participant_id'], $attid[$key], $key);
+                                Participants::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $attid[$key], $key);
                             }
                         }
                     }
@@ -1140,7 +1096,7 @@ class Participants extends CActiveRecord
                         {
                             foreach ($mapped as $cpdbatt => $tatt)
                             {
-                                Participants::updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
+                                Participants::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
                             }
                         }
                     }
@@ -1172,7 +1128,7 @@ class Participants extends CActiveRecord
                     {
                         foreach ($newarr as $key => $value)
                         {
-                            Participants::updateAttributeValueToken($surveyid, $pid, $attid[$key], $key);
+                            Participants::model()->updateAttributeValueToken($surveyid, $pid, $attid[$key], $key);
                         }
                     }
                     /* Now add mapped attribute values */
@@ -1180,7 +1136,7 @@ class Participants extends CActiveRecord
                     {
                         foreach ($mapped as $cpdbatt => $tatt)
                         {
-                            Participants::updateAttributeValueToken($surveyid,$pid,$cpdbatt,$tatt);
+                            Participants::model()->updateAttributeValueToken($surveyid,$pid,$cpdbatt,$tatt);
                         }
                     }
                     $sucessfull++;
@@ -1261,7 +1217,7 @@ class Participants extends CActiveRecord
                     $previousattribute[$newname]=$previousattribute[$tatt];
                     unset($previousattribute[$tatt]);
                     //Rename the token field the name of the participant_attribute
-                    $attributedetails=ParticipantAttributeNames::getAttributeNames($cpdbatt);
+                    $attributedetails=ParticipantAttributeNames::model()->getAttributeNames($cpdbatt);
                     $previousattribute[$newname]['description']=$attributedetails[0]['attribute_name'];
                     $previousattribute = serialize($previousattribute);
                     //$newstring = str_replace($tatt, $newname, $previousattribute['attributedescriptions']);

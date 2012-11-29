@@ -47,7 +47,11 @@ class NumericalQuestion extends QuestionModule
             $tiwidth=10;
         }
 
-        $fValue=rtrim($_SESSION['survey_'.$this->surveyid][$this->fieldname],'0.');// Remove ending . and extra 0
+        $fValue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+        if(strpos(".",$fValue))
+        {
+            $fValue=rtrim(rtrim($sValue,"0"),".");
+        }
         $integeronly=0;
         if (trim($aQuestionAttributes['num_value_int_only'])==1)
         {
@@ -98,7 +102,10 @@ class NumericalQuestion extends QuestionModule
 
     public function getExtendedAnswer($value, $language)
     {
-        $value=rtrim($value,"0.");
+        if(strpos(".",$value))
+        {
+            $fValue=rtrim(rtrim($value,"0"),".");
+        }
         $aQuestionAttributes = $this->getAttributeValues();
         if($aQuestionAttributes['num_value_int_only'])
         {

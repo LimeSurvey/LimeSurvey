@@ -183,16 +183,14 @@ class CheckQuestion extends QuestionModule
             }
             $answer .= $startitem;
             $answer .= $hiddenfield.'
-            <input class="checkbox other-checkbox" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox"';
+            <input class="checkbox other-checkbox" style="visibility:hidden" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox"';
             // othercbox can be not display, because only input text goes to database
 
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && trim($_SESSION['survey_'.$this->surveyid][$myfname])!='')
             {
                 $answer .= CHECKED;
             }
-            $answer .= " onclick='cancelBubbleThis(event);if(this.checked===false){ document.getElementById(\"answer$myfname\").value=\"\"; document.getElementById(\"java$myfname\").value=\"\"; $checkconditionFunction(\"\", \"$myfname\", \"text\"); }";
-            $answer .= " if(this.checked===true) { document.getElementById(\"answer$myfname\").focus(); }; LEMflagMandOther(\"$myfname\",this.checked);";
-            $answer .= "' />
+            $answer .= " />
             <label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
             <input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
@@ -204,11 +202,15 @@ class CheckQuestion extends QuestionModule
                 }
                 $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
             }
-            $answer .= "\" onkeyup='if ($.trim(this.value)!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; $(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));'/>";
-
+            $answer .="\" />";
             $answer .="<script type='text/javascript'>\n";
-            $answer .="$('#answer{$myfname}').bind('keyup blur',function(){\n";
-            $answer .= " if ($.trim($(this).val())!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",true); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",false); }; $(\"#java{$myfname}\").val($(this).val());$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));\n";
+            $answer .="$('#answer{$myfname}cbox').css('visibility','');";
+            $answer .="$('#answer{$myfname}').bind('keyup focusout',function(event){\n";
+            $answer .= " if ($.trim($(this).val()).length>0) { $(\"#answer{$myfname}cbox\").attr(\"checked\",true); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",false); }; $(\"#java{$myfname}\").val($(this).val());LEMflagMandOther(\"$myfname\",$('#answer{$myfname}cbox').is(\":checked\")); $oth_checkconditionFunction(this.value, this.name, this.type); \n";
+            $answer .="});\n";
+            $answer .="$('#answer{$myfname}cbox').click(function(event){\n";
+            $answer .= " //if (($(this)).is(':checked')) { $(\"#answer{$myfname}\").focus(); } else { $(\"#answer{$myfname}\").val('');{$checkconditionFunction}(\"\", \"{$myfname}\", \"text\"); }; return true;\n";
+            $answer .= " if (($(this)).is(':checked') && $.trim($(\"#answer{$myfname}\").val()).length==0) { $(\"#answer{$myfname}\").focus();LEMflagMandOther(\"$myfname\",true);return false; } else {  $(\"#answer{$myfname}\").val('');{$checkconditionFunction}(\"\", \"{$myfname}\", \"text\");LEMflagMandOther(\"$myfname\",false); return true; }; \n";
             $answer .="});\n";
             $answer .="</script>\n";
             $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
@@ -601,8 +603,8 @@ class CheckQuestion extends QuestionModule
         {
             $clang=Yii::app()->lang;
             $attributes = $this->getAttributeValues();
-            if (trim($attributes['other_replace_text']) != '') {
-                $othertext = trim($qattr['other_replace_text']);
+            if (trim($attributes['other_replace_text'][$_SESSION['survey_'.$this->surveyid]['s_lang']]) != '') {
+                $othertext = trim($qattr['other_replace_text'][$_SESSION['survey_'.$this->surveyid]['s_lang']]);
             }
             else {
                 $othertext = $clang->gT('Other:');
