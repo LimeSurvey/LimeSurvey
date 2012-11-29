@@ -5728,26 +5728,25 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
     return $goodchars;
 }
 
-function getTokenData($surveyid, $token)
-{
-    Tokens_dynamic::sid($surveyid);
-    $query = Tokens_dynamic::model()->findAll('token = :token',array(':token' => $token));
 
-    // while($row=$result->FetchRow())
-    $thistoken=array(); // so has default value
-    foreach ($query as $row)
+/**
+* Return array with token attribute.
+*
+* @param $surveyid 	int	the surveyid
+* @param $token	string	token code
+*
+* @return Array of token data
+*/
+function getTokenData($surveyid, $token) 
+{
+    $thistoken = Tokens_dynamic::model($surveyid)->find('token = :token',array(':token' => $token));
+    $thistokenarray=array(); // so has default value
+    if($thistoken)
     {
-        $thistoken=array("firstname"=>$row->firstname,
-        "lastname"=>$row->lastname,
-        "email"=>$row->email,
-        "language" =>$row->language);
-        $attrfieldnames=getAttributeFieldNames($surveyid);
-        foreach ($attrfieldnames as $attr_name)
-        {
-            $thistoken[$attr_name]=$row[$attr_name];
-        }
-    } // while
-    return $thistoken;
+        $thistokenarray =$thistoken->attributes;
+    }// Did we fill with empty string if not exist ?
+
+    return $thistokenarray;
 }
 
 /**
