@@ -227,7 +227,7 @@ class Participants extends CActiveRecord
 
     function getParticipants($page, $limit,$attid, $order = null, $userid = null)
     {
-        $start = $limit * $page - $limit;
+        $offset = ($page - 1) * $limit;
         $selectValue = array();
         $joinValue = array();
         array_push($selectValue,"p.*");
@@ -249,11 +249,17 @@ class Participants extends CActiveRecord
         $data = Yii::app()->db->createCommand()
               ->select($selectValue)
               ->from('{{participants}} p')
-              ->limit($limit, $start);
+              ->offset($offset)
+              ->limit($limit);
         $data->setJoin($joinValue);
         
         if (!empty($order)) {
-            $data->setOrder($order);
+            list($field, $sortOrder) = explode(' ' , $order);
+            // survey field is not sortable (and searchable) right now until we include it in the query just skip to prevent ugly errors
+            $aNotSortable = array('survey');
+            if (!in_array($field, $aNotSortable)) {
+                $data->setOrder($order);
+            }
         }
         
         if (!is_null($userid)) {
@@ -262,8 +268,8 @@ class Participants extends CActiveRecord
                  ->bindParam(":userid2", $userid, PDO::PARAM_INT);
         }
         $allData = $data->queryAll();
+        
         return $allData;
-
     }
 
     function getSurveyCount($participant_id)
