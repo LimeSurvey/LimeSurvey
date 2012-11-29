@@ -217,9 +217,9 @@ class index extends CAction {
             AND (startdate >= '".date("Y-m-d H:i")."')
             ORDER BY ls1.surveyls_title";
             // Query is too complex to be changed to ActiveRecord
-            $oResult=Yii::app()->db->createCommand($sQuery)->bindValues(array(':displaylanguage'=>$sDisplayLanguage))->query();
+            $sResult=Yii::app()->db->createCommand($sQuery)->bindValues(array(':displaylanguage'=>$sDisplayLanguage))->query();
 
-            $aRows=$sresult->readAll();
+            $aRows=$sResult->readAll();
             if(count($aRows) > 0)
             {
                 $aSurveyLinkList[] = "</ul>"
