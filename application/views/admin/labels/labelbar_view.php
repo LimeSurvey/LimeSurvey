@@ -11,7 +11,7 @@
             <a href='#' onclick="if (confirm('<?php $clang->eT("Do you really want to delete this label set?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/labels/sa/process")."?action=deletelabelset&amp;lid=$lid"); ?>}" >
                 <img src='<?php echo $sImageURL; ?>delete.png'  alt='<?php $clang->eT("Delete label set"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>separator.gif'  alt='' />
-            <a href='<?php echo $this->createUrl("admin/export/dumplabel/lid/$lid");?>'>
+            <a href='<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid");?>'>
                 <img src='<?php echo $sImageURL; ?>dumplabel.png' alt='<?php $clang->eT("Export this label set"); ?>' /></a>
         </div>
         <div class='menubar-right'>

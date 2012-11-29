@@ -21,7 +21,7 @@
                         <li><?php $clang->eT("All participant information is lost.");?></li>
                         <li><?php $clang->eT("A deactivated survey is not accessible to participants (only a message appears that they are not permitted to see this survey).");?></li>
                         <li><?php $clang->eT("All questions, groups and parameters are editable again.");?></li>
-                        <li><a title='<?php $clang->eT("Export survey results") ?>' href='<?php echo $this->createUrl('admin/export/exportresults/surveyid/'.$surveyid) ?>'>
+                        <li><a title='<?php $clang->eT("Export survey results") ?>' href='<?php echo $this->createUrl('admin/export/sa/exportresults/surveyid/'.$surveyid) ?>'>
                             <?php $clang->eT("You should export your responses before deactivating.");?>
                         </li>
                     </ul>

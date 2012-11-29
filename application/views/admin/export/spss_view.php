@@ -1,6 +1,6 @@
 <div class='header ui-widget-header'><?php $clang->eT("Export result data to SPSS");?></div>
 
-<form action='<?php echo $this->createUrl("admin/export/exportspss/sid/$surveyid/");?>' id='exportspss' method='post'><ul>
+<form action='<?php echo $this->createUrl("admin/export/sa/exportspss/sid/$surveyid/");?>' id='exportspss' method='post'><ul>
 <li><label for='completionstate'><?php $clang->eT("Data selection:");?></label><select id='completionstate' name='completionstate' onchange='this.form.submit();'>
 <option value='complete' <?php echo $selecthide;?>><?php $clang->eT("Completed responses only");?></option>
 <option value='all' <?php echo $selectshow;?>><?php $clang->eT("All responses");?></option>

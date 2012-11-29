@@ -37,7 +37,7 @@
             <img src='<?php echo $sImageURL; ?>separator.gif'  alt='' />
             <img src='<?php echo $sImageURL; ?>blank.gif' width='5' height='20' alt='' />
 
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/logout");?>', '_top')">
+            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/sa/logout");?>', '_top')">
                 <img src='<?php echo $sImageURL; ?>logout.png' alt='<?php $clang->eT("Logout"); ?>' /></a>
 
             <a href="#" onclick="showhelp('show')">

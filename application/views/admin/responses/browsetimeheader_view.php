@@ -10,22 +10,22 @@
     <div class='menubar-main'>
         <?php if (!Yii::app()->request->getPost('sql'))
         { ?>
-            <a href='<?php echo $this->createUrl("/admin/responses/time/surveyid/$iSurveyId/start/0/limit/$limit"); ?>' title='<?php $clang->eT("Show start..."); ?>' >
+            <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/0/limit/$limit"); ?>' title='<?php $clang->eT("Show start..."); ?>' >
                 <img name='DataBegin' align='left' src='<?php echo $sImageURL; ?>databegin.png' alt='<?php $clang->eT("Show start..."); ?>' />
             </a>
-            <a href='<?php echo $this->createUrl("/admin/responses/time/surveyid/$iSurveyId/start/$last/limit/$limit"); ?>' title='<?php $clang->eT("Show previous.."); ?>'>
+            <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$last/limit/$limit"); ?>' title='<?php $clang->eT("Show previous.."); ?>'>
                 <img name='DataBack' align='left'  src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous.."); ?>' />
             </a>
             <img src='<?php echo $sImageURL; ?>/blank.gif' width='13' height='20' alt='' />
-            <a href='<?php echo $this->createUrl("/admin/responses/time/surveyid/$iSurveyId/start/$next/limit/$limit"); ?>' title='<?php $clang->eT("Show next..."); ?>'>
+            <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$next/limit/$limit"); ?>' title='<?php $clang->eT("Show next..."); ?>'>
                 <img name='DataForward' align='left' src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' />
             </a>
-            <a href='<?php echo $this->createUrl("/admin/responses/time/surveyid/$iSurveyId/start/$end/imit/$limit"); ?>' title='<?php $clang->eT("Show last..."); ?>'>
+            <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$end/imit/$limit"); ?>' title='<?php $clang->eT("Show last..."); ?>'>
                 <img name='DataEnd' align='left' src='<?php echo $sImageURL; ?>dataend.png' alt='<?php $clang->eT("Show last.."); ?>' />
             </a>
             <img src='<?php echo $sImageURL; ?>separator.gif' alt='' />
         <?php } ?>
-        <form action='<?php echo $this->createUrl("/admin/responses/time/surveyid/{$iSurveyId}"); ?>' id='browseresults' method='post'>
+        <form action='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/{$iSurveyId}"); ?>' id='browseresults' method='post'>
             <font size='1' face='verdana'>
             <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='20' alt='' />
             <?php $clang->eT("Records displayed:"); ?> <input type='text' size='4' value='<?php echo $limit ?>' name='limit' id='limit' />
@@ -40,7 +40,7 @@
     </div>
 </div>
 
-<form action='<?php echo $this->createUrl("/admin/responses/time/surveyid/{$iSurveyId}"); ?>' id='resulttableform' method='post'>
+<form action='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/{$iSurveyId}"); ?>' id='resulttableform' method='post'>
 
 <!-- DATA TABLE -->
 <?php if ($fncount < 10) { ?>

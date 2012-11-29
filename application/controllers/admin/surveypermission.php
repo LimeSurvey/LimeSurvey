@@ -96,13 +96,13 @@ class surveypermission extends Survey_Common_Action {
                     $surveysecurity .= "<tr>\n";
 
                     $surveysecurity .= "<td>\n";
-                    $surveysecurity .= "<form style='display:inline;' method='post' action='".$this->getController()->createUrl('admin/surveypermission/set/surveyid/'.$surveyid)."'>"
+                    $surveysecurity .= "<form style='display:inline;' method='post' action='".$this->getController()->createUrl('admin/surveypermission/sa/set/surveyid/'.$surveyid)."'>"
                     ."<input type='image' src='{$imageurl}edit_16.png' alt='".$clang->gT("Edit permissions")."' />"
                     ."<input type='hidden' name='action' value='setsurveysecurity' />"
                     ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
                     ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
                     ."</form>\n";
-                    $surveysecurity .= "<form style='display:inline;' method='post' action='".$this->getController()->createUrl('admin/surveypermission/delete/surveyid/'.$surveyid)."'>"
+                    $surveysecurity .= "<form style='display:inline;' method='post' action='".$this->getController()->createUrl('admin/surveypermission/sa/delete/surveyid/'.$surveyid)."'>"
                     ."<input type='image' src='{$imageurl}/token_delete.png' alt='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
                     ."<input type='hidden' name='action' value='delsurveysecurity' />"
                     ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
@@ -162,14 +162,14 @@ class surveypermission extends Survey_Common_Action {
 
             $surveysecurity .= "</tbody>\n"
             . "</table>\n"
-            . "<form class='form44' action='".$this->getController()->createUrl('admin/surveypermission/adduser/surveyid/'.$surveyid)."' method='post'><ul>\n"
+            . "<form class='form44' action='".$this->getController()->createUrl('admin/surveypermission/sa/adduser/surveyid/'.$surveyid)."' method='post'><ul>\n"
             . "<li><label for='uidselect'>".$clang->gT("User").": </label><select id='uidselect' name='uid'>\n"
             . getSurveyUserList(false,false,$surveyid)
             . "</select>\n"
             . "<input style='width: 15em;' type='submit' value='".$clang->gT("Add User")."'  onclick=\"if (document.getElementById('uidselect').value == -1) { alert('".$clang->gT("Please select a user first","js")."'); return false;}\"/>"
             . "<input type='hidden' name='action' value='addsurveysecurity' />"
             . "</li></ul></form>\n"
-            . "<form class='form44' action='".$this->getController()->createUrl('admin/surveypermission/addusergroup/surveyid/'.$surveyid)."' method='post'><ul><li>\n"
+            . "<form class='form44' action='".$this->getController()->createUrl('admin/surveypermission/sa/addusergroup/surveyid/'.$surveyid)."' method='post'><ul><li>\n"
             . "<label for='ugidselect'>".$clang->gT("Groups").": </label><select id='ugidselect' name='ugid'>\n"
             . getSurveyUserGroupList('htmloptions',$surveyid)
             . "</select>\n"
@@ -231,7 +231,7 @@ class surveypermission extends Survey_Common_Action {
                         {
                             $addsummary .= "<div class=\"successheader\">".$clang->gT("User group added.")."</div>\n";
                             Yii::app()->session['uids'] = $uid_arr;
-                            $addsummary .= "<br /><form method='post' action='".$this->getController()->createUrl('admin/surveypermission/set/surveyid/'.$surveyid)."'>"
+                            $addsummary .= "<br /><form method='post' action='".$this->getController()->createUrl('admin/surveypermission/sa/set/surveyid/'.$surveyid)."'>"
                             ."<input type='submit' value='".$clang->gT("Set Survey Rights")."' />"
                             ."<input type='hidden' name='action' value='setusergroupsurveysecurity' />"
                             ."<input type='hidden' name='ugid' value='{$postusergroupid}' />"
@@ -241,21 +241,21 @@ class surveypermission extends Survey_Common_Action {
                         {
                             // Error while adding user to the database
                             $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user group.")."</div>\n";
-                            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
                         }
                     }
                     else
                     {
                         // no user to add
                         $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user group.")."</div>\n";
-                        $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                        $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
                     }
                 }
                 else
                 {
                     $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n"
                     . "<br />" . $clang->gT("No Username selected.")."<br />\n";
-                    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
                 }
             }
             else
@@ -306,7 +306,7 @@ class surveypermission extends Survey_Common_Action {
                     {
 
                         $addsummary .= "<div class=\"successheader\">".$clang->gT("User added.")."</div>\n";
-                        $addsummary .= "<br /><form method='post' action='".$this->getController()->createUrl('admin/surveypermission/set/surveyid/'.$surveyid)."'>"
+                        $addsummary .= "<br /><form method='post' action='".$this->getController()->createUrl('admin/surveypermission/sa/set/surveyid/'.$surveyid)."'>"
                         ."<input type='submit' value='".$clang->gT("Set survey permissions")."' />"
                         ."<input type='hidden' name='action' value='setsurveysecurity' />"
                         ."<input type='hidden' name='uid' value='{$postuserid}' />"
@@ -317,14 +317,14 @@ class surveypermission extends Survey_Common_Action {
                         // Username already exists.
                         $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n"
                         . "<br />" . $clang->gT("Username already exists.")."<br />\n";
-                        $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                        $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
                     }
                 }
                 else
                 {
                     $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n"
                     . "<br />" . $clang->gT("No Username selected.")."<br />\n";
-                    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
                 }
             }
             else
@@ -387,7 +387,7 @@ class surveypermission extends Survey_Common_Action {
                     $sUsergroupName=$resrow['name'];
                     $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for group %s"),"<span style='font-style:italic'>".$sUsergroupName."</span>")."</div>";
                 }
-                $usersummary .= "<br /><form action='".$this->getController()->createUrl('admin/surveypermission/surveyright/surveyid/'.$surveyid)."' method='post'>\n"
+                $usersummary .= "<br /><form action='".$this->getController()->createUrl('admin/surveypermission/sa/surveyright/surveyid/'.$surveyid)."' method='post'>\n"
                 . "<table style='margin:0 auto;' class='usersurveypermissions'><thead>\n";
 
                 $usersummary .= ""
@@ -497,7 +497,7 @@ class surveypermission extends Survey_Common_Action {
                 {
                     $addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not delete user. User was not supplied.")."</div>\n";
                 }
-                $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
             }
             else
             {
@@ -590,7 +590,7 @@ class surveypermission extends Survey_Common_Action {
                 }
 
             }
-            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
             $addsummary .= "</div>\n";
             $aViewUrls['output'] = $addsummary;
         }

@@ -482,7 +482,7 @@ class dataentry extends Survey_Common_Action
                     }
                     Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
                 }
-                $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/responses/index/surveyid/{$surveyid}"));
+                $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/responses/sa/index/surveyid/{$surveyid}"));
             }
         }
     }
