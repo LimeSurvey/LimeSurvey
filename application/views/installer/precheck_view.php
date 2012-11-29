@@ -62,7 +62,7 @@ function dirReport($dir, $write, $clang)
        <?php } else { ?><?php echo $phpVersion ; ?> <?php } ?></td>
 </tr>
 <tr>
-       <td style="width: 209px;"><?php $clang->eT("PHP DBO driver library"); ?></td>
+       <td style="width: 209px;"><?php $clang->eT("PHP PDO driver library"); ?></td>
        <td align="center" style="width: 225px;"><?php $clang->eT("At least one installed"); ?></td>
        <td align="center" style="width: 225px;"><?php if (count($dbtypes)==0) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("None found"); ?></span></b>
        <?php } else { ?><?php echo implode(', ',$dbtypes); ?> <?php } ?></td>
