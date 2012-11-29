@@ -1762,9 +1762,9 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
             case 'N':
                 if (trim($sValue)!='')
                 {
-                    if(strpos(".",$fValue))
+                    if(strpos(".",$sValue))
                     {
-                        $fValue=rtrim(rtrim($sValue,"0"),".");
+                        $sValue=rtrim(rtrim($sValue,"0"),".");
                     }
                     $qidattributes = getQuestionAttributeValues($fields['qid']);
                     if($qidattributes['num_value_int_only'])
