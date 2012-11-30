@@ -90,6 +90,16 @@ CKEDITOR.STYLE_OBJECT = 3;
 
 	CKEDITOR.style = function( styleDefinition, variablesValues )
 	{
+		// Inline style text as attribute should be converted
+		// to styles object.
+		var attrs = styleDefinition.attributes;
+		if ( attrs && attrs.style )
+		{
+			styleDefinition.styles = CKEDITOR.tools.extend( {},
+				styleDefinition.styles, parseStyleText( attrs.style ) );
+			delete attrs.style;
+		}
+
 		if ( variablesValues )
 		{
 			styleDefinition = CKEDITOR.tools.clone( styleDefinition );

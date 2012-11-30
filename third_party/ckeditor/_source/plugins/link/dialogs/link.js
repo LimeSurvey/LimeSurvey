@@ -503,6 +503,11 @@ CKEDITOR.dialog.add( 'link', function( editor )
 													dialog.getValueOf( 'info', 'linkType' ) != 'url' )
 												return true;
 
+											if ( (/javascript\:/).test( this.getValue() ) ) {
+												alert( commonLang.invalidValue );
+												return false;
+											}
+
 											if ( this.getDialog().fakeObj )	// Edit Anchor.
 												return true;
 

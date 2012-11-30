@@ -8,14 +8,14 @@ Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
-CKEDITOR.plugins.setLang( 'devtools', 'fa',
+CKEDITOR.plugins.setLang( 'devtools', 'ku',
 {
 	devTools :
 	{
-		title		: 'اطلاعات عنصر',
-		dialogName	: 'نام پنجره محاوره‌ای',
-		tabName		: 'نام برگه',
-		elementId	: 'ID عنصر',
-		elementType	: 'نوع عنصر'
+		title		: 'زانیاری توخم',
+		dialogName	: 'ناوی په‌نجه‌ره‌ی دیالۆگ',
+		tabName		: 'ناوی بازده‌ر تاب',
+		elementId	: 'ناسنامه‌ی توخم',
+		elementType	: 'جۆری توخم'
 	}
 });

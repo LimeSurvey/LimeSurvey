@@ -106,7 +106,8 @@ CKEDITOR.tools.extend( CKEDITOR.dom.node.prototype,
 
 				if ( !cloneId )
 					node.removeAttribute( 'id', false );
-				node.removeAttribute( 'data-cke-expando', false );
+
+				node[ 'data-cke-expando' ] = undefined;
 
 				if ( includeChildren )
 				{

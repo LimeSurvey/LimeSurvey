@@ -275,15 +275,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			cloneCol.push( map[ i ][ colIndex ] );
 			var nextCell = insertBefore ? map[ i ][ colIndex - 1 ] : map[ i ][ colIndex + 1 ];
-			nextCell && nextCol.push( nextCell );
+			nextCol.push( nextCell );
 		}
 
 		for ( i = 0; i < height; i++ )
 		{
 			var cell;
+
+			if ( !cloneCol[ i ] )
+				continue;
+
 			// Check whether there's a spanning column here, do not break it.
 			if ( cloneCol[ i ].colSpan > 1
-				&& nextCol.length
 				&& nextCol[ i ] == cloneCol[ i ] )
 			{
 				cell = cloneCol[ i ];
@@ -771,7 +774,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	CKEDITOR.plugins.tabletools =
 	{
-		requires : [ 'table', 'dialog', 'contextmenu' ],
+		requires : [ 'table', 'dialog' ],
 
 		init : function( editor )
 		{

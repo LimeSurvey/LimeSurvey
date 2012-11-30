@@ -5,7 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 CKEDITOR.plugins.add( 'devtools',
 {
-	lang : [ 'en', 'bg', 'cs', 'cy', 'da', 'de', 'el', 'eo', 'et', 'fa', 'fi', 'fr', 'gu', 'he', 'hr', 'it', 'nb', 'nl', 'no', 'pl', 'pt-br', 'tr', 'ug', 'uk', 'vi', 'zh-cn' ],
+	lang : [ 'en', 'bg', 'cs', 'cy', 'da', 'de', 'el', 'eo', 'et', 'fa', 'fi', 'fr', 'gu', 'he', 'hr', 'it', 'ku', 'nb', 'nl', 'no', 'pl', 'pt-br', 'sk', 'tr', 'ug', 'uk', 'vi', 'zh-cn' ],
 
 	init : function( editor )
 	{
