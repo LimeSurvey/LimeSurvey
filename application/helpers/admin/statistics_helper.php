@@ -535,8 +535,9 @@ class statistics_helper {
         $statlang = $oLanguage;
         $firstletter = Question_types::model()->findByAttributes(array('class' => substr(get_class($q), 0, -8)))->getAttribute('legacy'); //AJS
         $sDatabaseType = Yii::app()->db->getDriverName();
-        $statisticsoutput = "";
-
+        $statisticsoutput="";
+        $qqid = "";
+        
         /* Some variable depend on output type, actually : only line feed */
         switch ($outputType) {
             case 'xls':
@@ -1360,7 +1361,7 @@ class statistics_helper {
             $alist[] = array("", $statlang->gT("No answer"));
         }
 
-        return array("alist" => $alist, "qtitle" => $qtitle, "qquestion" => $qquestion, "qtype" => $qtype, "statisticsoutput" => $statisticsoutput); //AJS
+        return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput, "parentqid"=>$qqid);
     }
 
     /**
