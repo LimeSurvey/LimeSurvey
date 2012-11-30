@@ -31,7 +31,7 @@ CKEDITOR.lang['hu'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle : 'Rich text editor, %1', // MISSING
+	editorTitle : 'HTML szerkesztő, %1',
 	editorHelp : 'Press ALT 0 for help', // MISSING
 
 	// ARIA descriptions.
@@ -120,6 +120,7 @@ CKEDITOR.lang['hu'] =
 		alignTop		: 'Tetejére',
 		alignMiddle		: 'Középre',
 		alignBottom		: 'Aljára',
+		invalidValue	: 'Invalid value.', // MISSING
 		invalidHeight	: 'A magasság mezőbe csak számokat írhat.',
 		invalidWidth	: 'A szélesség mezőbe csak számokat írhat.',
 		invalidCssLength	: '"%1"-hez megadott érték csakis egy pozitív szám lehet, esetleg egy érvényes CSS egységgel megjelölve(px, %, in, cm, mm, em, ex, pt vagy pc).',

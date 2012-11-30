@@ -31,8 +31,8 @@ CKEDITOR.lang['ru'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle : 'Rich text editor, %1', // MISSING
-	editorHelp : 'Press ALT 0 for help', // MISSING
+	editorTitle : 'Визуальный редактор текста, %1',
+	editorHelp : 'нажмите ALT-0 для открытия справки',
 
 	// ARIA descriptions.
 	toolbars	: 'Панели инструментов редактора',
@@ -120,6 +120,7 @@ CKEDITOR.lang['ru'] =
 		alignTop		: 'По верху',
 		alignMiddle		: 'По середине',
 		alignBottom		: 'По низу',
+		invalidValue	: 'Invalid value.', // MISSING
 		invalidHeight	: 'Высота задается числом.',
 		invalidWidth	: 'Ширина задается числом.',
 		invalidCssLength	: 'Значение, указанное в поле "%1", должно быть положительным целым числом. Допускается указание единиц меры CSS (px, %, in, cm, mm, em, ex, pt или pc).',

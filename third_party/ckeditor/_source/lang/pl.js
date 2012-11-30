@@ -31,8 +31,8 @@ CKEDITOR.lang['pl'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle : 'Rich text editor, %1', // MISSING
-	editorHelp : 'Press ALT 0 for help', // MISSING
+	editorTitle : 'Edytor tekstu sformatowanego, %1',
+	editorHelp : 'W celu uzyskania pomocy naciśnij ALT 0',
 
 	// ARIA descriptions.
 	toolbars	: 'Paski narzędzi edytora',
@@ -120,6 +120,7 @@ CKEDITOR.lang['pl'] =
 		alignTop		: 'Do góry',
 		alignMiddle		: 'Do środka',
 		alignBottom		: 'Do dołu',
+		invalidValue	: 'Invalid value.', // MISSING
 		invalidHeight	: 'Wysokość musi być liczbą.',
 		invalidWidth	: 'Szerokość musi być liczbą.',
 		invalidCssLength	: 'Wartość podana dla pola "%1" musi być liczbą dodatnią bez jednostki lub z poprawną jednostką długości zgodną z CSS (px, %, in, cm, mm, em, ex, pt lub pc).',

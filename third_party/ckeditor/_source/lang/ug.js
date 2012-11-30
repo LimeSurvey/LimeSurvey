@@ -30,8 +30,8 @@ CKEDITOR.lang['ug'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle : 'Rich text editor, %1', // MISSING
-	editorHelp : 'Press ALT 0 for help', // MISSING
+	editorTitle : 'كۆرۈنۈشچان تەھرىرلىگۈچ، %1',
+	editorHelp : 'ALT+0 نى بېسىپ ياردەمنى كۆرۈڭ',
 
 	// ARIA descriptions.
 	toolbars	: 'قورال بالداق',
@@ -119,6 +119,7 @@ CKEDITOR.lang['ug'] =
 		alignTop		: 'ئۈستى',
 		alignMiddle		: 'ئوتتۇرا',
 		alignBottom		: 'ئاستى',
+		invalidValue	: 'Invalid value.', // MISSING
 		invalidHeight	: 'ئېگىزلىك چوقۇم رەقەم پىچىمىدا بولۇشى زۆرۈر',
 		invalidWidth	: 'كەڭلىك چوقۇم رەقەم پىچىمىدا بولۇشى زۆرۈر',
 		invalidCssLength	: 'بۇ سۆز بۆلىكى چوقۇم مۇۋاپىق بولغان CSS ئۇزۇنلۇق قىممىتى بولۇشى زۆرۈر، بىرلىكى (px, %, in, cm, mm, em, ex, pt ياكى pc)',

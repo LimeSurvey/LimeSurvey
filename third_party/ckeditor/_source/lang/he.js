@@ -31,8 +31,8 @@ CKEDITOR.lang['he'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle : 'Rich text editor, %1', // MISSING
-	editorHelp : 'Press ALT 0 for help', // MISSING
+	editorTitle : 'עורך טקסט עשיר, %1',
+	editorHelp : 'לחץ אלט ALT + 0 לעזרה',
 
 	// ARIA descriptions.
 	toolbars	: 'סרגלי כלים של העורך',
@@ -120,6 +120,7 @@ CKEDITOR.lang['he'] =
 		alignTop		: 'למעלה',
 		alignMiddle		: 'לאמצע',
 		alignBottom		: 'לתחתית',
+		invalidValue	: 'Invalid value.', // MISSING
 		invalidHeight	: 'הגובה חייב להיות מספר.',
 		invalidWidth	: 'הרוחב חייב להיות מספר.',
 		invalidCssLength	: 'הערך שצוין לשדה "%1" חייב להיות מספר חיובי עם או ללא יחידת מידה חוקית של CSS (px, %, in, cm, mm, em, ex, pt, או pc).',
