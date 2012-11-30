@@ -89,13 +89,14 @@ class UserIdentity extends CUserIdentity
                 }
                 elseif (Yii::app()->getConfig("auth_webserver_autocreate_user"))
                 {
-                    $aUserProfile=Yii::app()->getConfig("auth_webserver_autocreate_profile");
-                } else {
-                    $this->id = $oUser->uid;
-                    $this->user = $oUser;
-                    $this->errorCode = self::ERROR_NONE;
+                    $aUserProfile=Yii::app()->getConfig("auth_webserver_autocreate_profile"); 
                 }
+            } else {
+                $this->id = $oUser->uid;
+                $this->user = $oUser;
+                $this->errorCode = self::ERROR_NONE;
             }
+            
             
             
             if (Yii::app()->getConfig("auth_webserver_autocreate_user") && isset($aUserProfile) && is_null($oUser))
