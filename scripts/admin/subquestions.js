@@ -632,13 +632,13 @@ function setlabel()
         if(!flag[1]){
             $('#laname').remove();
             $('[for=laname]').remove();
-            $($(this).next().next()).after('<select name="laname" id="lasets">');
+            $($(this).next().next()).after('<select name="laname" id="lasets"><option value=""></option></select>');
             jQuery.getJSON(lanameurl, function(data) {
                 $.each(data, function(key, val) {
                     $('#lasets').append('<option value="' + key + '">' + val + '</option>');
                 });
             });
-            $('#lasets').append('</select>');
+            $('#lasets option[value=""]').remove();
             flag[1] = true;
             flag[0] = false;
         }
