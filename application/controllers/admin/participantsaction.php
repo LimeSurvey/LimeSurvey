@@ -864,145 +864,18 @@ class participantsaction extends Survey_Common_Action
      */
     function getParticipantsResults_json()
     {
-    	///admin/participants/getParticipantsResults_json/search/email||contains||com
-        //Possible methods: equal,contains,notequal,notcontains,greaterthan,lessthan
-        //First entry is field to search, second method, third value, seperated by double pipe "||"
-        $page = Yii::app()->request->getPost('page');
-        $limit = Yii::app()->request->getPost('rows');
-        $page=($page) ? $page : 1;
-    	  $limit=($limit) ? $limit : 25;
-
-        $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
-        $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
-
-        //If super admin all the participants will be visible
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
-        {
-            $searchcondition = Yii::app()->request->getQuery('search');
-
-            $searchcondition = urldecode($searchcondition);
-            $finalcondition = array();
-            $condition = explode("||", $searchcondition);
-            $aData = new stdClass();
-            $aData->page = $page;
-
-            $records = Participants::model()->getParticipantsSearchMultiple($condition, $page, $limit);
-
-            $aData->records = count(Participants::model()->getParticipantsSearchMultiple($condition, 0, 0));
-            $aData->total = ceil($aData->records / $limit);
-
-            $i = 0;
-
-            foreach ($records as $row => $value)
-            {
-                $username = User::model()->getName($value['owner_uid']); //for conversion of uid to human readable names
-                $surveycount = Participants::model()->getSurveyCount($value['participant_id']);
-                $sortablearray[$i] = array($value['participant_id'], "true", $value['firstname'], $value['lastname'], $value['email'], $value['blacklisted'], $surveycount, $value['language'], $username[0]['full_name']); // since it's the admin he has access to all editing on the participants inspite of what can_edit option is
-                $attributes = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($value['participant_id']);
-                foreach ($attid as $iAttributeId)
-                {
-                    $participantfields[]=$iAttributeId['attribute_id'];
-                    $answer = ParticipantAttributeNames::model()->getAttributeValue($value['participant_id'], $iAttributeId['attribute_id']);
-                    if (isset($answer['value']))
-                    {
-                        array_push($sortablearray[$i], $answer['value']);
-                    }
-                    else
-                    {
-                        array_push($sortablearray[$i], "");
-                    }
-                }
-                $i++;
-            }
-
-            if (!empty($sortablearray))
-            {
-                $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
-                if(is_numeric(Yii::app()->request->getPost('sidx'))) {
-
-                }
-                //var_dump($sortablearray);echo "\r\n\r\n";
-                $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
-                $i = 0;
-                $count = count($sortedarray[0]);
-
-                foreach ($sortedarray as $key => $value)
-                {
-                    $aData->rows[$i]['id'] = $value[0];
-                    $aData->rows[$i]['cell'] = array();
-                    for ($j = 0; $j < $count; $j++)
-                    {
-                        array_push($aData->rows[$i]['cell'], $value[$j]);
-                    }
-                    $i++;
-                }
-            }
-            echo ls_json_encode($aData);
-        }
-        // Only the owned and shared participants will be visible
-        else
-        {
-            $searchcondition = Yii::app()->request->getQuery('search');
-            $searchcondition = urldecode($searchcondition);
-            $finalcondition = array();
-            $condition = explode("||", $searchcondition);
-            $aData = new stdClass();
-            $aData->page = $page;
-
-            $records = Participants::model()->getParticipantsSearchMultiple($condition, $page, $limit);
-
-            $i = 0;
-            foreach ($records as $row => $value)
-            {
-                if (Participants::model()->is_owner($value['participant_id']))
-                {
-                    $username = User::model()->getName($value['owner_uid']); //for conversion of uid to human readable names
-                    $surveycount = Participants::model()->getSurveyCount($value['participant_id']);
-                    $sortablearray[$i] = array($value['participant_id'], "true", $value['firstname'], $value['lastname'], $value['email'], $value['blacklisted'], $surveycount, $value['language'], $username[0]['full_name']); // since it's the admin he has access to all editing on the participants inspite of what can_edit option is
-                    $attributes = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($value['participant_id']);
-                    foreach ($attid as $iAttributeId)
-                    {
-                        $answer = ParticipantAttributeNames::model()->getAttributeValue($value['participant_id'], $iAttributeId['attribute_id']);
-                        if (isset($answer['value']))
-                        {
-                            array_push($sortablearray[$i], $answer['value']);
-                        }
-                        else
-                        {
-                            array_push($sortablearray[$i], "");
-                        }
-                    }
-                    $i++;
-                }
-            }
-
-            if (!empty($sortablearray))
-            {
-                $aData->records = count($sortablearray);
-                $aData->total = ceil(count($sortablearray) / $limit);
-                $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
-                $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
-                $i = 0;
-                $count = count($sortedarray[0]);
-                foreach ($sortedarray as $key => $value)
-                {
-                    $aData->rows[$i]['id'] = $value[0];
-                    $aData->rows[$i]['cell'] = array();
-                    for ($j = 0; $j < $count; $j++)
-                    {
-                        array_push($aData->rows[$i]['cell'], $value[$j]);
-                    }
-                    $i++;
-                }
-            }
-            echo ls_json_encode($aData);
-        }
+        $searchcondition = Yii::app()->request->getQuery('search');
+        $searchcondition = urldecode($searchcondition);
+        $finalcondition = array();
+        $condition = explode("||", $searchcondition);
+        $search = Participants::model()->getParticipantsSearchMultipleCondition($condition);
+        return $this->getParticipants_json($search);
     }
 
 	/*
 	   * Sends the data in JSON format extracted from the database to be displayed using the jqGrid
 	*/
-    function getParticipants_json()
+    function getParticipants_json($search = null)
     {
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
@@ -1021,19 +894,23 @@ class participantsaction extends Survey_Common_Action
         $order = $sidx. " ". $sord;
         
         $aData = new stdClass;
-        $aData->page = $page;
         
         //If super admin all the participants will be visible
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
             $iUserID = null;
-            $aData->records = Participants::model()->count();
         } else {
             $iUserID = Yii::app()->session['loginID'];
-            $aData->records = Participants::model()->getParticipantsOwnerCount($iUserID);
         }
-        $records = Participants::model()->getParticipants($page, $limit,$attid, $order, $iUserID);
+        $aData->records = Participants::model()->getParticipantsCount($attid, $search, $iUserID);
         $aData->total = ceil($aData->records / $limit);
+        if ($page>$aData->total) {
+            $page = $aData->total;
+        }
+        $aData->page = $page;
+        $records = Participants::model()->getParticipants($page, $limit,$attid, $order, $search, $iUserID);
+        
+        
         $aRowToAdd=array();
         foreach ($records as $key => $row)
         {            
