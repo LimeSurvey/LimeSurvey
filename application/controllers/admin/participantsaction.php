@@ -783,66 +783,27 @@ class participantsaction extends Survey_Common_Action
 
         // Field names in the first row
         $fields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
-        $i = 0;
         $outputarray = array(); // The array to be passed to the export helper to be written to a csv file
-        foreach ($fields as $field)
-        {
-            $outputarray[0][$i] = $field; //fields written to output array
-            $i++;
-        }
+        
+        $outputarray[0] = $fields; //fields written to output array
 
-        if (Yii::app()->request->getQuery('id') == "null")
-        {
-            $i = 1;
-            $j = 0;
-            foreach ($query as $field => $aData)
-            {
-                foreach ($fields as $field)
-                {
-                    $outputarray[$i][$j] = $aData[$field];
-                    $j++;
-                }
-                $i++;
-            }
-            CPDBExport($outputarray, "central_" . time());
-        }
-        else
-        {
+        // If attribute fields are selected, add them to the output
+        if (Yii::app()->request->getQuery('id') != "null") {
             $iAttributeId = explode(",", Yii::app()->request->getQuery('id'));
             foreach ($iAttributeId as $key => $value)
             {
+                $fields[] = 'a'.$value;
                 $attributename = ParticipantAttributeNames::model()->getAttributeNames($value);
-                $outputarray[0][$i] = $attributename[0]['attribute_name'];
-                $i++;
+                $outputarray[0][] = $attributename[0]['attribute_name'];
             }
-            $i = 1;
-            $j = 0;
-            // Fetching the table data
-            foreach ($query as $field => $aData)
-            {
-                foreach ($fields as $field)
-                {
-                    $outputarray[$i][$j] = $aData[$field];
-                    $j++;
-                }
-                foreach ($iAttributeId as $key => $value)
-                {
-                    $answer = ParticipantAttributeNames::model()->getAttributeValue($aData['participant_id'], $value);
-                    if (isset($answer['value']))
-                    {
-                        $outputarray[$i][$j] = $answer['value'];
-                        $j++;
-                    }
-                    else
-                    {
-                        $outputarray[$i][$j] = "";
-                        $j++;
-                    }
-                }
-                $i++;
-            }
-            CPDBExport($outputarray, "central_" . time());
+        }       
+      
+        $fieldKeys = array_flip($fields);
+        foreach ($query as $field => $aData)
+        {
+            $outputarray[] = array_intersect_key($aData, $fieldKeys);
         }
+        CPDBExport($outputarray, "central_" . time());
     }
 
     /**
