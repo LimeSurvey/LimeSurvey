@@ -5628,8 +5628,8 @@ function do_array_multiflexi($ia)
     elseif ($aQuestionAttributes['input_boxes']!=0 )
     {
         $inputboxlayout=true;
-        $answertypeclass .=" mumeric-item text";
-        $extraclass .= " text numeric";
+        $answertypeclass .=" numeric-item text";
+        $extraclass .= " numberonly";
     }
     else
     {
@@ -5655,7 +5655,12 @@ function do_array_multiflexi($ia)
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
+        $kpclass = " num-keypad";
         $extraclass .=" inputkeypad";
+    }
+    else
+    {
+        $kpclass = "";
     }
 
     if (trim($aQuestionAttributes['answer_width'])!='')
@@ -5808,7 +5813,7 @@ function do_array_multiflexi($ia)
                     {
                         $myfname2_java_value = "";
                     }
-                    $answer .= "\t<td class=\"answer_cell_00$ld question-item answer-item {$answertypeclass}-item\">\n"
+                    $answer .= "\t<td class=\"answer_cell_00$ld question-item answer-item {$answertypeclass}-item $extraclass\">\n"
                     . "<label for=\"answer{$myfname2}\">\n"
                     . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n";
 
@@ -5830,7 +5835,7 @@ function do_array_multiflexi($ia)
                         $answer .= "\t</select>\n";
                     } elseif ($inputboxlayout == true)
                     {
-                        $answer .= "\t<input type='text' class=\"multiflexitext $extraclass\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 title=\""
+                        $answer .= "\t<input type='text' class=\"multiflexitext text {$kpclass}\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 title=\""
                         . HTMLEscape($labelans[$thiskey]).'"'
                         . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\""
                         . " value=\"";
