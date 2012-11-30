@@ -79,7 +79,7 @@
             <?php
                 if(Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] == 1)
                 { 	 ?>
-                <a href="<?php echo $this->createUrl("admin/participants/index"); ?>" >
+                <a href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" >
                     <img src='<?php echo $sImageURL;?>cpdb.png' alt='<?php $clang->eT("Central participant database/panel");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php } ?>
         </div>
@@ -102,7 +102,7 @@
 
 
             <img id='separator2' src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
-            <a href="<?php echo $this->createUrl("admin/authentication/logout"); ?>" >
+            <a href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>" >
                 <img src='<?php echo $sImageURL;?>logout.png' alt='<?php $clang->eT("Logout");?>' /></a>
 
             <a href="http://docs.limesurvey.org" target="_blank">

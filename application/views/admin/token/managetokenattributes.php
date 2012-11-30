@@ -1,6 +1,6 @@
 <div class='header ui-widget-header'><?php $clang->eT("Manage token attribute fields"); ?></div>
 
-<form action="<?php echo $this->createUrl("admin/tokens/updatetokenattributedescriptions/surveyid/$surveyid"); ?>" method="post">
+<form action="<?php echo $this->createUrl("admin/tokens/sa/updatetokenattributedescriptions/surveyid/$surveyid"); ?>" method="post">
     <div id="tabs">
         <ul>
         <?php
@@ -103,7 +103,7 @@
 <div class='header ui-widget-header'><?php $clang->eT("Add token attributes"); ?></div><p>
 
 <?php echo sprintf($clang->gT('There are %s user attribute fields in this token table'), $nrofattributes); ?></p>
-<form id="addattribute" action="<?php echo $this->createUrl("admin/tokens/updatetokenattributes/surveyid/$surveyid"); ?>" method="post">
+<form id="addattribute" action="<?php echo $this->createUrl("admin/tokens/sa/updatetokenattributes/surveyid/$surveyid"); ?>" method="post">
     <p>
         <label for="addnumber"><?php $clang->eT('Number of attribute fields to add:'); ?></label>
         <input type="text" id="addnumber" name="addnumber" size="3" maxlength="3" value="1" />

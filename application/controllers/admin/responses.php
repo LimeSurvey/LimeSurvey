@@ -258,7 +258,7 @@ class responses extends Survey_Common_Action
                                 if ($metadata === "size")
                                     $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
                                 else if ($metadata === "name")
-                                    $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyID}"));
+                                    $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/sa/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyID}"));
                                 else
                                     $answervalue = rawurldecode($phparray[$index][$metadata]);
                             }

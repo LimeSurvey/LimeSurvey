@@ -42,6 +42,17 @@ function subval_sort($a, $subkey, $order)
  */
 class participantsaction extends Survey_Common_Action
 {
+    public function runWithParams($params)
+    {
+        if (!hasGlobalPermission('USER_RIGHT_PARTICIPANT_PANEL'))
+        {
+            die('No permission');
+        }
+        parent::runWithParams($params);
+    }
+
+
+    
     /**
      * Loads jqGrid for the view
      * @param string $sScript Subaction
@@ -475,7 +486,7 @@ class participantsaction extends Survey_Common_Action
             $stg ->stg_value=Yii::app()->request->getPost('userideditable');
             $stg->save();
         }
-        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('admin/participants/userControl'));
+        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('admin/participants/sa/userControl'));
     }
 
     /**
@@ -498,7 +509,7 @@ class participantsaction extends Survey_Common_Action
                 $stg->save();
             }
         }
-        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('admin/participants/blacklistControl'));
+        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('admin/participants/sa/blacklistControl'));
     }
 
     /**
@@ -527,7 +538,7 @@ class participantsaction extends Survey_Common_Action
                 $surveylink = $row['survey_id'];
             } else
             {
-                $surveylink = '<a href=' . Yii::app()->getController()->createUrl("/admin/tokens/browse/surveyid/{$row['survey_id']}") . '>' . $row['survey_id'].'</a>';
+                $surveylink = '<a href=' . Yii::app()->getController()->createUrl("/admin/tokens/sa/browse/surveyid/{$row['survey_id']}") . '>' . $row['survey_id'].'</a>';
             }
             $aData->rows[$i]['cell'] = array($surveyname[0]['surveyls_title'], $surveylink, $row['token_id'], $row['date_created'], $row['date_invited'], $row['date_completed']);
             $i++;
@@ -1144,7 +1155,7 @@ class participantsaction extends Survey_Common_Action
             );
             ParticipantAttributeNames::model()->saveAttributeValue($editattvalue);
         }
-        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('admin/participants/attributeControl'));
+        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('admin/participants/sa/attributeControl'));
     }
 
     /*
@@ -1155,7 +1166,7 @@ class participantsaction extends Survey_Common_Action
         $iAttributeId = Yii::app()->request->getQuery('aid');
         $iValueId = Yii::app()->request->getQuery('vid');
         ParticipantAttributeNames::model()->delAttributeValues($iAttributeId, $iValueId);
-        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('/admin/participants/viewAttribute/aid/' . $iAttributeId));
+        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('/admin/participants/sa/viewAttribute/aid/' . $iAttributeId));
     }
 
     /*

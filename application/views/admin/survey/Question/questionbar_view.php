@@ -33,20 +33,20 @@ if (isset($tmp_survlangs)) { ?>
         <?php  if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
 
-            <a href='<?php echo $this->createUrl("admin/question/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>'>
+            <a href='<?php echo $this->createUrl("admin/question/sa/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>'>
                 <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php $clang->eT("Edit Current Question"); ?>' /></a>
             <?php } ?>
 
         <?php if(hasSurveyPermission($surveyid,'surveycontent','read'))
             { ?>
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt=''  />
-            <a target='_blank' href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>">
+            <a target='_blank' href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>">
                 <img src='<?php echo $sImageURL; ?>quality_assurance.png' alt='<?php $clang->eT("Check survey logic for current question"); ?>' /></a>
             <?php } ?>
         <?php if ($activated != "Y")
             {?>
             <a href='#'
-                onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/question/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
+                onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/question/sa/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
                 <img style='<?php echo (hasSurveyPermission($surveyid,'surveycontent','delete')?'':'visibility: hidden;');?>' src='<?php echo $sImageURL; ?>delete.png' alt='<?php $clang->eT("Delete current question"); ?>'/></a>
             <?php }
             else
@@ -60,7 +60,7 @@ if (isset($tmp_survlangs)) { ?>
 
             if(hasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
-            <a href='<?php echo $this->createUrl("admin/export/question/surveyid/$surveyid/gid/$gid/qid/$qid");?>'>
+            <a href='<?php echo $this->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/$qid");?>'>
                 <img src='<?php echo $sImageURL; ?>dumpquestion.png' alt='<?php $clang->eT("Export this question"); ?>' /></a>
             <?php } ?>
 
@@ -73,7 +73,7 @@ if (isset($tmp_survlangs)) { ?>
             {
                 if ($activated != "Y")
                 { ?>
-                <a href='<?php echo $this->createUrl("admin/question/copyquestion/surveyid/$surveyid/gid/$gid/qid/$qid");?>'>
+                <a href='<?php echo $this->createUrl("admin/question/sa/copyquestion/surveyid/$surveyid/gid/$gid/qid/$qid");?>'>
                     <img src='<?php echo $sImageURL; ?>copy.png'  alt='<?php $clang->eT("Copy Current Question"); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                 <?php }
@@ -91,7 +91,7 @@ if (isset($tmp_survlangs)) { ?>
 
             if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
-            <a href="<?php echo $this->createUrl("admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
+            <a href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
                 <img src='<?php echo $sImageURL; ?>conditions.png' alt='<?php $clang->eT("Set conditions for this question"); ?>'  /></a>
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
             <?php }
@@ -108,7 +108,7 @@ if (isset($tmp_survlangs)) { ?>
             {
                 if ($qtypes[$qrrow['type']]['subquestions'] >0)
                 { ?>
-                <a href='<?php echo $this->createUrl('admin/question/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
+                <a href='<?php echo $this->createUrl('admin/question/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                     <img src='<?php echo $sImageURL; ?><?php if ($qtypes[$qrrow['type']]['subquestions']==1){?>subquestions.png<?php } else {?>subquestions2d.png<?php } ?>' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a>
                 <?php }
             }
@@ -122,7 +122,7 @@ if (isset($tmp_survlangs)) { ?>
 
             if(hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0)
             { ?>
-            <a href='<?php echo $this->createUrl('admin/question/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
+            <a href='<?php echo $this->createUrl('admin/question/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                 <img src='<?php echo $sImageURL; ?>answers.png' alt='<?php $clang->eT("Edit answer options for this question"); ?>' /></a>
             <?php }
             else
@@ -135,7 +135,7 @@ if (isset($tmp_survlangs)) { ?>
 
             if(hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
             { ?>
-            <a href='<?php echo $this->createUrl('admin/question/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
+            <a href='<?php echo $this->createUrl('admin/question/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                 <img src='<?php echo $sImageURL; ?>defaultanswers.png' alt='<?php $clang->eT("Edit default answers for this question"); ?>' /></a>
             <?php } ?>
     </div>
@@ -192,7 +192,7 @@ if (isset($tmp_survlangs)) { ?>
         { ?>
         <tr ><td></td><td>
                 <span class='statusentryhighlight'>
-                    <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/answeroptions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add answer options to this question"); ?>
+                    <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/sa/answeroptions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add answer options to this question"); ?>
                         <img src='<?php echo $sImageURL; ?>answers_20.png' title='<?php $clang->eT("Edit answer options for this question"); ?>' /></a></span></td></tr>
         <?php }
 
@@ -201,7 +201,7 @@ if (isset($tmp_survlangs)) { ?>
         { ?>
         <tr ><td></td><td>
                 <span class='statusentryhighlight'>
-                    <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add subquestions to this question"); ?>
+                    <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/sa/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add subquestions to this question"); ?>
                         <img src='<?php echo $sImageURL; ?><?php if ($qtypes[$qrrow['type']]['subquestions']==1){?>subquestions_20<?php } else {?>subquestions2d_20<?php } ?>.png' title='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a></span></td></tr>
         <?php }
 

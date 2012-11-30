@@ -7,12 +7,12 @@
     }
 ?>
 <script type='text/javascript'>
-    var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/graph"); ?>";
+    var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/graph"); ?>";
     var sStatisticsLanguage="<?php echo $sStatisticsLanguage; ?>";
-    var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/listcolumn/surveyid/".$surveyid."/column/"); ?>";
+    var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/listcolumn/surveyid/".$surveyid."/column/"); ?>";
     var showTextInline="<?php echo $showtextinline ?>";
 </script>
-<form method='post' name='formbuilder' action='<?php echo Yii::app()->getController()->createUrl("admin/statistics/index/surveyid/$surveyid"); ?>#start'>
+<form method='post' name='formbuilder' action='<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>#start'>
     <div class='header ui-widget-header header_statistics'>
         <div style='float:right;'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showgfilter' alt='<?php $clang->eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidegfilter' alt='<?php $clang->eT("Minimize"); ?>'/></div>
         <?php $clang->eT("General filters"); ?>
@@ -140,7 +140,7 @@
         </div>
         <p>
             <input type='submit' value='<?php $clang->eT("View statistics"); ?>' />
-            <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/surveyid/$surveyid"); ?>', '_top')" />
+            <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/surveyid/$surveyid"); ?>', '_top')" />
         </p>
     </div>
     <div style='clear: both'></div>
@@ -1287,7 +1287,7 @@
 
     <p id='vertical_slide2'>
     <input type='submit' value='<?php $clang->eT("View statistics"); ?>' />
-    <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/index/surveyid/$surveyid"); ?>', '_top')" />
+    <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
     <input type='hidden' name='display' value='stats' />
     </p>

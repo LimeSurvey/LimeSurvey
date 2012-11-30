@@ -126,7 +126,7 @@
                     <li>
                         <label>&nbsp;</label>
                         <input type='button'<?php echo hasResources($lid, 'label') === false ? ' disabled="disabled"' : '' ?>
-                            onclick='window.open("<?php echo $this->createUrl("/admin/export/resources/export/label/lid/$lid"); ?>", "_blank")'
+                            onclick='window.open("<?php echo $this->createUrl("/admin/export/sa/resources/export/label/lid/$lid"); ?>", "_blank")'
                             value="<?php $clang->eT("Export resources as ZIP archive") ?>"  />
                     </li>
                 </ul>

@@ -22,7 +22,7 @@
         ?>
     </ul>
 
-    <form method='post' class='form30' id='sendreminder' action='<?php echo $this->createURL("admin/tokens/email/action/remind/surveyid/$surveyid"); ?>'>
+    <form method='post' class='form30' id='sendreminder' action='<?php echo $this->createUrl("admin/tokens/sa/email/action/remind/surveyid/$surveyid"); ?>'>
         <?php
         foreach ($surveylangs as $language)
         {

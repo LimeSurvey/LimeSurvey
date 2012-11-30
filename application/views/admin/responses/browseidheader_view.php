@@ -25,17 +25,17 @@
                         <img src='<?php echo $sImageURL; ?>download.png' alt='<?php $clang->eT("Download files for this entry"); ?>' /></a>
                     <?php } ?>
 
-                <a href='<?php echo $this->createUrl("admin/export/exportresults/surveyid/$surveyid/id/$id"); ?>' title='<?php $clang->eT("Export this Response"); ?>' >
+                <a href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid/id/$id"); ?>' title='<?php $clang->eT("Export this Response"); ?>' >
                     <img src='<?php echo $sImageURL; ?>export.png' alt='<?php $clang->eT("Export this Response"); ?>'/></a>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
             <?php } ?>
             <img src='<?php echo $sImageURL; ?>blank.gif' width='20' height='20' alt='' />
             <?php if($previous) { ?>
-            <a href='<?php echo $this->createUrl("admin/responses/view/surveyid/$surveyid/id/$previous"); ?>' title='<?php $clang->eT("Show previous..."); ?>' >
+            <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$previous"); ?>' title='<?php $clang->eT("Show previous..."); ?>' >
                 <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous..."); ?>' /></a>
             <?php } ?>
             <?php if($next) { ?>
-                <a href='<?php echo $this->createUrl("admin/responses/view/surveyid/$surveyid/id/$next"); ?>' title='<?php $clang->eT("Show next..."); ?>'>
+                <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$next"); ?>' title='<?php $clang->eT("Show next..."); ?>'>
                     <img src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php $clang->eT("Show next..."); ?>' /></a>
             <?php } ?>
         </div>

@@ -10,7 +10,7 @@
             <li>
                 <label>&nbsp;</label>
                 <input type='button'<?php echo $disabledIfNoResources; ?>
-                       onclick='window.open("<?php echo $this->createUrl("admin/export/resources/export/survey/surveyid/$surveyid"); ?>", "_blank")'
+                       onclick='window.open("<?php echo $this->createUrl("admin/export/sa/resources/export/survey/surveyid/$surveyid"); ?>", "_blank")'
                        value="<?php $clang->eT("Export Resources As ZIP Archive") ?>"  />
             </li>
         </ul>

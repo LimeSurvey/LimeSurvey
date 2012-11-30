@@ -20,7 +20,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
 <td><?php echo $assess['id'];?></td>
 <td>
 <?php if (hasSurveyPermission($surveyid, 'assessments','update')) { ?>
-    <form method='post' action='<?php echo $this->createUrl("admin/assessments/index/surveyid/$surveyid");?>'>
+    <form method='post' action='<?php echo $this->createUrl("admin/assessments/sa/index/surveyid/$surveyid");?>'>
         <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php $clang->eT("Edit");?>' />
         <input type='hidden' name='action' value='assessmentedit' />
         <input type='hidden' name='id' value="<?php echo $assess['id'];?>" />
@@ -28,7 +28,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
 <?php } ?>
 
 <?php if (hasSurveyPermission($surveyid, 'assessments','delete')) { ?>
-     <form method='post' action='<?php echo $this->createUrl("admin/assessments/index/surveyid/$surveyid");?>'>
+     <form method='post' action='<?php echo $this->createUrl("admin/assessments/sa/index/surveyid/$surveyid");?>'>
      <input type='image' src='<?php echo $imageurl;?>/token_delete.png' alt='<?php $clang->eT("Delete");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
      <input type='hidden' name='action' value='assessmentdelete' />
      <input type='hidden' name='id' value='<?php echo $assess['id'];?>' />
@@ -62,7 +62,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
 </tbody></table>
 
 <?php if ((hasSurveyPermission($surveyid, 'assessments','update') && $actionvalue=="assessmentupdate") || (hasSurveyPermission($surveyid, 'assessments','create')&& $actionvalue=="assessmentadd")) { ?>
-<br /><form method='post' class='form30' id='assessmentsform' name='assessmentsform' action='<?php echo $this->createUrl("admin/assessments/index/surveyid/$surveyid");?>'>
+<br /><form method='post' class='form30' id='assessmentsform' name='assessmentsform' action='<?php echo $this->createUrl("admin/assessments/sa/index/surveyid/$surveyid");?>'>
 	<div class='header ui-widget-header'><?php echo $actiontitle;?></div>
 	<ul class="assessmentscope"><li><label><?php $clang->eT("Scope");?></label>
 	<input type='radio' id='radiototal' name='scope' value='T' <?php

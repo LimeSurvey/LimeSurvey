@@ -1,7 +1,7 @@
 <div class='header ui-widget-header'>
     <?php $clang->eT("Create dummy tokens"); ?>
 </div>
-<form id='edittoken' class='form30' method='post' action='<?php echo $this->createUrl("admin/tokens/adddummies/surveyid/$surveyid/subaction/add"); ?>'>
+<form id='edittoken' class='form30' method='post' action='<?php echo $this->createUrl("admin/tokens/sa/adddummies/surveyid/$surveyid/subaction/add"); ?>'>
     <ul>
         <li><label>ID:</label>
             <?php $clang->eT("Auto"); ?>
