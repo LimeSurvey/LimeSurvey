@@ -27,9 +27,9 @@
         foreach ($surveylangs as $language)
         {
             //GET SURVEY DETAILS
-            if (!$thissurvey['email_remind'])
+            if (!$thissurvey[$language]['email_remind'])
             {
-                $thissurvey['email_remind'] = str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}") . "\n\n" . $clang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"));
+                $thissurvey[$language]['email_remind'] = str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}") . "\n\n" . $clang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"));
             }
             echo "<div id='tabpage_{$language}'><ul>"
             . "<li><label for='from_$language' >" . $clang->gT("From") . ":</label>\n"
@@ -38,12 +38,12 @@
 
             $fieldsarray["{ADMINNAME}"] = $thissurvey['adminname'];
             $fieldsarray["{ADMINEMAIL}"] = $thissurvey['adminemail'];
-            $fieldsarray["{SURVEYNAME}"] = $thissurvey['name'];
-            $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey['description'];
+            $fieldsarray["{SURVEYNAME}"] = $thissurvey[$language]['name'];
+            $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey[$language]['description'];
             $fieldsarray["{EXPIRY}"] = $thissurvey["expiry"];
 
-            $subject = Replacefields($thissurvey['email_remind_subj'], $fieldsarray, false);
-            $textarea = Replacefields($thissurvey['email_remind'], $fieldsarray, false);
+            $subject = Replacefields($thissurvey[$language]['email_remind_subj'], $fieldsarray, false);
+            $textarea = Replacefields($thissurvey[$language]['email_remind'], $fieldsarray, false);
             if ($ishtml !== true)
             {
                 $textarea = str_replace(array('<x>', '</x>'), array(''), $textarea);

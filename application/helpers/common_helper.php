@@ -3798,7 +3798,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["public_statistics"]=array(
     "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
-    'category'=>$clang->gT('Other'),
+    'category'=>$clang->gT('Statistics'),
     'sortorder'=>80,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),
