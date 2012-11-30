@@ -591,7 +591,8 @@ class statistics_helper {
         $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
         $statisticsoutput="";
-
+        $qqid = "";
+        
         /* Some variable depend on output type, actually : only line feed */
         switch($outputType)
         {
@@ -1570,7 +1571,7 @@ class statistics_helper {
 
         }
 
-        return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput);
+        return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput, "parentqid"=>$qqid);
     }
     
     /**
@@ -2875,7 +2876,7 @@ class statistics_helper {
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
         $qsid = $surveyid;
-        $aattr = getQuestionAttributeValues($qqid, substr($rt, 0, 1));
+        $aattr = getQuestionAttributeValues($outputs['parentqid'], substr($rt, 0, 1));
 
         //PCHART has to be enabled and we need some data
         if ($usegraph == 1) {
