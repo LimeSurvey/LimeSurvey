@@ -29,18 +29,18 @@
 class Participants extends CActiveRecord
 {
 
-    /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
+	/**
+	 * Returns the static model of Settings table
+	 *
+	 * @static
+	 * @access public
      * @param string $class
-     * @return Participants
-     */
-    public static function model($class = __CLASS__)
-    {
-        return parent::model($class);
-    }
+	 * @return Participants
+	 */
+	public static function model($class = __CLASS__)
+	{
+		return parent::model($class);
+	}
 
     /**
      * @return string the associated database table name
@@ -225,9 +225,32 @@ class Participants extends CActiveRecord
         return $count;
     }
 
-    function getParticipants($page, $limit,$attid, $order = null, $userid = null)
+    function getParticipants($page, $limit,$attid, $order = null, $search = null, $userid = null)
     {
-        $start = $limit * $page - $limit;
+        $data = $this->getParticipantsSelectCommand(false, $attid, $search, $userid, $page, $limit, $order);
+        
+        $allData = $data->queryAll();
+        
+        return $allData;
+    }
+    
+    /**
+     * Duplicated from getparticipants, only to have a count
+     * 
+     * @param type $attid
+     * @param type $order
+     * @param CDbCriteria $search
+     * @param type $userid
+     * @return type
+     */    
+    function getParticipantsCount($attid, $search = null, $userid = null) {
+        $data = $this->getParticipantsSelectCommand(true, $attid, $search, $userid);
+        
+        return $data->queryScalar();
+    }
+    
+    private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
+    {
         $selectValue = array();
         $joinValue = array();
         
@@ -247,32 +270,64 @@ class Participants extends CActiveRecord
             array_push($selectValue,"attribute".$attid.".value as a".$attid);
             array_push($joinValue,"LEFT JOIN {{participant_attribute}} attribute".$attid." ON attribute".$attid.".participant_id=p.participant_id AND attribute".$attid.".attribute_id=".$attid);
         }
+        
+        $aConditions = array(); // this wil hold all conditions
+        $aParams = array();
         if (!is_null($userid)) {
             // We are not superadmin so we need to limit to our own or shared with us
             $selectValue[] = '{{participant_shares}}.can_edit';
             $joinValue[]   = 'LEFT JOIN {{participant_shares}} ON p.participant_id={{participant_shares}}.participant_id';
-            $where = 'p.owner_uid = :userid1 OR {{participant_shares}}.share_uid = :userid2';
+            $aConditions[] = 'p.owner_uid = :userid1 OR {{participant_shares}}.share_uid = :userid2';
+        }
+              
+        if ($count) {
+            $selectValue = 'count(*) as cnt';
         }
         
         $data = Yii::app()->db->createCommand()
-              ->select($selectValue)
-              ->from('{{participants}} p')
-              ->offset($offset)
-              ->limit($limit);
+                ->select($selectValue)
+                ->from('{{participants}} p');
         $data->setJoin($joinValue);
         
-        if (!empty($order)) {
-            $data->setOrder($order);
+        if (!empty($search)) {
+            /* @var $search CDbCriteria */
+             $aSearch = $search->toArray();
+             $aConditions[] = $aSearch['condition'];
+             $aParams = $aSearch['params'];
+        }
+        $condition = ''; // This will be the final condition
+        foreach ($aConditions as $idx => $newCondition) {
+            if ($idx>0) { 
+                $condition .= ' AND ';
+            }
+            $condition .= '(' . $newCondition . ')';
+        }
+                
+        if (!empty($condition)) {
+            $data->setWhere($condition);
         }
         
+        if (!$count) {
+            // Apply order and limits
+            if (!empty($order)) {
+                $data->setOrder($order);
+            }
+
+            if ($page <> 0) {
+                $offset = ($page - 1) * $limit;
+                $data->offset($offset)
+                     ->limit($limit);
+            }
+        }
+        
+        $data->bindValues($aParams);
+        
         if (!is_null($userid)) {
-            $data->setWhere($where);
             $data->bindParam(":userid1", $userid, PDO::PARAM_INT)
                  ->bindParam(":userid2", $userid, PDO::PARAM_INT);
         }
-        $allData = $data->queryAll();
         
-        return $allData;
+        return $data;
     }
 
     function getSurveyCount($participant_id)
@@ -289,31 +344,31 @@ class Participants extends CActiveRecord
 
     function deleteParticipant($rows)
     {
-        /* This function deletes the participant from the participants table,
-           references in the survey_links table (but not in matching tokens tables)
-           and then all the participants attributes. */
+    	/* This function deletes the participant from the participants table,
+    	   references in the survey_links table (but not in matching tokens tables)
+    	   and then all the participants attributes. */
 
-        // Converting the comma seperated id's to an array to delete multiple rows
+		// Converting the comma seperated id's to an array to delete multiple rows
         $rowid = explode(",", $rows);
         foreach ($rowid as $row)
         {
             Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
-            Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
-            Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
+        	Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
+        	Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
         }
     }
 
     function deleteParticipantToken($rows)
     {
-        /* This function deletes the participant from the participants table,
-           the participant from any tokens table they're in (using the survey_links table to find them)
-           and then all the participants attributes. */
+    	/* This function deletes the participant from the participants table,
+    	   the participant from any tokens table they're in (using the survey_links table to find them)
+    	   and then all the participants attributes. */
         $rowid = explode(",", $rows);
         foreach ($rowid as $row)
         {
             $tokens = Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = :pid')->bindParam(":pid", $row, PDO::PARAM_INT)->queryAll();
 
-            foreach ($tokens as $key => $value)
+			foreach ($tokens as $key => $value)
             {
                 $tokentable='{{tokens_'.intval($value['survey_id']).'}}';
 
@@ -322,11 +377,11 @@ class Participants extends CActiveRecord
                     Yii::app()->db->createCommand()
                                   ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = :pid',array(':pid'=>$row)); // Deletes matching token table entries
                     //Yii::app()->db->createCommand()->delete(Tokens::model()->tableName(), array('in', 'participant_id', $row));
-                }
+				}
             }
-            Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
-            Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
-            Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
+        	Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
+        	Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
+        	Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
 
         }
     }
@@ -347,31 +402,31 @@ class Participants extends CActiveRecord
                                     ->bindParam(":row", $row, PDO::PARAM_INT)
                                     ->queryAll();
 
-            foreach ($tokens as $key => $value)
-            {
+			foreach ($tokens as $key => $value)
+			{
                 $tokentable='{{tokens_'.intval($value['survey_id']).'}}';
-                if (Yii::app()->db->schema->getTable($tokentable))
-                {
-                    $tokenid = Yii::app()->db->createCommand()
+				if (Yii::app()->db->schema->getTable($tokentable))
+				{
+					$tokenid = Yii::app()->db->createCommand()
                                              ->select('token')
                                              ->from('{{tokens_' . intval($value['survey_id']) . '}}')
                                              ->where('participant_id = :pid')
                                              ->bindParam(":pid", $value['participant_id'], PDO::PARAM_INT)
                                              ->queryAll();
-                    $token = $tokenid[0];
+					$token = $tokenid[0];
                     $surveytable='{{survey_'.intval($value['survey_id']).'}}';
-                    if ($datas=Yii::app()->db->schema->getTable($surveytable))
-                    {
-                        if (!empty($token['token']) && isset($datas->columns['token'])) //Make sure we have a token value, and that tokens are used to link to the survey
-                        {
-                            $gettoken = Yii::app()->db->createCommand()
+					if ($datas=Yii::app()->db->schema->getTable($surveytable))
+					{
+						if (!empty($token['token']) && isset($datas->columns['token'])) //Make sure we have a token value, and that tokens are used to link to the survey
+						{
+							$gettoken = Yii::app()->db->createCommand()
                                                       ->select('*')
                                                       ->from('{{survey_' . intval($value['survey_id']) . '}}')
                                                       ->where('token = :token')
                                                       ->bindParam(":token", $token['token'], PDO::PARAM_STR)
                                                       ->queryAll();
-                            $gettoken = $gettoken[0];
-                            Yii::app()->db->createCommand()
+							$gettoken = $gettoken[0];
+							Yii::app()->db->createCommand()
                                           ->delete('{{survey_' . intval($value['survey_id']) . '}}', 'token = :token')
                                           ->bindParam(":token", $gettoken['token'], PDO::PARAM_STR); // Deletes matching responses from surveys
 						}
@@ -401,8 +456,8 @@ class Participants extends CActiveRecord
      * */
     function getParticipantsSearchMultiple($condition, $page, $limit)
     {
-        //http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
-        //First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
+    	//http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
+    	//First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
 
         //As we iterate through the conditions we build up the $command query by adding conditions to it
         //
@@ -574,8 +629,8 @@ class Participants extends CActiveRecord
                 $i = $i + 4;
             }
         }
-
-        if ($page == 0 && $limit == 0)
+        
+    	if ($page == 0 && $limit == 0)
         {
             $arr = Participants::model()->findAll($command);
             $data = array();
@@ -597,6 +652,124 @@ class Participants extends CActiveRecord
         }
 
         return $data;
+    }
+    
+    /** 
+     * Function builds a select query for searches through participants using the $condition field passed
+     * which is in the format "firstfield||sqloperator||value||booleanoperator||secondfield||sqloperator||value||booleanoperator||etc||etc||etc"
+     * for example: "firstname||equal||Jason||and||lastname||equal||Cleeland" will produce SQL along the lines of "WHERE firstname = 'Jason' AND lastname=='Cleeland'"
+     *
+     * @param array $condition an array containing the search string exploded using || so that "firstname||equal||jason" is $condition(1=>'firstname', 2=>'equal', 3=>'jason')
+     * @param int $page Which page number to display
+     * @param in $limit The limit/number of reords to return
+     *
+     * @returns CDbCriteria $output
+     */
+    function getParticipantsSearchMultipleCondition($condition)
+    {
+    	//http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
+    	//First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
+
+        //As we iterate through the conditions we build up the $command query by adding conditions to it
+        //
+        $i = 0;
+        $command = new CDbCriteria;
+        $command->condition = '';
+        $aParams = array();
+
+        $iNumberOfConditions = (count($condition)+1)/4;
+        while ($i < $iNumberOfConditions)
+        {
+            $sFieldname=$condition[$i*4];
+            $sOperator=$condition[($i*4)+1];
+            $sValue=$condition[($i*4)+2];
+            if(is_numeric($sValue)) $sValue=intval($sValue);
+            $param = ':condition_'.$i;
+            switch ($sOperator)
+            {
+                case 'equal': 
+                    $operator = '=';
+                    $aParams[$param] = $sValue;
+                    break;
+                case 'contains': 
+                    $operator = 'LIKE';
+                    $aParams[$param] = '%'.$sValue.'%';
+                    break;
+                case 'beginswith':
+                    $operator = 'LIKE';
+                    $aParams[$param] = $sValue.'%';
+                    break;
+                case 'notequal': 
+                    $operator = '!=';
+                    $aParams[$param] = $sValue;
+                    break;
+                case 'notcontains': 
+                    $operator = 'NOT LIKE';
+                    $aParams[$param] = '%'.$sValue.'%';
+                    break;
+                case 'greaterthan': 
+                    $operator = '>';
+                    $aParams[$param] = '%'.$sValue.'%';
+                    break;
+                case 'lessthan': 
+                    $operator = '<';
+                    $aParams[$param] = '%'.$sValue.'%';
+                    break;
+            }
+            if (isset($condition[($i*4)+3]))
+            {
+                $booloperator=  strtoupper($condition[($i*4)+3]);
+            }
+            else
+            {
+                $booloperator='AND';
+            }
+            
+            if($sFieldname=="email")
+            {
+                $command->addCondition('p.email ' . $operator . ' '.$param, $booloperator);
+            } 
+            elseif($sFieldname=="survey")
+            {
+                $subQuery = Yii::app()->db->createCommand()
+                ->select('sl.participant_id')
+                ->from('{{survey_links}} sl')
+                ->join('{{surveys_languagesettings}} sls', 'sl.survey_id = sls.surveyls_survey_id')
+                ->where('sls.surveyls_title '. $operator.' '.$param)
+                ->group('sl.participant_id');
+                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);             
+            }
+            elseif($sFieldname=="surveys") //Search by quantity of linked surveys
+            {
+                $subQuery = Yii::app()->db->createCommand()
+                ->select('sl.participant_id')
+                ->from('{{survey_links}} sl')
+                ->having('count(*) '. $operator.' '.$param)
+                ->group('sl.participant_id');
+                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);
+            }
+            elseif($sFieldname=="owner_name")
+            {
+                $command->addCondition('full_name ' . $operator . ' '.$param, $booloperator);
+            }
+            elseif (is_numeric($sFieldname)) //Searching for an attribute
+            {
+                $command->addCondition('a'. $sFieldname . ' ' . $operator . ' '.$param, $booloperator);
+            }
+            else
+            {
+                $command->addCondition($sFieldname . ' '.$operator.' '.$param, $booloperator);
+            }
+            
+            $i++;
+        }
+        
+        if (count($aParams)>0)
+        {
+            $command->params = $aParams;
+        }
+                
+        return $command;
     }
 
     /**
@@ -1231,7 +1404,7 @@ class Participants extends CActiveRecord
         return $returndata;
     }
 
-    /*
+	/*
      * The purpose of this function is to check for duplicate in participants
      */
 
