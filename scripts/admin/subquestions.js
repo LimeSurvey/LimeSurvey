@@ -24,10 +24,18 @@ $(document).ready(function(){
         modal: true,
         width:800,
         title: lsbrowsertitle});
-    $('#quickadd').dialog({ autoOpen: false,
+    $('#quickadd').dialog({ 
+		autoOpen: false,
         modal: true,
         width:600,
-        title: quickaddtitle});
+        title: quickaddtitle,
+		open: function( event, ui ) {
+			$('textarea', this).show(); // IE 8 hack
+		},
+		beforeClose: function( event, ui ) {
+			$('textarea', this).hide(); // IE 8 hack
+		}
+	});
 
     $('.btnlsbrowser').click(lsbrowser);
     $('#btncancel').click(function(){
