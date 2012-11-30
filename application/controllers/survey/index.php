@@ -618,7 +618,7 @@ class index extends CAction {
                         $_SESSION['survey_'.$surveyid]['step'] = $aRow['lastpage'];
                     }
                 }
-                buildsurveysession();
+                buildsurveysession($surveyid);
                 loadanswers();
             }        
         }

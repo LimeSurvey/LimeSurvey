@@ -4515,7 +4515,7 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
 *
 * @return Array of token data
 */
-function getTokenData($surveyid, $token) 
+function getTokenData($surveyid, $token) // TODO : move it to token model
 {
     $thistoken = Tokens_dynamic::model($surveyid)->find('token = :token',array(':token' => $token));
     $thistokenarray=array(); // so has default value
@@ -4525,7 +4525,6 @@ function getTokenData($surveyid, $token)
     }// Did we fill with empty string if not exist ?
 
     return $thistokenarray;
-}
 }
 
 /**
