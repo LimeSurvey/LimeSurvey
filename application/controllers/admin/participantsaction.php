@@ -91,6 +91,84 @@ class participantsaction extends Survey_Common_Action
 
         parent::_renderWrappedTemplate($sAction, $a_ViewUrls, $aData);
     }
+    
+    /**
+     * Export to csv using optional search/filter
+     * 
+     * @param type $search
+     */
+    private function csvExport($search = null) {
+        Yii::app()->loadHelper('export');      
+        
+        $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
+        
+        //If super admin all the participants will be visible
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+        {
+            $iUserID = null;
+        } else {
+            $iUserID = Yii::app()->session['loginID'];
+        }
+
+        $query = Participants::model()->getParticipants(0, 0, $attid, null, $search, $iUserID);
+        if (!$query)
+            return false;
+
+        // Field names in the first row
+        $fields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
+        $outputarray = array(); // The array to be passed to the export helper to be written to a csv file
+        
+        $outputarray[0] = $fields; //fields written to output array
+
+        // If attribute fields are selected, add them to the output
+        $queryId = Yii::app()->request->getQuery('id');
+        if (!is_null($queryId) && $queryId != "null") {
+            $iAttributeId = explode(",", $queryId);
+             foreach ($iAttributeId as $key => $value)
+            {
+                $fields[] = 'a'.$value;
+                $attributename = ParticipantAttributeNames::model()->getAttributeNames($value);
+                $outputarray[0][] = $attributename[0]['attribute_name'];
+            }
+        }       
+      
+        $fieldKeys = array_flip($fields);
+        foreach ($query as $field => $aData)
+        {
+            $outputarray[] = array_intersect_key($aData, $fieldKeys);
+        }
+        CPDBExport($outputarray, "central_" . time());
+    }
+    
+    /**
+     * Returns a string with the number of participants available for export or 0
+     * 
+     * @param type $search
+     * @return string|0
+     */
+    protected function csvExportCount($search = null)
+    {
+        $clang = $this->getController()->lang;
+        
+        $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
+        
+        //If super admin all the participants will be visible
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+        {
+            $iUserID = null;
+        } else {
+            $iUserID = Yii::app()->session['loginID'];
+        }
+        
+
+        $count = Participants::model()->getParticipantsCount($attid, $search, $iUserID);
+
+        if ($count > 0) {
+            return sprintf($clang->gT("Export %s participant(s) to CSV"), $count);
+        } else {
+            return $count;
+        }
+    }
 
     /**
      * Loads the view 'participantsPanel'
@@ -553,8 +631,6 @@ class participantsaction extends Survey_Common_Action
      */
     function exporttocsvcount()
     {
-        $clang = $this->getController()->lang;
-
         $searchconditionurl = Yii::app()->request->getPost('searchcondition');
         $searchcondition = basename($searchconditionurl);
         
@@ -566,20 +642,7 @@ class participantsaction extends Survey_Common_Action
             $search = null;
         }
         
-        $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
-        
-        //If super admin all the participants will be visible
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
-        {
-            $iUserID = null;
-        } else {
-            $iUserID = Yii::app()->session['loginID'];
-        }
-        
-
-        $count = Participants::model()->getParticipantsCount($attid, $search, $iUserID);
-
-        echo sprintf($clang->gT("Export %s participant(s) to CSV"), $count);
+        echo $this->csvExportCount($search);
     }
 
     /**
@@ -587,25 +650,7 @@ class participantsaction extends Survey_Common_Action
      */
     function exporttocsvcountAll()
     {
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants in the central table will be counted
-        {
-            $count = Participants::model()->getParticipantsCountWithoutLimit();
-        }
-        else // otherwise only the participants on which the logged in user has the rights
-        {
-            $iUserID = Yii::app()->session['loginID'];
-            $query = Participants::model()->getParticipantsOwner($iUserID);
-            $count = count($query);
-        }
-
-        if ($count > 0) // If count is greater than 0 it will show the message
-        {
-            printf($clang->gT("Export %s participant(s) to CSV"), $count);
-        }
-        else // else it will return a numeric count which will tell that there is no participant to be exported
-        {
-            echo $count;
-        }
+        echo $this->csvExportCount();
     }
 
     /**
@@ -613,76 +658,7 @@ class participantsaction extends Survey_Common_Action
      */
     function exporttocsvAll()
     {
-        Yii::app()->loadHelper('export');  // loads the export helper
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be exported
-        {
-            $query = Participants::model()->getParticipantsWithoutLimit();
-        }
-        else // otherwise only the ones over which the user has rights on
-        {
-            $iUserID = Yii::app()->session['loginID'];
-            $query = Participants::model()->getParticipantsOwner($iUserID);
-        }
-
-        if (!$query)
-            return false;
-
-        // These are the consistent fields that will be exported
-        $fields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
-        $i = 0;
-        $outputarray = array();
-
-        foreach ($fields as $field)
-        {
-            $outputarray[0][$i] = $field; // The fields are being added to the index 0 of the array to be written to the header of the csv file
-            $i++;
-        }
-
-        $attributenames = ParticipantAttributeNames::model()->getAttributes();
-        // Attribute names are being added to the index 0 of the array
-        foreach ($attributenames as $key => $value)
-        {
-            $outputarray[0][$i] = $value['attribute_name'];
-            $i++;
-        }
-        // Fetching the table data
-        $i = 1;
-        $j = 0;
-        // Read through the query result and add it to the array
-        // Please not it will give only basic field in the central database
-        foreach ($query as $field => $aData)
-        {
-            foreach ($fields as $field)
-            {
-                $outputarray[$i][$j] = $aData[$field];
-                //increment the column
-                $j++;
-            }
-
-            // it will iterate through the additional attributes that the user has choosen to export and will fetch the values
-            // that are to be exported to the CSV file
-            foreach ($attributenames as $key => $value)
-            {
-                $answer = ParticipantAttributeNames::model()->getAttributeValue($aData['participant_id'], $value['attribute_id']);
-                if (isset($answer['value']))
-                { // if the attribute value is there for that attribute and the user then it will written to the array
-                    $outputarray[$i][$j] = $answer['value'];
-                    //increment the column
-                    $j++;
-                }
-                else
-                { // otherwise blank value will be written to the array
-                    $outputarray[$i][$j] = "";
-                    //increment the column
-                    $j++;
-                }
-            }
-            // increment the row
-            $i++;
-        }
-
-        // Load the helper and pass the array to be written to a CSV file
-        CPDBExport($outputarray, "central_" . time());
+        $this->csvExport(); // no search
     }
 
     /**
@@ -779,8 +755,6 @@ class participantsaction extends Survey_Common_Action
      */
     function exporttocsv()
     {
-        Yii::app()->loadHelper('export');
-
         $searchconditionurl = Yii::app()->request->getPost('searchcondition');
         $searchcondition = basename($searchconditionurl);
         
@@ -792,43 +766,7 @@ class participantsaction extends Survey_Common_Action
             $search = null;
         }
         
-        $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
-        
-        //If super admin all the participants will be visible
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
-        {
-            $iUserID = null;
-        } else {
-            $iUserID = Yii::app()->session['loginID'];
-        }
-
-        $query = Participants::model()->getParticipants(0, 0, $attid, null, $search, $iUserID);
-        if (!$query)
-            return false;
-
-        // Field names in the first row
-        $fields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
-        $outputarray = array(); // The array to be passed to the export helper to be written to a csv file
-        
-        $outputarray[0] = $fields; //fields written to output array
-
-        // If attribute fields are selected, add them to the output
-        if (Yii::app()->request->getQuery('id') != "null") {
-            $iAttributeId = explode(",", Yii::app()->request->getQuery('id'));
-            foreach ($iAttributeId as $key => $value)
-            {
-                $fields[] = 'a'.$value;
-                $attributename = ParticipantAttributeNames::model()->getAttributeNames($value);
-                $outputarray[0][] = $attributename[0]['attribute_name'];
-            }
-        }       
-      
-        $fieldKeys = array_flip($fields);
-        foreach ($query as $field => $aData)
-        {
-            $outputarray[] = array_intersect_key($aData, $fieldKeys);
-        }
-        CPDBExport($outputarray, "central_" . time());
+        $this->csvExport($search);
     }
 
     /**
