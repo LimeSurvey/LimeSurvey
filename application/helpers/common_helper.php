@@ -2654,7 +2654,7 @@ function questionAttributes()
     "caption"=>$clang->gT('Answer prefix'));
 
     $qattributes["public_statistics"]=array(
-    'category'=>$clang->gT('Other'),
+    'category'=>$clang->gT('Statistics'),
     'sortorder'=>80,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),

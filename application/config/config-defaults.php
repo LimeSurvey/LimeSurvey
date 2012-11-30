@@ -103,7 +103,7 @@ $config['allowexportalldb'] = false;
 * maxdumpdbrecords (integer)
 * The maximum number of records that would be output in a go (and held in memory)during a database backup. Reduce this number if you're getting errors while backing up the entire database.
 */
-$config['maxdumpdbrecords'] = 2500;
+$config['maxdumpdbrecords'] = 2000;
 
 /**
 * allowmandbackwards (boolean)
