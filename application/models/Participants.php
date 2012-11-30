@@ -172,7 +172,7 @@ class Participants extends CActiveRecord
             ->from('{{participants}}')
             ->leftJoin('{{participant_shares}}', ' {{participants}}.participant_id={{participant_shares}}.participant_id')
             ->where('owner_uid = :userid1 OR share_uid = :userid2')
-            ->group('{{participants}}.participant_id');
+            ->group('{{participants}}.participant_id,{{participant_shares}}.can_edit');
         
         $command = Yii::app()->db->createCommand()
                 ->select('p.*, ps.can_edit')
