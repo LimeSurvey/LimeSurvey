@@ -47,7 +47,7 @@ class NumericalQuestion extends QuestionModule
             $tiwidth=10;
         }
 
-        $fValue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+        $fValue=$_SESSION['survey_'.$this->surveyid][$this->fieldname];
         if(strpos($fValue,"."))
         {
             $fValue=rtrim(rtrim($fValue,"0"),".");
@@ -63,7 +63,6 @@ class NumericalQuestion extends QuestionModule
                 $fValue=number_format($fValue, 0, '', '');
             }
         }
-
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
         $fValue = str_replace('.',$sSeperator,$fValue);
