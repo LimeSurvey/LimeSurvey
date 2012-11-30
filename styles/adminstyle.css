@@ -28,3 +28,11 @@ div.htmleditor {
 		display: none;
 }
 
+/* Some changes to codemirror used on template editor */
+.codemirror-ui-button-frame input,.codemirror-ui-button-frame label{
+	font-size: 0.7em !important;
+}
+
+.codemirror-ui-find-bar{
+	margin-top: 0.2em !important;
+}
