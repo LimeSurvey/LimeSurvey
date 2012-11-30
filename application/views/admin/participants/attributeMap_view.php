@@ -1,12 +1,12 @@
 <script type="text/javascript">
-    var redUrl = "<?php echo $this->createUrl("/admin/participants/displayParticipants"); ?>";
+    var redUrl = "<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>";
     var surveyId = "<?php echo $survey_id ?>";
     var redirect = "<?php echo $redirect ?>";
     if(redirect=='TRUE')
     {
         redUrl = "<?php echo $this->createUrl("/admin/tokens/sa/browse/surveyid/{$survey_id}"); ?>";
     }
-    var copyUrl = "<?php echo $this->createUrl("/admin/participants/addToTokenattmap"); ?>";
+    var copyUrl = "<?php echo $this->createUrl("/admin/participants/sa/addToTokenattmap"); ?>";
 
     var participant_id = "<?php echo $participant_id; ?>";
 

@@ -475,7 +475,7 @@ class tokens extends Survey_Common_Action
             }
             $action .= viewHelper::getImageLink('edit_16.png', null, $clang->gT("Edit token entry"), null, 'imagelink token_edit');
             if (!empty($token['participant_id']) && $token['participant_id'] != "") {
-                $action .= viewHelper::getImageLink('cpdb_16.png', "admin/participants/displayParticipants/searchurl/participant_id||equal||" . $token['participant_id'], $clang->gT("View this person in the central participants database"), '_top');
+                $action .= viewHelper::getImageLink('cpdb_16.png', "admin/participants/sa/displayParticipants/searchurl/participant_id||equal||" . $token['participant_id'], $clang->gT("View this person in the central participants database"), '_top');
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }

@@ -19,7 +19,7 @@
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
             $attribute = array('class' => 'form44');
-            echo CHtml::beginForm($this->createUrl('/admin/participants/storeBlacklistValues'), 'post', $attribute);
+            echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeBlacklistValues'), 'post', $attribute);
             $options = array('1' => $clang->gT('Yes'), '0' => $clang->gT('No'));
             ?>
             <ul>

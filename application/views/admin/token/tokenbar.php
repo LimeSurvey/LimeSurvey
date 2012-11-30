@@ -83,7 +83,7 @@
                 if(Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] == 1)
                 {
                 ?>
-                <a href="<?php echo $this->createUrl("admin/participants/displayParticipants"); ?>">
+                <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
                     <img src='<?php echo $imageurl; ?>cpdb.png' alt='<?php $clang->eT("Central participant database/panel"); ?>' />
                 </a>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />

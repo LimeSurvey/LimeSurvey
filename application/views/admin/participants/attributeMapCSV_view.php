@@ -11,9 +11,9 @@
         <script src="<?php echo Yii::app()->getConfig('adminscripts') . "attributeMapCSV.js" ?>" type="text/javascript"></script>
         <script type="text/javascript">
 
-            var copyUrl = "<?php echo $this->createURL("admin/participants/uploadCSV"); ?>";
-            var displayParticipants = "<?php echo $this->createURL("admin/participants/displayParticipants"); ?>";
-            var mapCSVcancelled = "<?php echo $this->createURL("admin/participants/mapCSVcancelled"); ?>";
+            var copyUrl = "<?php echo $this->createUrl("admin/participants/sa/uploadCSV"); ?>";
+            var displayParticipants = "<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>";
+            var mapCSVcancelled = "<?php echo $this->createUrl("admin/participants/sa/mapCSVcancelled"); ?>";
             var characterset = "<?php echo $_POST['characterset']; ?>";
             var okBtn = "<?php $clang->eT("OK") ?>";
             var processed = "<?php $clang->eT("Summary") ?>";

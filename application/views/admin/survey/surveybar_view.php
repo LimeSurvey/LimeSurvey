@@ -167,13 +167,13 @@
                         </ul>
                     </li>
                     <?php if($onelanguage) { ?>
-                        <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/index/surveyid/$surveyid");?>' >
+                        <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
                             <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php $clang->eT("Printable version");?></a></li>
                         <?php } else { ?>
-                        <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/index/surveyid/$surveyid");?>' >
+                        <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
                             <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php $clang->eT("Printable version");?></a><ul>
                                 <?php foreach ($languagelist as $tmp_lang) { ?>
-                                    <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/index/surveyid/$surveyid/lang/$tmp_lang");?>'>
+                                    <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid/lang/$tmp_lang");?>'>
                                         <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
                                     <?php } ?>
                             </ul></li>
