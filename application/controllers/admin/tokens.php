@@ -476,7 +476,7 @@ class tokens extends Survey_Common_Action
             }
             $action .= '<input style="float: left; height: 16; width: 16px; font-size: 8; font-family: verdana" type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'edit_16.png" class="token_edit" title="' . $clang->gT("Edit token entry") . '" alt="' . $clang->gT("Edit token entry") . '">';
             if(!empty($token['participant_id']) && $token['participant_id'] != "") {
-                $action .= '<input type="image" style="float: left" src="'.Yii::app()->getConfig('adminimageurl').'cpdb_16.png" name="viewparticipant" id="viewparticipant" title="'.$clang->gT("View this person in the central participants database").'" alt="'.$clang->gT("View this person in the central participants database").'" onClick=\'window.open("'.Yii::app()->getController()->createUrl("admin/participants/displayParticipants/searchurl/participant_id||equal||".$token['participant_id']).'", "_top")\'>';
+                $action .= '<input type="image" style="float: left" src="'.Yii::app()->getConfig('adminimageurl').'cpdb_16.png" name="viewparticipant" id="viewparticipant" title="'.$clang->gT("View this person in the central participants database").'" alt="'.$clang->gT("View this person in the central participants database").'" onClick=\'window.open("'.Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants/searchurl/participant_id||equal||".$token['participant_id']).'", "_top")\'>';
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }

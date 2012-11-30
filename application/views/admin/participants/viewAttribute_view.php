@@ -3,7 +3,7 @@
 <script src="<?php echo Yii::app()->getConfig('generalscripts') . "jquery/jquery-ui.js" ?>" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "viewAttribute.js" ?>" type="text/javascript"></script>
 <script type="text/javascript">
-    var url = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getAttributeBox"); ?>";
+    var url = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getAttributeBox"); ?>";
     var attname = "<?php $clang->eT("Attribute name:"); ?>";
     removeitem = new Array(); // Array to hold values that are to be removed from langauges option
 </script>
@@ -17,7 +17,7 @@ foreach (getLanguageData(false, Yii::app()->session['adminlang']) as $langkey2 =
     $options[$langkey2] = $langname['description'];
 }
 
-echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/saveAttribute/aid/' . Yii::app()->request->getQuery('aid')) . '/', "post");
+echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/sa/saveAttribute/aid/' . Yii::app()->request->getQuery('aid')) . '/', "post");
 
 ?>
 <div class='commonsettings'>
@@ -99,7 +99,7 @@ echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants
                         'height' => '15',
                         'class'=> 'edit',
                         'title' => $clang->gT("Delete value"));
-                    echo CHtml::link(CHtml::image($del['src'], $del['alt'], array_slice($del, 2)), $this->createURL('admin/participants/delAttributeValues/aid/' . $attributes['attribute_id'] . '/vid/' . $value['value_id']));
+                    echo CHtml::link(CHtml::image($del['src'], $del['alt'], array_slice($del, 2)), $this->createUrl('admin/participants/sa/delAttributeValues/aid/' . $attributes['attribute_id'] . '/vid/' . $value['value_id']));
                     ?></td>
             </tr>
             <?php

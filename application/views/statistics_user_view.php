@@ -3,7 +3,7 @@
     echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir($sTemplatePath))."/startpage.pstpl"));
 ?>
 <script type='text/javascript'>
-    var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/graph"); ?>";
+    var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/graph"); ?>";
 </script>
         <div id='statsContainer'>
             <div id='statsHeader'>
