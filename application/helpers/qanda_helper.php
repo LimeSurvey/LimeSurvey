@@ -5617,23 +5617,23 @@ function do_array_multiflexi($ia)
     }
 
     $checkboxlayout=false;
+    $inputboxlayout=false;
     if ($aQuestionAttributes['multiflexible_checkbox']!=0)
     {
         $minvalue=0;
         $maxvalue=1;
         $checkboxlayout=true;
-        $answertypeclass .=" checkbox";
+        $answertypeclass =" checkbox";
     }
-
-    $inputboxlayout=false;
-    if ($aQuestionAttributes['input_boxes']!=0 && !$checkboxlayout) // checkboxlayout have the
+    elseif ($aQuestionAttributes['input_boxes']!=0 )
     {
         $inputboxlayout=true;
-        $answertypeclass .=" numberonly text";
+        $answertypeclass .=" mumeric-item text";
+        $extraclass .= " text numeric";
     }
-    if (!$checkboxlayout && !$inputboxlayout)
+    else
     {
-        $answertypeclass .=" dropdown";
+        $answertypeclass =" dropdown";
     }
     if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
     {
@@ -5655,12 +5655,7 @@ function do_array_multiflexi($ia)
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
-        $kpclass = "num-keypad";
         $extraclass .=" inputkeypad";
-    }
-    else
-    {
-        $kpclass = "";
     }
 
     if (trim($aQuestionAttributes['answer_width'])!='')
@@ -5835,11 +5830,11 @@ function do_array_multiflexi($ia)
                         $answer .= "\t</select>\n";
                     } elseif ($inputboxlayout == true)
                     {
-                        $answer .= "\t<input type='text' class=\"multiflexitext $kpclass\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 title=\""
+                        $answer .= "\t<input type='text' class=\"multiflexitext $extraclass\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 title=\""
                         . HTMLEscape($labelans[$thiskey]).'"'
                         . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\""
                         . " value=\"";
-                        if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) {
+                        if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && is_numeric($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {
                             $answer .= str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]);
                         }
                         $answer .= "\" />\n";
@@ -5867,7 +5862,7 @@ function do_array_multiflexi($ia)
                     //					. "<label for=\"answer{$myfname2}\">\n"
                     . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" value=\"$myvalue\"/>\n"
                     . "\t<input type=\"hidden\" name=\"$myfname2\" id=\"answer{$myfname2}\" value=\"$myvalue\" />\n";
-                    $answer .= "\t<input type=\"checkbox\" name=\"cbox_$myfname2\" id=\"cbox_$myfname2\" $setmyvalue "
+                    $answer .= "\t<input type=\"checkbox\" class=\"checkbox {$extraclass}\" name=\"cbox_$myfname2\" id=\"cbox_$myfname2\" $setmyvalue "
                     . " onclick=\"cancelBubbleThis(event); "
                     . " aelt=document.getElementById('answer{$myfname2}');"
                     . " jelt=document.getElementById('java{$myfname2}');"
