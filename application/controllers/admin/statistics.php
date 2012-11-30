@@ -473,8 +473,20 @@ class statistics extends Survey_Common_Action {
             }
         }
         
-        if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
-        if($sortby != "") $search['order']=$sortby.' '.$sortmethod;
+        if ($sortby!='') 
+        {
+            if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql')
+            {
+                $sortby="CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
+            }
+            else
+            {            
+                $sortby=Yii::app()->db->quoteColumnName($sortby);    
+            }
+
+            if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
+            $search['order']=$sortby.' '.$sortmethod;
+        }
         $results=Survey_dynamic::model($surveyid)->findAll($search);
         foreach($results as $row) {
             $output[]=array("id"=>$row['id'], "value"=>$row[$column]);
