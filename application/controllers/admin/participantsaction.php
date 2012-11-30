@@ -42,6 +42,17 @@ function subval_sort($a, $subkey, $order)
  */
 class participantsaction extends Survey_Common_Action
 {
+    public function runWithParams($params)
+    {
+        if (!hasGlobalPermission('USER_RIGHT_PARTICIPANT_PANEL'))
+        {
+            die('No permission');
+        }
+        parent::runWithParams($params);
+    }
+
+
+    
     /**
      * Loads jqGrid for the view
      * @param string $sScript Subaction

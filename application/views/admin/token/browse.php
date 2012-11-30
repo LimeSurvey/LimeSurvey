@@ -70,7 +70,13 @@
     var invitemsg = "<?php echo $clang->eT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"); ?>"
     var remindmsg = "<?php echo $clang->eT("Send reminder email to the selected entries (if they have already received the invitation email)"); ?>"
     var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/email/action/invite/surveyid/{$surveyid}/tokenids/|"); ?>";
+    <?php if (!hasGlobalPermission('USER_RIGHT_PARTICIPANT_PANEL')){?>
+    var bParticipantPanelPermission=false;
+    <?php 
+    } else {?>
+    var bParticipantPanelPermission=true;
     var viewParticipantsLink = "<?php $clang->eT("View participants of this survey in the central participant database panel") ?>";
+    <?php } ?>
     var sBounceProcessing = "<?php $clang->eT("Start bounce processing") ?>";
     var sBounceProcessingURL = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/bounceprocessing/surveyid/{$surveyid}"); ?>";
     var participantlinkUrl="<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants/searchurl/survey||equal||{$surveyid}"); ?>";

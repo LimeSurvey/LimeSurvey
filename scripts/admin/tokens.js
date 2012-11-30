@@ -308,15 +308,18 @@ $(document).ready(function() {
         onClickButton:function(){
             window.open(remindurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
         }
-    });
-    $("#displaytokens").navButtonAdd('#pager', {
-        caption:"",
-        title:viewParticipantsLink,
-        buttonicon:'ui-participant-link',
-        onClickButton:function(){
-            window.open(participantlinkUrl, "_top");
-        }
-    });
+    });                 
+    if (bParticipantPanelPermission==true)
+    {
+        $("#displaytokens").navButtonAdd('#pager', {
+            caption:"",
+            title:viewParticipantsLink,
+            buttonicon:'ui-participant-link',
+            onClickButton:function(){
+                window.open(participantlinkUrl, "_top");
+            }
+        });
+    }
     $("#displaytokens").navButtonAdd('#pager', {
         caption:"",
         title:sBounceProcessing,
