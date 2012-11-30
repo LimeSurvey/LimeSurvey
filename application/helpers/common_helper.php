@@ -151,7 +151,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 }
                 if ($returnwithouturl===false)
                 {
-                    $inactivesurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
+                    $inactivesurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -169,7 +169,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 }
                 if ($returnwithouturl===false)
                 {
-                    $expiredsurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
+                    $expiredsurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -187,7 +187,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 }
                 if ($returnwithouturl===false)
                 {
-                    $activesurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
+                    $activesurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -388,7 +388,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
     {
         $qrow = $qrow->attributes;
         $qrow['title'] = strip_tags($qrow['title']);
-        $link = Yii::app()->getController()->createUrl("/admin/survey/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$qrow['qid']);
+        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$qrow['qid']);
         $sQuestionselecter .= "<option value='{$link}'";
         if ($selectedqid == $qrow['qid'])
         {
@@ -992,7 +992,7 @@ function getGroupListLang($gid, $language, $surveyid)
         $gv = $gv->attributes;
         $groupselecter .= "<option";
         if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
-        $link = Yii::app()->getController()->createUrl("/admin/survey/view/surveyid/".$surveyid."/gid/".$gv['gid']);
+        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gv['gid']);
         $groupselecter .= " value='{$link}'>";
         if (strip_tags($gv['group_name']))
         {
@@ -1004,7 +1004,7 @@ function getGroupListLang($gid, $language, $surveyid)
     }
     if ($groupselecter)
     {
-        $link = Yii::app()->getController()->createUrl("/admin/survey/view/surveyid/".$surveyid);
+        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid);
         if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$groupselecter;}
         else {$groupselecter .= "<option value='{$link}'>".$clang->gT("None")."</option>\n";}
     }
@@ -5192,13 +5192,13 @@ function accessDenied($action,$sid='')
         }
         elseif($action == "ordergroups")
         {
-            $link = Yii::app()->getController()->createUrl("/admin/survey/view/surveyid/$sid");
+            $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/$sid");
             $accesssummary .= "<p>".$clang->gT("You are not allowed to order groups in this survey!")."<br />";
             $accesssummary .= "<a href='$link'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "editsurvey")
         {
-            $link = Yii::app()->getController()->createUrl("/admin/survey/view/surveyid/$sid");
+            $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/$sid");
             $accesssummary .= "<p>".$clang->gT("You are not allowed to edit this survey!")."</p>";
             $accesssummary .= "<a href='$link'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
         }

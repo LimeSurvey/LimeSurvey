@@ -1,4 +1,4 @@
-<form method='post' action='<?php echo $this->createUrl("admin/user/userrights");?>'>
+<form method='post' action='<?php echo $this->createUrl("admin/user/sa/userrights");?>'>
 
 <table width='100%' border='0'>
 <tr>

@@ -1,4 +1,4 @@
-<form action='<?php echo $this->createUrl("admin/user/usertemplates");?>' method='post'>
+<form action='<?php echo $this->createUrl("admin/user/sa/usertemplates");?>' method='post'>
     <div class='header ui-widget-header'><?php $clang->eT('Edit template permissions');?></div>
     <table id="user-template-rights" width='50%' border='0' cellpadding='3' style='margin:5px auto 0 auto;'>
     <thead>

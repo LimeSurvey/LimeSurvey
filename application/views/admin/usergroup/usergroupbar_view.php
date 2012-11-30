@@ -15,7 +15,7 @@
 
             <?php if($ugid && $grpresultcount > 0)
                 { ?>
-                <a href="<?php echo $this->createUrl("admin/usergroups/mail/ugid/".$ugid); ?>">
+                <a href="<?php echo $this->createUrl("admin/usergroups/sa/mail/ugid/".$ugid); ?>">
                     <img src='<?php echo $imageurl; ?>invite.png' alt='<?php $clang->eT("Mail to all Members"); ?>' name='MailUserGroup' /></a>
                 <?php }
                 else
@@ -28,7 +28,7 @@
             <?php if($ugid && $grpresultcount > 0 &&
                 Yii::app()->session['loginID'] == $grow['owner_id'])
                 { ?>
-                <a href="<?php echo $this->createUrl("admin/usergroups/edit/ugid/".$ugid); ?>">
+                <a href="<?php echo $this->createUrl("admin/usergroups/sa/edit/ugid/".$ugid); ?>">
                     <img src='<?php echo $imageurl; ?>edit.png' alt='<?php $clang->eT("Edit current user group"); ?>' name='EditUserGroup' /></a>
                 <?php }
                 else
@@ -56,7 +56,7 @@
             </select>
             <?php if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
                 { ?>
-                <a href='<?php echo $this->createUrl("admin/usergroups/add"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/usergroups/sa/add"); ?>'>
                     <img src='<?php echo $imageurl; ?>add.png' alt='<?php $clang->eT("Add new user group"); ?>' /></a>
                 <?php } ?>
             <img src='<?php echo $imageurl; ?>separator.gif' alt='' />

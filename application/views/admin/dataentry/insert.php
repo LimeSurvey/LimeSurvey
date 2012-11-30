@@ -76,13 +76,13 @@
 
         <?php echo $errormsg; ?>
 
-        <input type='submit' value='<?php $clang->eT("Add another record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/dataentry/view/surveyid/'.$surveyid.'/lang/'.$lang); ?>', '_top')" />
-        <br /><br />
-        <input type='submit' value='<?php $clang->eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/survey/view/surveyid/'.$surveyid); ?>', '_top')" />
+		<input type='submit' value='<?php $clang->eT("Add another record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/dataentry/view/surveyid/'.$surveyid.'/lang/'.$lang); ?>', '_top')" />
+		<br /><br />
+        <input type='submit' value='<?php $clang->eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid); ?>', '_top')" />
         <br /><br />
 
         <?php if(isset($thisid)): ?>
-            <input type='submit' value='<?php $clang->eT("View this record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/responses/action/surveyid/'.$surveyid.'/id/'.$thisid); ?>', '_top')" />
+            <input type='submit' value='<?php $clang->eT("View this record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/responses/sa/action/surveyid/'.$surveyid.'/id/'.$thisid); ?>', '_top')" />
             <br /><br />
         <?php endif; ?>
 

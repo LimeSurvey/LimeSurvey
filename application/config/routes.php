@@ -20,6 +20,7 @@ $route['<_sid:\d+>/tk-<_token:\w+>'] = "survey/index/sid/<_sid>/token/<_token>";
 
 //Admin Routes
 $route['admin/index'] = "admin";
+$route['admin/<action:\w+>/sa/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>'; 
 $route['admin/<action:\w+>/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>';
 
 //question

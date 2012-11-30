@@ -10,7 +10,7 @@
             <img src='<?php echo $sImageURL; ?>separator.gif' alt='' />
             <img src='<?php echo $sImageURL; ?>blank.gif' width='76' height='20' alt='' />
             <img src='<?php echo $sImageURL; ?>separator.gif' alt='' />
-            <a href='<?php echo $this->createUrl("admin/labels/exportmulti");?>'>
+            <a href='<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>'>
                 <img src='<?php echo $sImageURL; ?>dumplabelmulti.png' alt='<?php $clang->eT("Export multiple label sets"); ?>' /></a>
         </div>
         <div class='menubar-right'>
@@ -25,19 +25,19 @@
                     {
                         foreach ($labelsets as $lb)
                         { ?>
-                        <option value='<?php echo $this->createUrl("admin/labels/view/lid/".$lb[0]); ?>'
+                        <option value='<?php echo $this->createUrl("admin/labels/sa/view/lid/".$lb[0]); ?>'
                             <?php if ($lb[0] == $lid) { ?> selected='selected' <?php } ?>
                             ><?php echo $lb[0]; ?>: <?php echo $lb[1]; ?></option>
                         <?php }
                 } ?>
 
             </select>
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/labels/newlabelset") ?>', '_top')">
+            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/labels/sa/newlabelset") ?>', '_top')">
                 <img src='<?php echo $sImageURL; ?>add.png' alt='<?php $clang->eT("Create or import new label set(s)"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>separator.gif'  alt='' />
             <img src='<?php echo $sImageURL; ?>blank.gif' width='5' height='20' alt='' />
 
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/logout");?>', '_top')">
+            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/sa/logout");?>', '_top')">
                 <img src='<?php echo $sImageURL; ?>logout.png' alt='<?php $clang->eT("Logout"); ?>' /></a>
 
             <a href="#" onclick="showhelp('show')">

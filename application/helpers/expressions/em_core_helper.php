@@ -1580,7 +1580,7 @@ class ExpressionManager {
                         $stringParts[] = "<span title='"  . $message . "' style='color: ". $color . "; font-weight: bold'";
                         if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid)) {
                             // Modify this link to utilize a different framework
-                            $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
+                            $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
                             $stringParts[] = " onclick='window.open(\"" . $editlink . "\");'";
                         }
                         $stringParts[] = ">";

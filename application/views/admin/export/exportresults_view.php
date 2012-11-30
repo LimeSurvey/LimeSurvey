@@ -5,7 +5,7 @@
     ?>
 </div>
 <div class='wrap2columns'>
-    <form id='resultexport' action='<?php echo $this->createUrl("admin/export/exportresults/surveyid/$surveyid");?>' method='post'><div class='left'>
+    <form id='resultexport' action='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid");?>' method='post'><div class='left'>
 
             
             <fieldset <?php  if ($SingleResponse) {?>

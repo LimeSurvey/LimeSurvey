@@ -58,7 +58,7 @@
             <?php } ?>
             
             <strong><?php $clang->eT("Copy of survey is completed."); ?></strong>
-            <a href='<?php echo $this->createUrl("admin/survey/view/".$aImportResults['newsid']); ?>'>
+            <a href='<?php echo $this->createUrl("admin/survey/sa/view/".$aImportResults['newsid']); ?>'>
             <?php $clang->eT("Go to survey"); ?></a>
     <?php } ?>
 </div>

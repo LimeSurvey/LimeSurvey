@@ -1,6 +1,6 @@
 <div class='header'><?php $clang->eT("Delete user"); ?></div>
 <div class='messagebox'>
-    <form method="post" name="deluserform" action="<?php echo $this->createUrl("admin/user/deluser"); ?>">
+    <form method="post" name="deluserform" action="<?php echo $this->createUrl("admin/user/sa/deluser"); ?>">
         <?php $clang->eT("Transfer the surveys of this user to: "); ?>
         <select name='transfer_surveys_to'>
             <?php

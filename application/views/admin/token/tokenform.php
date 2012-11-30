@@ -15,7 +15,7 @@
         }
     ?>
 </div>
-<form id='edittoken' class='form30' method='post' action='<?php echo $this->createUrl("admin/tokens/$subaction/surveyid/$surveyid/tokenid/$tokenid"); ?>'>
+<form id='edittoken' class='form30' method='post' action='<?php echo $this->createUrl("admin/tokens/sa/$subaction/surveyid/$surveyid/tokenid/$tokenid"); ?>'>
     <ul>
         <li><label>ID:</label>
             <?php if ($subaction == "edit")

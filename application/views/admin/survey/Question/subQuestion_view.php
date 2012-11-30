@@ -14,8 +14,8 @@
     var saveaslabletitle  = '<?php $clang->eT('Save as label set','js'); ?>';
     var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/getAllSets'); ?>';
     var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/ajaxSets'); ?>';
-    var lsdetailurl = '<?php echo Yii::app()->createUrl('/admin/question/ajaxlabelsetdetails'); ?>';
-    var lspickurl = '<?php echo Yii::app()->createUrl('/admin/question/ajaxlabelsetpicker'); ?>';
+    var lsdetailurl = '<?php echo Yii::app()->createUrl('/admin/question/sa/ajaxlabelsetdetails'); ?>';
+    var lspickurl = '<?php echo Yii::app()->createUrl('/admin/question/sa/ajaxlabelsetpicker'); ?>';
     var check = true;
     var lasuccess = '<?php $clang->eT('The records have been saved successfully!'); ?>';
     var lafail = '<?php $clang->eT('Sorry, the request failed!'); ?>';

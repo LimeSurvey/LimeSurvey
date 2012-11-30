@@ -1,4 +1,4 @@
-<form name='loginform' id='loginform' method='post' action='<?php echo $this->createUrl("admin/authentication/login"); ?>' >
+<form name='loginform' id='loginform' method='post' action='<?php echo $this->createUrl("admin/authentication/sa/login"); ?>' >
     <div class='messagebox ui-corner-all'>
         <div class='header ui-widget-header'><?php echo $summary; ?></div>
         <br />
@@ -30,7 +30,7 @@
         if (Yii::app()->getConfig("display_user_password_in_email") === true)
         {
             ?>
-            <a href='<?php echo $this->createUrl("admin/authentication/forgotpassword"); ?>'><?php $clang->eT("Forgot your password?"); ?></a><br />&nbsp;
+            <a href='<?php echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>'><?php $clang->eT("Forgot your password?"); ?></a><br />&nbsp;
             <?php
         }
         ?>

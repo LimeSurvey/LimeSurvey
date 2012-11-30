@@ -2554,8 +2554,8 @@ class statistics_helper {
 
                         $this->pdf->AddPage('P', 'A4');
 
-                        $this->pdf->titleintopdf($pdfTitle, $titleDesc);
-                        $this->pdf->Image($tempdir . "/" . $cachefilename, 0, 70, 180, 0, '', Yii::app()->getController()->createUrl("admin/survey/view/surveyid/" . $surveyid), 'B', true, 150, 'C', false, false, 0, true);
+                        $this->pdf->titleintopdf($pdfTitle,$titleDesc);
+                        $this->pdf->Image($tempdir."/".$cachefilename, 0, 70, 180, 0, '', Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$surveyid), 'B', true, 150,'C',false,false,0,true);
 
                         break;
                     case 'html':
@@ -2875,14 +2875,14 @@ class statistics_helper {
         if ($results > 0) {
             if ($outputType == 'html' && $browse === true) {
                 //add a buttons to browse results
-                $statisticsoutput .= "<form action='" . Yii::app()->getController()->createUrl("admin/responses/browse/surveyid/$surveyid") . "' method='post' target='_blank'>\n"
-                        . "\t\t<p>"
-                        . "\t\t\t<input type='submit' value='" . $statlang->gT("Browse") . "'  />\n"
-                        . "\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-                        . "\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
-                        . "\t\t\t<input type='hidden' name='subaction' value='all' />\n"
-                        . "\t\t</p>"
-                        . "\t\t</form>\n";
+                $statisticsoutput .= "<form action='".Yii::app()->getController()->createUrl("admin/responses/sa/browse/surveyid/$surveyid")."' method='post' target='_blank'>\n"
+                ."\t\t<p>"
+                ."\t\t\t<input type='submit' value='".$statlang->gT("Browse")."'  />\n"
+                ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+                ."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
+                ."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
+                ."\t\t</p>"
+                ."\t\t</form>\n";
             }
         } //end if (results > 0)
 

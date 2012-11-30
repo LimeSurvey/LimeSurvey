@@ -19,6 +19,6 @@
                 <?php } ?>
                <?php echo $clang->gT("Total records imported:") . ' '  . $importcount; ?>
                <br /> <br />
-               [<a href='<?php echo $this->createUrl("/admin/responses/index/surveyid/{$surveyid}"); ?>'><?php $clang->eT("Browse responses"); ?></a>]
+               [<a href='<?php echo $this->createUrl("/admin/responses/sa/index/surveyid/{$surveyid}"); ?>'><?php $clang->eT("Browse responses"); ?></a>]
 </div>
 <br />&nbsp;

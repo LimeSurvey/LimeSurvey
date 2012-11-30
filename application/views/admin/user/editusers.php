@@ -14,7 +14,7 @@
         </tr></thead><tbody>
         <tr >
             <td style='padding:3px;'>
-                <form method='post' action='<?php echo $this->createUrl("admin/user/modifyuser");?>'>
+                <form method='post' action='<?php echo $this->createUrl("admin/user/sa/modifyuser");?>'>
                     <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php $clang->eT("Edit user");?>' />
                     <input type='hidden' name='action' value='modifyuser' />
                     <input type='hidden' name='uid' value='<?php echo htmlspecialchars($usrhimself['uid']);?>' />
@@ -53,7 +53,7 @@
 
                 <td style='padding:3px;'>
                     <?php if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $usr['uid'] == Yii::app()->session['loginID'] || (Yii::app()->session['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == Yii::app()->session['loginID'])) { ?>
-                        <form method='post' action='<?php echo $this->createUrl("admin/user/modifyuser");?>'>
+                        <form method='post' action='<?php echo $this->createUrl("admin/user/sa/modifyuser");?>'>
                             <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php $clang->eT("Edit this user");?>' />
                             <input type='hidden' name='action' value='modifyuser' />
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
@@ -64,7 +64,7 @@
                         $usr['uid'] != Yii::app()->session['loginID'] ) ||
                         (Yii::app()->session['USER_RIGHT_CREATE_USER'] == 1 &&
                         $usr['parent_id'] == Yii::app()->session['loginID'])) && $usr['uid']!=1) { ?>
-                        <form method='post' action='<?php echo $this->createUrl("admin/user/setUserRights/");?>'>
+                        <form method='post' action='<?php echo $this->createUrl("admin/user/sa/setUserRights/");?>'>
                             <input type='image' src='<?php echo $imageurl;?>security_16.png' alt='<?php $clang->eT("Set global permissions for this user");?>' />
                             <input type='hidden' name='action' value='setUserRights' />
                             <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
@@ -73,7 +73,7 @@
                         <?php }
                         if (Yii::app()->session['loginID'] == "1" && $usr['parent_id'] !=1 ) { ?>
 
-                        <form method='post' action='<?php echo $this->createUrl("admin/user/setasadminchild/");?>'>
+                        <form method='post' action='<?php echo $this->createUrl("admin/user/sa/setasadminchild/");?>'>
                             <input type='image' src='<?php echo $imageurl;?>takeownership.png' alt='<?php $clang->eT("Take ownership");?>' />
                             <input type='hidden' name='action' value='setasadminchild' />
                             <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
@@ -81,7 +81,7 @@
                         </form>
                         <?php }
                         if ((Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1)  && $usr['uid']!=1) { ?>
-                        <form method='post' action='<?php echo $this->createUrl("admin/user/setusertemplates/");?>'>
+                        <form method='post' action='<?php echo $this->createUrl("admin/user/sa/setusertemplates/");?>'>
                             <input type='image' src='<?php echo $imageurl;?>templatepermissions_small.png' alt='<?php $clang->eT("Set template permissions for this user");?>' />
                             <input type='hidden' name='action' value='setusertemplates' />
                             <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
@@ -89,7 +89,7 @@
                         </form>
                         <?php }
                         if ((Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || (Yii::app()->session['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == Yii::app()->session['loginID']))&& $usr['uid']!=1) { ?>
-                        <form method='post' action='<?php echo $this->createUrl("admin/user/deluser");?>'>
+                        <form method='post' action='<?php echo $this->createUrl("admin/user/sa/deluser");?>'>
                             <input type='image' src='<?php echo $imageurl;?>token_delete.png' alt='<?php $clang->eT("Delete this user");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
                             <input type='hidden' name='action' value='deluser' />
                             <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
@@ -122,7 +122,7 @@
         } ?>
     </tbody></table><br />
 <?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_CREATE_USER']) { ?>
-    <form action='<?php echo $this->createUrl("admin/user/adduser");?>' method='post'>
+    <form action='<?php echo $this->createUrl("admin/user/sa/adduser");?>' method='post'>
         <table class='users'><tr class='oddrow'>
                 <th><?php $clang->eT("Add user:");?></th>
                 <td style='width:20%'><input type='text' name='new_user' /></td>

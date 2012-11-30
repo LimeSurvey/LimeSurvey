@@ -1,5 +1,5 @@
 <div class="header ui-tabs ui-widget ui-widget-content ui-corner-all"><?php $clang->eT("Edit quota");?></div>
-<form class='form44' action="<?php echo $this->createUrl("admin/quotas/modifyquota/surveyid/$iSurveyId");?>" method="post">
+<form class='form44' action="<?php echo $this->createUrl("admin/quotas/sa/modifyquota/surveyid/$iSurveyId");?>" method="post">
 <ul>
     <li><label for='quota_name'><?php $clang->eT("Quota name:");?></label> <input id="quota_name" name="quota_name" type="text" size="30" maxlength="255" value="<?php echo $quotainfo['name'];?>" /></li>
     <li><label for='quota_limit'><?php $clang->eT("Quota limit:");?></label><input id="quota_limit" name="quota_limit" type="text" size="12" maxlength="8" value="<?php echo $quotainfo['qlimit'];?>" /></li>

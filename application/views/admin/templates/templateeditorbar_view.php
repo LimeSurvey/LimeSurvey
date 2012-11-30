@@ -109,17 +109,17 @@
         <div class='menubar-right'>
 
             <label for='templatedir'><?php $clang->eT("Template:"); ?></label>
-            <select class="listboxtemplates" id='templatedir' name='templatedir' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/view/editfile/".$editfile."/screenname/".$screenname); ?>/templatename/'+escape(this.value), '_top')">
+            <select class="listboxtemplates" id='templatedir' name='templatedir' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/view/editfile/".$editfile."/screenname/".$screenname); ?>/templatename/'+escape(this.value), '_top')">
                 <?php echo templateoptions($templates, $templatename); ?>
             </select>
             <label for='listboxtemplates'><?php $clang->eT("Screen:"); ?></label>
-            <select class="listboxtemplates" id='listboxtemplates' name='screenname' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/screenredirect/editfile/".$editfile."/templatename/".$templatename); ?>/screenname/'+escape(this.value), '_top')">
+            <select class="listboxtemplates" id='listboxtemplates' name='screenname' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/screenredirect/editfile/".$editfile."/templatename/".$templatename); ?>/screenname/'+escape(this.value), '_top')">
                 <?php echo makeoptions($screens, "id", "name", HTMLEscape($screenname) ); ?>
             </select>
             <a href='#' onclick="javascript: copyprompt('<?php $clang->eT("Create new template called:"); ?>', '<?php $clang->eT("NewTemplate"); ?>', 'default', 'copy')">
                 <img src='<?php echo $sImageURL; ?>add.png' alt='<?php $clang->eT("Create new template"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-            <a href="<?php echo $this->createUrl("admin/authentication/logout"); ?>">
+            <a href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>">
                 <img src='<?php echo $sImageURL; ?>logout.png' alt='<?php $clang->eT("Logout"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='20'  />
         </div>

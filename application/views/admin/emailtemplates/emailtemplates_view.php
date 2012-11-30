@@ -135,7 +135,7 @@ ul.editor-parent {
 </div>
 <?php 
 ?>
-<form class='form30newtabs' id='emailtemplates' action='<?php echo Yii::app()->getController()->createUrl('admin/emailtemplates/update/surveyid/'.$surveyid); ?>' method='post'>
+<form class='form30newtabs' id='emailtemplates' action='<?php echo Yii::app()->getController()->createUrl('admin/emailtemplates/sa/update/surveyid/'.$surveyid); ?>' method='post'>
     <div id='tabs'>
         <ul>
             <?php foreach ($grplangs as $grouplang): ?>

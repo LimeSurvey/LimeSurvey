@@ -345,7 +345,7 @@ class templates extends Survey_Common_Action
     */
     public function screenredirect($editfile = 'startpage.pstpl', $templatename = 'default', $screenname = 'welcome')
     {
-        $this->getController()->redirect($this->getController()->createUrl("admin/templates/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
 
     /**
@@ -359,7 +359,7 @@ class templates extends Survey_Common_Action
     */
     public function fileredirect($templatename = 'default', $screenname = 'welcome', $editfile = 'startpage.pstpl')
     {
-        $this->getController()->redirect($this->getController()->createUrl("admin/templates/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
 
     /**
@@ -384,7 +384,7 @@ class templates extends Survey_Common_Action
             {
                 Yii::app()->session['flashmessage'] = sprintf($clang->gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete));
             }
-            $this->getController()->redirect($this->getController()->createUrl("admin/templates/view/editfile/" . returnGlobal('editfile') . "/screenname/" . returnGlobal('screenname') . "/templatename/" . returnGlobal('templatename')));
+            $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . returnGlobal('editfile') . "/screenname/" . returnGlobal('screenname') . "/templatename/" . returnGlobal('templatename')));
         }
     }
 
@@ -481,7 +481,7 @@ class templates extends Survey_Common_Action
         }
 
         // Redirect with default templatename, editfile and screenname
-        $this->getController()->redirect($this->getController()->createUrl("admin/templates/view"));
+        $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view"));
     }
 
     /**
@@ -539,7 +539,7 @@ class templates extends Survey_Common_Action
             }
         }
 
-        $this->getController()->redirect($this->getController()->createUrl("admin/templates/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
 
     /**

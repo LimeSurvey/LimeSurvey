@@ -66,7 +66,7 @@ class responses extends Survey_Common_Action
                 if ($actrow['active'] == 'N') //SURVEY IS NOT ACTIVE YET
                 {
                     Yii::app()->session['flashmessage'] = $clang->gT("This survey has not been activated. There are no results to browse.");
-                    $this->getController()->redirect($this->getController()->createUrl("/admin/survey/view/surveyid/{$iSurveyId}"));
+                    $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
                 }
             }
         }
@@ -257,7 +257,7 @@ class responses extends Survey_Common_Action
                                 if ($metadata === "size")
                                     $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
                                 else if ($metadata === "name")
-                                    $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fn[0]}/id/{$iId}/surveyid/{$iSurveyID}"));
+                                    $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/sa/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fn[0]}/id/{$iId}/surveyid/{$iSurveyID}"));
                                 else
                                     $answervalue = rawurldecode($phparray[$index][$metadata]);
                             }

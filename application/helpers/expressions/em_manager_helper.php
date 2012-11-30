@@ -4211,8 +4211,8 @@
             /////////////////////////////////////////////////////////
             if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
             {
-                $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
-                $debug_message .= '<br/>[G#' . $LEM->currentGroupSeq . ']'
+                $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
+                $debug_message .= '<br />[G#' . $LEM->currentGroupSeq . ']'
                 . '[' . $groupSeqInfo['qstart'] . '-' . $groupSeqInfo['qend'] . ']'
                 . "[<a href='$editlink'>"
                 .  'GID:' . $gid . "</a>]:  "
@@ -4553,7 +4553,7 @@
             /////////////////////////////////////////////////////////
             if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
             {
-                $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $LEM->sid . '/gid/' . $gid . '/qid/' . $qid);
+                $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid . '/qid/' . $qid);
                 $debug_qmessage .= '--[Q#' . $qInfo['qseq'] . ']'
                 . "[<a href='$editlink'>"
                 . 'QID:'. $qid . '</a>][' . get_class($q) . ']: '
@@ -6704,7 +6704,7 @@ EOD;
                     $grelevance = '{' . (($ginfo['grelevance']=='') ? 1 : $ginfo['grelevance']) . '}';
                     $gtext = ((trim($ginfo['description']) == '') ? '&nbsp;' : $ginfo['description']);
 
-                    $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
+                    $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
                     $groupRow = "<tr class='LEMgroup'>"
                     . "<td>G-$gseq</td>"
                     . "<td><b>".$ginfo['group_name']."</b><br/>[<a target='_blank' href='$editlink'>GID ".$gid."</a>]</td>"
@@ -7036,12 +7036,12 @@ EOD;
                 }
                 else
                 {
-                    $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $LEM->sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
+                    $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $LEM->sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
                     $questionRow .= "<span class='highlighterror' title='" . $varNameError['message'] . "' "
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";
                 }
-                $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
+                $editlink = Yii::app()->getController()->createUrl('/admin/survey/sa/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
                 $description = $q->questionProperties('description');
                 $class = substr(get_class($q),0,-8);
                 $questionRow .= "</b><br/>[<a target='_blank' href='$editlink'>QID $qid</a>]<br/>$description [$class]</td>"

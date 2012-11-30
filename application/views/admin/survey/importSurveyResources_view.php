@@ -71,5 +71,5 @@ if (!empty($aErrorFilesInfo))
 <?php
 }
 ?>
-    <input type='submit' value='<?php $clang->eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/editsurveysettings/surveyid/' . $surveyid); ?>', '_top')" />
+    <input type='submit' value='<?php $clang->eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editsurveysettings/surveyid/' . $surveyid); ?>', '_top')" />
 </div>

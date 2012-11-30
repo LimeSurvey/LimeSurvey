@@ -2,12 +2,12 @@
 <div class="header"><?php $clang->eT("Add Answer");?>: <?php $clang->eT("Question Selection");?></div><br />
     <div class="messagebox">
         <?php $clang->eT("All answers are already selected in this quota.");?>
-        <br/><br/><input type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/index/surveyid/$iSurveyId");?>', '_top')" value="<?php $clang->eT("Continue");?>"/>
+        <br/><br/><input type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$iSurveyId");?>', '_top')" value="<?php $clang->eT("Continue");?>"/>
     </div>
 <?php } else { ?>
 <div class="header ui-widget-header"><?php $clang->eT("Survey Quota");?>: <?php $clang->eT("Add Answer");?></div><br />
     <div class="messagebox ui-corner-all" style="width: 600px">
-        <form action="<?php echo $this->createUrl("admin/quotas/insertquotaanswer/surveyid/$iSurveyId");?>#quota_<?php echo sanitize_int($_POST['quota_id']);?>" method="post">
+        <form action="<?php echo $this->createUrl("admin/quotas/sa/insertquotaanswer/surveyid/$iSurveyId");?>#quota_<?php echo sanitize_int($_POST['quota_id']);?>" method="post">
             <table class="addquotaanswer">
                 <tbody>
                     <thead>
