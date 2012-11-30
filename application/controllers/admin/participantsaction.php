@@ -557,26 +557,27 @@ class participantsaction extends Survey_Common_Action
 
         $searchconditionurl = Yii::app()->request->getPost('searchcondition');
         $searchcondition = basename($searchconditionurl);
-
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants in the cpdb are counted
+        
+        if ($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
         {
-            if ($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
-            {
-                $condition = explode("||", $searchcondition);
-                $query = Participants::model()->getParticipantsSearchMultiple($condition, 0, 0);
-                $count = count($query);
-            }
-            else // if no search criteria all the participants will be counted
-            {
-                $count = Participants::model()->getParticipantsCountWithoutLimit();
-            }
+            $condition = explode("||", $searchcondition);
+            $search = Participants::model()->getParticipantsSearchMultipleCondition($condition);
+        } else {
+            $search = null;
         }
-        else // If no search criteria it will simply return the number of participants
+        
+        $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
+        
+        //If super admin all the participants will be visible
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
+            $iUserID = null;
+        } else {
             $iUserID = Yii::app()->session['loginID'];
-            $query = Participants::model()->getParticipantsOwner($iUserID);
-            $count = count($query);
         }
+        
+
+        $count = Participants::model()->getParticipantsCount($attid, $search, $iUserID);
 
         echo sprintf($clang->gT("Export %s participant(s) to CSV"), $count);
     }
@@ -782,27 +783,26 @@ class participantsaction extends Survey_Common_Action
 
         $searchconditionurl = Yii::app()->request->getPost('searchcondition');
         $searchcondition = basename($searchconditionurl);
-
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be visible
+        
+        if ($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
         {
-            if ($searchcondition != 'getParticipants_json') // If there is a search condition then only does participants are exported
-            {
-                $condition = explode("||", $searchcondition);
-
-                $query = Participants::model()->getParticipantsSearchMultiple($condition, 0, 0);
-
-            } // else all the participants in the central table will be exported since it's superadmin
-            else
-            {
-                $query = Participants::model()->getParticipantsWithoutLimit();
-            }
+            $condition = explode("||", $searchcondition);
+            $search = Participants::model()->getParticipantsSearchMultipleCondition($condition);
+        } else {
+            $search = null;
         }
-        else
+        
+        $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
+        
+        //If super admin all the participants will be visible
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
-            $iUserID = Yii::app()->session['loginID']; // else only the
-            $query = Participants::model()->getParticipantsOwner($iUserID);
+            $iUserID = null;
+        } else {
+            $iUserID = Yii::app()->session['loginID'];
         }
 
+        $query = Participants::model()->getParticipants(0, 0, $attid, null, $search, $iUserID);
         if (!$query)
             return false;
 

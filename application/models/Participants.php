@@ -313,9 +313,11 @@ class Participants extends CActiveRecord
                 $data->setOrder($order);
             }
 
-            $offset = ($page - 1) * $limit;
-            $data->offset($offset)
-                  ->limit($limit);
+            if ($page <> 0) {
+                $offset = ($page - 1) * $limit;
+                $data->offset($offset)
+                     ->limit($limit);
+            }
         }
         
         $data->bindValues($aParams);
