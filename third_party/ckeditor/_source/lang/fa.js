@@ -31,8 +31,8 @@ CKEDITOR.lang['fa'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle : 'Rich text editor, %1', // MISSING
-	editorHelp : 'Press ALT 0 for help', // MISSING
+	editorTitle : 'ویرایشگر متن غنی, %1',
+	editorHelp : 'کلید Alt+0 را برای راهنمایی بفشارید',
 
 	// ARIA descriptions.
 	toolbars	: 'نوار ابزار',
@@ -120,6 +120,7 @@ CKEDITOR.lang['fa'] =
 		alignTop		: 'بالا',
 		alignMiddle		: 'وسط',
 		alignBottom		: 'پائین',
+		invalidValue	: 'Invalid value.', // MISSING
 		invalidHeight	: 'ارتفاع باید یک عدد باشد.',
 		invalidWidth	: 'پهنا باید یک عدد باشد.',
 		invalidCssLength	: 'عدد تعیین شده برای فیلد "%1" باید یک عدد مثبت با یا بدون یک واحد اندازه گیری CSS معتبر باشد (px, %, in, cm, mm, em, ex, pt, or pc).',
