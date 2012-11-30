@@ -488,55 +488,25 @@ class statistics extends Survey_Common_Action {
 
 	}
 
-    /* Returns a simple list of values in a particular column, that meet the
-     * requirements of the SQL
-     *
-     * */
+    
+    /**
+    *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
+    */
     function listcolumn($surveyid, $column, $sortby="", $sortmethod="", $sorttype="")
     {
-        $search['condition']=Yii::app()->db->quoteColumnName($column)." != ''";
-        $sDBDriverName=Yii::app()->db->getDriverName();
-        if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql')
-        {
-            $search['condition']="CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
-        }
-        
-        //Look for any selects/filters set in the original statistics query, and apply them to the column listing
-        if (isset(Yii::app()->session['statistics_selects_'.$surveyid]) && is_array(Yii::app()->session['statistics_selects_'.$surveyid]))
-        {
-            foreach(Yii::app()->session['statistics_selects_'.$surveyid] as $sql) {
-                 $search['condition'] .= " AND $sql";
-            }
-        }
-        
-        if ($sortby!='') 
-        {
-            if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql')
-            {
-                $sortby="CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
-            }
-            else
-            {            
-                $sortby=Yii::app()->db->quoteColumnName($sortby);    
-            }
-
-            if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
-            $search['order']=$sortby.' '.$sortmethod;
-        }
-        $results=Survey_dynamic::model($surveyid)->findAll($search);
-        $output=array();
-        foreach($results as $row) {
-            $output[]=array("id"=>$row['id'], "value"=>$row[$column]);
-        }
+        Yii::app()->loadHelper('admin/statistics');
+        $helper = new statistics_helper();
+        $output = $helper->_listcolumn($surveyid, $column, $sortby, $sortmethod, $sorttype);
         $aData['surveyid']=$surveyid;
         $aData['data']=$output;
         $aData['column']=$column;
         $aData['sortby']=$sortby;
         $aData['sortmethod']=$sortmethod;
         $aData['sorttype']=$sorttype;
-        $this->getController()->render('export/statistics_browse_view', $aData);
+        $this->getController()->render('export/statistics_browse_view', $aData);    
     }
-
+    
+    
 	function graph()
 	{
         Yii::app()->loadHelper('admin/statistics');

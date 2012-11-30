@@ -1805,6 +1805,20 @@ class statistics_helper {
                 $fname="$al[1]";
                 if ($browse===true) $fname .= " <input type='button' class='statisticsbrowsebutton' value='"
                     .$statlang->gT("Browse")."' id='$ColumnName_RM' />";
+
+                if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
+                    $headPDF2 = array();
+                    $headPDF2[] = array($statlang->gT("ID"),$statlang->gT("Response"));
+                    $tablePDF2 = array();
+                    $result2= $this->_listcolumn($surveyid,$ColumnName_RM);
+
+                    foreach ($result2 as $row2)
+                    {
+                        $tablePDF2[]=array($row2['id'], $row2['value']);
+                    }
+                }                
+                    
+                    
             }
 
             /*
@@ -1838,6 +1852,18 @@ class statistics_helper {
                 ."\t\t<th width='25%' align='center' >"
                 ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
                 ."\t</tr></thead>\n";
+                
+                if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
+                    $headPDF2 = array();
+                    $headPDF2[] = array($statlang->gT("ID"),$statlang->gT("Response"));
+                    $tablePDF2 = array();
+                    $result2= $this->_listcolumn($surveyid,$ColumnName_RM);
+
+                    foreach ($result2 as $row2)
+                    {
+                        $tablePDF2[]=array($row2['id'], $row2['value']);
+                    }
+                }                
             }
 
 
@@ -2865,6 +2891,10 @@ class statistics_helper {
             //                    $footA = array($foot);
             //                    $this->pdf->tablehead($footA);
             //                }
+            if (isset($headPDF2))
+            {
+                $this->pdf->headTable($headPDF2,$tablePDF2);
+            }
         }
 
         if ($outputType=='html') {
@@ -3508,4 +3538,49 @@ class statistics_helper {
             return $allRows[$row][$fieldname] + $diff * ($allRows[$row+1][$fieldname]-$allRows[$row][$fieldname]);
         }        
     }
+                  
+    
+    /**
+    *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
+    */
+    function _listcolumn($surveyid, $column, $sortby="", $sortmethod="", $sorttype="")
+    {
+        $search['condition']=Yii::app()->db->quoteColumnName($column)." != ''";
+        $sDBDriverName=Yii::app()->db->getDriverName();
+        if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql')
+        {
+            $search['condition']="CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
+        }
+        
+        //Look for any selects/filters set in the original statistics query, and apply them to the column listing
+        if (isset(Yii::app()->session['statistics_selects_'.$surveyid]) && is_array(Yii::app()->session['statistics_selects_'.$surveyid]))
+        {
+            foreach(Yii::app()->session['statistics_selects_'.$surveyid] as $sql) {
+                 $search['condition'] .= " AND $sql";
+            }
+        }
+        
+        if ($sortby!='') 
+        {
+            if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql')
+            {
+                $sortby="CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
+            }
+            else
+            {            
+                $sortby=Yii::app()->db->quoteColumnName($sortby);    
+            }
+
+            if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
+            $search['order']=$sortby.' '.$sortmethod;
+        }
+        $results=Survey_dynamic::model($surveyid)->findAll($search);
+        $output=array();
+        foreach($results as $row) {
+            $output[]=array("id"=>$row['id'], "value"=>$row[$column]);
+        }
+        return $output;
+    }    
+    
+    
 }
