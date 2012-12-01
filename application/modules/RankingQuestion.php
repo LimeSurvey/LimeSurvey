@@ -294,7 +294,7 @@ class RankingQuestion extends QuestionModule
     public function createFieldmap()
     {
         $clang = Yii::app()->lang;
-        $data = Answers::model()->findAllByAttributes(array('qid' => $this->id,'parent_qid' => '0', 'language' => $this->language));
+        $data = Answers::model()->findAllByAttributes(array('qid' => $this->id,'scale_id' => '0', 'language' => $this->language));
         $map = array();
         for ($i=1; $i<=count($data); $i++)
         {
