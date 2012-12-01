@@ -114,163 +114,48 @@ class RankingQuestion extends QuestionModule
     public function getDataEntry($idrow, &$fnames, $language)
     {
         $clang = Yii::app()->lang;
-        $currentvalues=array();
         $myfname=$this->surveyid.'X'.$this->gid.'X'.$this->id;
         $q = $this;
-        while ($q->id==$this->id)
-        {
-            //Let's get all the existing values into an array
-            if ($idrow[$q->fieldname])
-            {
-                $currentvalues[] = $idrow[$q->fieldname];
-            }
-            if(!$fname=next($fnames)) break;
-            $q=$fname['q'];
-        }
-        $ansquery = "SELECT * FROM {{answers}} WHERE language = '{$language}' AND qid=$thisqid ORDER BY sortorder, answer";
-        $ansresult = dbExecuteAssoc($ansquery);
-        $anscount = $ansresult->count();
-        $output = "\t<script type='text/javascript'>\n"
-        ."\t<!--\n"
-        ."function rankthis_$thisqid(\$code, \$value)\n"
-        ."\t{\n"
-        ."\t\$index=document.editresponse.CHOICES_$thisqid.selectedIndex;\n"
-        ."\tfor (i=1; i<=$anscount; i++)\n"
-        ."{\n"
-        ."\$b=i;\n"
-        ."\$b += '';\n"
-        ."\$inputname=\"RANK_$thisqid\"+\$b;\n"
-        ."\$hiddenname=\"d$myfname\"+\$b;\n"
-        ."\$cutname=\"cut_$thisqid\"+i;\n"
-        ."document.getElementById(\$cutname).style.display='none';\n"
-        ."if (!document.getElementById(\$inputname).value)\n"
-        ."\t{\n"
-        ."\tdocument.getElementById(\$inputname).value=\$value;\n"
-        ."\tdocument.getElementById(\$hiddenname).value=\$code;\n"
-        ."\tdocument.getElementById(\$cutname).style.display='';\n"
-        ."\tfor (var b=document.getElementById('CHOICES_$thisqid').options.length-1; b>=0; b--)\n"
-        ."{\n"
-        ."if (document.getElementById('CHOICES_$thisqid').options[b].value == \$code)\n"
-        ."\t{\n"
-        ."\tdocument.getElementById('CHOICES_$thisqid').options[b] = null;\n"
-        ."\t}\n"
-        ."}\n"
-        ."\ti=$anscount;\n"
-        ."\t}\n"
-        ."}\n"
-        ."\tif (document.getElementById('CHOICES_$thisqid').options.length == 0)\n"
-        ."{\n"
-        ."document.getElementById('CHOICES_$thisqid').disabled=true;\n"
-        ."}\n"
-        ."\tdocument.editresponse.CHOICES_$thisqid.selectedIndex=-1;\n"
-        ."\t}\n"
-        ."function deletethis_$thisqid(\$text, \$value, \$name, \$thisname)\n"
-        ."\t{\n"
-        ."\tvar qid='$thisqid';\n"
-        ."\tvar lngth=qid.length+4;\n"
-        ."\tvar cutindex=\$thisname.substring(lngth, \$thisname.length);\n"
-        ."\tcutindex=parseFloat(cutindex);\n"
-        ."\tdocument.getElementById(\$name).value='';\n"
-        ."\tdocument.getElementById(\$thisname).style.display='none';\n"
-        ."\tif (cutindex > 1)\n"
-        ."{\n"
-        ."\$cut1name=\"cut_$thisqid\"+(cutindex-1);\n"
-        ."\$cut2name=\"d$myfname\"+(cutindex);\n"
-        ."document.getElementById(\$cut1name).style.display='';\n"
-        ."document.getElementById(\$cut2name).value='';\n"
-        ."}\n"
-        ."\telse\n"
-        ."{\n"
-        ."\$cut2name=\"d$myfname\"+(cutindex);\n"
-        ."document.getElementById(\$cut2name).value='';\n"
-        ."}\n"
-        ."\tvar i=document.getElementById('CHOICES_$thisqid').options.length;\n"
-        ."\tdocument.getElementById('CHOICES_$thisqid').options[i] = new Option(\$text, \$value);\n"
-        ."\tif (document.getElementById('CHOICES_$thisqid').options.length > 0)\n"
-        ."{\n"
-        ."document.getElementById('CHOICES_$thisqid').disabled=false;\n"
-        ."}\n"
-        ."\t}\n"
-        ."\t//-->\n"
-        ."\t</script>\n";
-        foreach ($ansresult->readAll() as $ansrow) //Now we're getting the codes and answers
-        {
-            $answers[] = array($ansrow['code'], $ansrow['answer']);
-        }
-        //now find out how many existing values there are
 
-        $chosen[]=""; //create array
-        if (!isset($ranklist)) {$ranklist="";}
-
-        if (isset($currentvalues))
-        {
-            $existing = count($currentvalues);
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language='{$language}' and scale_id=0 ORDER BY sortorder, answer";
+        $ansresult = Yii::app()->db->createCommand($ansquery)->query()->readAll();
+        $anscount = count($ansresult);
+        $answers= array();
+            foreach ($ansresult as $ansrow)
+            {
+                $answers[] = $ansrow;
+            }
+        $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}";// $this->fieldname give the last sq fieldname in dataentry
+        $output = "";
+        $output .= "<div id='question{$this->id}' class='ranking-answers'><ul class='answers-list'>";
+        for ($i=1; $i<=$anscount; $i++)
+        {   
+            // Get actual answer
+            
+            (isset($idrow[$fieldname.$i])) ? $thisanswer=$idrow[$fieldname.$i]:$thisanswer="";
+            $output .= "\n<li class=\"select-item\">";
+            $output .="<label for=\"answer{$fieldname}{$i}\">";
+            if($i==1){
+                $output .=$clang->gT('First choice');
+            }else{
+                $output .=$clang->gT('Next choice');
+            }
+            $output .= "<select name=\"{$fieldname}{$i}\" id=\"answer{$fieldname}{$i}\">\n";
+            $output .= "\t<option value=\"\">".$clang->gT('None')."</option>\n";
+            foreach ($answers as $ansrow)
+            {
+                ($thisanswer==$ansrow['code']) ? $selected=" selected=\"selected\"" : $selected="";
+                $output .= "\t<option value=\"".$ansrow['code']."\" $selected>".flattenText($ansrow['answer'])."</option>\n";
+            }
+            $output .= "</select>\n";
+            $output .="</label>";
+            next($fnames);
         }
-        else {$existing=0;}
-        for ($j=1; $j<=$anscount; $j++) //go through each ranking and check for matching answer
-        {
-            $k=$j-1;
-            if (isset($currentvalues) && isset($currentvalues[$k]) && $currentvalues[$k])
-            {
-                foreach ($answers as $ans)
-                {
-                    if ($ans[0] == $currentvalues[$k])
-                    {
-                        $thiscode=$ans[0];
-                        $thistext=$ans[1];
-                    }
-                }
-            }
-            $ranklist .= "$j:&nbsp;<input class='ranklist' id='RANK_$thisqid$j'";
-            if (isset($currentvalues) && isset($currentvalues[$k]) && $currentvalues[$k])
-            {
-                $ranklist .= " value='".$thistext."'";
-            }
-            $ranklist .= " onFocus=\"this.blur()\"  />\n"
-            . "<input type='hidden' id='d$myfname$j' name='$myfname$j' value='";
-            if (isset($currentvalues) && isset($currentvalues[$k]) && $currentvalues[$k])
-            {
-                $ranklist .= $thiscode;
-                $chosen[]=array($thiscode, $thistext);
-            }
-            $ranklist .= "' />\n"
-            . "<img src='".Yii::app()->getConfig('imageurl')."/cut.gif' alt='".$clang->gT("Remove this item")."' title='".$clang->gT("Remove this item")."' ";
-            if ($j != $existing)
-            {
-                $ranklist .= "style='display:none'";
-            }
-            $ranklist .= " id='cut_$thisqid$j' onclick=\"deletethis_$thisqid(document.editresponse.RANK_$thisqid$j.value, document.editresponse.d$myfname$j.value, document.editresponse.RANK_$thisqid$j.id, this.id)\" /><br />\n\n";
-        }
-
-        if (!isset($choicelist)) {$choicelist="";}
-        $choicelist .= "<select class='choicelist' size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onclick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" >\n";
-        foreach ($answers as $ans)
-        {
-            if (!in_array($ans, $chosen))
-            {
-                $choicelist .= "\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
-            }
-        }
-        $choicelist .= "</select>\n";
-        $output .= "\t<table>\n"
-        ."<tr>\n"
-        ."\t<td>\n"
-        ."<strong>"
-        .$clang->gT("Your Choices").":</strong><br />\n"
-        .$choicelist
-        ."\t</td>\n"
-        ."\t<td align='left'>\n"
-        ."<strong>"
-        .$clang->gT("Your Ranking").":</strong><br />\n"
-        .$ranklist
-        ."\t</td>\n"
-        ."</tr>\n"
-        ."\t</table>\n"
-        ."\t<input type='hidden' name='multi' value='$anscount' />\n"
-        ."\t<input type='hidden' name='lastfield' value='";
-        if (isset($multifields)) {$output .= $multifields;}
-        $output .= "' />\n";
-        prev($fnames);
+        prev($fnames);// for do one pass more, then get prev
+        $output .="</li>";
+        $output .= '</ul>';
+        $output .= '</div>';
+        echo Yii::trace(CVarDumper::dumpAsString($idrow),'vardump');
         return $output;
     }
 

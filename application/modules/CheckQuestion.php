@@ -252,6 +252,7 @@ class CheckQuestion extends QuestionModule
     public function getDataEntry($idrow, &$fnames, $language)
     {
         $q = $this;
+        $output="";
         while ($q->id == $this->id)
         {
             if (substr($q->fieldname, -5) == "other")
@@ -266,8 +267,8 @@ class CheckQuestion extends QuestionModule
                 $output .= " />{$q->sq}<br />\n";
             }
 
-            if(!$fname=next($fnames)) break;
-            $q=$fname['q'];
+            if(!$q=next($fnames)) break;
+            //$q=$fnames['q'];
         }
         prev($fnames);
         return $output;

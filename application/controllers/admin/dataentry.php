@@ -589,12 +589,10 @@ class dataentry extends Survey_Common_Action
 
             $highlight = FALSE;
             unset($fnames['lastpage']);
-
             $output = '';
             foreach ($results as $idrow)
             {
                 $q = reset($fnames);
-
                 do
                 {
                     if (isset($idrow[$q->fieldname]) )
@@ -655,7 +653,7 @@ class dataentry extends Survey_Common_Action
 
                     $output .= "        </td>
                     </tr>\n";
-                } while ($fname=next($fnames));
+                } while ($q=next($fnames));
             }
             $output .= "</table>\n"
             ."<p>\n";
@@ -725,8 +723,10 @@ class dataentry extends Survey_Common_Action
     */
     public function update()
     {
-        $aData=array();        $subaction = Yii::app()->request->getPost('subaction');
-        if (isset($_REQUEST['surveyid'])) $surveyid = $_REQUEST['surveyid'];        if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
+        $aData=array();
+        $subaction = Yii::app()->request->getPost('subaction');
+        if (isset($_REQUEST['surveyid'])) $surveyid = $_REQUEST['surveyid'];
+        if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
         $surveyid = sanitize_int($surveyid);
         $id = Yii::app()->request->getPost('id');
         $lang = Yii::app()->request->getPost('lang');
@@ -777,10 +777,10 @@ class dataentry extends Survey_Common_Action
                         $updateqr .= dbQuoteID($q->fieldname)." = " . dbQuoteAll($thisvalue) . ", \n";
                     }
                 }
-                elseif(!is_a($q, 'QuestionModule'))
+                elseif(is_a($q, 'QuestionModule'))
                 {
                     $thisvalue = $q->filter($thisvalue, 'dataentry');
-                    $updateqr .= dbQuoteID($q->fieldname) . ' = ' . $thisvalue == null ? 'NULL' : dbQuoteAll($thisvalue) . ', \n';
+                    $updateqr .= dbQuoteID($q->fieldname) . ' = ' . (is_null($thisvalue) ? 'NULL' : dbQuoteAll($thisvalue)) . ", \n";
                 }
                 else
                 {
@@ -789,7 +789,6 @@ class dataentry extends Survey_Common_Action
             }
             $updateqr = substr($updateqr, 0, -3);
             $updateqr .= " WHERE id=$id";
-
             $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
 
             $onerecord_link = $this->getController()->createUrl('/').'/admin/responses/view/surveyid/'.$surveyid.'/id/'.$id;
