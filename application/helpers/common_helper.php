@@ -622,7 +622,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
     }
     else
     {
-        $sQuestionselecter = "<option>".$clang->gT("None")."</option>\n".$sQuestionselecter;
+        $sQuestionselecter = "<option value=' '>".$clang->gT("None")."</option>\n".$sQuestionselecter;
     }
     return $sQuestionselecter;
 }
