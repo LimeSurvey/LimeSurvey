@@ -603,7 +603,7 @@ class dataentry extends Survey_Common_Action
                     }
                     $output .= "\t<tr";
                     if ($highlight) $output .=" class='odd'";
-                    else $aDataentryoutput .=" class='even'";
+                    else $output .=" class='even'";
 
                     $highlight=!$highlight;
                     $output .=">\n"
@@ -1167,7 +1167,7 @@ class dataentry extends Survey_Common_Action
             if(is_null($lang) || !in_array($lang,$slangs))
             {
                 $sDataEntryLanguage = $baselang;
-                $blang = $clang;
+                $blang = new Limesurvey_lang($baselang);
             } else {
                 Yii::app()->loadLibrary('Limesurvey_lang',array($lang));
                 $blang = new Limesurvey_lang($lang);
@@ -1203,7 +1203,7 @@ class dataentry extends Survey_Common_Action
             {
                 LimeExpressionManager::StartProcessingGroup($degrow['gid'], ($thissurvey['anonymized']!="N"),$surveyid);
 
-                $results = Questions::model()->with('question_types')->findAllByAttributes(array('gid' => $degrow['gid'], 'language' => $sDataEntryLanguage), array('order' => 'question_order'));
+                $results = Questions::model()->with('question_types')->findAllByAttributes(array('gid' => $degrow['gid'],'parent_qid' => '0', 'language' => $sDataEntryLanguage), array('order' => 'question_order'));
                 $aDataentryoutput .= "\t<tr>\n"
                 ."<td colspan='3' align='center'><strong>".flattenText($degrow['group_name'],true)."</strong></td>\n"
                 ."\t</tr>\n";
@@ -1218,7 +1218,6 @@ class dataentry extends Survey_Common_Action
                     // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?
 
                     // TMSW Conditions->Relevance:  Show relevance equation instead of conditions here - better yet, have data entry use survey-at-a-time but with different view
-
                     $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
                     $q = $qinfo['info']['q'];
                     $qidattributes = is_a($q, 'QuestionModule') ? $q->getAttributeValues() : array();

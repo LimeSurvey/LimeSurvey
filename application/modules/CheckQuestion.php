@@ -667,7 +667,7 @@ class CheckQuestion extends QuestionModule
         $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY question_order";
         $mearesult = dbExecuteAssoc($meaquery);
         $meacount = $mearesult->getRowCount();
-
+        $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}";// $this->fieldname give the last sq fieldname in dataentry
         $output = '';
         if ($this->isother == "Y") $meacount++;
         if ($dcols > 0 && $meacount >= $dcols)
@@ -684,13 +684,13 @@ class CheckQuestion extends QuestionModule
                     echo $divider;
                     $upto=0;
                 }
-                $output .= "<input type='checkbox' class='checkboxbtn' name='{$this->fieldname}{$mearow['title']}' id='answer{$this->fieldname}{$mearow['title']}' value='Y' />";
-                $output .= "<label for='answer{$this->fieldname}{$mearow['title']}'>{$mearow['question']}</label><br />";
+                $output .= "<input type='checkbox' class='checkboxbtn' name='{$fieldname}{$mearow['title']}' id='answer{$fieldname}{$mearow['title']}' value='Y' />";
+                $output .= "<label for='answer{$fieldname}{$mearow['title']}'>{$mearow['question']}</label><br />";
                 $upto++;
             }
             if ($this->isother == "Y")
             {
-                $output .= $language->gT("Other") . "<input type='text' name='{$this->fieldname}other' />";
+                $output .= $language->gT("Other") . "<input type='text' name='{$fieldname}other' />";
             }
             $output .= "</td></tr></table>";
         }
