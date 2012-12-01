@@ -119,6 +119,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if(!isset($templatedir)) $templatedir = getTemplatePath($templatename);
     if(!isset($templateurl)) $templateurl = getTemplateURL($templatename)."/";
+    if (!$anonymized && isset($thissurvey['anonymized'])) $anonymized=($thissurvey['anonymized']=="Y");
 
     // TEMPLATECSS and TEMPLATEJS
     $_templatecss="";$_templatejs="";
@@ -854,7 +855,7 @@ EOD;
     $coreReplacements['TEMPLATEJS'] = $_templatejs;
     $coreReplacements['TEMPLATEURL'] = $templateurl;
     $coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
-    if (!$anonymized) $coreReplacements['TOKEN'] = $_token;
+    $coreReplacements['TOKEN'] = (!$anonymized ? $_token : '');// Silently replace TOKEN by empty string
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
 
