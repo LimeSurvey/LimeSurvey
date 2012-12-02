@@ -2,7 +2,7 @@
     <p><?php $clang->eT('To receive a new password by email you have to enter your user name and original email address.'); ?>
     </p>
     <p>&nbsp;</p>
-<form class="form44" name="forgotpassword" id="forgotpassword" method="post" action="<?php echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>" >
+<?php echo CHtml::form(array("admin/authentication/sa/forgotpassword"), 'post', array('class'=>'form44','id'=>'forgotpassword','name'=>'forgotpassword'));?>
 
     <ul>
         <li><label for="user"><?php $clang->eT('User name'); ?></label><input name="user" id="user" type="text" size="60" maxlength="60" value="" /></li>

@@ -13,7 +13,7 @@
         <li><a href='#language'><?php $clang->eT("Language"); ?></a></li>
         <li><a href='#interfaces'><?php $clang->eT("Interfaces"); ?></a></li>
     </ul>
-    <form class='form30' id='frmglobalsettings' name='frmglobalsettings' action='<?php echo $this->createUrl("admin/globalsettings"); ?>' method='post'>
+    <?php echo CHtml::form(array("admin/globalsettings"), 'post', array('class'=>'form30','id'=>'frmglobalsettings','name'=>'frmglobalsettings'));?>
         <div id='overview'>
             <div class='header ui-widget-header'><?php $clang->eT("System overview"); ?></div>
             <br /><table class='statisticssummary'>
