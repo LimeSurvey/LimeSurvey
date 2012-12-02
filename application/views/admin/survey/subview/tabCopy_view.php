@@ -1,5 +1,5 @@
 <div id='copy'>
-    <form class='form30' action='<?php echo $this->createUrl('admin/survey/sa/copy'); ?>' id='copysurveyform' method='post'>
+    <?php echo CHtml::form(array('admin/survey/sa/copy'), 'post', array('id'=>'copysurveyform', 'name'=>'copysurveyform', 'class'=>'form30')); ?>
         <ul>
             <li><label for='copysurveylist'><?php $clang->eT("Select survey to copy:"); ?> </label>
                 <select id='copysurveylist' name='copysurveylist' required="required">

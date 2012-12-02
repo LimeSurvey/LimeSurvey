@@ -43,7 +43,8 @@
             <?php $clang->eT("The following settings cannot be changed when the survey is active.");?>
         </div>
         <?php $clang->eT("Please check these settings now, then click the button below.");?>
-        <form class='form44' action='<?php echo Yii::app()->getController()->createUrl("admin/survey/sa/activate/surveyid/".$surveyid); ?>' method='post'>
+        <?php echo CHtml::form(array("admin/survey/sa/activate/surveyid/{$surveyid}/"), 'post', array('class'=>'form44')); ?>
+        
             <ul>
                 <li><label for='anonymized'><?php $clang->eT("Anonymized responses?"); ?>
 

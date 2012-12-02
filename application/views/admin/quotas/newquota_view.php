@@ -1,5 +1,5 @@
 <div class='header ui-widget-header'><?php $clang->eT("New quota");?></div>
-<form class="form30" action="<?php echo $this->createUrl("admin/quotas/sa/insertquota/surveyid/$surveyid");?>" method="post" id="addnewquotaform" name="addnewquotaform">
+<?php echo CHtml::form(array("admin/quotas/sa/insertquota/surveyid/{$iSurveyId}"), 'post', array('class'=>'form30', 'id'=>'addnewquotaform', 'name'=>'addnewquotaform')); ?>
     <ul>
         <li>
             <label for="quota_name"><?php $clang->eT("Quota name");?>:</label>

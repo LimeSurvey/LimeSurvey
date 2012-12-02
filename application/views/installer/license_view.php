@@ -25,7 +25,8 @@
 <div class="grid_2">&nbsp;</div>
 <div class="grid_4 demo">
 <br/>
-<form action="<?php echo $this->createUrl('installer/license'); ?>" method="post" style="width: 300px;" name="formcheck">
+<?php echo CHtml::form(array("installer/license"), 'post', array('style'=>'width: 300px;', 'name'=>'formcheck')); ?>
+
 <table style="font-size:11px; width: 694px; background: #ffffff;">
 <tbody>
    <tr>

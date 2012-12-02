@@ -2,7 +2,7 @@
     if ($tableExists) {
     ?>
     <div class='header ui-widget-header'><?php $clang->eT("Import a VV survey file"); ?></div>
-    <form id='vvexport' enctype='multipart/form-data' method='post' action="<?php echo $this->createURL('admin/dataentry/vvimport/surveyid/'.$surveyid); ?>">
+    <?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/'.$surveyid), 'post', array('enctype'=>'multipart/form-data', 'id'=>'vvexport'));?>
         <ul>
             <li>
                 <label for='the_file'><?php $clang->eT("File:"); ?></label>

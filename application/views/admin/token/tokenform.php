@@ -15,7 +15,7 @@
         }
     ?>
 </div>
-<form id='edittoken' class='form30' method='post' action='<?php echo $this->createUrl("admin/tokens/sa/$subaction/surveyid/$surveyid/tokenid/$tokenid"); ?>'>
+<?php echo CHtml::form(array("admin/tokens/sa/{$subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"), 'post', array('id'=>'edittoken', 'class'=>'form30')); ?>
     <ul>
         <li><label>ID:</label>
             <?php if ($subaction == "edit")

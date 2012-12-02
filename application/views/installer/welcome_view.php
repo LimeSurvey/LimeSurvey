@@ -1,6 +1,6 @@
 <?php $this->render("/installer/header_view", compact('progressValue', 'clang')); ?>
 
-<form action="<?php echo $this->createUrl('installer/welcome'); ?>" method="post">
+<?php echo CHtml::form(array("installer/welcome"), 'post'); ?>
 
 <div class="container_6">
 

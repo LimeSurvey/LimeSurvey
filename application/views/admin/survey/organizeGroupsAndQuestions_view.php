@@ -25,7 +25,9 @@
         }?>
     </ol>
 </div>
-<form id='frmOrganize' action="<?php echo Yii::app()->getController()->createUrl('admin/survey/sa/organize/surveyid/'.$surveyid);?>" method="post"><p>
+<?php echo CHtml::form(array("admin/survey/sa/organize/surveyid/{$surveyid}"), 'post', array('id'=>'frmOrganize')); ?>
+    <p>
         <input type='hidden' id='orgdata' name='orgdata' value='' />
-        <button id='btnSave'><?php echo $clang->eT('Save'); ?></button></p>
+        <button id='btnSave'><?php echo $clang->eT('Save'); ?></button>
+    </p>
 </form>

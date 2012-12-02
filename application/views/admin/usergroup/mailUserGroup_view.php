@@ -1,5 +1,5 @@
 <div class='header ui-widget-header'><?php $clang->eT("Mail to all Members"); ?></div>
-    <form action='<?php echo $this->createUrl("admin/usergroups/sa/mail/ugid/".$ugid); ?>' class='form30' id='usergroupform' name='usergroupform' method='post'><ul>
+    <?php echo CHtml::form(array("admin/usergroups/sa/mail/ugid/{$ugid}"), 'post', array('class'=>'form30', 'id'=>'mailusergroup', 'name'=>'mailusergroup')); ?>
         <li><label for='copymail'><?php $clang->eT("Send me a copy:"); ?></label>
         <input id='copymail' name='copymail' type='checkbox' class='checkboxbtn' value='1' /></li>
         <li><label for='subject'><?php $clang->eT("Subject:"); ?></label>

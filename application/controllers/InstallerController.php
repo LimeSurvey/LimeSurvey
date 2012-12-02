@@ -363,7 +363,8 @@ class InstallerController extends CController {
                         .$clang->gT("The database you specified does not exist:")."<br /><br />\n<strong>".$model->dbname."</strong><br /><br />\n"
                         .$clang->gT("LimeSurvey can attempt to create this database for you.")."<br /><br />\n";
 
-                        $values['adminoutputForm'] = "<form action='".$this->createUrl("installer/createdb")."' method='post'><input type='submit' value='"
+                        $values['adminoutputForm'] =  CHtml::form(array('installer/createdb'), 'post').
+                        "<input type='submit' value='"
                         .$clang->gT("Create database")."' class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' /></form>";
                     }
                     elseif ($dbexistsbutempty) //&& !(returnGlobal('createdbstep2')==$clang->gT("Populate database")))
@@ -375,7 +376,7 @@ class InstallerController extends CController {
                         $values['adminoutputText'].= sprintf($clang->gT('A database named "%s" already exists.'),$model->dbname)."<br /><br />\n"
                         .$clang->gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
 
-                        $values['adminoutputForm']= "<form method='post' action='".$this->createUrl("installer/populatedb")."'>"
+                        $values['adminoutputForm'] =  CHtml::form(array('installer/populatedb'), 'post')
                         ."<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='".$clang->gT("Populate database")."' />"
                         ."</form>";
                     }
@@ -491,7 +492,7 @@ class InstallerController extends CController {
             ."<strong><font class='successtitle'>\n"
             .$clang->gT("Database has been created.")."</font></strong><br /><br />\n"
             .$clang->gT("Please continue with populating the database.")."<br /><br />\n";
-            $aData['adminoutputForm'] = "<form method='post' action='".$this->createUrl('installer/populatedb')."'>"
+            $aData['adminoutputForm'] =  CHtml::form(array('installer/populatedb'), 'post')
             ."<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='".$clang->gT("Populate database")."' /></form>";
         }
         else

@@ -22,7 +22,7 @@
         ?>
     </ul>
 
-    <form method='post' class='form30' id='sendreminder' action='<?php echo $this->createUrl("admin/tokens/sa/email/action/remind/surveyid/$surveyid"); ?>'>
+    <?php echo CHtml::form(array("admin/tokens/sa/email/action/remind/surveyid/{$surveyid}"), 'post', array('id'=>'sendreminder', 'class'=>'form30')); ?>
         <?php
         foreach ($surveylangs as $language)
         {

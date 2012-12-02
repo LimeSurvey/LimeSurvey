@@ -1,6 +1,5 @@
 <div class='header ui-widget-header'><?php $clang->eT('Edit default answer values') ?></div>
-<form class='form30' id='frmdefaultvalues' name='frmdefaultvalues'
-    action='<?php echo $this->createUrl('admin/database/index') ?>' method='post'>
+<?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmdefaultvalues','name'=>'frmdefaultvalues')); ?>
     <div id="tabs">
         <ul>
             <?php

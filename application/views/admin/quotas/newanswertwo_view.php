@@ -7,7 +7,7 @@
 <?php } else { ?>
 <div class="header ui-widget-header"><?php $clang->eT("Survey Quota");?>: <?php $clang->eT("Add Answer");?></div><br />
 	<div class="messagebox ui-corner-all" style="width: 600px">
-		<form action="<?php echo $this->createUrl("admin/quotas/sa/insertquotaanswer/surveyid/$iSurveyId");?>#quota_<?php echo sanitize_int($_POST['quota_id']);?>" method="post">
+        <?php echo CHtml::form(array("admin/quotas/sa/insertquotaanswer/surveyid/{$iSurveyId}"), 'post', array('#'=>'quota_'.sanitize_int($_POST['quota_id']))); ?>
 			<table class="addquotaanswer">
 				<tbody>
 					<thead>

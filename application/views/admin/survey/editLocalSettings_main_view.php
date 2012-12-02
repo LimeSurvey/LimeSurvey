@@ -1,6 +1,6 @@
 <div class="header ui-widget-header"><?php $clang->eT("Edit survey text elements"); ?></div>
-    <form id="addnewsurvey" class="form30" name="addnewsurvey" action="<?php echo $this->createUrl("admin/database/index/updatesurveylocalesettings");  ?>" method="post">
-            <div id="tabs">
+    <?php echo CHtml::form(array("admin/database/index/updatesurveylocalesettings"), 'post', array('id'=>'addnewsurvey','name'=>'addnewsurvey','class'=>'form30')); ?>
+        <div id="tabs">
             	<?php echo $additional_content; ?>
             
             <?php if($has_permissions): ?>

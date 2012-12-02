@@ -1363,7 +1363,8 @@ class conditionsaction extends Survey_Common_Action {
                             }
 
                             $aViewUrls['output'] .= "\t<tr class='{$markcidstyle}'>\n"
-                            ."\t<td colspan='2'><form style='margin-bottom:0;' name='conditionaction{$rows['cid']}' id='conditionaction{$rows['cid']}' method='post' action='".$this->getController()->createUrl("/admin/conditions/sa/index/subaction/$subaction/surveyid/$iSurveyID/gid/$gid/qid/$qid/")."'>\n"
+                            ."\t<td colspan='2'>"
+                            .CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id'=>"conditionaction{$rows['cid']}",'name'=>"conditionaction{$rows['cid']}"))
                             ."<table>\n"
                             ."\t<tr>\n";
 
@@ -1594,9 +1595,8 @@ class conditionsaction extends Survey_Common_Action {
         if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
         {
             $aViewUrls['output'] .= "<tr class=''><td colspan='3'>\n"
-            ."<form action='".$this->getController()->createUrl("admin/conditions/sa/index/subaction/copyconditions/surveyid/$iSurveyID/gid/$gid/qid/$qid/")."' name='copyconditions' id='copyconditions' method='post'>\n";
-
-            $aViewUrls['output'] .= "<div class='header ui-widget-header'>".$clang->gT("Copy conditions")."</div>\n";
+            .CHtml::form(array("/admin/conditions/sa/index/subaction/copyconditions/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id'=>"copyconditions",'name'=>"copyconditions"))
+            ."<div class='header ui-widget-header'>".$clang->gT("Copy conditions")."</div>\n";
 
 
             //CopyConditionsMessage
@@ -1698,7 +1698,7 @@ class conditionsaction extends Survey_Common_Action {
         $subaction == "updatescenario" ||
         $subaction == "editthiscondition" || $subaction == "delete")
         {
-            $aViewUrls['output'] .= "<form action='".$this->getController()->createUrl("/admin/conditions/sa/index/subaction/$subaction/surveyid/$iSurveyID/gid/$gid/qid/$qid/")."' name='editconditions' id='editconditions' method='post'>\n";
+            $aViewUrls['output'] .= CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id'=>"editconditions",'name'=>"editconditions"));
             if ($subaction == "editthiscondition" &&  isset($p_cid))
             {
                 $mytitle = $clang->gT("Edit condition");

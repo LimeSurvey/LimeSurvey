@@ -1,6 +1,6 @@
 <div class='header ui-widget-header'><?php $clang->eT("Data entry"); ?></div>
 
-            <form action='<?php echo $this->createUrl('admin/dataentry/insert'); ?>' enctype='multipart/form-data' name='addsurvey' method='post' id='addsurvey'>
+        <?php echo CHtml::form(array("admin/dataentry/sa/insert"), 'post', array('style'=>'display: none', 'name'=>'addsurvey', 'id'=>'addsurvey', 'enctype'=>'multipart/form-data'));?>
             <table class='data-entry-tbl'>
             <tr>
             <td colspan='3'>

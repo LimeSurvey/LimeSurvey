@@ -21,8 +21,7 @@
                 }
             ?>
         </ul>
-        <form id='sendinvitation' class='form30' method='post' action='<?php echo $this->createUrl("admin/tokens/sa/email/surveyid/$surveyid"); ?>'>
-
+        <?php echo CHtml::form(array("admin/tokens/sa/email/surveyid/{$surveyid}"), 'post', array('id'=>'sendinvitation', 'name'=>'sendinvitation', 'class'=>'form30')); ?>
             <?php
                 foreach ($surveylangs as $language)
                 {

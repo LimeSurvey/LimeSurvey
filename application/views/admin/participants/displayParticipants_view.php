@@ -283,7 +283,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
 
 <!-- Add To Survey Popup Window -->
 <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none">
-    <form action="<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/attributeMap"); ?>" name="addsurvey" id="addsurvey" method="POST">
+    <?php echo CHtml::form(array("admin/participants/sa/attributeMap"), 'post', array('id'=>'addsurvey','name'=>'addsurvey')); ?>
         <input type="hidden" name="participant_id" id="participant_id" value=""></input>
         <input type="hidden" name="count" id="count" value=""></input>
         <div class='popupgroup'>

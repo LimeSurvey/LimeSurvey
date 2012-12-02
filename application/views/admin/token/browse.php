@@ -100,14 +100,7 @@
     { "name":"validuntil", "index":"validuntil","align":"center", "sorttype":"int", "sortable": true,"width":160,"editable":true}
     <?php if (count($uidNames)) echo ','.implode(",\n", $uidNames); ?>];
     <!--
-    for(i=0; i<document.forms.length; i++)
-        {
-        var el = document.createElement('input');
-        el.type = 'hidden';
-        el.name = 'checksessionbypost';
-        el.value = 'kb9e2u4s55';
-        document.forms[i].appendChild(el);
-    }
+
     function addHiddenElement(theform,thename,thevalue)
     {
         var myel = document.createElement('input');
@@ -128,7 +121,6 @@
             {
             addHiddenElement(myform,arrayparam[i],arrayval[i])
         }
-        addHiddenElement(myform,'checksessionbypost',checkcode)
         myform.submit();
     }
 

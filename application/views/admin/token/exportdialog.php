@@ -1,5 +1,5 @@
 <div class='header ui-widget-header'><?php $clang->eT("Token export options"); ?></div><br />
-<form id='exportdialog' name='exportdialog' action='<?php echo $this->createUrl("admin/tokens/sa/exportdialog/surveyid/$surveyid"); ?>' method='post'>
+<?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/{$surveyid}"), 'post', array('id'=>'exportdialog', 'name'=>'exportdialog')); ?>
     <ul><li><label for='tokenstatus'><?php $clang->eT('Token status:'); ?></label><select id='tokenstatus' name='tokenstatus' >
                 <option selected='selected' value='0'><?php $clang->eT('All tokens'); ?></option>
                 <option value='1'><?php $clang->eT('Completed'); ?></option>

@@ -1,3 +1,6 @@
+<script type='text/javascript'>
+    var sEnterTitle = '<?php $clang->eT('Error: You have to enter a group title for each language.','js'); ?>';
+</script>
 <?php echo PrepareEditorScript(false, $this);?>
 <div class='header ui-widget-header'><?php $clang->eT("Add question group"); ?></div>
 <div id='tabs'><ul>
@@ -14,14 +17,7 @@
             <?php } ?>
     </ul>
 
-    <form action='<?php echo $this->createUrl("admin/questiongroup/sa/insert/surveyid/".$surveyid); ?>' class='form30' id='newquestiongroup' name='newquestiongroup' method='post' onsubmit=" if (1==0
-
-        <?php foreach ($grplangs as $grouplang)
-            { ?>
-            || document.getElementById('group_name_<?php echo $grouplang; ?>').value.length==0
-            <?php } ?>
-        ) { alert ('<?php $clang->eT("Error: You have to enter a group title for each language.",'js'); ?>'); return false;}" >
-
+    <?php echo CHtml::form(array("admin/questiongroup/sa/insert/surveyid/{$surveyid}"), 'post', array('id'=>'newquestiongroup', 'name'=>'newquestiongroup', 'class'=>'form30')); ?>
         <?php
             foreach ($grplangs as $grouplang)
             { ?>
@@ -29,7 +25,7 @@
                 <ul>
                     <li>
                         <label for='group_name_<?php echo $grouplang; ?>'><?php $clang->eT("Title:"); ?></label>
-                        <input type='text' size='80' maxlength='100' name='group_name_<?php echo $grouplang; ?>' id='group_name_<?php echo $grouplang; ?>' required="required" /><span class='annotation'> <?php $clang->eT("Required"); ?></span></li>
+                        <input type='text' size='80' maxlength='100' class='group_title' name='group_name_<?php echo $grouplang; ?>' id='group_name_<?php echo $grouplang; ?>' /><span class='annotation'> <?php $clang->eT("Required"); ?></span></li>
                     <li><label for='description_<?php echo $grouplang; ?>'><?php $clang->eT("Description:"); ?></label>
                         <div class="htmleditor">
                             <textarea cols='80' rows='8' id='description_<?php echo $grouplang; ?>' name='description_<?php echo $grouplang; ?>'></textarea>
@@ -53,7 +49,7 @@
     <?php if (hasSurveyPermission($surveyid,'surveycontent','import'))
         { ?>
         <div id="import">
-            <form enctype='multipart/form-data' class='form30' id='importgroup' name='importgroup' action='<?php echo $this->createUrl('admin/questiongroup/sa/import'); ?>' method='post' onsubmit='return validatefilename(this,"<?php $clang->eT('Please select a file to import!','js'); ?>");'>
+            <?php echo CHtml::form(array("admin/questiongroup/sa/import"), 'post', array('id'=>'importgroup', 'name'=>'importgroup', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.$clang->gT('Please select a file to import!','js').'");')); ?>
                 <ul>
                     <li>
                         <label for='the_file'><?php $clang->eT("Select question group file (*.lsg/*.csv):"); ?></label>

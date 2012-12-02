@@ -747,11 +747,11 @@ class SurveyRuntimeHelper {
         $hiddenfieldnames = implode("|", $inputnames);
 
         if (isset($upload_file) && $upload_file)
-            echo "<form enctype=\"multipart/form-data\" method='post' action='" . Yii::app()->getController()->createUrl("survey/index") . "' id='limesurvey' name='limesurvey' autocomplete='off'>
+            echo CHtml::form(array("survey/index"), 'post',array('enctype'=>'multipart/form-data','id'=>'limesurvey','name'=>'limesurvey', 'autocomplete'=>'off'))."\n
             <!-- INPUT NAMES -->
             <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         else
-            echo "<form method='post' action='" . Yii::app()->getController()->createUrl("survey/index") . "' id='limesurvey' name='limesurvey' autocomplete='off'>
+            echo CHtml::form(array("survey/index"), 'post',array('id'=>'limesurvey', 'name'=>'limesurvey', 'autocomplete'=>'off'))."\n
             <!-- INPUT NAMES -->
             <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         echo sDefaultSubmitHandler();

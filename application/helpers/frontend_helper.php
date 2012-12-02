@@ -1428,8 +1428,8 @@
                     echo "<font color='#FF0000'>".$clang->gT("The answer to the security question is incorrect.")."</font><br />";
                 }
 
-                echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."</p>
-                <form class='captcha' method='post' action='".Yii::app()->getController()->createUrl("/survey/index/sid/$surveyid")."'>
+                echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."</p>"
+                .CHtml::form(array("/survey/index/sid/{$surveyid}"), 'post', array('class'=>'captcha'))."
                 <table align='center'>
                 <tr>
                 <td align='right' valign='middle'>
@@ -1501,8 +1501,8 @@
                 if (isset($secerror)) echo "<span class='error'>".$secerror."</span><br />";
                 echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
                 echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
-                <script type='text/javascript'>var focus_element='#token';</script>
-                <form id='tokenform' method='post' action='".Yii::app()->getController()->createUrl("/survey/index/sid/$surveyid")."'>
+                <script type='text/javascript'>var focus_element='#token';</script>"
+                .CHtml::form(array("/survey/index/sid/{$surveyid}"), 'post', array('id'=>'tokenform'))."
                 <ul>
                 <li>";?>
             <label for='token'><?php $clang->eT("Token:");?></label><input class='text <?php echo $kpclass?>' id='token' type='text' name='token' />
@@ -2621,7 +2621,9 @@ function checkQuota($checkaction,$surveyid)
                 echo "\t<div class='quotamessage'>\n";
                 echo "\t".$quota['Message']."<br /><br />\n";
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-                echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" id='moveprevbtn'>".$clang->gT("Previous")."</button>
+                echo CHtml::form(array("/survey/index"), 'post', array('id'=>'limesurvey','name'=>'limesurvey'))."
+                <input type='hidden' name='move' value='movenext' id='movenext' />
+                <button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" id='moveprevbtn'>".$clang->gT("Previous")."</button>
                 <input type='hidden' name='thisstep' value='".($_SESSION['survey_'.$surveyid]['step'])."' id='thisstep' />
                 <input type='hidden' name='sid' value='".returnGlobal('sid')."' id='sid' />
                 <input type='hidden' name='token' value='".$clienttoken."' id='token' />
@@ -2737,8 +2739,7 @@ function display_first_page() {
     $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
     echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
-    echo "\n<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
-
+    echo CHtml::form(array("/survey/index"), 'post', array('id'=>'limesurvey','name'=>'limesurvey','autocomplete'=>'off'));
     echo "\n\n<!-- START THE SURVEY -->\n";
 
     echo templatereplace(file_get_contents($sTemplatePath."welcome.pstpl"),array(),$redata,'frontend_helper[2762]')."\n";
