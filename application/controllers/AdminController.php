@@ -155,6 +155,16 @@ class AdminController extends LSYii_Controller
 
                 $this->redirect($this->createUrl('/admin/authentication/sa/login'));
             }
+            elseif (!empty($this->user_id)  && $action != "remotecontrol")
+            {
+                if (Yii::app()->session['session_hash'] != hash('sha256',getGlobalSetting('SessionName').Yii::app()->user->getName().Yii::app()->user->getId()))
+                {
+                    Yii::app()->session->clear();
+                    Yii::app()->session->close();
+                    $this->redirect($this->createUrl('/admin/authentication/sa/login'));
+                }
+                
+            }
 
             return parent::run($action);
     }

@@ -61,20 +61,6 @@ class RegisterController extends LSYii_Controller {
             Yii::app()->request->redirect(Yii::app()->baseUrl);
         }
 
-        $usquery = "SELECT stg_value FROM {{settings_global}} where stg_name='SessionName'";
-        $usrow = Yii::app()->db->createCommand($usquery)->queryRow();
-        if ($usrow)
-        {
-            $stg_SessionName=$usrow['stg_value'];
-            Yii::app()->session->setSessionName("$stg_SessionName-runtime-$surveyid");
-        }
-        else
-        {
-            Yii::app()->setSessionName("LimeSurveyRuntime-$surveyid");
-        }
-
-        Yii::app()->session->setCookieParams(array(0, Yii::app()->getConfig('publicurl')));
-
         // Get passed language from form, so that we dont loose this!
         if (!isset($postlang) || $postlang == "" || !$postlang )
         {

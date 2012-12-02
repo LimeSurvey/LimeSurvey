@@ -624,7 +624,7 @@ class InstallerController extends CController {
                     $password_hash=hash('sha256', $defaultpass);
                     try {
                         $this->connection->createCommand()->insert('{{users}}', array('users_name' => $defaultuser, 'password' => $password_hash, 'full_name' => $siteadminname, 'parent_id' => 0, 'lang' => $defaultlang, 'email' => $siteadminemail, 'create_survey' => 1, 'create_user' => 1, 'participant_panel' => 1, 'delete_user' => 1, 'superadmin' => 1, 'configurator' => 1, 'manage_template' => 1, 'manage_label' => 1));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => 'ls'.self::_getRandomID().self::_getRandomID().self::_getRandomID()));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => self::_getRandomString()));
 
                         foreach(array('sitename', 'siteadminname', 'siteadminemail', 'siteadminbounce', 'defaultlang') as $insert) {
                             $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => $insert, 'stg_value' => $$insert));
@@ -1064,23 +1064,19 @@ class InstallerController extends CController {
     }
 
     /**
-    * Create a random survey ID
-    *
-    * based on code from Ken Lyle
+    * Create a random ASCII string 
     *
     * @return string
     */
-    function _getRandomID()
+    function _getRandomString()
     {
-        // Create a random survey ID -
-        // Random sid/ question ID generator...
-        $totalChar = 5; // number of chars in the sid
-        $salt = "123456789"; // This is the char. that is possible to use
-        srand((double)microtime()*1000000); // start the random generator
-        $sid=""; // set the inital variable
-        for ($i=0;$i<$totalChar;$i++) // loop and create sid
-            $sid = $sid . substr ($salt, rand() % strlen($salt), 1);
-        return $sid;
+        $totalChar = 64; // number of chars in the sid
+        $sResult='';
+        for ($i=0;$i<$totalChar;$i++)
+        {
+           $sResult.=chr(rand(33,126));
+        }
+        return $sResult;
     }
 
     /**

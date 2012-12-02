@@ -5654,7 +5654,10 @@ function removeBOM($str=""){
 /**********************************************/
 function getUpdateInfo()
 {
-    //require_once($homedir."/classes/http/http.php");
+    if (getGlobalSetting('SessionName')=='')
+    {
+        setGlobalSetting('SessionName',randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"§$%&/()=?´`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789'));
+    }
     Yii::import('application.libraries.admin.http.httpRequestIt');
     $http=new httpRequestIt;
 
@@ -7264,7 +7267,6 @@ function modifyDatabase($sqlfile='', $sqlstring='')
                 $command = str_replace('$siteadminname', $siteadminname, $command);
                 $command = str_replace('$siteadminemail', $siteadminemail, $command);
                 $command = str_replace('$defaultlang', Yii::app()->getConfig('defaultlang'), $command);
-                $command = str_replace('$sessionname', 'ls'.randomChars(20,'123456789'), $command);
                 $command = str_replace('$databasetabletype', Yii::app()->db->getDriverName(), $command);
 
                 try
