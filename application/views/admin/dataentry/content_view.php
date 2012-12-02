@@ -140,86 +140,55 @@
         <textarea cols='40' rows='5' name='<?php echo $fieldname; ?>comment'></textarea>
         <?php break;
         case "R": //RANKING TYPE QUESTION ?>
-
+        <div id="question<?php echo $thisqid ?>" class="ranking-answers"><ul class="answers-list">
+        <?php for ($i=1; $i<=$anscount; $i++)
+            {
+            ?>
+            <li class="select-item">
+            <?php
+                if($i==1){
+                    echo $blang->gT('First choice');
+                }else{
+                    echo $blang->gT('Next choice');
+                }
+            ?>
+            <select name="<?php echo $fieldname.$i ?>" id="answer<?php echo $fieldname.$i ?>">";
+                <option value=""><?php echo $blang->gT('None') ?></option>
+                <?php
+                    foreach ($answers as $ansrow)
+                    {
+                        echo "\t<option value=\"".$ansrow['code']."\">".flattenText($ansrow['answer'])."</option>\n";
+                    }
+                ?>
+            </select>
+            </li>
+        <?php 
+            }
+            ?>
+        </ul>
+        <div style="display:none" id="ranking-<?php echo $thisqid ?>-maxans"><?php echo $anscount ?></div>
+        <div style="display:none" id="ranking-<?php echo $thisqid ?>-minans">0</div>
+        <div style="display:none" id="ranking-<?php echo $thisqid ?>-name">javatbd<?php echo $fieldname ?></div>
+        <div style="display:none">
+        <?php foreach ($answers as $ansrow)
+        {
+            echo "<div id=\"htmlblock-{$thisqid}-{$ansrow['code']}\">{$ansrow['answer']}</div>";
+        }
+        ?>
+        </div>
         <script type='text/javascript'>
             <!--
-            function rankthis_<?php echo $thisqid; ?>($code, $value)
-            {
-                $index=document.addsurvey.CHOICES_<?php echo $thisqid; ?>.selectedIndex;
-                for (i=1; i<=<?php echo $anscount; ?>; i++)
-                {
-                    $b=i;
-                    $b += '';
-                    $inputname="RANK_<?php echo $thisqid; ?>"+$b;
-                    $hiddenname="d<?php echo $fieldname; ?>"+$b;
-                    $cutname="cut_<?php echo $thisqid; ?>"+i;
-                    document.getElementById($cutname).style.display='none';
-                    if (!document.getElementById($inputname).value)
-                        {
-                        document.getElementById($inputname).value=$value;
-                        document.getElementById($hiddenname).value=$code;
-                        document.getElementById($cutname).style.display='';
-                        for (var b=document.getElementById('CHOICES_<?php echo $thisqid; ?>').options.length-1; b>=0; b--)
-                            {
-                            if (document.getElementById('CHOICES_<?php echo $thisqid; ?>').options[b].value == $code)
-                                {
-                                document.getElementById('CHOICES_<?php echo $thisqid; ?>').options[b] = null;
-                            }
-                        }
-                        i=$anscount;
-                    }
-                }
-                if (document.getElementById('CHOICES_<?php echo $thisqid; ?>').options.length == 0)
-                    {
-                    document.getElementById('CHOICES_<?php echo $thisqid; ?>').disabled=true;
-                }
-                document.addsurvey.CHOICES_<?php echo $thisqid; ?>.selectedIndex=-1;
-            }
-            function deletethis_<?php echo $thisqid; ?>($text, $value, $name, $thisname)
-            {
-                var qid='<?php echo $thisqid; ?>';
-                var lngth=qid.length+4;
-                var cutindex=$thisname.substring(lngth, $thisname.length);
-                cutindex=parseFloat(cutindex);
-                document.getElementById($name).value='';
-                document.getElementById($thisname).style.display='none';
-                if (cutindex > 1)
-                    {
-                    $cut1name="cut_<?php echo $thisqid; ?>"+(cutindex-1);
-                    $cut2name="d<?php echo $fieldname; ?>"+(cutindex);
-                    document.getElementById($cut1name).style.display='';
-                    document.getElementById($cut2name).value='';
-                }
-                else
-                    {
-                    $cut2name="d<?php echo $fieldname; ?>"+(cutindex);
-                    document.getElementById($cut2name).value='';
-                }
-                var i=document.getElementById('CHOICES_<?php echo $thisqid; ?>').options.length;
-                document.getElementById('CHOICES_<?php echo $thisqid; ?>').options[i] = new Option($text, $value);
-                if (document.getElementById('CHOICES_<?php echo $thisqid; ?>').options.length > 0)
-                    {
-                    document.getElementById('CHOICES_<?php echo $thisqid; ?>').disabled=false;
-                }
-            }
-            //-->
+            var aRankingTranslations = {
+                choicetitle: '<?php echo $clang->gT("Your Choices",'js') ?>',
+                ranktitle: '<?php echo $clang->gT("Your Ranking",'js') ?>'
+            };
+            function checkconditions(){};
+            $(function() {
+                doDragDropRank(<?php echo $thisqid ?>,0,true,true);
+            });
+            -->
         </script>
-        <table>
-            <tr>
-                <td align='left' valign='top' width='200'>
-                    <strong>
-                        <?php echo $blang->gT("Your choices"); ?>:</strong><br />
-                    <?php echo $choicelist; ?>
-                </td>
-                <td align='left'>
-                    <strong>
-                        <?php echo $blang->gT("Your ranking"); ?>:</strong><br />
-                    <?php echo $ranklist; ?>
-                </td>
-            </tr>
-        </table>
-        <input type='hidden' name='multi' value='<?php echo $anscount; ?>' />
-        <input type='hidden' name='lastfield' value='<?php if (isset($multifields)) {echo $multifields;} ?>' />
+        </div>
         <?php
             break;
         case "M": //Multiple choice checkbox (Quite tricky really!)
