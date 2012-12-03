@@ -940,18 +940,6 @@ class InstallerController extends CController {
             extract(self::_getDatabaseConfig());
             $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
 
-            // mod_rewrite existence check
-            // Section commented out until a better method of knowing whether the mod_rewrite actually
-            // works is found. In the meantime, it is better to set $showScriptName to 'true' so it
-            // works on all installations, and allow users to change it manually later.
-            //if ((function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) || strtolower(getenv('HTTP_MOD_REWRITE')) == 'on')
-            //{
-            //    $showScriptName = 'false';
-            //}
-            //else
-            //{
-            $showScriptName = 'true';
-            //}
             if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false)
             {
                 $sURLFormat='path';
@@ -1038,8 +1026,11 @@ class InstallerController extends CController {
             ."\t\t"   . "'urlManager' => array("                    . "\n"
             ."\t\t\t" . "'urlFormat' => '{$sURLFormat}',"           . "\n"
             ."\t\t\t" . "'rules' => require('routes.php'),"         . "\n"
-            ."\t\t\t" . "'showScriptName' => $showScriptName,"      . "\n"
+            ."\t\t\t" . "'showScriptName' => true,"      . "\n"
             ."\t\t"   . "),"                                        . "\n"
+            ."\t\t"   . "'request'=>array("                                     . "\n"
+            ."\t\t\t"   . "'enableCsrfValidation'=>false, // Set this to true to enable CSRF protection. This is a new feature - please report any problems.". "\n"
+            ."\t\t"   . "),"                
             ."\t"     . ""                                          . "\n"
 
             ."\t"     . "),"                                        . "\n"
