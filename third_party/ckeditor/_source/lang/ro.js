@@ -32,7 +32,7 @@ CKEDITOR.lang['ro'] =
 	 * of reading non-English words. So be careful while translating it.
 	 */
 	editorTitle : 'Rich text editor, %1', // MISSING
-	editorHelp : 'Press ALT 0 for help', // MISSING
+	editorHelp : 'Apasă ALT 0 pentru ajutor',
 
 	// ARIA descriptions.
 	toolbars	: 'Editează bara de unelte',
@@ -120,6 +120,7 @@ CKEDITOR.lang['ro'] =
 		alignTop		: 'Sus',
 		alignMiddle		: 'Mijloc',
 		alignBottom		: 'Jos',
+		invalidValue	: 'Invalid value.', // MISSING
 		invalidHeight	: 'Înălțimea trebuie să fie un număr.',
 		invalidWidth	: 'Lățimea trebuie să fie un număr.',
 		invalidCssLength	: 'Value specified for the "%1" field must be a positive number with or without a valid CSS measurement unit (px, %, in, cm, mm, em, ex, pt, or pc).', // MISSING

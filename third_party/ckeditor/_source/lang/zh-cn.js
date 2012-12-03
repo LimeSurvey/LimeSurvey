@@ -120,6 +120,7 @@ CKEDITOR.lang['zh-cn'] =
 		alignTop		: '顶端',
 		alignMiddle		: '居中',
 		alignBottom		: '底部',
+		invalidValue	: 'Invalid value.', // MISSING
 		invalidHeight	: '高度必须为数字格式',
 		invalidWidth	: '宽度必须为数字格式',
 		invalidCssLength	: '该字段必须为合式的CSS长度值，包括单位(px, %, in, cm, mm, em, ex, pt 或 pc)',
@@ -496,7 +497,7 @@ CKEDITOR.lang['zh-cn'] =
 		noChanges		: '拼写检查完成: 没有更改任何单词',
 		oneChange		: '拼写检查完成: 更改了一个单词',
 		manyChanges		: '拼写检查完成: 更改了 %1 个单词',
-		ieSpellDownload	: '拼写检查插件还没安装, 你是否想现在就下载?'
+		ieSpellDownload	: '拼写检查插件还没安装, 您是否想现在就下载?'
 	},
 
 	smiley :
@@ -533,7 +534,7 @@ CKEDITOR.lang['zh-cn'] =
 		cutError	: '您的浏览器安全设置不允许编辑器自动执行剪切操作, 请使用键盘快捷键(Ctrl/Cmd+X)来完成',
 		copyError	: '您的浏览器安全设置不允许编辑器自动执行复制操作, 请使用键盘快捷键(Ctrl/Cmd+C)来完成',
 		pasteMsg	: '请使用键盘快捷键(<STRONG>Ctrl/Cmd+V</STRONG>)把内容粘贴到下面的方框里，再按 <STRONG>确定</STRONG>',
-		securityMsg	: '因为你的浏览器的安全设置原因, 本编辑器不能直接访问你的剪贴板内容, 你需要在本窗口重新粘贴一次',
+		securityMsg	: '因为您的浏览器的安全设置原因, 本编辑器不能直接访问您的剪贴板内容, 你需要在本窗口重新粘贴一次。',
 		pasteArea	: '粘贴区域'
 	},
 
@@ -811,6 +812,6 @@ CKEDITOR.lang['zh-cn'] =
 		metaDescription : '页面说明',
 		metaAuthor : '作者',
 		metaCopyright : '版权',
-		previewHtml : '<p>这是一些<strong>演示用文字</strong>。你当前正在使用<a href="javascript:void(0)">CKEditor</a>。</p>'
+		previewHtml : '<p>这是一些<strong>演示用文字</strong>。您当前正在使用<a href="javascript:void(0)">CKEditor</a>。</p>'
 	}
 };

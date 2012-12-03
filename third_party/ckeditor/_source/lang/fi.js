@@ -31,8 +31,8 @@ CKEDITOR.lang['fi'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle : 'Rich text editor, %1', // MISSING
-	editorHelp : 'Press ALT 0 for help', // MISSING
+	editorTitle : 'Rikastekstieditori, %1',
+	editorHelp : 'Paina ALT 0 nähdäksesi ohjeen',
 
 	// ARIA descriptions.
 	toolbars	: 'Editorin työkalupalkit',
@@ -120,6 +120,7 @@ CKEDITOR.lang['fi'] =
 		alignTop		: 'Ylös',
 		alignMiddle		: 'Keskelle',
 		alignBottom		: 'Alas',
+		invalidValue	: 'Virheellinen arvo.',
 		invalidHeight	: 'Korkeuden täytyy olla numero.',
 		invalidWidth	: 'Leveyden täytyy olla numero.',
 		invalidCssLength	: 'Kentän "%1" arvon täytyy olla positiivinen luku CSS mittayksikön (px, %, in, cm, mm, em, ex, pt tai pc) kanssa tai ilman.',

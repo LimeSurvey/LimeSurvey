@@ -11,6 +11,6 @@ CKEDITOR.plugins.setLang( 'placeholder', 'zh-cn',
 		toolbar		: '创建占位符',
 		text		: '占位符文字',
 		edit		: '编辑占位符',
-		textMissing	: '占位符必需包含有文字'
+		textMissing	: '占位符必须包含文字。'
 	}
 });

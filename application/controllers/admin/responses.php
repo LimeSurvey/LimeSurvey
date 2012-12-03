@@ -136,13 +136,15 @@ class responses extends Survey_Common_Action
         {
             if ($q->fieldname == 'lastpage' || $q->fieldname == 'submitdate')
                 continue;
-            if ($q->type == 'interview_time')
-                continue;
-            if ($q->type == 'page_time')
-                continue;
-            if ($q->type == 'answer_time')
-                continue;
-
+            if(isset($q->type))
+            {
+                if ($q->type == 'interview_time')
+                    continue;
+                if ($q->type == 'page_time')
+                    continue;
+                if ($q->type == 'answer_time')
+                    continue;
+            }
             $question = $q->text;
             if (!is_a($q, 'QuestionModule') || !$q->fileUpload())
             {

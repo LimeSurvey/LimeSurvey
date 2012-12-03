@@ -63,23 +63,23 @@ class NumberArrayQuestion extends ArrayQuestion
         }
 
         $checkboxlayout=false;
+        $inputboxlayout=false;
         if ($aQuestionAttributes['multiflexible_checkbox']!=0)
         {
             $minvalue=0;
             $maxvalue=1;
             $checkboxlayout=true;
-            $answertypeclass .=" checkbox";
+            $answertypeclass =" checkbox";
         }
-
-        $inputboxlayout=false;
-        if ($aQuestionAttributes['input_boxes']!=0 && !$checkboxlayout) // checkboxlayout have the
+        elseif ($aQuestionAttributes['input_boxes']!=0 )
         {
             $inputboxlayout=true;
-            $answertypeclass .=" numberonly text";
+            $answertypeclass =" numeric-item text";
+            $extraclass.=" numberonly";
         }
-        if (!$checkboxlayout && !$inputboxlayout)
+        else
         {
-            $answertypeclass .=" dropdown";
+            $answertypeclass =" dropdown";
         }
         if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
         {
@@ -269,15 +269,16 @@ class NumberArrayQuestion extends ArrayQuestion
                                 $answer .= ">$ii</option>\n";
                             }
                             $answer .= "\t</select>\n";
-                        } elseif ($inputboxlayout == true)
+                        }
+                        else
                         {
                             $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
                             $sSeperator = $sSeperator['seperator'];
-                            $answer .= "\t<input type='text' class=\"multiflexitext $kpclass\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 title=\""
+                            $answer .= "\t<input type='text' class=\"multiflexitext $kpclass $extraclass\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 title=\""
                             . HTMLEscape($labelans[$thiskey]).'"'
                             . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\""
                             . " value=\"";
-                            if(isset($_SESSION['survey_'.$this->surveyid][$myfname2]) && $_SESSION['survey_'.$this->surveyid][$myfname2]) {
+                            if(isset($_SESSION['survey_'.$this->surveyid][$myfname2]) && is_numeric($_SESSION['survey_'.$this->surveyid][$myfname2])) {
                                 $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.$this->surveyid][$myfname2]);
                                 $answer .= $dispVal;
                             }

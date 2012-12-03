@@ -415,7 +415,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
     }
     else
     {
-        $sQuestionselecter = "<option>".$clang->gT("None")."</option>\n".$sQuestionselecter;
+        $sQuestionselecter = "<option value=' '>".$clang->gT("None")."</option>\n".$sQuestionselecter;
     }
     return $sQuestionselecter;
 }
@@ -2654,7 +2654,7 @@ function questionAttributes()
     "caption"=>$clang->gT('Answer prefix'));
 
     $qattributes["public_statistics"]=array(
-    'category'=>$clang->gT('Other'),
+    'category'=>$clang->gT('Statistics'),
     'sortorder'=>80,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),

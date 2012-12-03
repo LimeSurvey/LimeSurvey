@@ -31,8 +31,8 @@ CKEDITOR.lang['gu'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle : 'Rich text editor, %1', // MISSING
-	editorHelp : 'Press ALT 0 for help', // MISSING
+	editorTitle : 'રીચ ટેક્ષ્ત્ એડિટર, %1',
+	editorHelp : 'પ્રેસ ALT 0 મદદ માટ',
 
 	// ARIA descriptions.
 	toolbars	: 'એડીટર ટૂલ બાર',
@@ -120,6 +120,7 @@ CKEDITOR.lang['gu'] =
 		alignTop		: 'ઉપર',
 		alignMiddle		: 'વચ્ચે',
 		alignBottom		: 'નીચે',
+		invalidValue	: 'Invalid value.', // MISSING
 		invalidHeight	: 'ઉંચાઈ એક આંકડો હોવો જોઈએ.',
 		invalidWidth	: 'પોહળ ઈ એક આંકડો હોવો જોઈએ.',
 		invalidCssLength	: '"%1" ની વેલ્યુ એક પોસીટીવ આંકડો હોવો જોઈએ અથવા CSS measurement unit (px, %, in, cm, mm, em, ex, pt, or pc) વગર.',

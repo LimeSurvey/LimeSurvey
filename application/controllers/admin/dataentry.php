@@ -589,12 +589,10 @@ class dataentry extends Survey_Common_Action
 
             $highlight = FALSE;
             unset($fnames['lastpage']);
-
             $output = '';
             foreach ($results as $idrow)
             {
                 $q = reset($fnames);
-
                 do
                 {
                     if (isset($idrow[$q->fieldname]) )
@@ -603,7 +601,7 @@ class dataentry extends Survey_Common_Action
                     }
                     $output .= "\t<tr";
                     if ($highlight) $output .=" class='odd'";
-                    else $aDataentryoutput .=" class='even'";
+                    else $output .=" class='even'";
 
                     $highlight=!$highlight;
                     $output .=">\n"
@@ -655,7 +653,7 @@ class dataentry extends Survey_Common_Action
 
                     $output .= "        </td>
                     </tr>\n";
-                } while ($fname=next($fnames));
+                } while ($q=next($fnames));
             }
             $output .= "</table>\n"
             ."<p>\n";
@@ -725,8 +723,10 @@ class dataentry extends Survey_Common_Action
     */
     public function update()
     {
-        $aData=array();        $subaction = Yii::app()->request->getPost('subaction');
-        if (isset($_REQUEST['surveyid'])) $surveyid = $_REQUEST['surveyid'];        if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
+        $aData=array();
+        $subaction = Yii::app()->request->getPost('subaction');
+        if (isset($_REQUEST['surveyid'])) $surveyid = $_REQUEST['surveyid'];
+        if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
         $surveyid = sanitize_int($surveyid);
         $id = Yii::app()->request->getPost('id');
         $lang = Yii::app()->request->getPost('lang');
@@ -777,10 +777,10 @@ class dataentry extends Survey_Common_Action
                         $updateqr .= dbQuoteID($q->fieldname)." = " . dbQuoteAll($thisvalue) . ", \n";
                     }
                 }
-                elseif(!is_a($q, 'QuestionModule'))
+                elseif(is_a($q, 'QuestionModule'))
                 {
                     $thisvalue = $q->filter($thisvalue, 'dataentry');
-                    $updateqr .= dbQuoteID($q->fieldname) . ' = ' . $thisvalue == null ? 'NULL' : dbQuoteAll($thisvalue) . ', \n';
+                    $updateqr .= dbQuoteID($q->fieldname) . ' = ' . (is_null($thisvalue) ? 'NULL' : dbQuoteAll($thisvalue)) . ", \n";
                 }
                 else
                 {
@@ -789,7 +789,6 @@ class dataentry extends Survey_Common_Action
             }
             $updateqr = substr($updateqr, 0, -3);
             $updateqr .= " WHERE id=$id";
-
             $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
 
             $onerecord_link = $this->getController()->createUrl('/').'/admin/responses/view/surveyid/'.$surveyid.'/id/'.$id;
@@ -1167,7 +1166,7 @@ class dataentry extends Survey_Common_Action
             if(is_null($lang) || !in_array($lang,$slangs))
             {
                 $sDataEntryLanguage = $baselang;
-                $blang = $clang;
+                $blang = new Limesurvey_lang($baselang);
             } else {
                 Yii::app()->loadLibrary('Limesurvey_lang',array($lang));
                 $blang = new Limesurvey_lang($lang);
@@ -1203,7 +1202,7 @@ class dataentry extends Survey_Common_Action
             {
                 LimeExpressionManager::StartProcessingGroup($degrow['gid'], ($thissurvey['anonymized']!="N"),$surveyid);
 
-                $results = Questions::model()->with('question_types')->findAllByAttributes(array('gid' => $degrow['gid'], 'language' => $sDataEntryLanguage), array('order' => 'question_order'));
+                $results = Questions::model()->with('question_types')->findAllByAttributes(array('gid' => $degrow['gid'],'parent_qid' => '0', 'language' => $sDataEntryLanguage), array('order' => 'question_order'));
                 $aDataentryoutput .= "\t<tr>\n"
                 ."<td colspan='3' align='center'><strong>".flattenText($degrow['group_name'],true)."</strong></td>\n"
                 ."\t</tr>\n";
@@ -1218,7 +1217,6 @@ class dataentry extends Survey_Common_Action
                     // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?
 
                     // TMSW Conditions->Relevance:  Show relevance equation instead of conditions here - better yet, have data entry use survey-at-a-time but with different view
-
                     $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
                     $q = $qinfo['info']['q'];
                     $qidattributes = is_a($q, 'QuestionModule') ? $q->getAttributeValues() : array();

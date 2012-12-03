@@ -984,31 +984,31 @@ function submittokens($quotaexit = false) {
     }
 }
 
-    /**
-    * Send a submit notification to the email address specified in the notifications tab in the survey settings
-    */
-    function sendSubmitNotifications($surveyid)
+/**
+* Send a submit notification to the email address specified in the notifications tab in the survey settings
+*/
+function sendSubmitNotifications($surveyid)
+{
+    // @todo: Remove globals
+    global $maildebug;
+    $thissurvey=getSurveyInfo($surveyid);
+    if (empty($thissurvey['emailresponseto']) && empty($thissurvey['emailnotificationto']))
     {
-        // @todo: Remove globals
-        global $thissurvey, $maildebug, $tokensexist;
-        
-        if (trim($thissurvey['adminemail'])=='')
-        {
-            return;
-        }
-        
-        $homeurl=Yii::app()->createAbsoluteUrl('/admin');
-        $clang = Yii::app()->lang;
-        $sitename = Yii::app()->getConfig("sitename");
+        return;
+    }
 
-        $debug=Yii::app()->getConfig('debug');
-        $bIsHTML = ($thissurvey['htmlemail'] == 'Y');
+    $homeurl=Yii::app()->createAbsoluteUrl('/admin');
+    $clang = Yii::app()->lang;
+    $sitename = Yii::app()->getConfig("sitename");
+
+    $debug=Yii::app()->getConfig('debug');
+    $bIsHTML = ($thissurvey['htmlemail'] == 'Y');
 
     $aReplacementVars=array();
 
     if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['survey_'.$surveyid]['scid']))
     {
-            $aReplacementVars['RELOADURL']="".Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['survey_'.$surveyid]['scid']."/loadname/".urlencode($_SESSION['survey_'.$surveyid]['holdname'])."/loadpass/".urlencode($_SESSION['survey_'.$surveyid]['holdpass'])."/lang/".urlencode($clang->langcode));
+        $aReplacementVars['RELOADURL']="".Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['survey_'.$surveyid]['scid']."/loadname/".urlencode($_SESSION['survey_'.$surveyid]['holdname'])."/loadpass/".urlencode($_SESSION['survey_'.$surveyid]['holdpass'])."/lang/".urlencode($clang->langcode));
         if ($bIsHTML)
         {
             $aReplacementVars['RELOADURL']="<a href='{$aReplacementVars['RELOADURL']}'>{$aReplacementVars['RELOADURL']}</a>";
@@ -1025,9 +1025,9 @@ function submittokens($quotaexit = false) {
         $srid = $_SESSION['survey_'.$surveyid]['srid'];
     $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
     $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
-        $aReplacementVars['VIEWRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/responses/view/surveyid/{$surveyid}/id/{$srid}");
-        $aReplacementVars['EDITRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$srid}");
-        $aReplacementVars['STATISTICSURL']=Yii::app()->createAbsoluteUrl("/admin/statistics/index/surveyid/{$surveyid}");
+    $aReplacementVars['VIEWRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/responses/view/surveyid/{$surveyid}/id/{$srid}");
+    $aReplacementVars['EDITRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$srid}");
+    $aReplacementVars['STATISTICSURL']=Yii::app()->createAbsoluteUrl("/admin/statistics/index/surveyid/{$surveyid}");
     if ($bIsHTML)
     {
         $aReplacementVars['VIEWRESPONSEURL']="<a href='{$aReplacementVars['VIEWRESPONSEURL']}'>{$aReplacementVars['VIEWRESPONSEURL']}</a>";
@@ -1043,7 +1043,7 @@ function submittokens($quotaexit = false) {
     {
         $aRecipient=explode(";", $thissurvey['emailnotificationto']);
         {
-                foreach($aRecipient as $sRecipient)
+            foreach($aRecipient as $sRecipient)
             {
                 $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN
                 if(validateEmailAddress($sRecipient))
@@ -1061,8 +1061,8 @@ function submittokens($quotaexit = false) {
             //Gather token data for tokenised surveys
             $_SESSION['survey_'.$surveyid]['thistoken']=getTokenData($surveyid, $_SESSION['survey_'.$surveyid]['token']);
         }
-            // there was no token used so lets remove the token field from insertarray
-            elseif ($_SESSION['survey_'.$surveyid]['insertarray'][0]=='token')
+        // there was no token used so lets remove the token field from insertarray
+        elseif ($_SESSION['survey_'.$surveyid]['insertarray'][0]=='token')
         {
             unset($_SESSION['survey_'.$surveyid]['insertarray'][0]);
         }
@@ -1079,31 +1079,31 @@ function submittokens($quotaexit = false) {
             }
         }
 
-        $aFullResponseTable=getFullResponseTable($surveyid,$_SESSION['survey_'.$surveyid]['srid'],$_SESSION['survey_'.$surveyid]['s_lang']);
-        $ResultTableHTML = "<table class='printouttable' >\n";
-        $ResultTableText ="\n\n";
-        $oldgid = 0;
-        $oldqid = 0;
-        foreach ($aFullResponseTable as $sFieldname=>$fname)
+        if(strpos($thissurvey['email_admin_responses'],'{ANSWERTABLE}')!==false)// Don't calculate if not needed
         {
-            if (substr($sFieldname,0,4)=='gid_')
+            $aFullResponseTable=getFullResponseTable($surveyid,$_SESSION['survey_'.$surveyid]['srid'],$_SESSION['survey_'.$surveyid]['s_lang']);
+            $ResultTableHTML = "<table class='printouttable' >\n";
+            $ResultTableText ="\n\n";
+            $oldgid = 0;
+            $oldqid = 0;
+            foreach ($aFullResponseTable as $sFieldname=>$fname)
             {
-
-                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
-                $ResultTableText .="\n{$fname[0]}\n\n";
+                if (substr($sFieldname,0,4)=='gid_')
+                {
+                    $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
+                    $ResultTableText .="\n{$fname[0]}\n\n";
+                }
+                elseif (substr($sFieldname,0,4)=='qid_')
+                {
+                    $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>{$fname[0]}</td></tr>\n";
+                    $ResultTableText .="\n{$fname[0]}\n";
+                }
+                else
+                {
+                    $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+                    $ResultTableText .="     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
+                }
             }
-            elseif (substr($sFieldname,0,4)=='qid_')
-            {
-                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>{$fname[0]}</td></tr>\n";
-                $ResultTableText .="\n{$fname[0]}\n";
-            }
-            else
-            {
-                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
-                $ResultTableText .="     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
-            }
-        }
-
             $ResultTableHTML .= "</table>\n";
             $ResultTableText .= "\n\n";
             if ($bIsHTML)
@@ -1115,10 +1115,9 @@ function submittokens($quotaexit = false) {
                 $aReplacementVars['ANSWERTABLE']=$ResultTableText;
             }
         }
+    }
 
         $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
-    
-        
         $redata=compact(array_keys(get_defined_vars()));
         if (count($aEmailNotificationTo)>0)
         {
@@ -1126,7 +1125,7 @@ function submittokens($quotaexit = false) {
             $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,$redata,'frontend_helper[1399]',($thissurvey['anonymized'] == "Y"));
             foreach ($aEmailNotificationTo as $sRecipient)
         {
-                if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid)))
+            if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid)))
             {
                 if ($debug>0)
                 {
@@ -1142,7 +1141,7 @@ function submittokens($quotaexit = false) {
         $sSubject=templatereplace($thissurvey['email_admin_responses_subj'],$aReplacementVars,$redata,'frontend_helper[1415]',($thissurvey['anonymized'] == "Y"));
         foreach ($aEmailResponseTo as $sRecipient)
         {
-                if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid)))
+            if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid)))
             {
                 if ($debug>0)
                 {
@@ -1151,15 +1150,13 @@ function submittokens($quotaexit = false) {
             }
         }
     }
-
-
 }
 
 function submitfailed($errormsg='')
 {
     global $debug;
     global $thissurvey;
-        global $subquery, $surveyid;
+    global $subquery, $surveyid;
 
     $clang = Yii::app()->lang;
 

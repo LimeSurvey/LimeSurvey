@@ -6,7 +6,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.plugins.add( 'uicolor',
 {
 	requires : [ 'dialog' ],
-	lang : [ 'bg', 'cs', 'cy', 'da', 'de', 'el', 'en', 'eo', 'et', 'fa', 'fi', 'fr', 'he', 'hr', 'it', 'mk', 'nb', 'nl', 'no', 'pl', 'pt-br', 'tr', 'ug', 'uk', 'vi', 'zh-cn' ],
+	lang : [ 'bg', 'cs', 'cy', 'da', 'de', 'el', 'en', 'eo', 'et', 'fa', 'fi', 'fr', 'he', 'hr', 'it', 'ku', 'mk', 'nb', 'nl', 'no', 'pl', 'pt-br', 'sk', 'tr', 'ug', 'uk', 'vi', 'zh-cn' ],
 
 	init : function( editor )
 	{
