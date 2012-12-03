@@ -76,11 +76,11 @@ class database extends Survey_Common_Action
                 {
                     foreach ($questlangs as $language)
                     {
-                        if (Yii::app()->request->getPost('defaultanswerscale_'.$scale_id.'_'.$language))
+                        if (!is_null(Yii::app()->request->getPost('defaultanswerscale_'.$scale_id.'_'.$language)))
                         {
                             $this->_updateDefaultValues($qid,0,$scale_id,'',$language,Yii::app()->request->getPost('defaultanswerscale_'.$scale_id.'_'.$language),true);
                         }
-                        if (Yii::app()->request->getPost('other_'.$scale_id.'_'.$language))
+                        if (!is_null(Yii::app()->request->getPost('other_'.$scale_id.'_'.$language)))
                         {
                             $this->_updateDefaultValues($qid,0,$scale_id,'other',$language,Yii::app()->request->getPost('other_'.$scale_id.'_'.$language),true);
                         }
@@ -112,7 +112,7 @@ class database extends Survey_Common_Action
             {
                 foreach ($questlangs as $language)
                 {
-                    if (Yii::app()->request->getPost('defaultanswerscale_0_'.$language.'_0'))
+                    if (!is_null(Yii::app()->request->getPost('defaultanswerscale_0_'.$language.'_0')))
                     {
                         $this->_updateDefaultValues($postqid,0,0,'',$language,Yii::app()->request->getPost('defaultanswerscale_0_'.$language.'_0'),true);
                     }
