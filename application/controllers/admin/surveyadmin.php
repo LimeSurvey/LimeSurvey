@@ -173,6 +173,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
 
         $oResult = Questions::model()->with('groups')->with('question_types')->with('parents')->findAllByAttributes(array('sid' => $iSurveyID, 'language' => $esrow['language']), array('index' => 'qid', 'order' => 'group_order, t.question_order'));
+        $questions=array();
         foreach ($oResult as $result)
         {
             $q = createQuestion(empty($result->question_types['class']) ? $oResult[$result['parent_qid']]->question_types['class'] : $result->question_types['class'] );
