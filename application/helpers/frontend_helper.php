@@ -2436,12 +2436,13 @@ function UpdateFieldArray()
 */
 function checkQuota($checkaction,$surveyid)
 {
-    global $clang, $clienttoken, $thissurvey;
-    if (!isset($_SESSION['survey_'.$surveyid]['s_lang'])){
+    global $clienttoken ;
+    if (!isset($_SESSION['survey_'.$surveyid]['srid']))
+    {
         return;
     }
-
-    $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
+    $thissurvey=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+    $sTemplatePath=getTemplatePath($thissurvey['templatedir']);
 
     $global_matched = false;
     $quota_info = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
@@ -2468,7 +2469,6 @@ function checkQuota($checkaction,$surveyid)
                 {
                     foreach($member['fieldnames'] as $fieldname)
                     {
-
                         if (!in_array($fieldname,$fields_list))
                         {
                             $fields_list[] = $fieldname;
@@ -2478,8 +2478,8 @@ function checkQuota($checkaction,$surveyid)
                         $fields_value_array[$fieldname][]=$member['value'];
                         $fields_query_array[$fieldname][]= dbQuoteID($fieldname)." = '{$member['value']}'";
                     }
-
                 }
+
                 // fill the $querycond array with each fields_query grouped by fieldname
                 foreach($fields_list as $fieldname)
                 {
@@ -2518,51 +2518,44 @@ function checkQuota($checkaction,$surveyid)
                 }
 
                 // A field was submitted that is part of the quota
-
                 if ($matched_fields == true)
                 {
-
                     // Check the status of the quota, is it full or not
                     $sQuery = "SELECT count(id) FROM {{survey_".$surveyid."}}
                     WHERE ".implode(' AND ',$querycond)." "."
                     AND submitdate IS NOT NULL";
-
                     $iRowCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
-                    
-
                     if ($iRowCount >= $quota['Limit']) // Quota is full!!
-
                     {
                         // Now we have to check if the quota matches in the current session
                         // This will let us know if this person is going to exceed the quota
-
                         $counted_matches = 0;
                         foreach($quota_info[$x]['members'] as $member)
                         {
                             if (isset($member['insession']) && $member['insession'] == "true") $counted_matches++;
                         }
+
                         if($counted_matches == count($quota['members']))
                         {
                             // They are going to exceed the quota if data is submitted
                             $quota_info[$x]['status']="matched";
-
-                        } else
+                        }
+                        else
                         {
                             $quota_info[$x]['status']="notmatched";
                         }
-
-                    } else
+                    }
+                    else
                     {
                         // Quota is no in danger of being exceeded.
                         $quota_info[$x]['status']="notmatched";
                     }
                 }
-
             }
             $x++;
         }
-
-    } else
+    }
+    else
     {
         return false;
     }
@@ -2573,41 +2566,44 @@ function checkQuota($checkaction,$surveyid)
     {
         return $quota_info;
     }
-    else if ($global_matched == true && $checkaction == 'enforce')
+    elseif ($global_matched == true && $checkaction == 'enforce')
+    {
+        // Need to add Quota action enforcement here.
+        reset($quota_info);
+
+        $tempmsg ="";
+        $found = false;
+        $redata = compact(array_keys(get_defined_vars()));
+        foreach($quota_info as $quota)
         {
-            // Need to add Quota action enforcement here.
-            reset($quota_info);
-
-            $tempmsg ="";
-            $found = false;
-            foreach($quota_info as $quota)
+            $quota['Message']=templatereplace($quota['Message'],array(),$redata);
+            $quota['Url']=templatereplace($quota['Url'],array(),$redata);
+            $quota['UrlDescrip']=templatereplace($quota['UrlDescrip'],array(),$redata);
+            if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "1"))
             {
-                if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "1"))
+                // If a token is used then mark the token as completed
+                if (isset($clienttoken) && $clienttoken)
                 {
-                    // If a token is used then mark the token as completed
-                    if (isset($clienttoken) && $clienttoken)
-                    {
-                        submittokens(true);
-                    }
-
-                sendCacheHeaders();
-                if($quota['AutoloadUrl'] == 1 && $quota['Url'] != "")
-                {
-                    header("Location: ".$quota['Url']);
-                    killSurveySession($surveyid);
+                    submittokens(true);
                 }
-                doHeader();
 
-                $redata = compact(array_keys(get_defined_vars()));
-                echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[2617]');
-                echo "\t<div class='quotamessage'>\n";
-                echo "\t".$quota['Message']."<br /><br />\n";
-                echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-                echo "\t</div>\n";
-                echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[2622]');
-                doFooter();
+            sendCacheHeaders();
+            if($quota['AutoloadUrl'] == 1 && $quota['Url'] != "")
+            {
+                header("Location: ".$quota['Url']);
                 killSurveySession($surveyid);
-                exit;
+            }
+            doHeader();
+
+            echo templatereplace(file_get_contents($sTemplatePath."/startpage.pstpl"),array(),$redata,'frontend_helper[2617]');
+            echo "\t<div class='quotamessage'>\n";
+            echo "\t".$quota['Message']."<br /><br />\n";
+            echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
+            echo "\t</div>\n";
+            echo templatereplace(file_get_contents($sTemplatePath."/endpage.pstpl"),array(),$redata,'frontend_helper[2622]');
+            doFooter();
+            killSurveySession($surveyid);
+            exit;
             }
 
             if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "2"))
@@ -2617,7 +2613,7 @@ function checkQuota($checkaction,$surveyid)
                 doHeader();
 
                 $redata = compact(array_keys(get_defined_vars()));
-                echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[2634]');
+                echo templatereplace(file_get_contents($sTemplatePath."/startpage.pstpl"),array(),$redata,'frontend_helper[2634]');
                 echo "\t<div class='quotamessage'>\n";
                 echo "\t".$quota['Message']."<br /><br />\n";
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
@@ -2629,14 +2625,13 @@ function checkQuota($checkaction,$surveyid)
                 <input type='hidden' name='token' value='".$clienttoken."' id='token' />
                 </form>\n";
                 echo "\t</div>\n";
-                echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[2644]');
+                echo templatereplace(file_get_contents($sTemplatePath."/endpage.pstpl"),array(),$redata,'frontend_helper[2644]');
                 doFooter();
                 exit;
             }
         }
-
-
-    } else
+    }
+    else
     {
         // Unknown value
         return false;
