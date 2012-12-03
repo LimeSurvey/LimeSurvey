@@ -615,7 +615,8 @@ class remotecontrol_handle
 			$sLanguage = $oSurvey->language;
 
 		$oAllQuestions = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid'=>'0','language'=>$sLanguage));
-		$aSummary = createCompleteSGQA($iSurveyID,$oAllQuestions,$sLanguage);
+		usort($oAllQuestions, 'groupOrderThenQuestionOrder');
+        $aSummary = createCompleteSGQA($iSurveyID,$oAllQuestions,$sLanguage);
 
         $helper = new statistics_helper();
 		switch ($docType)
