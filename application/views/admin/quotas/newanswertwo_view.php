@@ -1,11 +1,11 @@
 <?php if (count($question_answers) == $x) { ?>
-<div class="header"><?php $clang->eT("Add Answer");?>: <?php $clang->eT("Question Selection");?></div><br />
+<div class="header"><?php $clang->eT("Add answer");?>: <?php $clang->eT("Question Selection");?></div><br />
 	<div class="messagebox">
 		<?php $clang->eT("All answers are already selected in this quota.");?>
 		<br/><br/><input type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$iSurveyId");?>', '_top')" value="<?php $clang->eT("Continue");?>"/>
 	</div>
 <?php } else { ?>
-<div class="header ui-widget-header"><?php $clang->eT("Survey Quota");?>: <?php $clang->eT("Add Answer");?></div><br />
+<div class="header ui-widget-header"><?php $clang->eT("Survey quota");?>: <?php $clang->eT("Add answer");?></div><br />
 	<div class="messagebox ui-corner-all" style="width: 600px">
         <?php echo CHtml::form(array("admin/quotas/sa/insertquotaanswer/surveyid/{$iSurveyId}"), 'post', array('#'=>'quota_'.sanitize_int($_POST['quota_id']))); ?>
 			<table class="addquotaanswer">

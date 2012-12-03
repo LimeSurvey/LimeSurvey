@@ -728,12 +728,10 @@ class Translator
     'datestamp' => 'Date last action',
     'startdate' => 'Date started',
     'submitdate' => 'Completed',
-    //'completed' => 'Completed',
     'ipaddr' => 'IP address',
     'refurl' => 'Referring URL',
     'lastpage' => 'Last page',
-    'startlanguage' => 'Start language'//,
-    //'tid' => 'Token ID'
+    'startlanguage' => 'Start language'
     );
 
     public function translate($key, $sLanguageCode)

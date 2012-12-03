@@ -51,7 +51,7 @@
     <td style="padding: 3px;">
         <?php if (hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
             <?php echo CHtml::form(array("admin/quotas/sa/new_answer/surveyid/{$iSurveyId}"), 'post'); ?>
-                <input name="submit" type="submit" class="quota_new" value="<?php $clang->eT("Add Answer");?>" />
+                <input name="submit" type="submit" class="quota_new" value="<?php $clang->eT("Add answer");?>" />
                 <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
                 <input type="hidden" name="action" value="quotas" />
                 <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />

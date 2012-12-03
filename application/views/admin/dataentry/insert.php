@@ -30,7 +30,7 @@
 			   		</td>
 			   	</tr>
 			  	<tr>
-			  		<td align='right'><?php $clang->eT("Start Language:"); ?></td>
+			  		<td align='right'><?php $clang->eT("Start language:"); ?></td>
 			   		<td>
 			   			<input type='text' name='save_language' value='<?php echo $_POST['save_language']; ?>' />
 			   		</td>

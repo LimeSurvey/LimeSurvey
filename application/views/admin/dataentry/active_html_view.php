@@ -43,7 +43,7 @@ if ($thissurvey['active'] == "Y")
     					  <td><input type='password' name='save_confirmpassword' /></td></tr>
     					  <tr><td align='right'><?php $clang->eT("Email:"); ?></td>
     					  <td><input type='email' name='save_email' /></td></tr>
-    					  <tr><td align='right'><?php $clang->eT("Start Language:"); ?></td>
+    					  <tr><td align='right'><?php $clang->eT("Start language:"); ?></td>
     					  <td>
                     <select name='save_language'>
                     <?php foreach ($slangs as $lang)
