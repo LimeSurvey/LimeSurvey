@@ -241,11 +241,23 @@ class RegisterController extends LSYii_Controller {
         sendCacheHeaders();
         doHeader();
         Yii::app()->lang = $clang;
-        echo templatereplace(file_get_contents("$sTemplate/startpage.pstpl"));
-        echo templatereplace(file_get_contents("$sTemplate/survey.pstpl"));
-        echo $sHTML;
-        echo templatereplace(file_get_contents("$sTemplate/endpage.pstpl"));
+        // fetch the defined variables and pass it to the header footer templates.
+        $redata = compact(array_keys(get_defined_vars()));
+        $this->_printTemplateContent($sTemplate.'/startpage.pstpl', $redata, __LINE__);
+        $this->_printTemplateContent($sTemplate.'/survey.pstpl', $redata, __LINE__);
+        echo $html;
+        $this->_printTemplateContent($sTemplate.'/endpage.pstpl', $redata, __LINE__);
+        
         doFooter();
+    }
+    
+    /**
+    * function will parse the templates data
+    * @return displays the requested template
+    */
+    function _printTemplateContent($sTemplateFile, &$redata, $iDebugLine = -1)
+    {
+        echo templatereplace(file_get_contents($sTemplateFile),array(),$redata,'survey['.$iDebugLine.']');
     }
 
 }
