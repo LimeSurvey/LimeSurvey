@@ -267,7 +267,13 @@ class Participants extends CActiveRecord
         foreach($attid as $key=>$attid)
         {
             $attid = $attid['attribute_id'];
-            array_push($selectValue,"attribute".$attid.".value as a".$attid);
+            $databasetype = Yii::app()->db->getDriverName();
+            if ($databasetype=='mssql' || $databasetype=="sqlsrv")
+            {
+                $selectValue[]= "cast(attribute".$attid.".value as varchar(max)) as a".$attid;
+            } else {
+                $selectValue[]= "attribute".$attid.".value as a".$attid;
+            }
             array_push($joinValue,"LEFT JOIN {{participant_attribute}} attribute".$attid." ON attribute".$attid.".participant_id=p.participant_id AND attribute".$attid.".attribute_id=".$attid);
         }
         
@@ -752,9 +758,13 @@ class Participants extends CActiveRecord
             {
                 $command->addCondition('full_name ' . $operator . ' '.$param, $booloperator);
             }
+            elseif($sFieldname=="participant_id")
+            {
+                $command->addCondition('p.participant_id ' . $operator . ' '.$param, $booloperator);
+            }
             elseif (is_numeric($sFieldname)) //Searching for an attribute
             {
-                $command->addCondition('a'. $sFieldname . ' ' . $operator . ' '.$param, $booloperator);
+                $command->addCondition('attribute'. $sFieldname . '.value ' . $operator . ' '.$param, $booloperator);
             }
             else
             {
