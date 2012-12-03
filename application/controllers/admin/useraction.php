@@ -105,7 +105,7 @@ class UserAction extends Survey_Common_Action
 
             if ($iNewUID) {
                 // add default template to template rights for user
-                Templates_rights::model()->insertRecords(array('uid' => $iNewUID, 'folder' => 'default', 'use' => '1'));
+                Templates_rights::model()->insertRecords(array('uid' => $iNewUID, 'folder' => Yii::app()->getConfig("defaulttemplate"), 'use' => '1'));
 
                 // add new user to userlist
                 $sresult = User::model()->getAllRecords(array('uid' => $iNewUID));
@@ -433,7 +433,7 @@ class UserAction extends Survey_Common_Action
         $postuserid = Yii::app()->request->getPost("uid");
         $aViewUrls = array();
 
-        // A user can't modify his own rights ;-)
+        // A user can't modify his own rights
         if ($postuserid != Yii::app()->session['loginID']) {
             $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
             $sresultcount = count($sresult);
