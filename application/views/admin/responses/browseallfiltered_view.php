@@ -8,7 +8,7 @@
         <table width='100%' align='center' border='0' bgcolor='#EFEFEF'>
             <tr>
                 <td align='center'>
-                    <?php $clang->eT("Showing Filtered Results"); ?><br />
+                    <?php $clang->eT("Showing filtered results"); ?><br />
                     [<a href="javascript:window.close()"><?php $clang->eT("Close"); ?></a>]
                 </td>
             </tr>

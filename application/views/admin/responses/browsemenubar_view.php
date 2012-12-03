@@ -16,12 +16,12 @@
                 <?php if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
                     { ?>
                     <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>'>
-                        <img src='<?php echo $sImageURL; ?>document.png' title='' alt='<?php $clang->eT("Display Responses"); ?>' /></a>
+                        <img src='<?php echo $sImageURL; ?>document.png' title='' alt='<?php $clang->eT("Display responses"); ?>' /></a>
                     <?php }
                     else
                     { ?>
                     <a href="<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>" accesskey='b' id='browseresponses'>
-                        <img src='<?php echo $sImageURL; ?>document.png' alt='<?php $clang->eT("Display Responses"); ?>' /></a>
+                        <img src='<?php echo $sImageURL; ?>document.png' alt='<?php $clang->eT("Display responses"); ?>' /></a>
 
                     <div class="langpopup" id="browselangpopup"><?php $clang->eT("Please select a language:"); ?><ul>
                             <?php foreach ($tmp_survlangs as $tmp_lang)
@@ -31,12 +31,12 @@
                         </ul></div>
                     <?php } ?>
                 <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/start/0/limit/50/order/desc"); ?>'>
-                    <img src='<?php echo $sImageURL; ?>viewlast.png' alt='<?php $clang->eT("Display Last 50 Responses"); ?>' /></a>
+                    <img src='<?php echo $sImageURL; ?>viewlast.png' alt='<?php $clang->eT("Display last 50 responses"); ?>' /></a>
                 <?php }
                 if (hasSurveyPermission($surveyid, 'responses', 'create'))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/dataentry/view/surveyid/$surveyid"); ?>'>
-                    <img src='<?php echo $sImageURL; ?>dataentry.png' alt='<?php $clang->eT("Dataentry Screen for Survey"); ?>' /></a>
+                    <img src='<?php echo $sImageURL; ?>dataentry.png' alt='<?php $clang->eT("Data entry"); ?>' /></a>
                 <?php }
                 if (hasSurveyPermission($surveyid, 'statistics', 'read'))
                 { ?>

@@ -51,5 +51,5 @@
         <input type="hidden" name="action" value="quotas" />
         <input type="hidden" name="subaction" value="insertquota" />
     </div>
-    <p><input name="submit" type="submit" value="<?php $clang->eT("Add New Quota");?>" />
+    <p><input name="submit" type="submit" value="<?php $clang->eT("Add new quota");?>" />
     </form>

@@ -1,18 +1,18 @@
 <?php if (count($question_answers) == $x) { ?>
-<div class="header"><?php $clang->eT("Add Answer");?>: <?php $clang->eT("Question Selection");?></div><br />
+<div class="header"><?php $clang->eT("Add answer");?>: <?php $clang->eT("Question selection");?></div><br />
     <div class="messagebox">
         <?php $clang->eT("All answers are already selected in this quota.");?>
         <br/><br/><input type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$iSurveyId");?>', '_top')" value="<?php $clang->eT("Continue");?>"/>
     </div>
 <?php } else { ?>
-<div class="header ui-widget-header"><?php $clang->eT("Survey Quota");?>: <?php $clang->eT("Add Answer");?></div><br />
+<div class="header ui-widget-header"><?php $clang->eT("Survey quota");?>: <?php $clang->eT("Add answer");?></div><br />
     <div class="messagebox ui-corner-all" style="width: 600px">
         <form action="<?php echo $this->createUrl("admin/quotas/sa/insertquotaanswer/surveyid/$iSurveyId");?>#quota_<?php echo sanitize_int($_POST['quota_id']);?>" method="post">
             <table class="addquotaanswer">
                 <tbody>
                     <thead>
                     <tr>
-                      <th class="header ui-widget-header" colspan="2"><?php echo sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name);?></th>
+                      <th class="header ui-widget-header" colspan="2"><?php echo sprintf($clang->gt("New answer for quota '%s'"), $quota_name);?></th>
                     </tr>
                     </thead>
                     <tr class="evenrow">
@@ -20,7 +20,7 @@
                         <td align="center">&nbsp;</td>
                     </tr>
                     <tr class="evenrow">
-                        <td width="35%" align="center" valign="top"><strong><?php $clang->eT("Select Answer");?>:</strong></td>
+                        <td width="35%" align="center" valign="top"><strong><?php $clang->eT("Select answer");?>:</strong></td>
                         <td align="left">
                             <select name="quota_anscode" size="15">
 <?php

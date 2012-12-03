@@ -1,4 +1,4 @@
-<div class='header ui-widget-header'><?php $clang->eT("Import Question") ?></div>
+<div class='header ui-widget-header'><?php $clang->eT("Import question") ?></div>
 <div class='messagebox ui-corner-all'>
     <div class='successheader'><?php $clang->eT("Success") ?></div><br />
     <?php $clang->eT("File upload succeeded.") ?><br /><br />

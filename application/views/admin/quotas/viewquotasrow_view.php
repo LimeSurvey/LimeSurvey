@@ -9,7 +9,7 @@
             {
                 echo '<font color="#48B150">'.$clang->gT("Active").'</font>';
             } else {
-                echo '<font color="#B73838">'.$clang->gT("Not Active").'</font>';
+                echo '<font color="#B73838">'.$clang->gT("Not active").'</font>';
             }
         ?>
     </td>
@@ -51,7 +51,7 @@
     <td style="padding: 3px;">
         <?php if (hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
             <form action="<?php echo $this->createUrl("admin/quotas/sa/new_answer/surveyid/$iSurveyId");?>" method="post">
-                <input name="submit" type="submit" class="quota_new" value="<?php $clang->eT("Add Answer");?>" />
+                <input name="submit" type="submit" class="quota_new" value="<?php $clang->eT("Add answer");?>" />
                 <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
                 <input type="hidden" name="action" value="quotas" />
                 <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />

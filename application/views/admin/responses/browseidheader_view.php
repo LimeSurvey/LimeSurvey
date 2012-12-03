@@ -25,8 +25,8 @@
                         <img src='<?php echo $sImageURL; ?>download.png' alt='<?php $clang->eT("Download files for this entry"); ?>' /></a>
                     <?php } ?>
 
-                <a href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid/id/$id"); ?>' title='<?php $clang->eT("Export this Response"); ?>' >
-                    <img src='<?php echo $sImageURL; ?>export.png' alt='<?php $clang->eT("Export this Response"); ?>'/></a>
+                <a href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid/id/$id"); ?>' title='<?php $clang->eT("Export this response"); ?>' >
+                    <img src='<?php echo $sImageURL; ?>export.png' alt='<?php $clang->eT("Export this response"); ?>'/></a>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
             <?php } ?>
             <img src='<?php echo $sImageURL; ?>blank.gif' width='20' height='20' alt='' />
