@@ -3420,8 +3420,9 @@ class statistics_helper {
 
                 if($pdfOutput=='F')
                 { // This is only used by lsrc to send an E-Mail attachment, so it gives back the filename to send and delete afterwards
-                    $this->pdf->Output($tempdir."/".$statlang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
-                    return $tempdir."/".$statlang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf';
+                    $tempfilename = $tempdir."/Survey_".$surveyid.".pdf";
+                    $this->pdf->Output($tempfilename, $pdfOutput);
+                    return $tempfilename;
                 }
                 else
                     return $this->pdf->Output($statlang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
