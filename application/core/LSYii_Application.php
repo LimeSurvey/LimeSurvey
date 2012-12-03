@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php 
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -77,7 +77,17 @@ class LSYii_Application extends CWebApplication
                 $config['components']['db']['enableParamLogging'] = true;
             }
         }
-        
+
+        $config['components']['request']=array(
+            'class'=>'HttpRequest',
+            'noCsrfValidationRoutes'=>array(
+//              '^services/wsdl.*$'   // Set here additional regex rules for routes not to be validate 
+                'getTokens_json'
+            ),
+            'enableCsrfValidation'=>false,      // Enable to activate CSRF protection
+            'enableCookieValidation'=>false   // Enable to activate cookie protection
+        );
+
         parent::__construct($config);
         // Load the default and environmental settings from different files into self.
         $ls_config = require(APPPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config-defaults.php');
