@@ -39,7 +39,7 @@
     ?>
     <br /><div class='header ui-widget-header'><?php $clang->eT("Restore options"); ?></div>
     <div class='messagebox ui-corner-all'>
-        <form method='post' action='<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>'>
+        <?php echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$surveyid}"), 'post'); ?>
             <?php $clang->eT("The following old token tables could be restored:"); ?><br /><br />
             <select size='4' name='oldtable' style='width:250px;'>
                 <?php
@@ -56,14 +56,6 @@
     <?php } ?>
 <script type="text/javascript">
     <!--
-    for(i=0; i<document.forms.length; i++)
-        {
-        var el = document.createElement('input');
-        el.type = 'hidden';
-        el.name = 'checksessionbypost';
-        el.value = 'cvtp4rts86';
-        document.forms[i].appendChild(el);
-    }
 
     function addHiddenElement(theform,thename,thevalue)
     {
@@ -85,7 +77,6 @@
             {
             addHiddenElement(myform,arrayparam[i],arrayval[i])
         }
-        addHiddenElement(myform,'checksessionbypost',checkcode)
         myform.submit();
     }
 

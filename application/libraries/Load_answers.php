@@ -29,17 +29,17 @@ class Load_answers {
         ."\t}\n"
         ."\t</script>\n\n";
 
-        echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."'>\n";
-        echo templatereplace(file_get_contents($sTemplatePath."load.pstpl"),array(),$redata);
-        //PRESENT OPTIONS SCREEN (Replace with Template Later)
-        //END
-        echo "<input type='hidden' name='sid' value='{$surveyid}' />\n";
-        echo "<input type='hidden' name='loadall' value='reload' />\n";
-        if (isset($clienttoken) && $clienttoken != "")
-        {
-            echo "<input type='hidden' name='token' value='$clienttoken' />\n";
-        }
-        echo "</form>";
+        echo CHtml::form(array("/survey/index"), 'post')."\n";
+		echo templatereplace(file_get_contents($sTemplatePath."load.pstpl"),array(),$redata);
+		//PRESENT OPTIONS SCREEN (Replace with Template Later)
+		//END
+		echo "<input type='hidden' name='sid' value='{$surveyid}' />\n";
+		echo "<input type='hidden' name='loadall' value='reload' />\n";
+		if (isset($clienttoken) && $clienttoken != "")
+		{
+		    echo "<input type='hidden' name='token' value='$clienttoken' />\n";
+		}
+		echo "</form>";
 
         echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata);
         doFooter();

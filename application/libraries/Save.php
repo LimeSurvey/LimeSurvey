@@ -73,7 +73,8 @@ class Save {
         ."\t//-->\n"
         ."\t</script>\n\n";
 
-        echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."'>\n";
+        echo CHtml::form(array("/survey/index"), 'post')."\n";
+        
         //PRESENT OPTIONS SCREEN
         if (isset($errormsg) && $errormsg != "")
         {

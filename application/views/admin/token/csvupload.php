@@ -2,7 +2,8 @@
     <?php echo $sError; ?><br /><br />
     <?php } ?>
 
-<form id='tokenimport' enctype='multipart/form-data' action='<?php echo $this->createUrl("admin/tokens/sa/import/surveyid/$iSurveyId"); ?>' method='post'>
+<?php echo CHtml::form(array("admin/tokens/sa/import/surveyid/{$iSurveyId}"), 'post', array('id'=>'tokenimport', 'name'=>'tokenimport', 'enctype'=>'multipart/form-data')); ?>
+
     <ul>
         <li>
             <label for='the_file'><?php $clang->eT("Choose the CSV file to upload:"); ?></label>

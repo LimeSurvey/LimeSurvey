@@ -1,6 +1,6 @@
 <div class='header ui-widget-header'><?php $clang->eT("Bounce settings"); ?></div>
 <div id='bouncesettingsdiv'>
-    <form id='bouncesettings' class='form30' name='bouncesettings' action='<?php echo $this->createUrl("admin/tokens/sa/bouncesettings/surveyid/$surveyid"); ?>' method='post'>
+    <?php echo CHtml::form(array("admin/tokens/sa/bouncesettings/surveyid/{$surveyid}"), 'post', array('id'=>'bouncesettings', 'name'=>'bouncesettings', 'class'=>'form30')); ?>
         <br>
         <ul><li><label for='bounce_email'><?php $clang->eT('Survey bounce email:'); ?></label>
                 <input type='email' size='50' id='bounce_email' name='bounce_email' value="<?php echo $settings['bounce_email']; ?>" ></li>

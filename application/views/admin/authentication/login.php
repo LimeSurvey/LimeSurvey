@@ -1,4 +1,4 @@
-<form name='loginform' id='loginform' method='post' action='<?php echo $this->createUrl("admin/authentication/sa/login"); ?>' >
+<?php echo CHtml::form(array('admin/authentication/sa/login'), 'post', array('id'=>'loginform', 'name'=>'loginform'));?>
     <div class='messagebox ui-corner-all'>
         <div class='header ui-widget-header'><?php echo $summary; ?></div>
         <br />

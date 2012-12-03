@@ -1,12 +1,13 @@
-<form action='<?php echo $this->createUrl("admin/user/sa/usertemplates");?>' method='post'>
-    <div class='header ui-widget-header'><?php $clang->eT('Edit template permissions');?></div>
+<?php echo CHtml::form(array("admin/user/sa/usertemplates"), 'post', array('name'=>'modtemplaterightsform', 'id'=>'modtemplaterightsform')); ?>
+
+	<div class='header ui-widget-header'><?php $clang->eT('Edit template permissions');?></div>
     <table id="user-template-rights" width='50%' border='0' cellpadding='3' style='margin:5px auto 0 auto;'>
-    <thead>
-    <tr>
-    <th colspan="2" style="background-color:#000; color:#fff;">
+	<thead>
+	<tr>
+	<th colspan="2" style="background-color:#000; color:#fff;">
     <?php $clang->eT('Set templates that this user may access');?>: <?php echo $_POST['user'];?></th>
-    </tr>
-    <?php
+	</tr>
+	<?php
     foreach ($list as $data)
     {
         ?>

@@ -117,6 +117,7 @@ class questiongroup extends Survey_Common_Action
             $baselang = Survey::model()->findByPk($surveyid)->language;
             $grplangs[] = $baselang;
             $grplangs = array_reverse($grplangs);
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'questiongroup.js');
 
             $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
             $aData['surveyid'] = $surveyid;

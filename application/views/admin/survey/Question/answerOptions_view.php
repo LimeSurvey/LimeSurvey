@@ -2,7 +2,7 @@
 <div class='header ui-widget-header'>
     <?php $clang->eT("Edit answer options"); ?>
 </div>
-<form id='editanswersform' name='editanswersform' method='post' action='<?php echo $this->createUrl('admin/database'); ?>'>
+<?php echo CHtml::form(array("admin/database"), 'post', array('id'=>'editanswersform', 'name'=>'editanswersform')); ?>
     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
     <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
     <input type='hidden' name='qid' value='<?php echo $qid; ?>' />

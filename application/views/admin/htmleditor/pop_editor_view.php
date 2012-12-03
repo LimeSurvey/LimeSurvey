@@ -9,9 +9,8 @@
     </head>
 
     <body>
-        <form method='post' onsubmit='saveChanges=true;'>
+        <?php echo CHtml::form('', 'post', array('onsubmit'=>'saveChanges=true;'));?>
 
-            <input type='hidden' name='checksessionbypost' value='<?php echo Yii::app()->session['checksessionpost']; ?>' />
             <script type='text/javascript'>
                 <!--
                 function closeme()

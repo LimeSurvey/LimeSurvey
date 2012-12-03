@@ -1,7 +1,7 @@
 <div class='header ui-widget-header'>
     <strong><?php $clang->eT("Import CSV"); ?> </strong>
 </div>
-<form action="<?php echo $this->createUrl('admin/participants/sa/attributeMapCSV'); ?>" method="post" accept-charset="utf-8" class="form44" enctype="multipart/form-data">
+<?php echo CHtml::form(array("admin/participants/sa/attributeMapCSV"), 'post', array('id'=>'addsurvey','class'=>'form44', 'enctype'=>'multipart/form-data', 'accept-charset'=>'utf-8')); ?>
     <ul>
         <li>
             <label for="the_file" id="fileupload">

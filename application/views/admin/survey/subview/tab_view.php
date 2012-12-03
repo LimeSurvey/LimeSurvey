@@ -23,4 +23,8 @@
         <li><a href='#resources'><?php $clang->eT("Resources"); ?></a></li>
         <?php } ?>
     </ul>
-    <form class='form30' name='addnewsurvey' id='addnewsurvey' action='<?php if ($action == "newsurvey") echo $this->createUrl("admin/survey/sa/insert"); if ($action == "editsurveysettings") echo $this->createUrl("admin/database/index/updatesurveysettings"); ?>' method='post' >
+    <?php
+        if ($action == "editsurveysettings") $sURL="admin/database/index/updatesurveysettings";
+        else $sURL="admin/survey/sa/insert";
+    ?>
+    <?php echo CHtml::form(array($sURL), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'form30')); ?>

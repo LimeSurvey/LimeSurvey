@@ -1,5 +1,5 @@
 <div class='header ui-widget-header'><?php echo sprintf($clang->gT("Editing user group (Owner: %s)"), Yii::app()->session['user']); ?></div>
-    <form action='<?php echo $this->createUrl("admin/usergroups/sa/edit/ugid/".$ugid); ?>' id='usergroupform' class='form30' name='usergroupform' method='post'>
+    <?php echo CHtml::form(array("admin/usergroups/sa/edit/ugid/{$ugid}"), 'post', array('class'=>'form30', 'id'=>'usergroupform', 'name'=>'usergroupform')); ?>
         <ul>
         <li><label for='name'><?php $clang->eT("Name:"); ?></label>
         <input type='text' size='50' maxlength='20' id='name' name='name' value="<?php echo $esrow['name']; ?>" /></li>

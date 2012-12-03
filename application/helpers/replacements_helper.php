@@ -608,7 +608,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         else
             $tokensid = $registerdata['sid'];
 
-        $_registerform = "<form method='post' action='".Yii::app()->getController()->createUrl('/register/index/surveyid/'.$tokensid)."'>\n";
+        $_registerform = CHtml::form(array("/register/index/surveyid/{$tokensid}"), 'post');
 
         if (!isset($_REQUEST['lang']))
         {
@@ -619,7 +619,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $_reglang = returnGlobal('lang');
         }
 
-        $_registerform .= "<input type='hidden' name='lang' value='" . $_reglang . "' />\n";
+        $_registerform .= "\n<input type='hidden' name='lang' value='" . $_reglang . "' />\n";
         $_registerform .= "<input type='hidden' name='sid' value='$tokensid' id='sid' />\n";
 
         $_registerform.="<table class='register' summary='Registrationform'>\n"

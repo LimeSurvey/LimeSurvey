@@ -1,5 +1,4 @@
-<form method='post' action='<?php echo $this->createUrl("admin/user/sa/userrights");?>'>
-
+<?php echo CHtml::form(array("admin/user/sa/userrights"), 'post', array('name'=>'moduserrightsform', 'id'=>'moduserrightsform')); ?>
 <table width='100%' border='0'>
 <tr>
 <td colspan='8' class='header ui-widget-header' align='center'>

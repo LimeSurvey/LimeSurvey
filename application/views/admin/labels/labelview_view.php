@@ -14,7 +14,7 @@
         ?>
     </ul>
 
-    <form method='post' id='mainform' action='<?php echo $this->createUrl('admin/labels/process') ?>'>
+    <?php echo CHtml::form(array("admin/labels/sa/process"), 'post', array('id'=>'mainform')); ?>
         <input type='hidden' name='lid' value='<?php echo $lid ?>' />
         <input type='hidden' name='action' value='modlabelsetanswers' />
         <?php
@@ -115,7 +115,7 @@
     </form>
     <div id='up_resmgmt'>
         <div>
-            <form class='form30' id='browselabelresources' name='browselabelresources'
+            <?php echo CHtml::form('', 'post', array('id'=>'browselabelresources','name'=>'browselabelresources')); ?>
                 action='<?php echo $this->createUrl("admin/kcfinder/index/load/browse"); ?>' method='get' target="_blank">
                 <ul style='list-style-type:none; text-align:center'>
                     <li>
@@ -131,7 +131,7 @@
                     </li>
                 </ul>
             </form>
-            <form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources'
+            <?php echo CHtml::form('', 'post', array('id'=>'importlabelresources','class'=>'form30', 'name'=>'importlabelresources', 'enctype'=>'multipart/form-data')); ?>
                 action='<?php echo $this->createUrl('/admin/labels/importlabelresources') ?>' method='post'
                 onsubmit='return validatefilename(this, "<?php $clang->eT('Please select a file to import!', 'js') ?>");'>
 

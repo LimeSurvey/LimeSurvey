@@ -25,7 +25,7 @@
             </a>
             <img src='<?php echo $sImageURL; ?>separator.gif' alt='' />
         <?php } ?>
-        <form action='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/{$iSurveyId}"); ?>' id='browseresults' method='post'>
+        <?php echo CHtml::form(array("admin/responses/sa/time/surveyid/{$surveyid}/"), 'post', array('id'=>'browseresults')); ?>
             <font size='1' face='verdana'>
             <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='20' alt='' />
             <?php $clang->eT("Records displayed:"); ?> <input type='text' size='4' value='<?php echo $limit ?>' name='limit' id='limit' />
@@ -40,7 +40,7 @@
     </div>
 </div>
 
-<form action='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/{$iSurveyId}"); ?>' id='resulttableform' method='post'>
+<?php echo CHtml::form(array("admin/responses/sa/time/surveyid/{$surveyid}/"), 'post', array('id'=>'resulttableform')); ?>
 
 <!-- DATA TABLE -->
 <?php if ($fncount < 10) { ?>

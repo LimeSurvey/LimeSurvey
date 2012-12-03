@@ -9,7 +9,8 @@
         $subaction == "renumberscenarios")  { ?>
         <td><strong><?php echo $onlyshow;?></strong>
         </td>
-        <td><form id='deleteallconditions' action='<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/deleteallconditions/surveyid/$surveyid/gid/$gid/qid/$qid/");?>' method='post' name='deleteallconditions' style='margin-bottom:0;'>
+        <td>
+        <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deleteallconditions/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;','id'=>'deleteallconditions','name'=>'deleteallconditions'));?>
         <input type='hidden' name='qid' value='<?php echo $qid;?>' />
         <input type='hidden' name='gid' value='<?php echo $gid;?>' />
         <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
@@ -29,7 +30,7 @@
         else
         { ?>
         <td><strong><?php echo $onlyshow;?></strong>
-            <form id='deleteallconditions' action='<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/deleteallconditions/surveyid/$surveyid/gid/$gid/qid/$qid/");?>' method='post' name='deleteallconditions' style='margin-bottom:0;'>
+            <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deleteallconditions/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;','id'=>'deleteallconditions','name'=>'deleteallconditions'));?>
                 <input type='hidden' name='qid' value='<?php echo $qid;?>' />
                 <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
                 <input type='hidden' id='toplevelsubaction' name='subaction' value='deleteallconditions' />

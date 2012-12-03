@@ -2,16 +2,16 @@
 <?php
 if(isset($headercfg))
 {
-    if ($headercfg["type"] == "success")
-    { ?>
-        <div class="header successheader"><?php echo $headercfg["message"];?></div>
-        <?php
-    }
-    if ($headercfg["type"] == "warning")
-    { ?>
-        <div class="header warningheader"><?php echo $headercfg["message"];?></div>
-        <?php
-    }
+	if ($headercfg["type"] == "success")
+	{ ?>
+		<div class="header successheader"><?php echo $headercfg["message"];?></div>
+		<?php
+	}
+	if ($headercfg["type"] == "warning")
+	{ ?>
+		<div class="header warningheader"><?php echo $headercfg["message"];?></div>
+		<?php
+	}
 }
 ?>
 
@@ -19,8 +19,8 @@ if(isset($headercfg))
 if(isset($groupfound))
 { ?>
 <table width='100%' border='0'>
-    <tr><td align='justify' colspan='2' height='4'>
-    <font size='2' ><strong><?php $clang->eT("Description: ");?></strong>
+	<tr><td align='justify' colspan='2' height='4'>
+ 	<font size='2' ><strong><?php $clang->eT("Description: ");?></strong>
     <?php echo $usergroupdescription;?></font></td></tr>
 </table>
 <?php
@@ -44,7 +44,7 @@ if(isset($groupfound))
                 <?php
                 if(isset($currentuser["displayactions"]) && $currentuser["displayactions"] == true)
                 { ?>
-                    <form method='post' action='<?php echo $this->createUrl("admin/usergroups/sa/user/ugid/{$usergroupid}/action/remove"); ?>'>
+                    <?php echo CHtml::form(array("admin/usergroups/sa/user/ugid/{$ugid}/action/remove"), 'post'); ?>
                     <input type='image' src='<?php echo Yii::app()->getConfig('adminimageurl')?>/token_delete.png' alt='<?php $clang->eT("Delete this user from group");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
                     <input name='uid' type='hidden' value='<?php echo $currentuser["userid"]; ?>' />
                     </form>
@@ -72,7 +72,7 @@ if(isset($groupfound))
 if (!empty($useradddialog))
 {
 	?>
-        <form action='<?php echo $this->createUrl("admin/usergroups/sa/user/ugid/{$ugid}/action/add"); ?>' method='post'>
+        <?php echo CHtml::form(array("admin/usergroups/sa/user/ugid/{$ugid}/action/add"), 'post'); ?>
             <table class='users'>
                 <tbody>
                     <tr>
@@ -88,6 +88,6 @@ if (!empty($useradddialog))
                 </tbody>
             </table>
         </form>
-    <?php
+	<?php
 }
 ?>

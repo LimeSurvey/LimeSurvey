@@ -33,7 +33,7 @@
             <?php }
         ?>
     </ul>
-    <form name='frmeditquestion' id='frmeditquestion' class='form30' action='<?php echo $this->createUrl("admin/database/index"); ?>' method='post' onsubmit="return isEmpty(document.getElementById('title'), '<?php $clang->eT("Error: You have to enter a question code.",'js'); ?>');">
+    <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmeditquestion','name'=>'frmeditquestion','onsubmit'=>"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');")); ?>
             <div id='questionactioncopy'>
                 <p><input type='button' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
                 <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
@@ -293,7 +293,7 @@
         if (hasSurveyPermission($surveyid,'surveycontent','import'))
         { ?>
         <br /><div class='header ui-widget-header'><?php $clang->eT("...or import a question"); ?></div>
-        <form enctype='multipart/form-data' id='importquestion' name='importquestion' action='<?php echo $this->createUrl('admin/question/sa/import'); ?>' method='post' onsubmit='return validatefilename(this,"<?php $clang->eT('Please select a file to import!','js'); ?>");'>
+        <?php echo CHtml::form(array("admin/question/sa/import"), 'post', array('id'=>'importquestion', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return validatefilename(this, '".$clang->gT("Please select a file to import!",'js')."');")); ?>
             <ul>
                 <li>
                     <label for='the_file'><?php $clang->eT("Select LimeSurvey question file (*.lsq/*.csv)"); ?>:</label>

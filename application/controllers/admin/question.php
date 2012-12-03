@@ -429,7 +429,7 @@ class question extends Survey_Common_Action
         $aData['qid'] = $qid = sanitize_int($qid);
 
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'admin/subquestions.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'questions.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
@@ -1210,7 +1210,7 @@ EOD;
 
         $redata = compact(array_keys(get_defined_vars()));
         $content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"), array(), $redata);
-        $content .='<form method="post" action="index.php" id="limesurvey" name="limesurvey" autocomplete="off">';
+        $content .= CHtml::form('index.php', 'post', array('id'=>"limesurvey",'name'=>"limesurvey",'autocomplete'=>'off'));
         $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"), array(), $redata);
 
         $question_template = file_get_contents("$thistpl/question.pstpl");

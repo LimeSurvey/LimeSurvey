@@ -12,7 +12,7 @@
 <li><?php $clang->eT("Reset the completed answers to the incomplete state");?></li>
 <li><?php $clang->eT("Reset all your tokens to the 'not used' state");?></li>
 </ol><br />
-<form method="post" action="<?php echo $this->createURL('admin/dataentry/iteratesurvey/unfinalizeanswers/true/surveyid/'.$surveyid); ?>">
+<?php echo CHtml::form(array("admin/dataentry/sa/iteratesurvey/unfinalizeanswers/true/surveyid/"), 'post');?>
 <input type='submit' onclick="return confirm('<?php $clang->eT("Are you really sure you want to *delete* some incomplete answers and reset the completed state of both answers and tokens?","js");?>')" value='<?php $clang->eT("Reset answers and token completed state");?>' />
 </form>
 </div>

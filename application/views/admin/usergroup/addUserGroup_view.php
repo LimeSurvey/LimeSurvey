@@ -1,6 +1,6 @@
 <div class='header ui-widget-header'><?php $clang->eT("Add user group"); ?></div>
 <br />
-<form action='<?php echo $this->createUrl("admin/usergroups/sa/add"); ?>' id='usergroupform' class='form30' method='post'>
+<?php echo CHtml::form(array("admin/usergroups/sa/add"), 'post', array('class'=>'form30', 'id'=>'usergroupform')); ?>
     <ul>
         <li>
             <label for='group_name'><?php $clang->eT("Name:"); ?></label>

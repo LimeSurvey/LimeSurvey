@@ -41,7 +41,7 @@
                     $selectshow = "selected='selected'";
                 }
             ?>
-            <form action='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/"); ?>' id='browseresults' method='post'>
+            <?php echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post', array('id'=>'browseresults')); ?>
                     <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='20' alt='' />
                     <?php $clang->eT("Records displayed:"); ?><input type='text' size='4' value='<?php echo $dtcount2; ?>' name='limit' id='limit' />
                     &nbsp;&nbsp; <?php $clang->eT("Starting from:"); ?><input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
@@ -64,8 +64,7 @@
     </div>
 </div>
 
-<form action='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' id='resulttableform' method='post'>
-
+<?php echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post', array('id'=>'resulttableform')); ?>
 <!-- DATA TABLE -->
 <?php if ($fncount < 10) { ?>
     <table class='browsetable' style='width:100%'>

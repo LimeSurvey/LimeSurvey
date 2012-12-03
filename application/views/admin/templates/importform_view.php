@@ -1,5 +1,6 @@
 <div class='header ui-widget-header'><?php $clang->eT("Uploaded template file") ?></div>
-<form enctype='multipart/form-data' id='importtemplate' name='importtemplate' action='<?php echo $this->createUrl('admin/templates/upload') ?>' method='post' onsubmit='return validatefilename(this, "<?php $clang->eT('Please select a file to import!', 'js') ?>");'>
+<?php echo CHtml::form(array('admin/templates/upload'), 'post', array('id'=>'importtemplate', 'name'=>'importtemplate', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.$clang->gT('Please select a file to import!', 'js').'");')); ?>
+
     <input type='hidden' name='lid' value='$lid' />
     <input type='hidden' name='action' value='templateupload' />
     <ul>

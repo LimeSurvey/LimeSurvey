@@ -1,7 +1,7 @@
 <div class='header ui-widget-header'>
     <?php $clang->eT("Import responses from a deactivated survey table"); ?>
 </div>
-<form id='importresponses' class='form30' method='post'>
+<?php echo CHtml::form('', 'post', array('class'=>'form30', 'id'=>'importresponses'));?>
     <ul>
         <li>
             <label><?php $clang->eT("Target survey ID:"); ?></label>

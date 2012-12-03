@@ -23,9 +23,10 @@ if (empty($_REQUEST['sid']))   //  || count($_REQUEST) == 0) {
     foreach($data->readAll() as $row) {
         $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . flattenText($row['title']) . "</option>\n";
     }
-    $url = $this->createUrl('admin/expressions/sa/survey_logic_file');
+    $sFormTag= CHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post');?>
+    
     $form = <<< EOD
-<form method='post' action='$url'>
+$sFormTag    
 <h3>Generate a logic file for the survey</h3>
 <table border='1'>
 <tr><th>Parameter</th><th>Value</th></tr>

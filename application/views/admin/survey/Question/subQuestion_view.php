@@ -26,7 +26,8 @@
 <div class='header ui-widget-header'>
     <?php $clang->eT("Edit subquestions"); ?>
 </div>
-<form id='editsubquestionsform' name='editsubquestionsform' method='post' action='<?php echo $this->createUrl("admin/database"); ?>'>
+<?php echo CHtml::form(array("admin/database"), 'post', array('id'=>'editsubquestionsform', 'name'=>'editsubquestionsform')); ?>
+
     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
     <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
     <input type='hidden' name='qid' value='<?php echo $qid; ?>' />

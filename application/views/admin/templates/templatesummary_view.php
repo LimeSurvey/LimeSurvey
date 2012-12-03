@@ -32,7 +32,8 @@
     </div>
 
     <div style='float:left;width:70%; padding:1.3em;' >
-        <form name='editTemplate' id='editTemplate' method='post' action='<?php echo $this->createUrl("admin/templates/sa/templatesavechanges"); ?>'>
+        <?php echo CHtml::form(array('admin/templates/sa/templatesavechanges'), 'post', array('id'=>'editTemplate', 'name'=>'editTemplate')); ?>
+        
             <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
             <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
             <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
@@ -65,7 +66,7 @@
     <div style="float:left;">
         <div>
             <?php $clang->eT("Other files:"); ?>
-            <form action='<?php echo $this->createUrl("admin/templates/sa/templatefiledelete"); ?>' method='post'>
+            <?php echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post'); ?>
                 <select size='11' style='min-width:130px;' name='otherfile' id='otherfile'>
                     <?php echo makeoptions($otherfiles, "name", "name", ""); ?>
                 </select><br>
@@ -77,7 +78,7 @@
             </form>
         </div>
         <div style='margin-top:1em;'>
-            <form enctype='multipart/form-data' name='importtemplatefile' id='importtemplatefile' action='<?php echo $this->createUrl('admin/templates/uploadfile') ?>' method='post'>
+            <?php echo CHtml::form(array('admin/templates/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
                 <?php $clang->eT("Upload a file:"); ?><br><input style='width:50px;' size=10 name='upload_file' id="upload_file" type="file" /><br />
                 <input type='submit' value='<?php $clang->eT("Upload"); ?>'
                     <?php if (!is_template_editable($templatename))  { ?>

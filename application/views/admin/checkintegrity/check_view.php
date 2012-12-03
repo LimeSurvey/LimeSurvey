@@ -210,7 +210,7 @@
         <?php } else
         {?>
         <br /><?php $clang->eT("Should we proceed with the delete?"); ?> <br />
-        <form action='<?php echo $this->createUrl('admin/checkintegrity/fixintegrity'); ?>' method='post'>
+        <?php echo CHtml::form(array("admin/checkintegrity/fixintegrity"), 'post');?>
             <input type='hidden' name='ok' value='Y' />
             <input type='submit' value='<?php $clang->eT("Yes - Delete Them!"); ?>' />
         </form>
@@ -225,7 +225,7 @@
         <br /> <?php $clang->eT("No database action required!"); ?>
         <?php } else
         {?>
-        <form action='<?php echo $this->createUrl('admin/checkintegrity/fixredundancy'); ?>' method='post'>
+        <?php echo CHtml::form(array("admin/checkintegrity/fixredundancy"), 'post');?>
             <ul>
                 <?php
                     if (isset($redundantsurveytables))

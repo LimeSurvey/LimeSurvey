@@ -7,5 +7,5 @@
     ?>
 </div>
 
-<form method='post' action='<?php echo $this->createUrl('/admin/dataentry/update'); ?>' name='editresponse' id='editresponse'>
+<?php echo CHtml::form(array("admin/dataentry/sa/update"), 'post', array('name'=>'editresponse', 'id'=>'editresponse'));?>
    <table id='responsedetail' width='99%' align='center'>

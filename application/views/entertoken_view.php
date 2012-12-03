@@ -9,7 +9,7 @@
         <?php $clang->eT("If you have been issued a token, please enter it in the box below and click continue."); ?>
     </p>
     <script type='text/javascript'>var focus_element='#token';</script>
-    <form id='tokenform' method='post' action='<? echo Yii::app()->getController()->createUrl("/survey/index/sid/$surveyid");?>'>
+    <?php echo CHtml::form(array("/survey/index/sid/{$surveyid}"), 'post', array('id'=>'tokenform'));?>
         <ul>
             <li>
                 <label for='token'><? $clang->eT("Token");?></label><input class='text <?php echo $kpclass?>' id='token' type='text' name='token' />";

@@ -12,7 +12,7 @@
     var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/listcolumn/surveyid/".$surveyid."/column/"); ?>";
     var showTextInline="<?php echo $showtextinline ?>";
 </script>
-<form method='post' name='formbuilder' action='<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>#start'>
+<?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder','#'=>'start'));?>
     <div class='header ui-widget-header header_statistics'>
         <div style='float:right;'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showgfilter' alt='<?php $clang->eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidegfilter' alt='<?php $clang->eT("Minimize"); ?>'/></div>
         <?php $clang->eT("General filters"); ?>

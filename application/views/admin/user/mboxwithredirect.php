@@ -4,7 +4,8 @@
     <br />
     <?php echo $extra; ?>
     <br />
-    <form method="post" action="<?php echo $url; ?>">
+    <?php echo CHtml::form($url, 'post'); ?>
+    
         <input type="submit" value="<?php echo $urlText; ?>" />
         <?php
         if (!empty($hiddenVars))

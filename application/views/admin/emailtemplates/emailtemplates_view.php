@@ -133,18 +133,17 @@ ul.editor-parent {
 <div class='header ui-widget-header'>
     <?php $clang->eT("Edit email templates"); ?>
 </div>
-<?php 
-?>
-<form class='form30newtabs' id='emailtemplates' action='<?php echo Yii::app()->getController()->createUrl('admin/emailtemplates/sa/update/surveyid/'.$surveyid); ?>' method='post'>
+<?php echo CHtml::form(array('admin/emailtemplates/sa/update/surveyid/'.$surveyid), 'post', array('name'=>'emailtemplates', 'class'=>'form30newtabs'));?>
+
     <div id='tabs'>
         <ul>
             <?php foreach ($grplangs as $grouplang): ?>
                 <li><a href='#tab-<?php echo $grouplang; ?>'><?php echo getLanguageNameFromCode($grouplang,false); ?>
                         <?php if ($grouplang == Survey::model()->findByPk($surveyid)->language): ?>
-                        <?php echo ' ('.$clang->gT("Base language").')'; ?>
-                        <?php endif; ?>
-                </a></li>
-            <?php endforeach; ?>    
+                            <?php echo ' ('.$clang->gT("Base language").')'; ?>
+                            <?php endif; ?>
+                    </a></li>
+                <?php endforeach; ?>
         </ul>
         <?php 
             foreach ($grplangs as $key => $grouplang)
@@ -158,7 +157,7 @@ ul.editor-parent {
                 }
                 $this->renderPartial('/admin/emailtemplates/email_language_tab', compact('surveyinfo', 'ishtml', 'surveyid', 'clang', 'grouplang', 'bplang', 'esrow', 'aDefaultTexts'));
             }
-        ?>
+            ?>
     </div>
     <p>
         <input type='submit' class='standardbtn' value='<?php $clang->eT("Save"); ?>' />
