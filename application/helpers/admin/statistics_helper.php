@@ -1562,6 +1562,37 @@ class statistics_helper {
                 if ($al[0] === "") {
                     $fname = $statlang->gT("No answer");
                 }
+                $fname="$al[1]";
+                if ($browse===true) $fname .= " <input type='button' class='statisticsbrowsebutton' value='"
+                    .$statlang->gT("Browse")."' id='$ColumnName_RM' />";
+
+                if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
+                    $headPDF2 = array();
+                    $headPDF2[] = array($statlang->gT("ID"),$statlang->gT("Response"));
+                    $tablePDF2 = array();
+                    $result2= $this->_listcolumn($surveyid,$ColumnName_RM);
+
+                    foreach ($result2 as $row2)
+                    {
+                        $tablePDF2[]=array($row2['id'], $row2['value']);
+                    }
+                }                
+                    
+                    
+            }
+
+            /*
+            * text questions:
+            *
+            * U = huge free text
+            * T = long free text
+            * S = short free text
+            * Q = multiple short text
+            */
+            elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q")
+            {
+                $headPDF = array();
+                $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
 
                 //"other" handling
                 //"Answers" means that we show an option to list answer to "other" text field
@@ -1579,17 +1610,70 @@ class statistics_helper {
                                 . $statlang->gT("Browse") . "' id='$ColumnName_RM' />";
                 }
 
-                /*
-                 * text questions:
-                 *
-                 * U = huge free text
-                 * T = long free text
-                 * S = short free text
-                 * Q = multiple short text
-                 */
-                elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q") { //AJS
-                    $headPDF = array();
-                    $headPDF[] = array($statlang->gT("Answer"), $statlang->gT("Count"), $statlang->gT("Percentage"));
+                $statisticsoutput .= "</th>\n"
+                ."\t\t<th width='25%' align='center' >"
+                ."<strong>".$statlang->gT("Count")."</strong></th>\n"
+                ."\t\t<th width='25%' align='center' >"
+                ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
+                ."\t</tr></thead>\n";
+                
+                if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
+                    $headPDF2 = array();
+                    $headPDF2[] = array($statlang->gT("ID"),$statlang->gT("Response"));
+                    $tablePDF2 = array();
+                    $result2= $this->_listcolumn($surveyid,$ColumnName_RM);
+
+                    foreach ($result2 as $row2)
+                    {
+                        $tablePDF2[]=array($row2['id'], $row2['value']);
+                    }
+                }                
+            }
+
+
+            //check if aggregated results should be shown
+            elseif (Yii::app()->getConfig('showaggregateddata') == 1)
+            {
+                if(!isset($showheadline) || $showheadline != false)
+                {
+                    if($outputs['qtype'] == "5" || $outputs['qtype'] == "A")
+                    {
+                        switch($outputType)
+                        {
+                            case 'xls':
+
+                                $headXLS = array();
+                                $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"),$statlang->gT("Sum"));
+
+                                $this->xlsRow++;
+                                $this->sheet->write($this->xlsRow,0,$statlang->gT("Answer"));
+                                $this->sheet->write($this->xlsRow,1,$statlang->gT("Count"));
+                                $this->sheet->write($this->xlsRow,2,$statlang->gT("Percentage"));
+                                $this->sheet->write($this->xlsRow,3,$statlang->gT("Sum"));
+
+                                break;
+                            case 'pdf':
+
+                                $headPDF = array();
+                                $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"),$statlang->gT("Sum"));
+
+                                break;
+                            case 'html':
+                                //four columns
+                                $statisticsoutput .= "<strong>".$statlang->gT("Answer")."</strong></th>\n"
+                                ."\t\t<th width='15%' align='center' >"
+                                ."<strong>".$statlang->gT("Count")."</strong></th>\n"
+                                ."\t\t<th width='20%' align='center' >"
+                                ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
+                                ."\t\t<th width='15%' align='center' >"
+                                ."<strong>".$statlang->gT("Sum")."</strong></th>\n"
+                                ."\t</tr></thead>\n";
+                                break;
+                            default:
+
+
+                                break;
+                        }
 
                     //show free text answers
                     if ($al[0] == "Answers") {
@@ -2499,6 +2583,17 @@ class statistics_helper {
             $tablePDF = array_merge_recursive($tablePDF, $footPDF);
             $this->pdf->headTable($headPDF, $tablePDF);
             //$this->pdf->tableintopdf($tablePDF);
+
+            //                if(isset($footPDF))
+            //                foreach($footPDF as $foot)
+            //                {
+            //                    $footA = array($foot);
+            //                    $this->pdf->tablehead($footA);
+            //                }
+            if (isset($headPDF2))
+            {
+                $this->pdf->headTable($headPDF2,$tablePDF2);
+            }
         }
 
         if ($outputType == 'html') {
@@ -3044,5 +3139,49 @@ class statistics_helper {
             return $allRows[$row][$q->fieldname] + $diff * ($allRows[$row + 1][$q->fieldname] - $allRows[$row][$q->fieldname]);
         }
     }
+                  
+    
+    /**
+    *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
+    */
+    function _listcolumn($surveyid, $column, $sortby="", $sortmethod="", $sorttype="")
+    {
+        $search['condition']=Yii::app()->db->quoteColumnName($column)." != ''";
+        $sDBDriverName=Yii::app()->db->getDriverName();
+        if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql')
+        {
+            $search['condition']="CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
+        }
+        
+        //Look for any selects/filters set in the original statistics query, and apply them to the column listing
+        if (isset(Yii::app()->session['statistics_selects_'.$surveyid]) && is_array(Yii::app()->session['statistics_selects_'.$surveyid]))
+        {
+            foreach(Yii::app()->session['statistics_selects_'.$surveyid] as $sql) {
+                 $search['condition'] .= " AND $sql";
+            }
+        }
+        
+        if ($sortby!='') 
+        {
+            if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql')
+            {
+                $sortby="CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
+            }
+            else
+            {            
+                $sortby=Yii::app()->db->quoteColumnName($sortby);    
+            }
 
+            if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
+            $search['order']=$sortby.' '.$sortmethod;
+        }
+        $results=Survey_dynamic::model($surveyid)->findAll($search);
+        $output=array();
+        foreach($results as $row) {
+            $output[]=array("id"=>$row['id'], "value"=>$row[$column]);
+        }
+        return $output;
+    }    
+    
+    
 }

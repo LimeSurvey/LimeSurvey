@@ -305,7 +305,7 @@
                 </li>
             </ul>
             <p>
-            <input type='submit' value='<?php $clang->eT("Import Question"); ?>' />
+            <input type='submit' value='<?php $clang->eT("Import question"); ?>' />
             <input type='hidden' name='action' value='importquestion' />
             <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
             <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
