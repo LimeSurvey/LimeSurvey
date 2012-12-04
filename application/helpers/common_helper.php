@@ -6245,7 +6245,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
             'surveyls_language' => $language
             );
 
-            Surveys_languagesettings::update($data,$where);
+            Surveys_languagesettings::model()->update($data,$where);
 
         } // Enf if modified
     } // end while qentry
