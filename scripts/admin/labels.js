@@ -1,5 +1,14 @@
-// $Id: labels.js 8649 2010-04-28 21:38:53Z c_schmitz $
-
+/*
+* LimeSurvey
+* Copyright (C) 2007-2012 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*/
 $(document).ready(function(){
     $('#btnDumpLabelSets').click(function(){
         if ($('#labelsets > option:selected').size()==0)
@@ -13,6 +22,8 @@ $(document).ready(function(){
         }
     });
 
+    removeCSRFDivs();
+    
     if ($(".answertable tbody").children().length == 0)
         add_label(undefined);
 
