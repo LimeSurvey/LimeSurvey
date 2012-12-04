@@ -3196,10 +3196,10 @@ function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
 * @param mixed $sitename
 * @param mixed $ishtml
 * @param mixed $bouncemail
-* @param mixed $attachment
+* @param array $attachments
 * @return bool If successful returns true
 */
-function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null, $customheaders="")
+function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachments=null, $customheaders="")
 {
 
     global $maildebug, $maildebugbody;
@@ -3343,9 +3343,22 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
         $mail->Body = $body;
     }
 
-    // add the attachment if there is one
-    if(!is_null($attachment))
-        $mail->AddAttachment($attachment);
+    // Add attachments if they are there.
+    if (is_array($attachments))
+    {
+        foreach ($attachments as $attachment)
+        {
+            // Attachment is either an array with filename and attachment name.
+            if (is_array($attachment))
+            {
+                $mail->AddAttachment($attachment[0], $attachment[1]);
+            }
+            else 
+            { // Or a string with the filename.
+                $mail->AddAttachment($attachment);
+            }
+        }
+    }
 
     if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
     if ($emailsmtpdebug>0) {
