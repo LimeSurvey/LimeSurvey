@@ -73,7 +73,8 @@ $(document).ready(function(){
         $("tbody>tr",$("#tabs>form>div:first")).each(function(trindex,trelement){
 
             var tr_code = $(trelement).attr('id');
-            tr_code=tr_code.substr(3);
+            tr_code=tr_code.split('_');// first is row, second langage and last the row number
+            tr_code=tr_code[2];
             dataToSend['codelist'].push(tr_code);
             dataToSend[tr_code] = {
                 code: $("#code_"+tr_code).val(),
@@ -270,7 +271,7 @@ function createNewLabelTR(alternate,first){
     x = "<tr ";
     if (alternate)
         x = x + "class= 'highlight' ";
-    x = x + "style = 'white-space: nowrap;' id='row###next###'>";
+    x = x + "style = 'white-space: nowrap;' id='row_###lang###_###next###'>";
 
     if (!first)
         x = x + "<td>###codeval###</td><td>###assessmentval###</td>";
