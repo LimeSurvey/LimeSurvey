@@ -29,7 +29,7 @@
     }
 
     $clang->eT('Please check any problems above and then proceed to the final step.');
-    echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/step4/")."', '_top')\" ";
+    echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/step4/")."', '_top')\" ";
     echo ">".sprintf($clang->gT('Proceed to step %s'),'4')."</button></p>";
     echo '</div>';
 
