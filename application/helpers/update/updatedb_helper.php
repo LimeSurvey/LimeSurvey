@@ -1055,7 +1055,7 @@ function db_upgrade_all($oldversion) {
         ));
         addUnique('question_type_groups', array('order'));
 
-        Yii::app()->db->createCommand()->addColumn('{{questions}}','tid',"integer NOT NULL DEFAULT '0' AFTER `gid`");
+        Yii::app()->db->createCommand()->addColumn('{{questions}}','tid',"integer NOT NULL DEFAULT '0'");
 
         upgradeSurveys165();
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>165),"stg_name='DBVersion'");
