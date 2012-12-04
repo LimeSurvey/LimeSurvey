@@ -55,9 +55,6 @@ return array(
             'rules' => require('routes.php'),
             'showScriptName' => true,
         ),
-        'request'=>array(
-            'enableCsrfValidation'=>false, // Set this to true to enable CSRF protection. This is a new feature - please report any problems.
-        ),        
         // Use the following config variable to set modified optional settings copied from config-defaults.php
         'config'=>array(
             // debug: Set this to 1 if you are looking for errors. If you still get no errors after enabling this
