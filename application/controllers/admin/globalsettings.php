@@ -68,7 +68,12 @@ class GlobalSettings extends Survey_Common_Action
 
         // Some URLs are not to be allowed to refered back to.
         // These exceptions can be added to the $aReplacements array
-        $aReplacements=array('admin/user/adduser'=>'admin/user/index');
+        $aReplacements=array('admin/user/adduser'=>'admin/user/index',
+                             'admin/user/sa/adduser'=>'admin/user/sa/index',
+                             'admin/user/sa/setusertemplates'=>'admin/user/sa/index',
+                             'admin/user/setusertemplates'=>'admin/user/sa/index'
+                             
+                            );
         $refurl= str_replace(array_keys($aReplacements),array_values($aReplacements),$refurl);
         Yii::app()->session['refurl'] = htmlspecialchars($refurl); //just to be safe!
 
