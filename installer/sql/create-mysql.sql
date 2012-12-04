@@ -430,6 +430,7 @@ CREATE TABLE `prefix_surveys` (
   `alloweditaftercompletion` varchar(1) default 'N',
   `googleanalyticsstyle` varchar(1) DEFAULT NULL,
   `googleanalyticsapikey` VARCHAR(25) DEFAULT NULL,
+  `attachments` text DEFAULT NULL,
    PRIMARY KEY(`sid`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

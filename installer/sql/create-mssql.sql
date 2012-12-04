@@ -425,6 +425,7 @@ CREATE TABLE [prefix_surveys] (
   [alloweditaftercompletion] varchar(1) default 'N',
   [googleanalyticsstyle] varchar(1),
   [googleanalyticsapikey] varchar(25),
+  [attachments] varchar(max) default null,
   PRIMARY KEY  ([sid])
 );
 

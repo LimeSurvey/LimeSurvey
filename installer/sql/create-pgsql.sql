@@ -436,6 +436,7 @@ CREATE TABLE prefix_surveys (
     alloweditaftercompletion character varying(1) DEFAULT 'N',
     googleanalyticsstyle character varying(1),
     googleanalyticsapikey character varying(25),
+    attacments text DEFAULT NULL,
     CONSTRAINT prefix_surveys_pkey PRIMARY KEY (sid)
 );
 
