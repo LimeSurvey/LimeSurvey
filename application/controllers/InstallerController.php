@@ -376,7 +376,7 @@ class InstallerController extends CController {
                         $aValues['adminoutputText'].= sprintf($clang->gT('A database named "%s" already exists.'),$oModel->dbname)."<br /><br />\n"
                         .$clang->gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
 
-                        $values['adminoutputForm'] =  CHtml::form(array('installer/populatedb'), 'post')
+                        $aValues['adminoutputForm'] =  CHtml::form(array('installer/populatedb'), 'post')
                         ."<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='".$clang->gT("Populate database")."' />"
                         ."</form>";
                     }
