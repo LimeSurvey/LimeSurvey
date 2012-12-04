@@ -142,7 +142,7 @@ class AdminController extends LSYii_Controller
         {
             $usrow = getGlobalSetting('DBVersion');
             if ((int) $usrow < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
-                $this->redirect($this->createUrl('/admin/update/db'));
+                $this->redirect($this->createUrl('/admin/update/sa/db'));
         }
 
         if ($action != "update" && $action != "db")
