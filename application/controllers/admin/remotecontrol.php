@@ -2261,7 +2261,12 @@ class remotecontrol_handle
         }
         $oFomattingOptions=new FormattingOptions();
         $oFomattingOptions->responseMinRecord=$iFromResponseID;
-        $oFomattingOptions->responseMaxRecord=$iToResponseID;
+        
+        if($iToResponseID !=null)   
+            $oFomattingOptions->responseMaxRecord=$iToResponseID;
+        else
+            $oFomattingOptions->responseMaxRecord = Survey_dynamic::model($iSurveyID)->count();
+
         $oFomattingOptions->selectedColumns=$aFields;
         $oFomattingOptions->responseCompletionState=$sCompletionStatus;
         $oFomattingOptions->headingFormat=$sHeadingType;
