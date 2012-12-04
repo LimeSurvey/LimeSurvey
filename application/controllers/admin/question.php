@@ -429,7 +429,7 @@ class question extends Survey_Common_Action
         $aData['qid'] = $qid = sanitize_int($qid);
 
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'questions.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'subquestions.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
