@@ -540,8 +540,6 @@ class update extends Survey_Common_Action
     */
     function db($continue = null)
     {
-        echo  'test';
-        die();
         $clang = $this->getController()->lang;
         Yii::app()->loadHelper("update/update");
         if(isset($continue) && $continue=="yes")
