@@ -493,7 +493,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $oHTTPRequest->data_timeout=0;
         $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $updaterversion = getGlobalSetting("updatebuild");
+        $updaterversion = '';
         $oHTTPRequest->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/{$updaterversion}",$arguments);
 
         $oHTTPRequesterror=$oHTTPRequest->Open($arguments);
@@ -540,6 +540,8 @@ class update extends Survey_Common_Action
     */
     function db($continue = null)
     {
+        echo  'test';
+        die();
         $clang = $this->getController()->lang;
         Yii::app()->loadHelper("update/update");
         if(isset($continue) && $continue=="yes")
