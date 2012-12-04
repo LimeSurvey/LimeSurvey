@@ -1,12 +1,7 @@
 <?php $surveyinfo = getSurveyInfo($surveyid); ?>
 <script type='text/javascript'>
     var sReplaceTextConfirmation='<?php $clang->eT("This will replace the existing text. Continue?","js"); ?>';
-    function openKCFinder_singleFile(target) {
-    window.KCFinder = {};
-    window.KCFinder.target = target;
-    window.KCFinder.callBack = KCFinder_callback;
-    window.open('/third_party/kcfinder/browse.php?opener=custom&type=files&CKEditor=email_invite_en&langCode=en', 'kcfinder_single', 'height=600px, width=800px, modal=yes');
-}
+    
 
 $(document).ready(function () {
     $('button.add-attachment').click(function(e)
@@ -16,95 +11,13 @@ $(document).ready(function () {
         openKCFinder_singleFile(target); 
         
     });
-    $('#attachment-relevance-editor button').click(function()
-    {
-        $('#attachment-relevance-editor').dialog('close');
-        var relevance = $('#attachment-relevance-editor textarea').val();
-        $('#attachment-relevance-editor').dialog('option', 'target').val(relevance);
-        var span = $('#attachment-relevance-editor').dialog('option', 'target').parents('tr').find('span.relevance');
-        if (relevance.length > 50)
-        {
-            $(span).text(relevance.replace(/(\r\n|\n|\r)/gm,"").substr(0, 47) + '...');
-        }
-        else
-        {
-            $(span).text(relevance);
-        }
-
-    });
+    
     
     
 });
 
-function KCFinder_callback(url)
-{
-    var filename = decodeURIComponent(url.substring(url.lastIndexOf('/')+1));
-    if ($(window.KCFinder.target).is('table'))
-    {
-        var baserow = '<tr>';
-        // Actions
-        baserow = baserow + '<td>';
-        baserow = baserow + '<img alt="Remove attachment" class="btnattachmentremove" src="/styles/gringegreen/images/deleteanswer.png">';
-        //baserow = baserow + '<img alt="Edit attachment relevance" class="btnattachmentrelevance" src="/styles/gringegreen/images/global.png">';
-        baserow = baserow + '</td>';
 
-        baserow = baserow + '<td><span class="filename"></span><input class="filename" type="hidden"></td>';
-        baserow = baserow + '<td><span class="filesize"></span></td>';
-        baserow = baserow + '<td><span class="relevance"></span><input class="relevance" type="hidden"></td>';
 
-        //baserow = baserow + '<td><img alt="Edit attachment relevance" class="btndelanswer" src="/styles/gringegreen/images/global.png"></td>';
-
-        baserow = baserow + '</tr>';
-    
-        var newrow = $(baserow).clone();
-        var templatetype = $(window.KCFinder.target).attr('data-template');
-    
-        $(newrow).find('span.relevance').text('1');
-        $(newrow).find('input.relevance').val('1').attr('name', 'attachments-' + templatetype + '-relevance[]');
-        $(newrow).find('input.filename').attr('name', 'attachments-' + templatetype + '-url[]');
-        $(newrow).appendTo(window.KCFinder.target);
-        $('span.relevance').unbind('click').bind('click', editAttachmentRelevance);
-        $('img.btnattachmentremove').unbind('click').bind('click', removeAttachment);
-        $('span.filename').unbind('click').bind('click', function(e) {
-            e.preventDefault();
-            var target = $(this).parents('tr');
-            openKCFinder_singleFile(target); 
-
-        });
-        }
-        else
-        {
-            var newrow = window.KCFinder.target;
-        }
-    
-    $(newrow).find('span.filename').text(filename);
-    $(newrow).find('input.filename').val(url);
-
-    
-
-    window.KCFinder = null;
-    
-}
-function editAttachmentRelevance(e)
-{
-        e.preventDefault();
-        var target = $(this).parents('tr').find('input.relevance');
-        var span = $(this).parents('tr').find('span.relevance');
-        $('#attachment-relevance-editor textarea').val($(target).val());
-        $('#attachment-relevance-editor').dialog({
-            'modal': true,
-            'minWidth' : 400,
-            'minHeight' :200,
-            'height': 300,
-            'target' : target,
-            'title' : 'Relevance equation for: ' + $(this).parents('tr').find('span.filename').text()
-        });
-}
-function removeAttachment(e)
-{
-    e.preventDefault();
-    $(this).parents('tr').remove();
-}
 
 </script>
 <style type="text/css">

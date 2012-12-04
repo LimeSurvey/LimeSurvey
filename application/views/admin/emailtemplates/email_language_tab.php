@@ -4,6 +4,7 @@
             'title' => $clang->gT("Invitation"),
             'subject' => $clang->gT("Invitation email subject:"),
             'body' => $clang->gT("Invitation email body:"),
+            'attachments' => $clang->gT("Invitation attachments:"),
             'field' => array(
                 'subject' => 'surveyls_email_invite_subj',
                 'body' => 'surveyls_email_invite'
@@ -17,6 +18,7 @@
             'title' => $clang->gT("Reminder"),
             'subject' => $clang->gT("Reminder email subject:"),
             'body' => $clang->gT("Reminder email body:"),
+            'attachments' => $clang->gT("Reminder attachments:"),
             'field' => array(
                 'subject' => 'surveyls_email_remind_subj',
                 'body' => 'surveyls_email_remind'
@@ -30,6 +32,7 @@
             'title' => $clang->gT("Confirmation"),
             'subject' => $clang->gT("Confirmation email subject:"),
             'body' => $clang->gT("Confirmation email body:"),
+            'attachments' => $clang->gT("Confirmation attachments:"),
             'field' => array(
                 'subject' => 'surveyls_email_confirm_subj',
                 'body' => 'surveyls_email_confirm'
@@ -43,6 +46,7 @@
             'title' => $clang->gT("Registration"),
             'subject' => $clang->gT("Registration email subject:"),
             'body' => $clang->gT("Registration email body:"),
+            'attachments' => $clang->gT("Registration attachments:"),
             'field' => array(
                 'subject' => 'surveyls_email_register_subj',
                 'body' => 'surveyls_email_register'
@@ -56,6 +60,7 @@
             'title' => $clang->gT("Basic admin notification"),
             'subject' => $clang->gT("Basic admin notification subject:"),
             'body' => $clang->gT("Basic admin notification email body:"),
+            'attachments' => $clang->gT("Basic notification attachments:"),
             'field' => array(
                 'subject' => 'email_admin_notification_subj',
                 'body' => 'email_admin_notification'
@@ -69,6 +74,7 @@
             'title' => $clang->gT("Detailed admin notification"),
             'subject' => $clang->gT("Detailed admin notification subject:"),
             'body' => $clang->gT("Detailed admin notification email body:"),
+            'attachments' => $clang->gT("Detailed notification attachments:"),
             'field' => array(
                 'subject' => 'email_admin_responses_subj',
                 'body' => 'email_admin_responses'
