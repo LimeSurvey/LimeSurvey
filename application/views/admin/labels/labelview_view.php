@@ -53,7 +53,7 @@
                                     $codeids = $codeids . ' ' . $row['sortorder'];
                                 }
                             ?>
-                            <tr style='white-space: nowrap;' id='row<?php echo $row['sortorder'] ?>'<?php
+                            <tr style='white-space: nowrap;' id='row_<?php echo $row['language']; ?>_<?php echo $row['sortorder'] ?>'<?php
                                     if ($alternate == true) {
                                     ?> class="highlight" <?php
                                     }
@@ -86,17 +86,17 @@
                                         echo getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[" . $clang->gT("Label:", "js") . "](" . $row['language'] . ")", '', '', '', $action);
                                     ?>
                                 </td>
+                                <td style='text-align:center;'>
                                 <?php
                                     if ($first)
                                     {
                                     ?>
-                                    <td style='text-align:center;'>
                                         <img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' alt='<?php $clang->eT("Insert a new label after this one") ?>' />
                                         <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' alt='<?php $clang->eT("Delete this label") ?>' />
-                                    </td>
                                     <?php
                                     }
                                 ?>
+                                    </td>
                             </tr>
                             <?php
                                 $position++;
@@ -105,7 +105,7 @@
                         ?>
                     </tbody>
                 </table>
-                <button class='btnquickadd' id='btnquickadd' type='button'><?php $clang->eT('Quick add...') ?></button>
+                <button class='btnquickadd' id='btnquickadd_<?php echo $i ?>' type='button'><?php $clang->eT('Quick add...') ?></button>
                 <p><input type='submit' name='method' value='<?php $clang->eT("Save changes") ?>'  id='saveallbtn_<?php echo $lslanguage ?>' /></p>
             </div>
             <?php
