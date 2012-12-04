@@ -19,6 +19,7 @@
  */
 function CheckForDBUpgrades($subaction = null)
 {
+    
     $clang = Yii::app()->getController()->lang;
     $dbversionnumber = Yii::app()->getConfig('dbversionnumber');
     $currentDBVersion=GetGlobalSetting('DBVersion');
@@ -56,7 +57,7 @@ function ShowDBUpgradeNotice() {
     ."<li><b>" .$clang->gT('Root URL') . ":</b> " . Yii::app()->getController()->createUrl('') . "</li>"
     .'</ul><br/>'
     ."<p>"
-    ."<a href='".Yii::app()->getController()->createUrl("admin/update/db/continue/yes")."'>" . $clang->gT('Click here to continue') . "</a>"
+    ."<a href='".Yii::app()->getController()->createUrl("admin/update/sa/db/continue/yes")."'>" . $clang->gT('Click here to continue') . "</a>"
     ."</p>"
     .'</div>';
 }
