@@ -60,6 +60,67 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.00+ (build 121127) to 2.00+ (build 121204) Dec 4, 2012
+-Fixed issue #6919: Save as label set from within survey doesn't work in IE (tpartner)
+-Fixed issue #6922: Problem with placing the cursor after placeholder in IE8 (Carsten Schmitz)
+-Fixed issue #6931: Array questions do not display graphs by default even if set to Yes - patch by pfpDave (Carsten Schmitz)
+-Fixed issue #6936: Restricted users can enter central participant database panel when they shouldn't have access (Carsten Schmitz)
+-Fixed issue #6938: Web server auth doesn't work - patch by pfpDave (Carsten Schmitz)
+-Fixed issue #6943: Restoring a Token Table of an pre 2.x Survey results in MySQL Error (Menno Dekker)
+-Fixed issue #6949: Expressions are not replaced with their values in quota urls / screens (Denis Chenu)
+-Fixed issue #6950: Free texts answers are not be printed in PDF report (Carsten Schmitz)
+-Fixed issue #6955: CDbException (Error 500) when viewing participant panel as a restricted user (Menno Dekker)
+-Fixed issue #6956: Sorting Participant list only sorts visible entries (Menno Dekker)
+-Fixed issue #6958: Error 2048 intermittently when adding tokens to CPD from survey with custom attributes set (Menno Dekker)
+-Fixed issue #6960: Unchecking of "other" option in multiple choice questions impossible if text box empty (Denis Chenu)
+-Fixed issue #6963: error 2014 (unbuffered queries) after submiting survey (Menno Dekker)
+-Fixed issue #6966: {TOKEN:USESLEFT} is undefined variable in surveys and notification/confirmation emails (Denis Chenu)
+-Fixed issue #6968: Wrong caption in installer (Carsten Schmitz)
+-Fixed issue #6969: Statistics graphs in Arabic not shown properly (Carsten Schmitz)
+-Fixed issue #6974: Missing iamge file from build '/images/cut.gif' (tpartner)
+-Fixed issue #6975: Non superadmin can not see shared panel (Menno Dekker)
+-Fixed issue #6976: Reminder mails are sent in wrong language (Carsten Schmitz)
+-Fixed issue #6980: Numerical input strips zeros (Denis Chenu)
+-Fixed issue #6981: Width of 'Replace existing label set' list box unusable when saving question label set in IE8 (tpartner)
+-Fixed issue #6982: IE8 switches to compatibility view causing data to be lost when using quick add in array questions (tpartner)
+-Fixed issue #6983: Change Response - Ranking Question doesn't work (Denis Chenu)
+-Fixed issue #6983: part 2, when adding a new response (Denis Chenu)
+-Fixed issue #6984: Can't save edits to a response with MSSQL Server (Field Name's not wrapped) (Menno Dekker)
+-Fixed issue #6985: Custom default template is not used as default in user template permission (Carsten Schmitz)
+-Fixed issue #6990: Changing Question to None causes a JS Error in IE8 Compatibility view (IE7) (With fix) (tpartner)
+-Fixed issue #6991: Review anonymous survey (Denis Chenu)
+-Fixed issue #6992: After registering for a token based survey - the next page is missing template css (ravindrakhokharia)
+-Fixed issue #6997: Zero values in Array (Numbers) (attribute input_boxes) disappear (Denis Chenu)
+-Fixed issue #7007: Fatal error when exporting large survey results to SPSS/R (Menno Dekker)
+-Fixed issue: Admin email address not shown when survey is inactive and accessed by participants (Carsten Schmitz)
+-Fixed issue: Check for required JSON library not existent in installer (Carsten Schmitz)
+-Fixed issue: Invitation URL not working properly when language code contains a hyphen (Carsten Schmitz)
+-Fixed issue: Missing CSRF protection (Carsten Schmitz)
+-Fixed Issue: Remotecontrol errors in export_statistics (Spiros Trougakos)
+-Fixed issue: Results export is slow (Carsten Schmitz)
+-Fixed issue: Sorting problem in MSSQL when browsing free text responses (Carsten Schmitz)
+#Updated translation: Amharic by Dereje
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by xsb, yanglaw
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han, mdekker
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfortunato, lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Lithuanian by simasj
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Romanian by izbieta
+#Updated translation: Spanish (Spain) by valdomir, larjona
+#Updated translation: Swedish by mr2jswe
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.00+ (build 121121) to 2.00+ (build 121127) Nov 27, 2012
 -Fixed issue #6653: Invalid alignment in Opera (tpartner)
 -Fixed issue #6754: Column style for citronade template (Denis Chenu)

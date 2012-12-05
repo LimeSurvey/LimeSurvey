@@ -1,6 +1,7 @@
 // $Id: subquestions.js 9692 2011-01-15 21:31:10Z c_schmitz $
 var labelcache=[];
 $(document).ready(function(){
+    removeCSRFDivs();    
     $("body").delegate(".code", "keypress", function(e) {
         key=e.which;
         if ( key==null || key==0 || key==8 || key==9  || key==27 )

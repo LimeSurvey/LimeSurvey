@@ -85,26 +85,29 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
     //Now get the query string with all fields to export
     $query = SPSSGetQuery($iSurveyID);
 
-    $result=Yii::app()->db->createCommand($query)->query()->readAll(); //Checked
-    $num_fields = isset($result[0]) ? count($result[0]) : 0;
-
-    //This shouldn't occur, but just to be safe:
-    if (count($fields)<>$num_fields) safeDie("Database inconsistency error");
-    
-    // Add column headers (used by R export)
-    if($header==TRUE)
-    {
-        $i = 1;
-        foreach ($fields as $field) {
-            if (!$field['hide'] ) echo $q.strtoupper($field['sql_name']).$q;
-            if ($i<$num_fields && !$field['hide']) echo ',';
-            $i++;
-        }
-        echo("\n");
-    }
-
+    $result=Yii::app()->db->createCommand($query)->query();
+    $rownr = 0;
 
     foreach ($result as $row) {
+        $rownr++;
+        if ($rownr == 1) {
+            $num_fields = count($row);
+
+            //This shouldn't occur, but just to be safe:
+            if (count($fields)<>$num_fields) safeDie("Database inconsistency error");
+
+            // Add column headers (used by R export)
+            if($header==TRUE)
+            {
+                $i = 1;
+                foreach ($fields as $field) {
+                    if (!$field['hide'] ) echo $q.strtoupper($field['sql_name']).$q;
+                    if ($i<$num_fields && !$field['hide']) echo ',';
+                    $i++;
+                }
+                echo("\n");
+            }            
+        }
         $row = array_change_key_case($row,CASE_UPPER);
         //$row = $result->GetRowAssoc(true);	//Get assoc array, use uppercase
         reset($fields);	//Jump to the first element in the field array

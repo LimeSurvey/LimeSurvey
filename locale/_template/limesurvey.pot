@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-12-03 23:05:53+00:00\n"
+"POT-Creation-Date: 2012-12-04 23:05:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -705,57 +705,57 @@ msgstr ""
 msgid "Deleting conditions: %u conditions deleted"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:417
+#: application/controllers/admin/checkintegrity.php:405
 msgid "No matching CQID"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:426
+#: application/controllers/admin/checkintegrity.php:414
 msgid "No matching CFIELDNAME group!"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:431
+#: application/controllers/admin/checkintegrity.php:419
 msgid "No CFIELDNAME field set!"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:519
+#: application/controllers/admin/checkintegrity.php:507
 msgid "No matching survey"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:532
-#: application/controllers/admin/checkintegrity.php:595
+#: application/controllers/admin/checkintegrity.php:520
+#: application/controllers/admin/checkintegrity.php:584
 msgid "No matching group"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:545
+#: application/controllers/admin/checkintegrity.php:533
 msgid "No matching question"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:561
+#: application/controllers/admin/checkintegrity.php:549
 msgid "Language specific settings missing"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:579
+#: application/controllers/admin/checkintegrity.php:567
 msgid "The related survey is missing."
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:601
-#: application/controllers/admin/checkintegrity.php:617
+#: application/controllers/admin/checkintegrity.php:588
+#: application/controllers/admin/checkintegrity.php:604
 msgid "There is no matching survey."
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:665
+#: application/controllers/admin/checkintegrity.php:652
 msgid "responses"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:672
+#: application/controllers/admin/checkintegrity.php:659
 msgid "timings"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:685
+#: application/controllers/admin/checkintegrity.php:672
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:746
+#: application/controllers/admin/checkintegrity.php:733
 msgid "Survey ID %d saved at %s containing %d record(s)"
 msgstr ""
 
@@ -886,12 +886,12 @@ msgstr ""
 #: application/helpers/common_helper.php:4226
 #: application/helpers/common_helper.php:4237
 #: application/helpers/common_helper.php:4297
-#: application/helpers/export_helper.php:276
-#: application/helpers/export_helper.php:280
-#: application/helpers/export_helper.php:288
-#: application/helpers/export_helper.php:292
-#: application/helpers/export_helper.php:1340
-#: application/helpers/export_helper.php:1359
+#: application/helpers/export_helper.php:279
+#: application/helpers/export_helper.php:283
+#: application/helpers/export_helper.php:291
+#: application/helpers/export_helper.php:295
+#: application/helpers/export_helper.php:1343
+#: application/helpers/export_helper.php:1362
 #: application/helpers/expressions/em_manager_helper.php:2786
 #: application/helpers/expressions/em_manager_helper.php:2790
 #: application/helpers/qanda_helper.php:4137
@@ -1047,8 +1047,8 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1195
 #: application/helpers/admin/statistics_helper.php:1315
 #: application/helpers/common_helper.php:1821
-#: application/helpers/export_helper.php:294
-#: application/helpers/export_helper.php:1359
+#: application/helpers/export_helper.php:297
+#: application/helpers/export_helper.php:1362
 #: application/helpers/expressions/em_manager_helper.php:2792
 #: application/helpers/qanda_helper.php:4573
 #: application/helpers/qanda_helper.php:4618
@@ -1110,10 +1110,10 @@ msgstr ""
 #: application/helpers/common_helper.php:4225
 #: application/helpers/common_helper.php:4236
 #: application/helpers/common_helper.php:4296
-#: application/helpers/export_helper.php:289
-#: application/helpers/export_helper.php:293
-#: application/helpers/export_helper.php:1340
-#: application/helpers/export_helper.php:1359
+#: application/helpers/export_helper.php:292
+#: application/helpers/export_helper.php:296
+#: application/helpers/export_helper.php:1343
+#: application/helpers/export_helper.php:1362
 #: application/helpers/expressions/em_manager_helper.php:2787
 #: application/helpers/expressions/em_manager_helper.php:2791
 #: application/helpers/qanda_helper.php:4146
@@ -1179,8 +1179,8 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1233
 #: application/helpers/admin/statistics_helper.php:1333
 #: application/helpers/common_helper.php:1827
-#: application/helpers/export_helper.php:297
-#: application/helpers/export_helper.php:1364
+#: application/helpers/export_helper.php:300
+#: application/helpers/export_helper.php:1367
 #: application/helpers/expressions/em_manager_helper.php:2795
 #: application/helpers/qanda_helper.php:4730
 #: application/helpers/qanda_helper.php:4772
@@ -1195,8 +1195,8 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1233
 #: application/helpers/admin/statistics_helper.php:1334
 #: application/helpers/common_helper.php:1829
-#: application/helpers/export_helper.php:298
-#: application/helpers/export_helper.php:1364
+#: application/helpers/export_helper.php:301
+#: application/helpers/export_helper.php:1367
 #: application/helpers/expressions/em_manager_helper.php:2796
 #: application/helpers/qanda_helper.php:4731
 #: application/helpers/qanda_helper.php:4783
@@ -1211,8 +1211,8 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1233
 #: application/helpers/admin/statistics_helper.php:1335
 #: application/helpers/common_helper.php:1828
-#: application/helpers/export_helper.php:299
-#: application/helpers/export_helper.php:1364
+#: application/helpers/export_helper.php:302
+#: application/helpers/export_helper.php:1367
 #: application/helpers/expressions/em_manager_helper.php:2797
 #: application/helpers/qanda_helper.php:4732
 #: application/helpers/qanda_helper.php:4795
@@ -1296,8 +1296,8 @@ msgstr ""
 #: application/controllers/admin/quotas.php:460
 #: application/helpers/admin/statistics_helper.php:1439
 #: application/helpers/common_helper.php:1812
-#: application/helpers/export_helper.php:284
-#: application/helpers/export_helper.php:1344
+#: application/helpers/export_helper.php:287
+#: application/helpers/export_helper.php:1347
 #: application/helpers/expressions/em_manager_helper.php:2783
 #: application/helpers/qanda_helper.php:4183
 #: application/views/admin/dataentry/content_view.php:54
@@ -1312,8 +1312,8 @@ msgstr ""
 #: application/controllers/admin/quotas.php:459
 #: application/helpers/admin/statistics_helper.php:1440
 #: application/helpers/common_helper.php:1811
-#: application/helpers/export_helper.php:285
-#: application/helpers/export_helper.php:1344
+#: application/helpers/export_helper.php:288
+#: application/helpers/export_helper.php:1347
 #: application/helpers/expressions/em_manager_helper.php:2782
 #: application/helpers/qanda_helper.php:4191
 #: application/views/admin/dataentry/content_view.php:55
@@ -1342,10 +1342,10 @@ msgstr ""
 #: application/helpers/common_helper.php:4254
 #: application/helpers/common_helper.php:4263
 #: application/helpers/common_helper.php:4272
-#: application/helpers/export_helper.php:937
-#: application/helpers/export_helper.php:946
-#: application/helpers/export_helper.php:1042
-#: application/helpers/export_helper.php:1057
+#: application/helpers/export_helper.php:940
+#: application/helpers/export_helper.php:949
+#: application/helpers/export_helper.php:1045
+#: application/helpers/export_helper.php:1060
 #: application/helpers/qanda_helper.php:1838
 #: application/helpers/qanda_helper.php:2390
 #: application/helpers/qanda_helper.php:2729
@@ -2181,17 +2181,17 @@ msgstr ""
 
 #: application/controllers/admin/export.php:196
 #: application/controllers/admin/export.php:358
-#: application/controllers/admin/export.php:639
+#: application/controllers/admin/export.php:642
 #: application/views/admin/export/exportresults_view.php:1
 #: application/views/admin/export/vv_view.php:22
 msgid "Export results"
 msgstr ""
 
-#: application/controllers/admin/export.php:879
+#: application/controllers/admin/export.php:885
 msgid "Export VV file"
 msgstr ""
 
-#: application/controllers/admin/export.php:1034
+#: application/controllers/admin/export.php:1040
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr ""
 
@@ -2233,11 +2233,11 @@ msgstr ""
 msgid "Edit label set"
 msgstr ""
 
-#: application/controllers/admin/labels.php:335
+#: application/controllers/admin/labels.php:334
 msgid "Label set properties sucessfully updated."
 msgstr ""
 
-#: application/controllers/admin/labels.php:344
+#: application/controllers/admin/labels.php:343
 msgid "Label set sucessfully deleted."
 msgstr ""
 
@@ -6444,8 +6444,8 @@ msgstr ""
 msgid "SQL command failed: %s"
 msgstr ""
 
-#: application/helpers/export_helper.php:277
-#: application/helpers/export_helper.php:281
+#: application/helpers/export_helper.php:280
+#: application/helpers/export_helper.php:284
 msgid "Not Selected"
 msgstr ""
 

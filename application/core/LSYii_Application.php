@@ -79,12 +79,14 @@ class LSYii_Application extends CWebApplication
         }
 
         $config['components']['request']=array(
-            'class'=>'HttpRequest',
+            'class'=>'LSHttpRequest',
             'noCsrfValidationRoutes'=>array(
 //              '^services/wsdl.*$'   // Set here additional regex rules for routes not to be validate 
-                'getTokens_json'
+                'getTokens_json',
+                'getSurveys_json',
+                'remotecontrol'
             ),
-            'enableCsrfValidation'=>false,      // Enable to activate CSRF protection
+            'enableCsrfValidation'=>false,    // Enable to activate CSRF protection
             'enableCookieValidation'=>false   // Enable to activate cookie protection
         );
 
