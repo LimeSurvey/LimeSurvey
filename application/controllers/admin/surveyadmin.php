@@ -942,6 +942,11 @@ class SurveyAdmin extends Survey_Common_Action
             elseif ($action == 'copysurvey' && (empty($importerror) || !$importerror))
             {
                 $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName);
+                if (isset($exclude['conditions']))
+                {
+                    Questions::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);
+                    Groups::model()->updateAll(array('grelevance'=>'1'),'sid='.$aImportResults['newsid']);
+                }
                 if (!isset($exclude['permissions']))
                 {
                     Survey_permissions::model()->copySurveyPermissions($iSurveyID,$aImportResults['newsid']);
