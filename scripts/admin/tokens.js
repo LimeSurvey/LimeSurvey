@@ -27,6 +27,40 @@ function addcondition()
 }
 
 
+function addSelectedParticipantsToCPDB()
+{
+    var dialog_buttons={};
+    var token = [];
+
+    var token = jQuery('#displaytokens').jqGrid('getGridParam','selarrrow');
+
+    if(token.length==0)
+    {        /* build an array containing the various button functions */
+        /* Needed because it's the only way to label a button with a variable */
+
+        dialog_buttons[okBtn]=function(){
+            $( this ).dialog( "close" );
+        };
+        /* End of building array for button functions */
+        $('#norowselected').dialog({
+            modal: true,
+            buttons: dialog_buttons
+        });
+    }
+    else
+    {
+        $("#addcpdb").load(postUrl, {
+            participantid:token},function(){
+                $(location).attr('href',attMapUrl+'/'+survey_id);
+        });        
+    }    
+
+    /*$(":checked").each(function() {
+    token.push($(this).attr('name'));
+    });*/
+}
+
+
 $(document).ready(function() {
 
     $("#filterduplicatetoken").change(function(){
@@ -118,6 +152,7 @@ $(document).ready(function() {
         loadComplete: function()
         {
             /* Sneaky way of adding custom icons to jqGrid pager buttons */
+            $("#pager").find(".ui-add-to-cpdb-link").css({"background-image":"url("+imageurl+"addtocpdb_12.png)", "background-position":"0", "color":"black"});
             $("#pager").find(".ui-participant-link").css({"background-image":"url("+imageurl+"cpdb_12.png)", "background-position":"0", "color":"black"});
             $("#pager").find(".ui-bounceprocessing").css({"background-image":"url("+imageurl+"bounce_12.png)", "background-position":"0", "color":"black"});
             window.editing = false;
@@ -150,10 +185,10 @@ $(document).ready(function() {
                     dateFormat: userdateformat
                 });
 
-                jQuery('<input type="image" class="drop_editing" src="' + jQuery(this).parent().find('input:eq(1)').attr('src') + '" />')
+                jQuery('<input type="image" class="drop_editing" title="'+cancelBtn+'" src="' + imageurl + 'token_delete.png" />')
                 .appendTo(jQuery(this).parent())
                 .click(func);
-                jQuery('<input type="image" class="save" src="' + imageurl + '/ok.png" width="16" />')
+                jQuery('<input type="image" class="save" title="'+saveBtn+'" src="' + imageurl + 'ok.png" width="16" />')
                 .appendTo(jQuery(this).parent())
                 .click(function()
                 {
@@ -309,17 +344,6 @@ $(document).ready(function() {
             window.open(remindurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
         }
     });                 
-    if (bParticipantPanelPermission==true)
-    {
-        $("#displaytokens").navButtonAdd('#pager', {
-            caption:"",
-            title:viewParticipantsLink,
-            buttonicon:'ui-participant-link',
-            onClickButton:function(){
-                window.open(participantlinkUrl, "_top");
-            }
-        });
-    }
     $("#displaytokens").navButtonAdd('#pager', {
         caption:"",
         title:sBounceProcessing,
@@ -337,6 +361,25 @@ $(document).ready(function() {
             checkbounces();
         }
     });
+    if (bParticipantPanelPermission==true)
+    {
+        $("#displaytokens").navSeparatorAdd("#pager",{});        
+        $("#displaytokens").navButtonAdd('#pager', {
+            caption:"",
+            title:viewParticipantsLink,
+            buttonicon:'ui-participant-link',
+            onClickButton:function(){
+                window.open(participantlinkUrl, "_top");
+            }
+        });
+        $("#displaytokens").navButtonAdd('#pager', {
+            caption:"",
+            title:sAddParticipantToCPDBText,
+            buttonicon:'ui-add-to-cpdb-link',
+            onClickButton:addSelectedParticipantsToCPDB
+        });
+    }
+
     $.extend(jQuery.jgrid.edit,{
         closeAfterAdd: true,
         reloadAfterSubmit: true,
