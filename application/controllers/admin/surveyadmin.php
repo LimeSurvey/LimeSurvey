@@ -124,6 +124,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $esrow = $this->_fetchSurveyInfo('newsurvey');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+
         Yii::app()->loadHelper('admin/htmleditor');
         $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 
@@ -1181,7 +1182,20 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['action'] = "newsurvey";
         $aData['clang'] = $clang;
         $aData['owner'] = $owner;
-
+        $aLanguageDetails= getLanguageDetails(Yii::app()->session['adminlang']);
+        $aData['sRadixDefault'] = $aLanguageDetails['radixpoint'];
+        $aData['sDateFormatDefault'] = $aLanguageDetails['dateformat'];
+        foreach (getRadixPointData() as $index=>$radixptdata){
+          $aRadixPointData[$index]=$radixptdata['desc'];  
+        }
+        $aData['aRadixPointData']=$aRadixPointData;
+        
+        foreach (getDateFormatData (0,Yii::app()->session['adminlang']) as $index => $dateformatdata) 
+        {
+          $aDateFormatData[$index]=$dateformatdata['dateformat'];  
+        }
+        $aData['aDateFormatData']=$aDateFormatData;
+                
         return $aData;
     }
 
