@@ -597,9 +597,10 @@ class remotecontrol_handle
      * @param string $docType Type of documents the exported statistics should be
      * @param string $sLanguage Optional language of the survey to use
      * @param string $graph Create graph option
+     * @param int|array $groupIDs An OPTIONAL array (ot a single int) containing the groups we choose to generate statistics from
      * @return string Base64 encoded string with the statistics file
      */
-    public function export_statistics($sSessionKey, $iSurveyID,  $docType='pdf', $sLanguage=null, $graph='0')
+    public function export_statistics($sSessionKey, $iSurveyID,  $docType='pdf', $sLanguage=null, $graph='0', $groupIDs=null)
     {
 		Yii::app()->loadHelper('admin/statistics');
 		$tempdir = Yii::app()->getConfig("tempdir");
@@ -616,8 +617,41 @@ class remotecontrol_handle
 		if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
 			$sLanguage = $oSurvey->language;
 
-		$oAllQuestions = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid'=>'0','language'=>$sLanguage));
-		usort($oAllQuestions, 'groupOrderThenQuestionOrder');
+        if($groupIDs!=null)
+        {
+            if(is_int($groupIDs))
+                    $groupIDs = array($groupIDs);
+                
+            if(is_array($groupIDs)) 
+            {   
+                //check that every value of the array belongs to the survey defined
+                $aGroups = Groups::model()->findAllByAttributes(array('sid' => $iSurveyID));
+
+                foreach( $aGroups as $group)
+                    $validGroups[] = $group['gid'];
+
+                $groupIDs=array_intersect($groupIDs,$validGroups);
+                
+                if (empty($groupIDs))
+                    return array('status' => 'Error: Invalid group ID');
+                
+                //and then get all the questions for these groups
+                $criteria = new CDbCriteria;
+                $criteria->addInCondition('gid', $groupIDs);
+                $criteria->addCondition('sid = '.$iSurveyID);
+                $criteria->addCondition('parent_qid = 0');
+                $criteria->addCondition('language = :lang');
+                $criteria->params[':lang'] = $sLanguage;
+                $oAllQuestions = Questions::model()->findAll($criteria);
+            }
+            else
+                return array('status' => 'Error: Invalid group ID');
+            
+        }       
+        else
+		  $oAllQuestions = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid'=>'0','language'=>$sLanguage));
+		
+        usort($oAllQuestions, 'groupOrderThenQuestionOrder');
         $aSummary = createCompleteSGQA($iSurveyID,$oAllQuestions,$sLanguage);
 
         $helper = new statistics_helper();
