@@ -159,24 +159,51 @@ class User_groups extends CActiveRecord {
 	{
 		$criteria=new CDbCriteria;
 		$criteria->select='*';
-		$criteria->condition="ugid=:ugid AND owner_id=:ownerid";
-		$criteria->params=array(':ugid'=>$ugid, ':ownerid'=>$ownerid);
+		$criteria->condition="ugid=:ugid";
+        $aParams=array();
+        if (!Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+        {
+            $criteria->condition.=" AND owner_id=:ownerid";
+            $aParams[':ownerid']=$ownerid;
+        }
+
+        $aParams[':ugid']=$ugid;
+		$criteria->params=$aParams;
 		$result=User_groups::model()->find($criteria);
 		return $result;
 	}
 
 	function requestViewGroup($ugid, $userid)
 	{
-		$query = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE a.ugid = :ugid AND uid = :userid ORDER BY name";
-		$command = Yii::app()->db->createCommand($query)->bindParam(":ugid", $ugid, PDO::PARAM_INT)->bindParam(":userid", $userid, PDO::PARAM_INT);
-		$result = $command->query()->readAll();
-		return $result;
+		$sQuery = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE a.ugid = :ugid";
+        if (!Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+        {
+            $sQuery.="  AND uid = :userid ";
+        }
+        $sQuery.=" ORDER BY name";
+        $command = Yii::app()->db->createCommand($sQuery)->bindParam(":ugid", $ugid, PDO::PARAM_INT);
+        if (!Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+        {
+            $command->bindParam(":userid", $userid, PDO::PARAM_INT);
+        }
+		return $command->query()->readAll();
 	}
 
 	function deleteGroup($ugid, $ownerid)
 	{
-		$group = User_groups::model()->find("owner_id = :ownerid AND ugid = :ugid", array(":ownerid"=>$ownerid, ":ugid"=>$ugid));
+        $aParams=array();
+        $aParams[':ugid']=$ugid;
+        $sCondition="ugid = :ugid";
+        if (!Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+        {
+            $sCondition.=" AND owner_id=:ownerid";
+            $aParams[':ownerid']=$ownerid;
+        }
+        
+        
+		$group = User_groups::model()->find($sCondition, $aParams);
 		$group->delete();
+        
 		if($group->getErrors())
 			return false;
 		else
