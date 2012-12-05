@@ -164,25 +164,28 @@
 </div>
 <br/>
 <table id="displaytokens"></table> <div id="pager"></div>
-<p><input type='button' name='addtocpdb' id='addtocpdb' value='<?php $clang->eT("Add participants to central database");?>'/><br />
-<div id="addcpdb" title="addsurvey" style="display:none">
-    <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
-    <p>
-        <select id="attributeid" name="attributeid" multiple="multiple">
-            <?php
-                if(!empty($attrfieldnames))
-                {
-                    foreach($attrfieldnames as $key=>$value)
+
+<?php if (hasGlobalPermission('USER_RIGHT_PARTICIPANT_PANEL')) { ?>
+    <p><input type='button' name='addtocpdb' id='addtocpdb' value='<?php $clang->eT("Add participants to central database");?>'/><br /></p>
+    <div id="addcpdb" title="addsurvey" style="display:none">
+        <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
+        <p>
+            <select id="attributeid" name="attributeid" multiple="multiple">
+                <?php
+                    if(!empty($attrfieldnames))
                     {
-                        echo "<option value='".$key."'>".$value."</option>";
+                        foreach($attrfieldnames as $key=>$value)
+                        {
+                            echo "<option value='".$key."'>".$value."</option>";
+                        }
                     }
-                }
 
-            ?>
-        </select>
-    </p>
+                ?>
+            </select>
+        </p>
 
-</div>
+    </div>
+<?php } ?>
 </div>
 
 
