@@ -31,7 +31,7 @@
  * Every route will be interpreted as a regex pattern.
  *
  */
-class HttpRequest extends CHttpRequest {
+class LSHttpRequest extends CHttpRequest {
     public $noCsrfValidationRoutes = array();
 
     protected function normalizeRequest(){
