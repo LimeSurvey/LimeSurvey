@@ -3703,12 +3703,15 @@ function do_numerical($ia)
     {
         $fValue=rtrim(rtrim($fValue,"0"),".");
     }
-    if (trim($aQuestionAttributes['num_value_int_only'])==1 && is_numeric($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
+    if (trim($aQuestionAttributes['num_value_int_only'])==1)
     {
         $acomma="";
         $extraclass .=" integeronly";
         $answertypeclass .= " integeronly";
-        $fValue=number_format($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], 0, '', '');
+        if(is_numeric($fValue))
+        {
+            $fValue=number_format($fValue, 0, '', '');
+        }
         $integeronly=1;
     }
     else
