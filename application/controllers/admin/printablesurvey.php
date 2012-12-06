@@ -1336,17 +1336,17 @@ class printablesurvey extends Survey_Common_Action
                                     $question['ANSWER'] .= "\t\t\t<td>\n";
                                     if ($checkboxlayout === false)
                                     {
-                                        $question['ANSWER'] .= "\t\t\t\t".self::_input_type_image('text','',4).self::_addsgqacode(" (".$fieldname.$mearow['title']."_".$xaxisarray[$i].") ")."\n";
+                                        $question['ANSWER'] .= "\t\t\t\t".self::_input_type_image('text','',4).self::_addsgqacode(" (".$fieldname.$frow['title']."_".$xaxisarray[$i].") ")."\n";
                                         $pdfoutput[$a][$i]="__";
                                     }
                                     else
                                     {
-                                        $question['ANSWER'] .= "\t\t\t\t".self::_input_type_image('checkbox').self::_addsgqacode(" (".$fieldname.$mearow['title']."_".$xaxisarray[$i].") ")."\n";
+                                        $question['ANSWER'] .= "\t\t\t\t".self::_input_type_image('checkbox').self::_addsgqacode(" (".$fieldname.$frow['title']."_".$xaxisarray[$i].") ")."\n";
                                         $pdfoutput[$a][$i]="o";
                                     }
                                     $question['ANSWER'] .= "\t\t\t</td>\n";
                                 }
-                                $answertext=$mearow['question'];
+                                $answertext=$frow['question'];
                                 if (strpos($answertext,'|'))
                                 {
                                     $answertext=substr($answertext,strpos($answertext,'|')+1);
