@@ -905,9 +905,14 @@ class Survey_Common_Action extends CAction
             $data['clang'] = Yii::app()->lang;
             Yii::app()->loadHelper('database');
 
-            if (!empty($ugid)) {
-                $grpquery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=" . Yii::app()->session['loginID'];
-            $grpresult = Yii::app()->db->createCommand($grpquery)->queryRow();  //Checked
+        if (!empty($ugid)) {
+            $sQuery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = {$ugid}";
+            if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
+            {
+                $sQuery .=" AND gu.uid = ".Yii::app()->session['loginID'];
+            }
+            
+            $grpresult = Yii::app()->db->createCommand($sQuery)->queryRow();  //Checked
 
             if ($grpresult) {
                 $grpresultcount=1;
