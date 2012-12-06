@@ -7,7 +7,6 @@ if (count($_GET) > 0) {
         $_REQUEST[$key] = $val;
     }
     $_REQUEST['LEM_PRETTY_PRINT_ALL_SYNTAX'] = 'Y';
-
 }
 
 $clang = Yii::app()->lang;
@@ -23,7 +22,7 @@ if (empty($_REQUEST['sid']))   //  || count($_REQUEST) == 0) {
     foreach($data->readAll() as $row) {
         $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . flattenText($row['title']) . "</option>\n";
     }
-    $sFormTag= CHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post');?>
+    $sFormTag= CHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post');
     
     $form = <<< EOD
 $sFormTag    
