@@ -7,7 +7,6 @@ if (count($_GET) > 0) {
         $_REQUEST[$key] = $val;
     }
     $_REQUEST['LEM_PRETTY_PRINT_ALL_SYNTAX'] = 'Y';
-
 }
 
 $clang = Yii::app()->lang;

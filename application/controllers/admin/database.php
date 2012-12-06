@@ -215,7 +215,7 @@ class database extends Survey_Common_Action
             if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 
             Yii::app()->session['flashmessage']= $clang->gT("Answer options were successfully saved.");
-
+            LimeExpressionManager::SetDirtyFlag();
             if ($databaseoutput != '')
             {
                 echo $databaseoutput;
@@ -349,7 +349,7 @@ class database extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = $clang->gT("Subquestions were successfully saved.");
 
             //$action='editsubquestions';
-
+            LimeExpressionManager::SetDirtyFlag();
             if ($databaseoutput != '')
             {
                 echo $databaseoutput;
