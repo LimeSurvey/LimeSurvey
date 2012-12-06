@@ -33,6 +33,7 @@
     // Build the javasript variables to pass to the jqGrid
 ?>
 <script type="text/javascript">
+    var sAddParticipantToCPDBText = '<?php $clang->eT("Add participants to central database",'js');?>';
     var sRecordText = '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
     var sPageText = '<?php $clang->eT("Page {0} of {1}",'js');?>';
     var imageurl = "<?php echo Yii::app()->getConfig('adminimageurl'); ?>";
@@ -52,7 +53,7 @@
     var minusbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "deleteanswer.png" ?>";
     var survey_id = "<?php echo $surveyid; ?>";
     var delUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/delete/surveyid/{$surveyid}"); ?>";
-    var cancelBtn = "<?php $clang->eT("Cancel") ?>";
+    var saveBtn = "<?php $clang->eT("Save changes") ?>";
     var okBtn = "<?php echo $clang->eT("OK") ?>";
     var delmsg = "<?php $clang->eT("Are you sure you want to delete the selected entries?") ?>";
     var surveyID = "<?php echo $surveyid; ?>";
@@ -166,7 +167,6 @@
 <table id="displaytokens"></table> <div id="pager"></div>
 
 <?php if (hasGlobalPermission('USER_RIGHT_PARTICIPANT_PANEL')) { ?>
-    <p><input type='button' name='addtocpdb' id='addtocpdb' value='<?php $clang->eT("Add participants to central database");?>'/><br /></p>
     <div id="addcpdb" title="addsurvey" style="display:none">
         <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
         <p>
