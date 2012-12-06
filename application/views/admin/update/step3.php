@@ -28,9 +28,9 @@ if ($databasetype=='mysql' || $databasetype=='mysqli')
         echo "<span class='warningtitle'>".$clang->gT('No DB backup created:').'<br />'.$clang->gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!').'</span><br /><br />';
     }
 
-$clang->eT('Please check any problems above and then proceed to the final step.');
-    echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/step4/")."', '_top')\" ";
-echo ">".sprintf($clang->gT('Proceed to step %s'),'4')."</button></p>";
-echo '</div>';
+    $clang->eT('Please check any problems above and then proceed to the final step.');
+    echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/step4/")."', '_top')\" ";
+    echo ">".sprintf($clang->gT('Proceed to step %s'),'4')."</button></p>";
+    echo '</div>';
 
 ?>
