@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*    $Id$
 */
 
 // There will be a file for each database (accordingly named to the dbADO scheme)
@@ -33,1007 +33,1019 @@ function db_upgrade_all($oldversion) {
     $sVarchar = Yii::app()->getConfig('varchar');
     $sAutoIncrement  = Yii::app()->getConfig('autoincrement');
 
-    if ($oldversion < 111)
+    $oTransaction=Yii::app()->db->beginTransaction();
+    try
     {
-        // Language upgrades from version 110 to 111 because the language names did change
-
-        $aOldNewLanguages=array('german_informal'=>'german-informal',
-        'cns'=>'cn-Hans',
-        'cnt'=>'cn-Hant',
-        'pt_br'=>'pt-BR',
-        'gr'=>'el',
-        'jp'=>'ja',
-        'si'=>'sl',
-        'se'=>'sv',
-        'vn'=>'vi');
-        foreach  ($aOldNewLanguages as $sOldLanguageCode=>$sNewLanguageCode)
+        if ($oldversion < 111)
         {
-            alterLanguageCode($sOldLanguageCode,$sNewLanguageCode);
-        }
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>111),"stg_name='DBVersion'");
-    }
+            // Language upgrades from version 110 to 111 because the language names did change
 
-    if ($oldversion < 112) {
-        // New size of the username field (it was previously 20 chars wide)
-        Yii::app()->db->createCommand()->alterColumn('{{users}}','users_name',"{$sVarchar}(64) NOT NULL");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>112),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 113) {
-        //Fixes the collation for the complete DB, tables and columns
-
-        if ($sDBDriverName=='mysql')
-        {
-            $databasename=getDBConnectionStringProperty('dbname');
-            fixMySQLCollations();
-            modifyDatabase("","ALTER DATABASE `$databasename` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");echo $modifyoutput; flush();@ob_flush();
-        }
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>113),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 114) {
-        Yii::app()->db->createCommand()->alterColumn('{{saved_control}}','email',"{$sVarchar}(320) NOT NULL");
-        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320) NOT NULL");
-        Yii::app()->db->createCommand()->alterColumn('{{users}}','email',"{$sVarchar}(320) NOT NULL");
-        Yii::app()->db->createCommand()->insert('{{settings_global}}',array('stg_name'=>'SessionName','stg_value'=>randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"§$%&/()=?´`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789')));
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>114),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 126) {
-
-        addColumn('{{surveys}}','printanswers',"{$sVarchar}(1) default 'N'");
-        addColumn('{{surveys}}','listpublic',"{$sVarchar}(1) default 'N'");
-
-        upgradeSurveyTables126();
-        upgradeTokenTables126();
-
-        // Create quota table
-        Yii::app()->db->createCommand()->createTable('{{quota}}',array(
-        'id' => 'pk',
-        'sid' => 'integer',
-        'qlimit' => 'integer',
-        'name' => 'string',
-        'action' => 'integer',
-        'active' => 'integer NOT NULL DEFAULT 1'
-        ));
-
-        // Create quota_members table
-        Yii::app()->db->createCommand()->createTable('{{quota_members}}',array(
-        'id' => 'pk',
-        'sid' => 'integer',
-        'qid' => 'integer',
-        'quota_id' => 'integer',
-        'code' => $sVarchar.'(5)'
-        ));
-        Yii::app()->db->createCommand()->createIndex('sid','{{quota_members}}','sid,qid,quota_id,code',true);
-
-
-        // Create templates_rights table
-        Yii::app()->db->createCommand()->createTable('{{templates_rights}}',array(
-        'uid' => 'integer NOT NULL',
-        'folder' => 'string NOT NULL',
-        'use' => 'integer',
-        'PRIMARY KEY (uid, folder)'
-        ));
-
-        // Create templates table
-        Yii::app()->db->createCommand()->createTable('{{templates}}',array(
-        'folder' => 'string NOT NULL',
-        'creator' => 'integer NOT NULL',
-        'PRIMARY KEY (folder)'
-        ));
-
-        // Rename Norwegian language codes
-        alterLanguageCode('no','nb');
-
-        addColumn('{{surveys}}','htmlemail',"{$sVarchar}(1) default 'N'");
-        addColumn('{{surveys}}','tokenanswerspersistence',"{$sVarchar}(1) default 'N'");
-        addColumn('{{surveys}}','usecaptcha',"{$sVarchar}(1) default 'N'");
-        addColumn('{{surveys}}','bounce_email','text');
-        addColumn('{{users}}','htmleditormode',"{$sVarchar}(7) default 'default'");
-        addColumn('{{users}}','superadmin',"integer NOT NULL default '0'");
-        addColumn('{{questions}}','lid1',"integer NOT NULL default '0'");
-
-        alterColumn('{{conditions}}','value',"string",false,'');
-        alterColumn('{{labels}}','title',"text");
-
-        Yii::app()->db->createCommand()->update('{{users}}',array('superadmin'=>1),"create_survey=1 AND create_user=1 AND move_user=1 AND delete_user=1 AND configurator=1");
-        Yii::app()->db->createCommand()->update('{{conditions}}',array('method'=>'=='),"(method is null) or method='' or method='0'");
-
-        dropColumn('{{users}}','move_user');
-
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>126),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 127) {
-        modifyDatabase("","create index answers_idx2 on {{answers}} (sortorder)"); echo $modifyoutput;
-        modifyDatabase("","create index assessments_idx2 on {{assessments}} (sid)"); echo $modifyoutput;
-        modifyDatabase("","create index assessments_idx3 on {{assessments}} (gid)"); echo $modifyoutput;
-        modifyDatabase("","create index conditions_idx2 on {{conditions}} (qid)"); echo $modifyoutput;
-        modifyDatabase("","create index conditions_idx3 on {{conditions}} (cqid)"); echo $modifyoutput;
-        modifyDatabase("","create index groups_idx2 on {{groups}} (sid)"); echo $modifyoutput;
-        modifyDatabase("","create index question_attributes_idx2 on {{question_attributes}} (qid)"); echo $modifyoutput;
-        modifyDatabase("","create index questions_idx2 on {{questions}} (sid)"); echo $modifyoutput;
-        modifyDatabase("","create index questions_idx3 on {{questions}} (gid)"); echo $modifyoutput;
-        modifyDatabase("","create index questions_idx4 on {{questions}} (type)"); echo $modifyoutput;
-        modifyDatabase("","create index quota_idx2 on {{quota}} (sid)"); echo $modifyoutput;
-        modifyDatabase("","create index saved_control_idx2 on {{saved_control}} (sid)"); echo $modifyoutput;
-        modifyDatabase("","create index user_in_groups_idx1 on {{user_in_groups}} (ugid, uid)"); echo $modifyoutput;
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>127),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 128) {
-        upgradeTokens128();
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>128),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 129) {
-        addColumn('{{surveys}}','startdate',"datetime");
-        addColumn('{{surveys}}','usestartdate',"{$sVarchar}(1) NOT NULL default 'N'");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>129),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 130)
-    {
-        addColumn('{{conditions}}','scenario',"integer NOT NULL default '1'");
-        Yii::app()->db->createCommand()->update('{{conditions}}',array('scenario'=>'1'),"(scenario is null) or scenario=0");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>130),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 131)
-    {
-        addColumn('{{surveys}}','publicstatistics',"{$sVarchar}(1) NOT NULL default 'N'");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>131),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 132)
-    {
-        addColumn('{{surveys}}','publicgraphs',"{$sVarchar}(1) NOT NULL default 'N'");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>132),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 133)
-    {
-        addColumn('{{users}}','one_time_pw','binary');
-        // Add new assessment setting
-        addColumn('{{surveys}}','assessments',"{$sVarchar}(1) NOT NULL default 'N'");
-        // add new assessment value fields to answers & labels
-        addColumn('{{answers}}','assessment_value',"integer NOT NULL default '0'");
-        addColumn('{{labels}}','assessment_value',"integer NOT NULL default '0'");
-        // copy any valid codes from code field to assessment field
-        switch ($sDBDriverName){
-            case 'mysql':
-                Yii::app()->db->createCommand("UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
-                Yii::app()->db->createCommand("UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
-                // copy assessment link to message since from now on we will have HTML assignment messages
-                Yii::app()->db->createCommand("UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')")->execute();
-                break;
-            case 'mssql':
-                try{
-                Yii::app()->db->createCommand("UPDATE {{answers}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
-                Yii::app()->db->createCommand("UPDATE {{labels}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
-                } catch(Exception $e){};
-                // copy assessment link to message since from now on we will have HTML assignment messages
-                alterColumn('{{assessments}}','link',"varchar(max)",false);
-                alterColumn('{{assessments}}','message',"varchar(max)",false);
-                Yii::app()->db->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')+'<br /><a href=\"'+link+'\">'+link+'</a>'")->execute();
-                break;
-            case 'pgsql':
-                Yii::app()->db->createCommand("UPDATE {{answers}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
-                Yii::app()->db->createCommand("UPDATE {{labels}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
-                // copy assessment link to message since from now on we will have HTML assignment messages
-                Yii::app()->db->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')||'<br /><a href=\"'||link||'\">'||link||'</a>'")->execute();
-                break;
-            default: die('Unkown database type');
-        }
-        // activate assessment where assessment rules exist
-        Yii::app()->db->createCommand("UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)")->execute();
-        // add language field to assessment table
-        addColumn('{{assessments}}','language',"{$sVarchar}(20) NOT NULL default 'en'");
-        // update language field with default language of that particular survey
-        Yii::app()->db->createCommand("UPDATE {{assessments}} SET language=(select language from {{surveys}} where sid={{assessments}}.sid)")->execute();
-        // drop the old link field
-        dropColumn('{{assessments}}','link');
-
-        // Add new fields to survey language settings
-        addColumn('{{surveys_languagesettings}}','surveyls_url',"string");
-        addColumn('{{surveys_languagesettings}}','surveyls_endtext','text');
-        // copy old URL fields ot language specific entries
-        Yii::app()->db->createCommand("UPDATE {{surveys_languagesettings}} set surveyls_url=(select url from {{surveys}} where sid={{surveys_languagesettings}}.surveyls_survey_id)")->execute();
-        // drop old URL field
-        dropColumn('{{surveys}}','url');
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>133),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 134)
-    {
-        // Add new tokens setting
-        addColumn('{{surveys}}','usetokens',"{$sVarchar}(1) NOT NULL default 'N'");
-        addColumn('{{surveys}}','attributedescriptions','text');
-        dropColumn('{{surveys}}','attribute1');
-        dropColumn('{{surveys}}','attribute2');
-        upgradeTokenTables134();
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>134),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 135)
-    {
-        alterColumn('{{question_attributes}}','value','text');
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>135),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 136) //New Quota Functions
-    {
-        addColumn('{{quota}}','autoload_url',"integer NOT NULL default 0");
-        // Create quota table
-        $fields = array(
-        'quotals_id' => 'pk',
-        'quotals_quota_id' => 'integer NOT NULL DEFAULT 0',
-        'quotals_language' => "{$sVarchar}(45) NOT NULL default 'en'",
-        'quotals_name' => 'string',
-        'quotals_message' => 'text NOT NULL',
-        'quotals_url' => 'string',
-        'quotals_urldescrip' => 'string',
-        );
-        createTable('{{quota_languagesettings}}',$fields);
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>136),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 137) //New Quota Functions
-    {
-        addColumn('{{surveys_languagesettings}}','surveyls_dateformat',"integer NOT NULL default 1");
-        addColumn('{{users}}','dateformat',"integer NOT NULL default 1");
-        Yii::app()->db->createCommand()->update('{{surveys}}',array('startdate'=>NULL),"usestartdate='N'");
-        Yii::app()->db->createCommand()->update('{{surveys}}',array('expires'=>NULL),"useexpiry='N'");
-        dropColumn('{{surveys}}','useexpiry');
-        dropColumn('{{surveys}}','usestartdate');
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>137),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 138) //Modify quota field
-    {
-        alterColumn('{{quota_members}}','code',"{$sVarchar}(11)");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>138),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 139) //Modify quota field
-    {
-        upgradeSurveyTables139();
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>139),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 140) //Modify surveys table
-    {
-        addColumn('{{surveys}}','emailresponseto','text');
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>140),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 141) //Modify surveys table
-    {
-        addColumn('{{surveys}}','tokenlength','integer NOT NULL default 15');
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>141),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 142) //Modify surveys table
-    {
-        upgradeQuestionAttributes142();
-        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','expires',"datetime");
-        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','startdate',"datetime");
-        Yii::app()->db->createCommand()->update('{{question_attributes}}',array('value'=>0),"value='false'");
-        Yii::app()->db->createCommand()->update('{{question_attributes}}',array('value'=>1),"value='true'");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>142),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 143)
-    {
-        addColumn('{{questions}}','parent_qid','integer NOT NULL default 0');
-        addColumn('{{answers}}','scale_id','integer NOT NULL default 0');
-        addColumn('{{questions}}','scale_id','integer NOT NULL default 0');
-        addColumn('{{questions}}','same_default','integer NOT NULL default 0');
-        dropPrimaryKey('answers');
-        addPrimaryKey('answers', array('qid','code','language','scale_id'));
-
-        $fields = array(
-        'qid' => "integer NOT NULL default 0",
-        'scale_id' => 'integer NOT NULL default 0',
-        'sqid' => 'integer  NOT NULL default 0',
-        'language' => $sVarchar.'(20) NOT NULL',
-        'specialtype' => $sVarchar."(20) NOT NULL default ''",
-        'defaultvalue' => 'text',
-        );
-        createTable('{{defaultvalues}}',$fields);
-        addPrimaryKey('defaultvalues', array('qid','specialtype','language','scale_id','sqid'));
-
-        // -Move all 'answers' that are subquestions to the questions table
-        // -Move all 'labels' that are answers to the answers table
-        // -Transscribe the default values where applicable
-        // -Move default values from answers to questions
-        upgradeTables143();
-
-        dropColumn('{{answers}}','default_value');
-        dropColumn('{{questions}}','lid');
-        dropColumn('{{questions}}','lid1');
-
-        $fields = array(
-        'sesskey' => "{$sVarchar}(64) NOT NULL DEFAULT ''",
-        'expiry' => "datetime NOT NULL",
-        'expireref' => "{$sVarchar}(250) DEFAULT ''",
-        'created' => "datetime NOT NULL",
-        'modified' => "datetime NOT NULL",
-        'sessdata' => 'text'
-        );
-        Yii::app()->db->createCommand()->createTable('{{sessions}}',$fields);
-        addPrimaryKey('sessions',array('sesskey'));
-        Yii::app()->db->createCommand()->createIndex('sess2_expiry','{{sessions}}','expiry');
-        Yii::app()->db->createCommand()->createIndex('sess2_expireref','{{sessions}}','expireref');
-        // Move all user templates to the new user template directory
-        echo sprintf($clang->gT("Moving user templates to new location at %s..."),$usertemplaterootdir)."<br />";
-        $myDirectory = opendir($standardtemplaterootdir);
-        $aFailedTemplates=array();
-        // get each entry
-        while($entryName = readdir($myDirectory)) {
-            if (!in_array($entryName,array('.','..','.svn')) && is_dir($standardtemplaterootdir.DIRECTORY_SEPARATOR.$entryName) && !isStandardTemplate($entryName))
+            $aOldNewLanguages=array('german_informal'=>'german-informal',
+            'cns'=>'cn-Hans',
+            'cnt'=>'cn-Hant',
+            'pt_br'=>'pt-BR',
+            'gr'=>'el',
+            'jp'=>'ja',
+            'si'=>'sl',
+            'se'=>'sv',
+            'vn'=>'vi');
+            foreach  ($aOldNewLanguages as $sOldLanguageCode=>$sNewLanguageCode)
             {
-                if (!rename($standardtemplaterootdir.DIRECTORY_SEPARATOR.$entryName,$usertemplaterootdir.DIRECTORY_SEPARATOR.$entryName))
+                alterLanguageCode($sOldLanguageCode,$sNewLanguageCode);
+            }
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>111),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 112) {
+            // New size of the username field (it was previously 20 chars wide)
+            Yii::app()->db->createCommand()->alterColumn('{{users}}','users_name',"{$sVarchar}(64) NOT NULL");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>112),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 113) {
+            //Fixes the collation for the complete DB, tables and columns
+
+            if ($sDBDriverName=='mysql')
+            {
+                $databasename=getDBConnectionStringProperty('dbname');
+                fixMySQLCollations();
+                modifyDatabase("","ALTER DATABASE `$databasename` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");echo $modifyoutput; flush();@ob_flush();
+            }
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>113),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 114) {
+            Yii::app()->db->createCommand()->alterColumn('{{saved_control}}','email',"{$sVarchar}(320) NOT NULL");
+            Yii::app()->db->createCommand()->alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320) NOT NULL");
+            Yii::app()->db->createCommand()->alterColumn('{{users}}','email',"{$sVarchar}(320) NOT NULL");
+            Yii::app()->db->createCommand()->insert('{{settings_global}}',array('stg_name'=>'SessionName','stg_value'=>randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"§$%&/()=?´`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789')));
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>114),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 126) {
+
+            addColumn('{{surveys}}','printanswers',"{$sVarchar}(1) default 'N'");
+            addColumn('{{surveys}}','listpublic',"{$sVarchar}(1) default 'N'");
+
+            upgradeSurveyTables126();
+            upgradeTokenTables126();
+
+            // Create quota table
+            Yii::app()->db->createCommand()->createTable('{{quota}}',array(
+            'id' => 'pk',
+            'sid' => 'integer',
+            'qlimit' => 'integer',
+            'name' => 'string',
+            'action' => 'integer',
+            'active' => 'integer NOT NULL DEFAULT 1'
+            ));
+
+            // Create quota_members table
+            Yii::app()->db->createCommand()->createTable('{{quota_members}}',array(
+            'id' => 'pk',
+            'sid' => 'integer',
+            'qid' => 'integer',
+            'quota_id' => 'integer',
+            'code' => $sVarchar.'(5)'
+            ));
+            Yii::app()->db->createCommand()->createIndex('sid','{{quota_members}}','sid,qid,quota_id,code',true);
+
+
+            // Create templates_rights table
+            Yii::app()->db->createCommand()->createTable('{{templates_rights}}',array(
+            'uid' => 'integer NOT NULL',
+            'folder' => 'string NOT NULL',
+            'use' => 'integer',
+            'PRIMARY KEY (uid, folder)'
+            ));
+
+            // Create templates table
+            Yii::app()->db->createCommand()->createTable('{{templates}}',array(
+            'folder' => 'string NOT NULL',
+            'creator' => 'integer NOT NULL',
+            'PRIMARY KEY (folder)'
+            ));
+
+            // Rename Norwegian language codes
+            alterLanguageCode('no','nb');
+
+            addColumn('{{surveys}}','htmlemail',"{$sVarchar}(1) default 'N'");
+            addColumn('{{surveys}}','tokenanswerspersistence',"{$sVarchar}(1) default 'N'");
+            addColumn('{{surveys}}','usecaptcha',"{$sVarchar}(1) default 'N'");
+            addColumn('{{surveys}}','bounce_email','text');
+            addColumn('{{users}}','htmleditormode',"{$sVarchar}(7) default 'default'");
+            addColumn('{{users}}','superadmin',"integer NOT NULL default '0'");
+            addColumn('{{questions}}','lid1',"integer NOT NULL default '0'");
+
+            alterColumn('{{conditions}}','value',"string",false,'');
+            alterColumn('{{labels}}','title',"text");
+
+            Yii::app()->db->createCommand()->update('{{users}}',array('superadmin'=>1),"create_survey=1 AND create_user=1 AND move_user=1 AND delete_user=1 AND configurator=1");
+            Yii::app()->db->createCommand()->update('{{conditions}}',array('method'=>'=='),"(method is null) or method='' or method='0'");
+
+            dropColumn('{{users}}','move_user');
+
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>126),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 127) {
+            modifyDatabase("","create index answers_idx2 on {{answers}} (sortorder)"); echo $modifyoutput;
+            modifyDatabase("","create index assessments_idx2 on {{assessments}} (sid)"); echo $modifyoutput;
+            modifyDatabase("","create index assessments_idx3 on {{assessments}} (gid)"); echo $modifyoutput;
+            modifyDatabase("","create index conditions_idx2 on {{conditions}} (qid)"); echo $modifyoutput;
+            modifyDatabase("","create index conditions_idx3 on {{conditions}} (cqid)"); echo $modifyoutput;
+            modifyDatabase("","create index groups_idx2 on {{groups}} (sid)"); echo $modifyoutput;
+            modifyDatabase("","create index question_attributes_idx2 on {{question_attributes}} (qid)"); echo $modifyoutput;
+            modifyDatabase("","create index questions_idx2 on {{questions}} (sid)"); echo $modifyoutput;
+            modifyDatabase("","create index questions_idx3 on {{questions}} (gid)"); echo $modifyoutput;
+            modifyDatabase("","create index questions_idx4 on {{questions}} (type)"); echo $modifyoutput;
+            modifyDatabase("","create index quota_idx2 on {{quota}} (sid)"); echo $modifyoutput;
+            modifyDatabase("","create index saved_control_idx2 on {{saved_control}} (sid)"); echo $modifyoutput;
+            modifyDatabase("","create index user_in_groups_idx1 on {{user_in_groups}} (ugid, uid)"); echo $modifyoutput;
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>127),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 128) {
+            upgradeTokens128();
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>128),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 129) {
+            addColumn('{{surveys}}','startdate',"datetime");
+            addColumn('{{surveys}}','usestartdate',"{$sVarchar}(1) NOT NULL default 'N'");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>129),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 130)
+        {
+            addColumn('{{conditions}}','scenario',"integer NOT NULL default '1'");
+            Yii::app()->db->createCommand()->update('{{conditions}}',array('scenario'=>'1'),"(scenario is null) or scenario=0");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>130),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 131)
+        {
+            addColumn('{{surveys}}','publicstatistics',"{$sVarchar}(1) NOT NULL default 'N'");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>131),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 132)
+        {
+            addColumn('{{surveys}}','publicgraphs',"{$sVarchar}(1) NOT NULL default 'N'");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>132),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 133)
+        {
+            addColumn('{{users}}','one_time_pw','binary');
+            // Add new assessment setting
+            addColumn('{{surveys}}','assessments',"{$sVarchar}(1) NOT NULL default 'N'");
+            // add new assessment value fields to answers & labels
+            addColumn('{{answers}}','assessment_value',"integer NOT NULL default '0'");
+            addColumn('{{labels}}','assessment_value',"integer NOT NULL default '0'");
+            // copy any valid codes from code field to assessment field
+            switch ($sDBDriverName){
+                case 'mysql':
+                    Yii::app()->db->createCommand("UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
+                    Yii::app()->db->createCommand("UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
+                    // copy assessment link to message since from now on we will have HTML assignment messages
+                    Yii::app()->db->createCommand("UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')")->execute();
+                    break;
+                case 'mssql':
+                    try{
+                    Yii::app()->db->createCommand("UPDATE {{answers}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
+                    Yii::app()->db->createCommand("UPDATE {{labels}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
+                    } catch(Exception $e){};
+                    // copy assessment link to message since from now on we will have HTML assignment messages
+                    alterColumn('{{assessments}}','link',"varchar(max)",false);
+                    alterColumn('{{assessments}}','message',"varchar(max)",false);
+                    Yii::app()->db->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')+'<br /><a href=\"'+link+'\">'+link+'</a>'")->execute();
+                    break;
+                case 'pgsql':
+                    Yii::app()->db->createCommand("UPDATE {{answers}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
+                    Yii::app()->db->createCommand("UPDATE {{labels}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
+                    // copy assessment link to message since from now on we will have HTML assignment messages
+                    Yii::app()->db->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')||'<br /><a href=\"'||link||'\">'||link||'</a>'")->execute();
+                    break;
+                default: die('Unkown database type');
+            }
+            // activate assessment where assessment rules exist
+            Yii::app()->db->createCommand("UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)")->execute();
+            // add language field to assessment table
+            addColumn('{{assessments}}','language',"{$sVarchar}(20) NOT NULL default 'en'");
+            // update language field with default language of that particular survey
+            Yii::app()->db->createCommand("UPDATE {{assessments}} SET language=(select language from {{surveys}} where sid={{assessments}}.sid)")->execute();
+            // drop the old link field
+            dropColumn('{{assessments}}','link');
+
+            // Add new fields to survey language settings
+            addColumn('{{surveys_languagesettings}}','surveyls_url',"string");
+            addColumn('{{surveys_languagesettings}}','surveyls_endtext','text');
+            // copy old URL fields ot language specific entries
+            Yii::app()->db->createCommand("UPDATE {{surveys_languagesettings}} set surveyls_url=(select url from {{surveys}} where sid={{surveys_languagesettings}}.surveyls_survey_id)")->execute();
+            // drop old URL field
+            dropColumn('{{surveys}}','url');
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>133),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 134)
+        {
+            // Add new tokens setting
+            addColumn('{{surveys}}','usetokens',"{$sVarchar}(1) NOT NULL default 'N'");
+            addColumn('{{surveys}}','attributedescriptions','text');
+            dropColumn('{{surveys}}','attribute1');
+            dropColumn('{{surveys}}','attribute2');
+            upgradeTokenTables134();
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>134),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 135)
+        {
+            alterColumn('{{question_attributes}}','value','text');
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>135),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 136) //New Quota Functions
+        {
+            addColumn('{{quota}}','autoload_url',"integer NOT NULL default 0");
+            // Create quota table
+            $fields = array(
+            'quotals_id' => 'pk',
+            'quotals_quota_id' => 'integer NOT NULL DEFAULT 0',
+            'quotals_language' => "{$sVarchar}(45) NOT NULL default 'en'",
+            'quotals_name' => 'string',
+            'quotals_message' => 'text NOT NULL',
+            'quotals_url' => 'string',
+            'quotals_urldescrip' => 'string',
+            );
+            createTable('{{quota_languagesettings}}',$fields);
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>136),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 137) //New Quota Functions
+        {
+            addColumn('{{surveys_languagesettings}}','surveyls_dateformat',"integer NOT NULL default 1");
+            addColumn('{{users}}','dateformat',"integer NOT NULL default 1");
+            Yii::app()->db->createCommand()->update('{{surveys}}',array('startdate'=>NULL),"usestartdate='N'");
+            Yii::app()->db->createCommand()->update('{{surveys}}',array('expires'=>NULL),"useexpiry='N'");
+            dropColumn('{{surveys}}','useexpiry');
+            dropColumn('{{surveys}}','usestartdate');
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>137),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 138) //Modify quota field
+        {
+            alterColumn('{{quota_members}}','code',"{$sVarchar}(11)");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>138),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 139) //Modify quota field
+        {
+            upgradeSurveyTables139();
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>139),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 140) //Modify surveys table
+        {
+            addColumn('{{surveys}}','emailresponseto','text');
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>140),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 141) //Modify surveys table
+        {
+            addColumn('{{surveys}}','tokenlength','integer NOT NULL default 15');
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>141),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 142) //Modify surveys table
+        {
+            upgradeQuestionAttributes142();
+            Yii::app()->db->createCommand()->alterColumn('{{surveys}}','expires',"datetime");
+            Yii::app()->db->createCommand()->alterColumn('{{surveys}}','startdate',"datetime");
+            Yii::app()->db->createCommand()->update('{{question_attributes}}',array('value'=>0),"value='false'");
+            Yii::app()->db->createCommand()->update('{{question_attributes}}',array('value'=>1),"value='true'");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>142),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 143)
+        {
+            addColumn('{{questions}}','parent_qid','integer NOT NULL default 0');
+            addColumn('{{answers}}','scale_id','integer NOT NULL default 0');
+            addColumn('{{questions}}','scale_id','integer NOT NULL default 0');
+            addColumn('{{questions}}','same_default','integer NOT NULL default 0');
+            dropPrimaryKey('answers');
+            addPrimaryKey('answers', array('qid','code','language','scale_id'));
+
+            $fields = array(
+            'qid' => "integer NOT NULL default 0",
+            'scale_id' => 'integer NOT NULL default 0',
+            'sqid' => 'integer  NOT NULL default 0',
+            'language' => $sVarchar.'(20) NOT NULL',
+            'specialtype' => $sVarchar."(20) NOT NULL default ''",
+            'defaultvalue' => 'text',
+            );
+            createTable('{{defaultvalues}}',$fields);
+            addPrimaryKey('defaultvalues', array('qid','specialtype','language','scale_id','sqid'));
+
+            // -Move all 'answers' that are subquestions to the questions table
+            // -Move all 'labels' that are answers to the answers table
+            // -Transscribe the default values where applicable
+            // -Move default values from answers to questions
+            upgradeTables143();
+
+            dropColumn('{{answers}}','default_value');
+            dropColumn('{{questions}}','lid');
+            dropColumn('{{questions}}','lid1');
+
+            $fields = array(
+            'sesskey' => "{$sVarchar}(64) NOT NULL DEFAULT ''",
+            'expiry' => "datetime NOT NULL",
+            'expireref' => "{$sVarchar}(250) DEFAULT ''",
+            'created' => "datetime NOT NULL",
+            'modified' => "datetime NOT NULL",
+            'sessdata' => 'text'
+            );
+            Yii::app()->db->createCommand()->createTable('{{sessions}}',$fields);
+            addPrimaryKey('sessions',array('sesskey'));
+            Yii::app()->db->createCommand()->createIndex('sess2_expiry','{{sessions}}','expiry');
+            Yii::app()->db->createCommand()->createIndex('sess2_expireref','{{sessions}}','expireref');
+            // Move all user templates to the new user template directory
+            echo sprintf($clang->gT("Moving user templates to new location at %s..."),$usertemplaterootdir)."<br />";
+            $myDirectory = opendir($standardtemplaterootdir);
+            $aFailedTemplates=array();
+            // get each entry
+            while($entryName = readdir($myDirectory)) {
+                if (!in_array($entryName,array('.','..','.svn')) && is_dir($standardtemplaterootdir.DIRECTORY_SEPARATOR.$entryName) && !isStandardTemplate($entryName))
                 {
-                    $aFailedTemplates[]=$entryName;
-                };
+                    if (!rename($standardtemplaterootdir.DIRECTORY_SEPARATOR.$entryName,$usertemplaterootdir.DIRECTORY_SEPARATOR.$entryName))
+                    {
+                        $aFailedTemplates[]=$entryName;
+                    };
+                }
             }
-        }
-        if (count($aFailedTemplates)>0)
-        {
-            echo "The following templates at {$standardtemplaterootdir} could not be moved to the new location at {$usertemplaterootdir}:<br /><ul>";
-            foreach ($aFailedTemplates as $sFailedTemplate)
+            if (count($aFailedTemplates)>0)
             {
-                echo "<li>{$sFailedTemplate}</li>";
+                echo "The following templates at {$standardtemplaterootdir} could not be moved to the new location at {$usertemplaterootdir}:<br /><ul>";
+                foreach ($aFailedTemplates as $sFailedTemplate)
+                {
+                    echo "<li>{$sFailedTemplate}</li>";
+                }
+                echo "</ul>Please move these templates manually after the upgrade has finished.<br />";
             }
-            echo "</ul>Please move these templates manually after the upgrade has finished.<br />";
+            // close directory
+            closedir($myDirectory);
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>143),"stg_name='DBVersion'");
         }
-        // close directory
-        closedir($myDirectory);
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>143),"stg_name='DBVersion'");
-    }
 
-    if ($oldversion < 145)
-    {
-        addColumn('{{surveys}}','savetimings',"{$sVarchar}(1) NULL default 'N'");
-        addColumn('{{surveys}}','showXquestions',"{$sVarchar}(1) NULL default 'Y'");
-        addColumn('{{surveys}}','showgroupinfo',"{$sVarchar}(1) NULL default 'B'");
-        addColumn('{{surveys}}','shownoanswer',"{$sVarchar}(1) NULL default 'Y'");
-        addColumn('{{surveys}}','showqnumcode',"{$sVarchar}(1) NULL default 'X'");
-        addColumn('{{surveys}}','bouncetime','integer');
-        addColumn('{{surveys}}','bounceprocessing',"{$sVarchar}(1) NULL default 'N'");
-        addColumn('{{surveys}}','bounceaccounttype',"{$sVarchar}(4)");
-        addColumn('{{surveys}}','bounceaccounthost',"{$sVarchar}(200)");
-        addColumn('{{surveys}}','bounceaccountpass',"{$sVarchar}(100)");
-        addColumn('{{surveys}}','bounceaccountencryption',"{$sVarchar}(3)");
-        addColumn('{{surveys}}','bounceaccountuser',"{$sVarchar}(200)");
-        addColumn('{{surveys}}','showwelcome',"{$sVarchar}(1) default 'Y'");
-        addColumn('{{surveys}}','showprogress',"{$sVarchar}(1) default 'Y'");
-        addColumn('{{surveys}}','allowjumps',"{$sVarchar}(1) default 'N'");
-        addColumn('{{surveys}}','navigationdelay',"integer default 0");
-        addColumn('{{surveys}}','nokeyboard',"{$sVarchar}(1) default 'N'");
-        addColumn('{{surveys}}','alloweditaftercompletion',"{$sVarchar}(1) default 'N'");
-
-
-        $fields = array(
-        'sid' => "integer NOT NULL",
-        'uid' => "integer NOT NULL",
-        'permission' => $sVarchar.'(20) NOT NULL',
-        'create_p' => "integer NOT NULL default 0",
-        'read_p' => "integer NOT NULL default 0",
-        'update_p' => "integer NOT NULL default 0",
-        'delete_p' => "integer NOT NULL default 0",
-        'import_p' => "integer NOT NULL default 0",
-        'export_p' => "integer NOT NULL default 0"
-        );
-        Yii::app()->db->createCommand()->createTable('{{survey_permissions}}',$fields);
-        addPrimaryKey('survey_permissions', array('sid','uid','permission'));
-
-        upgradeSurveyPermissions145();
-
-        // drop the old survey rights table
-        Yii::app()->db->createCommand()->dropTable('{{surveys_rights}}');
-
-        // Add new fields for email templates
-        addColumn('{{surveys_languagesettings}}','email_admin_notification_subj',"string");
-        addColumn('{{surveys_languagesettings}}','email_admin_responses_subj',"string");
-        addColumn('{{surveys_languagesettings}}','email_admin_notification',"text");
-        addColumn('{{surveys_languagesettings}}','email_admin_responses',"text");
-
-        //Add index to questions table to speed up subquestions
-        Yii::app()->db->createCommand()->createIndex('parent_qid_idx','{{questions}}','parent_qid');
-
-        addColumn('{{surveys}}','emailnotificationto',"text");
-
-        upgradeSurveys145();
-        dropColumn('{{surveys}}','notification');
-        alterColumn('{{conditions}}','method',"{$sVarchar}(5)",false,'');
-
-        Yii::app()->db->createCommand()->renameColumn('{{surveys}}','private','anonymized');
-        Yii::app()->db->createCommand()->update('{{surveys}}',array('anonymized'=>'N'),"anonymized is NULL");
-        alterColumn('{{surveys}}','anonymized',"{$sVarchar}(1)",false,'N');
-
-        //now we clean up things that were not properly set in previous DB upgrades
-        Yii::app()->db->createCommand()->update('{{answers}}',array('answer'=>''),"answer is NULL");
-        Yii::app()->db->createCommand()->update('{{assessments}}',array('scope'=>''),"scope is NULL");
-        Yii::app()->db->createCommand()->update('{{assessments}}',array('name'=>''),"name is NULL");
-        Yii::app()->db->createCommand()->update('{{assessments}}',array('message'=>''),"message is NULL");
-        Yii::app()->db->createCommand()->update('{{assessments}}',array('minimum'=>''),"minimum is NULL");
-        Yii::app()->db->createCommand()->update('{{assessments}}',array('maximum'=>''),"maximum is NULL");
-        Yii::app()->db->createCommand()->update('{{groups}}',array('group_name'=>''),"group_name is NULL");
-        Yii::app()->db->createCommand()->update('{{labels}}',array('code'=>''),"code is NULL");
-        Yii::app()->db->createCommand()->update('{{labelsets}}',array('label_name'=>''),"label_name is NULL");
-        Yii::app()->db->createCommand()->update('{{questions}}',array('type'=>'T'),"type is NULL");
-        Yii::app()->db->createCommand()->update('{{questions}}',array('title'=>''),"title is NULL");
-        Yii::app()->db->createCommand()->update('{{questions}}',array('question'=>''),"question is NULL");
-        Yii::app()->db->createCommand()->update('{{questions}}',array('other'=>'N'),"other is NULL");
-
-        alterColumn('{{answers}}','answer',"text",false);
-        alterColumn('{{answers}}','assessment_value','integer',false , '0');
-        alterColumn('{{assessments}}','scope',"{$sVarchar}(5)",false , '');
-        alterColumn('{{assessments}}','name',"text",false);
-        alterColumn('{{assessments}}','message',"text",false);
-        alterColumn('{{assessments}}','minimum',"{$sVarchar}(50)",false , '');
-        alterColumn('{{assessments}}','maximum',"{$sVarchar}(50)",false , '');
-        // change the primary index to include language
-        if ($sDBDriverName=='mysql') // special treatment for mysql because this needs to be in one step since an AUTOINC field is involved
+        if ($oldversion < 145)
         {
-            Yii::app()->db->createCommand("ALTER TABLE {{assessments}} DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `language`)")->execute();
-        }
-        else
-        {
-            dropPrimaryKey('assessments');
-            addPrimaryKey('assessments',array('id','language'));
-        }
+            addColumn('{{surveys}}','savetimings',"{$sVarchar}(1) NULL default 'N'");
+            addColumn('{{surveys}}','showXquestions',"{$sVarchar}(1) NULL default 'Y'");
+            addColumn('{{surveys}}','showgroupinfo',"{$sVarchar}(1) NULL default 'B'");
+            addColumn('{{surveys}}','shownoanswer',"{$sVarchar}(1) NULL default 'Y'");
+            addColumn('{{surveys}}','showqnumcode',"{$sVarchar}(1) NULL default 'X'");
+            addColumn('{{surveys}}','bouncetime','integer');
+            addColumn('{{surveys}}','bounceprocessing',"{$sVarchar}(1) NULL default 'N'");
+            addColumn('{{surveys}}','bounceaccounttype',"{$sVarchar}(4)");
+            addColumn('{{surveys}}','bounceaccounthost',"{$sVarchar}(200)");
+            addColumn('{{surveys}}','bounceaccountpass',"{$sVarchar}(100)");
+            addColumn('{{surveys}}','bounceaccountencryption',"{$sVarchar}(3)");
+            addColumn('{{surveys}}','bounceaccountuser',"{$sVarchar}(200)");
+            addColumn('{{surveys}}','showwelcome',"{$sVarchar}(1) default 'Y'");
+            addColumn('{{surveys}}','showprogress',"{$sVarchar}(1) default 'Y'");
+            addColumn('{{surveys}}','allowjumps',"{$sVarchar}(1) default 'N'");
+            addColumn('{{surveys}}','navigationdelay',"integer default 0");
+            addColumn('{{surveys}}','nokeyboard',"{$sVarchar}(1) default 'N'");
+            addColumn('{{surveys}}','alloweditaftercompletion',"{$sVarchar}(1) default 'N'");
 
 
-        alterColumn('{{conditions}}','cfieldname',"{$sVarchar}(50)",false , '');
-        dropPrimaryKey('defaultvalues');
-        alterColumn('{{defaultvalues}}','specialtype',"{$sVarchar}(20)",false , '');
-        addPrimaryKey('defaultvalues', array('qid','specialtype','language','scale_id','sqid'));
+            $fields = array(
+            'sid' => "integer NOT NULL",
+            'uid' => "integer NOT NULL",
+            'permission' => $sVarchar.'(20) NOT NULL',
+            'create_p' => "integer NOT NULL default 0",
+            'read_p' => "integer NOT NULL default 0",
+            'update_p' => "integer NOT NULL default 0",
+            'delete_p' => "integer NOT NULL default 0",
+            'import_p' => "integer NOT NULL default 0",
+            'export_p' => "integer NOT NULL default 0"
+            );
+            Yii::app()->db->createCommand()->createTable('{{survey_permissions}}',$fields);
+            addPrimaryKey('survey_permissions', array('sid','uid','permission'));
 
-        alterColumn('{{groups}}','group_name',"{$sVarchar}(100)",false , '');
-        alterColumn('{{labels}}','code',"{$sVarchar}(5)",false , '');
-        alterColumn('{{labels}}','language',"{$sVarchar}(20)",false , 'en');
-        alterColumn('{{labelsets}}','label_name',"{$sVarchar}(100)",false , '');
-        alterColumn('{{questions}}','parent_qid','integer',false ,'0');
-        alterColumn('{{questions}}','title',"{$sVarchar}(20)",false , '');
-        alterColumn('{{questions}}','question',"text",false);
-        alterColumn('{{questions}}','type',"{$sVarchar}(1)",false , 'T');
-        try{ Yii::app()->db->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e){};
-        alterColumn('{{questions}}','other',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{questions}}','mandatory',"{$sVarchar}(1)");
-        alterColumn('{{question_attributes}}','attribute',"{$sVarchar}(50)");
-        alterColumn('{{quota}}','qlimit','integer');
+            upgradeSurveyPermissions145();
 
-        Yii::app()->db->createCommand()->update('{{saved_control}}',array('identifier'=>''),"identifier is NULL");
-        alterColumn('{{saved_control}}','identifier',"text",false);
-        Yii::app()->db->createCommand()->update('{{saved_control}}',array('access_code'=>''),"access_code is NULL");
-        alterColumn('{{saved_control}}','access_code',"text",false);
-        alterColumn('{{saved_control}}','email',"{$sVarchar}(320)");
-        Yii::app()->db->createCommand()->update('{{saved_control}}',array('ip'=>''),"ip is NULL");
-        alterColumn('{{saved_control}}','ip',"text",false);
-        Yii::app()->db->createCommand()->update('{{saved_control}}',array('saved_thisstep'=>''),"saved_thisstep is NULL");
-        alterColumn('{{saved_control}}','saved_thisstep',"text",false);
-        Yii::app()->db->createCommand()->update('{{saved_control}}',array('status'=>''),"status is NULL");
-        alterColumn('{{saved_control}}','status',"{$sVarchar}(1)",false , '');
-        Yii::app()->db->createCommand()->update('{{saved_control}}',array('saved_date'=>'1980-01-01 00:00:00'),"saved_date is NULL");
-        alterColumn('{{saved_control}}','saved_date',"datetime",false);
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>''),"stg_value is NULL");
-        alterColumn('{{settings_global}}','stg_value',"string",false , '');
+            // drop the old survey rights table
+            Yii::app()->db->createCommand()->dropTable('{{surveys_rights}}');
 
-        alterColumn('{{surveys}}','admin',"{$sVarchar}(50)");
-        Yii::app()->db->createCommand()->update('{{surveys}}',array('active'=>'N'),"active is NULL");
+            // Add new fields for email templates
+            addColumn('{{surveys_languagesettings}}','email_admin_notification_subj',"string");
+            addColumn('{{surveys_languagesettings}}','email_admin_responses_subj',"string");
+            addColumn('{{surveys_languagesettings}}','email_admin_notification',"text");
+            addColumn('{{surveys_languagesettings}}','email_admin_responses',"text");
 
-        alterColumn('{{surveys}}','active',"{$sVarchar}(1)",false , 'N');
+            //Add index to questions table to speed up subquestions
+            Yii::app()->db->createCommand()->createIndex('parent_qid_idx','{{questions}}','parent_qid');
 
-        alterColumn('{{surveys}}','startdate',"datetime");
-        alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320)");
-        alterColumn('{{surveys}}','anonymized',"{$sVarchar}(1)",false , 'N');
+            addColumn('{{surveys}}','emailnotificationto',"text");
 
-        alterColumn('{{surveys}}','faxto',"{$sVarchar}(20)");
-        alterColumn('{{surveys}}','format',"{$sVarchar}(1)");
-        alterColumn('{{surveys}}','language',"{$sVarchar}(50)");
-        alterColumn('{{surveys}}','additional_languages',"string");
-        alterColumn('{{surveys}}','printanswers',"{$sVarchar}(1)",true , 'N');
-        alterColumn('{{surveys}}','publicstatistics',"{$sVarchar}(1)",true , 'N');
-        alterColumn('{{surveys}}','publicgraphs',"{$sVarchar}(1)",true , 'N');
-        alterColumn('{{surveys}}','assessments',"{$sVarchar}(1)",true , 'N');
-        alterColumn('{{surveys}}','usetokens',"{$sVarchar}(1)",true , 'N');
-        alterColumn('{{surveys}}','bounce_email',"{$sVarchar}(320)");
-        alterColumn('{{surveys}}','tokenlength','integer',true , 15);
+            upgradeSurveys145();
+            dropColumn('{{surveys}}','notification');
+            alterColumn('{{conditions}}','method',"{$sVarchar}(5)",false,'');
 
-        Yii::app()->db->createCommand()->update('{{surveys_languagesettings}}',array('surveyls_title'=>''),"surveyls_title is NULL");
-        alterColumn('{{surveys_languagesettings}}','surveyls_title',"{$sVarchar}(200)",false);
-        alterColumn('{{surveys_languagesettings}}','surveyls_endtext',"text");
-        alterColumn('{{surveys_languagesettings}}','surveyls_url',"string");
-        alterColumn('{{surveys_languagesettings}}','surveyls_urldescription',"string");
-        alterColumn('{{surveys_languagesettings}}','surveyls_email_invite_subj',"string");
-        alterColumn('{{surveys_languagesettings}}','surveyls_email_remind_subj',"string");
-        alterColumn('{{surveys_languagesettings}}','surveyls_email_register_subj',"string");
-        alterColumn('{{surveys_languagesettings}}','surveyls_email_confirm_subj',"string");
-        alterColumn('{{surveys_languagesettings}}','surveyls_dateformat','integer',false , 1);
+            Yii::app()->db->createCommand()->renameColumn('{{surveys}}','private','anonymized');
+            Yii::app()->db->createCommand()->update('{{surveys}}',array('anonymized'=>'N'),"anonymized is NULL");
+            alterColumn('{{surveys}}','anonymized',"{$sVarchar}(1)",false,'N');
 
-        Yii::app()->db->createCommand()->update('{{users}}',array('users_name'=>''),"users_name is NULL");
-        Yii::app()->db->createCommand()->update('{{users}}',array('full_name'=>''),"full_name is NULL");
-        alterColumn('{{users}}','users_name',"{$sVarchar}(64)",false , '');
-        alterColumn('{{users}}','full_name',"{$sVarchar}(50)",false);
-        alterColumn('{{users}}','lang',"{$sVarchar}(20)");
-        alterColumn('{{users}}','email',"{$sVarchar}(320)");
-        alterColumn('{{users}}','superadmin','integer',false , 0);
-        alterColumn('{{users}}','htmleditormode',"{$sVarchar}(7)",true,'default');
-        alterColumn('{{users}}','dateformat','integer',false , 1);
-        try{
-            Yii::app()->db->createCommand()->dropIndex('email','{{users}}');
-        }
-        catch(Exception $e)
-        {
-            // do nothing
-        }
+            //now we clean up things that were not properly set in previous DB upgrades
+            Yii::app()->db->createCommand()->update('{{answers}}',array('answer'=>''),"answer is NULL");
+            Yii::app()->db->createCommand()->update('{{assessments}}',array('scope'=>''),"scope is NULL");
+            Yii::app()->db->createCommand()->update('{{assessments}}',array('name'=>''),"name is NULL");
+            Yii::app()->db->createCommand()->update('{{assessments}}',array('message'=>''),"message is NULL");
+            Yii::app()->db->createCommand()->update('{{assessments}}',array('minimum'=>''),"minimum is NULL");
+            Yii::app()->db->createCommand()->update('{{assessments}}',array('maximum'=>''),"maximum is NULL");
+            Yii::app()->db->createCommand()->update('{{groups}}',array('group_name'=>''),"group_name is NULL");
+            Yii::app()->db->createCommand()->update('{{labels}}',array('code'=>''),"code is NULL");
+            Yii::app()->db->createCommand()->update('{{labelsets}}',array('label_name'=>''),"label_name is NULL");
+            Yii::app()->db->createCommand()->update('{{questions}}',array('type'=>'T'),"type is NULL");
+            Yii::app()->db->createCommand()->update('{{questions}}',array('title'=>''),"title is NULL");
+            Yii::app()->db->createCommand()->update('{{questions}}',array('question'=>''),"question is NULL");
+            Yii::app()->db->createCommand()->update('{{questions}}',array('other'=>'N'),"other is NULL");
 
-        Yii::app()->db->createCommand()->update('{{user_groups}}',array('name'=>''),"name is NULL");
-        Yii::app()->db->createCommand()->update('{{user_groups}}',array('description'=>''),"description is NULL");
-        alterColumn('{{user_groups}}','name',"{$sVarchar}(20)",false);
-        alterColumn('{{user_groups}}','description',"text",false);
-
-        try { Yii::app()->db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}'); } catch(Exception $e) {}        
-        try { addPrimaryKey('user_in_groups', array('ugid','uid')); } catch(Exception $e) {}        
-
-        addColumn('{{surveys_languagesettings}}','surveyls_numberformat',"integer NOT NULL DEFAULT 0");
-
-        Yii::app()->db->createCommand()->createTable('{{failed_login_attempts}}',array(
-        'id' => "pk",
-        'ip' => $sVarchar.'(37) NOT NULL',
-        'last_attempt' => $sVarchar.'(20) NOT NULL',
-        'number_attempts' => "integer NOT NULL"
-        ));
-        upgradeTokens145();
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>145),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 146) //Modify surveys table
-    {
-        upgradeSurveyTimings146();
-        // Fix permissions for new feature quick-translation
-        modifyDatabase("", "INSERT into {{survey_permissions}} (sid,uid,permission,read_p,update_p) SELECT sid,owner_id,'translations','1','1' from {{surveys}}"); echo $modifyoutput; flush();@ob_flush();
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>146),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 147)
-    {
-        addColumn('{{users}}','templateeditormode',"{$sVarchar}(7) NOT NULL default 'default'");
-        addColumn('{{users}}','questionselectormode',"{$sVarchar}(7) NOT NULL default 'default'");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>147),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 148)
-    {
-        addColumn('{{users}}','participant_panel',"integer NOT NULL default 0");
-
-        Yii::app()->db->createCommand()->createTable('{{participants}}',array(
-        'participant_id' => $sVarchar.'(50) NOT NULL',
-        'firstname' => $sVarchar.'(40) default NULL',
-        'lastname' => $sVarchar.'(40) default NULL',
-        'email' => $sVarchar.'(80) default NULL',
-        'language' => $sVarchar.'(40) default NULL',
-        'blacklisted' => $sVarchar.'(1) NOT NULL',
-        'owner_uid' => "integer NOT NULL"
-        ));
-        addPrimaryKey('participants', array('participant_id'));
-
-        Yii::app()->db->createCommand()->createTable('{{participant_attribute}}',array(
-        'participant_id' => $sVarchar.'(50) NOT NULL',
-        'attribute_id' => "integer NOT NULL",
-        'value' => $sVarchar.'(50) NOT NULL'
-        ));
-        addPrimaryKey('participant_attribute', array('participant_id','attribute_id'));
-
-        Yii::app()->db->createCommand()->createTable('{{participant_attribute_names}}',array(
-        'attribute_id' => $sAutoIncrement,
-        'attribute_type' => $sVarchar.'(4) NOT NULL',
-        'visible' => $sVarchar.'(5) NOT NULL',
-        'PRIMARY KEY (attribute_id,attribute_type)'
-        ));
-
-        Yii::app()->db->createCommand()->createTable('{{participant_attribute_names_lang}}',array(
-        'attribute_id' => 'integer NOT NULL',
-        'attribute_name' => $sVarchar.'(30) NOT NULL',
-        'lang' => $sVarchar.'(20) NOT NULL'
-        ));
-        addPrimaryKey('participant_attribute_names_lang', array('attribute_id','lang'));
-
-        Yii::app()->db->createCommand()->createTable('{{participant_attribute_values}}',array(
-        'attribute_id' => 'integer NOT NULL',
-        'value_id' => 'pk',
-        'value' => $sVarchar.'(20) NOT NULL'
-        ));
-
-        Yii::app()->db->createCommand()->createTable('{{participant_shares}}',array(
-        'participant_id' => $sVarchar.'(50) NOT NULL',
-        'share_uid' => 'integer NOT NULL',
-        'date_added' => 'datetime NOT NULL',
-        'can_edit' => $sVarchar.'(5) NOT NULL'
-        ));
-        addPrimaryKey('participant_shares', array('participant_id','share_uid'));
-
-        Yii::app()->db->createCommand()->createTable('{{survey_links}}',array(
-        'participant_id' => $sVarchar.'(50) NOT NULL',
-        'token_id' => 'integer NOT NULL',
-        'survey_id' => 'integer NOT NULL',
-        'date_created' => 'datetime NOT NULL'
-        ));
-        addPrimaryKey('survey_links', array('participant_id','token_id','survey_id'));
-
-        // Add language field to question_attributes table
-        addColumn('{{question_attributes}}','language',"{$sVarchar}(20)");
-
-        upgradeQuestionAttributes148();
-        fixSubquestions();
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>148),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 149)
-    {
-        $fields = array(
-        'id' => 'integer',
-        'sid' => 'integer',
-        'parameter' => $sVarchar.'(50)',
-        'targetqid' => 'integer',
-        'targetsqid' => 'integer'
-        );
-        Yii::app()->db->createCommand()->createTable('{{survey_url_parameters}}',$fields);
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>149),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 150)
-    {
-        addColumn('{{questions}}','relevance','TEXT');
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>150),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 151)
-    {
-        addColumn('{{groups}}','randomization_group',"{$sVarchar}(20) NOT NULL default ''");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>151),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 152)
-    {
-        Yii::app()->db->createCommand()->createIndex('question_attributes_idx3','{{question_attributes}}','attribute');
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>152),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 153)
-    {
-        createTable('{{expression_errors}}',array(
-        'id' => 'pk',
-        'errortime' => $sVarchar.'(50)',
-        'sid' => 'integer',
-        'gid' => 'integer',
-        'qid' => 'integer',
-        'gseq' => 'integer',
-        'qseq' => 'integer',
-        'type' => $sVarchar.'(50)',
-        'eqn' => 'text',
-        'prettyprint' => 'text'
-        ));
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>153),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 154)
-    {
-        Yii::app()->db->createCommand()->addColumn('{{groups}}','grelevance',"text");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>154),"stg_name='DBVersion'");
-    }
-
-    if ($oldversion < 155)
-    {
-        addColumn('{{surveys}}','googleanalyticsstyle',"{$sVarchar}(1)");
-        addColumn('{{surveys}}','googleanalyticsapikey',"{$sVarchar}(25)");
-        try{ Yii::app()->db->createCommand()->renameColumn('{{surveys}}','showXquestions','showxquestions');} catch(Exception $e) {};
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>155),"stg_name='DBVersion'");
-    }
-
-
-    if ($oldversion < 156)
-    {
-        try
-        {
-            Yii::app()->db->createCommand()->dropTable('{{survey_url_parameters}}');
-        }
-        catch(Exception $e)
-        {
-            // do nothing
-        }
-        Yii::app()->db->createCommand()->createTable('{{survey_url_parameters}}',array(
-        'id' => 'pk',
-        'sid' => 'integer NOT NULL',
-        'parameter' => $sVarchar.'(50) NOT NULL',
-        'targetqid' => 'integer',
-        'targetsqid' => 'integer'
-        ));
-
-        Yii::app()->db->createCommand()->dropTable('{{sessions}}');
-        if ($sDBDriverName=='mysql')
-        {
-            Yii::app()->db->createCommand()->createTable('{{sessions}}',array(
-            'id' => $sVarchar.'(32) NOT NULL',
-            'expire' => 'integer',
-            'data' => 'longtext'
-            ));
-        }
-        else
-        {
-            Yii::app()->db->createCommand()->createTable('{{sessions}}',array(
-            'id' => $sVarchar.'(32) NOT NULL',
-            'expire' => 'integer',
-            'data' => 'text'
-            ));
-        }
-
-        addPrimaryKey('sessions', array('id'));
-
-        addColumn('{{surveys_languagesettings}}','surveyls_attributecaptions',"TEXT");
-        addColumn('{{surveys}}','sendconfirmation',"{$sVarchar}(1) default 'Y'");
-
-        upgradeSurveys156();
-
-        // If a survey has an deleted owner, re-own the survey to the superadmin
-        Yii::app()->db->schema->refresh();
-        Survey::model()->refreshMetaData();
-        $surveys = Survey::model();
-        $surveys = $surveys->with(array('owner'))->findAll();
-        foreach ($surveys as $row)
-        {
-            if (!isset($row->owner->attributes))
+            alterColumn('{{answers}}','answer',"text",false);
+            alterColumn('{{answers}}','assessment_value','integer',false , '0');
+            alterColumn('{{assessments}}','scope',"{$sVarchar}(5)",false , '');
+            alterColumn('{{assessments}}','name',"text",false);
+            alterColumn('{{assessments}}','message',"text",false);
+            alterColumn('{{assessments}}','minimum',"{$sVarchar}(50)",false , '');
+            alterColumn('{{assessments}}','maximum',"{$sVarchar}(50)",false , '');
+            // change the primary index to include language
+            if ($sDBDriverName=='mysql') // special treatment for mysql because this needs to be in one step since an AUTOINC field is involved
             {
-                Survey::model()->updateByPk($row->sid,array('owner_id'=>1));
+                Yii::app()->db->createCommand("ALTER TABLE {{assessments}} DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `language`)")->execute();
             }
+            else
+            {
+                dropPrimaryKey('assessments');
+                addPrimaryKey('assessments',array('id','language'));
+            }
+
+
+            alterColumn('{{conditions}}','cfieldname',"{$sVarchar}(50)",false , '');
+            dropPrimaryKey('defaultvalues');
+            alterColumn('{{defaultvalues}}','specialtype',"{$sVarchar}(20)",false , '');
+            addPrimaryKey('defaultvalues', array('qid','specialtype','language','scale_id','sqid'));
+
+            alterColumn('{{groups}}','group_name',"{$sVarchar}(100)",false , '');
+            alterColumn('{{labels}}','code',"{$sVarchar}(5)",false , '');
+            alterColumn('{{labels}}','language',"{$sVarchar}(20)",false , 'en');
+            alterColumn('{{labelsets}}','label_name',"{$sVarchar}(100)",false , '');
+            alterColumn('{{questions}}','parent_qid','integer',false ,'0');
+            alterColumn('{{questions}}','title',"{$sVarchar}(20)",false , '');
+            alterColumn('{{questions}}','question',"text",false);
+            alterColumn('{{questions}}','type',"{$sVarchar}(1)",false , 'T');
+            try{ Yii::app()->db->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e){};
+            alterColumn('{{questions}}','other',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{questions}}','mandatory',"{$sVarchar}(1)");
+            alterColumn('{{question_attributes}}','attribute',"{$sVarchar}(50)");
+            alterColumn('{{quota}}','qlimit','integer');
+
+            Yii::app()->db->createCommand()->update('{{saved_control}}',array('identifier'=>''),"identifier is NULL");
+            alterColumn('{{saved_control}}','identifier',"text",false);
+            Yii::app()->db->createCommand()->update('{{saved_control}}',array('access_code'=>''),"access_code is NULL");
+            alterColumn('{{saved_control}}','access_code',"text",false);
+            alterColumn('{{saved_control}}','email',"{$sVarchar}(320)");
+            Yii::app()->db->createCommand()->update('{{saved_control}}',array('ip'=>''),"ip is NULL");
+            alterColumn('{{saved_control}}','ip',"text",false);
+            Yii::app()->db->createCommand()->update('{{saved_control}}',array('saved_thisstep'=>''),"saved_thisstep is NULL");
+            alterColumn('{{saved_control}}','saved_thisstep',"text",false);
+            Yii::app()->db->createCommand()->update('{{saved_control}}',array('status'=>''),"status is NULL");
+            alterColumn('{{saved_control}}','status',"{$sVarchar}(1)",false , '');
+            Yii::app()->db->createCommand()->update('{{saved_control}}',array('saved_date'=>'1980-01-01 00:00:00'),"saved_date is NULL");
+            alterColumn('{{saved_control}}','saved_date',"datetime",false);
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>''),"stg_value is NULL");
+            alterColumn('{{settings_global}}','stg_value',"string",false , '');
+
+            alterColumn('{{surveys}}','admin',"{$sVarchar}(50)");
+            Yii::app()->db->createCommand()->update('{{surveys}}',array('active'=>'N'),"active is NULL");
+
+            alterColumn('{{surveys}}','active',"{$sVarchar}(1)",false , 'N');
+
+            alterColumn('{{surveys}}','startdate',"datetime");
+            alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320)");
+            alterColumn('{{surveys}}','anonymized',"{$sVarchar}(1)",false , 'N');
+
+            alterColumn('{{surveys}}','faxto',"{$sVarchar}(20)");
+            alterColumn('{{surveys}}','format',"{$sVarchar}(1)");
+            alterColumn('{{surveys}}','language',"{$sVarchar}(50)");
+            alterColumn('{{surveys}}','additional_languages',"string");
+            alterColumn('{{surveys}}','printanswers',"{$sVarchar}(1)",true , 'N');
+            alterColumn('{{surveys}}','publicstatistics',"{$sVarchar}(1)",true , 'N');
+            alterColumn('{{surveys}}','publicgraphs',"{$sVarchar}(1)",true , 'N');
+            alterColumn('{{surveys}}','assessments',"{$sVarchar}(1)",true , 'N');
+            alterColumn('{{surveys}}','usetokens',"{$sVarchar}(1)",true , 'N');
+            alterColumn('{{surveys}}','bounce_email',"{$sVarchar}(320)");
+            alterColumn('{{surveys}}','tokenlength','integer',true , 15);
+
+            Yii::app()->db->createCommand()->update('{{surveys_languagesettings}}',array('surveyls_title'=>''),"surveyls_title is NULL");
+            alterColumn('{{surveys_languagesettings}}','surveyls_title',"{$sVarchar}(200)",false);
+            alterColumn('{{surveys_languagesettings}}','surveyls_endtext',"text");
+            alterColumn('{{surveys_languagesettings}}','surveyls_url',"string");
+            alterColumn('{{surveys_languagesettings}}','surveyls_urldescription',"string");
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_invite_subj',"string");
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_remind_subj',"string");
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_register_subj',"string");
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_confirm_subj',"string");
+            alterColumn('{{surveys_languagesettings}}','surveyls_dateformat','integer',false , 1);
+
+            Yii::app()->db->createCommand()->update('{{users}}',array('users_name'=>''),"users_name is NULL");
+            Yii::app()->db->createCommand()->update('{{users}}',array('full_name'=>''),"full_name is NULL");
+            alterColumn('{{users}}','users_name',"{$sVarchar}(64)",false , '');
+            alterColumn('{{users}}','full_name',"{$sVarchar}(50)",false);
+            alterColumn('{{users}}','lang',"{$sVarchar}(20)");
+            alterColumn('{{users}}','email',"{$sVarchar}(320)");
+            alterColumn('{{users}}','superadmin','integer',false , 0);
+            alterColumn('{{users}}','htmleditormode',"{$sVarchar}(7)",true,'default');
+            alterColumn('{{users}}','dateformat','integer',false , 1);
+            try{
+                Yii::app()->db->createCommand()->dropIndex('email','{{users}}');
+            }
+            catch(Exception $e)
+            {
+                // do nothing
+            }
+
+            Yii::app()->db->createCommand()->update('{{user_groups}}',array('name'=>''),"name is NULL");
+            Yii::app()->db->createCommand()->update('{{user_groups}}',array('description'=>''),"description is NULL");
+            alterColumn('{{user_groups}}','name',"{$sVarchar}(20)",false);
+            alterColumn('{{user_groups}}','description',"text",false);
+
+            try { Yii::app()->db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}'); } catch(Exception $e) {}        
+            try { addPrimaryKey('user_in_groups', array('ugid','uid')); } catch(Exception $e) {}        
+
+            addColumn('{{surveys_languagesettings}}','surveyls_numberformat',"integer NOT NULL DEFAULT 0");
+
+            Yii::app()->db->createCommand()->createTable('{{failed_login_attempts}}',array(
+            'id' => "pk",
+            'ip' => $sVarchar.'(37) NOT NULL',
+            'last_attempt' => $sVarchar.'(20) NOT NULL',
+            'number_attempts' => "integer NOT NULL"
+            ));
+            upgradeTokens145();
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>145),"stg_name='DBVersion'");
         }
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>156),"stg_name='DBVersion'");
-    }
 
-    if ($oldversion < 157)
-    {
-        // MySQL DB corrections
-        try{ Yii::app()->db->createCommand()->dropIndex('questions_idx4','{{questions}}');} catch(Exception $e) {};
-
-        alterColumn('{{answers}}','assessment_value','integer',false , '0');
-        dropPrimaryKey('answers');
-        alterColumn('{{answers}}','scale_id','integer',false , '0');
-        addPrimaryKey('answers', array('qid','code','language','scale_id'));
-        alterColumn('{{conditions}}','method',"{$sVarchar}(5)",false , '');
-        alterColumn('{{participants}}','owner_uid','integer',false);
-        alterColumn('{{participant_attribute_names}}','visible',$sVarchar.'(5)',false);
-        alterColumn('{{questions}}','type',"{$sVarchar}(1)",false , 'T');
-        alterColumn('{{questions}}','other',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{questions}}','mandatory',"{$sVarchar}(1)");
-        alterColumn('{{questions}}','scale_id','integer',false , '0');
-        alterColumn('{{questions}}','parent_qid','integer',false ,'0');
-
-        alterColumn('{{questions}}','same_default','integer',false , '0');
-        alterColumn('{{quota}}','qlimit','integer');
-        alterColumn('{{quota}}','action','integer');
-        alterColumn('{{quota}}','active','integer',false , '1');
-        alterColumn('{{quota}}','autoload_url','integer',false , '0');
-        alterColumn('{{saved_control}}','status',"{$sVarchar}(1)",false , '');
-        alterColumn('{{sessions}}','id',"{$sVarchar}(32)",false);
-
-        alterColumn('{{surveys}}','active',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','anonymized',"{$sVarchar}(1)",false,'N');
-        alterColumn('{{surveys}}','format',"{$sVarchar}(1)");
-        alterColumn('{{surveys}}','savetimings',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','datestamp',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','usecookie',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','allowregister',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','allowsave',"{$sVarchar}(1)",false , 'Y');
-        alterColumn('{{surveys}}','autonumber_start','integer' ,false, '0');
-        alterColumn('{{surveys}}','autoredirect',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','allowprev',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','printanswers',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','ipaddr',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','refurl',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','publicstatistics',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','publicgraphs',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','listpublic',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','htmlemail',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','sendconfirmation',"{$sVarchar}(1)",false , 'Y');
-        alterColumn('{{surveys}}','tokenanswerspersistence',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','assessments',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','usecaptcha',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','usetokens',"{$sVarchar}(1)",false , 'N');
-        alterColumn('{{surveys}}','tokenlength','integer',false, '15');
-        alterColumn('{{surveys}}','showxquestions',"{$sVarchar}(1)", true , 'Y');
-        alterColumn('{{surveys}}','showgroupinfo',"{$sVarchar}(1) ", true , 'B');
-        alterColumn('{{surveys}}','shownoanswer',"{$sVarchar}(1) ", true , 'Y');
-        alterColumn('{{surveys}}','showqnumcode',"{$sVarchar}(1) ", true , 'X');
-        alterColumn('{{surveys}}','bouncetime','integer');
-        alterColumn('{{surveys}}','showwelcome',"{$sVarchar}(1)", true , 'Y');
-        alterColumn('{{surveys}}','showprogress',"{$sVarchar}(1)", true , 'Y');
-        alterColumn('{{surveys}}','allowjumps',"{$sVarchar}(1)", true , 'N');
-        alterColumn('{{surveys}}','navigationdelay','integer', false , '0');
-        alterColumn('{{surveys}}','nokeyboard',"{$sVarchar}(1)", true , 'N');
-        alterColumn('{{surveys}}','alloweditaftercompletion',"{$sVarchar}(1)", true , 'N');
-        alterColumn('{{surveys}}','googleanalyticsstyle',"{$sVarchar}(1)");
-
-        alterColumn('{{surveys_languagesettings}}','surveyls_dateformat','integer',false , 1);
-        alterColumn('{{survey_permissions}}','sid','integer',false);
-        alterColumn('{{survey_permissions}}','uid', 'integer',false);
-        alterColumn('{{survey_permissions}}','create_p', 'integer',false , '0');
-        alterColumn('{{survey_permissions}}','read_p', 'integer',false , '0');
-        alterColumn('{{survey_permissions}}','update_p','integer',false , '0');
-        alterColumn('{{survey_permissions}}','delete_p' ,'integer',false , '0');
-        alterColumn('{{survey_permissions}}','import_p','integer',false , '0');
-        alterColumn('{{survey_permissions}}','export_p' ,'integer',false , '0');
-
-        alterColumn('{{survey_url_parameters}}','targetqid' ,'integer');
-        alterColumn('{{survey_url_parameters}}','targetsqid' ,'integer');
-
-        alterColumn('{{templates_rights}}','use','integer',false );
-
-        alterColumn('{{users}}','create_survey','integer',false, '0');
-        alterColumn('{{users}}','create_user','integer',false, '0');
-        alterColumn('{{users}}','participant_panel','integer',false, '0');
-        alterColumn('{{users}}','delete_user','integer',false, '0');
-        alterColumn('{{users}}','superadmin','integer',false, '0');
-        alterColumn('{{users}}','configurator','integer',false, '0');
-        alterColumn('{{users}}','manage_template','integer',false, '0');
-        alterColumn('{{users}}','manage_label','integer',false, '0');
-        alterColumn('{{users}}','dateformat','integer',false, 1);
-        alterColumn('{{users}}','participant_panel','integer',false , '0');
-        alterColumn('{{users}}','parent_id','integer',false);
-        alterColumn('{{surveys_languagesettings}}','surveyls_survey_id','integer',false);
-        alterColumn('{{user_groups}}','owner_id',"integer",false);
-        alterColumn('{{user_in_groups}}','ugid',"integer",false);
-        alterColumn('{{user_in_groups}}','uid',"integer",false);
-
-        // Additional corrections for Postgres
-        try{ Yii::app()->db->createCommand()->createIndex('questions_idx3','{{questions}}','gid');} catch(Exception $e) {};
-        try{ Yii::app()->db->createCommand()->createIndex('conditions_idx3','{{conditions}}','cqid');} catch(Exception $e) {};
-        try{ Yii::app()->db->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e) {};
-        try{ Yii::app()->db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}');} catch(Exception $e) {};
-        try{ Yii::app()->db->createCommand()->dropIndex('{{user_name_key}}','{{users}}');} catch(Exception $e) {};
-        try{ Yii::app()->db->createCommand()->createIndex('users_name','{{users}}','users_name',true);} catch(Exception $e) {};
-        try{ addPrimaryKey('user_in_groups', array('ugid','uid'));} catch(Exception $e) {};
-
-        alterColumn('{{participant_attribute}}','value',"{$sVarchar}(50)", false);
-        alterColumn('{{participant_attribute_names}}','attribute_type',"{$sVarchar}(4)", false);
-        try{ dropColumn('{{participant_attribute_names_lang}}','id');} catch(Exception $e) {};
-        try{ addPrimaryKey('participant_attribute_names_lang',array('attribute_id','lang'));} catch(Exception $e) {};
-        try{ Yii::app()->db->createCommand()->renameColumn('{{participant_shares}}','shared_uid','share_uid');} catch(Exception $e) {};
-        alterColumn('{{participant_shares}}','date_added',"datetime", false);
-        alterColumn('{{participants}}','firstname',"{$sVarchar}(40)");
-        alterColumn('{{participants}}','lastname',"{$sVarchar}(40)");
-        alterColumn('{{participants}}','email',"{$sVarchar}(80)");
-        alterColumn('{{participants}}','language',"{$sVarchar}(40)");
-        alterColumn('{{quota_languagesettings}}','quotals_name',"string");
-        alterColumn('{{survey_permissions}}','sid','integer',false);
-        alterColumn('{{survey_permissions}}','uid','integer',false);
-        alterColumn('{{users}}','htmleditormode',"{$sVarchar}(7)",true,'default');
-        alterColumn('{{survey_links}}','date_created',"datetime",true);
-        alterColumn('{{saved_control}}','identifier',"text",false);
-        alterColumn('{{saved_control}}','email',"{$sVarchar}(320)");
-        alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320)");
-        alterColumn('{{surveys}}','bounce_email',"{$sVarchar}(320)");
-        alterColumn('{{users}}','email',"{$sVarchar}(320)");
-
-        try{ Yii::app()->db->createCommand()->dropIndex('assessments_idx','{{assessments}}');} catch(Exception $e) {};
-        try{ Yii::app()->db->createCommand()->createIndex('assessments_idx3','{{assessments}}','gid');} catch(Exception $e) {};
-
-        try{ Yii::app()->db->createCommand()->dropIndex('ixcode','{{labels}}');} catch(Exception $e) {};
-        try{ Yii::app()->db->createCommand()->dropIndex('{{labels_ixcode_idx}}','{{labels}}');} catch(Exception $e) {};
-        try{ Yii::app()->db->createCommand()->createIndex('labels_code_idx','{{labels}}','code');} catch(Exception $e) {};
-
-
-
-        if ($sDBDriverName=='pgsql')
+        if ($oldversion < 146) //Modify surveys table
         {
-            try{ Yii::app()->db->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;} catch(Exception $e) {};
-            try{ Yii::app()->db->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;} catch(Exception $e) {};
+            upgradeSurveyTimings146();
+            // Fix permissions for new feature quick-translation
+            modifyDatabase("", "INSERT into {{survey_permissions}} (sid,uid,permission,read_p,update_p) SELECT sid,owner_id,'translations','1','1' from {{surveys}}"); echo $modifyoutput; flush();@ob_flush();
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>146),"stg_name='DBVersion'");
         }
 
-        // Additional corrections for MSSQL
-        alterColumn('{{answers}}','answer',"text",false);
-        alterColumn('{{assessments}}','name',"text",false);
-        alterColumn('{{assessments}}','message',"text",false);
-        alterColumn('{{defaultvalues}}','defaultvalue',"text");
-        alterColumn('{{expression_errors}}','eqn',"text");
-        alterColumn('{{expression_errors}}','prettyprint',"text");
-        alterColumn('{{groups}}','description',"text");
-        alterColumn('{{groups}}','grelevance',"text");
-        alterColumn('{{labels}}','title',"text");
-        alterColumn('{{question_attributes}}','value',"text");
-        alterColumn('{{questions}}','preg',"text");
-        alterColumn('{{questions}}','help',"text");
-        alterColumn('{{questions}}','relevance',"text");
-        alterColumn('{{questions}}','question',"text",false);
-        alterColumn('{{quota_languagesettings}}','quotals_quota_id',"integer",false);
-        alterColumn('{{quota_languagesettings}}','quotals_message',"text",false);
-        alterColumn('{{saved_control}}','refurl',"text");
-        alterColumn('{{saved_control}}','access_code',"text",false);
-        alterColumn('{{saved_control}}','ip',"text",false);
-        alterColumn('{{saved_control}}','saved_thisstep',"text",false);
-        alterColumn('{{saved_control}}','saved_date',"datetime",false);
-        alterColumn('{{surveys}}','attributedescriptions',"text");
-        alterColumn('{{surveys}}','emailresponseto',"text");
-        alterColumn('{{surveys}}','emailnotificationto',"text");
+        if ($oldversion < 147)
+        {
+            addColumn('{{users}}','templateeditormode',"{$sVarchar}(7) NOT NULL default 'default'");
+            addColumn('{{users}}','questionselectormode',"{$sVarchar}(7) NOT NULL default 'default'");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>147),"stg_name='DBVersion'");
+        }
 
-        alterColumn('{{surveys_languagesettings}}','surveyls_description',"text");
-        alterColumn('{{surveys_languagesettings}}','surveyls_welcometext',"text");
-        alterColumn('{{surveys_languagesettings}}','surveyls_email_invite',"text");
-        alterColumn('{{surveys_languagesettings}}','surveyls_email_remind',"text");
-        alterColumn('{{surveys_languagesettings}}','surveyls_email_register',"text");
-        alterColumn('{{surveys_languagesettings}}','surveyls_email_confirm',"text");
-        alterColumn('{{surveys_languagesettings}}','surveyls_attributecaptions',"text");
-        alterColumn('{{surveys_languagesettings}}','email_admin_notification',"text");
-        alterColumn('{{surveys_languagesettings}}','email_admin_responses',"text");
-        alterColumn('{{surveys_languagesettings}}','surveyls_endtext',"text");
-        alterColumn('{{user_groups}}','description',"text",false);
+        if ($oldversion < 148)
+        {
+            addColumn('{{users}}','participant_panel',"integer NOT NULL default 0");
+
+            Yii::app()->db->createCommand()->createTable('{{participants}}',array(
+            'participant_id' => $sVarchar.'(50) NOT NULL',
+            'firstname' => $sVarchar.'(40) default NULL',
+            'lastname' => $sVarchar.'(40) default NULL',
+            'email' => $sVarchar.'(80) default NULL',
+            'language' => $sVarchar.'(40) default NULL',
+            'blacklisted' => $sVarchar.'(1) NOT NULL',
+            'owner_uid' => "integer NOT NULL"
+            ));
+            addPrimaryKey('participants', array('participant_id'));
+
+            Yii::app()->db->createCommand()->createTable('{{participant_attribute}}',array(
+            'participant_id' => $sVarchar.'(50) NOT NULL',
+            'attribute_id' => "integer NOT NULL",
+            'value' => $sVarchar.'(50) NOT NULL'
+            ));
+            addPrimaryKey('participant_attribute', array('participant_id','attribute_id'));
+
+            Yii::app()->db->createCommand()->createTable('{{participant_attribute_names}}',array(
+            'attribute_id' => $sAutoIncrement,
+            'attribute_type' => $sVarchar.'(4) NOT NULL',
+            'visible' => $sVarchar.'(5) NOT NULL',
+            'PRIMARY KEY (attribute_id,attribute_type)'
+            ));
+
+            Yii::app()->db->createCommand()->createTable('{{participant_attribute_names_lang}}',array(
+            'attribute_id' => 'integer NOT NULL',
+            'attribute_name' => $sVarchar.'(30) NOT NULL',
+            'lang' => $sVarchar.'(20) NOT NULL'
+            ));
+            addPrimaryKey('participant_attribute_names_lang', array('attribute_id','lang'));
+
+            Yii::app()->db->createCommand()->createTable('{{participant_attribute_values}}',array(
+            'attribute_id' => 'integer NOT NULL',
+            'value_id' => 'pk',
+            'value' => $sVarchar.'(20) NOT NULL'
+            ));
+
+            Yii::app()->db->createCommand()->createTable('{{participant_shares}}',array(
+            'participant_id' => $sVarchar.'(50) NOT NULL',
+            'share_uid' => 'integer NOT NULL',
+            'date_added' => 'datetime NOT NULL',
+            'can_edit' => $sVarchar.'(5) NOT NULL'
+            ));
+            addPrimaryKey('participant_shares', array('participant_id','share_uid'));
+
+            Yii::app()->db->createCommand()->createTable('{{survey_links}}',array(
+            'participant_id' => $sVarchar.'(50) NOT NULL',
+            'token_id' => 'integer NOT NULL',
+            'survey_id' => 'integer NOT NULL',
+            'date_created' => 'datetime NOT NULL'
+            ));
+            addPrimaryKey('survey_links', array('participant_id','token_id','survey_id'));
+
+            // Add language field to question_attributes table
+            addColumn('{{question_attributes}}','language',"{$sVarchar}(20)");
+
+            upgradeQuestionAttributes148();
+            fixSubquestions();
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>148),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 149)
+        {
+            $fields = array(
+            'id' => 'integer',
+            'sid' => 'integer',
+            'parameter' => $sVarchar.'(50)',
+            'targetqid' => 'integer',
+            'targetsqid' => 'integer'
+            );
+            Yii::app()->db->createCommand()->createTable('{{survey_url_parameters}}',$fields);
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>149),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 150)
+        {
+            addColumn('{{questions}}','relevance','TEXT');
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>150),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 151)
+        {
+            addColumn('{{groups}}','randomization_group',"{$sVarchar}(20) NOT NULL default ''");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>151),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 152)
+        {
+            Yii::app()->db->createCommand()->createIndex('question_attributes_idx3','{{question_attributes}}','attribute');
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>152),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 153)
+        {
+            createTable('{{expression_errors}}',array(
+            'id' => 'pk',
+            'errortime' => $sVarchar.'(50)',
+            'sid' => 'integer',
+            'gid' => 'integer',
+            'qid' => 'integer',
+            'gseq' => 'integer',
+            'qseq' => 'integer',
+            'type' => $sVarchar.'(50)',
+            'eqn' => 'text',
+            'prettyprint' => 'text'
+            ));
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>153),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 154)
+        {
+            Yii::app()->db->createCommand()->addColumn('{{groups}}','grelevance',"text");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>154),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 155)
+        {
+            addColumn('{{surveys}}','googleanalyticsstyle',"{$sVarchar}(1)");
+            addColumn('{{surveys}}','googleanalyticsapikey',"{$sVarchar}(25)");
+            try{ Yii::app()->db->createCommand()->renameColumn('{{surveys}}','showXquestions','showxquestions');} catch(Exception $e) {};
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>155),"stg_name='DBVersion'");
+        }
+
+
+        if ($oldversion < 156)
+        {
+            try
+            {
+                Yii::app()->db->createCommand()->dropTable('{{survey_url_parameters}}');
+            }
+            catch(Exception $e)
+            {
+                // do nothing
+            }
+            Yii::app()->db->createCommand()->createTable('{{survey_url_parameters}}',array(
+            'id' => 'pk',
+            'sid' => 'integer NOT NULL',
+            'parameter' => $sVarchar.'(50) NOT NULL',
+            'targetqid' => 'integer',
+            'targetsqid' => 'integer'
+            ));
+
+            Yii::app()->db->createCommand()->dropTable('{{sessions}}');
+            if ($sDBDriverName=='mysql')
+            {
+                Yii::app()->db->createCommand()->createTable('{{sessions}}',array(
+                'id' => $sVarchar.'(32) NOT NULL',
+                'expire' => 'integer',
+                'data' => 'longtext'
+                ));
+            }
+            else
+            {
+                Yii::app()->db->createCommand()->createTable('{{sessions}}',array(
+                'id' => $sVarchar.'(32) NOT NULL',
+                'expire' => 'integer',
+                'data' => 'text'
+                ));
+            }
+
+            addPrimaryKey('sessions', array('id'));
+
+            addColumn('{{surveys_languagesettings}}','surveyls_attributecaptions',"TEXT");
+            addColumn('{{surveys}}','sendconfirmation',"{$sVarchar}(1) default 'Y'");
+
+            upgradeSurveys156();
+
+            // If a survey has an deleted owner, re-own the survey to the superadmin
+            Yii::app()->db->schema->refresh();
+            Survey::model()->refreshMetaData();
+            $surveys = Survey::model();
+            $surveys = $surveys->with(array('owner'))->findAll();
+            foreach ($surveys as $row)
+            {
+                if (!isset($row->owner->attributes))
+                {
+                    Survey::model()->updateByPk($row->sid,array('owner_id'=>1));
+                }
+            }
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>156),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 157)
+        {
+            // MySQL DB corrections
+            try{ Yii::app()->db->createCommand()->dropIndex('questions_idx4','{{questions}}');} catch(Exception $e) {};
+
+            alterColumn('{{answers}}','assessment_value','integer',false , '0');
+            dropPrimaryKey('answers');
+            alterColumn('{{answers}}','scale_id','integer',false , '0');
+            addPrimaryKey('answers', array('qid','code','language','scale_id'));
+            alterColumn('{{conditions}}','method',"{$sVarchar}(5)",false , '');
+            alterColumn('{{participants}}','owner_uid','integer',false);
+            alterColumn('{{participant_attribute_names}}','visible',$sVarchar.'(5)',false);
+            alterColumn('{{questions}}','type',"{$sVarchar}(1)",false , 'T');
+            alterColumn('{{questions}}','other',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{questions}}','mandatory',"{$sVarchar}(1)");
+            alterColumn('{{questions}}','scale_id','integer',false , '0');
+            alterColumn('{{questions}}','parent_qid','integer',false ,'0');
+
+            alterColumn('{{questions}}','same_default','integer',false , '0');
+            alterColumn('{{quota}}','qlimit','integer');
+            alterColumn('{{quota}}','action','integer');
+            alterColumn('{{quota}}','active','integer',false , '1');
+            alterColumn('{{quota}}','autoload_url','integer',false , '0');
+            alterColumn('{{saved_control}}','status',"{$sVarchar}(1)",false , '');
+            alterColumn('{{sessions}}','id',"{$sVarchar}(32)",false);
+
+            alterColumn('{{surveys}}','active',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','anonymized',"{$sVarchar}(1)",false,'N');
+            alterColumn('{{surveys}}','format',"{$sVarchar}(1)");
+            alterColumn('{{surveys}}','savetimings',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','datestamp',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','usecookie',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','allowregister',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','allowsave',"{$sVarchar}(1)",false , 'Y');
+            alterColumn('{{surveys}}','autonumber_start','integer' ,false, '0');
+            alterColumn('{{surveys}}','autoredirect',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','allowprev',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','printanswers',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','ipaddr',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','refurl',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','publicstatistics',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','publicgraphs',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','listpublic',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','htmlemail',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','sendconfirmation',"{$sVarchar}(1)",false , 'Y');
+            alterColumn('{{surveys}}','tokenanswerspersistence',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','assessments',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','usecaptcha',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','usetokens',"{$sVarchar}(1)",false , 'N');
+            alterColumn('{{surveys}}','tokenlength','integer',false, '15');
+            alterColumn('{{surveys}}','showxquestions',"{$sVarchar}(1)", true , 'Y');
+            alterColumn('{{surveys}}','showgroupinfo',"{$sVarchar}(1) ", true , 'B');
+            alterColumn('{{surveys}}','shownoanswer',"{$sVarchar}(1) ", true , 'Y');
+            alterColumn('{{surveys}}','showqnumcode',"{$sVarchar}(1) ", true , 'X');
+            alterColumn('{{surveys}}','bouncetime','integer');
+            alterColumn('{{surveys}}','showwelcome',"{$sVarchar}(1)", true , 'Y');
+            alterColumn('{{surveys}}','showprogress',"{$sVarchar}(1)", true , 'Y');
+            alterColumn('{{surveys}}','allowjumps',"{$sVarchar}(1)", true , 'N');
+            alterColumn('{{surveys}}','navigationdelay','integer', false , '0');
+            alterColumn('{{surveys}}','nokeyboard',"{$sVarchar}(1)", true , 'N');
+            alterColumn('{{surveys}}','alloweditaftercompletion',"{$sVarchar}(1)", true , 'N');
+            alterColumn('{{surveys}}','googleanalyticsstyle',"{$sVarchar}(1)");
+
+            alterColumn('{{surveys_languagesettings}}','surveyls_dateformat','integer',false , 1);
+            alterColumn('{{survey_permissions}}','sid','integer',false);
+            alterColumn('{{survey_permissions}}','uid', 'integer',false);
+            alterColumn('{{survey_permissions}}','create_p', 'integer',false , '0');
+            alterColumn('{{survey_permissions}}','read_p', 'integer',false , '0');
+            alterColumn('{{survey_permissions}}','update_p','integer',false , '0');
+            alterColumn('{{survey_permissions}}','delete_p' ,'integer',false , '0');
+            alterColumn('{{survey_permissions}}','import_p','integer',false , '0');
+            alterColumn('{{survey_permissions}}','export_p' ,'integer',false , '0');
+
+            alterColumn('{{survey_url_parameters}}','targetqid' ,'integer');
+            alterColumn('{{survey_url_parameters}}','targetsqid' ,'integer');
+
+            alterColumn('{{templates_rights}}','use','integer',false );
+
+            alterColumn('{{users}}','create_survey','integer',false, '0');
+            alterColumn('{{users}}','create_user','integer',false, '0');
+            alterColumn('{{users}}','participant_panel','integer',false, '0');
+            alterColumn('{{users}}','delete_user','integer',false, '0');
+            alterColumn('{{users}}','superadmin','integer',false, '0');
+            alterColumn('{{users}}','configurator','integer',false, '0');
+            alterColumn('{{users}}','manage_template','integer',false, '0');
+            alterColumn('{{users}}','manage_label','integer',false, '0');
+            alterColumn('{{users}}','dateformat','integer',false, 1);
+            alterColumn('{{users}}','participant_panel','integer',false , '0');
+            alterColumn('{{users}}','parent_id','integer',false);
+            alterColumn('{{surveys_languagesettings}}','surveyls_survey_id','integer',false);
+            alterColumn('{{user_groups}}','owner_id',"integer",false);
+            alterColumn('{{user_in_groups}}','ugid',"integer",false);
+            alterColumn('{{user_in_groups}}','uid',"integer",false);
+
+            // Additional corrections for Postgres
+            try{ Yii::app()->db->createCommand()->createIndex('questions_idx3','{{questions}}','gid');} catch(Exception $e) {};
+            try{ Yii::app()->db->createCommand()->createIndex('conditions_idx3','{{conditions}}','cqid');} catch(Exception $e) {};
+            try{ Yii::app()->db->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e) {};
+            try{ Yii::app()->db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}');} catch(Exception $e) {};
+            try{ Yii::app()->db->createCommand()->dropIndex('{{user_name_key}}','{{users}}');} catch(Exception $e) {};
+            try{ Yii::app()->db->createCommand()->createIndex('users_name','{{users}}','users_name',true);} catch(Exception $e) {};
+            try{ addPrimaryKey('user_in_groups', array('ugid','uid'));} catch(Exception $e) {};
+
+            alterColumn('{{participant_attribute}}','value',"{$sVarchar}(50)", false);
+            alterColumn('{{participant_attribute_names}}','attribute_type',"{$sVarchar}(4)", false);
+            try{ dropColumn('{{participant_attribute_names_lang}}','id');} catch(Exception $e) {};
+            try{ addPrimaryKey('participant_attribute_names_lang',array('attribute_id','lang'));} catch(Exception $e) {};
+            try{ Yii::app()->db->createCommand()->renameColumn('{{participant_shares}}','shared_uid','share_uid');} catch(Exception $e) {};
+            alterColumn('{{participant_shares}}','date_added',"datetime", false);
+            alterColumn('{{participants}}','firstname',"{$sVarchar}(40)");
+            alterColumn('{{participants}}','lastname',"{$sVarchar}(40)");
+            alterColumn('{{participants}}','email',"{$sVarchar}(80)");
+            alterColumn('{{participants}}','language',"{$sVarchar}(40)");
+            alterColumn('{{quota_languagesettings}}','quotals_name',"string");
+            alterColumn('{{survey_permissions}}','sid','integer',false);
+            alterColumn('{{survey_permissions}}','uid','integer',false);
+            alterColumn('{{users}}','htmleditormode',"{$sVarchar}(7)",true,'default');
+            alterColumn('{{survey_links}}','date_created',"datetime",true);
+            alterColumn('{{saved_control}}','identifier',"text",false);
+            alterColumn('{{saved_control}}','email',"{$sVarchar}(320)");
+            alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320)");
+            alterColumn('{{surveys}}','bounce_email',"{$sVarchar}(320)");
+            alterColumn('{{users}}','email',"{$sVarchar}(320)");
+
+            try{ Yii::app()->db->createCommand()->dropIndex('assessments_idx','{{assessments}}');} catch(Exception $e) {};
+            try{ Yii::app()->db->createCommand()->createIndex('assessments_idx3','{{assessments}}','gid');} catch(Exception $e) {};
+
+            try{ Yii::app()->db->createCommand()->dropIndex('ixcode','{{labels}}');} catch(Exception $e) {};
+            try{ Yii::app()->db->createCommand()->dropIndex('{{labels_ixcode_idx}}','{{labels}}');} catch(Exception $e) {};
+            try{ Yii::app()->db->createCommand()->createIndex('labels_code_idx','{{labels}}','code');} catch(Exception $e) {};
 
 
 
-        alterColumn('{{conditions}}','value','string',false,'');
-        alterColumn('{{participant_shares}}','can_edit',"{$sVarchar}(5)",false);
+            if ($sDBDriverName=='pgsql')
+            {
+                try{ Yii::app()->db->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;} catch(Exception $e) {};
+                try{ Yii::app()->db->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;} catch(Exception $e) {};
+            }
 
-        alterColumn('{{users}}','password',"binary",false);
-        dropColumn('{{users}}','one_time_pw');
-        addColumn('{{users}}','one_time_pw','binary');
+            // Additional corrections for MSSQL
+            alterColumn('{{answers}}','answer',"text",false);
+            alterColumn('{{assessments}}','name',"text",false);
+            alterColumn('{{assessments}}','message',"text",false);
+            alterColumn('{{defaultvalues}}','defaultvalue',"text");
+            alterColumn('{{expression_errors}}','eqn',"text");
+            alterColumn('{{expression_errors}}','prettyprint',"text");
+            alterColumn('{{groups}}','description',"text");
+            alterColumn('{{groups}}','grelevance',"text");
+            alterColumn('{{labels}}','title',"text");
+            alterColumn('{{question_attributes}}','value',"text");
+            alterColumn('{{questions}}','preg',"text");
+            alterColumn('{{questions}}','help',"text");
+            alterColumn('{{questions}}','relevance',"text");
+            alterColumn('{{questions}}','question',"text",false);
+            alterColumn('{{quota_languagesettings}}','quotals_quota_id',"integer",false);
+            alterColumn('{{quota_languagesettings}}','quotals_message',"text",false);
+            alterColumn('{{saved_control}}','refurl',"text");
+            alterColumn('{{saved_control}}','access_code',"text",false);
+            alterColumn('{{saved_control}}','ip',"text",false);
+            alterColumn('{{saved_control}}','saved_thisstep',"text",false);
+            alterColumn('{{saved_control}}','saved_date',"datetime",false);
+            alterColumn('{{surveys}}','attributedescriptions',"text");
+            alterColumn('{{surveys}}','emailresponseto',"text");
+            alterColumn('{{surveys}}','emailnotificationto',"text");
+
+            alterColumn('{{surveys_languagesettings}}','surveyls_description',"text");
+            alterColumn('{{surveys_languagesettings}}','surveyls_welcometext',"text");
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_invite',"text");
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_remind',"text");
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_register',"text");
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_confirm',"text");
+            alterColumn('{{surveys_languagesettings}}','surveyls_attributecaptions',"text");
+            alterColumn('{{surveys_languagesettings}}','email_admin_notification',"text");
+            alterColumn('{{surveys_languagesettings}}','email_admin_responses',"text");
+            alterColumn('{{surveys_languagesettings}}','surveyls_endtext',"text");
+            alterColumn('{{user_groups}}','description',"text",false);
 
 
-        Yii::app()->db->createCommand()->update('{{question_attributes}}',array('value'=>'1'),"attribute = 'random_order' and value = '2'");
 
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>157),"stg_name='DBVersion'");
-    }
+            alterColumn('{{conditions}}','value','string',false,'');
+            alterColumn('{{participant_shares}}','can_edit',"{$sVarchar}(5)",false);
 
-    if ($oldversion < 158)
-    {
-        LimeExpressionManager::UpgradeConditionsToRelevance();
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>158),"stg_name='DBVersion'");
-    }
-    if ($oldversion < 159)
-    {
-        alterColumn('{{failed_login_attempts}}', 'ip', "{$sVarchar}(40)",false);
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>159),"stg_name='DBVersion'");
-    }
+            alterColumn('{{users}}','password',"binary",false);
+            dropColumn('{{users}}','one_time_pw');
+            addColumn('{{users}}','one_time_pw','binary');
 
-    if ($oldversion < 160)
-    {
-        alterLanguageCode('it','it-informal');
-        alterLanguageCode('it-formal','it');
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>160),"stg_name='DBVersion'");
-    }
-    if ($oldversion < 161)
-    {
-        addColumn('{{survey_links}}','date_invited','datetime NULL default NULL');
-        addColumn('{{survey_links}}','date_completed','datetime NULL default NULL');
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>161),"stg_name='DBVersion'");
-    }
-    if ($oldversion < 162)
-    {
-        /* Fix participant db types */
-        alterColumn('{{participant_attribute}}', 'value', "text", false);
-        alterColumn('{{participant_attribute_names_lang}}', 'attribute_name', "{$sVarchar}(255)", false);
-        alterColumn('{{participant_attribute_values}}', 'value', "text", false);
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>162),"stg_name='DBVersion'");
-    }
-    if ($oldversion < 163)
-    {
-        //Replace  by <script type="text/javascript" src="{TEMPLATEURL}template.js"></script> by {TEMPLATEJS}
 
-        $replacedTemplate=replaceTemplateJS();
+            Yii::app()->db->createCommand()->update('{{question_attributes}}',array('value'=>'1'),"attribute = 'random_order' and value = '2'");
 
-    }
-    
-    if ($oldversion < 164)
-    {
-        // fix survey tables for missing or incorrect token field
-        upgradeSurveyTables164();
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>157),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 158)
+        {
+            LimeExpressionManager::UpgradeConditionsToRelevance();
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>158),"stg_name='DBVersion'");
+        }
+        if ($oldversion < 159)
+        {
+            alterColumn('{{failed_login_attempts}}', 'ip', "{$sVarchar}(40)",false);
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>159),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 160)
+        {
+            alterLanguageCode('it','it-informal');
+            alterLanguageCode('it-formal','it');
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>160),"stg_name='DBVersion'");
+        }
+        if ($oldversion < 161)
+        {
+            addColumn('{{survey_links}}','date_invited','datetime NULL default NULL');
+            addColumn('{{survey_links}}','date_completed','datetime NULL default NULL');
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>161),"stg_name='DBVersion'");
+        }
+        if ($oldversion < 162)
+        {
+            /* Fix participant db types */
+            alterColumn('{{participant_attribute}}', 'value', "text", false);
+            alterColumn('{{participant_attribute_names_lang}}', 'attribute_name', "{$sVarchar}(255)", false);
+            alterColumn('{{participant_attribute_values}}', 'value', "text", false);
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>162),"stg_name='DBVersion'");
+        }
+        if ($oldversion < 163)
+        {
+            //Replace  by <script type="text/javascript" src="{TEMPLATEURL}template.js"></script> by {TEMPLATEJS}
+
+            $replacedTemplate=replaceTemplateJS();
+
+        }
         
-        // Not updating settings table as upgrade process takes care of that step now
+        if ($oldversion < 164)
+        {
+            // fix survey tables for missing or incorrect token field
+            upgradeSurveyTables164();
+            
+            // Not updating settings table as upgrade process takes care of that step now
+        }
+        $oTransaction->commit();
     }
+    catch(Exception $e)
+    {
+       $oTransaction->rollback();
+       echo '<br /><br />'.$clang->gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
+       return false;
+    }        
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
+    return true;
 }
 
 function upgradeSurveys156()
