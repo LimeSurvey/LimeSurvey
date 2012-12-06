@@ -749,6 +749,15 @@ class Participants extends CActiveRecord
                 ->group('sl.participant_id');
                 $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);             
             }
+            elseif($sFieldname=="surveyid")
+            {
+                $subQuery = Yii::app()->db->createCommand()
+                ->select('sl.participant_id')
+                ->from('{{survey_links}} sl')
+                ->where('sl.survey_id '. $operator.' '.$param)
+                ->group('sl.participant_id');
+                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);             
+            }
             elseif($sFieldname=="surveys") //Search by quantity of linked surveys
             {
                 $subQuery = Yii::app()->db->createCommand()
