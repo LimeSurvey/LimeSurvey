@@ -55,6 +55,16 @@
 					this._element = CKEDITOR.plugins.limereplacementfields.getSelectedPlaceHoder( editor );
 
 				this.setupContent( this._element );
+				
+				if($('#cquestions option:first').width() == 0) { // IE7 hack
+					var maxW = 0;
+					$('#cquestions option').wrapInner('<span />').each(function(i){
+						if($('span', this).outerWidth() > maxW){
+							maxW = $('span', this).outerWidth();
+						}
+					});
+					$('#cquestions').width(maxW + 60);
+				}
 			},
 			onOk : function()
 			{
