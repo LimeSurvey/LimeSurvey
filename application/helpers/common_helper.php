@@ -4909,12 +4909,6 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
         foreach ($quotas->languagesettings[0]->attributes as $k => $v)
             $survey_quotas[$k] = $v;
 
-        //Modify the URL - thanks janokary
-        $survey_quotas['quotals_url']=str_replace("{SAVEDID}",!empty(Yii::app()->session['srid']) ? Yii::app()->session['srid'] : '', $survey_quotas['quotals_url']);
-        $survey_quotas['quotals_url']=str_replace("{SID}", $surveyid, $survey_quotas['quotals_url']);
-        $survey_quotas['quotals_url']=str_replace("{LANG}", Yii::app()->lang->getlangcode(), $survey_quotas['quotals_url']);
-        $survey_quotas['quotals_url']=str_replace("{TOKEN}",$clienttoken, $survey_quotas['quotals_url']);
-
         $quota_info=array('Name' => $survey_quotas['name'],
         'Limit' => $survey_quotas['qlimit'],
         'Action' => $survey_quotas['action'],
