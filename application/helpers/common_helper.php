@@ -1045,7 +1045,10 @@ function getUserList($outputformat='fullinfoarray')
                     )
                 )
             UNION
-            SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}";
+            SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}
+            UNION
+            SELECT {$sSelectFields} from {{users}} v where uid={$myuid}";
+            
         }
         else
         {
