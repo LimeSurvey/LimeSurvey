@@ -352,10 +352,7 @@ class SurveyRuntimeHelper {
                 //Before doing the "templatereplace()" function, check the $thissurvey['url']
                 //field for limereplace stuff, and do transformations!
                 $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
-                $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'],array('SID'=>$thissurvey['sid'],
-                                                                                                'SAVEDID'=>(isset($_SESSION[$LEMsessid]['srid']) ? $_SESSION[$LEMsessid]['srid'] : ''),
-                                                                                                'TOKEN'=>(isset($clienttoken) ? $clienttoken : ''),
-                                                                                                ));   // to do INSERTANS substitutions
+                $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], $thissurvey);   // to do INSERTANS substitutions
                 
                 //END PAGE - COMMIT CHANGES TO DATABASE
                 if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit

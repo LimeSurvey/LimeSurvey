@@ -5653,7 +5653,7 @@ function getUpdateInfo()
 {
     if (getGlobalSetting('SessionName')=='')
     {
-        setGlobalSetting('SessionName',randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"§$%&/()=?´`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789'));
+        setGlobalSetting('SessionName',randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"$%&/()=?`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789'));
     }
     Yii::import('application.libraries.admin.http.httpRequestIt');
     $http=new httpRequestIt;
@@ -6131,12 +6131,6 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
             // !!! Doubting this
             foreach ($_survey_quotas->languagesettings[0] as $k => $v)
                 $survey_quotas[$k] = $v;
-
-            //Modify the URL - thanks janokary
-            $survey_quotas['quotals_url']=str_replace("{SAVEDID}",!empty(Yii::app()->session['srid']) ? Yii::app()->session['srid'] : '', $survey_quotas['quotals_url']);
-            $survey_quotas['quotals_url']=str_replace("{SID}", $surveyid, $survey_quotas['quotals_url']);
-            $survey_quotas['quotals_url']=str_replace("{LANG}", Yii::app()->lang->getlangcode(), $survey_quotas['quotals_url']);
-            $survey_quotas['quotals_url']=str_replace("{TOKEN}",$clienttoken, $survey_quotas['quotals_url']);
 
             array_push($quota_info,array('Name' => $survey_quotas['name'],
             'Limit' => $survey_quotas['qlimit'],
