@@ -49,18 +49,19 @@
         {
             return;
         }
-
         $aRow = Yii::app()->db->createCommand($query)->queryRow();
         if (!$aRow)
         {
             safeDie($clang->gT("There is no matching saved survey")."<br />\n");
+            return false;
         }
         else
         {
             //A match has been found. Let's load the values!
             //If this is from an email, build surveysession first
             $_SESSION['survey_'.$surveyid]['LEMtokenResume']=true;
-
+            // Get if survey is been answered
+            $submitdate=$aRow['submitdate'];
             foreach ($aRow as $column => $value)
             {
                 if ($column == "token")
@@ -73,11 +74,18 @@
                     $_SESSION['survey_'.$surveyid]['step']=$value;
                     $thisstep=$value-1;
                 }
-                elseif ($column =='lastpage' && isset($_GET['token']) && $thissurvey['alloweditaftercompletion'] != 'Y' )
+                elseif ($column =='lastpage' && isset($_GET['token']))
                 {
-                    if ($value<1) $value=1;
-                    $_SESSION['survey_'.$surveyid]['step']=$value;
-                    $thisstep=$value-1;
+                    if(is_null($submitdate) || $submitdate=="N")
+                    {
+                        if ($value<1) $value=1;
+                        $_SESSION['survey_'.$surveyid]['step']=$value;
+                        $thisstep=$value-1;
+                    }
+                    else
+                    {
+                        $_SESSION['survey_'.$surveyid]['maxstep']=$value;
+                    }
                 }
                 /*
                 Commented this part out because otherwise startlanguage would overwrite any other language during a running survey.
@@ -108,7 +116,7 @@
                 else
                 {
                     //Only make session variables for those in insertarray[]
-                    if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']))
+                    if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$column]))
                     {
                         if (($_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'N' ||
                         $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'K' ||

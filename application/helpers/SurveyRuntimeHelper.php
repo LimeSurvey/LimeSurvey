@@ -112,7 +112,9 @@ class SurveyRuntimeHelper {
                     $move = "movenext";
                     $_SESSION[$LEMsessid]['step']=1;
                 }
-            } else if($surveyid != LimeExpressionManager::getLEMsurveyId()) {
+            }
+            elseif($surveyid != LimeExpressionManager::getLEMsurveyId())
+            {
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
                 LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
             }
@@ -164,6 +166,10 @@ class SurveyRuntimeHelper {
             if (isset($_SESSION[$LEMsessid]['LEMtokenResume']))
             {
                 LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
+                if(isset($_SESSION[$LEMsessid]['maxstep']) && $_SESSION[$LEMsessid]['maxstep']>$_SESSION[$LEMsessid]['step'])
+                {
+                    LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['maxstep'], false, false);
+                }
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
                 unset($_SESSION[$LEMsessid]['LEMtokenResume']);
             }
@@ -275,8 +281,14 @@ class SurveyRuntimeHelper {
             {
                 // must do this here to process the POSTed values
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false);   // by jumping to current step, saves data so far
-
-                $cSave->showsaveform(); // generates a form and exits, awaiting input
+                if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
+                {
+                    $cSave->showsaveform(); // generates a form and exits, awaiting input
+                }
+                else 
+                {
+                    // TODO : update lastpage to $_SESSION[$LEMsessid]['step'] in Survey_dynamic
+                }
             }
 
             if ($thissurvey['active'] == "Y" && isset($_POST['saveprompt']))
