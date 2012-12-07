@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-12-06 23:05:54+00:00\n"
+"POT-Creation-Date: 2012-12-07 23:05:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -128,7 +128,7 @@ msgid "Version"
 msgstr ""
 
 #: application/controllers/AdminController.php:418
-#: application/controllers/admin/authentication.php:332
+#: application/controllers/admin/authentication.php:331
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr ""
 
@@ -377,8 +377,8 @@ msgstr ""
 
 #: application/controllers/RegisterController.php:88
 #: application/controllers/survey/index.php:412
-#: application/helpers/frontend_helper.php:1428
-#: application/helpers/frontend_helper.php:1655
+#: application/helpers/frontend_helper.php:1436
+#: application/helpers/frontend_helper.php:1663
 #: application/libraries/Save.php:129
 msgid "The answer to the security question is incorrect."
 msgstr ""
@@ -637,11 +637,11 @@ msgstr ""
 msgid "Reloading screen. Please wait."
 msgstr ""
 
-#: application/controllers/admin/authentication.php:350
+#: application/controllers/admin/authentication.php:349
 msgid "Incorrect username and/or password!"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:359
+#: application/controllers/admin/authentication.php:358
 msgid "You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again."
 msgstr ""
 
@@ -1402,7 +1402,7 @@ msgid "and"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1362
-#: application/helpers/SurveyRuntimeHelper.php:467
+#: application/helpers/SurveyRuntimeHelper.php:479
 msgid "or"
 msgstr ""
 
@@ -3130,9 +3130,9 @@ msgstr ""
 #: application/helpers/common_helper.php:6525
 #: application/helpers/common_helper.php:6529
 #: application/helpers/common_helper.php:6533
-#: application/helpers/frontend_helper.php:1460
-#: application/helpers/frontend_helper.php:1537
-#: application/helpers/frontend_helper.php:1707
+#: application/helpers/frontend_helper.php:1468
+#: application/helpers/frontend_helper.php:1545
+#: application/helpers/frontend_helper.php:1715
 #: application/helpers/replacements_helper.php:669
 #: application/views/admin/authentication/message.php:3
 #: application/views/admin/participants/attributeMapCSV_view.php:76
@@ -4113,19 +4113,19 @@ msgid "Load unfinished survey"
 msgstr ""
 
 #: application/controllers/survey/index.php:475
-#: application/helpers/frontend_helper.php:1502
-#: application/helpers/frontend_helper.php:1574
-#: application/helpers/frontend_helper.php:1619
-#: application/helpers/frontend_helper.php:1658
+#: application/helpers/frontend_helper.php:1510
+#: application/helpers/frontend_helper.php:1582
+#: application/helpers/frontend_helper.php:1627
+#: application/helpers/frontend_helper.php:1666
 #: application/views/entertoken_view.php:8
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
 #: application/controllers/survey/index.php:476
 #: application/controllers/survey/index.php:508
-#: application/helpers/frontend_helper.php:1576
-#: application/helpers/frontend_helper.php:1621
-#: application/helpers/frontend_helper.php:1810
+#: application/helpers/frontend_helper.php:1584
+#: application/helpers/frontend_helper.php:1629
+#: application/helpers/frontend_helper.php:1818
 msgid "For further information please contact %s"
 msgstr ""
 
@@ -4224,91 +4224,91 @@ msgstr ""
 msgid "Forbidden Extension"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:150
+#: application/helpers/SurveyRuntimeHelper.php:152
 msgid "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:254
+#: application/helpers/SurveyRuntimeHelper.php:260
 msgid "Save your responses so far"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:385
-#: application/helpers/frontend_helper.php:1349
+#: application/helpers/SurveyRuntimeHelper.php:397
+#: application/helpers/frontend_helper.php:1357
 msgid "Did Not Save"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:386
+#: application/helpers/SurveyRuntimeHelper.php:398
 msgid "Your survey responses have not been recorded. This survey is not yet active."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:391
+#: application/helpers/SurveyRuntimeHelper.php:403
 msgid "Clear Responses"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:446
+#: application/helpers/SurveyRuntimeHelper.php:458
 #: application/helpers/replacements_helper.php:850
 #: application/views/admin/templates/templateeditor_completed_view.php:2
 msgid "Thank you!"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:447
+#: application/helpers/SurveyRuntimeHelper.php:459
 #: application/views/admin/templates/templateeditor_completed_view.php:4
 msgid "Your survey responses have been recorded."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:460
+#: application/helpers/SurveyRuntimeHelper.php:472
 msgid "Print your answers."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:476
+#: application/helpers/SurveyRuntimeHelper.php:488
 msgid "View the statistics for this survey."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:526
+#: application/helpers/SurveyRuntimeHelper.php:538
 msgid "Sorry. There is no matching survey."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:543
+#: application/helpers/SurveyRuntimeHelper.php:555
 msgid "Invalid group number for this survey: "
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:549
+#: application/helpers/SurveyRuntimeHelper.php:561
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:567
+#: application/helpers/SurveyRuntimeHelper.php:579
 msgid "Submit your answers"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:568
+#: application/helpers/SurveyRuntimeHelper.php:580
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:882
+#: application/helpers/SurveyRuntimeHelper.php:894
 #: application/helpers/qanda_helper.php:474
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:888
+#: application/helpers/SurveyRuntimeHelper.php:900
 #: application/helpers/qanda_helper.php:504
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:894
+#: application/helpers/SurveyRuntimeHelper.php:906
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1032
-#: application/helpers/frontend_helper.php:2748
+#: application/helpers/SurveyRuntimeHelper.php:1044
+#: application/helpers/frontend_helper.php:2756
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1040
+#: application/helpers/SurveyRuntimeHelper.php:1052
 msgid "Question index"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1108
-#: application/helpers/frontend_helper.php:2213
+#: application/helpers/SurveyRuntimeHelper.php:1120
+#: application/helpers/frontend_helper.php:2221
 #: application/helpers/replacements_helper.php:389
 #: application/views/admin/dataentry/active_html_view.php:67
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
@@ -5154,7 +5154,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:2342
 #: application/helpers/common_helper.php:5468
-#: application/helpers/frontend_helper.php:1678
+#: application/helpers/frontend_helper.php:1686
 #: application/views/admin/dataentry/caption_view.php:29
 #: application/views/admin/participants/attributeMap_view.php:96
 #: application/views/admin/token/browse.php:85
@@ -7096,99 +7096,99 @@ msgstr ""
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:56
+#: application/helpers/frontend_helper.php:55
 msgid "There is no matching saved survey"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:160
+#: application/helpers/frontend_helper.php:168
 msgid "You have completed %s%% of this survey"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:815
+#: application/helpers/frontend_helper.php:823
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:828
-#: application/helpers/frontend_helper.php:834
+#: application/helpers/frontend_helper.php:836
+#: application/helpers/frontend_helper.php:842
 msgid "Sorry, only %s extensions are allowed!"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:846
+#: application/helpers/frontend_helper.php:854
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1350
+#: application/helpers/frontend_helper.php:1358
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1353
+#: application/helpers/frontend_helper.php:1361
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1358
+#: application/helpers/frontend_helper.php:1366
 msgid "An error occurred saving a response to survey id"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1359
+#: application/helpers/frontend_helper.php:1367
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1364
+#: application/helpers/frontend_helper.php:1372
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1366
+#: application/helpers/frontend_helper.php:1374
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1368
+#: application/helpers/frontend_helper.php:1376
 msgid "Error saving results"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1375
+#: application/helpers/frontend_helper.php:1383
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1431
+#: application/helpers/frontend_helper.php:1439
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1455
+#: application/helpers/frontend_helper.php:1463
 msgid "Security question:"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1503
-#: application/helpers/frontend_helper.php:1663
+#: application/helpers/frontend_helper.php:1511
+#: application/helpers/frontend_helper.php:1671
 #: application/views/entertoken_view.php:9
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1508
-#: application/helpers/frontend_helper.php:1696
+#: application/helpers/frontend_helper.php:1516
+#: application/helpers/frontend_helper.php:1704
 msgid "Token:"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1533
-#: application/helpers/frontend_helper.php:1704
+#: application/helpers/frontend_helper.php:1541
+#: application/helpers/frontend_helper.php:1712
 #: application/helpers/replacements_helper.php:667
 msgid "Security Question"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1575
-#: application/helpers/frontend_helper.php:1620
+#: application/helpers/frontend_helper.php:1583
+#: application/helpers/frontend_helper.php:1628
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1682
+#: application/helpers/frontend_helper.php:1690
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1809
+#: application/helpers/frontend_helper.php:1817
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2190
-#: application/helpers/frontend_helper.php:2622
+#: application/helpers/frontend_helper.php:2198
+#: application/helpers/frontend_helper.php:2630
 #: application/views/admin/templates/templateeditor_navigator_view.php:5
 #: application/views/installer/dbconfig_view.php:87
 #: application/views/installer/dbsettings_view.php:29
@@ -7198,9 +7198,9 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2197
-#: application/helpers/frontend_helper.php:2203
-#: application/helpers/frontend_helper.php:2208
+#: application/helpers/frontend_helper.php:2205
+#: application/helpers/frontend_helper.php:2211
+#: application/helpers/frontend_helper.php:2216
 #: application/views/admin/participants/displayParticipants_view.php:129
 #: application/views/admin/quotas/newanswer_view.php:33
 #: application/views/admin/quotas/newanswertwo_view.php:45
@@ -7853,6 +7853,9 @@ msgid "Spanish"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:474
+msgid "Spanish (Chile)"
+msgstr ""
+
 #: application/helpers/surveytranslator_helper.php:481
 msgid "Spanish (Mexico)"
 msgstr ""
@@ -7951,23 +7954,23 @@ msgstr ""
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1043
+#: application/helpers/update/updatedb_helper.php:1045
 msgid "An non-recoverable error happened during the update. Error details:"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1047
+#: application/helpers/update/updatedb_helper.php:1049
 msgid "Database update finished (%s)"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1841
+#: application/helpers/update/updatedb_helper.php:1843
 msgid "Some user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1843
+#: application/helpers/update/updatedb_helper.php:1845
 msgid "Template(s) to be verified :"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1849
+#: application/helpers/update/updatedb_helper.php:1851
 msgid "All %s user templates updated."
 msgstr ""
 
