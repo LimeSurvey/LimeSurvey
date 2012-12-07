@@ -33,7 +33,7 @@ function db_upgrade_all($oldversion) {
     $sVarchar = Yii::app()->getConfig('varchar');
     $sAutoIncrement  = Yii::app()->getConfig('autoincrement');
 
-    $oTransaction=Yii::app()->db->beginTransaction();
+    $oTransactioultn=Yii::app()->db->beginTransaction();
     try
     {
         if ($oldversion < 111)
@@ -1025,6 +1025,7 @@ function db_upgrade_all($oldversion) {
             //Replace  by <script type="text/javascript" src="{TEMPLATEURL}template.js"></script> by {TEMPLATEJS}
 
             $replacedTemplate=replaceTemplateJS();
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>163),"stg_name='DBVersion'");
 
         }
         
@@ -1032,6 +1033,7 @@ function db_upgrade_all($oldversion) {
         {
             // fix survey tables for missing or incorrect token field
             upgradeSurveyTables164();
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>164),"stg_name='DBVersion'");
             
             // Not updating settings table as upgrade process takes care of that step now
         }
