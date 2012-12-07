@@ -1,10 +1,9 @@
-<?php echo CHtml::form(array("admin/user/sa/userrights"), 'post', array('name'=>'moduserrightsform', 'id'=>'moduserrightsform')); ?>
-<table width='100%' border='0'>
-<tr>
-<td colspan='8' class='header ui-widget-header' align='center'>
-<?php $clang->eT("Set User Rights");?>:<?php echo htmlspecialchars(sanitize_user($_POST['user']));?>
-</td>
-</tr>
+
+<div class="header ui-widget-header"><?php $clang->eT("Set User Rights");?></div>
+<div id="tabs">
+    <ul>
+        <li><a href="#setuserright-<?php echo $postuserid; ?>"><?php echo htmlspecialchars(sanitize_user($_POST['user']));?></a></li>
+    </ul>
 
 <?php // HERE WE LIST FOR USER RIGHTS YOU CAN SET TO a USER
 // YOU CAN ONLY SET AT MOST THE RIGHTS YOU have yourself
@@ -18,116 +17,68 @@ foreach ($userlist as $usr) {
         $adminquery = "SELECT uid FROM {{users}} WHERE parent_id=0";
         $row = Yii::app()->db->createCommand($adminquery)->queryRow();
         ?>
-
-        <tr>
-
-        <?php // Only Initial SuperAdmin can give SuperAdmin rights
-        if($row['uid'] == Yii::app()->session['loginID'])
-        { // RENAMED AS SUPERADMIN
-            echo "<th align='center' class='admincell'>".$clang->gT("Super-Administrator")."</th>\n";
-        }
-        if($parent['participant_panel']) {
-            echo "<th align='center' >".$clang->gT("Participant panel")."</th>\n";
-        }
-        if($parent['create_survey']) {
-            echo "<th align='center'>".$clang->gT("Create survey")."</th>\n";
-        }
-        if($parent['configurator']) {
-            echo "<th align='center'>".$clang->gT("Configurator")."</th>\n";
-        }
-        if($parent['create_user']) {
-            echo "<th align='center'>".$clang->gT("Create user")."</th>\n";
-        }
-        if($parent['delete_user']) {
-            echo "<th align='center'>".$clang->gT("Delete user")."</th>\n";
-        }
-        if($parent['manage_template']) {
-            echo "<th align='center'>".$clang->gT("Use all/manage templates")."</th>\n";
-        }
-        if($parent['manage_label']) {
-            echo "<th align='center'>".$clang->gT("Manage labels")."</th>\n";
-        }
-        ?>
-
-        </tr>
-        <tr>
-
-        <?php
-        //// Only Initial SuperAdmmin can give SuperAdmin right
-        if($row['uid'] ==  Yii::app()->session['loginID']) {
-            echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"superadmin\" id=\"superadmin\" value=\"superadmin\"";
-            if($usr['superadmin']) {
-                echo " checked='checked' ";
-            }
-            echo "onclick=\"if (this.checked == true) { document.getElementById('create_survey').checked=true;document.getElementById('configurator').checked=true;document.getElementById('participant_panel').checked=true;document.getElementById('configurator').checked=true;document.getElementById('create_user').checked=true;document.getElementById('delete_user').checked=true;document.getElementById('manage_template').checked=true;document.getElementById('manage_label').checked=true;}\"";
-            echo " />\n";
-        }
+        <div id="setuserright-<?php echo $usr['uid'];?>">
+        <?php echo CHtml::form(array("admin/user/sa/userrights"), 'post', array('name'=>'moduserrightsform', 'id'=>'moduserrightsform','class'=>'form44')); ?>
+        <ul>
+        <?php if($row['uid'] == Yii::app()->session['loginID']) { ?>
+            <li>
+                <label for='superadmin' class='warning warningtitle'><?php echo $clang->gT("Super-Administrator") ?></label>
+                <?php echo CHtml::checkBox('superadmin',$usr['superadmin'],array('value'=>'superadmin','class'=>'checkboxbtn')) ?>
+            </li>
+        <?php } ?>
+        <?php if($parent['participant_panel']) { ?>
+            <li>
+                <label for="participant_panel"><?php echo $clang->gT("Participant panel"); ?></label>
+                <?php echo CHtml::checkBox('participant_panel',$usr['participant_panel'],array('value'=>'participant_panel','class'=>'checkboxbtn withadmin')) ?>
+            </li>
+        <?php } ?>
+        <?php if($parent['create_survey']) { ?>
+            <li>
+                <label for="create_survey"><?php echo $clang->gT("Create survey"); ?></label>
+                <?php echo CHtml::checkBox('create_survey',$usr['create_survey'],array('value'=>'create_survey','class'=>'checkboxbtn withadmin')) ?>
+            </li>
+        <?php } ?>
+        <?php if($parent['configurator']) { ?>
+            <li>
+                <label for="configurator"><?php echo $clang->gT("Configurator"); ?></label>
+                <?php echo CHtml::checkBox('configurator',$usr['configurator'],array('value'=>'configurator','class'=>'checkboxbtn withadmin')) ?>
+            </li>
+        <?php } ?>
+        <?php if($parent['create_user']) { ?>
+            <li>
+                <label for="create_user"><?php echo $clang->gT("Create user"); ?></label>
+                <?php echo CHtml::checkBox('create_user',$usr['create_user'],array('value'=>'create_user','class'=>'checkboxbtn withadmin')) ?>
+            </li>
+        <?php } ?>
+        <?php if($parent['delete_user']) { ?>
+            <li>
+                <label for=""><?php echo $clang->gT("Delete user"); ?></label>
+                <?php echo CHtml::checkBox('delete_user',$usr['delete_user'],array('value'=>'delete_user','class'=>'checkboxbtn withadmin')) ?>
+            </li>
+        <?php } ?>
+        <?php if($parent['manage_template']) { ?>
+            <li>
+                <label for="manage_template"><?php echo $clang->gT("Use all/manage templates"); ?></label>
+                <?php echo CHtml::checkBox('manage_template',$usr['manage_template'],array('value'=>'manage_template','class'=>'checkboxbtn withadmin')) ?>
+            </li>
+        <?php } ?>
+        <?php if($parent['manage_label']) { ?>
+            <li>
+                <label for=""><?php echo $clang->gT("Manage labels"); ?></label>
+                <?php echo CHtml::checkBox('manage_label',$usr['manage_label'],array('value'=>'manage_label','class'=>'checkboxbtn withadmin')) ?>
+            </li>
+        <?php } ?>
+    </ul>
+    <p>
         
-        if($parent['participant_panel']) {
-            echo "</td>\n";
-            // Only Initial SuperAdmmin can give Participant Panel's right
-            echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"participant_panel\" id=\"participant_panel\" value=\"participant_panel\"";
-            if($usr['participant_panel']) {
-                echo " checked='checked' ";
-            }
-            echo " /></td>\n";
-        }
-        
-        if($parent['create_survey']) {
-            echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"create_survey\" id=\"create_survey\" value=\"create_survey\"";
-            if($usr['create_survey']) {
-                echo " checked='checked' ";
-            }
-            echo " /></td>\n";
-        }
-        if($parent['configurator']) {
-            echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"configurator\" id=\"configurator\" value=\"configurator\"";
-            if($usr['configurator']) {
-                echo " checked='checked' ";
-            }
-            echo " /></td>\n";
-        }
-        if($parent['create_user']) {
-            echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"create_user\" id=\"create_user\" value=\"create_user\"";
-            if($usr['create_user']) {
-                echo " checked='checked' ";
-            }
-            echo " /></td>\n";
-        }
-        if($parent['delete_user']) {
-            echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"delete_user\" id=\"delete_user\" value=\"delete_user\"";
-            if($usr['delete_user']) {
-                echo " checked='checked' ";
-            }
-            echo " /></td>\n";
-        }
-        if($parent['manage_template']) {
-            echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"manage_template\" id=\"manage_template\" value=\"manage_template\"";
-            if($usr['manage_template']) {
-                echo " checked='checked' ";
-            }
-            echo " /></td>\n";
-        }
-        if($parent['manage_label']) {
-            echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"manage_label\" id=\"manage_label\" value=\"manage_label\"";
-            if($usr['manage_label']) {
-                echo " checked='checked' ";
-            }
-            echo " /></td>\n";
-        }
-        ?>
-        </tr>
-
-        <tr>
-        <td colspan='7' align='center'>
-        <input type='submit' value='<?php $clang->eT("Save Now");?>' />
+        <input class="standardbtn" type='submit' value='<?php $clang->eT("Save Now");?>' />
         <input type='hidden' name='action' value='userrights' />
         <input type='hidden' name='uid' value='<?php echo $postuserid;?>' />
-        </td>
-        </tr>
-        </table>
-        </form>
-        <?php continue;
+    </p>
+    <?php echo CHtml::endForm();?>
+    </div>
+    <?php 
     }    // if
 }    // foreach
 ?>
+</div>
