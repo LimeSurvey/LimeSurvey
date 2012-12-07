@@ -229,7 +229,7 @@
         $supportedLanguages['fr']['description'] = $clang->gT('French');
         $supportedLanguages['fr']['nativedescription'] = 'Fran&#231;ais';
         $supportedLanguages['fr']['rtl'] = false;
-        $supportedLanguages['fr']['dateformat'] = 2;
+        $supportedLanguages['fr']['dateformat'] = 5;
         $supportedLanguages['fr']['radixpoint'] = 1;
 
         // Galician
