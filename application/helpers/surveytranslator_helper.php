@@ -471,7 +471,7 @@
         $supportedLanguages['es']['radixpoint'] = 1;
 
         // Spanish (Chile)
-        $supportedLanguages['es-CL']['description'] = $clang->gT('Spanish (Mexico)');
+        $supportedLanguages['es-CL']['description'] = $clang->gT('Spanish (Chile)');
         $supportedLanguages['es-CL']['nativedescription'] = 'Espa&#241;ol chileno';
         $supportedLanguages['es-CL']['rtl'] = false;
         $supportedLanguages['es-CL']['dateformat'] = 5;
