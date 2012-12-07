@@ -779,7 +779,7 @@ function convertGETtoPOST($url)
     //	$Valuelist = "[" . implode(",",$arrayVal) . "]";
     $Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
     $Valuelist = "new Array(" . implode(",",$arrayVal) . ")";
-    $callscript = "sendPost('$calledscript','".Yii::app()->session['checksessionpost']."',$Paramlist,$Valuelist);";
+    $callscript = "sendPost('$calledscript','',$Paramlist,$Valuelist);";
     return $callscript;
 }
 

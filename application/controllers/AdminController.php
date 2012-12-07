@@ -439,11 +439,6 @@ class AdminController extends LSYii_Controller
 
         unset(Yii::app()->session['metaHeader']);
 
-        if(empty(Yii::app()->session['checksessionpost']))
-            Yii::app()->session['checksessionpost'] = '';
-
-        $data['checksessionpost'] = Yii::app()->session['checksessionpost'];
-
         return $this->render('/admin/endScripts_view', $data);
     }
 
