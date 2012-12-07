@@ -60,6 +60,42 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121204) to 2.00+ (build 121207) Dec 7, 2012
+-New feature: Added the option to export statistics (in remotecontrol) for a group or a selection of groups of a survey. (Spiros Trougakos)
+-Fixed issue #6936: CPDB button visible in tokens even if admin has no permission to access CPDB (Carsten Schmitz)
+-Fixed issue #6945: Superadmin can't edit all admin groups / Only initial superadmin can give participant panel permissions (Carsten Schmitz)
+-Fixed issue #6986: Usability tokens (Carsten Schmitz)
+-Fixed issue #6988: Conditions not set (tpartner)
+-Fixed issue #7005: SAVEDID not replaced (Denis Chenu)
+-Fixed issue #7006: Copying a survey and setting "reset conditions" doesn't reset relevance equations (Carsten Schmitz)
+-Fixed issue #7009: Label set quick add function broken (tpartner)
+-Fixed issue #7012: Derive defaults for decimal mark/date format for a new survey from the currently used language (Carsten Schmitz)
+-Fixed issue #7014: "R" entry in User control Page (Carsten Schmitz)
+-Fixed issue #7018: Maximum chars setting ignored for printable survey when using array numbers (Carsten Schmitz)
+-Fixed issue #7022: Limesurvey Replacement Field Properties box is empty in IE8 (tpartner)
+-Fixed issue #7028: Editing a participant in the CPD gives CDbException error (Menno Dekker)
+-Fixed issue #7033: Data entry screen: form is not displayed (Menno Dekker)
+-Fixed issue #7035: Error on queXML export (Carsten Schmitz)
+-Fixed issue #7036: Integer only is not set in numeric question type (Denis Chenu)
+-Fixed issue #7039: Confirmation message at the top of the page when trying to delete a survey in the survey list (Carsten Schmitz)
+-Fixed issue: Export_responses did not produce all responses (Spiros Trougakos)
+-Fixed issue: View participant from tokens in participant panel not working (Menno Dekker)
+-Fixed issue: Wrong label for "Spanish (Chile)". (Ryuichi INABA)
+#Updated translation: Arabic by ysaad
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: English by quaint
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by EnDaN
+#Updated translation: Italian by lfortunato, lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by samarta, taborda
+#Updated translation: Romanian by izbieta
+#Updated translation: Russian by Dominik
+#Updated translation: Serbian by MilaVeljovic
+
 
 Changes from 2.00+ (build 121127) to 2.00+ (build 121204) Dec 4, 2012
 -Fixed issue #6919: Save as label set from within survey doesn't work in IE (tpartner)
