@@ -60,6 +60,15 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121207) to 2.00+ (build 121208) Dec 7, 2012
+-Fixed issue #7020: "Show question index / allow jumping" with "Allow editing responses after completion" are incomplete (Denis Chenu)
+-Fixed issue #7025: "Resume later" in Token/Enable token-based response persistence don't have to show in forms (Denis Chenu)
+-Fixed issue #7046: Error after clicking expression manager icon (Carsten Schmitz)
+-Fixed issue #7047: Unable to reload a saved survey if it's not anonymous without token table (Denis Chenu)
+-Fixed issue: Suboptimal default date format for French (Carsten Schmitz)
+-Fixed issue: Upgrade does not successfully complete (Carsten Schmitz)
+
+
 Changes from 2.00+ (build 121204) to 2.00+ (build 121207) Dec 7, 2012
 -New feature: Added the option to export statistics (in remotecontrol) for a group or a selection of groups of a survey. (Spiros Trougakos)
 -Fixed issue #6936: CPDB button visible in tokens even if admin has no permission to access CPDB (Carsten Schmitz)
