@@ -49,7 +49,7 @@ foreach ($userlist as $usr) {
         <?php } ?>
         <?php if($parent['delete_user']) { ?>
             <li>
-                <label for=""><?php echo $clang->gT("Delete user"); ?></label>
+                <label for="delete_user"><?php echo $clang->gT("Delete user"); ?></label>
                 <input type='checkbox' class='checkboxbtn' name='delete_user' id='delete_user' value='delete_user' <?php if($usr['delete_user']) {echo " checked='checked' ";} ?> />
             </li>
         <?php } ?>
@@ -61,7 +61,7 @@ foreach ($userlist as $usr) {
         <?php } ?>
         <?php if($parent['manage_label']) { ?>
             <li>
-                <label for=""><?php echo $clang->gT("Manage labels"); ?></label>
+                <label for="manage_label"><?php echo $clang->gT("Manage labels"); ?></label>
                 <input type='checkbox' class='checkboxbtn' name='manage_label' id='manage_label' value='manage_label' <?php if($usr['manage_label']) {echo " checked='checked' ";} ?> />
             </li>
         <?php } ?>
