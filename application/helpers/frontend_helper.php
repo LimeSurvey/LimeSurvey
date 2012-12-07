@@ -108,7 +108,7 @@
                 else
                 {
                     //Only make session variables for those in insertarray[]
-                    if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']))
+                    if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$column]))
                     {
                         if (($_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'N' ||
                         $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'K' ||
