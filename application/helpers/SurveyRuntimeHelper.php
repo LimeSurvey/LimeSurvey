@@ -275,8 +275,10 @@ class SurveyRuntimeHelper {
             {
                 // must do this here to process the POSTed values
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false);   // by jumping to current step, saves data so far
-
-                $cSave->showsaveform(); // generates a form and exits, awaiting input
+                if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
+                {
+                    $cSave->showsaveform(); // generates a form and exits, awaiting input
+                }
             }
 
             if ($thissurvey['active'] == "Y" && isset($_POST['saveprompt']))
