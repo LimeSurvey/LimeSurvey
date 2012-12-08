@@ -47,7 +47,7 @@ class limereplacementfields extends Survey_Common_Action
             }
 
             //2: Get all other questions that occur before this question that are pre-determined answer types
-            $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+            $fieldmap = createFieldMap($surveyid,false,false,getBaseLanguageFromSurveyID($surveyid));
 
             $surveyInfo = getSurveyInfo($surveyid);
             $surveyformat = $surveyInfo['format']; // S, G, A
@@ -175,21 +175,22 @@ class limereplacementfields extends Survey_Common_Action
     private function _getChildQuestions(array $questions)
     {
         $cquestions = array();
-
+        $InsertansUnsupportedQuestionClass= Yii::app()->getConfig('InsertansUnsupportedQuestionClass');
         foreach ($questions as $q)
         {
+            $text = $q->text;
             if (isset($q->sq)) {
-                $text = "[{$q->sq}] " . $q->text;
+                $text = "[{$q->sq}] " . $text;
             }
             if (isset($q->sq1)) {
-                $text = "[{$q->sq1}] " . $q->text;
+                $text = "[{$q->sq1}] " . $text;
             }
             if (isset($q->sq2)) {
                 $text = "[{$q->sq2}] " . $q->text;
             }
-
             $shortquestion = $q->title . ": " . flattenText($text);
-            $cquestions[] = array($shortquestion, $q->id, $q->fieldname, $q->previouspage);
+            $active=($q->previouspage && !in_array(get_class($q),$InsertansUnsupportedQuestionClass));
+            $cquestions[] = array($shortquestion, $q->id, $q->fieldname, $active);
         }
         return $cquestions;
     }

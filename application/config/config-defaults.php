@@ -649,6 +649,13 @@ $config['rpc_publish_api'] = 0;
 $config['session_expiration_time'] = 28800;
 
 /**
+* This parameter can be used to set some question not selectable in LimeReplacementFiels
+* Default is an empty array, leave it for new question modules system
+* @var array LongText
+*/
+$config['InsertansUnsupportedQuestionClass'] = array();
+
+/**
  === Advanced Setup ===================================================================================
 The following URL and directory locations do not need to be modified unless you have a non-standard
 LimeSurvey installation. Do not change unless you know what you are doing.
