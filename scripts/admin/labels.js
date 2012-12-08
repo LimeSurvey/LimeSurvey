@@ -118,11 +118,10 @@ function quickaddfunction(){
         k = 0;
         if (params.length > $(".lslanguage").length){
             code = params[0].replace(/[^a-zA-Z 0-9]+/g,'').substr(0,5);
-
-            i++;
+            k++;
         }
 
-        if (index!=0 || (!lsreplace && $("#tabs>div:not(:last) tbody>tr").length > 0)){
+        if (index!=0 || (!lsreplace && $("#tabs div[id^='newedit']:not(:last) tbody>tr").length > 0)){
             event = {};
             event.target = $(".btnaddanswer:last");
             var retcode = add_label(event);
@@ -131,19 +130,21 @@ function quickaddfunction(){
             var retcode = add_label();
         }
 
-
-
-        if (typeof(code)!="undefined")
+        if (typeof(code)!="undefined") {
             $("#code_"+retcode).val(code);
+		}
 
-        $(".lslanguage").each(function(){
+        $(".lslanguage").each(function(i){
             $("input[name=title_"+$(this).val()+"_"+retcode+"]").val(params[k]);
+			if (typeof(code)!="undefined" && i > 0) {
+				$("#row_"+$(this).val()+"_"+retcode+" td:first").text(code);
+			}
             k++;
         });
 
 
     });
-    $("#quickaddarea").html('');
+    $("#quickaddarea").val('');
     $('#quickadd').dialog('close');
 }
 
@@ -184,15 +185,15 @@ function add_label(event)
 {
     if(event!=undefined)
     {
-        if ($(this).closest('tr').find('.codeval').size()>0)
+        if ($(event.target).closest('tr').find('.codeval').size()>0)
         {
-            next_code=getNextCode($(this).closest('tr').find('.codeval').val());
+            next_code=getNextCode($(event.target).closest('tr').find('.codeval').val());
         }
         else
         {
             next_code='L001';
         }
-        while ($('.answertable').find('input[value="'+next_code+'"]').length>0 && next_code!=$(this).closest('tr').find('.codeval').val())
+        while ($('.answertable').find('input[value="'+next_code+'"]').length>0 && next_code!=$(event.target).closest('tr').find('.codeval').val())
         {
             next_code=getNextCode(next_code);
         }
@@ -239,7 +240,7 @@ function add_label(event)
 
     });
 
-    $("tr[name="+randomid+"]").hide().fadeIn(1000);
+    $("tr[id$='_"+randomid+"']").hide().fadeIn(1000);
 
     fix_highlighting();
 

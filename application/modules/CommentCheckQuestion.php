@@ -121,7 +121,7 @@ class CommentCheckQuestion extends CheckQuestion
             ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT('Make a comment on your choice here:')."' value='";
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.$this->surveyid][$myfname2],ENT_QUOTES);}
             // --> START NEW FEATURE - SAVE
-            $answer_main .= "' onkeyup='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname2}\").value,\"$myfname2\",\"text\");}' />\n</span>\n"
+            $answer_main .= "' onkeyup='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname2}\").value,\"$myfname2\",\"text\");$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,document.getElementById(\"answer{$myfname}\").name, document.getElementById(\"answer{$myfname}\").type);}' />\n</span>\n"
             . "\t</li>\n";
             // --> END NEW FEATURE - SAVE
 

@@ -627,4 +627,4 @@ INSERT INTO `prefix_question_type_groups` (`id`, `name`, `order`, `system`) VALU
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '166');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '167');

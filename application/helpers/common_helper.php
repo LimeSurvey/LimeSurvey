@@ -1045,7 +1045,10 @@ function getUserList($outputformat='fullinfoarray')
                     )
                 )
             UNION
-            SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}";
+            SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}
+            UNION
+            SELECT {$sSelectFields} from {{users}} v where uid={$myuid}";
+            
         }
         else
         {
@@ -4909,12 +4912,6 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
         foreach ($quotas->languagesettings[0]->attributes as $k => $v)
             $survey_quotas[$k] = $v;
 
-        //Modify the URL - thanks janokary
-        $survey_quotas['quotals_url']=str_replace("{SAVEDID}",!empty(Yii::app()->session['srid']) ? Yii::app()->session['srid'] : '', $survey_quotas['quotals_url']);
-        $survey_quotas['quotals_url']=str_replace("{SID}", $surveyid, $survey_quotas['quotals_url']);
-        $survey_quotas['quotals_url']=str_replace("{LANG}", Yii::app()->lang->getlangcode(), $survey_quotas['quotals_url']);
-        $survey_quotas['quotals_url']=str_replace("{TOKEN}",$clienttoken, $survey_quotas['quotals_url']);
-
         $quota_info=array('Name' => $survey_quotas['name'],
         'Limit' => $survey_quotas['qlimit'],
         'Action' => $survey_quotas['action'],
@@ -5878,9 +5875,14 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
 {
     $clang = Yii::app()->lang;
     //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
-    $squery = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE uid = ".Yii::app()->session['loginID']." ORDER BY name";
+    $sQuery = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
+    if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
+    {
+        $sQuery .="AND uid = ".Yii::app()->session['loginID'];
+    }
+    $sQuery .=  " ORDER BY name";
 
-    $sresult = Yii::app()->db->createCommand($squery)->query(); //Checked
+    $sresult = Yii::app()->db->createCommand($sQuery)->query(); //Checked
     if (!$sresult) {return "Database Error";}
     $selecter = "";
     foreach ($sresult->readAll() as $row)

@@ -142,19 +142,29 @@ class Participants extends CActiveRecord
         Yii::app()->db->createCommand()->insert('{{participants}}', $data);
     }
 
-    /*
-     * This function updates the data edited in the jqgrid
-     * Parameters : data that is edited
-     * Return Data : None
+    /**
+     * Returns the primary key of this table
+     *
+     * @access public
+     * @return string
      */
+    public function primaryKey() {
+        return 'participant_id';
+    }
 
+    /**
+     * This function updates the data edited in the jqgrid
+     * 
+     * @param aray $data
+     */
     function updateRow($data)
     {
-        Yii::app()->db->createCommand()
-                  ->update('{{participants}}',
-                           $data,
-                           'participant_id = :participant_id',
-                           array(':participant_id'=>$data['participant_id']));
+        $record = $this->findByPk($data['participant_id']);
+        foreach ($data as $key => $value)
+        {
+            $record->$key = $value;
+        }
+        $record->save();
     }
 
     /*
@@ -736,6 +746,15 @@ class Participants extends CActiveRecord
                 ->from('{{survey_links}} sl')
                 ->join('{{surveys_languagesettings}} sls', 'sl.survey_id = sls.surveyls_survey_id')
                 ->where('sls.surveyls_title '. $operator.' '.$param)
+                ->group('sl.participant_id');
+                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);             
+            }
+            elseif($sFieldname=="surveyid")
+            {
+                $subQuery = Yii::app()->db->createCommand()
+                ->select('sl.participant_id')
+                ->from('{{survey_links}} sl')
+                ->where('sl.survey_id '. $operator.' '.$param)
                 ->group('sl.participant_id');
                 $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);             
             }
