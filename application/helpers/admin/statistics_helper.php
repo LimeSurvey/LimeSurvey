@@ -191,9 +191,10 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             // this block is to remove the items with value == 0
             // and an inelegant way to remove comments from List with Comments questions
             $i = 0;
+            $aHelperArray=array_keys($lbl);
             while (isset ($gdata[$i]))
             {
-                if ($gdata[$i] == 0 || ($type == "O" && substr($lbl[$i],0,strlen($oLanguage->gT("Comments")))==$oLanguage->gT("Comments")))
+                if ($gdata[$i] == 0 || ($type == "O" && substr($aHelperArray[$i],0,strlen($oLanguage->gT("Comments")))==$oLanguage->gT("Comments")))
                 {
                     array_splice ($gdata, $i, 1);
                     array_splice ($lbl, $i, 1);
