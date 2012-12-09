@@ -60,6 +60,29 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.00+ (build 121208) to 2.00+ (build 121209) Dec 9, 2012
+-Fixed issue #7021: Web server authentication broken (Carsten Schmitz)
+-Fixed issue #7050: Database update successful, but can no longer get back to admin page (Carsten Schmitz)
+-Fixed issue #7051: Images uploaded in HTML editor end up in wrong directory on Windows (Carsten Schmitz)
+-Fixed issue: JavaScript error (TypeError: C is null) in LimeReplacementField (Denis Chenu)
+#Updated translation: Amharic by addis_1001
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: English by pfpDave
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Japanese by nomoto, inaba
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Portuguese (Portugal) by jginga
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.00+ (build 121207) to 2.00+ (build 121208) Dec 7, 2012
 -Fixed issue #7020: "Show question index / allow jumping" with "Allow editing responses after completion" are incomplete (Denis Chenu)
 -Fixed issue #7025: "Resume later" in Token/Enable token-based response persistence don't have to show in forms (Denis Chenu)
