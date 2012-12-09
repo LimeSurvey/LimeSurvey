@@ -3502,6 +3502,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         {
             $insertdata['wishSID']=GetNewSurveyID($iDesiredSurveyId);
         }
+        else
+        {
+            $insertdata['wishSID']=$iOldSID;
+        }
 
         if ($iDBVersion<=143)
         {
