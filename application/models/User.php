@@ -15,6 +15,13 @@
 
 class User extends CActiveRecord
 {
+
+    /**
+    * UserRights : available User rights
+    * @static array
+    */
+    public static $UserRights=array('superadmin','configurator','create_survey','participant_panel','create_user','delete_user','manage_template','manage_label'); // Maybe move to User::models
+
     /**
     * Returns the static model of Settings table
     *
@@ -147,7 +154,6 @@ class User extends CActiveRecord
         if ($oUser->save())
         {
             return $oUser->uid;
-
         }
         else{
             return false;
@@ -155,14 +161,14 @@ class User extends CActiveRecord
     }
 
     /**
-	 * This method is invoked before saving a record (after validation, if any).
-	 * The default implementation raises the {@link onBeforeSave} event.
-	 * You may override this method to do any preparation work for record saving.
-	 * Use {@link isNewRecord} to determine whether the saving is
-	 * for inserting or updating record.
-	 * Make sure you call the parent implementation so that the event is raised properly.
-	 * @return boolean whether the saving should be executed. Defaults to true.
-	 */
+     * This method is invoked before saving a record (after validation, if any).
+     * The default implementation raises the {@link onBeforeSave} event.
+     * You may override this method to do any preparation work for record saving.
+     * Use {@link isNewRecord} to determine whether the saving is
+     * for inserting or updating record.
+     * Make sure you call the parent implementation so that the event is raised properly.
+     * @return boolean whether the saving should be executed. Defaults to true.
+     */
     public function beforeSave()
     {
          // Postgres delivers bytea fields as streams :-o - if this is not done it looks like Postgres saves something unexpected
@@ -170,11 +176,9 @@ class User extends CActiveRecord
         {
             $this->password=stream_get_contents($this->password,-1,0); 
         }
-        
         return parent::beforeSave();
     }
-    
-    
+
     /**
     * Delete user
     *
@@ -220,7 +224,7 @@ class User extends CActiveRecord
         
         return $result;
     }
-    
+
     public function getuidfromparentid($parentid)
     {
         return Yii::app()->db->createCommand()->select('uid')->from('{{users}}')->where('parent_id = :parent_id')->bindParam(":parent_id", $parentid, PDO::PARAM_INT)->queryRow();
@@ -259,7 +263,6 @@ class User extends CActiveRecord
     */
     public function insertRecords($data)
     {
-
         return $this->db->insert('users',$data);
     }
 
@@ -274,4 +277,65 @@ class User extends CActiveRecord
         $query2 = "SELECT b.uid FROM (SELECT uid FROM {{survey_permissions}} WHERE sid = :surveyid) AS c RIGHT JOIN {{user_in_groups}} AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = :postugid";
         return Yii::app()->db->createCommand($query2)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->bindParam(":postugid", $postusergroupid, PDO::PARAM_INT)->query(); //Checked
     }
+
+    /**
+    * Returns global user rights 
+    * By default the right of the login user
+    * By default the array of user right true or false
+    *
+    * @param string $user_right, by default false to return array of rights
+    * @param int $userid, by default the session userid
+    * @access public
+    * @return array of userright by default
+    * @return boolean if $right is set and a string
+    */
+    public static function GetUserRights($user_right=false,$userid=false)
+    {
+        // If right and right is in session, return actual session 
+        if( $user_right && (!$userid || $userid==Yii::app()->session['loginID']) && isset(Yii::app()->session['USER_RIGHT_'.strtoupper($user_right)]))
+        {
+            return Yii::app()->session['USER_RIGHT_'.strtoupper($user_right)];
+        }
+        // if not userid, set to the actual session userid
+        if(!$userid)
+        {
+            $userid=Yii::app()->session['loginID'];
+        }
+        $user=self::model()->findByPk($userid);
+        // is $user_right, return the corresponding attribute
+        if($user_right)
+        {
+            if(strtoupper($user_right)=="INITIALSUPERADMIN")
+            {
+                return (!$user->parent_id);
+            }
+            else
+            {
+                return ($user->$user_right || $user->superadmin);
+            }
+        }
+        // else array of user rights
+        $userrights=array();
+        foreach(self::$UserRights as $right)
+        {
+            $userrights[$right]=($user->$right || $user->superadmin);
+        }
+        $userrights['initialsuperadmin']=(!$user->parent_id);
+        $userrights['superadmin']=($userrights['superadmin'] || $userrights['initialsuperadmin']);
+        // Fill the session var ?
+        // Can not happened actually, because USER_RIGHT_INITIALSUPERADMIN is set in AdminController
+        if($userid==Yii::app()->session['loginID'] && !isset(Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN']))
+        {
+            foreach($userrights as $right->$value)
+            {
+                if(!isset(Yii::app()->session['USER_RIGHT_'.strtoupper($right)]))
+                {
+                    Yii::app()->session['USER_RIGHT_'.strtoupper($right)]=$value;
+                }
+            }
+        }
+        return $userrights;
+
+    }
+
 }
