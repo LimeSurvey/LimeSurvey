@@ -32,7 +32,7 @@ function db_upgrade_all($oldversion) {
     $sVarchar = Yii::app()->getConfig('varchar');
     $sAutoIncrement  = Yii::app()->getConfig('autoincrement');
 
-    $oTransactioultn=Yii::app()->db->beginTransaction();
+    $oTransaction=Yii::app()->db->beginTransaction();
     try
     {
         if ($oldversion < 111)
