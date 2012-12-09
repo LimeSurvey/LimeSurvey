@@ -71,28 +71,34 @@ class printablesurvey extends Survey_Common_Action
         $surveyactive = $desrow['active'];
         $surveytable = "{{survey_".$desrow['sid']."}}";
         $surveyexpirydate = $desrow['expires'];
-        $surveystartdate = $desrow['startdate'];
         $surveyfaxto = $desrow['faxto'];
         $dateformattype = $desrow['surveyls_dateformat'];
 
-
         if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
 
-
         Yii::app()->loadHelper('surveytranslator');
-        $dformat=getDateFormatData($dateformattype);
-        $dformat=$dformat['phpdate'];
-
-        $expirytimestamp = strtotime($surveyexpirydate);
-        $expirytimeofday_h = date('H',$expirytimestamp);
-        $expirytimeofday_m = date('i',$expirytimestamp);
-
-        $surveyexpirydate = date($dformat,$expirytimestamp);
-
-        if(!empty($expirytimeofday_h) || !empty($expirytimeofday_m))
+        
+        if (!is_null($surveyexpirydate))
         {
-            $surveyexpirydate .= ' &ndash; '.$expirytimeofday_h.':'.$expirytimeofday_m;
-        };
+            $dformat=getDateFormatData($dateformattype);
+            $dformat=$dformat['phpdate'];
+
+            $expirytimestamp = strtotime($surveyexpirydate);
+            $expirytimeofday_h = date('H',$expirytimestamp);
+            $expirytimeofday_m = date('i',$expirytimestamp);
+
+            $surveyexpirydate = date($dformat,$expirytimestamp);
+
+            if(!empty($expirytimeofday_h) || !empty($expirytimeofday_m))
+            {
+                $surveyexpirydate .= ' &ndash; '.$expirytimeofday_h.':'.$expirytimeofday_m;
+            };            
+            sprintf($clang->gT("Please submit by %s"), $surveyexpirydate);
+        }
+        else
+        {
+            $surveyexpirydate='';
+        }
 
         //define('PRINT_TEMPLATE' , '/templates/print/' , true);
         if(is_file(Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$template.DIRECTORY_SEPARATOR.'print_survey.pstpl'))
@@ -157,12 +163,6 @@ class printablesurvey extends Survey_Common_Action
         if(!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number exists, don't display faxing information!
         {
             $survey_output['FAX_TO'] = $clang->gT("Please fax your completed survey to:")." $surveyfaxto";
-        }
-
-
-        if ($surveystartdate!='')
-        {
-            $survey_output['SUBMIT_BY'] = sprintf($clang->gT("Please submit by %s"), $surveyexpirydate);
         }
 
         /**
