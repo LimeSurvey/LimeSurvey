@@ -425,7 +425,7 @@ class AdminController extends LSYii_Controller
 
         unset(Yii::app()->session['metaHeader']);
 
-        return $this->render('/admin/endScripts_view', $data);
+        return $this->render('/admin/endScripts_view', array());
     }
     
     /**
