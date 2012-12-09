@@ -139,6 +139,12 @@ class SurveyAdmin extends Survey_Common_Action
 
         $this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
     }
+    
+    function fakebrowser()
+    {
+        $aData['clang'] = $this->getController()->lang;
+        Yii::app()->getController()->render('/admin/survey/newSurveyBrowserMessage', $aData);
+    }    
 
     /**
     * This function prepares the view for editing a survey
