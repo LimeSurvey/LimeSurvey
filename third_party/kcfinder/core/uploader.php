@@ -342,7 +342,8 @@ class uploader {
         )
             $filename = strtr($filename, $this->config['filenameChangeChars']);
         // On Windows platforms, PHP will mangle non-ASCII characters, see http://bugs.php.net/bug.php?id=47096
-        if ( 'WIN' == substr( PHP_OS, 0, 3 ) ) {
+        if ( 'WIN' == substr( PHP_OS, 0, 3 )) {
+                setlocale( LC_CTYPE, '' ); // Resets the codepage to the system codepage so it can be properly retrieved
                 $codepage = 'Windows-' . trim( strstr( setlocale( LC_CTYPE, 0 ), '.' ), '.' );
                 if ( function_exists( 'iconv' ) ) {
                         $filename = iconv( 'UTF-8', $codepage, $filename );
