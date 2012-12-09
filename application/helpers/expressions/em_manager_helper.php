@@ -7501,7 +7501,7 @@ EOD;
                                     $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $qid,$_SESSION['LEMlang']);
                                     $aDateFormatData=getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
                                     $oDateTimeConverter = new Date_Time_Converter($value, $aDateFormatData['phpdate']);
-                                    $value=$oDateTimeConverter->convert("Y-m-d");
+                                    $value=$oDateTimeConverter->convert("Y-m-d H:i");
                                 }
                                 break;
                             case 'N': //NUMERICAL QUESTION TYPE
