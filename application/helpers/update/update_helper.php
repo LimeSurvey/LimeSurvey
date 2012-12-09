@@ -9,8 +9,6 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- *
- *  $Id$
  */
 
 /**
@@ -32,9 +30,16 @@ function CheckForDBUpgrades($subaction = null)
             echo Yii::app()->getController()->_getAdminHeader();
             echo "<div style='width:90%; padding:1% 5%;background-color:#eee;'>";
             Yii::app()->loadHelper('update/updatedb');
-            db_upgrade_all(intval($currentDBVersion));
-            $data = "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
-            $data .= "<br /><a href='".Yii::app()->getController()->createUrl("/admin")."'>".$clang->gT("Back to main menu")."</a></div>";
+            $result=db_upgrade_all(intval($currentDBVersion));
+            if ($result)
+            {
+                $data = "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
+                $data .= "<br /><a href='".Yii::app()->getController()->createUrl("/admin")."'>".$clang->gT("Back to main menu")."</a></div>";
+            }
+            else
+            {
+                $data = "<p><a href='".Yii::app()->getController()->createUrl("/admin/update/sa/db")."'>".$clang->gT("Please fix this error in your database and try again")."</a></p></div>";
+            }
             return $data;
         }
         else {
