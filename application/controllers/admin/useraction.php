@@ -28,7 +28,6 @@ class UserAction extends Survey_Common_Action
     function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
-
         Yii::app()->loadHelper('database');
     }
 
@@ -395,33 +394,62 @@ class UserAction extends Survey_Common_Action
 
     function setUserRights()
     {
+        $clang = Yii::app()->lang;
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'users.js');
-        $postuser = Yii::app()->request->getPost('user');
-        $postemail = Yii::app()->request->getPost('email');
         $postuserid = Yii::app()->request->getPost('uid');
-        $postfull_name = Yii::app()->request->getPost('full_name');
-        if (isset($_POST['uid'])) {
-            $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
-            $sresultcount = count($sresult);
+#        $postuser = Yii::app()->request->getPost('user');
+#        $postemail = Yii::app()->request->getPost('email');
+#        $postfull_name = Yii::app()->request->getPost('full_name');
+        if($postuserid==Yii::app()->session['loginID'])
+        {
+            $aData = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("You are not allowed to change your own permissions!"), 'warningheader');
+            $aViewUrls['mboxwithredirect'][] = $aData;
         }
         else
         {
-            echo accessDenied('setUserRights');
-            die();
+            $aData=array();
+            if (isset($postuserid))
+            {
+                if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+                    $uresult = User::model()->findbyPk($postuserid);
+                else
+                    $uresult = User::model()->findbyPk($postuserid,'parent_id=:parent_id',array('parent_id' => Yii::app()->session['loginID']));
+                if($uresult)
+                {
+                    $aData['users'][0]=$uresult->attributes;
+                }
+                else
+                {
+                    $aData = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("You are not allowed to change this user permissions!"), 'warningheader');
+                    $aViewUrls['mboxwithredirect'][] = $aData;
+                }
+            }
+            else
+            {
+                $uresult = User::model()->findAll('uid!=:uid AND parent_id=:parent_id',array( 'uid'=>Yii::app()->session['loginID'],'parent_id' => Yii::app()->session['loginID']));
+                foreach($uresult as $user)
+                {
+                    $aData['users'][]=$user->attributes;
+                }
+            }
+            if(isset($aData['users']))
+            {
+                // Get Parent right (this loginId rights)
+                $thisUserRights=User::GetUserRights();
+                // Fix some specific rights
+                $thisUserRights['superadmin']=$thisUserRights['initialsuperadmin'];
+                unset($thisUserRights['initialsuperadmin']);
+                $aData['allowedRights']=array_keys(array_filter($thisUserRights));
+                $aViewUrls['setuserrights'][]=$aData;
+            }
+            elseif(!isset($aViewUrls['mboxwithredirect']))
+            {
+                $aData = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("You are not allowed to change any user permissions!"), 'warningheader');
+                $aViewUrls['mboxwithredirect'][] = $aData;
+            }
         }
-        // RELIABLY CHECK MY RIGHTS
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || (Yii::app()->session['USER_RIGHT_CREATE_USER'] && $sresultcount > 0 && Yii::app()->session['loginID'] != $postuserid)
-        ) // if(Yii::app()->session['loginID'] != $postuserid)
-        {
-            $aData['postuserid'] = $postuserid;
-            $this->_renderWrappedTemplate('user', 'setuserrights', $aData);
-        } // if
-        else
-        {
-            echo accessDenied('setUserRights');
-            die();
-        }
+        $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
     /**
