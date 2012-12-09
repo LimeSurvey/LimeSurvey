@@ -499,13 +499,19 @@ $config['restrictToLanguages'] = '';
 */
 $config['RPCInterface'] = 'off';
 
-
 /**
 * This parameter sets the default session expiration time in seconds
 * Default is 8 hours
 * @var integer
 */
 $config['iSessionExpirationTime'] = 28800;
+
+/**
+* This parameter can be used to set some question not selectable in LimeReplacementFiels
+* Default is an empty array, leave it for new question modules system
+* @var array
+*/
+$config['InsertansUnsupportedtypes'] = array();
 
 // === Advanced Setup
 // The following parameters need information from config.php
