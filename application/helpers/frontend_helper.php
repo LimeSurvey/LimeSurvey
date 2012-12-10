@@ -974,7 +974,25 @@ function submittokens($quotaexit = false) {
 
                 //Only send confirmation email if there is a valid email address
                 if (validateEmailAddress($cnfrow['email'])) {
-                    SendEmailMessage($message, $subject, $to, $from, $sitename, $ishtml);
+                    $aAttachments = unserialize($thissurvey['attachments']);
+        
+                    $aRelevantAttachments = array();
+                    /*
+                     * Iterate through attachments and check them for relevance.
+                     */
+                    if (isset($aAttachments['admin_notification']))
+                    {
+                        foreach ($aAttachments['admin_notification'] as $aAttachment)
+                        {
+                            $relevance = $aAttachment['relevance'];
+                            // If the attachment is relevant it will be added to the mail.
+                            if (LimeExpressionManager::ProcessRelevance($relevance) && file_exists($aAttachment['url']))
+                            {
+                                $aRelevantAttachments[] = $aAttachment['url'];
+                            }
+                        }
+                    }
+                    SendEmailMessage($message, $subject, $to, $from, $sitename, $ishtml, null, $aRelevantAttachments);
                 }
             } else {
                 //There is nothing in the message or "Send confirmation emails" is set to "No" , so don't send a confirmation email
@@ -1118,6 +1136,26 @@ function sendSubmitNotifications($surveyid)
     }
 
         $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
+        
+        $aAttachments = unserialize($thissurvey['attachments']);
+        
+        $aRelevantAttachments = array();
+        /*
+         * Iterate through attachments and check them for relevance.
+         */
+        if (isset($aAttachments['admin_notification']))
+        {
+            foreach ($aAttachments['admin_notification'] as $aAttachment)
+            {
+                $relevance = $aAttachment['relevance'];
+                // If the attachment is relevant it will be added to the mail.
+                if (LimeExpressionManager::ProcessRelevance($relevance) && file_exists($aAttachment['url']))
+                {
+                    $aRelevantAttachments[] = $aAttachment['url'];
+                }
+            }
+        }
+        
         $redata=compact(array_keys(get_defined_vars()));
         if (count($aEmailNotificationTo)>0)
         {
@@ -1125,7 +1163,7 @@ function sendSubmitNotifications($surveyid)
             $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,$redata,'frontend_helper[1399]',($thissurvey['anonymized'] == "Y"));
             foreach ($aEmailNotificationTo as $sRecipient)
         {
-            if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid)))
+            if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid), $aRelevantAttachments))
             {
                 if ($debug>0)
                 {
@@ -1141,7 +1179,7 @@ function sendSubmitNotifications($surveyid)
         $sSubject=templatereplace($thissurvey['email_admin_responses_subj'],$aReplacementVars,$redata,'frontend_helper[1415]',($thissurvey['anonymized'] == "Y"));
         foreach ($aEmailResponseTo as $sRecipient)
         {
-            if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid)))
+            if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid), $aRelevantAttachments))
             {
                 if ($debug>0)
                 {
