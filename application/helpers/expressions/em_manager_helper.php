@@ -2582,9 +2582,13 @@
          */
         public function loadTokenInformation($iSurveyId, $sToken = null, $bAnonymize = false)
         {
-            if ($sToken == null)
+            if ($sToken == null && isset($_SESSION[$this->sessid]['token']))
             {
                 $sToken = $_SESSION[$this->sessid]['token'];
+            }
+            else
+            {
+                $sToken = null;
             }
             
             $aToken = getTokenData($iSurveyId, $sToken);
