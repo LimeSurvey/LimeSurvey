@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    // pupup calendar
+    // popup calendar
     $(".popupdate").each(function(i,e) {
         var basename = e.id.substr(6);
         format=$('#dateformat'+basename).val();
@@ -71,23 +71,7 @@ function dateUpdater() {
         }
         else
         {
-            var answer = $('#dateformat'+thisid).val();
-            if ($('#year'+thisid).length) answer = answer.replace(/y+/, $('#year'+thisid).val());
-            if ($('#month'+thisid).length) answer = answer.replace(/m+/, $('#month'+thisid).val());
-            if ($('#day'+thisid).length) answer = answer.replace(/d+/, $('#day'+thisid).val());
-            if ($('#hour'+thisid).length) answer = answer.replace(/H+/, $('#hour'+thisid).val());
-            if ($('#minute'+thisid).length)
-            {
-                // The minute is optional (assumed as 00)
-                if ($('#minute'+thisid).val()=='')
-                {
-                    answer = answer.replace(/M+/, '00');
-                }
-                else
-                {
-                    answer = answer.replace(/M+/, $('#minute'+thisid).val());
-                }
-            }
+
             if ($('#year'+thisid).size()==0)
             {
                 iYear='1900';
@@ -112,14 +96,38 @@ function dateUpdater() {
             {
                 iDay=$('#day'+thisid).val(); 
             }
+            if ($('#hour'+thisid).size()==0)
+            {
+                iHour='00';
+            }
+            else
+            {
+                iHour=$('#hour'+thisid).val(); 
+            }            
+            if ($('#minute'+thisid).size()==0)
+            {
+                iMinute='00';
+            }
+            else
+            {
+                iMinute=$('#minute'+thisid).val(); 
+            }
             ValidDate(this,iYear+'-'+iMonth+'-'+iDay);          
             parseddate=$.datepicker.parseDate( 'dd-mm-yy', iDay+'-'+iMonth+'-'+iYear);
-            $('#answer'+thisid).val($.datepicker.formatDate( $('#dateformat'+thisid).val(), parseddate)); 
+            parseddate=$.datepicker.formatDate( $('#dateformat'+thisid).val(), parseddate);
+            parseddate=parseddate.replace('HH',pad(iHour,2));
+            parseddate=parseddate.replace('H',iHour);
+            parseddate=parseddate.replace('NN',pad(iMinute,2));
+            parseddate=parseddate.replace('N',iMinute);
+            $('#answer'+thisid).val(parseddate); 
             $('#answer'+thisid).change();
             $('#qattribute_answer'+thisid).val('');
         }
 }
 
+function pad (str, max) {
+    return str.length < max ? pad("0" + str, max) : str;
+}
 
 function ValidDate(oObject, value) {// Regular expression used to check if date is in correct format 
     var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/; 

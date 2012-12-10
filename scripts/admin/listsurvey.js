@@ -132,13 +132,17 @@ $(document).ready(function(){
                                                                   bSubmit: sDelCaption,
                                                                   caption: sDelCaption,
                                                                   bCancel: sCancel,
-                                                                  width : 700 },
-                                                                  {
+                                                                  width : 450,
+                                                                  afterShowForm: function(form) {
+                                                                    form.closest('div.ui-jqdialog').center();
+                                                                  }
+                                                                },
+                                                                {
                                                                       caption: sSearchCaption,
                                                                       Find : sFind,
                                                                       odata : [ sOperator1, sOperator2, sOperator3, sOperator4, sOperator5, sOperator6, sOperator7, sOperator8, sOperator9, sOperator10, sOperator11, sOperator12, sOperator13, sOperator14 ],
                                                                       Reset: sReset
-                                                                  });
+                                                                });
     jQuery("#displaysurveys").jqGrid('filterToolbar', {searchOnEnter : false,defaultSearch: 'cn'});
     jQuery("#displaysurveys").jqGrid('navButtonAdd','#pager',{
         buttonicon:"ui-icon-calculator",

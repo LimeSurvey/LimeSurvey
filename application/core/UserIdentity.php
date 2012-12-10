@@ -76,7 +76,11 @@ class UserIdentity extends CUserIdentity
                 $sUser = substr($sUser, strrpos($sUser, "\\")+1);
             }            
             $aUserMappings=Yii::app()->getConfig("auth_webserver_user_map");
-            if (isset($aUserMappings[$sUser])) $sUser= $aUserMappings[$sUser];
+            if (isset($aUserMappings[$sUser])) 
+            {
+               $sUser = $aUserMappings[$sUser];
+            }
+            $this->username = $sUser;
 
             $oUser=User::model()->findByAttributes(array('users_name'=>$sUser));
             if (is_null($oUser))
