@@ -2532,58 +2532,8 @@
             $this->q2subqInfo = $q2subqInfo;
 
             // Now set tokens
-            if (isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
-            {
-                //Gather survey data for tokenised surveys, for use in presenting questions
-                $_SESSION[$this->sessid]['thistoken']=getTokenData($surveyid, $_SESSION[$this->sessid]['token']);
-                $this->knownVars['TOKEN:TOKEN'] = array(
-                    'code'=>$_SESSION[$this->sessid]['token'],
-                    'jsName_on'=>'',
-                    'jsName'=>'',
-                    'readWrite'=>'N',
-                );
-            }
-            if (isset($_SESSION[$this->sessid]['thistoken']))
-            {
-                foreach (array_keys($_SESSION[$this->sessid]['thistoken']) as $tokenkey)
-                {
-                    if ($anonymized)
-                    {
-                        $val = "";
-                    }
-                    else
-                    {
-                        $val = $_SESSION[$this->sessid]['thistoken'][$tokenkey];
-                    }
-                    $key = "TOKEN:" . strtoupper($tokenkey);
-                    $this->knownVars[$key] = array(
-                    'code'=>$val,
-                    'jsName_on'=>'',
-                    'jsName'=>'',
-                    'readWrite'=>'N',
-                    );
-                }
-            }
-            else
-            {
-                // Read list of available tokens from the tokens table so that preview and error checking works correctly
-                $attrs = array_keys(getTokenFieldsAndNames($surveyid));
-
-                $blankVal = array(
-                'code'=>'',
-                'jsName_on'=>'',
-                'jsName'=>'',
-                'readWrite'=>'N',
-                );
-
-                foreach ($attrs as $key)
-                {
-                    if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/',$key))
-                    {
-                        $this->knownVars['TOKEN:' . strtoupper($key)] = $blankVal;
-                    }
-                }
-            }
+            $this->loadTokenInformation($surveyid, null, $anonymized);
+            
             // set default value for reserved 'this' variable
             $this->knownVars['this'] = array(
             'jsName_on'=>'',
@@ -2617,6 +2567,72 @@
             return true;
         }
 
+        
+        
+        
+        /**
+         * This function loads the relevant data about tokens for a survey.
+         * If specific token is not given it loads empty values, this is used for 
+         * question previewing and the like.
+         * 
+         * @param int $iSurveyId
+         * @param string $sToken
+         * @param boolean $bAnonymize
+         * @return void 
+         */
+        public function loadTokenInformation($iSurveyId, $sToken = null, $bAnonymize = false)
+        {
+            if ($sToken == null)
+            {
+                $sToken = $_SESSION[$this->sessid]['token'];
+            }
+            
+            $aToken = getTokenData($iSurveyId, $sToken);
+            
+            $this->knownVars['TOKEN:TOKEN'] = array(
+                'code'=> $sToken,
+                'jsName_on'=>'',
+                'jsName'=>'',
+                'readWrite'=>'N',
+            );
+          
+            if (isset($aToken))
+            {
+                foreach ($aToken as $key => $val)
+                {
+                    if ($bAnonymize)
+                    {
+                        $val = "";
+                    }
+                    $key = "TOKEN:" . strtoupper($key);
+                    $this->knownVars[$key] = array(
+                    'code'=>$val,
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                    );
+                }
+            }
+            else
+            {
+                // Read list of available tokens from the tokens table so that preview and error checking works correctly
+                
+                $blankVal = array(
+                'code'=>'',
+                'jsName_on'=>'',
+                'jsName'=>'',
+                'readWrite'=>'N',
+                );
+
+                foreach (getTokenFieldsAndNames($surveyId) as $field => $details)
+                {
+                    if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/', $field))
+                    {
+                        $this->knownVars['TOKEN:' . strtoupper($field)] = $blankVal;
+                    }
+                }
+            }
+        }
         /**
         * Return whether a sub-question is relevant
         * @param <type> $sgqa
