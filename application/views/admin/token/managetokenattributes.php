@@ -103,7 +103,7 @@
 <div class='header ui-widget-header'><?php $clang->eT("Add token attributes"); ?></div><p>
 
 <?php echo sprintf($clang->gT('There are %s user attribute fields in this token table'), $nrofattributes); ?></p>
-<?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
+<?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
     <p>
         <label for="addnumber"><?php $clang->eT('Number of attribute fields to add:'); ?></label>
         <input type="text" id="addnumber" name="addnumber" size="3" maxlength="3" value="1" />
