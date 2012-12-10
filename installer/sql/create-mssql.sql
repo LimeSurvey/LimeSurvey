@@ -424,8 +424,7 @@ CREATE TABLE [prefix_surveys] (
   [nokeyboard] varchar(1) default 'N',
   [alloweditaftercompletion] varchar(1) default 'N',
   [googleanalyticsstyle] varchar(1),
-  [googleanalyticsapikey] varchar(25),
-  [attachments] varchar(max) default null,
+  [googleanalyticsapikey] varchar(25)
   PRIMARY KEY  ([sid])
 );
 
@@ -457,6 +456,7 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [email_admin_responses_subj] varchar(255) NULL,
   [email_admin_responses] varchar(max) NULL,
   [surveyls_numberformat] int NOT NULL DEFAULT 0,
+  [attachments] varchar(max) default null,
   PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
 );
 

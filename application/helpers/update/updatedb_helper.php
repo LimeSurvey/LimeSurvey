@@ -1081,7 +1081,7 @@ function db_upgrade_all($oldversion) {
     if ($oldversion < 167)
     {
         // Add attachment text field to survey table.
-        addColumn('{{surveys}}', 'attachments', 'text');
+        addColumn('{{surveys_languagesettings}}', 'attachments', 'text');
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>167),"stg_name='DBVersion'");
     }        
     }

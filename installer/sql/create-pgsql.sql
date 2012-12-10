@@ -436,7 +436,6 @@ CREATE TABLE prefix_surveys (
     alloweditaftercompletion character varying(1) DEFAULT 'N',
     googleanalyticsstyle character varying(1),
     googleanalyticsapikey character varying(25),
-    attachments text DEFAULT NULL,
     CONSTRAINT prefix_surveys_pkey PRIMARY KEY (sid)
 );
 
@@ -468,6 +467,7 @@ CREATE TABLE prefix_surveys_languagesettings (
     email_admin_responses_subj character varying(255),
     email_admin_responses text,
     surveyls_numberformat integer NOT NULL DEFAULT 0,
+    attachments text DEFAULT NULL,
     CONSTRAINT prefix_surveys_languagesettings_pkey PRIMARY KEY (surveyls_survey_id, surveyls_language)
 );
 
