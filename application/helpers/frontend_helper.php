@@ -980,9 +980,9 @@ function submittokens($quotaexit = false) {
                     /*
                      * Iterate through attachments and check them for relevance.
                      */
-                    if (isset($aAttachments['admin_notification']))
+                    if (isset($aAttachments['confirmation']))
                     {
-                        foreach ($aAttachments['admin_notification'] as $aAttachment)
+                        foreach ($aAttachments['confirmation'] as $aAttachment)
                         {
                             $relevance = $aAttachment['relevance'];
                             // If the attachment is relevant it will be added to the mail.
@@ -1173,6 +1173,22 @@ function sendSubmitNotifications($surveyid)
         }
     }
 
+            $aRelevantAttachments = array();
+        /*
+         * Iterate through attachments and check them for relevance.
+         */
+        if (isset($aAttachments['detailed_admin_notification']))
+        {
+            foreach ($aAttachments['detailed_admin_notification'] as $aAttachment)
+            {
+                $relevance = $aAttachment['relevance'];
+                // If the attachment is relevant it will be added to the mail.
+                if (LimeExpressionManager::ProcessRelevance($relevance) && file_exists($aAttachment['url']))
+                {
+                    $aRelevantAttachments[] = $aAttachment['url'];
+                }
+            }
+        }
     if (count($aEmailResponseTo)>0)
     {
         $sMessage=templatereplace($thissurvey['email_admin_responses'],$aReplacementVars,$redata,'frontend_helper[1414]',($thissurvey['anonymized'] == "Y"));
