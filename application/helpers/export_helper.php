@@ -1266,7 +1266,7 @@ function quexml_export($surveyi, $quexmllan)
             }
 
             $response = $dom->createElement("response");
-            $sgq = $iSurveyID . "X" . $gid . "X" . $qid;
+            $sgq = $RowQ['title'];
             $response->setAttribute("varName",$sgq);
 
             switch ($type)
