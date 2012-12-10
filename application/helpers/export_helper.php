@@ -377,7 +377,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $fields=array();
     if (isset($tokensexist) && $tokensexist == true && $surveyprivate == 'N') {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
-        foreach ($tokenattributes as $attributefield=>$attributedescription['description'])
+        foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
@@ -523,7 +523,7 @@ function SPSSGetQuery($iSurveyID) {
         foreach ($tokenattributes as $attributefield) {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
-                $query .= "t.{$attributefield}, ";
+                $query .= Yii::app()->db->quoteColumnName( 't.' . $attributefield) . ',';
             }
         }
         $query .= "s.*
