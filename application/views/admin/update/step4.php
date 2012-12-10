@@ -27,7 +27,8 @@ else
 if (!$downloaderror)
 {
 	echo sprintf($clang->gT('Buildnumber was successfully updated to %s.'),Yii::app()->session['updateinfo']['toversion']).'<br />';
-	$clang->eT('Please check any problems above - update was done.').'<br />';
+    $clang->eT('The update is now complete!'); ?> <br /> <?php
+    $clang->eT('As a last step you should clear your browser cache now.');?> <br /> <?php
 }
 
 echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_top')\" >".$clang->gT('Back to main menu')."</button></p>";
