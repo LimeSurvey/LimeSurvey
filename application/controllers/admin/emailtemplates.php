@@ -97,47 +97,54 @@ class emailtemplates extends Survey_Common_Action {
             array_filter($languagelist);
             foreach ($languagelist as $langname)
             {
-                foreach ($_POST['attachments'][$langname] as $template => &$attachments)
+                if (isset($_POST['attachments'][$langname]))
                 {
-                    foreach ($attachments as  $index => &$attachment)
+                    foreach ($_POST['attachments'][$langname] as $template => &$attachments)
                     {
-                        // We again take the real path.
-                        $localName = realpath(str_replace($uploadUrl, $uploadDir, $attachment['url']));
-                        if ($localName !== false)
+                        foreach ($attachments as  $index => &$attachment)
                         {
-                            if (strpos($localName, $uploadDir) === 0)
+                            // We again take the real path.
+                            $localName = realpath(str_replace($uploadUrl, $uploadDir, $attachment['url']));
+                            if ($localName !== false)
                             {
-                                $attachment['url'] = $localName;
-                                $attachment['size'] = filesize($localName);
+                                if (strpos($localName, $uploadDir) === 0)
+                                {
+                                    $attachment['url'] = $localName;
+                                    $attachment['size'] = filesize($localName);
+                                }
+                                else
+                                {
+                                    unset($attachments[$index]);
+                                }
                             }
-                            else
+                            else 
                             {
                                 unset($attachments[$index]);
                             }
                         }
-                        else 
-                        {
-                            unset($attachments[$index]);
-                        }
+                        unset($attachments);
                     }
-                    unset($attachments);
+                }
+                else
+                {
+                    $_POST['attachments'][$langname] = array();
                 }
                 
                 $attributes = array(
-                        'surveyls_email_invite_subj' => $_POST['email_invitation_subj_'.$langname],
-                        'surveyls_email_invite' => $_POST['email_invitation_'.$langname],
-                        'surveyls_email_remind_subj' => $_POST['email_reminder_subj_'.$langname],
-                        'surveyls_email_remind' => $_POST['email_reminder_'.$langname],
-                        'surveyls_email_register_subj' => $_POST['email_registration_subj_'.$langname],
-                        'surveyls_email_register' => $_POST['email_registration_'.$langname],
-                        'surveyls_email_confirm_subj' => $_POST['email_confirmation_subj_'.$langname],
-                        'surveyls_email_confirm' => $_POST['email_confirmation_'.$langname],
-                        'email_admin_notification_subj' => $_POST['email_admin_notification_subj_'.$langname],
-                        'email_admin_notification' => $_POST['email_admin_notification_'.$langname],
-                        'email_admin_responses_subj' => $_POST['email_admin_detailed_notification_subj_'.$langname],
-                        'email_admin_responses' => $_POST['email_admin_detailed_notification_'.$langname],
-                        'attachments' => serialize($_POST['attachments'][$langname])
-                        );
+                    'surveyls_email_invite_subj' => $_POST['email_invitation_subj_'.$langname],
+                    'surveyls_email_invite' => $_POST['email_invitation_'.$langname],
+                    'surveyls_email_remind_subj' => $_POST['email_reminder_subj_'.$langname],
+                    'surveyls_email_remind' => $_POST['email_reminder_'.$langname],
+                    'surveyls_email_register_subj' => $_POST['email_registration_subj_'.$langname],
+                    'surveyls_email_register' => $_POST['email_registration_'.$langname],
+                    'surveyls_email_confirm_subj' => $_POST['email_confirmation_subj_'.$langname],
+                    'surveyls_email_confirm' => $_POST['email_confirmation_'.$langname],
+                    'email_admin_notification_subj' => $_POST['email_admin_notification_subj_'.$langname],
+                    'email_admin_notification' => $_POST['email_admin_notification_'.$langname],
+                    'email_admin_responses_subj' => $_POST['email_admin_detailed_notification_subj_'.$langname],
+                    'email_admin_responses' => $_POST['email_admin_detailed_notification_'.$langname],
+                    'attachments' => serialize($_POST['attachments'][$langname])
+                );
                 $usquery = Surveys_languagesettings::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Email templates successfully saved.");
