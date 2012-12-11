@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-12-10 23:05:51+00:00\n"
+"POT-Creation-Date: 2012-12-11 23:05:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -705,57 +705,57 @@ msgstr ""
 msgid "Deleting conditions: %u conditions deleted"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:405
+#: application/controllers/admin/checkintegrity.php:407
 msgid "No matching CQID"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:414
+#: application/controllers/admin/checkintegrity.php:419
 msgid "No matching CFIELDNAME group!"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:419
+#: application/controllers/admin/checkintegrity.php:424
 msgid "No CFIELDNAME field set!"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:507
+#: application/controllers/admin/checkintegrity.php:512
 msgid "No matching survey"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:520
-#: application/controllers/admin/checkintegrity.php:584
+#: application/controllers/admin/checkintegrity.php:525
+#: application/controllers/admin/checkintegrity.php:594
 msgid "No matching group"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:533
+#: application/controllers/admin/checkintegrity.php:540
 msgid "No matching question"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:549
+#: application/controllers/admin/checkintegrity.php:559
 msgid "Language specific settings missing"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:567
+#: application/controllers/admin/checkintegrity.php:577
 msgid "The related survey is missing."
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:588
-#: application/controllers/admin/checkintegrity.php:604
+#: application/controllers/admin/checkintegrity.php:598
+#: application/controllers/admin/checkintegrity.php:614
 msgid "There is no matching survey."
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:652
+#: application/controllers/admin/checkintegrity.php:662
 msgid "responses"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:659
+#: application/controllers/admin/checkintegrity.php:669
 msgid "timings"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:672
+#: application/controllers/admin/checkintegrity.php:682
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:733
+#: application/controllers/admin/checkintegrity.php:743
 msgid "Survey ID %d saved at %s containing %d record(s)"
 msgstr ""
 
@@ -922,9 +922,9 @@ msgstr ""
 #: application/views/admin/survey/subview/tabNotification_view.php:32
 #: application/views/admin/survey/subview/tabNotification_view.php:59
 #: application/views/admin/survey/subview/tabNotification_view.php:87
-#: application/views/admin/survey/subview/tabNotification_view.php:110
-#: application/views/admin/survey/subview/tabNotification_view.php:125
-#: application/views/admin/survey/subview/tabNotification_view.php:140
+#: application/views/admin/survey/subview/tabNotification_view.php:111
+#: application/views/admin/survey/subview/tabNotification_view.php:126
+#: application/views/admin/survey/subview/tabNotification_view.php:141
 #: application/views/admin/survey/subview/tabPresentation_view.php:56
 #: application/views/admin/survey/subview/tabPresentation_view.php:80
 #: application/views/admin/survey/subview/tabPresentation_view.php:98
@@ -1143,9 +1143,9 @@ msgstr ""
 #: application/views/admin/survey/subview/tabNotification_view.php:37
 #: application/views/admin/survey/subview/tabNotification_view.php:64
 #: application/views/admin/survey/subview/tabNotification_view.php:92
-#: application/views/admin/survey/subview/tabNotification_view.php:113
-#: application/views/admin/survey/subview/tabNotification_view.php:130
-#: application/views/admin/survey/subview/tabNotification_view.php:145
+#: application/views/admin/survey/subview/tabNotification_view.php:114
+#: application/views/admin/survey/subview/tabNotification_view.php:131
+#: application/views/admin/survey/subview/tabNotification_view.php:146
 #: application/views/admin/survey/subview/tabPresentation_view.php:62
 #: application/views/admin/survey/subview/tabPresentation_view.php:86
 #: application/views/admin/survey/subview/tabPresentation_view.php:104
@@ -2539,7 +2539,7 @@ msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:941
 #: application/helpers/expressions/em_manager_helper.php:2915
-#: application/helpers/expressions/em_manager_helper.php:5474
+#: application/helpers/expressions/em_manager_helper.php:5475
 #: application/helpers/qanda_helper.php:1398
 #: application/helpers/qanda_helper.php:1724
 #: application/helpers/qanda_helper.php:2233
@@ -3750,7 +3750,7 @@ msgid "Survey title and description"
 msgstr ""
 
 #: application/controllers/admin/translate.php:464
-#: application/helpers/expressions/em_manager_helper.php:8023
+#: application/helpers/expressions/em_manager_helper.php:8024
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:29
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:32
 #: application/views/admin/survey/QuestionGroups/editGroup_view.php:19
@@ -3771,7 +3771,7 @@ msgid "Welcome and end text"
 msgstr ""
 
 #: application/controllers/admin/translate.php:494
-#: application/helpers/expressions/em_manager_helper.php:8037
+#: application/helpers/expressions/em_manager_helper.php:8038
 #: application/views/admin/survey/editLocalSettings_view.php:17
 #: application/views/admin/survey/editLocalSettings_view.php:21
 #: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:33
@@ -6968,7 +6968,7 @@ msgid "other"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:2531
-#: application/helpers/expressions/em_manager_helper.php:5476
+#: application/helpers/expressions/em_manager_helper.php:5477
 msgid "If you choose '%s' please also specify your choice in the accompanying text field."
 msgstr ""
 
@@ -6976,72 +6976,72 @@ msgstr ""
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4464
+#: application/helpers/expressions/em_manager_helper.php:4465
 msgid "Unable to insert record into survey table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4557
+#: application/helpers/expressions/em_manager_helper.php:4558
 msgid "Error in SQL update"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5451
+#: application/helpers/expressions/em_manager_helper.php:5452
 msgid "This question is mandatory"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5465
+#: application/helpers/expressions/em_manager_helper.php:5466
 msgid "Please check at least one item."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5498
-#: application/helpers/expressions/em_manager_helper.php:5535
+#: application/helpers/expressions/em_manager_helper.php:5499
+#: application/helpers/expressions/em_manager_helper.php:5536
 msgid "Please complete all parts"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5527
+#: application/helpers/expressions/em_manager_helper.php:5528
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5543
+#: application/helpers/expressions/em_manager_helper.php:5544
 msgid "Please rank all items"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8008
+#: application/helpers/expressions/em_manager_helper.php:8009
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8014
+#: application/helpers/expressions/em_manager_helper.php:8015
 msgid "Logic File for Survey # "
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8030
+#: application/helpers/expressions/em_manager_helper.php:8031
 #: application/views/admin/survey/editLocalSettings_view.php:15
 #: application/views/admin/survey/surveySummary_view.php:40
 msgid "Welcome:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8044
+#: application/helpers/expressions/em_manager_helper.php:8045
 #: application/views/admin/survey/surveySummary_view.php:117
 msgid "End URL"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8048
+#: application/helpers/expressions/em_manager_helper.php:8049
 msgid "Name [ID]"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8048
+#: application/helpers/expressions/em_manager_helper.php:8049
 msgid "Relevance [Validation] (Default)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8048
+#: application/helpers/expressions/em_manager_helper.php:8049
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8100
-#: application/helpers/expressions/em_manager_helper.php:8350
+#: application/helpers/expressions/em_manager_helper.php:8101
+#: application/helpers/expressions/em_manager_helper.php:8351
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8108
+#: application/helpers/expressions/em_manager_helper.php:8109
 #: application/views/admin/survey/Question/editQuestion_view.php:53
 #: application/views/admin/survey/Question/editQuestion_view.php:57
 #: application/views/admin/survey/Question/editQuestion_view.php:81
@@ -7052,47 +7052,47 @@ msgstr ""
 msgid "Help:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8109
+#: application/helpers/expressions/em_manager_helper.php:8110
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8126
+#: application/helpers/expressions/em_manager_helper.php:8127
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8126
+#: application/helpers/expressions/em_manager_helper.php:8127
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8252
+#: application/helpers/expressions/em_manager_helper.php:8253
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8264
+#: application/helpers/expressions/em_manager_helper.php:8265
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8422
+#: application/helpers/expressions/em_manager_helper.php:8423
 msgid "This question has at least %s error."
 msgid_plural "This question has at least %s errors."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/helpers/expressions/em_manager_helper.php:8461
+#: application/helpers/expressions/em_manager_helper.php:8462
 msgid "%s question contains errors that need to be corrected"
 msgid_plural "%s questions contain errors that need to be corrected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/helpers/expressions/em_manager_helper.php:8467
+#: application/helpers/expressions/em_manager_helper.php:8468
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8470
+#: application/helpers/expressions/em_manager_helper.php:8471
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8473
+#: application/helpers/expressions/em_manager_helper.php:8474
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
@@ -12550,7 +12550,7 @@ msgstr ""
 #: application/views/admin/survey/subview/tabNotification_view.php:24
 #: application/views/admin/survey/subview/tabNotification_view.php:51
 #: application/views/admin/survey/subview/tabNotification_view.php:79
-#: application/views/admin/survey/subview/tabNotification_view.php:102
+#: application/views/admin/survey/subview/tabNotification_view.php:103
 #: application/views/admin/survey/subview/tabTokens_view.php:26
 msgid "Cannot be changed"
 msgstr ""
@@ -12575,39 +12575,39 @@ msgstr ""
 msgid "Responses will have their referring URL logged."
 msgstr ""
 
-#: application/views/admin/survey/subview/tabNotification_view.php:100
+#: application/views/admin/survey/subview/tabNotification_view.php:101
 msgid "Timings will not be saved."
 msgstr ""
 
-#: application/views/admin/survey/subview/tabNotification_view.php:101
+#: application/views/admin/survey/subview/tabNotification_view.php:102
 msgid "Timings will be saved."
 msgstr ""
 
-#: application/views/admin/survey/subview/tabNotification_view.php:119
+#: application/views/admin/survey/subview/tabNotification_view.php:120
 msgid "Enable assessment mode?"
 msgstr ""
 
-#: application/views/admin/survey/subview/tabNotification_view.php:134
+#: application/views/admin/survey/subview/tabNotification_view.php:135
 msgid "Participant may save and resume later?"
 msgstr ""
 
-#: application/views/admin/survey/subview/tabNotification_view.php:148
+#: application/views/admin/survey/subview/tabNotification_view.php:149
 msgid "Google Analytics API key for this survey?"
 msgstr ""
 
-#: application/views/admin/survey/subview/tabNotification_view.php:152
+#: application/views/admin/survey/subview/tabNotification_view.php:153
 msgid "Google Analytics style for this survey?"
 msgstr ""
 
-#: application/views/admin/survey/subview/tabNotification_view.php:158
+#: application/views/admin/survey/subview/tabNotification_view.php:159
 msgid "Do not use Google Analytics"
 msgstr ""
 
-#: application/views/admin/survey/subview/tabNotification_view.php:163
+#: application/views/admin/survey/subview/tabNotification_view.php:164
 msgid "Default Google Analytics"
 msgstr ""
 
-#: application/views/admin/survey/subview/tabNotification_view.php:168
+#: application/views/admin/survey/subview/tabNotification_view.php:169
 msgid "Survey name-[SID]/Group name"
 msgstr ""
 
