@@ -3178,6 +3178,9 @@
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sid=sanitize_int($surveyid);
             $LEM->sessid = 'survey_' . $LEM->sid;
+            
+            // Trying to fix http://bugs.limesurvey.org/view.php?id=7004
+            $LEM->em->StartProcessingGroup($surveyid);
 
             if (is_null($options)) {
                 $options = array();
