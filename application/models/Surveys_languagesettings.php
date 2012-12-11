@@ -42,7 +42,7 @@ class Surveys_languagesettings extends CActiveRecord
      * @static
      * @access public
      * @param string $class
-     * @return CActiveRecord
+     * @return Surveys_languagesettings
      */
     public static function model($class = __CLASS__)
     {
@@ -209,37 +209,46 @@ class Surveys_languagesettings extends CActiveRecord
         return Yii::app()->db->createCommand()->select('surveyls_title')->from('{{surveys_languagesettings}}')->where('surveyls_language = :adminlang AND surveyls_survey_id = :surveyid')->bindParam(":adminlang", $lang, PDO::PARAM_STR)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->queryAll();
     }
 
-    function updateRecords($data,$condition=FALSE, $xssfiltering = false)
-    {
-        if ($condition != FALSE)
-        {
-            $this->db->where($condition);
-        }
+    /**
+     * Updates a single record identified by $condition with the
+     * key/value pairs in the $data array. 
+     * 
+     * @param type $data
+     * @param type $condition
+     * @param type $xssfiltering
+     * @return boolean
+     */
+    function updateRecord($data,$condition='', $xssfiltering = false)
+    {       
         if (isset($data['surveyls_url']) && $data['surveyls_url']== 'http://') {$data['surveyls_url']="";}
-        if($xssfiltering)
+        
+        /*
+         * Mdekker: don't think we need this anymore
+		if($xssfiltering)
+		{
+			$filter = new CHtmlPurifier();
+			$filter->options = array('URI.AllowedSchemes'=>array(
+  				'http' => true,
+  				'https' => true,
+			));
+			if (isset($data["description"]))
+				$data["description"] = $filter->purify($data["description"]);
+			if (isset($data["title"]))
+				$data["title"] = $filter->purify($data["title"]);
+			if (isset($data["welcome"]))
+				$data["welcome"] = $filter->purify($data["welcome"]);
+			if (isset($data["endtext"]))
+				$data["endtext"] = $filter->purify($data["endtext"]);
+		}
+         */
+        
+        $record = $this->findByPk($condition);
+        foreach ($data as $key => $value)
         {
-            $filter = new CHtmlPurifier();
-            $filter->options = array('URI.AllowedSchemes'=>array(
-                'http' => true,
-                'https' => true,
-            ));
-            if (isset($data["description"]))
-                $data["description"] = $filter->purify($data["description"]);
-            if (isset($data["title"]))
-                $data["title"] = $filter->purify($data["title"]);
-            if (isset($data["welcome"]))
-                $data["welcome"] = $filter->purify($data["welcome"]);
-            if (isset($data["endtext"]))
-                $data["endtext"] = $filter->purify($data["endtext"]);
+            $record->$key = $value;
         }
-
-        $this->db->update('surveys_languagesettings',$data);
-
-        if ($this->db->affected_rows() <= 0)
-        {
-            return false;
-        }
-
+        $record->save($xssfiltering);
+                    
         return true;
     }
 
