@@ -190,7 +190,7 @@ $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz
 * This sets how much memory LimeSurvey can access in megabytes. 32 mb is the minimum recommended - if you are using PDF functions up to 64 mb may be needed
 * @todo Has currently no effect
 */
-$config['memorylimit'] = '32';
+$config['memory_limit'] = '32';
 
 /**
 * showpopups (boolean)
