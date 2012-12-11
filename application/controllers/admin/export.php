@@ -389,13 +389,15 @@ class export extends Survey_Common_Action {
 
             //Now get the query string with all fields to export
             $query = SPSSGetQuery($iSurveyID);
-            $result = Yii::app()->db->createCommand($query)->query()->readAll(); //Checked
+            $result = Yii::app()->db->createCommand($query)->query();
 
-            $num_fields = isset( $result[0] ) ? count($result[0]) : 0;
-            
+            $num_fields = 0;            
             //Now we check if we need to adjust the size of the field or the type of the field
             foreach ( $result as $row )
             {
+                if($num_fields==0) {
+                    $num_fields = count($row);
+                }
                 $row = array_values($row);
                 $fieldno = 0;
 
@@ -420,6 +422,7 @@ class export extends Survey_Common_Action {
                     $fieldno++;
                 }
             }
+            $result->close();
 
             /**
             * End of DATA print out
@@ -660,12 +663,15 @@ class export extends Survey_Common_Action {
             $query = SPSSGetQuery($iSurveyID);
 
             $result = Yii::app()->db->createCommand($query)->query(); //Checked
-            $result = $result->readAll();
-            $num_fields = isset( $result[0] ) ? count($result[0]) : array();
+            
+            $num_fields = 0;
 
             //Now we check if we need to adjust the size of the field or the type of the field
             foreach ( $result as $row )
             {
+                if($num_fields==0) {
+                    $num_fields = count($row);
+                }
                 $row = array_values($row);
                 $fieldno = 0;
 
@@ -691,6 +697,7 @@ class export extends Survey_Common_Action {
                     $fieldno++;
                 }
             }
+            $result->close();
 
             $errors = "";
             $i = 1;
