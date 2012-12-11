@@ -269,7 +269,8 @@ class SurveyDao
         $aAnswers= Yii::app()->db->createCommand($sQuery)->queryAll();
         foreach($aAnswers as $aAnswer)
         {
-             $aAnswer['answer']=stripTagsFull($aAnswer['answer']);
+             if(Yii::app()->controller->action->id !='remotecontrol')
+				$aAnswer['answer']=stripTagsFull($aAnswer['answer']);
              $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']]=$aAnswer;
         }
         //Load tokens
