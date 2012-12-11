@@ -5875,7 +5875,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
 {
     $clang = Yii::app()->lang;
     //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
-    $sQuery = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
+    $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
     if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
     {
         $sQuery .="AND uid = ".Yii::app()->session['loginID'];
