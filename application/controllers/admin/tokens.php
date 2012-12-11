@@ -1131,6 +1131,7 @@ class tokens extends Survey_Common_Action
         }
 
         Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => serialize($fieldcontents)));
+        
         foreach ($languages as $language)
         {
             $ls = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language));
@@ -1355,7 +1356,39 @@ class tokens extends Survey_Common_Action
                     }
                     else
                     {
-                        if (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyId), null, $customheaders))
+                        /*
+                         * Get attachments.
+                         */
+                        if ($sSubAction == 'email')
+                        {
+                            $sTemplate = 'invitation';
+                        }
+                        elseif ($sSubAction == 'remind')
+                        {
+                            $sTemplate = 'reminder';
+                        }
+                        $aRelevantAttachments = array();
+                        if (isset($aData['thissurvey'][$emrow['language']]['attachments']))
+                        {
+                            $aAttachments = unserialize($aData['thissurvey'][$emrow['language']]['attachments']);
+                            if (!empty($aAttachments))
+                            {
+                                if (isset($aAttachments[$sTemplate]))
+                                {
+                                    LimeExpressionManager::singleton()->loadTokenInformation($aData['thissurvey']['sid'], $emrow['token']);
+                                    
+                                    foreach ($aAttachments[$sTemplate] as $aAttachment)
+                                    {
+                                        if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance']))
+                                        {
+                                            $aReleventAttachments[] = $aAttachment['url'];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyId), $aRelevantAttachments, $customheaders))
                         {
                             // Put date into sent
                             $udequery = Tokens_dynamic::model($iSurveyId)->findByPk($emrow['tid']);
