@@ -2280,10 +2280,13 @@ class remotecontrol_handle
      * @param array $aFields Optional Selected fields
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
-    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
+    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='full', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         Yii::app()->loadHelper('admin/exportresults');
+        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data');
+		if(!$count = Survey_dynamic::model($iSurveyID)->count()) return array('status' => 'No Data');
+
         if (!hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
         if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
         if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
@@ -2292,12 +2295,16 @@ class remotecontrol_handle
            $aFields=array_slice($aFields,0,255);
         }
         $oFomattingOptions=new FormattingOptions();
-        $oFomattingOptions->responseMinRecord=$iFromResponseID;
+        
+        if($iFromResponseID !=null)   
+			$oFomattingOptions->responseMinRecord=$iFromResponseID;
+        else
+			$oFomattingOptions->responseMinRecord=1;        
         
         if($iToResponseID !=null)   
             $oFomattingOptions->responseMaxRecord=$iToResponseID;
         else
-            $oFomattingOptions->responseMaxRecord = Survey_dynamic::model($iSurveyID)->count();
+            $oFomattingOptions->responseMaxRecord = $count;
 
         $oFomattingOptions->selectedColumns=$aFields;
         $oFomattingOptions->responseCompletionState=$sCompletionStatus;
