@@ -159,7 +159,7 @@ function openKCFinder_singleFile(target) {
     window.KCFinder = {};
     window.KCFinder.target = target;
     window.KCFinder.callBack = KCFinder_callback;
-    window.open('/third_party/kcfinder/browse.php?opener=custom&type=files&CKEditor=email_invite_en&langCode=en', 'kcfinder_single', 'height=600px, width=800px, modal=yes');
+    window.open(CKEDITOR.basePath + '../kcfinder/browse.php?opener=custom&type=files&CKEditor=email_invite_en&langCode=en', 'kcfinder_single', 'height=600px, width=800px, modal=yes');
 }
 
     $('#attachment-relevance-editor button').click(function()
