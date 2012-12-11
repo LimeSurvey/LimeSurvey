@@ -11,7 +11,7 @@ if (count($_POST) == 0) {
         $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . flattenText($row['title']) . "</option>\n";
     }
 
-    $sFormTag= CHtml::form(array('admin/expressions/sa/navigation_test'), 'post');?>
+    $sFormTag= CHtml::form(array('admin/expressions/sa/navigation_test'), 'post');
 
     $form = <<< EOD
 $sFormTag    
