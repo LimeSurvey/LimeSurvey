@@ -3944,6 +3944,7 @@
             $LEM->sid=sanitize_int($surveyid);
             $LEM->sessid = 'survey_' . $LEM->sid;
 
+            $LEM->em->StartProcessingGroup($surveyid);
             if (is_null($options)) {
                 $options = array();
             }
