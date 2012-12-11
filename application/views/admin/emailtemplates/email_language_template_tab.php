@@ -47,7 +47,7 @@
                     foreach ($esrow->attachments[$tab] as $attachment)
                     {
                         
-                        $script[] = "addAttachment($('#attachments-$tab'), '{$attachment['url']}', '{$attachment['relevance']}', '{$attachment['size']}' );";
+                        $script[] = sprintf("addAttachment($('#attachments-%s'), %s, %s, %s );", $tab, json_encode($attachment['url']), json_encode($attachment['relevance']), json_encode($attachment['size']));
                     }
                     echo '<script type="text/javascript">';
                     echo '$(document).ready(function() {';
