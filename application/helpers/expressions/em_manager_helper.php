@@ -2582,6 +2582,10 @@
          */
         public function loadTokenInformation($iSurveyId, $sToken = null, $bAnonymize = false)
         {
+            if (!Survey::model()->hasTokens($iSurveyId))
+            {
+                return;
+            }
             if ($sToken == null && isset($_SESSION[$this->sessid]['token']))
             {
                 $sToken = $_SESSION[$this->sessid]['token'];
