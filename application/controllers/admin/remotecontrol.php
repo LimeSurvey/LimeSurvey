@@ -2280,7 +2280,7 @@ class remotecontrol_handle
      * @param array $aFields Optional Selected fields
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
-    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
+    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='full', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         Yii::app()->loadHelper('admin/exportresults');
@@ -2295,7 +2295,6 @@ class remotecontrol_handle
            $aFields=array_slice($aFields,0,255);
         }
         $oFomattingOptions=new FormattingOptions();
-        $oFomattingOptions->responseMinRecord=$iFromResponseID;
         
         if($iFromResponseID !=null)   
 			$oFomattingOptions->responseMinRecord=$iFromResponseID;
