@@ -396,13 +396,18 @@ class CheckIntegrity extends Survey_Common_Action
         // TMSW Conditions->Relevance:  Replace this with analysis of relevance
         $conditions = Conditions::model()->findAll();
         if (Conditions::model()->hasErrors()) safeDie(Conditions::model()->getError());
+        $okQuestion = array();
         foreach ($conditions as $condition)
         {
             if ($condition['cqid'] != 0) { // skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
-                $iRowCount = Questions::model()->countByAttributes(array('qid' => $condition['cqid']));
-                if (Questions::model()->hasErrors()) safeDie(Questions::model()->getError());
-                if (!$iRowCount) {
-                    $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => $clang->gT('No matching CQID'));
+                if (!array_key_exists($condition['cqid'], $okQuestion)) {
+                    $iRowCount = Questions::model()->countByAttributes(array('qid' => $condition['cqid']));
+                    if (Questions::model()->hasErrors()) safeDie(Questions::model()->getError());                
+                    if (!$iRowCount) {
+                        $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => $clang->gT('No matching CQID'));
+                    } else {
+                        $okQuestion[$condition['cqid']] = $condition['cqid'];
+                    }
                 }
             }
             if ($condition['cfieldname']) //Only do this if there actually is a 'cfieldname'
@@ -525,12 +530,17 @@ class CheckIntegrity extends Survey_Common_Action
         /**********************************************************************/
         $answers = Answers::model()->findAll();
         if (Answers::model()->hasErrors()) safeDie(Answers::model()->getError());
+        $okQuestion = array();
         foreach ($answers as $answer)
         {
-            $iAnswerCount = Questions::model()->countByAttributes(array('qid' => $answer['qid']));
-            if (Questions::model()->hasErrors()) safeDie(Questions::model()->getError());
-            if (!$iAnswerCount) {
-                $aDelete['answers'][] = array('qid' => $answer['qid'], 'code' => $answer['code'], 'reason' => $clang->gT('No matching question'));
+            if (!array_key_exists($answer['qid'], $okQuestion)) {
+                $iAnswerCount = Questions::model()->countByAttributes(array('qid' => $answer['qid']));
+                if (Questions::model()->hasErrors()) safeDie(Questions::model()->getError());
+                if (!$iAnswerCount) {
+                    $aDelete['answers'][] = array('qid' => $answer['qid'], 'code' => $answer['code'], 'reason' => $clang->gT('No matching question'));
+                }  else {
+                    $okQuestion[$answer['qid']] = $answer['qid'];
+                }
             }
         }
 
