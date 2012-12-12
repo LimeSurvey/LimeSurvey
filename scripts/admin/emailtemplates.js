@@ -89,7 +89,7 @@ function addAttachment(target, url, relevance, size)
     var baserow = '<tr>';
         // Actions
         baserow = baserow + '<td>';
-        baserow = baserow + '<img alt="Remove attachment" class="btnattachmentremove" src="' + LS.baseimageurl + 'deleteanswer.png">';
+        baserow = baserow + '<img alt="Remove attachment" class="btnattachmentremove" src="' + LS.adminImageUrl + 'deleteanswer.png">';
         //baserow = baserow + '<img alt="Edit attachment relevance" class="btnattachmentrelevance" src="/styles/gringegreen/images/global.png">';
         baserow = baserow + '</td>';
 
