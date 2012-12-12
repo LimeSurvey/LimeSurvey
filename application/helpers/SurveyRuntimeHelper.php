@@ -881,13 +881,13 @@ END;
 
 END;
         }
-
+        
         print <<<END
             }
         // -->
         </script>
 END;
-
+        
         //Display the "mandatory" message on page if necessary
         if (isset($showpopups) && $showpopups == 0 && $stepInfo['mandViolation'] && $okToShowErrors)
         {
@@ -1028,6 +1028,26 @@ END;
 
         LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+        if ($previewquestion){
+            // force the question to be visible, even if irrelevant
+            echo "
+        <script type='text/javascript'>
+    $('#relevance" . $_qid . "').val(1);
+    $(document).ready(function() {
+        $('#question" . $_qid . "').show();
+    });
+    $(document).change(function() {
+        $('#question'. LEMqid).show();
+    });
+    $(document).bind('keydown',function(e) {
+                if (e.keyCode == 9) {
+                    $('#question" . $_qid . "').show();
+                    return true;
+                }
+                return true;
+            });
+         </script>";
+        }
         LimeExpressionManager::FinishProcessingPage();
 
         if (!$previewgrp && !$previewquestion)
