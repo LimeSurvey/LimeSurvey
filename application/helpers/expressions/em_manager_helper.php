@@ -2526,7 +2526,7 @@
                         $othertext = trim($qattr['other_replace_text']);
                     }
                     else {
-                        $othertext = $this->gT('other');
+                        $othertext = $this->gT('Other:');
                     }
                     $qtips['other_comment_mandatory']=sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
                 }
@@ -7500,6 +7500,9 @@ EOD;
                                 else
                                 {
                                     $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $qid,$_SESSION['LEMlang']);
+                                    if (!isset($aAttributes[$qid])) {
+                                        $aAttributes[$qid]=array();
+                                    }
                                     $aDateFormatData=getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
                                     $oDateTimeConverter = new Date_Time_Converter($value, $aDateFormatData['phpdate']);
                                     $value=$oDateTimeConverter->convert("Y-m-d H:i");
