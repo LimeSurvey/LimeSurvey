@@ -1037,7 +1037,7 @@ END;
         $('#question" . $_qid . "').show();
     });
     $(document).change(function() {
-        $('#question'. LEMqid).show();
+        $('#question" . $_qid . "').show();
     });
     $(document).bind('keydown',function(e) {
                 if (e.keyCode == 9) {
