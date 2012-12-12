@@ -359,7 +359,8 @@ class CheckIntegrity extends Survey_Common_Action
         {
             $sTableName = substr(reset($aRow), strlen($sDBPrefix));
             if ($sTableName == 'survey_permissions' || $sTableName == 'survey_links' || $sTableName == 'survey_url_parameters') continue;
-            $iSurveyID = substr($sTableName, strpos($sTableName, '_') + 1);
+            $aTableName=explode('_',$sTableName);
+            $iSurveyID = $aTableName[1];
             if (false == array_search($iSurveyID, $sids)) {
                 $sDate = date('YmdHis') . rand(1, 1000);
                 $sOldTable = "survey_{$iSurveyID}";
