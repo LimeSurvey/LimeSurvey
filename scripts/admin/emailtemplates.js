@@ -89,7 +89,7 @@ function addAttachment(target, url, relevance, size)
     var baserow = '<tr>';
         // Actions
         baserow = baserow + '<td>';
-        baserow = baserow + '<img alt="Remove attachment" class="btnattachmentremove" src="/styles/gringegreen/images/deleteanswer.png">';
+        baserow = baserow + '<img alt="Remove attachment" class="btnattachmentremove" src="' + LS.baseimageurl + 'deleteanswer.png">';
         //baserow = baserow + '<img alt="Edit attachment relevance" class="btnattachmentrelevance" src="/styles/gringegreen/images/global.png">';
         baserow = baserow + '</td>';
 
@@ -159,7 +159,7 @@ function openKCFinder_singleFile(target) {
     window.KCFinder = {};
     window.KCFinder.target = target;
     window.KCFinder.callBack = KCFinder_callback;
-    window.open(CKEDITOR.basePath + '../kcfinder/browse.php?opener=custom&type=files&CKEditor=email_invite_en&langCode=en', 'kcfinder_single', 'height=600px, width=800px, modal=yes');
+    window.open(LS.baseUrl + '/third_party/kcfinder/browse.php?opener=custom&type=files&CKEditor=email_invite_en&langCode=en', 'kcfinder_single', 'height=600px, width=800px, modal=yes');
 }
 
     $('#attachment-relevance-editor button').click(function()
