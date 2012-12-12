@@ -971,7 +971,7 @@ END;
                     continue; // skip this one
                 }
 
-                if (!$qinfo['relevant'] || ($qinfo['hidden'] && $qinfo['info']['type'] == '*'))
+                if ((!$qinfo['relevant'] && !$previewquestion) || ($qinfo['hidden'] && $qinfo['info']['type'] == '*'))
                 {
                     $n_q_display = ' style="display: none;"';
                 }
