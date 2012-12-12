@@ -2077,7 +2077,7 @@
                         $othertext = trim($qattr['other_replace_text']);
                     }
                     else {
-                        $othertext = $this->gT('other');
+                        $othertext = $this->gT('Other:');
                     }
                     $qtips['other_comment_mandatory']=sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
                 }
