@@ -108,7 +108,7 @@ function loadanswers()
             else
             {
                 //Only make session variables for those in insertarray[]
-                if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']))
+                if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$column]))
                 {
                     $q = $_SESSION['survey_'.$surveyid]['fieldmap'][$column];
                     $_SESSION['survey_'.$surveyid][$column] = $q->loadAnswer($value);
