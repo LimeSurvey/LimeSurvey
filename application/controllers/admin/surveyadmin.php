@@ -674,8 +674,8 @@ class SurveyAdmin extends Survey_Common_Action
             if ($rows['active'] == "Y")
             {
                 $cntResult = Survey_dynamic::countAllAndPartial($rows['sid']);
-                $all = $cntResult['cntAll'];
-                $partial = $cntResult['cntPartial'];
+                $all = $cntResult['cntall'];
+                $partial = $cntResult['cntpartial'];
 
                 $aSurveyEntry[] = $all - $partial;
                 $aSurveyEntry[] = $partial;
@@ -686,8 +686,8 @@ class SurveyAdmin extends Survey_Common_Action
                 if (tableExists('tokens_' . $rows['sid'] ))
                 {
                     $cntResult = Tokens_dynamic::countAllAndCompleted($rows['sid']);
-                    $tokens = $cntResult['cntAll'];
-                    $tokenscompleted = $cntResult['cntCompleted'];
+                    $tokens = $cntResult['cntall'];
+                    $tokenscompleted = $cntResult['cntcompleted'];
 
                     $aSurveyEntry[] = $tokens;
                     $aSurveyEntry[] = ($tokens == 0) ? 0 : round($tokenscompleted / $tokens * 100, 1);

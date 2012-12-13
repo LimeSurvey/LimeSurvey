@@ -229,11 +229,11 @@ class Tokens_dynamic extends LSActiveRecord
     public static function countAllAndCompleted($sid)
     {
         $select = array(
-            'count(*) AS cntAll',
+            'count(*) AS cntall',
             'sum(CASE '. Yii::app()->db->quoteColumnName('completed') . '
                  WHEN '.Yii::app()->db->quoteValue('Y').' THEN 0
                           ELSE 1
-                 END) AS cntCompleted',
+                 END) AS cntcompleted',
             );
         $result = Yii::app()->db->createCommand()->select($select)->from('{{tokens_' . $sid . '}}')->queryRow();
         return $result;
