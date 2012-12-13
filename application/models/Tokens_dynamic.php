@@ -225,6 +225,19 @@ class Tokens_dynamic extends LSActiveRecord
     {
         return Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$iSurveyID}}} WHERE token IS NULL OR token=''")->queryAll();
     }
+    
+    public static function countAllAndCompleted($sid)
+    {
+        $select = array(
+            'count(*) AS cntAll',
+            'sum(CASE completed
+                 WHEN "Y" THEN 0
+                          ELSE 1
+                 END) AS cntCompleted',
+            );
+        $result = Yii::app()->db->createCommand()->select($select)->from('{{tokens_' . $sid . '}}')->queryRow();
+        return $result;
+    }
 
    /**
      * Creates and inserts token for a specific token record and returns the token string created

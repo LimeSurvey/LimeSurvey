@@ -27,11 +27,11 @@ function injectglobalsettings()
         //foreach  ($dbvaluearray as $setting)
         foreach ($settings as $setting)
         {
-            if (Yii::app()->getConfig($setting->getAttribute('stg_name')) !== false)
-            {
+            //if (Yii::app()->getConfig($setting->getAttribute('stg_name')) !== false)
+            //{
                 //$$setting['stg_name']=$setting['stg_value'];
                 Yii::app()->setConfig($setting->getAttribute('stg_name'), $setting->getAttribute('stg_value'));
-            }
+            //}
         }
     }
 }
