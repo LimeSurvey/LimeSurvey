@@ -183,6 +183,19 @@ class Survey_dynamic extends LSActiveRecord
         return $newCriteria;
     }
     
+    public static function countAllAndPartial($sid)
+    {
+        $select = array(
+            'count(*) AS cntAll',
+            'sum(CASE 
+                 WHEN submitdate IS NULL THEN 1
+                          ELSE 0
+                 END) AS cntPartial',
+            );
+        $result = Yii::app()->db->createCommand()->select($select)->from('{{survey_' . $sid . '}}')->queryRow();
+        return $result;
+    }
+    
     /**
      * Return true if actual survey is completed
      *

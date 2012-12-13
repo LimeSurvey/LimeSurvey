@@ -685,8 +685,9 @@ class SurveyAdmin extends Survey_Common_Action
             //Set Responses
             if ($rows['active'] == "Y")
             {
-                $partial = Survey_dynamic::model($rows['sid'])->countByAttributes(array('submitdate' => null));
-                $all = Survey_dynamic::model($rows['sid'])->count();
+                $cntResult = Survey_dynamic::countAllAndPartial($rows['sid']);
+                $all = $cntResult['cntAll'];
+                $partial = $cntResult['cntPartial'];
 
                 $aSurveyEntry[] = $all - $partial;
                 $aSurveyEntry[] = $partial;
@@ -696,10 +697,9 @@ class SurveyAdmin extends Survey_Common_Action
                 $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']);
                 if (tableExists('tokens_' . $rows['sid'] ))
                 {
-                    $tokens = Tokens_dynamic::model($rows['sid'])->count();
-                    $tokenscompleted = Tokens_dynamic::model($rows['sid'])->count(array(
-                    'condition' => "completed <> 'N'"
-                    ));
+                    $cntResult = Tokens_dynamic::countAllAndCompleted($rows['sid']);
+                    $tokens = $cntResult['cntAll'];
+                    $tokenscompleted = $cntResult['cntCompleted'];
 
                     $aSurveyEntry[] = $tokens;
                     $aSurveyEntry[] = ($tokens == 0) ? 0 : round($tokenscompleted / $tokens * 100, 1);
