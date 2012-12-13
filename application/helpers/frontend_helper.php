@@ -72,7 +72,7 @@
                 }
                 elseif ($column == "saved_thisstep" )
                 {
-                    if($thissurvey['alloweditaftercompletion'] != 'Y' || !Survey::model()->hasTokens($iSurveyId) )
+                    if($thissurvey['alloweditaftercompletion'] != 'Y' || !Survey::model()->hasTokens($surveyid) )
                     {
                         $_SESSION['survey_'.$surveyid]['step']=$value;
                         $thisstep=$value-1;
