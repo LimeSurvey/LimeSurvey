@@ -127,7 +127,7 @@ $(document).ready(function() {
         sortname: 'firstname',
         sortorder: 'asc',
         viewrecords : true,
-        rowList: [25,50,100,250,500,1000],
+        rowList: [25,50,100,250,500,1000,2500,5000],
         multiselect: true,
         loadonce : false,
         loadComplete : function() {
@@ -244,7 +244,7 @@ $(document).ready(function() {
                 recordtext:'',
                 pgtext:'',
                 rowNum:10,
-                rowList:[10,25,50,100,250,500],
+                rowList:[10,25,50,100,250,500,1000,2500,5000],  /* start with 10 to keep it smaller */
                 gridComplete: function () {
                     /* Removes the delete icon from the actions bar */
                     $('div.ui-inline-del').html('');

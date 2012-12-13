@@ -59,7 +59,7 @@ jQuery("#sharePanel").jqGrid({
     scrollOffset:0,
     autowidth: true,
     sortname : "firstname",
-    rowList: [25,50,100,250,500,1000,2000,5000],
+    rowList: [25,50,100,250,500,1000,2500,5000],
     multiselect: true,
     loadonce: true,
     pager: "#pager"
