@@ -1381,7 +1381,7 @@ class tokens extends Survey_Common_Action
                                     {
                                         if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance']))
                                         {
-                                            $aReleventAttachments[] = $aAttachment['url'];
+                                            $aRelevantAttachments[] = $aAttachment['url'];
                                         }
                                     }
                                 }

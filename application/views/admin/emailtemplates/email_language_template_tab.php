@@ -32,7 +32,7 @@
         <div style="float: left; width: 60%;">
         <button class="add-attachment" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>">Add file</button>
         
-        <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]" id ="attachments-<?php echo $tab ?>" class="attachments" style="width: 500px">
+        <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]" id ="attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" class="attachments" style="width: 500px">
             <tr>
                 <th>Action</th>
                 <th>Filename</th>
@@ -47,7 +47,7 @@
                     foreach ($esrow->attachments[$tab] as $attachment)
                     {
                         
-                        $script[] = sprintf("addAttachment($('#attachments-%s'), %s, %s, %s );", $tab, json_encode($attachment['url']), json_encode($attachment['relevance']), json_encode($attachment['size']));
+                        $script[] = sprintf("addAttachment($('#attachments-%s-%s'), %s, %s, %s );", $grouplang, $tab, json_encode($attachment['url']), json_encode($attachment['relevance']), json_encode($attachment['size']));
                     }
                     echo '<script type="text/javascript">';
                     echo '$(document).ready(function() {';
