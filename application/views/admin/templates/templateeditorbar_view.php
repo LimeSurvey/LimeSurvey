@@ -8,7 +8,7 @@
     {
         if (newtemplatename=window.prompt(text, defvalue))
             {
-            sendPost('<?php echo $this->createUrl('admin/templates/template'); ?>'+action,'',new Array('action','newname','copydir'),new Array('template'+action,newtemplatename,copydirectory));
+            sendPost('<?php echo $this->createUrl('admin/templates/sa/template'); ?>'+action,'',new Array('action','newname','copydir'),new Array('template'+action,newtemplatename,copydirectory));
         }
     }
 
@@ -65,9 +65,9 @@
             } ?>
             <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir))
                 {?>
-                <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/upload'); ?>", "_top")'>
+                <a href='<?php echo $this->createUrl('admin/templates/sa/upload'); ?>' target="_top">
                     <img src='<?php echo $sImageURL; ?>import.png' alt='<?php $clang->eT("Import template"); ?>' title='' /></a>
-                <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/templatezip/templatename/' . $templatename) ?>", "_top")'>
+                <a href='<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename); ?>'>
                     <img src='<?php echo $sImageURL; ?>export.png' alt='<?php $clang->eT("Export Template"); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                 <a href='#' onclick="javascript: copyprompt('<?php $clang->eT("Please enter the name for the copied template:"); ?>', '<?php echo $clang->gT("copy_of_")."$templatename"; ?>',            '<?php echo $templatename; ?>', 'copy')">
