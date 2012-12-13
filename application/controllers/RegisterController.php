@@ -63,19 +63,6 @@ class RegisterController extends LSYii_Controller {
             Yii::app()->request->redirect(Yii::app()->baseUrl);
         }
 
-        getGlobalSetting('SessionName');
-        if (getGlobalSetting('SessionName'))
-        {
-            $stg_SessionName=$usrow['stg_value'];
-            Yii::app()->session->setSessionName("$stg_SessionName-runtime-$iSurveyID");
-        }
-        else
-        {
-            Yii::app()->setSessionName("LimeSurveyRuntime-$iSurveyID");
-        }
-
-        Yii::app()->session->setCookieParams(array(0, Yii::app()->getConfig('publicurl')));
-
         // Get passed language from form, so that we dont loose this!
         if (!isset($sLanguage) || $sLanguage == "" || !$sLanguage )
         {
@@ -140,7 +127,7 @@ class RegisterController extends LSYii_Controller {
 
         $iTokenLength = $aSurveyInfo['tokenlength'];
         //if tokenlength is not set or there are other problems use the default value (15)
-        if(!$iTokenLength || trim($iTokenLength) == '')
+        if(!$iTokenLength || intval($iTokenLength) == 0)
         {
             $iTokenLength = 15;
         }
