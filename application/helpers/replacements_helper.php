@@ -462,7 +462,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                 $_saveall = '';
             }
         }
-        elseif (isset($_SESSION['survey_'.$surveyid]['scid']) && (isset($move) && $move == "movelast"))
+        elseif (isset($surveyid) && isset($_SESSION['survey_'.$surveyid]['scid']) && (isset($move) && $move == "movelast"))
         {  //Already saved and on Submit Page, dont show Save So Far button
             $_saveall = '';
         }
