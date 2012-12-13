@@ -21,7 +21,7 @@ class Answers extends CActiveRecord
 	 * @static
 	 * @access public
      * @param string $class
-	 * @return CActiveRecord
+	 * @return Answers
 	 */
 	public static function model($class = __CLASS__)
 	{
@@ -78,9 +78,28 @@ class Answers extends CActiveRecord
 			->query();
     }
 
+    /**
+     * Return the key=>value answer for a given $qid
+     * 
+     * @staticvar array $answerCache
+     * @param type $qid
+     * @param type $code
+     * @param type $lang
+     * @param type $iScaleID
+     * @return array
+     */
     function getAnswerFromCode($qid, $code, $lang, $iScaleID=0)
     {
-		return Yii::app()->db->cache(6)->createCommand()
+        static $answerCache = array();
+
+        if (array_key_exists($qid, $answerCache)
+                && array_key_exists($code, $answerCache[$qid])
+                && array_key_exists($lang, $answerCache[$qid][$code])
+                && array_key_exists($iScaleID, $answerCache[$qid][$code][$lang])) {
+            // We have a hit :)
+            return $answerCache[$qid][$code][$lang][$iScaleID];
+        } else {
+            $answerCache[$qid][$code][$lang][$iScaleID] = Yii::app()->db->cache(6)->createCommand()
 			->select('answer')
 			->from(self::tableName())
 			->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=:scale_id', 'language=:lang'))
@@ -88,7 +107,10 @@ class Answers extends CActiveRecord
 			->bindParam(":code", $code, PDO::PARAM_STR)
 			->bindParam(":lang", $lang, PDO::PARAM_STR)
             ->bindParam(":scale_id", $iScaleID, PDO::PARAM_INT)
-			->query();
+			->query()->readAll();
+            
+            return $answerCache[$qid][$code][$lang][$iScaleID];
+        }
     }
 
 	public function oldNewInsertansTags($newsid,$oldsid)
