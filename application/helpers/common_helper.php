@@ -100,7 +100,7 @@ function isStandardTemplate($sTemplateName)
 */
 function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=false)
 {
-    static $cached = null;
+    $cached = null;
 
     $timeadjust = getGlobalSetting('timeadjust');
     $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);

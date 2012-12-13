@@ -706,7 +706,7 @@ class CheckIntegrity extends Survey_Common_Action
             $aTokenSIDs[] = $iSurveyID;
             $aFullOldTokenSIDs[$iSurveyID][] = $sTable;
         }
-        $aOldTokenSIDs = array_unique($aTokenSIDs);
+        $aOldTokenSIDs = array_unique($aOldTokenSIDs);
         $surveys = Survey::model()->findAll();
         if (Survey::model()->hasErrors()) safeDie(Survey::model()->getError());
         $aSIDs = array();
@@ -716,7 +716,7 @@ class CheckIntegrity extends Survey_Common_Action
         }
         foreach ($aOldTokenSIDs as $iOldTokenSID)
         {
-            if (!in_array($iOldTokenSID, $aOldTokenSIDs)) {
+            if (!in_array($iOldTokenSID, $aTokenSIDs)) {
                 foreach ($aFullOldTokenSIDs[$iOldTokenSID] as $sTableName)
                 {
                     $aDelete['orphantokentables'][] = $sTableName;

@@ -78,9 +78,6 @@ class Answers extends CActiveRecord
             ->query();
     }
 
-    /**
-     * @deprecated No longer used as questions have their answer(codes) encapsulated
-     */
     function getAnswerFromCode($qid, $code, $lang, $iScaleID=0)
     {
         return Yii::app()->db->cache(6)->createCommand()
