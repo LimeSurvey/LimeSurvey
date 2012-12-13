@@ -3140,7 +3140,7 @@ function do_multiplenumeric($ia)
     }
     else
     {
-        $maxlength= "25";
+        $maxlength= " maxlength='25' ";
     }
 
     //    //EQUALS VALUE
