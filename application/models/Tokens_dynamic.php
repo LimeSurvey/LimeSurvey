@@ -230,8 +230,8 @@ class Tokens_dynamic extends LSActiveRecord
     {
         $select = array(
             'count(*) AS cntAll',
-            'sum(CASE completed
-                 WHEN "Y" THEN 0
+            'sum(CASE '. Yii::app()->db->quoteColumnName('completed') . '
+                 WHEN '.Yii::app()->db->quoteValue('Y').' THEN 0
                           ELSE 1
                  END) AS cntCompleted',
             );
