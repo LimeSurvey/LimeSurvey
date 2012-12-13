@@ -160,7 +160,7 @@ viewrecords : true,
 gridview: true,
 multiselect: true,
 loadonce: true,
-rowList: [25,50,100,250,500,1000,5000,10000],
+rowList: [25,50,100,250,500,1000,2500,5000],
 ondblClickRow: function(id) {
 if (lastSel != id) {
 $('#responseTable').saveRow(lastSel);

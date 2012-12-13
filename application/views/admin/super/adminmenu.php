@@ -19,7 +19,7 @@
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
-            <a href="<?php echo $this->createUrl("/admin"); ?>">
+            <a href="<?php echo $this->createUrl("/admin/survey/sa/index"); ?>">
                 <img src='<?php echo $sImageURL;?>home.png' alt='<?php $clang->eT("Default administration page");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
 
             <img src='<?php echo $sImageURL;?>blank.gif' alt='' width='11' />

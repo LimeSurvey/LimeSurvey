@@ -46,25 +46,30 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function index()
     {
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/i18n/grid.locale-en.js");
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/jquery.jqGrid.min.js");
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jquery.coookie.js");
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "listsurvey.js");
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/ui.jqgrid.css");
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/jquery.ui.datepicker.css");
-
-        Yii::app()->loadHelper('surveytranslator');
-
-        $aData['issuperadmin'] = false;
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+        if (count(getSurveyList(true)) == 0)
         {
-            $aData['issuperadmin'] = true;
-        }
+            $this->_renderWrappedTemplate('super', 'firststeps');
+        } else {
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/i18n/grid.locale-en.js");
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/jquery.jqGrid.min.js");
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jquery.coookie.js");
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "listsurvey.js");
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/ui.jqgrid.css");
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/jquery.ui.datepicker.css");
 
-        $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
+            Yii::app()->loadHelper('surveytranslator');
+
+            $aData['issuperadmin'] = false;
+            if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+            {
+                $aData['issuperadmin'] = true;
+            }
+
+            $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
+        }
     }
 
     public function regenquestioncodes($iSurveyID, $sSubAction )
@@ -680,8 +685,9 @@ class SurveyAdmin extends Survey_Common_Action
             //Set Responses
             if ($rows['active'] == "Y")
             {
-                $partial = Survey_dynamic::model($rows['sid'])->countByAttributes(array('submitdate' => null));
-                $all = Survey_dynamic::model($rows['sid'])->count();
+                $cntResult = Survey_dynamic::countAllAndPartial($rows['sid']);
+                $all = $cntResult['cntAll'];
+                $partial = $cntResult['cntPartial'];
 
                 $aSurveyEntry[] = $all - $partial;
                 $aSurveyEntry[] = $partial;
@@ -691,10 +697,9 @@ class SurveyAdmin extends Survey_Common_Action
                 $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']);
                 if (tableExists('tokens_' . $rows['sid'] ))
                 {
-                    $tokens = Tokens_dynamic::model($rows['sid'])->count();
-                    $tokenscompleted = Tokens_dynamic::model($rows['sid'])->count(array(
-                    'condition' => "completed <> 'N'"
-                    ));
+                    $cntResult = Tokens_dynamic::countAllAndCompleted($rows['sid']);
+                    $tokens = $cntResult['cntAll'];
+                    $tokenscompleted = $cntResult['cntCompleted'];
 
                     $aSurveyEntry[] = $tokens;
                     $aSurveyEntry[] = ($tokens == 0) ? 0 : round($tokenscompleted / $tokens * 100, 1);

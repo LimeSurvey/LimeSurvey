@@ -25,7 +25,7 @@ $(document).ready(function() {
         autowidth: true,
         loadonce: true,
         sortname : "attribute_name",
-        rowList: [25,50,100,250,500,1000,5000],
+        rowList: [25,50,100,250,500,1000,2500,5000],
         multiselect: true,
         pager: "#pager",
         pgtext: pagerMsg,

@@ -11,113 +11,115 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-function loadanswers()
-{
-    global $surveyid;
-    global $thissurvey, $thisstep;
-    global $clienttoken;
-    $clang = Yii::app()->lang;
-
-    $scid=returnGlobal('scid');
-    if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
+    function loadanswers()
     {
-        $query = "SELECT * FROM {{saved_control}} INNER JOIN {$thissurvey['tablename']}
-        ON {{saved_control}}.srid = {$thissurvey['tablename']}.id
-        WHERE {{saved_control}}.sid=$surveyid\n";
-        if (isset($scid)) //Would only come from email
+        global $surveyid;
+        global $thissurvey, $thisstep;
+        global $clienttoken;
+        $clang = Yii::app()->lang;
 
+        $scid=returnGlobal('scid');
+        if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
         {
-            $query .= "AND {{saved_control}}.scid={$scid}\n";
+            $query = "SELECT * FROM {{saved_control}} INNER JOIN {$thissurvey['tablename']}
+            ON {{saved_control}}.srid = {$thissurvey['tablename']}.id
+            WHERE {{saved_control}}.sid=$surveyid\n";
+            if (isset($scid)) //Would only come from email
+
+            {
+                $query .= "AND {{saved_control}}.scid={$scid}\n";
+            }
+                $query .="AND {{saved_control}}.identifier = '".autoEscape($_SESSION['survey_'.$surveyid]['holdname'])."' ";
+
+                if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
+            {
+                $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(autoUnescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
+            }
+            else
+            {
+                $query .="AND {{saved_control}}.access_code = '".md5(autoUnescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
+            }
         }
-            $query .="AND {{saved_control}}.identifier = '".autoEscape($_SESSION['survey_'.$surveyid]['holdname'])."' ";
-
-            if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
+        elseif (isset($_SESSION['survey_'.$surveyid]['srid']))
         {
-            $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(autoUnescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
+            $query = "SELECT * FROM {$thissurvey['tablename']}
+            WHERE {$thissurvey['tablename']}.id=".$_SESSION['survey_'.$surveyid]['srid']."\n";
         }
         else
         {
-            $query .="AND {{saved_control}}.access_code = '".md5(autoUnescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
+            return;
         }
-    }
-    elseif (isset($_SESSION['survey_'.$surveyid]['srid']))
-    {
-        $query = "SELECT * FROM {$thissurvey['tablename']}
-        WHERE {$thissurvey['tablename']}.id=".$_SESSION['survey_'.$surveyid]['srid']."\n";
-    }
-    else
-    {
-        return;
-    }
 
         $aRow = Yii::app()->db->createCommand($query)->queryRow();
         if (!$aRow)
         {
             safeDie($clang->gT("There is no matching saved survey")."<br />\n");
+            return false;
         }
         else
         {
             //A match has been found. Let's load the values!
             //If this is from an email, build surveysession first
             $_SESSION['survey_'.$surveyid]['LEMtokenResume']=true;
-
+            // Get if survey is been answered
+            $submitdate=$aRow['submitdate'];
             foreach ($aRow as $column => $value)
             {
                 if ($column == "token")
-            {
-                $clienttoken=$value;
-                $token=$value;
-            }
-            elseif ($column == "saved_thisstep" && $thissurvey['alloweditaftercompletion'] != 'Y' )
-            {
-                $_SESSION['survey_'.$surveyid]['step']=$value;
-                $thisstep=$value-1;
-            }
-            elseif ($column =='lastpage' && isset($_GET['token']) && $thissurvey['alloweditaftercompletion'] != 'Y' )
-            {
-                if ($value<1) $value=1;
-                $_SESSION['survey_'.$surveyid]['step']=$value;
-                $thisstep=$value-1;
-            }
-            /*
-            Commented this part out because otherwise startlanguage would overwrite any other language during a running survey.
-            We will need a new field named 'endlanguage' to save the current language (for example for returning participants)
-            /the language the survey was completed in.
-            elseif ($column =='startlanguage')
-            {
-            $clang = SetSurveyLanguage( $surveyid, $value);
-            UpdateSessionGroupList($value);  // to refresh the language strings in the group list session variable
-            UpdateFieldArray();        // to refresh question titles and question text
-            }*/
-            elseif ($column == "scid")
-            {
-                $_SESSION['survey_'.$surveyid]['scid']=$value;
-            }
-            elseif ($column == "srid")
-            {
-                $_SESSION['survey_'.$surveyid]['srid']=$value;
-            }
-            elseif ($column == "datestamp")
-            {
-                $_SESSION['survey_'.$surveyid]['datestamp']=$value;
-            }
-            if ($column == "startdate")
-            {
-                $_SESSION['survey_'.$surveyid]['startdate']=$value;
-            }
-            else
-            {
-                //Only make session variables for those in insertarray[]
-                if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']))
                 {
-                    $q = $_SESSION['survey_'.$surveyid]['fieldmap'][$column];
-                    $_SESSION['survey_'.$surveyid][$column] = $q->loadAnswer($value);
-                }  // if (in_array(
-            }  // else
-        } // foreach
+                    $clienttoken=$value;
+                    $token=$value;
+                }
+                elseif ($column == "saved_thisstep" )
+                {
+                    if($thissurvey['alloweditaftercompletion'] != 'Y' || !Survey::model()->hasTokens($surveyid) )
+                    {
+                        $_SESSION['survey_'.$surveyid]['step']=$value;
+                        $thisstep=$value-1;
+                    }
+                }
+                elseif ($column =='lastpage')
+                {
+                    if(is_null($submitdate) || $submitdate=="N")
+                    {
+                        if ($value<1) $value=1;
+                        $_SESSION['survey_'.$surveyid]['step']=$value;
+                        $thisstep=$value-1;
+                    }
+                    elseif( $thissurvey['alloweditaftercompletion'] == 'Y' && Survey::model()->hasTokens($surveyid))
+                    {
+                        $_SESSION['survey_'.$surveyid]['maxstep']=$value;
+                    }
+                }
+                elseif ($column == "scid")
+                {
+                    $_SESSION['survey_'.$surveyid]['scid']=$value;
+                }
+                elseif ($column == "srid")
+                {
+                    $_SESSION['survey_'.$surveyid]['srid']=$value;
+                }
+                elseif ($column == "datestamp")
+                {
+                    $_SESSION['survey_'.$surveyid]['datestamp']=$value;
+                }
+                elseif ($column == "startdate")
+                {
+                    $_SESSION['survey_'.$surveyid]['startdate']=$value;
+                }
+                else
+                {
+                    //Only make session variables for those in insertarray[]
+                    if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$column]))
+                    {
+                        $q = $_SESSION['survey_'.$surveyid]['fieldmap'][$column];
+                        $_SESSION['survey_'.$surveyid][$column] = $q->loadAnswer($value);
+                    }  // if (in_array(
+                }  // else
+            } // foreach
+        }
+        return true;
     }
-    return true;
-}
 
 function makegraph($currentstep, $total)
 {
