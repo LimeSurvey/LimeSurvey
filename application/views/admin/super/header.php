@@ -8,6 +8,7 @@
     <script type="text/javascript" src="<?php echo Yii::app()->getConfig('generalscripts');?>jquery/jquery.ui.touch-punch.min.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->getConfig('generalscripts');?>jquery/jquery.qtip.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->getConfig('generalscripts');?>jquery/jquery.notify.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->createUrl('config/script');?>"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts');?>admin_core.js"></script>
     <?php echo $datepickerlang;?>
     <title><?php echo $sitename;?></title>
