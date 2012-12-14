@@ -603,6 +603,7 @@ class remotecontrol_handle
     public function export_statistics($sSessionKey, $iSurveyID,  $docType='pdf', $sLanguage=null, $graph='0', $groupIDs=null)
     {
 		Yii::app()->loadHelper('admin/statistics');
+
 		$tempdir = Yii::app()->getConfig("tempdir");
 		if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
 
@@ -617,6 +618,10 @@ class remotecontrol_handle
 		if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
 			$sLanguage = $oSurvey->language;
 
+		$oAllQuestions =Questions::model()->getQuestionList($iSurveyID, $sLanguage);
+       	if (!isset($oAllQuestions))
+				return array('status' => 'No available data');
+				
         if($groupIDs!=null)
         {
             if(is_int($groupIDs))
@@ -634,24 +639,22 @@ class remotecontrol_handle
                 
                 if (empty($groupIDs))
                     return array('status' => 'Error: Invalid group ID');
-                
-                //and then get all the questions for these groups
-                $criteria = new CDbCriteria;
-                $criteria->addInCondition('gid', $groupIDs);
-                $criteria->addCondition('sid = '.$iSurveyID);
-                $criteria->addCondition('parent_qid = 0');
-                $criteria->addCondition('language = :lang');
-                $criteria->params[':lang'] = $sLanguage;
-                $oAllQuestions = Questions::model()->findAll($criteria);
+                                     
+               foreach($oAllQuestions as $key => $aQuestion)  
+                 {
+					 if(!in_array($aQuestion['gid'],$groupIDs))
+						unset($oAllQuestions[$key]);	 
+				 }      
             }
             else
                 return array('status' => 'Error: Invalid group ID');
-            
-        }       
-        else
-		  $oAllQuestions = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid'=>'0','language'=>$sLanguage));
-		
-        usort($oAllQuestions, 'groupOrderThenQuestionOrder');
+		}
+			
+       	if (!isset($oAllQuestions))
+				return array('status' => 'No available data');
+				
+		usort($oAllQuestions, 'groupOrderThenQuestionOrder');     
+        
         $aSummary = createCompleteSGQA($iSurveyID,$oAllQuestions,$sLanguage);
 
         $helper = new statistics_helper();
