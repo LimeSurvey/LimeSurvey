@@ -1409,7 +1409,7 @@ function getSurveyInfo($surveyid, $languagecode='')
     $thissurvey=false;
 
     // if no language code is set then get the base language one
-    if (!isset($languagecode) || $languagecode=='')
+    if ((!isset($languagecode) || $languagecode=='') && Survey::model()->findByPk($surveyid))
     {
         $languagecode=Survey::model()->findByPk($surveyid)->language;
     }
@@ -7340,7 +7340,7 @@ function getHeader($meta = false)
     {
         $languagecode =  Yii::app()->session['survey_'.$surveyid]['s_lang'];
     }
-    elseif (isset($surveyid) && $surveyid)
+    elseif (isset($surveyid) && $surveyid  && Survey::model()->findByPk($surveyid))
     {
         $languagecode=Survey::model()->findByPk($surveyid)->language;
     }
