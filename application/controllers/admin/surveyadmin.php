@@ -623,9 +623,9 @@ class SurveyAdmin extends Survey_Common_Action
             else
             {
                 $condition = "sid={$rows['sid']} AND language='" . $rows['language'] . "'";
-                $questionsCountResult = Questions::model()->findAll($condition);
+                $questionsCountResult = Questions::model()->count($condition);
 
-                if (count($questionsCountResult) && hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
+                if ($questionsCountResult>0 && hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
                     $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/sa/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'inactive.png" title="" alt="' . $clang->gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
                 }
