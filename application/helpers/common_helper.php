@@ -1112,53 +1112,54 @@ function getUserList($outputformat='fullinfoarray')
 */
 function getSurveyInfo($surveyid, $languagecode='')
 {
-    global $siteadminname, $siteadminemail, $languagechanger;
+    static $cacheSurveyInfo = array();// Use some cache
     $surveyid=sanitize_int($surveyid);
     $languagecode=sanitize_languagecode($languagecode);
     $thissurvey=false;
-
+    // Do job only if this survey exist
+    if(!Survey::model()->findByPk($surveyid))
+    {
+        return false;
+    }
     // if no language code is set then get the base language one
     if (!isset($languagecode) || $languagecode=='')
     {
         $languagecode=Survey::model()->findByPk($surveyid)->language;
     }
-
-    //$query="SELECT * FROM ".db_table_name('surveys').",".db_table_name('surveys_languagesettings')." WHERE sid=$surveyid and surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
-
-    $result = Surveys_languagesettings::model()->with('survey')->findAllByAttributes(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
-    foreach ($result as $row)
+    if(isset($cacheSurveyInfo[$surveyid][$languagecode]) )
     {
-        $thissurvey=array();
-        foreach ($row as $k => $v)
-            $thissurvey[$k] = $v;
-        foreach ($row->survey as $k => $v)
-            $thissurvey[$k] = $v;
-
-        // now create some stupid array translations - needed for backward compatibility
-        // Newly added surveysettings don't have to be added specifically - these will be available by field name automatically
-        $thissurvey['name']=$thissurvey['surveyls_title'];
-        $thissurvey['description']=$thissurvey['surveyls_description'];
-        $thissurvey['welcome']=$thissurvey['surveyls_welcometext'];
-        $thissurvey['templatedir']=$thissurvey['template'];
-        $thissurvey['adminname']=$thissurvey['admin'];
-        $thissurvey['tablename']='{{survey_'.$thissurvey['sid'] . '}}';
-        $thissurvey['urldescrip']=$thissurvey['surveyls_urldescription'];
-        $thissurvey['url']=$thissurvey['surveyls_url'];
-        $thissurvey['expiry']=$thissurvey['expires'];
-        $thissurvey['email_invite_subj']=$thissurvey['surveyls_email_invite_subj'];
-        $thissurvey['email_invite']=$thissurvey['surveyls_email_invite'];
-        $thissurvey['email_remind_subj']=$thissurvey['surveyls_email_remind_subj'];
-        $thissurvey['email_remind']=$thissurvey['surveyls_email_remind'];
-        $thissurvey['email_confirm_subj']=$thissurvey['surveyls_email_confirm_subj'];
-        $thissurvey['email_confirm']=$thissurvey['surveyls_email_confirm'];
-        $thissurvey['email_register_subj']=$thissurvey['surveyls_email_register_subj'];
-        $thissurvey['email_register']=$thissurvey['surveyls_email_register'];
-        $thissurvey['attributedescriptions'] = $row->survey->tokenAttributes;
-        $thissurvey['attributecaptions'] = $row->attributeCaptions;
-        if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=$siteadminname;}
-        if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=$siteadminemail;}
-        if (!isset($thissurvey['urldescrip']) ||
-        $thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
+        $thissurvey=$cacheSurveyInfo[$surveyid][$languagecode];
+    }
+    else
+    {
+        $result = Surveys_languagesettings::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        if($result)
+        {
+            $thissurvey=array_merge($result->survey->attributes,$result->attributes);
+            $thissurvey['name']=$thissurvey['surveyls_title'];
+            $thissurvey['description']=$thissurvey['surveyls_description'];
+            $thissurvey['welcome']=$thissurvey['surveyls_welcometext'];
+            $thissurvey['templatedir']=$thissurvey['template'];
+            $thissurvey['adminname']=$thissurvey['admin'];
+            $thissurvey['tablename']='{{survey_'.$thissurvey['sid'] . '}}';
+            $thissurvey['urldescrip']=$thissurvey['surveyls_urldescription'];
+            $thissurvey['url']=$thissurvey['surveyls_url'];
+            $thissurvey['expiry']=$thissurvey['expires'];
+            $thissurvey['email_invite_subj']=$thissurvey['surveyls_email_invite_subj'];
+            $thissurvey['email_invite']=$thissurvey['surveyls_email_invite'];
+            $thissurvey['email_remind_subj']=$thissurvey['surveyls_email_remind_subj'];
+            $thissurvey['email_remind']=$thissurvey['surveyls_email_remind'];
+            $thissurvey['email_confirm_subj']=$thissurvey['surveyls_email_confirm_subj'];
+            $thissurvey['email_confirm']=$thissurvey['surveyls_email_confirm'];
+            $thissurvey['email_register_subj']=$thissurvey['surveyls_email_register_subj'];
+            $thissurvey['email_register']=$thissurvey['surveyls_email_register'];
+            $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
+            $thissurvey['attributecaptions'] = $result->attributeCaptions;
+            if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=Yii::app()->getConfig('siteadminemail');}
+            if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=Yii::app()->getConfig('siteadminname');}
+            if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
+        }
+        $cacheSurveyInfo[$surveyid][$languagecode]=$thissurvey;
     }
 
     return $thissurvey;
