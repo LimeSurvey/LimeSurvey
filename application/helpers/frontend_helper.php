@@ -2234,8 +2234,11 @@ function doAssessment($surveyid, $returndataonly=false)
 {
 
     $clang = Yii::app()->lang;
-
     $baselang=Survey::model()->findByPk($surveyid)->language;
+    if(Survey::model()->findByPk($surveyid)->assessments!="Y")
+    {
+        return false;
+    }
     $total=0;
     if (!isset($_SESSION['survey_'.$surveyid]['s_lang']))
     {
@@ -2244,6 +2247,7 @@ function doAssessment($surveyid, $returndataonly=false)
     $query = "SELECT * FROM {{assessments}}
     WHERE sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'
     ORDER BY scope, id";
+
     if ($result = dbExecuteAssoc($query))   //Checked
     {
         $aResultSet=$result->readAll();
