@@ -6087,7 +6087,7 @@ function getHeader($meta = false)
     {
         $languagecode =  Yii::app()->session['survey_'.$surveyid]['s_lang'];
     }
-    elseif (isset($surveyid) && $surveyid)
+    elseif (isset($surveyid) && $surveyid && Survey::model()->findByPk($surveyid))
     {
         $languagecode=Survey::model()->findByPk($surveyid)->language;
     }
