@@ -608,7 +608,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         else
             $tokensid = $registerdata['sid'];
 
-        $_registerform = CHtml::form(array("/register/index/surveyid/{$tokensid}"), 'post');
+        $_registerform = CHtml::form(array("/register/index/surveyid/{$tokensid}/register/validate"), 'post');
 
         if (!isset($_REQUEST['lang']))
         {
