@@ -389,6 +389,7 @@ CREATE TABLE `prefix_surveys` (
   `datestamp` varchar(1) NOT NULL default 'N',
   `usecookie` varchar(1) NOT NULL default 'N',
   `allowregister` varchar(1) NOT NULL default 'N',
+  `directregister` varchar(1) NOT NULL default 'N',
   `allowsave` varchar(1) NOT NULL default 'Y',
   `autonumber_start` int(11) NOT NULL default '0',
   `autoredirect` varchar(1) NOT NULL default 'N',
@@ -626,4 +627,4 @@ INSERT INTO `prefix_question_type_groups` (`id`, `name`, `order`, `system`) VALU
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '167');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '168');

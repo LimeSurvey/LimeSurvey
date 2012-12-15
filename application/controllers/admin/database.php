@@ -975,6 +975,7 @@ class database extends Survey_Common_Action
             'publicgraphs'=> Yii::app()->request->getPost('publicgraphs'),
             'usecookie'=> Yii::app()->request->getPost('usecookie'),
             'allowregister'=> Yii::app()->request->getPost('allowregister'),
+            'directregister'=> Yii::app()->request->getPost('directregister'),
             'allowsave'=> Yii::app()->request->getPost('allowsave'),
             'navigationdelay'=> Yii::app()->request->getPost('navigationdelay'),
             'printanswers'=> Yii::app()->request->getPost('printanswers'),

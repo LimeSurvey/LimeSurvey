@@ -32,6 +32,7 @@ function getSurveyDefaultSettings()
     'autoredirect'             => 'N',
     'tokenlength'              => 15,
     'allowregister'            => 'N',
+    'directregister'           => 'N',
     'usecookie'                => 'N',
     'usecaptcha'               => 'D',
     'htmlemail'                => 'Y',

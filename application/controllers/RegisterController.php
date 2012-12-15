@@ -212,15 +212,35 @@ class RegisterController extends LSYii_Controller {
             ."SET sent='$dNow' WHERE tid=$iTokenID";
             dbExecuteAssoc($query) or show_error("Unable to execute this query : $query<br />");     //Checked
             $sHTML = "<center>".$clang->gT("Thank you for registering to participate in this survey.")."<br /><br />\n";
-            $sHTML = $clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."<br /><br />\n".$clang->gT("Survey administrator")." {ADMINNAME} ({ADMINEMAIL})";
-            $sHTML = ReplaceFields($sHTML, $aReplacementFields);
+            if($thissurvey['directregister']!="Y")
+            {
+                $sHTML .= $clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."<br /><br />\n".$clang->gT("Survey administrator")." {ADMINNAME} ({ADMINEMAIL})";
+            }
+            else
+            {
+                $registerurl=Yii::app()->getController()->createUrl("{$surveyid}/lang-{$sLanguage}/tk-{$sNewToken}");
+                $sHTML .= sprintf($clang->gT("An email has been sent to the address you provided with access details for this survey. <a href='%s'>You can enter to this survey now</a>.",'unescaped'),$registerurl);
+                $sHTML .= "<br /><br />\n".$clang->gT("Survey administrator")." {ADMINNAME} ({ADMINEMAIL})";
+            }
             $sHTML .= "<br /><br /></center>\n";
+
         }
         else
         {
-            $sHTML = "Email Error";
+            $sHTML = "<center>".$clang->gT("Thank you for registering to participate in this survey.")."<br /><br />\n";
+            if($aSurveyInfo['directregister']!="Y")
+            {
+                $sHTML .= $clang->gT("We are sorry, an error occured when attempting to send email.")."<br /><br />\n".$clang->gT("Survey administrator")." {ADMINNAME} ({ADMINEMAIL})";
+            }
+            else
+            {
+                $registerurl=Yii::app()->getController()->createUrl("{$iSurveyID}/lang-{$sLanguage}/tk-{$sNewToken}");
+                $sHTML .= sprintf($clang->gT("An error occured when attempting to send email. <a href='%s'>You can enter to this survey now</a>.",'unescaped'),$registerurl);
+                $sHTML .= "<br /><br />\n".$clang->gT("Survey administrator")." {ADMINNAME} ({ADMINEMAIL})";
+            }
+            $sHTML .= "<br /><br /></center>\n";
         }
-
+        $sHTML = ReplaceFields($sHTML, $aReplacementFields);
         //PRINT COMPLETED PAGE
         if (!$thissurvey['template'])
         {

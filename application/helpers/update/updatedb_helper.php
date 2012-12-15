@@ -1083,6 +1083,12 @@ function db_upgrade_all($oldversion) {
         // Add attachment text field to survey table.
         addColumn('{{surveys_languagesettings}}', 'attachments', 'text');
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>167),"stg_name='DBVersion'");
+    }
+    if ($oldversion < 168)
+    {
+        // Add directregister text field to survey table.
+        addColumn('{{surveys}}','directregister',"{$sVarchar}(1) default 'N'");
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>168),"stg_name='DBVersion'");
     }        
     }
     catch(Exception $e)

@@ -725,6 +725,10 @@ class Survey_Common_Action extends CAction
         {
             $surveysummary2 .= $clang->gT("If tokens are used, the public may register for this survey") . "<br />";
         }
+        if ($surveyinfo['directregister'] == "Y")
+        {
+            $surveysummary2 .= $clang->gT("If public may register for this survey,they can answer without email confirmation.") . "<br />";
+        }
         if ($surveyinfo['allowsave'] == "Y" && $surveyinfo['tokenanswerspersistence'] == 'N')
         {
             $surveysummary2 .= $clang->gT("Participants can save partially finished surveys") . "<br />\n";
