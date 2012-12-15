@@ -44,7 +44,7 @@ foreach ($data as $row) {
     </a>
 </div>
 <div class='statisticscolumndata'>
-    <?php echo stripslashes($row['value']) ?>
+    <?php echo sanitize_html_string($row['value']) ?>
 </div>
 <div style='clear: both'></div>
 <?php
