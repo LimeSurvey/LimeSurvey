@@ -1112,7 +1112,7 @@ function getUserList($outputformat='fullinfoarray')
 */
 function getSurveyInfo($surveyid, $languagecode='')
 {
-    static $cacheSurveyInfo = array();// Use some cache
+    static $staticSurveyInfo = array();// Use some static
     $surveyid=sanitize_int($surveyid);
     $languagecode=sanitize_languagecode($languagecode);
     $thissurvey=false;
@@ -1126,9 +1126,9 @@ function getSurveyInfo($surveyid, $languagecode='')
     {
         $languagecode=Survey::model()->findByPk($surveyid)->language;
     }
-    if(isset($cacheSurveyInfo[$surveyid][$languagecode]) )
+    if(isset($staticSurveyInfo[$surveyid][$languagecode]) )
     {
-        $thissurvey=$cacheSurveyInfo[$surveyid][$languagecode];
+        $thissurvey=$staticSurveyInfo[$surveyid][$languagecode];
     }
     else
     {
@@ -1159,7 +1159,7 @@ function getSurveyInfo($surveyid, $languagecode='')
             if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=Yii::app()->getConfig('siteadminname');}
             if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
         }
-        $cacheSurveyInfo[$surveyid][$languagecode]=$thissurvey;
+        $staticSurveyInfo[$surveyid][$languagecode]=$thissurvey;
     }
 
     return $thissurvey;
