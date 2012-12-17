@@ -6,7 +6,7 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
         global $notanswered, $thissurvey;
         $extraclass ="";
         $clang = Yii::app()->lang;
-
+        $caption=$clang->gT("An array with sub-question on each line. The answers are value from 1 to 10 and are contained in the table header. ");
         $checkconditionFunction = "checkconditions";
 
         $qquery = "SELECT other FROM {{questions}} WHERE qid=".$this->id."  AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."'";
@@ -26,6 +26,7 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
         if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
         {
             ++$cellwidth; // add another column
+            $caption.=$clang->gT("The last cell are for no answer. ");
         }
         $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
@@ -33,7 +34,8 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
         $anscount = count($ansresult);
 
         $fn = 1;
-        $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - a ten point Likert scale array\" >\n\n"
+        $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\" >"
+        . "<caption class=\"hide screenreader\">{$caption}</caption>\n"
         . "\t<colgroup class=\"col-responses\">\n"
         . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 
@@ -50,7 +52,7 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
         }
         $answer .= "\t</colgroup>\n\n"
         . "\t<thead>\n<tr class=\"array1\">\n"
-        . "\t<th>&nbsp;</th>\n";
+        . "\t<td>&nbsp;</td>\n";
         for ($xc=1; $xc<=10; $xc++)
         {
             $answer .= "\t<th>$xc</th>\n";
@@ -89,8 +91,8 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
 
             for ($i=1; $i<=10; $i++)
             {
-                $answer_t_content .= "\t<td class=\"answer_cell_00$i answer-item radio-item\">\n<label for=\"answer$myfname-$i\">\n"
-                ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\" title=\"$i\"";
+                $answer_t_content .= "\t<td class=\"answer_cell_00$i answer-item radio-item\">\n<label for=\"answer$myfname-$i\" class=\"hide\">$i</label>\n"
+                ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\" ";
                 if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == $i)
                 {
                     $answer_t_content .= CHECKED;
@@ -101,13 +103,13 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
             }
             if ($this->mandatory != "Y" && SHOW_NO_ANSWER == 1)
             {
-                $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n<label for=\"answer$myfname-\">\n"
-                ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer')."\"";
+                $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n<label for=\"answer$myfname-\" class=\"hide\">{$clang->gT('No answer')}</label>\n"
+                ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
                 if (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) || $_SESSION['survey_'.$this->surveyid][$myfname] == '')
                 {
                     $answer_t_content .= CHECKED;
                 }
-                $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
+                $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n";
 
             }
             $answer_t_content .= "</tr>\n";

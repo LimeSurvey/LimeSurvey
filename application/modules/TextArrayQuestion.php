@@ -9,7 +9,7 @@ class TextArrayQuestion extends ArrayQuestion
         $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
         $extraclass ="";
         $clang = Yii::app()->lang;
-
+        $caption=$clang->gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. ");
         if ($thissurvey['nokeyboard']=='Y')
         {
             includeKeypad();
@@ -68,6 +68,7 @@ class TextArrayQuestion extends ArrayQuestion
             $q_table_id_HTML = ' id="'.$q_table_id.'"';
             $num_class = ' numbers-only';
             $extraclass.=" numberonly";
+            $caption.=$clang->gT("Each answers are number. ");
             switch ($aQuestionAttributes['show_totals'])
             {
                 case 'R':
@@ -89,6 +90,7 @@ class TextArrayQuestion extends ArrayQuestion
                         <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
                         </td>';
                     };
+                    $caption.=$clang->gT("The last row show the total for the column. ");
                     break;
                 case 'C':
                     $totals_class = $show_totals = 'col';
@@ -108,6 +110,7 @@ class TextArrayQuestion extends ArrayQuestion
                         <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
                         </td>';
                     };
+                    $caption.=$clang->gT("The last column show the total for the row. ");
                     break;
                 case 'B':
                     $totals_class = $show_totals = 'both';
@@ -135,6 +138,7 @@ class TextArrayQuestion extends ArrayQuestion
                         $grand_total = '
                         <td>&nbsp;</td>';
                     };
+                    $caption.=$clang->gT("The last row show the total for the column and the last column show the total for the row. ");
                     break;
             };
             if(!empty($totals_class))
@@ -194,6 +198,7 @@ class TextArrayQuestion extends ArrayQuestion
             {
                 $right_exists=true;
                 $answerwidth=$answerwidth/2;
+                $caption.=$clang->gT("The last cell give some information. ");
             }
             else
             {
@@ -235,7 +240,10 @@ class TextArrayQuestion extends ArrayQuestion
             . $answer_head_line
             . "</tr>\n\t</thead>\n";
 
-            $answer = "\n<table$q_table_id_HTML class=\"question subquestions-list questions-list{$extraclass}$num_class"."$totals_class\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - an array of text responses\">\n" . $answer_cols . $answer_head;
+            $answer = "\n<table$q_table_id_HTML class=\"question subquestions-list questions-list{$extraclass}$num_class"."$totals_class\" >" 
+            . "<caption class=\"hide screenreader\">{$caption}</caption>\n"
+            . $answer_cols . $answer_head;
+
             $answer .= "<tbody>";
             $trbc = '';
             foreach ($ansresult as $ansrow)
@@ -294,13 +302,12 @@ class TextArrayQuestion extends ArrayQuestion
                     $myfname2=$myfname."_$ld";
                     $myfname2value = isset($_SESSION['survey_'.$this->surveyid][$myfname2]) ? $_SESSION['survey_'.$this->surveyid][$myfname2] : "";
                     $answer .= "\t<td class=\"answer_cell_00$ld answer-item text-item\">\n"
-                    . "\t\t\t\t<label for=\"answer{$myfname2}\">\n"
+                    . "\t\t\t\t<label for=\"answer{$myfname2}\" class=\"hide\">{$labelans[$thiskey]}</label\n"
                     . "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
-                    . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" class=\"".$kpclass."\" {$maxlength} title=\""
-                    . flattenText($labelans[$thiskey]).'" '
+                    . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" class=\"text {$kpclass}\" {$maxlength} "
                     . 'size="'.$inputwidth.'" '
                     . ' value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
-                    $answer .= "\t\t\t\t</label>\n\t\t\t</td>\n";
+                    $answer .= "\n\t\t\t</td>\n";
                     $thiskey += 1;
                 }
                 if (strpos($answertextsave,'|'))
