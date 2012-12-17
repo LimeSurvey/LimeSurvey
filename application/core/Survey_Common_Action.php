@@ -727,7 +727,11 @@ class Survey_Common_Action extends CAction
         }
         if ($surveyinfo['directregister'] == "Y")
         {
-            $surveysummary2 .= $clang->gT("If public may register for this survey,they can answer without email confirmation.") . "<br />";
+            $surveysummary2 .= $clang->gT("If public may register for this survey, the url for survey with token are shown without email confirmation.") . "<br />";
+        }
+        elseif ($surveyinfo['directregister'] == "A")
+        {
+            $surveysummary2 .= $clang->gT("If public may register for this survey, survey start just after registering without email confirmation.") . "<br />";
         }
         if ($surveyinfo['allowsave'] == "Y" && $surveyinfo['tokenanswerspersistence'] == 'N')
         {
