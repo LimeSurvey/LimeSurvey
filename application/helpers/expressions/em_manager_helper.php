@@ -6452,20 +6452,26 @@ EOD;
             {
                 case 'varName':
                     return $name;
+                    break;
                 case 'code':
                 case 'NAOK':
                     if (isset($var['code'])) {
                         return $var['code'];    // for static values like TOKEN
                     }
-                    else {
-                        if (isset($_SESSION[$this->sessid][$sgqa])) {
-                            return $_SESSION[$this->sessid][$sgqa];
+                    else
+                    {
+                        if (isset($_SESSION[$this->sessid][$sgqa]))
+                        {
+                            $q = $var['q'];
+                            return $q->getVarAttributeLEM($_SESSION[$this->sessid][$sgqa]);
                         }
-                        if (isset($var['default']) && !is_null($var['default'])) {
+                        elseif (isset($var['default']) && !is_null($var['default']))
+                        {
                             return $var['default'];
                         }
                         return $default;
                     }
+                    break;
                 case 'value':
                 case 'valueNAOK':
                 {
