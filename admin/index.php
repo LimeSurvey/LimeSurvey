@@ -12,5 +12,10 @@
     */
 
     // Simple redirect to still have the old /admin URL
-    header( 'Location: ../index.php/admin' ) ;
+    if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false) {
+        header( 'Location: ../index.php/admin' );
+    } else {
+        // For IIS use get style
+        header( 'Location: ../index.php?r=admin' );
+    }
 ?>
