@@ -85,5 +85,11 @@ abstract class TextQuestion extends QuestionModule
     {
         return $language->gT("Please write your answer here:");
     }
+
+    public function getVarAttributeLEM($name,$value)
+    {
+        return sanitize_html_string(parent::getVarAttributeLEM($sgqa,$value));
+    }
+
 }
 ?>

@@ -431,7 +431,7 @@ abstract class QuestionModule extends CComponent
         return false;
     }
 
-    public function getVarAttributeLEM($value)
+    public function getVarAttributeLEM($sgqa,$value)
     {
         return $value;
     }

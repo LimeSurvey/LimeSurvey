@@ -729,5 +729,11 @@ EOD;
         $props=array('description' => $clang->gT("Array (Texts)"),'group' => $clang->gT('Arrays'),'subquestions' => 2,'class' => 'array-multi-flexi-text','hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0,'enum' => 0);
         return $prop?$props[$prop]:$props;
     }
+
+    public function getVarAttributeLEM($name,$value)
+    {
+        return sanitize_html_string(parent::getVarAttributeLEM($sgqa,$value));
+    }
+
 }
 ?>

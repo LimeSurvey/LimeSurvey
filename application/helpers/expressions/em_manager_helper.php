@@ -6463,7 +6463,7 @@ EOD;
                         if (isset($_SESSION[$this->sessid][$sgqa]))
                         {
                             $q = $var['q'];
-                            return $q->getVarAttributeLEM($_SESSION[$this->sessid][$sgqa]);
+                            return $q->getVarAttributeLEM($sgqa, $_SESSION[$this->sessid][$sgqa]);
                         }
                         elseif (isset($var['default']) && !is_null($var['default']))
                         {
