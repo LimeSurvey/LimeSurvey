@@ -1372,13 +1372,6 @@ function buildsurveysession($surveyid,$previewGroup=false)
                 if (isset($secerror)) echo "<span class='error'>".$secerror."</span><br />";
                 echo '<div id="wrapper"><p id="tokenmessage" class="information">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
                 echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>";
-                if ($thissurvey['allowregister'] == "Y")
-                {
-                    $registerurl=Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/register/new");
-                    echo "<p  id='registerurl' class='information'>"
-                        . sprintf($clang->gT("If you don't have a token, <a href='%s'>you may register for this survey if you wish to take part</a>.",'unescaped'),$registerurl)
-                        . "</p>";
-                }
                 echo "<script type='text/javascript'>var focus_element='#token';</script>"
                 .CHtml::form(array("/survey/index/sid/{$surveyid}"), 'post', array('id'=>'tokenform'))."
                 <ul>
@@ -1415,7 +1408,15 @@ function buildsurveysession($surveyid,$previewGroup=false)
             <input class='submit' type='submit' value='".$clang->gT("Continue")."' />
             </li>
             </ul>
-            </form></div>";
+            </form>";
+            if ($thissurvey['allowregister'] == "Y")
+            {
+                $registerurl=Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/register/new");
+                echo "<p  id='registerurl' class='information'>"
+                    . sprintf($clang->gT("If you don't have a token, <a href='%s'>you may register for this survey if you wish to take part</a>.",'unescaped'),$registerurl)
+                    . "</p>";
+            }
+            echo "</div>";
         }
 
         echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
