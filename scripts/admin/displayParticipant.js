@@ -176,7 +176,7 @@ $(document).ready(function() {
         pgtext: pageViewTxt,
         emptyrecords: emptyRecordsTxt,
         recordtext: viewRecordTxt,
-        caption: "Participants",
+        caption: participantsTxt,
         subGrid: true,
         subGridRowExpanded: function(subgrid_id,row_id) {
             subgrid_table_id = subgrid_id+"_t";
