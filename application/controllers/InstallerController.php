@@ -1036,6 +1036,7 @@ class InstallerController extends CController {
             */
 
             ."\t\t"   . "'urlManager' => array("                    . "\n"
+            ."\t\t\t" . "'class' => 'application.core.LSYii_UrlManager',". "\n"
             ."\t\t\t" . "'urlFormat' => '{$sURLFormat}',"           . "\n"
             ."\t\t\t" . "'rules' => require('routes.php'),"         . "\n"
             ."\t\t\t" . "'showScriptName' => $showScriptName,"      . "\n"
