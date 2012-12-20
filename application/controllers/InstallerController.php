@@ -114,7 +114,6 @@ class InstallerController extends CController {
     */
     protected function _sessioncontrol()
     {
-        session_save_path('s:\test');   // For debugging
         if (empty(Yii::app()->session['installerLang']))
             Yii::app()->session['installerLang'] = 'en';
 
