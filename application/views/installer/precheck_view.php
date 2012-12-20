@@ -91,6 +91,12 @@ function dirReport($dir, $write, $clang)
        <td style="width: 209px;">/tmp <?php $clang->eT("directory"); ?></td>
        <td align="center" style="width: 225px;"><?php $clang->eT("Found & writable"); ?></td>
        <td align="center" style="width: 225px;"><?php  echo dirReport($tmpdirPresent,$tmpdirWritable,$clang); ?></td>
+       
+       <tr>
+           <td style="width: 209px;">session.save_path <?php echo session_save_path(); ?></td>
+       <td align="center" style="width: 225px;"><?php $clang->eT("Found & writable"); ?></td>
+       <td align="center" style="width: 225px;"><?php  echo dirReport($sessiondirPresent,$sessiondirWritable,$clang); ?></td>
+</tr>
 </tr>
 
 </table>

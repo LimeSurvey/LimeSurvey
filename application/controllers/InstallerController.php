@@ -114,6 +114,7 @@ class InstallerController extends CController {
     */
     protected function _sessioncontrol()
     {
+        session_save_path('s:\test');   // For debugging
         if (empty(Yii::app()->session['installerLang']))
             Yii::app()->session['installerLang'] = 'en';
 
@@ -830,6 +831,9 @@ class InstallerController extends CController {
 
         //upload directory check
         if (!check_DirectoryWriteable(Yii::app()->getConfig('uploaddir').'/', $data, 'uploaddir', 'uerror',true) )
+            $bProceed = false;
+        
+        if (!check_DirectoryWriteable(Yii::app()->session->getSavePath().'/', $data, 'sessiondir', 'serror',true) )
             $bProceed = false;
 
         // ** optional settings check **
