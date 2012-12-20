@@ -256,7 +256,7 @@ class Authentication extends Survey_Common_Action
         {
             return $this->_getAuthenticationFailedErrorMessage();
         }
-
+        session_regenerate_id(); // Prevent session fixation
         return $this->_setLoginSessions($identity);
     }
 
