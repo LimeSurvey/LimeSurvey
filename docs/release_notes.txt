@@ -60,6 +60,32 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121213) to 2.00+ (build 121220) Dec 20, 2012
+-Fixed issue #6962: Made max filter size equal for all browse tables (Menno Dekker)
+-Fixed issue #7082: Clicking view response in tokens table opens response in same window causing search to be lost (Menno Dekker)
+-Fixed issue #7107: Login using http://<serverurl>/admin broken on IIS (Menno Dekker)
+-Fixed issue #7071: Survey timing tables are archived and offered for deletion when visiting the integrity check (c-schmitz)
+-Fixed issue #7085: Cross Site Scripting (XSS) in printing page (Denis Chenu)
+-Fixed issue #7087: XSS security in statistics for admin (Denis Chenu)
+-Fixed issue #7093: XSS in Expression Manager (Denis Chenu)
+-Fixed issue #7095: Usage of wrong db engine when mysql database is configured to not default to MyISAM (c-schmitz)
+-Fixed issue: Incorrect temporary directory used for PDF generation (c-schmitz)
+-Fixed issue: PHP notice :  Trying to get property of non-object if survey not exist (Denis Chenu)
+-Fixed issue: Notice on template editor (Menno Dekker)
+-Fixed issue: Old token table is never checked for being empty or orphan in checkintegrity (Menno Dekker)
+-New feature: Installer checks if session save path is writable (Menno Dekker)
+-Fixed issue #7088: When creating quota, I cannot add answer (Menno Dekker)
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yooyooh, yanglaw
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: Italian by lfortunato, lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Spanish (Spain) by valdomir, jaimealvarezv
+#Updated translation: Turkish by kayazeren
 
 Changes from 2.00+ (build 121211) to 2.00+ (build 121213) Dec 13, 2012
 -Fixed issue #6998: question is hidden by condition - no single preview anymore (Menno Dekker)
