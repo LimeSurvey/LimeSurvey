@@ -2564,7 +2564,14 @@
                 // other comment mandatory
                 if ($other_comment_mandatory!='')
                 {
-                    $qtips['other_comment_mandatory']=$this->gT('Please also fill in the "other comment" field.');
+                    //$qtips['other_comment_mandatory']=$this->gT('Please also fill in the "other comment" field.');
+                    if (isset($qattr['other_replace_text']) && trim($qattr['other_replace_text']) != '') {
+                        $othertext = trim($qattr['other_replace_text']);
+                    }
+                    else {
+                        $othertext = $this->gT('Other:');
+                    }
+                    $qtips['other_comment_mandatory']=sprintf($this->gT("If you choose '%s' you must provide a description."),$othertext);
                 }
 
                 // regular expression validation
@@ -5507,9 +5514,9 @@
                                 $othertext = trim($qattr['other_replace_text']);
                             }
                             else {
-                                $othertext = $LEM->gT('Other:');
+                                $othertext = $this->gT('Other:');
                             }
-                            $mandatoryTip .= "<br />\n".sprintf($LEM->gT("If you choose '%s' you must provide a description."), $othertext);
+                            $mandatoryTip .= "<br />\n".sprintf($this->gT("If you choose '%s' you must provide a description."), $othertext);
                         }
                         break;
                     case 'X':   // Boilerplate can never be mandatory
@@ -7209,7 +7216,7 @@ EOD;
             // eventually replace this with i8n
             global $clang;
             if (isset($clang))  {
-                return htmlspecialchars($clang->gT($string),ENT_QUOTES);
+                return $clang->gT($string);
             }
             else {
                 return $string;
