@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-12-20 23:05:57+00:00\n"
+"POT-Creation-Date: 2012-12-21 23:05:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -150,123 +150,123 @@ msgstr ""
 msgid "GNU General Public License:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:200
+#: application/controllers/InstallerController.php:201
 #: application/views/installer/sidebar_view.php:20
 msgid "Pre-installation check"
 msgstr ""
 
-#: application/controllers/InstallerController.php:201
+#: application/controllers/InstallerController.php:202
 msgid "Pre-installation check for LimeSurvey "
-msgstr ""
-
-#: application/controllers/InstallerController.php:235
-#: application/controllers/InstallerController.php:421
-#: application/controllers/InstallerController.php:525
-#: application/controllers/InstallerController.php:615
-#: application/views/installer/dbconfig_view.php:23
-msgid "Database configuration"
 msgstr ""
 
 #: application/controllers/InstallerController.php:236
 #: application/controllers/InstallerController.php:422
 #: application/controllers/InstallerController.php:526
 #: application/controllers/InstallerController.php:616
+#: application/views/installer/dbconfig_view.php:23
+msgid "Database configuration"
+msgstr ""
+
+#: application/controllers/InstallerController.php:237
+#: application/controllers/InstallerController.php:423
+#: application/controllers/InstallerController.php:527
+#: application/controllers/InstallerController.php:617
 msgid "Please enter the database settings you want to use for LimeSurvey:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:275
+#: application/controllers/InstallerController.php:276
 msgid "Connection with database failed. Please check database location, user name and password and try again."
 msgstr ""
 
-#: application/controllers/InstallerController.php:313
+#: application/controllers/InstallerController.php:314
 msgid "The database you specified is up to date."
 msgstr ""
 
-#: application/controllers/InstallerController.php:321
+#: application/controllers/InstallerController.php:322
 msgid "The database you specified is up to date. You'll be redirected in 5 seconds. If not, click <a href=\"%s\">here</a>."
 msgstr ""
 
-#: application/controllers/InstallerController.php:346
 #: application/controllers/InstallerController.php:347
-#: application/controllers/InstallerController.php:504
+#: application/controllers/InstallerController.php:348
 #: application/controllers/InstallerController.php:505
+#: application/controllers/InstallerController.php:506
 #: application/views/installer/sidebar_view.php:26
 msgid "Database settings"
 msgstr ""
 
-#: application/controllers/InstallerController.php:362
+#: application/controllers/InstallerController.php:363
 msgid "Database doesn't exist!"
 msgstr ""
 
-#: application/controllers/InstallerController.php:363
+#: application/controllers/InstallerController.php:364
 msgid "The database you specified does not exist:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:364
+#: application/controllers/InstallerController.php:365
 msgid "LimeSurvey can attempt to create this database for you."
 msgstr ""
 
-#: application/controllers/InstallerController.php:368
+#: application/controllers/InstallerController.php:369
 msgid "Create database"
 msgstr ""
 
-#: application/controllers/InstallerController.php:376
+#: application/controllers/InstallerController.php:377
 msgid "A database named \"%s\" already exists."
 msgstr ""
 
-#: application/controllers/InstallerController.php:377
+#: application/controllers/InstallerController.php:378
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr ""
 
-#: application/controllers/InstallerController.php:380
-#: application/controllers/InstallerController.php:496
+#: application/controllers/InstallerController.php:381
+#: application/controllers/InstallerController.php:497
 msgid "Populate database"
 msgstr ""
 
-#: application/controllers/InstallerController.php:390
+#: application/controllers/InstallerController.php:391
 msgid "LimeSurvey database is up to date. No action needed"
 msgstr ""
 
-#: application/controllers/InstallerController.php:392
+#: application/controllers/InstallerController.php:393
 msgid "Please <a href=\"%s\">log in</a>."
 msgstr ""
 
-#: application/controllers/InstallerController.php:493
+#: application/controllers/InstallerController.php:494
 msgid "Database has been created."
 msgstr ""
 
-#: application/controllers/InstallerController.php:494
+#: application/controllers/InstallerController.php:495
 msgid "Please continue with populating the database."
 msgstr ""
 
-#: application/controllers/InstallerController.php:500
+#: application/controllers/InstallerController.php:501
 msgid "Try again! Connection with database failed."
 msgstr ""
 
-#: application/controllers/InstallerController.php:557
-#: application/controllers/InstallerController.php:1196
+#: application/controllers/InstallerController.php:558
+#: application/controllers/InstallerController.php:1205
 msgid "Try again! Connection with database failed. Reason: "
 msgstr ""
 
-#: application/controllers/InstallerController.php:565
+#: application/controllers/InstallerController.php:566
 msgid "Database %s has been successfully populated."
 msgstr ""
 
-#: application/controllers/InstallerController.php:569
+#: application/controllers/InstallerController.php:570
 msgid "Database was populated but there were errors:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:592
+#: application/controllers/InstallerController.php:593
 #: application/views/installer/optconfig_view.php:25
 #: application/views/installer/sidebar_view.php:29
 msgid "Optional settings"
 msgstr ""
 
-#: application/controllers/InstallerController.php:593
+#: application/controllers/InstallerController.php:594
 msgid "Optional settings to give you a head start"
 msgstr ""
 
-#: application/controllers/InstallerController.php:640
+#: application/controllers/InstallerController.php:641
 #: application/controllers/admin/surveypermission.php:497
 #: application/controllers/admin/useraction.php:293
 #: application/controllers/admin/useraction.php:365
@@ -275,19 +275,19 @@ msgstr ""
 msgid "Success!"
 msgstr ""
 
-#: application/controllers/InstallerController.php:641
+#: application/controllers/InstallerController.php:642
 msgid "LimeSurvey has been installed successfully."
 msgstr ""
 
-#: application/controllers/InstallerController.php:652
+#: application/controllers/InstallerController.php:653
 msgid "Passwords don't match."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1063
+#: application/controllers/InstallerController.php:1072
 msgid "Configuration directory is not writable"
 msgstr ""
 
-#: application/controllers/InstallerController.php:1064
+#: application/controllers/InstallerController.php:1073
 msgid "You will be redirected in about 5 secs. If not, click <a href=\"%s\">here</a>."
 msgstr ""
 
@@ -2708,7 +2708,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:428
 #: application/helpers/common_helper.php:5455
 #: application/helpers/replacements_helper.php:633
-#: application/views/admin/export/exportresults_view.php:126
+#: application/views/admin/export/exportresults_view.php:128
 #: application/views/admin/participants/displayParticipants_view.php:70
 #: application/views/admin/participants/displayParticipants_view.php:171
 #: application/views/admin/participants/displayParticipants_view.php:190
@@ -2724,7 +2724,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:429
 #: application/helpers/common_helper.php:5460
 #: application/helpers/replacements_helper.php:640
-#: application/views/admin/export/exportresults_view.php:127
+#: application/views/admin/export/exportresults_view.php:129
 #: application/views/admin/participants/displayParticipants_view.php:71
 #: application/views/admin/participants/displayParticipants_view.php:171
 #: application/views/admin/participants/displayParticipants_view.php:191
@@ -3670,7 +3670,7 @@ msgid "Bounce settings have been saved."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:2266
-#: application/views/admin/export/exportresults_view.php:122
+#: application/views/admin/export/exportresults_view.php:124
 #: application/views/admin/token/tokenbar.php:3
 #: application/views/admin/token/tokenwarning.php:3
 msgid "Token control"
@@ -6316,7 +6316,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:5465
 #: application/helpers/replacements_helper.php:647
-#: application/views/admin/export/exportresults_view.php:128
+#: application/views/admin/export/exportresults_view.php:130
 #: application/views/admin/saved/savedlist_view.php:10
 #: application/views/admin/token/browse.php:85
 #: application/views/admin/token/browse.php:135
@@ -8920,7 +8920,7 @@ msgstr ""
 
 #: application/views/admin/export/exportresults_view.php:90
 #: application/views/admin/export/exportresults_view.php:96
-#: application/views/admin/export/exportresults_view.php:124
+#: application/views/admin/export/exportresults_view.php:126
 msgid "Help"
 msgstr ""
 
@@ -8932,15 +8932,15 @@ msgstr ""
 msgid "Choose the columns you wish to export."
 msgstr ""
 
-#: application/views/admin/export/exportresults_view.php:123
+#: application/views/admin/export/exportresults_view.php:125
 msgid "Choose token fields"
 msgstr ""
 
-#: application/views/admin/export/exportresults_view.php:124
+#: application/views/admin/export/exportresults_view.php:126
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
 msgstr ""
 
-#: application/views/admin/export/exportresults_view.php:138
+#: application/views/admin/export/exportresults_view.php:140
 #: application/views/admin/export/spss_view.php:20
 msgid "Export data"
 msgstr ""
@@ -14438,8 +14438,11 @@ msgstr ""
 #: application/views/installer/precheck_view.php:82
 #: application/views/installer/precheck_view.php:87
 #: application/views/installer/precheck_view.php:92
-#: application/views/installer/precheck_view.php:97
 msgid "Found & writable"
+msgstr ""
+
+#: application/views/installer/precheck_view.php:96
+msgid "Session writable"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:105
