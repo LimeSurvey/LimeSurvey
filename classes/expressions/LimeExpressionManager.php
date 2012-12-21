@@ -7676,20 +7676,51 @@ EOD;
             {
                 case 'varName':
                     return $name;
+                    break;
                 case 'code':
                 case 'NAOK':
                     if (isset($var['code'])) {
                         return $var['code'];    // for static values like TOKEN
                     }
                     else {
-                        if (isset($_SESSION[$sgqa])) {
-                            return $_SESSION[$sgqa];
+                        if (isset($_SESSION[$sgqa]))
+                        {
+                            $type = $var['type'];
+                            switch($type)
+                            {
+                                case 'Q': //MULTIPLE SHORT TEXT
+                                case ';': //ARRAY (Multi Flexi) Text
+                                case 'S': //SHORT FREE TEXT
+                                case 'T': //LONG FREE TEXT
+                                case 'U': //HUGE FREE TEXT
+                                    return sanitize_html_string($_SESSION[$sgqa]);// Sanitize the string entered by user
+                                case '!': //List - dropdown
+                                case 'L': //LIST drop-down/radio-button list
+                                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                                case 'M': //Multiple choice checkbox
+                                case 'P': //Multiple choice with comments checkbox + text
+                                    if (preg_match('/comment$/',$sgqa) || preg_match('/other$/',$sgqa) || preg_match('/_other$/',$name))
+                                    {
+                                        return sanitize_html_string($_SESSION[$sgqa]);
+                                    }
+                                    else
+                                    {
+                                        return $_SESSION[$sgqa];
+                                    }
+                                default:
+                                    return $_SESSION[$sgqa];
+                            }
                         }
-                        if (isset($var['default']) && !is_null($var['default'])) {
+                        elseif (isset($var['default']) && !is_null($var['default']))
+                        {
                             return $var['default'];
                         }
-                        return $default;
+                        else
+                        {
+                            return $default;
+                        }
                     }
+                    break;
                 case 'value':
                 case 'valueNAOK':
                 {
