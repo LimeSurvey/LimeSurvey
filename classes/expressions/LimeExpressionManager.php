@@ -7843,8 +7843,8 @@ EOD;
                                 {
                                     $shown = $var['question'];
                                 }
-                                elseif (preg_match('/comment$/',$sgqa) && isset($_SESSION[$sgqa])) {
-                                    $shown = $_SESSION[$sgqa];
+                                elseif (preg_match('/comment$/',$sgqa)) {
+                                    $shown=$code;
                                 }
                                 else
                                 {
