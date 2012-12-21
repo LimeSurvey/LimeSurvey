@@ -38,15 +38,15 @@
 
 .sf-menu.sf-js-enabled li:hover ul,
 .sf-menu.sf-js-enabled li.sfHover ul {
-	top:			44px; 
+	top:			43px; 
 }
 
 ul.sf-menu li:hover li ul,
 ul.sf-menu li.sfHover li ul {
 	top:			-999em;
 }
-ul.sf-menu li li:hover ul,
-ul.sf-menu li li.sfHover ul {
+ul.sf-menu li li:hover ul,ul.sf-menu.sf-js-enabled li li:hover ul,
+ul.sf-menu li li.sfHover ul,ul.sf-menu.sf-js-enabled li li.sfHover ul {
 	left:			18em; /* match ul width */
 	top:			0;
 }
