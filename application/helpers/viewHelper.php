@@ -18,7 +18,9 @@
  */
 class viewHelper
 {
+
     /**
+     * getImageLink
      * Returns HTML needed for a link that consists of only an image with alt text.
      *
      * Usage: getImageLink('test.png', 'controller/action/params', 'Your description', 'optionalClass', '_blank')
@@ -52,5 +54,82 @@ class viewHelper
         $output .= '><img src="' . Yii::app()->getConfig('adminimageurl') . $imgName . '" alt="' . $linkTxt. '" title="' . $linkTxt. '"></a>';
 
         return $output;
+    }
+
+    /**
+     * getFieldText
+     * Returns $string : complete field information text for surveytable.
+     *
+     * Usage: getFieldText($field, $option)
+     *
+     * @param array $field the field information from createFieldMap
+     * @param array $option option for filtering
+     */
+    public static function getFieldText($field, $option=false)
+    {
+        // Maybe put flatten in option
+        if(isset($field['fieldname']))
+        {
+            $questiontext=FlattenText($field['question'],false,true);
+            if(isset($field['scale']) && $field['scale'])
+            {
+                $questiontext.="[".FlattenText($field['scale'],false,true)."]";
+            }
+            if(isset($field['subquestion']) && $field['subquestion'])
+            {
+                $questiontext.="[".FlattenText($field['subquestion'],false,true)."]";
+            }
+            if(isset($field['subquestion1']) && $field['subquestion1'])
+            {
+                $questiontext.="[".FlattenText($field['subquestion1'],false,true)."]";
+            }
+            if(isset($field['subquestion2']) && $field['subquestion2'])
+            {
+                $questiontext.="[".FlattenText($field['subquestion2'],false,true)."]";
+            }
+        }
+        else
+        {
+            $questiontext="";
+        }
+        return $questiontext;
+    }
+
+    /**
+     * getFieldCode
+     * Returns $string : complete field information code for surveytable.
+     *
+     * Usage: getFieldCode($field, $option)
+     *
+     * @param array $field the field information from createFieldMap
+     * @param array $option option for filtering
+     */
+    public static function getFieldCode($field, $option=false)
+    {
+        if(isset($field['fieldname']))
+        {
+            if(isset($field['title']) && $field['title'])
+            {
+                $questioncode=$field['title'];
+                if(isset($field['scale']) && $field['scale'])
+                {
+                    $scalenum=intval($field['scale_id'])+1;
+                    $questioncode.="[".$scalenum."]";
+                }
+                if(isset($field['aid']) && $field['aid'])
+                {
+                    $questioncode.="[".$field['aid']."]";
+                }
+            }
+            else
+            {
+                $questioncode=$field['fieldname'];
+            }
+        }
+        else
+        {
+            $questioncode="";
+        }
+        return $questioncode;
     }
 }

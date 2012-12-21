@@ -99,8 +99,10 @@
                 } ?>
                 <br /><select name='colselect[]' multiple size='20'>
                     <?php $i=1;
-                        foreach($excesscols as $sFieldName=>$aData)
+                        foreach($excesscols as $sFieldName=>$fieldinfo)
                         {
+                            $questiontext=viewHelper::getFieldText($fieldinfo);
+                            $questioncode=viewHelper::getFieldCode($fieldinfo);
                             echo "<option value='{$sFieldName}'";
                             if (isset($_POST['summary']))
                             {
@@ -113,7 +115,7 @@
                             {
                                 echo " selected";
                             }
-                            echo ">{$i}: {$sFieldName} - ".ellipsize(FlattenText($aData['question'],false,true),40,0.9)."</option>\n";
+                            echo " title='{$sFieldName} : ".sanitize_html_string($questiontext)."'>".ellipsize("{$i} : {$questioncode} - {$questiontext}",45)."</option>\n";
                             $i++;
                     } ?>
                 </select>
