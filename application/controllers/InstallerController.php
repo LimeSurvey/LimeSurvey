@@ -173,6 +173,7 @@ class InstallerController extends CController {
         {
             $this->redirect($this->createUrl('installer/precheck'));
         }
+        Yii::app()->session['saveCheck'] = 'save';  // Checked in next step
 
         $this->render('/installer/license_view',$aData);
     }
@@ -832,8 +833,16 @@ class InstallerController extends CController {
         if (!check_DirectoryWriteable(Yii::app()->getConfig('uploaddir').'/', $data, 'uploaddir', 'uerror',true) )
             $bProceed = false;
         
-        if (!check_DirectoryWriteable(Yii::app()->session->getSavePath().'/', $data, 'sessiondir', 'serror',true) )
+        // Session writable check
+        $session = Yii::app()->session; /* @var $session CHttpSession */
+        $sessionWritable = ($session->get('saveCheck', null)==='save');
+        $data['sessionWritable'] = $sessionWritable;
+        $data['sessionWritableImg'] = check_HTML_image($sessionWritable);
+        if (!$sessionWritable){  
+            // For recheck, try to set the value again
+            $session['saveCheck'] = 'save';
             $bProceed = false;
+        }
 
         // ** optional settings check **
 
