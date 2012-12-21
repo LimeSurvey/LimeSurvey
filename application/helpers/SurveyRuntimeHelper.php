@@ -364,7 +364,7 @@ class SurveyRuntimeHelper {
                 //Before doing the "templatereplace()" function, check the $thissurvey['url']
                 //field for limereplace stuff, and do transformations!
                 $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
-                $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], $thissurvey);   // to do INSERTANS substitutions
+                $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], array(), $redata);   // to do INSERTANS substitutions
                 
                 //END PAGE - COMMIT CHANGES TO DATABASE
                 if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
@@ -393,7 +393,7 @@ class SurveyRuntimeHelper {
                     }
                     */
                     // can't kill session before end message, otherwise INSERTANS doesn't work.
-                    $completed = templatereplace($thissurvey['surveyls_endtext']);
+                    $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata);
                     $completed .= "<br /><strong><font size='2' color='red'>" . $clang->gT("Did Not Save") . "</font></strong><br /><br />\n\n";
                     $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
                     if ($thissurvey['printanswers'] == 'Y')
@@ -412,7 +412,7 @@ class SurveyRuntimeHelper {
                         setcookie("LS_" . $surveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days   
                     }
 
-
+                    
                     $content = '';
                     $content .= templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
 
@@ -460,13 +460,13 @@ class SurveyRuntimeHelper {
                     }
                     else
                     {
-                        $completed = templatereplace($thissurvey['surveyls_endtext']);
+                        $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata);
                     }
 
                     // Link to Print Answer Preview  **********
                     if ($thissurvey['printanswers'] == 'Y')
                     {
-                        $url = Yii::app()->getController()->createUrl("printanswers/view/surveyid/{$surveyid}");
+                        $url = Yii::app()->getController()->createUrl("/printanswers/view/surveyid/{$surveyid}");
                         $completed .= "<br /><br />"
                         . "<a class='printlink' href='$url'  target='_blank'>"
                         . $clang->gT("Print your answers.")
@@ -482,7 +482,7 @@ class SurveyRuntimeHelper {
                     // Link to Public statistics  **********
                     if ($thissurvey['publicstatistics'] == 'Y')
                     {
-                        $url = Yii::app()->getController()->createUrl("statistics_user/action/surveyid/{$surveyid}/language/".$_SESSION[$LEMsessid]['s_lang']);
+                        $url = Yii::app()->getController()->createUrl("/statistics_user/action/surveyid/{$surveyid}/language/".$_SESSION[$LEMsessid]['s_lang']);
                         $completed .= "<br /><br />"
                         . "<a class='publicstatisticslink' href='$url' target='_blank'>"
                         . $clang->gT("View the statistics for this survey.")
@@ -514,7 +514,7 @@ class SurveyRuntimeHelper {
                 {
                     echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
                 }
-                echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"));
+                echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"), array(), $redata);
                 doFooter();
                 
                 // The session cannot be killed until the page is completely rendered

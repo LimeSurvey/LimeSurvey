@@ -49,8 +49,8 @@ class index extends CAction {
             killSurveySession($surveyid);
         }
 
-
-        list($surveyExists, $isSurveyActive) = $this->_surveyExistsAndIsActive($surveyid);
+        $surveyExists=($surveyid && Survey::model()->findByPk($surveyid));
+        $isSurveyActive=($surveyExists && Survey::model()->findByPk($surveyid)->active=="Y");
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
@@ -147,7 +147,7 @@ class index extends CAction {
         //CHECK FOR REQUIRED INFORMATION (sid)
         if ($surveyid && $surveyExists)
         {
- 		    LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
+            LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
             $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
             UpdateSessionGroupList($surveyid, $sTempLanguage);  // to refresh the language strings in the group list session variable
             UpdateFieldArray();        // to refresh question titles and question text
@@ -719,7 +719,7 @@ class index extends CAction {
 
     function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
-        if ( is_int($mvSurveyIdOrBaseLang) )
+        if ( is_int($mvSurveyIdOrBaseLang))
         {
             $baselang = Survey::model()->findByPk($surveyId)->language;
         }
@@ -736,28 +736,6 @@ class index extends CAction {
 
         return new Limesurvey_lang($baselang);
     }
-
-    function _surveyExistsAndIsActive($surveyId)
-    {
-        $isSurveyActive = false;
-        $surveyExists = false;
-
-        if ($surveyId)
-        {
-            $aRow = dbExecuteAssoc("SELECT active FROM {{surveys}} WHERE sid='".$surveyId."'")->read();
-            if (isset($aRow['active']))
-            {
-                $surveyExists = true;
-                if($aRow['active'] == 'Y')
-                {
-                    $isSurveyActive = true;
-                }
-            }
-        }
-
-        return array($surveyExists, $isSurveyActive);
-    }
-
 
     function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
     {
@@ -808,11 +786,19 @@ class index extends CAction {
 
     function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array())
     {
-        $sTemplateDir= getTemplatePath($sTemplateDir);
+
+        if(isset($redata['surveyid']) && $redata['surveyid'] && !isset($thisurvey))
+        {
+            $thissurvey=getSurveyInfo($redata['surveyid']);
+            $sTemplateDir= getTemplatePath($thissurvey['template']);
+        }
+        else
+        {
+            $sTemplateDir= getTemplatePath($sTemplateDir);
+        }
         sendCacheHeaders();
 
         doHeader();
-
         $this->_printTemplateContent($sTemplateDir.'/startpage.pstpl', $redata, $iDebugLine);
         $this->_printMessage($asMessage);
         $this->_printTemplateContent($sTemplateDir.'/endpage.pstpl', $redata, $iDebugLine);
@@ -822,12 +808,21 @@ class index extends CAction {
         exit;
     }
 
-    function _createNewUserSessionAndRedirect($surveyId, &$redata, $iDebugLine, $asMessage = array())
+    function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = array())
     {
         $clang = Yii::app()->lang;
-        killSurveySession($surveyId);
+        killSurveySession($surveyid);
+        $thissurvey=getSurveyInfo($surveyid);
+        if($thissurvey)
+        {
+            $templatename=$thissurvey['template'];
+        }
+        else
+        {
+            $templatename=Yii::app()->getConfig('defaulttemplate');;
+        }
         // Let's redirect the client to the same URL after having reset the session
-        $this->_niceExit($redata, $iDebugLine, null, $asMessage);
+        $this->_niceExit($redata, $iDebugLine, $templatename, $asMessage);
     }
 
 
