@@ -596,7 +596,7 @@ class ListQuestion extends QuestionModule
         }
     }
 
-    public function getVarAttributeLEM($name,$value)
+    public function getVarAttributeLEM($sgqa,$value)
     {
         if (preg_match('/other$/',$sgqa))
         {

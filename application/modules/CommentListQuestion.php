@@ -287,7 +287,7 @@ class CommentListQuestion extends ListQuestion
         }
     }
 
-    public function getVarAttributeLEM($name,$value)
+    public function getVarAttributeLEM($sgqa,$value)
     {
         if (preg_match('/comment$/',$sgqa))
         {

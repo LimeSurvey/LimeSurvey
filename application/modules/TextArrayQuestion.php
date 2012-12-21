@@ -730,7 +730,7 @@ EOD;
         return $prop?$props[$prop]:$props;
     }
 
-    public function getVarAttributeLEM($name,$value)
+    public function getVarAttributeLEM($sgqa,$value)
     {
         return sanitize_html_string(parent::getVarAttributeLEM($sgqa,$value));
     }
