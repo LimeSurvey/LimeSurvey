@@ -48,9 +48,8 @@ class index extends CAction {
         {
             killSurveySession($surveyid);
         }
-
-
-        list($surveyExists, $isSurveyActive) = $this->_surveyExistsAndIsActive($surveyid);
+        $surveyExists=($surveyid && Survey::model()->findByPk($surveyid));
+        $isSurveyActive=($surveyExists && Survey::model()->findByPk($surveyid)->active=="Y");
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
@@ -737,28 +736,6 @@ class index extends CAction {
         return new Limesurvey_lang($baselang);
     }
 
-    function _surveyExistsAndIsActive($surveyId)
-    {
-        $isSurveyActive = false;
-        $surveyExists = false;
-
-        if ($surveyId)
-        {
-            $aRow = dbExecuteAssoc("SELECT active FROM {{surveys}} WHERE sid='".$surveyId."'")->read();
-            if (isset($aRow['active']))
-            {
-                $surveyExists = true;
-                if($aRow['active'] == 'Y')
-                {
-                    $isSurveyActive = true;
-                }
-            }
-        }
-
-        return array($surveyExists, $isSurveyActive);
-    }
-
-
     function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
     {
         return $clientToken != '' && isset($_SESSION['survey_'.$surveyid]['token']) && $clientToken != $_SESSION['survey_'.$surveyid]['token'];
@@ -808,28 +785,41 @@ class index extends CAction {
 
     function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array())
     {
-        if ( $sTemplateDir === null )
-            $sTemplateDir = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default';
-
+        if(isset($redata['surveyid']) && $redata['surveyid'] && !isset($thisurvey))
+        {
+            $thissurvey=getSurveyInfo($redata['surveyid']);
+            $sTemplateDir= getTemplatePath($thissurvey['template']);
+        }
+        else
+        {
+            $sTemplateDir= getTemplatePath($sTemplateDir);
+        }
         sendCacheHeaders();
-
         doHeader();
-
-        $this->_printTemplateContent($sTemplateDir.DIRECTORY_SEPARATOR.'startpage.pstpl', $redata, $iDebugLine);
+        $this->_printTemplateContent($sTemplateDir.'/startpage.pstpl', $redata, $iDebugLine);
         $this->_printMessage($asMessage);
-        $this->_printTemplateContent($sTemplateDir.DIRECTORY_SEPARATOR.'endpage.pstpl', $redata, $iDebugLine);
+        $this->_printTemplateContent($sTemplateDir.'/endpage.pstpl', $redata, $iDebugLine);
 
         doFooter();
 
         exit;
     }
 
-    function _createNewUserSessionAndRedirect($surveyId, &$redata, $iDebugLine, $asMessage = array())
+    function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = array())
     {
         $clang = Yii::app()->lang;
-        killSurveySession($surveyId);
+        killSurveySession($surveyid);
+        $thissurvey=getSurveyInfo($surveyid);
+        if($thissurvey)
+        {
+            $templatename=$thissurvey['template'];
+        }
+        else
+        {
+            $templatename=Yii::app()->getConfig('defaulttemplate');;
+        }
         // Let's redirect the client to the same URL after having reset the session
-        $this->_niceExit($redata, $iDebugLine, null, $asMessage);
+        $this->_niceExit($redata, $iDebugLine, $templatename, $asMessage);
     }
 
 
