@@ -862,7 +862,7 @@
                         */
 
                         // 1) Total number of files uploaded
-                        // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn’t upload any)
+                        // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn't upload any)
                         $fieldname=substr($rt, 1, strlen($rt));
                         $query = "SELECT SUM(".db_quote_id($fieldname.'_filecount').") as sum, AVG(".db_quote_id($fieldname.'_filecount').") as avg FROM ".db_table_name("survey_$surveyid");
                         $result=db_execute_assoc($query) or safe_die("Couldn't fetch the records<br />$query<br />".$connect->ErrorMsg());
@@ -2068,7 +2068,7 @@
                                     //$fname .= $query2;
                                     while ($row2=$result2->FetchRow())
                                     {
-                                        $fnamelast .= $row2[0]."<br />\n";
+                                        $fnamelast .= sanitize_html_string($row2[0])."<br />\n";
                                         $tablePDF2[]=array($row2[0]);
                                     }
                                     $fnamelast .= "</div>\n";
@@ -2119,7 +2119,7 @@
                                     //$fname .= $query2;
                                     while ($row2=$result2->FetchRow())
                                     {
-                                        $fnamelast .= $row2[0]."<br />\n";
+                                        $fnamelast .= sanitize_html_string($row2[0])."<br />\n";
                                         $tablePDF2[]=array($row2[0]);
                                     }
                                     $fnamelast .= "</div>\n";
