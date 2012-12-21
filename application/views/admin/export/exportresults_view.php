@@ -101,6 +101,8 @@
                     <?php $i=1;
                         foreach($excesscols as $q)
                         {
+                            $questiontext=viewHelper::getFieldText($q);
+                            $questioncode=viewHelper::getFieldCode($q);
                             echo "<option value='{$q->fieldname}'";
                             if (isset($_POST['summary']))
                             {
@@ -113,7 +115,7 @@
                             {
                                 echo " selected";
                             }
-                            echo ">{$i}: {$q->fieldname} - ".ellipsize(FlattenText($q->text,false,true),40,0.9)."</option>\n";
+                            echo " title='{$q->fieldname} : ".sanitize_html_string($questiontext)."'>".ellipsize("{$i} : {$questioncode} - {$questiontext}",45)."</option>\n";
                             $i++;
                     } ?>
                 </select>

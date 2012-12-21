@@ -19,6 +19,7 @@
 class viewHelper
 {
     /**
+     * getImageLink
      * Returns HTML needed for a link that consists of only an image with alt text.
      *
      * Usage: getImageLink('test.png', 'controller/action/params', 'Your description', 'optionalClass', '_blank')
@@ -53,4 +54,82 @@ class viewHelper
 
         return $output;
     }
+
+    /**
+     * getFieldText
+     * Returns $string : complete field information text for surveytable.
+     *
+     * Usage: getFieldText($q, $option)
+     *
+     * @param object $q the field information from createFieldMap
+     * @param array $option option for filtering
+     */
+    public static function getFieldText($q, $option=false)
+    {
+        // Maybe put flatten in option
+        if(isset($q->fieldname))
+        {
+            $questiontext=FlattenText($q->text,false,true);
+            if(isset($q->scalename) && $q->scalename)
+            {
+                $questiontext.="[".FlattenText($q->scalename,false,true)."]";
+            }
+            if(isset($q->sq) && $q->sq)
+            {
+                $questiontext.="[".FlattenText($q->sq,false,true)."]";
+            }
+            if(isset($q->sq1) && $q->sq1)
+            {
+                $questiontext.="[".FlattenText($q->sq1,false,true)."]";
+            }
+            if(isset($q->sq2) && $q->sq2)
+            {
+                $questiontext.="[".FlattenText($q->sq2,false,true)."]";
+            }
+        }
+        else
+        {
+            $questiontext="";
+        }
+        return $questiontext;
+    }
+
+    /**
+     * getFieldCode
+     * Returns $string : complete field information code for surveytable.
+     *
+     * Usage: getFieldCode($field, $option)
+     *
+     * @param object $q the field information from createFieldMap
+     * @param array $option option for filtering
+     */
+    public static function getFieldCode($q, $option=false)
+    {
+        if(isset($q->fieldname))
+        {
+            if(isset($q->title) && $q->title)
+            {
+                $questioncode=$q->title;
+                if(isset($q->scale))
+                {
+                    $scalenum=intval($q->scale)+1;
+                    $questioncode.="[".$scalenum."]";
+                }
+                if(isset($q->aid) && $q->aid)
+                {
+                    $questioncode.="[".$q->aid."]";
+                }
+            }
+            else
+            {
+                $questioncode=$q->fieldname;
+            }
+        }
+        else
+        {
+            $questioncode="";
+        }
+        return $questioncode;
+    }
+
 }
