@@ -99,6 +99,7 @@ class viewHelper
             $questiontext=flattenText($questiontext,false,true);
         }
         return $questiontext;
+    }
 
     /**
      * getFieldCode returns complete field information code.
