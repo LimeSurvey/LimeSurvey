@@ -361,7 +361,7 @@ class CheckIntegrity extends Survey_Common_Action
             if ($sTableName == 'survey_permissions' || $sTableName == 'survey_links' || $sTableName == 'survey_url_parameters') continue;
             $aTableName=explode('_',$sTableName);
             $iSurveyID = $aTableName[1];
-            if (false == array_search($iSurveyID, $sids)) {
+            if (!in_array($iSurveyID, $sids)) {
                 $sDate = date('YmdHis') . rand(1, 1000);
                 $sOldTable = "survey_{$iSurveyID}";
                 $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
@@ -379,9 +379,7 @@ class CheckIntegrity extends Survey_Common_Action
         {
             $sTableName = substr(reset($aRow), strlen($sDBPrefix));
             $iSurveyID = substr($sTableName, strpos($sTableName, '_') + 1);
-            $count = count(Survey::model()->findAllByPk($iSurveyID));
-            if (Survey::model()->hasErrors()) safeDie(Survey::model()->getError());
-            if ($count == 0) {
+            if (!in_array($iSurveyID, $sids)) {
                 $sDate = date('YmdHis') . rand(1, 1000);
                 $sOldTable = "tokens_{$iSurveyID}";
                 $sNewTable = "old_tokens_{$iSurveyID}_{$sDate}";
@@ -582,20 +580,19 @@ class CheckIntegrity extends Survey_Common_Action
         /**********************************************************************/
         $questions = Questions::model()->findAll();
         if (Questions::model()->hasErrors()) safeDie(Questions::model()->getError());
+        $groups = Groups::model()->findAll();
+        if (Groups::model()->hasErrors()) safeDie(Groups::model()->getError());
+        $gids = array();
+        foreach ($groups as $group) $gids[] = $group['gid'];
+        
         foreach ($questions as $question)
         {
             //Make sure the group exists
-            $criteria = new CDbCriteria;
-            $criteria->compare('gid', $question['gid']);
-            $iQuestionCount = count(Groups::model()->findAll($criteria));
-            if (Groups::model()->hasErrors()) safeDie(Groups::model()->getError());
-            if (!$iQuestionCount) {
+            if (!in_array($question['gid'], $gids)) {
                 $aDelete['questions'][] = array('qid' => $question['qid'], 'reason' => $clang->gT('No matching group') . " ({$question['gid']})");
             }
             //Make sure survey exists
-            $iQuestionCount = count(Survey::model()->findAllByPk($question['sid']));
-            if (Survey::model()->hasErrors()) safeDie(Survey::model()->getError());
-            if (!$iQuestionCount) {
+            if (!in_array($question['sid'], $sids)) {
                 $aDelete['questions'][] = array('qid' => $question['qid'], 'reason' => $clang->gT('There is no matching survey.') . " ({$question['sid']})");
             }
         }
