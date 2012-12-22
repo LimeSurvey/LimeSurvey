@@ -3383,8 +3383,10 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
 *
 * @param string $sTextToFlatten  Text you want to clean
+* @param boolan $keepSpan set to true for keep span, used for expression manager. Default: false
 * @param boolan $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
-* @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true
+* @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true. Default: UTF-8
+* @param string $bStripNewLines strip new lines if true, if false replace all new line by \r\n. Default: true
 *
 * @return string  Cleaned text
 */
@@ -3400,12 +3402,13 @@ function flattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=fals
     else {
         $sNicetext = strip_tags($sNicetext);
     }
+    // ~\R~u : see "What \R matches" and "Newline sequences" in http://www.pcre.org/pcre.txt
     if ($bStripNewLines ){  // strip new lines
-        $sNicetext = preg_replace(array('~\Ru~'),array(' '), $sNicetext);
+        $sNicetext = preg_replace(array('~\R~u'),array(' '), $sNicetext);
     }
     else // unify newlines to \r\n
     {
-        $sNicetext = preg_replace(array('~\Ru~'), array("\r\n"), $sNicetext);
+        $sNicetext = preg_replace(array('~\R~u'), array("\r\n"), $sNicetext);
     }
     if ($bDecodeHTMLEntities==true)
     {
