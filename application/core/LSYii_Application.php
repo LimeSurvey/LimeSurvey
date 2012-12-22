@@ -83,7 +83,7 @@ class LSYii_Application extends CWebApplication
             $config['components']['request']=array();
         }
         $config['components']['request']=array_merge_recursive($config['components']['request'],array(
-            'class'=>'HttpRequest',
+            'class'=>'LSHttpRequest',
             'noCsrfValidationRoutes'=>array(
 //              '^services/wsdl.*$'   // Set here additional regex rules for routes not to be validate 
                 'getTokens_json',
