@@ -19,11 +19,11 @@
 class viewHelper
 {
     /**
-     * getImageLink
-     * Returns HTML needed for a link that consists of only an image with alt text.
+     * getImageLink returns HTML needed for a link that consists of only an image with alt text.
      *
      * Usage: getImageLink('test.png', 'controller/action/params', 'Your description', 'optionalClass', '_blank')
      *
+     * @return string
      * @param string $imgName the name of the image to use, adminImageUrl will be added to it
      * @param string $linkUrl Url we want to go to, uses CController->createUrl()
      * @param string $linkTxt Text to show for the link
@@ -61,49 +61,56 @@ class viewHelper
      *
      * Usage: getFieldText($q, $option)
      *
+     * @return string
      * @param object $q the field information from createFieldMap
      * @param array $option option for filtering
      */
-    public static function getFieldText($q, $option=false)
+    public static function getFieldText($q, $option=array())
     {
-        // Maybe put flatten in option
+        // Default options
+        if(!isset($option['flat'])){$option['flat']=true;}
+
         if(isset($q->fieldname))
         {
-            $questiontext=FlattenText($q->text,false,true);
+            $questiontext=$q->text;
             if(isset($q->scalename) && $q->scalename)
             {
-                $questiontext.="[".FlattenText($q->scalename,false,true)."]";
+                $questiontext.="[{$q->scalename}]";
             }
             if(isset($q->sq) && $q->sq)
             {
-                $questiontext.="[".FlattenText($q->sq,false,true)."]";
+                $questiontext.="[{$q->sq}]";
             }
             if(isset($q->sq1) && $q->sq1)
             {
-                $questiontext.="[".FlattenText($q->sq1,false,true)."]";
+                $questiontext.="[{$q->sq1}]";
             }
             if(isset($q->sq2) && $q->sq2)
             {
-                $questiontext.="[".FlattenText($q->sq2,false,true)."]";
+                $questiontext.="[{$q->sq2}]";
             }
         }
         else
         {
             $questiontext="";
         }
+        if($option['flat'])
+        {
+            $questiontext=flattenText($questiontext);
+        }
         return $questiontext;
     }
 
     /**
-     * getFieldCode
-     * Returns $string : complete field information code for surveytable.
+     * getFieldCode returns $string : complete field information code for surveytable.
      *
      * Usage: getFieldCode($field, $option)
      *
+     * @return string
      * @param object $q the field information from createFieldMap
      * @param array $option option for filtering
      */
-    public static function getFieldCode($q, $option=false)
+    public static function getFieldCode($q, $option=array())
     {
         if(isset($q->fieldname))
         {
