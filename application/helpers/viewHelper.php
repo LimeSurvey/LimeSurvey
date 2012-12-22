@@ -24,6 +24,7 @@ class viewHelper
      *
      * Usage: getImageLink('test.png', 'controller/action/params', 'Your description', 'optionalClass', '_blank')
      *
+     * @return string
      * @param string $imgName the name of the image to use, adminImageUrl will be added to it
      * @param string $linkUrl Url we want to go to, uses CController->createUrl()
      * @param string $linkTxt Text to show for the link
@@ -56,15 +57,19 @@ class viewHelper
     }
 
     /**
-     * getFieldText returns complete field information text for surveytable.
+     * getFieldText returns complete field information text.
      *
      * Usage: getFieldText($field, $option)
      *
+     * @return string
      * @param array $field the field information from createFieldMap
      * @param array $option option for filtering
      */
-    public static function getFieldText($field, $option=array('flat'=>true))
+    public static function getFieldText($field, $option=array())
     {
+        // Default options
+        if(!isset($option['flat'])){$option['flat']=true;}
+
         if(isset($field['fieldname']))
         {
             $questiontext=$field['question'];
@@ -89,21 +94,22 @@ class viewHelper
         {
             $questiontext="";
         }
-        if (isset($option['flat']) && $option['flat'])
+        if ($option['flat'])
         {
             $questiontext=flattenText($questiontext,false,true);
         }
         return $questiontext;
 
     /**
-     * getFieldCode returns complete field information code for surveytable.
+     * getFieldCode returns complete field information code.
      *
      * Usage: getFieldCode($field, $option)
      *
+     * @return string
      * @param array $field the field information from createFieldMap
      * @param array $option option for filtering
      */
-    public static function getFieldCode($field, $option=false)
+    public static function getFieldCode($field, $option=array())
     {
         if(isset($field['fieldname']))
         {
