@@ -273,10 +273,10 @@ function activateSurvey($iSurveyID, $simulate = false)
     //$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 
     $tabname = "{{survey_{$iSurveyID}}}";
-    $command = new CDbCommand(Yii::app()->db);
+    Yii::app()->loadHelper("database");
     try
     {
-        $execresult = $command->createTable($tabname,$createsurvey);
+        $execresult = createTable($tabname, $createsurvey);
     }
     catch (CDbException $e)
     {
@@ -329,14 +329,13 @@ function activateSurvey($iSurveyID, $simulate = false)
                 }
             }
 
-            $command = new CDbCommand(Yii::app()->db);
         $tabname = "{{survey_{$iSurveyID}}}_timings";
-            try
-            {
-                $execresult = $command->createTable($tabname,$column);
-            }
-            catch (CDbException $e)
-            {
+        try
+        {
+            $execresult = createTable($tabname,$column);
+        }
+        catch (CDbException $e)
+        {
             return array('error'=>'timingstablecreation');
             }
 

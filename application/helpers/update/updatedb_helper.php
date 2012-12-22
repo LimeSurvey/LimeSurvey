@@ -90,7 +90,7 @@ function db_upgrade_all($oldversion) {
             upgradeTokenTables126();
 
             // Create quota table
-            Yii::app()->db->createCommand()->createTable('{{quota}}',array(
+            createTable('{{quota}}',array(
             'id' => 'pk',
             'sid' => 'integer',
             'qlimit' => 'integer',
@@ -100,7 +100,7 @@ function db_upgrade_all($oldversion) {
             ));
 
             // Create quota_members table
-            Yii::app()->db->createCommand()->createTable('{{quota_members}}',array(
+            createTable('{{quota_members}}',array(
             'id' => 'pk',
             'sid' => 'integer',
             'qid' => 'integer',
@@ -111,7 +111,7 @@ function db_upgrade_all($oldversion) {
 
 
             // Create templates_rights table
-            Yii::app()->db->createCommand()->createTable('{{templates_rights}}',array(
+            createTable('{{templates_rights}}',array(
             'uid' => 'integer NOT NULL',
             'folder' => 'string NOT NULL',
             'use' => 'integer',
@@ -119,7 +119,7 @@ function db_upgrade_all($oldversion) {
             ));
 
             // Create templates table
-            Yii::app()->db->createCommand()->createTable('{{templates}}',array(
+            createTable('{{templates}}',array(
             'folder' => 'string NOT NULL',
             'creator' => 'integer NOT NULL',
             'PRIMARY KEY (folder)'
@@ -364,7 +364,7 @@ function db_upgrade_all($oldversion) {
             'modified' => "datetime NOT NULL",
             'sessdata' => 'text'
             );
-            Yii::app()->db->createCommand()->createTable('{{sessions}}',$fields);
+            createTable('{{sessions}}',$fields);
             addPrimaryKey('sessions',array('sesskey'));
             Yii::app()->db->createCommand()->createIndex('sess2_expiry','{{sessions}}','expiry');
             Yii::app()->db->createCommand()->createIndex('sess2_expireref','{{sessions}}','expireref');
@@ -429,7 +429,7 @@ function db_upgrade_all($oldversion) {
             'import_p' => "integer NOT NULL default 0",
             'export_p' => "integer NOT NULL default 0"
             );
-            Yii::app()->db->createCommand()->createTable('{{survey_permissions}}',$fields);
+            createTable('{{survey_permissions}}',$fields);
             addPrimaryKey('survey_permissions', array('sid','uid','permission'));
 
             upgradeSurveyPermissions145();
@@ -584,7 +584,7 @@ function db_upgrade_all($oldversion) {
 
             addColumn('{{surveys_languagesettings}}','surveyls_numberformat',"integer NOT NULL DEFAULT 0");
 
-            Yii::app()->db->createCommand()->createTable('{{failed_login_attempts}}',array(
+            createTable('{{failed_login_attempts}}',array(
             'id' => "pk",
             'ip' => $sVarchar.'(37) NOT NULL',
             'last_attempt' => $sVarchar.'(20) NOT NULL',
@@ -613,7 +613,7 @@ function db_upgrade_all($oldversion) {
         {
             addColumn('{{users}}','participant_panel',"integer NOT NULL default 0");
 
-            Yii::app()->db->createCommand()->createTable('{{participants}}',array(
+            createTable('{{participants}}',array(
             'participant_id' => $sVarchar.'(50) NOT NULL',
             'firstname' => $sVarchar.'(40) default NULL',
             'lastname' => $sVarchar.'(40) default NULL',
@@ -624,34 +624,34 @@ function db_upgrade_all($oldversion) {
             ));
             addPrimaryKey('participants', array('participant_id'));
 
-            Yii::app()->db->createCommand()->createTable('{{participant_attribute}}',array(
+            createTable('{{participant_attribute}}',array(
             'participant_id' => $sVarchar.'(50) NOT NULL',
             'attribute_id' => "integer NOT NULL",
             'value' => $sVarchar.'(50) NOT NULL'
             ));
             addPrimaryKey('participant_attribute', array('participant_id','attribute_id'));
 
-            Yii::app()->db->createCommand()->createTable('{{participant_attribute_names}}',array(
+            createTable('{{participant_attribute_names}}',array(
             'attribute_id' => $sAutoIncrement,
             'attribute_type' => $sVarchar.'(4) NOT NULL',
             'visible' => $sVarchar.'(5) NOT NULL',
             'PRIMARY KEY (attribute_id,attribute_type)'
             ));
 
-            Yii::app()->db->createCommand()->createTable('{{participant_attribute_names_lang}}',array(
+            createTable('{{participant_attribute_names_lang}}',array(
             'attribute_id' => 'integer NOT NULL',
             'attribute_name' => $sVarchar.'(30) NOT NULL',
             'lang' => $sVarchar.'(20) NOT NULL'
             ));
             addPrimaryKey('participant_attribute_names_lang', array('attribute_id','lang'));
 
-            Yii::app()->db->createCommand()->createTable('{{participant_attribute_values}}',array(
+            createTable('{{participant_attribute_values}}',array(
             'attribute_id' => 'integer NOT NULL',
             'value_id' => 'pk',
             'value' => $sVarchar.'(20) NOT NULL'
             ));
 
-            Yii::app()->db->createCommand()->createTable('{{participant_shares}}',array(
+            createTable('{{participant_shares}}',array(
             'participant_id' => $sVarchar.'(50) NOT NULL',
             'share_uid' => 'integer NOT NULL',
             'date_added' => 'datetime NOT NULL',
@@ -659,7 +659,7 @@ function db_upgrade_all($oldversion) {
             ));
             addPrimaryKey('participant_shares', array('participant_id','share_uid'));
 
-            Yii::app()->db->createCommand()->createTable('{{survey_links}}',array(
+            createTable('{{survey_links}}',array(
             'participant_id' => $sVarchar.'(50) NOT NULL',
             'token_id' => 'integer NOT NULL',
             'survey_id' => 'integer NOT NULL',
@@ -684,7 +684,7 @@ function db_upgrade_all($oldversion) {
             'targetqid' => 'integer',
             'targetsqid' => 'integer'
             );
-            Yii::app()->db->createCommand()->createTable('{{survey_url_parameters}}',$fields);
+            createTable('{{survey_url_parameters}}',$fields);
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>149),"stg_name='DBVersion'");
         }
 
@@ -748,7 +748,7 @@ function db_upgrade_all($oldversion) {
             {
                 // do nothing
             }
-            Yii::app()->db->createCommand()->createTable('{{survey_url_parameters}}',array(
+            createTable('{{survey_url_parameters}}',array(
             'id' => 'pk',
             'sid' => 'integer NOT NULL',
             'parameter' => $sVarchar.'(50) NOT NULL',
@@ -759,7 +759,7 @@ function db_upgrade_all($oldversion) {
             Yii::app()->db->createCommand()->dropTable('{{sessions}}');
             if ($sDBDriverName=='mysql')
             {
-                Yii::app()->db->createCommand()->createTable('{{sessions}}',array(
+                createTable('{{sessions}}',array(
                 'id' => $sVarchar.'(32) NOT NULL',
                 'expire' => 'integer',
                 'data' => 'longtext'
@@ -767,7 +767,7 @@ function db_upgrade_all($oldversion) {
             }
             else
             {
-                Yii::app()->db->createCommand()->createTable('{{sessions}}',array(
+                createTable('{{sessions}}',array(
                 'id' => $sVarchar.'(32) NOT NULL',
                 'expire' => 'integer',
                 'data' => 'text'
