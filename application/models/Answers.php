@@ -90,26 +90,38 @@ class Answers extends CActiveRecord
      */
     function getAnswerFromCode($qid, $code, $lang, $iScaleID=0)
     {
-        return Yii::app()->db->cache(6)->createCommand()
-            ->select('answer')
-            ->from(self::tableName())
-            ->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=:scale_id', 'language=:lang'))
-            ->bindParam(":qid", $qid, PDO::PARAM_INT)
-            ->bindParam(":code", $code, PDO::PARAM_STR)
-            ->bindParam(":lang", $lang, PDO::PARAM_STR)
-            ->bindParam(":scale_id", $iScaleID, PDO::PARAM_INT)
-            ->query();
+        static $answerCache = array();
+
+        if (array_key_exists($qid, $answerCache)
+                && array_key_exists($code, $answerCache[$qid])
+                && array_key_exists($lang, $answerCache[$qid][$code])
+                && array_key_exists($iScaleID, $answerCache[$qid][$code][$lang])) {
+            // We have a hit :)
+            return $answerCache[$qid][$code][$lang][$iScaleID];
+        } else {
+            $answerCache[$qid][$code][$lang][$iScaleID] = Yii::app()->db->cache(6)->createCommand()
+			->select('answer')
+			->from(self::tableName())
+			->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=:scale_id', 'language=:lang'))
+			->bindParam(":qid", $qid, PDO::PARAM_INT)
+			->bindParam(":code", $code, PDO::PARAM_STR)
+			->bindParam(":lang", $lang, PDO::PARAM_STR)
+                        ->bindParam(":scale_id", $iScaleID, PDO::PARAM_INT)
+			->query()->readAll();
+            
+            return $answerCache[$qid][$code][$lang][$iScaleID];
+        }
     }
 
-	public function oldNewInsertansTags($newsid,$oldsid)
-	{
-		$criteria = new CDbCriteria;
-		$criteria->compare('questions.sid',$newsid);
-		$criteria->compare('answer','{INSERTANS::'.$oldsid.'X');
-		return $this->with('questions')->findAll($criteria);
-	}
+    public function oldNewInsertansTags($newsid,$oldsid)
+    {
+            $criteria = new CDbCriteria;
+            $criteria->compare('questions.sid',$newsid);
+            $criteria->compare('answer','{INSERTANS::'.$oldsid.'X');
+            return $this->with('questions')->findAll($criteria);
+    }
 
-	public function updateRecord($data, $condition=FALSE)
+    public function updateRecord($data, $condition=FALSE)
     {
         return Yii::app()->db->createCommand()->update(self::tableName(), $data, $condition ? $condition : '');
     }

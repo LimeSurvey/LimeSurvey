@@ -1784,7 +1784,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
             case "^":
             case "I":
             case "R":
-                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage) or die ("Couldn't get answer type L - getAnswerCode()"); //Checked
+                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage);
                 foreach($result as $row)
                 {
                     $this_answer=$row['answer'];
@@ -1846,7 +1846,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 {
                     $iScaleID=0;
                 }
-                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage,$iScaleID) or die ("Couldn't get answer type L - getAnswerCode()"); //Checked
+                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage,$iScaleID);
                 foreach($result as $row)
                 {
                     $this_answer=$row['answer'];
