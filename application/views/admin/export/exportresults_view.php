@@ -115,7 +115,7 @@
                             {
                                 echo " selected";
                             }
-                            echo " title='{$sFieldName} : ".sanitize_html_string($questiontext)."'>".ellipsize("{$i} : {$questioncode} - {$questiontext}",45)."</option>\n";
+                            echo " title='{$sFieldName} : ".str_replace("'", "&#39;",$questiontext)."'>".ellipsize("{$i} : {$questioncode} - ".str_replace(array("\r\n", "\n", "\r"), " ", $questiontext),45)."</option>\n";
                             $i++;
                     } ?>
                 </select>

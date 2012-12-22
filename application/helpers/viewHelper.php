@@ -20,8 +20,7 @@ class viewHelper
 {
 
     /**
-     * getImageLink
-     * Returns HTML needed for a link that consists of only an image with alt text.
+     * getImageLink returns HTML needed for a link that consists of only an image with alt text.
      *
      * Usage: getImageLink('test.png', 'controller/action/params', 'Your description', 'optionalClass', '_blank')
      *
@@ -57,47 +56,47 @@ class viewHelper
     }
 
     /**
-     * getFieldText
-     * Returns $string : complete field information text for surveytable.
+     * getFieldText returns complete field information text for surveytable.
      *
      * Usage: getFieldText($field, $option)
      *
      * @param array $field the field information from createFieldMap
      * @param array $option option for filtering
      */
-    public static function getFieldText($field, $option=false)
+    public static function getFieldText($field, $option=array('flat'=>true))
     {
-        // Maybe put flatten in option
         if(isset($field['fieldname']))
         {
-            $questiontext=FlattenText($field['question'],false,true);
+            $questiontext=$field['question'];
             if(isset($field['scale']) && $field['scale'])
             {
-                $questiontext.="[".FlattenText($field['scale'],false,true)."]";
+                $questiontext.="[{$field['scale']}]";
             }
             if(isset($field['subquestion']) && $field['subquestion'])
             {
-                $questiontext.="[".FlattenText($field['subquestion'],false,true)."]";
+                $questiontext.="[{$field['subquestion']}]";
             }
             if(isset($field['subquestion1']) && $field['subquestion1'])
             {
-                $questiontext.="[".FlattenText($field['subquestion1'],false,true)."]";
+                $questiontext.="[{$field['subquestion1']}]";
             }
             if(isset($field['subquestion2']) && $field['subquestion2'])
             {
-                $questiontext.="[".FlattenText($field['subquestion2'],false,true)."]";
+                $questiontext.="[{$field['subquestion2']}]";
             }
         }
         else
         {
             $questiontext="";
         }
+        if (isset($option['flat']) && $option['flat'])
+        {
+            $questiontext=flattenText($questiontext,false,true);
+        }
         return $questiontext;
-    }
 
     /**
-     * getFieldCode
-     * Returns $string : complete field information code for surveytable.
+     * getFieldCode returns complete field information code for surveytable.
      *
      * Usage: getFieldCode($field, $option)
      *
