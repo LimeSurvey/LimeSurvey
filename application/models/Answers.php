@@ -90,16 +90,7 @@ class Answers extends CActiveRecord
      */
     function getAnswerFromCode($qid, $code, $lang, $iScaleID=0)
     {
-        static $answerCache = array();
-
-        if (array_key_exists($qid, $answerCache)
-                && array_key_exists($code, $answerCache[$qid])
-                && array_key_exists($lang, $answerCache[$qid][$code])
-                && array_key_exists($iScaleID, $answerCache[$qid][$code][$lang])) {
-            // We have a hit :)
-            return $answerCache[$qid][$code][$lang][$iScaleID];
-        } else {
-            $answerCache[$qid][$code][$lang][$iScaleID] = Yii::app()->db->cache(6)->createCommand()
+        return Yii::app()->db->cache(6)->createCommand()
             ->select('answer')
             ->from(self::tableName())
             ->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=:scale_id', 'language=:lang'))
@@ -108,9 +99,6 @@ class Answers extends CActiveRecord
             ->bindParam(":lang", $lang, PDO::PARAM_STR)
             ->bindParam(":scale_id", $iScaleID, PDO::PARAM_INT)
             ->query();
-
-            return $answerCache[$qid][$code][$lang][$iScaleID];
-        }
     }
 
 	public function oldNewInsertansTags($newsid,$oldsid)
