@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-12-22 23:05:51+00:00\n"
+"POT-Creation-Date: 2012-12-23 23:05:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -843,7 +843,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1173
 #: application/controllers/admin/printablesurvey.php:1190
 #: application/controllers/admin/printablesurvey.php:1195
-#: application/controllers/admin/quotas.php:526
+#: application/controllers/admin/quotas.php:506
 #: application/controllers/admin/surveyadmin.php:666
 #: application/controllers/admin/tokens.php:2065
 #: application/core/Survey_Common_Action.php:823
@@ -1066,7 +1066,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1175
 #: application/controllers/admin/printablesurvey.php:1192
 #: application/controllers/admin/printablesurvey.php:1195
-#: application/controllers/admin/quotas.php:527
+#: application/controllers/admin/quotas.php:507
 #: application/controllers/admin/surveyadmin.php:670
 #: application/controllers/admin/tokens.php:2067
 #: application/core/Survey_Common_Action.php:819
@@ -1292,7 +1292,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:751
 #: application/controllers/admin/printablesurvey.php:723
 #: application/controllers/admin/printablesurvey.php:728
-#: application/controllers/admin/quotas.php:460
+#: application/controllers/admin/quotas.php:464
 #: application/helpers/admin/statistics_helper.php:1440
 #: application/helpers/common_helper.php:1817
 #: application/helpers/export_helper.php:287
@@ -1308,7 +1308,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:752
 #: application/controllers/admin/printablesurvey.php:724
 #: application/controllers/admin/printablesurvey.php:728
-#: application/controllers/admin/quotas.php:459
+#: application/controllers/admin/quotas.php:463
 #: application/helpers/admin/statistics_helper.php:1441
 #: application/helpers/common_helper.php:1816
 #: application/helpers/export_helper.php:288
@@ -2656,7 +2656,7 @@ msgid "Group could not be deleted"
 msgstr ""
 
 #: application/controllers/admin/questiongroup.php:326
-#: application/controllers/admin/quotas.php:343
+#: application/controllers/admin/quotas.php:349
 #: application/views/admin/assessments_view.php:103
 #: application/views/admin/emailtemplates/emailtemplates_view.php:16
 #: application/views/admin/quotas/newquota_view.php:27
@@ -4138,7 +4138,7 @@ msgstr ""
 msgid "Your token seems to be valid but can be used only during a certain time period."
 msgstr ""
 
-#: application/controllers/survey/index.php:666
+#: application/controllers/survey/index.php:653
 msgid "Your responses were successfully saved."
 msgstr ""
 
