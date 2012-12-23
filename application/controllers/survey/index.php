@@ -77,11 +77,11 @@ class index extends CAction {
         }
 
 
-        if ($this->_isPreviewAction($param) && !$this->_canUserPreviewSurvey($surveyid))
+        if (isset($param['action']) && (in_array($param['action'],array('previewgroup','previewquestion'))) && !$this->_canUserPreviewSurvey($surveyid))
         {
             $aMessage = array(
-            $clang->gT('Error'),
-            $clang->gT("We are sorry but you don't have permissions to do this.")
+                $clang->gT('Error'),
+                $clang->gT("We are sorry but you don't have permissions to do this.")
             );
             $this->_niceExit($redata, __LINE__, null, $aMessage);
         }
@@ -622,32 +622,20 @@ class index extends CAction {
             }        
         }
 
-        //        // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
-        //        if (isset($move) || isset($_POST['saveprompt']))
-        //        {
-        //            $redata = compact(array_keys(get_defined_vars()));
-        //            //save.php
-        //            Yii::import("application.libraries.Save");
-        //            $tmp = new Save();
-        //            $tmp->run($redata);
-        //
-        //            // RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
-        //            if ($thissurvey['active'] == "Y" &&
-        //            ( $thissurvey['allowsave'] == "Y" || $thissurvey['tokenanswerspersistence'] == "Y") )
-        //            {
-        //                loadanswers();
-        //            }
-        //        }
-
-        if (isset($param['action']) && $param['action'] == 'previewgroup')
+        // Preview action : Preview right already tested before
+        if (isset($param['action']) && (in_array($param['action'],array('previewgroup','previewquestion'))))
         {
-            $thissurvey['format'] = 'G';
-            buildsurveysession($surveyid,true);
-        }
-
-        if (isset($param['action']) && $param['action'] == 'previewquestion')
-        {
-            $thissurvey['format'] = 'S';
+            // Unset all SESSION: be sure to have the last version
+            unset($_SESSION['fieldmap-' . $surveyid . $clang->langcode]);// Needed by createFieldMap: else fieldmap can be outdated
+            unset($_SESSION['survey_'.$surveyid]);
+            if ($param['action'] == 'previewgroup')
+            {
+                $thissurvey['format'] = 'G';
+            }
+            elseif ($param['action'] == 'previewquestion')
+            {
+                $thissurvey['format'] = 'S';
+            }
             buildsurveysession($surveyid,true);
         }
 

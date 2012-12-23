@@ -164,7 +164,7 @@ class RadioArrayQuestion extends ArrayQuestion
 
                 if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
                 {
-                    $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n<label for=\"answer$myfname-\">{$clang->gT('No answer')}</label>\n"
+                    $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n<label for=\"answer$myfname-\" class=\"hide\">{$clang->gT('No answer')}</label>\n"
                     ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" ";
                     if (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) || $_SESSION['survey_'.$this->surveyid][$myfname] == '')
                     {
