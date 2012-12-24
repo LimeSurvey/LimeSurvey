@@ -182,25 +182,27 @@ class index extends CAction {
 
             foreach($result->readAll() as $rows)
             {
-                $querylang="SELECT surveyls_title
-                FROM {{surveys_languagesettings}}
-                WHERE surveyls_survey_id={$rows['sid']}
-                AND surveyls_language='{$sDisplayLanguage}'";
-                $resultlang=Yii::app()->db->createCommand($querylang)->queryRow();
-                if ($resultlang['surveyls_title'] )
+#                $querylang="SELECT surveyls_title
+#                FROM {{surveys_languagesettings}}
+#                WHERE surveyls_survey_id={$rows['sid']}
+#                AND surveyls_language='{$sDisplayLanguage}'";
+#                $resultlang=Yii::app()->db->createCommand($querylang)->queryRow();
+                $resultlang=Surveys_languagesettings::model()->find(
+                        "surveyls_survey_id=:surveyls_survey_id AND surveyls_language=:surveyls_language",
+                        array(':surveyls_survey_id'=>intval($rows['sid']),':surveyls_language'=>$sDisplayLanguage)
+                );
+                $langparam=array();
+                $langtag = "";
+                if ($resultlang )
                 {
-                    $rows['surveyls_title']=$resultlang['surveyls_title'];
-                    $langtag = "";
+                    $rows['surveyls_title']=$resultlang->surveyls_title;
+                    $langparam=array('lang'=>$sDisplayLanguage);
                 }
                 else
                 {
                     $langtag = "lang=\"{$rows['language']}\"";
                 }
-                $link = "<li><a href='".$this->getController()->createUrl('/survey/index/sid/'.$rows['sid']);
-                if (isset($param['lang']) && $langtag=="") // TODO review with session ?
-                {
-                    $link .= "/lang-".sanitize_languagecode($param['lang']);
-                }
+                $link = "<li><a href='".$this->getController()->createUrl('/survey/index/sid/'.$rows['sid'],$langparam);
                 $link .= "' $langtag class='surveytitle'>".$rows['surveyls_title']."</a>\n";
                 if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."/language/".$sDisplayLanguage."'>(".$clang->gT('View statistics').")</a>";
                 $link .= "</li>\n";
