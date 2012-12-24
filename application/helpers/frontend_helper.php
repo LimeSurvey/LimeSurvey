@@ -261,10 +261,12 @@
     {
         if(count(getLanguageDataRestricted())>1)
         {
+            $route="";
             $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
             foreach(getLanguageDataRestricted(true, $sSelectedLanguage) as $sLanguageID=>$aLanguageProperties)
             {
-                $sHTMLCode .= "<option value='".Yii::app()->getController()->createUrl("/survey/index")."?lang=".$sLanguageID."' ";
+                $sLanguageUrl=Yii::app()->getController()->createUrl('survey/index',array('lang'=>$sLanguageID));
+                $sHTMLCode .= "<option value='{$sLanguageUrl}'";
                 if($sLanguageID == $sSelectedLanguage)
                 {
                     $sHTMLCode .= " selected='selected' ";
@@ -1392,7 +1394,7 @@
     * It is called from the related format script (group.php, question.php, survey.php)
     * if the survey has just started.
     */
-    function buildsurveysession($surveyid,$previewGroup=false)
+    function buildsurveysession($surveyid,$preview=false)
     {
         global $thissurvey, $secerror, $clienttoken;
         global $tokensexist;
@@ -1477,7 +1479,7 @@
 
         //BEFORE BUILDING A NEW SESSION FOR THIS SURVEY, LET'S CHECK TO MAKE SURE THE SURVEY SHOULD PROCEED!
         // TOKEN REQUIRED BUT NO TOKEN PROVIDED
-        if ($tokensexist == 1 && !$clienttoken && !$previewGroup)
+        if ($tokensexist == 1 && !$clienttoken && !$preview)
         {
 
             if ($thissurvey['nokeyboard']=='Y')
@@ -2099,7 +2101,7 @@
     // Prefill questions/answers from command line params
     $reservedGetValues= array('token','sid','gid','qid','lang','newtest','action');
     $startingValues=array();
-    if (isset($_GET) && !$previewGroup)
+    if (isset($_GET) && !$preview)
     {
         foreach ($_GET as $k=>$v)
         {
@@ -2110,14 +2112,13 @@
         }
     }
     $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
-
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url
     $oResult=Survey_url_parameters::model()->getParametersForSurvey($surveyid);
     foreach($oResult->readAll() as $aRow)
     {
-        if(isset($_GET[$aRow['parameter']]))
+        if(isset($_GET[$aRow['parameter']]) && !$preview)
         {
             $_SESSION['survey_'.$surveyid]['urlparams'][$aRow['parameter']]=$_GET[$aRow['parameter']];
             if ($aRow['targetqid']!='')
