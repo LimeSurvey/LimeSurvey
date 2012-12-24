@@ -221,20 +221,16 @@
 
         if (count($slangs)>1) // return a dropdow only of there are more than one lanagage
         {
-            $previewgrp = false;
-            if (isset($_REQUEST['action'])&& $_REQUEST['action']=='previewgroup')
+            $route="/survey/index/sid/{$surveyid}";
+            if (Yii::app()->request->getParam('action','none')=='previewgroup' && intval(Yii::app()->request->getParam('gid',0)))
             {
-                $previewgrp = true;
+                $route.="/action/previewgroup/gid/".intval(Yii::app()->request->getParam('gid',0));
             }
             $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
-            $sAddToURL = "";
-            $sTargetURL = Yii::app()->getController()->createUrl("/survey/index");
-            if ($previewgrp){
-                $sAddToURL = "&amp;action=previewgroup&amp;gid={$_REQUEST['gid']}";
-            }
             foreach ($slangs as $sLanguage)
             {
-                $sHTMLCode .= "<option value=\"{$sTargetURL}?sid=". $surveyid ."&amp;lang=". $sLanguage ."{$sAddToURL}\" ";
+                $sTargetURL=Yii::app()->getController()->createUrl($route."/lang/$sLanguage");
+                $sHTMLCode .= "<option value=\"{$sTargetURL}\" ";
                 if ($sLanguage==$sSelectedLanguage)
                 {
                     $sHTMLCode .=" selected='selected'";
@@ -261,7 +257,6 @@
     {
         if(count(getLanguageDataRestricted())>1)
         {
-            $route="";
             $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
             foreach(getLanguageDataRestricted(true, $sSelectedLanguage) as $sLanguageID=>$aLanguageProperties)
             {
