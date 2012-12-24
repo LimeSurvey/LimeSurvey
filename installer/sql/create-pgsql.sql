@@ -395,6 +395,7 @@ CREATE TABLE prefix_surveys (
     datestamp character varying(1) DEFAULT 'N' NOT NULL,
     usecookie character varying(1) DEFAULT 'N' NOT NULL,
     allowregister character varying(1) DEFAULT 'N' NOT NULL,
+    directregister character varying(1) DEFAULT 'N' NOT NULL,
     allowsave character varying(1) DEFAULT 'Y' NOT NULL,
     autonumber_start integer DEFAULT 0 NOT NULL,
     autoredirect character varying(1) DEFAULT 'N' NOT NULL,
@@ -627,4 +628,4 @@ INSERT INTO prefix_question_type_groups (id, name, "order", system) VALUES
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '167');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '168');

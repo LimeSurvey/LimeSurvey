@@ -81,6 +81,26 @@
                     ><?php $clang->eT("No"); ?></option>
             </select>
         </li>
+        <li><label for='directregister'><?php $clang->eT("Allow entering survey without mail validation?"); ?></label>
+            <select id='directregister' name='directregister'>
+                <option value='N'
+                    <?php if ($esrow['directregister'] != "Y" && $esrow['directregister'] != "A") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php $clang->eT("No"); ?></option>
+                <option value='Y'
+                    <?php if ($esrow['directregister'] == "Y") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php $clang->eT("Yes: the url are shown in message."); ?></option>
+                <option value='A'
+                    <?php if ($esrow['directregister'] == "A") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php $clang->eT("Yes: directly enter in the survey."); ?></option>
+            </select>
+            <!--<span class="annotation"><?php $clang->eT("User can enter without mail validation. Please ensure legality of user registration without validation process in your country."); ?></span>-->
+        </li>
 
         <li>
             <label for='htmlemail'><?php $clang->eT("Use HTML format for token emails?"); ?></label>
