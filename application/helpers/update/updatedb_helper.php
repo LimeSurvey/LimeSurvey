@@ -78,7 +78,7 @@ function db_upgrade_all($oldversion) {
             Yii::app()->db->createCommand()->alterColumn('{{saved_control}}','email',"{$sVarchar}(320) NOT NULL");
             Yii::app()->db->createCommand()->alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320) NOT NULL");
             Yii::app()->db->createCommand()->alterColumn('{{users}}','email',"{$sVarchar}(320) NOT NULL");
-            Yii::app()->db->createCommand()->insert('{{settings_global}}',array('stg_name'=>'SessionName','stg_value'=>randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"§$%&/()=?´`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789')));
+            Yii::app()->db->createCommand()->insert('{{settings_global}}',array('stg_name'=>'SessionName','stg_value'=>randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"ï¿½$%&/()=?ï¿½`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789')));
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>114),"stg_name='DBVersion'");
         }
 
@@ -914,6 +914,18 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{survey_permissions}}','sid','integer',false);
             alterColumn('{{survey_permissions}}','uid','integer',false);
             alterColumn('{{users}}','htmleditormode',"{$sVarchar}(7)",true,'default');
+            
+            // Sometimes the survey_links table was deleted before this step, if so
+            // we recreate it (copied from line 663)
+            if (!tableExists('{survey_links}')) {
+                createTable('{{survey_links}}',array(
+                    'participant_id' => $sVarchar.'(50) NOT NULL',
+                    'token_id' => 'integer NOT NULL',
+                    'survey_id' => 'integer NOT NULL',
+                    'date_created' => 'datetime NOT NULL'
+                    ));
+                addPrimaryKey('survey_links', array('participant_id','token_id','survey_id'));
+            }
             alterColumn('{{survey_links}}','date_created',"datetime",true);
             alterColumn('{{saved_control}}','identifier',"text",false);
             alterColumn('{{saved_control}}','email',"{$sVarchar}(320)");
