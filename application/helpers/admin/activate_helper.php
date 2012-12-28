@@ -277,6 +277,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     try
     {
         $execresult = createTable($tabname, $createsurvey);
+        if (isset($createsurvey['token'])) Yii::app()->db->createCommand()->createIndex('token',$tabname,'token');
     }
     catch (CDbException $e)
     {

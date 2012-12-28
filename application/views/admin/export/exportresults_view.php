@@ -77,7 +77,7 @@
             <fieldset>
                 <legend><?php $clang->eT("Column control");?></legend>
 
-                <input type='hidden' name='sid' value='$surveyid' />
+                <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <?php if (isset($_POST['sql'])) { ?>
                     <input type='hidden' name='sql' value="<?php echo stripcslashes($_POST['sql']);?>" />
                     <?php }
