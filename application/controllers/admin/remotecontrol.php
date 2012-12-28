@@ -679,6 +679,62 @@ class remotecontrol_handle
 
 	}
 
+/**
+     * RPC Routine to export submittion timeline.
+     * Returns an array of values (count and period)
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey
+     * @param string $sType (day|hour)
+     * @param string $dStart
+     * @param string $dEnd
+     * @return array On success: The timeline. On failure array with error information
+     * */
+    public function export_timeline($sSessionKey, $iSurveyID, $sType, $dStart, $dEnd)
+    {
+		if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+		if (!in_array($sType, array('day','hour'))) return array('status' => 'Invalid Period');
+		if (!hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
+		$oSurvey=Survey::model()->findByPk($iSurveyID);
+		if (is_null($oSurvey)) return array('status' => 'Error: Invalid survey ID');
+		if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No available data');
+		if ($oSurvey['datestamp']!='Y') return array('status' => 'No available data');
+        	
+		$criteria = new CDbCriteria;
+ 		$criteria->select = 'date(submitdate) as sDate , COUNT(*) as sCount';
+		$criteria->addCondition('submitdate >=:dstart');
+		$criteria->params[':dstart'] = $dStart;
+		$criteria->addCondition('submitdate <= :dend');
+		$criteria->params[':dend'] = $dEnd; 
+		
+		switch ($sType)
+        {
+		case 'hour':
+					$criteria->select .= ', HOUR(submitdate) as sHour';
+					$criteria->group = 'DAY(submitdate) , HOUR(submitdate)';  
+					break;
+		case 'day':
+		default:
+					$criteria->select .= ', DAY(submitdate) as sDay';
+					$criteria->group = 'DAY(submitdate) ';  
+					break;
+		}
+
+		$oResponses = Survey_dynamic::model($iSurveyID)->findall($criteria);
+		if (empty($oResponses))  return array('status' => 'No valid Data');
+		
+		foreach($oResponses as $aResponse){
+			$timeSlot = $aResponse['sDate'];
+			
+			if($aResponse['sHour']!=null)
+				$timeSlot =$timeSlot."::". $aResponse['sHour'];
+
+			$aResult[$timeSlot] = $aResponse['sCount'];
+		}
+		return $aResult;
+	}
+	
     /**
      * RPC routine to get survey summary, regarding token usage and survey participation.
      * Returns the requested value as string.

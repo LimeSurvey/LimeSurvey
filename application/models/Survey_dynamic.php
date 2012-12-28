@@ -17,6 +17,10 @@
 class Survey_dynamic extends LSActiveRecord
 {
     protected static $sid = 0;
+    protected $sHour;
+    protected $sDay;
+    protected $sCount;
+    protected $sDate; 
 
     /**
      * Returns the static model of Settings table
