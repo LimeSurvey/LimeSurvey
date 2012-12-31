@@ -1119,6 +1119,7 @@ class SurveyAdmin extends Survey_Common_Action
             $esrow['autoredirect'] = 'N';
             $esrow['tokenlength'] = 15;
             $esrow['allowregister'] = 'N';
+            $esrow['directregister'] = 'N';
             $esrow['usecookie'] = 'N';
             $esrow['usecaptcha'] = 'D';
             $esrow['htmlemail'] = 'Y';
@@ -1568,6 +1569,7 @@ class SurveyAdmin extends Survey_Common_Action
             'usecookie' => $_POST['usecookie'],
             'emailnotificationto' => $_POST['emailnotificationto'],
             'allowregister' => $_POST['allowregister'],
+            'directregister' => $_POST['directregister'],
             'allowsave' => $_POST['allowsave'],
             'navigationdelay' => $_POST['navigationdelay'],
             'autoredirect' => $_POST['autoredirect'],

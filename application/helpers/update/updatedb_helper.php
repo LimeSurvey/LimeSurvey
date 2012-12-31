@@ -1062,28 +1062,36 @@ function db_upgrade_all($oldversion) {
         upgradeSurveys165();
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>165),"stg_name='DBVersion'");
         }
-    
-    if ($oldversion < 166)
-    {
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_name'=>'survey_preview_admin_only'),"stg_name='surveyPreview_require_Auth'");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_name'=>'ipinfodb_api_key'),"stg_name='ipInfoDbAPIKey'");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_name'=>'googlemaps_api_key'),"stg_name='googleMapsAPIKey'");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_name'=>'rpc_interface'),"stg_name='RPCInterface'");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_name'=>'session_expiration_time'),"stg_name='iSessionExpirationTime'");
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_name'=>'restrict_to_languages'),"stg_name='restrictToLanguages'");
-        upgradeTokenTables166();
-        alterColumn('{{participants}}', 'email', "{$sVarchar}(254)", false);
-        alterColumn('{{participants}}', 'firstname', "{$sVarchar}(150)", false);
-        alterColumn('{{participants}}', 'lastname', "{$sVarchar}(150)", false);
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>166),"stg_name='DBVersion'");
-    }
 
-    if ($oldversion < 167)
-    {
-        // Add attachment text field to survey table.
-        addColumn('{{surveys_languagesettings}}', 'attachments', 'text');
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>167),"stg_name='DBVersion'");
-    }        
+        if ($oldversion < 166)
+        {
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_name'=>'survey_preview_admin_only'),"stg_name='surveyPreview_require_Auth'");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_name'=>'ipinfodb_api_key'),"stg_name='ipInfoDbAPIKey'");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_name'=>'googlemaps_api_key'),"stg_name='googleMapsAPIKey'");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_name'=>'rpc_interface'),"stg_name='RPCInterface'");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_name'=>'session_expiration_time'),"stg_name='iSessionExpirationTime'");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_name'=>'restrict_to_languages'),"stg_name='restrictToLanguages'");
+            upgradeTokenTables166();
+            alterColumn('{{participants}}', 'email', "{$sVarchar}(254)", false);
+            alterColumn('{{participants}}', 'firstname', "{$sVarchar}(150)", false);
+            alterColumn('{{participants}}', 'lastname', "{$sVarchar}(150)", false);
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>166),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 167)
+        {
+            // Add attachment text field to survey table.
+            addColumn('{{surveys_languagesettings}}', 'attachments', 'text');
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>167),"stg_name='DBVersion'");
+        }
+
+        if ($oldversion < 168)
+        {
+            // Add directregister text field to survey table.
+            addColumn('{{surveys}}','directregister',"{$sVarchar}(1) default 'N'");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>168),"stg_name='DBVersion'");
+         }
+
     }
     catch(Exception $e)
     {
