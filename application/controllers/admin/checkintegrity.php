@@ -43,23 +43,30 @@ class CheckIntegrity extends Survey_Common_Action
     public function fixredundancy()
     {
         $clang = Yii::app()->lang;
-
+        $oldsmultidelete=Yii::app()->request->getPost('oldsmultidelete', array());
+        $aData['messages'] = array();
         if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1 && Yii::app()->request->getPost('ok') == 'Y') {
             $aDelete = $this->_checkintegrity();
 
             if (isset($aDelete['redundanttokentables'])) {
                 foreach ($aDelete['redundanttokentables'] as $aTokenTable)
                 {
-                    Yii::app()->db->createCommand()->dropTable($aTokenTable['table']);
-                    $aData['messages'][] = $clang->gT('Deleting token table:') . ' ' . $aTokenTable['table'];
+                    if(in_array($aTokenTable['table'],$oldsmultidelete))
+                    {
+                        Yii::app()->db->createCommand()->dropTable($aTokenTable['table']);
+                        $aData['messages'][] = $clang->gT('Deleting token table:') . ' ' . $aTokenTable['table'];
+                    }
                 }
             }
 
             if (isset($aDelete['redundantsurveytables'])) {
                 foreach ($aDelete['redundantsurveytables'] as $aSurveyTable)
                 {
-                    Yii::app()->db->createCommand()->dropTable($aSurveyTable['table']);
-                    $aData['messages'][] = $clang->gT('Deleting survey table:') . ' ' . $aSurveyTable['table'];
+                    if(in_array($aSurveyTable['table'],$oldsmultidelete))
+                    {
+                        Yii::app()->db->createCommand()->dropTable($aSurveyTable['table']);
+                        $aData['messages'][] = $clang->gT('Deleting survey table:') . ' ' . $aSurveyTable['table'];
+                    }
                 }
             }
 
@@ -335,7 +342,6 @@ class CheckIntegrity extends Survey_Common_Action
         $criteria->addNotInCondition('sid', $sids, 'OR');
 
         Survey_permissions::model()->deleteAll($criteria);
-        
 
         // Deactivate surveys that have a missing response table
         foreach ($surveys as $survey) 
