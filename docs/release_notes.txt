@@ -60,6 +60,46 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121220) to 2.00+ (build 121231) Dec 20, 2012
+-Fixed issue #7088: When creating quota, I cannot add answer (Menno Dekker)
+-Fixed issue #7116: Impossible to generate tokens (Menno Dekker)
+-Fixed issue #6937: Undefined index: fieldarray error when first testing a survey (Denis Chenu)
+-Fixed issue #7000: Fixed sorting of questions in export_statistics in remotecontrol (Spiros Trougakos)
+-Fixed issue #7073: Rubbish text after upgrading in ComfortUpdate step 4 (c-schmitz)
+-Fixed issue #7076: Missing translation and wrong truncating (tpartner)
+-Fixed issue #7084: Session fixation vulnerability (c-schmitz)
+-Fixed issue #7086: Export results window  shows SGQA-Codes instead of variable names (Denis Chenu)
+-Fixed issue #7089: Date shown in wrong format in global settings (c-schmitz)
+-Fixed issue #7092: Missing translation (c-schmitz)
+-Fixed issue #7105: Bad error handling on invalid lastgroup POST (c-schmitz)
+-Fixed issue #7108: 'hostinfo' parameter in config.php not working (c-schmitz)
+-Fixed issue #7114: {TEMPLATEURL} not parsed correctly at survey's end message (Denis Chenu)
+-Fixed issue: Couldn't get answer type L - getAnswerCode() in browse unique response id (Menno Dekker)
+-Fixed issue: error public page don't use survey template (Denis Chenu)
+-Fixed issue: Export/response browsing as slower as bigger the token table gets (c-schmitz)
+-Fixed issue: session write check is unreliable (Menno Dekker)
+-Fixed issue: Unbale to change language in surveylisting with 'urlFormat' to 'get' (Denis Chenu)
+-Fixed issue: Possible failure on upgrade due to missing survey_links table (Menno Dekker)
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Lithuanian by simasj
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Spanish (Chile) by masterbip, SirCrovax
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.00+ (build 121213) to 2.00+ (build 121220) Dec 20, 2012
 -Fixed issue #6962: Made max filter size equal for all browse tables (Menno Dekker)
 -Fixed issue #7082: Clicking view response in tokens table opens response in same window causing search to be lost (Menno Dekker)
