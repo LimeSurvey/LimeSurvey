@@ -2273,7 +2273,74 @@ class remotecontrol_handle
 
         return base64_encode($sFileData);
     }
-
+	
+    /**
+     * RPC Routine to reset of particular participant/token survey.
+     * Returns array
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the survey that participants belong
+     * @param string $sToken unique token id of specific participant
+     * @param int $iTokenID Id of the participant to alter
+     * @return array Result of the change action
+     */
+    public function resetParticipantSurvey($sSessionKey, $iSurveyID, $sToken, $iTokenID){
+    	// check sessionKey is valid or not
+    	if ($this->_checkSessionKey($sSessionKey))
+    	{
+    		$oSurvey = Survey::model()->findByPk($iSurveyID);
+    		if (!isset($oSurvey))
+    			return array('status' => 'Error: Invalid survey ID');
+    		
+    		// delete the entry of already completed survey.
+    		Yii::app()->db->createCommand()->delete("{{survey_".intval($iSurveyID)."}}",'',array('token' => $sToken));
+    		
+    		if (hasSurveyPermission($iSurveyID, 'tokens', 'update'))
+    		{
+    			if(!tableExists("{{tokens_$iSurveyID}}"))
+    				return array('status' => 'Error: No token table');
+    	
+    			$oToken = Tokens_dynamic::model($iSurveyID)->findByPk($iTokenID);
+    			if (!isset($oToken))
+    				return array('status' => 'Error: Invalid tokenid');
+    	
+    			$aResult = array();
+    			// Remove fields that may not be modified
+    			//unset($aTokenData['tid']);
+    			$aTokenData = array('completed'=>'N','usesleft'=>1);
+    	
+    			$aBasicDestinationFields=array_flip(Tokens_dynamic::model()->tableSchema->columnNames);
+    			$aTokenData=array_intersect_key($aTokenData,$aBasicDestinationFields);
+    			$aTokenAttributes = $oToken->getAttributes();
+    	
+    			if (empty($aTokenData))
+    				return array('status' => 'No valid Data');
+    	
+    			foreach($aTokenData as $sFieldName=>$sValue)
+    			{
+    				$oToken->$sFieldName=$sValue;
+    				try
+    				{
+    					$bSaveResult=$oToken->save();
+    					$aResult[$sFieldName]=$bSaveResult;
+    					//unset fields that failed
+    					if (!$bSaveResult)
+    						$oToken->$sFieldName=$aTokenAttributes[$sFieldName];
+    				}
+    				catch(Exception $e)
+    				{
+    					$oToken->$sFieldName=$aTokenAttributes[$sFieldName];
+    				}
+    			}
+    			return $aResult;
+    		}
+    		else
+    			return array('status' => 'No permission');
+    	}
+    	else
+    		return array('status' => 'Invalid Session Key');
+    }
 
     /**
      * Tries to login with username and password
