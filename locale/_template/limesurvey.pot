@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-01-01 23:05:53+00:00\n"
+"POT-Creation-Date: 2013-01-03 10:32:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -116,7 +116,7 @@ msgid "Main Admin Screen"
 msgstr ""
 
 #: application/controllers/AdminController.php:95
-#: application/core/Survey_Common_Action.php:315
+#: application/core/Survey_Common_Action.php:326
 #: application/views/admin/conditions/conditionshead_view.php:25
 #: application/views/admin/index.php:4
 #: application/views/admin/super/adminmenu.php:109
@@ -846,7 +846,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:506
 #: application/controllers/admin/surveyadmin.php:666
 #: application/controllers/admin/tokens.php:2065
-#: application/core/Survey_Common_Action.php:823
+#: application/core/Survey_Common_Action.php:834
 #: application/helpers/admin/statistics_helper.php:1314
 #: application/helpers/admin/statistics_helper.php:1447
 #: application/helpers/common_helper.php:1802
@@ -1069,7 +1069,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:507
 #: application/controllers/admin/surveyadmin.php:670
 #: application/controllers/admin/tokens.php:2067
-#: application/core/Survey_Common_Action.php:819
+#: application/core/Survey_Common_Action.php:830
 #: application/helpers/admin/statistics_helper.php:1315
 #: application/helpers/admin/statistics_helper.php:1448
 #: application/helpers/common_helper.php:1809
@@ -1736,7 +1736,7 @@ msgid "Next choice"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:898
-#: application/core/Survey_Common_Action.php:624
+#: application/core/Survey_Common_Action.php:635
 #: application/helpers/common_helper.php:428
 #: application/helpers/common_helper.php:431
 #: application/helpers/common_helper.php:625
@@ -2692,9 +2692,9 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:76
 #: application/controllers/admin/tokens.php:42
-#: application/core/Survey_Common_Action.php:352
-#: application/core/Survey_Common_Action.php:509
-#: application/core/Survey_Common_Action.php:651
+#: application/core/Survey_Common_Action.php:363
+#: application/core/Survey_Common_Action.php:520
+#: application/core/Survey_Common_Action.php:662
 msgid "Invalid survey ID"
 msgstr ""
 
@@ -3252,7 +3252,7 @@ msgid "This file is not a valid ZIP file archive. Import failed."
 msgstr ""
 
 #: application/controllers/admin/templates.php:132
-#: application/core/Survey_Common_Action.php:971
+#: application/core/Survey_Common_Action.php:982
 #: application/views/admin/participants/attributeMapCSV_view.php:18
 #: application/views/admin/participants/displayParticipants_view.php:139
 #: application/views/admin/participants/participantsPanel_view.php:5
@@ -3707,12 +3707,12 @@ msgid "Return to survey administration"
 msgstr ""
 
 #: application/controllers/admin/translate.php:306
-#: application/core/Survey_Common_Action.php:547
+#: application/core/Survey_Common_Action.php:558
 msgid "Test this survey"
 msgstr ""
 
 #: application/controllers/admin/translate.php:306
-#: application/core/Survey_Common_Action.php:551
+#: application/core/Survey_Common_Action.php:562
 msgid "Execute this survey"
 msgstr ""
 
@@ -4142,86 +4142,86 @@ msgstr ""
 msgid "Your responses were successfully saved."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:677
+#: application/core/Survey_Common_Action.php:688
 #: application/views/admin/survey/subview/tabTokens_view.php:24
 msgid "Responses to this survey are anonymized."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:681
+#: application/core/Survey_Common_Action.php:692
 #: application/views/admin/survey/subview/tabTokens_view.php:22
 msgid "Responses to this survey are NOT anonymized."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:685
+#: application/core/Survey_Common_Action.php:696
 msgid "It is presented question by question."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:689
+#: application/core/Survey_Common_Action.php:700
 msgid "It is presented group by group."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:693
+#: application/core/Survey_Common_Action.php:704
 msgid "It is presented on one single page."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:699
+#: application/core/Survey_Common_Action.php:710
 msgid "No question index will be shown with this format."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:703
+#: application/core/Survey_Common_Action.php:714
 msgid "A question index will be shown; participants will be able to jump between viewed questions."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:708
+#: application/core/Survey_Common_Action.php:719
 #: application/views/admin/survey/subview/tabNotification_view.php:22
 msgid "Responses will be date stamped."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:712
+#: application/core/Survey_Common_Action.php:723
 msgid "IP Addresses will be logged"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:716
+#: application/core/Survey_Common_Action.php:727
 msgid "Referrer URL will be saved."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:720
+#: application/core/Survey_Common_Action.php:731
 msgid "It uses cookies for access control."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:724
+#: application/core/Survey_Common_Action.php:735
 msgid "If tokens are used, the public may register for this survey"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:728
+#: application/core/Survey_Common_Action.php:739
 msgid "Participants can save partially finished surveys"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:732
+#: application/core/Survey_Common_Action.php:743
 msgid "Basic email notification is sent to:"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:736
+#: application/core/Survey_Common_Action.php:747
 msgid "Detailed email notification with response data is sent to:"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:834
+#: application/core/Survey_Common_Action.php:845
 msgid "Survey cannot be activated yet."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:837
+#: application/core/Survey_Common_Action.php:848
 msgid "You need to add question groups"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:841
+#: application/core/Survey_Common_Action.php:852
 msgid "You need to add questions"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:964
+#: application/core/Survey_Common_Action.php:975
 msgid "Copy failed"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:980
+#: application/core/Survey_Common_Action.php:991
 msgid "Forbidden Extension"
 msgstr ""
 
