@@ -391,7 +391,7 @@ class translate extends Survey_Common_Action {
 								'option',
 								array(
 									'selected' => $selected,
-									'value' => $this->getController()->createUrl("admin/translate/index/surveyid/{$iSurveyID}/")
+									'value' => $this->getController()->createUrl("admin/translate/sa/index/surveyid/{$iSurveyID}/")
 								),
 								$clang->gT("Please choose...")
 							);
@@ -406,7 +406,7 @@ class translate extends Survey_Common_Action {
 								'option',
 								array(
 									'selected' => $selected,
-									'value' => $this->getController()->createUrl("admin/translate/index/surveyid/{$iSurveyID}/lang/{$lang}")
+									'value' => $this->getController()->createUrl("admin/translate/sa/index/surveyid/{$iSurveyID}/lang/{$lang}")
 								),
 								$tolangtext
 							);
