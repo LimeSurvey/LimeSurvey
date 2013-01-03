@@ -67,7 +67,18 @@ class Survey_Common_Action extends CAction
 
         if (!empty($params['iSurveyId']))
         {
-            LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
+            if(!Survey::model()->findByPk($params['iSurveyId']))
+            {
+                $this->getController()->error('Invalid survey id');
+            }
+            elseif (!hasSurveyPermission($params['iSurveyId'], 'survey', 'read'))
+            {
+                $this->getController()->error('No permission');
+            }
+            else
+            {
+                LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
+            }
         }
 
         // Check if the method is public and of the action class, not its parents
