@@ -599,7 +599,7 @@ function db_upgrade_all($oldversion) {
         {
             upgradeSurveyTimings146();
             // Fix permissions for new feature quick-translation
-            modifyDatabase("", "INSERT into {{survey_permissions}} (sid,uid,permission,read_p,update_p) SELECT sid,owner_id,'translations','1','1' from {{surveys}}"); echo $modifyoutput; flush();@ob_flush();
+            try { setTransactionBookmark(); Yii::app()->db->createCommand("INSERT into {{survey_permissions}} (sid,uid,permission,read_p,update_p) SELECT sid,owner_id,'translations','1','1' from {{surveys}}")->execute(); echo $modifyoutput; flush();@ob_flush();} catch(Exception $e) { rollBackToTransactionBookmark();}        
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>146),"stg_name='DBVersion'");
         }
 
@@ -734,7 +734,7 @@ function db_upgrade_all($oldversion) {
         {
             addColumn('{{surveys}}','googleanalyticsstyle',"{$sVarchar}(1)");
             addColumn('{{surveys}}','googleanalyticsapikey',"{$sVarchar}(25)");
-            try{ Yii::app()->db->createCommand()->renameColumn('{{surveys}}','showXquestions','showxquestions');} catch(Exception $e) {};
+            try { setTransactionBookmark(); Yii::app()->db->createCommand()->renameColumn('{{surveys}}','showXquestions','showxquestions');} catch(Exception $e) { rollBackToTransactionBookmark();}        
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>155),"stg_name='DBVersion'");
         }
 
@@ -800,7 +800,7 @@ function db_upgrade_all($oldversion) {
         if ($oldversion < 157)
         {
             // MySQL DB corrections
-            try{ Yii::app()->db->createCommand()->dropIndex('questions_idx4','{{questions}}');} catch(Exception $e) {};
+            try { setTransactionBookmark(); Yii::app()->db->createCommand()->dropIndex('questions_idx4','{{questions}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}        
 
             alterColumn('{{answers}}','assessment_value','integer',false , '0');
             dropPrimaryKey('answers');
@@ -821,8 +821,7 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{quota}}','active','integer',false , '1');
             alterColumn('{{quota}}','autoload_url','integer',false , '0');
             alterColumn('{{saved_control}}','status',"{$sVarchar}(1)",false , '');
-            alterColumn('{{sessions}}','id',"{$sVarchar}(32)",false);
-
+            try { setTransactionBookmark(); alterColumn('{{sessions}}','id',"{$sVarchar}(32)",false); } catch(Exception $e) { rollBackToTransactionBookmark();}        
             alterColumn('{{surveys}}','active',"{$sVarchar}(1)",false , 'N');
             alterColumn('{{surveys}}','anonymized',"{$sVarchar}(1)",false,'N');
             alterColumn('{{surveys}}','format',"{$sVarchar}(1)");
@@ -861,8 +860,8 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{surveys}}','googleanalyticsstyle',"{$sVarchar}(1)");
 
             alterColumn('{{surveys_languagesettings}}','surveyls_dateformat','integer',false , 1);
-            alterColumn('{{survey_permissions}}','sid','integer',false);
-            alterColumn('{{survey_permissions}}','uid', 'integer',false);
+            try { setTransactionBookmark(); alterColumn('{{survey_permissions}}','sid',"integer",false); } catch(Exception $e) { rollBackToTransactionBookmark();}        
+            try { setTransactionBookmark(); alterColumn('{{survey_permissions}}','uid',"integer",false); } catch(Exception $e) { rollBackToTransactionBookmark();}        
             alterColumn('{{survey_permissions}}','create_p', 'integer',false , '0');
             alterColumn('{{survey_permissions}}','read_p', 'integer',false , '0');
             alterColumn('{{survey_permissions}}','update_p','integer',false , '0');
@@ -886,20 +885,21 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{users}}','dateformat','integer',false, 1);
             alterColumn('{{users}}','participant_panel','integer',false , '0');
             alterColumn('{{users}}','parent_id','integer',false);
-            alterColumn('{{surveys_languagesettings}}','surveyls_survey_id','integer',false);
+            try { setTransactionBookmark(); alterColumn('{{surveys_languagesettings}}','surveyls_survey_id',"integer",false); } catch(Exception $e) { rollBackToTransactionBookmark(); }        
             alterColumn('{{user_groups}}','owner_id',"integer",false);
             alterColumn('{{user_in_groups}}','ugid',"integer",false);
             alterColumn('{{user_in_groups}}','uid',"integer",false);
 
             // Additional corrections for Postgres
-            try{ Yii::app()->db->createCommand()->createIndex('questions_idx3','{{questions}}','gid');} catch(Exception $e) {};
-            try{ Yii::app()->db->createCommand()->createIndex('conditions_idx3','{{conditions}}','cqid');} catch(Exception $e) {};
-            try{ Yii::app()->db->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e) {};
-            try{ Yii::app()->db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}');} catch(Exception $e) {};
-            try{ Yii::app()->db->createCommand()->dropIndex('{{user_name_key}}','{{users}}');} catch(Exception $e) {};
-            try{ Yii::app()->db->createCommand()->createIndex('users_name','{{users}}','users_name',true);} catch(Exception $e) {};
-            try{ addPrimaryKey('user_in_groups', array('ugid','uid'));} catch(Exception $e) {};
+            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->createIndex('questions_idx3','{{questions}}','gid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->createIndex('conditions_idx3','{{conditions}}','cqid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->dropIndex('{{user_name_key}}','{{users}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->createIndex('users_name','{{users}}','users_name',true);} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); addPrimaryKey('user_in_groups', array('ugid','uid'));} catch(Exception $e) { rollBackToTransactionBookmark(); };
 
+             debugbreak();
             alterColumn('{{participant_attribute}}','value',"{$sVarchar}(50)", false);
             alterColumn('{{participant_attribute_names}}','attribute_type',"{$sVarchar}(4)", false);
             try{ dropColumn('{{participant_attribute_names_lang}}','id');} catch(Exception $e) {};
@@ -1749,6 +1749,24 @@ function addColumn($sTableName, $sColumn, $sType)
     Yii::app()->db->createCommand()->addColumn($sTableName,$sColumn,$sType);
 }
 
+
+function setTransactionBookmark($sBookmark='limesurvey')
+{
+    $sDBDriverName=Yii::app()->db->getDriverName();
+    if ($sDBDriverName=='pgsql')
+    {
+        Yii::app()->db->createCommand("SAVEPOINT {$sBookmark};")->execute();
+    }
+}
+
+function rollBackToTransactionBookmark($sBookmark='limesurvey')
+{
+    $sDBDriverName=Yii::app()->db->getDriverName();
+    if ($sDBDriverName=='pgsql')
+    {
+        Yii::app()->db->createCommand("ROLLBACK TO SAVEPOINT {$sBookmark};")->execute();
+    }
+}
 
 
 function dropDefaultValueMSSQL($fieldname, $tablename)
