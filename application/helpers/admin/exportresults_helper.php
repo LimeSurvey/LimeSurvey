@@ -305,14 +305,25 @@ class SurveyDao
     */
     public function loadSurveyResults(SurveyObj $survey, $iLimit, $iOffset, $iMaximum, $sFilter='' )
     {
+
         // Get info about the survey
-        $oRecordSet = Yii::app()->db->createCommand()->select()->from('{{survey_' . $survey->id . '}}');
+        $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . $survey->id . '}}')->getColumnNames();
+        
+        $oRecordSet = Yii::app()->db->createCommand()->from('{{survey_' . $survey->id . '}}');
         if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',Survey_dynamic::model($survey->id)->attributes))
         {
-            $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}}','{{tokens_' . $survey->id . '}}.token={{survey_' . $survey->id . '}}.token');
+            $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}} tokentable','tokentable.token={{survey_' . $survey->id . '}}.token');
+            $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . $survey->id . '}}')->getColumnNames();
+            $aSelectFields=array_merge($aSelectFields,array_diff($aTokenFields, array('token')));
+            $aSelectFields=array_diff($aSelectFields, array('token'));
+            $aSelectFields[]='{{survey_' . $survey->id . '}}.token';
         }
         if ($survey->info['savetimings']=="Y") {
             $oRecordSet->leftJoin("{{survey_" . $survey->id . "_timings}} survey_timings", "{{survey_" . $survey->id . "}}.id = survey_timings.id");
+            $aTimingFields=Yii::app()->db->schema->getTable("{{survey_" . $survey->id . "_timings}}")->getColumnNames();
+            $aSelectFields=array_merge($aSelectFields,array_diff($aTimingFields, array('id')));
+            $aSelectFields=array_diff($aSelectFields, array('id'));
+            $aSelectFields[]='{{survey_' . $survey->id . '}}.id';
         }
 
         if ($sFilter!='')
@@ -323,7 +334,7 @@ class SurveyDao
             $iLimit=$iMaximum-$iOffset;
         }
             
-        $survey->responses=$oRecordSet->order('{{survey_' . $survey->id . '}}.id')->limit($iLimit, $iOffset)->query()->readAll();
+        $survey->responses=$oRecordSet->select($aSelectFields)->order('{{survey_' . $survey->id . '}}.id')->limit($iLimit, $iOffset)->query()->readAll();
 
         return count($survey->responses);
     }
@@ -1283,7 +1294,7 @@ abstract class Writer implements IWriter
             foreach ($oOptions->selectedColumns as $column)
             {
                 $value = $response[$column];
-                if (isset($survey->fieldMap[$column]))
+                if (isset($survey->fieldMap[$column]) && $survey->fieldMap[$column]['type']!='answer_time' && $survey->fieldMap[$column]['type']!='page_time' && $survey->fieldMap[$column]['type']!='interview_time')
                 {
                     switch ($oOptions->answerFormat) {
                         case 'long':
