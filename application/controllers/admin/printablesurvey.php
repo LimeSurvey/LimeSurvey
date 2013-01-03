@@ -1034,7 +1034,7 @@ class printablesurvey extends Survey_Common_Action
                             $prefix="";
                             $suffix="";
                             if($qidattributes['prefix'][$surveyprintlang] != "") {
-                                $prefix=$qidattributes['prefix'][$surveyprintlang]; print_r($prefix);
+                                $prefix=$qidattributes['prefix'][$surveyprintlang];
                             }
                             if($qidattributes['suffix'][$surveyprintlang] != "") {
                                 $suffix=$qidattributes['suffix'][$surveyprintlang];
