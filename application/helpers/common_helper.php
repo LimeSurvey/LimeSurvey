@@ -415,7 +415,8 @@ function getQuestions($surveyid,$gid,$selectedqid)
     }
     else
     {
-        $sQuestionselecter = "<option value=' '>".$clang->gT("None")."</option>\n".$sQuestionselecter;
+        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid);
+        $sQuestionselecter = "<option value='{$link}'>".$clang->gT("None")."</option>\n".$sQuestionselecter;
     }
     return $sQuestionselecter;
 }
