@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-01-03 10:32:37+00:00\n"
+"POT-Creation-Date: 2013-01-03 10:41:31+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,9 +22,9 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:1587
 #: application/controllers/admin/dataentry.php:1592
 #: application/controllers/admin/dataentry.php:1597
-#: application/controllers/admin/dataentry.php:1634
 #: application/controllers/admin/dataentry.php:1635
 #: application/controllers/admin/dataentry.php:1636
+#: application/controllers/admin/dataentry.php:1637
 #: application/controllers/survey/index.php:84
 #: application/controllers/survey/index.php:97
 #: application/controllers/survey/index.php:348
@@ -1695,7 +1695,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:519
 #: application/controllers/admin/dataentry.php:1416
 #: application/controllers/admin/dataentry.php:1540
-#: application/controllers/admin/dataentry.php:2460
+#: application/controllers/admin/dataentry.php:2461
 #: application/views/admin/dataentry/caption_view.php:1
 #: application/views/admin/dataentry/dataentry_header_view.php:1
 #: application/views/admin/dataentry/delete.php:1
@@ -1860,50 +1860,50 @@ msgstr ""
 msgid "Edit this entry"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1609
+#: application/controllers/admin/dataentry.php:1610
 msgid "This surveys uses anonymized responses, so you can't update your response."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1634
+#: application/controllers/admin/dataentry.php:1635
 #: application/libraries/Save.php:115
 msgid "You must supply a name for this saved session."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1635
+#: application/controllers/admin/dataentry.php:1636
 #: application/libraries/Save.php:116
 msgid "You must supply a password for this saved session."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1636
+#: application/controllers/admin/dataentry.php:1637
 #: application/libraries/Save.php:119
 msgid "Your passwords do not match."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1820
+#: application/controllers/admin/dataentry.php:1821
 msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1849
+#: application/controllers/admin/dataentry.php:1850
 msgid "A token entry for the saved survey has been created too."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1857
+#: application/controllers/admin/dataentry.php:1858
 #: application/libraries/Save.php:196 application/libraries/Save.php:241
 msgid "Saved Survey Details"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1858
+#: application/controllers/admin/dataentry.php:1859
 #: application/libraries/Save.php:197
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1860
+#: application/controllers/admin/dataentry.php:1861
 #: application/helpers/replacements_helper.php:557
 #: application/libraries/Save.php:199
 msgid "Name"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1861
+#: application/controllers/admin/dataentry.php:1862
 #: application/controllers/admin/useraction.php:129
 #: application/controllers/admin/useraction.php:133
 #: application/controllers/admin/useraction.php:364
@@ -1917,255 +1917,255 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1862
+#: application/controllers/admin/dataentry.php:1863
 #: application/libraries/Save.php:201 application/libraries/Save.php:243
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1870
+#: application/controllers/admin/dataentry.php:1871
 msgid "An email has been sent with details about your saved survey"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1993
+#: application/controllers/admin/dataentry.php:1994
 msgid "Only answer this if the following conditions are met:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1999
+#: application/controllers/admin/dataentry.php:2000
 msgid "The answer(s) must meet these validation criteria:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2005
+#: application/controllers/admin/dataentry.php:2006
 msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2342
+#: application/controllers/admin/dataentry.php:2343
 #: application/controllers/admin/tokens.php:1757
 #: application/views/admin/participants/importCSV_view.php:17
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2343
+#: application/controllers/admin/dataentry.php:2344
 #: application/controllers/admin/tokens.php:1758
 #: application/views/admin/participants/importCSV_view.php:18
 msgid "US ASCII"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2344
+#: application/controllers/admin/dataentry.php:2345
 #: application/controllers/admin/tokens.php:1759
 #: application/views/admin/participants/importCSV_view.php:19
 msgid "Automatic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2345
+#: application/controllers/admin/dataentry.php:2346
 #: application/controllers/admin/tokens.php:1760
 #: application/views/admin/participants/importCSV_view.php:20
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2346
+#: application/controllers/admin/dataentry.php:2347
 #: application/controllers/admin/tokens.php:1761
 #: application/views/admin/participants/importCSV_view.php:21
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2347
+#: application/controllers/admin/dataentry.php:2348
 #: application/controllers/admin/tokens.php:1762
 #: application/views/admin/participants/importCSV_view.php:22
 msgid "Windows Central European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2348
+#: application/controllers/admin/dataentry.php:2349
 #: application/controllers/admin/tokens.php:1763
 #: application/views/admin/participants/importCSV_view.php:23
 msgid "Windows Cyrillic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2349
+#: application/controllers/admin/dataentry.php:2350
 #: application/controllers/admin/tokens.php:1764
 #: application/views/admin/participants/importCSV_view.php:24
 msgid "Windows Arabic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2350
+#: application/controllers/admin/dataentry.php:2351
 #: application/controllers/admin/tokens.php:1765
 #: application/views/admin/participants/importCSV_view.php:25
 msgid "Windows Baltic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2351
+#: application/controllers/admin/dataentry.php:2352
 #: application/controllers/admin/tokens.php:1766
 #: application/views/admin/participants/importCSV_view.php:26
 msgid "DOS West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2352
+#: application/controllers/admin/dataentry.php:2353
 #: application/controllers/admin/tokens.php:1767
 #: application/views/admin/participants/importCSV_view.php:27
 msgid "DOS Central European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2353
+#: application/controllers/admin/dataentry.php:2354
 #: application/controllers/admin/tokens.php:1768
 #: application/views/admin/participants/importCSV_view.php:28
 msgid "DOS Russian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2354
+#: application/controllers/admin/dataentry.php:2355
 #: application/controllers/admin/tokens.php:1769
 #: application/views/admin/participants/importCSV_view.php:29
 msgid "SJIS for Windows Japanese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2355
+#: application/controllers/admin/dataentry.php:2356
 #: application/controllers/admin/tokens.php:1770
 #: application/views/admin/participants/importCSV_view.php:30
 msgid "DEC West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2356
+#: application/controllers/admin/dataentry.php:2357
 #: application/controllers/admin/tokens.php:1771
 #: application/views/admin/participants/importCSV_view.php:31
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2357
+#: application/controllers/admin/dataentry.php:2358
 #: application/controllers/admin/tokens.php:1772
 #: application/views/admin/participants/importCSV_view.php:32
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2358
+#: application/controllers/admin/dataentry.php:2359
 #: application/controllers/admin/tokens.php:1773
 #: application/views/admin/participants/importCSV_view.php:33
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2359
+#: application/controllers/admin/dataentry.php:2360
 #: application/controllers/admin/tokens.php:1774
 #: application/views/admin/participants/importCSV_view.php:34
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2360
+#: application/controllers/admin/dataentry.php:2361
 #: application/controllers/admin/tokens.php:1775
 #: application/views/admin/participants/importCSV_view.php:35
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2361
+#: application/controllers/admin/dataentry.php:2362
 #: application/controllers/admin/tokens.php:1776
 #: application/views/admin/participants/importCSV_view.php:36
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2362
+#: application/controllers/admin/dataentry.php:2363
 #: application/controllers/admin/tokens.php:1777
 #: application/views/admin/participants/importCSV_view.php:37
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2363
+#: application/controllers/admin/dataentry.php:2364
 #: application/controllers/admin/tokens.php:1778
 #: application/views/admin/participants/importCSV_view.php:38
 msgid "HP West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2364
+#: application/controllers/admin/dataentry.php:2365
 #: application/controllers/admin/tokens.php:1779
 #: application/views/admin/participants/importCSV_view.php:39
 msgid "DOS Kamenicky Czech-Slovak"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2365
+#: application/controllers/admin/dataentry.php:2366
 #: application/controllers/admin/tokens.php:1780
 #: application/views/admin/participants/importCSV_view.php:40
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2366
+#: application/controllers/admin/dataentry.php:2367
 #: application/controllers/admin/tokens.php:1781
 #: application/views/admin/participants/importCSV_view.php:41
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2367
+#: application/controllers/admin/dataentry.php:2368
 #: application/controllers/admin/tokens.php:1782
 #: application/views/admin/participants/importCSV_view.php:42
 msgid "cp1252 West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2368
+#: application/controllers/admin/dataentry.php:2369
 #: application/controllers/admin/tokens.php:1783
 #: application/views/admin/participants/importCSV_view.php:43
 msgid "ISO 8859-2 Central European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2369
+#: application/controllers/admin/dataentry.php:2370
 #: application/controllers/admin/tokens.php:1784
 #: application/views/admin/participants/importCSV_view.php:44
 msgid "ISO 8859-9 Turkish"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2370
+#: application/controllers/admin/dataentry.php:2371
 #: application/controllers/admin/tokens.php:1785
 #: application/views/admin/participants/importCSV_view.php:45
 msgid "ISO 8859-13 Baltic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2371
+#: application/controllers/admin/dataentry.php:2372
 #: application/controllers/admin/tokens.php:1786
 #: application/views/admin/participants/importCSV_view.php:46
 msgid "Mac Central European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2372
+#: application/controllers/admin/dataentry.php:2373
 #: application/controllers/admin/tokens.php:1787
 #: application/views/admin/participants/importCSV_view.php:47
 msgid "Mac West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2373
+#: application/controllers/admin/dataentry.php:2374
 #: application/controllers/admin/tokens.php:1788
 #: application/views/admin/participants/importCSV_view.php:48
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2374
+#: application/controllers/admin/dataentry.php:2375
 #: application/controllers/admin/tokens.php:1789
 #: application/views/admin/participants/importCSV_view.php:49
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2375
+#: application/controllers/admin/dataentry.php:2376
 #: application/controllers/admin/tokens.php:1790
 #: application/views/admin/participants/importCSV_view.php:50
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2376
+#: application/controllers/admin/dataentry.php:2377
 #: application/controllers/admin/tokens.php:1791
 #: application/views/admin/participants/importCSV_view.php:51
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2377
+#: application/controllers/admin/dataentry.php:2378
 #: application/controllers/admin/tokens.php:1792
 #: application/views/admin/participants/importCSV_view.php:52
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2378
+#: application/controllers/admin/dataentry.php:2379
 #: application/controllers/admin/tokens.php:1793
 #: application/views/admin/participants/importCSV_view.php:53
 msgid "UTF-8 Unicode"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2435
+#: application/controllers/admin/dataentry.php:2436
 #: application/controllers/admin/printablesurvey.php:1961
 msgid "Only answer this question for the items you selected in question %s ('%s')"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2443
+#: application/controllers/admin/dataentry.php:2444
 #: application/controllers/admin/printablesurvey.php:1969
 msgid "Only answer this question for the items you did not select in question %s ('%s')"
 msgstr ""
