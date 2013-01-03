@@ -895,7 +895,7 @@ class dataentry extends Survey_Common_Action
                     {
                         $errormsg .= "<br /><br />".$clang->gT("Follow the following link to update it").":\n";
                         $errormsg .= CHtml::link("[id:$lastanswfortoken]",
-                        Yii::app()->baseUrl.('/admin/dataentry/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
+                        $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
                         array('title' => $clang->gT("Edit this entry")));
                     }
                     else
