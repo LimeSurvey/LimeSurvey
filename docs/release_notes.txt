@@ -60,6 +60,17 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121231) to 2.00+ (build 130103) Jan 3, 2013
+-Fixed issue #7125: Prefix of "numerical input"-question shown in printable survey-view (Menno Dekker)
+-Fixed issue #7128: After editing a relevance equationall other relevance equations in the survey are reset (Carsten Schmitz)
+-Fixed issue: all admin have access to survey summary, logic files and survey print version (Denis Chenu)
+#Updated translation: Lithuanian by simasj
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Spanish (Chile) by masterbip, SirCrovax
+
+
 Changes from 2.00+ (build 121220) to 2.00+ (build 121231) Dec 20, 2012
 -Fixed issue #7088: When creating quota, I cannot add answer (Menno Dekker)
 -Fixed issue #7116: Impossible to generate tokens (Menno Dekker)
