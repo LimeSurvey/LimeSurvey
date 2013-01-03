@@ -899,20 +899,19 @@ function db_upgrade_all($oldversion) {
             try{ setTransactionBookmark(); Yii::app()->db->createCommand()->createIndex('users_name','{{users}}','users_name',true);} catch(Exception $e) { rollBackToTransactionBookmark(); };
             try{ setTransactionBookmark(); addPrimaryKey('user_in_groups', array('ugid','uid'));} catch(Exception $e) { rollBackToTransactionBookmark(); };
 
-             debugbreak();
             alterColumn('{{participant_attribute}}','value',"{$sVarchar}(50)", false);
-            alterColumn('{{participant_attribute_names}}','attribute_type',"{$sVarchar}(4)", false);
-            try{ dropColumn('{{participant_attribute_names_lang}}','id');} catch(Exception $e) {};
-            try{ addPrimaryKey('participant_attribute_names_lang',array('attribute_id','lang'));} catch(Exception $e) {};
-            try{ Yii::app()->db->createCommand()->renameColumn('{{participant_shares}}','shared_uid','share_uid');} catch(Exception $e) {};
+            try{ setTransactionBookmark(); alterColumn('{{participant_attribute_names}}','attribute_type',"{$sVarchar}(4)", false);} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); dropColumn('{{participant_attribute_names_lang}}','id');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); addPrimaryKey('participant_attribute_names_lang',array('attribute_id','lang'));} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->renameColumn('{{participant_shares}}','shared_uid','share_uid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
             alterColumn('{{participant_shares}}','date_added',"datetime", false);
             alterColumn('{{participants}}','firstname',"{$sVarchar}(40)");
             alterColumn('{{participants}}','lastname',"{$sVarchar}(40)");
             alterColumn('{{participants}}','email',"{$sVarchar}(80)");
             alterColumn('{{participants}}','language',"{$sVarchar}(40)");
             alterColumn('{{quota_languagesettings}}','quotals_name',"string");
-            alterColumn('{{survey_permissions}}','sid','integer',false);
-            alterColumn('{{survey_permissions}}','uid','integer',false);
+            try{ setTransactionBookmark(); alterColumn('{{survey_permissions}}','sid','integer',false); } catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); alterColumn('{{survey_permissions}}','uid','integer',false); } catch(Exception $e) { rollBackToTransactionBookmark(); };
             alterColumn('{{users}}','htmleditormode',"{$sVarchar}(7)",true,'default');
             
             // Sometimes the survey_links table was deleted before this step, if so
@@ -933,19 +932,19 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{surveys}}','bounce_email',"{$sVarchar}(320)");
             alterColumn('{{users}}','email',"{$sVarchar}(320)");
 
-            try{ Yii::app()->db->createCommand()->dropIndex('assessments_idx','{{assessments}}');} catch(Exception $e) {};
-            try{ Yii::app()->db->createCommand()->createIndex('assessments_idx3','{{assessments}}','gid');} catch(Exception $e) {};
+            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->dropIndex('assessments_idx','{{assessments}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->createIndex('assessments_idx3','{{assessments}}','gid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
 
-            try{ Yii::app()->db->createCommand()->dropIndex('ixcode','{{labels}}');} catch(Exception $e) {};
-            try{ Yii::app()->db->createCommand()->dropIndex('{{labels_ixcode_idx}}','{{labels}}');} catch(Exception $e) {};
-            try{ Yii::app()->db->createCommand()->createIndex('labels_code_idx','{{labels}}','code');} catch(Exception $e) {};
+            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->dropIndex('ixcode','{{labels}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->dropIndex('{{labels_ixcode_idx}}','{{labels}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->createIndex('labels_code_idx','{{labels}}','code');} catch(Exception $e) { rollBackToTransactionBookmark(); };
 
 
 
             if ($sDBDriverName=='pgsql')
             {
-                try{ Yii::app()->db->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;} catch(Exception $e) {};
-                try{ Yii::app()->db->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;} catch(Exception $e) {};
+                try{ setTransactionBookmark(); Yii::app()->db->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;} catch(Exception $e) { rollBackToTransactionBookmark(); };
+                try{ setTransactionBookmark(); Yii::app()->db->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;} catch(Exception $e) { rollBackToTransactionBookmark(); };
             }
 
             // Additional corrections for MSSQL
