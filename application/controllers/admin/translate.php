@@ -391,7 +391,7 @@ class translate extends Survey_Common_Action {
                                 'option',
                                 array(
                                     'selected' => $selected,
-                                    'value' => $this->getController()->createUrl("admin/translate/index/surveyid/{$iSurveyID}/")
+									'value' => $this->getController()->createUrl("admin/translate/sa/index/surveyid/{$iSurveyID}/")
                                 ),
                                 $clang->gT("Please choose...")
                             );
@@ -402,14 +402,14 @@ class translate extends Survey_Common_Action {
             $selected = ( $tolang == $lang ) ? "selected" : "";
 
             $tolangtext = $supportedLanguages[$lang]['description'];
-            $language_list .= CHtml::tag(
-                                'option',
-                                array(
-                                    'selected' => $selected,
-                                    'value' => $this->getController()->createUrl("admin/translate/index/surveyid/{$iSurveyID}/lang/{$lang}")
-                                ),
-                                $tolangtext
-                            );
+			$language_list .= CHtml::tag(
+								'option',
+								array(
+									'selected' => $selected,
+									'value' => $this->getController()->createUrl("admin/translate/sa/index/surveyid/{$iSurveyID}/lang/{$lang}")
+								),
+								$tolangtext
+							);
         }
 
         $language_list .= CHtml::closeTag('select');
