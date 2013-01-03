@@ -35,7 +35,7 @@
                 <?php }
                 if (hasSurveyPermission($surveyid, 'responses', 'create'))
                 { ?>
-                <a href='<?php echo $this->createUrl("admin/dataentry/view/surveyid/$surveyid"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>dataentry.png' alt='<?php $clang->eT("Dataentry Screen for Survey"); ?>' /></a>
                 <?php }
                 if (hasSurveyPermission($surveyid, 'statistics', 'read'))
