@@ -869,7 +869,7 @@ class database extends Survey_Common_Action
                     $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\")\n //-->\n</script>\n";
                 }
             }
-            LimeExpressionManager::UpgradeConditionsToRelevance($surveyid, $qid);
+            LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
 
             if ($databaseoutput != '')
             {
