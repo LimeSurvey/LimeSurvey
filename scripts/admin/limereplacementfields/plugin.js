@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -14,7 +14,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	CKEDITOR.plugins.add( 'limereplacementfields',
 	{
 		requires : [ 'dialog' ],
-		lang : [ 'en','de','fr'],
+		lang : [ 'en' ],
 		init : function( editor )
 		{
 			var lang = editor.lang.limereplacementfields;
@@ -119,6 +119,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	});
 })();
+
+CKEDITOR.plugins.setLang('limereplacementfields','en', {
+    limereplacementfields: {   
+        title:sReplacementFieldTitle,
+        button:sReplacementFieldButton
+    }
+    }
+);                        
 
 CKEDITOR.plugins.limereplacementfields =
 {
