@@ -3303,7 +3303,7 @@ class statistics_helper {
 
                 $this->pdf->AddPage('P', ' A4');
 
-                $this->pdf->Bookmark($this->pdf->delete_html($statlang->gT("Results",'unescaped')), 0, 0);
+                $this->pdf->Bookmark($statlang->gT("Results",'unescaped'), 0, 0);
                 $this->pdf->titleintopdf($statlang->gT("Results",'unescaped'),$statlang->gT("Survey",'unescaped')." ".$surveyid);
                 $this->pdf->tableintopdf($array);
 

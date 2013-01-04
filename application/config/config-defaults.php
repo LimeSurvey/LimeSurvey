@@ -320,7 +320,7 @@ $config['showsgqacode'] =  false;
 *  This feature configures PDF export for Export Answers
 */
 
-$config['pdfdefaultfont'] = 'freemono';              //Default font for the pdf Export
+$config['pdfdefaultfont'] = 'dejavusans';              //Default font for the pdf Export
 $config['pdffontsize']    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $config['notsupportlanguages'] = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
 $config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
