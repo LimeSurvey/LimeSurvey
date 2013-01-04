@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-01-03 23:05:53+00:00\n"
+"POT-Creation-Date: 2013-01-04 23:05:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9953,42 +9953,42 @@ msgstr ""
 msgid "Replace"
 msgstr ""
 
-#: application/views/admin/limeReplacementFields_view.php:45
+#: application/views/admin/limeReplacementFields_view.php:46
 msgid "No replacement variable available for this field"
 msgstr ""
 
-#: application/views/admin/limeReplacementFields_view.php:52
+#: application/views/admin/limeReplacementFields_view.php:53
 msgid "Standard Fields"
 msgstr ""
 
-#: application/views/admin/limeReplacementFields_view.php:69
+#: application/views/admin/limeReplacementFields_view.php:70
 msgid "Previous Answers Fields"
 msgstr ""
 
-#: application/views/admin/limeReplacementFields_view.php:110
-#: application/views/admin/limeReplacementFields_view.php:125
+#: application/views/admin/limeReplacementFields_view.php:111
+#: application/views/admin/limeReplacementFields_view.php:126
 msgid "Some Question have been disabled"
 msgstr ""
 
-#: application/views/admin/limeReplacementFields_view.php:112
+#: application/views/admin/limeReplacementFields_view.php:113
 msgid "Survey Format is %s:"
 msgstr ""
 
-#: application/views/admin/limeReplacementFields_view.php:112
+#: application/views/admin/limeReplacementFields_view.php:113
 #: application/views/admin/survey/subview/tabPresentation_view.php:22
 msgid "All in one"
 msgstr ""
 
-#: application/views/admin/limeReplacementFields_view.php:114
-#: application/views/admin/limeReplacementFields_view.php:127
+#: application/views/admin/limeReplacementFields_view.php:115
+#: application/views/admin/limeReplacementFields_view.php:128
 msgid "Only Previous pages answers are available"
 msgstr ""
 
-#: application/views/admin/limeReplacementFields_view.php:126
+#: application/views/admin/limeReplacementFields_view.php:127
 msgid "Survey mode is set to %s:"
 msgstr ""
 
-#: application/views/admin/limeReplacementFields_view.php:126
+#: application/views/admin/limeReplacementFields_view.php:127
 #: application/views/admin/survey/subview/tabPresentation_view.php:16
 msgid "Group by Group"
 msgstr ""
@@ -12448,6 +12448,14 @@ msgstr ""
 
 #: application/views/admin/survey/organizeGroupsAndQuestions_view.php:4
 msgid "After you are done please click the bottom 'Save' button to save your changes."
+msgstr ""
+
+#: application/views/admin/survey/prepareEditorScript_view.php:4
+msgid "LameSurvey replacement field properties"
+msgstr ""
+
+#: application/views/admin/survey/prepareEditorScript_view.php:5
+msgid "Insert/edit LimeSurvey replacement field"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabCopy_view.php:4
