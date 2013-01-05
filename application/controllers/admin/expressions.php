@@ -13,8 +13,9 @@
  *  $Id$
  */
 class Expressions extends Survey_Common_Action {
-    function index()
-    {
+	function index()
+	{
+        header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
     ?>
 <!DOCTYPE html>
 <html>
