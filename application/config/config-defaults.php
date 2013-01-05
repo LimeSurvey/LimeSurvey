@@ -445,7 +445,7 @@ $config['showsgqacode'] =  false;
 * pdfdefaultfont (string)
 * PDF export responses settings - default font for the PDF export
 */
-$config['pdfdefaultfont'] = 'freemono';
+$config['pdfdefaultfont'] = 'dejavusans';
 
 /**
 * pdffontsize (integer)
