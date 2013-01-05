@@ -172,6 +172,9 @@ class SurveyAdmin extends Survey_Common_Action
 
         Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
 
+        Yii::app()->loadHelper('/admin/htmleditor');
+        initKcfinder();
+        
         $esrow = array();
         $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
         $aData['esrow'] = $esrow;
