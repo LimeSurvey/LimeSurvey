@@ -776,7 +776,6 @@ function db_upgrade_all($oldversion) {
             }
 
             addPrimaryKey('sessions', array('id'));
-
             addColumn('{{surveys_languagesettings}}','surveyls_attributecaptions',"TEXT");
             addColumn('{{surveys}}','sendconfirmation',"{$sVarchar}(1) default 'Y'");
 
@@ -795,6 +794,8 @@ function db_upgrade_all($oldversion) {
                 }
             }
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>156),"stg_name='DBVersion'");
+            $oTransaction->commit();
+            $oTransaction=Yii::app()->db->beginTransaction();
         }
 
         if ($oldversion < 157)
