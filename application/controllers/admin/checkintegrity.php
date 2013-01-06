@@ -366,15 +366,18 @@ class CheckIntegrity extends Survey_Common_Action
             $sTableName = substr(reset($aRow), strlen($sDBPrefix));
             if ($sTableName == 'survey_permissions' || $sTableName == 'survey_links' || $sTableName == 'survey_url_parameters') continue;
             $aTableName=explode('_',$sTableName);
-            $iSurveyID = $aTableName[1];
-            if (!in_array($iSurveyID, $sids)) {
-                $sDate = date('YmdHis') . rand(1, 1000);
-                $sOldTable = "survey_{$iSurveyID}";
-                $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
-                try {
-                    $deactivateresult = Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
-                } catch (CDbException $e) {
-                    die ('Couldn\'t make backup of the survey table. Please try again. The database reported the following error:<br />' . htmlspecialchars($e) . '<br />');
+            if (isset($aTableName[1]) && ctype_digit($aTableName[1]))
+            {
+                $iSurveyID = $aTableName[1];
+                if (!in_array($iSurveyID, $sids)) {
+                    $sDate = date('YmdHis') . rand(1, 1000);
+                    $sOldTable = "survey_{$iSurveyID}";
+                    $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
+                    try {
+                        $deactivateresult = Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+                    } catch (CDbException $e) {
+                        die ('Couldn\'t make backup of the survey table. Please try again. The database reported the following error:<br />' . htmlspecialchars($e) . '<br />');
+                    }
                 }
             }
         }
