@@ -117,7 +117,7 @@ class viewHelper
             if(isset($q->title) && $q->title)
             {
                 $questioncode=$q->title;
-                if(isset($q->scale))
+                if(isset($q->scale) && isset($q->scalename))
                 {
                     $scalenum=intval($q->scale)+1;
                     $questioncode.="[".$scalenum."]";
