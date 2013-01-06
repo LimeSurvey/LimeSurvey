@@ -438,19 +438,17 @@ class responses extends Survey_Common_Action
                     $q->fieldname == 'submitdate' ||
                     $q->fieldname == 'token')
                     continue;
+                $question = viewHelper::getFieldText($q);
 
-                $question = $q->text;
-                if (!is_a($q, 'QuestionModule') || !$q->fileUpload())
+                if (!is_a($q, 'QuestionModule'))
                 {
-                    if (isset($q->sq) && $q->sq != '')
-                        $question .=' (' . $q->sq . ')';
-                    if (isset($q->sq1) && isset($q->sq2))
-                        $question .=' (' . $q->sq1 . ':' . $q->sq2 . ')';
-                    if (isset($q->scale))
-                        $question .='[' . $q->scale . ']';
                     $fnames[] = array($q->fieldname, $question);
                 }
-                else
+                elseif(!$q->fileUpload())
+                {
+                    $fnames[] = array($q->fieldname, $question,'code'=>viewHelper::getFieldCode($q));
+                }
+                else // Specific for file upload
                 {
                     if ($q->aid !== 'filecount')
                     {
@@ -459,17 +457,17 @@ class responses extends Survey_Common_Action
                         for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
                         {
                             if ($qidattributes['show_title'] == 1)
-                                $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(Title)", "title", $i);
+                                $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $question . "(Title)",'code'=>viewHelper::getFieldCode($q).'[title]',"metadata"=>"title", "index"=>$i);
 
                             if ($qidattributes['show_comment'] == 1)
-                                $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(Comment)", "comment", $i);
+                                $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $question . "(Comment)",'code'=>viewHelper::getFieldCode($q).'[comment]', "metadata"=>"comment", "index"=>$i);
 
-                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(File name)", "name", $i);
-                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(File size)", "size", $i);
+                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $question . "(File name)",'code'=>viewHelper::getFieldCode($q).'[name]', "metadata"=>"name", "index"=>$i);
+                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $question . "(File size)",'code'=>viewHelper::getFieldCode($q).'[size]', "metadata"=>"size", "index"=>$i);
                         }
                     }
                     else
-                        $fnames[] = array($q->fieldname, "File count");
+                        $fnames[] = array($q->fieldname, $clang->gT("File count"));
                 }
             }
 

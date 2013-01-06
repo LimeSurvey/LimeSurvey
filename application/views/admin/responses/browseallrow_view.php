@@ -29,7 +29,7 @@
             }
             else
             {
-                //No corresponding token in the token tabel, just didsplay the token
+                //No corresponding token in the token table, just display the token
                 $browsedatafield .= "{$dtrow['token']}";
             }
         ?>
@@ -40,10 +40,10 @@
 
         for ($i; $i < $fncount; $i++)
         {
-            if (count($fnames[$i]) > 2)
+            if (isset($fnames[$i]['metadata']))
             {
-                $index = $fnames[$i][3];
-                $metadata = $fnames[$i][2];
+                $index = $fnames[$i]['index'];
+                $metadata = $fnames[$i]['metadata'];
                 $phparray = json_decode_ls($dtrow[$fnames[$i][0]], true);
                 if (isset($phparray[$index]))
                 {
