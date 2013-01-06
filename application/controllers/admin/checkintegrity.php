@@ -360,7 +360,7 @@ class CheckIntegrity extends Survey_Common_Action
             $sTableName = substr(reset($aRow), strlen($sDBPrefix));
             if ($sTableName == 'survey_permissions' || $sTableName == 'survey_links' || $sTableName == 'survey_url_parameters') continue;
             $aTableName=explode('_',$sTableName);
-            if (isset($aTableName[1]) && is_int($aTableName[1]))
+            if (isset($aTableName[1]) && ctype_digit($aTableName[1]))
             {
                 $iSurveyID = $aTableName[1];
                 if (!in_array($iSurveyID, $sids)) {
