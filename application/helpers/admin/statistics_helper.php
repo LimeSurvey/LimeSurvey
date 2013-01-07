@@ -434,11 +434,11 @@ function buildSelects($allfields, $surveyid, $language) {
                 {
                     if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
                     {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." > '".$_POST[$pv]."'";
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." > ".sanitize_int($_POST[$pv]);
                     }
                     if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
                     {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." < '".$_POST[$pv]."'";
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." < ".sanitize_int($_POST[$pv]);
                     }
                 }
 
@@ -465,20 +465,20 @@ function buildSelects($allfields, $surveyid, $language) {
                     //Date equals
                     if (substr($pv, -1, 1) == "eq")
                     {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2))." = '".$_POST[$pv]."'";
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2))." = ".dbQuoteAll($_POST[$pv]);
                     }
                     else
                     {
                         //date less than
                         if (substr($pv, -1, 1) == "less")
                         {
-                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " >= '".$_POST[$pv]."'";
+                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " >= ".dbQuoteAll($_POST[$pv]);
                         }
 
                         //date greater than
                         if (substr($pv, -1, 1) == "more")
                         {
-                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " <= '".$_POST[$pv]."'";
+                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " <= ".dbQuoteAll($_POST[$pv]);
                         }
                     }
                 }
@@ -493,7 +493,7 @@ function buildSelects($allfields, $surveyid, $language) {
                         $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
                         $_POST[$pv]=$datetimeobj->convert("Y-m-d");
 
-                        $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= '".$_POST[$pv]." 00:00:00' and ".Yii::app()->db->quoteColumnName('datestamp')." <= '".$_POST[$pv]." 23:59:59'";
+                        $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= ".dbQuoteAll($_POST[$pv]." 00:00:00")." and ".Yii::app()->db->quoteColumnName('datestamp')." <= ".dbQuoteAll($_POST[$pv]." 23:59:59");
                     }
                     else
                     {
@@ -502,7 +502,7 @@ function buildSelects($allfields, $surveyid, $language) {
                         {
                             $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
                             $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." < '".$_POST[$pv]."'";
+                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." < ".dbQuoteAll($_POST[$pv]);
                         }
 
                         //timestamp greater than
@@ -510,7 +510,7 @@ function buildSelects($allfields, $surveyid, $language) {
                         {
                             $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
                             $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." > '".$_POST[$pv]."'";
+                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." > ".dbQuoteAll($_POST[$pv]);
                         }
                     }
                 }
