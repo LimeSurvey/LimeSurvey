@@ -580,6 +580,7 @@ a.optoutemail {
     clear:left;
 }
 
+.ui-jqgrid-btable tr:hover td,
 .browsetable tr:hover {
     background-color: #C5D0F2;
 }
