@@ -584,7 +584,8 @@ a.optoutemail {
 .browsetable tr:hover {
     background-color: #C5D0F2;
 }
-.browsetable td span{
+.browsetable thead td span,
+.browsetable tbody td span{
     display:block;
     height:3em;
     overflow:hidden;
@@ -1812,3 +1813,6 @@ td.LEMerror  {
 #cquestions optgroup{
     font-weight:bold;
 }
+
+
+.browsetable thead td span
