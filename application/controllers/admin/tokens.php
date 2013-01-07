@@ -450,7 +450,7 @@ class tokens extends Survey_Common_Action
                 //Get the survey response id of the matching entry
                 $id = Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token' => $token['token']));
                 if (count($id) > 0) {
-                    $action .= viewHelper::getImageLink('token_viewanswer.png', "admin/responses/sa/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}", $clang->gT("View response details"), null, '_top');
+                    $action .= viewHelper::getImageLink('token_viewanswer.png', "admin/responses/sa/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}", $clang->gT("View response details"), '_top');
                 } else {
                     $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
                 }
