@@ -134,7 +134,7 @@
 
 .ui-state-hover,.ui-widget-content .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus
   {
-  background-color: #EFFBDB;
+  border: 1px solid #85BD00;
   font-weight: bold;
   color: #333;
   outline: none;
