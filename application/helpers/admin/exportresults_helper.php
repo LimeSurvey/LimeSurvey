@@ -1634,22 +1634,42 @@ class PdfWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
-        
+        $pdfdefaultfont=Yii::app()->getConfig('pdfdefaultfont');
+        $pdffontsize=Yii::app()->getConfig('pdffontsize');
+        $pdforientation=Yii::app()->getConfig('pdforientation');
+
         if ($oOptions->output=='file') 
         {
             $this->pdfDestination = 'F';
         } else {
             $this->pdfDestination = 'D';
         }
-
-        //The $pdforientation, $pdfDefaultFont, and $pdfFontSize values
-        //come from the Lime Survey config files.
-
-        global $pdforientation, $pdfdefaultfont, $pdffontsize;
-
         Yii::import('application.libraries.admin.pdf', true);
+        if($pdfdefaultfont=='auto')
+        {
+            $pdfdefaultfont=PDF_FONT_NAME_DATA;
+        }
+        // Array of PDF core fonts: are replaced by according fonts according to the alternatepdffontfile array.Maybe just courier,helvetica and times but if a user want symbol: why not ....
+        $pdfcorefont=array("courier","helvetica","symbol","times","zapfdingbats");
+        $pdffontsize=Yii::app()->getConfig('pdffontsize');
+
+        // create new PDF document
         $this->pdf = new pdf();
-        $this->pdf->SetFont(Yii::app()->getConfig('pdfdefaultfont'), '', Yii::app()->getConfig('pdffontsize'));
+        if (in_array($pdfdefaultfont,$pdfcorefont))
+        {
+            $alternatepdffontfile=Yii::app()->getConfig('alternatepdffontfile');
+            if(array_key_exists($sLanguageCode,$alternatepdffontfile))
+            {
+                $pdfdefaultfont = $alternatepdffontfile[$sLanguageCode];// Actually use only core font
+            }
+        }
+        if ($pdffontsize=='auto')
+        {
+            $pdffontsize=PDF_FONT_SIZE_MAIN;
+        }
+
+        $this->pdf = new pdf();
+        $this->pdf->SetFont($pdfdefaultfont, '', $pdffontsize);
         $this->pdf->AddPage();
         $this->pdf->intopdf("PDF export ".date("Y.m.d-H:i", time()));
 
