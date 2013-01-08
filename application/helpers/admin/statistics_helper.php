@@ -2647,7 +2647,6 @@ class statistics_helper {
      * @return buffer
      */
     function generate_statistics($surveyid, $summary, $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $statlangcode = null, $browse = true) { //AJS
-        global $pdfdefaultfont, $pdffontsize;
 
         $astatdata = array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
@@ -2703,18 +2702,28 @@ class statistics_helper {
             //require_once('classes/tcpdf/mypdf.php');
             Yii::import('application.libraries.admin.pdf', true);
             $pdfdefaultfont=Yii::app()->getConfig('pdfdefaultfont');
+            $pdfcorefont=array("courier","helvetica","symbol","times","zapfdingbats");
             $pdffontsize=Yii::app()->getConfig('pdffontsize');
 
-            // create new PDF document
-            $this->pdf = new pdf();
-            if ($pdfdefaultfont=='auto')
+            if($pdfdefaultfont=='auto')
             {
                 $pdfdefaultfont=PDF_FONT_NAME_DATA;
+            }
+            if (in_array($pdfdefaultfont,$pdfcorefont))
+            {
+                $alternatepdffontfile=Yii::app()->getConfig('alternatepdffontfile');
+                if(array_key_exists($statlangcode,$alternatepdffontfile))
+                {
+                    $pdfdefaultfont = $alternatepdffontfile[$statlangcode];// Actually use only core font
+                }
             }
             if ($pdffontsize=='auto')
             {
                 $pdffontsize=PDF_FONT_SIZE_MAIN;
             }
+
+            // create new PDF document
+            $this->pdf = new pdf();
 
             $surveyInfo = getSurveyInfo($surveyid,$language);
 
