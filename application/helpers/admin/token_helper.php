@@ -49,7 +49,9 @@ function createTokenTable($iSurveyID, $aAttributeFields=array())
     }
     try{
         createTable("{{tokens_".intval($iSurveyID)."}}", $fields);
-        Yii::app()->db->createCommand()->createIndex('token',"{{tokens_".intval($iSurveyID)."}}",'token');
+        try{
+            Yii::app()->db->createCommand()->createIndex("idx_token_token_{$iSurveyID}_".rand(1,50000),"{{tokens_".intval($iSurveyID)."}}",'token');
+        } catch(Exception $e) {}
         return true;
     } catch(Exception $e) {
         return false;
