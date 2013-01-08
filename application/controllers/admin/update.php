@@ -369,12 +369,11 @@ class update extends Survey_Common_Action
             {
                 if (is_file($rootdir.$afile['file']))
                 {
-                    unlink($rootdir.$afile['file']);
+                    @unlink($rootdir.$afile['file']);
                 }
                 else{
                     rmdirr($rootdir.$afile['file']);
                 }
-                echo sprintf($clang->gT('File deleted: %s'),$afile['file']).'<br />';
             }
         }
 

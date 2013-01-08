@@ -314,15 +314,55 @@ $config['standard_templates_readonly'] =  true;
 $config['showsgqacode'] =  false;
 
 
-
 /**
 *  PDF Export Settings
 *  This feature configures PDF export for Export Answers
+*  PDF core fonts are not included in PDF: make ligther pdf 
+*  See http://www.tcpdf.org/fonts.php to have the list of PDF core fonts
 */
 
-$config['pdfdefaultfont'] = 'freemono';              //Default font for the pdf Export
+$config['pdfdefaultfont'] = 'auto';              //Default font for the pdf Export
+/**
+*  $alternatepdffontfile - array of the font file name used to created pdf in statistics in specific langage - this font are included in tcpdf core
+*  Only used if $pdfdefaultfont is set to auto or set to a PDF core fonts
+*  Some langage are not tested : need translation for Yes,No and Gender : ckb, swh
+*/
+$config['alternatepdffontfile']=array(
+    'ar'=>'freesans',// 'dejavusans' work too but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
+    'be'=>'dejavusans',
+    'bg'=>'dejavusans',
+    'zh-Hans'=>'chinese',
+    'zh-Hant-HK'=>'chinese',
+    'zh-Hant-TW'=>'chinese',
+    'cs'=>'dejavusans',
+    'cs-informal'=>'dejavusans',// This one not really tested: no translation for Yes/No or Gender
+    'el'=>'dejavusans',
+    'he'=>'freesans',
+    'hi'=>'dejavusans',
+    'hu'=>'dejavusans',
+    'ja'=>'cid0jp',
+    'ko'=>'cid0kr',
+    'lv'=>'dejavusans',
+    'lt'=>'dejavusans',
+    'mk'=>'dejavusans',
+    'mt'=>'dejavusans',
+    'fa'=>'dejavusans',
+    'pl'=>'dejavusans',
+    'pa'=>'freesans',
+    'ro'=>'dejavusans',
+    'ru'=>'dejavusans',
+    'sr'=>'dejavusans',
+);
+/**
+*  $notsupportlanguages - array of language where no font was found for PDF
+*  Seems not used actually
+*/
+$config['notsupportlanguages'] = array(
+    'am',// Amharic
+    'si',// Sinhala
+    'th',// Thai
+    );
 $config['pdffontsize']    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
-$config['notsupportlanguages'] = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
 $config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
 
 
