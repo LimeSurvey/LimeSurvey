@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-01-07 08:34:27+00:00\n"
+"POT-Creation-Date: 2013-01-08 21:02:57+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -362,7 +362,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:1739
 #: application/controllers/admin/conditionsaction.php:2099
 #: application/controllers/admin/conditionsaction.php:2102
-#: application/controllers/admin/responses.php:624
+#: application/controllers/admin/responses.php:623
 #: application/views/admin/export/statistics_view.php:1336
 #: application/views/admin/export/statistics_view.php:1339
 #: application/views/admin/survey/Question/questionbar_view.php:12
@@ -377,8 +377,8 @@ msgstr ""
 
 #: application/controllers/RegisterController.php:88
 #: application/controllers/survey/index.php:414
-#: application/helpers/frontend_helper.php:1433
-#: application/helpers/frontend_helper.php:1660
+#: application/helpers/frontend_helper.php:1415
+#: application/helpers/frontend_helper.php:1642
 #: application/libraries/Save.php:129
 msgid "The answer to the security question is incorrect."
 msgstr ""
@@ -428,7 +428,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:156
 #: application/controllers/admin/responses.php:132
 #: application/controllers/admin/responses.php:133
-#: application/controllers/admin/responses.php:433
+#: application/controllers/admin/responses.php:432
 #: application/views/admin/quotas/viewquotas_view.php:17
 #: application/views/admin/token/exportdialog.php:5
 msgid "Completed"
@@ -1680,7 +1680,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:400
 #: application/controllers/admin/statistics.php:121
-#: application/helpers/admin/statistics_helper.php:3191
+#: application/helpers/admin/statistics_helper.php:3201
 msgid "Quick statistics"
 msgstr ""
 
@@ -1832,7 +1832,7 @@ msgid "View This Record"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1505
-#: application/controllers/admin/responses.php:891
+#: application/controllers/admin/responses.php:889
 #: application/views/admin/dataentry/delete.php:5
 #: application/views/admin/dataentry/vvimport_upload.php:22
 #: application/views/admin/responses/browseallfiltered_view.php:3
@@ -2700,13 +2700,13 @@ msgid "Invalid survey ID"
 msgstr ""
 
 #: application/controllers/admin/responses.php:127
-#: application/controllers/admin/responses.php:427
+#: application/controllers/admin/responses.php:426
 #: application/views/admin/participants/displayParticipants_view.php:93
 msgid "Token ID"
 msgstr ""
 
 #: application/controllers/admin/responses.php:128
-#: application/controllers/admin/responses.php:428
+#: application/controllers/admin/responses.php:427
 #: application/helpers/common_helper.php:5459
 #: application/helpers/replacements_helper.php:633
 #: application/views/admin/export/exportresults_view.php:128
@@ -2722,7 +2722,7 @@ msgid "First name"
 msgstr ""
 
 #: application/controllers/admin/responses.php:129
-#: application/controllers/admin/responses.php:429
+#: application/controllers/admin/responses.php:428
 #: application/helpers/common_helper.php:5464
 #: application/helpers/replacements_helper.php:640
 #: application/views/admin/export/exportresults_view.php:129
@@ -2738,7 +2738,7 @@ msgid "Last name"
 msgstr ""
 
 #: application/controllers/admin/responses.php:130
-#: application/controllers/admin/responses.php:430
+#: application/controllers/admin/responses.php:429
 #: application/controllers/admin/useraction.php:146
 #: application/views/admin/authentication/forgotpassword.php:9
 #: application/views/admin/participants/displayParticipants_view.php:69
@@ -2772,12 +2772,12 @@ msgid_plural "%s responses were successfully deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/responses.php:620
+#: application/controllers/admin/responses.php:619
 #: application/helpers/common_helper.php:2930
 msgid "Total time"
 msgstr ""
 
-#: application/controllers/admin/responses.php:622
+#: application/controllers/admin/responses.php:621
 #: application/views/admin/assessments_view.php:74
 msgid "Group"
 msgstr ""
@@ -3133,9 +3133,9 @@ msgstr ""
 #: application/helpers/common_helper.php:6531
 #: application/helpers/common_helper.php:6535
 #: application/helpers/common_helper.php:6539
-#: application/helpers/frontend_helper.php:1465
-#: application/helpers/frontend_helper.php:1542
-#: application/helpers/frontend_helper.php:1712
+#: application/helpers/frontend_helper.php:1447
+#: application/helpers/frontend_helper.php:1524
+#: application/helpers/frontend_helper.php:1694
 #: application/helpers/replacements_helper.php:669
 #: application/views/admin/authentication/message.php:3
 #: application/views/admin/participants/attributeMapCSV_view.php:76
@@ -4120,19 +4120,19 @@ msgid "Load unfinished survey"
 msgstr ""
 
 #: application/controllers/survey/index.php:477
-#: application/helpers/frontend_helper.php:1507
-#: application/helpers/frontend_helper.php:1579
-#: application/helpers/frontend_helper.php:1624
-#: application/helpers/frontend_helper.php:1663
+#: application/helpers/frontend_helper.php:1489
+#: application/helpers/frontend_helper.php:1561
+#: application/helpers/frontend_helper.php:1606
+#: application/helpers/frontend_helper.php:1645
 #: application/views/entertoken_view.php:8
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
 #: application/controllers/survey/index.php:478
 #: application/controllers/survey/index.php:510
-#: application/helpers/frontend_helper.php:1581
-#: application/helpers/frontend_helper.php:1626
-#: application/helpers/frontend_helper.php:1815
+#: application/helpers/frontend_helper.php:1563
+#: application/helpers/frontend_helper.php:1608
+#: application/helpers/frontend_helper.php:1797
 msgid "For further information please contact %s"
 msgstr ""
 
@@ -4240,7 +4240,7 @@ msgid "Save your responses so far"
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:397
-#: application/helpers/frontend_helper.php:1354
+#: application/helpers/frontend_helper.php:1336
 msgid "Did Not Save"
 msgstr ""
 
@@ -4306,7 +4306,7 @@ msgid "One or more uploaded files are not in proper format/size. You cannot proc
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1064
-#: application/helpers/frontend_helper.php:2756
+#: application/helpers/frontend_helper.php:2738
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 
@@ -4315,7 +4315,7 @@ msgid "Question index"
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1140
-#: application/helpers/frontend_helper.php:2217
+#: application/helpers/frontend_helper.php:2199
 #: application/helpers/replacements_helper.php:389
 #: application/views/admin/dataentry/active_html_view.php:67
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
@@ -4349,6 +4349,11 @@ msgstr ""
 
 #: application/helpers/admin/activate_helper.php:208
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
+msgstr ""
+
+#: application/helpers/admin/exportresults_helper.php:1687
+#: application/helpers/admin/statistics_helper.php:3190
+msgid "page"
 msgstr ""
 
 #: application/helpers/admin/htmleditor_helper.php:179
@@ -4658,7 +4663,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1143
 #: application/helpers/admin/statistics_helper.php:1808
 #: application/helpers/admin/statistics_helper.php:1843
-#: application/helpers/admin/statistics_helper.php:3355
+#: application/helpers/admin/statistics_helper.php:3365
 msgid "Browse"
 msgstr ""
 
@@ -4770,11 +4775,11 @@ msgstr ""
 msgid "Enable map display"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3163
+#: application/helpers/admin/statistics_helper.php:3173
 msgid "Statistics survey %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3165
+#: application/helpers/admin/statistics_helper.php:3175
 #: application/helpers/common_helper.php:3443
 #: application/helpers/common_helper.php:3454
 #: application/helpers/common_helper.php:3465
@@ -4784,44 +4789,40 @@ msgstr ""
 msgid "Statistics"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3165
+#: application/helpers/admin/statistics_helper.php:3175
 msgid "Survey %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3180
-msgid "page"
-msgstr ""
-
-#: application/helpers/admin/statistics_helper.php:3191
-#: application/helpers/admin/statistics_helper.php:3307
-#: application/helpers/admin/statistics_helper.php:3429
+#: application/helpers/admin/statistics_helper.php:3201
+#: application/helpers/admin/statistics_helper.php:3317
+#: application/helpers/admin/statistics_helper.php:3439
 #: application/views/admin/participants/displayParticipants_view.php:298
 #: application/views/admin/survey/listSurveys_view.php:42
 #: application/views/admin/survey/surveybar_view.php:3
 msgid "Survey"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3279
-#: application/helpers/admin/statistics_helper.php:3298
-#: application/helpers/admin/statistics_helper.php:3317
+#: application/helpers/admin/statistics_helper.php:3289
+#: application/helpers/admin/statistics_helper.php:3308
+#: application/helpers/admin/statistics_helper.php:3327
 msgid "Number of records in this query:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3282
-#: application/helpers/admin/statistics_helper.php:3299
-#: application/helpers/admin/statistics_helper.php:3319
+#: application/helpers/admin/statistics_helper.php:3292
+#: application/helpers/admin/statistics_helper.php:3309
+#: application/helpers/admin/statistics_helper.php:3329
 msgid "Total records in survey:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3288
-#: application/helpers/admin/statistics_helper.php:3302
-#: application/helpers/admin/statistics_helper.php:3326
+#: application/helpers/admin/statistics_helper.php:3298
+#: application/helpers/admin/statistics_helper.php:3312
+#: application/helpers/admin/statistics_helper.php:3336
 msgid "Percentage of total:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3306
-#: application/helpers/admin/statistics_helper.php:3307
 #: application/helpers/admin/statistics_helper.php:3316
+#: application/helpers/admin/statistics_helper.php:3317
+#: application/helpers/admin/statistics_helper.php:3326
 msgid "Results"
 msgstr ""
 
@@ -5161,7 +5162,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:2345
 #: application/helpers/common_helper.php:5474
-#: application/helpers/frontend_helper.php:1683
+#: application/helpers/frontend_helper.php:1665
 #: application/views/admin/dataentry/caption_view.php:29
 #: application/views/admin/participants/attributeMap_view.php:96
 #: application/views/admin/token/browse.php:85
@@ -7120,78 +7121,78 @@ msgstr ""
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1355
+#: application/helpers/frontend_helper.php:1337
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1358
+#: application/helpers/frontend_helper.php:1340
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1363
+#: application/helpers/frontend_helper.php:1345
 msgid "An error occurred saving a response to survey id"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1364
+#: application/helpers/frontend_helper.php:1346
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1369
+#: application/helpers/frontend_helper.php:1351
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1371
+#: application/helpers/frontend_helper.php:1353
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1373
+#: application/helpers/frontend_helper.php:1355
 msgid "Error saving results"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1380
+#: application/helpers/frontend_helper.php:1362
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1436
+#: application/helpers/frontend_helper.php:1418
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1460
+#: application/helpers/frontend_helper.php:1442
 msgid "Security question:"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1508
-#: application/helpers/frontend_helper.php:1668
+#: application/helpers/frontend_helper.php:1490
+#: application/helpers/frontend_helper.php:1650
 #: application/views/entertoken_view.php:9
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1513
-#: application/helpers/frontend_helper.php:1701
+#: application/helpers/frontend_helper.php:1495
+#: application/helpers/frontend_helper.php:1683
 msgid "Token:"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1538
-#: application/helpers/frontend_helper.php:1709
+#: application/helpers/frontend_helper.php:1520
+#: application/helpers/frontend_helper.php:1691
 #: application/helpers/replacements_helper.php:667
 msgid "Security Question"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1580
-#: application/helpers/frontend_helper.php:1625
+#: application/helpers/frontend_helper.php:1562
+#: application/helpers/frontend_helper.php:1607
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1687
+#: application/helpers/frontend_helper.php:1669
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1814
+#: application/helpers/frontend_helper.php:1796
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2194
-#: application/helpers/frontend_helper.php:2630
+#: application/helpers/frontend_helper.php:2176
+#: application/helpers/frontend_helper.php:2612
 #: application/views/admin/templates/templateeditor_navigator_view.php:5
 #: application/views/installer/dbconfig_view.php:87
 #: application/views/installer/dbsettings_view.php:29
@@ -7201,9 +7202,9 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2201
-#: application/helpers/frontend_helper.php:2207
-#: application/helpers/frontend_helper.php:2212
+#: application/helpers/frontend_helper.php:2183
+#: application/helpers/frontend_helper.php:2189
+#: application/helpers/frontend_helper.php:2194
 #: application/views/admin/participants/displayParticipants_view.php:130
 #: application/views/admin/quotas/newanswer_view.php:33
 #: application/views/admin/quotas/newanswertwo_view.php:45
@@ -9668,7 +9669,16 @@ msgstr ""
 msgid "Editing %s"
 msgstr ""
 
-#: application/views/admin/htmleditor/pop_editor_view.php:53
+#: application/views/admin/htmleditor/pop_editor_view.php:29
+msgid "LameSurvey replacement field properties"
+msgstr ""
+
+#: application/views/admin/htmleditor/pop_editor_view.php:30
+#: application/views/admin/survey/prepareEditorScript_view.php:5
+msgid "Insert/edit LimeSurvey replacement field"
+msgstr ""
+
+#: application/views/admin/htmleditor/pop_editor_view.php:55
 msgid "Editing"
 msgstr ""
 
@@ -12462,10 +12472,6 @@ msgstr ""
 
 #: application/views/admin/survey/prepareEditorScript_view.php:4
 msgid "LimeSurvey replacement field properties"
-msgstr ""
-
-#: application/views/admin/survey/prepareEditorScript_view.php:5
-msgid "Insert/edit LimeSurvey replacement field"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabCopy_view.php:4
