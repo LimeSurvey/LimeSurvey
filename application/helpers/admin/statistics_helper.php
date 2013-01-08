@@ -3142,13 +3142,23 @@ class statistics_helper {
             //require_once('classes/tcpdf/mypdf.php');
             Yii::import('application.libraries.admin.pdf', true);
             $pdfdefaultfont=Yii::app()->getConfig('pdfdefaultfont');
+            if($pdfdefaultfont=='auto')
+            {
+                $pdfdefaultfont=PDF_FONT_NAME_DATA;
+            }
+            // Array of PDF core fonts: are replaced by according fonts according to the alternatepdffontfile array.Maybe just courier,helvetica and times but if a user want symbol: why not ....
+            $pdfcorefont=array("courier","helvetica","symbol","times","zapfdingbats");
             $pdffontsize=Yii::app()->getConfig('pdffontsize');
 
             // create new PDF document
             $this->pdf = new pdf();
-            if ($pdfdefaultfont=='auto')
+            if (in_array($pdfdefaultfont,$pdfcorefont))
             {
-                $pdfdefaultfont=PDF_FONT_NAME_DATA;
+                $alternatepdffontfile=Yii::app()->getConfig('alternatepdffontfile');
+                if(array_key_exists($statlangcode,$alternatepdffontfile))
+                {
+                    $pdfdefaultfont = $alternatepdffontfile[$statlangcode];// Actually use only core font
+                }
             }
             if ($pdffontsize=='auto')
             {
