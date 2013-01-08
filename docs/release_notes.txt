@@ -60,6 +60,60 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.00+ (build 130103) to 2.00+ (build 130108) Jan 8, 2013
+-New feature: Kurdish (Sorani) translation by havalabdulkarim, bryar1991
+-Fixed issue #6996: Error due to composite primary key on participant_attribute_names on pqsql (Menno Dekker)
+-Fixed issue #7075: browse results bug with upload type question (display few answer and no download) (Menno Dekker)
+-Fixed issue #7099: Selecting question 'none' in admin results in invalid question id or no action at all (Menno Dekker)
+-Fixed issue #7101: Error URL doesn't work when submitting a survey via data entry screen (Menno Dekker)
+-Fixed issue #7122: Token Table not Updating on Survey Submit (Menno Dekker)
+-Fixed issue #6969: Arabic characters not properly shown when exporting statistics as PDF (Carsten Schmitz)
+-Fixed issue #7076: Missing translation and wrong truncating (Carsten Schmitz)
+-Fixed issue #7083: CDbException when using the Show Next / Show Last buttons in the response browser using tokens and MSSQL (Carsten Schmitz)
+-Fixed issue #7110: Import template not working in IIS (Carsten Schmitz)
+-Fixed issue #7115: PostgreSQL update to 2.0 failes with blocked transaction error (Carsten Schmitz)
+-Fixed issue #7119: Arabic based language report to PDF (Denis Chenu)
+-Fixed issue #7127: Can't export full response set to CSV in MS SQL (Carsten Schmitz)
+-Fixed issue #7133: Impossible to translate survey via quick-translation if using IIS (Carsten Schmitz)
+-Fixed issue #7134: Impossible to view users in a group if using IIS (Carsten Schmitz)
+-Fixed issue #7136: Incorrect charset in header when viewing QA (Carsten Schmitz)
+-Fixed issue #7137: Problem upgrading from 1.92 to 2.00+ using SQL Server (Carsten Schmitz)
+-Fixed issue #7139: Warning after updating from 2.00 to most current update release (Carsten Schmitz)
+-Fixed issue #7140: Missing translations (Carsten Schmitz)
+-Fixed issue #7141: Internal Server Error: "application.controllers.admin.kcfinder" is invalid (Sam Mousa)
+-Fixed issue #7142: Error when importing a question group (Carsten Schmitz)
+-Fixed issue #7144: Checking data integrity does not work (Carsten Schmitz)
+-Fixed issue #7149: problem on jqgrid tables (tpartner)
+-Fixed issue #7150: Survey list table overflows window (tpartner)
+-Fixed issue: Font for response export to PDF (Denis Chenu)
+-Fixed issue: Some SQL injection and XSS issues (Carsten Schmitz)
+-Fixed issue: Time difference setting in global settings can only be set to full hours (Carsten Schmitz)
+#Updated translation: Amharic by hizkiel
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Chinese (Taiwan) (Traditional) by katy50306
+#Updated translation: Danish by docl
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by tigger
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by anikoken
+#Updated translation: Icelandic by Bragi_H
+#Updated translation: Italian by lfortunato, lfanfoni
+#Updated translation: Macedonian by acikabt
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Persian by ardalan
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by hugomusetti, mauriciofurtado, tagosc
+#Updated translation: Romanian by izbieta
+#Updated translation: Spanish (Mexican) by k001
+#Updated translation: Swedish by klaster, seniorcoach
+
+
 Changes from 2.00+ (build 121231) to 2.00+ (build 130103) Jan 3, 2013
 -Fixed issue #7125: Prefix of "numerical input"-question shown in printable survey-view (Menno Dekker)
 -Fixed issue #7128: After editing a relevance equationall other relevance equations in the survey are reset (Carsten Schmitz)
