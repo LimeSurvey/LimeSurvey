@@ -1047,10 +1047,8 @@
                 $participant_id = isset($usesrow->participant_id) ? $usesrow->participant_id : '';
         }
 
-        $utquery = "UPDATE {{tokens_$surveyid}}\n";
         if ($quotaexit==true)
         {
-            $utquery .= "SET completed='Q', usesleft=usesleft-1\n";
             $usesrow->completed = 'Q';
             $usesrow->usesleft = $usesrow->usesleft-1;
         }
