@@ -1672,7 +1672,20 @@ class PdfWriter extends Writer
         $this->pdf->SetFont($pdfdefaultfont, '', $pdffontsize);
         $this->pdf->AddPage();
         $this->pdf->intopdf("PDF export ".date("Y.m.d-H:i", time()));
-
+        //Set some pdf metadata
+        $lg=array();
+        $lg['a_meta_charset'] = 'UTF-8';
+        if (getLanguageRTL($sLanguageCode))
+        {
+            $lg['a_meta_dir'] = 'rtl';
+        }
+        else
+        {
+            $lg['a_meta_dir'] = 'ltr';
+        }
+        $lg['a_meta_language'] = $statlangcode;
+        $lg['w_page']=$statlang->gT("page");
+        $this->pdf->setLanguageArray($lg);
 
         $this->separator="\t";
 
