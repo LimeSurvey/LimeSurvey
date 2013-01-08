@@ -326,7 +326,7 @@ class SurveyAdmin extends Survey_Common_Action
         $postsid = Yii::app()->request->getPost('sid', $iSurveyID);
         $postsid = sanitize_int($postsid);
         $clang = $this->getController()->lang;
-        $date = date('YmdHis'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
+        $date = date('YmdHis'); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
 
         if (empty($_POST['ok']))
         {
