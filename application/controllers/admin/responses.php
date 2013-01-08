@@ -394,6 +394,7 @@ class responses extends Survey_Common_Action
                     
                     if (file_exists($file))
                     {
+                        @ob_clean();
                         header('Content-Description: File Transfer');
                         header('Content-Type: application/octet-stream');
                         header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]['name']) . '"');
@@ -402,8 +403,6 @@ class responses extends Survey_Common_Action
                         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
                         header('Pragma: public');
                         header('Content-Length: ' . filesize($file));
-                        ob_clean();
-                        flush();
                         readfile($file);
                         exit;
                     }
@@ -860,6 +859,7 @@ class responses extends Survey_Common_Action
 
             if (file_exists($tmpdir . '/' . $zipfilename))
             {
+                @ob_clean();
                 header('Content-Description: File Transfer');
                 header('Content-Type: application/octet-stream');
                 header('Content-Disposition: attachment; filename=' . basename($zipfilename));
@@ -868,8 +868,6 @@ class responses extends Survey_Common_Action
                 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
                 header('Pragma: public');
                 header('Content-Length: ' . filesize($tmpdir . "/" . $zipfilename));
-                ob_clean();
-                flush();
                 readfile($tmpdir . '/' . $zipfilename);
                 unlink($tmpdir . '/' . $zipfilename);
                 exit;
