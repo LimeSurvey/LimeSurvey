@@ -6,7 +6,7 @@
                 if(Yii::app()->session['loginID'])
                 { ?>
                 --  <?php $clang->eT("Logged in as:");?><strong>
-                    <a href="<?php echo $this->createUrl("/admin/user/personalsettings"); ?>">
+                    <a href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">
                         <?php echo Yii::app()->session['user'];?> <img src='<?php echo $sImageURL;?>profile_edit.png' alt='<?php $clang->eT("Edit your personal preferences");?>' /></a>
                 </strong>
                 <?php } ?>
