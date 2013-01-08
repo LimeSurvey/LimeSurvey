@@ -258,7 +258,7 @@ class responses extends Survey_Common_Action
                                 if ($metadata === "size")
                                     $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
                                 else if ($metadata === "name")
-                                    $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/sa/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyID}"));
+                                    $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/sa/browse/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyID}"));
                                 else
                                     $answervalue = rawurldecode($phparray[$index][$metadata]);
                             }
@@ -377,12 +377,12 @@ class responses extends Survey_Common_Action
             $zipfilename = "Files_for_responses_" . Yii::app()->request->getPost('downloadfile') . ".zip";
             $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('downloadfile'), $zipfilename,$aData['language']);
         }
-        else if (Yii::app()->request->getPost('downloadindividualfile') != '')
+        else if (Yii::app()->request->getParam('downloadindividualfile') != '')
         {
-            $iId = (int) Yii::app()->request->getPost('id');
-            $downloadindividualfile = Yii::app()->request->getPost('downloadindividualfile');
-            $fieldname = Yii::app()->request->getPost('fieldname');
-
+            $iId = (int) Yii::app()->request->getParam('id');
+            $downloadindividualfile = Yii::app()->request->getParam('downloadindividualfile');
+            $fieldname = Yii::app()->request->getParam('fieldname');
+            
             $oRow = Survey_dynamic::model($iSurveyID)->findByAttributes(array('id' => $iId));
             $phparray = json_decode_ls($oRow->$fieldname);
 
@@ -391,7 +391,7 @@ class responses extends Survey_Common_Action
                 if ($phparray[$i]['name'] == $downloadindividualfile)
                 {
                     $file = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $phparray[$i]['filename'];
-
+                    
                     if (file_exists($file))
                     {
                         header('Content-Description: File Transfer');
