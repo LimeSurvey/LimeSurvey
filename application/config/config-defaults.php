@@ -541,10 +541,10 @@ $config['RPCInterface'] = 'off';
 
 /**
 * This parameter sets the default session expiration time in seconds
-* Default is 8 hours
+* Default is 2 hours
 * @var integer
 */
-$config['iSessionExpirationTime'] = 28800;
+$config['iSessionExpirationTime'] = 7200;
 
 /**
 * This parameter can be used to set some question not selectable in LimeReplacementFiels

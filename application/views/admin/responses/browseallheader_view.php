@@ -55,11 +55,6 @@
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <input type='hidden' name='action' value='browse' />
                 <input type='hidden' name='subaction' value='all' />
-
-                <?php if (isset($_POST['sql']))
-                    { ?>
-                    <input type='hidden' name='sql' value='<?php echo HTMLEscape($_POST['sql']); ?>' />
-                    <?php } ?>
             </form></div>
     </div>
 </div>

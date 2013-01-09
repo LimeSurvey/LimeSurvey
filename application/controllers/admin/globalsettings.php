@@ -176,7 +176,7 @@ class GlobalSettings extends Survey_Common_Action
 
         setGlobalSetting('maxemails', sanitize_int($maxemails));
         $iSessionExpirationTime = (int)($_POST['iSessionExpirationTime']);
-        if ($iSessionExpirationTime == 0) $iSessionExpirationTime = 3600;
+        if ($iSessionExpirationTime == 0) $iSessionExpirationTime = 7200;
         setGlobalSetting('iSessionExpirationTime', $iSessionExpirationTime);
         setGlobalSetting('ipInfoDbAPIKey', $_POST['ipInfoDbAPIKey']);
         setGlobalSetting('googleMapsAPIKey', $_POST['googleMapsAPIKey']);

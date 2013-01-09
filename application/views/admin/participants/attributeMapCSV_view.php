@@ -14,14 +14,14 @@
             var copyUrl = "<?php echo $this->createUrl("admin/participants/sa/uploadCSV"); ?>";
             var displayParticipants = "<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>";
             var mapCSVcancelled = "<?php echo $this->createUrl("admin/participants/sa/mapCSVcancelled"); ?>";
-            var characterset = "<?php echo $_POST['characterset']; ?>";
+            var characterset = "<?php echo sanitize_paranoid_string($_POST['characterset']); ?>";
             var okBtn = "<?php $clang->eT("OK") ?>";
             var processed = "<?php $clang->eT("Summary") ?>";
             var summary = "<?php $clang->eT("Upload summary") ?>";
             var notPairedErrorTxt = "<?php $clang->eT("You have to pair this field with an existing attribute.") ?>";
             var onlyOnePairedErrorTxt = "<?php $clang->eT("Only one CSV attribute is mapped with central attribute.") ?>";
             var cannotAcceptErrorTxt="<?php $clang->eT("This list cannot accept token attributes.") ?>";
-            var seperator = "<?php echo $_POST['seperatorused']; ?>";
+            var seperator = "<?php echo sanitize_paranoid_string($_POST['seperatorused']); ?>";
             var thefilepath = "<?php echo $fullfilepath ?>";
             var filterblankemails = "<?php echo $filterbea ?>";
         </script>

@@ -93,22 +93,19 @@
 
             <?php
 
-                if (isset($datestamp) && $datestamp == "Y") {
-                    echo "<fieldset id='right'><legend>".$clang->gT("Submission date")."</legend><ul><li>"
-                    ."<label for='datestampE'>".$clang->gT("Equals:")."</label>\n"
-                    ."<input class='popupdate' size='12' id='datestampE' name='datestampE' type='text' value='";
-                    if (isset($_POST['datestampE'])) { echo  $_POST['datestampE']; }
-                    echo "' /></li><li><label for='datestampG'>\n"
-                    ."&nbsp;&nbsp;".$clang->gT("Later than:")."</label>\n"
-                    ."<input class='popupdatetime' size='12' id='datestampG' name='datestampG' value='";
-                    if (isset($_POST['datestampG'])) { echo $_POST['datestampG']; }
-                    echo "' type='text' /></li><li><label for='datestampL'> ".$clang->gT("Earlier than:")."</label>
-                    <input class='popupdatetime' size='12' id='datestampL' name='datestampL' value='";
-                    if (isset($_POST['datestampL'])) { echo $_POST['datestampL']; }
-                    echo "' type='text' /></li></ul></fieldset>\n";
-                    echo "<input type='hidden' name='summary[]' value='datestampE' />";
-                    echo "<input type='hidden' name='summary[]' value='datestampG' />";
-                    echo "<input type='hidden' name='summary[]' value='datestampL' />";
+                if (isset($datestamp) && $datestamp == "Y") {?>
+                    <fieldset id='right'><legend><?php $clang->eT("Submission date"); ?></legend><ul><li>
+                    <label for='datestampE'><?php $clang->eT("Equals:"); ?></label>
+                    <?php echo CHtml::inputField('text','datestampeE',isset($_POST['datestampE'])?$_POST['datestampE']:'',array('id'=>'datestampE', 'class'=>'popupdate'));?>
+                    </li><li><label for='datestampG'><?php $clang->eT("Later than:");?></label>
+                    <?php echo CHtml::inputField('text','datestampG',isset($_POST['datestampG'])?$_POST['datestampG']:'',array('id'=>'datestampG', 'class'=>'popupdate', 'size'=>'12'));?>
+                    </li><li><label for='datestampL'><?php $clang->eT("Earlier than:");?></label>
+                    <?php echo CHtml::inputField('text','datestampL',isset($_POST['datestampL'])?$_POST['datestampL']:'',array('id'=>'datestampL', 'class'=>'popupdate', 'size'=>'12'));?>
+                    </li></ul></fieldset>
+                    <input type='hidden' name='summary[]' value='datestampE' />
+                    <input type='hidden' name='summary[]' value='datestampG' />
+                    <input type='hidden' name='summary[]' value='datestampL' />
+                    <?php
                 }
 
             ?>
@@ -287,20 +284,15 @@
                             echo " />&nbsp;";
 
                             //show speaker
-                            echo _showSpeaker($flt[3]." - ".flattenText($row[1],true))."<br />\n";
+                            echo _showSpeaker($flt[3]." - ".flattenText($row[1],true))."<br>\n";?>
 
-                            //input fields
-                            echo "\t<span class='smalltext'>".$clang->gT("Number greater than").":</span><br />\n"
-                            ."\t<input type='text' name='$myfield2' value='";
-                            if (isset($_POST[$myfield2])){echo $_POST[$myfield2];}
-
-                            //check number input using JS
-                            echo "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
-                            ."\t<span class='smalltext'>".$clang->gT("Number less than").":</span><br />\n"
-                            ."\t<input type='text' name='$myfield3' value='";
-                            if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
-                            echo "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n";
-
+                            <span class='smalltext'><?php $clang->eT("Number greater than");?>:</span><br />
+                            <?php echo CHtml::inputField('text',$myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('onkeypress'=>"return goodchars(event,'0123456789.,')"));?>
+                            <br>
+                            <span class='smalltext'><?php $clang->eT("Number less than");?>:</span><br>
+                            <?php echo CHtml::inputField('text',$myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array('onkeypress'=>"return goodchars(event,'0123456789.,')"));?>
+                            <br>
+                            <?php 
                             //we added 1 form -> increase counter
                             $counter2++;
                         }
@@ -337,12 +329,8 @@
                         echo " />&nbsp;";
                         echo _showSpeaker($flt[3]." - ".flattenText($row[1],true))
                         ."<br />\n"
-                        ."\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n"
-                        ."\t<input type='text' name='$myfield2' value='";
-                        if (isset($_POST[$myfield2]))
-                        {echo $_POST[$myfield2];}
-
-                        echo "' />"
+                        ."\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n";
+                        echo CHtml::inputField('text',$myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array())
                         ."\t</td>\n";
                         $counter2++;
                     }
@@ -367,12 +355,8 @@
                     echo " />&nbsp;"
                     ."&nbsp;"._showSpeaker($niceqtext)
                     ."<br />\n"
-                    ."\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n"
-                    ."\t<textarea name='$myfield2' rows='3' cols='80'>";
-
-                    if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
-
-                    echo "</textarea>\n"
+                    ."\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n" 
+                    .CHtml::textArea($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('rows'=>'3','cols'=>'80'))
                     ."\t</td>\n";
                     break;
 
@@ -391,12 +375,8 @@
                     ."&nbsp;"._showSpeaker($niceqtext)
                     ."<br />\n"
                     ."\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n"
-                    ."\t<input type='text' name='$myfield2' value='";
-
-                    if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
-
-                    echo "' />";
-                    echo "\t</td>\n";
+                    .CHtml::inputField('text',$myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array())
+                    ."\t</td>\n";
                     break;
 
 
@@ -407,18 +387,11 @@
                     $myfield2="{$myfield}G";
                     $myfield3="{$myfield}L";
                     echo "\t<span class='smalltext'>".$clang->gT("Number greater than").":</span><br />\n"
-                    ."\t<input type='text' name='$myfield2' value='";
-
-                    if (isset($_POST[$myfield2])){echo $_POST[$myfield2];}
-
-                    echo "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
+                    .CHtml::inputField('text',$myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
+                    ."\t<br />\n"
                     ."\t<span class='smalltext'>".$clang->gT("Number less than").":</span><br />\n"
-                    ."\t<input type='text' name='$myfield3' value='";
-
-                    if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
-
-                    //only numeriacl input allowed -> check using JS
-                    echo "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n";
+                    .CHtml::inputField('text',$myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
+                    ."\t<br />\n";
 
                     //put field names into array
 
@@ -431,21 +404,11 @@
                     $myfield2 = "{$myfield}G";
                     $myfield3 = "{$myfield}L";
                     echo "\t<span class='smalltext'>".$clang->gT("Number of files greater than").":</span><br />\n"
-                    ."\t<input type='text' name='$myfield2' value='";
-
-                    if (isset($_POST[$myfield2])){echo $_POST[$myfield2];}
-
-                    echo "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
+                    .CHtml::inputField('text',$myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
+                    ."<br />\n"
                     ."\t<span class='smalltext'>".$clang->gT("Number of files less than").":</span><br />\n"
-                    ."\t<input type='text' name='$myfield3' value='";
-
-                    if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
-
-                    //only numeriacl input allowed -> check using JS
-                    echo "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n";
-
-                    //put field names into array
-
+                    .CHtml::inputField('text',$myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
+                    ."<br />\n";
                     break;
 
 
@@ -482,22 +445,14 @@
                     ."<br />\n"
 
                     ."\t<span class='smalltext'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
-                    ."\t<input name='$myfield3' type='text' value='";
-
-                    if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
-
-                    echo "' /><br />\n"
+                    .CHtml::inputField('text',$myfield3,isset($_POST[$myfield3])?$_POST[$myfield2]:'',array() )
+                    ."<br />\n"
                     ."\t&nbsp;&nbsp;".$clang->gT("Date is")." >=<br />\n"
-                    ."\t<input name='$myfield4' value='";
-
-                    if (isset($_POST[$myfield4])) {echo $_POST[$myfield4];}
-
-                    echo "' type='text' /> <br />"
-                    .$clang->gT("AND/OR Date is")." <= <br /> <input  name='$myfield5' value='";
-
-                    if (isset($_POST[$myfield5])) {echo $_POST[$myfield5];}
-
-                    echo "' type='text' /></span>\n";
+                    .CHtml::inputField('text',$myfield4,isset($_POST[$myfield4])?$_POST[$myfield4]:'',array() )
+                    ."<br />"
+                    .$clang->gT("AND/OR Date is")." <= <br />"
+                    .CHtml::inputField('text',$myfield5,isset($_POST[$myfield5])?$_POST[$myfield5]:'',array() )
+                    ."</span>\n";
                     break;
 
 
@@ -591,7 +546,7 @@
                         $myfield2 = $myfield.$row[0];
                         echo "<!-- $myfield2 - ";
 
-                        if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
+                        if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
 
                         echo " -->\n";
 
@@ -643,7 +598,7 @@
                         $myfield2 = $myfield . "$row[0]";
                         echo "<!-- $myfield2 - ";
 
-                        if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
+                        if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
 
                         echo " -->\n";
 
@@ -690,7 +645,7 @@
                         $myfield2 = $myfield . "$row[0]";
                         echo "<!-- $myfield2 - ";
 
-                        if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
+                        if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
 
                         echo " -->\n";
 
@@ -748,7 +703,7 @@
                         $myfield2 = $myfield . "$row[0]";
                         echo "<!-- $myfield2 - ";
 
-                        if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
+                        if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
 
                         echo " -->\n";
 
@@ -798,7 +753,7 @@
                         {
                             $myfield2 = "T".$myfield . $row[0] . "_" . $frow['title'];
                             echo "<!-- $myfield2 - ";
-                            if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
+                            if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
                             echo " -->\n";
                             if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
                             echo "\t<td align='center'>"
@@ -808,10 +763,9 @@
                             ._showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['question']."]")." - ".$row[0]."/".$frow['title'])
                             ."</strong><br />\n";
                             //echo $fquery;
-                            echo "\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n";
-                            echo "\t<input type='text' name='{$myfield2}' value='";
-                            if(isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
-                            echo "' />\n\t</td>\n";
+                            echo "\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n"
+                            .CHtml::inputField('text',$myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array() )
+                            ."</td>\n";
                             $counter2++;
                         }
                     }
@@ -863,7 +817,7 @@
                         {
                             $myfield2 = $myfield . $row[0] . "_" . $frow['title'];
                             echo "<!-- $myfield2 - ";
-                            if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
+                            if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
                             echo " -->\n";
                             if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
                             echo "\t<td align='center'>"
@@ -907,7 +861,7 @@
                         $myfield2 = $myfield . "$row[0]";
                         echo "<!-- $myfield2 - ";
 
-                        if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
+                        if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
 
                         echo " -->\n";
 
@@ -999,7 +953,7 @@
                         $myfield3 = $myfield . $i;
                         echo "<!-- $myfield2 - ";
 
-                        if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
+                        if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
 
                         echo " -->\n"
                         ."\t<td align='center'>"
@@ -1067,7 +1021,7 @@
                         echo "<!-- $myfield2 - ";
                         if (isset($_POST[$myfield2]))
                         {
-                            echo $_POST[$myfield2];
+                            echo htmlspecialchars($_POST[$myfield2]);
                         }
                         echo " -->\n";
 
@@ -1150,7 +1104,7 @@
                         echo "<!-- $myfield2 - ";
                         if (isset($_POST[$myfield2]))
                         {
-                            echo $_POST[$myfield2];
+                            echo htmlspecialchars($_POST[$myfield2]);
                         }
 
                         echo " -->\n";
