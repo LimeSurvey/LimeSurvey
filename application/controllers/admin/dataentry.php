@@ -749,7 +749,7 @@ class dataentry extends Survey_Common_Action
                             $select_options = array(
                             '' => $clang->gT("Please choose").'...',
                             'F' => $clang->gT("Female"),
-                            'G' => $clang->gT("Male")
+                            'M' => $clang->gT("Male")
                             );
                             $aDataentryoutput .= CHtml::listBox($fname['fieldname'], $idrow[$fname['fieldname']], $select_options);
                             break;
