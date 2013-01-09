@@ -1971,6 +1971,7 @@ class dataentry extends Survey_Common_Action
                 $bgc = 'odd';
                 foreach ($deqrows as $deqrow)
                 {
+                    $cdata = array();
                     $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
                     $cdata['qidattributes'] = $qidattributes;
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
