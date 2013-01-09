@@ -843,7 +843,7 @@ class dataentry extends Survey_Common_Action
                 if (isset($_POST['token']))
                 {
                     $tokencompleted = "";
-                    $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token='{$_POST['token']}'"; //dbQuoteAll($_POST['token'],true);
+                    $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".dbQuoteAll($_POST['token']);
                     $tcresult = dbExecuteAssoc($tcquery);
                     $tcresult = $tcresult->readAll();
                     $tccount = count($tcresult);
@@ -865,7 +865,7 @@ class dataentry extends Survey_Common_Action
                     }
                     else
                     { // token is valid, survey not anonymous, try to get last recorded response id
-                        $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token='".$_POST['token']."'"; //dbQuoteAll($_POST['token'],true);
+                        $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".dbQuoteAll($_POST['token']);
                         $aresult = dbExecuteAssoc($aquery);
                         foreach ($aresult->readAll() as $arow)
                         {
@@ -992,7 +992,7 @@ class dataentry extends Survey_Common_Action
                         { $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust); }
 
                         // check how many uses the token has left
-                        $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token='".$_POST['token']."'";
+                        $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token=".dbQuoteAll($_POST['token']);
                         $usesresult = dbExecuteAssoc($usesquery);
                         $usesrow = $usesresult->readAll(); //$usesresult->row_array()
                         if (isset($usesrow)) { $usesleft = $usesrow[0]['usesleft']; }
@@ -1021,7 +1021,7 @@ class dataentry extends Survey_Common_Action
                                 $utquery .= "SET usesleft=usesleft-1\n";
                             }
                         }
-                        $utquery .= "WHERE token='".$_POST['token']."'";
+                        $utquery .= "WHERE token=".dbQuoteAll($_POST['token']);
                         $utresult = dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
 
                         // save submitdate into survey table
