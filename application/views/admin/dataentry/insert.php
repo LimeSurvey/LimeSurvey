@@ -8,31 +8,31 @@
 			  	<tr>
 			   		<td align='right'><?php $clang->eT("Identifier:"); ?></td>
 			   		<td>
-			   			<input type='text' name='save_identifier' value='<?php echo $_POST['save_identifier']; ?>' />'
+                        <?php echo CHtml::inputField('text','save_identifier',$_POST['save_identifier']);?>
 			   		</td>
 			   	</tr>
 			  	<tr>
 			  		<td align='right'><?php $clang->eT("Password:"); ?></td>
 			   		<td>
-			   			<input type='password' name='save_password' value='<?php echo $_POST['save_password']; ?>' />
+                        <?php echo CHtml::inputField('password','save_password',$_POST['save_password']);?>
 			   		</td>
 			   	</tr>
 			  	<tr>
                     <td align='right'><?php $clang->eT("Confirm password:"); ?></td>
 			   		<td>
-			   			<input type='password' name='save_confirmpassword' value='<?php echo $_POST['save_confirmpassword']; ?>' />
+                        <?php echo CHtml::inputField('password','save_confirmpassword',$_POST['save_confirmpassword']);?>
 			   		</td>
 			   	</tr>
 			  	<tr>
 			  		<td align='right'><?php $clang->eT("Email:"); ?></td>
 			   		<td>
-			   			<input type='email' name='save_email' value='<?php echo $_POST['save_email']; ?>' />
+                        <?php echo CHtml::inputField('email','save_email',$_POST['save_email']);?>
 			   		</td>
 			   	</tr>
 			  	<tr>
                     <td align='right'><?php $clang->eT("Start language:"); ?></td>
 			   		<td>
-			   			<input type='text' name='save_language' value='<?php echo $_POST['save_language']; ?>' />
+                        <?php echo CHtml::inputField('text','save_language',$_POST['save_language']);?>
 			   		</td>
 			   	</tr>
 			   	<tr>
@@ -40,7 +40,7 @@
 			   		<td>
 			   			<input type='submit' value='<?php $clang->eT("Submit"); ?>' />
 						<input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
-						<input type='hidden' name='subaction' value='<?php echo $_POST['subaction']; ?>' />
+                        <?php echo CHtml::hiddenField('subaction',$_POST['subaction']);?>
 						<input type='hidden' name='language' value='<?php echo $lang; ?>' />
 						<input type='hidden' name='save' value='on' />
 					</td>

@@ -69,9 +69,9 @@ class Assessment extends CActiveRecord
         return $assessment;
     }
 
-    public static function updateAssessment($id, $language, array $data)
+    public static function updateAssessment($id, $iSurveyID, $language, array $data)
     {
-        $assessment = self::model()->findByAttributes(array('id' => $id, 'language' => $language));
+        $assessment = self::model()->findByAttributes(array('id' => $id, 'sid'=> $iSurveyID, 'language' => $language));
         if (!is_null($assessment)) {
             foreach ($data as $k => $v)
                 $assessment->$k = $v;

@@ -93,22 +93,19 @@
 
             <?php
 
-                if (isset($datestamp) && $datestamp == "Y") {
-                    echo "<fieldset id='right'><legend>".$clang->gT("Submission date")."</legend><ul><li>"
-                    ."<label for='datestampE'>".$clang->gT("Equals:")."</label>\n"
-                    ."<input class='popupdate' size='12' id='datestampE' name='datestampE' type='text' value='";
-                    if (isset($_POST['datestampE'])) { echo  $_POST['datestampE']; }
-                    echo "' /></li><li><label for='datestampG'>\n"
-                    ."&nbsp;&nbsp;".$clang->gT("Later than:")."</label>\n"
-                    ."<input class='popupdatetime' size='12' id='datestampG' name='datestampG' value='";
-                    if (isset($_POST['datestampG'])) { echo $_POST['datestampG']; }
-                    echo "' type='text' /></li><li><label for='datestampL'> ".$clang->gT("Earlier than:")."</label>
-                    <input class='popupdatetime' size='12' id='datestampL' name='datestampL' value='";
-                    if (isset($_POST['datestampL'])) { echo $_POST['datestampL']; }
-                    echo "' type='text' /></li></ul></fieldset>\n";
-                    echo "<input type='hidden' name='summary[]' value='datestampE' />";
-                    echo "<input type='hidden' name='summary[]' value='datestampG' />";
-                    echo "<input type='hidden' name='summary[]' value='datestampL' />";
+                if (isset($datestamp) && $datestamp == "Y") {?>
+                    <fieldset id='right'><legend><?php $clang->eT("Submission date"); ?></legend><ul><li>
+                    <label for='datestampE'><?php $clang->eT("Equals:"); ?></label>
+                    <?php echo CHtml::inputField('text','datestampeE',isset($_POST['datestampE'])?$_POST['datestampE']:'',array('id'=>'datestampE', 'class'=>'popupdate'));?>
+                    </li><li><label for='datestampG'><?php $clang->eT("Later than:");?></label>
+                    <?php echo CHtml::inputField('text','datestampG',isset($_POST['datestampG'])?$_POST['datestampG']:'',array('id'=>'datestampG', 'class'=>'popupdate', 'size'=>'12'));?>
+                    </li><li><label for='datestampL'><?php $clang->eT("Earlier than:");?></label>
+                    <?php echo CHtml::inputField('text','datestampL',isset($_POST['datestampL'])?$_POST['datestampL']:'',array('id'=>'datestampL', 'class'=>'popupdate', 'size'=>'12'));?>
+                    </li></ul></fieldset>
+                    <input type='hidden' name='summary[]' value='datestampE' />
+                    <input type='hidden' name='summary[]' value='datestampG' />
+                    <input type='hidden' name='summary[]' value='datestampL' />
+                    <?php
                 }
 
             ?>

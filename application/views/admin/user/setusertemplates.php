@@ -5,7 +5,7 @@
 	<thead>
 	<tr>
 	<th colspan="2" style="background-color:#000; color:#fff;">
-    <?php $clang->eT('Set templates that this user may access');?>: <?php echo $_POST['user'];?></th>
+    <?php $clang->eT('Set templates that this user may access');?>: <?php echo htmlspecialchars(sanitize_user($_POST['user']));?></th>
 	</tr>
 	<?php
     foreach ($list as $data)

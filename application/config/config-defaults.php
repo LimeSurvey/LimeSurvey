@@ -683,7 +683,7 @@ $config['rpc_publish_api'] = 0;
 * session_expiration_time (integer)
 * This parameter sets the default session expiration time in seconds
 */
-$config['session_expiration_time'] = 28800;
+$config['session_expiration_time'] = 7200;
 
 /**
 * This parameter can be used to set some question not selectable in LimeReplacementFiels
