@@ -64,7 +64,7 @@
                 if (hasSurveyPermission($surveyid, 'responses', 'create'))
                 {
                 ?>
-                <a href='<?php echo $this->createUrl("admin/dataentry/import/surveyid/$surveyid"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/dataentry/sa/import/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>importold.png' alt='<?php $clang->eT("Import responses from a deactivated survey table"); ?>' /></a>
                 <?php } ?>
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
@@ -76,7 +76,7 @@
                 <?php }
                 if (hasSurveyPermission($surveyid, 'responses', 'import'))
                 { ?>
-                <a href='<?php echo $this->createUrl("admin/dataentry/vvimport/surveyid/$surveyid"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/dataentry/sa/vvimport/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>importvv.png' alt='<?php $clang->eT("Import a VV survey file"); ?>' /></a>
                 <?php }
                 if (hasSurveyPermission($surveyid, 'responses', 'export'))
@@ -86,7 +86,7 @@
                 <?php }
                 if (hasSurveyPermission($surveyid, 'responses', 'delete') && $thissurvey['anonymized'] == 'N' && $thissurvey['tokenanswerspersistence'] == 'Y')
                 { ?>
-                <a href='<?php echo $this->createUrl("admin/dataentry/iteratesurvey/surveyid/$surveyid"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/dataentry/sa/iteratesurvey/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>iterate.png' title='' alt='<?php $clang->eT("Iterate survey"); ?>' /></a>
                 <?php } ?>
         </div>
