@@ -26,7 +26,7 @@
 
 
                 var saveChanges = false;
-                var sReplacementFieldTitle = '<?php $clang->eT('LameSurvey replacement field properties','js');?>';
+                var sReplacementFieldTitle = '<?php $clang->eT('LimeSurvey replacement field properties','js');?>';
                 var sReplacementFieldButton = '<?php $clang->eT('Insert/edit LimeSurvey replacement field','js');?>';
                 $(document).ready(function(){
                     CKEDITOR.on('instanceReady',CKeditor_OnComplete);
