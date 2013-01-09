@@ -540,7 +540,7 @@ class surveypermission extends Survey_Common_Action {
                 if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
                 {
                     $where .= "sid = :surveyid AND owner_id != :postuserid AND owner_id = :owner_id";
-                    $resrow = Survey::model()->find($where,array(':sid' => $surveyid, ':owner_id' => Yii::app()->session['loginID'], ':postuserid' => $postuserid));
+                    $resrow = Survey::model()->find($where,array(':surveyid' => $surveyid, ':owner_id' => Yii::app()->session['loginID'], ':postuserid' => $postuserid));
                 }
             }
             else{
