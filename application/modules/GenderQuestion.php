@@ -50,7 +50,7 @@ class GenderQuestion extends QuestionModule
         $select_options = array(
         '' => $clang->gT("Please choose").'...',
         'F' => $clang->gT("Female"),
-        'G' => $clang->gT("Male")
+        'M' => $clang->gT("Male")
         );
         return CHtml::listBox($this->fieldname, $idrow[$this->fieldname], $select_options);
     }
