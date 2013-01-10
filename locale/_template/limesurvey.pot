@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-01-09 20:51:52+00:00\n"
+"POT-Creation-Date: 2013-01-10 23:05:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1236,12 +1236,12 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:667
 #: application/helpers/admin/statistics_helper.php:716
 #: application/helpers/admin/statistics_helper.php:1571
-#: application/helpers/admin/statistics_helper.php:1795
-#: application/helpers/admin/statistics_helper.php:2374
-#: application/helpers/admin/statistics_helper.php:2388
-#: application/helpers/admin/statistics_helper.php:2449
-#: application/helpers/admin/statistics_helper.php:2512
-#: application/helpers/admin/statistics_helper.php:2579
+#: application/helpers/admin/statistics_helper.php:1796
+#: application/helpers/admin/statistics_helper.php:2383
+#: application/helpers/admin/statistics_helper.php:2397
+#: application/helpers/admin/statistics_helper.php:2458
+#: application/helpers/admin/statistics_helper.php:2521
+#: application/helpers/admin/statistics_helper.php:2588
 #: application/helpers/common_helper.php:1811
 #: application/helpers/common_helper.php:1819
 #: application/helpers/qanda_helper.php:976
@@ -1324,8 +1324,8 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:838
 #: application/helpers/admin/statistics_helper.php:640
 #: application/helpers/admin/statistics_helper.php:1559
-#: application/helpers/admin/statistics_helper.php:1669
-#: application/helpers/admin/statistics_helper.php:1799
+#: application/helpers/admin/statistics_helper.php:1670
+#: application/helpers/admin/statistics_helper.php:1800
 #: application/helpers/common_helper.php:1795
 #: application/helpers/common_helper.php:1858
 #: application/helpers/common_helper.php:2528
@@ -1492,19 +1492,19 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:1816
 #: application/helpers/admin/statistics_helper.php:666
 #: application/helpers/admin/statistics_helper.php:715
-#: application/helpers/admin/statistics_helper.php:1836
-#: application/helpers/admin/statistics_helper.php:1883
-#: application/helpers/admin/statistics_helper.php:1886
-#: application/helpers/admin/statistics_helper.php:1895
-#: application/helpers/admin/statistics_helper.php:1900
-#: application/helpers/admin/statistics_helper.php:1923
-#: application/helpers/admin/statistics_helper.php:1926
-#: application/helpers/admin/statistics_helper.php:1935
-#: application/helpers/admin/statistics_helper.php:1940
-#: application/helpers/admin/statistics_helper.php:2029
-#: application/helpers/admin/statistics_helper.php:2032
-#: application/helpers/admin/statistics_helper.php:2040
-#: application/helpers/admin/statistics_helper.php:2045
+#: application/helpers/admin/statistics_helper.php:1838
+#: application/helpers/admin/statistics_helper.php:1885
+#: application/helpers/admin/statistics_helper.php:1888
+#: application/helpers/admin/statistics_helper.php:1897
+#: application/helpers/admin/statistics_helper.php:1902
+#: application/helpers/admin/statistics_helper.php:1925
+#: application/helpers/admin/statistics_helper.php:1928
+#: application/helpers/admin/statistics_helper.php:1937
+#: application/helpers/admin/statistics_helper.php:1942
+#: application/helpers/admin/statistics_helper.php:2031
+#: application/helpers/admin/statistics_helper.php:2034
+#: application/helpers/admin/statistics_helper.php:2042
+#: application/helpers/admin/statistics_helper.php:2047
 #: application/helpers/qanda_helper.php:1286
 #: application/helpers/qanda_helper.php:3740
 #: application/helpers/qanda_helper.php:3840
@@ -1680,7 +1680,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:400
 #: application/controllers/admin/statistics.php:121
-#: application/helpers/admin/statistics_helper.php:3201
+#: application/helpers/admin/statistics_helper.php:3210
 msgid "Quick statistics"
 msgstr ""
 
@@ -1695,7 +1695,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:519
 #: application/controllers/admin/dataentry.php:1416
 #: application/controllers/admin/dataentry.php:1540
-#: application/controllers/admin/dataentry.php:2461
+#: application/controllers/admin/dataentry.php:2462
 #: application/views/admin/dataentry/caption_view.php:1
 #: application/views/admin/dataentry/dataentry_header_view.php:1
 #: application/views/admin/dataentry/delete.php:1
@@ -1927,246 +1927,246 @@ msgstr ""
 msgid "An email has been sent with details about your saved survey"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1994
+#: application/controllers/admin/dataentry.php:1995
 msgid "Only answer this if the following conditions are met:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2000
+#: application/controllers/admin/dataentry.php:2001
 msgid "The answer(s) must meet these validation criteria:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2006
+#: application/controllers/admin/dataentry.php:2007
 msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2343
+#: application/controllers/admin/dataentry.php:2344
 #: application/controllers/admin/tokens.php:1757
 #: application/views/admin/participants/importCSV_view.php:17
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2344
+#: application/controllers/admin/dataentry.php:2345
 #: application/controllers/admin/tokens.php:1758
 #: application/views/admin/participants/importCSV_view.php:18
 msgid "US ASCII"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2345
+#: application/controllers/admin/dataentry.php:2346
 #: application/controllers/admin/tokens.php:1759
 #: application/views/admin/participants/importCSV_view.php:19
 msgid "Automatic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2346
+#: application/controllers/admin/dataentry.php:2347
 #: application/controllers/admin/tokens.php:1760
 #: application/views/admin/participants/importCSV_view.php:20
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2347
+#: application/controllers/admin/dataentry.php:2348
 #: application/controllers/admin/tokens.php:1761
 #: application/views/admin/participants/importCSV_view.php:21
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2348
+#: application/controllers/admin/dataentry.php:2349
 #: application/controllers/admin/tokens.php:1762
 #: application/views/admin/participants/importCSV_view.php:22
 msgid "Windows Central European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2349
+#: application/controllers/admin/dataentry.php:2350
 #: application/controllers/admin/tokens.php:1763
 #: application/views/admin/participants/importCSV_view.php:23
 msgid "Windows Cyrillic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2350
+#: application/controllers/admin/dataentry.php:2351
 #: application/controllers/admin/tokens.php:1764
 #: application/views/admin/participants/importCSV_view.php:24
 msgid "Windows Arabic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2351
+#: application/controllers/admin/dataentry.php:2352
 #: application/controllers/admin/tokens.php:1765
 #: application/views/admin/participants/importCSV_view.php:25
 msgid "Windows Baltic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2352
+#: application/controllers/admin/dataentry.php:2353
 #: application/controllers/admin/tokens.php:1766
 #: application/views/admin/participants/importCSV_view.php:26
 msgid "DOS West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2353
+#: application/controllers/admin/dataentry.php:2354
 #: application/controllers/admin/tokens.php:1767
 #: application/views/admin/participants/importCSV_view.php:27
 msgid "DOS Central European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2354
+#: application/controllers/admin/dataentry.php:2355
 #: application/controllers/admin/tokens.php:1768
 #: application/views/admin/participants/importCSV_view.php:28
 msgid "DOS Russian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2355
+#: application/controllers/admin/dataentry.php:2356
 #: application/controllers/admin/tokens.php:1769
 #: application/views/admin/participants/importCSV_view.php:29
 msgid "SJIS for Windows Japanese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2356
+#: application/controllers/admin/dataentry.php:2357
 #: application/controllers/admin/tokens.php:1770
 #: application/views/admin/participants/importCSV_view.php:30
 msgid "DEC West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2357
+#: application/controllers/admin/dataentry.php:2358
 #: application/controllers/admin/tokens.php:1771
 #: application/views/admin/participants/importCSV_view.php:31
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2358
+#: application/controllers/admin/dataentry.php:2359
 #: application/controllers/admin/tokens.php:1772
 #: application/views/admin/participants/importCSV_view.php:32
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2359
+#: application/controllers/admin/dataentry.php:2360
 #: application/controllers/admin/tokens.php:1773
 #: application/views/admin/participants/importCSV_view.php:33
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2360
+#: application/controllers/admin/dataentry.php:2361
 #: application/controllers/admin/tokens.php:1774
 #: application/views/admin/participants/importCSV_view.php:34
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2361
+#: application/controllers/admin/dataentry.php:2362
 #: application/controllers/admin/tokens.php:1775
 #: application/views/admin/participants/importCSV_view.php:35
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2362
+#: application/controllers/admin/dataentry.php:2363
 #: application/controllers/admin/tokens.php:1776
 #: application/views/admin/participants/importCSV_view.php:36
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2363
+#: application/controllers/admin/dataentry.php:2364
 #: application/controllers/admin/tokens.php:1777
 #: application/views/admin/participants/importCSV_view.php:37
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2364
+#: application/controllers/admin/dataentry.php:2365
 #: application/controllers/admin/tokens.php:1778
 #: application/views/admin/participants/importCSV_view.php:38
 msgid "HP West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2365
+#: application/controllers/admin/dataentry.php:2366
 #: application/controllers/admin/tokens.php:1779
 #: application/views/admin/participants/importCSV_view.php:39
 msgid "DOS Kamenicky Czech-Slovak"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2366
+#: application/controllers/admin/dataentry.php:2367
 #: application/controllers/admin/tokens.php:1780
 #: application/views/admin/participants/importCSV_view.php:40
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2367
+#: application/controllers/admin/dataentry.php:2368
 #: application/controllers/admin/tokens.php:1781
 #: application/views/admin/participants/importCSV_view.php:41
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2368
+#: application/controllers/admin/dataentry.php:2369
 #: application/controllers/admin/tokens.php:1782
 #: application/views/admin/participants/importCSV_view.php:42
 msgid "cp1252 West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2369
+#: application/controllers/admin/dataentry.php:2370
 #: application/controllers/admin/tokens.php:1783
 #: application/views/admin/participants/importCSV_view.php:43
 msgid "ISO 8859-2 Central European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2370
+#: application/controllers/admin/dataentry.php:2371
 #: application/controllers/admin/tokens.php:1784
 #: application/views/admin/participants/importCSV_view.php:44
 msgid "ISO 8859-9 Turkish"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2371
+#: application/controllers/admin/dataentry.php:2372
 #: application/controllers/admin/tokens.php:1785
 #: application/views/admin/participants/importCSV_view.php:45
 msgid "ISO 8859-13 Baltic"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2372
+#: application/controllers/admin/dataentry.php:2373
 #: application/controllers/admin/tokens.php:1786
 #: application/views/admin/participants/importCSV_view.php:46
 msgid "Mac Central European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2373
+#: application/controllers/admin/dataentry.php:2374
 #: application/controllers/admin/tokens.php:1787
 #: application/views/admin/participants/importCSV_view.php:47
 msgid "Mac West European"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2374
+#: application/controllers/admin/dataentry.php:2375
 #: application/controllers/admin/tokens.php:1788
 #: application/views/admin/participants/importCSV_view.php:48
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2375
+#: application/controllers/admin/dataentry.php:2376
 #: application/controllers/admin/tokens.php:1789
 #: application/views/admin/participants/importCSV_view.php:49
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2376
+#: application/controllers/admin/dataentry.php:2377
 #: application/controllers/admin/tokens.php:1790
 #: application/views/admin/participants/importCSV_view.php:50
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2377
+#: application/controllers/admin/dataentry.php:2378
 #: application/controllers/admin/tokens.php:1791
 #: application/views/admin/participants/importCSV_view.php:51
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2378
+#: application/controllers/admin/dataentry.php:2379
 #: application/controllers/admin/tokens.php:1792
 #: application/views/admin/participants/importCSV_view.php:52
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2379
+#: application/controllers/admin/dataentry.php:2380
 #: application/controllers/admin/tokens.php:1793
 #: application/views/admin/participants/importCSV_view.php:53
 msgid "UTF-8 Unicode"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2436
+#: application/controllers/admin/dataentry.php:2437
 #: application/controllers/admin/printablesurvey.php:1961
 msgid "Only answer this question for the items you selected in question %s ('%s')"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2444
+#: application/controllers/admin/dataentry.php:2445
 #: application/controllers/admin/printablesurvey.php:1969
 msgid "Only answer this question for the items you did not select in question %s ('%s')"
 msgstr ""
@@ -4352,7 +4352,7 @@ msgid "This question has a condition set, however the condition is based on a qu
 msgstr ""
 
 #: application/helpers/admin/exportresults_helper.php:1687
-#: application/helpers/admin/statistics_helper.php:3190
+#: application/helpers/admin/statistics_helper.php:3199
 msgid "page"
 msgstr ""
 
@@ -4522,7 +4522,7 @@ msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:197
 #: application/helpers/admin/statistics_helper.php:1564
-#: application/helpers/admin/statistics_helper.php:1799
+#: application/helpers/admin/statistics_helper.php:1800
 msgid "Comments"
 msgstr ""
 
@@ -4586,22 +4586,22 @@ msgid "Result"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:1040
-#: application/helpers/admin/statistics_helper.php:1883
-#: application/helpers/admin/statistics_helper.php:1889
-#: application/helpers/admin/statistics_helper.php:1895
-#: application/helpers/admin/statistics_helper.php:1906
-#: application/helpers/admin/statistics_helper.php:2668
-#: application/helpers/admin/statistics_helper.php:2672
-#: application/helpers/admin/statistics_helper.php:2684
-#: application/helpers/admin/statistics_helper.php:2690
+#: application/helpers/admin/statistics_helper.php:1885
+#: application/helpers/admin/statistics_helper.php:1891
+#: application/helpers/admin/statistics_helper.php:1897
+#: application/helpers/admin/statistics_helper.php:1908
+#: application/helpers/admin/statistics_helper.php:2677
+#: application/helpers/admin/statistics_helper.php:2681
+#: application/helpers/admin/statistics_helper.php:2693
+#: application/helpers/admin/statistics_helper.php:2699
 msgid "Sum"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:1041
-#: application/helpers/admin/statistics_helper.php:2849
-#: application/helpers/admin/statistics_helper.php:2856
-#: application/helpers/admin/statistics_helper.php:2863
-#: application/helpers/admin/statistics_helper.php:2870
+#: application/helpers/admin/statistics_helper.php:2858
+#: application/helpers/admin/statistics_helper.php:2865
+#: application/helpers/admin/statistics_helper.php:2872
+#: application/helpers/admin/statistics_helper.php:2879
 msgid "Standard deviation"
 msgstr ""
 
@@ -4610,20 +4610,20 @@ msgid "Average"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:1059
-#: application/helpers/admin/statistics_helper.php:1836
-#: application/helpers/admin/statistics_helper.php:1852
-#: application/helpers/admin/statistics_helper.php:1883
-#: application/helpers/admin/statistics_helper.php:1887
-#: application/helpers/admin/statistics_helper.php:1895
-#: application/helpers/admin/statistics_helper.php:1902
-#: application/helpers/admin/statistics_helper.php:1923
-#: application/helpers/admin/statistics_helper.php:1927
-#: application/helpers/admin/statistics_helper.php:1935
-#: application/helpers/admin/statistics_helper.php:1942
-#: application/helpers/admin/statistics_helper.php:2029
-#: application/helpers/admin/statistics_helper.php:2033
-#: application/helpers/admin/statistics_helper.php:2040
-#: application/helpers/admin/statistics_helper.php:2047
+#: application/helpers/admin/statistics_helper.php:1838
+#: application/helpers/admin/statistics_helper.php:1854
+#: application/helpers/admin/statistics_helper.php:1885
+#: application/helpers/admin/statistics_helper.php:1889
+#: application/helpers/admin/statistics_helper.php:1897
+#: application/helpers/admin/statistics_helper.php:1904
+#: application/helpers/admin/statistics_helper.php:1925
+#: application/helpers/admin/statistics_helper.php:1929
+#: application/helpers/admin/statistics_helper.php:1937
+#: application/helpers/admin/statistics_helper.php:1944
+#: application/helpers/admin/statistics_helper.php:2031
+#: application/helpers/admin/statistics_helper.php:2035
+#: application/helpers/admin/statistics_helper.php:2042
+#: application/helpers/admin/statistics_helper.php:2049
 msgid "Count"
 msgstr ""
 
@@ -4661,9 +4661,9 @@ msgid "minitab method"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:1143
-#: application/helpers/admin/statistics_helper.php:1808
-#: application/helpers/admin/statistics_helper.php:1843
-#: application/helpers/admin/statistics_helper.php:3365
+#: application/helpers/admin/statistics_helper.php:1810
+#: application/helpers/admin/statistics_helper.php:1845
+#: application/helpers/admin/statistics_helper.php:3374
 msgid "Browse"
 msgstr ""
 
@@ -4680,8 +4680,8 @@ msgstr ""
 msgid "Label %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1812
-#: application/helpers/admin/statistics_helper.php:1859
+#: application/helpers/admin/statistics_helper.php:1814
+#: application/helpers/admin/statistics_helper.php:1861
 #: application/views/admin/assessments_view.php:9
 #: application/views/admin/saved/savedlist_view.php:5
 #: application/views/admin/survey/Question/questionbar_view.php:12
@@ -4691,44 +4691,44 @@ msgstr ""
 msgid "ID"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1812
-#: application/helpers/admin/statistics_helper.php:1859
+#: application/helpers/admin/statistics_helper.php:1814
+#: application/helpers/admin/statistics_helper.php:1861
 msgid "Response"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1836
-#: application/helpers/admin/statistics_helper.php:1854
-#: application/helpers/admin/statistics_helper.php:1883
-#: application/helpers/admin/statistics_helper.php:1888
-#: application/helpers/admin/statistics_helper.php:1895
-#: application/helpers/admin/statistics_helper.php:1904
-#: application/helpers/admin/statistics_helper.php:1923
-#: application/helpers/admin/statistics_helper.php:1928
-#: application/helpers/admin/statistics_helper.php:1935
-#: application/helpers/admin/statistics_helper.php:1944
-#: application/helpers/admin/statistics_helper.php:2029
-#: application/helpers/admin/statistics_helper.php:2034
-#: application/helpers/admin/statistics_helper.php:2040
-#: application/helpers/admin/statistics_helper.php:2049
+#: application/helpers/admin/statistics_helper.php:1838
+#: application/helpers/admin/statistics_helper.php:1856
+#: application/helpers/admin/statistics_helper.php:1885
+#: application/helpers/admin/statistics_helper.php:1890
+#: application/helpers/admin/statistics_helper.php:1897
+#: application/helpers/admin/statistics_helper.php:1906
+#: application/helpers/admin/statistics_helper.php:1925
+#: application/helpers/admin/statistics_helper.php:1930
+#: application/helpers/admin/statistics_helper.php:1937
+#: application/helpers/admin/statistics_helper.php:1946
+#: application/helpers/admin/statistics_helper.php:2031
+#: application/helpers/admin/statistics_helper.php:2036
+#: application/helpers/admin/statistics_helper.php:2042
+#: application/helpers/admin/statistics_helper.php:2051
 msgid "Percentage"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2157
-#: application/helpers/admin/statistics_helper.php:2189
-#: application/helpers/admin/statistics_helper.php:2237
+#: application/helpers/admin/statistics_helper.php:2159
+#: application/helpers/admin/statistics_helper.php:2191
+#: application/helpers/admin/statistics_helper.php:2239
 msgid "Not completed or Not displayed"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2161
-#: application/helpers/admin/statistics_helper.php:2193
-#: application/helpers/admin/statistics_helper.php:2241
+#: application/helpers/admin/statistics_helper.php:2163
+#: application/helpers/admin/statistics_helper.php:2195
+#: application/helpers/admin/statistics_helper.php:2243
 msgid "Not displayed"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2668
-#: application/helpers/admin/statistics_helper.php:2672
-#: application/helpers/admin/statistics_helper.php:2684
-#: application/helpers/admin/statistics_helper.php:2690
+#: application/helpers/admin/statistics_helper.php:2677
+#: application/helpers/admin/statistics_helper.php:2681
+#: application/helpers/admin/statistics_helper.php:2693
+#: application/helpers/admin/statistics_helper.php:2699
 #: application/views/admin/quotas/viewquotasrow_view.php:48
 #: application/views/admin/survey/Question/import_view.php:11
 #: application/views/admin/survey/QuestionGroups/import_view.php:12
@@ -4737,49 +4737,49 @@ msgstr ""
 msgid "Answers"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2669
-#: application/helpers/admin/statistics_helper.php:2677
-#: application/helpers/admin/statistics_helper.php:2685
-#: application/helpers/admin/statistics_helper.php:2696
+#: application/helpers/admin/statistics_helper.php:2678
+#: application/helpers/admin/statistics_helper.php:2686
+#: application/helpers/admin/statistics_helper.php:2694
+#: application/helpers/admin/statistics_helper.php:2705
 msgid "Number of cases"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2848
-#: application/helpers/admin/statistics_helper.php:2852
-#: application/helpers/admin/statistics_helper.php:2862
-#: application/helpers/admin/statistics_helper.php:2868
+#: application/helpers/admin/statistics_helper.php:2857
+#: application/helpers/admin/statistics_helper.php:2861
+#: application/helpers/admin/statistics_helper.php:2871
+#: application/helpers/admin/statistics_helper.php:2877
 msgid "Arithmetic mean"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2992
+#: application/helpers/admin/statistics_helper.php:3001
 msgid "Disable chart"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2993
+#: application/helpers/admin/statistics_helper.php:3002
 msgid "Enable chart"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2994
+#: application/helpers/admin/statistics_helper.php:3003
 msgid "Display as bar chart"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2995
+#: application/helpers/admin/statistics_helper.php:3004
 msgid "Display as pie chart"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2996
+#: application/helpers/admin/statistics_helper.php:3005
 msgid "Disable map display"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2997
+#: application/helpers/admin/statistics_helper.php:3006
 msgid "Enable map display"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3173
+#: application/helpers/admin/statistics_helper.php:3182
 msgid "Statistics survey %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3175
+#: application/helpers/admin/statistics_helper.php:3184
 #: application/helpers/common_helper.php:3443
 #: application/helpers/common_helper.php:3454
 #: application/helpers/common_helper.php:3465
@@ -4789,40 +4789,40 @@ msgstr ""
 msgid "Statistics"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3175
+#: application/helpers/admin/statistics_helper.php:3184
 msgid "Survey %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3201
-#: application/helpers/admin/statistics_helper.php:3317
-#: application/helpers/admin/statistics_helper.php:3439
+#: application/helpers/admin/statistics_helper.php:3210
+#: application/helpers/admin/statistics_helper.php:3326
+#: application/helpers/admin/statistics_helper.php:3448
 #: application/views/admin/participants/displayParticipants_view.php:298
 #: application/views/admin/survey/listSurveys_view.php:42
 #: application/views/admin/survey/surveybar_view.php:3
 msgid "Survey"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3289
-#: application/helpers/admin/statistics_helper.php:3308
-#: application/helpers/admin/statistics_helper.php:3327
+#: application/helpers/admin/statistics_helper.php:3298
+#: application/helpers/admin/statistics_helper.php:3317
+#: application/helpers/admin/statistics_helper.php:3336
 msgid "Number of records in this query:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3292
-#: application/helpers/admin/statistics_helper.php:3309
-#: application/helpers/admin/statistics_helper.php:3329
+#: application/helpers/admin/statistics_helper.php:3301
+#: application/helpers/admin/statistics_helper.php:3318
+#: application/helpers/admin/statistics_helper.php:3338
 msgid "Total records in survey:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3298
-#: application/helpers/admin/statistics_helper.php:3312
-#: application/helpers/admin/statistics_helper.php:3336
+#: application/helpers/admin/statistics_helper.php:3307
+#: application/helpers/admin/statistics_helper.php:3321
+#: application/helpers/admin/statistics_helper.php:3345
 msgid "Percentage of total:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3316
-#: application/helpers/admin/statistics_helper.php:3317
+#: application/helpers/admin/statistics_helper.php:3325
 #: application/helpers/admin/statistics_helper.php:3326
+#: application/helpers/admin/statistics_helper.php:3335
 msgid "Results"
 msgstr ""
 
