@@ -60,6 +60,26 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130108) to 2.00+ (build 130110) Jan 10, 2013
+-Fixed issue #7074: Cannot properly browse comments in statistics for Multiple choice with comments (Carsten Schmitz)
+-Fixed issue #7130: Cryptic validation criteria shown in data entry mode (Carsten Schmitz)
+-Fixed issue #7146: Security issues (Carsten Schmitz)
+-Fixed issue #7147: Unable to set survey permissions for non-admin users (Carsten Schmitz)
+-Fixed issue #7155: Survey deactivation doesn't update activation/deactivation icons (Carsten Schmitz)
+-Fixed issue #7163: when editing gender in data entry screen cannot select male option. when male option selected get no answer [G] (tpartner)
+-Fixed issue #7170: Missing jquery file (Carsten Schmitz)
+-Fixed issue: Data entry not working on non-Apache servers (Carsten Schmitz)
+-Fixed issue: Repeated survey activation not possible on Postgres (Carsten Schmitz)
+#Updated translation: Arabic by ysaad, mdchaara
+#Updated translation: Chinese (Simplified) by aifie, yanglaw
+#Updated translation: Croatian by rsedak, rovinj
+#Updated translation: Italian by lfanfoni
+#Updated translation: Kurdish (Sorani) by Daban88
+#Updated translation: Lithuanian by simasj, justasg
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Spanish (Spain) by larjona, valdomir
+
 
 Changes from 2.00+ (build 130103) to 2.00+ (build 130108) Jan 8, 2013
 -New feature: Kurdish (Sorani) translation by havalabdulkarim, bryar1991
