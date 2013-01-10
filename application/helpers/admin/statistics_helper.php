@@ -1659,6 +1659,7 @@ class statistics_helper {
                 break;
         }
         //loop though the array which contains all answer data
+        $ColumnName_RM=array();
         foreach ($outputs['alist'] as $al)
         {
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
@@ -1798,20 +1799,21 @@ class statistics_helper {
             //"Answers" means that we show an option to list answer to "other" text field
             elseif ($al[0] === $statlang->gT("Other") || $al[0] === "Answers" || ($outputs['qtype'] === "O" && $al[0] === $statlang->gT("Comments")) || $outputs['qtype'] === "P")
             {
-                if ($outputs['qtype'] == "P") $ColumnName_RM = $al[2]."comment";
-                else  $ColumnName_RM = $al[2];
+                if ($outputs['qtype'] == "P") $sColumnName = $al[2]."comment";
+                else  $sColumnName = $al[2];
+                $ColumnName_RM[]=$sColumnName;
                 if ($outputs['qtype']=='O') {
                     $TotalCompleted -=$row;
                 }
                 $fname="$al[1]";
                 if ($browse===true) $fname .= " <input type='button' class='statisticsbrowsebutton' value='"
-                    .$statlang->gT("Browse")."' id='$ColumnName_RM' />";
+                    .$statlang->gT("Browse")."' id='$sColumnName' />";
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array($statlang->gT("ID"),$statlang->gT("Response"));
                     $tablePDF2 = array();
-                    $result2= $this->_listcolumn($surveyid,$ColumnName_RM);
+                    $result2= $this->_listcolumn($surveyid,$sColumnName);
 
                     foreach ($result2 as $row2)
                     {
@@ -1840,7 +1842,7 @@ class statistics_helper {
                 {
                     $fname= "$al[1]";
                     if ($browse===true) $fname .= " <input type='button'  class='statisticsbrowsebutton' value='"
-                        . $statlang->gT("Browse")."' id='$ColumnName_RM' />";
+                        . $statlang->gT("Browse")."' id='$sColumnName' />";
                 }
                 elseif ($al[0] == "NoAnswer")
                 {
@@ -1858,7 +1860,7 @@ class statistics_helper {
                     $headPDF2 = array();
                     $headPDF2[] = array($statlang->gT("ID"),$statlang->gT("Response"));
                     $tablePDF2 = array();
-                    $result2= $this->_listcolumn($surveyid,$ColumnName_RM);
+                    $result2= $this->_listcolumn($surveyid,$sColumnName);
 
                     foreach ($result2 as $row2)
                     {
@@ -2291,8 +2293,15 @@ class statistics_helper {
             * */
             if(strpos($label[$i], "class='statisticsbrowsebutton'"))
             {
-                $extraline="<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
-                <div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM}'></div></td></tr>\n";
+                $extraline="<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>";
+                if ($outputs['qtype']=='P')
+                {
+                    $extraline.="<div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM[$i]}'></div></td></tr>\n";
+                }
+                else
+                {
+                    $extraline.="<div class='statisticsbrowsecolumn' id='columnlist_{$sColumnName}'></div></td></tr>\n";
+                }
             }
 
             //output absolute number of records
