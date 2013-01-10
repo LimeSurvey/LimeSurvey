@@ -54,7 +54,7 @@
 
 
 
-            popup = window.open('<?php echo $this->createUrl('admin/htmleditor_pop/index'); ?>/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/<?php echo $clang->getlangcode(); ?>','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
+            popup = window.open('<?php echo $this->createUrl('admin/htmleditor_pop/sa/index'); ?>/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/<?php echo $clang->getlangcode(); ?>','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
 
             editorwindowsHash[fieldname] = popup;
         }
