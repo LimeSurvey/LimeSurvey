@@ -557,7 +557,7 @@ class SurveyAdmin extends Survey_Common_Action
         $params[':sid']=$intSurveyId;
         if (!hasGlobalPermission("USER_RIGHT_SUPERADMIN"))
         {
-            $query_condition .= 'AND owner_id=:uid';
+            $query_condition .= ' AND owner_id=:uid';
             $params[':uid']=$owner_id;
         }
 
