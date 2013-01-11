@@ -3204,9 +3204,8 @@ class statistics_helper {
             $this->pdf->setFooterFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_DATA));
 
             // set default header data 
-            $headerlogo = 'statistics.png';
-            // when png crashes, try uncommenting next line
-            //$headerlogo = '';
+            // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
+            $headerlogo = 'statistics.gif';
             $this->pdf->SetHeaderData($headerlogo, 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
             $this->pdf->SetFont($pdfdefaultfont, '', $pdffontsize);
             // set default monospaced font
