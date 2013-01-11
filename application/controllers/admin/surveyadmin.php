@@ -525,7 +525,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         header('Content-type: application/json');
 
-        $result = User::model()->findAll();
+        $result = getUserList();
 
         $aUsers = array();
         if (count($result) > 0)
