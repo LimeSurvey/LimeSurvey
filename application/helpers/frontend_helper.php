@@ -883,49 +883,45 @@ function submittokens($quotaexit = false) {
     $today        = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
     // check how many uses the token has left
-    $usesquery  = "SELECT usesleft, participant_id, tid FROM {{tokens_$surveyid}} WHERE token='" . $clienttoken . "'";
-    $usesresult = dbExecuteAssoc($usesquery);
-    $usesrow    = $usesresult->read();
-    $usesresult->close();
-    if (isset($usesrow)) {
-        $usesleft       = $usesrow['usesleft'];
-        $participant_id = $usesrow['participant_id'];
-        $token_id       = $usesrow['tid'];
+    $usesrow = Tokens_dynamic::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+    if (!is_null($usesrow)) {
+            $usesleft = $usesrow->usesleft;
+            $participant_id = isset($usesrow->participant_id) ? $usesrow->participant_id : '';
     }
 
-    $utquery = "UPDATE {{tokens_$surveyid}}\n";
-    if ($quotaexit == true) {
-        $utquery .= "SET completed='Q', usesleft=usesleft-1\n";
-    } elseif (isTokenCompletedDatestamped($thissurvey)) {
-        if (isset($usesleft) && $usesleft <= 1) {
-            $utquery .= "SET usesleft=usesleft-1, completed='$today'\n";
-            if (!empty($participant_id)) {
-                //Update the survey_links table if necessary
-                $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid' => $participant_id, ':sid' => $surveyid, ':tid' => $token_id));
-                if (!is_null($slquery)) {
-                    $slquery->date_completed = $today;
-                    $slquery->save();
-                }
+    if ($quotaexit==true)
+    {
+        $usesrow->completed = 'Q';
+        $usesrow->usesleft = $usesrow->usesleft-1;
+    }
+    else
+    {        
+        if (isset($usesleft) && $usesleft<=1)
+        {
+            // Finish the token
+            if (isTokenCompletedDatestamped($thissurvey))
+            {
+                $usesrow->completed = $today;
+            } else {
+                $usesrow->completed = 'Y';
             }
-        } else {
-            $utquery .= "SET usesleft=usesleft-1\n";
-        }
-    } else {
-        if (isset($usesleft) && $usesleft <= 1) {
-            $utquery .= "SET usesleft=usesleft-1, completed='Y'\n";
-            if (!empty($participant_id)) {
-                //Update the survey_links table if necessary, to protect anonymity, use the date_created field date
-                $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'                   => $participant_id, ':sid'                   => $surveyid, ':tid'                   => $token_id));
-                $slquery->date_completed = $slquery->date_created;
+            if(!empty($participant_id))
+            {
+                $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$usesrow->tid));
+
+                if (isTokenCompletedDatestamped($thissurvey))
+                {
+                    $slquery->date_completed = $today;
+                } else {
+                    // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
+                    $slquery->date_completed = $slquery->date_created;    
+                }                    
                 $slquery->save();
             }
-        } else {
-            $utquery .= "SET usesleft=usesleft-1\n";
         }
+        $usesrow->usesleft = $usesrow->usesleft-1;
     }
-    $utquery .= "WHERE token='" . $clienttoken . "'";
-
-    $utresult = dbExecuteAssoc($utquery) or safeDie("Couldn't update tokens table!<br />\n$utquery<br />\n");     //Checked
+    $usesrow->save();
 
     if ($quotaexit == false) {
         // TLR change to put date into sent and completed
