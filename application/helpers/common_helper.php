@@ -6449,12 +6449,13 @@ function json_decode_ls($jsonString)
 {
    $decoded = json_decode($jsonString, true);
 
-   if (json_last_error() === JSON_ERROR_SYNTAX) {
-       // probably we need stipslahes
-       $decoded = json_decode(stripslashes($jsonString), true);
-   }
+    if (is_null($decoded) && !empty($jsonString))
+    {
+        // probably we need stipslahes
+        $decoded = json_decode(stripslashes($jsonString), true);
+    }
 
-   return $decoded;
+    return $decoded;
 }
 
 /**
