@@ -452,7 +452,8 @@ class Statistics_userController extends LSYii_Controller {
             $data['sTemplatePath'] = validateTemplateDir($thissurvey['templatedir']);
         }
         
-        
+        $redata = compact(array_keys(get_defined_vars()));
+        $data['redata'] = $redata;
         header_includes('statistics_user.js');
 		$this->render('/statistics_user_view',$data);
 
