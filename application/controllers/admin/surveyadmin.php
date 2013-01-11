@@ -1523,7 +1523,7 @@ class SurveyAdmin extends Survey_Common_Action
             $sTemplate = $_POST['template'];
             if (!$sTemplate || (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights(Yii::app()->session['loginID'], $_POST['template'])))
             {
-                $sTemplate = "default";
+                $sTemplate = Yii::app()->getConfig('defaulttemplate');
             }
 
             Yii::app()->loadHelper("surveytranslator");

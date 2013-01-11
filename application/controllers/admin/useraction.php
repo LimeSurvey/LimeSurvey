@@ -110,13 +110,6 @@ class UserAction extends Survey_Common_Action
                 $sresult = User::model()->getAllRecords(array('uid' => $iNewUID));
                 $srow = count($sresult);
 
-                $userlist = getUserList();
-                array_push($userlist, array("user" => $srow['users_name'], "uid" => $srow['uid'], "email" => $srow['email'],
-                "password" => $srow["password"], "parent_id" => $srow['parent_id'], // "level"=>$level,
-                "create_survey" => $srow['create_survey'], "participant_panel" => $srow['participant_panel'], "configurator" => $srow['configurator'], "create_user" => $srow['create_user'],
-                "delete_user" => $srow['delete_user'], "superadmin" => $srow['superadmin'], "manage_template" => $srow['manage_template'],
-                "manage_label" => $srow['manage_label']));
-
                 // send Mail
                 $body = sprintf($clang->gT("Hello %s,"), $new_full_name) . "<br /><br />\n";
                 $body .= sprintf($clang->gT("this is an automated email to notify that a user has been created for you on the site '%s'."), Yii::app()->getConfig("sitename")) . "<br /><br />\n";
@@ -466,67 +459,24 @@ class UserAction extends Survey_Common_Action
             $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
             $sresultcount = count($sresult);
 
-            if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && $sresultcount > 0) { // Not Admin, just a user with childs
+            if ($sresultcount > 0 || User::GetUserRights('superadmin')) 
+            { // User (non super admin) can not modifiy other admin created user
+                $thisUserRights=User::GetUserRights();
+                $thisUserRights['superadmin']=$thisUserRights['initialsuperadmin'];
                 $rights = array();
-
-                $rights['create_survey'] = (isset($_POST['create_survey']) && Yii::app()->session['USER_RIGHT_CREATE_SURVEY'])
-                ? 1 : 0;
-                $rights['configurator'] = (isset($_POST['configurator']) && Yii::app()->session['USER_RIGHT_CONFIGURATOR'])
-                ? 1 : 0;
-                $rights['create_user'] = (isset($_POST['create_user']) && Yii::app()->session['USER_RIGHT_CREATE_USER'])
-                ? 1 : 0;
-                $rights['participant_panel'] = (isset($_POST['participant_panel']) && Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'])
-                ? 1 : 0;
-                $rights['delete_user'] = (isset($_POST['delete_user']) && Yii::app()->session['USER_RIGHT_DELETE_USER'])
-                ? 1 : 0;
-                $rights['manage_template'] = (isset($_POST['manage_template']) && Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'])
-                ? 1 : 0;
-                $rights['manage_label'] = (isset($_POST['manage_label']) && Yii::app()->session['USER_RIGHT_MANAGE_LABEL'])
-                ? 1 : 0;
-
-                $rights['superadmin'] = 0; // ONLY Initial Superadmin can give this right
-
-                if ($postuserid != 1)
-                    setUserRights($postuserid, $rights);
-            }
-            elseif (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
-            {
-                $rights = array();
-
-                // Only Initial Superadmin can give this right
-                if (isset($_POST['superadmin'])) {
-                    // Am I original Superadmin ?
-                    // Initial SuperAdmin has parent_id == 0
-                    $adminresult = User::model()->getuidfromparentid('0');
-                    $row = $adminresult;
-                    if ($row['uid'] == Yii::app()->session['loginID']) // it's the original superadmin !!!
-                    {
-                        $rights['superadmin'] = 1;
-                    }
-                    else
-                    {
-                        $rights['superadmin'] = 0;
-                    }
-                }
-                else
+                foreach($thisUserRights as $userRight => $thisUserRight)
                 {
-                    $rights['superadmin'] = 0;
+                    $rights[$userRight]=(isset($_POST[$userRight]) && $thisUserRight) ? 1 : 0;
                 }
+                $rights['superadmin'] = ($rights['superadmin'] && $thisUserRights['initialsuperadmin']) ? 1 : 0; // ONLY Initial Superadmin can give this right
 
-                $rights['create_survey'] = (isset($_POST['create_survey']) || $rights['superadmin']) ? 1 : 0;
-                $rights['configurator'] = (isset($_POST['configurator']) || $rights['superadmin']) ? 1 : 0;
-                $rights['create_user'] = (isset($_POST['create_user']) || $rights['superadmin']) ? 1 : 0;
-                $rights['participant_panel'] = (isset($_POST['participant_panel']) || $rights['superadmin']) ? 1 : 0;
-                $rights['delete_user'] = (isset($_POST['delete_user']) || $rights['superadmin']) ? 1 : 0;
-                $rights['manage_template'] = (isset($_POST['manage_template']) || $rights['superadmin']) ? 1 : 0;
-                $rights['manage_label'] = (isset($_POST['manage_label']) || $rights['superadmin']) ? 1 : 0;
 
-                setUserRights($postuserid, $rights);
+                if (!User::GetUserRights('initialsuperadmin',$postuserid))// This can not be happened
+                    User::setUserRights($postuserid, $rights);
             }
             else
             {
-                echo accessDenied('userrights');
-                die();
+                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("You are not allowed to change this user permissions!"), 'warningheader');
             }
             $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("User permissions were updated successfully."), 'successheader');
         }

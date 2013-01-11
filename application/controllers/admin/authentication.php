@@ -46,7 +46,7 @@ class Authentication extends Survey_Common_Action
                 {
                     Failed_login_attempts::model()->deleteAttempts();
 
-                    $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
+                    $this->getController()->_setSessionUserRights();
                     Yii::app()->session['just_logged_in'] = true;
                     Yii::app()->session['loginsummary'] = $this->_getSummary();
                     $this->_doRedirect();

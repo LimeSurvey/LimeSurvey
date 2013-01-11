@@ -291,15 +291,8 @@ function hasGlobalPermission($sPermission)
 {
     if (!Yii::app()->user->getIsGuest()) $iUID = !Yii::app()->user->getId();
     else return false;
-    if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
-    if (Yii::app()->session[$sPermission]==1)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    $sPermission=substr($sPermission,11);// Remove "USER_RIGHT_"
+    return User::GetUserRights($sPermission);
 
 }
 
@@ -1027,16 +1020,7 @@ function getUserList($outputformat='fullinfoarray')
     {
         if (isset($myuid))
         {
-            $sDatabaseType = Yii::app()->db->getDriverName();
-            if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv")
-            {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,create_survey,participant_panel,configurator,create_user,delete_user,superadmin,manage_template,manage_label,CAST(password as varchar) as password';
-            }
-            else
-            {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,create_survey,participant_panel,configurator,create_user,delete_user,superadmin,manage_template,manage_label,password';
-            }
-
+            $sSelectFields = 'users_name,uid,email,full_name,parent_id';
             // List users from same group as me + all my childs
             // a subselect is used here because MSSQL does not like to group by text
             // also Postgres does like this one better
@@ -1080,11 +1064,11 @@ function getUserList($outputformat='fullinfoarray')
         {
             if ($srow['uid'] != Yii::app()->session['loginID'])
             {
-                $userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "participant_panel"=>$srow['participant_panel'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);           //added by Dennis modified by Moses
+                $userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id']);
             }
             else
             {
-                $userlist[0] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'],"participant_panel"=>$srow['participant_panel'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);
+                $userlist[0] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id']);
             }
         }
         else
@@ -2000,17 +1984,7 @@ function hasFileUploadQuestion($surveyid) {
 */
 function setUserRights($uid, $rights)
 {
-    $uid=sanitize_int($uid);
-    $updates = "create_survey=".$rights['create_survey']
-    . ", create_user=".$rights['create_user']
-    . ", participant_panel=".$rights['participant_panel']
-    . ", delete_user=".$rights['delete_user']
-    . ", superadmin=".$rights['superadmin']
-    . ", configurator=".$rights['configurator']
-    . ", manage_template=".$rights['manage_template']
-    . ", manage_label=".$rights['manage_label'];
-    $uquery = "UPDATE {{users}} SET ".$updates." WHERE uid = ".$uid;
-    return dbSelectLimitAssoc($uquery);     //Checked
+    User::model()->setUserRights($uid, $rights);
 }
 
 /**
@@ -6333,15 +6307,15 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
         $authorizedUsersList = getUserList('onlyuidarray');
     }
 
-        foreach($aSurveyIDResult as $sv)
+    foreach($aSurveyIDResult as $sv)
+    {
+        if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
+        in_array($sv['uid'],$authorizedUsersList))
         {
-            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
-            in_array($sv['uid'],$authorizedUsersList))
-            {
-                $surveyselecter .= "<option";
-                $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
-            }
+            $surveyselecter .= "<option";
+            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
         }
+    }
     if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;}
     else {$surveyselecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
 

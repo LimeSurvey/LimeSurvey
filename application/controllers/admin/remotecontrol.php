@@ -2369,7 +2369,7 @@ class remotecontrol_handle
             Yii::app()->session[$k] = $v;
         Yii::app()->user->setId($aUserData['uid']);
 
-        $this->controller->_GetSessionUserRights($aUserData['uid']);
+        $this->controller->_setSessionUserRights();
         return true;
     }
 

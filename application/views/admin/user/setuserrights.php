@@ -34,7 +34,7 @@ $RightLabels=array(
                 }?>
                 <li>
                     <label for='<?php echo $userright; ?>' class='<?php echo $labelclass; ?>'><?php echo $RightLabels[$userright]; ?></label>
-                    <?php echo CHtml::checkBox($userright,$user[$userright],array('value'=>$userright,'class'=>'checkboxbtn $inputclass')); ?>
+                    <?php echo CHtml::checkBox($userright,$user[$userright],array('value'=>$userright,'class'=>"checkboxbtn {$inputclass}")); ?>
                 </li>
             <?php } ?>
             </ul>

@@ -125,7 +125,7 @@ class AdminController extends LSYii_Controller
         Yii::app()->setLang($this->lang);
 
         if (!empty($this->user_id))
-            $this->_GetSessionUserRights($this->user_id);
+            $this->_setSessionUserRights($this->user_id);
     }
 
     /**
@@ -221,46 +221,30 @@ class AdminController extends LSYii_Controller
     * Set Session User Rights
     *
     * @access public
-    * @param integer $iLoginID
-    * @return void
+    * @return boolean
     */
-    public function _GetSessionUserRights($iLoginID)
+    public function _setSessionUserRights()
     {
+        $iLoginID=Yii::app()->user->getId();
+        if(!$iLoginID)
+            return false;
         $oUser = User::model()->findByPk($iLoginID);
-
-        if (!empty($oUser))
+        if(!$oUser)
+            return false;
+        $userrights=array();
+        foreach(User::$UserRights as $right)
         {
-            Yii::app()->session['USER_RIGHT_SUPERADMIN']        = $oUser->superadmin;
-            Yii::app()->session['USER_RIGHT_CREATE_SURVEY']     = ($oUser->create_survey || $oUser->superadmin);
-            Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] = ($oUser->participant_panel || $oUser->superadmin);
-            Yii::app()->session['USER_RIGHT_CONFIGURATOR']      = ($oUser->configurator || $oUser->superadmin);
-            Yii::app()->session['USER_RIGHT_CREATE_USER']       = ($oUser->create_user || $oUser->superadmin);
-            Yii::app()->session['USER_RIGHT_DELETE_USER']       = ($oUser->delete_user || $oUser->superadmin);
-            Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE']   = ($oUser->manage_template || $oUser->superadmin);
-            Yii::app()->session['USER_RIGHT_MANAGE_LABEL']      = ($oUser->manage_label || $oUser->superadmin);
+            $userrights[$right]=($oUser->$right || $oUser->superadmin);
         }
-
-        // SuperAdmins
-        // * original superadmin with uid=1 unless manually changed and defined
-        //   in config-defaults.php
-        // * or any user having USER_RIGHT_SUPERADMIN right
-
-        // Let's check if I am the Initial SuperAdmin
-
-        $oUser = User::model()->findByAttributes(array('parent_id' => 0));
-
-        if (!is_null($oUser) && $oUser->uid == $iLoginID)
-            $initialSuperadmin=true;
-        else
-            $initialSuperadmin=false;
-
-        if ($initialSuperadmin === true)
+        $userrights['initialsuperadmin']=(!$oUser->parent_id);
+        // initialsuperadminare a superadmin
+        // initialsuperadmin can have less right than superadmin in session only: like old situation
+        $userrights['superadmin']=($userrights['superadmin'] || $userrights['initialsuperadmin']);
+        foreach($userrights as $right=>$value)
         {
-            Yii::app()->session['USER_RIGHT_SUPERADMIN'] = 1;
-            Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 1;
+            Yii::app()->session['USER_RIGHT_'.strtoupper($right)]=($value)? 1:0;
         }
-        else
-            Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 0;
+        return true;
     }
 
     /**

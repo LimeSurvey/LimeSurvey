@@ -26,7 +26,7 @@ class UserIdentity extends CUserIdentity
     * @return bool
     */
     public function authenticate($sOneTimePassword='')
-    {    
+    {
         if (Yii::app()->getConfig("auth_webserver")==false || $this->username != "")         
         {
             $user = User::model()->findByAttributes(array('users_name' => $this->username));
