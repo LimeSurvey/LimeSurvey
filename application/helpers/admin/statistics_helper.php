@@ -2616,7 +2616,9 @@ class statistics_helper {
 
         //close table/output
         if ($outputType == 'html') {
-            if ($usegraph == 1) {
+            // show this block only when we show graphs and are not in the public statics controller
+            // this is because the links don't work from that controller
+            if ($usegraph==1 && get_class(Yii::app()->getController()) !== 'Statistics_userController') {
                 $sImgUrl = Yii::app()->getConfig('adminimageurl');
 
                 $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_{$q->fieldname}' class='graphdisplay' style=\"text-align:center\">"
