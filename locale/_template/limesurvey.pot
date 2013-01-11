@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-01-10 23:05:53+00:00\n"
+"POT-Creation-Date: 2013-01-11 23:05:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1680,7 +1680,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:400
 #: application/controllers/admin/statistics.php:121
-#: application/helpers/admin/statistics_helper.php:3210
+#: application/helpers/admin/statistics_helper.php:3211
 msgid "Quick statistics"
 msgstr ""
 
@@ -4352,7 +4352,7 @@ msgid "This question has a condition set, however the condition is based on a qu
 msgstr ""
 
 #: application/helpers/admin/exportresults_helper.php:1687
-#: application/helpers/admin/statistics_helper.php:3199
+#: application/helpers/admin/statistics_helper.php:3201
 msgid "page"
 msgstr ""
 
@@ -4663,7 +4663,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1143
 #: application/helpers/admin/statistics_helper.php:1810
 #: application/helpers/admin/statistics_helper.php:1845
-#: application/helpers/admin/statistics_helper.php:3374
+#: application/helpers/admin/statistics_helper.php:3375
 msgid "Browse"
 msgstr ""
 
@@ -4751,35 +4751,35 @@ msgstr ""
 msgid "Arithmetic mean"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3001
+#: application/helpers/admin/statistics_helper.php:3003
 msgid "Disable chart"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3002
+#: application/helpers/admin/statistics_helper.php:3004
 msgid "Enable chart"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3003
+#: application/helpers/admin/statistics_helper.php:3005
 msgid "Display as bar chart"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3004
+#: application/helpers/admin/statistics_helper.php:3006
 msgid "Display as pie chart"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3005
+#: application/helpers/admin/statistics_helper.php:3007
 msgid "Disable map display"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3006
+#: application/helpers/admin/statistics_helper.php:3008
 msgid "Enable map display"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3182
+#: application/helpers/admin/statistics_helper.php:3184
 msgid "Statistics survey %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3184
+#: application/helpers/admin/statistics_helper.php:3186
 #: application/helpers/common_helper.php:3443
 #: application/helpers/common_helper.php:3454
 #: application/helpers/common_helper.php:3465
@@ -4789,40 +4789,40 @@ msgstr ""
 msgid "Statistics"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3184
+#: application/helpers/admin/statistics_helper.php:3186
 msgid "Survey %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3210
-#: application/helpers/admin/statistics_helper.php:3326
-#: application/helpers/admin/statistics_helper.php:3448
+#: application/helpers/admin/statistics_helper.php:3211
+#: application/helpers/admin/statistics_helper.php:3327
+#: application/helpers/admin/statistics_helper.php:3449
 #: application/views/admin/participants/displayParticipants_view.php:298
 #: application/views/admin/survey/listSurveys_view.php:42
 #: application/views/admin/survey/surveybar_view.php:3
 msgid "Survey"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3298
-#: application/helpers/admin/statistics_helper.php:3317
-#: application/helpers/admin/statistics_helper.php:3336
+#: application/helpers/admin/statistics_helper.php:3299
+#: application/helpers/admin/statistics_helper.php:3318
+#: application/helpers/admin/statistics_helper.php:3337
 msgid "Number of records in this query:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3301
-#: application/helpers/admin/statistics_helper.php:3318
-#: application/helpers/admin/statistics_helper.php:3338
+#: application/helpers/admin/statistics_helper.php:3302
+#: application/helpers/admin/statistics_helper.php:3319
+#: application/helpers/admin/statistics_helper.php:3339
 msgid "Total records in survey:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3307
-#: application/helpers/admin/statistics_helper.php:3321
-#: application/helpers/admin/statistics_helper.php:3345
+#: application/helpers/admin/statistics_helper.php:3308
+#: application/helpers/admin/statistics_helper.php:3322
+#: application/helpers/admin/statistics_helper.php:3346
 msgid "Percentage of total:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3325
 #: application/helpers/admin/statistics_helper.php:3326
-#: application/helpers/admin/statistics_helper.php:3335
+#: application/helpers/admin/statistics_helper.php:3327
+#: application/helpers/admin/statistics_helper.php:3336
 msgid "Results"
 msgstr ""
 
