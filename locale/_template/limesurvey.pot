@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-01-11 23:05:56+00:00\n"
+"POT-Creation-Date: 2013-01-12 23:05:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -484,8 +484,8 @@ msgid "Title"
 msgstr ""
 
 #: application/controllers/UploaderController.php:261
-#: application/helpers/common_helper.php:2556
-#: application/helpers/common_helper.php:2769
+#: application/helpers/common_helper.php:2559
+#: application/helpers/common_helper.php:2772
 #: application/helpers/qanda_helper.php:2840
 #: application/views/admin/dataentry/content_view.php:139
 msgid "Comment"
@@ -844,48 +844,48 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1190
 #: application/controllers/admin/printablesurvey.php:1195
 #: application/controllers/admin/quotas.php:506
-#: application/controllers/admin/surveyadmin.php:669
+#: application/controllers/admin/surveyadmin.php:673
 #: application/controllers/admin/tokens.php:2065
 #: application/core/Survey_Common_Action.php:831
 #: application/helpers/admin/statistics_helper.php:1314
 #: application/helpers/admin/statistics_helper.php:1447
-#: application/helpers/common_helper.php:1803
-#: application/helpers/common_helper.php:1809
-#: application/helpers/common_helper.php:1825
-#: application/helpers/common_helper.php:3175
-#: application/helpers/common_helper.php:3276
-#: application/helpers/common_helper.php:3386
-#: application/helpers/common_helper.php:3400
-#: application/helpers/common_helper.php:3412
-#: application/helpers/common_helper.php:3424
-#: application/helpers/common_helper.php:3436
-#: application/helpers/common_helper.php:3446
-#: application/helpers/common_helper.php:3457
-#: application/helpers/common_helper.php:3508
-#: application/helpers/common_helper.php:3539
-#: application/helpers/common_helper.php:3550
-#: application/helpers/common_helper.php:3657
-#: application/helpers/common_helper.php:3668
-#: application/helpers/common_helper.php:3688
-#: application/helpers/common_helper.php:3700
-#: application/helpers/common_helper.php:3730
-#: application/helpers/common_helper.php:3743
-#: application/helpers/common_helper.php:3754
-#: application/helpers/common_helper.php:3765
-#: application/helpers/common_helper.php:3785
-#: application/helpers/common_helper.php:3805
-#: application/helpers/common_helper.php:3842
-#: application/helpers/common_helper.php:3852
-#: application/helpers/common_helper.php:3862
-#: application/helpers/common_helper.php:3881
-#: application/helpers/common_helper.php:3924
-#: application/helpers/common_helper.php:3950
-#: application/helpers/common_helper.php:3986
-#: application/helpers/common_helper.php:4074
-#: application/helpers/common_helper.php:4084
-#: application/helpers/common_helper.php:4232
-#: application/helpers/common_helper.php:4243
-#: application/helpers/common_helper.php:4303
+#: application/helpers/common_helper.php:1806
+#: application/helpers/common_helper.php:1812
+#: application/helpers/common_helper.php:1828
+#: application/helpers/common_helper.php:3178
+#: application/helpers/common_helper.php:3279
+#: application/helpers/common_helper.php:3389
+#: application/helpers/common_helper.php:3403
+#: application/helpers/common_helper.php:3415
+#: application/helpers/common_helper.php:3427
+#: application/helpers/common_helper.php:3439
+#: application/helpers/common_helper.php:3449
+#: application/helpers/common_helper.php:3460
+#: application/helpers/common_helper.php:3511
+#: application/helpers/common_helper.php:3542
+#: application/helpers/common_helper.php:3553
+#: application/helpers/common_helper.php:3660
+#: application/helpers/common_helper.php:3671
+#: application/helpers/common_helper.php:3691
+#: application/helpers/common_helper.php:3703
+#: application/helpers/common_helper.php:3733
+#: application/helpers/common_helper.php:3746
+#: application/helpers/common_helper.php:3757
+#: application/helpers/common_helper.php:3768
+#: application/helpers/common_helper.php:3788
+#: application/helpers/common_helper.php:3808
+#: application/helpers/common_helper.php:3845
+#: application/helpers/common_helper.php:3855
+#: application/helpers/common_helper.php:3865
+#: application/helpers/common_helper.php:3884
+#: application/helpers/common_helper.php:3927
+#: application/helpers/common_helper.php:3953
+#: application/helpers/common_helper.php:3989
+#: application/helpers/common_helper.php:4077
+#: application/helpers/common_helper.php:4087
+#: application/helpers/common_helper.php:4235
+#: application/helpers/common_helper.php:4246
+#: application/helpers/common_helper.php:4306
 #: application/helpers/export_helper.php:279
 #: application/helpers/export_helper.php:283
 #: application/helpers/export_helper.php:291
@@ -1045,7 +1045,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1191
 #: application/controllers/admin/printablesurvey.php:1195
 #: application/helpers/admin/statistics_helper.php:1316
-#: application/helpers/common_helper.php:1827
+#: application/helpers/common_helper.php:1830
 #: application/helpers/export_helper.php:297
 #: application/helpers/export_helper.php:1362
 #: application/helpers/expressions/em_manager_helper.php:2792
@@ -1067,48 +1067,48 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1192
 #: application/controllers/admin/printablesurvey.php:1195
 #: application/controllers/admin/quotas.php:507
-#: application/controllers/admin/surveyadmin.php:673
+#: application/controllers/admin/surveyadmin.php:677
 #: application/controllers/admin/tokens.php:2067
 #: application/core/Survey_Common_Action.php:827
 #: application/helpers/admin/statistics_helper.php:1315
 #: application/helpers/admin/statistics_helper.php:1448
-#: application/helpers/common_helper.php:1810
-#: application/helpers/common_helper.php:1826
-#: application/helpers/common_helper.php:3174
-#: application/helpers/common_helper.php:3275
-#: application/helpers/common_helper.php:3385
-#: application/helpers/common_helper.php:3401
-#: application/helpers/common_helper.php:3413
-#: application/helpers/common_helper.php:3425
-#: application/helpers/common_helper.php:3437
-#: application/helpers/common_helper.php:3446
-#: application/helpers/common_helper.php:3457
-#: application/helpers/common_helper.php:3509
-#: application/helpers/common_helper.php:3538
-#: application/helpers/common_helper.php:3549
-#: application/helpers/common_helper.php:3656
-#: application/helpers/common_helper.php:3667
-#: application/helpers/common_helper.php:3687
-#: application/helpers/common_helper.php:3699
-#: application/helpers/common_helper.php:3729
-#: application/helpers/common_helper.php:3742
-#: application/helpers/common_helper.php:3753
-#: application/helpers/common_helper.php:3764
-#: application/helpers/common_helper.php:3784
-#: application/helpers/common_helper.php:3804
-#: application/helpers/common_helper.php:3841
-#: application/helpers/common_helper.php:3851
-#: application/helpers/common_helper.php:3861
-#: application/helpers/common_helper.php:3880
-#: application/helpers/common_helper.php:3923
-#: application/helpers/common_helper.php:3935
-#: application/helpers/common_helper.php:3949
-#: application/helpers/common_helper.php:3985
-#: application/helpers/common_helper.php:4073
-#: application/helpers/common_helper.php:4083
-#: application/helpers/common_helper.php:4231
-#: application/helpers/common_helper.php:4242
-#: application/helpers/common_helper.php:4302
+#: application/helpers/common_helper.php:1813
+#: application/helpers/common_helper.php:1829
+#: application/helpers/common_helper.php:3177
+#: application/helpers/common_helper.php:3278
+#: application/helpers/common_helper.php:3388
+#: application/helpers/common_helper.php:3404
+#: application/helpers/common_helper.php:3416
+#: application/helpers/common_helper.php:3428
+#: application/helpers/common_helper.php:3440
+#: application/helpers/common_helper.php:3449
+#: application/helpers/common_helper.php:3460
+#: application/helpers/common_helper.php:3512
+#: application/helpers/common_helper.php:3541
+#: application/helpers/common_helper.php:3552
+#: application/helpers/common_helper.php:3659
+#: application/helpers/common_helper.php:3670
+#: application/helpers/common_helper.php:3690
+#: application/helpers/common_helper.php:3702
+#: application/helpers/common_helper.php:3732
+#: application/helpers/common_helper.php:3745
+#: application/helpers/common_helper.php:3756
+#: application/helpers/common_helper.php:3767
+#: application/helpers/common_helper.php:3787
+#: application/helpers/common_helper.php:3807
+#: application/helpers/common_helper.php:3844
+#: application/helpers/common_helper.php:3854
+#: application/helpers/common_helper.php:3864
+#: application/helpers/common_helper.php:3883
+#: application/helpers/common_helper.php:3926
+#: application/helpers/common_helper.php:3938
+#: application/helpers/common_helper.php:3952
+#: application/helpers/common_helper.php:3988
+#: application/helpers/common_helper.php:4076
+#: application/helpers/common_helper.php:4086
+#: application/helpers/common_helper.php:4234
+#: application/helpers/common_helper.php:4245
+#: application/helpers/common_helper.php:4305
 #: application/helpers/export_helper.php:292
 #: application/helpers/export_helper.php:296
 #: application/helpers/export_helper.php:1343
@@ -1177,7 +1177,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1229
 #: application/controllers/admin/printablesurvey.php:1233
 #: application/helpers/admin/statistics_helper.php:1334
-#: application/helpers/common_helper.php:1833
+#: application/helpers/common_helper.php:1836
 #: application/helpers/export_helper.php:300
 #: application/helpers/export_helper.php:1367
 #: application/helpers/expressions/em_manager_helper.php:2795
@@ -1193,7 +1193,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1230
 #: application/controllers/admin/printablesurvey.php:1233
 #: application/helpers/admin/statistics_helper.php:1335
-#: application/helpers/common_helper.php:1835
+#: application/helpers/common_helper.php:1838
 #: application/helpers/export_helper.php:301
 #: application/helpers/export_helper.php:1367
 #: application/helpers/expressions/em_manager_helper.php:2796
@@ -1209,7 +1209,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1231
 #: application/controllers/admin/printablesurvey.php:1233
 #: application/helpers/admin/statistics_helper.php:1336
-#: application/helpers/common_helper.php:1834
+#: application/helpers/common_helper.php:1837
 #: application/helpers/export_helper.php:302
 #: application/helpers/export_helper.php:1367
 #: application/helpers/expressions/em_manager_helper.php:2797
@@ -1242,8 +1242,8 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:2458
 #: application/helpers/admin/statistics_helper.php:2521
 #: application/helpers/admin/statistics_helper.php:2588
-#: application/helpers/common_helper.php:1811
-#: application/helpers/common_helper.php:1819
+#: application/helpers/common_helper.php:1814
+#: application/helpers/common_helper.php:1822
 #: application/helpers/qanda_helper.php:976
 #: application/helpers/qanda_helper.php:1565
 #: application/helpers/qanda_helper.php:1872
@@ -1294,7 +1294,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:728
 #: application/controllers/admin/quotas.php:464
 #: application/helpers/admin/statistics_helper.php:1440
-#: application/helpers/common_helper.php:1818
+#: application/helpers/common_helper.php:1821
 #: application/helpers/export_helper.php:287
 #: application/helpers/export_helper.php:1347
 #: application/helpers/expressions/em_manager_helper.php:2783
@@ -1310,7 +1310,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:728
 #: application/controllers/admin/quotas.php:463
 #: application/helpers/admin/statistics_helper.php:1441
-#: application/helpers/common_helper.php:1817
+#: application/helpers/common_helper.php:1820
 #: application/helpers/export_helper.php:288
 #: application/helpers/export_helper.php:1347
 #: application/helpers/expressions/em_manager_helper.php:2782
@@ -1326,21 +1326,21 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1559
 #: application/helpers/admin/statistics_helper.php:1670
 #: application/helpers/admin/statistics_helper.php:1800
-#: application/helpers/common_helper.php:1795
-#: application/helpers/common_helper.php:1858
-#: application/helpers/common_helper.php:2528
-#: application/helpers/common_helper.php:2788
-#: application/helpers/common_helper.php:3695
-#: application/helpers/common_helper.php:3709
-#: application/helpers/common_helper.php:3725
-#: application/helpers/common_helper.php:3781
-#: application/helpers/common_helper.php:4015
-#: application/helpers/common_helper.php:4028
-#: application/helpers/common_helper.php:4038
-#: application/helpers/common_helper.php:4251
-#: application/helpers/common_helper.php:4260
-#: application/helpers/common_helper.php:4269
-#: application/helpers/common_helper.php:4278
+#: application/helpers/common_helper.php:1798
+#: application/helpers/common_helper.php:1861
+#: application/helpers/common_helper.php:2531
+#: application/helpers/common_helper.php:2791
+#: application/helpers/common_helper.php:3698
+#: application/helpers/common_helper.php:3712
+#: application/helpers/common_helper.php:3728
+#: application/helpers/common_helper.php:3784
+#: application/helpers/common_helper.php:4018
+#: application/helpers/common_helper.php:4031
+#: application/helpers/common_helper.php:4041
+#: application/helpers/common_helper.php:4254
+#: application/helpers/common_helper.php:4263
+#: application/helpers/common_helper.php:4272
+#: application/helpers/common_helper.php:4281
 #: application/helpers/export_helper.php:940
 #: application/helpers/export_helper.php:949
 #: application/helpers/export_helper.php:1045
@@ -1664,7 +1664,7 @@ msgstr ""
 #: application/controllers/admin/question.php:55
 #: application/controllers/admin/questiongroup.php:55
 #: application/controllers/admin/surveyadmin.php:262
-#: application/controllers/admin/surveyadmin.php:885
+#: application/controllers/admin/surveyadmin.php:889
 #: application/controllers/admin/templates.php:142
 #: application/controllers/admin/templates.php:257
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
@@ -1740,12 +1740,12 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:632
 #: application/helpers/common_helper.php:428
 #: application/helpers/common_helper.php:431
-#: application/helpers/common_helper.php:626
-#: application/helpers/common_helper.php:1231
-#: application/helpers/common_helper.php:1301
-#: application/helpers/common_helper.php:4006
-#: application/helpers/common_helper.php:7601
-#: application/helpers/common_helper.php:7641
+#: application/helpers/common_helper.php:629
+#: application/helpers/common_helper.php:1234
+#: application/helpers/common_helper.php:1304
+#: application/helpers/common_helper.php:4009
+#: application/helpers/common_helper.php:7604
+#: application/helpers/common_helper.php:7644
 #: application/views/admin/dataentry/content_view.php:156
 #: application/views/admin/token/bounce.php:14
 #: application/views/admin/token/bounce.php:56
@@ -1753,14 +1753,14 @@ msgid "None"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:924
-#: application/helpers/common_helper.php:4033
+#: application/helpers/common_helper.php:4036
 #: application/helpers/qanda_helper.php:2165
 #: application/views/admin/dataentry/content_view.php:182
 msgid "Your Choices"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:925
-#: application/helpers/common_helper.php:4043
+#: application/helpers/common_helper.php:4046
 #: application/helpers/qanda_helper.php:2173
 #: application/views/admin/dataentry/content_view.php:183
 msgid "Your Ranking"
@@ -2707,7 +2707,7 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:128
 #: application/controllers/admin/responses.php:427
-#: application/helpers/common_helper.php:5459
+#: application/helpers/common_helper.php:5462
 #: application/helpers/replacements_helper.php:633
 #: application/views/admin/export/exportresults_view.php:126
 #: application/views/admin/participants/displayParticipants_view.php:70
@@ -2723,7 +2723,7 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:129
 #: application/controllers/admin/responses.php:428
-#: application/helpers/common_helper.php:5464
+#: application/helpers/common_helper.php:5467
 #: application/helpers/replacements_helper.php:640
 #: application/views/admin/export/exportresults_view.php:127
 #: application/views/admin/participants/displayParticipants_view.php:71
@@ -2773,7 +2773,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: application/controllers/admin/responses.php:619
-#: application/helpers/common_helper.php:2930
+#: application/helpers/common_helper.php:2933
 msgid "Total time"
 msgstr ""
 
@@ -2869,25 +2869,25 @@ msgstr ""
 msgid "No, thanks."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:603
+#: application/controllers/admin/surveyadmin.php:601
 msgid "(None)"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:609
+#: application/controllers/admin/surveyadmin.php:607
 #: application/views/admin/survey/surveybar_view.php:19
 msgid "This survey is active but expired."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:613
+#: application/controllers/admin/surveyadmin.php:611
 #: application/views/admin/survey/surveybar_view.php:21
 msgid "This survey is active but has a start date."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:619
+#: application/controllers/admin/surveyadmin.php:617
 msgid "This survey is active - click here to stop this survey."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:623
+#: application/controllers/admin/surveyadmin.php:621
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:105
 #: application/views/admin/survey/surveybar_view.php:23
 #: application/views/admin/survey/surveybar_view.php:230
@@ -2895,66 +2895,66 @@ msgstr ""
 msgid "This survey is currently active."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:633
+#: application/controllers/admin/surveyadmin.php:631
 msgid "This survey is currently not active - click here to activate this survey."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:637
+#: application/controllers/admin/surveyadmin.php:635
 msgid "This survey is currently not active."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:659
+#: application/controllers/admin/surveyadmin.php:663
 #: application/views/admin/survey/listSurveys_view.php:67
 msgid "Closed"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:663
+#: application/controllers/admin/surveyadmin.php:667
 #: application/views/admin/survey/listSurveys_view.php:66
 msgid "Open"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:733
+#: application/controllers/admin/surveyadmin.php:737
 msgid "Survey deleted."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:806
+#: application/controllers/admin/surveyadmin.php:810
 #: application/views/admin/survey/Question/answerOptions_view.php:43
 #: application/views/admin/survey/Question/subQuestion_view.php:42
 #: application/views/admin/token/managetokenattributes.php:12
 msgid "Base Language"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:867
+#: application/controllers/admin/surveyadmin.php:871
 msgid "Import survey data"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:868
+#: application/controllers/admin/surveyadmin.php:872
 msgid "Survey structure import summary"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:873
+#: application/controllers/admin/surveyadmin.php:877
 #: application/views/admin/survey/copySurvey_view.php:1
 #: application/views/admin/survey/subview/tabCopy_view.php:21
 msgid "Copy survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:874
+#: application/controllers/admin/surveyadmin.php:878
 msgid "Survey copy summary"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:904
+#: application/controllers/admin/surveyadmin.php:908
 msgid "Import failed. You specified an invalid file type '%s'."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:941
+#: application/controllers/admin/surveyadmin.php:945
 msgid "No survey ID has been provided. Cannot copy survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1081
+#: application/controllers/admin/surveyadmin.php:1085
 msgid "The new question group/question order was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1353
+#: application/controllers/admin/surveyadmin.php:1357
 #: application/views/admin/labels/labelview_view.php:136
 #: application/views/admin/labels/labelview_view.php:148
 #: application/views/admin/survey/Question/editQuestion_view.php:283
@@ -2966,26 +2966,26 @@ msgstr ""
 msgid "Please select a file to import!"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1356
+#: application/controllers/admin/surveyadmin.php:1360
 #: application/views/admin/labels/labelview_view.php:148
 #: application/views/admin/templates/importform_view.php:17
 msgid "zip library not supported by PHP, Import ZIP Disabled"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1381
+#: application/controllers/admin/surveyadmin.php:1385
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1424
+#: application/controllers/admin/surveyadmin.php:1428
 #: application/views/admin/survey/editSurvey_view.php:37
 msgid "(No target question)"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1507
+#: application/controllers/admin/surveyadmin.php:1511
 msgid "Survey could not be created because it did not have a title"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1639
+#: application/controllers/admin/surveyadmin.php:1643
 msgid "Survey was successfully added."
 msgstr ""
 
@@ -3110,29 +3110,29 @@ msgstr ""
 #: application/controllers/admin/tokens.php:2269
 #: application/controllers/admin/tokens.php:2307
 #: application/controllers/admin/useraction.php:722
-#: application/helpers/common_helper.php:6422
-#: application/helpers/common_helper.php:6427
-#: application/helpers/common_helper.php:6432
-#: application/helpers/common_helper.php:6437
-#: application/helpers/common_helper.php:6442
-#: application/helpers/common_helper.php:6447
-#: application/helpers/common_helper.php:6452
-#: application/helpers/common_helper.php:6457
-#: application/helpers/common_helper.php:6462
-#: application/helpers/common_helper.php:6468
-#: application/helpers/common_helper.php:6474
-#: application/helpers/common_helper.php:6479
-#: application/helpers/common_helper.php:6484
-#: application/helpers/common_helper.php:6489
-#: application/helpers/common_helper.php:6494
-#: application/helpers/common_helper.php:6499
-#: application/helpers/common_helper.php:6505
-#: application/helpers/common_helper.php:6510
-#: application/helpers/common_helper.php:6519
-#: application/helpers/common_helper.php:6524
-#: application/helpers/common_helper.php:6531
-#: application/helpers/common_helper.php:6535
-#: application/helpers/common_helper.php:6539
+#: application/helpers/common_helper.php:6425
+#: application/helpers/common_helper.php:6430
+#: application/helpers/common_helper.php:6435
+#: application/helpers/common_helper.php:6440
+#: application/helpers/common_helper.php:6445
+#: application/helpers/common_helper.php:6450
+#: application/helpers/common_helper.php:6455
+#: application/helpers/common_helper.php:6460
+#: application/helpers/common_helper.php:6465
+#: application/helpers/common_helper.php:6471
+#: application/helpers/common_helper.php:6477
+#: application/helpers/common_helper.php:6482
+#: application/helpers/common_helper.php:6487
+#: application/helpers/common_helper.php:6492
+#: application/helpers/common_helper.php:6497
+#: application/helpers/common_helper.php:6502
+#: application/helpers/common_helper.php:6508
+#: application/helpers/common_helper.php:6513
+#: application/helpers/common_helper.php:6522
+#: application/helpers/common_helper.php:6527
+#: application/helpers/common_helper.php:6534
+#: application/helpers/common_helper.php:6538
+#: application/helpers/common_helper.php:6542
 #: application/helpers/frontend_helper.php:1329
 #: application/helpers/frontend_helper.php:1406
 #: application/helpers/frontend_helper.php:1576
@@ -3738,13 +3738,13 @@ msgstr ""
 
 #: application/controllers/admin/translate.php:396
 #: application/helpers/common_helper.php:423
-#: application/helpers/common_helper.php:621
-#: application/helpers/common_helper.php:1230
-#: application/helpers/common_helper.php:1300
-#: application/helpers/common_helper.php:7172
-#: application/helpers/common_helper.php:7209
-#: application/helpers/common_helper.php:7600
-#: application/helpers/common_helper.php:7640
+#: application/helpers/common_helper.php:624
+#: application/helpers/common_helper.php:1233
+#: application/helpers/common_helper.php:1303
+#: application/helpers/common_helper.php:7175
+#: application/helpers/common_helper.php:7212
+#: application/helpers/common_helper.php:7603
+#: application/helpers/common_helper.php:7643
 #: application/helpers/qanda_helper.php:1360
 #: application/helpers/qanda_helper.php:1541
 #: application/helpers/qanda_helper.php:2124
@@ -4780,10 +4780,10 @@ msgid "Statistics survey %s"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:3186
-#: application/helpers/common_helper.php:3443
-#: application/helpers/common_helper.php:3454
-#: application/helpers/common_helper.php:3465
-#: application/helpers/common_helper.php:3801
+#: application/helpers/common_helper.php:3446
+#: application/helpers/common_helper.php:3457
+#: application/helpers/common_helper.php:3468
+#: application/helpers/common_helper.php:3804
 #: application/models/Survey_permissions.php:68
 #: application/views/admin/export/statistics_view.php:1256
 msgid "Statistics"
@@ -4974,23 +4974,23 @@ msgstr ""
 msgid "Inactive"
 msgstr ""
 
-#: application/helpers/common_helper.php:1188
+#: application/helpers/common_helper.php:1191
 msgid "No email notification"
 msgstr ""
 
-#: application/helpers/common_helper.php:1189
+#: application/helpers/common_helper.php:1192
 msgid "Basic email notification"
 msgstr ""
 
-#: application/helpers/common_helper.php:1190
+#: application/helpers/common_helper.php:1193
 msgid "Detailed email notification with result codes"
 msgstr ""
 
-#: application/helpers/common_helper.php:1470
+#: application/helpers/common_helper.php:1473
 msgid "Response submission for survey {SURVEYNAME} with results"
 msgstr ""
 
-#: application/helpers/common_helper.php:1471
+#: application/helpers/common_helper.php:1474
 msgid ""
 "Hello,\n"
 "\n"
@@ -5013,11 +5013,11 @@ msgid ""
 "{ANSWERTABLE}"
 msgstr ""
 
-#: application/helpers/common_helper.php:1508
+#: application/helpers/common_helper.php:1511
 msgid "Response submission for survey {SURVEYNAME}"
 msgstr ""
 
-#: application/helpers/common_helper.php:1509
+#: application/helpers/common_helper.php:1512
 msgid ""
 "Hello,\n"
 "\n"
@@ -5036,11 +5036,11 @@ msgid ""
 "{STATISTICSURL}"
 msgstr ""
 
-#: application/helpers/common_helper.php:1510
+#: application/helpers/common_helper.php:1513
 msgid "Confirmation of your participation in our survey"
 msgstr ""
 
-#: application/helpers/common_helper.php:1511
+#: application/helpers/common_helper.php:1514
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -5053,11 +5053,11 @@ msgid ""
 "{ADMINNAME}"
 msgstr ""
 
-#: application/helpers/common_helper.php:1512
+#: application/helpers/common_helper.php:1515
 msgid "Invitation to participate in a survey"
 msgstr ""
 
-#: application/helpers/common_helper.php:1513
+#: application/helpers/common_helper.php:1516
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -5079,25 +5079,25 @@ msgid ""
 "{SURVEYURL}"
 msgstr ""
 
-#: application/helpers/common_helper.php:1513
-#: application/helpers/common_helper.php:1515
+#: application/helpers/common_helper.php:1516
+#: application/helpers/common_helper.php:1518
 #: application/views/admin/token/remind.php:32
 msgid ""
 "If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n"
 "{OPTOUTURL}"
 msgstr ""
 
-#: application/helpers/common_helper.php:1513
+#: application/helpers/common_helper.php:1516
 msgid ""
 "If you are blacklisted but want to participate in this survey and want to receive invitations please click the following link:\n"
 "{OPTINURL}"
 msgstr ""
 
-#: application/helpers/common_helper.php:1514
+#: application/helpers/common_helper.php:1517
 msgid "Reminder to participate in a survey"
 msgstr ""
 
-#: application/helpers/common_helper.php:1515
+#: application/helpers/common_helper.php:1518
 #: application/views/admin/token/remind.php:32
 msgid ""
 "Dear {FIRSTNAME},\n"
@@ -5122,11 +5122,11 @@ msgid ""
 "{SURVEYURL}"
 msgstr ""
 
-#: application/helpers/common_helper.php:1516
+#: application/helpers/common_helper.php:1519
 msgid "Survey registration confirmation"
 msgstr ""
 
-#: application/helpers/common_helper.php:1517
+#: application/helpers/common_helper.php:1520
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -5139,29 +5139,29 @@ msgid ""
 "If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
 
-#: application/helpers/common_helper.php:1863
+#: application/helpers/common_helper.php:1866
 msgid "File count"
 msgstr ""
 
-#: application/helpers/common_helper.php:2303
+#: application/helpers/common_helper.php:2306
 #: application/views/admin/export/statistics_view.php:78
 msgid "Response ID"
 msgstr ""
 
-#: application/helpers/common_helper.php:2311
+#: application/helpers/common_helper.php:2314
 msgid "Date submitted"
 msgstr ""
 
-#: application/helpers/common_helper.php:2319
+#: application/helpers/common_helper.php:2322
 msgid "Last page"
 msgstr ""
 
-#: application/helpers/common_helper.php:2327
+#: application/helpers/common_helper.php:2330
 msgid "Start language"
 msgstr ""
 
-#: application/helpers/common_helper.php:2345
-#: application/helpers/common_helper.php:5474
+#: application/helpers/common_helper.php:2348
+#: application/helpers/common_helper.php:5477
 #: application/helpers/frontend_helper.php:1547
 #: application/views/admin/dataentry/caption_view.php:29
 #: application/views/admin/participants/attributeMap_view.php:96
@@ -5172,408 +5172,408 @@ msgstr ""
 msgid "Token"
 msgstr ""
 
-#: application/helpers/common_helper.php:2360
+#: application/helpers/common_helper.php:2363
 msgid "Date started"
 msgstr ""
 
-#: application/helpers/common_helper.php:2373
+#: application/helpers/common_helper.php:2376
 msgid "Date last action"
 msgstr ""
 
-#: application/helpers/common_helper.php:2389
+#: application/helpers/common_helper.php:2392
 #: application/views/admin/dataentry/caption_view.php:74
 #: application/views/admin/saved/savedlist_view.php:8
 msgid "IP address"
 msgstr ""
 
-#: application/helpers/common_helper.php:2400
+#: application/helpers/common_helper.php:2403
 msgid "Referrer URL"
 msgstr ""
 
-#: application/helpers/common_helper.php:2634
+#: application/helpers/common_helper.php:2637
 msgid "Scale 1"
 msgstr ""
 
-#: application/helpers/common_helper.php:2651
+#: application/helpers/common_helper.php:2654
 msgid "Scale 2"
 msgstr ""
 
-#: application/helpers/common_helper.php:2676
+#: application/helpers/common_helper.php:2679
 msgid "Rank %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:2806
+#: application/helpers/common_helper.php:2809
 msgid "Other comment"
 msgstr ""
 
-#: application/helpers/common_helper.php:2937
+#: application/helpers/common_helper.php:2940
 msgid "Group time"
 msgstr ""
 
-#: application/helpers/common_helper.php:2944
+#: application/helpers/common_helper.php:2947
 msgid "Question time"
 msgstr ""
 
-#: application/helpers/common_helper.php:3171
-#: application/helpers/common_helper.php:3182
-#: application/helpers/common_helper.php:3192
-#: application/helpers/common_helper.php:3237
-#: application/helpers/common_helper.php:3253
-#: application/helpers/common_helper.php:3264
-#: application/helpers/common_helper.php:3272
-#: application/helpers/common_helper.php:3283
-#: application/helpers/common_helper.php:3291
-#: application/helpers/common_helper.php:3299
-#: application/helpers/common_helper.php:3308
-#: application/helpers/common_helper.php:3316
-#: application/helpers/common_helper.php:3325
-#: application/helpers/common_helper.php:3535
-#: application/helpers/common_helper.php:3546
-#: application/helpers/common_helper.php:3629
-#: application/helpers/common_helper.php:3637
-#: application/helpers/common_helper.php:3645
-#: application/helpers/common_helper.php:3653
-#: application/helpers/common_helper.php:3664
-#: application/helpers/common_helper.php:3739
-#: application/helpers/common_helper.php:3772
-#: application/helpers/common_helper.php:3792
-#: application/helpers/common_helper.php:3812
-#: application/helpers/common_helper.php:3838
-#: application/helpers/common_helper.php:3848
-#: application/helpers/common_helper.php:3858
-#: application/helpers/common_helper.php:3869
-#: application/helpers/common_helper.php:3931
-#: application/helpers/common_helper.php:3965
-#: application/helpers/common_helper.php:3974
-#: application/helpers/common_helper.php:3982
-#: application/helpers/common_helper.php:3994
-#: application/helpers/common_helper.php:4003
-#: application/helpers/common_helper.php:4216
+#: application/helpers/common_helper.php:3174
+#: application/helpers/common_helper.php:3185
+#: application/helpers/common_helper.php:3195
+#: application/helpers/common_helper.php:3240
+#: application/helpers/common_helper.php:3256
+#: application/helpers/common_helper.php:3267
+#: application/helpers/common_helper.php:3275
+#: application/helpers/common_helper.php:3286
+#: application/helpers/common_helper.php:3294
+#: application/helpers/common_helper.php:3302
+#: application/helpers/common_helper.php:3311
+#: application/helpers/common_helper.php:3319
+#: application/helpers/common_helper.php:3328
+#: application/helpers/common_helper.php:3538
+#: application/helpers/common_helper.php:3549
+#: application/helpers/common_helper.php:3632
+#: application/helpers/common_helper.php:3640
+#: application/helpers/common_helper.php:3648
+#: application/helpers/common_helper.php:3656
+#: application/helpers/common_helper.php:3667
+#: application/helpers/common_helper.php:3742
+#: application/helpers/common_helper.php:3775
+#: application/helpers/common_helper.php:3795
+#: application/helpers/common_helper.php:3815
+#: application/helpers/common_helper.php:3841
+#: application/helpers/common_helper.php:3851
+#: application/helpers/common_helper.php:3861
+#: application/helpers/common_helper.php:3872
+#: application/helpers/common_helper.php:3934
+#: application/helpers/common_helper.php:3968
+#: application/helpers/common_helper.php:3977
+#: application/helpers/common_helper.php:3985
+#: application/helpers/common_helper.php:3997
+#: application/helpers/common_helper.php:4006
+#: application/helpers/common_helper.php:4219
 msgid "Display"
 msgstr ""
 
-#: application/helpers/common_helper.php:3177
+#: application/helpers/common_helper.php:3180
 msgid "Sort the answer options alphabetically"
 msgstr ""
 
-#: application/helpers/common_helper.php:3178
+#: application/helpers/common_helper.php:3181
 msgid "Sort answers alphabetically"
 msgstr ""
 
-#: application/helpers/common_helper.php:3187
+#: application/helpers/common_helper.php:3190
 msgid "Set the percentage width of the (sub-)question column (1-100)"
 msgstr ""
 
-#: application/helpers/common_helper.php:3188
+#: application/helpers/common_helper.php:3191
 msgid "(Sub-)question width"
 msgstr ""
 
-#: application/helpers/common_helper.php:3196
+#: application/helpers/common_helper.php:3199
 msgid "Repeat headings every X subquestions (Set to 0 to deactivate heading repeat, deactivate minimum repeat headings from config)."
 msgstr ""
 
-#: application/helpers/common_helper.php:3197
+#: application/helpers/common_helper.php:3200
 msgid "Repeat headers"
 msgstr ""
 
-#: application/helpers/common_helper.php:3201
-#: application/helpers/common_helper.php:3209
-#: application/helpers/common_helper.php:3217
-#: application/helpers/common_helper.php:3228
-#: application/helpers/common_helper.php:3245
-#: application/helpers/common_helper.php:3342
-#: application/helpers/common_helper.php:3350
-#: application/helpers/common_helper.php:3358
-#: application/helpers/common_helper.php:3366
-#: application/helpers/common_helper.php:3374
-#: application/helpers/common_helper.php:3382
-#: application/helpers/common_helper.php:3557
-#: application/helpers/common_helper.php:3597
-#: application/helpers/common_helper.php:3750
-#: application/helpers/common_helper.php:3761
-#: application/helpers/common_helper.php:4287
+#: application/helpers/common_helper.php:3204
+#: application/helpers/common_helper.php:3212
+#: application/helpers/common_helper.php:3220
+#: application/helpers/common_helper.php:3231
+#: application/helpers/common_helper.php:3248
+#: application/helpers/common_helper.php:3345
+#: application/helpers/common_helper.php:3353
+#: application/helpers/common_helper.php:3361
+#: application/helpers/common_helper.php:3369
+#: application/helpers/common_helper.php:3377
+#: application/helpers/common_helper.php:3385
+#: application/helpers/common_helper.php:3560
+#: application/helpers/common_helper.php:3600
+#: application/helpers/common_helper.php:3753
+#: application/helpers/common_helper.php:3764
+#: application/helpers/common_helper.php:4290
 msgid "Logic"
 msgstr ""
 
-#: application/helpers/common_helper.php:3204
+#: application/helpers/common_helper.php:3207
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."
 msgstr ""
 
-#: application/helpers/common_helper.php:3205
+#: application/helpers/common_helper.php:3208
 msgid "Array filter"
 msgstr ""
 
-#: application/helpers/common_helper.php:3212
+#: application/helpers/common_helper.php:3215
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."
 msgstr ""
 
-#: application/helpers/common_helper.php:3213
+#: application/helpers/common_helper.php:3216
 msgid "Array filter exclusion"
 msgstr ""
 
-#: application/helpers/common_helper.php:3220
+#: application/helpers/common_helper.php:3223
 msgid "Hidden"
 msgstr ""
 
-#: application/helpers/common_helper.php:3221
+#: application/helpers/common_helper.php:3224
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:105
 #: application/views/admin/survey/surveybar_view.php:291
 msgid "Disabled"
 msgstr ""
 
-#: application/helpers/common_helper.php:3223
+#: application/helpers/common_helper.php:3226
 msgid "Specify how array-filtered sub-questions should be displayed"
 msgstr ""
 
-#: application/helpers/common_helper.php:3224
+#: application/helpers/common_helper.php:3227
 msgid "Array filter style"
 msgstr ""
 
-#: application/helpers/common_helper.php:3232
+#: application/helpers/common_helper.php:3235
 msgid "If one of the subquestions is marked then for each marked subquestion this value is added as assessment."
 msgstr ""
 
-#: application/helpers/common_helper.php:3233
+#: application/helpers/common_helper.php:3236
 #: application/views/admin/labels/labelview_view.php:39
 #: application/views/admin/survey/Question/answerOptions_view.php:22
 #: application/views/admin/survey/Question/answerOptions_view.php:68
 msgid "Assessment value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3240
-#: application/helpers/common_helper.php:3241
+#: application/helpers/common_helper.php:3243
+#: application/helpers/common_helper.php:3244
 msgid "Category separator"
 msgstr ""
 
-#: application/helpers/common_helper.php:3248
+#: application/helpers/common_helper.php:3251
 msgid "Filter the available answers by this value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3249
+#: application/helpers/common_helper.php:3252
 msgid "Code filter"
 msgstr ""
 
-#: application/helpers/common_helper.php:3259
+#: application/helpers/common_helper.php:3262
 msgid "The answer options will be distributed across the number of columns set here"
 msgstr ""
 
-#: application/helpers/common_helper.php:3260
+#: application/helpers/common_helper.php:3263
 msgid "Display columns"
 msgstr ""
 
-#: application/helpers/common_helper.php:3267
+#: application/helpers/common_helper.php:3270
 msgid "How many rows to display"
 msgstr ""
 
-#: application/helpers/common_helper.php:3268
+#: application/helpers/common_helper.php:3271
 msgid "Display rows"
 msgstr ""
 
-#: application/helpers/common_helper.php:3278
+#: application/helpers/common_helper.php:3281
 msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr ""
 
-#: application/helpers/common_helper.php:3279
+#: application/helpers/common_helper.php:3282
 msgid "Display dropdown boxes"
 msgstr ""
 
-#: application/helpers/common_helper.php:3286
+#: application/helpers/common_helper.php:3289
 msgid "Minimum year value in calendar"
 msgstr ""
 
-#: application/helpers/common_helper.php:3287
+#: application/helpers/common_helper.php:3290
 msgid "Minimum year"
 msgstr ""
 
-#: application/helpers/common_helper.php:3294
+#: application/helpers/common_helper.php:3297
 msgid "Maximum year value for calendar"
 msgstr ""
 
-#: application/helpers/common_helper.php:3295
+#: application/helpers/common_helper.php:3298
 msgid "Maximum year"
 msgstr ""
 
-#: application/helpers/common_helper.php:3303
+#: application/helpers/common_helper.php:3306
 msgid "Prefix|Suffix for dropdown lists"
 msgstr ""
 
-#: application/helpers/common_helper.php:3304
+#: application/helpers/common_helper.php:3307
 msgid "Dropdown prefix/suffix"
 msgstr ""
 
-#: application/helpers/common_helper.php:3311
+#: application/helpers/common_helper.php:3314
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr ""
 
-#: application/helpers/common_helper.php:3312
+#: application/helpers/common_helper.php:3315
 msgid "Dropdown separator"
 msgstr ""
 
-#: application/helpers/common_helper.php:3320
+#: application/helpers/common_helper.php:3323
 msgid "Enter a header text for the first scale"
 msgstr ""
 
-#: application/helpers/common_helper.php:3321
+#: application/helpers/common_helper.php:3324
 msgid "Header for first scale"
 msgstr ""
 
-#: application/helpers/common_helper.php:3329
+#: application/helpers/common_helper.php:3332
 msgid "Enter a header text for the second scale"
 msgstr ""
 
-#: application/helpers/common_helper.php:3330
+#: application/helpers/common_helper.php:3333
 msgid "Header for second scale"
 msgstr ""
 
-#: application/helpers/common_helper.php:3334
-#: application/helpers/common_helper.php:3565
-#: application/helpers/common_helper.php:3573
-#: application/helpers/common_helper.php:3589
-#: application/helpers/common_helper.php:3605
-#: application/helpers/common_helper.php:3613
-#: application/helpers/common_helper.php:3683
-#: application/helpers/common_helper.php:4199
-#: application/helpers/common_helper.php:4207
-#: application/helpers/common_helper.php:4299
+#: application/helpers/common_helper.php:3337
+#: application/helpers/common_helper.php:3568
+#: application/helpers/common_helper.php:3576
+#: application/helpers/common_helper.php:3592
+#: application/helpers/common_helper.php:3608
+#: application/helpers/common_helper.php:3616
+#: application/helpers/common_helper.php:3686
+#: application/helpers/common_helper.php:4202
+#: application/helpers/common_helper.php:4210
+#: application/helpers/common_helper.php:4302
 msgid "Input"
 msgstr ""
 
-#: application/helpers/common_helper.php:3337
+#: application/helpers/common_helper.php:3340
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3338
+#: application/helpers/common_helper.php:3341
 msgid "Equals sum value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3345
+#: application/helpers/common_helper.php:3348
 msgid "Enter a boolean equation to validate the whole question."
 msgstr ""
 
-#: application/helpers/common_helper.php:3346
+#: application/helpers/common_helper.php:3349
 msgid "Question validation equation"
 msgstr ""
 
-#: application/helpers/common_helper.php:3353
+#: application/helpers/common_helper.php:3356
 msgid "This is a hint text that will be shown to the participant describing the question validation equation."
 msgstr ""
 
-#: application/helpers/common_helper.php:3354
+#: application/helpers/common_helper.php:3357
 msgid "Question validation tip"
 msgstr ""
 
-#: application/helpers/common_helper.php:3361
+#: application/helpers/common_helper.php:3364
 msgid "Enter a boolean equation to validate each sub-question."
 msgstr ""
 
-#: application/helpers/common_helper.php:3362
+#: application/helpers/common_helper.php:3365
 msgid "Sub-question validation equation"
 msgstr ""
 
-#: application/helpers/common_helper.php:3369
+#: application/helpers/common_helper.php:3372
 msgid "This is a tip shown to the participant describing the sub-question validation equation."
 msgstr ""
 
-#: application/helpers/common_helper.php:3370
+#: application/helpers/common_helper.php:3373
 msgid "Sub-question validation tip"
 msgstr ""
 
-#: application/helpers/common_helper.php:3377
+#: application/helpers/common_helper.php:3380
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
 msgstr ""
 
-#: application/helpers/common_helper.php:3378
+#: application/helpers/common_helper.php:3381
 msgid "Exclusive option"
 msgstr ""
 
-#: application/helpers/common_helper.php:3388
+#: application/helpers/common_helper.php:3391
 msgid "If the participant marks all options, uncheck all and check the option set in the \"Exclusive option\" setting"
 msgstr ""
 
-#: application/helpers/common_helper.php:3389
+#: application/helpers/common_helper.php:3392
 msgid "Auto-check exclusive option if all others are checked"
 msgstr ""
 
-#: application/helpers/common_helper.php:3396
-#: application/helpers/common_helper.php:3408
-#: application/helpers/common_helper.php:3420
-#: application/helpers/common_helper.php:3432
-#: application/helpers/common_helper.php:3476
-#: application/helpers/common_helper.php:3487
-#: application/helpers/common_helper.php:3496
-#: application/helpers/common_helper.php:3505
-#: application/helpers/common_helper.php:3516
-#: application/helpers/common_helper.php:3524
+#: application/helpers/common_helper.php:3399
+#: application/helpers/common_helper.php:3411
+#: application/helpers/common_helper.php:3423
+#: application/helpers/common_helper.php:3435
+#: application/helpers/common_helper.php:3479
+#: application/helpers/common_helper.php:3490
+#: application/helpers/common_helper.php:3499
+#: application/helpers/common_helper.php:3508
+#: application/helpers/common_helper.php:3519
+#: application/helpers/common_helper.php:3527
 msgid "Location"
 msgstr ""
 
-#: application/helpers/common_helper.php:3402
+#: application/helpers/common_helper.php:3405
 msgid "Store the city?"
 msgstr ""
 
-#: application/helpers/common_helper.php:3403
+#: application/helpers/common_helper.php:3406
 msgid "Save city"
 msgstr ""
 
-#: application/helpers/common_helper.php:3414
+#: application/helpers/common_helper.php:3417
 msgid "Store the state?"
 msgstr ""
 
-#: application/helpers/common_helper.php:3415
+#: application/helpers/common_helper.php:3418
 msgid "Save state"
 msgstr ""
 
-#: application/helpers/common_helper.php:3426
+#: application/helpers/common_helper.php:3429
 msgid "Store the postal code?"
 msgstr ""
 
-#: application/helpers/common_helper.php:3427
+#: application/helpers/common_helper.php:3430
 msgid "Save postal code"
 msgstr ""
 
-#: application/helpers/common_helper.php:3438
+#: application/helpers/common_helper.php:3441
 msgid "Store the country?"
 msgstr ""
 
-#: application/helpers/common_helper.php:3439
+#: application/helpers/common_helper.php:3442
 msgid "Save country"
 msgstr ""
 
-#: application/helpers/common_helper.php:3447
+#: application/helpers/common_helper.php:3450
 msgid "Show a map in the statistics?"
 msgstr ""
 
-#: application/helpers/common_helper.php:3448
+#: application/helpers/common_helper.php:3451
 msgid "Display map"
 msgstr ""
 
-#: application/helpers/common_helper.php:3458
+#: application/helpers/common_helper.php:3461
 msgid "Display a chart in the statistics?"
 msgstr ""
 
-#: application/helpers/common_helper.php:3459
+#: application/helpers/common_helper.php:3462
 msgid "Display chart"
 msgstr ""
 
-#: application/helpers/common_helper.php:3468
+#: application/helpers/common_helper.php:3471
 msgid "Bar chart"
 msgstr ""
 
-#: application/helpers/common_helper.php:3468
+#: application/helpers/common_helper.php:3471
 msgid "Pie chart"
 msgstr ""
 
-#: application/helpers/common_helper.php:3469
+#: application/helpers/common_helper.php:3472
 msgid "Select the type of chart to be displayed"
 msgstr ""
 
-#: application/helpers/common_helper.php:3470
+#: application/helpers/common_helper.php:3473
 msgid "Chart type"
 msgstr ""
 
-#: application/helpers/common_helper.php:3479
-#: application/helpers/common_helper.php:3713
-#: application/helpers/common_helper.php:3815
+#: application/helpers/common_helper.php:3482
+#: application/helpers/common_helper.php:3716
+#: application/helpers/common_helper.php:3818
 #: application/views/admin/globalSettings_view.php:228
 #: application/views/admin/globalSettings_view.php:241
 #: application/views/admin/globalSettings_view.php:262
@@ -5583,420 +5583,420 @@ msgstr ""
 msgid "Off"
 msgstr ""
 
-#: application/helpers/common_helper.php:3480
+#: application/helpers/common_helper.php:3483
 msgid "Google Maps"
 msgstr ""
 
-#: application/helpers/common_helper.php:3482
+#: application/helpers/common_helper.php:3485
 msgid "Activate this to show a map above the input field where the user can select a location"
 msgstr ""
 
-#: application/helpers/common_helper.php:3483
+#: application/helpers/common_helper.php:3486
 msgid "Use mapping service"
 msgstr ""
 
-#: application/helpers/common_helper.php:3491
+#: application/helpers/common_helper.php:3494
 msgid "Width of the map in pixel"
 msgstr ""
 
-#: application/helpers/common_helper.php:3492
+#: application/helpers/common_helper.php:3495
 msgid "Map width"
 msgstr ""
 
-#: application/helpers/common_helper.php:3500
+#: application/helpers/common_helper.php:3503
 msgid "Height of the map in pixel"
 msgstr ""
 
-#: application/helpers/common_helper.php:3501
+#: application/helpers/common_helper.php:3504
 msgid "Map height"
 msgstr ""
 
-#: application/helpers/common_helper.php:3511
+#: application/helpers/common_helper.php:3514
 msgid "Get the default location using the user's IP address?"
 msgstr ""
 
-#: application/helpers/common_helper.php:3512
+#: application/helpers/common_helper.php:3515
 msgid "IP as default location"
 msgstr ""
 
-#: application/helpers/common_helper.php:3519
+#: application/helpers/common_helper.php:3522
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
 msgstr ""
 
-#: application/helpers/common_helper.php:3520
+#: application/helpers/common_helper.php:3523
 msgid "Default position"
 msgstr ""
 
-#: application/helpers/common_helper.php:3528
+#: application/helpers/common_helper.php:3531
 msgid "Map zoom level"
 msgstr ""
 
-#: application/helpers/common_helper.php:3529
+#: application/helpers/common_helper.php:3532
 msgid "Zoom level"
 msgstr ""
 
-#: application/helpers/common_helper.php:3541
+#: application/helpers/common_helper.php:3544
 msgid "Hide the tip that is normally shown with a question"
 msgstr ""
 
-#: application/helpers/common_helper.php:3542
+#: application/helpers/common_helper.php:3545
 msgid "Hide tip"
 msgstr ""
 
-#: application/helpers/common_helper.php:3552
+#: application/helpers/common_helper.php:3555
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr ""
 
-#: application/helpers/common_helper.php:3553
+#: application/helpers/common_helper.php:3556
 msgid "Always hide this question"
 msgstr ""
 
-#: application/helpers/common_helper.php:3560
+#: application/helpers/common_helper.php:3563
 msgid "Limit the number of possible answers"
 msgstr ""
 
-#: application/helpers/common_helper.php:3561
+#: application/helpers/common_helper.php:3564
 msgid "Maximum answers"
 msgstr ""
 
-#: application/helpers/common_helper.php:3568
+#: application/helpers/common_helper.php:3571
 msgid "Maximum sum value of multiple numeric input"
 msgstr ""
 
-#: application/helpers/common_helper.php:3569
+#: application/helpers/common_helper.php:3572
 msgid "Maximum sum value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3576
+#: application/helpers/common_helper.php:3579
 msgid "Maximum value of the numeric input"
 msgstr ""
 
-#: application/helpers/common_helper.php:3577
-#: application/helpers/common_helper.php:3633
+#: application/helpers/common_helper.php:3580
+#: application/helpers/common_helper.php:3636
 msgid "Maximum value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3592
+#: application/helpers/common_helper.php:3595
 msgid "Maximum characters allowed"
 msgstr ""
 
-#: application/helpers/common_helper.php:3593
+#: application/helpers/common_helper.php:3596
 msgid "Maximum characters"
 msgstr ""
 
-#: application/helpers/common_helper.php:3600
+#: application/helpers/common_helper.php:3603
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr ""
 
-#: application/helpers/common_helper.php:3601
+#: application/helpers/common_helper.php:3604
 msgid "Minimum answers"
 msgstr ""
 
-#: application/helpers/common_helper.php:3608
+#: application/helpers/common_helper.php:3611
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3609
+#: application/helpers/common_helper.php:3612
 msgid "Minimum sum value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3616
+#: application/helpers/common_helper.php:3619
 msgid "Minimum value of the numeric input"
 msgstr ""
 
-#: application/helpers/common_helper.php:3617
-#: application/helpers/common_helper.php:3641
+#: application/helpers/common_helper.php:3620
+#: application/helpers/common_helper.php:3644
 msgid "Minimum value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3632
+#: application/helpers/common_helper.php:3635
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr ""
 
-#: application/helpers/common_helper.php:3640
+#: application/helpers/common_helper.php:3643
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr ""
 
-#: application/helpers/common_helper.php:3648
-#: application/helpers/common_helper.php:3649
+#: application/helpers/common_helper.php:3651
+#: application/helpers/common_helper.php:3652
 msgid "Step value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3659
+#: application/helpers/common_helper.php:3662
 msgid "Use checkbox layout"
 msgstr ""
 
-#: application/helpers/common_helper.php:3660
+#: application/helpers/common_helper.php:3663
 msgid "Checkbox layout"
 msgstr ""
 
-#: application/helpers/common_helper.php:3670
+#: application/helpers/common_helper.php:3673
 msgid "Present answer options in reverse order"
 msgstr ""
 
-#: application/helpers/common_helper.php:3671
+#: application/helpers/common_helper.php:3674
 msgid "Reverse answer order"
 msgstr ""
 
-#: application/helpers/common_helper.php:3690
+#: application/helpers/common_helper.php:3693
 msgid "Restrict input to integer values"
 msgstr ""
 
-#: application/helpers/common_helper.php:3691
+#: application/helpers/common_helper.php:3694
 msgid "Integer only"
 msgstr ""
 
-#: application/helpers/common_helper.php:3703
+#: application/helpers/common_helper.php:3706
 msgid "Allow only numerical input"
 msgstr ""
 
-#: application/helpers/common_helper.php:3704
+#: application/helpers/common_helper.php:3707
 msgid "Numbers only"
 msgstr ""
 
-#: application/helpers/common_helper.php:3714
+#: application/helpers/common_helper.php:3717
 msgid "Rows"
 msgstr ""
 
-#: application/helpers/common_helper.php:3715
+#: application/helpers/common_helper.php:3718
 msgid "Columns"
 msgstr ""
 
-#: application/helpers/common_helper.php:3716
+#: application/helpers/common_helper.php:3719
 msgid "Both rows and columns"
 msgstr ""
 
-#: application/helpers/common_helper.php:3719
+#: application/helpers/common_helper.php:3722
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr ""
 
-#: application/helpers/common_helper.php:3720
+#: application/helpers/common_helper.php:3723
 msgid "Show totals for"
 msgstr ""
 
-#: application/helpers/common_helper.php:3733
+#: application/helpers/common_helper.php:3736
 msgid "Show grand total for either columns or rows"
 msgstr ""
 
-#: application/helpers/common_helper.php:3734
+#: application/helpers/common_helper.php:3737
 msgid "Show grand total"
 msgstr ""
 
-#: application/helpers/common_helper.php:3745
+#: application/helpers/common_helper.php:3748
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr ""
 
-#: application/helpers/common_helper.php:3746
+#: application/helpers/common_helper.php:3749
 msgid "Text inputs"
 msgstr ""
 
-#: application/helpers/common_helper.php:3756
+#: application/helpers/common_helper.php:3759
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr ""
 
-#: application/helpers/common_helper.php:3757
+#: application/helpers/common_helper.php:3760
 msgid "'Other:' comment mandatory"
 msgstr ""
 
-#: application/helpers/common_helper.php:3767
+#: application/helpers/common_helper.php:3770
 msgid "Allow only numerical input for 'Other' text"
 msgstr ""
 
-#: application/helpers/common_helper.php:3768
+#: application/helpers/common_helper.php:3771
 msgid "Numbers only for 'Other'"
 msgstr ""
 
-#: application/helpers/common_helper.php:3776
+#: application/helpers/common_helper.php:3779
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr ""
 
-#: application/helpers/common_helper.php:3777
+#: application/helpers/common_helper.php:3780
 msgid "Label for 'Other:' option"
 msgstr ""
 
-#: application/helpers/common_helper.php:3787
+#: application/helpers/common_helper.php:3790
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr ""
 
-#: application/helpers/common_helper.php:3788
+#: application/helpers/common_helper.php:3791
 msgid "Insert page break in printable view"
 msgstr ""
 
-#: application/helpers/common_helper.php:3796
+#: application/helpers/common_helper.php:3799
 msgid "Add a prefix to the answer field"
 msgstr ""
 
-#: application/helpers/common_helper.php:3797
+#: application/helpers/common_helper.php:3800
 msgid "Answer prefix"
 msgstr ""
 
-#: application/helpers/common_helper.php:3807
+#: application/helpers/common_helper.php:3810
 msgid "Show statistics of this question in the public statistics page"
 msgstr ""
 
-#: application/helpers/common_helper.php:3808
+#: application/helpers/common_helper.php:3811
 msgid "Show in public statistics"
 msgstr ""
 
-#: application/helpers/common_helper.php:3816
+#: application/helpers/common_helper.php:3819
 msgid "Randomize on each page load"
 msgstr ""
 
-#: application/helpers/common_helper.php:3820
+#: application/helpers/common_helper.php:3823
 msgid "Present answers in random order"
 msgstr ""
 
-#: application/helpers/common_helper.php:3821
+#: application/helpers/common_helper.php:3824
 msgid "Random answer order"
 msgstr ""
 
-#: application/helpers/common_helper.php:3844
+#: application/helpers/common_helper.php:3847
 msgid "Show javascript alert"
 msgstr ""
 
-#: application/helpers/common_helper.php:3845
+#: application/helpers/common_helper.php:3848
 msgid "Show an alert if answers exceeds the number of max answers"
 msgstr ""
 
-#: application/helpers/common_helper.php:3854
+#: application/helpers/common_helper.php:3857
 msgid "Same height for all choice"
 msgstr ""
 
-#: application/helpers/common_helper.php:3855
+#: application/helpers/common_helper.php:3858
 msgid "Force each choice to have the same height"
 msgstr ""
 
-#: application/helpers/common_helper.php:3864
+#: application/helpers/common_helper.php:3867
 msgid "Same height for lists"
 msgstr ""
 
-#: application/helpers/common_helper.php:3865
+#: application/helpers/common_helper.php:3868
 msgid "Force the choice list and the rank list to have the same height"
 msgstr ""
 
-#: application/helpers/common_helper.php:3872
+#: application/helpers/common_helper.php:3875
 msgid "Get order from previous question"
 msgstr ""
 
-#: application/helpers/common_helper.php:3873
+#: application/helpers/common_helper.php:3876
 msgid "Enter question ID to get subquestion order from a previous question"
 msgstr ""
 
-#: application/helpers/common_helper.php:3877
-#: application/helpers/common_helper.php:3888
-#: application/helpers/common_helper.php:3896
-#: application/helpers/common_helper.php:3904
-#: application/helpers/common_helper.php:3912
-#: application/helpers/common_helper.php:3920
-#: application/helpers/common_helper.php:3946
-#: application/helpers/common_helper.php:3957
+#: application/helpers/common_helper.php:3880
+#: application/helpers/common_helper.php:3891
+#: application/helpers/common_helper.php:3899
+#: application/helpers/common_helper.php:3907
+#: application/helpers/common_helper.php:3915
+#: application/helpers/common_helper.php:3923
+#: application/helpers/common_helper.php:3949
+#: application/helpers/common_helper.php:3960
 msgid "Slider"
 msgstr ""
 
-#: application/helpers/common_helper.php:3883
-#: application/helpers/common_helper.php:3884
-#: application/helpers/common_helper.php:3940
-#: application/helpers/common_helper.php:3941
+#: application/helpers/common_helper.php:3886
+#: application/helpers/common_helper.php:3887
+#: application/helpers/common_helper.php:3943
+#: application/helpers/common_helper.php:3944
 msgid "Use slider layout"
 msgstr ""
 
-#: application/helpers/common_helper.php:3891
-#: application/helpers/common_helper.php:3892
+#: application/helpers/common_helper.php:3894
+#: application/helpers/common_helper.php:3895
 msgid "Slider minimum value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3899
-#: application/helpers/common_helper.php:3900
+#: application/helpers/common_helper.php:3902
+#: application/helpers/common_helper.php:3903
 msgid "Slider maximum value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3907
-#: application/helpers/common_helper.php:3908
+#: application/helpers/common_helper.php:3910
+#: application/helpers/common_helper.php:3911
 msgid "Slider accuracy"
 msgstr ""
 
-#: application/helpers/common_helper.php:3915
-#: application/helpers/common_helper.php:3916
+#: application/helpers/common_helper.php:3918
+#: application/helpers/common_helper.php:3919
 msgid "Slider initial value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3926
+#: application/helpers/common_helper.php:3929
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
 msgstr ""
 
-#: application/helpers/common_helper.php:3927
+#: application/helpers/common_helper.php:3930
 msgid "Slider starts at the middle position"
 msgstr ""
 
-#: application/helpers/common_helper.php:3936
+#: application/helpers/common_helper.php:3939
 msgid "Yes - stars"
 msgstr ""
 
-#: application/helpers/common_helper.php:3937
+#: application/helpers/common_helper.php:3940
 msgid "Yes - slider with emoticon"
 msgstr ""
 
-#: application/helpers/common_helper.php:3952
+#: application/helpers/common_helper.php:3955
 msgid "Display min and max value under the slider"
 msgstr ""
 
-#: application/helpers/common_helper.php:3953
+#: application/helpers/common_helper.php:3956
 msgid "Display slider min and max value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3960
+#: application/helpers/common_helper.php:3963
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr ""
 
-#: application/helpers/common_helper.php:3961
+#: application/helpers/common_helper.php:3964
 msgid "Slider left/right text separator"
 msgstr ""
 
-#: application/helpers/common_helper.php:3969
+#: application/helpers/common_helper.php:3972
 msgid "Add a suffix to the answer field"
 msgstr ""
 
-#: application/helpers/common_helper.php:3970
+#: application/helpers/common_helper.php:3973
 msgid "Answer suffix"
 msgstr ""
 
-#: application/helpers/common_helper.php:3977
+#: application/helpers/common_helper.php:3980
 msgid "Width of text input box"
 msgstr ""
 
-#: application/helpers/common_helper.php:3978
+#: application/helpers/common_helper.php:3981
 msgid "Input box width"
 msgstr ""
 
-#: application/helpers/common_helper.php:3988
+#: application/helpers/common_helper.php:3991
 msgid "Present dropdown control(s) instead of list of radio buttons"
 msgstr ""
 
-#: application/helpers/common_helper.php:3989
+#: application/helpers/common_helper.php:3992
 msgid "Use dropdown presentation"
 msgstr ""
 
-#: application/helpers/common_helper.php:3998
+#: application/helpers/common_helper.php:4001
 msgid "For list dropdown boxes, show up to this many rows"
 msgstr ""
 
-#: application/helpers/common_helper.php:3999
+#: application/helpers/common_helper.php:4002
 msgid "Height of dropdown"
 msgstr ""
 
-#: application/helpers/common_helper.php:4007
+#: application/helpers/common_helper.php:4010
 msgid "Order - like 3)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4010
+#: application/helpers/common_helper.php:4013
 msgid "Accelerator keys for list items"
 msgstr ""
 
-#: application/helpers/common_helper.php:4011
+#: application/helpers/common_helper.php:4014
 msgid "Prefix for list items"
 msgstr ""
 
-#: application/helpers/common_helper.php:4018
+#: application/helpers/common_helper.php:4021
 #: application/views/admin/authentication/login.php:12
 #: application/views/admin/user/personalsettings.php:29
 #: application/views/admin/user/personalsettings.php:41
@@ -6004,324 +6004,324 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: application/helpers/common_helper.php:4019
+#: application/helpers/common_helper.php:4022
 msgid "Nominal"
 msgstr ""
 
-#: application/helpers/common_helper.php:4020
+#: application/helpers/common_helper.php:4023
 msgid "Ordinal"
 msgstr ""
 
-#: application/helpers/common_helper.php:4021
+#: application/helpers/common_helper.php:4024
 msgid "Scale"
 msgstr ""
 
-#: application/helpers/common_helper.php:4023
+#: application/helpers/common_helper.php:4026
 msgid "Set a specific SPSS export scale type for this question"
 msgstr ""
 
-#: application/helpers/common_helper.php:4024
+#: application/helpers/common_helper.php:4027
 msgid "SPSS export scale type"
 msgstr ""
 
-#: application/helpers/common_helper.php:4033
+#: application/helpers/common_helper.php:4036
 msgid "Replace choice header (default: \"%s\")"
 msgstr ""
 
-#: application/helpers/common_helper.php:4034
+#: application/helpers/common_helper.php:4037
 msgid "Choice header"
 msgstr ""
 
-#: application/helpers/common_helper.php:4043
+#: application/helpers/common_helper.php:4046
 msgid "Replace rank header (default: \"%s\")"
 msgstr ""
 
-#: application/helpers/common_helper.php:4044
+#: application/helpers/common_helper.php:4047
 msgid "Rank header"
 msgstr ""
 
-#: application/helpers/common_helper.php:4049
-#: application/helpers/common_helper.php:4057
-#: application/helpers/common_helper.php:4069
-#: application/helpers/common_helper.php:4080
-#: application/helpers/common_helper.php:4091
-#: application/helpers/common_helper.php:4100
-#: application/helpers/common_helper.php:4108
-#: application/helpers/common_helper.php:4116
-#: application/helpers/common_helper.php:4125
-#: application/helpers/common_helper.php:4133
-#: application/helpers/common_helper.php:4141
-#: application/helpers/common_helper.php:4149
-#: application/helpers/common_helper.php:4158
-#: application/helpers/common_helper.php:4166
-#: application/helpers/common_helper.php:4174
-#: application/helpers/common_helper.php:4182
-#: application/helpers/common_helper.php:4191
+#: application/helpers/common_helper.php:4052
+#: application/helpers/common_helper.php:4060
+#: application/helpers/common_helper.php:4072
+#: application/helpers/common_helper.php:4083
+#: application/helpers/common_helper.php:4094
+#: application/helpers/common_helper.php:4103
+#: application/helpers/common_helper.php:4111
+#: application/helpers/common_helper.php:4119
+#: application/helpers/common_helper.php:4128
+#: application/helpers/common_helper.php:4136
+#: application/helpers/common_helper.php:4144
+#: application/helpers/common_helper.php:4152
+#: application/helpers/common_helper.php:4161
+#: application/helpers/common_helper.php:4169
+#: application/helpers/common_helper.php:4177
+#: application/helpers/common_helper.php:4185
+#: application/helpers/common_helper.php:4194
 msgid "Timer"
 msgstr ""
 
-#: application/helpers/common_helper.php:4052
+#: application/helpers/common_helper.php:4055
 msgid "Limit time to answer question (in seconds)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4053
+#: application/helpers/common_helper.php:4056
 msgid "Time limit"
 msgstr ""
 
-#: application/helpers/common_helper.php:4060
+#: application/helpers/common_helper.php:4063
 msgid "Warn and move on"
 msgstr ""
 
-#: application/helpers/common_helper.php:4061
+#: application/helpers/common_helper.php:4064
 msgid "Move on without warning"
 msgstr ""
 
-#: application/helpers/common_helper.php:4062
+#: application/helpers/common_helper.php:4065
 msgid "Disable only"
 msgstr ""
 
-#: application/helpers/common_helper.php:4064
+#: application/helpers/common_helper.php:4067
 msgid "Action to perform when time limit is up"
 msgstr ""
 
-#: application/helpers/common_helper.php:4065
+#: application/helpers/common_helper.php:4068
 msgid "Time limit action"
 msgstr ""
 
-#: application/helpers/common_helper.php:4075
+#: application/helpers/common_helper.php:4078
 msgid "Disable the next button until time limit expires"
 msgstr ""
 
-#: application/helpers/common_helper.php:4076
+#: application/helpers/common_helper.php:4079
 msgid "Time limit disable next"
 msgstr ""
 
-#: application/helpers/common_helper.php:4086
+#: application/helpers/common_helper.php:4089
 msgid "Disable the prev button until the time limit expires"
 msgstr ""
 
-#: application/helpers/common_helper.php:4087
+#: application/helpers/common_helper.php:4090
 msgid "Time limit disable prev"
 msgstr ""
 
-#: application/helpers/common_helper.php:4095
+#: application/helpers/common_helper.php:4098
 msgid "The text message that displays in the countdown timer during the countdown"
 msgstr ""
 
-#: application/helpers/common_helper.php:4096
+#: application/helpers/common_helper.php:4099
 msgid "Time limit countdown message"
 msgstr ""
 
-#: application/helpers/common_helper.php:4103
+#: application/helpers/common_helper.php:4106
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
 msgstr ""
 
-#: application/helpers/common_helper.php:4104
+#: application/helpers/common_helper.php:4107
 msgid "Time limit timer CSS style"
 msgstr ""
 
-#: application/helpers/common_helper.php:4111
+#: application/helpers/common_helper.php:4114
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4112
+#: application/helpers/common_helper.php:4115
 msgid "Time limit expiry message display time"
 msgstr ""
 
-#: application/helpers/common_helper.php:4120
+#: application/helpers/common_helper.php:4123
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4121
+#: application/helpers/common_helper.php:4124
 msgid "Time limit expiry message"
 msgstr ""
 
-#: application/helpers/common_helper.php:4128
+#: application/helpers/common_helper.php:4131
 msgid "CSS style for the 'time limit expiry message'"
 msgstr ""
 
-#: application/helpers/common_helper.php:4129
+#: application/helpers/common_helper.php:4132
 msgid "Time limit message CSS style"
 msgstr ""
 
-#: application/helpers/common_helper.php:4136
+#: application/helpers/common_helper.php:4139
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4137
+#: application/helpers/common_helper.php:4140
 msgid "1st time limit warning message timer"
 msgstr ""
 
-#: application/helpers/common_helper.php:4144
+#: application/helpers/common_helper.php:4147
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4145
+#: application/helpers/common_helper.php:4148
 msgid "1st time limit warning message display time"
 msgstr ""
 
-#: application/helpers/common_helper.php:4153
+#: application/helpers/common_helper.php:4156
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4154
+#: application/helpers/common_helper.php:4157
 msgid "1st time limit warning message"
 msgstr ""
 
-#: application/helpers/common_helper.php:4161
+#: application/helpers/common_helper.php:4164
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr ""
 
-#: application/helpers/common_helper.php:4162
+#: application/helpers/common_helper.php:4165
 msgid "1st time limit warning CSS style"
 msgstr ""
 
-#: application/helpers/common_helper.php:4169
+#: application/helpers/common_helper.php:4172
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4170
+#: application/helpers/common_helper.php:4173
 msgid "2nd time limit warning message timer"
 msgstr ""
 
-#: application/helpers/common_helper.php:4177
+#: application/helpers/common_helper.php:4180
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4178
+#: application/helpers/common_helper.php:4181
 msgid "2nd time limit warning message display time"
 msgstr ""
 
-#: application/helpers/common_helper.php:4186
+#: application/helpers/common_helper.php:4189
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4187
+#: application/helpers/common_helper.php:4190
 msgid "2nd time limit warning message"
 msgstr ""
 
-#: application/helpers/common_helper.php:4194
+#: application/helpers/common_helper.php:4197
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr ""
 
-#: application/helpers/common_helper.php:4195
+#: application/helpers/common_helper.php:4198
 msgid "2nd time limit warning CSS style"
 msgstr ""
 
-#: application/helpers/common_helper.php:4202
+#: application/helpers/common_helper.php:4205
 msgid "Specify a custom date/time format (the <i>d/dd m/mm yy/yyyy H/HH M/MM</i> formats and \"-./: \" characters are allowed for day/month/year/hour/minutes without or with leading zero respectively. Defaults to survey's date format"
 msgstr ""
 
-#: application/helpers/common_helper.php:4203
+#: application/helpers/common_helper.php:4206
 msgid "Date/Time format"
 msgstr ""
 
-#: application/helpers/common_helper.php:4211
+#: application/helpers/common_helper.php:4214
 msgid "Minute step interval when using select boxes"
 msgstr ""
 
-#: application/helpers/common_helper.php:4212
+#: application/helpers/common_helper.php:4215
 msgid "Minute step interval"
 msgstr ""
 
-#: application/helpers/common_helper.php:4219
+#: application/helpers/common_helper.php:4222
 msgid "Short names"
 msgstr ""
 
-#: application/helpers/common_helper.php:4220
+#: application/helpers/common_helper.php:4223
 msgid "Full names"
 msgstr ""
 
-#: application/helpers/common_helper.php:4221
+#: application/helpers/common_helper.php:4224
 msgid "Numbers"
 msgstr ""
 
-#: application/helpers/common_helper.php:4223
+#: application/helpers/common_helper.php:4226
 msgid "Change the display style of the month when using select boxes"
 msgstr ""
 
-#: application/helpers/common_helper.php:4224
+#: application/helpers/common_helper.php:4227
 msgid "Month display style"
 msgstr ""
 
-#: application/helpers/common_helper.php:4228
-#: application/helpers/common_helper.php:4239
+#: application/helpers/common_helper.php:4231
+#: application/helpers/common_helper.php:4242
 msgid "File metadata"
 msgstr ""
 
-#: application/helpers/common_helper.php:4234
+#: application/helpers/common_helper.php:4237
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr ""
 
-#: application/helpers/common_helper.php:4235
+#: application/helpers/common_helper.php:4238
 msgid "Show title"
 msgstr ""
 
-#: application/helpers/common_helper.php:4245
+#: application/helpers/common_helper.php:4248
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr ""
 
-#: application/helpers/common_helper.php:4246
+#: application/helpers/common_helper.php:4249
 msgid "Show comment"
 msgstr ""
 
-#: application/helpers/common_helper.php:4255
+#: application/helpers/common_helper.php:4258
 msgid "The participant cannot upload a single file larger than this size"
 msgstr ""
 
-#: application/helpers/common_helper.php:4256
+#: application/helpers/common_helper.php:4259
 msgid "Maximum file size allowed (in KB)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4264
+#: application/helpers/common_helper.php:4267
 msgid "Maximum number of files that the participant can upload for this question"
 msgstr ""
 
-#: application/helpers/common_helper.php:4265
+#: application/helpers/common_helper.php:4268
 msgid "Max number of files"
 msgstr ""
 
-#: application/helpers/common_helper.php:4273
+#: application/helpers/common_helper.php:4276
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr ""
 
-#: application/helpers/common_helper.php:4274
+#: application/helpers/common_helper.php:4277
 msgid "Min number of files"
 msgstr ""
 
-#: application/helpers/common_helper.php:4282
+#: application/helpers/common_helper.php:4285
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr ""
 
-#: application/helpers/common_helper.php:4283
+#: application/helpers/common_helper.php:4286
 msgid "Allowed file types"
 msgstr ""
 
-#: application/helpers/common_helper.php:4290
+#: application/helpers/common_helper.php:4293
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
 msgstr ""
 
-#: application/helpers/common_helper.php:4291
+#: application/helpers/common_helper.php:4294
 msgid "Randomization group name"
 msgstr ""
 
-#: application/helpers/common_helper.php:4305
+#: application/helpers/common_helper.php:4308
 msgid "Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"
 msgstr ""
 
-#: application/helpers/common_helper.php:4306
+#: application/helpers/common_helper.php:4309
 msgid "Value range allows missing"
 msgstr ""
 
-#: application/helpers/common_helper.php:4447
+#: application/helpers/common_helper.php:4450
 msgid "Email was not sent because demo-mode is activated."
 msgstr ""
 
-#: application/helpers/common_helper.php:4568
+#: application/helpers/common_helper.php:4571
 msgid "SMTP debug output:"
 msgstr ""
 
-#: application/helpers/common_helper.php:5469
+#: application/helpers/common_helper.php:5472
 #: application/helpers/replacements_helper.php:647
 #: application/views/admin/export/exportresults_view.php:128
 #: application/views/admin/saved/savedlist_view.php:10
@@ -6330,124 +6330,124 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: application/helpers/common_helper.php:5479
+#: application/helpers/common_helper.php:5482
 msgid "Language code"
 msgstr ""
 
-#: application/helpers/common_helper.php:5484
+#: application/helpers/common_helper.php:5487
 msgid "Invitation sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:5489
+#: application/helpers/common_helper.php:5492
 msgid "Last reminder sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:5494
+#: application/helpers/common_helper.php:5497
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: application/helpers/common_helper.php:5499
+#: application/helpers/common_helper.php:5502
 #: application/views/admin/token/browse.php:85
 #: application/views/admin/token/browse.php:143
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:6416
+#: application/helpers/common_helper.php:6419
 msgid "Access denied!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6421
+#: application/helpers/common_helper.php:6424
 msgid "You are not allowed dump the database!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6426
+#: application/helpers/common_helper.php:6429
 msgid "You are not allowed export a label set!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6431
+#: application/helpers/common_helper.php:6434
 msgid "You are not allowed to change user data!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6436
+#: application/helpers/common_helper.php:6439
 msgid "You are not allowed to create new surveys!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6441
+#: application/helpers/common_helper.php:6444
 msgid "You are not allowed to delete this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6446
+#: application/helpers/common_helper.php:6449
 msgid "You are not allowed to add new questions for this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6451
+#: application/helpers/common_helper.php:6454
 msgid "You are not allowed to activate this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6456
+#: application/helpers/common_helper.php:6459
 msgid "You are not allowed to stop this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6461
+#: application/helpers/common_helper.php:6464
 msgid "You are not allowed to add a group to this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6467
+#: application/helpers/common_helper.php:6470
 msgid "You are not allowed to order groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6473
+#: application/helpers/common_helper.php:6476
 msgid "You are not allowed to edit this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6478
+#: application/helpers/common_helper.php:6481
 msgid "You are not allowed to edit groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6483
+#: application/helpers/common_helper.php:6486
 msgid "You are not allowed to browse responses!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6488
+#: application/helpers/common_helper.php:6491
 msgid "You are not allowed to set assessment rules!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6493
+#: application/helpers/common_helper.php:6496
 msgid "You are not allowed to delete this group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6498
+#: application/helpers/common_helper.php:6501
 msgid "You are not allowed to import a survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6504
+#: application/helpers/common_helper.php:6507
 msgid "You are not allowed to import a group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6509
+#: application/helpers/common_helper.php:6512
 msgid "You are not allowed to to import a question!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6518
-#: application/helpers/common_helper.php:6523
+#: application/helpers/common_helper.php:6521
+#: application/helpers/common_helper.php:6526
 msgid "Security alert"
 msgstr ""
 
-#: application/helpers/common_helper.php:6518
-#: application/helpers/common_helper.php:6523
+#: application/helpers/common_helper.php:6521
+#: application/helpers/common_helper.php:6526
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr ""
 
-#: application/helpers/common_helper.php:6518
-#: application/helpers/common_helper.php:6523
+#: application/helpers/common_helper.php:6521
+#: application/helpers/common_helper.php:6526
 msgid "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
 msgstr ""
 
-#: application/helpers/common_helper.php:6528
+#: application/helpers/common_helper.php:6531
 msgid "You are not allowed to perform this operation!"
 msgstr ""
 
-#: application/helpers/common_helper.php:7282
+#: application/helpers/common_helper.php:7285
 msgid "SQL command failed: %s"
 msgstr ""
 
