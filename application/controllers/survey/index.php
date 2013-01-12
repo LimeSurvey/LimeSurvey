@@ -755,7 +755,7 @@ class index extends CAction {
         if ( !isset($_SESSION['loginID']) ) // This is not needed because hasSurveyPermission control connexion
             return false;
 
-        return hasSurveyPermission($iSurveyID,'content','read');
+        return hasSurveyPermission($iSurveyID,'surveycontent','read');
     }
 
     function _userHasPreviewAccessSession($iSurveyID){
