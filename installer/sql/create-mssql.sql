@@ -495,6 +495,7 @@ CREATE TABLE [prefix_users] (
   [lang] varchar(20),
   [email] varchar(320),
   [create_survey] int NOT NULL default '0',
+  [manage_survey] int NOT NULL default '0',
   [create_user] int NOT NULL default '0',
   [participant_panel] int NOT NULL default '0',
   [delete_user] int NOT NULL default '0',
@@ -619,4 +620,4 @@ INSERT INTO [prefix_question_type_groups] ([id], [name], [order], [system]) VALU
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '168');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '169');

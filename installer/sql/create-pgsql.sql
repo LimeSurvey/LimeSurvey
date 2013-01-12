@@ -505,6 +505,7 @@ CREATE TABLE prefix_users (
     parent_id integer NOT NULL,
     lang character varying(20),
     email character varying(320),
+    manage_survey integer DEFAULT 0 NOT NULL,
     create_survey integer DEFAULT 0 NOT NULL,
     create_user integer DEFAULT 0 NOT NULL,
     participant_panel integer DEFAULT 0 NOT NULL,
@@ -628,4 +629,4 @@ INSERT INTO prefix_question_type_groups (id, name, "order", system) VALUES
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '168');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '169');
