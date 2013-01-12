@@ -240,25 +240,23 @@ function hasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
 {
     if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
     $sCRUD=$sCRUD.'_p';
-    $iSID = (int)$iSID;
-    if ($iSID==0) return false;
-    $aSurveyPermissionCache = Yii::app()->getConfig("aSurveyPermissionCache");
+    $thissurvey=getSurveyInfo($iSID);
+    if (!$thissurvey) return false;
 
     if (is_null($iUID))
     {
-        if (!Yii::app()->user->getIsGuest()) $iUID = Yii::app()->session['loginID'];
+        if (!Yii::app()->user->getIsGuest()) $iUID = Yii::app()->user->getId();
         else return false;
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
     }
+    // Some uther don't have to be in Survey_permissions
+    if (User::GetUserRights('superadmin')) return true; //Superadmin has access to all
+    if ($iUID==$thissurvey['owner_id']) return true; //Survey owner has access to all
 
+    $aSurveyPermissionCache = Yii::app()->getConfig("aSurveyPermissionCache");
     if (!isset($aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]))
     {
-        //!!! Convert this model
-        $query = Survey_permissions::model()->findByAttributes(array("sid"=> $iSID,"uid"=> $iUID,"permission"=>$sPermission));
-        //$sSQL = "SELECT {$sCRUD} FROM " . db_table_name('survey_permissions') . "
-        //        WHERE sid={$iSID} AND uid = {$iUID}
-        //        and permission=".dbQuoteAll($sPermission); //Getting rights for this survey
-        $bPermission = is_null($query) ? array() : $query->attributes;
+        $oPermissions = Survey_permissions::model()->findByAttributes(array("sid"=> $iSID,"uid"=> $iUID,"permission"=>$sPermission));
+        $bPermission = !$oPermissions ? array() : $oPermissions->attributes;
         if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
         {
             $bPermission=false;

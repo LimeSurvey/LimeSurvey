@@ -534,13 +534,13 @@ class SurveyAdmin extends Survey_Common_Action
     {
         header('Content-type: application/json');
 
-        $result = User::model()->findAll();
+        $result = getUserList();
 
         $aUsers = array();
         if (count($result) > 0)
         {
             foreach ($result as $rows)
-                $aUsers[] = array($rows['uid'], $rows['users_name']);
+                $aUsers[] = array($rows['uid'], $rows['user']);
         }
         $ajaxoutput = ls_json_encode($aUsers) . "\n";
         echo $ajaxoutput;
@@ -566,20 +566,16 @@ class SurveyAdmin extends Survey_Common_Action
         $params[':sid']=$intSurveyId;
         if (!hasGlobalPermission("USER_RIGHT_SUPERADMIN"))
         {
-            $query_condition .= 'AND owner_id=:uid';
+            $query_condition .= ' AND owner_id=:uid';
             $params[':uid']=$owner_id;
         }
+        $result = Survey::model()->updateAll(array('owner_id'=>$intNewOwner), $query_condition, $params);// Update
 
-        $result = Survey::model()->updateAll(array('owner_id'=>$intNewOwner), $query_condition, $params);
-
-        $result = Survey::model()->with('owner')->findAllByAttributes(array('sid' => $intSurveyId, 'owner_id' => $intNewOwner));
-
+        $result = Survey::model()->with('owner')->findAllByAttributes(array('sid' => $intSurveyId, 'owner_id' => $intNewOwner));// Find new owner name: return false if owner are not the new one
         $intRecordCount = count($result);
-
         $aUsers = array(
-        'record_count' => $intRecordCount,
+            'record_count' => $intRecordCount,
         );
-
         foreach ($result as $row)
             $aUsers['newowner'] = $row->owner->users_name;
 
@@ -660,7 +656,14 @@ class SurveyAdmin extends Survey_Common_Action
             $aSurveyEntry[] = '<!--' . $rows['datecreated'] . '-->' . $datetimeobj->convert($dateformatdetails['phpdate']);
 
             //Set Owner
-            $aSurveyEntry[] = $rows['users_name'] . ' (<a href="#" class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
+            if(User::GetUserRights('superadmin') || $rows['owner_id']==Yii::app()->user->getId())
+            {
+                $aSurveyEntry[] = $rows['users_name'] . ' (<a href="#" class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
+            }
+            else
+            {
+                $aSurveyEntry[] = $rows['users_name'];
+            }
 
             //Set Access
             if (tableExists('tokens_' . $rows['sid'] ))
