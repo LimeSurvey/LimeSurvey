@@ -524,9 +524,7 @@ class SurveyAdmin extends Survey_Common_Action
     public function ajaxgetusers()
     {
         header('Content-type: application/json');
-
         $result = getUserList();
-
         $aUsers = array();
         if (count($result) > 0)
         {
@@ -568,7 +566,7 @@ class SurveyAdmin extends Survey_Common_Action
         $intRecordCount = count($result);
 
         $aUsers = array(
-        'record_count' => $intRecordCount,
+            'record_count' => $intRecordCount,
         );
 
         foreach ($result as $row)
@@ -651,8 +649,14 @@ class SurveyAdmin extends Survey_Common_Action
             $aSurveyEntry[] = '<!--' . $rows['datecreated'] . '-->' . $datetimeobj->convert($dateformatdetails['phpdate']);
 
             //Set Owner
-            $aSurveyEntry[] = $rows['users_name'] . ' (<a href="#" class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
-
+            if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] || Yii::app()->session['loginID']==$rows['owner_id'])
+            {
+                $aSurveyEntry[] = $rows['users_name'] . ' (<a class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
+            }
+            else
+            {
+                $aSurveyEntry[] = $rows['users_name'];
+            }
             //Set Access
             if (tableExists('tokens_' . $rows['sid'] ))
             {
