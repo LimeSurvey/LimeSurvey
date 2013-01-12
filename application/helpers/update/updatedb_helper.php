@@ -1092,6 +1092,13 @@ function db_upgrade_all($oldversion) {
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>168),"stg_name='DBVersion'");
          }
 
+        if ($oldversion < 169)
+        {
+            // Add manage_survey users right (integre(1) : integer) to users table.
+            Yii::app()->db->createCommand()->addColumn('{{users}}','manage_survey',"integer NOT NULL DEFAULT 0");
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>169),"stg_name='DBVersion'");
+         }
+
     }
     catch(Exception $e)
     {

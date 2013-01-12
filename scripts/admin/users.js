@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  $('.withadmin').click(function() {
+  $('.with-superadmin').click(function() {
   if(!$(this).is(':checked'))
     {
     $('#superadmin').attr('checked', false);
@@ -8,7 +8,7 @@ $(document).ready(function(){
   $('#superadmin').click(function() {
   if($(this).is(':checked'))
     {
-    $('.withadmin').attr('checked', true);
+    $('.with-superadmin').attr('checked', true);
     }
   });
 // Seems deprecated

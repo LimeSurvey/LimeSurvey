@@ -62,13 +62,13 @@ img {
     border: 0;
 }
 
-a {
+a,.link {
     color: #328639;
     text-decoration: underline;
     cursor:pointer;
 }
 
-a:hover {
+a:hover,.link:hover {
     color: #819D26;
     text-decoration: underline;
 }

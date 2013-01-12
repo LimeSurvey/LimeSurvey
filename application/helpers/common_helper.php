@@ -106,7 +106,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
     $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
 
     if(is_null($cached)) {
-        if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
+        if (!User::GetUserRights('manage_survey'))
             $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
         else
             $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
@@ -248,14 +248,17 @@ function hasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
         if (!Yii::app()->user->getIsGuest()) $iUID = Yii::app()->user->getId();
         else return false;
     }
-    // Some uther don't have to be in Survey_permissions
+
+    // Some user don't need to be in Survey_permissions
     if (User::GetUserRights('superadmin')) return true; //Superadmin has access to all
     if ($iUID==$thissurvey['owner_id']) return true; //Survey owner has access to all
+    if (User::GetUserRights('manage_survey')) return true; //Survey manager has access to all
 
     $aSurveyPermissionCache = Yii::app()->getConfig("aSurveyPermissionCache");
     if (!isset($aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]))
     {
         $oPermissions = Survey_permissions::model()->findByAttributes(array("sid"=> $iSID,"uid"=> $iUID,"permission"=>$sPermission));
+
         $bPermission = !$oPermissions ? array() : $oPermissions->attributes;
         if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
         {
@@ -1031,13 +1034,11 @@ function getUserList($outputformat='fullinfoarray')
             SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}
             UNION
             SELECT {$sSelectFields} from {{users}} v where uid={$myuid}";
-            
         }
         else
         {
             return array(); // Or die maybe
         }
-                                                        
     }
     else
     {
@@ -6301,7 +6302,6 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
 
     if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
     {
-
         $authorizedUsersList = getUserList('onlyuidarray');
     }
 
