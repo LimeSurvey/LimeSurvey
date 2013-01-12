@@ -4683,7 +4683,7 @@ function SSLRedirect($enforceSSLMode)
 */
 function enforceSSLMode()
 {
-    $https = isset($_SERVER['HTTPS'])?$_SERVER['HTTPS']:'';
+    $bSSLActive = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off");
     if (Yii::app()->getConfig('ssl_emergency_override') !== true )
     {
         $force_ssl = strtolower(getGlobalSetting('force_ssl'));
@@ -4692,11 +4692,11 @@ function enforceSSLMode()
     {
         $force_ssl = 'off';
     };
-    if( $force_ssl == 'on' && $https == '' )
+    if( $force_ssl == 'on' && $bSSLActive )
     {
         SSLRedirect('s');
     }
-    if( $force_ssl == 'off' && $https != '')
+    if( $force_ssl == 'off' && $bSSLActive)
     {
         SSLRedirect('');
     };
