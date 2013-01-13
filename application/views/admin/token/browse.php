@@ -34,6 +34,8 @@
 ?>
 <script type="text/javascript">
     var sAddParticipantToCPDBText = '<?php $clang->eT("Add participants to central database",'js');?>';
+    var sSelectRowMsg = "<?php $clang->eT("Please select at least one participant.", 'js') ?>";
+    var sWarningMsg = "<?php $clang->eT("Warning", 'js') ?>";
     var sRecordText = '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
     var sPageText = '<?php $clang->eT("Page {0} of {1}",'js');?>';
     var imageurl = "<?php echo Yii::app()->getConfig('adminimageurl'); ?>";
@@ -129,7 +131,7 @@
 </script>
 <div id ="search" style="display:none">
     <?php
-        $optionsearch = array('' => 'Select One',
+        $optionsearch = array('' => $clang->gT('Select...'),
         'firstname' => $clang->gT("First name"),
         'lastname' => $clang->gT("Last name"),
         'email' => $clang->gT("Email address"),
@@ -143,7 +145,7 @@
         'usesleft' => $clang->gT("Uses left"),
         'validfrom' => $clang->gT("Valid from"),
         'validuntil' => $clang->gT("Valid until"));
-        $optioncontition = array('' => 'Select One',
+        $optioncontition = array('' => $clang->gT('Select...'),
         'equal' => $clang->gT("Equals"),
         'contains' => $clang->gT("Contains"),
         'notequal' => $clang->gT("Not equal"),

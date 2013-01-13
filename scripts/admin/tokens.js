@@ -206,6 +206,8 @@ $(document).ready(function() {
         caption: sCaption
     });
     jQuery("#displaytokens").jqGrid('navGrid','#pager',{
+        alertcap: sWarningMsg,
+        alerttext: sSelectRowMsg,
         deltitle: sDelTitle,
         refreshtitle: sRefreshTitle,
         add:false,
