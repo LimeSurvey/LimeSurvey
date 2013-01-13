@@ -2271,10 +2271,11 @@ function UpdateGroupList($surveyid, $language)
     }
 }
 
+/**
+* FieldArray contains all necessary information regarding the questions
+* This function is needed to update it in case the survey is switched to another language
+*/
 function UpdateFieldArray()
-//The FieldArray contains all necessary information regarding the questions
-//This function is needed to update it in case the survey is switched to another language
-
 {
     global $surveyid;
 
@@ -2287,15 +2288,14 @@ function UpdateFieldArray()
         {
             $questionarray =& $_SESSION['survey_'.$surveyid]['fieldarray'][$key];
 
-            $query = "SELECT * FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
-            $result = dbExecuteAssoc($query) or safeDie ("Couldn't get question <br />$query<br />");      //Checked
-            $row = $result->read();
-            $questionarray[2]=$row['title'];
-            $questionarray[3]=$row['question'];
+            $query = "SELECT title, question FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
+            $usrow = Yii::app()->db->createCommand($query)->queryRow();
+            if (!$usrow) safeDie ("Couldn't get question <br />$query<br />");      //Checked
+            $questionarray[2]=$usrow['title'];
+            $questionarray[3]=$usrow['question'];
             unset($questionarray);
         }
     }
-
 }
 
 /**
