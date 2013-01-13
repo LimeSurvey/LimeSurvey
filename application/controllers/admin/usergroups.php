@@ -128,39 +128,33 @@ class Usergroups extends Survey_Common_Action
      * Function responsible to delete a user group.
      * @return void
      */
-    public function delete()
+    public function delete($ugid)
     {
         $clang = Yii::app()->lang;
-        $action = $_POST['action'];
-        $ugid = $_POST['ugid'];
         $aViewUrls = array();
         $aData = array();
 
-        if ($action == "delusergroup") {
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
 
-            if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
+            if (!empty($ugid) && ($ugid > -1)) {
+                $result = User_groups::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
+                if ($result->count() > 0) {  // OK - AR count
+                    $delquery_result = User_groups::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
 
-                if (!empty($ugid) && ($ugid > -1)) {
-                    $result = User_groups::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
-                    if ($result->count() > 0) {  // OK - AR count
-                        $delquery_result = User_groups::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
-
-                        if ($delquery_result) //Checked)
-                        {
-                            list($aViewUrls, $aData) = $this->index(false, array("type" => "success", "message" => $clang->gT("Success!")));
-                        }
-                        else
-                        {
-                            list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Could not delete user group.")));
-                        }
+                    if ($delquery_result) //Checked)
+                    {
+                        list($aViewUrls, $aData) = $this->index(false, array("type" => "success", "message" => $clang->gT("Success!")));
+                    }
+                    else
+                    {
+                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Could not delete user group.")));
                     }
                 }
-                else
-                {
-                    list($aViewUrls, $aData) = $this->index($ugid, array("type" => "warning", "message" => $clang->gT("Could not delete user group. No group selected.")));
-                }
             }
-
+            else
+            {
+                list($aViewUrls, $aData) = $this->index($ugid, array("type" => "warning", "message" => $clang->gT("Could not delete user group. No group selected.")));
+            }
         }
 
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
@@ -308,23 +302,18 @@ class Usergroups extends Survey_Common_Action
                         $bgcc = "evenrow";
                     }
                     $userloop[$row]["userid"] = $egurow['uid'];
-                    if ($egurow['uid'] == $crow['owner_id']) {
-                        $userloop[$row]["username"] = "<strong>{$egurow['users_name']}</strong>";
-                        $userloop[$row]["email"] = "<strong>{$egurow['email']}</strong>";
-                        $userloop[$row]["rowclass"] = $bgcc;
-                        $userloop[$row]["displayactions"] = false;
-                    } else {
-                        //	output users
-                        $userloop[$row]["rowclass"] = $bgcc;
-                        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
-                            $userloop[$row]["displayactions"] = true;
-                        } else {
-                            $userloop[$row]["displayactions"] = false;
-                        }
 
-                        $userloop[$row]["username"] = $egurow['users_name'];
-                        $userloop[$row]["email"] = $egurow['email'];
+                    //	output users
+                    $userloop[$row]["rowclass"] = $bgcc;
+                    if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
+                        $userloop[$row]["displayactions"] = true;
+                    } else {
+                        $userloop[$row]["displayactions"] = false;
                     }
+
+                    $userloop[$row]["username"] = $egurow['users_name'];
+                    $userloop[$row]["email"] = $egurow['email'];
+                 
                     $row++;
                 }
                 $aData["userloop"] = $userloop;

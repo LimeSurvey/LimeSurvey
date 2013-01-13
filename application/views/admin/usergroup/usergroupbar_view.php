@@ -5,13 +5,11 @@
             {
                 echo "{$grow['name']}";
         } ?>
-
-
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
             <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='55' height='20' />
-            <img src='<?php echo $imageurl; ?>separator.gif' alt='' />
+            <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
 
             <?php if($ugid && $grpresultcount > 0)
                 { ?>
@@ -23,7 +21,7 @@
                 <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='40' height='20' />
                 <?php } ?>
             <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='78' height='20' />
-            <img src='<?php echo $imageurl; ?>separator.gif' alt='' />
+            <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
 
             <?php if($ugid && $grpresultcount > 0 && (Yii::app()->session['loginID'] == $grow['owner_id'] || hasGlobalPermission('USER_RIGHT_SUPERADMIN')))
                 { ?>
@@ -38,7 +36,7 @@
                 if($ugid && $grpresultcount > 0 &&  (Yii::app()->session['loginID'] == $grow['owner_id'] || hasGlobalPermission('USER_RIGHT_SUPERADMIN')))
                 { ?>
 
-                <a href='#' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl('admin/usergroups/sa/delete')."?action=delusergroup&amp;ugid=$ugid"); ?>}">
+                <a href='#' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl('admin/usergroups/sa/delete/ugid/'.$ugid)); ?>}">
                     <img src='<?php echo $imageurl; ?>delete.png' alt='<?php $clang->eT("Delete current user group"); ?>' name='DeleteUserGroup'  /></a>
                 <?php }
                 else
@@ -46,7 +44,7 @@
                 <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='40' height='20' />
                 <?php } ?>
             <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='92' height='20' />
-            <img src='<?php echo $imageurl; ?>separator.gif' alt='' />
+            <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
         </div>
         <div class='menubar-right'>
             <label for="ugid"><?php $clang->eT("User groups"); ?>:</label>  <select name='ugid' id='ugid' onchange="window.location=this.options[this.selectedIndex].value">
@@ -57,7 +55,7 @@
                 <a href='<?php echo $this->createUrl("admin/usergroups/sa/add"); ?>'>
                     <img src='<?php echo $imageurl; ?>add.png' alt='<?php $clang->eT("Add new user group"); ?>' /></a>
                 <?php } ?>
-            <img src='<?php echo $imageurl; ?>separator.gif' alt='' />
+            <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
             <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='82' height='20' />
         </div></div>
     </div>
