@@ -359,6 +359,13 @@
         $supportedLanguages['mk']['dateformat'] = 1;
         $supportedLanguages['mk']['radixpoint'] = 1;
 
+        // Mongolian
+        $supportedLanguages['mn']['description'] = $clang->gT('Mongolian');
+        $supportedLanguages['mn']['nativedescription'] = '&#1052;&#1086;&#1085;&#1075;&#1086;&#1083;';
+        $supportedLanguages['mn']['rtl'] = false;
+        $supportedLanguages['mn']['dateformat'] = 3;
+        $supportedLanguages['mn']['radixpoint'] = 0;
+
         // Malay
         $supportedLanguages['ms']['description'] = $clang->gT('Malay');
         $supportedLanguages['ms']['nativedescription'] = 'Bahasa Melayu';
