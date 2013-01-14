@@ -320,7 +320,7 @@ class CommentCheckQuestion extends CheckQuestion
     {
         if (preg_match('/comment$/',$sgqa))
         {
-            return sanitize_html_string(parent::getVarAttributeLEM($sgqa,$value));
+            return htmlspecialchars(parent::getVarAttributeLEM($sgqa,$value),ENT_NOQUOTES);
         }
         else
         {

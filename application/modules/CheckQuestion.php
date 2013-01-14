@@ -589,7 +589,7 @@ class CheckQuestion extends QuestionModule
     {
         if (preg_match('/other$/',$sgqa))
         {
-            return sanitize_html_string(parent::getVarAttributeLEM($sgqa,$value));
+            return htmlspecialchars(parent::getVarAttributeLEM($sgqa,$value),ENT_NOQUOTES);
         }
         else
         {
