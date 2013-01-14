@@ -13,7 +13,7 @@
 		</td>
 		<td>
 		<?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}/lang/{$surveyinfo['language']}"); ?>
-        <a href='<?php echo $tmp_url?>/lang/<?php echo $surveyinfo['language']; ?>' target='_blank'><?php echo $tmp_url; ?></a>
+        <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
         </td>
     </tr>
         <?php
@@ -25,7 +25,7 @@
             </td>
             <td>
             <?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}/lang/{$langname}"); ?>
-            <a href='<?php echo $tmp_url?>/lang/<?php echo $langname; ?>' target='_blank'><?php echo $tmp_url; ?></a>
+            <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
             </td>
         </tr>
 
