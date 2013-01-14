@@ -724,8 +724,7 @@
             }
             if ($_SESSION['LEMlang'] != $lang) {
                 // then changing languages, so clear cache
-                //            $_SESSION['LEMdirtyFlag'] = true;
-                $_SESSION['LEMforceRefresh'] = true;
+                $_SESSION['LEMdirtyFlag'] = true;
             }
             $_SESSION['LEMlang'] = $lang;
         }
