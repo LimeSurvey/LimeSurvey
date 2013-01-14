@@ -345,6 +345,10 @@ textarea {
     font-family: verdana, arial, sans-serif;
 }
 
+.markedrow
+{
+    background-color: lightyellow;
+}
 
 .subtitle {
     font-size: 10px;
