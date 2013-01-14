@@ -54,7 +54,7 @@ class CheckIntegrity extends Survey_Common_Action
                     if(in_array($aTokenTable['table'],$oldsmultidelete))
                     {
                         Yii::app()->db->createCommand()->dropTable($aTokenTable['table']);
-                        $aData['messages'][] = $clang->gT('Deleting token table:') . ' ' . $aTokenTable['table'];
+                        $aData['messages'][] = sprintf($clang->gT('Deleting token table: %s'),$aTokenTable['table']);
                     }
                 }
             }
@@ -65,7 +65,7 @@ class CheckIntegrity extends Survey_Common_Action
                     if(in_array($aSurveyTable['table'],$oldsmultidelete))
                     {
                         Yii::app()->db->createCommand()->dropTable($aSurveyTable['table']);
-                        $aData['messages'][] = $clang->gT('Deleting survey table:') . ' ' . $aSurveyTable['table'];
+                        $aData['messages'][] = sprintf($clang->gT('Deleting survey table: %s'),$aSurveyTable['table']);
                     }
                 }
             }
