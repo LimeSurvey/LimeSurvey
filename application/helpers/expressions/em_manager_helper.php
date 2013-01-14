@@ -7666,7 +7666,7 @@ EOD;
                                 case 'S': //SHORT FREE TEXT
                                 case 'T': //LONG FREE TEXT
                                 case 'U': //HUGE FREE TEXT
-                                    return sanitize_html_string($_SESSION[$this->sessid][$sgqa]);// Sanitize the string entered by user
+                                    return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
                                 case '!': //List - dropdown
                                 case 'L': //LIST drop-down/radio-button list
                                 case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
@@ -7674,7 +7674,7 @@ EOD;
                                 case 'P': //Multiple choice with comments checkbox + text
                                     if (preg_match('/comment$/',$sgqa) || preg_match('/other$/',$sgqa) || preg_match('/_other$/',$name))
                                     {
-                                        return sanitize_html_string($_SESSION[$this->sessid][$sgqa]);
+                                        return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
                                     }
                                     else
                                     {
