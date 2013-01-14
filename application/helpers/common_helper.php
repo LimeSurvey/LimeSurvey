@@ -98,7 +98,7 @@ function isStandardTemplate($sTemplateName)
 * @return string This string is returned containing <option></option> formatted list of existing surveys
 *
 */
-function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=false)
+function getSurveyList($returnarray=false, $surveyid=false)
 {
     static $cached = null;
 
@@ -149,13 +149,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 {
                     $inactivesurveys .= " selected='selected'"; $svexist = 1;
                 }
-                if ($returnwithouturl===false)
-                {
-                    $inactivesurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
-                } else
-                {
-                    $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-                }
+                $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
             } elseif($sv['expires']!='' && $sv['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust))
             {
                 $expiredsurveys .="<option ";
@@ -167,13 +161,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 {
                     $expiredsurveys .= " selected='selected'"; $svexist = 1;
                 }
-                if ($returnwithouturl===false)
-                {
-                    $expiredsurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
-                } else
-                {
-                    $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-                }
+                $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
             } else
             {
                 $activesurveys .= "<option ";
@@ -185,16 +173,11 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 {
                     $activesurveys .= " selected='selected'"; $svexist = 1;
                 }
-                if ($returnwithouturl===false)
-                {
-                    $activesurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
-                } else
-                {
-                    $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-                }
+                $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
             }
         } // End Foreach
     }
+    
     //Only show each activesurvey group if there are some
     if ($activesurveys!='')
     {
@@ -216,13 +199,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
         $surveyselecter = "<option selected='selected' value=''>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;
     } else
     {
-        if ($returnwithouturl===false)
-        {
-            $surveyselecter = "<option value='".Yii::app()->getController()->createUrl("/admin")."'>".$clang->gT("None")."</option>\n".$surveyselecter;
-        } else
-        {
-            $surveyselecter = "<option value=''>".$clang->gT("None")."</option>\n".$surveyselecter;
-        }
+        $surveyselecter = "<option value=''>".$clang->gT("None")."</option>\n".$surveyselecter;
     }
     return $surveyselecter;
 }
