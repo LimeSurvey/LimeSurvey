@@ -96,7 +96,7 @@ class surveypermission extends Survey_Common_Action {
                     $surveysecurity .= "<tr>\n";
 
                     $surveysecurity .= "<td>\n";
-                    if(hasSurveyPermission($surveyid,'survey','update'))
+                    if(hasSurveyPermission($surveyid,'surveysecurity','update'))
                     {
                         if($PermissionRow['uid']!=Yii::app()->user->getId()) // Can not update own security
                         {
@@ -107,6 +107,9 @@ class surveypermission extends Survey_Common_Action {
                             ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
                             ."</form>\n";
                         }
+                    }
+                    if(hasSurveyPermission($surveyid,'surveysecurity','delete'))
+                    {
                         $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/delete/surveyid/{$surveyid}"), 'post', array('style'=>"display:inline;"))
                         ."<input type='image' src='{$imageurl}/token_delete.png' alt='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
                         ."<input type='hidden' name='action' value='delsurveysecurity' />"
@@ -170,7 +173,7 @@ class surveypermission extends Survey_Common_Action {
 
             $surveysecurity .= "</tbody>\n"
             . "</table>\n";
-            if(hasSurveyPermission($surveyid,'survey','create'))
+            if(hasSurveyPermission($surveyid,'surveysecurity','create'))
             {
                 $surveysecurity .= ""
                 . CHtml::form(array("admin/surveypermission/sa/adduser/surveyid/{$surveyid}"), 'post', array('class'=>"form44"))."<ul>\n"
@@ -514,7 +517,7 @@ class surveypermission extends Survey_Common_Action {
             $addsummary = "<div class=\"header\">".$clang->gT("Deleting User")."</div>\n";
             $addsummary .= "<div class=\"messagebox\">\n";
 
-            if( hasSurveyPermission($surveyid, 'surveysecurity', 'update') )
+            if( hasSurveyPermission($surveyid, 'surveysecurity', 'delete') )
             {
                 if (isset($postuserid))
                 {
