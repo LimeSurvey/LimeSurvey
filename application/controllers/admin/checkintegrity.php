@@ -69,7 +69,10 @@ class CheckIntegrity extends Survey_Common_Action
                     }
                 }
             }
-
+            if(count($aData['messages'])==0)
+            {
+                $aData['messages'][] = $clang->gT('No old survey or token table selected.');
+            }
             $this->_renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
         }
     }
