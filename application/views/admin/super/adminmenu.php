@@ -89,8 +89,8 @@
         </div>
         <div class='menubar-right'>
             <label for='surveylist'><?php $clang->eT("Surveys:");?></label>
-            <select id='surveylist' name='surveylist' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
-                <?php echo getSurveyList(false, false, $surveyid); ?>
+            <select id='surveylist' name='surveylist' onchange="if (this.options[this.selectedIndex].value!='') {window.open('<?php echo $this->createUrl("/admin/survey/sa/view/surveyid/"); ?>/'+this.options[this.selectedIndex].value,'_top')} else {window.open('<?php echo $this->createUrl("/admin/survey/sa/index/");?>','_top')}">
+                <?php echo getSurveyList(false, $surveyid); ?>
             </select>
             <a href="<?php echo $this->createUrl("admin/survey/sa/index"); ?>">
                 <img src='<?php echo $sImageURL;?>surveylist.png' alt='<?php $clang->eT("Detailed list of surveys");?>' />

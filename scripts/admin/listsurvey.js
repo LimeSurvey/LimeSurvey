@@ -133,7 +133,8 @@ $(document).ready(function(){
                                                           del:true,
                                                           edit:false,
                                                           refresh: true,
-                                                          search: true
+                                                          search: true,
+
                                                         },{},{},{ msg:delmsg, 
                                                                   bSubmit: sDelCaption,
                                                                   caption: sDelCaption,
@@ -141,7 +142,18 @@ $(document).ready(function(){
                                                                   width : 450,
                                                                   afterShowForm: function(form) {
                                                                     form.closest('div.ui-jqdialog').center();
-                                                                  }
+                                                                  },
+                                                          afterSubmit: function(response, postdata) {
+                                                              if (postdata.oper=='del')
+                                                              {
+                                                                  // Remove surveys from dropdown, too
+                                                                    aSurveyIDs=postdata.id.split(",");
+                                                                    $.each(aSurveyIDs,function(iIndex, iSurveyID){
+                                                                        $("#surveylist option[value='"+iSurveyID+"']").remove();   
+                                                                    })
+                                                              };
+                                                              return [true];
+                                                          }
                                                                 },
                                                                 {
                                                                       caption: sSearchCaption,
