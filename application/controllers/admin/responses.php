@@ -326,7 +326,7 @@ class responses extends Survey_Common_Action
         $aViewUrls = array();
         $oBrowseLanguage = new Limesurvey_lang($aData['language']);
 
-
+        $tokenRequest = Yii::app()->request->getParam('token', null);
 
         //Delete Individual answer using inrow delete buttons/links - checked
         if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked' && hasSurveyPermission($iSurveyID, 'responses', 'delete'))
@@ -513,6 +513,10 @@ class responses extends Survey_Common_Action
             //NOW LETS SHOW THE DATA
             if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
                 $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
+            
+            if (!is_null($tokenRequest)) {
+                $oCriteria->addCondition('t.token = ' . Yii::app()->db->quoteValue($tokenRequest));
+            }
 
             $oCriteria->order = 'id ' . (Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
             $oCriteria->offset = $start;
