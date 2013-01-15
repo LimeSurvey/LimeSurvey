@@ -381,14 +381,10 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyId);
         }
         $clang = $this->getController()->lang;
-        $page  = Yii::app()->request->getPost('page');
-        $sidx = Yii::app()->request->getPost('sidx');
-        $sidx = !empty($sidx) ? $sidx : "lastname";
-        $sord = Yii::app()->request->getPost('sord');
-        $sord = !empty($sord) ? $sord : "asc";
-        $limit = Yii::app()->request->getPost('rows');
-        $limit = isset($limit) ? $limit : 25; //Stop division by zero errors
-        $page = isset($page) ? $page : 1; //Stop division by zero errors
+        $page  = Yii::app()->request->getPost('page', 1);
+        $sidx = Yii::app()->request->getPost('sidx', 'lastname');
+        $sord = Yii::app()->request->getPost('sord', 'asc');
+        $limit = Yii::app()->request->getPost('rows', 25);
         
         $aData = new stdClass;
         $aData->page = $page;
