@@ -77,7 +77,7 @@ function db_upgrade_all($oldversion) {
             Yii::app()->db->createCommand()->alterColumn('{{saved_control}}','email',"{$sVarchar}(320) NOT NULL");
             Yii::app()->db->createCommand()->alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320) NOT NULL");
             Yii::app()->db->createCommand()->alterColumn('{{users}}','email',"{$sVarchar}(320) NOT NULL");
-            Yii::app()->db->createCommand()->insert('{{settings_global}}',array('stg_name'=>'SessionName','stg_value'=>randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"§$%&/()=?´`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789')));
+            Yii::app()->db->createCommand()->insert('{{settings_global}}',array('stg_name'=>'SessionName','stg_value'=>randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"$%&/()=?`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789')));
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>114),"stg_name='DBVersion'");
         }
 
@@ -1035,7 +1035,7 @@ function db_upgrade_all($oldversion) {
     }
             
     if ($oldversion < 165)
-    {
+    {        
         Yii::app()->db->createCommand()->createTable('{{question_types}}',array(
         'tid' => 'pk',
         'order' => 'integer NOT NULL',
@@ -1096,6 +1096,20 @@ function db_upgrade_all($oldversion) {
         {
             // Add manage_survey users right (integre(1) : integer) to users table.
             Yii::app()->db->createCommand()->addColumn('{{users}}','manage_survey',"integer NOT NULL DEFAULT 0");
+            
+            // Fix composite primary key for pgsql databases http://bugs.limesurvey.org/view.php?id=6996
+            $table = 'participant_attribute_names';
+            if ($sDBDriverName == 'mysql') {
+                // Only for mysql first remove auto increment
+                alterColumn('{{' . $table . '}}', 'attribute_id', 'int', false);
+            }
+            dropPrimaryKey($table);
+            addPrimaryKey($table, array('attribute_id'));
+            if ($sDBDriverName == 'mysql') {
+                // Add back auto increment
+                alterColumn('{{' . $table . '}}', 'attribute_id', Yii::app()->getConfig('autoincrement'));
+            }
+            
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>169),"stg_name='DBVersion'");
          }
 

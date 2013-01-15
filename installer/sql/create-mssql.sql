@@ -159,7 +159,7 @@ CREATE TABLE [prefix_participant_attribute_names] (
   [attribute_id] int NOT NULL IDENTITY (1,1),
   [attribute_type] varchar(4) NOT NULL,
   [visible] varchar(5) NOT NULL,
-  PRIMARY KEY  ([attribute_id],[attribute_type])
+  PRIMARY KEY  ([attribute_id])
 );
 
 

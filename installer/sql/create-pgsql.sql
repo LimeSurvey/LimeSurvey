@@ -167,7 +167,7 @@ CREATE TABLE prefix_participant_attribute_names (
   "attribute_id" serial NOT NULL,
   "attribute_type" character varying( 4 ) NOT NULL,
   "visible" character varying( 5 ) NOT NULL,
-  CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id, attribute_type)
+  CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id)
 );
 
 

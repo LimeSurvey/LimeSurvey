@@ -160,7 +160,7 @@ CREATE TABLE `prefix_participant_attribute_names` (
   `attribute_id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_type` varchar(4) NOT NULL,
   `visible` varchar(5) NOT NULL,
-  PRIMARY KEY  (`attribute_id`,`attribute_type`)
+  PRIMARY KEY  (`attribute_id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
