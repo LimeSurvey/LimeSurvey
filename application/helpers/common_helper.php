@@ -3664,7 +3664,7 @@ function languageDropdown($surveyid,$selected)
 
     foreach ($slangs as $lang)
     {
-        $link = Yii::app()->homeUrl.("/admin/dataentry/view/surveyid/".$surveyid."/lang/".$lang);
+        $link = Yii::app()->homeUrl.("/admin/dataentry/sa/view/surveyid/".$surveyid."/lang/".$lang);
         if ($lang == $selected) $html .= "\t<option value='{$link}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
         if ($lang != $selected) $html .= "\t<option value='{$link}'>".getLanguageNameFromCode($lang,false)."</option>\n";
     }

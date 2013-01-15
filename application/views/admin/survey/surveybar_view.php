@@ -205,7 +205,7 @@
                     } ?>
                     <?php if($responsescreate) {
                             if($activated) { ?>
-                            <li><a href='<?php echo $this->createUrl("admin/dataentry/view/surveyid/$surveyid");?>' >
+                            <li><a href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$surveyid");?>' >
                                 <img src='<?php echo $sImageURL;?>dataentry_30.png' alt='' /> <?php $clang->eT("Data entry screen");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("This survey is not active, data entry is not allowed","js");?>');" >
