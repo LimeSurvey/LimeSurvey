@@ -565,6 +565,7 @@
                             ><?php $clang->eT("XML-RPC"); ?></option>
                     </select>
                 </li>
+                <li><label><?php $clang->eT("URL:"); ?></label><?php echo $this->createAbsoluteUrl("admin/remotecontrol"); ?></li>
                 <?php $rpc_publish_api=getGlobalSetting('rpc_publish_api'); ?>
                 <li><label for='rpc_publish_api'><?php $clang->eT("Publish API on /admin/remotecontrol:"); ?></label>
                     <select id='rpc_publish_api' name='rpc_publish_api'>
