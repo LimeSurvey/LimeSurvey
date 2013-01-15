@@ -444,6 +444,7 @@ class tokens extends Survey_Common_Action
             $aRowToAdd['id'] = $token['tid'];
 
             $action = "";
+            $action .= "<div class='inputbuttons'>";    // so we can hide this when edit is clicked
             if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "")) {
                 $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}", $clang->gT("Do survey"), '_blank');
             } elseif ($token['completed'] != "N" && $token['completed'] != "" && $prow['anonymized'] == "N") {
@@ -478,6 +479,7 @@ class tokens extends Survey_Common_Action
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
+            $action .= '</div>';
             $aRowToAdd['cell'] = array($token['tid'], $action, $token['firstname'], $token['lastname'], $token['email'], $token['emailstatus'], $token['token'], $token['language'], $token['sent'], $token['remindersent'], $token['remindercount'], $token['completed'], $token['usesleft'], $token['validfrom'], $token['validuntil']);
             foreach ($attributes as $attribute) {
                 $aRowToAdd['cell'][] = $token[$attribute];
