@@ -60,6 +60,36 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130110) to 2.00+ (build 130115) Jan 15, 2013
+-New language: Mongolian (Carsten Schmitz)
+-Fixed issue #7081: Help-Text will not be translated if you change the language during the survey (Denis Chenu)
+-Fixed issue #7157: Some languages cannot be represented by flags (Carsten Schmitz)
+-Fixed issue #7160: Impossible submit page with some email validation (Denis Chenu)
+-Fixed issue #7171: Data Integrity check function deletes token tables even what not asked to (Denis Chenu)
+-Fixed issue #7172: Error Missing argument 1 for accessDenied() in survey permissions settings (Denis Chenu)
+-Fixed issue #7173: Creating user added to user group with no option to remove self (Carsten Schmitz)
+-Fixed issue #7174: Create/edit user groups screen available to users even when nothing to display (Carsten Schmitz)
+-Fixed issue #7176: Missing translations (Carsten Schmitz)
+-Fixed issue #7179: blobblueish (admin) template: wrong icon for security setting (Carsten Schmitz)
+-Fixed issue #7181: Deleting survey from survey list does not remove from drop down field (Carsten Schmitz)
+-Fixed issue #7182: Login form displayed despite auth_webserver delegated authentication being used (Sam Mousa)
+-Fixed issue #7183: Authentication hook "hook_get_auth_webserver_profile" not working properly (Carsten Schmitz)
+-Fixed issue #7184: Clicking one of the 'Questions with conditions to this group:' links on the question group page shows an error (Carsten Schmitz)
+-Fixed issue #7186: Preview Question and Preview Question Group buttons give error: Undefined index: refurl (Denis Chenu)
+-Fixed issue: Dataset after query was still open creating problems on previewing a survey (Carsten Schmitz)
+-Fixed issue: Owner can't access to survey (Denis Chenu)
+-Fixed issue: Public statistics always uses default template (Menno Dekker)
+-Fixed issue: SSL mode forced to off leading to redirect loop on some webservers (Carsten Schmitz)
+-Fixed issue: User list in survey list show all user with usercontrolSameGroupPolicy to true (Denis Chenu)
+-Fixed issue: PNG logo crashes statistics pdf output (Menno Dekker)
+#Updated translation: Czech by slansky
+#Updated translation: Italian by lfortunato, lfanfoni
+#Updated translation: Kurdish (Sorani) by havalabdulkarim, Ayeneh
+#Updated translation: Lithuanian by apklausos
+#Updated translation: Mongolian by Erdenebayar
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.00+ (build 130108) to 2.00+ (build 130110) Jan 10, 2013
 -Fixed issue #7074: Cannot properly browse comments in statistics for Multiple choice with comments (Carsten Schmitz)
 -Fixed issue #7130: Cryptic validation criteria shown in data entry mode (Carsten Schmitz)
