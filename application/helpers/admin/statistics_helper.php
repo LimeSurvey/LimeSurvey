@@ -1443,10 +1443,10 @@ class statistics_helper {
 
                 break;
         }
-        echo '';
-
-        //loop thorugh the array which contains all answer data
-        foreach ($outputs['alist'] as $al) {
+        //loop though the array which contains all answer data
+        $ColumnName_RM=array();
+        foreach ($outputs['alist'] as $al)
+        {
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
             if (isset($al[2]) && $al[2]) {
 
@@ -1547,28 +1547,36 @@ class statistics_helper {
             $result = Yii::app()->db->createCommand($query)->query();
 
             // $statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
-            // this just extracts the data, after we present
-            foreach ($result->readAll() as $row) {
-                $row = array_values($row);
 
-                //store temporarily value of answer count of question type '5' and 'A'.
-                $tempcount = -1; //count can't be less han zero
-                //increase counter
-                $TotalCompleted += $row[0];
+            //store temporarily value of answer count of question type '5' and 'A'.
+            $tempcount = -1; //count can't be less han zero
 
-                //"no answer" handling
-                if ($al[0] === "") {
-                    $fname = $statlang->gT("No answer");
+            //increase counter
+            $TotalCompleted += $row;
+
+            //"no answer" handling
+            if ($al[0] === "")
+                {$fname=$statlang->gT("No answer");}
+
+            //"other" handling
+            //"Answers" means that we show an option to list answer to "other" text field
+            elseif ($al[0] === $statlang->gT("Other") || $al[0] === "Answers" || ($outputs['qtype'] === "O" && $al[0] === $statlang->gT("Comments")) || $outputs['qtype'] === "P")
+            {
+                if ($outputs['qtype'] == "P") $sColumnName = $al[2]."comment";
+                else  $sColumnName = $al[2];
+                $ColumnName_RM[]=$sColumnName;
+                if ($outputs['qtype']=='O') {
+                    $TotalCompleted -=$row;
                 }
                 $fname="$al[1]";
                 if ($browse===true) $fname .= " <input type='button' class='statisticsbrowsebutton' value='"
-                    .$statlang->gT("Browse")."' id='$ColumnName_RM' />";
+                    .$statlang->gT("Browse")."' id='$sColumnName' />";
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array($statlang->gT("ID"),$statlang->gT("Response"));
                     $tablePDF2 = array();
-                    $result2= $this->_listcolumn($surveyid,$ColumnName_RM);
+                    $result2= $this->_listcolumn($surveyid,$sColumnName);
 
                     foreach ($result2 as $row2)
                     {
@@ -1613,6 +1621,18 @@ class statistics_helper {
                 $headPDF = array();
                 $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
 
+                //show free text answers
+                if ($al[0] == "Answers")
+                {
+                    $fname= "$al[1]";
+                    if ($browse===true) $fname .= " <input type='button'  class='statisticsbrowsebutton' value='"
+                        . $statlang->gT("Browse")."' id='$sColumnName' />";
+                }
+                elseif ($al[0] == "NoAnswer")
+                {
+                    $fname= "$al[1]";
+                }
+
                 $statisticsoutput .= "</th>\n"
                 ."\t\t<th width='25%' align='center' >"
                 ."<strong>".$statlang->gT("Count")."</strong></th>\n"
@@ -1624,7 +1644,7 @@ class statistics_helper {
                     $headPDF2 = array();
                     $headPDF2[] = array($statlang->gT("ID"),$statlang->gT("Response"));
                     $tablePDF2 = array();
-                    $result2= $this->_listcolumn($surveyid,$ColumnName_RM);
+                    $result2= $this->_listcolumn($surveyid,$sColumnName);
 
                     foreach ($result2 as $row2)
                     {
@@ -2004,13 +2024,21 @@ class statistics_helper {
             $statisticsoutput .= "\t<tr>\n\t\t<td align='center' >" . $label[$i] . "\n"
                     . "\t\t</td>\n";
             /*
-             * If there is a "browse" button in this label, let's make sure there's an extra row afterwards
-             * to store the columnlist
-             *
-             * */
-            if (strpos($label[$i], "class='statisticsbrowsebutton'")) {
-                $extraline = "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
-                <div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM}'></div></td></tr>\n";
+            * If there is a "browse" button in this label, let's make sure there's an extra row afterwards
+            * to store the columnlist
+            *
+            * */
+            if(strpos($label[$i], "class='statisticsbrowsebutton'"))
+            {
+                $extraline="<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>";
+                if ($outputs['qtype']=='P')
+                {
+                    $extraline.="<div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM[$i]}'></div></td></tr>\n";
+                }
+                else
+                {
+                    $extraline.="<div class='statisticsbrowsecolumn' id='columnlist_{$sColumnName}'></div></td></tr>\n";
+                }
             }
 
             //output absolute number of records
