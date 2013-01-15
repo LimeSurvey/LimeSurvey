@@ -60,6 +60,17 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130115) to 2.00+ (build 130116) Jan 15, 2013
+-New feature: Global settings now shows URL to remote control interface (Menno Dekker)
+-Fixed issue #7188: Token icons misbehaving (Menno Dekker)
+-Fixed issue #7190: CPD Search doesn't work with or logic since upgrade (Menno Dekker)
+-Fixed issue #7192: Filters are pre-filled in statistics (Carsten Schmitz)
+-Fixed issue: Redirect loop if SSL is enforced (Carsten Schmitz)
+#Updated translation: Finnish by tigger
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: Slovak by Union
+
 Changes from 2.00+ (build 130110) to 2.00+ (build 130115) Jan 15, 2013
 -New language: Mongolian (Carsten Schmitz)
 -Fixed issue #7081: Help-Text will not be translated if you change the language during the survey (Denis Chenu)
