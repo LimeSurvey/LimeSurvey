@@ -5902,7 +5902,7 @@ function enforceSSLMode()
     {
         $force_ssl = 'off';
     };
-    if( $force_ssl == 'on' && $bSSLActive )
+    if( $force_ssl == 'on' && !$bSSLActive )
     {
         SSLRedirect('s');
     }
