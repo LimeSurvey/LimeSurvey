@@ -92,6 +92,11 @@ function dirReport($dir, $write, $clang)
        <td align="center" style="width: 225px;"><?php $clang->eT("Found & writable"); ?></td>
        <td align="center" style="width: 225px;"><?php  echo dirReport($tmpdirPresent,$tmpdirWritable,$clang); ?></td>
 </tr>
+<tr>
+       <td style="width: 209px;"><?php $clang->eT("Session writable"); ?></td>
+       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+       <td align="center" style="width: 225px;"><?php echo $sessionWritableImg; if (!$sessionWritable) echo '<br/>session.save_path: ' . session_save_path(); ?></td>
+</tr>
 
 </table>
 </fieldset>
