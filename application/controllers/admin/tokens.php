@@ -431,12 +431,14 @@ class tokens extends Survey_Common_Action
         // Now find all responses for the visible tokens
         $visibleTokens = array();
         $answeredTokens = array();
-        foreach ($tokens as $token) {
-            $visibleTokens[] = $token['token'];
-        }
-        $answers = Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$visibleTokens));
-        foreach($answers as $answer) {
-            $answeredTokens[$answer['token']] = $answer['token'];
+        if ($aSurveyInfo['anonymized'] == "N") {
+            foreach ($tokens as $token) {
+                $visibleTokens[] = $token['token'];
+            }
+            $answers = Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$visibleTokens));
+            foreach($answers as $answer) {
+                $answeredTokens[$answer['token']] = $answer['token'];
+            }
         }
         
         foreach ($tokens as $token)
