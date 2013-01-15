@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-01-14 23:05:55+00:00\n"
+"POT-Creation-Date: 2013-01-15 09:31:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9662,14 +9662,18 @@ msgstr ""
 msgid "XML-RPC"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:496
+#: application/views/admin/globalSettings_view.php:488
+msgid "URL:"
+msgstr ""
+
+#: application/views/admin/globalSettings_view.php:497
 #: application/views/admin/token/bounce.php:70
 #: application/views/admin/user/personalsettings.php:79
 #: application/views/admin/user/setusertemplates.php:25
 msgid "Save settings"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:499
+#: application/views/admin/globalSettings_view.php:500
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr ""
 
