@@ -1,32 +1,43 @@
 <table <?php echo $showstyle; ?> id='surveydetails'>
-    <tr>
-        <td>
-            <strong><?php $clang->eT("Title");?>:</strong>
-        </td>
-        <td class='settingentryhighlight'>
-            <?php echo $surveyinfo['surveyls_title']." (".$clang->gT("ID")." ".$surveyinfo['sid'].")";?>
+	<tr>
+		<td>
+			<strong><?php $clang->eT("Title");?>:</strong>
+		</td>
+		<td class='settingentryhighlight'>
+			<?php echo $surveyinfo['surveyls_title']." (".$clang->gT("ID")." ".$surveyinfo['sid'].")";?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<strong><?php echo $clang->gT("Survey URL") ." - ".getLanguageNameFromCode($surveyinfo['language'],false).":";?></strong>
+		</td>
+		<td>
+		<?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}/lang/{$surveyinfo['language']}"); ?>
+        <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
         </td>
     </tr>
-    <tr>
-        <td>
-            <strong><?php echo $clang->gT("Survey URL") ." (".getLanguageNameFromCode($surveyinfo['language'],false)."):";?></strong>
-        </td>
-        <td>
-        <?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}");
-        echo "<a href='{$tmp_url}/lang/{$surveyinfo['language']}' target='_blank'>{$tmp_url}/lang/{$surveyinfo['language']}</a>";
+        <?php
         foreach ($aAdditionalLanguages as $langname)
-        {
-            echo "&nbsp;<a href='{$tmp_url}/lang/$langname' target='_blank'><img title='".$clang->gT("Survey URL for language:")." ".getLanguageNameFromCode($langname,false)
-            ."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='".Yii::app()->getConfig("imageurl")."/flags/{$langname}.png' /></a>";
+        {?>
+        <tr>
+            <td>
+                <strong><?php echo getLanguageNameFromCode($langname,false).":";?></strong>
+            </td>
+            <td>
+            <?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}/lang/{$langname}"); ?>
+            <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
+            </td>
+        </tr>
+
+        <?php
         } ?>
-        </td>
-    </tr>
+	</tr>
     <tr>
-        <td>
-            <strong><?php $clang->eT("Description:");?></strong>
-        </td>
-        <td>
-            <?php
+    	<td>
+    		<strong><?php $clang->eT("Description:");?></strong>
+    	</td>
+    	<td>
+        	<?php
                 if (trim($surveyinfo['surveyls_description']) != '')
                 {
                     templatereplace($surveyinfo['surveyls_description']);
