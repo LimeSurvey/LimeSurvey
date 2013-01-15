@@ -485,6 +485,7 @@
                             <?php if ($RPCInterface == 'xml') { echo " selected='selected'";}?>
                             ><?php $clang->eT("XML-RPC"); ?></option>
                     </select></li>
+                    <li><label><?php $clang->eT("URL:"); ?></label><?php echo $this->createAbsoluteUrl("admin/remotecontrol"); ?></li>
             </ul>
         </div>
         <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ',$restrictToLanguages); ?>'/>
