@@ -8,31 +8,31 @@
 			  	<tr>
 			   		<td align='right'><?php $clang->eT("Identifier:"); ?></td>
 			   		<td>
-                        <?php echo CHtml::inputField('text','save_identifier',$_POST['save_identifier']);?>
+                        <?php echo CHtml::textField('text','save_identifier',$_POST['save_identifier']);?>
 			   		</td>
 			   	</tr>
 			  	<tr>
 			  		<td align='right'><?php $clang->eT("Password:"); ?></td>
 			   		<td>
-                        <?php echo CHtml::inputField('password','save_password',$_POST['save_password']);?>
+                        <?php echo CHtml::passwordField('save_password',$_POST['save_password']);?>
 			   		</td>
 			   	</tr>
 			  	<tr>
                     <td align='right'><?php $clang->eT("Confirm password:"); ?></td>
 			   		<td>
-                        <?php echo CHtml::inputField('password','save_confirmpassword',$_POST['save_confirmpassword']);?>
+                        <?php echo CHtml::passwordField('save_confirmpassword',$_POST['save_confirmpassword']);?>
 			   		</td>
 			   	</tr>
 			  	<tr>
 			  		<td align='right'><?php $clang->eT("Email:"); ?></td>
 			   		<td>
-                        <?php echo CHtml::inputField('email','save_email',$_POST['save_email']);?>
+                        <?php echo CHtml::textField('save_email',$_POST['save_email']);?>
 			   		</td>
 			   	</tr>
 			  	<tr>
                     <td align='right'><?php $clang->eT("Start language:"); ?></td>
 			   		<td>
-                        <?php echo CHtml::inputField('text','save_language',$_POST['save_language']);?>
+                        <?php echo CHtml::textField('text','save_language',$_POST['save_language']);?>
 			   		</td>
 			   	</tr>
 			   	<tr>
