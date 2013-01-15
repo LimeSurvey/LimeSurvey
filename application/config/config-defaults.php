@@ -326,7 +326,7 @@ $config['auth_webserver_autocreate_profile'] = Array(
 * If set, this function will overwrite the auth_webserver_autocreate_profile defined above by its return value
 *
 *  You can use any external DB in order to fill the profile for the user_name passed as the first parameter
-*  A dummy example for the 'hook_get_autouserprofile' function is given below:
+*  A dummy example for the 'hook_get_auth_autouserprofile' function is given below:
 */
 /*
 function hook_get_auth_webserver_profile($user_name)

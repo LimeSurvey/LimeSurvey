@@ -89,7 +89,7 @@ class UserIdentity extends CUserIdentity
                 {
                     // If defined this function returns an array
                     // describing the defaukt profile for this user
-                    $aUserProfile = hook_get_autouserprofile($sUser);
+                    $aUserProfile = hook_get_auth_webserver_profile($sUser);
                 }
                 elseif (Yii::app()->getConfig("auth_webserver_autocreate_user"))
                 {
