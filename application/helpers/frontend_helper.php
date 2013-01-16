@@ -2239,7 +2239,7 @@ function UpdateGroupList($surveyid, $language)
 */
 function UpdateFieldArray()
 {
-    global $surveyid;
+    /*global $surveyid;
 
     $clang = Yii::app()->lang;
 
@@ -2249,8 +2249,8 @@ function UpdateFieldArray()
         while ( list($key) = each($_SESSION['survey_'.$surveyid]['questions']) )
         {
             $q = clone $_SESSION['survey_'.$surveyid]['questions'][$key];
-
-            $query = "SELECT title, question FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
+          
+            $query = "SELECT title, question FROM {{questions}} WHERE qid=".$q->id." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
             $usrow = Yii::app()->db->createCommand($query)->queryRow();
             if (!$usrow) safeDie ("Couldn't get question <br />$query<br />");      //Checked
             $questionarray[2]=$usrow['title'];
@@ -2258,6 +2258,7 @@ function UpdateFieldArray()
             unset($questionarray);
         }
     }
+     */
 }
 
 /**
