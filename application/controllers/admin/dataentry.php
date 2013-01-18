@@ -670,11 +670,11 @@ class dataentry extends Survey_Common_Action
                                 // In case of anonymized responses survey with no datestamp
                                 // then the the answer submitdate gets a conventional timestamp
                                 // 1st Jan 1980
-                                $mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+                                $mysubmitdate = date("Y-m-d H:i",mktime(0,0,0,1,1,1980));   // Note that the completed field only supports 17 chars (so no seconds!)
                             }
                             else
                             {
-                                $mysubmitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+                                $mysubmitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));  // Note that the completed field only supports 17 chars (so no seconds!)
                             }
 
                             $completedate = empty($idrow['submitdate']) ? $mysubmitdate : $idrow['submitdate'];
