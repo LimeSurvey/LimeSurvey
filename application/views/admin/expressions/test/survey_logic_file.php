@@ -14,14 +14,7 @@ Yii::app()->loadHelper('frontend');
 
 if (empty($_REQUEST['sid']))   //  || count($_REQUEST) == 0) {
 {
-    $query = "select a.surveyls_survey_id as sid, a.surveyls_title as title, b.datecreated, b.assessments "
-    . "from {{surveys_languagesettings}} as a join {{surveys}} as b on a.surveyls_survey_id = b.sid"
-    . " where a.surveyls_language='en' order by a.surveyls_title, b.datecreated";
-    $data = dbExecuteAssoc($query);
-    $surveyList='';
-    foreach($data->readAll() as $row) {
-        $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . flattenText($row['title']) . "</option>\n";
-    }
+    $surveyList=getSurveyList();
     $sFormTag= CHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post');
     
     $form = <<< EOD
@@ -52,13 +45,14 @@ EOD;
 else {
     $surveyInfo = (array) explode('|', $_REQUEST['sid']);
     $surveyid = $surveyInfo[0];
+    $thissurvey=getSurveyInfo($surveyid);
     if (isset($_REQUEST['assessments']))
     {
         $assessments = ($_REQUEST['assessments'] == 'Y');
     }
     else
     {
-        $assessments = ($surveyInfo[1] == 'Y');
+        $assessments = ($thissurvey['assessments'] == 'Y');
     }
     $LEMdebugLevel = (
             ((isset($_REQUEST['LEM_DEBUG_TIMING']) && $_REQUEST['LEM_DEBUG_TIMING'] == 'Y') ? LEM_DEBUG_TIMING : 0) +
