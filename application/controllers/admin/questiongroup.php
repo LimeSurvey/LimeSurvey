@@ -244,10 +244,8 @@ class questiongroup extends Survey_Common_Action
             }
             else
                 Yii::app()->user->setFlash('flashmessage', $clang->gT('Group could not be deleted'));
-
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $iSurveyId));
-
             LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $iSurveyId));
         }
     }
 
