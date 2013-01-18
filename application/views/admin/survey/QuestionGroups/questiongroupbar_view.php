@@ -45,7 +45,7 @@
                     // TMSW Conditions->Relevance:  Should be allowed to delete group even if there are conditions/relevance, since separate view will show exceptions
 
                     { ?>
-                    <a href='<?php echo $this->createUrl("admin/questiongroup/sa/view/surveyid/$surveyid/gid/$gid"); ?>' onclick="alert('<?php $clang->eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>')">
+                    <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid/gid/$gid"); ?>' onclick="alert('<?php $clang->eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>'); return false;">
                         <img src='<?php echo $imageurl; ?>delete_disabled.png' alt='<?php $clang->eT("Delete current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
                     <?php }
                 }
