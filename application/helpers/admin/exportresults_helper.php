@@ -274,7 +274,7 @@ class SurveyDao
              $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']]=$aAnswer;
         }
         //Load tokens
-        if (tableExists('{{tokens_' . $intId . '}}'))
+        if (tableExists('{{tokens_' . $intId . '}}') && hasSurveyPermission($intId,'tokens','read'))
         {
             $sQuery = 'SELECT t.* FROM {{tokens_' . $intId . '}} AS t;';
             $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
@@ -310,7 +310,7 @@ class SurveyDao
         $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . $survey->id . '}}')->getColumnNames();
         
         $oRecordSet = Yii::app()->db->createCommand()->from('{{survey_' . $survey->id . '}}');
-        if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',Survey_dynamic::model($survey->id)->attributes))
+        if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',Survey_dynamic::model($survey->id)->attributes) && hasSurveyPermission($survey->id,'tokens','read'))
         {
             $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}} tokentable','tokentable.token={{survey_' . $survey->id . '}}.token');
             $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . $survey->id . '}}')->getColumnNames();

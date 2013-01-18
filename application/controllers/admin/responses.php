@@ -109,7 +109,7 @@ class responses extends Survey_Common_Action
             $fieldmap = createFieldMap($iSurveyID, false, false, $aData['language']);
 
             //add token to top of list if survey is not private
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID))
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && hasSurveyPermission($iSurveyID,'tokens','read'))
             {
                 $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
                 $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
@@ -184,7 +184,7 @@ class responses extends Survey_Common_Action
             if($exist)
             {
                 $oCriteria = new CDbCriteria();
-                if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}"))
+                if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}") && hasSurveyPermission($iSurveyID,'tokens','read'))
                 {
                     $oCriteria = Survey_dynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
                 }
@@ -305,7 +305,7 @@ class responses extends Survey_Common_Action
             $clang = $aData['clang'];
             $aData['num_total_answers'] = Survey_dynamic::model($iSurveyID)->count();
             $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
-            if (tableExists('{{tokens_' . $iSurveyID . '}}'))
+            if (tableExists('{{tokens_' . $iSurveyID . '}}') )
             {
                 $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}');
                 $aData['tokeninfo'] = Tokens_dynamic::model($iSurveyID)->summary();
@@ -423,7 +423,7 @@ class responses extends Survey_Common_Action
                 $aViewUrls[] = 'browseallfiltered_view';
             }
             //add token to top of list if survey is not private
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID)) //add token to top of list if survey is not private
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && hasSurveyPermission($iSurveyID,'tokens','read')) //add token to top of list if survey is not private
             {
                 $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
                 $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
@@ -480,7 +480,7 @@ class responses extends Survey_Common_Action
             if(!$limit){$limit=50;}
             $oCriteria = new CDbCriteria;
             //Create the query
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}"))
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && hasSurveyPermission($iSurveyID,'tokens','read'))
             {
                 $oCriteria = Survey_dynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
             }

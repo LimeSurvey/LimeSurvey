@@ -142,7 +142,7 @@ class export extends Survey_Common_Action {
 
         if ( ! hasSurveyPermission($iSurveyID, 'responses', 'export') )
         {
-            exit;
+            $this->getController()->error('Access denied!');
         }
 
         Yii::app()->loadHelper("admin/exportresults");
