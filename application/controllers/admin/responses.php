@@ -111,19 +111,12 @@ class responses extends Survey_Common_Action
             $fieldmap = createFieldMap($iSurveyID, 'full', false, false, $aData['language']);
 
             //add token to top of list if survey is not private
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) )
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && hasSurveyPermission($iSurveyID,'tokens','read'))
             {
-                if(hasSurveyPermission($iSurveyID,'token','read'))
-                {
-                    $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-                    $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
-                    $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
-                    $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
-                }
-                else
-                {
-                    $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-                }
+                $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
+                $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
+                $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
+                $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
             }
             $fnames[] = array("submitdate", $clang->gT("Submission date"), $clang->gT("Completed"), "0", 'D');
             $fnames[] = array("completed", $clang->gT("Completed"), "0");
@@ -193,7 +186,7 @@ class responses extends Survey_Common_Action
             {
                 //SHOW INDIVIDUAL RECORD
                 $oCriteria = new CDbCriteria();
-                if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}") && hasSurveyPermission($iSurveyID,'token','read'))
+                if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}") && hasSurveyPermission($iSurveyID,'tokens','read'))
                 {
                     $oCriteria = Survey_dynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
                 }
@@ -315,7 +308,7 @@ class responses extends Survey_Common_Action
             $clang = $aData['clang'];
             $aData['num_total_answers'] = Survey_dynamic::model($iSurveyID)->count();
             $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
-            if (tableExists('{{tokens_' . $iSurveyID . '}}') && hasSurveyPermission($iSurveyID,'token','read'))
+            if (tableExists('{{tokens_' . $iSurveyID . '}}') && hasSurveyPermission($iSurveyID,'tokens','read'))
             {
                 $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}');
                 $aData['tokeninfo'] = Tokens_dynamic::model($iSurveyID)->summary();
@@ -336,7 +329,7 @@ class responses extends Survey_Common_Action
         $tokenRequest = Yii::app()->request->getParam('token', null);
 
         //Delete Individual answer using inrow delete buttons/links - checked
-        if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked' && hasSurveyPermission($iSurveyID, 'responses', 'delete'))
+        if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked')
         {
             if(hasSurveyPermission($iSurveyID,'responses','delete'))
             {
@@ -453,16 +446,12 @@ class responses extends Survey_Common_Action
             //add token to top of list if survey is not private
             if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) ) //add token to top of list if survey is not private
             {
-                if(hasSurveyPermission($iSurveyID,'token','read'))
+                if(hasSurveyPermission($iSurveyID,'tokens','read'))
                 {
                     $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
                     $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
                     $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
                     $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
-                }
-                else
-                {
-                    $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
                 }
             }
 
@@ -526,7 +515,7 @@ class responses extends Survey_Common_Action
             if(!$limit){$limit=50;}
             $oCriteria = new CDbCriteria;
             //Create the query
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && hasSurveyPermission($iSurveyID,'token','read'))
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && hasSurveyPermission($iSurveyID,'tokens','read'))
             {
                 $oCriteria = Survey_dynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
             }
@@ -639,7 +628,8 @@ class responses extends Survey_Common_Action
         if ($aData['surveyinfo']['savetimings'] != "Y")
             die();
 
-        if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked' && hasSurveyPermission($iSurveyID, 'responses', 'delete'))
+        if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked' 
+            && hasSurveyPermission($iSurveyID, 'responses', 'delete'))
         {
             $iResponseID=(int) Yii::app()->request->getPost('deleteanswer');
             Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
@@ -648,7 +638,8 @@ class responses extends Survey_Common_Action
 
         if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0)
         {
-            if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked' && hasSurveyPermission($iSurveyID, 'responses', 'delete'))
+            if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked' && 
+                hasSurveyPermission($iSurveyID, 'responses', 'delete'))
             {
                 foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
                 {
