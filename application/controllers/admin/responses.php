@@ -52,34 +52,19 @@ class responses extends Survey_Common_Action
         $aData['imageurl'] = Yii::app()->getConfig('imageurl');
         $aData['action'] = Yii::app()->request->getParam('action');
         $aData['all']=Yii::app()->request->getParam('all');
-        $oCriteria = new CDbCriteria;
-        $oCriteria->select = 'sid, active';
-        $oCriteria->join = 'INNER JOIN {{surveys_languagesettings}} as b on (b.surveyls_survey_id=sid and b.surveyls_language=language)';
-        $oCriteria->condition = 'sid=:survey';
-        $oCriteria->params = array('survey' => $iSurveyId);
-        $actresult = Survey::model()->findAll($oCriteria);
-
-        if (count($actresult) > 0)
-        {
-            foreach ($actresult as $actrow)
-            {
-                if ($actrow['active'] == 'N') //SURVEY IS NOT ACTIVE YET
-                {
-                    Yii::app()->session['flashmessage'] = $clang->gT("This survey has not been activated. There are no results to browse.");
-                    $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
-                }
-            }
-        }
-        //SURVEY MATCHING $iSurveyID DOESN'T EXIST
-        else
+        $aData['surveyinfo'] = getSurveyInfo($iSurveyId);
+        if(!$aData['surveyinfo'])// Already done in Survey_Common_Action
         {
             Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
             $this->getController()->redirect($this->getController()->createUrl("admin/index"));
         }
+        elseif($aData['surveyinfo']['active'] != 'Y')
+        {
+            Yii::app()->session['flashmessage'] = $clang->gT("This survey has not been activated. There are no results to browse.");
+            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+        }
 
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
-
-        $aData['surveyinfo'] = getSurveyInfo($iSurveyId);
 
         if (isset($browselang) && $browselang != '')
         {
@@ -93,15 +78,15 @@ class responses extends Survey_Common_Action
             $aData['languagelist'][] = Survey::model()->findByPk($iSurveyId)->language;
             if (!in_array($aData['language'], $languagelist))
             {
-                $aData['language'] = Survey::model()->findByPk($iSurveyId)->language;
+                $aData['language'] = $aData['surveyinfo']['language'];
             }
         }
         else
         {
-            $aData['language'] = Survey::model()->findByPk($iSurveyId)->language;
+            $aData['language'] = $aData['surveyinfo']['language'];
         }
 
-        $aData['qulanguage'] = Survey::model()->findByPk($iSurveyId)->language;
+        $aData['qulanguage'] = $aData['surveyinfo']['language'];
 
         $aData['surveyoptions'] = '';
         $aData['browseoutput']  = '';
@@ -111,180 +96,193 @@ class responses extends Survey_Common_Action
 
     public function view($iSurveyID, $iId, $sBrowseLang = '')
     {
-        $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
-        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
-
-        extract($aData);
-        $clang = Yii::app()->lang;
-        $aViewUrls = array();
-
-        $fncount = 0;
-        $fieldmap = createFieldMap($iSurveyID, false, false, $aData['language']);
-
-        //add token to top of list if survey is not private
-        if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID))
+        if(hasSurveyPermission($iSurveyID,'responses','read'))
         {
-            $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-            $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
-            $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
-            $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
-        }
-        $fnames[] = array("submitdate", $clang->gT("Submission date"));
-        $fnames[] = array("completed", $clang->gT("Completed"));
+            $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
+            $oBrowseLanguage = new Limesurvey_lang($aData['language']);
 
-        foreach ($fieldmap as $q)
-        {
-            if ($q->fieldname == 'lastpage' || $q->fieldname == 'submitdate')
-                continue;
-            if(isset($q->type))
+            extract($aData);
+            $clang = Yii::app()->lang;
+            $aViewUrls = array();
+
+            $fncount = 0;
+            $fieldmap = createFieldMap($iSurveyID, false, false, $aData['language']);
+
+            //add token to top of list if survey is not private
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID))
             {
-                if ($q->type == 'interview_time')
-                    continue;
-                if ($q->type == 'page_time')
-                    continue;
-                if ($q->type == 'answer_time')
-                    continue;
+                $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
+                $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
+                $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
+                $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
             }
-            $question = $q->text;
-            if (!is_a($q, 'QuestionModule') || !$q->fileUpload())
+            $fnames[] = array("submitdate", $clang->gT("Submission date"));
+            $fnames[] = array("completed", $clang->gT("Completed"));
+
+            foreach ($fieldmap as $q)
             {
-                if (isset($q->sq) && $q->sq != '')
-                    $question .=' (' . $q->sq . ')';
-                if (isset($q->sq1) && isset($q->sq2))
-                    $question .=' (' . $q->sq1 . ':' . $q->sq2 . ')';
-                if (isset($q->scale))
-                    $question .='[' . $q->scale . ']';
-                $fnames[] = array($q->fieldname, $question);
-            }
-            else
-            {
-                if ($q->aid !== 'filecount')
+                if ($q->fieldname == 'lastpage' || $q->fieldname == 'submitdate')
+                    continue;
+                if(isset($q->type))
                 {
-                    $qidattributes = $q->getAttributeValues();
-
-                    for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
-                    {
-                        if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (Title)", "title", $i);
-
-                        if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (Comment)", "comment", $i);
-
-                        $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (File name)", "name", $i);
-                        $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (File size)", "size", $i);
-                    }
+                    if ($q->type == 'interview_time')
+                        continue;
+                    if ($q->type == 'page_time')
+                        continue;
+                    if ($q->type == 'answer_time')
+                        continue;
+                }
+                $question = $q->text;
+                if (!is_a($q, 'QuestionModule') || !$q->fileUpload())
+                {
+                    if (isset($q->sq) && $q->sq != '')
+                        $question .=' (' . $q->sq . ')';
+                    if (isset($q->sq1) && isset($q->sq2))
+                        $question .=' (' . $q->sq1 . ':' . $q->sq2 . ')';
+                    if (isset($q->scale))
+                        $question .='[' . $q->scale . ']';
+                    $fnames[] = array($q->fieldname, $question);
                 }
                 else
-                    $fnames[] = array($q->fieldname, "File count");
-            }
-        }
-
-        if ($iId < 1)
-        {
-            $iId = 1;
-        }
-
-        $exist = Survey_dynamic::model($iSurveyID)->exist($iId);
-        $next = Survey_dynamic::model($iSurveyID)->next($iId,true);
-        $previous = Survey_dynamic::model($iSurveyID)->previous($iId,true);
-        $aData['exist'] = $exist;
-        $aData['next'] = $next;
-        $aData['previous'] = $previous;
-        $aData['id'] = $iId;
-
-        $aViewUrls[] = 'browseidheader_view';
-        //SHOW INDIVIDUAL RECORD
-        if($exist)
-        {
-            $oCriteria = new CDbCriteria();
-            if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}"))
-            {
-                $oCriteria = Survey_dynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
-            }
-            // If admin ask an specific response, then show it
-            // Don't add incompleteAnsFilterState
-#            if (incompleteAnsFilterState() == 'incomplete')
-#                $oCriteria->addCondition('submitdate = ' . mktime(0, 0, 0, 1, 1, 1980) . ' OR submitdate IS NULL');
-#            elseif (incompleteAnsFilterState() == 'complete')
-#                $oCriteria->addCondition('submitdate >= ' . mktime(0, 0, 0, 1, 1, 1980));
-            $oCriteria->addCondition("id = {$iId}");
-            $iIdresult = Survey_dynamic::model($iSurveyID)->findAllAsArray($oCriteria) or die("Couldn't get entry");
-            foreach ($iIdresult as $iIdrow)
-            {
-                $iId = $iIdrow['id'];
-                $rlanguage = $iIdrow['startlanguage'];
-            }
-            $next = Survey_dynamic::model($iSurveyID)->next($iId);
-            $previous = Survey_dynamic::model($iSurveyID)->previous($iId);
-
-            if (isset($rlanguage))
-            {
-                $aData['rlanguage'] = $rlanguage;
-            }
-
-            foreach ($iIdresult as $iIdrow)
-            {
-                $highlight = false;
-                foreach ($fnames as $fn)
                 {
-                    if ($fn[0] != 'completed' && is_null($iIdrow[$fn[0]]))
+                    if ($q->aid !== 'filecount')
                     {
-                        continue;   // irrelevant, so don't show
-                    }
-                    $inserthighlight = '';
-                    if ($highlight)
-                        $inserthighlight = "class='highlight'";
+                        $qidattributes = $q->getAttributeValues();
 
-                    if ($fn[0] == 'completed')
-                    {
-                        if ($iIdrow['submitdate'] == NULL || $iIdrow['submitdate'] == "N")
+                        for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
                         {
-                            $answervalue = "N";
-                        }
-                        else
-                        {
-                            $answervalue = "Y";
+                            if ($qidattributes['show_title'] == 1)
+                                $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (Title)", "title", $i);
+
+                            if ($qidattributes['show_comment'] == 1)
+                                $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (Comment)", "comment", $i);
+
+                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (File name)", "name", $i);
+                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (File size)", "size", $i);
                         }
                     }
                     else
-                    {
-                        if (count($fn) > 2)
-                        {
-                            $index = $fn[2];
-                            $metadata = $fn[3];
-                            $phparray = json_decode_ls($iIdrow[$fn[0]]);
+                        $fnames[] = array($q->fieldname, "File count");
+                }
+            }
 
-                            if (isset($phparray[$index]))
+            if ($iId < 1)
+            {
+                $iId = 1;
+            }
+
+            $exist = Survey_dynamic::model($iSurveyID)->exist($iId);
+            $next = Survey_dynamic::model($iSurveyID)->next($iId,true);
+            $previous = Survey_dynamic::model($iSurveyID)->previous($iId,true);
+            $aData['exist'] = $exist;
+            $aData['next'] = $next;
+            $aData['previous'] = $previous;
+            $aData['id'] = $iId;
+
+            $aViewUrls[] = 'browseidheader_view';
+            //SHOW INDIVIDUAL RECORD
+            if($exist)
+            {
+                $oCriteria = new CDbCriteria();
+                if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}"))
+                {
+                    $oCriteria = Survey_dynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
+                }
+                // If admin ask an specific response, then show it
+                // Don't add incompleteAnsFilterState
+    #            if (incompleteAnsFilterState() == 'incomplete')
+    #                $oCriteria->addCondition('submitdate = ' . mktime(0, 0, 0, 1, 1, 1980) . ' OR submitdate IS NULL');
+    #            elseif (incompleteAnsFilterState() == 'complete')
+    #                $oCriteria->addCondition('submitdate >= ' . mktime(0, 0, 0, 1, 1, 1980));
+                $oCriteria->addCondition("id = {$iId}");
+                $iIdresult = Survey_dynamic::model($iSurveyID)->findAllAsArray($oCriteria) or die("Couldn't get entry");
+                foreach ($iIdresult as $iIdrow)
+                {
+                    $iId = $iIdrow['id'];
+                    $rlanguage = $iIdrow['startlanguage'];
+                }
+                $next = Survey_dynamic::model($iSurveyID)->next($iId);
+                $previous = Survey_dynamic::model($iSurveyID)->previous($iId);
+
+                if (isset($rlanguage))
+                {
+                    $aData['rlanguage'] = $rlanguage;
+                }
+
+                foreach ($iIdresult as $iIdrow)
+                {
+                    $highlight = false;
+                    foreach ($fnames as $fn)
+                    {
+                        if ($fn[0] != 'completed' && is_null($iIdrow[$fn[0]]))
+                        {
+                            continue;   // irrelevant, so don't show
+                        }
+                        $inserthighlight = '';
+                        if ($highlight)
+                            $inserthighlight = "class='highlight'";
+
+                        if ($fn[0] == 'completed')
+                        {
+                            if ($iIdrow['submitdate'] == NULL || $iIdrow['submitdate'] == "N")
                             {
-                                if ($metadata === "size")
-                                    $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
-                                else if ($metadata === "name")
-                                    $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/sa/browse/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fn[0]}/id/{$iId}/surveyid/{$iSurveyID}"));
-                                else
-                                    $answervalue = rawurldecode($phparray[$index][$metadata]);
+                                $answervalue = "N";
                             }
                             else
-                                $answervalue = "";
+                            {
+                                $answervalue = "Y";
+                            }
                         }
                         else
                         {
-                            $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyID, $fn[0], $iIdrow[$fn[0]], $oBrowseLanguage))), ENT_QUOTES);
+                            if (count($fn) > 2)
+                            {
+                                $index = $fn[2];
+                                $metadata = $fn[3];
+                                $phparray = json_decode_ls($iIdrow[$fn[0]]);
+
+                                if (isset($phparray[$index]))
+                                {
+                                    if ($metadata === "size")
+                                        $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
+                                    else if ($metadata === "name")
+                                        $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/sa/browse/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fn[0]}/id/{$iId}/surveyid/{$iSurveyID}"));
+                                    else
+                                        $answervalue = rawurldecode($phparray[$index][$metadata]);
+                                }
+                                else
+                                    $answervalue = "";
+                            }
+                            else
+                            {
+                                $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyID, $fn[0], $iIdrow[$fn[0]], $oBrowseLanguage))), ENT_QUOTES);
+                            }
                         }
+                        $aDataRow['answervalue'] = $answervalue;
+                        $aDataRow['inserthighlight'] = $inserthighlight;
+                        $aDataRow['fname'] = $fn;
+                        $aViewUrls['browseidrow_view'][] = $aDataRow;
                     }
-                    $aDataRow['answervalue'] = $answervalue;
-                    $aDataRow['inserthighlight'] = $inserthighlight;
-                    $aDataRow['fname'] = $fn;
-                    $aViewUrls['browseidrow_view'][] = $aDataRow;
                 }
             }
+            else
+            {
+                Yii::app()->session['flashmessage'] = $clang->gT("This response ID is invalid.");
+            }
+            $aViewUrls['browseidfooter_view'][] = $aData;
+
+            $this->_renderWrappedTemplate('',$aViewUrls, $aData);
         }
         else
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("This response ID is invalid.");
+            $clang = $this->getController()->lang;
+            $aData['surveyid'] = $iSurveyID;
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
+            $message['title']= $clang->gT('Access denied!');
+            $message['message']= $clang->gT('You do not have sufficient rights to access this page');
+            $message['class']= $clang->gT('error');
+            $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }
-        $aViewUrls['browseidfooter_view'][] = $aData;
-
-        $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
 
     public function index($iSurveyID)
@@ -325,8 +323,6 @@ class responses extends Survey_Common_Action
         $aViewUrls = array();
         $oBrowseLanguage = new Limesurvey_lang($aData['language']);
 
-
-
         //Delete Individual answer using inrow delete buttons/links - checked
         if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked' && hasSurveyPermission($iSurveyID, 'responses', 'delete'))
         {
@@ -362,7 +358,7 @@ class responses extends Survey_Common_Action
 
             }
             // Download all files for all marked responses  - checked
-            else if (Yii::app()->request->getPost('downloadfile') && Yii::app()->request->getPost('downloadfile') === 'marked')
+            elseif (Yii::app()->request->getPost('downloadfile') && Yii::app()->request->getPost('downloadfile') === 'marked')
             {
                 // Now, zip all the files in the filelist
                 $zipfilename = "Responses_for_survey_{$iSurveyID}.zip";
@@ -370,13 +366,18 @@ class responses extends Survey_Common_Action
             }
         }
         // Download all files for this entry - checked
-        else if (Yii::app()->request->getPost('downloadfile') && Yii::app()->request->getPost('downloadfile') != '' && Yii::app()->request->getPost('downloadfile') !== true)
+        elseif (
+                Yii::app()->request->getPost('downloadfile') && Yii::app()->request->getPost('downloadfile') != '' && Yii::app()->request->getPost('downloadfile') !== true
+                && hasSurveyPermission($iSurveyID,'responses','read')
+                )
         {
             // Now, zip all the files in the filelist
             $zipfilename = "Files_for_responses_" . Yii::app()->request->getPost('downloadfile') . ".zip";
             $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('downloadfile'), $zipfilename,$aData['language']);
         }
-        else if (Yii::app()->request->getParam('downloadindividualfile') != '')
+        elseif (Yii::app()->request->getParam('downloadindividualfile') != ''
+                && hasSurveyPermission($iSurveyID,'responses','read')
+                )
         {
             $iId = (int) Yii::app()->request->getParam('id');
             $downloadindividualfile = Yii::app()->request->getParam('downloadindividualfile');
@@ -415,10 +416,12 @@ class responses extends Survey_Common_Action
          * it containts
          *             $fnames[] = array(<dbfieldname>, <some strange title>, <questiontext>, <group_id>, <questiontype>);
          */
-        if (Yii::app()->request->getPost('sql'))
+        if(hasSurveyPermission($iSurveyID,'responses','read'))
         {
-            $aViewUrls[] = 'browseallfiltered_view';
-        }
+            if (Yii::app()->request->getPost('sql'))
+            {
+                $aViewUrls[] = 'browseallfiltered_view';
+            }
             //add token to top of list if survey is not private
             if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID)) //add token to top of list if survey is not private
             {
@@ -564,6 +567,17 @@ class responses extends Survey_Common_Action
 
             $aViewUrls[] = 'browseallfooter_view';
             $this->_renderWrappedTemplate('',$aViewUrls, $aData);
+        }
+        else
+        {
+            $clang = $this->getController()->lang;
+            $aData['surveyid'] = $iSurveyID;
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
+            $message['title']= $clang->gT('Access denied!');
+            $message['message']= $clang->gT('You do not have sufficient rights to access this page');
+            $message['class']= $clang->gT('error');
+            $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
+        }
     }
 
     public function time($iSurveyID)
