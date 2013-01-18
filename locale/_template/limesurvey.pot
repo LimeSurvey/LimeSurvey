@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-01-17 23:05:58+00:00\n"
+"POT-Creation-Date: 2013-01-18 23:06:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -362,7 +362,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:1739
 #: application/controllers/admin/conditionsaction.php:2099
 #: application/controllers/admin/conditionsaction.php:2102
-#: application/controllers/admin/responses.php:675
+#: application/controllers/admin/responses.php:666
 #: application/views/admin/export/statistics_view.php:1290
 #: application/views/admin/export/statistics_view.php:1293
 #: application/views/admin/survey/Question/questionbar_view.php:12
@@ -426,9 +426,9 @@ msgstr ""
 #: application/controllers/Statistics_userController.php:437
 #: application/controllers/admin/dataentry.php:546
 #: application/controllers/admin/quotas.php:156
-#: application/controllers/admin/responses.php:128
-#: application/controllers/admin/responses.php:129
-#: application/controllers/admin/responses.php:469
+#: application/controllers/admin/responses.php:121
+#: application/controllers/admin/responses.php:122
+#: application/controllers/admin/responses.php:458
 #: application/views/admin/quotas/viewquotas_view.php:17
 #: application/views/admin/token/exportdialog.php:5
 msgid "Completed"
@@ -1836,7 +1836,7 @@ msgid "View This Record"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1505
-#: application/controllers/admin/responses.php:941
+#: application/controllers/admin/responses.php:932
 #: application/views/admin/dataentry/delete.php:5
 #: application/views/admin/dataentry/vvimport_upload.php:22
 #: application/views/admin/responses/browseallfiltered_view.php:3
@@ -2201,25 +2201,25 @@ msgstr ""
 
 #: application/controllers/admin/expressions.php:29
 #: application/controllers/admin/printablesurvey.php:38
-#: application/controllers/admin/responses.php:291
-#: application/controllers/admin/responses.php:356
-#: application/controllers/admin/responses.php:381
-#: application/controllers/admin/responses.php:626
+#: application/controllers/admin/responses.php:284
+#: application/controllers/admin/responses.php:349
+#: application/controllers/admin/responses.php:374
+#: application/controllers/admin/responses.php:615
 #: application/helpers/common_helper.php:6392
 msgid "Access denied!"
 msgstr ""
 
 #: application/controllers/admin/expressions.php:30
 #: application/controllers/admin/printablesurvey.php:39
-#: application/controllers/admin/responses.php:292
-#: application/controllers/admin/responses.php:627
+#: application/controllers/admin/responses.php:285
+#: application/controllers/admin/responses.php:616
 msgid "You do not have sufficient rights to access this page"
 msgstr ""
 
 #: application/controllers/admin/expressions.php:31
 #: application/controllers/admin/printablesurvey.php:40
-#: application/controllers/admin/responses.php:293
-#: application/controllers/admin/responses.php:628
+#: application/controllers/admin/responses.php:286
+#: application/controllers/admin/responses.php:617
 msgid "error"
 msgstr ""
 
@@ -2684,7 +2684,7 @@ msgstr ""
 msgid "Group could not be deleted"
 msgstr ""
 
-#: application/controllers/admin/questiongroup.php:326
+#: application/controllers/admin/questiongroup.php:324
 #: application/controllers/admin/quotas.php:349
 #: application/views/admin/assessments_view.php:103
 #: application/views/admin/emailtemplates/emailtemplates_view.php:16
@@ -2696,7 +2696,7 @@ msgstr ""
 msgid "Base language"
 msgstr ""
 
-#: application/controllers/admin/questiongroup.php:401
+#: application/controllers/admin/questiongroup.php:399
 msgid "Question group successfully saved."
 msgstr ""
 
@@ -2727,16 +2727,14 @@ msgstr ""
 msgid "This survey has not been activated. There are no results to browse."
 msgstr ""
 
-#: application/controllers/admin/responses.php:118
-#: application/controllers/admin/responses.php:125
-#: application/controllers/admin/responses.php:458
-#: application/controllers/admin/responses.php:465
+#: application/controllers/admin/responses.php:116
+#: application/controllers/admin/responses.php:451
 #: application/views/admin/participants/displayParticipants_view.php:93
 msgid "Token ID"
 msgstr ""
 
-#: application/controllers/admin/responses.php:119
-#: application/controllers/admin/responses.php:459
+#: application/controllers/admin/responses.php:117
+#: application/controllers/admin/responses.php:452
 #: application/helpers/common_helper.php:5435
 #: application/helpers/replacements_helper.php:633
 #: application/views/admin/export/exportresults_view.php:126
@@ -2751,8 +2749,8 @@ msgstr ""
 msgid "First name"
 msgstr ""
 
-#: application/controllers/admin/responses.php:120
-#: application/controllers/admin/responses.php:460
+#: application/controllers/admin/responses.php:118
+#: application/controllers/admin/responses.php:453
 #: application/helpers/common_helper.php:5440
 #: application/helpers/replacements_helper.php:640
 #: application/views/admin/export/exportresults_view.php:127
@@ -2767,8 +2765,8 @@ msgstr ""
 msgid "Last name"
 msgstr ""
 
-#: application/controllers/admin/responses.php:121
-#: application/controllers/admin/responses.php:461
+#: application/controllers/admin/responses.php:119
+#: application/controllers/admin/responses.php:454
 #: application/controllers/admin/useraction.php:146
 #: application/views/admin/authentication/forgotpassword.php:9
 #: application/views/admin/participants/displayParticipants_view.php:69
@@ -2782,32 +2780,32 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: application/controllers/admin/responses.php:128
+#: application/controllers/admin/responses.php:121
 #: application/views/admin/export/statistics_view.php:97
 #: application/views/admin/templates/templateeditor_printoutput_view.php:9
 msgid "Submission date"
 msgstr ""
 
-#: application/controllers/admin/responses.php:279
+#: application/controllers/admin/responses.php:272
 msgid "This response ID is invalid."
 msgstr ""
 
-#: application/controllers/admin/responses.php:352
+#: application/controllers/admin/responses.php:345
 msgid "Response ID %s was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/responses.php:377
+#: application/controllers/admin/responses.php:370
 msgid "%s response was successfully deleted."
 msgid_plural "%s responses were successfully deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/responses.php:671
+#: application/controllers/admin/responses.php:662
 #: application/helpers/common_helper.php:2906
 msgid "Total time"
 msgstr ""
 
-#: application/controllers/admin/responses.php:673
+#: application/controllers/admin/responses.php:664
 #: application/views/admin/assessments_view.php:74
 msgid "Group"
 msgstr ""
