@@ -914,7 +914,7 @@
     {
         global $thissurvey;
         global $surveyid;
-        global $clienttoken;
+        $clienttoken=$_SESSION['survey_'.$surveyid]['thistoken']['token'];
 
         $clang = Yii::app()->lang;
         $sitename = Yii::app()->getConfig("sitename");
