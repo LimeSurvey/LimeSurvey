@@ -204,7 +204,7 @@ class RegisterController extends LSYii_Controller {
 
         $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 
-        $surveylink = $this->createAbsoluteUrl("survey/index/sid/{$surveyid}",array('lang'=>$baselang,'token'=>$newtoken));
+        $surveylink = $this->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$baselang,'token'=>$newtoken));
         $optoutlink = $this->createAbsoluteUrl("/optout/tokens/surveyid/{$surveyid}",array('langcode'=>'fr','token'=>'newtoken'));
         $optinlink = $this->createAbsoluteUrl("/optin/tokens/surveyid/{$surveyid}",array('langcode'=>'fr','token'=>'newtoken'));
         if (getEmailFormat($surveyid) == 'html')
