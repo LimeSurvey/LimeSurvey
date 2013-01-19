@@ -91,7 +91,7 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
                         //if (!isset($trbc) || $trbc == 'array1') {$trbc = 'array2';} else {$trbc = 'array1';}
                         $myfname=$this->fieldname.$ld;
                         $answer .= "\t<td class=\"answer_cell_00$ld answer-item radio-item\">\n"
-                        . "<label for=\"answer".$myfname.'-'.$ansrow['code']."\">{$ansrow['answer']}</label>\n"
+                        . "<label for=\"answer".$myfname.'-'.$ansrow['code']."\" class=\"hide\">{$ansrow['answer']}</label>\n"
                         . "\t<input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
                         . 'id="answer'.$myfname.'-'.$ansrow['code'].'" ';
                         if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == $ansrow['code'])
