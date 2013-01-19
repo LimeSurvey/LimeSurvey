@@ -1102,7 +1102,7 @@ class database extends Survey_Common_Action
             {
                 if ($langname)
                 {
-                    $iRowCount = Surveys_languagesettings::model()->count(array('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$surveyid,':langname'=>$langname));
+                    $iRowCount = Surveys_languagesettings::model()->count(array('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$surveyid,':langname'=>$langname)));
                     if ($iRowCount)
                     {
 

@@ -204,12 +204,12 @@ class RegisterController extends LSYii_Controller {
 
         $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 
+        $surveylink = $this->createAbsoluteUrl("survey/index/sid/{$surveyid}",array('lang'=>$baselang,'token'=>$newtoken));
+        $optoutlink = $this->createAbsoluteUrl("/optout/tokens/surveyid/{$surveyid}",array('langcode'=>'fr','token'=>'newtoken'));
+        $optinlink = $this->createAbsoluteUrl("/optin/tokens/surveyid/{$surveyid}",array('langcode'=>'fr','token'=>'newtoken'));
         if (getEmailFormat($surveyid) == 'html')
         {
             $useHtmlEmail = true;
-            $surveylink = $this->createAbsoluteUrl($surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
-            $optoutlink = $this->createAbsoluteUrl('optout/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
-            $optinlink = $this->createAbsoluteUrl('optin/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
             $fieldsarray["{SURVEYURL}"]="<a href='$surveylink'>".$surveylink."</a>";
             $fieldsarray["{OPTOUTURL}"]="<a href='$optoutlink'>".$optoutlink."</a>";
             $fieldsarray["{OPTINURL}"]="<a href='$optinlink'>".$optinlink."</a>";
@@ -217,9 +217,9 @@ class RegisterController extends LSYii_Controller {
         else
         {
             $useHtmlEmail = false;
-            $fieldsarray["{SURVEYURL}"]= $this->createAbsoluteUrl(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
-            $fieldsarray["{OPTOUTURL}"]= $this->createAbsoluteUrl('optout/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
-            $fieldsarray["{OPTINURL}"]= $this->createAbsoluteUrl('optin/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
+            $fieldsarray["{SURVEYURL}"]= $surveylink;
+            $fieldsarray["{OPTOUTURL}"]= $optoutlink;
+            $fieldsarray["{OPTINURL}"]= $optinlink;
         }
 
         $message=ReplaceFields($message, $fieldsarray);
