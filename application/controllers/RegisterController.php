@@ -184,12 +184,12 @@ class RegisterController extends LSYii_Controller {
 
         $sFrom = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 
+        $surveylink = $this->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$baselang,'token'=>$newtoken));
+        $optoutlink = $this->createAbsoluteUrl("/optout/tokens/surveyid/{$surveyid}",array('langcode'=>'fr','token'=>'newtoken'));
+        $optinlink = $this->createAbsoluteUrl("/optin/tokens/surveyid/{$surveyid}",array('langcode'=>'fr','token'=>'newtoken'));
         if (getEmailFormat($surveyid) == 'html')
         {
             $bUseHTMLEmail = true;
-            $surveylink = $this->createAbsoluteUrl($surveyid.'/lang-'.$sLanguage.'/tk-'.$sNewToken);
-            $optoutlink = $this->createAbsoluteUrl('optout/local/'.$surveyid.'/'.$sLanguage.'/'.$sNewToken);
-            $optinlink = $this->createAbsoluteUrl('optin/local/'.$surveyid.'/'.$sLanguage.'/'.$sNewToken);
             $aReplacementFields["{SURVEYURL}"]="<a href='$surveylink'>".$surveylink."</a>";
             $aReplacementFields["{OPTOUTURL}"]="<a href='$optoutlink'>".$optoutlink."</a>";
             $aReplacementFields["{OPTINURL}"]="<a href='$optinlink'>".$optinlink."</a>";
@@ -197,10 +197,13 @@ class RegisterController extends LSYii_Controller {
         else
         {
             $bUseHTMLEmail = false;
-            $aReplacementFields["{SURVEYURL}"]= $this->createAbsoluteUrl(''.$surveyid.'/lang-'.$sLanguage.'/tk-'.$sNewToken);
-            $aReplacementFields["{OPTOUTURL}"]= $this->createAbsoluteUrl('optout/local/'.$surveyid.'/'.$sLanguage.'/'.$sNewToken);
-            $aReplacementFields["{OPTINURL}"]= $this->createAbsoluteUrl('optin/local/'.$surveyid.'/'.$sLanguage.'/'.$sNewToken);
+            $aReplacementFields["{SURVEYURL}"]= $surveylink;
+            $aReplacementFields["{OPTOUTURL}"]= $optoutlink;
+            $aReplacementFields["{OPTINURL}"]= $optinlink;
         }
+        $sMessage = str_replace("@@SURVEYURL@@", $surveylink, $sMessage);
+        $sMessage = str_replace("@@OPTOUTURL@@", $optoutlink, $sMessage);
+        $sMessage = str_replace("@@OPTINURL@@", $optinlink, $sMessage);
 
         $sMessage=ReplaceFields($sMessage, $aReplacementFields);
         $sSubject=ReplaceFields($sSubject, $aReplacementFields);

@@ -1317,22 +1317,20 @@ class tokens extends Survey_Common_Action
                     }
 
                     $from = Yii::app()->request->getPost('from_' . $emrow['language']);
-
-                    $fieldsarray["{OPTOUTURL}"] = $this->getController()
-                                                       ->createAbsoluteUrl("/optout/tokens/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
-                    $fieldsarray["{OPTINURL}"] = $this->getController()
-                                                      ->createAbsoluteUrl("/optin/tokens/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
-                    $fieldsarray["{SURVEYURL}"] = $this->getController()
-                                                       ->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}/token/{$emrow['token']}/lang/" . trim($emrow['language']) . "/");
-
-                    foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
+                    $surveyurl = $this->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$baselang,'token'=>$newtoken));
+                    $optouturl = $this->createAbsoluteUrl("/optout/tokens/surveyid/{$surveyid}",array('langcode'=>'fr','token'=>'newtoken'));
+                    $optinurl = $this->createAbsoluteUrl("/optin/tokens/surveyid/{$surveyid}",array('langcode'=>'fr','token'=>'newtoken'));
+                    if ($bHtml)
                     {
-                        $url = $fieldsarray["{{$key}URL}"];
-                        if ($bHtml) $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
-                        if ($key == 'SURVEY')
-                        {
-                            $barebone_link = $url;
-                        }
+                        $fieldsarray["{SURVEYURL}"] = "<a href='{$surveyurl}'>" . htmlspecialchars($surveyurl) . '</a>';
+                        $fieldsarray["{OPTOUTURL}"] = "<a href='{$optouturl}'>" . htmlspecialchars($optouturl) . '</a>';
+                        $fieldsarray["{OPTINURL}"] = "<a href='{$optinurl}'>" . htmlspecialchars($optinurl) . '</a>';
+                    }
+                    else
+                    {
+                        $fieldsarray["{SURVEYURL}"] = "<{$surveyurl}>";
+                        $fieldsarray["{OPTOUTURL}"] = "<{$optouturl}>";
+                        $fieldsarray["{OPTINURL}"] = "<{$optinurl}>";
                     }
 
                     $customheaders = array('1' => "X-surveyid: " . $iSurveyId,
@@ -1342,11 +1340,10 @@ class tokens extends Survey_Common_Action
                     $modsubject = Replacefields(Yii::app()->request->getPost('subject_' . $emrow['language']), $fieldsarray);
                     $modmessage = Replacefields(Yii::app()->request->getPost('message_' . $emrow['language']), $fieldsarray);
 
-                    if (isset($barebone_link))
-                    {
-                        $modsubject = str_replace("@@SURVEYURL@@", $barebone_link, $modsubject);
-                        $modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $modmessage);
-                    }
+                    $modsubject = str_replace("@@SURVEYURL@@", $surveyurl, $modsubject);
+                    $modmessage = str_replace("@@SURVEYURL@@", $surveyurl, $modmessage);
+                    $modmessage = str_replace("@@OPTOUTURL@@", $optouturl, $modmessage);
+                    $modmessage = str_replace("@@OPTINURL@@", $optinurl, $modmessage);
 
                     if (trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
                     {
