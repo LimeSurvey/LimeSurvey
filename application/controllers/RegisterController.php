@@ -218,14 +218,12 @@ class RegisterController extends LSYii_Controller {
             
             if($thissurvey['directregister']=="Y")
             {
-                $registerurl=Yii::app()->getController()->createUrl("/{$surveyid}/lang-{$sLanguage}/tk-{$sNewToken}");
-                $sHTML .= sprintf($clang->gT("An email has been sent to the address you provided with access details for this survey. <a href='%s'>You can enter to this survey now</a>.",'unescaped'),$registerurl);
+                $sHTML .= sprintf($clang->gT("An email has been sent to the address you provided with access details for this survey. <a href='%s'>You can enter to this survey now</a>.",'unescaped'),$surveylink);
                 $sHTML .= "<br /><br />\n".$clang->gT("Survey administrator")." {ADMINNAME} ({ADMINEMAIL})";
             }
             elseif($thissurvey['directregister']=="A")
             {
-                $registerurl=Yii::app()->getController()->createUrl("/{$surveyid}/lang-{$sLanguage}/tk-{$sNewToken}");
-                Yii::app()->request->redirect($registerurl);
+                Yii::app()->request->redirect($surveylink);
             }
             else
             {
