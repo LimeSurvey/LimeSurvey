@@ -56,6 +56,7 @@ class SurveyRuntimeHelper {
         'anonymized' => ($thissurvey['anonymized'] != 'N'),
         'assessments' => ($thissurvey['assessments'] == 'Y'),
         'datestamp' => ($thissurvey['datestamp'] == 'Y'),
+        'deletenonvalues'=>Yii::app()->getConfig('deletenonvalues'),        
         'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY), // TODO set this to true if in admin mode but not if running a survey
         'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
         'radix'=>$radix,
