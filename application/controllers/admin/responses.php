@@ -280,7 +280,7 @@ class responses extends Survey_Common_Action
             $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
             $message['title']= $clang->gT('Access denied!');
             $message['message']= $clang->gT('You do not have sufficient rights to access this page');
-            $message['class']= $clang->gT('error');
+            $message['class']= "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }
     }
@@ -575,7 +575,7 @@ class responses extends Survey_Common_Action
             $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
             $message['title']= $clang->gT('Access denied!');
             $message['message']= $clang->gT('You do not have sufficient rights to access this page');
-            $message['class']= $clang->gT('error');
+            $message['class']= "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }
     }
