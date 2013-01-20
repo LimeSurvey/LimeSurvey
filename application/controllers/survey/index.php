@@ -147,10 +147,16 @@ class index extends CAction {
         if ($surveyid && $surveyExists)
         {
             LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
-            $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
-            UpdateSessionGroupList($surveyid, $sTempLanguage);  // to refresh the language strings in the group list session variable
-            UpdateFieldArray();        // to refresh question titles and question text
-
+            if(!isset($_SESSION['survey_'.$surveyid]['s_lang']) || $sTempLanguage!=$_SESSION['survey_'.$surveyid]['s_lang'])
+            {
+                $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
+                UpdateSessionGroupList($surveyid, $sTempLanguage);  // to refresh the language strings in the group list session variable
+                UpdateSessionQuestion($surveyid, $sTempLanguage);        // to refresh question titles and question text
+            }
+            else
+            {
+                $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
+            }
         }
         else
         {

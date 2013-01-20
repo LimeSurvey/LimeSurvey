@@ -2204,63 +2204,6 @@ function doAssessment($surveyid, $returndataonly=false)
     }
 }
 
-function UpdateGroupList($surveyid, $language)
-//1. SESSION VARIABLE: grouplist
-//A list of groups in this survey, ordered by group name.
-
-{
-
-
-    $clang = Yii::app()->lang;
-    unset ($_SESSION['survey_'.$surveyid]['grouplist']);
-    $query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
-    $result = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />");  //Checked
-    foreach ($result->readAll() as $row)
-    {
-        $_SESSION['survey_'.$surveyid]['grouplist'][$row['gid']]=array($row['gid'], $row['group_name'], $row['description']);
-    }
-    if (isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap'])>0)
-    {
-        // Now adjust the grouplist
-        foreach ($_SESSION['survey_'.$surveyid]['groupReMap'] as $iOldGid=>$iNewGid)
-        {
-            if (!isset($_SESSION['survey_'.$surveyid]['grouplist'][$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
-            {
-                $_SESSION['survey_'.$surveyid]['grouplist']=arraySwapAssoc($iOldGid,$iNewGid,$_SESSION['survey_'.$surveyid]['grouplist']);
-            }
-            $_SESSION['survey_'.$surveyid]['grouplist'][$iNewGid]['shuffled']=true;
-        }
-    }
-}
-
-/**
-* FieldArray contains all necessary information regarding the questions
-* This function is needed to update it in case the survey is switched to another language
-*/
-function UpdateFieldArray()
-{
-    /*global $surveyid;
-
-    $clang = Yii::app()->lang;
-
-    if (isset($_SESSION['survey_'.$surveyid]['questions']))
-    {
-        reset($_SESSION['survey_'.$surveyid]['questions']);
-        while ( list($key) = each($_SESSION['survey_'.$surveyid]['questions']) )
-        {
-            $q = clone $_SESSION['survey_'.$surveyid]['questions'][$key];
-          
-            $query = "SELECT title, question FROM {{questions}} WHERE qid=".$q->id." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
-            $usrow = Yii::app()->db->createCommand($query)->queryRow();
-            if (!$usrow) safeDie ("Couldn't get question <br />$query<br />");      //Checked
-            $questionarray[2]=$usrow['title'];
-            $questionarray[3]=$usrow['question'];
-            unset($questionarray);
-        }
-    }
-     */
-}
-
 /**
 * checkQuota() returns quota information for the current survey
 * @param string $checkaction - action the function must take after completing:
@@ -2613,16 +2556,60 @@ function resetTimers()
     Yii::app()->request->cookies['limesurvey_timers'] = $cookie;
 }
 
+/**
+* UpdateSessionGroupList needed to set or update group text
+* This function is needed to update it in case the survey is switched to another language
+* update $_SESSION['survey_'.$surveyid]['grouplist'] array of array
+* var int $surveyid
+* var string $language
+* return void
+**/
 function UpdateSessionGroupList($surveyid, $language)
-//1. SESSION VARIABLE: grouplist
-//A list of groups in this survey, ordered by group name.
 {
-    unset ($_SESSION['survey_'.$surveyid]['grouplist']);
-    $query = "SELECT * FROM {{groups}} WHERE sid={$surveyid} AND language='".$language."' ORDER BY group_order";
-    $result = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />".$connect->ErrorMsg());  //Checked
-    foreach($result->readAll() as $row)
+    if(!isset($_SESSION['survey_'.$surveyid]['grouplist']))
     {
-        $_SESSION['survey_'.$surveyid]['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
+        $oGroups=Groups::model()->findAll("sid=:sid and language=:language",array(":sid"=>$surveyid,"language"=>$language));
+        foreach($oGroups as $oGroup)
+        {
+            $_SESSION['survey_'.$surveyid]['grouplist'][]=array($oGroup->attributes['gid'], $oGroup->attributes['group_name'], $oGroup->attributes['description']);
+        }
+    }
+    else
+    {
+        reset($_SESSION['survey_'.$surveyid]['grouplist']);
+        while ( list($key) = each($_SESSION['survey_'.$surveyid]['grouplist']) )
+        {
+            $g = $_SESSION['survey_'.$surveyid]['grouplist'][$key];
+            $oGroup=Groups::model()->find("gid=:gid and language=:language",array(":gid"=>$g[0],"language"=>$language));
+            if($oGroup){
+                $_SESSION['survey_'.$surveyid]['grouplist'][$key]=array($oGroup->attributes['gid'], $oGroup->attributes['group_name'], $oGroup->attributes['description']);
+            }
+        }
+    }
+}
+
+/**
+* UpdateSessionQuestion needed to update question text
+* This function is needed to update it in case the survey is switched to another language
+* update $_SESSION['survey_'.$surveyid]['questions'] array of object
+* var int $surveyid
+* var string $language
+* return void
+**/
+function UpdateSessionQuestion($surveyid, $language)
+{
+    if (isset($_SESSION['survey_'.$surveyid]['questions']))
+    {
+        reset($_SESSION['survey_'.$surveyid]['questions']);
+        while ( list($key) = each($_SESSION['survey_'.$surveyid]['questions']) )
+        {
+            $q = clone $_SESSION['survey_'.$surveyid]['questions'][$key];
+            $oQuestion=Questions::model()->find("qid=:qid and language=:language",array(":qid"=>$q->id,"language"=>$language));
+            if($oQuestion){
+                $_SESSION['survey_'.$surveyid]['questions'][$key]->text=$oQuestion->attributes['question'];
+                $_SESSION['survey_'.$surveyid]['questions'][$key]->help=$oQuestion->attributes['help'];
+            }
+        }
     }
 }
 
