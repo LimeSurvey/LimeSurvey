@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-01-20 23:05:54+00:00\n"
+"POT-Creation-Date: 2013-01-21 23:05:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3128,8 +3128,8 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:347
 #: application/controllers/admin/surveypermission.php:535
 #: application/controllers/admin/surveypermission.php:638
-#: application/controllers/admin/tokens.php:2283
-#: application/controllers/admin/tokens.php:2321
+#: application/controllers/admin/tokens.php:2284
+#: application/controllers/admin/tokens.php:2326
 #: application/controllers/admin/useraction.php:722
 #: application/helpers/common_helper.php:6398
 #: application/helpers/common_helper.php:6403
@@ -3220,7 +3220,7 @@ msgstr ""
 
 #: application/controllers/admin/surveypermission.php:429
 #: application/views/admin/dataentry/vvimport.php:35
-#: application/views/admin/survey/subview/tab_view.php:18
+#: application/views/admin/survey/subview/tab_view.php:19
 msgid "Import"
 msgstr ""
 
@@ -3700,22 +3700,22 @@ msgstr ""
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2280
+#: application/controllers/admin/tokens.php:2281
 #: application/views/admin/export/exportresults_view.php:122
 #: application/views/admin/token/tokenbar.php:3
 #: application/views/admin/token/tokenwarning.php:3
 msgid "Token control"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2281
+#: application/controllers/admin/tokens.php:2282
 msgid "A token table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2318
+#: application/controllers/admin/tokens.php:2323
 msgid "Import old tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2319
+#: application/controllers/admin/tokens.php:2324
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr ""
 
@@ -8121,7 +8121,7 @@ msgid "Permission to view/update the survey settings including token table creat
 msgstr ""
 
 #: application/models/Survey_permissions.php:75
-#: application/views/admin/survey/subview/tab_view.php:16
+#: application/views/admin/survey/subview/tab_view.php:17
 msgid "Tokens"
 msgstr ""
 
@@ -8412,7 +8412,7 @@ msgid "Check database again?"
 msgstr ""
 
 #: application/views/admin/checkintegrity/fix_view.php:13
-#: application/views/admin/update/step2.php:73
+#: application/views/admin/update/step2.php:76
 #: application/views/admin/update/update.php:45
 #: application/views/installer/precheck_view.php:151
 msgid "Check again"
@@ -8833,7 +8833,7 @@ msgstr ""
 
 #: application/views/admin/export/exportresults_view.php:15
 #: application/views/admin/globalSettings_view.php:8
-#: application/views/admin/survey/subview/tab_view.php:12
+#: application/views/admin/survey/subview/tab_view.php:13
 msgid "General"
 msgstr ""
 
@@ -12915,27 +12915,31 @@ msgstr ""
 msgid "Set token length to:"
 msgstr ""
 
-#: application/views/admin/survey/subview/tab_view.php:13
-msgid "Presentation & navigation"
+#: application/views/admin/survey/subview/tab_view.php:7
+msgid "If you are using token functions or notifications emails you need to set an administrator email address."
 msgstr ""
 
 #: application/views/admin/survey/subview/tab_view.php:14
-msgid "Publication & access control"
+msgid "Presentation & navigation"
 msgstr ""
 
 #: application/views/admin/survey/subview/tab_view.php:15
+msgid "Publication & access control"
+msgstr ""
+
+#: application/views/admin/survey/subview/tab_view.php:16
 msgid "Notification & data management"
 msgstr ""
 
-#: application/views/admin/survey/subview/tab_view.php:19
+#: application/views/admin/survey/subview/tab_view.php:20
 msgid "Copy"
 msgstr ""
 
-#: application/views/admin/survey/subview/tab_view.php:22
+#: application/views/admin/survey/subview/tab_view.php:23
 msgid "Panel integration"
 msgstr ""
 
-#: application/views/admin/survey/subview/tab_view.php:23
+#: application/views/admin/survey/subview/tab_view.php:24
 msgid "Resources"
 msgstr ""
 
@@ -13995,23 +13999,23 @@ msgid "The following files would be added by the update but already exist. This 
 msgstr ""
 
 #: application/views/admin/update/step2.php:46
-#: application/views/admin/update/step2.php:59
+#: application/views/admin/update/step2.php:61
 msgid "We recommend that these files should be replaced by the update procedure."
 msgstr ""
 
-#: application/views/admin/update/step2.php:58
+#: application/views/admin/update/step2.php:59
 msgid "The following files will be modified or deleted but were already modified by someone else."
 msgstr ""
 
-#: application/views/admin/update/step2.php:71
+#: application/views/admin/update/step2.php:74
 msgid "When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed."
 msgstr ""
 
-#: application/views/admin/update/step2.php:77
+#: application/views/admin/update/step2.php:80
 msgid "Please check any problems above and then proceed to the next step."
 msgstr ""
 
-#: application/views/admin/update/step2.php:79
+#: application/views/admin/update/step2.php:82
 #: application/views/admin/update/step3.php:33
 #: application/views/admin/update/update.php:52
 msgid "Proceed to step %s"
