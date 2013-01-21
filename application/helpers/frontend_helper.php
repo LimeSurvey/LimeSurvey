@@ -2608,6 +2608,7 @@ function UpdateSessionQuestion($surveyid, $language)
             if($oQuestion){
                 $_SESSION['survey_'.$surveyid]['questions'][$key]->text=$oQuestion->attributes['question'];
                 $_SESSION['survey_'.$surveyid]['questions'][$key]->help=$oQuestion->attributes['help'];
+                $_SESSION['survey_'.$surveyid]['questions'][$key]->language=$language;
             }
         }
     }
