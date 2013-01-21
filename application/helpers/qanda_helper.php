@@ -1314,7 +1314,7 @@ function do_date($ia)
         }
         else
         {
-            $minyear='1980';
+            $minyear='1900';
         }
 
         if (trim($aQuestionAttributes['dropdown_dates_year_max'])!='') {
