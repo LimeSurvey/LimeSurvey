@@ -422,7 +422,7 @@ class update extends Survey_Common_Action
         // We create this new language object here because the language files might have been overwritten earlier
         // and the pointers to the file from the application language are not valid anymore 
         $aLanguage = new Limesurvey_lang(Yii::app()->session['adminlang']);
-        $aData = array('clang' => $aLanguage);
+        $aData['clang'] = $aLanguage;
 
         $this->_renderWrappedTemplate('update', 'step4', $aData);
     }
