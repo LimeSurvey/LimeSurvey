@@ -1390,7 +1390,7 @@ class dataentry extends Survey_Common_Action
         // Make this safe for DB (*after* we undo first excel's
         // and then our escaping).
         $fieldvalues = array_map( 'dbQuoteAll', $fieldvalues );
-        $fieldvalues = str_replace( dbQuoteAll('{question_not_shown}'), 'NULL', $fieldvalues );
+        $fieldvalues = str_replace( dbQuoteAll('{question_not_shown}'), null, $fieldvalues );
 
         return $fieldvalues;
     }
