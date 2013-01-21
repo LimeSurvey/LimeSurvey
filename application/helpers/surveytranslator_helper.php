@@ -330,6 +330,14 @@
         $supportedLanguages['ko']['dateformat'] = 7;
         $supportedLanguages['ko']['radixpoint'] = 0;
 
+        // Kurdish (Sorani)
+        $supportedLanguages['ckb']['description'] = $clang->gT('Kurdish (Sorani)');
+        $supportedLanguages['ckb']['nativedescription'] = '&#1705;&#1608;&#1585;&#1583;&#1740;&#1740; &#1606;&#1575;&#1608;&#1749;&#1606;&#1583;&#1740;';
+        $supportedLanguages['ckb']['rtl'] = true;
+        $supportedLanguages['ckb']['dateformat'] = 1;
+        $supportedLanguages['ckb']['radixpoint'] = 1;
+        
+        
         // Lithuanian
         $supportedLanguages['lt']['description'] = $clang->gT('Lithuanian');
         $supportedLanguages['lt']['nativedescription'] = 'Lietuvi&#371;';
@@ -350,6 +358,13 @@
         $supportedLanguages['mk']['rtl'] = false;
         $supportedLanguages['mk']['dateformat'] = 1;
         $supportedLanguages['mk']['radixpoint'] = 1;
+
+        // Mongolian
+        $supportedLanguages['mn']['description'] = $clang->gT('Mongolian');
+        $supportedLanguages['mn']['nativedescription'] = '&#1052;&#1086;&#1085;&#1075;&#1086;&#1083;';
+        $supportedLanguages['mn']['rtl'] = false;
+        $supportedLanguages['mn']['dateformat'] = 3;
+        $supportedLanguages['mn']['radixpoint'] = 0;
 
         // Malay
         $supportedLanguages['ms']['description'] = $clang->gT('Malay');

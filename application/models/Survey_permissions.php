@@ -92,15 +92,14 @@ class Survey_permissions extends CActiveRecord
 
 		foreach ($permissions as $sPermissionname=>$aPermissions)
 		{
-			if (!isset($aPermissions['create'])) {$aPermissions['create']=0;}
-			if (!isset($aPermissions['read'])) {$aPermissions['read']=0;}
-			if (!isset($aPermissions['update'])) {$aPermissions['update']=0;}
-			if (!isset($aPermissions['delete'])) {$aPermissions['delete']=0;}
-			if (!isset($aPermissions['import'])) {$aPermissions['import']=0;}
-			if (!isset($aPermissions['export'])) {$aPermissions['export']=0;}
+			$aPermissions['create']= (isset($aPermissions['create']) && $aPermissions['create'])? 1:0;
+			$aPermissions['read']= (isset($aPermissions['read']) && $aPermissions['read'])? 1:0;
+			$aPermissions['update']= (isset($aPermissions['update']) && $aPermissions['update'])? 1:0;
+			$aPermissions['delete']= (isset($aPermissions['delete']) && $aPermissions['delete'])? 1:0;
+			$aPermissions['import']= (isset($aPermissions['import']) && $aPermissions['import'])? 1:0;
+			$aPermissions['export']= (isset($aPermissions['export']) && $aPermissions['export'])? 1:0;
 			if ($aPermissions['create']==1 || $aPermissions['read']==1 ||$aPermissions['update']==1 || $aPermissions['delete']==1  || $aPermissions['import']==1  || $aPermissions['export']==1)
 			{
-				$data = array();
 				$data = array(
 					'sid' => $sid,
 					'uid' => $uid,
@@ -217,7 +216,7 @@ class Survey_permissions extends CActiveRecord
             WHERE p.sid = :surveyid AND u.uid != :userid
             GROUP BY p.sid, p.uid, u.users_name, u.full_name
             ORDER BY u.users_name";
-        $iUserID=Yii::app()->user->getId();    
+        $iUserID=Yii::app()->user->getId();
         return Yii::app()->db->createCommand($sQuery)->bindParam(":userid", $iUserID, PDO::PARAM_INT)->bindParam("surveyid", $surveyid, PDO::PARAM_INT)->query()->readAll(); //Checked
     }
 

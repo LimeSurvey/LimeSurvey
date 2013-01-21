@@ -1,6 +1,6 @@
 <div id="translationloading" style="width: 100%; font-weight: bold; color: #000; text-align: center;"><br /><?php $clang->eT("Loading translations");?><br /><br /></div>
 
-<?php echo CHtml::form(array("admin/translate/index/surveyid/{$surveyid}/lang/{$tolang}"), 'post', array('name'=>'translateform','id'=>'translateform'));?>
+<?php echo CHtml::form(array("admin/translate/sa/index/surveyid/{$surveyid}/lang/{$tolang}"), 'post', array('name'=>'translateform','id'=>'translateform'));?>
 	<input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
 	<input type='hidden' name='action' value='translate' />
 	<input type='hidden' name='actionvalue' value='translateSave' />

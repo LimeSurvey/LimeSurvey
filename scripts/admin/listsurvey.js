@@ -103,7 +103,7 @@ $(document).ready(function(){
         colModel: returnColModel(),
         toppager: true,
         height: "100%",
-        width: screen.width-20,
+        width: $(window).width()-4,
         shrinkToFit: true,
         ignoreCase: true,
         rowNum: 25,
@@ -118,7 +118,13 @@ $(document).ready(function(){
         multiselect: true,
         loadonce : true,
         pager: "#pager",
-        caption: sCaption
+        caption: sCaption,
+        loadComplete: function(data){
+            // Need this for vertical scrollbar 
+			$('#displaysurveys').setGridWidth($(window).width()-4);
+            $('.wrapper').width($('#displaysurveys').width()+4);
+            $('.footer').outerWidth($('#displaysurveys').outerWidth()+4).css({ 'margin':'0 auto' });
+        }
     });
     jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ deltitle: sDelTitle, 
                                                           searchtitle: sSearchTitle,
@@ -127,7 +133,8 @@ $(document).ready(function(){
                                                           del:true,
                                                           edit:false,
                                                           refresh: true,
-                                                          search: true
+                                                          search: true,
+
                                                         },{},{},{ msg:delmsg, 
                                                                   bSubmit: sDelCaption,
                                                                   caption: sDelCaption,
@@ -135,7 +142,18 @@ $(document).ready(function(){
                                                                   width : 450,
                                                                   afterShowForm: function(form) {
                                                                     form.closest('div.ui-jqdialog').center();
-                                                                  }
+                                                                  },
+                                                          afterSubmit: function(response, postdata) {
+                                                              if (postdata.oper=='del')
+                                                              {
+                                                                  // Remove surveys from dropdown, too
+                                                                    aSurveyIDs=postdata.id.split(",");
+                                                                    $.each(aSurveyIDs,function(iIndex, iSurveyID){
+                                                                        $("#surveylist option[value='"+iSurveyID+"']").remove();   
+                                                                    })
+                                                              };
+                                                              return [true];
+                                                          }
                                                                 },
                                                                 {
                                                                       caption: sSearchCaption,
@@ -166,8 +184,14 @@ $(document).ready(function(){
         }
     });
 
-	$('.wrapper').width($('#displaysurveys').width()*1.006);
-	$('.footer').width(($('#displaysurveys').width()*1.006)-10);
+	$('.wrapper').width($('#displaysurveys').width()+4);
+	$('.footer').outerWidth($('#displaysurveys').outerWidth()+4).css({ 'margin':'0 auto' });
+	
+    $(window).bind('resize', function() {
+        $('#displaysurveys').setGridWidth($(window).width()-4);
+        $('.wrapper').width($('#displaysurveys').width()+4);
+        $('.footer').outerWidth($('#displaysurveys').outerWidth()+4).css({ 'margin':'0 auto' });
+    }).trigger('resize');
 
     /* Trigger the inline search when the status list changes */
     $('#gs_status_select').change(function() {

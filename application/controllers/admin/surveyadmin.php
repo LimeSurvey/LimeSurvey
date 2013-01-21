@@ -172,6 +172,9 @@ class SurveyAdmin extends Survey_Common_Action
 
         Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
 
+        Yii::app()->loadHelper('/admin/htmleditor');
+        initKcfinder();
+        
         $esrow = array();
         $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
         $aData['esrow'] = $esrow;
@@ -313,7 +316,7 @@ class SurveyAdmin extends Survey_Common_Action
         $postsid = Yii::app()->request->getPost('sid', $iSurveyID);
         $postsid = sanitize_int($postsid);
         $clang = $this->getController()->lang;
-        $date = date('YmdHis'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
+        $date = date('YmdHis'); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
 
         if (empty($_POST['ok']))
         {
@@ -521,14 +524,12 @@ class SurveyAdmin extends Survey_Common_Action
     public function ajaxgetusers()
     {
         header('Content-type: application/json');
-
-        $result = User::model()->findAll();
-
+        $result = getUserList();
         $aUsers = array();
         if (count($result) > 0)
         {
             foreach ($result as $rows)
-                $aUsers[] = array($rows['uid'], $rows['users_name']);
+                $aUsers[] = array($rows['uid'], $rows['user']);
         }
         $ajaxoutput = ls_json_encode($aUsers) . "\n";
         echo $ajaxoutput;
@@ -554,7 +555,7 @@ class SurveyAdmin extends Survey_Common_Action
         $params[':sid']=$intSurveyId;
         if (!hasGlobalPermission("USER_RIGHT_SUPERADMIN"))
         {
-            $query_condition .= 'AND owner_id=:uid';
+            $query_condition .= ' AND owner_id=:uid';
             $params[':uid']=$owner_id;
         }
 
@@ -565,7 +566,7 @@ class SurveyAdmin extends Survey_Common_Action
         $intRecordCount = count($result);
 
         $aUsers = array(
-        'record_count' => $intRecordCount,
+            'record_count' => $intRecordCount,
         );
 
         foreach ($result as $row)
@@ -648,8 +649,14 @@ class SurveyAdmin extends Survey_Common_Action
             $aSurveyEntry[] = '<!--' . $rows['datecreated'] . '-->' . $datetimeobj->convert($dateformatdetails['phpdate']);
 
             //Set Owner
-            $aSurveyEntry[] = $rows['users_name'] . ' (<a href="#" class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
-
+            if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] || Yii::app()->session['loginID']==$rows['owner_id'])
+            {
+                $aSurveyEntry[] = $rows['users_name'] . ' (<a class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
+            }
+            else
+            {
+                $aSurveyEntry[] = $rows['users_name'];
+            }
             //Set Access
             if (tableExists('tokens_' . $rows['sid'] ))
             {

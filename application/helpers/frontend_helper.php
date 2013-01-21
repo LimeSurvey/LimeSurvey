@@ -868,124 +868,6 @@
             return $filenotvalidated;
     }
 
-    // TMSW Conditions->Relevance:  Consolidate checking most/all validation criteria within EM
-    function aCheckInput($surveyid, $move,$backok=null)
-    {
-        global $thisstep, $thissurvey;
-
-        if (!isset($backok) || $backok != "Y")
-        {
-            $fieldmap = createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
-
-            if (isset($_POST['fieldnames']))
-            {
-                $fields=explode("|", $_POST['fieldnames']);
-                foreach ($fields as $field)
-                {
-                    //Get question information
-                    if (isset($_POST[$field]) && isset($_SESSION['survey_'.$surveyid]['s_lang']) && ($_POST[$field] == "0" || $_POST[$field])) //Only do this if there is an answer
-
-                    {
-                        $fieldinfo=$fieldmap[$field];
-                        $pregquery="SELECT preg\n"
-                        ."FROM {{questions}}\n"
-                        ."WHERE qid=".$fieldinfo['qid']." "
-                        . "AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
-                        $pregresult=dbExecuteAssoc($pregquery) or safeDie("ERROR: $pregquery<br />");      //Checked
-                        foreach($pregresult->readAll() as $pregrow)
-                        {
-                            $preg=trim($pregrow['preg']);
-                        } // while
-                        if (isset($preg) && $preg)
-                        {
-                            if (!@preg_match($preg, $_POST[$field]))
-                            {
-                                $notvalidated[]=$field;
-                                continue;
-                            }
-                        }
-
-                        // check for other question attributes
-                        $qidattributes=getQuestionAttributeValues($fieldinfo['qid'],$fieldinfo['type']);
-
-                        if ($fieldinfo['type'] == 'N')
-                        {
-                            $neg = true;
-                            if (trim($qidattributes['max_num_value_n'])!='' &&
-                            $qidattributes['max_num_value_n'] >= 0)
-                            {
-                                $neg = false;
-                            }
-
-                            if (trim($qidattributes['num_value_int_only'])==1 &&
-                            !preg_match("/^" . ($neg? "-?": "") . "[0-9]+$/", $_POST[$field]))
-                            {
-                                $notvalidated[]=$field;
-                                continue;
-                            }
-
-                            if (trim($qidattributes['max_num_value_n'])!='' &&
-                            $_POST[$field] > $qidattributes['max_num_value_n'])
-                            {
-                                $notvalidated[]=$field;
-                                continue;
-                            }
-                            if (trim($qidattributes['min_num_value_n'])!='' &&
-                            $_POST[$field] < $qidattributes['min_num_value_n'])
-                            {
-                                $notvalidated[]=$field;
-                                continue;
-                            }
-                        }
-                        elseif ($fieldinfo['type'] == 'D')
-                        {
-                            // $_SESSION['survey_'.$surveyid][$fieldinfo['fieldname']] now contains the value parsed by
-                            // Date_Time_Converter in save.php. We can leave it there. We just do validation here.
-
-                            // deactivated this for now because DateTime::createFromFormat is only available in 5.3 or later
-                            // @todo: Find a strict date validation routine for 5.1.8 or later that understands the standard PHP datetime format
-                            $datetimeobj = true;
-                            //$dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
-                            //$datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'], $_POST[$field]);
-                            if(!$datetimeobj)
-                            {
-                                $notvalidated[]=$field;
-                                continue;
-                            }
-                        }
-                    }
-                }
-            }
-            //The following section checks for question attribute validation, looking for values in a particular field
-            if (isset($_POST['qattribute_answer']))
-            {
-                foreach ($_POST['qattribute_answer'] as $maxvalueanswer)
-                {
-                    //$maxvalue_answername="maxvalue_answer".$maxvalueanswer;
-                    if (!empty($_POST['qattribute_answer'.$maxvalueanswer]) && $_POST['display'.$maxvalueanswer] == "on")
-                    {
-                        $_SESSION['survey_'.$surveyid]['step'] = $thisstep;
-                        $notvalidated[]=$maxvalueanswer;
-                        return $notvalidated;
-                    }
-                }
-            }
-
-            if (isset($notvalidated) && is_array($notvalidated))
-            {
-                if (isset($move) && $move == "moveprev")
-                {
-                    $_SESSION['survey_'.$surveyid]['step'] = $thisstep;
-                }
-                if (isset($move) && $move == "movenext")
-                {
-                    $_SESSION['survey_'.$surveyid]['step'] = $thisstep;
-                }
-                return $notvalidated;
-            }
-        }
-    }
-
     function addtoarray_single($array1, $array2)
     {
         //Takes two single element arrays and adds second to end of first if value exists
@@ -1032,7 +914,7 @@
     {
         global $thissurvey;
         global $surveyid;
-        global $clienttoken;
+        $clienttoken=$_SESSION['survey_'.$surveyid]['thistoken']['token'];
 
         $clang = Yii::app()->lang;
         $sitename = Yii::app()->getConfig("sitename");
@@ -1041,63 +923,45 @@
         $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
         // check how many uses the token has left
-        $usesquery = "SELECT usesleft, participant_id, tid FROM {{tokens_$surveyid}} WHERE token='".$clienttoken."'";
-        $usesresult = dbExecuteAssoc($usesquery);
-        $usesrow = $usesresult->read();
-        $usesresult->close();
-        if (isset($usesrow)) {
-                $usesleft = $usesrow['usesleft'];
-                $participant_id=$usesrow['participant_id'];
-                $token_id=$usesrow['tid'];
+        $usesrow = Tokens_dynamic::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+        if (!is_null($usesrow)) {
+                $usesleft = $usesrow->usesleft;
+                $participant_id = isset($usesrow->participant_id) ? $usesrow->participant_id : '';
         }
 
-        $utquery = "UPDATE {{tokens_$surveyid}}\n";
         if ($quotaexit==true)
         {
-            $utquery .= "SET completed='Q', usesleft=usesleft-1\n";
-        }
-        elseif (isTokenCompletedDatestamped($thissurvey))
-        {
-            if (isset($usesleft) && $usesleft<=1)
-            {
-                $utquery .= "SET usesleft=usesleft-1, completed='$today'\n";
-                if(!empty($participant_id))
-                {
-                    //Update the survey_links table if necessary
-                    $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$token_id));
-                    if (!is_null($slquery))
-                    {
-                        $slquery->date_completed = $today;
-                        $slquery->save();
-                    }
-                }
-            }
-            else
-            {
-                $utquery .= "SET usesleft=usesleft-1\n";
-            }
+            $usesrow->completed = 'Q';
+            $usesrow->usesleft = $usesrow->usesleft-1;
         }
         else
-        {
+        {        
             if (isset($usesleft) && $usesleft<=1)
             {
-                $utquery .= "SET usesleft=usesleft-1, completed='Y'\n";
+                // Finish the token
+                if (isTokenCompletedDatestamped($thissurvey))
+                {
+                    $usesrow->completed = $today;
+                } else {
+                    $usesrow->completed = 'Y';
+                }
                 if(!empty($participant_id))
                 {
-                    //Update the survey_links table if necessary, to protect anonymity, use the date_created field date
-                    $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$token_id));
-                    $slquery->date_completed = $slquery->date_created;
+                    $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$usesrow->tid));
+                    
+                    if (isTokenCompletedDatestamped($thissurvey))
+                    {
+                        $slquery->date_completed = $today;
+                    } else {
+                        // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
+                        $slquery->date_completed = $slquery->date_created;    
+                    }                    
                     $slquery->save();
                 }
             }
-            else
-            {
-                $utquery .= "SET usesleft=usesleft-1\n";
-            }
+            $usesrow->usesleft = $usesrow->usesleft-1;
         }
-        $utquery .= "WHERE token='".$clienttoken."'";
-
-        $utresult = dbExecuteAssoc($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n");     //Checked
+        $usesrow->save();
 
         if ($quotaexit==false)
         {
@@ -1212,9 +1076,9 @@
             $srid = $_SESSION['survey_'.$surveyid]['srid'];
         $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
         $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
-        $aReplacementVars['VIEWRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/responses/view/surveyid/{$surveyid}/id/{$srid}");
-        $aReplacementVars['EDITRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$srid}");
-        $aReplacementVars['STATISTICSURL']=Yii::app()->createAbsoluteUrl("/admin/statistics/index/surveyid/{$surveyid}");
+        $aReplacementVars['VIEWRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/responses/sa/view/surveyid/{$surveyid}/id/{$srid}");
+        $aReplacementVars['EDITRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$srid}");
+        $aReplacementVars['STATISTICSURL']=Yii::app()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyid}");
         if ($bIsHTML)
         {
             $aReplacementVars['VIEWRESPONSEURL']="<a href='{$aReplacementVars['VIEWRESPONSEURL']}'>{$aReplacementVars['VIEWRESPONSEURL']}</a>";
@@ -2407,10 +2271,11 @@ function UpdateGroupList($surveyid, $language)
     }
 }
 
+/**
+* FieldArray contains all necessary information regarding the questions
+* This function is needed to update it in case the survey is switched to another language
+*/
 function UpdateFieldArray()
-//The FieldArray contains all necessary information regarding the questions
-//This function is needed to update it in case the survey is switched to another language
-
 {
     global $surveyid;
 
@@ -2423,15 +2288,14 @@ function UpdateFieldArray()
         {
             $questionarray =& $_SESSION['survey_'.$surveyid]['fieldarray'][$key];
 
-            $query = "SELECT * FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
-            $result = dbExecuteAssoc($query) or safeDie ("Couldn't get question <br />$query<br />");      //Checked
-            $row = $result->read();
-            $questionarray[2]=$row['title'];
-            $questionarray[3]=$row['question'];
+            $query = "SELECT title, question FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
+            $usrow = Yii::app()->db->createCommand($query)->queryRow();
+            if (!$usrow) safeDie ("Couldn't get question <br />$query<br />");      //Checked
+            $questionarray[2]=$usrow['title'];
+            $questionarray[3]=$usrow['question'];
             unset($questionarray);
         }
     }
-
 }
 
 /**

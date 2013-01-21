@@ -381,14 +381,10 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyId);
         }
         $clang = $this->getController()->lang;
-        $page  = Yii::app()->request->getPost('page');
-        $sidx = Yii::app()->request->getPost('sidx');
-        $sidx = !empty($sidx) ? $sidx : "lastname";
-        $sord = Yii::app()->request->getPost('sord');
-        $sord = !empty($sord) ? $sord : "asc";
-        $limit = Yii::app()->request->getPost('rows');
-        $limit = isset($limit) ? $limit : 25; //Stop division by zero errors
-        $page = isset($page) ? $page : 1; //Stop division by zero errors
+        $page  = Yii::app()->request->getPost('page', 1);
+        $sidx = Yii::app()->request->getPost('sidx', 'lastname');
+        $sord = Yii::app()->request->getPost('sord', 'asc');
+        $limit = Yii::app()->request->getPost('rows', 25);
         
         $aData = new stdClass;
         $aData->page = $page;
@@ -427,6 +423,20 @@ class tokens extends Survey_Common_Action
 
         $aSurveyInfo = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
         $attributes  = getAttributeFieldNames($iSurveyId);
+        
+        // Now find all responses for the visible tokens
+        $visibleTokens = array();
+        $answeredTokens = array();
+        if ($aSurveyInfo['anonymized'] == "N") {
+            foreach ($tokens as $token) {
+                $visibleTokens[] = $token['token'];
+            }
+            $answers = Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$visibleTokens));
+            foreach($answers as $answer) {
+                $answeredTokens[$answer['token']] = $answer['token'];
+            }
+        }
+        
         foreach ($tokens as $token)
         {
             $aRowToAdd = array();
@@ -444,16 +454,19 @@ class tokens extends Survey_Common_Action
             $aRowToAdd['id'] = $token['tid'];
 
             $action="";
+            $action .= "<div class='inputbuttons'>";    // so we can hide this when edit is clicked
+            // Check is we have an answer
+            if (in_array($token['token'], $answeredTokens)) {
+                // @@TODO change link
+                $url = $this->getController()->createUrl("admin/responses/sa/browse/surveyid/{$iSurveyId}", array('token'=>$token['token']));
+                $title = $clang->gT("View response details");
+                $action .= CHtml::link(CHtml::image(Yii::app()->getConfig('adminimageurl') . 'token_viewanswer.png', $title, array('title'=>$title)), $url, array('class'=>'imagelink'));
+            } else {
+                    $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
+            }
+            // Check if the token can be taken
             if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "")) {
                 $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}/newtest/Y", $clang->gT("Do survey"), '_blank');
-            } elseif ($token['completed'] != "N" && $token['completed'] != "" && $aSurveyInfo['anonymized'] == "N") {
-                //Get the survey response id of the matching entry
-                $id = Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token' => $token['token']));
-                if (count($id) > 0) {
-                    $action .= viewHelper::getImageLink('token_viewanswer.png', "admin/responses/sa/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}", $clang->gT("View response details"), null, '_top');
-                } else {
-                    $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
-                }
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
@@ -478,6 +491,7 @@ class tokens extends Survey_Common_Action
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
+            $action .= '</div>';
             $aRowToAdd['cell'] = array($token['tid'], $action, $token['firstname'], $token['lastname'], $token['email'], $token['emailstatus'], $token['token'], $token['language'], $token['sent'], $token['remindersent'], $token['remindercount'], $token['completed'], $token['usesleft'], $token['validfrom'], $token['validuntil']);
             foreach ($attributes as $attribute) {
                 $aRowToAdd['cell'][] = $token[$attribute];

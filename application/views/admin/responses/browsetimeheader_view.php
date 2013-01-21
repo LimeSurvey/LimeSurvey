@@ -32,10 +32,6 @@
             <?php $clang->eT("Starting from:"); ?> <input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
             <input type='submit' value='<?php $clang->eT("Show"); ?>' />
             </font>
-            <?php if (Yii::app()->request->getPost('sql'))
-            { ?>
-                <input type='hidden' name='sql' value='<?php echo HTMLEscape(Yii::app()->request->getPost('sql')); ?>' />
-            <?php } ?>
         </form>
     </div>
 </div>

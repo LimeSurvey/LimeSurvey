@@ -170,14 +170,25 @@ class Survey_dynamic extends LSActiveRecord
     {
         $newCriteria = new CDbCriteria();
         $criteria = $this->getCommandBuilder()->createCriteria($condition);
+        $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . self::$sid  . '}}')->getColumnNames();
+        $aSelectFields=array_diff($aSelectFields, array('token'));
+        $aSelect=array();
+        foreach($aSelectFields as $sField)
+            $aSelect[]='t.'.Yii::app()->db->schema->quoteColumnName($sField);
+        $aSelectFields=$aSelect;        
+        $aSelectFields[]='t.token';
 
         if ($criteria->select == '*')
         {
-            $criteria->select = 't.*';
+            $criteria->select = $aSelectFields;
         }
 
         $newCriteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} tokens ON t.token = tokens.token";
-        $newCriteria->select = 'tokens.*';  // Otherwise we don't get records from the token table
+
+        $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . self::$sid . '}}')->getColumnNames();
+        $aTokenFields=array_diff($aTokenFields, array('token'));
+        
+        $newCriteria->select = $aTokenFields;  // Otherwise we don't get records from the token table
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;

@@ -34,6 +34,8 @@
 ?>
 <script type="text/javascript">
     var sAddParticipantToCPDBText = '<?php $clang->eT("Add participants to central database",'js');?>';
+    var sSelectRowMsg = "<?php $clang->eT("Please select at least one participant.", 'js') ?>";
+    var sWarningMsg = "<?php $clang->eT("Warning", 'js') ?>";
     var sRecordText = '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
     var sPageText = '<?php $clang->eT("Page {0} of {1}",'js');?>';
     var imageurl = "<?php echo Yii::app()->getConfig('adminimageurl'); ?>";
@@ -85,7 +87,7 @@
     var colNames = ["ID","<?php $clang->eT("Action") ?>","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("Email address") ?>","<?php $clang->eT("Email status") ?>","<?php $clang->eT("Token") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Invitation sent?") ?>","<?php $clang->eT("Reminder sent?") ?>","<?php $clang->eT("Reminder count") ?>","<?php $clang->eT("Completed?") ?>","<?php $clang->eT("Uses left") ?>","<?php $clang->eT("Valid from") ?>","<?php $clang->eT("Valid until") ?>"<?php if (count($columnNames)) echo ','.$columnNames; ?>];
     var colModels = [
     { "name":"tid", "index":"tid", "width":30, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":false},
-    { "name":"action", "index":"action", "sorttype":"string", "sortable": false, "width":100, "align":"center", "editable":false},
+    { "name":"action", "index":"action", "sorttype":"string", "sortable": false, "width":120, "align":"center", "editable":false},
     { "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":100, "align":"center", "editable":true},
     { "name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":100, "align":"center", "editable":true},
     { "name":"email", "index":"email","align":"center","width":170, "sorttype":"string", "sortable": true, "editable":true},
@@ -129,7 +131,7 @@
 </script>
 <div id ="search" style="display:none">
     <?php
-        $optionsearch = array('' => 'Select One',
+        $optionsearch = array('' => $clang->gT('Select...'),
         'firstname' => $clang->gT("First name"),
         'lastname' => $clang->gT("Last name"),
         'email' => $clang->gT("Email address"),
@@ -143,7 +145,7 @@
         'usesleft' => $clang->gT("Uses left"),
         'validfrom' => $clang->gT("Valid from"),
         'validuntil' => $clang->gT("Valid until"));
-        $optioncontition = array('' => 'Select One',
+        $optioncontition = array('' => $clang->gT('Select...'),
         'equal' => $clang->gT("Equals"),
         'contains' => $clang->gT("Contains"),
         'notequal' => $clang->gT("Not equal"),

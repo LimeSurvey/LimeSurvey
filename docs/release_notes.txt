@@ -60,6 +60,172 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130115) to 2.00+ (build 130116) Jan 15, 2013
+-New feature: Global settings now shows URL to remote control interface (Menno Dekker)
+-Fixed issue #7188: Token icons misbehaving (Menno Dekker)
+-Fixed issue #7190: CPD Search doesn't work with or logic since upgrade (Menno Dekker)
+-Fixed issue #7192: Filters are pre-filled in statistics (Carsten Schmitz)
+-Fixed issue: Redirect loop if SSL is enforced (Carsten Schmitz)
+#Updated translation: Finnish by tigger
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: Slovak by Union
+
+Changes from 2.00+ (build 130110) to 2.00+ (build 130115) Jan 15, 2013
+-New language: Mongolian (Carsten Schmitz)
+-Fixed issue #7081: Help-Text will not be translated if you change the language during the survey (Denis Chenu)
+-Fixed issue #7157: Some languages cannot be represented by flags (Carsten Schmitz)
+-Fixed issue #7160: Impossible submit page with some email validation (Denis Chenu)
+-Fixed issue #7171: Data Integrity check function deletes token tables even what not asked to (Denis Chenu)
+-Fixed issue #7172: Error Missing argument 1 for accessDenied() in survey permissions settings (Denis Chenu)
+-Fixed issue #7173: Creating user added to user group with no option to remove self (Carsten Schmitz)
+-Fixed issue #7174: Create/edit user groups screen available to users even when nothing to display (Carsten Schmitz)
+-Fixed issue #7176: Missing translations (Carsten Schmitz)
+-Fixed issue #7179: blobblueish (admin) template: wrong icon for security setting (Carsten Schmitz)
+-Fixed issue #7181: Deleting survey from survey list does not remove from drop down field (Carsten Schmitz)
+-Fixed issue #7182: Login form displayed despite auth_webserver delegated authentication being used (Sam Mousa)
+-Fixed issue #7183: Authentication hook "hook_get_auth_webserver_profile" not working properly (Carsten Schmitz)
+-Fixed issue #7184: Clicking one of the 'Questions with conditions to this group:' links on the question group page shows an error (Carsten Schmitz)
+-Fixed issue #7186: Preview Question and Preview Question Group buttons give error: Undefined index: refurl (Denis Chenu)
+-Fixed issue: Dataset after query was still open creating problems on previewing a survey (Carsten Schmitz)
+-Fixed issue: Owner can't access to survey (Denis Chenu)
+-Fixed issue: Public statistics always uses default template (Menno Dekker)
+-Fixed issue: SSL mode forced to off leading to redirect loop on some webservers (Carsten Schmitz)
+-Fixed issue: User list in survey list show all user with usercontrolSameGroupPolicy to true (Denis Chenu)
+-Fixed issue: PNG logo crashes statistics pdf output (Menno Dekker)
+#Updated translation: Czech by slansky
+#Updated translation: Italian by lfortunato, lfanfoni
+#Updated translation: Kurdish (Sorani) by havalabdulkarim, Ayeneh
+#Updated translation: Lithuanian by apklausos
+#Updated translation: Mongolian by Erdenebayar
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.00+ (build 130108) to 2.00+ (build 130110) Jan 10, 2013
+-Fixed issue #7074: Cannot properly browse comments in statistics for Multiple choice with comments (Carsten Schmitz)
+-Fixed issue #7130: Cryptic validation criteria shown in data entry mode (Carsten Schmitz)
+-Fixed issue #7146: Security issues (Carsten Schmitz)
+-Fixed issue #7147: Unable to set survey permissions for non-admin users (Carsten Schmitz)
+-Fixed issue #7155: Survey deactivation doesn't update activation/deactivation icons (Carsten Schmitz)
+-Fixed issue #7163: when editing gender in data entry screen cannot select male option. when male option selected get no answer [G] (tpartner)
+-Fixed issue #7170: Missing jquery file (Carsten Schmitz)
+-Fixed issue: Data entry not working on non-Apache servers (Carsten Schmitz)
+-Fixed issue: Repeated survey activation not possible on Postgres (Carsten Schmitz)
+#Updated translation: Arabic by ysaad, mdchaara
+#Updated translation: Chinese (Simplified) by aifie, yanglaw
+#Updated translation: Croatian by rsedak, rovinj
+#Updated translation: Italian by lfanfoni
+#Updated translation: Kurdish (Sorani) by Daban88
+#Updated translation: Lithuanian by simasj, justasg
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Spanish (Spain) by larjona, valdomir
+
+
+Changes from 2.00+ (build 130103) to 2.00+ (build 130108) Jan 8, 2013
+-New feature: Kurdish (Sorani) translation by havalabdulkarim, bryar1991
+-Fixed issue #6996: Error due to composite primary key on participant_attribute_names on pqsql (Menno Dekker)
+-Fixed issue #7075: browse results bug with upload type question (display few answer and no download) (Menno Dekker)
+-Fixed issue #7099: Selecting question 'none' in admin results in invalid question id or no action at all (Menno Dekker)
+-Fixed issue #7101: Error URL doesn't work when submitting a survey via data entry screen (Menno Dekker)
+-Fixed issue #7122: Token Table not Updating on Survey Submit (Menno Dekker)
+-Fixed issue #6969: Arabic characters not properly shown when exporting statistics as PDF (Carsten Schmitz)
+-Fixed issue #7076: Missing translation and wrong truncating (Carsten Schmitz)
+-Fixed issue #7083: CDbException when using the Show Next / Show Last buttons in the response browser using tokens and MSSQL (Carsten Schmitz)
+-Fixed issue #7110: Import template not working in IIS (Carsten Schmitz)
+-Fixed issue #7115: PostgreSQL update to 2.0 failes with blocked transaction error (Carsten Schmitz)
+-Fixed issue #7119: Arabic based language report to PDF (Denis Chenu)
+-Fixed issue #7127: Can't export full response set to CSV in MS SQL (Carsten Schmitz)
+-Fixed issue #7133: Impossible to translate survey via quick-translation if using IIS (Carsten Schmitz)
+-Fixed issue #7134: Impossible to view users in a group if using IIS (Carsten Schmitz)
+-Fixed issue #7136: Incorrect charset in header when viewing QA (Carsten Schmitz)
+-Fixed issue #7137: Problem upgrading from 1.92 to 2.00+ using SQL Server (Carsten Schmitz)
+-Fixed issue #7139: Warning after updating from 2.00 to most current update release (Carsten Schmitz)
+-Fixed issue #7140: Missing translations (Carsten Schmitz)
+-Fixed issue #7141: Internal Server Error: "application.controllers.admin.kcfinder" is invalid (Sam Mousa)
+-Fixed issue #7142: Error when importing a question group (Carsten Schmitz)
+-Fixed issue #7144: Checking data integrity does not work (Carsten Schmitz)
+-Fixed issue #7149: problem on jqgrid tables (tpartner)
+-Fixed issue #7150: Survey list table overflows window (tpartner)
+-Fixed issue: Font for response export to PDF (Denis Chenu)
+-Fixed issue: Some SQL injection and XSS issues (Carsten Schmitz)
+-Fixed issue: Time difference setting in global settings can only be set to full hours (Carsten Schmitz)
+#Updated translation: Amharic by hizkiel
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Chinese (Taiwan) (Traditional) by katy50306
+#Updated translation: Danish by docl
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by tigger
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by anikoken
+#Updated translation: Icelandic by Bragi_H
+#Updated translation: Italian by lfortunato, lfanfoni
+#Updated translation: Macedonian by acikabt
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Persian by ardalan
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by hugomusetti, mauriciofurtado, tagosc
+#Updated translation: Romanian by izbieta
+#Updated translation: Spanish (Mexican) by k001
+#Updated translation: Swedish by klaster, seniorcoach
+
+
+Changes from 2.00+ (build 121231) to 2.00+ (build 130103) Jan 3, 2013
+-Fixed issue #7125: Prefix of "numerical input"-question shown in printable survey-view (Menno Dekker)
+-Fixed issue #7128: After editing a relevance equationall other relevance equations in the survey are reset (Carsten Schmitz)
+-Fixed issue: all admin have access to survey summary, logic files and survey print version (Denis Chenu)
+#Updated translation: Lithuanian by simasj
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Spanish (Chile) by masterbip, SirCrovax
+
+
+Changes from 2.00+ (build 121220) to 2.00+ (build 121231) Dec 20, 2012
+-Fixed issue #7088: When creating quota, I cannot add answer (Menno Dekker)
+-Fixed issue #7116: Impossible to generate tokens (Menno Dekker)
+-Fixed issue #6937: Undefined index: fieldarray error when first testing a survey (Denis Chenu)
+-Fixed issue #7000: Fixed sorting of questions in export_statistics in remotecontrol (Spiros Trougakos)
+-Fixed issue #7073: Rubbish text after upgrading in ComfortUpdate step 4 (c-schmitz)
+-Fixed issue #7076: Missing translation and wrong truncating (tpartner)
+-Fixed issue #7084: Session fixation vulnerability (c-schmitz)
+-Fixed issue #7086: Export results window  shows SGQA-Codes instead of variable names (Denis Chenu)
+-Fixed issue #7089: Date shown in wrong format in global settings (c-schmitz)
+-Fixed issue #7092: Missing translation (c-schmitz)
+-Fixed issue #7105: Bad error handling on invalid lastgroup POST (c-schmitz)
+-Fixed issue #7108: 'hostinfo' parameter in config.php not working (c-schmitz)
+-Fixed issue #7114: {TEMPLATEURL} not parsed correctly at survey's end message (Denis Chenu)
+-Fixed issue: Couldn't get answer type L - getAnswerCode() in browse unique response id (Menno Dekker)
+-Fixed issue: error public page don't use survey template (Denis Chenu)
+-Fixed issue: Export/response browsing as slower as bigger the token table gets (c-schmitz)
+-Fixed issue: session write check is unreliable (Menno Dekker)
+-Fixed issue: Unbale to change language in surveylisting with 'urlFormat' to 'get' (Denis Chenu)
+-Fixed issue: Possible failure on upgrade due to missing survey_links table (Menno Dekker)
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Lithuanian by simasj
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Spanish (Chile) by masterbip, SirCrovax
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.00+ (build 121213) to 2.00+ (build 121220) Dec 20, 2012
 -Fixed issue #6962: Made max filter size equal for all browse tables (Menno Dekker)
 -Fixed issue #7082: Clicking view response in tokens table opens response in same window causing search to be lost (Menno Dekker)

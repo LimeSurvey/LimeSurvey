@@ -305,7 +305,7 @@ function isStandardTemplate($sTemplateName)
 * @return string This string is returned containing <option></option> formatted list of existing surveys
 *
 */
-function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=false)
+function getSurveyList($returnarray=false, $surveyid=false)
 {
     static $cached = null;
 
@@ -356,13 +356,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 {
                     $inactivesurveys .= " selected='selected'"; $svexist = 1;
                 }
-                if ($returnwithouturl===false)
-                {
-                    $inactivesurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
-                } else
-                {
-                    $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-                }
+                $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
             } elseif($sv['expires']!='' && $sv['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust))
             {
                 $expiredsurveys .="<option ";
@@ -374,13 +368,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 {
                     $expiredsurveys .= " selected='selected'"; $svexist = 1;
                 }
-                if ($returnwithouturl===false)
-                {
-                    $expiredsurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
-                } else
-                {
-                    $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-                }
+                $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
             } else
             {
                 $activesurveys .= "<option ";
@@ -392,16 +380,11 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 {
                     $activesurveys .= " selected='selected'"; $svexist = 1;
                 }
-                if ($returnwithouturl===false)
-                {
-                    $activesurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
-                } else
-                {
-                    $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-                }
+                $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
             }
         } // End Foreach
     }
+    
     //Only show each activesurvey group if there are some
     if ($activesurveys!='')
     {
@@ -423,13 +406,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
         $surveyselecter = "<option selected='selected' value=''>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;
     } else
     {
-        if ($returnwithouturl===false)
-        {
-            $surveyselecter = "<option value='".Yii::app()->getController()->createUrl("/admin")."'>".$clang->gT("None")."</option>\n".$surveyselecter;
-        } else
-        {
-            $surveyselecter = "<option value=''>".$clang->gT("None")."</option>\n".$surveyselecter;
-        }
+        $surveyselecter = "<option value=''>".$clang->gT("None")."</option>\n".$surveyselecter;
     }
     return $surveyselecter;
 }
@@ -447,10 +424,11 @@ function hasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
 {
     if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
     $sCRUD=$sCRUD.'_p';
-    $iSID = (int)$iSID;
-    if ($iSID==0) return false;
-    $aSurveyPermissionCache = Yii::app()->getConfig("aSurveyPermissionCache");
 
+    $thissurvey=getSurveyInfo($iSID);
+    if (!$thissurvey) return false;
+
+    $aSurveyPermissionCache = Yii::app()->getConfig("aSurveyPermissionCache");
     if (is_null($iUID))
     {
         if (!Yii::app()->user->getIsGuest()) $iUID = Yii::app()->session['loginID'];
@@ -458,13 +436,11 @@ function hasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
     }
 
+    if ($thissurvey && $iUID==$thissurvey['owner_id']) return true; //Survey owner has access to all
+
     if (!isset($aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]))
     {
-        //!!! Convert this model
         $query = Survey_permissions::model()->findByAttributes(array("sid"=> $iSID,"uid"=> $iUID,"permission"=>$sPermission));
-        //$sSQL = "SELECT {$sCRUD} FROM " . db_table_name('survey_permissions') . "
-        //        WHERE sid={$iSID} AND uid = {$iUID}
-        //        and permission=".dbQuoteAll($sPermission); //Getting rights for this survey
         $bPermission = is_null($query) ? array() : $query->attributes;
         if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
         {
@@ -622,7 +598,8 @@ function getQuestions($surveyid,$gid,$selectedqid)
     }
     else
     {
-        $sQuestionselecter = "<option value=' '>".$clang->gT("None")."</option>\n".$sQuestionselecter;
+        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid);
+        $sQuestionselecter = "<option value='{$link}'>".$clang->gT("None")."</option>\n".$sQuestionselecter;
     }
     return $sQuestionselecter;
 }
@@ -4893,7 +4870,7 @@ function languageDropdown($surveyid,$selected)
 
     foreach ($slangs as $lang)
     {
-        $link = Yii::app()->homeUrl.("/admin/dataentry/view/surveyid/".$surveyid."/lang/".$lang);
+        $link = Yii::app()->homeUrl.("/admin/dataentry/sa/view/surveyid/".$surveyid."/lang/".$lang);
         if ($lang == $selected) $html .= "\t<option value='{$link}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
         if ($lang != $selected) $html .= "\t<option value='{$link}'>".getLanguageNameFromCode($lang,false)."</option>\n";
     }
@@ -5916,7 +5893,7 @@ function SSLRedirect($enforceSSLMode)
 */
 function enforceSSLMode()
 {
-    $https = isset($_SERVER['HTTPS'])?$_SERVER['HTTPS']:'';
+    $bSSLActive = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off");
     if (Yii::app()->getConfig('ssl_emergency_override') !== true )
     {
         $force_ssl = strtolower(getGlobalSetting('force_ssl'));
@@ -5925,11 +5902,11 @@ function enforceSSLMode()
     {
         $force_ssl = 'off';
     };
-    if( $force_ssl == 'on' && $https == '' )
+    if( $force_ssl == 'on' && !$bSSLActive )
     {
         SSLRedirect('s');
     }
-    if( $force_ssl == 'off' && $https != '')
+    if( $force_ssl == 'off' && $bSSLActive)
     {
         SSLRedirect('');
     };
@@ -7162,7 +7139,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
             //if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected='selected'"; $svexist = 1;}
 
             if ($gn['ugid'] == $ugid) {$selecter .= " selected='selected'"; $svexist = 1;}
-            $link = Yii::app()->getController()->createUrl("/admin/usergroups/view/ugid/".$gn['ugid']);
+            $link = Yii::app()->getController()->createUrl("/admin/usergroups/sa/view/ugid/".$gn['ugid']);
             $selecter .=" value='{$link}'>{$gn['name']}</option>\n";
             $simplegidarray[] = $gn['ugid'];
         }
@@ -7701,14 +7678,15 @@ function ls_json_encode($content)
  */
 function json_decode_ls($jsonString)
 {
-   $decoded = json_decode($jsonString, true);
+    $decoded = json_decode($jsonString, true);
 
-   if (json_last_error() === JSON_ERROR_SYNTAX) {
-       // probably we need stipslahes
-       $decoded = json_decode(stripslashes($jsonString), true);
-   }
+    if (is_null($decoded) && !empty($jsonString))
+    {
+        // probably we need stipslahes
+        $decoded = json_decode(stripslashes($jsonString), true);
+    }
 
-   return $decoded;
+    return $decoded;
 }
 
 /**

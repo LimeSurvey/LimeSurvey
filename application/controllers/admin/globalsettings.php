@@ -176,7 +176,7 @@ class GlobalSettings extends Survey_Common_Action
 
         setGlobalSetting('maxemails', sanitize_int($maxemails));
         $iSessionExpirationTime = (int)($_POST['iSessionExpirationTime']);
-        if ($iSessionExpirationTime == 0) $iSessionExpirationTime = 3600;
+        if ($iSessionExpirationTime == 0) $iSessionExpirationTime = 7200;
         setGlobalSetting('iSessionExpirationTime', $iSessionExpirationTime);
         setGlobalSetting('ipInfoDbAPIKey', $_POST['ipInfoDbAPIKey']);
         setGlobalSetting('googleMapsAPIKey', $_POST['googleMapsAPIKey']);
@@ -185,7 +185,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('force_ssl', $_POST['force_ssl']);
         setGlobalSetting('surveyPreview_require_Auth', $_POST['surveyPreview_require_Auth']);
         setGlobalSetting('RPCInterface', $_POST['RPCInterface']);
-        $savetime = trim(strip_tags((float)$_POST['timeadjust']) . ' hours'); //makes sure it is a number, at least 0
+        $savetime = ((float)$_POST['timeadjust'])*60 . ' minutes'; //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+' . $savetime;
         }

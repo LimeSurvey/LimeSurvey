@@ -749,19 +749,10 @@ class index extends CAction {
 
     function _canUserPreviewSurvey($iSurveyID)
     {
-        if ( !isset($_SESSION['loginID'], $_SESSION['USER_RIGHT_SUPERADMIN']) )
+        if ( !isset($_SESSION['loginID']) ) // This is not needed because hasSurveyPermission control connexion
             return false;
 
-        if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 )
-            return true;
-
-        $sQuery = "SELECT uid
-        FROM {{survey_permissions}}
-        WHERE sid = ".$iSurveyID." AND uid = ".$_SESSION['loginID'];
-        $aRow = Yii::app()->db->createCommand($sQuery)->queryRow();
-        if ( $aRow )
-            return true;
-        return false;
+        return hasSurveyPermission($iSurveyID,'surveycontent','read');
     }
 
     function _userHasPreviewAccessSession($iSurveyID){

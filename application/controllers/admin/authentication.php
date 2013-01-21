@@ -37,7 +37,7 @@ class Authentication extends Survey_Common_Action
 
         if ($bCanLogin && !is_array($bCanLogin))
         {
-            if (Yii::app()->request->getPost('action') ||  !is_null(Yii::app()->request->getQuery('onepass')))
+            if (Yii::app()->request->getPost('action') ||  !is_null(Yii::app()->request->getQuery('onepass')) || Yii::app()->getConfig('auth_webserver') === true)
             {
 
                 $aData = $this->_doLogin(Yii::app()->request->getParam('user'), Yii::app()->request->getPost('password'),Yii::app()->request->getQuery('onepass',''));

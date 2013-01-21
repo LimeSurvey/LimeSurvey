@@ -724,8 +724,7 @@
             }
             if ($_SESSION['LEMlang'] != $lang) {
                 // then changing languages, so clear cache
-                //            $_SESSION['LEMdirtyFlag'] = true;
-                $_SESSION['LEMforceRefresh'] = true;
+                $_SESSION['LEMdirtyFlag'] = true;
             }
             $_SESSION['LEMlang'] = $lang;
         }
@@ -3953,6 +3952,7 @@
             $LEM->surveyOptions['anonymized'] = (isset($options['anonymized']) ? $options['anonymized'] : false);
             $LEM->surveyOptions['assessments'] = (isset($options['assessments']) ? $options['assessments'] : false);
             $LEM->surveyOptions['datestamp'] = (isset($options['datestamp']) ? $options['datestamp'] : false);
+            $LEM->surveyOptions['deletenonvalues'] = (isset($options['deletenonvalues']) ? ($options['deletenonvalues']=='1') : true);
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = (isset($options['hyperlinkSyntaxHighlighting']) ? $options['hyperlinkSyntaxHighlighting'] : false);
             $LEM->surveyOptions['ipaddr'] = (isset($options['ipaddr']) ? $options['ipaddr'] : false);
             $LEM->surveyOptions['radix'] = (isset($options['radix']) ? $options['radix'] : '.');
@@ -4420,6 +4420,22 @@
             //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
             $updatedValues = $this->updatedValues;
 
+            if (!$this->surveyOptions['deletenonvalues'])
+            {
+                $nonNullValues = array();
+                foreach($updatedValues as $key=>$value)
+                {
+                    if (!is_null($value))
+                    {
+                        if (isset($value['value']) && !is_null($value['value']))
+                        {
+                            $nonNullValues[$key] = $value;
+                        }
+                    }
+                }
+                $updatedValues = $nonNullValues;
+            }            
+            
             $message = '';
             $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
             if ($this->surveyOptions['active'] && !isset($_SESSION[$this->sessid]['srid']))
@@ -7666,7 +7682,7 @@ EOD;
                                 case 'S': //SHORT FREE TEXT
                                 case 'T': //LONG FREE TEXT
                                 case 'U': //HUGE FREE TEXT
-                                    return sanitize_html_string($_SESSION[$this->sessid][$sgqa]);// Sanitize the string entered by user
+                                    return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
                                 case '!': //List - dropdown
                                 case 'L': //LIST drop-down/radio-button list
                                 case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
@@ -7674,7 +7690,7 @@ EOD;
                                 case 'P': //Multiple choice with comments checkbox + text
                                     if (preg_match('/comment$/',$sgqa) || preg_match('/other$/',$sgqa) || preg_match('/_other$/',$name))
                                     {
-                                        return sanitize_html_string($_SESSION[$this->sessid][$sgqa]);
+                                        return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
                                     }
                                     else
                                     {

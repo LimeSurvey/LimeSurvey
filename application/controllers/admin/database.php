@@ -869,7 +869,7 @@ class database extends Survey_Common_Action
                     $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\")\n //-->\n</script>\n";
                 }
             }
-            LimeExpressionManager::UpgradeConditionsToRelevance($surveyid, $qid);
+            LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
 
             if ($databaseoutput != '')
             {
@@ -1102,8 +1102,8 @@ class database extends Survey_Common_Action
             {
                 if ($langname)
                 {
-                    $usresult = Surveys_languagesettings::model()->findAllByPk(array('surveyls_survey_id'=>$surveyid, 'surveyls_language'=>$langname));
-                    if (count($usresult)==0)
+                    $iRowCount = Surveys_languagesettings::model()->count(array('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$surveyid,':langname'=>$langname)));
+                    if ($iRowCount)
                     {
 
                         $languagedetails=getLanguageDetails($langname);
@@ -1117,7 +1117,7 @@ class database extends Survey_Common_Action
                         $setting= new Surveys_languagesettings;
                         foreach ($insertdata as $k => $v)
                             $setting->$k = $v;
-                        $setting->save();
+                        $usresult=$setting->save();
                     }
                 }
             }

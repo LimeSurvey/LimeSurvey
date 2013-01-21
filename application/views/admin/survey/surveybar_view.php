@@ -32,22 +32,24 @@
             <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt=''  />
         </div>
         <ul class='sf-menu'>
-            <?php if($onelanguage) { ?>
-                <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" >
-                        <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
-                    </a></li>
-                <?php } else { ?>
-                <li><a href='#' accesskey='d'>
-                        <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
-                    </a><ul>
-                        <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y"); ?>'>
-                            <img src='<?php echo $sImageURL;?>do_30.png' alt=''/> <?php echo $icontext;?> </a><ul>
-                                <?php foreach ($languagelist as $tmp_lang) { ?>
-                                    <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$tmp_lang");?>'>
-                                        <img src='<?php echo $sImageURL;?>do_30.png' alt=''/> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
-                                    <?php } ?>
-                            </ul></li>
-                    </ul></li>
+            <?php if($activated || $surveycontent) { ?>
+                <?php if($onelanguage) { ?>
+                    <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" >
+                            <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
+                        </a></li>
+                    <?php } else { ?>
+                    <li><a href='#' accesskey='d'>
+                            <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
+                        </a><ul>
+                            <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y"); ?>'>
+                                <img src='<?php echo $sImageURL;?>do_30.png' alt=''/> <?php echo $icontext;?> </a><ul>
+                                    <?php foreach ($languagelist as $tmp_lang) { ?>
+                                        <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$tmp_lang");?>'>
+                                            <img src='<?php echo $sImageURL;?>do_30.png' alt=''/> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
+                                        <?php } ?>
+                                </ul></li>
+                        </ul></li>
+                    <?php } ?>
                 <?php } ?>
             <li><a href='#'>
                     <img src='<?php echo $sImageURL;?>edit.png' alt='<?php $clang->eT("Survey properties");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
@@ -76,18 +78,20 @@
                         <li><a href='<?php echo $this->createUrl("admin/emailtemplates/sa/index/surveyid/$surveyid");?>' >
                             <img src='<?php echo $sImageURL;?>emailtemplates_30.png' alt=''/> <?php $clang->eT("Email templates");?></a></li>
                         <?php } ?>
-                    <?php if($onelanguage) { ?>
-                        <li><a target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/");?>' >
-                            <img src='<?php echo $sImageURL;?>quality_assurance_30.png' alt='' /> <?php $clang->eT("Survey logic file");?></a></li>
-                        <?php } else { ?>
-                        <li><a target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/");?>' >
-                            <img src='<?php echo $sImageURL;?>quality_assurance_30.png' alt='' /> <?php $clang->eT("Survey logic file");?></a><ul>
-                                <?php foreach ($languagelist as $tmp_lang) { ?>
-                                    <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/lang/$tmp_lang");?>'>
-                                        <img src='<?php echo $sImageURL;?>quality_assurance.png' alt='' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
-                                    <?php } ?>
-                            </ul>
-                        </li>
+                    <?php if($surveycontent) { ?>
+                        <?php if($onelanguage) { ?>
+                            <li><a target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/");?>' >
+                                <img src='<?php echo $sImageURL;?>quality_assurance_30.png' alt='' /> <?php $clang->eT("Survey logic file");?></a></li>
+                            <?php } else { ?>
+                            <li><a target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/");?>' >
+                                <img src='<?php echo $sImageURL;?>quality_assurance_30.png' alt='' /> <?php $clang->eT("Survey logic file");?></a><ul>
+                                    <?php foreach ($languagelist as $tmp_lang) { ?>
+                                        <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/lang/$tmp_lang");?>'>
+                                            <img src='<?php echo $sImageURL;?>quality_assurance.png' alt='' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
+                                        <?php } ?>
+                                </ul>
+                            </li>
+                            <?php } ?>
                         <?php } ?>
                 </ul></li>
             <li><a href="#">
@@ -98,7 +102,7 @@
                         <?php } ?>
                     <?php if ($surveytranslate) {
                             if($hasadditionallanguages) { ?>
-                            <li><a href="<?php echo $this->createUrl("admin/translate/index/surveyid/{$surveyid}");?>">
+                            <li><a href="<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}");?>">
                                 <img src='<?php echo $sImageURL;?>translate_30.png' alt=''/> <?php $clang->eT("Quick-translation");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("Currently there are no additional languages configured for this survey.", "js");?>');" >
@@ -166,17 +170,19 @@
 
                         </ul>
                     </li>
-                    <?php if($onelanguage) { ?>
-                        <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
-                            <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php $clang->eT("Printable version");?></a></li>
-                        <?php } else { ?>
-                        <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
-                            <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php $clang->eT("Printable version");?></a><ul>
-                                <?php foreach ($languagelist as $tmp_lang) { ?>
-                                    <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid/lang/$tmp_lang");?>'>
-                                        <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
-                                    <?php } ?>
-                            </ul></li>
+                    <?php if($surveycontent) { ?>
+                        <?php if($onelanguage) { ?>
+                            <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
+                                <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php $clang->eT("Printable version");?></a></li>
+                            <?php } else { ?>
+                            <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
+                                <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php $clang->eT("Printable version");?></a><ul>
+                                    <?php foreach ($languagelist as $tmp_lang) { ?>
+                                        <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid/lang/$tmp_lang");?>'>
+                                            <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
+                                        <?php } ?>
+                                </ul></li>
+                            <?php } ?>
                         <?php } ?>
                     <?php if($surveyexport) {
                             if($onelanguage) { ?>
@@ -205,7 +211,7 @@
                     } ?>
                     <?php if($responsescreate) {
                             if($activated) { ?>
-                            <li><a href='<?php echo $this->createUrl("admin/dataentry/view/surveyid/$surveyid");?>' >
+                            <li><a href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$surveyid");?>' >
                                 <img src='<?php echo $sImageURL;?>dataentry_30.png' alt='' /> <?php $clang->eT("Data entry screen");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("This survey is not active, data entry is not allowed","js");?>');" >

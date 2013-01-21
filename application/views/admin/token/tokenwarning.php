@@ -34,7 +34,7 @@
     }
 
     // Do not offer old postgres token tables for restore since these are having an issue with missing index
-    if ($tcount > 0 && $databasetype != 'pgsql' && (hasSurveyPermission($surveyid, 'surveyactivation', 'update') || HasSurveyPermission($surveyid, 'tokens','delete')))
+    if ($tcount > 0 && (hasSurveyPermission($surveyid, 'surveyactivation', 'update') || HasSurveyPermission($surveyid, 'tokens','delete')))
     {
     ?>
     <br /><div class='header ui-widget-header'><?php $clang->eT("Restore options"); ?></div>

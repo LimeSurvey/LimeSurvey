@@ -386,7 +386,14 @@ function activateSurvey($iSurveyID, $simulate = false)
     {
         return array('error'=>'surveytablecreation');
     }
-
+    try
+    {
+        if (isset($createsurvey['token'])) Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$iSurveyID}_".rand(1,50000),$tabname,'token');
+    }
+    catch (CDbException $e)
+    {
+    }
+    
     $anquery = "SELECT autonumber_start FROM {{surveys}} WHERE sid={$iSurveyID}";
     if ($anresult=Yii::app()->db->createCommand($anquery)->query()->readAll())
     {

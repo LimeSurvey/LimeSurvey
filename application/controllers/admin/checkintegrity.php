@@ -43,26 +43,34 @@ class CheckIntegrity extends Survey_Common_Action
     public function fixredundancy()
     {
         $clang = Yii::app()->lang;
-
+        $oldsmultidelete=Yii::app()->request->getPost('oldsmultidelete', array());
+        $aData['messages'] = array();
         if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1 && Yii::app()->request->getPost('ok') == 'Y') {
             $aDelete = $this->_checkintegrity();
-
             if (isset($aDelete['redundanttokentables'])) {
                 foreach ($aDelete['redundanttokentables'] as $aTokenTable)
                 {
-                    Yii::app()->db->createCommand()->dropTable($aTokenTable['table']);
-                    $aData['messages'][] = $clang->gT('Deleting token table:') . ' ' . $aTokenTable['table'];
+                    if(in_array($aTokenTable['table'],$oldsmultidelete))
+                    {
+                        Yii::app()->db->createCommand()->dropTable($aTokenTable['table']);
+                        $aData['messages'][] = sprintf($clang->gT('Deleting token table: %s'),$aTokenTable['table']);
+                    }
                 }
             }
-
             if (isset($aDelete['redundantsurveytables'])) {
                 foreach ($aDelete['redundantsurveytables'] as $aSurveyTable)
                 {
-                    Yii::app()->db->createCommand()->dropTable($aSurveyTable['table']);
-                    $aData['messages'][] = $clang->gT('Deleting survey table:') . ' ' . $aSurveyTable['table'];
+                    if(in_array($aSurveyTable['table'],$oldsmultidelete))
+                    {
+                        Yii::app()->db->createCommand()->dropTable($aSurveyTable['table']);
+                        $aData['messages'][] = sprintf($clang->gT('Deleting survey table: %s'),$aSurveyTable['table']);
+                    }
                 }
             }
-
+            if(count($aData['messages'])==0)
+            {
+                $aData['messages'][] = $clang->gT('No old survey or token table selected.');
+            }
             $this->_renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
         }
     }
@@ -360,15 +368,18 @@ class CheckIntegrity extends Survey_Common_Action
             $sTableName = substr(reset($aRow), strlen($sDBPrefix));
             if ($sTableName == 'survey_permissions' || $sTableName == 'survey_links' || $sTableName == 'survey_url_parameters') continue;
             $aTableName=explode('_',$sTableName);
-            $iSurveyID = $aTableName[1];
-            if (!in_array($iSurveyID, $sids)) {
-                $sDate = date('YmdHis') . rand(1, 1000);
-                $sOldTable = "survey_{$iSurveyID}";
-                $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
-                try {
-                    $deactivateresult = Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
-                } catch (CDbException $e) {
-                    die ('Couldn\'t make backup of the survey table. Please try again. The database reported the following error:<br />' . htmlspecialchars($e) . '<br />');
+            if (isset($aTableName[1]) && ctype_digit($aTableName[1]))
+            {
+                $iSurveyID = $aTableName[1];
+                if (!in_array($iSurveyID, $sids)) {
+                    $sDate = date('YmdHis') . rand(1, 1000);
+                    $sOldTable = "survey_{$iSurveyID}";
+                    $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
+                    try {
+                        $deactivateresult = Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+                    } catch (CDbException $e) {
+                        die ('Couldn\'t make backup of the survey table. Please try again. The database reported the following error:<br />' . htmlspecialchars($e) . '<br />');
+                    }
                 }
             }
         }

@@ -375,7 +375,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $fieldno=0;
 
     $fields=array();
-    if (isset($tokensexist) && $tokensexist == true && $surveyprivate == 'N') {
+    if (isset($tokensexist) && $tokensexist == true && $surveyprivate == 'N' && hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
@@ -517,7 +517,7 @@ function SPSSGetQuery($iSurveyID) {
 
 
     #See if tokens are being used
-    if (isset($tokensexist) && $tokensexist == true && !$bDataAnonymized) {
+    if (isset($tokensexist) && $tokensexist == true && !$bDataAnonymized && hasSurveyPermission($iSurveyID,'tokens','read')) {
         $query="SELECT ";
         $tokenattributes=array_keys(getTokenFieldsAndNames($iSurveyID,false));
         foreach ($tokenattributes as $attributefield) {

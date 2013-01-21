@@ -134,10 +134,13 @@
 
 .ui-state-hover,.ui-widget-content .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus
   {
-  background-color: #EFFBDB;
   font-weight: bold;
   color: #333;
   outline: none;
+}
+
+#pager_left .ui-state-hover {
+	border: 1px solid #85BD00;
 }
 
 .ui-state-hover a,.ui-state-hover a:hover {

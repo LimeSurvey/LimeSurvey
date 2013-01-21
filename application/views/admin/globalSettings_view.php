@@ -177,7 +177,7 @@
                     </select></li>
                 <?php $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']); ?>
                 <li><label for='timeadjust'><?php $clang->eT("Time difference (in hours):"); ?></label>
-                    <span><input type='text' size='10' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+',' hours'),array('',''),getGlobalSetting('timeadjust'))); ?>" />
+                    <span><input type='text' size='10' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+',' hours',' minutes'),array('','',''),getGlobalSetting('timeadjust'))/60); ?>" />
                         <?php echo $clang->gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ". $clang->gT("Corrected time :").' '.convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
                     </span></li>
 
@@ -485,6 +485,7 @@
                             <?php if ($RPCInterface == 'xml') { echo " selected='selected'";}?>
                             ><?php $clang->eT("XML-RPC"); ?></option>
                     </select></li>
+                    <li><label><?php $clang->eT("URL:"); ?></label><?php echo $this->createAbsoluteUrl("admin/remotecontrol"); ?></li>
             </ul>
         </div>
         <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ',$restrictToLanguages); ?>'/>

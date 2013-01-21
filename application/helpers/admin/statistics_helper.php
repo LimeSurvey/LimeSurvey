@@ -434,11 +434,11 @@ function buildSelects($allfields, $surveyid, $language) {
                 {
                     if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
                     {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." > '".$_POST[$pv]."'";
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." > ".sanitize_int($_POST[$pv]);
                     }
                     if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
                     {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." < '".$_POST[$pv]."'";
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." < ".sanitize_int($_POST[$pv]);
                     }
                 }
 
@@ -465,20 +465,20 @@ function buildSelects($allfields, $surveyid, $language) {
                     //Date equals
                     if (substr($pv, -1, 1) == "eq")
                     {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2))." = '".$_POST[$pv]."'";
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2))." = ".dbQuoteAll($_POST[$pv]);
                     }
                     else
                     {
                         //date less than
                         if (substr($pv, -1, 1) == "less")
                         {
-                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " >= '".$_POST[$pv]."'";
+                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " >= ".dbQuoteAll($_POST[$pv]);
                         }
 
                         //date greater than
                         if (substr($pv, -1, 1) == "more")
                         {
-                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " <= '".$_POST[$pv]."'";
+                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " <= ".dbQuoteAll($_POST[$pv]);
                         }
                     }
                 }
@@ -493,7 +493,7 @@ function buildSelects($allfields, $surveyid, $language) {
                         $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
                         $_POST[$pv]=$datetimeobj->convert("Y-m-d");
 
-                        $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= '".$_POST[$pv]." 00:00:00' and ".Yii::app()->db->quoteColumnName('datestamp')." <= '".$_POST[$pv]." 23:59:59'";
+                        $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= ".dbQuoteAll($_POST[$pv]." 00:00:00")." and ".Yii::app()->db->quoteColumnName('datestamp')." <= ".dbQuoteAll($_POST[$pv]." 23:59:59");
                     }
                     else
                     {
@@ -502,7 +502,7 @@ function buildSelects($allfields, $surveyid, $language) {
                         {
                             $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
                             $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." < '".$_POST[$pv]."'";
+                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." < ".dbQuoteAll($_POST[$pv]);
                         }
 
                         //timestamp greater than
@@ -510,7 +510,7 @@ function buildSelects($allfields, $surveyid, $language) {
                         {
                             $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
                             $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." > '".$_POST[$pv]."'";
+                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." > ".dbQuoteAll($_POST[$pv]);
                         }
                     }
                 }
@@ -1659,6 +1659,7 @@ class statistics_helper {
                 break;
         }
         //loop though the array which contains all answer data
+        $ColumnName_RM=array();
         foreach ($outputs['alist'] as $al)
         {
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
@@ -1798,20 +1799,21 @@ class statistics_helper {
             //"Answers" means that we show an option to list answer to "other" text field
             elseif ($al[0] === $statlang->gT("Other") || $al[0] === "Answers" || ($outputs['qtype'] === "O" && $al[0] === $statlang->gT("Comments")) || $outputs['qtype'] === "P")
             {
-                if ($outputs['qtype'] == "P") $ColumnName_RM = $al[2]."comment";
-                else  $ColumnName_RM = $al[2];
+                if ($outputs['qtype'] == "P") $sColumnName = $al[2]."comment";
+                else  $sColumnName = $al[2];
+                $ColumnName_RM[]=$sColumnName;
                 if ($outputs['qtype']=='O') {
                     $TotalCompleted -=$row;
                 }
                 $fname="$al[1]";
                 if ($browse===true) $fname .= " <input type='button' class='statisticsbrowsebutton' value='"
-                    .$statlang->gT("Browse")."' id='$ColumnName_RM' />";
+                    .$statlang->gT("Browse")."' id='$sColumnName' />";
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array($statlang->gT("ID"),$statlang->gT("Response"));
                     $tablePDF2 = array();
-                    $result2= $this->_listcolumn($surveyid,$ColumnName_RM);
+                    $result2= $this->_listcolumn($surveyid,$sColumnName);
 
                     foreach ($result2 as $row2)
                     {
@@ -1840,7 +1842,7 @@ class statistics_helper {
                 {
                     $fname= "$al[1]";
                     if ($browse===true) $fname .= " <input type='button'  class='statisticsbrowsebutton' value='"
-                        . $statlang->gT("Browse")."' id='$ColumnName_RM' />";
+                        . $statlang->gT("Browse")."' id='$sColumnName' />";
                 }
                 elseif ($al[0] == "NoAnswer")
                 {
@@ -1858,7 +1860,7 @@ class statistics_helper {
                     $headPDF2 = array();
                     $headPDF2[] = array($statlang->gT("ID"),$statlang->gT("Response"));
                     $tablePDF2 = array();
-                    $result2= $this->_listcolumn($surveyid,$ColumnName_RM);
+                    $result2= $this->_listcolumn($surveyid,$sColumnName);
 
                     foreach ($result2 as $row2)
                     {
@@ -2291,8 +2293,15 @@ class statistics_helper {
             * */
             if(strpos($label[$i], "class='statisticsbrowsebutton'"))
             {
-                $extraline="<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
-                <div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM}'></div></td></tr>\n";
+                $extraline="<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>";
+                if ($outputs['qtype']=='P')
+                {
+                    $extraline.="<div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM[$i]}'></div></td></tr>\n";
+                }
+                else
+                {
+                    $extraline.="<div class='statisticsbrowsecolumn' id='columnlist_{$sColumnName}'></div></td></tr>\n";
+                }
             }
 
             //output absolute number of records
@@ -2985,7 +2994,9 @@ class statistics_helper {
 
         //close table/output
         if($outputType=='html') {
-            if ($usegraph==1) {
+            // show this block only when we show graphs and are not in the public statics controller
+            // this is because the links don't work from that controller
+            if ($usegraph==1 && get_class(Yii::app()->getController()) !== 'Statistics_userController') {
                 $sImgUrl = Yii::app()->getConfig('adminimageurl');
 
                 $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"
@@ -3142,13 +3153,23 @@ class statistics_helper {
             //require_once('classes/tcpdf/mypdf.php');
             Yii::import('application.libraries.admin.pdf', true);
             $pdfdefaultfont=Yii::app()->getConfig('pdfdefaultfont');
+            if($pdfdefaultfont=='auto')
+            {
+                $pdfdefaultfont=PDF_FONT_NAME_DATA;
+            }
+            // Array of PDF core fonts: are replaced by according fonts according to the alternatepdffontfile array.Maybe just courier,helvetica and times but if a user want symbol: why not ....
+            $pdfcorefont=array("courier","helvetica","symbol","times","zapfdingbats");
             $pdffontsize=Yii::app()->getConfig('pdffontsize');
 
             // create new PDF document
             $this->pdf = new pdf();
-            if ($pdfdefaultfont=='auto')
+            if (in_array($pdfdefaultfont,$pdfcorefont))
             {
-                $pdfdefaultfont=PDF_FONT_NAME_DATA;
+                $alternatepdffontfile=Yii::app()->getConfig('alternatepdffontfile');
+                if(array_key_exists($statlangcode,$alternatepdffontfile))
+                {
+                    $pdfdefaultfont = $alternatepdffontfile[$statlangcode];// Actually use only core font
+                }
             }
             if ($pdffontsize=='auto')
             {
@@ -3185,9 +3206,8 @@ class statistics_helper {
             $this->pdf->setFooterFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_DATA));
 
             // set default header data 
-            $headerlogo = 'statistics.png';
-            // when png crashes, try uncommenting next line
-            //$headerlogo = '';
+            // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
+            $headerlogo = 'statistics.gif';
             $this->pdf->SetHeaderData($headerlogo, 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
             $this->pdf->SetFont($pdfdefaultfont, '', $pdffontsize);
             // set default monospaced font
@@ -3303,7 +3323,7 @@ class statistics_helper {
 
                 $this->pdf->AddPage('P', ' A4');
 
-                $this->pdf->Bookmark($this->pdf->delete_html($statlang->gT("Results",'unescaped')), 0, 0);
+                $this->pdf->Bookmark($statlang->gT("Results",'unescaped'), 0, 0);
                 $this->pdf->titleintopdf($statlang->gT("Results",'unescaped'),$statlang->gT("Survey",'unescaped')." ".$surveyid);
                 $this->pdf->tableintopdf($array);
 
@@ -3347,7 +3367,7 @@ class statistics_helper {
         //only continue if we have something to output
         if ($results > 0)
         {
-            if($outputType=='html' && $browse === true)
+            if($outputType=='html' && $browse === true && hasSurveyPermission($surveyid,'responses','read'))
             {
                 //add a buttons to browse results
                 $statisticsoutput .= CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}"), 'post',array('target'=>'_blank'))."\n"
