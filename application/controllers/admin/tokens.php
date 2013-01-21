@@ -2272,6 +2272,7 @@ class tokens extends Survey_Common_Action
     function _newtokentable($iSurveyId)
     {
         $clang = $this->getController()->lang;
+        $aSurveyInfo = getSurveyInfo($iSurveyId);
         Yii::import('application.helpers.admin.token_helper', true);
         if (Yii::app()->request->getQuery('createtable') == "Y" && hasSurveyPermission($iSurveyId, 'surveyactivation', 'update'))
         {
@@ -2289,7 +2290,8 @@ class tokens extends Survey_Common_Action
             //Rebuild attributedescription value for the surveys table
             $table = Yii::app()->db->schema->getTable(Yii::app()->request->getPost('oldtable'));
             $fields=array_filter(array_keys($table->columns), 'filterForAttributes');
-            $fieldcontents=array();
+            $fieldcontents = $aSurveyInfo['attributedescriptions'];        
+            if (!is_array($fieldcontents)) $fieldcontents=array();
             foreach ($fields as $fieldname)
             {
                 $name=$fieldname;
@@ -2298,11 +2300,14 @@ class tokens extends Survey_Common_Action
                     $data=ParticipantAttributeNames::model()->getAttributeName($cpdbattid, Yii::app()->session['adminlang']);
                     $name=$data['attribute_name'];
                 }
-                $fieldcontents[$fieldname] = array(
-                            'description' => $name,
-                            'mandatory' => 'N',
-                            'show_register' => 'N'
-                            );
+                if (!isset($fieldcontents[$fieldname]))
+                {
+                    $fieldcontents[$fieldname] = array(
+                                'description' => $name,
+                                'mandatory' => 'N',
+                                'show_register' => 'N'
+                                );
+                }
             }
             Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => serialize($fieldcontents)));
 
