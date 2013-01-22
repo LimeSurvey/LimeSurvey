@@ -62,6 +62,28 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
         }
     }
 
+    if (count($lbl)>72)
+    {
+        $DataSet = array(1=>array(1=>1));
+        if ($cache->IsInCache("graph".$language.$iSurveyID,$DataSet))
+        {
+            $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet));
+        }
+        else
+        {
+            $graph = new pChart(690,200);
+            $graph->loadColorPalette($homedir.DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'limesurvey.pal');
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
+            $graph->drawTitle(0,0,$clang->gT('Sorry, but this question has too many answer options to be shown properly in a graph.','unescaped'),30,30,30,690,200);
+            $cache->WriteToCache("graph".$language.$iSurveyID,$DataSet,$graph);
+            $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet));
+            unset($graph);
+        }
+        
+        return  $cachefilename;
+    }
+        
     if (array_sum($gdata ) > 0) //Make sure that the percentages add up to more than 0
     {
         $graph = "";
