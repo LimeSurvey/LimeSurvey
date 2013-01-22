@@ -392,11 +392,11 @@
                 $suffix = '';
             }
 
-            if (intval(trim($qidattributes['maximum_chars'])) > 0 && intval(trim($qidattributes['maximum_chars'])) < 65534) { // Limit to 65535 to maintain compatibility w/database limitations
+            if (intval(trim($qidattributes['maximum_chars'])) > 0 && intval(trim($qidattributes['maximum_chars'])) < 4000) { // Limit to 4000 to maintain compatibility
                 $maximum_chars = intval(trim($qidattributes['maximum_chars']));
                 $maxlength = "maxlength='{$maximum_chars}' ";
             } else {
-                $maxlength = "maxlength='65534' "; // Default to 65534 chars if not set within limits
+                $maxlength = "maxlength='4000' "; // Default to 4000 chars if not set within limits
             }
 
             if (trim($qidattributes['text_input_width']) != '') {
