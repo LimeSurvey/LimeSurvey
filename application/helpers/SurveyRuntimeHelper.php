@@ -423,7 +423,7 @@ class SurveyRuntimeHelper {
                     }
 
                     //Update the token if needed and send a confirmation email
-                    if (isset($clienttoken) && $clienttoken)
+                    if (isset($_SESSION['survey_'.$surveyid]['thistoken']))
                     {
                         submittokens();
                     }

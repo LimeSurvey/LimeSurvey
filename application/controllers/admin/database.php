@@ -1029,8 +1029,8 @@ class database extends Survey_Common_Action
             {
                 if ($langname)
                 {
-                    $usresult = Surveys_languagesettings::model()->findAllByPk(array('surveyls_survey_id'=>$surveyid, 'surveyls_language'=>$langname));
-                    if (count($usresult)==0)
+                    $iRowCount = Surveys_languagesettings::model()->count(array('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$surveyid,':langname'=>$langname));
+                    if ($iRowCount)
                     {
 
                         $languagedetails=getLanguageDetails($langname);
@@ -1044,7 +1044,7 @@ class database extends Survey_Common_Action
                         $setting= new Surveys_languagesettings;
                         foreach ($insertdata as $k => $v)
                             $setting->$k = $v;
-                        $setting->save();
+                        $usresult=$setting->save();
                     }
                 }
             }
