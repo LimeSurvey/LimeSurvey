@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-01-22 07:16:33+00:00\n"
+"POT-Creation-Date: 2013-01-22 07:41:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -388,6 +388,11 @@ msgid "The email you used is not valid. Please try again."
 msgstr ""
 
 #: application/controllers/RegisterController.php:107
+#: application/controllers/admin/tokens.php:569
+#: application/controllers/admin/tokens.php:600
+#: application/controllers/admin/tokens.php:709
+#: application/controllers/admin/tokens.php:814
+#: application/controllers/admin/tokens.php:942
 msgid "%s cannot be left empty"
 msgstr ""
 
@@ -2679,12 +2684,16 @@ msgstr ""
 
 #: application/controllers/admin/questiongroup.php:324
 #: application/controllers/admin/quotas.php:349
+#: application/controllers/admin/surveyadmin.php:810
 #: application/views/admin/assessments_view.php:103
 #: application/views/admin/emailtemplates/emailtemplates_view.php:16
 #: application/views/admin/quotas/newquota_view.php:27
+#: application/views/admin/survey/Question/answerOptions_view.php:43
 #: application/views/admin/survey/Question/editQuestion_view.php:25
+#: application/views/admin/survey/Question/subQuestion_view.php:42
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:10
 #: application/views/admin/token/email.php:18
+#: application/views/admin/token/managetokenattributes.php:12
 #: application/views/admin/token/remind.php:18
 msgid "Base language"
 msgstr ""
@@ -2938,13 +2947,6 @@ msgstr ""
 msgid "Survey deleted."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:810
-#: application/views/admin/survey/Question/answerOptions_view.php:43
-#: application/views/admin/survey/Question/subQuestion_view.php:42
-#: application/views/admin/token/managetokenattributes.php:12
-msgid "Base Language"
-msgstr ""
-
 #: application/controllers/admin/surveyadmin.php:871
 msgid "Import survey data"
 msgstr ""
@@ -3084,9 +3086,10 @@ msgstr ""
 
 #: application/controllers/admin/surveypermission.php:183
 #: application/controllers/admin/surveypermission.php:311
+#: application/controllers/admin/useraction.php:160
 #: application/views/admin/user/editusers.php:133
 #: application/views/admin/usergroup/viewUserGroup_view.php:85
-msgid "Add User"
+msgid "Add user"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:183
@@ -3524,14 +3527,6 @@ msgstr ""
 msgid "View this person in the central participants database"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:569
-#: application/controllers/admin/tokens.php:600
-#: application/controllers/admin/tokens.php:709
-#: application/controllers/admin/tokens.php:814
-#: application/controllers/admin/tokens.php:942
-msgid "%s cannot be empty"
-msgstr ""
-
 #: application/controllers/admin/tokens.php:825
 msgid "The token entry was successfully updated."
 msgstr ""
@@ -3926,10 +3921,6 @@ msgstr ""
 
 #: application/controllers/admin/useraction.php:147
 msgid "An email with a generated password was sent to the user."
-msgstr ""
-
-#: application/controllers/admin/useraction.php:160
-msgid "Add user"
 msgstr ""
 
 #: application/controllers/admin/useraction.php:161
@@ -12544,6 +12535,7 @@ msgid "Administrator:"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabGeneralEditSurvey_view.php:50
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:58
 msgid "Admin email:"
 msgstr ""
 
@@ -12563,10 +12555,6 @@ msgstr ""
 
 #: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:17
 msgid "*This setting cannot be changed later!"
-msgstr ""
-
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:58
-msgid "Admin Email:"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:60
