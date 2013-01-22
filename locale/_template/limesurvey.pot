@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-01-21 23:05:54+00:00\n"
+"POT-Creation-Date: 2013-01-22 07:16:33+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2213,7 +2213,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:39
 #: application/controllers/admin/responses.php:285
 #: application/controllers/admin/responses.php:616
-msgid "You do not have sufficient rights to access this page"
+msgid "You do not have sufficient rights to access this page."
 msgstr ""
 
 #: application/controllers/admin/globalsettings.php:195
