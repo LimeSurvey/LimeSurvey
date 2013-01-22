@@ -60,6 +60,48 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130116) to 2.00+ (build 130122) Jan 22, 2013
+-Fixed issue #7097: View response details only appears once survey fully completed even when token persistence set (Menno Dekker)
+-Fixed issue #7156: Custom field description not retrieved when importing old token table (Carsten Schmitz)
+-Fixed issue #7165: VV-import/export leads to changes of data (Carsten Schmitz)
+-Fixed issue #7178: Administrator email not mandatory if token features or admin notifications are used (Carsten Schmitz)
+-Fixed issue #7189: Successful update on ComfortUpdate shows update error in step 4 (Carsten Schmitz)
+-Fixed issue #7194: "Page Not Found" when a public registred want to access to the survey (Denis Chenu)
+-Fixed issue #7196: Completing admin data entry for survey with tokens screen gives SQL Error on MSSQL (Carsten Schmitz)
+-Fixed issue #7199: Raising the token's "uses left" value from 0 to X doesn't remove the "completed" date (Carsten Schmitz)
+-Fixed issue #7201: Survey couldn't be completed when using additional language (Carsten Schmitz)
+-Fixed issue #7202: Response rate shows as 100% for all surveys (Carsten Schmitz)
+-Fixed issue #7203: User without access to survey response can see whole responses (Denis Chenu)
+-Fixed issue #7204: User without access to token table have all information from token table in responses (Denis Chenu)
+-Fixed issue #7205: User without access to content read can access to whole content (Denis Chenu)
+-Fixed issue #7208: Large list questions cause charts to break in statistics (Carsten Schmitz)
+-Fixed issue #7210: When deleting a question group all relevance equations in the survey are set to '1' (Carsten Schmitz)
+-Fixed issue #7212: Config parameter deletenonvalues not working (Carsten Schmitz)
+-Fixed issue #7215: Date/time question: only dates 1980 and over selectable in calender by default (Carsten Schmitz)
+-Fixed issue: Error displayed when adding a language to a survey even though it is correctly saved (Carsten Schmitz)
+#Updated translation: Arabic by ahmedsherpiny, ysaad, Rawand
+#Updated translation: Catalan by valdomir
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by hclaus, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfortunato, lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Kurdish (Sorani) by AhamdSaber, Qat, Rawand
+#Updated translation: Lithuanian by simasj, apklausos
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Serbian (Latin script) by OnSpot, YLotus
+#Updated translation: Slovak by Union
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.00+ (build 130115) to 2.00+ (build 130116) Jan 15, 2013
 -New feature: Global settings now shows URL to remote control interface (Menno Dekker)
 -Fixed issue #7188: Token icons misbehaving (Menno Dekker)
