@@ -648,7 +648,7 @@ class quexmlpdf extends pdf {
 	function __construct(CController $controller)
 	{
 		parent::__construct();
-		$this->style = $controller->render('/admin/export/sa/quexmlpdf_view','',true);
+		$this->style = $controller->render('/admin/export/quexmlpdf_view','',true);
 	}
 
 	/**

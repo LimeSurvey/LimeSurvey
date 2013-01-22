@@ -189,6 +189,7 @@
         $imgopts = '';
         $toolbarname = 'inline';
         $toolbaroption="";
+        $sFileBrowserAvailable='';
         $htmlformatoption="";
         $oCKeditorVarName = "oCKeditor_".str_replace("-","_",$fieldname);
 
@@ -221,7 +222,17 @@
             $htmlformatoption = ",fullPage:true\n";
         }
 
-
+        if ($surveyID=='')
+        {
+            $sFakeBrowserURL=Yii::app()->getController()->createUrl('admin/survey/sa/fakebrowser');
+            $sFileBrowserAvailable=",filebrowserBrowseUrl:'{$sFakeBrowserURL}'
+            ,filebrowserImageBrowseUrl:'{$sFakeBrowserURL}'
+            ,filebrowserFlashBrowseUrl:'{$sFakeBrowserURL}'
+            ,filebrowserUploadUrl:'{$sFakeBrowserURL}'
+            ,filebrowserImageUploadUrl:'{$sFakeBrowserURL}'
+            ,filebrowserFlashUploadUrl:'{$sFakeBrowserURL}'";
+        }
+        
         $htmlcode .= ""
         . "<script type=\"text/javascript\">\n"
         . "$(document).ready(function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
@@ -236,6 +247,7 @@
         ,width:'660'
         ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'
         ,smiley_path : \"".Yii::app()->getConfig('uploadurl')."/images/smiley/msn/\"\n"
+        . $sFileBrowserAvailable
         . $htmlformatoption
         . $toolbaroption
         ."});

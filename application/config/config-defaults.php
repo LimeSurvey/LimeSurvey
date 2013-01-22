@@ -87,7 +87,7 @@ $config['allowedtemplateuploads'] = 'gif,ico,jpg,png';  // File types allowed to
 
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
-$config['memorylimit']        =  '32';   // This sets how much memory LimeSurvey can access in megabytes. 32 mb is the minimum recommended - if you are using PDF functions up to 64 mb may be needed
+$config['memory_limit']        =  '32';   // This sets how much memory LimeSurvey can access in megabytes. 32 mb is the minimum recommended - if you are using PDF functions up to 64 mb may be needed
 
 $config['showpopups']         =   1;                // Show popup messages if mandatory or conditional questions have not been answered correctly.
 // 1=Show popup message, 0=Show message on page instead.
@@ -320,7 +320,7 @@ $config['showsgqacode'] =  false;
 *  This feature configures PDF export for Export Answers
 */
 
-$config['pdfdefaultfont'] = 'freemono';              //Default font for the pdf Export
+$config['pdfdefaultfont'] = 'dejavusans';              //Default font for the pdf Export
 $config['pdffontsize']    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $config['notsupportlanguages'] = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
 $config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
@@ -499,13 +499,19 @@ $config['restrictToLanguages'] = '';
 */
 $config['RPCInterface'] = 'off';
 
-
 /**
 * This parameter sets the default session expiration time in seconds
 * Default is 8 hours
 * @var integer
 */
 $config['iSessionExpirationTime'] = 28800;
+
+/**
+* This parameter can be used to set some question not selectable in LimeReplacementFiels
+* Default is an empty array, leave it for new question modules system
+* @var array
+*/
+$config['InsertansUnsupportedtypes'] = array();
 
 // === Advanced Setup
 // The following parameters need information from config.php

@@ -46,25 +46,30 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function index()
     {
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/i18n/grid.locale-en.js");
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/jquery.jqGrid.min.js");
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jquery.coookie.js");
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "listsurvey.js");
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/ui.jqgrid.css");
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/jquery.ui.datepicker.css");
+        if (count(getSurveyList(true)) == 0)
+		{
+            $this->_renderWrappedTemplate('super', 'firststeps');
+        } else {
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/i18n/grid.locale-en.js");
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/jquery.jqGrid.min.js");
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jquery.coookie.js");
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "listsurvey.js");
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/ui.jqgrid.css");
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/jquery.ui.datepicker.css");
 
-        Yii::app()->loadHelper('surveytranslator');
+            Yii::app()->loadHelper('surveytranslator');
 
-        $aData['issuperadmin'] = false;
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
-        {
-            $aData['issuperadmin'] = true;
+            $aData['issuperadmin'] = false;
+            if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+            {
+                $aData['issuperadmin'] = true;
+            }
+
+            $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
         }
-
-        $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
     }
 
     public function regenquestioncodes($iSurveyID, $sSubAction )
@@ -124,6 +129,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $esrow = $this->_fetchSurveyInfo('newsurvey');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+
         Yii::app()->loadHelper('admin/htmleditor');
         $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 
@@ -138,6 +144,12 @@ class SurveyAdmin extends Survey_Common_Action
 
         $this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
     }
+    
+    function fakebrowser()
+    {
+        $aData['clang'] = $this->getController()->lang;
+        Yii::app()->getController()->render('/admin/survey/newSurveyBrowserMessage', $aData);
+    }    
 
     /**
     * This function prepares the view for editing a survey
@@ -160,6 +172,9 @@ class SurveyAdmin extends Survey_Common_Action
 
         Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
 
+        Yii::app()->loadHelper('/admin/htmleditor');
+        initKcfinder();
+        
         $esrow = array();
         $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
         $aData['esrow'] = $esrow;
@@ -611,9 +626,9 @@ class SurveyAdmin extends Survey_Common_Action
             else
             {
                 $condition = "sid={$rows['sid']} AND language='" . $rows['language'] . "'";
-                $questionsCountResult = Questions::model()->findAll($condition);
+                $questionsCountResult = Questions::model()->count($condition);
 
-                if (count($questionsCountResult) && hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
+                if ($questionsCountResult>0 && hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
                     $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/sa/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'inactive.png" title="" alt="' . $clang->gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
                 }
@@ -661,8 +676,9 @@ class SurveyAdmin extends Survey_Common_Action
             //Set Responses
             if ($rows['active'] == "Y")
             {
-                $partial = Survey_dynamic::model($rows['sid'])->countByAttributes(array('submitdate' => null));
-                $all = Survey_dynamic::model($rows['sid'])->count();
+                $cntResult = Survey_dynamic::countAllAndPartial($rows['sid']);
+                $all = $cntResult['cntall'];
+                $partial = $cntResult['cntpartial'];
 
                 $aSurveyEntry[] = $all - $partial;
                 $aSurveyEntry[] = $partial;
@@ -672,10 +688,9 @@ class SurveyAdmin extends Survey_Common_Action
                 $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']);
                 if (tableExists('tokens_' . $rows['sid'] ))
                 {
-                    $tokens = Tokens_dynamic::model($rows['sid'])->count();
-                    $tokenscompleted = Tokens_dynamic::model($rows['sid'])->count(array(
-                    'condition' => "completed <> 'N'"
-                    ));
+                    $cntResult = Tokens_dynamic::countAllAndCompleted($rows['sid']);
+                    $tokens = $cntResult['cntall'];
+                    $tokenscompleted = $cntResult['cntcompleted'];
 
                     $aSurveyEntry[] = $tokens;
                     $aSurveyEntry[] = ($tokens == 0) ? 0 : round($tokenscompleted / $tokens * 100, 1);
@@ -942,6 +957,11 @@ class SurveyAdmin extends Survey_Common_Action
             elseif ($action == 'copysurvey' && (empty($importerror) || !$importerror))
             {
                 $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName);
+                if (isset($exclude['conditions']))
+                {
+                    Questions::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);
+                    Groups::model()->updateAll(array('grelevance'=>'1'),'sid='.$aImportResults['newsid']);
+                }
                 if (!isset($exclude['permissions']))
                 {
                     Survey_permissions::model()->copySurveyPermissions($iSurveyID,$aImportResults['newsid']);
@@ -1164,7 +1184,20 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['action'] = "newsurvey";
         $aData['clang'] = $clang;
         $aData['owner'] = $owner;
-
+        $aLanguageDetails= getLanguageDetails(Yii::app()->session['adminlang']);
+        $aData['sRadixDefault'] = $aLanguageDetails['radixpoint'];
+        $aData['sDateFormatDefault'] = $aLanguageDetails['dateformat'];
+        foreach (getRadixPointData() as $index=>$radixptdata){
+          $aRadixPointData[$index]=$radixptdata['desc'];  
+        }
+        $aData['aRadixPointData']=$aRadixPointData;
+        
+        foreach (getDateFormatData (0,Yii::app()->session['adminlang']) as $index => $dateformatdata) 
+        {
+          $aDateFormatData[$index]=$dateformatdata['dateformat'];  
+        }
+        $aData['aDateFormatData']=$aDateFormatData;
+                
         return $aData;
     }
 

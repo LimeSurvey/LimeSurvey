@@ -76,7 +76,7 @@ $(document).ready(function(){
 		if (slider_startvalue != 'NULL' && $('#slider-modifiedstate-'+basename).val() !=0)
 		{
 				var thevalue = slider_startvalue / slider_divisor;
-                $('#slider-callout-'+basename).css('left', $('.ui-slider-handle:first').css('left')).text(slider_prefix + thevalue + slider_suffix);
+                $('#slider-callout-'+basename).css('left', $('.ui-slider-handle:first', this).css('left')).text(slider_prefix + thevalue + slider_suffix);
 		}
 	})
 });

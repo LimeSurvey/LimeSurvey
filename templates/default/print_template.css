@@ -225,7 +225,7 @@ div.input-other,div.input-othercomment,div.input-rank,div.input-text {
 }
 
 /*fix styling for some questions that cannot be controlled individually */
-.array-multi-flexi div.input-text,div.input-rank {
+div.input-rank {
   width: 51px !important;
 }
 

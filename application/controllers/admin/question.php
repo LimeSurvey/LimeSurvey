@@ -1034,6 +1034,7 @@ class question extends Survey_Common_Action
     * @param int $qid
     * @param string $lang
     * @return void
+    * @deprecated THIS IS OBSOLETE AS QUESTION PREVIEW IS NOW HANDLED BY controllers/survey/index.php
     */
     public function preview($surveyid, $qid, $lang = null)
     {

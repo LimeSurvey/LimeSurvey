@@ -597,11 +597,13 @@ class remotecontrol_handle
      * @param string $docType Type of documents the exported statistics should be
      * @param string $sLanguage Optional language of the survey to use
      * @param string $graph Create graph option
+     * @param int|array $groupIDs An OPTIONAL array (ot a single int) containing the groups we choose to generate statistics from
      * @return string Base64 encoded string with the statistics file
      */
-    public function export_statistics($sSessionKey, $iSurveyID,  $docType='pdf', $sLanguage=null, $graph='0')
+    public function export_statistics($sSessionKey, $iSurveyID,  $docType='pdf', $sLanguage=null, $graph='0', $groupIDs=null)
     {
 		Yii::app()->loadHelper('admin/statistics');
+
 		$tempdir = Yii::app()->getConfig("tempdir");
 		if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
 
@@ -616,8 +618,43 @@ class remotecontrol_handle
 		if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
 			$sLanguage = $oSurvey->language;
 
-		$oAllQuestions = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid'=>'0','language'=>$sLanguage));
-		usort($oAllQuestions, 'groupOrderThenQuestionOrder');
+		$oAllQuestions =Questions::model()->getQuestionList($iSurveyID, $sLanguage);
+       	if (!isset($oAllQuestions))
+				return array('status' => 'No available data');
+				
+        if($groupIDs!=null)
+        {
+            if(is_int($groupIDs))
+                    $groupIDs = array($groupIDs);
+                
+            if(is_array($groupIDs)) 
+            {   
+                //check that every value of the array belongs to the survey defined
+                $aGroups = Groups::model()->findAllByAttributes(array('sid' => $iSurveyID));
+
+                foreach( $aGroups as $group)
+                    $validGroups[] = $group['gid'];
+
+                $groupIDs=array_intersect($groupIDs,$validGroups);
+                
+                if (empty($groupIDs))
+                    return array('status' => 'Error: Invalid group ID');
+                                     
+               foreach($oAllQuestions as $key => $aQuestion)  
+                 {
+					 if(!in_array($aQuestion['gid'],$groupIDs))
+						unset($oAllQuestions[$key]);	 
+				 }      
+            }
+            else
+                return array('status' => 'Error: Invalid group ID');
+		}
+			
+       	if (!isset($oAllQuestions))
+				return array('status' => 'No available data');
+				
+		usort($oAllQuestions, 'groupOrderThenQuestionOrder');     
+        
         $aSummary = createCompleteSGQA($iSurveyID,$oAllQuestions,$sLanguage);
 
         $helper = new statistics_helper();
@@ -2248,10 +2285,13 @@ class remotecontrol_handle
      * @param array $aFields Optional Selected fields
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
-    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
+    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='full', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         Yii::app()->loadHelper('admin/exportresults');
+        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data');
+		if(!$count = Survey_dynamic::model($iSurveyID)->count()) return array('status' => 'No Data');
+
         if (!hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
         if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
         if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
@@ -2260,8 +2300,17 @@ class remotecontrol_handle
            $aFields=array_slice($aFields,0,255);
         }
         $oFomattingOptions=new FormattingOptions();
-        $oFomattingOptions->responseMinRecord=$iFromResponseID;
-        $oFomattingOptions->responseMaxRecord=$iToResponseID;
+        
+        if($iFromResponseID !=null)   
+			$oFomattingOptions->responseMinRecord=$iFromResponseID;
+        else
+			$oFomattingOptions->responseMinRecord=1;        
+        
+        if($iToResponseID !=null)   
+            $oFomattingOptions->responseMaxRecord=$iToResponseID;
+        else
+            $oFomattingOptions->responseMaxRecord = $count;
+
         $oFomattingOptions->selectedColumns=$aFields;
         $oFomattingOptions->responseCompletionState=$sCompletionStatus;
         $oFomattingOptions->headingFormat=$sHeadingType;

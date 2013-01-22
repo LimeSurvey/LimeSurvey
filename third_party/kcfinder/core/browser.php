@@ -724,6 +724,7 @@ class browser extends uploader {
             if ($stat === false) continue;
             $filename = basename($file);
             if ( 'WIN' == substr( PHP_OS, 0, 3 ) ) {
+                    setlocale( LC_CTYPE, '' ); // Resets the codepage to the system codepage so it can be properly retrieved
                     $codepage = 'Windows-' . trim( strstr( setlocale( LC_CTYPE, 0 ), '.' ), '.' );
                     if ( function_exists( 'iconv' ) ) {
                             $filename = iconv( $codepage,  'UTF-8', $filename );

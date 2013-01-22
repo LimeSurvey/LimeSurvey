@@ -8,7 +8,7 @@
     {
         if (newtemplatename=window.prompt(text, defvalue))
             {
-            sendPost('<?php echo $this->createUrl('admin/templates/template'); ?>'+action,'<?php echo Yii::app()->session['checksessionpost']; ?>',new Array('action','newname','copydir'),new Array('template'+action,newtemplatename,copydirectory));
+            sendPost('<?php echo $this->createUrl('admin/templates/sa/template'); ?>'+action,'',new Array('action','newname','copydir'),new Array('template'+action,newtemplatename,copydirectory));
         }
     }
 
@@ -65,9 +65,9 @@
             } ?>
             <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir))
                 {?>
-                <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/upload'); ?>", "_top")'>
+                <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/sa/upload'); ?>", "_top")'>
                     <img src='<?php echo $sImageURL; ?>import.png' alt='<?php $clang->eT("Import template"); ?>' title='' /></a>
-                <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/templatezip/templatename/' . $templatename) ?>", "_top")'>
+                <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename) ?>", "_top")'>
                     <img src='<?php echo $sImageURL; ?>export.png' alt='<?php $clang->eT("Export Template"); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                 <a href='#' onclick="javascript: copyprompt('<?php $clang->eT("Please enter the name for the copied template:"); ?>', '<?php echo $clang->gT("copy_of_")."$templatename"; ?>',            '<?php echo $templatename; ?>', 'copy')">
@@ -88,7 +88,7 @@
                 { ?>
                 <a href='#' onclick="javascript: copyprompt('<?php $clang->eT("Rename this template to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
                     <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php $clang->eT("Rename this template"); ?>' /></a>
-                <a href='#' onclick='if (confirm("<?php $clang->eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/templates/delete/templatename/'.$templatename); ?>", "_top")' >
+                <a href='#' onclick='if (confirm("<?php $clang->eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/templates/sa/delete/templatename/'.$templatename); ?>", "_top")' >
                     <img src='<?php echo $sImageURL; ?>delete.png' alt='<?php $clang->eT("Delete this template"); ?>'/></a>
                 <?php
             } ?>

@@ -25,8 +25,7 @@
             <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='78' height='20' />
             <img src='<?php echo $imageurl; ?>separator.gif' alt='' />
 
-            <?php if($ugid && $grpresultcount > 0 &&
-                Yii::app()->session['loginID'] == $grow['owner_id'])
+            <?php if($ugid && $grpresultcount > 0 && (Yii::app()->session['loginID'] == $grow['owner_id'] || hasGlobalPermission('USER_RIGHT_SUPERADMIN')))
                 { ?>
                 <a href="<?php echo $this->createUrl("admin/usergroups/sa/edit/ugid/".$ugid); ?>">
                     <img src='<?php echo $imageurl; ?>edit.png' alt='<?php $clang->eT("Edit current user group"); ?>' name='EditUserGroup' /></a>
@@ -36,11 +35,10 @@
                 <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='40' height='20' />
                 <?php }
 
-                if($ugid && $grpresultcount > 0 &&
-                Yii::app()->session['loginID'] == $grow['owner_id'])
+                if($ugid && $grpresultcount > 0 &&  (Yii::app()->session['loginID'] == $grow['owner_id'] || hasGlobalPermission('USER_RIGHT_SUPERADMIN')))
                 { ?>
 
-                <a href='#' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl('admin/usergroups/delete')."?action=delusergroup&amp;ugid=$ugid"); ?>}">
+                <a href='#' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl('admin/usergroups/sa/delete')."?action=delusergroup&amp;ugid=$ugid"); ?>}">
                     <img src='<?php echo $imageurl; ?>delete.png' alt='<?php $clang->eT("Delete current user group"); ?>' name='DeleteUserGroup'  /></a>
                 <?php }
                 else

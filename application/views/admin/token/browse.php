@@ -33,6 +33,7 @@
     // Build the javasript variables to pass to the jqGrid
 ?>
 <script type="text/javascript">
+    var sAddParticipantToCPDBText = '<?php $clang->eT("Add participants to central database",'js');?>';
     var sRecordText = '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
     var sPageText = '<?php $clang->eT("Page {0} of {1}",'js');?>';
     var imageurl = "<?php echo Yii::app()->getConfig('adminimageurl'); ?>";
@@ -52,7 +53,7 @@
     var minusbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "deleteanswer.png" ?>";
     var survey_id = "<?php echo $surveyid; ?>";
     var delUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/delete/surveyid/{$surveyid}"); ?>";
-    var cancelBtn = "<?php $clang->eT("Cancel") ?>";
+    var saveBtn = "<?php $clang->eT("Save changes") ?>";
     var okBtn = "<?php echo $clang->eT("OK") ?>";
     var delmsg = "<?php $clang->eT("Are you sure you want to delete the selected entries?") ?>";
     var surveyID = "<?php echo $surveyid; ?>";
@@ -79,7 +80,7 @@
     <?php } ?>
     var sBounceProcessing = "<?php $clang->eT("Start bounce processing") ?>";
     var sBounceProcessingURL = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/bounceprocessing/surveyid/{$surveyid}"); ?>";
-    var participantlinkUrl="<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants/searchurl/survey||equal||{$surveyid}"); ?>";
+    var participantlinkUrl="<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants/searchurl/surveyid||equal||{$surveyid}"); ?>";
     var searchtypes = ["<?php $clang->eT("Equals") ?>","<?php $clang->eT("Contains") ?>","<?php $clang->eT("Not equal") ?>","<?php $clang->eT("Not contains") ?>","<?php $clang->eT("Greater than") ?>","<?php $clang->eT("Less than") ?>"]
     var colNames = ["ID","<?php $clang->eT("Action") ?>","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("Email address") ?>","<?php $clang->eT("Email status") ?>","<?php $clang->eT("Token") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Invitation sent?") ?>","<?php $clang->eT("Reminder sent?") ?>","<?php $clang->eT("Reminder count") ?>","<?php $clang->eT("Completed?") ?>","<?php $clang->eT("Uses left") ?>","<?php $clang->eT("Valid from") ?>","<?php $clang->eT("Valid until") ?>"<?php if (count($columnNames)) echo ','.$columnNames; ?>];
     var colModels = [
@@ -164,25 +165,27 @@
 </div>
 <br/>
 <table id="displaytokens"></table> <div id="pager"></div>
-<p><input type='button' name='addtocpdb' id='addtocpdb' value='<?php $clang->eT("Add participants to central database");?>'/><br />
-<div id="addcpdb" title="addsurvey" style="display:none">
-    <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
-    <p>
-        <select id="attributeid" name="attributeid" multiple="multiple">
-            <?php
-                if(!empty($attrfieldnames))
-                {
-                    foreach($attrfieldnames as $key=>$value)
+
+<?php if (hasGlobalPermission('USER_RIGHT_PARTICIPANT_PANEL')) { ?>
+    <div id="addcpdb" title="addsurvey" style="display:none">
+        <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
+        <p>
+            <select id="attributeid" name="attributeid" multiple="multiple">
+                <?php
+                    if(!empty($attrfieldnames))
                     {
-                        echo "<option value='".$key."'>".$value."</option>";
+                        foreach($attrfieldnames as $key=>$value)
+                        {
+                            echo "<option value='".$key."'>".$value."</option>";
+                        }
                     }
-                }
 
-            ?>
-        </select>
-    </p>
+                ?>
+            </select>
+        </p>
 
-</div>
+    </div>
+<?php } ?>
 </div>
 
 

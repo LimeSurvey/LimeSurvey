@@ -95,10 +95,11 @@
         </li>
 
         <li><label for='savetimings'><?php $clang->eT("Save timings?"); ?></label>
-            <?php if ($esrow['active']=="Y")
+            <?php 
+            if ($esrow['active']=="Y")
                 { ?>
                 <?php if ($esrow['savetimings'] != "Y") {  $clang->eT("Timings will not be saved.");}
-                    else { $clang->gT("Timings will be saved.");} ?>
+                    else { $clang->eT("Timings will be saved.");} ?>
                 <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
                 <input type='hidden' name='savetimings' value='<?php echo $esrow['savetimings']; ?>' />
                 <?php }

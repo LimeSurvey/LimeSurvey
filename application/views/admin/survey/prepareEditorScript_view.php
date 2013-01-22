@@ -1,6 +1,8 @@
 <script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL'); ?>/ckeditor.js"></script>
 <script type='text/javascript'>
     <!--
+    var sReplacementFieldTitle = '<?php $clang->eT('LimeSurvey replacement field properties','js');?>';
+    var sReplacementFieldButton = '<?php $clang->eT('Insert/edit LimeSurvey replacement field','js');?>';
     var editorwindowsHash = new Object();
     function find_popup_editor(fieldname)
     {
@@ -18,48 +20,48 @@
 
     function start_popup_editor(fieldname, fieldtext, sid, gid, qid, fieldtype, action)
     {
-    controlidena = fieldname + '_popupctrlena';
-    controliddis = fieldname + '_popupctrldis';
-    numwindows = editorwindowsHash.length;
-    activepopup = find_popup_editor(fieldname);
-    if (activepopup == null)
-    {
-    document.getElementsByName(fieldname)[0].readOnly=true;
-    document.getElementsByName(fieldname)[0].className='readonly';
-    document.getElementById(controlidena).style.display='none';
-    document.getElementById(controliddis).style.display='';
+        controlidena = fieldname + '_popupctrlena';
+        controliddis = fieldname + '_popupctrldis';
+        numwindows = editorwindowsHash.length;
+        activepopup = find_popup_editor(fieldname);
+        if (activepopup == null)
+        {
+            document.getElementsByName(fieldname)[0].readOnly=true;
+            document.getElementsByName(fieldname)[0].className='readonly';
+            document.getElementById(controlidena).style.display='none';
+            document.getElementById(controliddis).style.display='';
 
-    if (fieldname == '')
-    fieldname='0';
+            if (fieldname == '')
+                fieldname='0';
 
-    if (fieldtext == '')
-    fieldtext='0';
+            if (fieldtext == '')
+                fieldtext='0';
 
-    if (fieldtype == '')
-    fieldtype='0';
+            if (fieldtype == '')
+                fieldtype='0';
 
-    if (action == '')
-    action='0';
+            if (action == '')
+                action='0';
 
-    if (sid == '')
-    sid='0';
+            if (sid == '')
+                sid='0';
 
-    if (gid == '')
-    gid='0';
+            if (gid == '')
+                gid='0';
 
-    if (qid == '')
-    qid='0';
+            if (qid == '')
+                qid='0';
 
 
 
-    popup = window.open('<?php echo $this->createUrl('admin/htmleditor_pop/index'); ?>/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/<?php echo $clang->getlangcode(); ?>','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
+            popup = window.open('<?php echo $this->createUrl('admin/htmleditor_pop/index'); ?>/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/<?php echo $clang->getlangcode(); ?>','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
 
-    editorwindowsHash[fieldname] = popup;
-    }
-    else
-    {
-    activepopup.focus();
-    }
+            editorwindowsHash[fieldname] = popup;
+        }
+        else
+        {
+            activepopup.focus();
+        }
     }
 
     function updateCKeditor(fieldname,value)

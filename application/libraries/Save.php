@@ -281,7 +281,7 @@ class Save {
             $setField = $_POST['lastanswer'];
         }
         elseif (isset($_POST['lastgroup']))
-        {
+        {    
             $setField = $_POST['lastgroup'];
         }
         $passedTime = round(microtime(true) - $_POST['start_time'],2);
@@ -293,7 +293,9 @@ class Save {
         }
         else
         {
+            $aColumnNames=Survey_timings::model($thissurvey['sid'])->getTableSchema()->columnNames;
             $setField .= "time";
+            if (!in_array($setField,$aColumnNames)) die('Invalid last group timing fieldname');
             $setField = Yii::app()->db->quoteColumnName($setField);
             $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
             ."interviewtime =  (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " .$passedTime .","

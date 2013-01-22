@@ -256,7 +256,7 @@ class Authentication extends Survey_Common_Action
         {
             return $this->_getAuthenticationFailedErrorMessage();
         }
-
+        @session_regenerate_id(); // Prevent session fixation
         return $this->_setLoginSessions($identity);
     }
 
@@ -290,7 +290,6 @@ class Authentication extends Survey_Common_Action
         Yii::app()->session['templateeditormode'] = $user->templateeditormode;
         Yii::app()->session['questionselectormode'] = $user->questionselectormode;
         Yii::app()->session['dateformat'] = $user->dateformat;
-        Yii::app()->session['checksessionpost'] = randomChars(10);
         Yii::app()->session['session_hash'] = hash('sha256',getGlobalSetting('SessionName').$user->users_name.$user->uid);
     }
 

@@ -49,18 +49,19 @@
         {
             return;
         }
-
         $aRow = Yii::app()->db->createCommand($query)->queryRow();
         if (!$aRow)
         {
             safeDie($clang->gT("There is no matching saved survey")."<br />\n");
+            return false;
         }
         else
         {
             //A match has been found. Let's load the values!
             //If this is from an email, build surveysession first
             $_SESSION['survey_'.$surveyid]['LEMtokenResume']=true;
-
+            // Get if survey is been answered
+            $submitdate=$aRow['submitdate'];
             foreach ($aRow as $column => $value)
             {
                 if ($column == "token")
@@ -73,11 +74,18 @@
                     $_SESSION['survey_'.$surveyid]['step']=$value;
                     $thisstep=$value-1;
                 }
-                elseif ($column =='lastpage' && isset($_GET['token']) && $thissurvey['alloweditaftercompletion'] != 'Y' )
+                elseif ($column =='lastpage' && isset($_GET['token']))
                 {
-                    if ($value<1) $value=1;
-                    $_SESSION['survey_'.$surveyid]['step']=$value;
-                    $thisstep=$value-1;
+                    if(is_null($submitdate) || $submitdate=="N")
+                    {
+                        if ($value<1) $value=1;
+                        $_SESSION['survey_'.$surveyid]['step']=$value;
+                        $thisstep=$value-1;
+                    }
+                    else
+                    {
+                        $_SESSION['survey_'.$surveyid]['maxstep']=$value;
+                    }
                 }
                 /*
                 Commented this part out because otherwise startlanguage would overwrite any other language during a running survey.
@@ -108,7 +116,7 @@
                 else
                 {
                     //Only make session variables for those in insertarray[]
-                    if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']))
+                    if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$column]))
                     {
                         if (($_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'N' ||
                         $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'K' ||
@@ -213,20 +221,16 @@
 
         if (count($slangs)>1) // return a dropdow only of there are more than one lanagage
         {
-            $previewgrp = false;
-            if (isset($_REQUEST['action'])&& $_REQUEST['action']=='previewgroup')
+            $route="/survey/index/sid/{$surveyid}";
+            if (Yii::app()->request->getParam('action','none')=='previewgroup' && intval(Yii::app()->request->getParam('gid',0)))
             {
-                $previewgrp = true;
+                $route.="/action/previewgroup/gid/".intval(Yii::app()->request->getParam('gid',0));
             }
             $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
-            $sAddToURL = "";
-            $sTargetURL = Yii::app()->getController()->createUrl("/survey/index");
-            if ($previewgrp){
-                $sAddToURL = "&amp;action=previewgroup&amp;gid={$_REQUEST['gid']}";
-            }
             foreach ($slangs as $sLanguage)
             {
-                $sHTMLCode .= "<option value=\"{$sTargetURL}?sid=". $surveyid ."&amp;lang=". $sLanguage ."{$sAddToURL}\" ";
+                $sTargetURL=Yii::app()->getController()->createUrl($route."/lang/$sLanguage");
+                $sHTMLCode .= "<option value=\"{$sTargetURL}\" ";
                 if ($sLanguage==$sSelectedLanguage)
                 {
                     $sHTMLCode .=" selected='selected'";
@@ -256,7 +260,8 @@
             $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
             foreach(getLanguageDataRestricted(true, $sSelectedLanguage) as $sLanguageID=>$aLanguageProperties)
             {
-                $sHTMLCode .= "<option value='".Yii::app()->getController()->createUrl("/survey/index")."?lang=".$sLanguageID."' ";
+                $sLanguageUrl=Yii::app()->getController()->createUrl('survey/index',array('lang'=>$sLanguageID));
+                $sHTMLCode .= "<option value='{$sLanguageUrl}'";
                 if($sLanguageID == $sSelectedLanguage)
                 {
                     $sHTMLCode .= " selected='selected' ";
@@ -1384,7 +1389,7 @@
     * It is called from the related format script (group.php, question.php, survey.php)
     * if the survey has just started.
     */
-    function buildsurveysession($surveyid,$previewGroup=false)
+    function buildsurveysession($surveyid,$preview=false)
     {
         global $thissurvey, $secerror, $clienttoken;
         global $tokensexist;
@@ -1469,7 +1474,7 @@
 
         //BEFORE BUILDING A NEW SESSION FOR THIS SURVEY, LET'S CHECK TO MAKE SURE THE SURVEY SHOULD PROCEED!
         // TOKEN REQUIRED BUT NO TOKEN PROVIDED
-        if ($tokensexist == 1 && !$clienttoken && !$previewGroup)
+        if ($tokensexist == 1 && !$clienttoken && !$preview)
         {
 
             if ($thissurvey['nokeyboard']=='Y')
@@ -2091,7 +2096,7 @@
     // Prefill questions/answers from command line params
     $reservedGetValues= array('token','sid','gid','qid','lang','newtest','action');
     $startingValues=array();
-    if (isset($_GET) && !$previewGroup)
+    if (isset($_GET) && !$preview)
     {
         foreach ($_GET as $k=>$v)
         {
@@ -2102,14 +2107,13 @@
         }
     }
     $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
-
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url
     $oResult=Survey_url_parameters::model()->getParametersForSurvey($surveyid);
     foreach($oResult->readAll() as $aRow)
     {
-        if(isset($_GET[$aRow['parameter']]))
+        if(isset($_GET[$aRow['parameter']]) && !$preview)
         {
             $_SESSION['survey_'.$surveyid]['urlparams'][$aRow['parameter']]=$_GET[$aRow['parameter']];
             if ($aRow['targetqid']!='')
@@ -2226,8 +2230,11 @@ function doAssessment($surveyid, $returndataonly=false)
 {
 
     $clang = Yii::app()->lang;
-
     $baselang=Survey::model()->findByPk($surveyid)->language;
+    if(Survey::model()->findByPk($surveyid)->assessments!="Y")
+    {
+        return false;
+    }
     $total=0;
     if (!isset($_SESSION['survey_'.$surveyid]['s_lang']))
     {
@@ -2236,6 +2243,7 @@ function doAssessment($surveyid, $returndataonly=false)
     $query = "SELECT * FROM {{assessments}}
     WHERE sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'
     ORDER BY scope, id";
+
     if ($result = dbExecuteAssoc($query))   //Checked
     {
         $aResultSet=$result->readAll();

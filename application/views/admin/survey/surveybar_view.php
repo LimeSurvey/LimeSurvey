@@ -98,7 +98,7 @@
                         <?php } ?>
                     <?php if ($surveytranslate) {
                             if($hasadditionallanguages) { ?>
-                            <li><a href="<?php echo $this->createUrl("admin/translate/index/surveyid/{$surveyid}");?>">
+                            <li><a href="<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}");?>">
                                 <img src='<?php echo $sImageURL;?>translate_30.png' alt=''/> <?php $clang->eT("Quick-translation");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("Currently there are no additional languages configured for this survey.", "js");?>');" >
@@ -106,7 +106,7 @@
                             <?php } ?>
                         <?php } ?>
                     <?php if (hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
-                        <li><a href="<?php echo $this->createUrl("admin/expressions/sa"); ?>">
+                        <li><a href="<?php echo $this->createUrl("admin/expressions"); ?>">
                             <img src='<?php echo $sImageURL;?>expressionmanager_30.png' alt=''/> <?php $clang->eT("Expression Manager");?></a></li>
                         <?php } ?>
                     <?php if (hasSurveyPermission($surveyid,'surveycontent','update')) { ?>

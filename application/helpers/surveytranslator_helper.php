@@ -229,7 +229,7 @@
         $supportedLanguages['fr']['description'] = $clang->gT('French');
         $supportedLanguages['fr']['nativedescription'] = 'Fran&#231;ais';
         $supportedLanguages['fr']['rtl'] = false;
-        $supportedLanguages['fr']['dateformat'] = 2;
+        $supportedLanguages['fr']['dateformat'] = 5;
         $supportedLanguages['fr']['radixpoint'] = 1;
 
         // Galician
@@ -330,6 +330,14 @@
         $supportedLanguages['ko']['dateformat'] = 7;
         $supportedLanguages['ko']['radixpoint'] = 0;
 
+        // Kurdish (Sorani)
+        $supportedLanguages['ckb']['description'] = $clang->gT('Kurdish (Sorani)');
+        $supportedLanguages['ckb']['nativedescription'] = '&#1705;&#1608;&#1585;&#1583;&#1740;&#1740; &#1606;&#1575;&#1608;&#1749;&#1606;&#1583;&#1740;';
+        $supportedLanguages['ckb']['rtl'] = true;
+        $supportedLanguages['ckb']['dateformat'] = 1;
+        $supportedLanguages['ckb']['radixpoint'] = 1;
+        
+        
         // Lithuanian
         $supportedLanguages['lt']['description'] = $clang->gT('Lithuanian');
         $supportedLanguages['lt']['nativedescription'] = 'Lietuvi&#371;';
@@ -471,7 +479,7 @@
         $supportedLanguages['es']['radixpoint'] = 1;
 
         // Spanish (Chile)
-        $supportedLanguages['es-CL']['description'] = $clang->gT('Spanish (Mexico)');
+        $supportedLanguages['es-CL']['description'] = $clang->gT('Spanish (Chile)');
         $supportedLanguages['es-CL']['nativedescription'] = 'Espa&#241;ol chileno';
         $supportedLanguages['es-CL']['rtl'] = false;
         $supportedLanguages['es-CL']['dateformat'] = 5;
@@ -635,7 +643,7 @@
     function getJSDateFromDateFormat($sDateformat)
     {
         // The only difference from dateformat is that Jsdate does not support truncated years
-        return str_replace("yyyy", "yy", $sDateformat);
+        return str_replace(array('yyyy','MM','M'), array('yy','NN','NN'), $sDateformat);
     }
 
 

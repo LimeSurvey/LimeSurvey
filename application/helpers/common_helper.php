@@ -307,7 +307,7 @@ function isStandardTemplate($sTemplateName)
 */
 function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=false)
 {
-    $cached = null;
+    static $cached = null;
 
     $timeadjust = getGlobalSetting('timeadjust');
     $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
@@ -622,7 +622,8 @@ function getQuestions($surveyid,$gid,$selectedqid)
     }
     else
     {
-        $sQuestionselecter = "<option value=' '>".$clang->gT("None")."</option>\n".$sQuestionselecter;
+        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid);
+        $sQuestionselecter = "<option value='{$link}'>".$clang->gT("None")."</option>\n".$sQuestionselecter;
     }
     return $sQuestionselecter;
 }
@@ -779,7 +780,7 @@ function convertGETtoPOST($url)
     //	$Valuelist = "[" . implode(",",$arrayVal) . "]";
     $Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
     $Valuelist = "new Array(" . implode(",",$arrayVal) . ")";
-    $callscript = "sendPost('$calledscript','".Yii::app()->session['checksessionpost']."',$Paramlist,$Valuelist);";
+    $callscript = "sendPost('$calledscript','',$Paramlist,$Valuelist);";
     return $callscript;
 }
 
@@ -1336,7 +1337,10 @@ function getUserList($outputformat='fullinfoarray')
                     )
                 )
             UNION
-            SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}";
+            SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}
+            UNION
+            SELECT {$sSelectFields} from {{users}} v where uid={$myuid}";
+            
         }
         else
         {
@@ -1400,53 +1404,55 @@ function getUserList($outputformat='fullinfoarray')
 */
 function getSurveyInfo($surveyid, $languagecode='')
 {
-    global $siteadminname, $siteadminemail, $languagechanger;
+    static $staticSurveyInfo = array();// Use some static
     $surveyid=sanitize_int($surveyid);
     $languagecode=sanitize_languagecode($languagecode);
     $thissurvey=false;
-
+    // Do job only if this survey exist
+    if(!Survey::model()->findByPk($surveyid))
+    {
+        return false;
+    }
     // if no language code is set then get the base language one
-    if (!isset($languagecode) || $languagecode=='')
+    if ((!isset($languagecode) || $languagecode==''))
     {
         $languagecode=Survey::model()->findByPk($surveyid)->language;
     }
 
-    //$query="SELECT * FROM ".db_table_name('surveys').",".db_table_name('surveys_languagesettings')." WHERE sid=$surveyid and surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
-
-    $result = Surveys_languagesettings::model()->with('survey')->findAllByAttributes(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
-    foreach ($result as $row)
+    if(isset($staticSurveyInfo[$surveyid][$languagecode]) )
     {
-        $thissurvey=array();
-        foreach ($row as $k => $v)
-            $thissurvey[$k] = $v;
-        foreach ($row->survey as $k => $v)
-            $thissurvey[$k] = $v;
-
-        // now create some stupid array translations - needed for backward compatibility
-        // Newly added surveysettings don't have to be added specifically - these will be available by field name automatically
-        $thissurvey['name']=$thissurvey['surveyls_title'];
-        $thissurvey['description']=$thissurvey['surveyls_description'];
-        $thissurvey['welcome']=$thissurvey['surveyls_welcometext'];
-        $thissurvey['templatedir']=$thissurvey['template'];
-        $thissurvey['adminname']=$thissurvey['admin'];
-        $thissurvey['tablename']='{{survey_'.$thissurvey['sid'] . '}}';
-        $thissurvey['urldescrip']=$thissurvey['surveyls_urldescription'];
-        $thissurvey['url']=$thissurvey['surveyls_url'];
-        $thissurvey['expiry']=$thissurvey['expires'];
-        $thissurvey['email_invite_subj']=$thissurvey['surveyls_email_invite_subj'];
-        $thissurvey['email_invite']=$thissurvey['surveyls_email_invite'];
-        $thissurvey['email_remind_subj']=$thissurvey['surveyls_email_remind_subj'];
-        $thissurvey['email_remind']=$thissurvey['surveyls_email_remind'];
-        $thissurvey['email_confirm_subj']=$thissurvey['surveyls_email_confirm_subj'];
-        $thissurvey['email_confirm']=$thissurvey['surveyls_email_confirm'];
-        $thissurvey['email_register_subj']=$thissurvey['surveyls_email_register_subj'];
-        $thissurvey['email_register']=$thissurvey['surveyls_email_register'];
-        $thissurvey['attributedescriptions'] = $row->survey->tokenAttributes;
-        $thissurvey['attributecaptions'] = $row->attributeCaptions;
-        if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=$siteadminname;}
-        if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=$siteadminemail;}
-        if (!isset($thissurvey['urldescrip']) ||
-        $thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
+        $thissurvey=$staticSurveyInfo[$surveyid][$languagecode];
+    }
+    else
+    {
+        $result = Surveys_languagesettings::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        if($result)
+        {
+            $thissurvey=array_merge($result->survey->attributes,$result->attributes);
+            $thissurvey['name']=$thissurvey['surveyls_title'];
+            $thissurvey['description']=$thissurvey['surveyls_description'];
+            $thissurvey['welcome']=$thissurvey['surveyls_welcometext'];
+            $thissurvey['templatedir']=$thissurvey['template'];
+            $thissurvey['adminname']=$thissurvey['admin'];
+            $thissurvey['tablename']='{{survey_'.$thissurvey['sid'] . '}}';
+            $thissurvey['urldescrip']=$thissurvey['surveyls_urldescription'];
+            $thissurvey['url']=$thissurvey['surveyls_url'];
+            $thissurvey['expiry']=$thissurvey['expires'];
+            $thissurvey['email_invite_subj']=$thissurvey['surveyls_email_invite_subj'];
+            $thissurvey['email_invite']=$thissurvey['surveyls_email_invite'];
+            $thissurvey['email_remind_subj']=$thissurvey['surveyls_email_remind_subj'];
+            $thissurvey['email_remind']=$thissurvey['surveyls_email_remind'];
+            $thissurvey['email_confirm_subj']=$thissurvey['surveyls_email_confirm_subj'];
+            $thissurvey['email_confirm']=$thissurvey['surveyls_email_confirm'];
+            $thissurvey['email_register_subj']=$thissurvey['surveyls_email_register_subj'];
+            $thissurvey['email_register']=$thissurvey['surveyls_email_register'];
+            $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
+            $thissurvey['attributecaptions'] = $result->attributeCaptions;
+            if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=Yii::app()->getConfig('siteadminemail');}
+            if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=Yii::app()->getConfig('siteadminname');}
+            if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
+        }
+        $staticSurveyInfo[$surveyid][$languagecode]=$thissurvey;
     }
 
     return $thissurvey;
@@ -1779,7 +1785,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
             case "^":
             case "I":
             case "R":
-                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage) or die ("Couldn't get answer type L - getAnswerCode()"); //Checked
+                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage);
                 foreach($result as $row)
                 {
                     $this_answer=$row['answer'];
@@ -1841,7 +1847,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 {
                     $iScaleID=0;
                 }
-                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage,$iScaleID) or die ("Couldn't get answer type L - getAnswerCode()"); //Checked
+                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage,$iScaleID);
                 foreach($result as $row)
                 {
                     $this_answer=$row['answer'];
@@ -4572,8 +4578,10 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
 *
 * @param string $sTextToFlatten  Text you want to clean
+* @param boolan $keepSpan set to true for keep span, used for expression manager. Default: false
 * @param boolan $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
-* @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true
+* @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true. Default: UTF-8
+* @param string $bStripNewLines strip new lines if true, if false replace all new line by \r\n. Default: true
 *
 * @return string  Cleaned text
 */
@@ -4589,12 +4597,13 @@ function flattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=fals
     else {
         $sNicetext = strip_tags($sNicetext);
     }
+    // ~\R~u : see "What \R matches" and "Newline sequences" in http://www.pcre.org/pcre.txt
     if ($bStripNewLines ){  // strip new lines
-        $sNicetext = preg_replace(array('~\Ru~'),array(' '), $sNicetext);
+        $sNicetext = preg_replace(array('~\R~u'),array(' '), $sNicetext);
     }
     else // unify newlines to \r\n
     {
-        $sNicetext = preg_replace(array('~\Ru~'), array("\r\n"), $sNicetext);
+        $sNicetext = preg_replace(array('~\R~u'), array("\r\n"), $sNicetext);
     }
     if ($bDecodeHTMLEntities==true)
     {
@@ -5650,7 +5659,7 @@ function getUpdateInfo()
 {
     if (getGlobalSetting('SessionName')=='')
     {
-        setGlobalSetting('SessionName',randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"§$%&/()=?´`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789'));
+        setGlobalSetting('SessionName',randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"$%&/()=?`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789'));
     }
     Yii::import('application.libraries.admin.http.httpRequestIt');
     $http=new httpRequestIt;
@@ -6128,12 +6137,6 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
             // !!! Doubting this
             foreach ($_survey_quotas->languagesettings[0] as $k => $v)
                 $survey_quotas[$k] = $v;
-
-            //Modify the URL - thanks janokary
-            $survey_quotas['quotals_url']=str_replace("{SAVEDID}",!empty(Yii::app()->session['srid']) ? Yii::app()->session['srid'] : '', $survey_quotas['quotals_url']);
-            $survey_quotas['quotals_url']=str_replace("{SID}", $surveyid, $survey_quotas['quotals_url']);
-            $survey_quotas['quotals_url']=str_replace("{LANG}", Yii::app()->lang->getlangcode(), $survey_quotas['quotals_url']);
-            $survey_quotas['quotals_url']=str_replace("{TOKEN}",$clienttoken, $survey_quotas['quotals_url']);
 
             array_push($quota_info,array('Name' => $survey_quotas['name'],
             'Limit' => $survey_quotas['qlimit'],
@@ -7133,9 +7136,14 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
 {
     $clang = Yii::app()->lang;
     //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
-    $squery = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE uid = ".Yii::app()->session['loginID']." ORDER BY name";
+    $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
+    if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
+    {
+        $sQuery .="AND uid = ".Yii::app()->session['loginID'];
+    }
+    $sQuery .=  " ORDER BY name";
 
-    $sresult = Yii::app()->db->createCommand($squery)->query(); //Checked
+    $sresult = Yii::app()->db->createCommand($sQuery)->query(); //Checked
     if (!$sresult) {return "Database Error";}
     $selecter = "";
     foreach ($sresult->readAll() as $row)
@@ -7155,7 +7163,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
             //if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected='selected'"; $svexist = 1;}
 
             if ($gn['ugid'] == $ugid) {$selecter .= " selected='selected'"; $svexist = 1;}
-            $link = Yii::app()->getController()->createUrl("/admin/usergroups/view/ugid/".$gn['ugid']);
+            $link = Yii::app()->getController()->createUrl("/admin/usergroups/sa/view/ugid/".$gn['ugid']);
             $selecter .=" value='{$link}'>{$gn['name']}</option>\n";
             $simplegidarray[] = $gn['ugid'];
         }
@@ -7338,7 +7346,7 @@ function getHeader($meta = false)
     {
         $languagecode =  Yii::app()->session['survey_'.$surveyid]['s_lang'];
     }
-    elseif (isset($surveyid) && $surveyid)
+    elseif (isset($surveyid) && $surveyid  && Survey::model()->findByPk($surveyid))
     {
         $languagecode=Survey::model()->findByPk($surveyid)->language;
     }

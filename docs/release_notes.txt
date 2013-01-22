@@ -60,6 +60,196 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 121231) to 2.00+ (build 130103) Jan 3, 2013
+-Fixed issue #7125: Prefix of "numerical input"-question shown in printable survey-view (Menno Dekker)
+-Fixed issue #7128: After editing a relevance equationall other relevance equations in the survey are reset (Carsten Schmitz)
+-Fixed issue: all admin have access to survey summary, logic files and survey print version (Denis Chenu)
+#Updated translation: Lithuanian by simasj
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Spanish (Chile) by masterbip, SirCrovax
+
+
+Changes from 2.00+ (build 121220) to 2.00+ (build 121231) Dec 20, 2012
+-Fixed issue #7088: When creating quota, I cannot add answer (Menno Dekker)
+-Fixed issue #7116: Impossible to generate tokens (Menno Dekker)
+-Fixed issue #6937: Undefined index: fieldarray error when first testing a survey (Denis Chenu)
+-Fixed issue #7000: Fixed sorting of questions in export_statistics in remotecontrol (Spiros Trougakos)
+-Fixed issue #7073: Rubbish text after upgrading in ComfortUpdate step 4 (c-schmitz)
+-Fixed issue #7076: Missing translation and wrong truncating (tpartner)
+-Fixed issue #7084: Session fixation vulnerability (c-schmitz)
+-Fixed issue #7086: Export results window  shows SGQA-Codes instead of variable names (Denis Chenu)
+-Fixed issue #7089: Date shown in wrong format in global settings (c-schmitz)
+-Fixed issue #7092: Missing translation (c-schmitz)
+-Fixed issue #7105: Bad error handling on invalid lastgroup POST (c-schmitz)
+-Fixed issue #7108: 'hostinfo' parameter in config.php not working (c-schmitz)
+-Fixed issue #7114: {TEMPLATEURL} not parsed correctly at survey's end message (Denis Chenu)
+-Fixed issue: Couldn't get answer type L - getAnswerCode() in browse unique response id (Menno Dekker)
+-Fixed issue: error public page don't use survey template (Denis Chenu)
+-Fixed issue: Export/response browsing as slower as bigger the token table gets (c-schmitz)
+-Fixed issue: session write check is unreliable (Menno Dekker)
+-Fixed issue: Unbale to change language in surveylisting with 'urlFormat' to 'get' (Denis Chenu)
+-Fixed issue: Possible failure on upgrade due to missing survey_links table (Menno Dekker)
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Lithuanian by simasj
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Spanish (Chile) by masterbip, SirCrovax
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Turkish by kayazeren
+
+
+Changes from 2.00+ (build 121213) to 2.00+ (build 121220) Dec 20, 2012
+-Fixed issue #6962: Made max filter size equal for all browse tables (Menno Dekker)
+-Fixed issue #7082: Clicking view response in tokens table opens response in same window causing search to be lost (Menno Dekker)
+-Fixed issue #7107: Login using http://<serverurl>/admin broken on IIS (Menno Dekker)
+-Fixed issue #7071: Survey timing tables are archived and offered for deletion when visiting the integrity check (c-schmitz)
+-Fixed issue #7085: Cross Site Scripting (XSS) in printing page (Denis Chenu)
+-Fixed issue #7087: XSS security in statistics for admin (Denis Chenu)
+-Fixed issue #7093: XSS in Expression Manager (Denis Chenu)
+-Fixed issue #7095: Usage of wrong db engine when mysql database is configured to not default to MyISAM (c-schmitz)
+-Fixed issue: Incorrect temporary directory used for PDF generation (c-schmitz)
+-Fixed issue: PHP notice :  Trying to get property of non-object if survey not exist (Denis Chenu)
+-Fixed issue: Notice on template editor (Menno Dekker)
+-Fixed issue: Old token table is never checked for being empty or orphan in checkintegrity (Menno Dekker)
+-New feature: Installer checks if session save path is writable (Menno Dekker)
+-Fixed issue #7088: When creating quota, I cannot add answer (Menno Dekker)
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yooyooh, yanglaw
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: Italian by lfortunato, lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Spanish (Spain) by valdomir, jaimealvarezv
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.00+ (build 121211) to 2.00+ (build 121213) Dec 13, 2012
+-Fixed issue #6998: question is hidden by condition - no single preview anymore (Menno Dekker)
+-Fixed issue #7004: QA - view of question: click on variable -> bad request (Menno Dekker)
+-Fixed issue #7070: Error when submitting a questionnaire and using a date question with no custom advanced settings (Carsten Schmitz)
+-Fixed issue #7071: Survey timing tables are archived and offered for deletion when visiting the integrity check (Carsten Schmitz)
+#Updated translation: Chinese (Simplified) by yanglaw, xsb
+#Updated translation: Czech by slansky
+#Updated translation: French (France) by kharec, DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis, trougakoss
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Serbian by MilaVeljovic
+
+
+Changes from 2.00+ (build 121209) to 2.00+ (build 121211) Dec 11, 2012
+-Fixed issue #6994: Date/time question type always records "00:00" for time (Carsten Schmitz)
+-Fixed issue #7013: Misleading error message on file upload if survey has not been saved yet (Carsten Schmitz)
+-Fixed issue #7017: Unwanted date in print view footer (Carsten Schmitz)
+-Fixed issue #7021: Web server authentication broken (Carsten Schmitz)
+-Fixed issue #7023: Error when viewing charts in stats with a radio button question (Carsten Schmitz)
+-Fixed issue #7041: export_responses crashes if survey has no completed responses (Spiros Trougakos)
+-Fixed issue #7043: Labels shown in incorrect position on Multiple numerical input slider (tpartner)
+-Fixed issue #7052: Survey ID is not imported from .lss file (Carsten Schmitz)
+-Fixed issue #7053: exported quexml file does not contain variable names but SCQA identifier (Adam Zammit)
+-Fixed issue #7060: Group export on creates invalid file on Postgres (Carsten Schmitz)
+-Fixed issue #7062: Duplicate user groups in drop-down menu in user groups section (Carsten Schmitz)
+-Fixed issue: Export responses did not function for questions with subquestions (Spiros Trougakos)
+-Fixed issue: Small display issue in survey settings when timings is activated (Carsten Schmitz)
+-Fixed issue: Export spss/r was broken for not anonymous survey with tokens (Menno Dekker)
+-Fixed issue: Unable to set memory limit (Menno Dekker)
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish by elisa
+#Updated translation: Spanish (Mexican) by k001
+#Updated translation: Turkish by kayazeren
+#Updated translation: Ukrainian by skipenko
+
+
+Changes from 2.00+ (build 121208) to 2.00+ (build 121209) Dec 9, 2012
+-Fixed issue #7021: Web server authentication broken (Carsten Schmitz)
+-Fixed issue #7050: Database update successful, but can no longer get back to admin page (Carsten Schmitz)
+-Fixed issue #7051: Images uploaded in HTML editor end up in wrong directory on Windows (Carsten Schmitz)
+-Fixed issue: JavaScript error (TypeError: C is null) in LimeReplacementField (Denis Chenu)
+#Updated translation: Amharic by addis_1001
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: English by pfpDave
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Japanese by nomoto, inaba
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Portuguese (Portugal) by jginga
+#Updated translation: Turkish by kayazeren
+
+
+Changes from 2.00+ (build 121207) to 2.00+ (build 121208) Dec 7, 2012
+-Fixed issue #7020: "Show question index / allow jumping" with "Allow editing responses after completion" are incomplete (Denis Chenu)
+-Fixed issue #7025: "Resume later" in Token/Enable token-based response persistence don't have to show in forms (Denis Chenu)
+-Fixed issue #7046: Error after clicking expression manager icon (Carsten Schmitz)
+-Fixed issue #7047: Unable to reload a saved survey if it's not anonymous without token table (Denis Chenu)
+-Fixed issue: Suboptimal default date format for French (Carsten Schmitz)
+-Fixed issue: Upgrade does not successfully complete (Carsten Schmitz)
+
+
+Changes from 2.00+ (build 121204) to 2.00+ (build 121207) Dec 7, 2012
+-New feature: Added the option to export statistics (in remotecontrol) for a group or a selection of groups of a survey. (Spiros Trougakos)
+-Fixed issue #6936: CPDB button visible in tokens even if admin has no permission to access CPDB (Carsten Schmitz)
+-Fixed issue #6945: Superadmin can't edit all admin groups / Only initial superadmin can give participant panel permissions (Carsten Schmitz)
+-Fixed issue #6986: Usability tokens (Carsten Schmitz)
+-Fixed issue #6988: Conditions not set (tpartner)
+-Fixed issue #7005: SAVEDID not replaced (Denis Chenu)
+-Fixed issue #7006: Copying a survey and setting "reset conditions" doesn't reset relevance equations (Carsten Schmitz)
+-Fixed issue #7009: Label set quick add function broken (tpartner)
+-Fixed issue #7012: Derive defaults for decimal mark/date format for a new survey from the currently used language (Carsten Schmitz)
+-Fixed issue #7014: "R" entry in User control Page (Carsten Schmitz)
+-Fixed issue #7018: Maximum chars setting ignored for printable survey when using array numbers (Carsten Schmitz)
+-Fixed issue #7022: Limesurvey Replacement Field Properties box is empty in IE8 (tpartner)
+-Fixed issue #7028: Editing a participant in the CPD gives CDbException error (Menno Dekker)
+-Fixed issue #7033: Data entry screen: form is not displayed (Menno Dekker)
+-Fixed issue #7035: Error on queXML export (Carsten Schmitz)
+-Fixed issue #7036: Integer only is not set in numeric question type (Denis Chenu)
+-Fixed issue #7039: Confirmation message at the top of the page when trying to delete a survey in the survey list (Carsten Schmitz)
+-Fixed issue: Export_responses did not produce all responses (Spiros Trougakos)
+-Fixed issue: View participant from tokens in participant panel not working (Menno Dekker)
+-Fixed issue: Wrong label for "Spanish (Chile)". (Ryuichi INABA)
+#Updated translation: Arabic by ysaad
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: English by quaint
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by EnDaN
+#Updated translation: Italian by lfortunato, lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by samarta, taborda
+#Updated translation: Romanian by izbieta
+#Updated translation: Russian by Dominik
+#Updated translation: Serbian by MilaVeljovic
+
 
 Changes from 2.00+ (build 121127) to 2.00+ (build 121204) Dec 4, 2012
 -Fixed issue #6919: Save as label set from within survey doesn't work in IE (tpartner)

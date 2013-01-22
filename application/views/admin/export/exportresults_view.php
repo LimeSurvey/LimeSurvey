@@ -77,7 +77,7 @@
             <fieldset>
                 <legend><?php $clang->eT("Column control");?></legend>
 
-                <input type='hidden' name='sid' value='$surveyid' />
+                <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <?php if (isset($_POST['sql'])) { ?>
                     <input type='hidden' name='sql' value="<?php echo stripcslashes($_POST['sql']);?>" />
                     <?php }
@@ -99,8 +99,10 @@
                 } ?>
                 <br /><select name='colselect[]' multiple size='20'>
                     <?php $i=1;
-                        foreach($excesscols as $sFieldName=>$aData)
+                        foreach($excesscols as $sFieldName=>$fieldinfo)
                         {
+                            $questiontext=viewHelper::getFieldText($fieldinfo);
+                            $questioncode=viewHelper::getFieldCode($fieldinfo);
                             echo "<option value='{$sFieldName}'";
                             if (isset($_POST['summary']))
                             {
@@ -113,7 +115,7 @@
                             {
                                 echo " selected";
                             }
-                            echo ">{$i}: {$sFieldName} - ".ellipsize(FlattenText($aData['question'],false,true),40,0.9)."</option>\n";
+                            echo " title='{$sFieldName} : ".str_replace("'", "&#39;",$questiontext)."'>".ellipsize("{$i} : {$questioncode} - ".str_replace(array("\r\n", "\n", "\r"), " ", $questiontext),45)."</option>\n";
                             $i++;
                     } ?>
                 </select>

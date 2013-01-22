@@ -2712,7 +2712,7 @@ function do_multiplechoice_withcomments($ia)
         ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT('Make a comment on your choice here:')."' value='";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
         // --> START NEW FEATURE - SAVE
-        $answer_main .= "' onkeyup='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname2}\").value,\"$myfname2\",\"text\");}' />\n</span>\n"
+        $answer_main .= "' onkeyup='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname2}\").value,\"$myfname2\",\"text\");$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,document.getElementById(\"answer{$myfname}\").name, document.getElementById(\"answer{$myfname}\").type);}' />\n</span>\n"
         . "\t</li>\n";
         // --> END NEW FEATURE - SAVE
 
@@ -3140,7 +3140,7 @@ function do_multiplenumeric($ia)
     }
     else
     {
-        $maxlength= "25";
+        $maxlength= " maxlength='25' ";
     }
 
     //    //EQUALS VALUE
@@ -3703,12 +3703,15 @@ function do_numerical($ia)
     {
         $fValue=rtrim(rtrim($fValue,"0"),".");
     }
-    if (trim($aQuestionAttributes['num_value_int_only'])==1 && is_numeric($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
+    if (trim($aQuestionAttributes['num_value_int_only'])==1)
     {
         $acomma="";
         $extraclass .=" integeronly";
         $answertypeclass .= " integeronly";
-        $fValue=number_format($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], 0, '', '');
+        if(is_numeric($fValue))
+        {
+            $fValue=number_format($fValue, 0, '', '');
+        }
         $integeronly=1;
     }
     else

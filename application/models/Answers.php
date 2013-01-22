@@ -21,7 +21,7 @@ class Answers extends CActiveRecord
 	 * @static
 	 * @access public
      * @param string $class
-	 * @return CActiveRecord
+	 * @return Answers
 	 */
 	public static function model($class = __CLASS__)
 	{
@@ -39,16 +39,16 @@ class Answers extends CActiveRecord
 		return '{{answers}}';
 	}
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function primaryKey()
-	{
-		return array('qid', 'code');
-	}
+    /**
+    * Returns the primary key of this table
+    *
+    * @access public
+    * @return array
+    */
+    public function primaryKey()
+    {
+        return array('qid', 'code','language','scale_id');
+    }
 
     /**
      * Defines the relations for this model
@@ -68,38 +68,77 @@ class Answers extends CActiveRecord
         );
     }
 
-    function getAnswers($qid)
+    /**
+    * Returns this model's validation rules
+    *
+    */
+    public function rules()
     {
-		return Yii::app()->db->createCommand()
-			->select()
-			->from(self::tableName())
-			->where(array('and', 'qid='.$qid))
-			->order('code asc')
-			->query();
+        return array(
+            array('qid','numerical', 'integerOnly'=>true),
+            array('code','length', 'min' => 1, 'max'=>5),
+            array('answer','LSYii_Validators'),
+            array('sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('assessment_value','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
+            array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+        );
     }
 
+    function getAnswers($qid)
+    {
+        return Yii::app()->db->createCommand()
+            ->select()
+            ->from(self::tableName())
+            ->where(array('and', 'qid='.$qid))
+            ->order('code asc')
+            ->query();
+    }
+
+    /**
+     * Return the key=>value answer for a given $qid
+     * 
+     * @staticvar array $answerCache
+     * @param type $qid
+     * @param type $code
+     * @param type $lang
+     * @param type $iScaleID
+     * @return array
+     */
     function getAnswerFromCode($qid, $code, $lang, $iScaleID=0)
     {
-		return Yii::app()->db->cache(6)->createCommand()
+        static $answerCache = array();
+
+        if (array_key_exists($qid, $answerCache)
+                && array_key_exists($code, $answerCache[$qid])
+                && array_key_exists($lang, $answerCache[$qid][$code])
+                && array_key_exists($iScaleID, $answerCache[$qid][$code][$lang])) {
+            // We have a hit :)
+            return $answerCache[$qid][$code][$lang][$iScaleID];
+        } else {
+            $answerCache[$qid][$code][$lang][$iScaleID] = Yii::app()->db->cache(6)->createCommand()
 			->select('answer')
 			->from(self::tableName())
 			->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=:scale_id', 'language=:lang'))
 			->bindParam(":qid", $qid, PDO::PARAM_INT)
 			->bindParam(":code", $code, PDO::PARAM_STR)
 			->bindParam(":lang", $lang, PDO::PARAM_STR)
-            ->bindParam(":scale_id", $iScaleID, PDO::PARAM_INT)
-			->query();
+                        ->bindParam(":scale_id", $iScaleID, PDO::PARAM_INT)
+			->query()->readAll();
+            
+            return $answerCache[$qid][$code][$lang][$iScaleID];
+        }
     }
 
-	public function oldNewInsertansTags($newsid,$oldsid)
-	{
-		$criteria = new CDbCriteria;
-		$criteria->compare('questions.sid',$newsid);
-		$criteria->compare('answer','{INSERTANS::'.$oldsid.'X');
-		return $this->with('questions')->findAll($criteria);
-	}
+    public function oldNewInsertansTags($newsid,$oldsid)
+    {
+            $criteria = new CDbCriteria;
+            $criteria->compare('questions.sid',$newsid);
+            $criteria->compare('answer','{INSERTANS::'.$oldsid.'X');
+            return $this->with('questions')->findAll($criteria);
+    }
 
-	public function updateRecord($data, $condition=FALSE)
+    public function updateRecord($data, $condition=FALSE)
     {
         return Yii::app()->db->createCommand()->update(self::tableName(), $data, $condition ? $condition : '');
     }

@@ -49,8 +49,8 @@ class index extends CAction {
             killSurveySession($surveyid);
         }
 
-
-        list($surveyExists, $isSurveyActive) = $this->_surveyExistsAndIsActive($surveyid);
+        $surveyExists=($surveyid && Survey::model()->findByPk($surveyid));
+        $isSurveyActive=($surveyExists && Survey::model()->findByPk($surveyid)->active=="Y");
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
@@ -78,11 +78,11 @@ class index extends CAction {
         }
 
 
-        if ($this->_isPreviewAction($param) && !$this->_canUserPreviewSurvey($surveyid))
+        if (isset($param['action']) && (in_array($param['action'],array('previewgroup','previewquestion'))) && !$this->_canUserPreviewSurvey($surveyid))
         {
             $asMessage = array(
-            $clang->gT('Error'),
-            $clang->gT("We are sorry but you don't have permissions to do this.")
+                $clang->gT('Error'),
+                $clang->gT("We are sorry but you don't have permissions to do this.")
             );
             $this->_niceExit($redata, __LINE__, null, $asMessage);
         }
@@ -147,7 +147,7 @@ class index extends CAction {
         //CHECK FOR REQUIRED INFORMATION (sid)
         if ($surveyid && $surveyExists)
         {
- 		    LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
+            LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
             $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
             UpdateSessionGroupList($surveyid, $sTempLanguage);  // to refresh the language strings in the group list session variable
             UpdateFieldArray();        // to refresh question titles and question text
@@ -182,25 +182,27 @@ class index extends CAction {
 
             foreach($result->readAll() as $rows)
             {
-                $querylang="SELECT surveyls_title
-                FROM {{surveys_languagesettings}}
-                WHERE surveyls_survey_id={$rows['sid']}
-                AND surveyls_language='{$sDisplayLanguage}'";
-                $resultlang=Yii::app()->db->createCommand($querylang)->queryRow();
-                if ($resultlang['surveyls_title'] )
+#                $querylang="SELECT surveyls_title
+#                FROM {{surveys_languagesettings}}
+#                WHERE surveyls_survey_id={$rows['sid']}
+#                AND surveyls_language='{$sDisplayLanguage}'";
+#                $resultlang=Yii::app()->db->createCommand($querylang)->queryRow();
+                $resultlang=Surveys_languagesettings::model()->find(
+                        "surveyls_survey_id=:surveyls_survey_id AND surveyls_language=:surveyls_language",
+                        array(':surveyls_survey_id'=>intval($rows['sid']),':surveyls_language'=>$sDisplayLanguage)
+                );
+                $langparam=array();
+                $langtag = "";
+                if ($resultlang )
                 {
-                    $rows['surveyls_title']=$resultlang['surveyls_title'];
-                    $langtag = "";
+                    $rows['surveyls_title']=$resultlang->surveyls_title;
+                    $langparam=array('lang'=>$sDisplayLanguage);
                 }
                 else
                 {
                     $langtag = "lang=\"{$rows['language']}\"";
                 }
-                $link = "<li><a href='".$this->getController()->createUrl('/survey/index/sid/'.$rows['sid']);
-                if (isset($param['lang']) && $langtag=="") // TODO review with session ?
-                {
-                    $link .= "/lang-".sanitize_languagecode($param['lang']);
-                }
+                $link = "<li><a href='".$this->getController()->createUrl('/survey/index/sid/'.$rows['sid'],$langparam);
                 $link .= "' $langtag class='surveytitle'>".$rows['surveyls_title']."</a>\n";
                 if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."/language/".$sDisplayLanguage."'>(".$clang->gT('View statistics').")</a>";
                 $link .= "</li>\n";
@@ -620,35 +622,22 @@ class index extends CAction {
                 }
                 buildsurveysession($surveyid);
                 loadanswers();
-            }        
+            }
         }
-
-        //        // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
-        //        if (isset($move) || isset($_POST['saveprompt']))
-        //        {
-        //            $redata = compact(array_keys(get_defined_vars()));
-        //            //save.php
-        //            Yii::import("application.libraries.Save");
-        //            $tmp = new Save();
-        //            $tmp->run($redata);
-        //
-        //            // RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
-        //            if ($thissurvey['active'] == "Y" &&
-        //            ( $thissurvey['allowsave'] == "Y" || $thissurvey['tokenanswerspersistence'] == "Y") )
-        //            {
-        //                loadanswers();
-        //            }
-        //        }
-
-        if (isset($param['action']) && $param['action'] == 'previewgroup')
+        // Preview action : Preview right already tested before
+        if (isset($param['action']) && (in_array($param['action'],array('previewgroup','previewquestion'))))
         {
-            $thissurvey['format'] = 'G';
-            buildsurveysession($surveyid,true);
-        }
-
-        if (isset($param['action']) && $param['action'] == 'previewquestion')
-        {
-            $thissurvey['format'] = 'S';
+            // Unset all SESSION: be sure to have the last version
+            unset($_SESSION['fieldmap-' . $surveyid . $clang->langcode]);// Needed by createFieldMap: else fieldmap can be outdated
+            unset($_SESSION['survey_'.$surveyid]);
+            if ($param['action'] == 'previewgroup')
+            {
+                $thissurvey['format'] = 'G';
+            }
+            elseif ($param['action'] == 'previewquestion')
+            {
+                $thissurvey['format'] = 'S';
+            }
             buildsurveysession($surveyid,true);
         }
 
@@ -719,7 +708,7 @@ class index extends CAction {
 
     function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
-        if ( is_int($mvSurveyIdOrBaseLang) )
+        if ( is_int($mvSurveyIdOrBaseLang))
         {
             $baselang = Survey::model()->findByPk($surveyId)->language;
         }
@@ -737,28 +726,6 @@ class index extends CAction {
         return new Limesurvey_lang($baselang);
     }
 
-    function _surveyExistsAndIsActive($surveyId)
-    {
-        $isSurveyActive = false;
-        $surveyExists = false;
-
-        if ($surveyId)
-        {
-            $aRow = dbExecuteAssoc("SELECT active FROM {{surveys}} WHERE sid='".$surveyId."'")->read();
-            if (isset($aRow['active']))
-            {
-                $surveyExists = true;
-                if($aRow['active'] == 'Y')
-                {
-                    $isSurveyActive = true;
-                }
-            }
-        }
-
-        return array($surveyExists, $isSurveyActive);
-    }
-
-
     function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
     {
         return $clientToken != '' && isset($_SESSION['survey_'.$surveyid]['token']) && $clientToken != $_SESSION['survey_'.$surveyid]['token'];
@@ -767,11 +734,6 @@ class index extends CAction {
     function _isSurveyFinished($surveyid)
     {
         return isset($_SESSION['survey_'.$surveyid]['finished']) && $_SESSION['survey_'.$surveyid]['finished'] === true;
-    }
-
-    function _isPreviewAction($param = array())
-    {
-        return isset($param['action']) && ($param['action'] == 'previewgroup' || $param['action'] == 'previewquestion');
     }
 
     function _surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $bIsSurveyActive, $bSurveyExists)
@@ -808,11 +770,19 @@ class index extends CAction {
 
     function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array())
     {
-        $sTemplateDir= getTemplatePath($sTemplateDir);
+
+        if(isset($redata['surveyid']) && $redata['surveyid'] && !isset($thisurvey))
+        {
+            $thissurvey=getSurveyInfo($redata['surveyid']);
+            $sTemplateDir= getTemplatePath($thissurvey['template']);
+        }
+        else
+        {
+            $sTemplateDir= getTemplatePath($sTemplateDir);
+        }
         sendCacheHeaders();
 
         doHeader();
-
         $this->_printTemplateContent($sTemplateDir.'/startpage.pstpl', $redata, $iDebugLine);
         $this->_printMessage($asMessage);
         $this->_printTemplateContent($sTemplateDir.'/endpage.pstpl', $redata, $iDebugLine);
@@ -822,12 +792,21 @@ class index extends CAction {
         exit;
     }
 
-    function _createNewUserSessionAndRedirect($surveyId, &$redata, $iDebugLine, $asMessage = array())
+    function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = array())
     {
         $clang = Yii::app()->lang;
-        killSurveySession($surveyId);
+        killSurveySession($surveyid);
+        $thissurvey=getSurveyInfo($surveyid);
+        if($thissurvey)
+        {
+            $templatename=$thissurvey['template'];
+        }
+        else
+        {
+            $templatename=Yii::app()->getConfig('defaulttemplate');;
+        }
         // Let's redirect the client to the same URL after having reset the session
-        $this->_niceExit($redata, $iDebugLine, null, $asMessage);
+        $this->_niceExit($redata, $iDebugLine, $templatename, $asMessage);
     }
 
 

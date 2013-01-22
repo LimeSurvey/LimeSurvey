@@ -377,7 +377,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $fields=array();
     if (isset($tokensexist) && $tokensexist == true && $surveyprivate == 'N') {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
-        foreach ($tokenattributes as $attributefield=>$attributedescription['description'])
+        foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
@@ -523,7 +523,7 @@ function SPSSGetQuery($iSurveyID) {
         foreach ($tokenattributes as $attributefield) {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
-                $query .= "t.{$attributefield}, ";
+                $query .= Yii::app()->db->quoteColumnName( 't.' . $attributefield) . ',';
             }
         }
         $query .= "s.*
@@ -601,7 +601,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
                         $Key=str_replace('#','-',$Key);
                         if (!$xmlwriter->startElement($Key)) safeDie('Invalid element key: '.$Key);
                         // Remove invalid XML characters
-                        if ($Value!='') {
+                        if ($Value!=='') {
                             $Value=str_replace(']]>','',$Value);
                             $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u','',$Value));
                         }
@@ -1266,7 +1266,7 @@ function quexml_export($surveyi, $quexmllan)
             }
 
             $response = $dom->createElement("response");
-            $sgq = $iSurveyID . "X" . $gid . "X" . $qid;
+            $sgq = $RowQ['title'];
             $response->setAttribute("varName",$sgq);
 
             switch ($type)

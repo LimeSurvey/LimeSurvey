@@ -1601,8 +1601,9 @@ class dataentry extends Survey_Common_Action
                     {
                         $errormsg .= "<br /><br />".$clang->gT("Follow the following link to update it").":\n";
                         $errormsg .= CHtml::link("[id:$lastanswfortoken]",
-                        Yii::app()->baseUrl.('/admin/dataentry/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
+                        $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
                         array('title' => $clang->gT("Edit this entry")));
+                        $errormsg .= "<br/><br/>";
                     }
                     else
                     {
@@ -1779,7 +1780,7 @@ class dataentry extends Survey_Common_Action
                         $utresult = dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
 
                         // save submitdate into survey table
-                        $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$new_response}\n";
+                        $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$last_db_id}\n";
                         $sdresult = dbExecuteAssoc($sdquery) or safeDie ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
                         $last_db_id = getLastInsertID("{{survey_$surveyid}}");
                     }

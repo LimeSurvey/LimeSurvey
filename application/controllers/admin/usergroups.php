@@ -42,11 +42,9 @@ class Usergroups extends Survey_Common_Action
 
         if ($action == "mailsendusergroup") {
 
-            // user must be in user group
-            // or superadmin
+            // user must be in user group or superadmin
             $result = User_in_groups::model()->findAllByPk(array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
-
-            if (count($result) > 0 || Yii::app()->session['loginID'] == 1)
+            if (count($result) > 0 || Yii::app()->session['USER_RIGHT_SUPERADMIN'])
             {
                 $criteria = new CDbCriteria;
                 $criteria->compare('ugid',$ugid)->addNotInCondition('users.uid',array(Yii::app()->session['loginID']));
@@ -147,8 +145,6 @@ class Usergroups extends Survey_Common_Action
                     if ($result->count() > 0) {  // OK - AR count
                         $delquery_result = User_groups::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
 
-                        // $del_user_in_groups_query = "DELETE FROM {{user_in_groups}} WHERE ugid=$ugid AND uid=".Yii::app()->session['loginID'];
-
                         if ($delquery_result) //Checked)
                         {
                             list($aViewUrls, $aData) = $this->index(false, array("type" => "success", "message" => $clang->gT("Success!")));
@@ -236,12 +232,12 @@ class Usergroups extends Survey_Common_Action
                 if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
                     Yii::app()->session['flashmessage'] = $clang->gT("User group successfully saved!");
 					$aData['ugid'] = $ugid;
-                    Yii::app()->request->redirect($this->getController()->createUrl('admin/usergroups/view/ugid/'.$ugid));
+                    Yii::app()->request->redirect($this->getController()->createUrl('admin/usergroups/sa/view/ugid/'.$ugid));
                 }
                 else
                 {
                     Yii::app()->session['flashmessage'] = $clang->gT("Failed to edit user group!");
-                    Yii::app()->request->redirect($this->getController()->createUrl('admin/usergroups/edit/ugid/'.$ugid));
+                    Yii::app()->request->redirect($this->getController()->createUrl('admin/usergroups/sa/edit/ugid/'.$ugid));
                 }
 
             }
