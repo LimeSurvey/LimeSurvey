@@ -9,7 +9,7 @@
             $tab_title = getLanguageNameFromCode($language, false);
             if ($language == Survey::model()->findByPk($iSurveyID)->language)
 			{
-                $tab_title .= '(' . $clang->gT("Base Language") . ')';
+                $tab_title .= '(' . $clang->gT("Base language") . ')';
 			}
         ?>
             <li><a href="#language_<?php echo $language ?>"><?php echo $tab_title; ?></a></li>

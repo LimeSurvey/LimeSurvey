@@ -180,7 +180,7 @@ class surveypermission extends Survey_Common_Action {
                 . "<li><label for='uidselect'>".$clang->gT("User").": </label><select id='uidselect' name='uid'>\n"
                 . getSurveyUserList(false,false,$surveyid)
                 . "</select>\n"
-                . "<input style='width: 15em;' type='submit' value='".$clang->gT("Add User")."'  onclick=\"if (document.getElementById('uidselect').value == -1) { alert('".$clang->gT("Please select a user first","js")."'); return false;}\"/>"
+                . "<input style='width: 15em;' type='submit' value='".$clang->gT("Add user")."'  onclick=\"if (document.getElementById('uidselect').value == -1) { alert('".$clang->gT("Please select a user first","js")."'); return false;}\"/>"
                 . "<input type='hidden' name='action' value='addsurveysecurity' />"
                 . "</li></ul></form>\n";
                 
@@ -308,7 +308,7 @@ class surveypermission extends Survey_Common_Action {
 
         if($action == "addsurveysecurity")
         {
-            $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Add User")."</div>\n";
+            $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Add user")."</div>\n";
             $addsummary .= "<div class=\"messagebox ui-corner-all\">\n";
 
             $result = Survey::model()->findAll('sid = :sid AND owner_id = :owner_id AND owner_id != :postuserid',array(':sid' => $surveyid, ':owner_id' => Yii::app()->session['loginID'], ':postuserid' => $postuserid));
