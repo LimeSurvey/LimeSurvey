@@ -27,7 +27,7 @@ class Expressions extends Survey_Common_Action {
             $aData['surveyid'] = (int)$_REQUEST['sid'];
             $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
             $message['title']= $clang->gT('Access denied!');
-            $message['message']= $clang->gT('You do not have sufficient rights to access this page');
+            $message['message']= $clang->gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }

@@ -55,7 +55,7 @@
 
         <li><label for='admin'><?php $clang->eT("Administrator:") ; ?></label>
         <input type='text' size='50' id='admin' name='admin' value='<?php echo $owner['full_name'] ; ?>' /></li>
-        <li><label for='adminemail'><?php $clang->eT("Admin Email:") ; ?></label>
+        <li><label for='adminemail'><?php $clang->eT("Admin email:") ; ?></label>
         <input type='email' size='50' id='adminemail' name='adminemail' value='<?php echo $owner['email'] ; ?>' /></li>
         <li><label for='bounce_email'><?php $clang->eT("Bounce Email:") ; ?></label>
         <input type='email' size='50' id='bounce_email' name='bounce_email' value='<?php echo $owner['bounce_email'] ; ?>' /></li>

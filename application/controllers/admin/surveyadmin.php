@@ -821,7 +821,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $tab_title[$i] = getLanguageNameFromCode($esrow['surveyls_language'], false);
 
                 if ($esrow['surveyls_language'] == Survey::model()->findByPk($iSurveyID)->language)
-                    $tab_title[$i] .= '(' . $clang->gT("Base Language") . ')';
+                    $tab_title[$i] .= '(' . $clang->gT("Base language") . ')';
 
                 $esrow = array_map('htmlspecialchars', $esrow);
                 $aData['esrow'] = $esrow;
