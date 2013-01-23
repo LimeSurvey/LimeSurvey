@@ -4927,7 +4927,7 @@ function do_array($ia)
             {
                 $answer_head_line .= "\t<th>".$clang->gT('No answer')."</th>\n";
             }
-        $answer_head = "\t<thead><tr>\n".$answer_head_line."</thead></tr>\n\t\n";
+        $answer_head = "\t<thead><tr>\n".$answer_head_line."</tr></thead>\n\t\n";
 
         $answer = '<tbody>';
         $trbc = '';
