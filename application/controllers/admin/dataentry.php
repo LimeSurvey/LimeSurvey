@@ -169,7 +169,6 @@ class dataentry extends Survey_Common_Action
 
         $importcount = 0;
         $recordcount = 0;
-        $aFieldnames = array_map('dbQuoteID', $aFieldnames);
 
         // Find out which fields are datefields, these have to be null if the imported string is empty
         $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
@@ -198,36 +197,36 @@ class dataentry extends Survey_Common_Action
                 : array_combine($aFieldnames, $fieldvalues));
                 foreach ($datefields as $datefield)
                 {
-                    if (@$fielddata["'" . $datefield . "'"] == '') {
-                        unset($fielddata["'" . $datefield . "'"]);
+                    if (is_null(@$fielddata[ $datefield ])) {
+                        unset($fielddata[ $datefield ]);
                     }
                 }
 
                 foreach ($numericfields as $numericfield)
                 {
-                    if ($fielddata["`" . $numericfield . "`"] == '') {
-                        unset($fielddata["`" . $numericfield . "`"]);
+                    if ($fielddata[ $numericfield ] == '') {
+                        unset($fielddata[ $numericfield ]);
                     }
                 }
 
-                if (isset($fielddata['`submitdate`']) && $fielddata['`submitdate`'] == 'NULL') {
-                    unset ($fielddata['`submitdate`']);
+                if (isset($fielddata['submitdate']) && $fielddata['submitdate'] == 'NULL') {
+                    unset ($fielddata['submitdate']);
                 }
-                if ($fielddata['`lastpage`'] == '') $fielddata['`lastpage`'] = '0';
+                if ($fielddata['lastpage'] == '') $fielddata['lastpage'] = '0';
 
                 $recordexists = false;
-                if (isset($fielddata['`id`'])) {
-                    $result = $survey->findAllByAttributes(array('id' => $fielddata['`id`']));
+                if (isset($fielddata['id'])) {
+                    $result = $survey->findAllByAttributes(array('id' => $fielddata['id']));
                     $recordexists = $result > 0;
 
                     // Check if record with same id exists
                     if ($recordexists) {
                         if (Yii::app()->request->getPost('insert') == "ignore") {
-                            $aData['msgs'][] .= sprintf($clang->gT("Record ID %s was skipped because of duplicate ID."), $fielddata['`id`']);
+                            $aData['msgs'][] .= sprintf($clang->gT("Record ID %s was skipped because of duplicate ID."), $fielddata['id']);
                             continue;
                         }
                         if (Yii::app()->request->getPost('insert') == "replace") {
-                            $result = $survey->deleteSomeRecords(array('id' => $fielddata['`id`']));
+                            $result = $survey->deleteSomeRecords(array('id' => $fielddata['id']));
                             $recordexists = false;
                         }
                     }
@@ -2418,8 +2417,10 @@ class dataentry extends Survey_Common_Action
 
         // Make this safe for DB (*after* we undo first excel's
         // and then our escaping).
-        $fieldvalues = array_map( 'dbQuoteAll', $fieldvalues );
-        $fieldvalues = str_replace( dbQuoteAll('{question_not_shown}'), null, $fieldvalues );
+        foreach ($fieldvalues as &$sValue)
+        {
+            if ($sValue=='{question_not_shown}') $sValue=null;
+        }
 
         return $fieldvalues;
     }
