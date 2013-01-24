@@ -1255,13 +1255,14 @@
     */
     function buildsurveysession($surveyid,$preview=false)
     {
-        global $thissurvey, $secerror, $clienttoken;
+        global $secerror, $clienttoken;
         global $tokensexist;
         //global $surveyid;
         global $templang, $move, $rooturl;
 
         $clang = Yii::app()->lang;
 
+        $thissurvey = getSurveyInfo($surveyid);
         if (empty($templang))
         {
             $templang=$thissurvey['language'];
