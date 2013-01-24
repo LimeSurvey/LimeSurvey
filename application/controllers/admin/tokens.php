@@ -427,7 +427,7 @@ class tokens extends Survey_Common_Action
         // Now find all responses for the visible tokens
         $visibleTokens = array();
         $answeredTokens = array();
-        if ($aSurveyInfo['anonymized'] == "N") {
+        if ($aSurveyInfo['anonymized'] == "N" && $aSurveyInfo['active'] == "Y") {
             foreach ($tokens as $token) {
                 $visibleTokens[] = $token['token'];
             }
