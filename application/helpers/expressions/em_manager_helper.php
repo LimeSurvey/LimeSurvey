@@ -704,7 +704,7 @@
             if (!is_null($sid)) {
                 if (isset($_SESSION['LEMsid']) && $sid != $_SESSION['LEMsid']) {
                     // then trying to use a new survey - so clear the LEM cache
-                    $_SESSION['LEMdirtyFlag'] = true;
+                    self::SetDirtyFlag();
                 }
                 $_SESSION['LEMsid'] = $sid;
             }
@@ -724,7 +724,7 @@
             }
             if ($_SESSION['LEMlang'] != $lang) {
                 // then changing languages, so clear cache
-                $_SESSION['LEMdirtyFlag'] = true;
+                    self::SetDirtyFlag();
             }
             $_SESSION['LEMlang'] = $lang;
         }
