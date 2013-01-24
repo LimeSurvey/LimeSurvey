@@ -85,26 +85,29 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
     //Now get the query string with all fields to export
     $query = SPSSGetQuery($iSurveyID);
 
-    $result=Yii::app()->db->createCommand($query)->query()->readAll(); //Checked
-    $num_fields = isset($result[0]) ? count($result[0]) : 0;
-
-    //This shouldn't occur, but just to be safe:
-    if (count($fields)<>$num_fields) safeDie("Database inconsistency error");
-    
-    // Add column headers (used by R export)
-    if($header==TRUE)
-    {
-        $i = 1;
-        foreach ($fields as $field) {
-            if (!$field['hide'] ) echo $q.strtoupper($field['sql_name']).$q;
-            if ($i<$num_fields && !$field['hide']) echo ',';
-            $i++;
-        }
-        echo("\n");
-    }
-
+    $result=Yii::app()->db->createCommand($query)->query();
+    $rownr = 0;
 
     foreach ($result as $row) {
+        $rownr++;
+        if ($rownr == 1) {
+            $num_fields = count($row);
+
+            //This shouldn't occur, but just to be safe:
+            if (count($fields)<>$num_fields) safeDie("Database inconsistency error");
+
+            // Add column headers (used by R export)
+            if($header==TRUE)
+            {
+                $i = 1;
+                foreach ($fields as $field) {
+                    if (!$field['hide'] ) echo $q.strtoupper($field['sql_name']).$q;
+                    if ($i<$num_fields && !$field['hide']) echo ',';
+                    $i++;
+                }
+                echo("\n");
+            }            
+        }
         $row = array_change_key_case($row,CASE_UPPER);
         //$row = $result->GetRowAssoc(true);	//Get assoc array, use uppercase
         reset($fields);	//Jump to the first element in the field array
@@ -372,9 +375,9 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $fieldno=0;
 
     $fields=array();
-    if (isset($tokensexist) && $tokensexist == true && $surveyprivate == 'N') {
+    if (isset($tokensexist) && $tokensexist == true && $surveyprivate == 'N' && hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
-        foreach ($tokenattributes as $attributefield=>$attributedescription['description'])
+        foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
@@ -514,13 +517,13 @@ function SPSSGetQuery($iSurveyID) {
 
 
     #See if tokens are being used
-    if (isset($tokensexist) && $tokensexist == true && !$bDataAnonymized) {
+    if (isset($tokensexist) && $tokensexist == true && !$bDataAnonymized && hasSurveyPermission($iSurveyID,'tokens','read')) {
         $query="SELECT ";
         $tokenattributes=array_keys(getTokenFieldsAndNames($iSurveyID,false));
         foreach ($tokenattributes as $attributefield) {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
-                $query .= "t.{$attributefield}, ";
+                $query .= Yii::app()->db->quoteColumnName( 't.' . $attributefield) . ',';
             }
         }
         $query .= "s.*
@@ -598,7 +601,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
                         $Key=str_replace('#','-',$Key);
                         if (!$xmlwriter->startElement($Key)) safeDie('Invalid element key: '.$Key);
                         // Remove invalid XML characters
-                        if ($Value!='') {
+                        if ($Value!=='') {
                             $Value=str_replace(']]>','',$Value);
                             $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u','',$Value));
                         }
@@ -1263,7 +1266,7 @@ function quexml_export($surveyi, $quexmllan)
             }
 
             $response = $dom->createElement("response");
-            $sgq = $iSurveyID . "X" . $gid . "X" . $qid;
+            $sgq = $RowQ['title'];
             $response->setAttribute("varName",$sgq);
 
             switch ($type)

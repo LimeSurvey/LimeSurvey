@@ -166,17 +166,41 @@ class Survey_dynamic extends LSActiveRecord
     {
         $newCriteria = new CDbCriteria();
         $criteria = $this->getCommandBuilder()->createCriteria($condition);
+        $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . self::$sid  . '}}')->getColumnNames();
+        $aSelectFields=array_diff($aSelectFields, array('token'));
+        $aSelect=array();
+        foreach($aSelectFields as $sField)
+            $aSelect[]='t.'.Yii::app()->db->schema->quoteColumnName($sField);
+        $aSelectFields=$aSelect;        
+        $aSelectFields[]='t.token';
 
         if ($criteria->select == '*')
         {
-            $criteria->select = 't.*';
+            $criteria->select = $aSelectFields;
         }
 
         $newCriteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} tokens ON t.token = tokens.token";
-        $newCriteria->select = 'tokens.*';  // Otherwise we don't get records from the token table
+
+        $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . self::$sid . '}}')->getColumnNames();
+        $aTokenFields=array_diff($aTokenFields, array('token'));
+        
+        $newCriteria->select = $aTokenFields;  // Otherwise we don't get records from the token table
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
+    }
+    
+    public static function countAllAndPartial($sid)
+    {
+        $select = array(
+            'count(*) AS cntall',
+            'sum(CASE 
+                 WHEN '. Yii::app()->db->quoteColumnName('submitdate') . ' IS NULL THEN 1
+                          ELSE 0
+                 END) AS cntpartial',
+            );
+        $result = Yii::app()->db->createCommand()->select($select)->from('{{survey_' . $sid . '}}')->queryRow();
+        return $result;
     }
     
     /**
@@ -188,7 +212,12 @@ class Survey_dynamic extends LSActiveRecord
      */
     public function isCompleted($srid)
     {
+        static $resultCache = array();
+        
         $sid = self::$sid;
+        if (array_key_exists($sid, $resultCache) && array_key_exists($srid, $resultCache[$sid])) {
+            return $resultCache[$sid][$srid];
+        }
         $completed=false;
 
         if(Yii::app()->db->schema->getTable($this->tableName())){
@@ -202,6 +231,7 @@ class Survey_dynamic extends LSActiveRecord
                 $completed=true;
             }
         }
+        $resultCache[$sid][$srid] = $completed;
         return $completed;
     }
 

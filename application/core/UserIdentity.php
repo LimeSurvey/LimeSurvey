@@ -76,7 +76,11 @@ class UserIdentity extends CUserIdentity
                 $sUser = substr($sUser, strrpos($sUser, "\\")+1);
             }            
             $aUserMappings=Yii::app()->getConfig("auth_webserver_user_map");
-            if (isset($aUserMappings[$sUser])) $sUser= $aUserMappings[$sUser];
+            if (isset($aUserMappings[$sUser])) 
+            {
+               $sUser = $aUserMappings[$sUser];
+            }
+            $this->username = $sUser;
 
             $oUser=User::model()->findByAttributes(array('users_name'=>$sUser));
             if (is_null($oUser))
@@ -85,7 +89,7 @@ class UserIdentity extends CUserIdentity
                 {
                     // If defined this function returns an array
                     // describing the defaukt profile for this user
-                    $aUserProfile = hook_get_autouserprofile($sUser);
+                    $aUserProfile = hook_get_auth_webserver_profile($sUser);
                 }
                 elseif (Yii::app()->getConfig("auth_webserver_autocreate_user"))
                 {

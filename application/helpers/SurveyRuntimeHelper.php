@@ -56,10 +56,11 @@ class SurveyRuntimeHelper {
         'anonymized' => ($thissurvey['anonymized'] != 'N'),
         'assessments' => ($thissurvey['assessments'] == 'Y'),
         'datestamp' => ($thissurvey['datestamp'] == 'Y'),
+        'deletenonvalues'=>Yii::app()->getConfig('deletenonvalues'),        
         'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY), // TODO set this to true if in admin mode but not if running a survey
         'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
         'radix'=>$radix,
-        'refurl' => (($thissurvey['refurl'] == "Y") ? $_SESSION[$LEMsessid]['refurl'] : NULL),
+        'refurl' => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : NULL),
         'savetimings' => ($thissurvey['savetimings'] == "Y"),
         'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
         'startlanguage'=>(isset($clang->langcode) ? $clang->langcode : $thissurvey['language']),
@@ -112,7 +113,9 @@ class SurveyRuntimeHelper {
                     $move = "movenext";
                     $_SESSION[$LEMsessid]['step']=1;
                 }
-            } else if($surveyid != LimeExpressionManager::getLEMsurveyId()) {
+            }
+            elseif($surveyid != LimeExpressionManager::getLEMsurveyId())
+            {
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
                 LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
             }
@@ -164,6 +167,10 @@ class SurveyRuntimeHelper {
             if (isset($_SESSION[$LEMsessid]['LEMtokenResume']))
             {
                 LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
+                if(isset($_SESSION[$LEMsessid]['maxstep']) && $_SESSION[$LEMsessid]['maxstep']>$_SESSION[$LEMsessid]['step'])
+                {
+                    LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['maxstep'], false, false);
+                }
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
                 unset($_SESSION[$LEMsessid]['LEMtokenResume']);
             }
@@ -244,7 +251,7 @@ class SurveyRuntimeHelper {
             {
                 $_SESSION[$LEMsessid]['test']=time();
                 display_first_page();
-                exit;
+                Yii::app()->end(); // So we can still see debug messages
             }
 
             //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
@@ -275,8 +282,14 @@ class SurveyRuntimeHelper {
             {
                 // must do this here to process the POSTed values
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false);   // by jumping to current step, saves data so far
-
-                $cSave->showsaveform(); // generates a form and exits, awaiting input
+                if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
+                {
+                    $cSave->showsaveform(); // generates a form and exits, awaiting input
+                }
+                else 
+                {
+                    // TODO : update lastpage to $_SESSION[$LEMsessid]['step'] in Survey_dynamic
+                }
             }
 
             if ($thissurvey['active'] == "Y" && isset($_POST['saveprompt']))
@@ -352,10 +365,7 @@ class SurveyRuntimeHelper {
                 //Before doing the "templatereplace()" function, check the $thissurvey['url']
                 //field for limereplace stuff, and do transformations!
                 $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
-                $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'],array('SID'=>$thissurvey['sid'],
-                                                                                                'SAVEDID'=>(isset($_SESSION[$LEMsessid]['srid']) ? $_SESSION[$LEMsessid]['srid'] : ''),
-                                                                                                'TOKEN'=>(isset($clienttoken) ? $clienttoken : ''),
-                                                                                                ));   // to do INSERTANS substitutions
+                $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], array(), $redata);   // to do INSERTANS substitutions
                 
                 //END PAGE - COMMIT CHANGES TO DATABASE
                 if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
@@ -384,7 +394,7 @@ class SurveyRuntimeHelper {
                     }
                     */
                     // can't kill session before end message, otherwise INSERTANS doesn't work.
-                    $completed = templatereplace($thissurvey['surveyls_endtext']);
+                    $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata);
                     $completed .= "<br /><strong><font size='2' color='red'>" . $clang->gT("Did Not Save") . "</font></strong><br /><br />\n\n";
                     $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
                     if ($thissurvey['printanswers'] == 'Y')
@@ -403,7 +413,7 @@ class SurveyRuntimeHelper {
                         setcookie("LS_" . $surveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days   
                     }
 
-
+                    
                     $content = '';
                     $content .= templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
 
@@ -418,7 +428,7 @@ class SurveyRuntimeHelper {
                     }
 
                     //Update the token if needed and send a confirmation email
-                    if (isset($clienttoken) && $clienttoken)
+                    if (isset($_SESSION['survey_'.$surveyid]['thistoken']))
                     {
                         submittokens();
                     }
@@ -451,13 +461,13 @@ class SurveyRuntimeHelper {
                     }
                     else
                     {
-                        $completed = templatereplace($thissurvey['surveyls_endtext']);
+                        $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata);
                     }
 
                     // Link to Print Answer Preview  **********
                     if ($thissurvey['printanswers'] == 'Y')
                     {
-                        $url = Yii::app()->getController()->createUrl("printanswers/view/surveyid/{$surveyid}");
+                        $url = Yii::app()->getController()->createUrl("/printanswers/view/surveyid/{$surveyid}");
                         $completed .= "<br /><br />"
                         . "<a class='printlink' href='$url'  target='_blank'>"
                         . $clang->gT("Print your answers.")
@@ -473,7 +483,7 @@ class SurveyRuntimeHelper {
                     // Link to Public statistics  **********
                     if ($thissurvey['publicstatistics'] == 'Y')
                     {
-                        $url = Yii::app()->getController()->createUrl("statistics_user/action/surveyid/{$surveyid}/language/".$_SESSION[$LEMsessid]['s_lang']);
+                        $url = Yii::app()->getController()->createUrl("/statistics_user/action/surveyid/{$surveyid}/language/".$_SESSION[$LEMsessid]['s_lang']);
                         $completed .= "<br /><br />"
                         . "<a class='publicstatisticslink' href='$url' target='_blank'>"
                         . $clang->gT("View the statistics for this survey.")
@@ -505,7 +515,7 @@ class SurveyRuntimeHelper {
                 {
                     echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
                 }
-                echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"));
+                echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"), array(), $redata);
                 doFooter();
                 
                 // The session cannot be killed until the page is completely rendered
@@ -872,13 +882,13 @@ END;
 
 END;
         }
-
+        
         print <<<END
             }
         // -->
         </script>
 END;
-
+        
         //Display the "mandatory" message on page if necessary
         if (isset($showpopups) && $showpopups == 0 && $stepInfo['mandViolation'] && $okToShowErrors)
         {
@@ -962,7 +972,7 @@ END;
                     continue; // skip this one
                 }
 
-                if (!$qinfo['relevant'] || ($qinfo['hidden'] && $qinfo['info']['type'] == '*'))
+                if ((!$qinfo['relevant'] && !$previewquestion) || ($qinfo['hidden'] && $qinfo['info']['type'] == '*'))
                 {
                     $n_q_display = ' style="display: none;"';
                 }
@@ -1019,6 +1029,26 @@ END;
 
         LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+        if ($previewquestion){
+            // force the question to be visible, even if irrelevant
+            echo "
+        <script type='text/javascript'>
+    $('#relevance" . $_qid . "').val(1);
+    $(document).ready(function() {
+        $('#question" . $_qid . "').show();
+    });
+    $(document).change(function() {
+        $('#question" . $_qid . "').show();
+    });
+    $(document).bind('keydown',function(e) {
+                if (e.keyCode == 9) {
+                    $('#question" . $_qid . "').show();
+                    return true;
+                }
+                return true;
+            });
+         </script>";
+        }
         LimeExpressionManager::FinishProcessingPage();
 
         if (!$previewgrp && !$previewquestion)

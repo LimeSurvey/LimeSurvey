@@ -102,7 +102,9 @@
                 <td><a href='mailto:<?php echo htmlspecialchars($usr['email']);?>'><?php echo htmlspecialchars($usr['email']);?></a></td>
                 <td><?php echo htmlspecialchars($usr['full_name']);?></td>
 
-                <td><?php echo $noofsurveyslist[$i];?></td>
+                <?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) { ?>
+                    <td><?php echo $noofsurveyslist[$i];?></td>
+                <?php } ?>
 
                 <?php $uquery = "SELECT users_name FROM {{users}} WHERE uid=".$usr['parent_id'];
                     $uresult = dbExecuteAssoc($uquery); //Checked
@@ -128,7 +130,7 @@
                 <td style='width:20%'><input type='text' name='new_user' /></td>
                 <td style='width:20%'><input type='text' name='new_email' /></td>
                 <td style='width:20%'><input type='text' name='new_full_name' /></td><td style='width:8%'>&nbsp;</td>
-                <td style='width:15%'><input type='submit' value='<?php $clang->eT("Add User");?>' />
+                <td style='width:15%'><input type='submit' value='<?php $clang->eT("Add user");?>' />
                     <input type='hidden' name='action' value='adduser' /></td>
             </tr></table></form><br />
     <?php } ?>

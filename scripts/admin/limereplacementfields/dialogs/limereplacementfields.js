@@ -33,7 +33,7 @@
 						    	editor.config.LimeReplacementFieldsSID + '/gid/' +
 						    	editor.config.LimeReplacementFieldsGID + '/qid/' +
 						    	editor.config.LimeReplacementFieldsQID
-),
+						    ),
 							setup : function( element )
 							{
 								if ( isEdit )
@@ -55,6 +55,16 @@
 					this._element = CKEDITOR.plugins.limereplacementfields.getSelectedPlaceHoder( editor );
 
 				this.setupContent( this._element );
+				
+				if($('#cquestions').parent().width() == 0) { // IE7 hack
+					var maxW = 0;
+					$('#cquestions option').wrapInner('<span />').each(function(i){
+						if($('span', this).outerWidth() > maxW){
+							maxW = $('span', this).outerWidth();
+						}
+					});
+					$('#cquestions').width(maxW + 60);
+				}
 			},
 			onOk : function()
 			{

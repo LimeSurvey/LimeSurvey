@@ -377,16 +377,23 @@ function activateSurvey($iSurveyID, $simulate = false)
     //$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 
     $tabname = "{{survey_{$iSurveyID}}}";
-    $command = new CDbCommand(Yii::app()->db);
+    Yii::app()->loadHelper("database");
     try
     {
-        $execresult = $command->createTable($tabname,$createsurvey);
+        $execresult = createTable($tabname, $createsurvey);
     }
     catch (CDbException $e)
     {
         return array('error'=>'surveytablecreation');
     }
-
+    try
+    {
+        if (isset($createsurvey['token'])) Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$iSurveyID}_".rand(1,50000),$tabname,'token');
+    }
+    catch (CDbException $e)
+    {
+    }
+    
     $anquery = "SELECT autonumber_start FROM {{surveys}} WHERE sid={$iSurveyID}";
     if ($anresult=Yii::app()->db->createCommand($anquery)->query()->readAll())
     {
@@ -427,11 +434,10 @@ function activateSurvey($iSurveyID, $simulate = false)
             $column[$field] = 'FLOAT';
         }
 
-        $command = new CDbCommand(Yii::app()->db);
         $tabname = "{{survey_{$iSurveyID}}}_timings";
         try
         {
-            $execresult = $command->createTable($tabname,$column);
+            $execresult = createTable($tabname,$column);
         }
         catch (CDbException $e)
         {

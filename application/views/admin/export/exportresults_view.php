@@ -77,10 +77,8 @@
             <fieldset>
                 <legend><?php $clang->eT("Column control");?></legend>
 
-                <input type='hidden' name='sid' value='$surveyid' />
-                <?php if (isset($_POST['sql'])) { ?>
-                    <input type='hidden' name='sql' value="<?php echo stripcslashes($_POST['sql']);?>" />
-                    <?php }
+                <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
+                <?php 
                     if ($SingleResponse) { ?>
                     <input type='hidden' name='response_id' value="<?php echo $SingleResponse;?>" />
                     <?php }
@@ -99,8 +97,10 @@
                 } ?>
                 <br /><select name='colselect[]' multiple size='20'>
                     <?php $i=1;
-                        foreach($excesscols as $sFieldName=>$aData)
+                        foreach($excesscols as $sFieldName=>$fieldinfo)
                         {
+                            $questiontext=viewHelper::getFieldText($fieldinfo);
+                            $questioncode=viewHelper::getFieldCode($fieldinfo);
                             echo "<option value='{$sFieldName}'";
                             if (isset($_POST['summary']))
                             {
@@ -113,19 +113,19 @@
                             {
                                 echo " selected";
                             }
-                            echo ">{$i}: {$sFieldName} - ".ellipsize(FlattenText($aData['question'],false,true),40,0.9)."</option>\n";
+                            echo " title='{$sFieldName} : ".str_replace("'", "&#39;",$questiontext)."'>".ellipsize("{$i} : {$questioncode} - ".str_replace(array("\r\n", "\n", "\r"), " ", $questiontext),45)."</option>\n";
                             $i++;
                     } ?>
                 </select>
                 <br />&nbsp;</fieldset>
-            <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}")) { ?>
+            <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && hasSurveyPermission($surveyid,'token','read')) { ?>
                 <fieldset><legend><?php $clang->eT("Token control");?></legend>
                     <?php $clang->eT("Choose token fields");?>:
                     <img src='<?php echo $imageurl;?>/help.gif' alt='<?php $clang->eT("Help");?>' onclick='javascript:alert("<?php $clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js");?>")' /><br />
                     <select name='attribute_select[]' multiple size='20'>
-                        <option value='first_name' id='first_name' /><?php $clang->eT("First name");?></option>
-                        <option value='last_name' id='last_name' /><?php $clang->eT("Last name");?></option>
-                        <option value='email_address' id='email_address' /><?php $clang->eT("Email address");?></option>
+                        <option value='first_name' id='first_name'><?php $clang->eT("First name");?></option>
+                        <option value='last_name' id='last_name'><?php $clang->eT("Last name");?></option>
+                        <option value='email_address' id='email_address'><?php $clang->eT("Email address");?></option>
 
                         <?php $attrfieldnames=getTokenFieldsAndNames($surveyid,true);
                             foreach ($attrfieldnames as $attr_name=>$attr_desc)

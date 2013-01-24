@@ -428,7 +428,7 @@ class question extends Survey_Common_Action
         $aData['qid'] = $qid = sanitize_int($qid);
 
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'questions.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'subquestions.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
@@ -1034,6 +1034,7 @@ class question extends Survey_Common_Action
     * @param int $qid
     * @param string $lang
     * @return void
+    * @deprecated THIS IS OBSOLETE AS QUESTION PREVIEW IS NOW HANDLED BY controllers/survey/index.php
     */
     public function preview($surveyid, $qid, $lang = null)
     {

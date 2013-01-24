@@ -169,7 +169,6 @@ class dataentry extends Survey_Common_Action
 
         $importcount = 0;
         $recordcount = 0;
-        $aFieldnames = array_map('dbQuoteID', $aFieldnames);
 
         // Find out which fields are datefields, these have to be null if the imported string is empty
         $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
@@ -198,36 +197,36 @@ class dataentry extends Survey_Common_Action
                 : array_combine($aFieldnames, $fieldvalues));
                 foreach ($datefields as $datefield)
                 {
-                    if (@$fielddata["'" . $datefield . "'"] == '') {
-                        unset($fielddata["'" . $datefield . "'"]);
+                    if (is_null(@$fielddata[ $datefield ])) {
+                        unset($fielddata[ $datefield ]);
                     }
                 }
 
                 foreach ($numericfields as $numericfield)
                 {
-                    if ($fielddata["`" . $numericfield . "`"] == '') {
-                        unset($fielddata["`" . $numericfield . "`"]);
+                    if ($fielddata[ $numericfield ] == '') {
+                        unset($fielddata[ $numericfield ]);
                     }
                 }
 
-                if (isset($fielddata['`submitdate`']) && $fielddata['`submitdate`'] == 'NULL') {
-                    unset ($fielddata['`submitdate`']);
+                if (isset($fielddata['submitdate']) && $fielddata['submitdate'] == 'NULL') {
+                    unset ($fielddata['submitdate']);
                 }
-                if ($fielddata['`lastpage`'] == '') $fielddata['`lastpage`'] = '0';
+                if ($fielddata['lastpage'] == '') $fielddata['lastpage'] = '0';
 
                 $recordexists = false;
-                if (isset($fielddata['`id`'])) {
-                    $result = $survey->findAllByAttributes(array('id' => $fielddata['`id`']));
+                if (isset($fielddata['id'])) {
+                    $result = $survey->findAllByAttributes(array('id' => $fielddata['id']));
                     $recordexists = $result > 0;
 
                     // Check if record with same id exists
                     if ($recordexists) {
                         if (Yii::app()->request->getPost('insert') == "ignore") {
-                            $aData['msgs'][] .= sprintf($clang->gT("Record ID %s was skipped because of duplicate ID."), $fielddata['`id`']);
+                            $aData['msgs'][] .= sprintf($clang->gT("Record ID %s was skipped because of duplicate ID."), $fielddata['id']);
                             continue;
                         }
                         if (Yii::app()->request->getPost('insert') == "replace") {
-                            $result = $survey->deleteSomeRecords(array('id' => $fielddata['`id`']));
+                            $result = $survey->deleteSomeRecords(array('id' => $fielddata['id']));
                             $recordexists = false;
                         }
                     }
@@ -670,11 +669,11 @@ class dataentry extends Survey_Common_Action
                                 // In case of anonymized responses survey with no datestamp
                                 // then the the answer submitdate gets a conventional timestamp
                                 // 1st Jan 1980
-                                $mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+                                $mysubmitdate = date("Y-m-d H:i",mktime(0,0,0,1,1,1980));   // Note that the completed field only supports 17 chars (so no seconds!)
                             }
                             else
                             {
-                                $mysubmitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+                                $mysubmitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));  // Note that the completed field only supports 17 chars (so no seconds!)
                             }
 
                             $completedate = empty($idrow['submitdate']) ? $mysubmitdate : $idrow['submitdate'];
@@ -749,7 +748,7 @@ class dataentry extends Survey_Common_Action
                             $select_options = array(
                             '' => $clang->gT("Please choose").'...',
                             'F' => $clang->gT("Female"),
-                            'G' => $clang->gT("Male")
+                            'M' => $clang->gT("Male")
                             );
                             $aDataentryoutput .= CHtml::listBox($fname['fieldname'], $idrow[$fname['fieldname']], $select_options);
                             break;
@@ -1549,7 +1548,7 @@ class dataentry extends Survey_Common_Action
                 if (isset($_POST['token']))
                 {
                     $tokencompleted = "";
-                    $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token='{$_POST['token']}'"; //dbQuoteAll($_POST['token'],true);
+                    $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".dbQuoteAll($_POST['token']);
                     $tcresult = dbExecuteAssoc($tcquery);
                     $tcresult = $tcresult->readAll();
                     $tccount = count($tcresult);
@@ -1571,7 +1570,7 @@ class dataentry extends Survey_Common_Action
                     }
                     else
                     { // token is valid, survey not anonymous, try to get last recorded response id
-                        $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token='".$_POST['token']."'"; //dbQuoteAll($_POST['token'],true);
+                        $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".dbQuoteAll($_POST['token']);
                         $aresult = dbExecuteAssoc($aquery);
                         foreach ($aresult->readAll() as $arow)
                         {
@@ -1601,8 +1600,9 @@ class dataentry extends Survey_Common_Action
                     {
                         $errormsg .= "<br /><br />".$clang->gT("Follow the following link to update it").":\n";
                         $errormsg .= CHtml::link("[id:$lastanswfortoken]",
-                        Yii::app()->baseUrl.('/admin/dataentry/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
+                        $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
                         array('title' => $clang->gT("Edit this entry")));
+                        $errormsg .= "<br/><br/>";
                     }
                     else
                     {
@@ -1746,7 +1746,7 @@ class dataentry extends Survey_Common_Action
                         { $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust); }
 
                         // check how many uses the token has left
-                        $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token='".$_POST['token']."'";
+                        $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token=".dbQuoteAll($_POST['token']);
                         $usesresult = dbExecuteAssoc($usesquery);
                         $usesrow = $usesresult->readAll(); //$usesresult->row_array()
                         if (isset($usesrow)) { $usesleft = $usesrow[0]['usesleft']; }
@@ -1775,11 +1775,11 @@ class dataentry extends Survey_Common_Action
                                 $utquery .= "SET usesleft=usesleft-1\n";
                             }
                         }
-                        $utquery .= "WHERE token='".$_POST['token']."'";
+                        $utquery .= "WHERE token=".dbQuoteAll($_POST['token']);
                         $utresult = dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
 
                         // save submitdate into survey table
-                        $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$new_response}\n";
+                        $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$last_db_id}\n";
                         $sdresult = dbExecuteAssoc($sdquery) or safeDie ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
                         $last_db_id = getLastInsertID("{{survey_$surveyid}}");
                     }
@@ -1970,6 +1970,7 @@ class dataentry extends Survey_Common_Action
                 $bgc = 'odd';
                 foreach ($deqrows as $deqrow)
                 {
+                    $cdata = array();
                     $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
                     $cdata['qidattributes'] = $qidattributes;
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
@@ -2416,8 +2417,10 @@ class dataentry extends Survey_Common_Action
 
         // Make this safe for DB (*after* we undo first excel's
         // and then our escaping).
-        $fieldvalues = array_map( 'dbQuoteAll', $fieldvalues );
-        $fieldvalues = str_replace( dbQuoteAll('{question_not_shown}'), 'NULL', $fieldvalues );
+        foreach ($fieldvalues as &$sValue)
+        {
+            if ($sValue=='{question_not_shown}') $sValue=null;
+        }
 
         return $fieldvalues;
     }

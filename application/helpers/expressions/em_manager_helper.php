@@ -704,7 +704,7 @@
             if (!is_null($sid)) {
                 if (isset($_SESSION['LEMsid']) && $sid != $_SESSION['LEMsid']) {
                     // then trying to use a new survey - so clear the LEM cache
-                    $_SESSION['LEMdirtyFlag'] = true;
+                    self::SetDirtyFlag();
                 }
                 $_SESSION['LEMsid'] = $sid;
             }
@@ -724,8 +724,7 @@
             }
             if ($_SESSION['LEMlang'] != $lang) {
                 // then changing languages, so clear cache
-                //            $_SESSION['LEMdirtyFlag'] = true;
-                $_SESSION['LEMforceRefresh'] = true;
+                    self::SetDirtyFlag();
             }
             $_SESSION['LEMlang'] = $lang;
         }
@@ -2526,7 +2525,7 @@
                         $othertext = trim($qattr['other_replace_text']);
                     }
                     else {
-                        $othertext = $this->gT('other');
+                        $othertext = $this->gT('Other:');
                     }
                     $qtips['other_comment_mandatory']=sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
                 }
@@ -3944,6 +3943,7 @@
             $LEM->sid=sanitize_int($surveyid);
             $LEM->sessid = 'survey_' . $LEM->sid;
 
+            $LEM->em->StartProcessingGroup($surveyid);
             if (is_null($options)) {
                 $options = array();
             }
@@ -3952,6 +3952,7 @@
             $LEM->surveyOptions['anonymized'] = (isset($options['anonymized']) ? $options['anonymized'] : false);
             $LEM->surveyOptions['assessments'] = (isset($options['assessments']) ? $options['assessments'] : false);
             $LEM->surveyOptions['datestamp'] = (isset($options['datestamp']) ? $options['datestamp'] : false);
+            $LEM->surveyOptions['deletenonvalues'] = (isset($options['deletenonvalues']) ? ($options['deletenonvalues']=='1') : true);
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = (isset($options['hyperlinkSyntaxHighlighting']) ? $options['hyperlinkSyntaxHighlighting'] : false);
             $LEM->surveyOptions['ipaddr'] = (isset($options['ipaddr']) ? $options['ipaddr'] : false);
             $LEM->surveyOptions['radix'] = (isset($options['radix']) ? $options['radix'] : '.');
@@ -4419,6 +4420,22 @@
             //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
             $updatedValues = $this->updatedValues;
 
+            if (!$this->surveyOptions['deletenonvalues'])
+            {
+                $nonNullValues = array();
+                foreach($updatedValues as $key=>$value)
+                {
+                    if (!is_null($value))
+                    {
+                        if (isset($value['value']) && !is_null($value['value']))
+                        {
+                            $nonNullValues[$key] = $value;
+                        }
+                    }
+                }
+                $updatedValues = $nonNullValues;
+            }            
+            
             $message = '';
             $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
             if ($this->surveyOptions['active'] && !isset($_SESSION[$this->sessid]['srid']))
@@ -7427,15 +7444,25 @@ EOD;
             $qinfo = array();
             $_order=0;
             foreach ($data as $d)
-            {
-                $qinfo[$_order] = array(
-                'group_order' => $_order,
-                'gid' => $d['gid'],
-                'group_name' => $d['group_name'],
-                'description' =>  $d['description'],
-                'grelevance' => $d['grelevance'],
-                );
-                ++$_order;
+            { 
+                $gid[$d['gid']] = array(
+                    'group_order' => $_order,
+                    'gid' => $d['gid'],
+                    'group_name' => $d['group_name'],
+                    'description' =>  $d['description'],
+                    'grelevance' => $d['grelevance'],
+                 );
+                $qinfo[$_order] = $gid[$d['gid']];
+                ++$_order;                    
+            }
+            if (isset($_SESSION['survey_'.$surveyid]) && $_SESSION['survey_'.$surveyid]['grouplist']) {               
+                $_order=0;
+                foreach ($_SESSION['survey_'.$surveyid]['grouplist'] as $orderedGid => $info)
+                {
+                    $gid[$orderedGid]['group_order'] = $_order;
+                    $qinfo[$_order] = $gid[$orderedGid];
+                    ++$_order;
+                }
             }
 
             return $qinfo;
@@ -7499,9 +7526,12 @@ EOD;
                                 else
                                 {
                                     $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $qid,$_SESSION['LEMlang']);
+                                    if (!isset($aAttributes[$qid])) {
+                                        $aAttributes[$qid]=array();
+                                    }
                                     $aDateFormatData=getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
                                     $oDateTimeConverter = new Date_Time_Converter($value, $aDateFormatData['phpdate']);
-                                    $value=$oDateTimeConverter->convert("Y-m-d");
+                                    $value=$oDateTimeConverter->convert("Y-m-d H:i");
                                 }
                                 break;
                             case 'N': //NUMERICAL QUESTION TYPE
@@ -7646,6 +7676,7 @@ EOD;
             {
                 case 'varName':
                     return $name;
+                    break;
                 case 'code':
                 case 'NAOK':
                     if (isset($var['code'])) {
@@ -7653,13 +7684,38 @@ EOD;
                     }
                     else {
                         if (isset($_SESSION[$this->sessid][$sgqa])) {
-                            return $_SESSION[$this->sessid][$sgqa];
+                            $type = $var['type'];
+                            switch($type)
+                            {
+                                case 'Q': //MULTIPLE SHORT TEXT
+                                case ';': //ARRAY (Multi Flexi) Text
+                                case 'S': //SHORT FREE TEXT
+                                case 'T': //LONG FREE TEXT
+                                case 'U': //HUGE FREE TEXT
+                                    return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
+                                case '!': //List - dropdown
+                                case 'L': //LIST drop-down/radio-button list
+                                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                                case 'M': //Multiple choice checkbox
+                                case 'P': //Multiple choice with comments checkbox + text
+                                    if (preg_match('/comment$/',$sgqa) || preg_match('/other$/',$sgqa) || preg_match('/_other$/',$name))
+                                    {
+                                        return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
+                                    }
+                                    else
+                                    {
+                                        return $_SESSION[$this->sessid][$sgqa];
+                                    }
+                                default:
+                                    return $_SESSION[$this->sessid][$sgqa];
+                            }
                         }
-                        if (isset($var['default']) && !is_null($var['default'])) {
+                        elseif (isset($var['default']) && !is_null($var['default'])) {
                             return $var['default'];
                         }
                         return $default;
                     }
+                    break;
                 case 'value':
                 case 'valueNAOK':
                 {
@@ -7814,8 +7870,7 @@ EOD;
                                     $shown = $var['question'];
                                 }
                                 elseif (preg_match('/comment$/',$sgqa)) {
-                                    //$shown = $_SESSION[$this->sessid][$sgqa]; This one work and i understand it
-                                    $shown=$code; // This one is OK, and i think it's best but don't really understand it
+                                    $shown=$code; // This one return sgqa.code
                                 }
                                 else
                                 {
@@ -8918,7 +8973,7 @@ EOD;
                 $LEM =& LimeExpressionManager::singleton();
                 return $LEM->sid;
         }  
-            
+        
     }
 
     /**
@@ -8943,6 +8998,6 @@ EOD;
         }
         return ($a['qseq'] < $b['qseq']) ? -1 : 1;
     }
-    
+  
   
 ?>

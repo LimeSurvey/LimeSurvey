@@ -25,6 +25,8 @@ foreach ($userlist as $usr) {
         if($row['uid'] == Yii::app()->session['loginID'])
         { // RENAMED AS SUPERADMIN
             echo "<th align='center' class='admincell'>".$clang->gT("Super-Administrator")."</th>\n";
+        }
+        if($parent['participant_panel']) {
             echo "<th align='center' >".$clang->gT("Participant panel")."</th>\n";
         }
         if($parent['create_survey']) {
@@ -58,7 +60,11 @@ foreach ($userlist as $usr) {
                 echo " checked='checked' ";
             }
             echo "onclick=\"if (this.checked == true) { document.getElementById('create_survey').checked=true;document.getElementById('configurator').checked=true;document.getElementById('participant_panel').checked=true;document.getElementById('configurator').checked=true;document.getElementById('create_user').checked=true;document.getElementById('delete_user').checked=true;document.getElementById('manage_template').checked=true;document.getElementById('manage_label').checked=true;}\"";
-            echo " /></td>\n";
+            echo " />\n";
+        }
+        
+        if($parent['participant_panel']) {
+            echo "</td>\n";
             // Only Initial SuperAdmmin can give Participant Panel's right
             echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"participant_panel\" id=\"participant_panel\" value=\"participant_panel\"";
             if($usr['participant_panel']) {
@@ -66,6 +72,7 @@ foreach ($userlist as $usr) {
             }
             echo " /></td>\n";
         }
+        
         if($parent['create_survey']) {
             echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"create_survey\" id=\"create_survey\" value=\"create_survey\"";
             if($usr['create_survey']) {

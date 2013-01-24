@@ -42,28 +42,20 @@
         <li><label for='urldescrip'><?php $clang->eT("URL description:") ; ?></label>
         <input type='text' maxlength='255' size='50' id='urldescrip' name='urldescrip' value='' /></li>
         <li><label for='dateformat'><?php $clang->eT("Date format:") ; ?></label>
-        <select size='1' id='dateformat' name='dateformat'>
-
-        <?php foreach (getDateFormatData (0,Yii::app()->session['adminlang']) as $index => $dateformatdata) { ?>
-        <option value='<?php echo $index; ?>'> <?php echo $dateformatdata['dateformat'] ; ?>
-        </option>
-        <?php } ?>
-        </select>
+        <?php
+            echo CHtml::listBox('dateformat',$sDateFormatDefault, $aDateFormatData, array('id'=>'dateformat','size'=>'1'));
+        ?>
         </li>
         <li><label for='numberformat'><?php $clang->eT("Decimal mark:"); ?></label>
-            <select size='1' id='numberformat' name='numberformat'>
-                <?php foreach (getRadixPointData() as $index=>$radixptdata)
-                    { ?>
-                    <option value='<?php echo $index; ?>'
-                        ><?php echo $radixptdata['desc']; ?></option>
-                    <?php } ?>
-            </select>
+        <?php
+            echo CHtml::listBox('numberformat',$sRadixDefault, $aRadixPointData, array('id'=>'numberformat','size'=>'1'));
+        ?>
         </li>
 
 
         <li><label for='admin'><?php $clang->eT("Administrator:") ; ?></label>
         <input type='text' size='50' id='admin' name='admin' value='<?php echo $owner['full_name'] ; ?>' /></li>
-        <li><label for='adminemail'><?php $clang->eT("Admin Email:") ; ?></label>
+        <li><label for='adminemail'><?php $clang->eT("Admin email:") ; ?></label>
         <input type='email' size='50' id='adminemail' name='adminemail' value='<?php echo $owner['email'] ; ?>' /></li>
         <li><label for='bounce_email'><?php $clang->eT("Bounce Email:") ; ?></label>
         <input type='email' size='50' id='bounce_email' name='bounce_email' value='<?php echo $owner['bounce_email'] ; ?>' /></li>

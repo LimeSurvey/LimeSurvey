@@ -225,6 +225,19 @@ class Tokens_dynamic extends LSActiveRecord
     {
         return Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$iSurveyID}}} WHERE token IS NULL OR token=''")->queryAll();
     }
+    
+    public static function countAllAndCompleted($sid)
+    {
+        $select = array(
+            'count(*) AS cntall',
+            'sum(CASE '. Yii::app()->db->quoteColumnName('completed') . '
+                 WHEN '.Yii::app()->db->quoteValue('N').' THEN 0
+                          ELSE 1
+                 END) AS cntcompleted',
+            );
+        $result = Yii::app()->db->createCommand()->select($select)->from('{{tokens_' . $sid . '}}')->queryRow();
+        return $result;
+    }
 
    /**
      * Creates and inserts token for a specific token record and returns the token string created
@@ -325,6 +338,26 @@ class Tokens_dynamic extends LSActiveRecord
         }
 
         return array($newtokencount,count($tkresult));
+    }
+    
+    
+     /**
+     * This method is invoked before saving a record (after validation, if any).
+     * The default implementation raises the {@link onBeforeSave} event.
+     * You may override this method to do any preparation work for record saving.
+     * Use {@link isNewRecord} to determine whether the saving is
+     * for inserting or updating record.
+     * Make sure you call the parent implementation so that the event is raised properly.
+     * @return boolean whether the saving should be executed. Defaults to true.
+     */
+    public function beforeSave()
+    {
+         // Postgres delivers bytea fields as streams :-o - if this is not done it looks like Postgres saves something unexpected
+        if ($this->usesleft>0)
+        {
+            $this->completed='N'; 
+        }
+        return parent::beforeSave();
     }
 
     public function search()

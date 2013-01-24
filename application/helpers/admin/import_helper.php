@@ -1018,7 +1018,11 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
                 $insertdata[(string)$key]=(string)$value;
             }
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the qid
-            $insertdata['sqid']=$aQIDReplacements[(int)$insertdata['sqid']]; // remap the subqeustion id
+            if ($insertdata['sqid']>0) 
+            {
+                if (!isset($aQIDReplacements[(int)$insertdata['sqid']])) continue;  // If SQID is invalid skip the default value
+                $insertdata['sqid']=$aQIDReplacements[(int)$insertdata['sqid']]; // remap the subquestion id    
+            }
 
             // now translate any links
             $result = Yii::app()->db->createCommand()->insert('{{defaultvalues}}', $insertdata);
@@ -3459,6 +3463,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         if($iDesiredSurveyId!=NULL)
         {
             $insertdata['wishSID']=GetNewSurveyID($iDesiredSurveyId);
+        }
+        else
+        {
+            $insertdata['wishSID']=$iOldSID;
         }
 
         if ($iDBVersion<=143)

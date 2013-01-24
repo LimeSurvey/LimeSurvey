@@ -37,7 +37,7 @@ class Authentication extends Survey_Common_Action
 
         if ($bCanLogin && !is_array($bCanLogin))
         {
-            if (Yii::app()->request->getPost('action') ||  !is_null(Yii::app()->request->getQuery('onepass')))
+            if (Yii::app()->request->getPost('action') ||  !is_null(Yii::app()->request->getQuery('onepass')) || Yii::app()->getConfig('auth_webserver') === true)
             {
 
                 $aData = $this->_doLogin(Yii::app()->request->getParam('user'), Yii::app()->request->getPost('password'),Yii::app()->request->getQuery('onepass',''));
@@ -256,7 +256,7 @@ class Authentication extends Survey_Common_Action
         {
             return $this->_getAuthenticationFailedErrorMessage();
         }
-
+        @session_regenerate_id(); // Prevent session fixation
         return $this->_setLoginSessions($identity);
     }
 
@@ -290,7 +290,6 @@ class Authentication extends Survey_Common_Action
         Yii::app()->session['templateeditormode'] = $user->templateeditormode;
         Yii::app()->session['questionselectormode'] = $user->questionselectormode;
         Yii::app()->session['dateformat'] = $user->dateformat;
-        Yii::app()->session['checksessionpost'] = randomChars(10);
         Yii::app()->session['session_hash'] = hash('sha256',getGlobalSetting('SessionName').$user->users_name.$user->uid);
     }
 

@@ -9,17 +9,28 @@
 	</tr>
 	<tr>
 		<td>
-			<strong><?php echo $clang->gT("Survey URL") ." (".getLanguageNameFromCode($surveyinfo['language'],false)."):";?></strong>
+			<strong><?php echo $clang->gT("Survey URL") ." - ".getLanguageNameFromCode($surveyinfo['language'],false).":";?></strong>
 		</td>
 		<td>
-		<?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}");
-        echo "<a href='{$tmp_url}/lang/{$surveyinfo['language']}' target='_blank'>{$tmp_url}/lang/{$surveyinfo['language']}</a>";
+		<?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}/lang/{$surveyinfo['language']}"); ?>
+        <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
+        </td>
+    </tr>
+        <?php
         foreach ($aAdditionalLanguages as $langname)
-        {
-            echo "&nbsp;<a href='{$tmp_url}/lang/$langname' target='_blank'><img title='".$clang->gT("Survey URL for language:")." ".getLanguageNameFromCode($langname,false)
-            ."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='".Yii::app()->getConfig("imageurl")."/flags/{$langname}.png' /></a>";
+        {?>
+        <tr>
+            <td>
+                <strong><?php echo getLanguageNameFromCode($langname,false).":";?></strong>
+            </td>
+            <td>
+            <?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}/lang/{$langname}"); ?>
+            <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
+            </td>
+        </tr>
+
+        <?php
         } ?>
-		</td>
 	</tr>
     <tr>
     	<td>

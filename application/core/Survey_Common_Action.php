@@ -25,7 +25,14 @@
 */
 class Survey_Common_Action extends CAction
 {
+    public function __construct($controller, $id)
+    {
+        parent::__construct($controller, $id);
 
+        // Make sure viewHelper can be autoloaded
+        Yii::import('application.helpers.viewHelper');
+    }
+    
     /**
     * Override runWithParams() implementation in CAction to help us parse
     * requests with subactions.
@@ -60,7 +67,18 @@ class Survey_Common_Action extends CAction
 
         if (!empty($params['iSurveyId']))
         {
-            LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
+            if(!Survey::model()->findByPk($params['iSurveyId']))
+            {
+                $this->getController()->error('Invalid survey id');
+            }
+            elseif (!hasSurveyPermission($params['iSurveyId'], 'survey', 'read'))
+            {
+                $this->getController()->error('No permission');
+            }
+            else
+            {
+                LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
+            }
         }
 
         // Check if the method is public and of the action class, not its parents
@@ -489,14 +507,11 @@ class Survey_Common_Action extends CAction
     */
     function _surveybar($iSurveyID, $gid=null)
     {
-        //$this->load->helper('surveytranslator');
         $clang = $this->getController()->lang;
-        //echo Yii::app()->getConfig('gid');
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
         $condition = array('sid' => $iSurveyID, 'language' => $baselang);
 
-        //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$iSurveyID"; //Getting data for this survey
-        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByPk($iSurveyID); //$sumquery1, 1) ; //Checked
+        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->find('sid = :surveyid', array(':surveyid' => $iSurveyID)); //$sumquery1, 1) ; //Checked
         if (is_null($sumresult1))
         {
             Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
@@ -897,8 +912,13 @@ class Survey_Common_Action extends CAction
         Yii::app()->loadHelper('database');
 
         if (!empty($ugid)) {
-            $grpquery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=" . Yii::app()->session['loginID'];
-            $grpresult = Yii::app()->db->createCommand($grpquery)->queryRow();  //Checked
+            $sQuery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = {$ugid}";
+            if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
+            {
+                $sQuery .=" AND gu.uid = ".Yii::app()->session['loginID'];
+            }
+            
+            $grpresult = Yii::app()->db->createCommand($sQuery)->queryRow();  //Checked
 
             if ($grpresult) {
                 $grpresultcount=1;

@@ -42,9 +42,10 @@ else
     }
     if (count($existingfiles)>0)
     {
-        $clang->eT('The following files would be added by the update but already exist. This is very unusual and may be co-incidental.').'<br />';
-        $clang->eT('We recommend that these files should be replaced by the update procedure.').'<br />';
-        echo '<ul>';
+        $clang->eT('The following files would be added by the update but already exist. This is very unusual and may be co-incidental.');?><br />
+        <?php  $clang->eT('We recommend that these files should be replaced by the update procedure.');?><br />
+        <ul>
+        <?php
         sort($existingfiles);
         foreach ($existingfiles as $existingfile)
         {
@@ -55,9 +56,11 @@ else
 
     if (count($modifiedfiles)>0)
     {
-        $clang->eT('The following files will be modified or deleted but were already modified by someone else.').'<br />';
-        $clang->eT('We recommend that these files should be replaced by the update procedure.').'<br />';
-        echo '<ul>';
+        $clang->eT('The following files will be modified or deleted but were already modified by someone else.');?><br />
+        <?php
+        $clang->eT('We recommend that these files should be replaced by the update procedure.');?><br />
+        <ul> 
+        <?php
         sort($modifiedfiles);
         foreach ($modifiedfiles as $modifiedfile)
         {
@@ -69,13 +72,13 @@ else
     if (count($readonlyfiles)>0)
     {
         echo '<br />'.$clang->gT('When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed.');
-        echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/step2/")."', '_top')\"";
+        echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/step2/")."', '_top')\"";
         echo ">".$clang->gT('Check again')."</button></p>";
     }
     else
     {
         $clang->eT('Please check any problems above and then proceed to the next step.').'<br />';
-        echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/step3/")."', '_top')\" ";
+        echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/step3/")."', '_top')\" ";
         echo ">".sprintf($clang->gT('Proceed to step %s'),'3')."</button></p>";
 
     }

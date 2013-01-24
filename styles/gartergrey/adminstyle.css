@@ -436,6 +436,7 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 }
 .form44 li label:first-child,
 #exportspss li label:first-child,
+#exportr li label:first-child,
 #importtemplate li label:first-child,
 #tokenimport li label:first-child,
 #statistics_general_filter li label:first-child,
@@ -518,7 +519,8 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 #importsurveyresources li,
 #labelsetform li,
 #bouncesettings li,
-#exportspss li{
+#exportspss li,
+#exportr li{
     list-style-type: none;
     clear:left;
     padding-bottom:5px;

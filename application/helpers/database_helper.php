@@ -193,9 +193,9 @@ function dbGetTablesLike($table)
 *
 * @param mixed $sTableName
 * @param mixed $aColumns
-* @param mixed $aOptions
+* @param mixed $sOptions
 */
-function createTable($sTableName, $aColumns, $aOptions=null)
+function createTable($sTableName, $aColumns, $sOptions=null)
 {
     $sDBDriverName=Yii::app()->db->getDriverName();
 
@@ -214,5 +214,10 @@ function createTable($sTableName, $aColumns, $aOptions=null)
             $sType=str_replace('varchar','character varying',$sType);
         }
     }
-    Yii::app()->db->createCommand()->createTable($sTableName,$aColumns,$aOptions);
+    if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli')
+    {
+        if (is_null($sOptions))
+        $sOptions='ENGINE=MyISAM';
+    }    
+    Yii::app()->db->createCommand()->createTable($sTableName,$aColumns,$sOptions);
 }

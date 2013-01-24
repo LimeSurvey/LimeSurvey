@@ -3,7 +3,7 @@
 </div>
 <br />
 <div>
-    <?php echo CHtml::form($this->createUrl("/admin/user/personalsettings"), 'post', array('class' => 'form44')); ?>
+    <?php echo CHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', array('class' => 'form44')); ?>
         <ul>
             <li>
                 <?php echo CHtml::label($clang->gT("Interface language"), 'lang'); ?>:

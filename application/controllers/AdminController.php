@@ -142,7 +142,7 @@ class AdminController extends LSYii_Controller
         {
             $usrow = getGlobalSetting('DBVersion');
             if ((int) $usrow < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
-                $this->redirect($this->createUrl('/admin/update/db'));
+                $this->redirect($this->createUrl('/admin/update/sa/db'));
         }
 
         if ($action != "update" && $action != "db")
@@ -204,7 +204,6 @@ class AdminController extends LSYii_Controller
         'htmleditor_pop'   => 'htmleditor_pop',
         'limereplacementfields' => 'limereplacementfields',
         'index'            => 'index',
-        'kcfinder'         => 'kcfinder',
         'labels'           => 'labels',
         'participants'     => 'participantsaction',
         'printablesurvey'  => 'printablesurvey',
@@ -439,12 +438,7 @@ class AdminController extends LSYii_Controller
 
         unset(Yii::app()->session['metaHeader']);
 
-        if(empty(Yii::app()->session['checksessionpost']))
-            Yii::app()->session['checksessionpost'] = '';
-
-        $data['checksessionpost'] = Yii::app()->session['checksessionpost'];
-
-        return $this->render('/admin/endScripts_view', $data);
+        return $this->render('/admin/endScripts_view', array());
     }
 
     public function _css_admin_includes($includes = array(), $reset = false)

@@ -55,11 +55,6 @@
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <input type='hidden' name='action' value='browse' />
                 <input type='hidden' name='subaction' value='all' />
-
-                <?php if (isset($_POST['sql']))
-                    { ?>
-                    <input type='hidden' name='sql' value='<?php echo HTMLEscape($_POST['sql']); ?>' />
-                    <?php } ?>
             </form></div>
     </div>
 </div>
@@ -106,12 +101,12 @@
 <tfoot>
     <tr>
         <td colspan=<?php echo $fncount + 2; ?>>
-            <?php if (hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
-                <img id='imgDeleteMarkedResponses' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php $clang->eT('Delete marked responses'); ?>' />
-                <?php } ?>
-            <?php if (hasFileUploadQuestion($iSurveyId)) { ?>
-                <img id='imgDownloadMarkedFiles' src='<?php echo $sImageURL; ?>down_all.png' alt='<?php $clang->eT('Download marked files'); ?>' />
-                <?php } ?>
-        </td>
+<?php if (hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
+<img id='imgDeleteMarkedResponses' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php $clang->eT('Delete marked responses'); ?>' />
+<?php } ?>
+<?php if (hasFileUploadQuestion($iSurveyId)) { ?>
+<img id='imgDownloadMarkedFiles' src='<?php echo $sImageURL; ?>down_all.png' alt='<?php $clang->eT('Download marked files'); ?>' />
+<?php } ?>
+</td>
     </tr>
-            </tfoot>
+</tfoot>

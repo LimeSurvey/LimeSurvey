@@ -1,23 +1,25 @@
 <?php
 $clang = Yii::app()->lang;
 ?>
-<div class='statisticscolumnid'>
-    <?php
-    $image="sort_none.png";
-    if($sortby=="id") {
-        switch($sortmethod) {
-            case "asc":
-                $image="sort_desc.png";
-                break;
-            case "desc":
-                $image="sort_asc.png";
-                break;
+<?php if(hasSurveyPermission($surveyid,'responses','read')){ ?>
+    <div class='statisticscolumnid'>
+        <?php
+        $image="sort_none.png";
+        if($sortby=="id") {
+            switch($sortmethod) {
+                case "asc":
+                    $image="sort_desc.png";
+                    break;
+                case "desc":
+                    $image="sort_asc.png";
+                    break;
+            }
         }
-    }
-    ?>
-    <?php $sort=(isset($sortby) && $sortby=="id" && $sortmethod=='asc') ? 'desc' : 'asc'; ?>
-    <img src='<?php echo Yii::app()->getConfig('adminimageurl') . "/" . $image ?>' class='sortorder' id='sortorder_<?php echo $column ?>_id_<?php echo $sort ?>_T' style='cursor: pointer' />
-</div>
+        ?>
+        <?php $sort=(isset($sortby) && $sortby=="id" && $sortmethod=='asc') ? 'desc' : 'asc'; ?>
+        <img src='<?php echo Yii::app()->getConfig('adminimageurl') . "/" . $image ?>' class='sortorder' id='sortorder_<?php echo $column ?>_id_<?php echo $sort ?>_T' style='cursor: pointer' />
+    </div>
+<?php } ?>
 <div class='statisticscolumndata'>
     <?php
     $image="sort_none.png";
@@ -38,13 +40,15 @@ $clang = Yii::app()->lang;
 <?php
 foreach ($data as $row) {
 ?>
-<div class='statisticscolumnid'>
-    <a href='<?php echo Yii::app()->getController()->createUrl("admin/responses/sa/view/surveyid/".$surveyid."/id/".$row['id']); ?>' target='_blank'>
-        <img src='<?php echo Yii::app()->getConfig('adminimageurl') . "/search.gif" ?>' title='<?php $clang->eT("View response"); ?>'/>
-    </a>
-</div>
+<?php if(hasSurveyPermission($surveyid,'responses','read')){ ?>
+    <div class='statisticscolumnid'>
+        <a href='<?php echo Yii::app()->getController()->createUrl("admin/responses/sa/view/surveyid/".$surveyid."/id/".$row['id']); ?>' target='_blank'>
+            <img src='<?php echo Yii::app()->getConfig('adminimageurl') . "/search.gif" ?>' title='<?php $clang->eT("View response"); ?>'/>
+        </a>
+    </div>
+<?php } ?>
 <div class='statisticscolumndata'>
-    <?php echo stripslashes($row['value']) ?>
+    <?php echo sanitize_html_string($row['value']) ?>
 </div>
 <div style='clear: both'></div>
 <?php
