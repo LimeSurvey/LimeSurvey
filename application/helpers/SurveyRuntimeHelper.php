@@ -251,7 +251,7 @@ class SurveyRuntimeHelper {
             {
                 $_SESSION[$LEMsessid]['test']=time();
                 display_first_page();
-                exit;
+                Yii::app()->end(); // So we can still see debug messages
             }
 
             //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################

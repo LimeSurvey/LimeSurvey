@@ -7444,14 +7444,18 @@ EOD;
             $qinfo = array();
             $_order=0;
             foreach ($data as $d)
+            { 
+                $gid[$d['gid']] = array(
+                    'gid' => $d['gid'],
+                    'group_name' => $d['group_name'],
+                    'description' =>  $d['description'],
+                    'grelevance' => $d['grelevance'],
+                 );
+            }
+            foreach ($_SESSION['survey_'.$surveyid]['grouplist'] as $orderedGid => $info)
             {
-                $qinfo[$_order] = array(
-                'group_order' => $_order,
-                'gid' => $d['gid'],
-                'group_name' => $d['group_name'],
-                'description' =>  $d['description'],
-                'grelevance' => $d['grelevance'],
-                );
+                $gid[$orderedGid]['group_order'] = $_order;
+                $qinfo[$_order] = $gid[$orderedGid];
                 ++$_order;
             }
 
@@ -8963,7 +8967,7 @@ EOD;
                 $LEM =& LimeExpressionManager::singleton();
                 return $LEM->sid;
         }  
-            
+        
     }
 
     /**
@@ -8988,6 +8992,6 @@ EOD;
         }
         return ($a['qseq'] < $b['qseq']) ? -1 : 1;
     }
-    
+  
   
 ?>

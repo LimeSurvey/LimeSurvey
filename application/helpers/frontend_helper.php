@@ -1625,7 +1625,7 @@
     }
 
 
-    UpdateSessionGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+    UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
     $sQuery = "SELECT count(*)\n"
     ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
@@ -1729,20 +1729,16 @@
         shuffle($aShuffledIDs);
         $aGIDCompleteMap=$aGIDCompleteMap+array_combine($aGIDs,$aShuffledIDs);
     }
-    $_SESSION['survey_'.$surveyid]['groupReMap']=$aGIDCompleteMap;
+    $_SESSION['survey_' . $surveyid]['groupReMap'] = $aGIDCompleteMap;
 
+    $randomized = false;    // So we can trigger reorder once for group and question randomization
     // Now adjust the grouplist
     if (count($aRandomGroups)>0)
     {
+        $randomized = true;    // So we can trigger reorder once for group and question randomization
         // Now adjust the grouplist
-        foreach ($aGIDCompleteMap as $iOldGid=>$iNewGid)
-        {
-            if (!isset($_SESSION['survey_'.$surveyid]['grouplist'][$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
-            {
-                $_SESSION['survey_'.$surveyid]['grouplist']=arraySwapAssoc($iOldGid,$iNewGid,$_SESSION['survey_'.$surveyid]['grouplist']);
-            }
-            $_SESSION['survey_'.$surveyid]['grouplist'][$iNewGid]['shuffled']=true;
-        }
+        Yii::import('application.helpers.frontend_helper', true);   // make sure frontend helper is loaded
+        UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
         // ... and the fieldmap
 
         // First create a fieldmap with GID as key
@@ -1751,27 +1747,31 @@
             if (isset($aField['gid']))
             {
                 $GroupFieldMap[$aField['gid']][]=$aField;
-            }
+            } 
             else{
                 $GroupFieldMap['other'][]=$aField;
             }
         }
         // swap it
-        foreach ($aGIDCompleteMap as $iOldGid=>$iNewGid)
+        foreach ($GroupFieldMap as $iOldGid => $fields)
         {
-            if (!isset($GroupFieldMap[$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
+            $iNewGid = $iOldGid;
+            if (isset($aGIDCompleteMap[$iOldGid]))
             {
-                $GroupFieldMap=arraySwapAssoc($iOldGid,$iNewGid,$GroupFieldMap);
+                $iNewGid = $aGIDCompleteMap[$iOldGid];
             }
-            $GroupFieldMap[$iNewGid]['shuffled']=true;
+            $newGroupFieldMap[$iNewGid] = $GroupFieldMap[$iNewGid];
         }
+        $GroupFieldMap = $newGroupFieldMap;
         // and convert it back to a fieldmap
         unset($fieldmap);
         foreach($GroupFieldMap as $aGroupFields)
         {
             foreach ($aGroupFields as $aField)
             {
-                if (isset($aField['fieldname'])) $fieldmap[$aField['fieldname']]=$aField;  // isset() because of the shuffled flag above
+                if (isset($aField['fieldname'])) {
+                    $fieldmap[$aField['fieldname']] = $aField;  // isset() because of the shuffled flag above
+                }
             }
         }
         unset($GroupFieldMap);
@@ -1799,7 +1799,8 @@
     // If we have randomization groups set, then lets cycle through each group and
     // replace questions in the group with a randomly chosen one from the same group
     if (count($randomGroups) > 0)
-    {       
+    {
+        $randomized   = true;    // So we can trigger reorder once for group and question randomization
         $copyFieldMap = array();
         $oldQuestOrder = array();
         $newQuestOrder = array();
@@ -1817,17 +1818,19 @@
         foreach ($fieldmap as $fieldkey => $fieldval)
         {
             $found = 0;
-            foreach ($randomGroups as $gkey=>$gval)
+            foreach ($randomGroups as $gkey => $gval)
             {
                 // We found a qid that is in the randomization group
                 if (isset($fieldval['qid']) && in_array($fieldval['qid'],$oldQuestOrder[$gkey]))
                 {
                     // Get the swapped question
                     $oldQuestFlip = array_flip($oldQuestOrder[$gkey]);
-                    foreach($fieldmap as $key => $field) {
-                        if (isset($field['qid']) && $field['qid'] == $newQuestOrder[$gkey][$oldQuestFlip[$fieldval['qid']]]) {
-                            $field['random_gid'] = $fieldval['gid'];
-                            $copyFieldMap[$key] = $field;
+                    foreach ($fieldmap as $key => $field)
+                    {
+                        if (isset($field['qid']) && $field['qid'] == $newQuestOrder[$gkey][$oldQuestFlip[$fieldval['qid']]])
+                        {
+                            $field['random_gid'] = $fieldval['gid'];   // It is possible to swap to another group
+                            $copyFieldMap[$key]  = $field;
                         }
                     }
                     $found = 1;
@@ -1843,27 +1846,30 @@
             }
             reset($randomGroups);
         }
+        $fieldMap = $copyFieldMap;
+    }
+
+    if ($randomized === true)
+    {
         // reset the sequencing counts
-        $gseq=-1;
-        $_gid=-1;
-        $qseq=-1;
-        $_qid=-1;
-        $copyFieldMap2 = array();
-        foreach ($copyFieldMap as $key=>$val)
+        $gseq = -1;
+        $_gid = -1;
+        $qseq = -1;
+        $_qid = -1;
+        $copyFieldMap = array();
+        foreach ($fieldmap as $key => $val)
         {
-            if (isset($val['random_gid']))
+            if ($val['gid'] != '')
             {
-                if ($val['gid'] != '' && $val['random_gid'] != '' && $val['random_gid'] != $_gid)
+                if (isset($val['random_gid']))
                 {
-                    $_gid = $val['random_gid'];
-                    ++$gseq;
+                    $gid = $val['random_gid'];
+                } else {
+                    $gid = $val['gid'];
                 }
-            }
-            else
-            {
-                if ($val['gid'] != '' && $val['gid'] != $_gid)
+                if ($gid != $_gid)
                 {
-                    $_gid = $val['gid'];
+                    $_gid = $gid;
                     ++$gseq;
                 }
             }
@@ -1873,20 +1879,22 @@
                 $_qid = $val['qid'];
                 ++$qseq;
             }
+
             if ($val['gid'] != '' && $val['qid'] != '')
             {
-                $val['groupSeq'] = $gseq;
+                $val['groupSeq']    = $gseq;
                 $val['questionSeq'] = $qseq;
             }
-            $copyFieldMap2[$key] = $val;
+
+            $copyFieldMap[$key] = $val;
         }
+        $fieldmap = $copyFieldMap;
         unset($copyFieldMap);
-        $fieldmap=$copyFieldMap2;
 
-        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
-        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
+        $_SESSION['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
+        $_SESSION['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
     }
-
+    
     // TMSW Conditions->Relevance:  don't need hasconditions, or usedinconditions
 
     $_SESSION['survey_'.$surveyid]['fieldmap']=$fieldmap;
@@ -2257,18 +2265,21 @@ function UpdateGroupList($surveyid, $language)
     {
         $_SESSION['survey_'.$surveyid]['grouplist'][$row['gid']]=array($row['gid'], $row['group_name'], $row['description']);
     }
+    $groupList = $_SESSION['survey_'.$surveyid]['grouplist'];
     if (isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap'])>0)
     {
         // Now adjust the grouplist
-        foreach ($_SESSION['survey_'.$surveyid]['groupReMap'] as $iOldGid=>$iNewGid)
-        {
-            if (!isset($_SESSION['survey_'.$surveyid]['grouplist'][$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
-            {
-                $_SESSION['survey_'.$surveyid]['grouplist']=arraySwapAssoc($iOldGid,$iNewGid,$_SESSION['survey_'.$surveyid]['grouplist']);
+        $groupRemap = $_SESSION['survey_'.$surveyid]['groupReMap'];
+        unset ($_SESSION['survey_'.$surveyid]['grouplist']);
+     
+        foreach ($groupList as $groupId => $info) {
+            $newId = $groupId;
+            if (isset($groupRemap[$groupId])) {
+                $newId = $groupRemap[$groupId];
             }
-            $_SESSION['survey_'.$surveyid]['grouplist'][$iNewGid]['shuffled']=true;
+            $_SESSION['survey_'.$surveyid]['grouplist'][$newId] = $groupList[$newId];
         }
-    }
+     }
 }
 
 /**
@@ -2658,19 +2669,6 @@ function resetTimers()
     $cookie=new CHttpCookie('limesurvey_timers', '');
     $cookie->expire = time()- 3600;
     Yii::app()->request->cookies['limesurvey_timers'] = $cookie;
-}
-
-function UpdateSessionGroupList($surveyid, $language)
-//1. SESSION VARIABLE: grouplist
-//A list of groups in this survey, ordered by group name.
-{
-    unset ($_SESSION['survey_'.$surveyid]['grouplist']);
-    $query = "SELECT * FROM {{groups}} WHERE sid={$surveyid} AND language='".$language."' ORDER BY group_order";
-    $result = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />".$connect->ErrorMsg());  //Checked
-    foreach($result->readAll() as $row)
-    {
-        $_SESSION['survey_'.$surveyid]['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
-    }
 }
 
 //For multilanguage surveys

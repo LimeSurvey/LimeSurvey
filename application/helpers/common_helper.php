@@ -2820,39 +2820,12 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 {
                     if (isset($fieldmap[$fieldname]))
                     {
-                        $f = $fieldmap[$fieldname];
-                        if (isset($f['question']))
-                        {
-                            $mf['question'] = $f['question'];
-                        }
-                        if (isset($f['subquestion']))
-                        {
-                            $mf['subquestion'] = $f['subquestion'];
-                        }
-                        if (isset($f['subquestion1']))
-                        {
-                            $mf['subquestion1'] = $f['subquestion1'];
-                        }
-                        if (isset($f['subquestion2']))
-                        {
-                            $mf['subquestion2'] = $f['subquestion2'];
-                        }
-                        if (isset($f['group_name']))
-                        {
-                            $mf['group_name'] = $f['group_name'];
-                        }
-                        if (isset($f['answerList']))
-                        {
-                            $mf['answerList'] = $f['answerList'];
-                        }
-                        if (isset($f['defaultvalue']))
-                        {
-                            $mf['defaultvalue'] = $f['defaultvalue'];
-                        }
-                        if (isset($f['help']))
-                        {
-                            $mf['help'] = $f['help'];
-                        }
+                        // This array holds the keys of translatable attributes
+                        $translatable = array_flip(array('question', 'subquestion', 'subquestion1', 'subquestion2', 'group_name', 'answerList', 'defaultValue', 'help'));
+                        // We take all translatable attributes from the new fieldmap
+                        $newText = array_intersect_key($fieldmap[$fieldname], $translatable);
+                        // And merge them with the other values from the random fieldmap like questionSeq, groupSeq etc.
+                        $mf = $newText + $mf;
                     }
                     $mfieldmap[$fieldname] = $mf;
                 }
