@@ -7446,13 +7446,17 @@ EOD;
             foreach ($data as $d)
             { 
                 $gid[$d['gid']] = array(
+                    'group_order' => $_order,
                     'gid' => $d['gid'],
                     'group_name' => $d['group_name'],
                     'description' =>  $d['description'],
                     'grelevance' => $d['grelevance'],
                  );
+                $qinfo[$_order] = $gid[$d['gid']];
+                ++$_order;                    
             }
             if (isset($_SESSION['survey_'.$surveyid]) && $_SESSION['survey_'.$surveyid]['grouplist']) {               
+                $_order=0;
                 foreach ($_SESSION['survey_'.$surveyid]['grouplist'] as $orderedGid => $info)
                 {
                     $gid[$orderedGid]['group_order'] = $_order;
