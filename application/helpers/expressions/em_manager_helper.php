@@ -7452,11 +7452,13 @@ EOD;
                     'grelevance' => $d['grelevance'],
                  );
             }
-            foreach ($_SESSION['survey_'.$surveyid]['grouplist'] as $orderedGid => $info)
-            {
-                $gid[$orderedGid]['group_order'] = $_order;
-                $qinfo[$_order] = $gid[$orderedGid];
-                ++$_order;
+            if (isset($_SESSION['survey_'.$surveyid]) && $_SESSION['survey_'.$surveyid]['grouplist']) {               
+                foreach ($_SESSION['survey_'.$surveyid]['grouplist'] as $orderedGid => $info)
+                {
+                    $gid[$orderedGid]['group_order'] = $_order;
+                    $qinfo[$_order] = $gid[$orderedGid];
+                    ++$_order;
+                }
             }
 
             return $qinfo;
