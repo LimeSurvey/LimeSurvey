@@ -1163,7 +1163,7 @@ class tokens extends Survey_Common_Action
     /**
     * Handle email action
     */
-    function email($iSurveyId, $tokenids = null)
+    function email($iSurveyId, $tokenids = null)     
     {
         /* Check permissions */
         if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
@@ -1290,8 +1290,6 @@ class tokens extends Survey_Common_Action
 
             foreach ($aSurveyLangs as $language)
             {
-                $_POST['message_' . $language] = autoUnescape(Yii::app()->request->getPost('message_' . $language));
-                $_POST['subject_' . $language] = autoUnescape(Yii::app()->request->getPost('subject_' . $language));
                 if ($bHtml)
                     $_POST['message_' . $language] = html_entity_decode(Yii::app()->request->getPost('message_' . $language), ENT_QUOTES, Yii::app()->getConfig("emailcharset"));
             }
@@ -1349,7 +1347,7 @@ class tokens extends Survey_Common_Action
 
                     $customheaders = array('1' => "X-surveyid: " . $iSurveyId,
                     '2' => "X-tokenid: " . $fieldsarray["{TOKEN}"]);
-
+                    
                     global $maildebug;
                     $modsubject = Replacefields(Yii::app()->request->getPost('subject_' . $emrow['language']), $fieldsarray);
                     $modmessage = Replacefields(Yii::app()->request->getPost('message_' . $emrow['language']), $fieldsarray);
