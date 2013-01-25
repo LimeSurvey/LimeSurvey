@@ -2283,7 +2283,6 @@ function UpdateGroupList($surveyid, $language)
             $_SESSION['survey_'.$surveyid]['grouplist'][$newId] = $groupList[$newId];
         }
      }
-     traceVar($_SESSION['survey_'.$surveyid]);
 }
 
 /**
