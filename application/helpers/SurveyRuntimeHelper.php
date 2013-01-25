@@ -25,6 +25,9 @@ class SurveyRuntimeHelper {
         global $errormsg;
 
         extract($args);
+        if (!$thissurvey) {
+            $thissurvey = getSurveyInfo($surveyid);
+        }
         $LEMsessid = 'survey_' . $surveyid;
         $sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
         if (isset ($_SESSION['survey_'.$surveyid]['templatepath']))

@@ -1592,6 +1592,8 @@
     unset($_SESSION['survey_'.$surveyid]['insertarray']);
     unset($_SESSION['survey_'.$surveyid]['thistoken']);
     unset($_SESSION['survey_'.$surveyid]['fieldnamesInfo']);
+    unset($_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']);
+    unset($_SESSION['survey_'.$surveyid]['groupReMap']);
     $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
 
 
@@ -1708,7 +1710,7 @@
         $_SESSION['survey_'.$surveyid]['thistoken']=getTokenData($surveyid, $clienttoken);
     }
     $qtypes=getQuestionTypeList('','array');
-    $fieldmap=createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+    $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
 
     // Randomization groups for groups
@@ -1892,8 +1894,8 @@
         $fieldmap = $copyFieldMap;
         unset($copyFieldMap);
 
-        $_SESSION['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
-        $_SESSION['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
+        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
+        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
     }
     
     // TMSW Conditions->Relevance:  don't need hasconditions, or usedinconditions
@@ -2281,6 +2283,7 @@ function UpdateGroupList($surveyid, $language)
             $_SESSION['survey_'.$surveyid]['grouplist'][$newId] = $groupList[$newId];
         }
      }
+     traceVar($_SESSION['survey_'.$surveyid]);
 }
 
 /**

@@ -7457,6 +7457,7 @@ EOD;
             }
             if (isset($_SESSION['survey_'.$surveyid]) && $_SESSION['survey_'.$surveyid]['grouplist']) {               
                 $_order=0;
+                $qinfo = array();
                 foreach ($_SESSION['survey_'.$surveyid]['grouplist'] as $orderedGid => $info)
                 {
                     $gid[$orderedGid]['group_order'] = $_order;

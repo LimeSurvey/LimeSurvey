@@ -1427,8 +1427,10 @@ function getSurveyInfo($surveyid, $languagecode='')
             if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=Yii::app()->getConfig('siteadminemail');}
             if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=Yii::app()->getConfig('siteadminname');}
             if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
+        
+            $staticSurveyInfo[$surveyid][$languagecode]=$thissurvey;
         }
-        $staticSurveyInfo[$surveyid][$languagecode]=$thissurvey;
+        
     }
 
     return $thissurvey;
@@ -2811,10 +2813,10 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         if ($questionid == false)
         {
             // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
-            if (isset(Yii::app()->session['fieldmap-' . $surveyid . '-randMaster']))
+            if (isset(Yii::app()->session['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']))
             {
-                $masterFieldmap = Yii::app()->session['fieldmap-' . $surveyid . '-randMaster'];
-                $mfieldmap = Yii::app()->session[$masterFieldmap];
+                $masterFieldmap = Yii::app()->session['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'];
+                $mfieldmap = Yii::app()->session['survey_'.$surveyid][$masterFieldmap];
 
                 foreach ($mfieldmap as $fieldname => $mf)
                 {
