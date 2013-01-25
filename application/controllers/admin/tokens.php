@@ -427,6 +427,20 @@ class tokens extends Survey_Common_Action
 
         $aSurveyInfo = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
         $attributes  = getAttributeFieldNames($iSurveyId);
+        
+        // Now find all responses for the visible tokens
+        $visibleTokens = array();
+        $answeredTokens = array();
+        if ($aSurveyInfo['anonymized'] == "N" && $aSurveyInfo['active'] == "Y") {
+            foreach ($tokens as $token) {
+                $visibleTokens[] = $token['token'];
+            }
+            $answers = Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$visibleTokens));
+            foreach($answers as $answer) {
+                $answeredTokens[$answer['token']] = $answer['token'];
+            }
+        }
+        
         foreach ($tokens as $token)
         {
             $aRowToAdd = array();
@@ -443,18 +457,20 @@ class tokens extends Survey_Common_Action
 
             $aRowToAdd['id'] = $token['tid'];
 
-            $action = "";
+            $action="";
             $action .= "<div class='inputbuttons'>";    // so we can hide this when edit is clicked
-            if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "")) {
-                $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}", $clang->gT("Do survey"), '_blank');
-            } elseif ($token['completed'] != "N" && $token['completed'] != "" && $prow['anonymized'] == "N") {
-                //Get the survey response id of the matching entry
-                $id = Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token' => $token['token']));
-                if (count($id) > 0) {
-                    $action .= viewHelper::getImageLink('token_viewanswer.png', "admin/responses/sa/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}", $clang->gT("View response details"), null, '_top');
+            // Check is we have an answer
+            if (in_array($token['token'], $answeredTokens)) {
+                // @@TODO change link
+                $url = $this->getController()->createUrl("admin/responses/sa/browse/surveyid/{$iSurveyId}", array('token'=>$token['token']));
+                $title = $clang->gT("View response details");
+                $action .= CHtml::link(CHtml::image(Yii::app()->getConfig('adminimageurl') . 'token_viewanswer.png', $title, array('title'=>$title)), $url, array('class'=>'imagelink'));
                 } else {
                     $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
                 }
+            // Check if the token can be taken
+            if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "")) {
+                $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}/newtest/Y", $clang->gT("Do survey"), '_blank');
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
@@ -532,6 +548,7 @@ class tokens extends Survey_Common_Action
             //                $sLang = Yii::app()->request->getPost('language');
             //            }
             Tokens_dynamic::model($iSurveyId);
+
 
             echo $from . ',' . $until;
             $aData = array(
@@ -1133,7 +1150,6 @@ class tokens extends Survey_Common_Action
         }
 
         Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => serialize($fieldcontents)));
-        
         foreach ($languages as $language)
         {
             $ls = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language));
