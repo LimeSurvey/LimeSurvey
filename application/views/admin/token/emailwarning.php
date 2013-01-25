@@ -29,11 +29,9 @@
         <?php
         foreach ($aSurveyLangs as $language)
         {
-            $message = HTMLEscape($_POST['message_' . $language]);
-            $subject = HTMLEscape($_POST['subject_' . $language]); 
-            echo CHtml::hiddenField('from_'.$language, $_POST['from_' . $language]);
-            echo CHtml::hiddenField('subject_'.$language, $_POST['subject_' . $language]);
-            echo CHtml::hiddenField('message_'.$language, $message);
+            echo CHtml::hiddenField('from_'.$language, Yii::app()->request->getPost('from_' . $language));
+            echo CHtml::hiddenField('subject_'.$language, Yii::app()->request->getPost('subject_' . $language));
+            echo CHtml::hiddenField('message_'.$language, Yii::app()->request->getPost('message_' . $language));
         } ?>
     </form>
 </div>
