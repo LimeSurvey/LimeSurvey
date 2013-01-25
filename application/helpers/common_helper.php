@@ -1402,6 +1402,12 @@ function getSurveyInfo($surveyid, $languagecode='')
     else
     {
         $result = Surveys_languagesettings::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        if (is_null($result)) {
+            // When additional language was added, but not saved it does not exists
+            // We should revert to the base language then
+            $languagecode=Survey::model()->findByPk($surveyid)->language;
+            $result = Surveys_languagesettings::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        }
         if($result)
         {
             $thissurvey=array_merge($result->survey->attributes,$result->attributes);
