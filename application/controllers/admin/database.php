@@ -1029,22 +1029,19 @@ class database extends Survey_Common_Action
             {
                 if ($langname)
                 {
-                    $iRowCount = Surveys_languagesettings::model()->count(array('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$surveyid,':langname'=>$langname));
-                    if ($iRowCount)
+                    $oLanguageSettings = Surveys_languagesettings::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$surveyid,':langname'=>$langname));
+                    if(!$oLanguageSettings)
                     {
-
+                        $oLanguageSettings= new Surveys_languagesettings;
                         $languagedetails=getLanguageDetails($langname);
-
                         $insertdata = array(
-                        'surveyls_survey_id' => $surveyid,
-                        'surveyls_language' => $langname,
-                        'surveyls_title' => '',
-                        'surveyls_dateformat' => $languagedetails['dateformat']
+                            'surveyls_survey_id' => $surveyid,
+                            'surveyls_language' => $langname,
+                            'surveyls_dateformat' => $languagedetails['dateformat']
                         );
-                        $setting= new Surveys_languagesettings;
                         foreach ($insertdata as $k => $v)
-                            $setting->$k = $v;
-                        $usresult=$setting->save();
+                            $oLanguageSettings->$k = $v;
+                        $usresult=$oLanguageSettings->save();
                     }
                 }
             }
