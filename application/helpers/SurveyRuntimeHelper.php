@@ -54,10 +54,11 @@ class SurveyRuntimeHelper {
         'anonymized' => ($thissurvey['anonymized'] != 'N'),
         'assessments' => ($thissurvey['assessments'] == 'Y'),
         'datestamp' => ($thissurvey['datestamp'] == 'Y'),
+        'deletenonvalues'=>Yii::app()->getConfig('deletenonvalues'),        
         'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY), // TODO set this to true if in admin mode but not if running a survey
         'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
         'radix'=>$radix,
-        'refurl' => (($thissurvey['refurl'] == "Y") ? $_SESSION[$LEMsessid]['refurl'] : NULL),
+        'refurl' => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : NULL),
         'savetimings' => ($thissurvey['savetimings'] == "Y"),
         'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
         'startlanguage'=>(isset($clang->langcode) ? $clang->langcode : $thissurvey['language']),
@@ -361,7 +362,7 @@ class SurveyRuntimeHelper {
                 //Before doing the "templatereplace()" function, check the $thissurvey['url']
                 //field for limereplace stuff, and do transformations!
                 $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
-                $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], $thissurvey);   // to do INSERTANS substitutions
+                $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], array(), $redata);   // to do INSERTANS substitutions
                 
                 //END PAGE - COMMIT CHANGES TO DATABASE
                 if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
@@ -390,7 +391,7 @@ class SurveyRuntimeHelper {
                     }
                     */
                     // can't kill session before end message, otherwise INSERTANS doesn't work.
-                    $completed = templatereplace($thissurvey['surveyls_endtext']);
+                    $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata);
                     $completed .= "<br /><strong><font size='2' color='red'>" . $clang->gT("Did Not Save") . "</font></strong><br /><br />\n\n";
                     $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
                     if ($thissurvey['printanswers'] == 'Y')
@@ -399,8 +400,7 @@ class SurveyRuntimeHelper {
                         // in other cases the session is cleared at submit time
                         $completed .= "<a href='" . Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}/move/clearall") . "'>" . $clang->gT("Clear Responses") . "</a><br /><br />\n";
                     }
-
-
+                    killSurveySession($surveyid);
                 }
                 else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
                 {
@@ -424,7 +424,7 @@ class SurveyRuntimeHelper {
                     }
 
                     //Update the token if needed and send a confirmation email
-                    if (isset($clienttoken) && $clienttoken)
+                    if (isset($_SESSION['survey_'.$surveyid]['thistoken']))
                     {
                         submittokens();
                     }
@@ -457,7 +457,7 @@ class SurveyRuntimeHelper {
                     }
                     else
                     {
-                        $completed = templatereplace($thissurvey['surveyls_endtext']);
+                        $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata);
                     }
 
                     // Link to Print Answer Preview  **********
@@ -511,7 +511,7 @@ class SurveyRuntimeHelper {
                 {
                     echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
                 }
-                echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"));
+                echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"), array(), $redata);
                 doFooter();
                 
                 // The session cannot be killed until the page is completely rendered

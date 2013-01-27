@@ -67,13 +67,13 @@ img {
     border: 0;
 }
 
-a {
+a, .link{
     color: #328639;
     text-decoration: underline;
     cursor:pointer;
 }
 
-a:hover {
+a:hover, .link:hover{
     color: #819D26;
     text-decoration: underline;
 }
@@ -345,6 +345,10 @@ textarea {
     font-family: verdana, arial, sans-serif;
 }
 
+.markedrow
+{
+    background-color: lightyellow;
+}
 
 .subtitle {
     font-size: 10px;
@@ -580,10 +584,12 @@ a.optoutemail {
     clear:left;
 }
 
+ui-jqgrid-btable tr:hover td,
 .browsetable tr:hover {
     background-color: #C5D0F2;
 }
-.browsetable td span{
+.browsetable thead td span,
+.browsetable tbody td span{
     display:block;
     height:3em;
     overflow:hidden;
@@ -1806,4 +1812,8 @@ td.LEMerror  {
 {
     background-color:#fff !important;
     color:#000 !important;
+}
+
+#cquestions optgroup{
+    font-weight:bold;
 }

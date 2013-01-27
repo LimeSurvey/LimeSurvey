@@ -596,6 +596,18 @@ class ListQuestion extends QuestionModule
         }
     }
 
+    public function getVarAttributeLEM($sgqa,$value)
+    {
+        if (preg_match('/other$/',$sgqa))
+        {
+            return htmlspecialchars(parent::getVarAttributeLEM($sgqa,$value),ENT_NOQUOTES);
+        }
+        else
+        {
+            return parent::getVarAttributeLEM($sgqa,$value);
+        }
+    }
+
     public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
     {
         $code = LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);

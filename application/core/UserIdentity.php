@@ -26,7 +26,7 @@ class UserIdentity extends CUserIdentity
     * @return bool
     */
     public function authenticate($sOneTimePassword='')
-    {    
+    {
         if (Yii::app()->getConfig("auth_webserver")==false || $this->username != "")         
         {
             $user = User::model()->findByAttributes(array('users_name' => $this->username));
@@ -89,7 +89,7 @@ class UserIdentity extends CUserIdentity
                 {
                     // If defined this function returns an array
                     // describing the defaukt profile for this user
-                    $aUserProfile = hook_get_autouserprofile($sUser);
+                    $aUserProfile = hook_get_auth_webserver_profile($sUser);
                 }
                 elseif (Yii::app()->getConfig("auth_webserver_autocreate_user"))
                 {
@@ -100,9 +100,7 @@ class UserIdentity extends CUserIdentity
                 $this->user = $oUser;
                 $this->errorCode = self::ERROR_NONE;
             }
-            
-            
-            
+
             if (Yii::app()->getConfig("auth_webserver_autocreate_user") && isset($aUserProfile) && is_null($oUser))
             { // user doesn't exist but auto-create user is set
                 $oUser=new User;

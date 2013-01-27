@@ -287,6 +287,18 @@ class CommentListQuestion extends ListQuestion
         }
     }
 
+    public function getVarAttributeLEM($sgqa,$value)
+    {
+        if (preg_match('/comment$/',$sgqa))
+        {
+            return htmlspecialchars(parent::getVarAttributeLEM($sgqa,$value),ENT_NOQUOTES);
+        }
+        else
+        {
+            return parent::getVarAttributeLEM($sgqa,$value);// ListQuestion doing for other
+        }
+    }
+
     public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
     {
         $code = LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);

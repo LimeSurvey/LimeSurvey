@@ -326,7 +326,7 @@ $config['auth_webserver_autocreate_profile'] = Array(
 * If set, this function will overwrite the auth_webserver_autocreate_profile defined above by its return value
 *
 *  You can use any external DB in order to fill the profile for the user_name passed as the first parameter
-*  A dummy example for the 'hook_get_autouserprofile' function is given below:
+*  A dummy example for the 'hook_get_auth_autouserprofile' function is given below:
 */
 /*
 function hook_get_auth_webserver_profile($user_name)
@@ -442,29 +442,66 @@ $config['standard_templates_readonly'] =  true;
 $config['showsgqacode'] =  false;
 
 /**
-* pdfdefaultfont (string)
-* PDF export responses settings - default font for the PDF export
+*  PDF Export Settings
+*  This feature configures PDF export for Export Answers
 */
-$config['pdfdefaultfont'] = 'freemono';
-
+/** 
+*  $pdfdefaultfont (string) - default font used in pdf statitics
+*  PDF core fonts are not included in PDF: make ligther pdf 
+*  See http://www.tcpdf.org/fonts.php to have the list of PDF core fonts
+*/
+$config['pdfdefaultfont'] = 'auto';              //Default font for the pdf Export
+/**
+*  $alternatepdffontfile (array) - array of the font file name used to created pdf in statistics in specific langage - this font are included in tcpdf core
+*  Only used if $pdfdefaultfont is set to auto or set to a PDF core fonts
+*  Some langage are not tested : need translation for Yes,No and Gender : ckb, swh
+*/
+$config['alternatepdffontfile']=array(
+    'ar'=>'freesans',// 'dejavusans' work too but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
+    'be'=>'dejavusans',
+    'bg'=>'dejavusans',
+    'zh-Hans'=>'chinese',
+    'zh-Hant-HK'=>'chinese',
+    'zh-Hant-TW'=>'chinese',
+    'cs'=>'dejavusans',
+    'cs-informal'=>'dejavusans',// This one not really tested: no translation for Yes/No or Gender
+    'el'=>'dejavusans',
+    'he'=>'freesans',
+    'hi'=>'dejavusans',
+    'hu'=>'dejavusans',
+    'ja'=>'cid0jp',
+    'ko'=>'cid0kr',
+    'lv'=>'dejavusans',
+    'lt'=>'dejavusans',
+    'mk'=>'dejavusans',
+    'mt'=>'dejavusans',
+    'fa'=>'dejavusans',
+    'pl'=>'dejavusans',
+    'pa'=>'freesans',
+    'ro'=>'dejavusans',
+    'ru'=>'dejavusans',
+    'sr'=>'dejavusans',
+);
+/**
+*  $notsupportlanguages - array of language where no font was found for PDF
+*  Seems not used actually
+*/
+$config['notsupportlanguages'] = array(
+    'am',// Amharic
+    'si',// Sinhala
+    'th',// Thai
+    );
 /**
 * pdffontsize (integer)
 * PDF export responses settings - font size for normal text; survey title is +4; group title is +2
 */
-$config['pdffontsize'] = 9;
-
-/**
-* notsupportlanguages (array)
-* PDF export responses settings - languages not being supported by PDF export
-*/
-$config['notsupportlanguages'] = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
-
+$config['pdffontsize']    = 9;
 /**
 * pdforientation (string)
 * PDF export responses settings - Set L for Landscape or P for portrait format
+*  Seems not used actually
 */
 $config['pdforientation'] = 'P';
-
 
 /**
 * Statistics chart settings
@@ -646,7 +683,7 @@ $config['rpc_publish_api'] = 0;
 * session_expiration_time (integer)
 * This parameter sets the default session expiration time in seconds
 */
-$config['session_expiration_time'] = 28800;
+$config['session_expiration_time'] = 7200;
 
 /**
 * This parameter can be used to set some question not selectable in LimeReplacementFiels

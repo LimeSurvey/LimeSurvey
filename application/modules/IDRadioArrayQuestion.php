@@ -7,7 +7,7 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
         global $notanswered;
         $extraclass ="";
         $clang = Yii::app()->lang;
-
+        $caption=$clang->gT("An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. ");
         $checkconditionFunction = "checkconditions";
 
         $qquery = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."'";
@@ -25,6 +25,7 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
         if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
         {
             ++$cellwidth; // add another column
+            $caption.=$clang->gT("The last cell are for no answer. ");
         }
         $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
@@ -37,7 +38,8 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
 
         $fn = 1;
 
-        $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - Increase/Same/Decrease Likert scale array\">\n"
+        $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" >"
+        . "<caption class=\"hide screenreader\">{$caption}</caption>\n"
         . "\t<colgroup class=\"col-responses\">\n"
         . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 
@@ -97,8 +99,8 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
             $answer_body .= "\" />\n\t</th>\n";
 
             $answer_body .= "\t<td class=\"answer_cell_I answer-item radio-item\">\n"
-            . "<label for=\"answer$myfname-I\">\n"
-            ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" title=\"".$clang->gT('Increase').'"';
+            . "<label for=\"answer$myfname-I\" class=\"hide\">{$clang->gT('Increase')}</label>\n"
+            ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" ";
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == 'I')
             {
                 $answer_body .= CHECKED;
@@ -107,9 +109,9 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
             $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
             . "</label>\n"
             . "\t</td>\n"
-            . "\t<td class=\"answer_cell_S answer-item radio-item\">\n"
-            . "<label for=\"answer$myfname-S\">\n"
-            . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" title=\"".$clang->gT('Same').'"';
+            . "\t<td class=\"answer_cell_S answer-item radio-item\">"
+            . "<label for=\"answer$myfname-S\" class=\"hide\">{$clang->gT('Same')}</label>\n"
+            . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" ";
 
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == 'S')
             {
@@ -120,8 +122,8 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
             . "</label>\n"
             . "\t</td>\n"
             . "\t<td class=\"answer_cell_D answer-item radio-item\">\n"
-            . "<label for=\"answer$myfname-D\">\n"
-            . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" title=\"".$clang->gT('Decrease').'"';
+            . "<label for=\"answer$myfname-D\" class=\"hide\">{$clang->gT('Decrease')}</label>\n"
+            . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" ";
             // --> END NEW FEATURE - SAVE
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == 'D')
             {
@@ -138,8 +140,8 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
             if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
             {
                 $answer_body .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-                . "<label for=\"answer$myfname-\">\n"
-                . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer').'"';
+                . "<label for=\"answer$myfname-\" class=\"hide\">{$clang->gT('No answer')}</label>\n"
+                . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
                 if (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) || $_SESSION['survey_'.$this->surveyid][$myfname] == '')
                 {
                     $answer_body .= CHECKED;

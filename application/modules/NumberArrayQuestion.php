@@ -10,7 +10,7 @@ class NumberArrayQuestion extends ArrayQuestion
         $extraclass ="";
         $answertypeclass = "";
         $clang = Yii::app()->lang;
-
+        $caption=$clang->gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. ");
         $checkconditionFunction = "fixnum_checkconditions";
         //echo '<pre>'; print_r($_POST); echo '</pre>';
         $defaultvaluescript = '';
@@ -70,16 +70,19 @@ class NumberArrayQuestion extends ArrayQuestion
             $maxvalue=1;
             $checkboxlayout=true;
             $answertypeclass =" checkbox";
+            $caption.=$clang->gT("Check or uncheck the answer for each subquestion. ");
         }
         elseif ($aQuestionAttributes['input_boxes']!=0 )
         {
             $inputboxlayout=true;
             $answertypeclass =" numeric-item text";
             $extraclass.=" numberonly";
+            $caption.=$clang->gT("Each answers are a number. ");
         }
         else
         {
             $answertypeclass =" dropdown";
+            $caption.=$clang->gT("Select the answer for each subquestion. ");
         }
         if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
         {
@@ -136,8 +139,16 @@ class NumberArrayQuestion extends ArrayQuestion
 
             $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid=".$this->id." AND scale_id=0 AND question like '%|%'";
             $ansresult = dbExecuteAssoc($ansquery);
-            if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
-            // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
+            if ($ansresult->count()>0)
+            {
+                $right_exists=true;
+                $answerwidth=$answerwidth/2;
+                $caption.=$clang->gT("The last cell give some information. ");
+            }
+            else
+            {
+                $right_exists=false;
+            }
             $ansresult = $this->getChildren();
             if (trim($aQuestionAttributes['parent_order']!=''))
             {
@@ -175,6 +186,7 @@ class NumberArrayQuestion extends ArrayQuestion
                 $answer_head_line .= "\t<td>&nbsp;</td>";
                 $odd_even = alternation($odd_even);
                 $mycols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
+                $caption.=$clang->gT("The last cell give some information. ");
             }
             $answer_head = "\n\t<thead>\n<tr>\n"
             . $answer_head_line
@@ -182,7 +194,9 @@ class NumberArrayQuestion extends ArrayQuestion
             $mycols .= "\t</colgroup>\n";
 
             $trbc = '';
-            $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - an array type question with dropdown responses\">\n" . $mycols . $answer_head . "\n";
+            $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - an array type question with dropdown responses\">\n" 
+            . "<caption class=\"hide screenreader\">{$caption}</caption>\n"
+            . $mycols . $answer_head . "\n";
             $answer .= "<tbody>";
             foreach ($ansresult as $ansrow)
             {
@@ -252,9 +266,8 @@ class NumberArrayQuestion extends ArrayQuestion
                             $myfname2_java_value = "";
                         }
                         $answer .= "\t<td class=\"answer_cell_00$ld question-item answer-item {$answertypeclass}-item\">\n"
-                        . "<label for=\"answer{$myfname2}\">\n"
-                        . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n";
-
+                        . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n"
+                        . "<label for=\"answer{$myfname2}\" class=\"hide\">$ld</label>\n";
                         if($inputboxlayout == false) {
                             $answer .= "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
                             . HTMLEscape($labelans[$thiskey]).'"'
@@ -284,8 +297,7 @@ class NumberArrayQuestion extends ArrayQuestion
                             }
                             $answer .= "\" />\n";
                         }
-                        $answer .= "</label>\n"
-                        . "\t</td>\n";
+                        $answer .= "\t</td>\n";
 
                         $thiskey++;
                     }
@@ -305,7 +317,8 @@ class NumberArrayQuestion extends ArrayQuestion
                         $answer .= "\t<td class=\"answer_cell_00$ld question-item answer-item {$answertypeclass}-item\">\n"
                         . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" value=\"$myvalue\"/>\n"
                         . "\t<input type=\"hidden\" name=\"$myfname2\" id=\"answer{$myfname2}\" value=\"$myvalue\" />\n";
-                        $answer .= "\t<input type=\"checkbox\" name=\"cbox_$myfname2\" id=\"cbox_$myfname2\" $setmyvalue "
+                        // This one can not be done without javascript, TODO move js to a global js for whole question
+                        $answer .= "\t<input type=\"checkbox\" class=\"checkbox\" name=\"cbox_$myfname2\" id=\"cbox_$myfname2\" $setmyvalue "
                         . " onclick=\"cancelBubbleThis(event); "
                         . " aelt=document.getElementById('answer{$myfname2}');"
                         . " jelt=document.getElementById('java{$myfname2}');"
@@ -315,7 +328,7 @@ class NumberArrayQuestion extends ArrayQuestion
                         . "  aelt.value=0;jelt.value=0;$checkconditionFunction(0,'{$myfname2}',aelt.type);"
                         . " }; return true;\" "
                         . " />\n";
-                        $answer .= ""
+                        $answer .= "<label for=\"cbox_{$myfname2}\" class=\"hide\">$ld</label>\n"
                         . "\t</td>\n";
                         $thiskey++;
                     }
@@ -412,6 +425,7 @@ class NumberArrayQuestion extends ArrayQuestion
     {
         $map = array();
         $abrows = getSubQuestions($this);
+        $answerset=array();
         foreach ($abrows as $key=>$abrow)
         {
             if($abrow['scale_id']==1) {

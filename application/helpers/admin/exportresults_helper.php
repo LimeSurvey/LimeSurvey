@@ -274,7 +274,7 @@ class SurveyDao
              $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']]=$aAnswer;
         }
         //Load tokens
-        if (tableExists('{{tokens_' . $intId . '}}'))
+        if (tableExists('{{tokens_' . $intId . '}}') && hasSurveyPermission($intId,'tokens','read'))
         {
             $sQuery = 'SELECT t.* FROM {{tokens_' . $intId . '}} AS t;';
             $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
@@ -305,14 +305,25 @@ class SurveyDao
     */
     public function loadSurveyResults(SurveyObj $survey, $iLimit, $iOffset, $iMaximum, $sFilter='' )
     {
+
         // Get info about the survey
-        $oRecordSet = Yii::app()->db->createCommand()->select()->from('{{survey_' . $survey->id . '}}');
-        if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',Survey_dynamic::model($survey->id)->attributes))
+        $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . $survey->id . '}}')->getColumnNames();
+        
+        $oRecordSet = Yii::app()->db->createCommand()->from('{{survey_' . $survey->id . '}}');
+        if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',Survey_dynamic::model($survey->id)->attributes) && hasSurveyPermission($survey->id,'tokens','read'))
         {
-            $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}}','{{tokens_' . $survey->id . '}}.token={{survey_' . $survey->id . '}}.token');
+            $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}} tokentable','tokentable.token={{survey_' . $survey->id . '}}.token');
+            $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . $survey->id . '}}')->getColumnNames();
+            $aSelectFields=array_merge($aSelectFields,array_diff($aTokenFields, array('token')));
+            $aSelectFields=array_diff($aSelectFields, array('token'));
+            $aSelectFields[]='{{survey_' . $survey->id . '}}.token';
         }
         if ($survey->info['savetimings']=="Y") {
             $oRecordSet->leftJoin("{{survey_" . $survey->id . "_timings}} survey_timings", "{{survey_" . $survey->id . "}}.id = survey_timings.id");
+            $aTimingFields=Yii::app()->db->schema->getTable("{{survey_" . $survey->id . "_timings}}")->getColumnNames();
+            $aSelectFields=array_merge($aSelectFields,array_diff($aTimingFields, array('id')));
+            $aSelectFields=array_diff($aSelectFields, array('id'));
+            $aSelectFields[]='{{survey_' . $survey->id . '}}.id';
         }
 
         if ($sFilter!='')
@@ -323,7 +334,7 @@ class SurveyDao
             $iLimit=$iMaximum-$iOffset;
         }
             
-        $survey->responses=$oRecordSet->order('{{survey_' . $survey->id . '}}.id')->limit($iLimit, $iOffset)->query()->readAll();
+        $survey->responses=$oRecordSet->select($aSelectFields)->order('{{survey_' . $survey->id . '}}.id')->limit($iLimit, $iOffset)->query()->readAll();
 
         return count($survey->responses);
     }
@@ -846,7 +857,7 @@ abstract class Writer implements IWriter
             foreach ($oOptions->selectedColumns as $column)
             {
                 $value = $response[$column];
-                if (isset($survey->fieldMap[$column]))
+                if (isset($survey->fieldMap[$column]) && $survey->fieldMap[$column]['type']!='answer_time' && $survey->fieldMap[$column]['type']!='page_time' && $survey->fieldMap[$column]['type']!='interview_time')
                 {
                     switch ($oOptions->answerFormat) {
                         case 'long':
@@ -1186,7 +1197,11 @@ class PdfWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
-        
+        $pdfdefaultfont=Yii::app()->getConfig('pdfdefaultfont');
+        $pdffontsize=Yii::app()->getConfig('pdffontsize');
+        $pdforientation=Yii::app()->getConfig('pdforientation');// Not used
+        $clang = new limesurvey_lang($sLanguageCode);
+
         if ($oOptions->output=='file') 
         {
             $this->pdfDestination = 'F';
@@ -1194,18 +1209,46 @@ class PdfWriter extends Writer
             $this->pdfDestination = 'D';
         }
 
-        //The $pdforientation, $pdfDefaultFont, and $pdfFontSize values
-        //come from the Lime Survey config files.
-
-        global $pdforientation, $pdfdefaultfont, $pdffontsize;
-
         Yii::import('application.libraries.admin.pdf', true);
+        if($pdfdefaultfont=='auto')
+        {
+            $pdfdefaultfont=PDF_FONT_NAME_DATA;
+        }
+        // Array of PDF core fonts: are replaced by according fonts according to the alternatepdffontfile array.Maybe just courier,helvetica and times but if a user want symbol: why not ....
+        $pdfcorefont=array("courier","helvetica","symbol","times","zapfdingbats");
+        if (in_array($pdfdefaultfont,$pdfcorefont))
+        {
+            $alternatepdffontfile=Yii::app()->getConfig('alternatepdffontfile');
+            if(array_key_exists($sLanguageCode,$alternatepdffontfile))
+            {
+                $pdfdefaultfont = $alternatepdffontfile[$sLanguageCode];// Actually use only core font
+            }
+        }
+        if ($pdffontsize=='auto')
+        {
+            $pdffontsize=PDF_FONT_SIZE_MAIN;
+        }
+        
         $this->pdf = new pdf();
-        $this->pdf->SetFont(Yii::app()->getConfig('pdfdefaultfont'), '', Yii::app()->getConfig('pdffontsize'));
+        $this->pdf->SetFont($pdfdefaultfont, '', $pdffontsize);
         $this->pdf->AddPage();
         $this->pdf->intopdf("PDF export ".date("Y.m.d-H:i", time()));
 
-
+        //Set some pdf metadata
+        Yii::app()->loadHelper('surveytranslator');
+        $lg=array();
+        $lg['a_meta_charset'] = 'UTF-8';
+        if (getLanguageRTL($sLanguageCode))
+        {
+            $lg['a_meta_dir'] = 'rtl';
+        }
+        else
+        {
+            $lg['a_meta_dir'] = 'ltr';
+        }
+        $lg['a_meta_language'] = $sLanguageCode;
+        $lg['w_page']=$clang->gT("page");
+        $this->pdf->setLanguageArray($lg);
         $this->separator="\t";
 
         $this->rowCounter = 0;        

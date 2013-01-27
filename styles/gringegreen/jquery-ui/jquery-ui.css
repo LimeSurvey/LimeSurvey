@@ -140,6 +140,10 @@
   outline: none;
 }
 
+#pager_left .ui-state-hover {
+	border: 1px solid #85BD00;
+}
+
 .ui-state-hover a,.ui-state-hover a:hover {
   color: #333;
   text-decoration: none;

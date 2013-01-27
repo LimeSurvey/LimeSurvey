@@ -160,7 +160,7 @@ CREATE TABLE `prefix_participant_attribute_names` (
   `attribute_id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_type` varchar(4) NOT NULL,
   `visible` varchar(5) NOT NULL,
-  PRIMARY KEY  (`attribute_id`,`attribute_type`)
+  PRIMARY KEY  (`attribute_id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
@@ -389,6 +389,7 @@ CREATE TABLE `prefix_surveys` (
   `datestamp` varchar(1) NOT NULL default 'N',
   `usecookie` varchar(1) NOT NULL default 'N',
   `allowregister` varchar(1) NOT NULL default 'N',
+  `directregister` varchar(1) NOT NULL default 'N',
   `allowsave` varchar(1) NOT NULL default 'Y',
   `autonumber_start` int(11) NOT NULL default '0',
   `autoredirect` varchar(1) NOT NULL default 'N',
@@ -498,14 +499,15 @@ CREATE TABLE `prefix_users` (
   `parent_id` int(11) NOT NULL,
   `lang` varchar(20),
   `email` varchar(320),
-  `create_survey` int(11) NOT NULL default '0',
-  `create_user` int(11) NOT NULL default '0',
-  `participant_panel` int(11) NOT NULL default '0',
-  `delete_user` int(11) NOT NULL default '0',
-  `superadmin` int(11) NOT NULL default '0',
-  `configurator` int(11) NOT NULL default '0',
-  `manage_template` int(11) NOT NULL default '0',
-  `manage_label` int(11) NOT NULL default '0',
+  `manage_survey` int(1) NOT NULL default '0',
+  `create_survey` int(1) NOT NULL default '0',
+  `create_user` int(1) NOT NULL default '0',
+  `participant_panel` int(1) NOT NULL default '0',
+  `delete_user` int(1) NOT NULL default '0',
+  `superadmin` int(1) NOT NULL default '0',
+  `configurator` int(1) NOT NULL default '0',
+  `manage_template` int(1) NOT NULL default '0',
+  `manage_label` int(1) NOT NULL default '0',
   `htmleditormode` varchar(7) default 'default',
   `templateeditormode` varchar(7) NOT NULL default 'default',
   `questionselectormode` varchar(7) NOT NULL default 'default',
@@ -626,4 +628,4 @@ INSERT INTO `prefix_question_type_groups` (`id`, `name`, `order`, `system`) VALU
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '167');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '169');

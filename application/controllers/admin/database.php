@@ -825,32 +825,14 @@ class database extends Survey_Common_Action
             {
                 if ($langname)
                 {
-                    $url = Yii::app()->request->getPost('url_'.$langname);
-                    if ($url == 'http://') {$url="";}
-
-                    // Clean XSS attacks
-                    if ($xssfilter)
-                    {
-                        $purifier = new CHtmlPurifier();
-                        $purifier->options = array(
-                        'HTML.Allowed' => 'p,a[href],b,i'
-                        );
-                        $short_title=$purifier->purify(Yii::app()->request->getPost('short_title_'.$langname));
-                        $description=$purifier->purify(Yii::app()->request->getPost('description_'.$langname));
-                        $welcome=$purifier->purify(Yii::app()->request->getPost('welcome_'.$langname));
-                        $endtext=$purifier->purify(Yii::app()->request->getPost('endtext_'.$langname));
-                        $sURLDescription=$purifier->purify(Yii::app()->request->getPost('urldescrip_'.$langname));
-                        $sURL=$purifier->purify(Yii::app()->request->getPost('url_'.$langname));
-                    }
-                    else
-                    {
-                        $short_title = html_entity_decode(Yii::app()->request->getPost('short_title_'.$langname), ENT_QUOTES, "UTF-8");
-                        $description = html_entity_decode(Yii::app()->request->getPost('description_'.$langname), ENT_QUOTES, "UTF-8");
-                        $welcome = html_entity_decode(Yii::app()->request->getPost('welcome_'.$langname), ENT_QUOTES, "UTF-8");
-                        $endtext = html_entity_decode(Yii::app()->request->getPost('endtext_'.$langname), ENT_QUOTES, "UTF-8");
-                        $sURLDescription = html_entity_decode(Yii::app()->request->getPost('urldescrip_'.$langname), ENT_QUOTES, "UTF-8");
-                        $sURL = html_entity_decode(Yii::app()->request->getPost('url_'.$langname), ENT_QUOTES, "UTF-8");
-                    }
+                    $title = html_entity_decode(Yii::app()->request->getPost('short_title_'.$langname), ENT_QUOTES, "UTF-8");
+                    $description = html_entity_decode(Yii::app()->request->getPost('description_'.$langname), ENT_QUOTES, "UTF-8");
+                    $welcometext = html_entity_decode(Yii::app()->request->getPost('welcome_'.$langname), ENT_QUOTES, "UTF-8");
+                    $endtext = html_entity_decode(Yii::app()->request->getPost('endtext_'.$langname), ENT_QUOTES, "UTF-8");
+                    $sURLDescription = html_entity_decode(Yii::app()->request->getPost('urldescrip_'.$langname), ENT_QUOTES, "UTF-8");
+                    $sURL = html_entity_decode(Yii::app()->request->getPost('url_'.$langname), ENT_QUOTES, "UTF-8");
+                    $dateformat= Yii::app()->request->getPost('dateformat_'.$langname);
+                    $numberformat = Yii::app()->request->getPost('numberformat_'.$langname);
 
                     // Fix bug with FCKEditor saving strange BR types
                     $short_title = Yii::app()->request->getPost('short_title_'.$langname);
@@ -860,21 +842,19 @@ class database extends Survey_Common_Action
 
                     $short_title=fixCKeditorText($short_title);
                     $description=fixCKeditorText($description);
-                    $welcome=fixCKeditorText($welcome);
+                    $welcometext=fixCKeditorText($welcometext);
                     $endtext=fixCKeditorText($endtext);
 
-                    $data = array(
-                    'surveyls_title' => $short_title,
-                    'surveyls_description' => $description,
-                    'surveyls_welcometext' => $welcome,
-                    'surveyls_endtext' => $endtext,
-                    'surveyls_url' => $sURL,
-                    'surveyls_urldescription' => $sURLDescription,
-                    'surveyls_dateformat' => Yii::app()->request->getPost('dateformat_'.$langname),
-                    'surveyls_numberformat' => Yii::app()->request->getPost('numberformat_'.$langname)
-                    );
-
-                    Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$surveyid, 'surveyls_language'=>$langname), $data);
+                    $oSurveysLanguagesettings=Surveys_languagesettings::model()->findByPk(array('surveyls_survey_id'=>$surveyid, 'surveyls_language'=>$langname));
+                    $oSurveysLanguagesettings->surveyls_title= $title;
+                    $oSurveysLanguagesettings->surveyls_description= $description;
+                    $oSurveysLanguagesettings->surveyls_welcometext= $welcome;
+                    $oSurveysLanguagesettings->surveyls_endtext= $endtext;
+                    $oSurveysLanguagesettings->surveyls_url= $sURL;
+                    $oSurveysLanguagesettings->surveyls_urldescription= $sURLDescription;
+                    $oSurveysLanguagesettings->surveyls_dateformat= $dateformat;
+                    $oSurveysLanguagesettings->surveyls_numberformat= $numberformat;
+                    $oSurveysLanguagesettings->save();
                 }
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Survey text elements successfully saved.");
@@ -975,6 +955,7 @@ class database extends Survey_Common_Action
             'publicgraphs'=> Yii::app()->request->getPost('publicgraphs'),
             'usecookie'=> Yii::app()->request->getPost('usecookie'),
             'allowregister'=> Yii::app()->request->getPost('allowregister'),
+            'directregister'=> Yii::app()->request->getPost('directregister'),
             'allowsave'=> Yii::app()->request->getPost('allowsave'),
             'navigationdelay'=> Yii::app()->request->getPost('navigationdelay'),
             'printanswers'=> Yii::app()->request->getPost('printanswers'),
@@ -1028,22 +1009,19 @@ class database extends Survey_Common_Action
             {
                 if ($langname)
                 {
-                    $usresult = Surveys_languagesettings::model()->findAllByPk(array('surveyls_survey_id'=>$surveyid, 'surveyls_language'=>$langname));
-                    if (count($usresult)==0)
+                    $oLanguageSettings = Surveys_languagesettings::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$surveyid,':langname'=>$langname));
+                    if(!$oLanguageSettings)
                     {
-
+                        $oLanguageSettings= new Surveys_languagesettings;
                         $languagedetails=getLanguageDetails($langname);
-
                         $insertdata = array(
-                        'surveyls_survey_id' => $surveyid,
-                        'surveyls_language' => $langname,
-                        'surveyls_title' => '',
-                        'surveyls_dateformat' => $languagedetails['dateformat']
+                            'surveyls_survey_id' => $surveyid,
+                            'surveyls_language' => $langname,
+                            'surveyls_dateformat' => $languagedetails['dateformat']
                         );
-                        $setting= new Surveys_languagesettings;
                         foreach ($insertdata as $k => $v)
-                            $setting->$k = $v;
-                        $setting->save();
+                            $oLanguageSettings->$k = $v;
+                        $usresult=$oLanguageSettings->save();
                     }
                 }
             }

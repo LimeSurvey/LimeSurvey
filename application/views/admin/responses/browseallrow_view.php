@@ -1,20 +1,20 @@
 <tr class='<?php echo $bgcc; ?>' valign='top'>
     <td align='center'><input type='checkbox' class='cbResponseMarker' value='<?php echo $dtrow['id']; ?>' name='markedresponses[]' /></td>
     <td align='center'>
-        <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/{$dtrow['id']}"); ?>'><img src='<?php echo $sImageURL; ?>token_viewanswer.png' alt='<?php $clang->eT('View response details'); ?>'/></a>
-        <?php if (hasSurveyPermission($surveyid, 'responses', 'update'))
-            { ?>
-            <a href='<?php echo $this->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$dtrow['id']}"); ?>'><img src='<?php echo $sImageURL; ?>edit_16.png' alt='<?php $clang->eT('Edit this response'); ?>'/></a>
-            <?php }
-            if (hasFileUploadQuestion($surveyid))
-            { ?>
-            <a><img id='downloadfile_<?php echo $dtrow['id']; ?>' src='<?php echo $sImageURL; ?>down.png' alt='<?php $clang->eT('Download all files in this response as a zip file'); ?>' class='downloadfile'/></a>
-            <?php }
-            if (hasSurveyPermission($surveyid, 'responses', 'delete'))
-            { ?>
-            <a><img id='deleteresponse_<?php echo $dtrow['id']; ?>' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php $clang->eT('Delete this response'); ?>' class='deleteresponse'/></a>
-            <?php } ?>
-    </td>
+<a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/{$dtrow['id']}"); ?>'><img src='<?php echo $sImageURL; ?>token_viewanswer.png' alt='<?php $clang->eT('View response details'); ?>'/></a>
+<?php if (hasSurveyPermission($surveyid, 'responses', 'update'))
+{ ?>
+<a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$dtrow['id']}"); ?>'><img src='<?php echo $sImageURL; ?>edit_16.png' alt='<?php $clang->eT('Edit this response'); ?>'/></a>
+<?php }
+if (hasFileUploadQuestion($surveyid))
+{ ?>
+<a><img id='downloadfile_<?php echo $dtrow['id']; ?>' src='<?php echo $sImageURL; ?>down.png' alt='<?php $clang->eT('Download all files in this response as a zip file'); ?>' class='downloadfile'/></a>
+<?php }
+if (hasSurveyPermission($surveyid, 'responses', 'delete'))
+{ ?>
+<a><img id='deleteresponse_<?php echo $dtrow['id']; ?>' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php $clang->eT('Delete this response'); ?>' class='deleteresponse'/></a>
+<?php } ?>
+</td>
     <?php
         $i = 0;
         $browsedatafield="";
@@ -29,7 +29,7 @@
             }
             else
             {
-                //No corresponding token in the token tabel, just didsplay the token
+                //No corresponding token in the token table, just display the token
                 $browsedatafield .= "{$dtrow['token']}";
             }
         ?>
@@ -40,10 +40,10 @@
 
         for ($i; $i < $fncount; $i++)
         {
-            if (count($fnames[$i]) > 2)
+            if (isset($fnames[$i]['metadata']))
             {
-                $index = $fnames[$i][3];
-                $metadata = $fnames[$i][2];
+                $index = $fnames[$i]['index'];
+                $metadata = $fnames[$i]['metadata'];
                 $phparray = json_decode_ls($dtrow[$fnames[$i][0]], true);
                 if (isset($phparray[$index]))
                 {

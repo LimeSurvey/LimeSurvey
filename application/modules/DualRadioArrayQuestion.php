@@ -7,6 +7,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         global $notanswered;
         $repeatheadings = Yii::app()->getConfig("repeatheadings");
         $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
+        $caption="";// Just leave empty, are replaced after
         $extraclass ="";
         $answertypeclass = ""; // Maybe not
         $clang = Yii::app()->lang;
@@ -25,12 +26,14 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             $useDropdownLayout = true;
             $extraclass .=" dropdown-list";
             $answertypeclass .=" dropdown";
+            $caption=$clang->gT("An array with sub-question on each line, with 2 answers to provide on each line. You have to select the answer.");
         }
         else
         {
             $useDropdownLayout = false;
             $extraclass .=" radio-list";
             $answertypeclass .=" radio";
+            $caption=$clang->gT("An array with sub-question on each line, with 2 answers to provide on each line. The answers are contained in the table header. ");
         }
         if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
         {
@@ -82,7 +85,11 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                 }
             }
             $numrows=count($labelans) + count($labelans1);
-            if ($this->mandatory != "Y" && SHOW_NO_ANSWER == 1) {$numrows++;}
+            if ($this->mandatory != "Y" && SHOW_NO_ANSWER == 1)
+            {
+                $numrows++;
+                $caption.=$clang->gT("The last cell are for no answer. ");
+            }
             $cellwidth=$columnswidth/$numrows;
 
             $cellwidth=sprintf("%02d", $cellwidth);
@@ -92,6 +99,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             if ($ansresult->count()>0)
             {
                 $right_exists=true;
+                $caption.=$clang->gT("After answers, a cell give some information. ");
             }
             else
             {
@@ -207,7 +215,8 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                 $answer_head1 = '';
             }
 
-            $answer .= "\n<table class=\"question subquestions-list questions-list\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - a dual array type question\">\n"
+            $answer .= "\n<table class=\"question subquestions-list questions-list\" >\n"
+            . "<caption class=\"hide screenreader\">{$caption}</caption>\n"
             . $mycolumns
             . "\n\t<thead>\n"
             . $answer_head1
@@ -265,15 +274,14 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                 foreach ($labelcode as $ld)
                 {
                     $answer .= "\t<td class=\"answer_cell_1_00$ld answer-item {$answertypeclass}-item\">\n"
-                    . "<label for=\"answer$myfname-$ld\">\n"
-                    . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
-                    . HTMLEscape(strip_tags($labelans[$thiskey])).'"';
+                    . "<label for=\"answer$myfname-$ld\" class='hide'>{$labelans[$thiskey]}</label>\n"
+                    . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\"";
                     if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == $ld)
                     {
                         $answer .= CHECKED;
                     }
                     // --> START NEW FEATURE - SAVE
-                    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n";
+                    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n";
                     // --> END NEW FEATURE - SAVE
                     $answer .= "\n\t</td>\n";
                     $thiskey++;
@@ -295,15 +303,14 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                             $answer .=$hiddenanswers;
                             $hiddenanswers='';
                         }
-                        $answer .= "<label for=\"answer$myfname1-$ld\">\n"
-                        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname1\" value=\"$ld\" id=\"answer$myfname1-$ld\" title=\""
-                        . HTMLEscape(strip_tags($labelans1[$thiskey])).'"';
+                        $answer .= "<label for=\"answer$myfname1-$ld\" class='hide'>{$labelans1[$thiskey]}</label>\n"
+                        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname1\" value=\"$ld\" id=\"answer$myfname1-$ld\" title=\"";
                         if (isset($_SESSION['survey_'.$this->surveyid][$myfname1]) && $_SESSION['survey_'.$this->surveyid][$myfname1] == $ld)
                         {
                             $answer .= CHECKED;
                         }
                         // --> START NEW FEATURE - SAVE
-                        $answer .= " onclick=\"secondlabel_checkconditions(this.value, this.name, this.type)\" />\n</label>\n";
+                        $answer .= " onclick=\"secondlabel_checkconditions(this.value, this.name, this.type)\" />\n";
                         // --> END NEW FEATURE - SAVE
 
                         $answer .= "\t</td>\n";
@@ -325,15 +332,14 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                 {
                     $answer .= "\t<td class=\"dual_scale_separator information-item\">&nbsp;</td>\n"; // separator
                     $answer .= "\t<td class=\"dual_scale_no_answer answer-item radio-item noanswer-item\">\n"
-                    . "<label for='answer$myfname-'>\n"
-                    . "\t<input class='radio' type='radio' name='$myfname' value='' id='answer$myfname-' title='".$clang->gT("No answer")."'";
+                    . "<label for='answer$myfname-' class='hide'>{$clang->gT("No answer")}</label>\n"
+                    . "\t<input class='radio' type='radio' name='$myfname' value='' id='answer$myfname-' ";
                     if (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) || $_SESSION['survey_'.$this->surveyid][$myfname] == "")
                     {
                         $answer .= CHECKED;
                     }
                     // --> START NEW FEATURE - SAVE
                     $answer .= " onclick=\"noanswer_checkconditions(this.value, this.name, this.type)\" />\n"
-                    . "</label>\n"
                     . "\t</td>\n";
                     // --> END NEW FEATURE - SAVE
                 }
@@ -410,7 +416,8 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                 $colspan_1 = '';
                 $colspan_2 = '';
                 $suffix_cell = '';
-                $answer .= "\n<table class=\"question subquestion-list questions-list dropdown-list\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - an dual array type question\">\n\n"
+                $answer .= "\n<table class=\"question subquestion-list questions-list dropdown-list\" >\n"
+                . "<caption class=\"hide screenreader\">{$caption}</caption>\n"
                 . "\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
                 if($ddprefix != '')
                 {
@@ -475,8 +482,8 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     $answer .= $htmltbody2;
 
                     $answer .= "\t<th class=\"answertext\">\n"
-                    . "<label for=\"answer$rowname\">\n"
                     . $hiddenfield
+                    . "<label for=\"answer{$rowname}#0\">\n"
                     . "$answertext\n"
                     . "</label>\n"
                     . "\t</th>\n";
@@ -489,6 +496,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                         $answer .= "\t<td class=\"ddprefix information-item\">$ddprefix</td>\n";
                     }
                     $answer .= "\t<td class=\"answer-item dropdown-item\">\n"
+                    
                     . "<select name=\"$myfname\" id=\"answer$myfname\" onchange=\"array_dual_dd_checkconditions(this.value, this.name, this.type,$dualgroup,$checkconditionFunction);\">\n";
 
                     if (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) || $_SESSION['survey_'.$this->surveyid][$myfname] =='')
@@ -540,6 +548,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                         $answer .= "\t<td class='ddprefix information-item'>$ddprefix</td>\n";
                     }
                     $answer .= "\t<td class=\"answer-item dropdown-item\">\n"
+                    . "<label for=\"answer$myfname1\" class=\"hide\">$answertext</label>"
                     . "<select name=\"$myfname1\" id=\"answer$myfname1\" onchange=\"array_dual_dd_checkconditions(this.value, this.name, this.type,$dualgroup1,$checkconditionFunction);\">\n";
 
                     if (empty($_SESSION['survey_'.$this->surveyid][$myfname]))

@@ -719,16 +719,16 @@ class Participants extends CActiveRecord
                     break;
                 case 'greaterthan': 
                     $operator = '>';
-                    $aParams[$param] = '%'.$sValue.'%';
+                    $aParams[$param] = $sValue;
                     break;
                 case 'lessthan': 
                     $operator = '<';
-                    $aParams[$param] = '%'.$sValue.'%';
+                    $aParams[$param] = $sValue;
                     break;
             }
-            if (isset($condition[($i*4)+3]))
+            if (isset($condition[(($i-1)*4)+3]))
             {
-                $booloperator=  strtoupper($condition[($i*4)+3]);
+                $booloperator=  strtoupper($condition[(($i-1)*4)+3]);
             }
             else
             {

@@ -234,8 +234,11 @@
                         <ul>
                             <?php
                                 foreach ($redundantsurveytables as $surveytable) {?>
-                                <li><input type='checkbox' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]' /><?php echo $surveytable['details']?></li><?php
-                            }?>
+                                <li>
+                                    <input type='checkbox' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]' id='oldsurveydelete_<?php echo $surveytable['table']?>' />
+                                    <label for='oldsurveydelete_<?php echo $surveytable['table']?>'><?php echo $surveytable['details']?></label>
+                                </li>
+                            <?php }?>
                         </ul>
                     </li>
                     <?php
@@ -248,8 +251,11 @@
                         <ul>
                             <?php
                                 foreach ($redundanttokentables as $tokentable) {?>
-                                <li><input type='checkbox' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' /><?php echo $tokentable['details']?></li><?php
-                            }?>
+                                <li>
+                                    <input type='checkbox' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' id='oldtokendelete_<?php echo $tokentable['table']?>' />
+                                    <label for='oldtokendelete_<?php echo $tokentable['table']?>'><?php echo $tokentable['details']?></label>
+                                </li>
+                            <?php }?>
                         </ul>
                     </li>
                     <?php

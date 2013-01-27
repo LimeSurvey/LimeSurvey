@@ -55,11 +55,6 @@
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <input type='hidden' name='action' value='browse' />
                 <input type='hidden' name='subaction' value='all' />
-
-                <?php if (isset($_POST['sql']))
-                    { ?>
-                    <input type='hidden' name='sql' value='<?php echo HTMLEscape($_POST['sql']); ?>' />
-                    <?php } ?>
             </form></div>
     </div>
 </div>
@@ -81,12 +76,12 @@
             {
                 if (!isset($currentgroup))
                 {
-                    $currentgroup = $fn[1];
+                    $currentgroup = $fn[0];
                     $gbc = "odd";
                 }
-                if ($currentgroup != $fn[1])
+                if ($currentgroup != $fn[0])
                 {
-                    $currentgroup = $fn[1];
+                    $currentgroup = $fn[0];
                     if ($gbc == "odd")
                     {
                         $gbc = "even";
@@ -98,7 +93,10 @@
                 }
             ?>
             <th class='<?php echo $gbc; ?>'>
-                <strong><?php echo flattenText(stripJavaScript($fn[1]), true); ?></strong>
+                <?php if(isset($fn['code'])){ ?>
+                    <span class="qcode"><?php echo $fn['code']; ?></span>
+                <?php }?>
+                <strong class="questiontext"><?php echo $fn[1]; ?></strong>
             </th>
             <?php } ?>
     </tr>
@@ -106,12 +104,12 @@
 <tfoot>
     <tr>
         <td colspan=<?php echo $fncount + 2; ?>>
-            <?php if (hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
-                <img id='imgDeleteMarkedResponses' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php $clang->eT('Delete marked responses'); ?>' />
-                <?php } ?>
-            <?php if (hasFileUploadQuestion($iSurveyId)) { ?>
-                <img id='imgDownloadMarkedFiles' src='<?php echo $sImageURL; ?>down_all.png' alt='<?php $clang->eT('Download marked files'); ?>' />
-                <?php } ?>
+<?php if (hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
+<img id='imgDeleteMarkedResponses' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php $clang->eT('Delete marked responses'); ?>' />
+<?php } ?>
+<?php if (hasFileUploadQuestion($iSurveyId)) { ?>
+<img id='imgDownloadMarkedFiles' src='<?php echo $sImageURL; ?>down_all.png' alt='<?php $clang->eT('Download marked files'); ?>' />
+<?php } ?>
         </td>
     </tr>
-            </tfoot>
+</tfoot>

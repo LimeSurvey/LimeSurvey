@@ -8,8 +8,8 @@ class RadioArrayQuestion extends ArrayQuestion
         $repeatheadings = Yii::app()->getConfig("repeatheadings");
         $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
         $extraclass ="";
+        $caption="";// Just leave empty, are replaced after
         $clang = Yii::app()->lang;
-
         $checkconditionFunction = "checkconditions";
         $qquery = "SELECT other FROM {{questions}} WHERE qid={$this->id} AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."'";
         $qresult = dbExecuteAssoc($qquery);     //Checked
@@ -31,10 +31,12 @@ class RadioArrayQuestion extends ArrayQuestion
         {
             $useDropdownLayout = true;
             $extraclass .=" dropdown-list";
+            $caption=$clang->gT("An array with sub-question on each line. You have to select your answer.");
         }
         else
         {
             $useDropdownLayout = false;
+            $caption=$clang->gT("An array with sub-question on each line. The answers are contained in the table header. ");
         }
         if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
         {
@@ -59,17 +61,21 @@ class RadioArrayQuestion extends ArrayQuestion
             $fn=1;
 
             $numrows = count($labelans);
-            if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
-            {
-                ++$numrows;
-            }
             if ($right_exists)
             {
                 ++$numrows;
+                $caption.=$clang->gT("After answers, a cell give some information. ");
+            }
+            if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
+            {
+                ++$numrows;
+                $caption.=$clang->gT("The last cell are for no answer. ");
             }
             $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-            $answer_start = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - an array type question\" >\n";
+            $answer_start = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" >"
+                          . "<caption class=\"hide screenreader\">{$caption}</caption>\n";
+            
             $answer_head_line= "\t<td>&nbsp;</td>\n";
             foreach ($labelans as $ld)
             {
@@ -132,9 +138,8 @@ class RadioArrayQuestion extends ArrayQuestion
                 foreach ($labelcode as $ld)
                 {
                     $answer .= "\t\t\t<td class=\"answer_cell_00$ld answer-item radio-item\">\n"
-                    . "<label for=\"answer$myfname-$ld\">\n"
-                    . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
-                    . HTMLEscape(strip_tags($labelans[$thiskey])).'"';
+                    . "<label for=\"answer$myfname-$ld\" class=\"hide\">{$labelans[$thiskey]}</label>\n"
+                    . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" ";
                     if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == $ld)
                     {
                         $answer .= CHECKED;
@@ -159,14 +164,14 @@ class RadioArrayQuestion extends ArrayQuestion
 
                 if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
                 {
-                    $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n<label for=\"answer$myfname-\">\n"
-                    ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" title=\"".$clang->gT('No answer').'"';
+                    $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n<label for=\"answer$myfname-\" class=\"hide\">{$clang->gT('No answer')}</label>\n"
+                    ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" ";
                     if (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) || $_SESSION['survey_'.$this->surveyid][$myfname] == '')
                     {
                         $answer .= CHECKED;
                     }
                     // --> START NEW FEATURE - SAVE
-                    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\"  />\n</label>\n\t</td>\n";
+                    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\"  />\n\t</td>\n";
                     // --> END NEW FEATURE - SAVE
                 }
 

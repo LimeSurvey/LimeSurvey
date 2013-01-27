@@ -7,7 +7,7 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
         $clang = Yii::app()->lang;
         $extraclass = "";
         $checkconditionFunction = "checkconditions";
-
+        $caption=$clang->gT("An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. ");
         $aQuestionAttributes = $this->getAttributeValues();
         $qquery = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."'";
         $qresult = dbExecuteAssoc($qquery);    //Checked
@@ -35,7 +35,8 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
                 $fn=1;
                 $cellwidth=$anscount;
                 $cellwidth=round(( 50 / $cellwidth ) , 1);
-                $answer = "\n<table class=\"question subquestions-list questions-list\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - an array type question with a single response per column\">\n\n"
+                $answer = "\n<table class=\"question subquestions-list questions-list\" >\n"
+                . "<caption class=\"hide screenreader\">{$caption}</caption>\n"
                 . "\t<colgroup class=\"col-responses\">\n"
                 . "\t<col class=\"col-answers\" width=\"50%\" />\n";
                 $odd_even = '';
@@ -90,10 +91,9 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
                         //if (!isset($trbc) || $trbc == 'array1') {$trbc = 'array2';} else {$trbc = 'array1';}
                         $myfname=$this->fieldname.$ld;
                         $answer .= "\t<td class=\"answer_cell_00$ld answer-item radio-item\">\n"
-                        . "<label for=\"answer".$myfname.'-'.$ansrow['code']."\">\n"
+                        . "<label for=\"answer".$myfname.'-'.$ansrow['code']."\" class=\"hide\">{$ansrow['answer']}</label>\n"
                         . "\t<input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
-                        . 'id="answer'.$myfname.'-'.$ansrow['code'].'" '
-                        . 'title="'.HTMLEscape(strip_tags($ansrow['answer'])).'"';
+                        . 'id="answer'.$myfname.'-'.$ansrow['code'].'" ';
                         if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == $ansrow['code'])
                         {
                             $answer .= CHECKED;
@@ -105,7 +105,7 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
                             // because I think $_SESSION['survey_'.$this->surveyid][$myfname] is always set (by save.php ??) !
                             // should remove the !isset part I think !!
                         }
-                        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
+                        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n";
                     }
                     unset($trbc);
                     $answer .= "</tr>\n";

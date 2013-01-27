@@ -19,10 +19,11 @@
 class viewHelper
 {
     /**
-     * Returns HTML needed for a link that consists of only an image with alt text.
+     * getImageLink returns HTML needed for a link that consists of only an image with alt text.
      *
      * Usage: getImageLink('test.png', 'controller/action/params', 'Your description', 'optionalClass', '_blank')
      *
+     * @return string
      * @param string $imgName the name of the image to use, adminImageUrl will be added to it
      * @param string $linkUrl Url we want to go to, uses CController->createUrl()
      * @param string $linkTxt Text to show for the link
@@ -53,4 +54,89 @@ class viewHelper
 
         return $output;
     }
+
+    /**
+     * getFieldText
+     * Returns $string : complete field information text for surveytable.
+     *
+     * Usage: getFieldText($q, $option)
+     *
+     * @return string
+     * @param object $q the field information from createFieldMap
+     * @param array $option option for filtering
+     */
+    public static function getFieldText($q, $option=array())
+    {
+        // Default options
+        if(!isset($option['flat'])){$option['flat']=true;}
+
+        if(isset($q->fieldname))
+        {
+            $questiontext=$q->text;
+            if(isset($q->scalename) && $q->scalename)
+            {
+                $questiontext.="[{$q->scalename}]";
+            }
+            if(isset($q->sq) && $q->sq)
+            {
+                $questiontext.="[{$q->sq}]";
+            }
+            if(isset($q->sq1) && $q->sq1)
+            {
+                $questiontext.="[{$q->sq1}]";
+            }
+            if(isset($q->sq2) && $q->sq2)
+            {
+                $questiontext.="[{$q->sq2}]";
+            }
+        }
+        else
+        {
+            $questiontext="";
+        }
+        if($option['flat'])
+        {
+            $questiontext=flattenText($questiontext);
+        }
+        return $questiontext;
+    }
+
+    /**
+     * getFieldCode returns $string : complete field information code for surveytable.
+     *
+     * Usage: getFieldCode($field, $option)
+     *
+     * @return string
+     * @param object $q the field information from createFieldMap
+     * @param array $option option for filtering
+     */
+    public static function getFieldCode($q, $option=array())
+    {
+        if(isset($q->fieldname))
+        {
+            if(isset($q->title) && $q->title)
+            {
+                $questioncode=$q->title;
+                if(isset($q->scale) && isset($q->scalename))
+                {
+                    $scalenum=intval($q->scale)+1;
+                    $questioncode.="[".$scalenum."]";
+                }
+                if(isset($q->aid) && $q->aid)
+                {
+                    $questioncode.="[".$q->aid."]";
+                }
+            }
+            else
+            {
+                $questioncode=$q->fieldname;
+            }
+        }
+        else
+        {
+            $questioncode="";
+        }
+        return $questioncode;
+    }
+
 }

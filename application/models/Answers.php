@@ -47,7 +47,7 @@ class Answers extends CActiveRecord
      */
     public function primaryKey()
     {
-        return array('qid', 'code');
+        return array('qid', 'code','language','scale_id');
     }
 
     /**
@@ -65,6 +65,23 @@ class Answers extends CActiveRecord
             'groups' => array(self::HAS_ONE, 'Groups', '', 'through' => 'questions',
                 'on' => 'questions.gid = groups.gid'
             ),
+        );
+    }
+
+    /**
+    * Returns this model's validation rules
+    *
+    */
+    public function rules()
+    {
+        return array(
+            array('qid','numerical', 'integerOnly'=>true),
+            array('code','length', 'min' => 1, 'max'=>5),
+            array('answer','LSYii_Validators'),
+            array('sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('assessment_value','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
+            array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
         );
     }
 

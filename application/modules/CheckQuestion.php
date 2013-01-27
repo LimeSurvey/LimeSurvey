@@ -585,6 +585,18 @@ class CheckQuestion extends QuestionModule
         return true;
     }
 
+    public function getVarAttributeLEM($sgqa,$value)
+    {
+        if (preg_match('/other$/',$sgqa))
+        {
+            return htmlspecialchars(parent::getVarAttributeLEM($sgqa,$value),ENT_NOQUOTES);
+        }
+        else
+        {
+            return parent::getVarAttributeLEM($sgqa,$value);
+        }
+    }
+
     public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
     {
         $code = parent::getVarAttributeShown($name,'code',$default,$gseq,$qseq);

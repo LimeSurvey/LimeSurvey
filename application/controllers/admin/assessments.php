@@ -177,7 +177,7 @@ class Assessments extends Survey_Common_Action
             foreach ($languages as $language)
             {
                 $aData = $this->_getAssessmentPostData($iSurveyID, $language);
-                Assessment::model()->updateAssessment($aid, $language, $aData);
+                Assessment::model()->updateAssessment($aid, $iSurveyID, $language, $aData);
             }
         }
     }
@@ -188,7 +188,7 @@ class Assessments extends Survey_Common_Action
     private function _delete($iSurveyID, $assessmentId)
     {
         if (hasSurveyPermission($iSurveyID, 'assessments', 'delete')) {
-            Assessment::model()->deleteAllByAttributes(array('id' => $assessmentId));
+            Assessment::model()->deleteAllByAttributes(array('id' => $assessmentId, 'sid' => $iSurveyID));
         }
     }
 

@@ -78,7 +78,11 @@ class LSYii_Application extends CWebApplication
             }
         }
 
-        $config['components']['request']=array(
+        if (!isset($config['components']['request']))
+        {
+            $config['components']['request']=array();
+        }
+        $config['components']['request']=array_merge_recursive($config['components']['request'],array(
             'class'=>'LSHttpRequest',
             'noCsrfValidationRoutes'=>array(
 //              '^services/wsdl.*$'   // Set here additional regex rules for routes not to be validate 
@@ -88,7 +92,7 @@ class LSYii_Application extends CWebApplication
             ),
             'enableCsrfValidation'=>false,    // Enable to activate CSRF protection
             'enableCookieValidation'=>false   // Enable to activate cookie protection
-        );
+        ));
 
         parent::__construct($config);
         // Load the default and environmental settings from different files into self.

@@ -431,6 +431,12 @@ abstract class QuestionModule extends CComponent
         return false;
     }
 
+    public function getVarAttributeLEM($sgqa,$value)
+    {
+        return $value;
+    }
+
+
     public function getVarAttributeValueNAOK($name, $default, $gseq, $qseq, $ansArray)
     {
         return LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);

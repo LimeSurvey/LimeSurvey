@@ -67,7 +67,18 @@ class Survey_Common_Action extends CAction
 
         if (!empty($params['iSurveyId']))
         {
-            LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
+            if(!Survey::model()->findByPk($params['iSurveyId']))
+            {
+                $this->getController()->error('Invalid survey id');
+            }
+            elseif (!hasSurveyPermission($params['iSurveyId'], 'survey', 'read'))
+            {
+                $this->getController()->error('No permission');
+            }
+            else
+            {
+                LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
+            }
         }
 
         // Check if the method is public and of the action class, not its parents
@@ -498,14 +509,11 @@ class Survey_Common_Action extends CAction
     */
     function _surveybar($iSurveyID, $gid=null)
     {
-        //$this->load->helper('surveytranslator');
         $clang = $this->getController()->lang;
-        //echo Yii::app()->getConfig('gid');
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
         $condition = array('sid' => $iSurveyID, 'language' => $baselang);
 
-        //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$iSurveyID"; //Getting data for this survey
-        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByPk($iSurveyID); //$sumquery1, 1) ; //Checked
+        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->find('sid = :surveyid', array(':surveyid' => $iSurveyID)); //$sumquery1, 1) ; //Checked
         if (is_null($sumresult1))
         {
             Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
@@ -724,6 +732,14 @@ class Survey_Common_Action extends CAction
         if ($surveyinfo['allowregister'] == "Y")
         {
             $surveysummary2 .= $clang->gT("If tokens are used, the public may register for this survey") . "<br />";
+        }
+        if ($surveyinfo['directregister'] == "Y")
+        {
+            $surveysummary2 .= $clang->gT("If public may register for this survey, the url for survey with token are shown without email confirmation.") . "<br />";
+        }
+        elseif ($surveyinfo['directregister'] == "A")
+        {
+            $surveysummary2 .= $clang->gT("If public may register for this survey, survey start just after registering without email confirmation.") . "<br />";
         }
         if ($surveyinfo['allowsave'] == "Y" && $surveyinfo['tokenanswerspersistence'] == 'N')
         {

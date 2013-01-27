@@ -1,7 +1,8 @@
+<div class="header ui-widget-header">
+<?php echo sprintf($clang->gT('ComfortUpdate step %s'),'4');?>
+
+</div><div class="updater-background"><br />
 <?php
-
-echo '<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'4').'</div><div class="updater-background"><br />';
-
 if (!isset( Yii::app()->session['updateinfo']))
 {
     $clang->eT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
@@ -31,7 +32,6 @@ if (!$downloaderror)
     $clang->eT('As a last step you should clear your browser cache now.');?> <br /> <?php
 }
 
-echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_top')\" >".$clang->gT('Back to main menu')."</button></p>";
-echo '</div>';
-
-?>
+echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_top')\" >".$clang->gT('Back to main menu'); ?>
+</button></p>
+</div>

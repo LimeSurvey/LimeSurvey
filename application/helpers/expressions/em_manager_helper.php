@@ -704,7 +704,7 @@
             if (!is_null($sid)) {
                 if (isset($_SESSION['LEMsid']) && $sid != $_SESSION['LEMsid']) {
                     // then trying to use a new survey - so clear the LEM cache
-                    $_SESSION['LEMdirtyFlag'] = true;
+                    self::SetDirtyFlag();
                 }
                 $_SESSION['LEMsid'] = $sid;
             }
@@ -724,8 +724,7 @@
             }
             if ($_SESSION['LEMlang'] != $lang) {
                 // then changing languages, so clear cache
-                //            $_SESSION['LEMdirtyFlag'] = true;
-                $_SESSION['LEMforceRefresh'] = true;
+                self::SetDirtyFlag();
             }
             $_SESSION['LEMlang'] = $lang;
         }
@@ -3190,6 +3189,7 @@
             $LEM->surveyOptions['anonymized'] = (isset($options['anonymized']) ? $options['anonymized'] : false);
             $LEM->surveyOptions['assessments'] = (isset($options['assessments']) ? $options['assessments'] : false);
             $LEM->surveyOptions['datestamp'] = (isset($options['datestamp']) ? $options['datestamp'] : false);
+            $LEM->surveyOptions['deletenonvalues'] = (isset($options['deletenonvalues']) ? ($options['deletenonvalues']=='1') : true);
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = (isset($options['hyperlinkSyntaxHighlighting']) ? $options['hyperlinkSyntaxHighlighting'] : false);
             $LEM->surveyOptions['ipaddr'] = (isset($options['ipaddr']) ? $options['ipaddr'] : false);
             $LEM->surveyOptions['radix'] = (isset($options['radix']) ? $options['radix'] : '.');
@@ -3633,6 +3633,22 @@
             //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
             $updatedValues = $this->updatedValues;
 
+            if (!$this->surveyOptions['deletenonvalues'])
+            {
+                $nonNullValues = array();
+                foreach($updatedValues as $key=>$value)
+                {
+                    if (!is_null($value))
+                    {
+                        if (isset($value['value']) && !is_null($value['value']))
+                        {
+                            $nonNullValues[$key] = $value;
+                        }
+                    }
+                }
+                $updatedValues = $nonNullValues;
+            }            
+            
             $message = '';
             $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
             if ($this->surveyOptions['active'] && !isset($_SESSION[$this->sessid]['srid']))
@@ -6452,20 +6468,26 @@ EOD;
             {
                 case 'varName':
                     return $name;
+                    break;
                 case 'code':
                 case 'NAOK':
                     if (isset($var['code'])) {
                         return $var['code'];    // for static values like TOKEN
                     }
-                    else {
-                        if (isset($_SESSION[$this->sessid][$sgqa])) {
-                            return $_SESSION[$this->sessid][$sgqa];
+                    else
+                    {
+                        if (isset($_SESSION[$this->sessid][$sgqa]))
+                        {
+                            $q = $var['q'];
+                            return $q->getVarAttributeLEM($sgqa, $_SESSION[$this->sessid][$sgqa]);
                         }
-                        if (isset($var['default']) && !is_null($var['default'])) {
+                        elseif (isset($var['default']) && !is_null($var['default']))
+                        {
                             return $var['default'];
                         }
                         return $default;
                     }
+                    break;
                 case 'value':
                 case 'valueNAOK':
                 {

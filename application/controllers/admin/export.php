@@ -142,7 +142,7 @@ class export extends Survey_Common_Action {
 
         if ( ! hasSurveyPermission($iSurveyID, 'responses', 'export') )
         {
-            exit;
+            $this->getController()->error('Access denied!');
         }
 
         Yii::app()->loadHelper("admin/exportresults");
@@ -157,6 +157,10 @@ class export extends Survey_Common_Action {
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
             $aFieldMap = createFieldMap($iSurveyID,false,false,getBaseLanguageFromSurveyID($iSurveyID));
+            if ($thissurvey['savetimings'] === "Y") {
+                //Append survey timings to the fieldmap array
+                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+            }
             $iFieldCount = count($aFieldMap);
 
             $selecthide = "";

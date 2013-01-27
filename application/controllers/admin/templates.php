@@ -891,7 +891,6 @@ class templates extends Survey_Common_Action
         'clang' => $clang
         ), true);
 
-        $help = $clang->gT("This is some help text.");
         $totalquestions = '10';
         $surveyformat = 'Format';
         $notanswered = '5';
@@ -908,7 +907,7 @@ class templates extends Survey_Common_Action
         $aData['groupname'] = $groupname;
         $aData['groupdescription'] = $groupdescription;
         $aData['navigator'] = $navigator;
-        $aData['help'] = $help;
+        $aData['help'] = $clang->gT("This is some help text.");
         $aData['surveyformat'] = $surveyformat;
         $aData['totalquestions'] = $totalquestions;
         $aData['completed'] = $completed;
@@ -1092,11 +1091,12 @@ class templates extends Survey_Common_Action
                     'QUESTION_VALID_MESSAGE' => '',
                     // (not sure if this is used) file validation error
                     'QUESTION_FILE_VALID_MESSAGE' => '',
-                    'QUESTION_TEXT' => 'This is a sample question text. The user was asked to pick an entry.',
-                    'QUESTIONHELP' => 'This is some help text for this question.',
+                    'QUESTION_TEXT' => $clang->gT('This is a sample question text. The user was asked to pick an entry.'),
+                    'QUESTIONHELP' => $clang->gT('This is some help text for this question.'),
                     'ANSWER' =>
                     $this->getController()->render('/admin/templates/templateeditor_printablesurvey_quesanswer_view', array(
                     'templateurl' => $templateurl,
+                    'clang' => $clang
                     ), true),
                     ), $aData);
                 }

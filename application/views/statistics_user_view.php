@@ -1,6 +1,6 @@
 <?php 
     doHeader();
-    echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir($sTemplatePath))."/startpage.pstpl"));
+    echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir($sTemplatePath))."/startpage.pstpl"), array(), $redata);
 ?>
 <script type='text/javascript'>
     var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/graph"); ?>";
@@ -13,6 +13,6 @@
             <?php if (isset($statisticsoutput) && $statisticsoutput) { echo $statisticsoutput; } ?><br />
         </div>
 <?php 
-    echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir($sTemplatePath))."/endpage.pstpl"));
+    echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir($sTemplatePath))."/endpage.pstpl"), array(), $redata);
 ?>
 

@@ -3,7 +3,7 @@
 
 /* Build a different colModel for the userid column based on whether or not the user is editable */
 /* This can probably be moved into the controller */
-if (Yii::app()->getConfig("userideditable"))  //Firstly, if the user has edit rights, make the columns editable
+if (Yii::app()->getConfig("userideditable") == 'Y')  //Firstly, if the user has edit rights, make the columns editable
 {
     $uid = '{ "name":"owner_uid", "index":"owner_uid", "width":150, "sorttype":"int", "sortable": true, "align":"center", "editable":true, "edittype":"select", "editoptions":{ "value":"';
     $i = 0;
@@ -111,6 +111,7 @@ else
     var refreshListTxt="<?php $clang->eT("Refresh list", 'js') ?>";
     var pageViewTxt= "<?php $clang->eT("Page {0} of {1}", 'js') ?>";
     var viewRecordTxt= '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
+    var participantsTxt= '<?php $clang->eT("Participants",'js');?>';
     var emptyRecordsTxt= "<?php $clang->eT("No participants to view", 'js') ?>";
 
     var resetBtn = "<?php $clang->eT("Reset", 'js'); ?>";
@@ -287,7 +288,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
         <input type="hidden" name="participant_id" id="participant_id" value=""></input>
         <input type="hidden" name="count" id="count" value=""></input>
         <div class='popupgroup'>
-            <h4>Participants</h4>
+            <h4><?php $clang->eT("Participants") ?></h4>
             <div id='allinview' style='display: none'><?php $clang->eT("Add all participants in your current list to a survey.") ?></div>
             <div id='selecteditems' style='display: none'><?php $clang->eT("Add the selected participants to a survey.") ?></div>
             <br />

@@ -38,3 +38,13 @@ div.htmleditor {
 .codemirror-ui-find-bar{
 	margin-top: 0.2em !important;
 }
+
+.imagelink {
+    float:left;
+}
+
+.imagelink img {
+    margin-top: 3px;
+    margin-left: 1px;
+    margin-right: 1px;
+}

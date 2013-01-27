@@ -316,6 +316,18 @@ class CommentCheckQuestion extends CheckQuestion
                 . 'return htmlspecialchars_decode(attr.question);';
     }
 
+    public function getVarAttributeLEM($sgqa,$value)
+    {
+        if (preg_match('/comment$/',$sgqa))
+        {
+            return htmlspecialchars(parent::getVarAttributeLEM($sgqa,$value),ENT_NOQUOTES);
+        }
+        else
+        {
+            return parent::getVarAttributeLEM($sgqa,$value);// CheckQuestion doing for other
+        }
+    }
+
     public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
     {
         $name=preg_replace('/\.shown$/','',$name);

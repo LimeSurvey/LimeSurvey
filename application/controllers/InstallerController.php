@@ -174,6 +174,7 @@ class InstallerController extends CController {
         {
             $this->redirect($this->createUrl('installer/precheck'));
         }
+        Yii::app()->session['saveCheck'] = 'save';  // Checked in next step
 
         $this->render('/installer/license_view',$aData);
     }
@@ -836,6 +837,17 @@ class InstallerController extends CController {
         //upload directory check
         if (!check_DirectoryWriteable(Yii::app()->getConfig('uploaddir').'/', $aData, 'uploaddir', 'uerror',true) )
             $bProceed = false;
+        
+        // Session writable check
+        $session = Yii::app()->session; /* @var $session CHttpSession */
+        $sessionWritable = ($session->get('saveCheck', null)==='save');
+        $data['sessionWritable'] = $sessionWritable;
+        $data['sessionWritableImg'] = check_HTML_image($sessionWritable);
+        if (!$sessionWritable){  
+            // For recheck, try to set the value again
+            $session['saveCheck'] = 'save';
+            $bProceed = false;
+        }
 
         // ** optional settings check **
 
@@ -1036,6 +1048,7 @@ class InstallerController extends CController {
             */
 
             ."\t\t"   . "'urlManager' => array("                    . "\n"
+            ."\t\t\t" . "'class' => 'application.core.LSYii_UrlManager',". "\n"
             ."\t\t\t" . "'urlFormat' => '{$sURLFormat}',"           . "\n"
             ."\t\t\t" . "'rules' => require('routes.php'),"         . "\n"
             ."\t\t\t" . "'showScriptName' => $showScriptName,"      . "\n"

@@ -98,7 +98,7 @@ function isStandardTemplate($sTemplateName)
 * @return string This string is returned containing <option></option> formatted list of existing surveys
 *
 */
-function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=false)
+function getSurveyList($returnarray=false, $surveyid=false)
 {
     static $cached = null;
 
@@ -106,7 +106,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
     $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
 
     if(is_null($cached)) {
-        if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
+        if (!User::GetUserRights('manage_survey'))
             $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
         else
             $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
@@ -149,13 +149,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 {
                     $inactivesurveys .= " selected='selected'"; $svexist = 1;
                 }
-                if ($returnwithouturl===false)
-                {
-                    $inactivesurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
-                } else
-                {
-                    $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-                }
+                $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
             } elseif($sv['expires']!='' && $sv['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust))
             {
                 $expiredsurveys .="<option ";
@@ -167,13 +161,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 {
                     $expiredsurveys .= " selected='selected'"; $svexist = 1;
                 }
-                if ($returnwithouturl===false)
-                {
-                    $expiredsurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
-                } else
-                {
-                    $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-                }
+                $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
             } else
             {
                 $activesurveys .= "<option ";
@@ -185,16 +173,11 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 {
                     $activesurveys .= " selected='selected'"; $svexist = 1;
                 }
-                if ($returnwithouturl===false)
-                {
-                    $activesurveys .=" value='".Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
-                } else
-                {
-                    $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-                }
+                $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
             }
         } // End Foreach
     }
+    
     //Only show each activesurvey group if there are some
     if ($activesurveys!='')
     {
@@ -216,13 +199,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
         $surveyselecter = "<option selected='selected' value=''>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;
     } else
     {
-        if ($returnwithouturl===false)
-        {
-            $surveyselecter = "<option value='".Yii::app()->getController()->createUrl("/admin")."'>".$clang->gT("None")."</option>\n".$surveyselecter;
-        } else
-        {
-            $surveyselecter = "<option value=''>".$clang->gT("None")."</option>\n".$surveyselecter;
-        }
+        $surveyselecter = "<option value=''>".$clang->gT("None")."</option>\n".$surveyselecter;
     }
     return $surveyselecter;
 }
@@ -240,25 +217,26 @@ function hasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
 {
     if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
     $sCRUD=$sCRUD.'_p';
-    $iSID = (int)$iSID;
-    if ($iSID==0) return false;
-    $aSurveyPermissionCache = Yii::app()->getConfig("aSurveyPermissionCache");
+    $thissurvey=getSurveyInfo($iSID);
+    if (!$thissurvey) return false;
 
     if (is_null($iUID))
     {
-        if (!Yii::app()->user->getIsGuest()) $iUID = Yii::app()->session['loginID'];
+        if (!Yii::app()->user->getIsGuest()) $iUID = Yii::app()->user->getId();
         else return false;
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
+        if (User::GetUserRights('superadmin')) return true; //Superadmin has access to all
     }
 
+    // Some user don't need to be in Survey_permissions
+    if ($iUID==$thissurvey['owner_id']) return true; //Survey owner has access to all
+    if (User::GetUserRights('manage_survey')) return true; //Survey manager has access to all
+
+    $aSurveyPermissionCache = Yii::app()->getConfig("aSurveyPermissionCache");
     if (!isset($aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]))
     {
-        //!!! Convert this model
-        $query = Survey_permissions::model()->findByAttributes(array("sid"=> $iSID,"uid"=> $iUID,"permission"=>$sPermission));
-        //$sSQL = "SELECT {$sCRUD} FROM " . db_table_name('survey_permissions') . "
-        //        WHERE sid={$iSID} AND uid = {$iUID}
-        //        and permission=".dbQuoteAll($sPermission); //Getting rights for this survey
-        $bPermission = is_null($query) ? array() : $query->attributes;
+        $oPermissions = Survey_permissions::model()->findByAttributes(array("sid"=> $iSID,"uid"=> $iUID,"permission"=>$sPermission));
+
+        $bPermission = !$oPermissions ? array() : $oPermissions->attributes;
         if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
         {
             $bPermission=false;
@@ -291,15 +269,8 @@ function hasGlobalPermission($sPermission)
 {
     if (!Yii::app()->user->getIsGuest()) $iUID = !Yii::app()->user->getId();
     else return false;
-    if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
-    if (Yii::app()->session[$sPermission]==1)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    $sPermission=substr($sPermission,11);// Remove "USER_RIGHT_"
+    return User::GetUserRights($sPermission);
 
 }
 
@@ -415,7 +386,8 @@ function getQuestions($surveyid,$gid,$selectedqid)
     }
     else
     {
-        $sQuestionselecter = "<option value=' '>".$clang->gT("None")."</option>\n".$sQuestionselecter;
+        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid);
+        $sQuestionselecter = "<option value='{$link}'>".$clang->gT("None")."</option>\n".$sQuestionselecter;
     }
     return $sQuestionselecter;
 }
@@ -1026,16 +998,7 @@ function getUserList($outputformat='fullinfoarray')
     {
         if (isset($myuid))
         {
-            $sDatabaseType = Yii::app()->db->getDriverName();
-            if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv")
-            {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,create_survey,participant_panel,configurator,create_user,delete_user,superadmin,manage_template,manage_label,CAST(password as varchar) as password';
-            }
-            else
-            {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,create_survey,participant_panel,configurator,create_user,delete_user,superadmin,manage_template,manage_label,password';
-            }
-
+            $sSelectFields = 'users_name,uid,email,full_name,parent_id';
             // List users from same group as me + all my childs
             // a subselect is used here because MSSQL does not like to group by text
             // also Postgres does like this one better
@@ -1048,13 +1011,11 @@ function getUserList($outputformat='fullinfoarray')
             SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}
             UNION
             SELECT {$sSelectFields} from {{users}} v where uid={$myuid}";
-            
         }
         else
         {
             return array(); // Or die maybe
         }
-                                                        
     }
     else
     {
@@ -1079,11 +1040,11 @@ function getUserList($outputformat='fullinfoarray')
         {
             if ($srow['uid'] != Yii::app()->session['loginID'])
             {
-                $userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "participant_panel"=>$srow['participant_panel'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);           //added by Dennis modified by Moses
+                $userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id']);
             }
             else
             {
-                $userlist[0] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'],"participant_panel"=>$srow['participant_panel'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);
+                $userlist[0] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id']);
             }
         }
         else
@@ -1999,17 +1960,7 @@ function hasFileUploadQuestion($surveyid) {
 */
 function setUserRights($uid, $rights)
 {
-    $uid=sanitize_int($uid);
-    $updates = "create_survey=".$rights['create_survey']
-    . ", create_user=".$rights['create_user']
-    . ", participant_panel=".$rights['participant_panel']
-    . ", delete_user=".$rights['delete_user']
-    . ", superadmin=".$rights['superadmin']
-    . ", configurator=".$rights['configurator']
-    . ", manage_template=".$rights['manage_template']
-    . ", manage_label=".$rights['manage_label'];
-    $uquery = "UPDATE {{users}} SET ".$updates." WHERE uid = ".$uid;
-    return dbSelectLimitAssoc($uquery);     //Checked
+    User::model()->setUserRights($uid, $rights);
 }
 
 /**
@@ -3383,8 +3334,10 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
 *
 * @param string $sTextToFlatten  Text you want to clean
+* @param boolan $keepSpan set to true for keep span, used for expression manager. Default: false
 * @param boolan $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
-* @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true
+* @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true. Default: UTF-8
+* @param string $bStripNewLines strip new lines if true, if false replace all new line by \r\n. Default: true
 *
 * @return string  Cleaned text
 */
@@ -3400,12 +3353,13 @@ function flattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=fals
     else {
         $sNicetext = strip_tags($sNicetext);
     }
+    // ~\R~u : see "What \R matches" and "Newline sequences" in http://www.pcre.org/pcre.txt
     if ($bStripNewLines ){  // strip new lines
-        $sNicetext = preg_replace(array('~\Ru~'),array(' '), $sNicetext);
+        $sNicetext = preg_replace(array('~\R~u'),array(' '), $sNicetext);
     }
     else // unify newlines to \r\n
     {
-        $sNicetext = preg_replace(array('~\Ru~'), array("\r\n"), $sNicetext);
+        $sNicetext = preg_replace(array('~\R~u'), array("\r\n"), $sNicetext);
     }
     if ($bDecodeHTMLEntities==true)
     {
@@ -3687,7 +3641,7 @@ function languageDropdown($surveyid,$selected)
 
     foreach ($slangs as $lang)
     {
-        $link = Yii::app()->homeUrl.("/admin/dataentry/view/surveyid/".$surveyid."/lang/".$lang);
+        $link = Yii::app()->homeUrl.("/admin/dataentry/sa/view/surveyid/".$surveyid."/lang/".$lang);
         if ($lang == $selected) $html .= "\t<option value='{$link}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
         if ($lang != $selected) $html .= "\t<option value='{$link}'>".getLanguageNameFromCode($lang,false)."</option>\n";
     }
@@ -4706,7 +4660,7 @@ function SSLRedirect($enforceSSLMode)
 */
 function enforceSSLMode()
 {
-    $https = isset($_SERVER['HTTPS'])?$_SERVER['HTTPS']:'';
+    $bSSLActive = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off");
     if (Yii::app()->getConfig('ssl_emergency_override') !== true )
     {
         $force_ssl = strtolower(getGlobalSetting('force_ssl'));
@@ -4715,11 +4669,11 @@ function enforceSSLMode()
     {
         $force_ssl = 'off';
     };
-    if( $force_ssl == 'on' && $https == '' )
+    if( $force_ssl == 'on' && !$bSSLActive )
     {
         SSLRedirect('s');
     }
-    if( $force_ssl == 'off' && $https != '')
+    if( $force_ssl == 'off' && $bSSLActive)
     {
         SSLRedirect('');
     };
@@ -5903,7 +5857,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
             //if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected='selected'"; $svexist = 1;}
 
             if ($gn['ugid'] == $ugid) {$selecter .= " selected='selected'"; $svexist = 1;}
-            $link = Yii::app()->getController()->createUrl("/admin/usergroups/view/ugid/".$gn['ugid']);
+            $link = Yii::app()->getController()->createUrl("/admin/usergroups/sa/view/ugid/".$gn['ugid']);
             $selecter .=" value='{$link}'>{$gn['name']}</option>\n";
             $simplegidarray[] = $gn['ugid'];
         }
@@ -6325,19 +6279,18 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
 
     if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
     {
-
         $authorizedUsersList = getUserList('onlyuidarray');
     }
 
-        foreach($aSurveyIDResult as $sv)
+    foreach($aSurveyIDResult as $sv)
+    {
+        if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
+        in_array($sv['uid'],$authorizedUsersList))
         {
-            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
-            in_array($sv['uid'],$authorizedUsersList))
-            {
-                $surveyselecter .= "<option";
-                $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
-            }
+            $surveyselecter .= "<option";
+            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
         }
+    }
     if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;}
     else {$surveyselecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
 
@@ -6445,12 +6398,13 @@ function json_decode_ls($jsonString)
 {
    $decoded = json_decode($jsonString, true);
 
-   if (json_last_error() === JSON_ERROR_SYNTAX) {
-       // probably we need stipslahes
-       $decoded = json_decode(stripslashes($jsonString), true);
-   }
+    if (is_null($decoded) && !empty($jsonString))
+    {
+        // probably we need stipslahes
+        $decoded = json_decode(stripslashes($jsonString), true);
+    }
 
-   return $decoded;
+    return $decoded;
 }
 
 /**

@@ -12,7 +12,7 @@
                     <?php }
                     if (hasSurveyPermission($surveyid, 'responses', 'delete') && isset($rlanguage))
                     { ?>
-                    <a href='#' title='<?php $clang->eT("Delete this entry"); ?>' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?", "js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/dataentry/delete/id/$id/sid/$surveyid")); ?>}">
+                    <a href='#' title='<?php $clang->eT("Delete this entry"); ?>' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?", "js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/dataentry/sa/delete/id/$id/sid/$surveyid")); ?>}">
                         <img src='<?php echo $sImageURL; ?>delete.png' alt='<?php $clang->eT("Delete this entry"); ?>' /></a>
                     <?php }
                     else

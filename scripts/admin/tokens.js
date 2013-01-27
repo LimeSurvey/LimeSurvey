@@ -164,14 +164,14 @@ $(document).ready(function() {
                 var func = function()
                 {
                     jQuery('#displaytokens').restoreRow(row.attr('id'));
-                    row.find('a.imagelink').show();
+                    row.find('.inputbuttons').show();
                     row.find('.drop_editing').remove();
                     row.find('.save').remove();
                     window.editing = false;
                 }
 
                 jQuery('#displaytokens').editRow(row.attr('id'), true, null, null, null, null, func);
-                jQuery(this).parent().find('a.imagelink').hide();
+                row.find('.inputbuttons').hide();
                 window.editing = true;
 
                 var validfrom = row.find('[aria-describedby="displaytokens_validfrom"]');
@@ -186,10 +186,10 @@ $(document).ready(function() {
                 });
 
                 jQuery('<input type="image" class="drop_editing" title="'+cancelBtn+'" src="' + imageurl + 'token_delete.png" />')
-                .appendTo(jQuery(this).parent())
+                .appendTo(jQuery(this).parent().parent())
                 .click(func);
                 jQuery('<input type="image" class="save" title="'+saveBtn+'" src="' + imageurl + 'ok.png" width="16" />')
-                .appendTo(jQuery(this).parent())
+                .appendTo(jQuery(this).parent().parent())
                 .click(function()
                 {
                     jQuery('#displaytokens').saveRow(row.attr('id'));
@@ -206,6 +206,8 @@ $(document).ready(function() {
         caption: sCaption
     });
     jQuery("#displaytokens").jqGrid('navGrid','#pager',{
+        alertcap: sWarningMsg,
+        alerttext: sSelectRowMsg,
         deltitle: sDelTitle,
         refreshtitle: sRefreshTitle,
         add:false,

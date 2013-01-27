@@ -418,5 +418,11 @@ class MultitextQuestion extends QuestionModule
         $props=array('description' => $clang->gT("Multiple Short Text"),'group' => $clang->gT("Text questions"),'subquestions' => 1,'class' => 'multiple-short-txt','hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0,'enum' => 0);
         return $prop?$props[$prop]:$props;
     }
+
+    public function getVarAttributeLEM($sgqa,$value)
+    {
+        return htmlspecialchars(parent::getVarAttributeLEM($sgqa,$value),ENT_NOQUOTES);
+    }
+
 }
 ?>

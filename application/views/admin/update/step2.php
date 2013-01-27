@@ -42,9 +42,10 @@ else
     }
     if (count($existingfiles)>0)
     {
-        $clang->eT('The following files would be added by the update but already exist. This is very unusual and may be co-incidental.').'<br />';
-        $clang->eT('We recommend that these files should be replaced by the update procedure.').'<br />';
-        echo '<ul>';
+        $clang->eT('The following files would be added by the update but already exist. This is very unusual and may be co-incidental.');?><br />
+        <?php  $clang->eT('We recommend that these files should be replaced by the update procedure.');?><br />
+        <ul>
+        <?php
         sort($existingfiles);
         foreach ($existingfiles as $existingfile)
         {
@@ -55,9 +56,11 @@ else
 
     if (count($modifiedfiles)>0)
     {
-        $clang->eT('The following files will be modified or deleted but were already modified by someone else.').'<br />';
-        $clang->eT('We recommend that these files should be replaced by the update procedure.').'<br />';
-        echo '<ul>';
+        $clang->eT('The following files will be modified or deleted but were already modified by someone else.');?><br />
+        <?php
+        $clang->eT('We recommend that these files should be replaced by the update procedure.');?><br />
+        <ul> 
+        <?php
         sort($modifiedfiles);
         foreach ($modifiedfiles as $modifiedfile)
         {

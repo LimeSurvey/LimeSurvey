@@ -13,8 +13,27 @@
  *  $Id$
  */
 class Expressions extends Survey_Common_Action {
-    function index()
-    {
+	function index()
+	{
+        $needpermission=false;
+	    if (isset($_GET['sa']) && $_GET['sa']=='survey_logic_file' && !empty($_REQUEST['sid']))
+	    {
+	        $surveyid=(int)$_REQUEST['sid'];
+	        $needpermission=true;
+	    }
+        if($needpermission && !hasSurveyPermission($surveyid,'surveycontent','read'))
+        {
+            $clang = $this->getController()->lang;
+            $aData['surveyid'] = (int)$_REQUEST['sid'];
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
+            $message['title']= $clang->gT('Access denied!');
+            $message['message']= $clang->gT('You do not have sufficient rights to access this page.');
+            $message['class']= "error";
+            $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
+        }
+        else
+        {
+            header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
     ?>
 <!DOCTYPE html>
 <html>
@@ -36,6 +55,7 @@ class Expressions extends Survey_Common_Action {
     </body>
 </html>
     <?php
+        }
     }
 
     protected function test($which)

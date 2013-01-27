@@ -843,7 +843,7 @@ class dataentry extends Survey_Common_Action
                 if (isset($_POST['token']))
                 {
                     $tokencompleted = "";
-                    $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token='{$_POST['token']}'"; //dbQuoteAll($_POST['token'],true);
+                    $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".dbQuoteAll($_POST['token']);
                     $tcresult = dbExecuteAssoc($tcquery);
                     $tcresult = $tcresult->readAll();
                     $tccount = count($tcresult);
@@ -865,7 +865,7 @@ class dataentry extends Survey_Common_Action
                     }
                     else
                     { // token is valid, survey not anonymous, try to get last recorded response id
-                        $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token='".$_POST['token']."'"; //dbQuoteAll($_POST['token'],true);
+                        $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".dbQuoteAll($_POST['token']);
                         $aresult = dbExecuteAssoc($aquery);
                         foreach ($aresult->readAll() as $arow)
                         {
@@ -895,7 +895,7 @@ class dataentry extends Survey_Common_Action
                     {
                         $errormsg .= "<br /><br />".$clang->gT("Follow the following link to update it").":\n";
                         $errormsg .= CHtml::link("[id:$lastanswfortoken]",
-                        Yii::app()->baseUrl.('/admin/dataentry/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
+                        $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
                         array('title' => $clang->gT("Edit this entry")));
                     }
                     else
@@ -992,7 +992,7 @@ class dataentry extends Survey_Common_Action
                         { $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust); }
 
                         // check how many uses the token has left
-                        $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token='".$_POST['token']."'";
+                        $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token=".dbQuoteAll($_POST['token']);
                         $usesresult = dbExecuteAssoc($usesquery);
                         $usesrow = $usesresult->readAll(); //$usesresult->row_array()
                         if (isset($usesrow)) { $usesleft = $usesrow[0]['usesleft']; }
@@ -1021,7 +1021,7 @@ class dataentry extends Survey_Common_Action
                                 $utquery .= "SET usesleft=usesleft-1\n";
                             }
                         }
-                        $utquery .= "WHERE token='".$_POST['token']."'";
+                        $utquery .= "WHERE token=".dbQuoteAll($_POST['token']);
                         $utresult = dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
 
                         // save submitdate into survey table
@@ -1390,7 +1390,7 @@ class dataentry extends Survey_Common_Action
         // Make this safe for DB (*after* we undo first excel's
         // and then our escaping).
         $fieldvalues = array_map( 'dbQuoteAll', $fieldvalues );
-        $fieldvalues = str_replace( dbQuoteAll('{question_not_shown}'), 'NULL', $fieldvalues );
+        $fieldvalues = str_replace( dbQuoteAll('{question_not_shown}'), null, $fieldvalues );
 
         return $fieldvalues;
     }

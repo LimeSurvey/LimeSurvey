@@ -872,101 +872,108 @@ function remove_nulls_from_array($array)
 * @param mixed $quotaexit
 */
 function submittokens($quotaexit = false) {
-    global $thissurvey;
-    global $surveyid;
-    global $clienttoken;
-
+    $surveyid=Yii::app()->getConfig('surveyID');
+    if(isset($_SESSION['survey_'.$surveyid]['s_lang']))
+    {
+        $thissurvey=getSurveyInfo($surveyid,$_SESSION['survey_'.$surveyid]['s_lang']);
+    }
+    else
+    {
+        $thissurvey=getSurveyInfo($surveyid);
+    }
+    if(isset($_SESSION['survey_'.$surveyid]['thistoken']['token']))
+    {
+        $clienttoken=$_SESSION['survey_'.$surveyid]['thistoken']['token'];
+    } else {
+        return;
+    }
     $clang        = Yii::app()->lang;
     $sitename     = Yii::app()->getConfig("sitename");
     $emailcharset = Yii::app()->getConfig("emailcharset");
     // Shift the date due to global timeadjust setting
     $today        = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
-    // check how many uses the token has left
-    $usesquery  = "SELECT usesleft, participant_id, tid FROM {{tokens_$surveyid}} WHERE token='" . $clienttoken . "'";
-    $usesresult = dbExecuteAssoc($usesquery);
-    $usesrow    = $usesresult->read();
-    $usesresult->close();
-    if (isset($usesrow)) {
-        $usesleft       = $usesrow['usesleft'];
-        $participant_id = $usesrow['participant_id'];
-        $token_id       = $usesrow['tid'];
+    $oTokenInformation = Tokens_dynamic::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+    // Fill some var for easy access
+    if ($oTokenInformation) {
+            $usesleft = $oTokenInformation->usesleft;
+            $participant_id = isset($oTokenInformation->participant_id) ? $oTokenInformation->participant_id : '';
+    } else {
+        return;
     }
 
-    $utquery = "UPDATE {{tokens_$surveyid}}\n";
-    if ($quotaexit == true) {
-        $utquery .= "SET completed='Q', usesleft=usesleft-1\n";
-    } elseif (isTokenCompletedDatestamped($thissurvey)) {
-        if (isset($usesleft) && $usesleft <= 1) {
-            $utquery .= "SET usesleft=usesleft-1, completed='$today'\n";
-            if (!empty($participant_id)) {
-                //Update the survey_links table if necessary
-                $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid' => $participant_id, ':sid' => $surveyid, ':tid' => $token_id));
-                if (!is_null($slquery)) {
-                    $slquery->date_completed = $today;
-                    $slquery->save();
-                }
+    if ($quotaexit==true)
+    {
+        $oTokenInformation->completed = 'Q';
+        $oTokenInformation->usesleft = $oTokenInformation->usesleft-1;
+    }
+    else
+    {
+        if ($usesleft<=1)
+        {
+            // Finish the token
+            if (isTokenCompletedDatestamped($thissurvey))
+            {
+                $oTokenInformation->completed = $today;
+            } else {
+                $oTokenInformation->completed = 'Y';
             }
-        } else {
-            $utquery .= "SET usesleft=usesleft-1\n";
-        }
-    } else {
-        if (isset($usesleft) && $usesleft <= 1) {
-            $utquery .= "SET usesleft=usesleft-1, completed='Y'\n";
-            if (!empty($participant_id)) {
-                //Update the survey_links table if necessary, to protect anonymity, use the date_created field date
-                $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'                   => $participant_id, ':sid'                   => $surveyid, ':tid'                   => $token_id));
-                $slquery->date_completed = $slquery->date_created;
+            if(!empty($participant_id))
+            {
+                $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$usesrow->tid));
+
+                if (isTokenCompletedDatestamped($thissurvey))
+                {
+                    $slquery->date_completed = $today;
+                } else {
+                    // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
+                    $slquery->date_completed = $slquery->date_created;    
+                }                    
                 $slquery->save();
             }
-        } else {
-            $utquery .= "SET usesleft=usesleft-1\n";
         }
+        $oTokenInformation->usesleft = $oTokenInformation->usesleft-1;
     }
-    $utquery .= "WHERE token='" . $clienttoken . "'";
-
-    $utresult = dbExecuteAssoc($utquery) or safeDie("Couldn't update tokens table!<br />\n$utquery<br />\n");     //Checked
+    $oTokenInformation->save();
 
     if ($quotaexit == false) {
-        // TLR change to put date into sent and completed
-        $cnfquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token='" . $clienttoken . "' AND completed!='N' AND completed!=''";
+        if ($oTokenInformation && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y")
+        {
+            if($oTokenInformation->completed == "Y" || $oTokenInformation->completed == $today)
+            {
+                $from    = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
+                $to      = $oTokenInformation->email;
+                $subject = $thissurvey['email_confirm_subj'];
 
-        $cnfresult = dbExecuteAssoc($cnfquery);       //Checked
-        $cnfrow    = $cnfresult->read();
-        if (isset($cnfrow)) {
-            $from    = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-            $to      = $cnfrow['email'];
-            $subject = $thissurvey['email_confirm_subj'];
+                $aReplacementVars=array();
+                $aReplacementVars["ADMINNAME"]=$thissurvey['admin'];
+                $aReplacementVars["ADMINEMAIL"]=$thissurvey['adminemail'];
+                $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
+                //Fill with token info, because user can have his information with anonimity control
+                $aReplacementVars["FIRSTNAME"]=$oTokenInformation->firstname;
+                $aReplacementVars["LASTNAME"]=$oTokenInformation->lastname;
+                $aReplacementVars["TOKEN"]=$clienttoken;
+                $attrfieldnames=getAttributeFieldNames($surveyid);
+                foreach ($attrfieldnames as $attr_name)
+                {
+                    $aReplacementVars[strtoupper($attr_name)]=$oTokenInformation->$attr_name;
+                }
 
-            $fieldsarray["{ADMINNAME}"]         = $thissurvey['adminname'];
-            $fieldsarray["{ADMINEMAIL}"]        = $thissurvey['adminemail'];
-            $fieldsarray["{SURVEYNAME}"]        = $thissurvey['name'];
-            $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey['description'];
-            $fieldsarray["{FIRSTNAME}"]         = $cnfrow['firstname'];
-            $fieldsarray["{LASTNAME}"]          = $cnfrow['lastname'];
-            $fieldsarray["{TOKEN}"]             = $clienttoken;
-            $attrfieldnames                     = getAttributeFieldNames($surveyid);
-            foreach ($attrfieldnames as $attr_name) {
-                $fieldsarray["{" . strtoupper($attr_name) . "}"] = $cnfrow[$attr_name];
-            }
+                $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+                $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
+                $redata=array('thissurvey'=>$thissurvey);
+                $subject=templatereplace($subject,$aReplacementVars,$redata);
 
-            $dateformatdatat         = getDateFormatData($thissurvey['surveyls_dateformat']);
-            $numberformatdatat       = getRadixPointData($thissurvey['surveyls_numberformat']);
-            $fieldsarray["{EXPIRY}"] = convertDateTimeFormat($thissurvey["expiry"], 'Y-m-d H:i:s', $dateformatdatat['phpdate']);
+                $subject = html_entity_decode($subject, ENT_QUOTES, $emailcharset);
 
-            $subject = ReplaceFields($subject, $fieldsarray, true);
+                if (getEmailFormat($surveyid) == 'html') {
+                    $ishtml = true;
+                } else {
+                    $ishtml = false;
+                }
 
-            $subject = html_entity_decode($subject, ENT_QUOTES, $emailcharset);
-
-            if (getEmailFormat($surveyid) == 'html') {
-                $ishtml = true;
-            } else {
-                $ishtml = false;
-            }
-
-            if (trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
                 $message = $thissurvey['email_confirm'];
-                $message = ReplaceFields($message, $fieldsarray, true);
+                $message=templatereplace($message,$aReplacementVars,$redata);
 
                 if (!$ishtml) {
                     $message = strip_tags(breakToNewline(html_entity_decode($message, ENT_QUOTES, $emailcharset)));
@@ -975,7 +982,7 @@ function submittokens($quotaexit = false) {
                 }
 
                 //Only send confirmation email if there is a valid email address
-                if (validateEmailAddress($cnfrow['email'])) {
+                if (validateEmailAddress($to)) {
                     $aAttachments = unserialize($thissurvey['attachments']);
         
                     $aRelevantAttachments = array();
@@ -997,8 +1004,8 @@ function submittokens($quotaexit = false) {
                     SendEmailMessage($message, $subject, $to, $from, $sitename, $ishtml, null, $aRelevantAttachments);
                 }
             } else {
-                //There is nothing in the message or "Send confirmation emails" is set to "No" , so don't send a confirmation email
-                //This section only here as placeholder to indicate new feature :-)
+                // Leave it to send optional confirmation at closed token
+                // An idea for Plugin
             }
         }
     }
@@ -2208,63 +2215,6 @@ function doAssessment($surveyid, $returndataonly=false)
     }
 }
 
-function UpdateGroupList($surveyid, $language)
-//1. SESSION VARIABLE: grouplist
-//A list of groups in this survey, ordered by group name.
-
-{
-
-
-    $clang = Yii::app()->lang;
-    unset ($_SESSION['survey_'.$surveyid]['grouplist']);
-    $query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
-    $result = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />");  //Checked
-    foreach ($result->readAll() as $row)
-    {
-        $_SESSION['survey_'.$surveyid]['grouplist'][$row['gid']]=array($row['gid'], $row['group_name'], $row['description']);
-    }
-    if (isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap'])>0)
-    {
-        // Now adjust the grouplist
-        foreach ($_SESSION['survey_'.$surveyid]['groupReMap'] as $iOldGid=>$iNewGid)
-        {
-            if (!isset($_SESSION['survey_'.$surveyid]['grouplist'][$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
-            {
-                $_SESSION['survey_'.$surveyid]['grouplist']=arraySwapAssoc($iOldGid,$iNewGid,$_SESSION['survey_'.$surveyid]['grouplist']);
-            }
-            $_SESSION['survey_'.$surveyid]['grouplist'][$iNewGid]['shuffled']=true;
-        }
-    }
-}
-
-function UpdateFieldArray()
-//The FieldArray contains all necessary information regarding the questions
-//This function is needed to update it in case the survey is switched to another language
-
-{
-    global $surveyid;
-
-    $clang = Yii::app()->lang;
-
-    if (isset($_SESSION['survey_'.$surveyid]['questions']))
-    {
-        reset($_SESSION['survey_'.$surveyid]['questions']);
-        while ( list($key) = each($_SESSION['survey_'.$surveyid]['questions']) )
-        {
-            $q = clone $_SESSION['survey_'.$surveyid]['questions'][$key];
-
-            $query = "SELECT * FROM {{questions}} WHERE qid=".$q->id." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
-            $result = dbExecuteAssoc($query) or safeDie ("Couldn't get question <br />$query<br />");      //Checked
-            $row = $result->read();
-            $q->title=$row['title'];
-            $q->text=$row['question'];
-
-            $_SESSION['survey_'.$surveyid]['questions'][$key] = $q;
-        }
-    }
-
-}
-
 /**
 * checkQuota() returns quota information for the current survey
 * @param string $checkaction - action the function must take after completing:
@@ -2617,16 +2567,61 @@ function resetTimers()
     Yii::app()->request->cookies['limesurvey_timers'] = $cookie;
 }
 
+/**
+* UpdateSessionGroupList needed to set or update group text
+* This function is needed to update it in case the survey is switched to another language
+* update $_SESSION['survey_'.$surveyid]['grouplist'] array of array
+* var int $surveyid
+* var string $language
+* return void
+**/
 function UpdateSessionGroupList($surveyid, $language)
-//1. SESSION VARIABLE: grouplist
-//A list of groups in this survey, ordered by group name.
 {
-    unset ($_SESSION['survey_'.$surveyid]['grouplist']);
-    $query = "SELECT * FROM {{groups}} WHERE sid={$surveyid} AND language='".$language."' ORDER BY group_order";
-    $result = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />".$connect->ErrorMsg());  //Checked
-    foreach($result->readAll() as $row)
+    if(!isset($_SESSION['survey_'.$surveyid]['grouplist']))
     {
-        $_SESSION['survey_'.$surveyid]['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
+        $oGroups=Groups::model()->findAll("sid=:sid and language=:language",array(":sid"=>$surveyid,"language"=>$language));
+        foreach($oGroups as $oGroup)
+        {
+            $_SESSION['survey_'.$surveyid]['grouplist'][]=array($oGroup->attributes['gid'], $oGroup->attributes['group_name'], $oGroup->attributes['description']);
+        }
+    }
+    else
+    {
+        reset($_SESSION['survey_'.$surveyid]['grouplist']);
+        while ( list($key) = each($_SESSION['survey_'.$surveyid]['grouplist']) )
+        {
+            $g = $_SESSION['survey_'.$surveyid]['grouplist'][$key];
+            $oGroup=Groups::model()->find("gid=:gid and language=:language",array(":gid"=>$g[0],"language"=>$language));
+            if($oGroup){
+                $_SESSION['survey_'.$surveyid]['grouplist'][$key]=array($oGroup->attributes['gid'], $oGroup->attributes['group_name'], $oGroup->attributes['description']);
+            }
+        }
+    }
+}
+
+/**
+* UpdateSessionQuestion needed to update question text
+* This function is needed to update it in case the survey is switched to another language
+* update $_SESSION['survey_'.$surveyid]['questions'] array of object
+* var int $surveyid
+* var string $language
+* return void
+**/
+function UpdateSessionQuestion($surveyid, $language)
+{
+    if (isset($_SESSION['survey_'.$surveyid]['questions']))
+    {
+        reset($_SESSION['survey_'.$surveyid]['questions']);
+        while ( list($key) = each($_SESSION['survey_'.$surveyid]['questions']) )
+        {
+            $q = clone $_SESSION['survey_'.$surveyid]['questions'][$key];
+            $oQuestion=Questions::model()->find("qid=:qid and language=:language",array(":qid"=>$q->id,"language"=>$language));
+            if($oQuestion){
+                $_SESSION['survey_'.$surveyid]['questions'][$key]->text=$oQuestion->attributes['question'];
+                $_SESSION['survey_'.$surveyid]['questions'][$key]->help=$oQuestion->attributes['help'];
+                $_SESSION['survey_'.$surveyid]['questions'][$key]->language=$language;
+            }
+        }
     }
 }
 
