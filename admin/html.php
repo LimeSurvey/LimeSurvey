@@ -1671,6 +1671,10 @@ if($action == "exportstructure")
 	    .str_replace('queXML','<a href="http://quexml.sourceforge.net/" target="_blank">queXML</a>',$clang->gT("queXML Survey XML Format (*.xml)"))." "
 	    ."</label></li>\n";
 
+        $exportstructure.="<li><input type='radio' class='radiobtn' name='action' value='exportstructureexcel' id='surveyexcel'>"
+        ."<label for='surveyexcel'>"
+        .$clang->gT("LimeSurvey Excel survey file (*.txt)")."</label></li>\n";
+
 	    // XXX
 	    //include("../config.php");
 
