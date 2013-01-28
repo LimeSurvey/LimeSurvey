@@ -7458,10 +7458,10 @@ EOD;
             if (isset($_SESSION['survey_'.$surveyid]) && isset($_SESSION['survey_'.$surveyid]['grouplist'])) {
                 $_order=0;
                 $qinfo = array();
-                foreach ($_SESSION['survey_'.$surveyid]['grouplist'] as $orderedGid => $info)
+                foreach ($_SESSION['survey_'.$surveyid]['grouplist'] as $info)
                 {
-                    $gid[$orderedGid]['group_order'] = $_order;
-                    $qinfo[$_order] = $gid[$orderedGid];
+                    $gid[$info['gid']]['group_order'] = $_order;
+                    $qinfo[$_order] = $gid[$info['gid']];
                     ++$_order;
                 }
             }

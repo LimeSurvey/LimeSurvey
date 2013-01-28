@@ -2265,25 +2265,33 @@ function UpdateGroupList($surveyid, $language)
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
     $query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
     $result = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />");  //Checked
+    $groupList = array();
     foreach ($result->readAll() as $row)
     {
-        $_SESSION['survey_'.$surveyid]['grouplist'][$row['gid']]=array($row['gid'], $row['group_name'], $row['description']);
+        $group = array(
+            'gid'         => $row['gid'], 
+            'group_name'  => $row['group_name'],
+            'description' =>  $row['description']);
+        $groupList[] = $group;
+        $gidList[$row['gid']] = $group;
     }
-    $groupList = $_SESSION['survey_'.$surveyid]['grouplist'];
+    
     if (isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap'])>0)
     {
         // Now adjust the grouplist
         $groupRemap = $_SESSION['survey_'.$surveyid]['groupReMap'];
-        unset ($_SESSION['survey_'.$surveyid]['grouplist']);
-     
-        foreach ($groupList as $groupId => $info) {
-            $newId = $groupId;
-            if (isset($groupRemap[$groupId])) {
-                $newId = $groupRemap[$groupId];
+        $groupListCopy = $groupList;
+        foreach ($groupList as $gseq => $info) {
+            $gid = $info['gid']; 
+            if (isset($groupRemap[$gid])) {
+                $gid = $groupRemap[$gid];
             }
-            $_SESSION['survey_'.$surveyid]['grouplist'][$newId] = $groupList[$newId];
+            $groupListCopy[$gseq] = $gidList[$gid];
         }
+        $groupList = $groupListCopy;
      }
+     
+     $_SESSION['survey_'.$surveyid]['grouplist'] = $groupList;
 }
 
 /**

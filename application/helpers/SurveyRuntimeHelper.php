@@ -636,7 +636,7 @@ class SurveyRuntimeHelper {
 
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
         {
-            $gid = $gl[0];
+            $gid = $gl['gid'];
             $qnumber = 0;
 
             if ($surveyMode != 'survey')
@@ -913,10 +913,10 @@ END;
         $_gseq = -1;
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
         {
-            $gid = $gl[0];
+            $gid = $gl['gid'];
             ++$_gseq;
-            $groupname = $gl[1];
-            $groupdescription = $gl[2];
+            $groupname = $gl['group_name'];
+            $groupdescription = $gl['description'];
 
             if ($surveyMode != 'survey' && $gid != $onlyThisGID)
             {
@@ -1095,7 +1095,7 @@ END;
                             $grel = !LimeExpressionManager::GroupIsIrrelevantOrHidden($gseq);
                             if ($grel)
                             {
-                                $gtitle = LimeExpressionManager::ProcessString($g[1]);
+                                $gtitle = LimeExpressionManager::ProcessString($g['group_name']);
                                 echo '<h3>' . flattenText($gtitle) . "</h3>";
                             }
                             $lastGseq = $stepInfo['gseq'];
@@ -1118,7 +1118,7 @@ END;
 
                     if ($surveyMode == 'group')
                     {
-                        $indexlabel = LimeExpressionManager::ProcessString($g[1]);
+                        $indexlabel = LimeExpressionManager::ProcessString($g['group_name']);
                     }
                     else
                     {
