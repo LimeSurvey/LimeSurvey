@@ -20,7 +20,7 @@ class User extends CActiveRecord
     * UserRights : available User rights
     * @static array
     */
-    public static $UserRights=array('superadmin','configurator','manage_survey','create_survey','participant_panel','create_user','delete_user','manage_template','manage_label');
+    public static $UserRights=array('superadmin','configurator','manage_survey','create_survey','participant_panel','create_user','delete_user','manage_template','manage_label','copy_model','manage_model');
 
     /**
     * Returns the static model of Settings table

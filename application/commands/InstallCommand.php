@@ -138,7 +138,10 @@
             'superadmin'=>1,
             'configurator'=>1,
             'manage_template'=>1,
-            'manage_label'=>1
+            'manage_label'=>1,
+            'manage_survey'=>1,
+            'manage_model'=>1,
+            'copy_model'=>1
             ));
 
         }

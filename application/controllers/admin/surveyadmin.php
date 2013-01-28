@@ -605,8 +605,10 @@ class SurveyAdmin extends Survey_Common_Action
 
         $surveys = Survey::model();
         //Add permission "view" survey
+        if(User::GetUserRights('manage_model'))
+            $surveys->getDBCriteria()->mergeWith(array('condition'=>"type='M'"),false);
         if (!User::GetUserRights('manage_survey'))
-            $surveys->permission(Yii::app()->user->getId());
+            $surveys->permission(Yii::app()->user->getId(),false);
         $surveys = $surveys->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
         $aSurveyEntries = new stdClass();
         $aSurveyEntries->page = 1;
