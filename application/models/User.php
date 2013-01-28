@@ -298,6 +298,7 @@ class User extends CActiveRecord
         $oUser=self::model()->findByPk($iUserID);
         if(!$oUser)
             return false;
+        $rights['create_survey']=($rights['create_survey'] || $rights['copy_model']);
         foreach($rights as $right=>$value)
         {
             if(in_array($right,self::$UserRights))
