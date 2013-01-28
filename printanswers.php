@@ -254,7 +254,7 @@ foreach ($aFullResponseTable as $sFieldname=>$fname)
         }
         else
         {
-            $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+            $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>".sanitize_html_string($fname[2])."</td></tr>";
         }
     }
 }

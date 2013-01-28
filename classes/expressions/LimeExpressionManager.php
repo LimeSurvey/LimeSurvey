@@ -2564,7 +2564,14 @@
                 // other comment mandatory
                 if ($other_comment_mandatory!='')
                 {
-                    $qtips['other_comment_mandatory']=$this->gT('Please also fill in the "other comment" field.');
+                    //$qtips['other_comment_mandatory']=$this->gT('Please also fill in the "other comment" field.');
+                    if (isset($qattr['other_replace_text']) && trim($qattr['other_replace_text']) != '') {
+                        $othertext = trim($qattr['other_replace_text']);
+                    }
+                    else {
+                        $othertext = $this->gT('Other:');
+                    }
+                    $qtips['other_comment_mandatory']=sprintf($this->gT("If you choose '%s' you must provide a description."),$othertext);
                 }
 
                 // regular expression validation
@@ -5507,9 +5514,9 @@
                                 $othertext = trim($qattr['other_replace_text']);
                             }
                             else {
-                                $othertext = $LEM->gT('Other:');
+                                $othertext = $this->gT('Other:');
                             }
-                            $mandatoryTip .= "<br />\n".sprintf($LEM->gT("If you choose '%s' you must provide a description."), $othertext);
+                            $mandatoryTip .= "<br />\n".sprintf($this->gT("If you choose '%s' you must provide a description."), $othertext);
                         }
                         break;
                     case 'X':   // Boilerplate can never be mandatory
@@ -7209,7 +7216,7 @@ EOD;
             // eventually replace this with i8n
             global $clang;
             if (isset($clang))  {
-                return htmlspecialchars($clang->gT($string),ENT_QUOTES);
+                return $clang->gT($string);
             }
             else {
                 return $string;
@@ -7669,20 +7676,51 @@ EOD;
             {
                 case 'varName':
                     return $name;
+                    break;
                 case 'code':
                 case 'NAOK':
                     if (isset($var['code'])) {
                         return $var['code'];    // for static values like TOKEN
                     }
                     else {
-                        if (isset($_SESSION[$sgqa])) {
-                            return $_SESSION[$sgqa];
+                        if (isset($_SESSION[$sgqa]))
+                        {
+                            $type = $var['type'];
+                            switch($type)
+                            {
+                                case 'Q': //MULTIPLE SHORT TEXT
+                                case ';': //ARRAY (Multi Flexi) Text
+                                case 'S': //SHORT FREE TEXT
+                                case 'T': //LONG FREE TEXT
+                                case 'U': //HUGE FREE TEXT
+                                    return sanitize_html_string($_SESSION[$sgqa]);// Sanitize the string entered by user
+                                case '!': //List - dropdown
+                                case 'L': //LIST drop-down/radio-button list
+                                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                                case 'M': //Multiple choice checkbox
+                                case 'P': //Multiple choice with comments checkbox + text
+                                    if (preg_match('/comment$/',$sgqa) || preg_match('/other$/',$sgqa) || preg_match('/_other$/',$name))
+                                    {
+                                        return sanitize_html_string($_SESSION[$sgqa]);
+                                    }
+                                    else
+                                    {
+                                        return $_SESSION[$sgqa];
+                                    }
+                                default:
+                                    return $_SESSION[$sgqa];
+                            }
                         }
-                        if (isset($var['default']) && !is_null($var['default'])) {
+                        elseif (isset($var['default']) && !is_null($var['default']))
+                        {
                             return $var['default'];
                         }
-                        return $default;
+                        else
+                        {
+                            return $default;
+                        }
                     }
+                    break;
                 case 'value':
                 case 'valueNAOK':
                 {
@@ -7836,8 +7874,8 @@ EOD;
                                 {
                                     $shown = $var['question'];
                                 }
-                                elseif (preg_match('/comment$/',$sgqa) && isset($_SESSION[$sgqa])) {
-                                    $shown = $_SESSION[$sgqa];
+                                elseif (preg_match('/comment$/',$sgqa)) {
+                                    $shown=$code;
                                 }
                                 else
                                 {
