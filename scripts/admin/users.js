@@ -11,6 +11,18 @@ $(document).ready(function(){
     $('.with-superadmin').attr('checked', true);
     }
   });
+  $('.with-copy_model').click(function() {
+  if(!$(this).is(':checked'))
+    {
+    $('#copy_model').attr('checked', false);
+    }
+  });
+  $('#copy_model').click(function() {
+  if($(this).is(':checked'))
+    {
+    $('.with-copy_model').attr('checked', true);
+    }
+  });
 // Seems deprecated
 $("#users").tablesorter({
                         widgets: ['zebra'],

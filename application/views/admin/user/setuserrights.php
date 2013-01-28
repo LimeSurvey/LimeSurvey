@@ -16,7 +16,7 @@ $RightText=array(
     'delete_user'=>array('label'=>$clang->gT("Delete user"),'information'=>$clang->gT("User can delete the user he create.")),
     'manage_template'=>array('label'=>$clang->gT("Use all/manage templates"),'information'=>$clang->gT("User can manage template: modify, create or delete template.")),
     'manage_label'=>array('label'=>$clang->gT("Manage labels"),'information'=>$clang->gT("User can manage all label sets:  modify, create or delete label sets.")),
-    'copy_model'=>array('label'=>$clang->gT("Copy survey model"),'information'=>$clang->gT("User can copy all survey model.")),
+    'copy_model'=>array('label'=>$clang->gT("Copy survey model"),'information'=>$clang->gT("User can copy all survey model. The user need right to create survey to copy model.")),
     'manage_model'=>array('label'=>$clang->gT("Manage survey model"),'information'=>$clang->gT("Give complete administration rights to all survey model.")),
 );
 ?>
@@ -30,11 +30,17 @@ $RightText=array(
                     $labelclass=" warning warningtitle";
                     $inputclass=" superadmin";
                 }
+                elseif($userright=='create_survey')
+                {
+                    $labelclass="";
+                    $inputclass=" with-superadmin with-copy_model";
+                }
                 else
                 {
                     $labelclass="";
                     $inputclass=" with-superadmin";
-                }?>
+                }
+                ?>
                 <li>
                     <label for='<?php echo $userright; ?>' class='<?php echo $labelclass; ?>' title='<?php echo $RightText[$userright]['information']; ?>'><?php echo $RightText[$userright]['label']; ?></label>
                     <?php echo CHtml::checkBox($userright,$user[$userright],array('value'=>$userright,'class'=>"checkboxbtn {$inputclass}")); ?>
