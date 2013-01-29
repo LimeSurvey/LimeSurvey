@@ -822,7 +822,7 @@ class dataentry extends Survey_Common_Action
         'clang' => $clang
         );
 
-        if (hasSurveyPermission($surveyid, 'responses','read'))
+        if (hasSurveyPermission($surveyid, 'responses','create'))
         {
             if ($subaction == "insert" && hasSurveyPermission($surveyid,'responses','create'))
             {
@@ -1152,7 +1152,7 @@ class dataentry extends Survey_Common_Action
         if(isset($lang)) $lang=sanitize_languagecode($lang);
         $aViewUrls = array();
 
-        if (hasSurveyPermission($surveyid, 'responses', 'read'))
+        if (hasSurveyPermission($surveyid, 'responses', 'create'))
         {
             $clang = Yii::app()->lang;
 
