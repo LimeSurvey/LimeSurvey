@@ -32,6 +32,7 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         Yii::app()->loadHelper('database');
+        Yii::app()->loadHelper('surveytranslator');
     }
 
     public function index()
@@ -554,21 +555,38 @@ class CheckIntegrity extends Survey_Common_Action
             }
         }
 
-        /**********************************************************************/
-        /*     Check surveys                                                  */
-        /**********************************************************************/
+        /***************************************************************************/
+        /*   Check survey languagesettings and restore them if they don't exist    */
+        /***************************************************************************/
+
         $surveys = Survey::model()->findAll();
-        if (Survey::model()->hasErrors()) safeDie(Survey::model()->getError());
         foreach ($surveys as $survey)
         {
-            $criteria = new CDbCriteria;
-            $criteria->compare('surveyls_survey_id', $survey['sid']);
-            $iSurveyLangSettingsCount = count(Surveys_languagesettings::model()->findAll($criteria));
-            if (Surveys_languagesettings::model()->hasErrors()) safeDie(Surveys_languagesettings::model()->getError());
-            if (!$iSurveyLangSettingsCount) {
-                $aDelete['surveys'][] = array('sid' => $survey['sid'], 'reason' => $clang->gT('Language specific settings missing'));
+            $aLanguages=$survey->additionalLanguages;
+            $aLanguages[]=$survey->language;
+            foreach ($aLanguages as $langname)
+            {
+                if ($langname)
+                {
+                    $oLanguageSettings = Surveys_languagesettings::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$survey->sid,':langname'=>$langname));
+                    if(!$oLanguageSettings)
+                    {
+                        $oLanguageSettings= new Surveys_languagesettings;
+                        $languagedetails=getLanguageDetails($langname);
+                        $insertdata = array(
+                            'surveyls_survey_id' => $survey->sid,
+                            'surveyls_language' => $langname,
+                            'surveyls_title' => '',
+                            'surveyls_dateformat' => $languagedetails['dateformat']
+                        );
+                        foreach ($insertdata as $k => $v)
+                            $oLanguageSettings->$k = $v;
+                        $usresult=$oLanguageSettings->save();
+                    }
+                }
             }
         }
+        
 
         /**********************************************************************/
         /*     Check survey language settings                                 */
