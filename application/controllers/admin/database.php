@@ -1110,6 +1110,7 @@ class database extends Survey_Common_Action
                         $insertdata = array(
                             'surveyls_survey_id' => $surveyid,
                             'surveyls_language' => $langname,
+                            'surveyls_title' => '',
                             'surveyls_dateformat' => $languagedetails['dateformat']
                         );
                         foreach ($insertdata as $k => $v)
