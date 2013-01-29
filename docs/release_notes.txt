@@ -60,6 +60,38 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130122) to 2.00+ (build 130129) Jan 29, 2013
+-Fixed issue #7011: It is not possible to randomize the order of groups even when a randomization groupname is set (Menno Dekker)
+-Fixed issue #7165: VV-import/export leads to changes of data (Carsten Schmitz)
+-Fixed issue #7217: Error on import of question group file containing invalid default values (Carsten Schmitz)
+-Fixed issue #7218: {SAVEDID} parameter no longer supported in email subject (Denis Chenu)
+-Fixed issue #7220: PDF Export of Results in Fatal PHP Error (Denis Chenu)
+-Fixed issue #7225: Data entry screen without the privilege of reading responses. (Carsten Schmitz)
+-Fixed issue #7230: Missing language in exported question (Carsten Schmitz)
+-Fixed issue #7233: Missing error message when using ComfortUpdate (Carsten Schmitz)
+-Fixed issue #7237: Survey cannot be translated (Carsten Schmitz)
+-Fixed issue #7241: Administrator that has token Read/view can edit tokens. (Denis Chenu)
+-Fixed issue: Broken HTML in question (madflow)
+-Fixed issue: Integrity constraint violation after update multi language survey settings (Denis Chenu)
+-Fixed issue: Malformed text in invitations/emails when using text format for emails (Carsten Schmitz)
+-Fixed issue: Survey participants not shown if survey is inactive (Carsten Schmitz)
+-Fixed issue: Survey summary don't show base language summary (Denis Chenu)
+-Fixed issue: VV-import/export not working on Postgres or MSSQL Server (Carsten Schmitz)
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Danish by nielsb
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Mongolian by erka
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Serbian (Latin script) by OnSpot
+#Updated translation: Spanish (Spain) by larjona, kadejo, valdomir
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.00+ (build 130116) to 2.00+ (build 130122) Jan 22, 2013
 -Fixed issue #7097: View response details only appears once survey fully completed even when token persistence set (Menno Dekker)
 -Fixed issue #7156: Custom field description not retrieved when importing old token table (Carsten Schmitz)
