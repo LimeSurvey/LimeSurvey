@@ -575,7 +575,7 @@ class Survey_Common_Action extends CAction
         // EDIT SURVEY SETTINGS BUTTON
         $aData['surveysettings'] = hasSurveyPermission($iSurveyID, 'surveysettings', 'read');
         // Survey permission item
-        $aData['surveysecurity'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $surveyinfo['owner_id'] == Yii::app()->session['loginID'] || hasSurveyPermission($iSurveyID, 'surveysecurity', 'read'));
+        $aData['surveysecurity'] = hasSurveyPermission($iSurveyID, 'surveysecurity', 'read');
         // CHANGE QUESTION GROUP ORDER BUTTON
         $aData['surveycontent'] = hasSurveyPermission($iSurveyID, 'surveycontent', 'read');
         $aData['groupsum'] = (getGroupSum($iSurveyID, $surveyinfo['language']) > 1);

@@ -21,7 +21,7 @@
                     <img src='<?php echo $imageurl; ?>create_dummy_token.png' title='' alt='<?php $clang->eT("Create dummy tokens"); ?>' />
                 </a>
             <?php } ?>
-            <?php if (hasSurveyPermission($surveyid, 'tokens', 'update')){ ?>
+            <?php if (hasSurveyPermission($surveyid, 'surveysettings', 'update') || hasSurveyPermission($surveyid, 'tokens', 'read')){ ?>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$surveyid"); ?>">
                     <img src='<?php echo $imageurl; ?>token_manage.png' title='' alt='<?php $clang->eT("Manage additional attribute fields"); ?>' />
@@ -32,6 +32,7 @@
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/import/surveyid/$surveyid") ?>">
                     <img src='<?php echo $imageurl; ?>importcsv.png' title='' alt='<?php $clang->eT("Import tokens from CSV file"); ?>' />
                 </a>
+                <!-- Add control if LDAP is configured -->
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/importldap/surveyid/$surveyid") ?>">
                     <img src='<?php echo $imageurl; ?>importldap.png' alt='<?php $clang->eT("Import tokens from LDAP query"); ?>' />
                 </a>
