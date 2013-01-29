@@ -5,7 +5,7 @@
     <div class='warningheader'><?php $clang->eT("Warning"); ?></div>
     <br /><strong><?php $clang->eT("Tokens have not been initialised for this survey."); ?></strong><br /><br />
     <?php
-        if (hasSurveyPermission($surveyid, 'surveyactivation', 'update') || HasSurveyPermission($surveyid, 'tokens','create'))
+        if (hasSurveyPermission($surveyid, 'surveysettings', 'update') || HasSurveyPermission($surveyid, 'tokens','create'))
         {
             $clang->eT("If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL.");
         ?><br /><br />

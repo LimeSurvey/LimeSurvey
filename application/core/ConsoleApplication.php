@@ -32,6 +32,17 @@
             return isset($this->$name) ? $this->$name : false;
         }
 
+        /**
+         * Loads a helper
+         *
+         * @access public
+         * @param string $helper
+         * @return void
+         */
+        public function loadHelper($helper)
+        {
+            Yii::import('application.helpers.' . $helper . '_helper', true);
+        }
         
     }
 ?>

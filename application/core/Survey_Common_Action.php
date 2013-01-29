@@ -608,7 +608,11 @@ class Survey_Common_Action extends CAction
         $aData['responsescreate'] = hasSurveyPermission($iSurveyID, 'responses', 'create');
         $aData['responsesread'] = hasSurveyPermission($iSurveyID, 'responses', 'read');
         // TOKEN MANAGEMENT BUTTON
-        $aData['tokenmanagement'] = hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || hasSurveyPermission($iSurveyID, 'tokens', 'read');
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyID . '}}');
+        if(!$bTokenExists)
+            $aData['tokenmanagement'] = hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || hasSurveyPermission($iSurveyID, 'tokens', 'create');
+        else
+            $aData['tokenmanagement'] = hasSurveyPermission($iSurveyID, 'tokens', 'create') || hasSurveyPermission($iSurveyID, 'tokens', 'read'); // and export / import ?
 
         $aData['gid'] = $gid; // = $this->input->post('gid');
 
