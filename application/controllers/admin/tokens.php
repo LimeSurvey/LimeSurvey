@@ -73,7 +73,8 @@ class tokens extends Survey_Common_Action
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
         {
-            self::_newtokentable($iSurveyId);
+            $clang->eT("No token table.");
+            return;
         }
         $iSurveyId = sanitize_int($iSurveyId);
         $clang = $this->getController()->lang;
