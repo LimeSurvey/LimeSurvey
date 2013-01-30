@@ -4,10 +4,15 @@
     class ConsoleApplication extends CConsoleApplication
     {
         
+        protected $config = array();
+        
         public $lang = null;
         
         public function __construct($config = null) {
             parent::__construct($config);
+            // Load email settings.
+            $email = require(Yii::app()->basePath. DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'email.php');
+            $this->config = array_merge($this->config, $email);
         }
         /**
          * This function is implemented since em_core_manager incorrectly requires
@@ -27,9 +32,20 @@
         * @param string $name
         * @return mixed
         */
-        public function getConfig($name)
+        public function getConfig($name = null)
         {
-            return isset($this->$name) ? $this->$name : false;
+            if (isset($this->$name))
+            {
+                return $this->name;
+            }
+            elseif (isset($this->config[$name]))
+            {
+                return $this->config[$name];
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /**
@@ -44,5 +60,18 @@
             Yii::import('application.helpers.' . $helper . '_helper', true);
         }
         
+        /**
+         * Sets a configuration variable into the config
+         *
+         * @access public
+         * @param string $name
+         * @param mixed $value
+         * @return void
+         */
+        public function setConfig($name, $value)
+        {
+            $this->config[$name] = $value;
+        }
+
     }
 ?>
