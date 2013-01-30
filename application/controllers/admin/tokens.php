@@ -1482,7 +1482,7 @@ class tokens extends Survey_Common_Action
     {
         $iSurveyId = (int) $iSurveyId;
         $clang = $this->getController()->lang;
-        if (!hasSurveyPermission($iSurveyId, 'tokens', 'create'))
+        if (!hasSurveyPermission($iSurveyId, 'tokens', 'import'))
         {
             Yii::app()->session['flashmessage'] = $clang->gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -1751,7 +1751,7 @@ class tokens extends Survey_Common_Action
     {
         $clang = $this->getController()->lang;
         $iSurveyId = (int) $iSurveyId;
-        if (!hasSurveyPermission($iSurveyId, 'tokens', 'create'))
+        if (!hasSurveyPermission($iSurveyId, 'tokens', 'import'))
         {
             Yii::app()->session['flashmessage'] = $clang->gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
