@@ -179,13 +179,13 @@
         
         function getConditionsQuestions($distinctrow,$deqrow,$scenariorow,$surveyprintlang)
         {
-            $conquery="SELECT cid, cqid, q.title, q.question, value, q.type, cfieldname"
-            ."FROM {{conditions}} c, {{questions}} q"
-            ."WHERE c.cqid=q.qid"
-            ."AND c.cqid=:distinctrow"
-            ."AND c.qid=:deqrow"
-            ."AND c.scenario=:scenariorow"
-            ."AND language=:surveyprintlang";
+            $conquery="SELECT cid, cqid, q.title, q.question, value, q.type, cfieldname "
+            ."FROM {{conditions}} c, {{questions}} q "
+            ."WHERE c.cqid=q.qid "
+            ."AND c.cqid=:distinctrow "
+            ."AND c.qid=:deqrow "
+            ."AND c.scenario=:scenariorow "
+            ."AND language=:surveyprintlang ";
             return Yii::app()->db->createCommand($conquery)
             ->bindParam(":distinctrow", $distinctrow, PDO::PARAM_INT)
             ->bindParam(":deqrow", $deqrow, PDO::PARAM_INT)

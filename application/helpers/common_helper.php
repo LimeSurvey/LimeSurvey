@@ -3753,6 +3753,16 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Add a prefix to the answer field'),
     "caption"=>$clang->gT('Answer prefix'));
 
+    $qattributes["printable_help"]=array(
+    "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>201,
+    "inputtype"=>"text",
+    'i18n'=>true,
+    'default'=>"",
+    "help"=>$clang->gT('In the printable version replace the relevance equation with this explanation text.'),
+    "caption"=>$clang->gT("Relevance help for printable survey"));    
+    
     $qattributes["public_statistics"]=array(
     "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
     'category'=>$clang->gT('Statistics'),
