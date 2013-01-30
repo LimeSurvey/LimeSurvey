@@ -1828,10 +1828,10 @@
                 if (isset($fieldval['qid']) && in_array($fieldval['qid'],$oldQuestOrder[$gkey]))
                 {
                     // Get the swapped question
-                    $oldQuestFlip = array_flip($oldQuestOrder[$gkey]);
+                    $idx = array_search($fieldval['qid'],$oldQuestOrder[$gkey]);
                     foreach ($fieldmap as $key => $field)
                     {
-                        if (isset($field['qid']) && $field['qid'] == $newQuestOrder[$gkey][$oldQuestFlip[$fieldval['qid']]])
+                        if (isset($field['qid']) && $field['qid'] == $newQuestOrder[$gkey][$idx])
                         {
                             $field['random_gid'] = $fieldval['gid'];   // It is possible to swap to another group
                             $copyFieldMap[$key]  = $field;
@@ -1850,7 +1850,7 @@
             }
             reset($randomGroups);
         }
-        $fieldMap = $copyFieldMap;
+        $fieldmap = $copyFieldMap;
     }
 
     if ($randomized === true)
