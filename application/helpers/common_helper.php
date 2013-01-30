@@ -433,10 +433,10 @@ function hasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
     {
         if (!Yii::app()->user->getIsGuest()) $iUID = Yii::app()->session['loginID'];
         else return false;
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
+        // Some user have acces to whole survey settings
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true;
+        if ($thissurvey && $iUID==$thissurvey['owner_id']) return true;
     }
-
-    if ($thissurvey && $iUID==$thissurvey['owner_id']) return true; //Survey owner has access to all
 
     if (!isset($aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]))
     {
