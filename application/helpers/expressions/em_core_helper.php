@@ -345,11 +345,8 @@ class ExpressionManager {
                 if ($bBothNumeric) {
                     $result = array(($arg1[0] + $arg2[0]),$token[1],'NUMBER');
                 }
-                else if ($bBothString) {
-                    $result = array($arg1[0] . $arg2[0],$token[1],'STRING');
-                }
                 else {
-                    $result = array(NAN,$token[1],'NUMBER');
+                    $result = array($arg1[0] . $arg2[0],$token[1],'STRING');
                 }
                 break;
             case '-':
