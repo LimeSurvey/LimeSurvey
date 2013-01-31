@@ -356,13 +356,14 @@ function buildSelects($allfields, $surveyid, $language) {
         foreach ($postvars as $pv)
         {
             //Only do this if there is actually a value for the $pv
+
             if (
                     in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap)
                     || (
                             (
                                 $pv[0]=='D' || $pv[0]=='N' || $pv[0]=='K'
                             )
-                            && in_array(substr($pv,1,strlen($pv)-2),$aQuestionMap)
+                            && (in_array(substr($pv,1,strlen($pv)-2),$aQuestionMap) || in_array(substr($pv,1,strlen($pv)-3),$aQuestionMap) || in_array(substr($pv,1,strlen($pv)-5),$aQuestionMap))
                        )
                )
             {
@@ -485,22 +486,22 @@ function buildSelects($allfields, $surveyid, $language) {
                 elseif ($firstletter == "D" && $_POST[$pv] != "")
                 {
                     //Date equals
-                    if (substr($pv, -1, 1) == "eq")
+                    if (substr($pv, -2) == "eq")
                     {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2))." = ".dbQuoteAll($_POST[$pv]);
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-3))." = ".dbQuoteAll($_POST[$pv]);
                     }
                     else
                     {
                         //date less than
-                        if (substr($pv, -1, 1) == "less")
+                        if (substr($pv, -4) == "less")
                         {
-                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " >= ".dbQuoteAll($_POST[$pv]);
+                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-5)) . " >= ".dbQuoteAll($_POST[$pv]);
                         }
 
                         //date greater than
-                        if (substr($pv, -1, 1) == "more")
+                        if (substr($pv, -4) == "more")
                         {
-                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " <= ".dbQuoteAll($_POST[$pv]);
+                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-5)) . " <= ".dbQuoteAll($_POST[$pv]);
                         }
                     }
                 }
