@@ -408,13 +408,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (isset($surveyid) && !$iscompleted)
     {
-        $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and clear survey") . "' class='clearall' "
-        . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",array('move'=>'clearall','lang'=>$s_lang),'&amp;');
-
+        $aURLParams=array('move'=>'clearall','lang'=>$s_lang);
         if (returnGlobal('token'))
         {
-            $_clearall .= "?token=" . urlencode(trim(sanitize_token(strip_tags(returnGlobal('token')))));
+            $aURLParams['token'] = trim(sanitize_token(strip_tags(returnGlobal('token'))));
         }
+        $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and clear survey") . "' class='clearall' "
+        . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",$aURLParams,'&amp;');
         $_clearall .= "', '_self')}\" />";
     }
     else
@@ -512,9 +512,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     else if (isset($surveyid))
         {
-            $restart_extra = "";
             $restart_token = returnGlobal('token');
-            if (!empty($restart_token)) $restart_extra .= "/token/".urlencode($restart_token);
+            if (!empty($restart_token)) $restart_extra = "/token/".urlencode($restart_token);
             else $restart_extra = "/newtest/Y";
             if (!empty($_GET['lang'])) $restart_extra .= "/lang/".returnGlobal('lang');
             $_restart = "<a href='".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid$restart_extra")."'>".$clang->gT("Restart this Survey")."</a>";
