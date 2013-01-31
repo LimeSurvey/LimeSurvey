@@ -59,7 +59,7 @@ class User extends CActiveRecord
     public function rules()
     {
         return array(
-        array('users_name, password, email, full_name', 'required'),
+        array('users_name, password, email', 'required'),
         array('email', 'email'),
         );
     }
