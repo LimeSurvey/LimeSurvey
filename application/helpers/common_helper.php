@@ -105,7 +105,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
     $timeadjust = getGlobalSetting('timeadjust');
     $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
 
-    if(is_null($cached)) { // TODO: control model
+    if(is_null($cached)) {
         if(User::GetUserRights('manage_survey'))
             $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
         elseif(User::GetUserRights('manage_model'))
@@ -113,7 +113,6 @@ function getSurveyList($returnarray=false, $surveyid=false)
             $criteria = Survey::model()->getDBCriteria();
             $criteria ->mergeWith(array('condition'=>"type='M'"),false);
             $surveyidresult = Survey::model()->permission(Yii::app()->user->getId(),false)->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
-            //$surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
         }
         else
             $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
@@ -144,7 +143,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
                 $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle,ENT_QUOTES,'UTF-8'), 0, 45, 'UTF-8'))."...";
             }
 
-            if($sv['active']!='Y' && $sv['type']!="M")
+            if($sv['active']!='Y' && $sv['type']!="M") // Remove the inactive survey model
             {
                 $inactivesurveys .= "<option ";
                 if(Yii::app()->user->getId() == $sv['owner_id'])
@@ -156,7 +155,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
                     $inactivesurveys .= " selected='selected'"; $svexist = 1;
                 }
                 $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-            } elseif($sv['expires']!='' && $sv['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust) && $sv['type']!="M")
+            } elseif($sv['expires']!='' && $sv['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust))
             {
                 $expiredsurveys .="<option ";
                 if (Yii::app()->user->getId() == $sv['owner_id'])
@@ -168,7 +167,8 @@ function getSurveyList($returnarray=false, $surveyid=false)
                     $expiredsurveys .= " selected='selected'"; $svexist = 1;
                 }
                 $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-            } elseif($sv['active']=='Y')
+            }
+             elseif($sv['active']=='Y')
             {
                 $activesurveys .= "<option ";
                 if(Yii::app()->user->getId() == $sv['owner_id'])

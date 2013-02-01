@@ -359,7 +359,7 @@ function hook_get_auth_webserver_profile($user_name)
 $config['filterxsshtml'] = true;
 
  /**
- * surveymodelforall (boolean)
+ * allusercopymodel (boolean)
  * If this option is set to true, then limesurvey operators can
  * use/copy all survey model
  * Otherwise they can use only model where this setting is set

@@ -139,7 +139,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData = array_merge($aData, $this->_tabPublicationAccess($esrow));
         $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
         $aData = array_merge($aData, $this->_tabTokens($esrow));
-        if(User::GetUserRights("copy_model") && (!User::GetUserRights("superadmin")))
+        if(User::GetUserRights("copy_model") || Yii::app()->getConfig('allusercopymodel'))
         {
             $oModelList = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->together()->findAll(array("condition"=>"type = 'M'"));
             //$aModelList = $oModelList->attributes;
