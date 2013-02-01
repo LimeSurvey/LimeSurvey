@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-01-31 23:06:04+00:00\n"
+"POT-Creation-Date: 2013-02-01 23:06:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6679,293 +6679,297 @@ msgid "Find whether the type of a variable is string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:188
-msgid "Return comma-separated list of values"
+msgid "Join strings, return joined string.This function is an alias of implode(\"\",argN)"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:189
-msgid "Natural logarithm"
+msgid "Return comma-separated list of values"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:190
-msgid "Strip whitespace (or other characters) from the beginning of a string"
+msgid "Natural logarithm"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:191
-msgid "Find highest value"
+msgid "Strip whitespace (or other characters) from the beginning of a string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:192
-msgid "Find lowest value"
+msgid "Find highest value"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:193
-msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
+msgid "Find lowest value"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:194
-msgid "Inserts HTML line breaks before all newlines in a string"
+msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:195
-msgid "Format a number with grouped thousands"
+msgid "Inserts HTML line breaks before all newlines in a string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:196
-msgid "Get value of pi"
+msgid "Format a number with grouped thousands"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:197
-msgid "Exponential expression"
+msgid "Get value of pi"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:198
-msgid "Convert a quoted-printable string to an 8 bit string"
+msgid "Exponential expression"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:199
-msgid "Convert a 8 bit string to a quoted-printable string"
+msgid "Convert a quoted-printable string to an 8 bit string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:200
-msgid "Quote meta characters"
+msgid "Convert a 8 bit string to a quoted-printable string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:201
-msgid "Generate a random integer"
+msgid "Quote meta characters"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:202
-msgid "Compare a string to a regular expression pattern"
+msgid "Generate a random integer"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:203
-msgid "Rounds a number to an optional precision"
+msgid "Compare a string to a regular expression pattern"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:204
-msgid "Strip whitespace (or other characters) from the end of a string"
+msgid "Rounds a number to an optional precision"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:205
-msgid "Sine"
+msgid "Strip whitespace (or other characters) from the end of a string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:206
-msgid "Return a formatted string"
+msgid "Sine"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:207
-msgid "Square root"
+msgid "Return a formatted string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:208
-msgid "Calculate the Sample Standard Deviation for the list of numbers"
+msgid "Square root"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:209
-msgid "Pad a string to a certain length with another string"
+msgid "Calculate the Sample Standard Deviation for the list of numbers"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:210
-msgid "Repeat a string"
+msgid "Pad a string to a certain length with another string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:211
-msgid "Replace all occurrences of the search string with the replacement string"
+msgid "Repeat a string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:212
-msgid "Binary safe case-insensitive string comparison"
+msgid "Replace all occurrences of the search string with the replacement string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:213
-msgid "Binary safe string comparison"
+msgid "Binary safe case-insensitive string comparison"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:214
-msgid "Strip HTML and PHP tags from a string"
+msgid "Binary safe string comparison"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:215
-msgid "Find position of first occurrence of a case-insensitive string"
+msgid "Strip HTML and PHP tags from a string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:216
-msgid "Un-quotes a quoted string"
+msgid "Find position of first occurrence of a case-insensitive string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:217
-msgid "Case-insensitive strstr"
+msgid "Un-quotes a quoted string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:218
-msgid "Get string length"
+msgid "Case-insensitive strstr"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:219
-msgid "Find position of first occurrence of a string"
+msgid "Get string length"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:220
-msgid "Reverse a string"
+msgid "Find position of first occurrence of a string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:221
-msgid "Find first occurrence of a string"
+msgid "Reverse a string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:222
-msgid "Make a string lowercase"
+msgid "Find first occurrence of a string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:223
-msgid "Make a string uppercase"
+msgid "Make a string lowercase"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:224
-msgid "Return part of a string"
+msgid "Make a string uppercase"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:225
-msgid "Calculate the sum of values in an array"
+msgid "Return part of a string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:226
-msgid "Sum the values of answered questions in the list which pass the critiera (arg op value)"
+msgid "Calculate the sum of values in an array"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:227
-msgid "Tangent"
+msgid "Sum the values of answered questions in the list which pass the critiera (arg op value)"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:228
-msgid "Return current UNIX timestamp"
+msgid "Tangent"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:229
-msgid "Strip whitespace (or other characters) from the beginning and end of a string"
+msgid "Return current UNIX timestamp"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:230
-msgid "Uppercase the first character of each word in a string"
+msgid "Strip whitespace (or other characters) from the beginning and end of a string"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:231
+msgid "Uppercase the first character of each word in a string"
+msgstr ""
+
+#: application/helpers/expressions/em_core_helper.php:232
 msgid "Returns true if all non-empty responses are unique"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:259
+#: application/helpers/expressions/em_core_helper.php:260
 msgid "Unable to evaluate binary operator - fewer than 2 entries on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:266
-#: application/helpers/expressions/em_core_helper.php:402
+#: application/helpers/expressions/em_core_helper.php:267
+#: application/helpers/expressions/em_core_helper.php:403
 msgid "Invalid value(s) on the stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:396
+#: application/helpers/expressions/em_core_helper.php:397
 msgid "Unable to evaluate unary operator - no entries on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:451
+#: application/helpers/expressions/em_core_helper.php:452
 msgid "Extra tokens found"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:466
+#: application/helpers/expressions/em_core_helper.php:467
 msgid "Unbalanced equation - values left on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:472
+#: application/helpers/expressions/em_core_helper.php:473
 msgid "Not a valid expression"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:533
-#: application/helpers/expressions/em_core_helper.php:961
-#: application/helpers/expressions/em_core_helper.php:1042
+#: application/helpers/expressions/em_core_helper.php:534
+#: application/helpers/expressions/em_core_helper.php:962
+#: application/helpers/expressions/em_core_helper.php:1043
 msgid "Poorly terminated expression - expected a constant or variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:578
+#: application/helpers/expressions/em_core_helper.php:579
 msgid "Variable not declared until a later page"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:585
-#: application/helpers/expressions/em_core_helper.php:1697
+#: application/helpers/expressions/em_core_helper.php:586
+#: application/helpers/expressions/em_core_helper.php:1699
 msgid "Undefined variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:592
+#: application/helpers/expressions/em_core_helper.php:593
 msgid "Should never  get to this line?"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:678
+#: application/helpers/expressions/em_core_helper.php:679
 msgid "The value of this variable can not be changed"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:684
+#: application/helpers/expressions/em_core_helper.php:685
 msgid "Only variables can be assigned values"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:740
+#: application/helpers/expressions/em_core_helper.php:741
 msgid "Expected expressions separated by commas"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:748
+#: application/helpers/expressions/em_core_helper.php:749
 msgid "Extra token found after expressions"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:764
-#: application/helpers/expressions/em_core_helper.php:1690
+#: application/helpers/expressions/em_core_helper.php:765
+#: application/helpers/expressions/em_core_helper.php:1692
 msgid "Undefined function"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:770
+#: application/helpers/expressions/em_core_helper.php:771
 msgid "Expected left parentheses after function name"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:794
+#: application/helpers/expressions/em_core_helper.php:795
 msgid "Extra comma found in function"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:978
+#: application/helpers/expressions/em_core_helper.php:979
 msgid "Expected right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1681
+#: application/helpers/expressions/em_core_helper.php:1683
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1702
+#: application/helpers/expressions/em_core_helper.php:1704
 msgid "Unsupported syntax"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1710
+#: application/helpers/expressions/em_core_helper.php:1712
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1995
+#: application/helpers/expressions/em_core_helper.php:1997
 msgid "Function must have at least %s argument"
 msgid_plural "Function must have at least %s arguments"
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/helpers/expressions/em_core_helper.php:2086
+#: application/helpers/expressions/em_core_helper.php:2088
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2091
+#: application/helpers/expressions/em_core_helper.php:2093
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2092
+#: application/helpers/expressions/em_core_helper.php:2094
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2329
+#: application/helpers/expressions/em_core_helper.php:2331
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:3478
+#: application/helpers/expressions/em_core_helper.php:3492
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
