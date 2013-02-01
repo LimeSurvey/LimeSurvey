@@ -159,6 +159,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug','0')));
         setGlobalSetting('emailsmtpuser', strip_tags(returnGlobal('emailsmtpuser')));
         setGlobalSetting('filterxsshtml', strip_tags($_POST['filterxsshtml']));
+        setGlobalSetting('allusercopymodel', strip_tags($_POST['allusercopymodel']));
         setGlobalSetting('siteadminbounce', strip_tags($_POST['siteadminbounce']));
         setGlobalSetting('siteadminemail', strip_tags($_POST['siteadminemail']));
         setGlobalSetting('siteadminname', strip_tags($_POST['siteadminname']));

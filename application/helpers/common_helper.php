@@ -106,18 +106,22 @@ function getSurveyList($returnarray=false, $surveyid=false)
     $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
 
     if(is_null($cached)) {
-        if (!User::GetUserRights('manage_survey'))
-            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
-        else
+        if(User::GetUserRights('manage_survey'))
             $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
+        elseif(User::GetUserRights('manage_model'))
+        {
+            $criteria = Survey::model()->getDBCriteria();
+            $criteria ->mergeWith(array('condition'=>"type='M'"),false);
+            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId(),false)->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
+        }
+        else
+            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
 
         $surveynames = array();
         foreach ($surveyidresult as $result)
         {
             $surveynames[] = array_merge($result->attributes, $result->languagesettings[0]->attributes);
-
         }
-
         $cached = $surveynames;
     } else {
         $surveynames = $cached;
@@ -127,6 +131,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
     $activesurveys='';
     $inactivesurveys='';
     $expiredsurveys='';
+    $surveysmodel='';
     if ($surveynames)
     {
         foreach($surveynames as $sv)
@@ -138,7 +143,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
                 $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle,ENT_QUOTES,'UTF-8'), 0, 45, 'UTF-8'))."...";
             }
 
-            if($sv['active']!='Y')
+            if($sv['active']!='Y' && $sv['type']!="M") // Remove the inactive survey model
             {
                 $inactivesurveys .= "<option ";
                 if(Yii::app()->user->getId() == $sv['owner_id'])
@@ -162,7 +167,8 @@ function getSurveyList($returnarray=false, $surveyid=false)
                     $expiredsurveys .= " selected='selected'"; $svexist = 1;
                 }
                 $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-            } else
+            }
+             elseif($sv['active']=='Y')
             {
                 $activesurveys .= "<option ";
                 if(Yii::app()->user->getId() == $sv['owner_id'])
@@ -174,6 +180,18 @@ function getSurveyList($returnarray=false, $surveyid=false)
                     $activesurveys .= " selected='selected'"; $svexist = 1;
                 }
                 $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
+            } elseif($sv['type']=="M")
+            {
+                $surveysmodel .= "<option ";
+                if(Yii::app()->user->getId() == $sv['owner_id'])
+                {
+                    $surveysmodel .= " style=\"font-weight: bold;\"";
+                }
+                if ($sv['sid'] == $surveyid)
+                {
+                    $surveysmodel .= " selected='selected'"; $svexist = 1;
+                }
+                $surveysmodel .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
             }
         } // End Foreach
     }
@@ -194,6 +212,12 @@ function getSurveyList($returnarray=false, $surveyid=false)
         $surveyselecter .= "<optgroup label='".$clang->gT("Inactive")."' class='inactivesurveyselect'>\n";
         $surveyselecter .= $inactivesurveys . "</optgroup>";
     }
+    if ($surveysmodel!='')
+    {
+        $surveyselecter .= "<optgroup label='".$clang->gT("Survey model")."' class='surveymodel'>\n";
+        $surveyselecter .= $surveysmodel . "</optgroup>";
+    }
+
     if (!isset($svexist))
     {
         $surveyselecter = "<option selected='selected' value=''>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;
@@ -225,11 +249,10 @@ function hasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
         if (!Yii::app()->user->getIsGuest()) $iUID = Yii::app()->user->getId();
         else return false;
         if (User::GetUserRights('superadmin')) return true; //Superadmin has access to all
+        if ($iUID==$thissurvey['owner_id']) return true; //Survey owner has access to all
+        if (User::GetUserRights('manage_survey')) return true; //Survey manager has access to all
+        if (User::GetUserRights('manage_model') && $thissurvey['type']=="M") return true; //Survey manager has access to all
     }
-
-    // Some user don't need to be in Survey_permissions
-    if ($iUID==$thissurvey['owner_id']) return true; //Survey owner has access to all
-    if (User::GetUserRights('manage_survey')) return true; //Survey manager has access to all
 
     $aSurveyPermissionCache = Yii::app()->getConfig("aSurveyPermissionCache");
     if (!isset($aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]))

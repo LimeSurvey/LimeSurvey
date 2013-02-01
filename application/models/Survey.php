@@ -106,6 +106,7 @@ class Survey extends CActiveRecord
         array('anonymized', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('savetimings', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('datestamp', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('type', 'in','range'=>array('N','M'), 'allowEmpty'=>true),
         array('usecookie', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('allowregister', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('directregister', 'in','range'=>array('N','Y','A'), 'allowEmpty'=>true),// Y: url shown, A: autoload url
@@ -166,16 +167,18 @@ class Survey extends CActiveRecord
     *
     * @access public
     * @param int $loginID
+    * @param boolean $useAnd
     * @return CActiveRecord
     */
-    public function permission($loginID)
+    public function permission($loginID,$useAnd=true)
     {
         $loginID = (int) $loginID;
+        $useAnd=(bool) $useAnd;
         $criteria = $this->getDBCriteria();
         $criteria->mergeWith(array(
             'condition' => 'sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid = :uid AND permission = :permission AND read_p = 1)
                             OR owner_id = :owner_id',
-        ));
+        ),$useAnd);
         $criteria->params[':uid'] = $loginID;
         $criteria->params[':permission'] = 'survey';
         $criteria->params[':owner_id'] = $loginID;

@@ -392,6 +392,17 @@
                             ><?php $clang->eT("No"); ?></option>
                     </select></li>
 
+                <?php $allusercopymodel=getGlobalSetting('allusercopymodel'); ?>
+                <li><label for='allusercopymodel'><?php $clang->eT("All user can copy all survey model:"); ?></label>
+                    <select id='allusercopymodel' name='allusercopymodel'>
+                        <option value='1'
+                            <?php if ( $allusercopymodel == true) { echo " selected='selected'";}?>
+                            ><?php $clang->eT("Yes"); ?></option>
+                        <option value='0'
+                            <?php if ( $allusercopymodel == false) { echo " selected='selected'";}?>
+                            ><?php $clang->eT("No"); ?></option>
+                    </select></li>
+
                 <?php $thisusercontrolSameGroupPolicy=getGlobalSetting('usercontrolSameGroupPolicy'); ?>
                 <li><label for='usercontrolSameGroupPolicy'><?php $clang->eT("Group member can only see own group:"); ?></label>
                     <select id='usercontrolSameGroupPolicy' name='usercontrolSameGroupPolicy'>

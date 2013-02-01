@@ -448,6 +448,10 @@ textarea {
     margin-top:0.5em;
 }
 
+.popuptip {
+    display:none;
+}
+
 li.cancellink
 {
     list-style-type:none;

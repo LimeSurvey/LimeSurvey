@@ -432,7 +432,9 @@ textarea {
     background-color: #fdfdff;
 }
 
-
+.popuptip {
+    display:none;
+}
 .langpopup {
     display:none;
 }

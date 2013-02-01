@@ -386,6 +386,7 @@ CREATE TABLE `prefix_surveys` (
   `template` varchar(100) default 'default',
   `language` varchar(50) default NULL,
   `additional_languages` varchar(255) default NULL,
+  `type` varchar(1) NOT NULL default 'N',
   `datestamp` varchar(1) NOT NULL default 'N',
   `usecookie` varchar(1) NOT NULL default 'N',
   `allowregister` varchar(1) NOT NULL default 'N',
@@ -508,6 +509,8 @@ CREATE TABLE `prefix_users` (
   `configurator` int(1) NOT NULL default '0',
   `manage_template` int(1) NOT NULL default '0',
   `manage_label` int(1) NOT NULL default '0',
+  `copy_model` int(1) NOT NULL default '0',
+  `manage_model` int(1) NOT NULL default '0',
   `htmleditormode` varchar(7) default 'default',
   `templateeditormode` varchar(7) NOT NULL default 'default',
   `questionselectormode` varchar(7) NOT NULL default 'default',
@@ -628,4 +631,4 @@ INSERT INTO `prefix_question_type_groups` (`id`, `name`, `order`, `system`) VALU
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '169');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '170');

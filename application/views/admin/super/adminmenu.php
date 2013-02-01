@@ -99,9 +99,16 @@
             <?php
                 if(Yii::app()->session['USER_RIGHT_CREATE_SURVEY'] == 1)
                 { ?>
-
-                <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>">
+                <div class="popuptip" rel="createlink"><p><?php $clang->eT("Create, import, or copy a survey");?></p>
+                    <ul>
+                    <li><a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>">New survey</a></li>
+                    <li><a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey",array("#"=>"copy")); ?>">Copy survey</a></li>
+                    <li><a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey",array("#"=>"import")); ?>">Import survey</a></li>
+                    </ul>
+                </div>
+                <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>" id="createlink">
                     <img src='<?php echo $sImageURL;?>add.png' alt='<?php $clang->eT("Create, import, or copy a survey");?>' /></a>
+
                 <?php } ?>
 
 

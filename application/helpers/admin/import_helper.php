@@ -2675,6 +2675,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     // Set new survey ID
     $surveyrowdata['sid']=$iNewSID;
     $surveyrowdata['active']='N';
+    $surveyrowdata['type']='N';
 
     if (validateTemplateDir($surveyrowdata['template'])!==$surveyrowdata['template']) $importresults['importwarnings'][] = sprintf($clang->gT('Template %s not found, please review when activating.'),$surveyrowdata['template']);
 
@@ -3525,6 +3526,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         $insertdata['active']='N';
         //Set current user to be the owner
         $insertdata['owner_id']=Yii::app()->session['loginID'];
+        $insertdata['type']='N';
 
         if (isset($insertdata['bouncetime']) && $insertdata['bouncetime'] == '')
         {
