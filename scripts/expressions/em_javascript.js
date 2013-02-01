@@ -1,5 +1,19 @@
-/* Core JavaScript functions needed by ExpressionManager
+/*
+ * This file is part of LimeSurvey
+ * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ * Core JavaScript functions needed by ExpressionManager
  * @author Thomas M. White (TMSWhite)
+ * @author Denis Chenu (Shnoulle)
+ * Portion from php.js is copyright 2012 Kevin van Zonneveld.
+ * php.js is dual licensed under the MIT licenses.
  */
 
 function LEMcount()
@@ -205,6 +219,18 @@ function LEMlist()
             }
             ++j;
         }
+    }
+    return result;
+}
+
+ /**
+ * Returns concatenates list
+ */
+function LEMjoin()
+{
+    var result="";
+    for (i=0;i<arguments.length;++i) {
+        result += arguments[i];
     }
     return result;
 }
