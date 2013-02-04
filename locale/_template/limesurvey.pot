@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-02-01 23:06:01+00:00\n"
+"POT-Creation-Date: 2013-02-04 23:06:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -101,7 +101,7 @@ msgstr ""
 
 #: application/controllers/AdminController.php:87
 #: application/controllers/admin/surveyadmin.php:483
-#: application/controllers/admin/tokens.php:2165
+#: application/controllers/admin/tokens.php:2166
 #: application/helpers/admin/import_helper.php:2604
 #: application/views/admin/authentication/forgotpassword.php:15
 #: application/views/admin/dataentry/active_html_view.php:95
@@ -388,11 +388,11 @@ msgid "The email you used is not valid. Please try again."
 msgstr ""
 
 #: application/controllers/RegisterController.php:107
-#: application/controllers/admin/tokens.php:574
-#: application/controllers/admin/tokens.php:605
-#: application/controllers/admin/tokens.php:719
-#: application/controllers/admin/tokens.php:824
-#: application/controllers/admin/tokens.php:954
+#: application/controllers/admin/tokens.php:575
+#: application/controllers/admin/tokens.php:606
+#: application/controllers/admin/tokens.php:720
+#: application/controllers/admin/tokens.php:825
+#: application/controllers/admin/tokens.php:955
 msgid "%s cannot be left empty"
 msgstr ""
 
@@ -850,7 +850,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1106
 #: application/controllers/admin/quotas.php:506
 #: application/controllers/admin/surveyadmin.php:673
-#: application/controllers/admin/tokens.php:2082
+#: application/controllers/admin/tokens.php:2083
 #: application/core/Survey_Common_Action.php:825
 #: application/helpers/admin/statistics_helper.php:1337
 #: application/helpers/admin/statistics_helper.php:1470
@@ -957,7 +957,7 @@ msgid "Yes"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:150
-#: application/controllers/admin/tokens.php:2148
+#: application/controllers/admin/tokens.php:2149
 #: application/views/admin/assessments_view.php:131
 #: application/views/admin/conditions/includes/conditions_scenario.php:13
 #: application/views/admin/labels/labelview_view.php:161
@@ -994,7 +994,7 @@ msgid "Continue?"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:160
-#: application/controllers/admin/tokens.php:1434
+#: application/controllers/admin/tokens.php:1435
 #: application/controllers/admin/useraction.php:157
 #: application/helpers/admin/import_helper.php:4495
 #: application/helpers/admin/import_helper.php:4513
@@ -1074,7 +1074,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1108
 #: application/controllers/admin/quotas.php:507
 #: application/controllers/admin/surveyadmin.php:677
-#: application/controllers/admin/tokens.php:2084
+#: application/controllers/admin/tokens.php:2085
 #: application/core/Survey_Common_Action.php:821
 #: application/helpers/admin/statistics_helper.php:1338
 #: application/helpers/admin/statistics_helper.php:1471
@@ -1805,8 +1805,8 @@ msgid "Save"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1501
-#: application/controllers/admin/tokens.php:834
-#: application/controllers/admin/tokens.php:1007
+#: application/controllers/admin/tokens.php:835
+#: application/controllers/admin/tokens.php:1008
 #: application/controllers/admin/useraction.php:149
 #: application/views/admin/dataentry/insert.php:73
 #: application/views/admin/dataentry/iteratesurvey.php:5
@@ -1949,223 +1949,223 @@ msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2343
-#: application/controllers/admin/tokens.php:1774
+#: application/controllers/admin/tokens.php:1775
 #: application/views/admin/participants/importCSV_view.php:17
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2344
-#: application/controllers/admin/tokens.php:1775
+#: application/controllers/admin/tokens.php:1776
 #: application/views/admin/participants/importCSV_view.php:18
 msgid "US ASCII"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2345
-#: application/controllers/admin/tokens.php:1776
+#: application/controllers/admin/tokens.php:1777
 #: application/views/admin/participants/importCSV_view.php:19
 msgid "Automatic"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2346
-#: application/controllers/admin/tokens.php:1777
+#: application/controllers/admin/tokens.php:1778
 #: application/views/admin/participants/importCSV_view.php:20
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2347
-#: application/controllers/admin/tokens.php:1778
+#: application/controllers/admin/tokens.php:1779
 #: application/views/admin/participants/importCSV_view.php:21
 msgid "Binary pseudo charset"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2348
-#: application/controllers/admin/tokens.php:1779
+#: application/controllers/admin/tokens.php:1780
 #: application/views/admin/participants/importCSV_view.php:22
 msgid "Windows Central European"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2349
-#: application/controllers/admin/tokens.php:1780
+#: application/controllers/admin/tokens.php:1781
 #: application/views/admin/participants/importCSV_view.php:23
 msgid "Windows Cyrillic"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2350
-#: application/controllers/admin/tokens.php:1781
+#: application/controllers/admin/tokens.php:1782
 #: application/views/admin/participants/importCSV_view.php:24
 msgid "Windows Arabic"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2351
-#: application/controllers/admin/tokens.php:1782
+#: application/controllers/admin/tokens.php:1783
 #: application/views/admin/participants/importCSV_view.php:25
 msgid "Windows Baltic"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2352
-#: application/controllers/admin/tokens.php:1783
+#: application/controllers/admin/tokens.php:1784
 #: application/views/admin/participants/importCSV_view.php:26
 msgid "DOS West European"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2353
-#: application/controllers/admin/tokens.php:1784
+#: application/controllers/admin/tokens.php:1785
 #: application/views/admin/participants/importCSV_view.php:27
 msgid "DOS Central European"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2354
-#: application/controllers/admin/tokens.php:1785
+#: application/controllers/admin/tokens.php:1786
 #: application/views/admin/participants/importCSV_view.php:28
 msgid "DOS Russian"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2355
-#: application/controllers/admin/tokens.php:1786
+#: application/controllers/admin/tokens.php:1787
 #: application/views/admin/participants/importCSV_view.php:29
 msgid "SJIS for Windows Japanese"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2356
-#: application/controllers/admin/tokens.php:1787
+#: application/controllers/admin/tokens.php:1788
 #: application/views/admin/participants/importCSV_view.php:30
 msgid "DEC West European"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2357
-#: application/controllers/admin/tokens.php:1788
+#: application/controllers/admin/tokens.php:1789
 #: application/views/admin/participants/importCSV_view.php:31
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2358
-#: application/controllers/admin/tokens.php:1789
+#: application/controllers/admin/tokens.php:1790
 #: application/views/admin/participants/importCSV_view.php:32
 msgid "EUC-KR Korean"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2359
-#: application/controllers/admin/tokens.php:1790
+#: application/controllers/admin/tokens.php:1791
 #: application/views/admin/participants/importCSV_view.php:33
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2360
-#: application/controllers/admin/tokens.php:1791
+#: application/controllers/admin/tokens.php:1792
 #: application/views/admin/participants/importCSV_view.php:34
 msgid "GBK Simplified Chinese"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2361
-#: application/controllers/admin/tokens.php:1792
+#: application/controllers/admin/tokens.php:1793
 #: application/views/admin/participants/importCSV_view.php:35
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2362
-#: application/controllers/admin/tokens.php:1793
+#: application/controllers/admin/tokens.php:1794
 #: application/views/admin/participants/importCSV_view.php:36
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2363
-#: application/controllers/admin/tokens.php:1794
+#: application/controllers/admin/tokens.php:1795
 #: application/views/admin/participants/importCSV_view.php:37
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2364
-#: application/controllers/admin/tokens.php:1795
+#: application/controllers/admin/tokens.php:1796
 #: application/views/admin/participants/importCSV_view.php:38
 msgid "HP West European"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2365
-#: application/controllers/admin/tokens.php:1796
+#: application/controllers/admin/tokens.php:1797
 #: application/views/admin/participants/importCSV_view.php:39
 msgid "DOS Kamenicky Czech-Slovak"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2366
-#: application/controllers/admin/tokens.php:1797
+#: application/controllers/admin/tokens.php:1798
 #: application/views/admin/participants/importCSV_view.php:40
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2367
-#: application/controllers/admin/tokens.php:1798
+#: application/controllers/admin/tokens.php:1799
 #: application/views/admin/participants/importCSV_view.php:41
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2368
-#: application/controllers/admin/tokens.php:1799
+#: application/controllers/admin/tokens.php:1800
 #: application/views/admin/participants/importCSV_view.php:42
 msgid "cp1252 West European"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2369
-#: application/controllers/admin/tokens.php:1800
+#: application/controllers/admin/tokens.php:1801
 #: application/views/admin/participants/importCSV_view.php:43
 msgid "ISO 8859-2 Central European"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2370
-#: application/controllers/admin/tokens.php:1801
+#: application/controllers/admin/tokens.php:1802
 #: application/views/admin/participants/importCSV_view.php:44
 msgid "ISO 8859-9 Turkish"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2371
-#: application/controllers/admin/tokens.php:1802
+#: application/controllers/admin/tokens.php:1803
 #: application/views/admin/participants/importCSV_view.php:45
 msgid "ISO 8859-13 Baltic"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2372
-#: application/controllers/admin/tokens.php:1803
+#: application/controllers/admin/tokens.php:1804
 #: application/views/admin/participants/importCSV_view.php:46
 msgid "Mac Central European"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2373
-#: application/controllers/admin/tokens.php:1804
+#: application/controllers/admin/tokens.php:1805
 #: application/views/admin/participants/importCSV_view.php:47
 msgid "Mac West European"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2374
-#: application/controllers/admin/tokens.php:1805
+#: application/controllers/admin/tokens.php:1806
 #: application/views/admin/participants/importCSV_view.php:48
 msgid "Shift-JIS Japanese"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2375
-#: application/controllers/admin/tokens.php:1806
+#: application/controllers/admin/tokens.php:1807
 #: application/views/admin/participants/importCSV_view.php:49
 msgid "7bit Swedish"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2376
-#: application/controllers/admin/tokens.php:1807
+#: application/controllers/admin/tokens.php:1808
 #: application/views/admin/participants/importCSV_view.php:50
 msgid "TIS620 Thai"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2377
-#: application/controllers/admin/tokens.php:1808
+#: application/controllers/admin/tokens.php:1809
 #: application/views/admin/participants/importCSV_view.php:51
 msgid "UCS-2 Unicode"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2378
-#: application/controllers/admin/tokens.php:1809
+#: application/controllers/admin/tokens.php:1810
 #: application/views/admin/participants/importCSV_view.php:52
 msgid "EUC-JP Japanese"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2379
-#: application/controllers/admin/tokens.php:1810
+#: application/controllers/admin/tokens.php:1811
 #: application/views/admin/participants/importCSV_view.php:53
 msgid "UTF-8 Unicode"
 msgstr ""
@@ -2220,20 +2220,20 @@ msgstr ""
 #: application/controllers/admin/responses.php:616
 #: application/controllers/admin/tokens.php:40
 #: application/controllers/admin/tokens.php:262
-#: application/controllers/admin/tokens.php:636
-#: application/controllers/admin/tokens.php:759
-#: application/controllers/admin/tokens.php:865
-#: application/controllers/admin/tokens.php:902
-#: application/controllers/admin/tokens.php:1053
-#: application/controllers/admin/tokens.php:1089
-#: application/controllers/admin/tokens.php:1130
-#: application/controllers/admin/tokens.php:1181
-#: application/controllers/admin/tokens.php:1455
-#: application/controllers/admin/tokens.php:1492
-#: application/controllers/admin/tokens.php:1761
-#: application/controllers/admin/tokens.php:2064
-#: application/controllers/admin/tokens.php:2121
-#: application/controllers/admin/tokens.php:2178
+#: application/controllers/admin/tokens.php:637
+#: application/controllers/admin/tokens.php:760
+#: application/controllers/admin/tokens.php:866
+#: application/controllers/admin/tokens.php:903
+#: application/controllers/admin/tokens.php:1054
+#: application/controllers/admin/tokens.php:1090
+#: application/controllers/admin/tokens.php:1131
+#: application/controllers/admin/tokens.php:1182
+#: application/controllers/admin/tokens.php:1456
+#: application/controllers/admin/tokens.php:1493
+#: application/controllers/admin/tokens.php:1762
+#: application/controllers/admin/tokens.php:2065
+#: application/controllers/admin/tokens.php:2122
+#: application/controllers/admin/tokens.php:2179
 msgid "You do not have sufficient rights to access this page."
 msgstr ""
 
@@ -3136,7 +3136,7 @@ msgid "Delete"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:115
-#: application/controllers/admin/tokens.php:469
+#: application/controllers/admin/tokens.php:470
 #: application/views/admin/assessments_view.php:32
 #: application/views/admin/responses/browseidheader_view.php:15
 #: application/views/admin/saved/savedlist_view.php:29
@@ -3198,8 +3198,8 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:347
 #: application/controllers/admin/surveypermission.php:535
 #: application/controllers/admin/surveypermission.php:638
-#: application/controllers/admin/tokens.php:2304
-#: application/controllers/admin/tokens.php:2346
+#: application/controllers/admin/tokens.php:2305
+#: application/controllers/admin/tokens.php:2347
 #: application/controllers/admin/useraction.php:722
 #: application/helpers/common_helper.php:6389
 #: application/helpers/common_helper.php:6394
@@ -3539,8 +3539,8 @@ msgstr ""
 
 #: application/controllers/admin/tokens.php:85
 #: application/controllers/admin/tokens.php:376
-#: application/controllers/admin/tokens.php:518
-#: application/controllers/admin/tokens.php:621
+#: application/controllers/admin/tokens.php:519
+#: application/controllers/admin/tokens.php:622
 #: application/controllers/survey/index.php:85
 #: application/controllers/survey/index.php:98
 msgid "We are sorry but you don't have permissions to do this."
@@ -3566,230 +3566,230 @@ msgstr ""
 msgid "Bounce processing is deactivated either application-wide or for this survey in particular."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:457
+#: application/controllers/admin/tokens.php:458
 #: application/views/admin/responses/browseallrow_view.php:4
 #: application/views/admin/responses/browsetimerow_view.php:4
 msgid "View response details"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:464
+#: application/controllers/admin/tokens.php:465
 msgid "Do survey"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:470
+#: application/controllers/admin/tokens.php:471
 msgid "Delete token entry"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:475
+#: application/controllers/admin/tokens.php:476
 msgid "Send invitation email to this person (if they have not yet been sent an invitation email)"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:477
+#: application/controllers/admin/tokens.php:478
 msgid "Send reminder email to this person (if they have already received the invitation email)"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:486
+#: application/controllers/admin/tokens.php:487
 #: application/views/admin/token/tokenform.php:5
 msgid "Edit token entry"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:488
+#: application/controllers/admin/tokens.php:489
 msgid "View this person in the central participants database"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:835
+#: application/controllers/admin/tokens.php:836
 msgid "The token entry was successfully updated."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:836
-#: application/controllers/admin/tokens.php:1009
-#: application/controllers/admin/tokens.php:1020
+#: application/controllers/admin/tokens.php:837
+#: application/controllers/admin/tokens.php:1010
+#: application/controllers/admin/tokens.php:1021
 #: application/views/admin/token/addtokenpost.php:7
 #: application/views/admin/token/addtokenpost.php:14
 #: application/views/admin/token/tokenbar.php:13
 msgid "Display tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:842
-#: application/controllers/admin/tokens.php:1016
+#: application/controllers/admin/tokens.php:843
+#: application/controllers/admin/tokens.php:1017
 #: application/views/admin/token/addtokenpost.php:12
 #: application/views/admin/token/ldappost.php:5
 msgid "Failed"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:843
+#: application/controllers/admin/tokens.php:844
 #: application/views/admin/token/addtokenpost.php:13
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:844
+#: application/controllers/admin/tokens.php:845
 msgid "Show this token entry"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1008
+#: application/controllers/admin/tokens.php:1009
 msgid "New dummy tokens were added."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1017
+#: application/controllers/admin/tokens.php:1018
 msgid "Only %s new dummy tokens were added after %s trials."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1018
+#: application/controllers/admin/tokens.php:1019
 msgid "Try with a bigger token length."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1116
+#: application/controllers/admin/tokens.php:1117
 msgid "%s field(s) were successfully added."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1166
+#: application/controllers/admin/tokens.php:1167
 msgid "Token attribute descriptions were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1167
+#: application/controllers/admin/tokens.php:1168
 msgid "Back to attribute field management."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1366
+#: application/controllers/admin/tokens.php:1367
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1370
+#: application/controllers/admin/tokens.php:1371
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1380
+#: application/controllers/admin/tokens.php:1381
 msgid "Invitation sent to:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1385
+#: application/controllers/admin/tokens.php:1386
 msgid "Reminder sent to:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1403
+#: application/controllers/admin/tokens.php:1404
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1435
+#: application/controllers/admin/tokens.php:1436
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1436
+#: application/controllers/admin/tokens.php:1437
 msgid "having a valid email address"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1437
+#: application/controllers/admin/tokens.php:1438
 msgid "not having been sent an invitation already"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1438
+#: application/controllers/admin/tokens.php:1439
 msgid "having already completed the survey"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1439
+#: application/controllers/admin/tokens.php:1440
 msgid "having a token"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1526
+#: application/controllers/admin/tokens.php:1527
 msgid "Uploading LDAP Query"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1739
+#: application/controllers/admin/tokens.php:1740
 msgid "Can't bind to the LDAP directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1746
+#: application/controllers/admin/tokens.php:1747
 msgid "Can't connect to the LDAP directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2079
-#: application/controllers/admin/tokens.php:2106
+#: application/controllers/admin/tokens.php:2080
+#: application/controllers/admin/tokens.php:2107
 msgid "Create tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2080
+#: application/controllers/admin/tokens.php:2081
 msgid "Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2097
+#: application/controllers/admin/tokens.php:2098
 msgid "Only %s token has been created."
 msgid_plural "Only %s tokens have been created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:2098
+#: application/controllers/admin/tokens.php:2099
 msgid "Need %s token."
 msgid_plural "Need %s tokens."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:2103
+#: application/controllers/admin/tokens.php:2104
 msgid "%s token has been created."
 msgid_plural "%s tokens have been created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:2142
-#: application/controllers/admin/tokens.php:2161
+#: application/controllers/admin/tokens.php:2143
+#: application/controllers/admin/tokens.php:2162
 msgid "Delete Tokens Table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2143
+#: application/controllers/admin/tokens.php:2144
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2143
+#: application/controllers/admin/tokens.php:2144
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2146
+#: application/controllers/admin/tokens.php:2147
 msgid "Delete Tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2162
+#: application/controllers/admin/tokens.php:2163
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2162
+#: application/controllers/admin/tokens.php:2163
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2212
+#: application/controllers/admin/tokens.php:2213
 #: application/views/admin/globalSettings_view.php:10
 #: application/views/admin/token/bounce.php:1
 #: application/views/admin/token/tokenbar.php:63
 msgid "Bounce settings"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2213
+#: application/controllers/admin/tokens.php:2214
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2286
+#: application/controllers/admin/tokens.php:2287
 #: application/views/admin/token/tokenwarning.php:6
 msgid "Tokens have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2292
+#: application/controllers/admin/tokens.php:2293
 msgid "Tokens already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2301
+#: application/controllers/admin/tokens.php:2302
 #: application/views/admin/export/exportresults_view.php:122
 #: application/views/admin/token/tokenbar.php:3
 #: application/views/admin/token/tokenwarning.php:3
 msgid "Token control"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2302
+#: application/controllers/admin/tokens.php:2303
 msgid "A token table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2343
+#: application/controllers/admin/tokens.php:2344
 msgid "Import old tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2344
+#: application/controllers/admin/tokens.php:2345
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr ""
 
