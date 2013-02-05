@@ -943,6 +943,7 @@ class database extends Survey_Common_Action
             'bounce_email'=> Yii::app()->request->getPost('bounce_email'),
             'anonymized'=> Yii::app()->request->getPost('anonymized'),
             'faxto'=> Yii::app()->request->getPost('faxto'),
+            'type'=> Yii::app()->request->getPost('type'),
             'format'=> Yii::app()->request->getPost('format'),
             'savetimings'=> Yii::app()->request->getPost('savetimings'),
             'template'=>$template,
@@ -982,6 +983,7 @@ class database extends Survey_Common_Action
             'googleanalyticsstyle'=>trim(Yii::app()->request->getPost('googleanalyticsstyle')),
             'tokenlength'=>$tokenlength
             );
+            if(!User::GetUserRights('manage_model')) unset($updatearray['type']);
             // use model
             $Survey=Survey::model()->findByPk($surveyid);
             foreach ($updatearray as $k => $v)

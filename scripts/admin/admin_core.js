@@ -31,8 +31,36 @@ $(document).ready(function(){
     }
     )
 
+    // Call the popuptip hover rel attribute
+    $('.popuptip').each(function(){
+        if($(this).attr('rel')){
+            content=$(this).html();
+            $("#"+$(this).attr('rel')).qtip({
+                content:{
+                    text:content
+                },
+                style: {name: 'light',
+                    tip:true,
+                    border: {
+                        width: 1,
+                        radius: 5
+                    }
+                },
+                position: {adjust: {
+                        screen: true, scroll:true},
+                    corner: {
+                        target: 'bottomMiddle',
+                        tooltip: 'topMiddle'
+                        }
+                },
+                show: {effect: {length:50}},
+                hide: {when: 'mouseout', fixed: true, delay: 500}
+            });
+            $("#"+$(this).attr('rel')).find("img").removeAttr("alt"); // Remove children img attr alt, the  default tooltip can apply.
+        }
+    });
 
-    // Loads the tooltips for the toolbars  except the surveybar
+    // Loads the tooltips for the toolbars except the surveybar
     $('img[alt],input[src]').not('.surveybar img').each(function() {
         if($(this).attr('alt') != '')
             {
@@ -51,7 +79,6 @@ $(document).ready(function(){
                 },
                 show: {effect: {length:50}},
                 hide: {when: 'mouseout'}
-
             });
         }
     });
@@ -93,6 +120,7 @@ $(document).ready(function(){
             });
         }
     });
+
 
     $('.dosurvey').qtip({
         content:{

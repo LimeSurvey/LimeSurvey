@@ -54,5 +54,13 @@
         <li><label for='faxto'><?php $clang->eT("Fax to:"); ?></label>
             <input type='text' size='50' id='faxto' name='faxto' value="<?php echo $esrow['faxto']; ?>" />
         </li>
+        <?php if(User::GetUserRights('manage_model')) { ?>
+            <li><label for='type'><?php $clang->eT("Survey type:"); ?></label>
+                <select name="type" id="type">
+                    <option value="N"><?php $clang->eT("None"); ?></option>
+                    <option value="M" <?php if ($esrow['type']=='M') { ?> selected='selected' <?php } ?>><?php $clang->eT("Survey model"); ?></option>
+                </select>
+            </li>
+        <?php } ?>
     </ul>
 </div>

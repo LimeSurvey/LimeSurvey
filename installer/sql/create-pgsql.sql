@@ -392,6 +392,7 @@ CREATE TABLE prefix_surveys (
     "template" character varying(100) DEFAULT 'default',
     "language" character varying(50),
     additional_languages character varying(255),
+    type character varying(1) DEFAULT 'N' NOT NULL,
     datestamp character varying(1) DEFAULT 'N' NOT NULL,
     usecookie character varying(1) DEFAULT 'N' NOT NULL,
     allowregister character varying(1) DEFAULT 'N' NOT NULL,
@@ -514,6 +515,8 @@ CREATE TABLE prefix_users (
     configurator integer DEFAULT 0 NOT NULL,
     manage_template integer DEFAULT 0 NOT NULL,
     manage_label integer DEFAULT 0 NOT NULL,
+    copy_model integer DEFAULT 0 NOT NULL,
+    manage_model integer DEFAULT 0 NOT NULL,
     htmleditormode character varying(7) DEFAULT 'default',
     templateeditormode character varying(7) DEFAULT 'default' NOT NULL,
     questionselectormode character varying(7) DEFAULT 'default' NOT NULL,
@@ -629,4 +632,4 @@ INSERT INTO prefix_question_type_groups (id, name, "order", system) VALUES
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '169');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '170');

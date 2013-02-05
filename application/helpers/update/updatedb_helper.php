@@ -1096,7 +1096,6 @@ function db_upgrade_all($oldversion) {
         {
             // Add manage_survey users right (integre(1) : integer) to users table.
             Yii::app()->db->createCommand()->addColumn('{{users}}','manage_survey',"integer NOT NULL DEFAULT 0");
-            
             // Fix composite primary key for pgsql databases http://bugs.limesurvey.org/view.php?id=6996
             $table = 'participant_attribute_names';
             if ($sDBDriverName == 'mysql') {
@@ -1112,6 +1111,15 @@ function db_upgrade_all($oldversion) {
             
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>169),"stg_name='DBVersion'");
          }
+
+        if ($oldversion < 170)
+        {
+            Yii::app()->db->createCommand()->addColumn('{{surveys}}','type',"{$sVarchar}(1) NOT NULL DEFAULT 'N'");
+            Yii::app()->db->createCommand()->addColumn('{{users}}','copy_model',"integer NOT NULL DEFAULT 0");
+            Yii::app()->db->createCommand()->addColumn('{{users}}','manage_model',"integer NOT NULL DEFAULT 0");
+            upgradeUsers170();
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>170),"stg_name='DBVersion'");
+        }
 
     }
     catch(Exception $e)
@@ -2074,4 +2082,18 @@ function upgradeSurveyTables164()
             }
         }
     }
+}
+
+
+/**
+ *  Upgrade admin right with manage_survey, copy_model and manage_model
+ * 
+ * Set manage_survey, copy_model and manage_model to 1 for all superadmin
+ * 
+ * @return void
+ */
+function upgradeUsers170()
+{
+    $sUsersUpdateQuery= "update {{users}} set copy_model=1,manage_model=1,manage_survey=1 where superadmin>0";
+    Yii::app()->db->createCommand($sUsersUpdateQuery)->execute();
 }

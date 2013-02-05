@@ -7,6 +7,16 @@
 			<?php echo $surveyinfo['surveyls_title']." (".$clang->gT("ID")." ".$surveyinfo['sid'].")";?>
 		</td>
 	</tr>
+    <?php if($surveyinfo['type'] && $surveyinfo['type']!="N") { ?>
+    <tr>
+        <td>
+            <strong><?php $clang->eT("Survey type");?>:</strong>
+        </td>
+        <td class='settingentryhighlight'>
+            <?php if($surveyinfo['type']=="M"){echo $clang->gT("Survey model");} ?>
+        </td>
+    </tr>
+    <?php } ?>
 	<tr>
 		<td>
 			<strong><?php echo $clang->gT("Survey URL") ." - ".getLanguageNameFromCode($surveyinfo['language'],false).":";?></strong>

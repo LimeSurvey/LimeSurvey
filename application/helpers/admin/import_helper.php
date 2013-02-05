@@ -2670,11 +2670,11 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
     $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
     $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
-    // Set new owner ID
-    $surveyrowdata['owner_id']=Yii::app()->session['loginID'];
-    // Set new survey ID
+    // Set new survey ID and survey seting
     $surveyrowdata['sid']=$iNewSID;
+    $surveyrowdata['owner_id']=Yii::app()->session['loginID'];
     $surveyrowdata['active']='N';
+    $surveyrowdata['type']='N';
 
     if (validateTemplateDir($surveyrowdata['template'])!==$surveyrowdata['template']) $importresults['importwarnings'][] = sprintf($clang->gT('Template %s not found, please review when activating.'),$surveyrowdata['template']);
 
@@ -3521,10 +3521,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         unset($insertdata['expires']);
         unset($insertdata['startdate']);
 
-        //Make sure it is not set active
-        $insertdata['active']='N';
-        //Set current user to be the owner
+        //Survey setting: Inactive, owner_id, type none
         $insertdata['owner_id']=Yii::app()->session['loginID'];
+        $insertdata['active']='N';
+        $insertdata['type']='N';
 
         if (isset($insertdata['bouncetime']) && $insertdata['bouncetime'] == '')
         {

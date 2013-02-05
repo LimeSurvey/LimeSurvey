@@ -139,6 +139,20 @@ class SurveyAdmin extends Survey_Common_Action
         $aData = array_merge($aData, $this->_tabPublicationAccess($esrow));
         $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
         $aData = array_merge($aData, $this->_tabTokens($esrow));
+        if(User::GetUserRights("copy_model") || Yii::app()->getConfig('allusercopymodel'))
+        {
+            $oModelList = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->together()->findAll(array("condition"=>"type = 'M'"));
+            $aModelList = array();
+            foreach ($oModelList as $oModel)
+            {
+                $aModelList[] = array_merge($oModel->attributes, $oModel->languagesettings[0]->attributes);
+            }
+        }
+        else
+        {
+            $aModelList=array();
+        }
+        $aData['aModelList']=$aModelList;
         $arrayed_data['data'] = $aData;
         $aViewUrls[] = 'newSurvey_view';
 
@@ -607,6 +621,8 @@ class SurveyAdmin extends Survey_Common_Action
         //Add permission "view" survey
         if (!User::GetUserRights('manage_survey'))
             $surveys->permission(Yii::app()->user->getId());
+        if(User::GetUserRights('manage_model'))
+            $surveys->getDBCriteria()->mergeWith(array('condition'=>"type='M'"),false);
         $surveys = $surveys->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
         $aSurveyEntries = new stdClass();
         $aSurveyEntries->page = 1;
@@ -873,7 +889,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         if ($action == "importsurvey" || $action == "copysurvey")
         {
-            if (@$_POST['copysurveytranslinksfields'] == "on" || @$_POST['translinksfields'] == "on")
+            if (Yii::app()->request->getPost('copysurveytranslinksfields') == "on" || Yii::app()->request->getPost('translinksfields') == "on")
             {
                 $sTransLinks = true;
             }
@@ -1565,6 +1581,7 @@ class SurveyAdmin extends Survey_Common_Action
             'owner_id' => Yii::app()->session['loginID'],
             'admin' => $_POST['admin'],
             'active' => 'N',
+            'type' => $_POST['type'],
             'adminemail' => $_POST['adminemail'],
             'bounce_email' => $_POST['bounce_email'],
             'anonymized' => $_POST['anonymized'],
@@ -1604,7 +1621,7 @@ class SurveyAdmin extends Survey_Common_Action
             'emailresponseto' => $_POST['emailresponseto'],
             'tokenlength' => $_POST['tokenlength']
             );
-
+            if(!User::GetUserRights('manage_model')) unset($aInsertData['type']);
 
             if (!is_null($iSurveyID))
             {

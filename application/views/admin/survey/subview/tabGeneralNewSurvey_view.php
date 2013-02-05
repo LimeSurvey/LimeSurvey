@@ -18,6 +18,14 @@
         <li><label for='surveyls_title'><?php $clang->eT("Title"); ?> :</label>
         <input type='text' size='82' maxlength='200' id='surveyls_title' name='surveyls_title' required="required" autofocus="autofocus" /> <span class='annotation'><?php $clang->eT("Required"); ?> </span>
         </li>
+        <?php if(User::GetUserRights('manage_model')) { ?>
+            <li><label for='type'><?php $clang->eT("Survey type:"); ?></label>
+                <select name="type" id="type">
+                    <option value="N"><?php $clang->eT("None"); ?></option>
+                    <option value="M"><?php $clang->eT("Survey model"); ?></option>
+                </select>
+            </li>
+        <?php } ?>
         <li><label for='description'><?php $clang->eT("Description:"); ?> </label>
         <div class='htmleditor'>
         <textarea cols='80' rows='10' id='description' name='description'></textarea>

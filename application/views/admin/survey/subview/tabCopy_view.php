@@ -22,4 +22,21 @@
             <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
             <input type='hidden' name='action' value='copysurvey' /></p>
     </form>
+    <?php if(count($aModelList)) { ?>
+        <div class="header ui-widget-header"><?php $clang->eT('Survey model') ?></div>
+        <?php echo CHtml::form(array('admin/survey/sa/copy'), 'post', array('id'=>'copymodelsurveyform', 'name'=>'copysurveyform', 'class'=>'form30')); ?>
+            <ul>
+                <li><label for='copysurveymodellist'><?php $clang->eT("Select survey model to copy:"); ?> </label>
+                    <?php  echo CHtml::dropDownList('copysurveylist',"",CHtml::listData($aModelList,'sid','surveyls_title'),array('empty' => $clang->gT("Please choose...")),array('id'=>'copysurveymodellist')); ?>
+                    <span class='annotation'><?php echo $clang->gT("Required"); ?> </span></li>
+                <li><label for='copysurveyname'><?php echo $clang->gT("New survey title:"); ?> </label>
+                    <?php echo CHtml::textField('copysurveyname','',array('id'=>'copysurveymodelname','size'=>'82','maxlength'=>'200','required'=>"required")); ?>
+                    <span class='annotation'><?php echo $clang->gT("Required"); ?> </span></li>
+            <p>
+                <?php echo CHtml::submitButton($clang->gT('Copy survey model')); ?>
+                <?php echo CHtml::hiddenField('copysurveytranslinksfields','on',array('id'=>'modeltranslinksfields')); ?>
+                <?php echo CHtml::hiddenField('action','copysurvey'); ?></p>
+                
+        <?php echo CHtml::endForm() ?>
+    <?php } ?>
 </div>
