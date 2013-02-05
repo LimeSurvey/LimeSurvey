@@ -87,7 +87,7 @@
         <?php endif; ?>
 
         <?php if(isset($save)): ?>
-        	<input type='submit' value='<?php $clang->eT("Browse saved responses"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/saved/view/surveyid/'.$surveyid.'/all'); ?>', '_top')" />
+        	<input type='submit' value='<?php $clang->eT("Browse saved responses"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/saved/sa/view/surveyid/'.$surveyid.'/all'); ?>', '_top')" />
         	<br /><br />
 		<?php endif; ?>
 	</div>

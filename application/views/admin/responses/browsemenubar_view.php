@@ -71,7 +71,7 @@
 
             <?php if (hasSurveyPermission($surveyid, 'responses', 'read'))
                 { ?>
-                <a href='<?php echo $this->createUrl("admin/saved/view/surveyid/$surveyid"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/saved/sa/view/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>saved.png' title='' alt='<?php $clang->eT("View Saved but not submitted Responses"); ?>' /></a>
                 <?php }
                 if (hasSurveyPermission($surveyid, 'responses', 'import'))

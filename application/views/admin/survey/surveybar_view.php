@@ -220,7 +220,7 @@
                     } ?>
                     <?php if($responsesread) {
                             if($activated) { ?>
-                            <li><a href='<?php echo $this->createUrl("admin/saved/view/surveyid/$surveyid");?>' >
+                            <li><a href='<?php echo $this->createUrl("admin/saved/sa/view/surveyid/$surveyid");?>' >
                                 <img src='<?php echo $sImageURL;?>saved_30.png' alt='' /> <?php $clang->eT("Partial (saved) responses");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("This survey is not active - no responses are available","js");?>');" >
