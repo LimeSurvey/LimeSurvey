@@ -60,6 +60,49 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.00+ (build 130129) to 2.00+ (build 130206) Feb 6, 2013
+-New feature: Added new setting 'showrelevance' to config file -  When this settings is activated then the printable survey option will show the raw relevance equation below the general fill-out instructions in case the question has conditions (Carsten Schmitz)
+-New feature: New advanced question attribute to set a fill-out help text for the printable view (Carsten Schmitz)
+-Fixed issue #7222: Randomized order of questions within group not working for question by question format (Menno Dekker)
+-Fixed issue #6894: Data export in R syntax file for ranking type questions omits answer labels causing R data import failure (andrie)
+-Fixed issue #7243: Syntax error in sytax file for R (andrie)
+-Fixed issue #6023: Print preview shows conditions as formula (Carsten Schmitz)
+-Fixed issue #7236: Different behaviour of + in EM in same group or next group (Denis Chenu)
+-Fixed issue #7236: Unable to concatenate number : join is undefined (Denis Chenu)
+-Fixed issue #7239: Adding a new user without full name is impossible (Carsten Schmitz)
+-Fixed issue #7240: Token not accepted when using 'Exit & clear survey' and restarting survey (Carsten Schmitz)
+-Fixed issue #7246: Impossible to filter by date (Carsten Schmitz)
+-Fixed issue #7256: Admin can copy survey without right (Denis Chenu)
+-Fixed issue #7272: JavaScript error in IE8 on surveylist (thanks to GBr) (Denis Chenu)
+-Fixed issue: Browse saved responses unavailable on IIS systems (Menno Dekker)
+-Fixed issue: Unable to see token table after adding token without code (Denis Chenu)
+-Fixed issue: Underscores not allowed in filenames when uploading in the template editor (Carsten Schmitz)
+#Updated translation: Catalan by valdomir
+#Updated translation: Czech by slansky
+#Updated translation: Danish by nielsb
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by BenoitBouvarel, DenisChenu, Zeste
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni, sischi
+#Updated translation: Japanese by nomoto
+#Updated translation: Kurdish (Sorani) by havalabdulkarim, Rebaz
+#Updated translation: Mongolian by erka
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by marciojv, mauriciofurtado
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Serbian (Latin script) by OnSpot
+#Updated translation: Slovak by Union
+#Updated translation: Spanish (Spain) by Nodens, valdomir, kadejo, xtingray
+#Updated translation: Turkish by kayazeren
+#Updated translation: Welsh by NortonT
+
+
 Changes from 2.00+ (build 130122) to 2.00+ (build 130129) Jan 29, 2013
 -Fixed issue #7011: It is not possible to randomize the order of groups even when a randomization groupname is set (Menno Dekker)
 -Fixed issue #7165: VV-import/export leads to changes of data (Carsten Schmitz)
