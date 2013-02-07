@@ -43,34 +43,6 @@ class printablesurvey extends Survey_Common_Action
         else
         {
             // PRESENT SURVEY DATAENTRY SCREEN
-            if(isset($_POST['printableexport']))
-            {
-                Yii::import("application.libraries.admin.pdf");
-                $pdfdefaultfont=Yii::app()->getConfig('pdfdefaultfont');
-                if($pdfdefaultfont=='auto')
-                {
-                    $pdfdefaultfont=PDF_FONT_NAME_DATA;
-                }
-                // Array of PDF core fonts: are replaced by according fonts according to the alternatepdffontfile array.Maybe just courier,helvetica and times but if a user want symbol: why not ....
-                $pdfcorefont=array("courier","helvetica","symbol","times","zapfdingbats");
-                $pdffontsize=Yii::app()->getConfig('pdffontsize');
-                if (in_array($pdfdefaultfont,$pdfcorefont))
-                {
-                    $alternatepdffontfile=Yii::app()->getConfig('alternatepdffontfile');
-                    if(array_key_exists($statlangcode,$alternatepdffontfile))
-                    {
-                        $pdfdefaultfont = $alternatepdffontfile[$statlangcode];// Actually use only core font
-                    }
-                }
-                if ($pdffontsize=='auto')
-                {
-                    $pdffontsize=PDF_FONT_SIZE_MAIN;
-                }
-                $pdforientation=Yii::app()->getConfig('pdforientation');
-                $pdf = new pdf ($pdforientation,'mm','A4');
-                $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
-                $pdf->AddPage();
-            }
             // Set the language of the survey, either from GET parameter of session var
             if (isset($lang))
             {
@@ -104,8 +76,6 @@ class printablesurvey extends Survey_Common_Action
             $surveyfaxto = $desrow['faxto'];
             $dateformattype = $desrow['surveyls_dateformat'];
 
-            if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
-
             Yii::app()->loadHelper('surveytranslator');
             
             if (!is_null($surveyexpirydate))
@@ -130,7 +100,6 @@ class printablesurvey extends Survey_Common_Action
                 $surveyexpirydate='';
             }
 
-            //define('PRINT_TEMPLATE' , '/templates/print/' , true);
             if(is_file(Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$template.DIRECTORY_SEPARATOR.'print_survey.pstpl'))
             {
                 define('PRINT_TEMPLATE_DIR' , Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$template.DIRECTORY_SEPARATOR , true);
@@ -203,7 +172,6 @@ class printablesurvey extends Survey_Common_Action
              *        $survey_output['SURVEY_DESCRIPTION'] =
              *        $survey_output['WELCOME'] =
              *        $survey_output['THEREAREXQUESTIONS'] =
-             *        $survey_output['PDF_FORM'] =
              *        $survey_output['HEADELEMENTS'] =
              *        $survey_output['TEMPLATEURL'] =
              *        $survey_output['SUBMIT_TEXT'] =
@@ -239,7 +207,6 @@ class printablesurvey extends Survey_Common_Action
 
             // =========================================================
             // START doin the business:
-            $pdfoutput = '';
             foreach ($degresult->readAll() as $degrow)
             {
                 // ---------------------------------------------------
@@ -258,16 +225,13 @@ class printablesurvey extends Survey_Common_Action
                 }
 
                 $group = array(
-                         'GROUPNAME' => $degrow['group_name']
-                ,'GROUPDESCRIPTION' => $group_desc
-                ,'QUESTIONS' => '' // templated formatted content if $question is appended to this at the end of processing each question.
+                    'GROUPNAME' => $degrow['group_name']
+                    ,'GROUPDESCRIPTION' => $group_desc
+                    ,'QUESTIONS' => '' // templated formatted content if $question is appended to this at the end of processing each question.
                 );
 
                 // A group can have only hidden questions. In that case you don't want to see the group's header/description either.
                 $bGroupHasVisibleQuestions = false;
-
-                if(isset($_POST['printableexport'])){$pdf->titleintopdf($degrow['group_name'],$degrow['description']);}
-
                 $gid = $degrow['gid'];
                 //Alternate bgcolor for different groups
                 if (!isset($group['ODD_EVEN']) || $group['ODD_EVEN'] == ' g-row-even')
@@ -351,22 +315,14 @@ class printablesurvey extends Survey_Common_Action
                     {
                         $question['QUESTION_MANDATORY'] = $clang->gT('*');
                         $question['QUESTION_CLASS'] .= ' mandatory';
-                        $pdfoutput .= $clang->gT("*");
                     }
 
-                    $pdfoutput ='';
 
                     //DIFFERENT TYPES OF DATA FIELD HERE
-
-
-                    if(isset($_POST['printableexport'])){$pdf->intopdf($deqrow['title']." ".$deqrow['question']);}
-
                     if ($deqrow['help'])
                     {
                         $hh = $deqrow['help'];
                         $question['QUESTIONHELP'] = $hh;
-
-                        if(isset($_POST['printableexport'])){$pdf->helptextintopdf($hh);}
                     }
 
 
@@ -383,52 +339,14 @@ class printablesurvey extends Survey_Common_Action
                     $help = $q->getTypeHelp($clang);
                     $question['QUESTION_TYPE_HELP'] .= $help;
                     $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-                    if(isset($_POST['printableexport']))
-                    {
-                        $pdf->intopdf($help, "U");
-                        $pdfoutput = $q->getPrintPDF($clang);
-                        if (is_string($pdfoutput))
-                            $pdf->intopdf($pdfoutput);
-                        else if (is_array($pdfoutput) && count($pdfoutput) && is_array($pdfoutput[0]))
-                        {
-                            $pdf->tableintopdf($pdfoutput);
-                        }
-                        else if (is_array($pdfoutput))
-                        {
-                            foreach ($pdfoutput as $output)
-                            {
-                                $pdf->intopdf($output);
-                            }
-                        }
-
-                        $pdf->ln(5);
-                    }
-                    else
-                    {
-                        $question['ANSWER'] .= $q->getPrintAnswers($clang);
-                        $question['QUESTION_TYPE_HELP'] = self::_star_replace($question['QUESTION_TYPE_HELP']);
-                        $group['QUESTIONS'] .= self::_populate_template( 'question' , $question);
-                    }
+                    $question['ANSWER'] .= $q->getPrintAnswers($clang);
+                    $question['QUESTION_TYPE_HELP'] = self::_star_replace($question['QUESTION_TYPE_HELP']);
+                    $group['QUESTIONS'] .= self::_populate_template( 'question' , $question);
                 }
                 if ($bGroupHasVisibleQuestions)
                 {
                     $survey_output['GROUPS'] .= self::_populate_template( 'group' , $group );
                 }
-            }
-
-            if(isset($_POST['printableexport']))
-            {
-                if ($surveystartdate!='')
-                {
-                    if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please submit by %s"), $surveyexpirydate));}
-                }
-                if(!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number exists, don't display faxing information!
-                {
-                    if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please fax your completed survey to: %s"),$surveyfaxto),'B');}
-                }
-                $pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
-                $pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
-                return;
             }
 
             $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , $clang->gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
@@ -508,21 +426,20 @@ class printablesurvey extends Survey_Common_Action
         }// End print
     }
 
+    /**
+     * A poor mans templating system.
+     *
+     *     $template    template filename (path is privided by config.php)
+     *     $input        a key => value array containg all the stuff to be put into the template
+     *     $line         for debugging purposes only.
+     *
+     * Returns a formatted string containing template with
+     * keywords replaced by variables.
+     *
+     * How:
+     */
     private function _populate_template( $template , $input  , $line = '')
     {
-        global $rootdir, $debug;
-        /**
-         * A poor mans templating system.
-         *
-         *     $template    template filename (path is privided by config.php)
-         *     $input        a key => value array containg all the stuff to be put into the template
-         *     $line         for debugging purposes only.
-         *
-         * Returns a formatted string containing template with
-         * keywords replaced by variables.
-         *
-         * How:
-         */
         $full_path = PRINT_TEMPLATE_DIR.'print_'.$template.'.pstpl';
         $full_constant = 'TEMPLATE'.$template.'.pstpl';
         if(!defined($full_constant))
@@ -565,7 +482,7 @@ class printablesurvey extends Survey_Common_Action
         }
         else
         {
-            if($debug > 0)
+            if(Yii::app()->getConfig('debug') > 0)
             {
                 if(!empty($line))
                 {
@@ -591,8 +508,6 @@ class printablesurvey extends Survey_Common_Action
 
     public static function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
     {
-        global $rooturl, $rootdir;
-
         if($type == 'other' or $type == 'othercomment')
         {
             $x = 1;
@@ -665,7 +580,8 @@ class printablesurvey extends Survey_Common_Action
                  );
     }
 
-    private function _array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
+    private function _array_filter_help($qidattributes, $surveyprintlang, $surveyid) 
+    {
         $clang = $this->getController()->lang;
         $output = "";
         if(!empty($qidattributes['array_filter']))
