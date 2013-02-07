@@ -74,7 +74,7 @@
                         <option value='30'
                             <?php if ($thisupdatecheckperiod==30) { echo "selected='selected'";} ?>
                             ><?php echo $clang->eT("Every month"); ?></option>
-                    </select>&nbsp;<input type='button' onclick="window.open('<?php echo $this->createUrl("admin/globalsettings/updatecheck"); ?>', '_top')" value='<?php $clang->eT("Check now"); ?>' />&nbsp;<span id='lastupdatecheck'><?php echo sprintf($clang->gT("Last check: %s"),$updatelastcheck); ?></span></li></ul><p>
+                    </select>&nbsp;<input type='button' onclick="window.open('<?php echo $this->createUrl("admin/globalsettings/sa/updatecheck"); ?>', '_top')" value='<?php $clang->eT("Check now"); ?>' />&nbsp;<span id='lastupdatecheck'><?php echo sprintf($clang->gT("Last check: %s"),$updatelastcheck); ?></span></li></ul><p>
 
                 <?php
                     if (isset($updateavailable) && $updateavailable==1)
