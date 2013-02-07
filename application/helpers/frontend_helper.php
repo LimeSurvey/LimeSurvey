@@ -955,7 +955,7 @@
                 }
                 if(!empty($participant_id))
                 {
-                    $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$usesrow->tid));
+                    $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$oTokenInformation->tid));
                     
                     if (isTokenCompletedDatestamped($thissurvey))
                     {
