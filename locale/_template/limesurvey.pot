@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-02-04 23:06:05+00:00\n"
+"POT-Creation-Date: 2013-02-07 23:05:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1865,8 +1865,8 @@ msgid "Follow the following link to update it"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1604
-#: application/views/admin/responses/browseidheader_view.php:10
-#: application/views/admin/responses/browseidheader_view.php:11
+#: application/views/admin/responses/browseidheader_view.php:16
+#: application/views/admin/responses/browseidheader_view.php:17
 msgid "Edit this entry"
 msgstr ""
 
@@ -3066,16 +3066,16 @@ msgstr ""
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1439
+#: application/controllers/admin/surveyadmin.php:1438
 #: application/views/admin/survey/editSurvey_view.php:37
 msgid "(No target question)"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1522
+#: application/controllers/admin/surveyadmin.php:1521
 msgid "Survey could not be created because it did not have a title"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1654
+#: application/controllers/admin/surveyadmin.php:1653
 msgid "Survey was successfully added."
 msgstr ""
 
@@ -3138,7 +3138,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:115
 #: application/controllers/admin/tokens.php:470
 #: application/views/admin/assessments_view.php:32
-#: application/views/admin/responses/browseidheader_view.php:15
+#: application/views/admin/responses/browseidheader_view.php:21
 #: application/views/admin/saved/savedlist_view.php:29
 #: application/views/admin/user/editusers.php:24
 #: application/views/admin/user/editusers.php:93
@@ -3200,7 +3200,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:638
 #: application/controllers/admin/tokens.php:2305
 #: application/controllers/admin/tokens.php:2347
-#: application/controllers/admin/useraction.php:722
+#: application/controllers/admin/useraction.php:723
 #: application/helpers/common_helper.php:6389
 #: application/helpers/common_helper.php:6394
 #: application/helpers/common_helper.php:6399
@@ -4056,20 +4056,20 @@ msgstr ""
 msgid "You are not allowed to change your own permissions!"
 msgstr ""
 
-#: application/controllers/admin/useraction.php:568
-#: application/controllers/admin/useraction.php:572
+#: application/controllers/admin/useraction.php:569
+#: application/controllers/admin/useraction.php:573
 msgid "Set template permissions"
 msgstr ""
 
-#: application/controllers/admin/useraction.php:568
+#: application/controllers/admin/useraction.php:569
 msgid "Template permissions were updated successfully."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:572
+#: application/controllers/admin/useraction.php:573
 msgid "Error while updating usertemplates."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:618
+#: application/controllers/admin/useraction.php:619
 msgid "Your personal settings were successfully saved."
 msgstr ""
 
@@ -6687,7 +6687,7 @@ msgid "Return comma-separated list of values"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:190
-msgid "Natural logarithm"
+msgid "The logarithm of number to base, if given, or the natural logarithm. "
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:191
@@ -6953,23 +6953,23 @@ msgid_plural "Function must have at least %s arguments"
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/helpers/expressions/em_core_helper.php:2088
+#: application/helpers/expressions/em_core_helper.php:2087
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2093
+#: application/helpers/expressions/em_core_helper.php:2092
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2094
+#: application/helpers/expressions/em_core_helper.php:2093
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2331
+#: application/helpers/expressions/em_core_helper.php:2330
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:3492
+#: application/helpers/expressions/em_core_helper.php:3510
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -11257,36 +11257,36 @@ msgstr ""
 msgid "Edit this token"
 msgstr ""
 
-#: application/views/admin/responses/browseidheader_view.php:2
+#: application/views/admin/responses/browseidheader_view.php:8
 msgid "View response ID %d"
 msgstr ""
 
-#: application/views/admin/responses/browseidheader_view.php:15
-#: application/views/admin/responses/browseidheader_view.php:16
+#: application/views/admin/responses/browseidheader_view.php:21
+#: application/views/admin/responses/browseidheader_view.php:22
 msgid "Delete this entry"
 msgstr ""
 
-#: application/views/admin/responses/browseidheader_view.php:20
+#: application/views/admin/responses/browseidheader_view.php:26
 msgid "You don't have permission to delete this entry."
 msgstr ""
 
-#: application/views/admin/responses/browseidheader_view.php:24
-#: application/views/admin/responses/browseidheader_view.php:25
+#: application/views/admin/responses/browseidheader_view.php:30
+#: application/views/admin/responses/browseidheader_view.php:31
 msgid "Download files for this entry"
-msgstr ""
-
-#: application/views/admin/responses/browseidheader_view.php:28
-#: application/views/admin/responses/browseidheader_view.php:29
-msgid "Export this Response"
 msgstr ""
 
 #: application/views/admin/responses/browseidheader_view.php:34
 #: application/views/admin/responses/browseidheader_view.php:35
+msgid "Export this Response"
+msgstr ""
+
+#: application/views/admin/responses/browseidheader_view.php:40
+#: application/views/admin/responses/browseidheader_view.php:41
 msgid "Show previous..."
 msgstr ""
 
-#: application/views/admin/responses/browseidheader_view.php:38
-#: application/views/admin/responses/browseidheader_view.php:39
+#: application/views/admin/responses/browseidheader_view.php:44
+#: application/views/admin/responses/browseidheader_view.php:45
 #: application/views/admin/responses/browsetimeheader_view.php:20
 msgid "Show next..."
 msgstr ""
