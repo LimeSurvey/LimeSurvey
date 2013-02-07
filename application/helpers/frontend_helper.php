@@ -926,11 +926,11 @@ function submittokens($quotaexit = false) {
                 {
                     $slquery->date_completed = $today;
                 } else {
-                    // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
-                    $slquery->date_completed = $slquery->date_created;    
-                }                    
-                $slquery->save();
-            }
+                        // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
+                        $slquery->date_completed = $slquery->date_created;
+                    }
+                    $slquery->save();
+                }
         }
         $oTokenInformation->usesleft = $oTokenInformation->usesleft-1;
     }
