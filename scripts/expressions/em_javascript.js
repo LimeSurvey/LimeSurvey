@@ -12,6 +12,7 @@
  * Core JavaScript functions needed by ExpressionManager
  * @author Thomas M. White (TMSWhite)
  * @author Denis Chenu (Shnoulle)
+ *
  * Portion from php.js is copyright 2012 Kevin van Zonneveld.
  * php.js is dual licensed under the MIT licenses.
  */
@@ -221,6 +222,30 @@ function LEMlist()
         }
     }
     return result;
+}
+
+/**
+ *  Returns Natural logarithm of a number
+ */
+
+function LEMlog()
+{
+    // takes variable number of arguments
+    if (arguments.length < 1) {
+        return NaN;
+    }
+    var base=Math.exp(1);
+    if(arguments.length>1){
+        base = arguments[1];
+        if (isNaN(base)) { return NaN;}
+        if (base<=0 ) { return NaN;}
+        base=Math.abs(parseFloat(arguments[1]));
+    }
+    if(base==Math.exp(1)){// Not needed
+        return Math.log(arguments[0]);
+    }else{
+        return Math.log(arguments[0])/Math.log(base);
+    }
 }
 
  /**
