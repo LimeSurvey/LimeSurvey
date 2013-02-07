@@ -30,15 +30,19 @@ else
 {
     echo '<h3>'.$clang->gT('Checking existing LimeSurvey files...').'</h3>';
     if (count($readonlyfiles)>0)
-    {
+    { ?>
         
-        $readonlyfiles=array_unique($readonlyfiles);
-        sort($readonlyfiles);
+        <span class="warningtitle"><?php $clang->eT('Warning: The following files/directories need to be updated but their permissions are set to read-only.'); ?><br />
+        <?php $clang->eT('You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice.'); ?><br />
+        </span><ul>
+        <?php
         foreach ($readonlyfiles as $readonlyfile)
-        {
-            echo '<li>'.htmlspecialchars($readonlyfile).'</li>';
-        }
-        echo '</ul>';
+        {?>
+            <li><?php echo htmlspecialchars($readonlyfile); ?></li>
+        <?php
+        }?>
+        </ul>
+      <?php  
     }
     if (count($existingfiles)>0)
     {
@@ -56,9 +60,9 @@ else
 
     if (count($modifiedfiles)>0)
     {
-        $clang->eT('The following files will be modified or deleted but were already modified by someone else.');?><br />
+        $clang->eT('The following files will be modified or deleted but were already modified by someone else.');?><br>
         <?php
-        $clang->eT('We recommend that these files should be replaced by the update procedure.');?><br />
+        $clang->eT('We recommend that these files should be replaced by the update procedure.');?><br>
         <ul> 
         <?php
         sort($modifiedfiles);

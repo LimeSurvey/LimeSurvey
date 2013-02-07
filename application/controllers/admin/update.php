@@ -144,7 +144,9 @@ class update extends Survey_Common_Action
 
         list($error, $updateinfo, $cookies) = $this->_getChangedFiles($buildnumber, $updatebuild, $updatekey);
         $aData = $this->_getFileStatus($updateinfo);
-
+        $aReadOnlyFiles=array_unique($aData['readonlyfiles']);
+        sort($aReadOnlyFiles);
+        $aData['readonlyfiles']=$aReadOnlyFiles;
         Yii::app()->session['updateinfo'] = $updateinfo;
         Yii::app()->session['updatesession'] = $cookies;
 
