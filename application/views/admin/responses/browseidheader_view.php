@@ -7,7 +7,7 @@
             <?php if($exist) { ?>
                 <?php if (isset($rlanguage))
                     { ?>
-                    <a href='<?php echo $this->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}/lang/$rlanguage"); ?>' title='<?php $clang->eT("Edit this entry"); ?>'>
+                    <a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}/lang/$rlanguage"); ?>' title='<?php $clang->eT("Edit this entry"); ?>'>
                         <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php $clang->gT("Edit this entry"); ?>' /></a>
                     <?php }
                     if (hasSurveyPermission($surveyid, 'responses', 'delete') && isset($rlanguage))
