@@ -1426,11 +1426,10 @@ class SurveyAdmin extends Survey_Common_Action
         $i = 0;
         $clang = $this->getController()->lang;
         $aData = new stdClass();
-
         foreach ($oResult as $oRow)
         {
             $aData->rows[$i]['id'] = $oRow['id'];
-            if ($oRow['question'] != '')
+            if (!is_null($oRow['question']))
             {
                         $oRow['title'] .= ': ' . ellipsize(flattenText($oRow['question'], false, true), 43, .70);
             }
