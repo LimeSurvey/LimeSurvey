@@ -437,7 +437,7 @@
                     ."<br />\n"
 
                     ."\t<span class='smalltext'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
-                    .CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield2]:'',array() )
+                    .CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array() )
                     ."<br />\n"
                     ."\t&nbsp;&nbsp;".$clang->gT("Date is")." >=<br />\n"
                     .CHtml::textField($myfield4,isset($_POST[$myfield4])?$_POST[$myfield4]:'',array() )
