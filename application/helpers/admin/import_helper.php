@@ -792,6 +792,7 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
     $aQIDReplacements=array();
     $results['defaultvalues']=0;
     $results['answers']=0;
+    $results['questions']=0;
     $results['question_attributes']=0;
     $results['subquestions']=0;
     $results['conditions']=0;
@@ -832,48 +833,39 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
         $newgrouporder++;
     }
 
-    foreach ($xml->groups->rows->row as $row)
+    if(isset($xml->groups))
     {
-        $insertdata=array();
-        foreach ($row as $key=>$value)
+        foreach ($xml->groups->rows->row as $row)
         {
-            $insertdata[(string)$key]=(string)$value;
-        }
-        $iOldSID=$insertdata['sid'];
-        $insertdata['sid']=$iNewSID;
-        $insertdata['group_order']=$newgrouporder;
-        $oldgid=$insertdata['gid']; unset($insertdata['gid']); // save the old qid
+            $insertdata=array();
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $iOldSID=$insertdata['sid'];
+            $insertdata['sid']=$iNewSID;
+            $insertdata['group_order']=$newgrouporder;
+            $oldgid=$insertdata['gid']; unset($insertdata['gid']); // save the old qid
 
-        // now translate any links
-        $insertdata['group_name']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
-        $insertdata['description']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
-        // Insert the new question
-        if (isset($aGIDReplacements[$oldgid]))
-        {
-            $insertdata['gid']=$aGIDReplacements[$oldgid];
-        }
+            // now translate any links
+            $insertdata['group_name']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
+            $insertdata['description']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+            // Insert the new group
+            if (isset($aGIDReplacements[$oldgid]))
+            {
+                $insertdata['gid']=$aGIDReplacements[$oldgid];
+            }
 
-        if (isset($insertdata['type']))
-        {
-            $insertdata['tid'] = Question_types::model()->findByAttribute(array('legacy' => $insertdata['type']))->getAttribute('tid');
-            //unset($insertdata['type']); //AJSL
-        }
-        else
-        {
-            $insertdata['tid'] = Question_types::model()->findByAttribute(array('class' => $insertdata['class']))->getAttribute('tid');
-            unset($insertdata['class']);
-        }
-        if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups',true);
+            if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups',true);
+            $result = Yii::app()->db->createCommand()->insert('{{groups}}', $insertdata);
+            if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups',false);
+            $results['groups']++;
 
-        $result = Yii::app()->db->createCommand()->insert('{{groups}}', $insertdata);
-
-        if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups',false);
-        $results['groups']++;
-
-        if (!isset($aGIDReplacements[$oldgid]))
-        {
-            $newgid=getLastInsertID('{{groups}}');
-            $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
+            if (!isset($aGIDReplacements[$oldgid]))
+            {
+                $newgid=getLastInsertID('{{groups}}');
+                $aGIDReplacements[$oldgid]=$newgid; // add old and new gid to the mapping array
+            }
         }
     }
 
@@ -882,53 +874,64 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
 
     // We have to run the question table data two times - first to find all main questions
     // then for subquestions (because we need to determine the new qids for the main questions first)
-
-
-    $results['questions']=0;
-    foreach ($xml->questions->rows->row as $row)
+    if(isset($xml->questions))
     {
-        $insertdata=array();
-        foreach ($row as $key=>$value)
+        foreach ($xml->questions->rows->row as $row)
         {
-            $insertdata[(string)$key]=(string)$value;
-        }
-        $iOldSID=$insertdata['sid'];
-        $insertdata['sid']=$iNewSID;
-        if (!isset($aGIDReplacements[$insertdata['gid']]) || trim($insertdata['title'])=='') continue; // Skip questions with invalid group id
-        $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
-        $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
+            $insertdata=array();
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $iOldSID=$insertdata['sid'];
+            $insertdata['sid']=$iNewSID;
+            if (!isset($aGIDReplacements[$insertdata['gid']]) || trim($insertdata['title'])=='') continue; // Skip questions with invalid group id
+            $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
+            $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
-        // now translate any links
-        $insertdata['title']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['title']);
-        $insertdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-        $insertdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
-        // Insert the new question
-        if (isset($aQIDReplacements[$oldqid]))
-        {
-            $insertdata['qid']=$aQIDReplacements[$oldqid];
-        }
-        if (isset($insertdata['type'])){
-            $insertdata['tid'] = Question_types::model()->findByAttributes(array('legacy' => $insertdata['type']))->getAttribute('tid');
-            //unset($insertdata['type']); //AJSL
-        } else {
-            $insertdata['tid'] = Question_types::model()->findByAttributes(array('class' => $insertdata['class']))->getAttribute('tid');
+            // now translate any links
+            $insertdata['title']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['title']);
+            $insertdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
+            $insertdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+            // Insert the new question
+            if (isset($aQIDReplacements[$oldqid]))
+            {
+                $insertdata['qid']=$aQIDReplacements[$oldqid];
+            }
+            // Replace $insertdata['tid'] for Plugin system
+            // Using priority: class,type
+            $findtid=false;
+            if (isset($insertdata['class'])){
+                $findtid=Question_types::model()->find("class=:class",array('class' => $insertdata['class']));
+            }
+            if(!$findtid && isset($insertdata['type'])){
+                $findtid=Question_types::model()->find("legacy=:legacy",array('legacy' => $insertdata['type']));
+            }
+            if($findtid){
+                $insertdata['tid']=$findtid->tid;
+                $insertdata['type']=$findtid->legacy;// Actually can be used, but reworking this for Plugin
+            }else{
+                // Throw error ? Remove question with alert ? Fill a specific column with "needed plugin" ?
+                //continue; // Comment this actually break the survey if the tid are not found
+            }
+            // Unset uneeded $insertdata
+            //unset($insertdata['type']); //Maybe for Plugin, but can be leave actually
             unset($insertdata['class']);
-        }
-        if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',true);
-        $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
-        if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',false);
-        if (!isset($aQIDReplacements[$oldqid]))
-        {
-            $newqid=getLastInsertID('{{questions}}');
-            $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
-            $results['questions']++;
+            if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',true);
+            $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
+            if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',false);
+            if (!isset($aQIDReplacements[$oldqid]))
+            {
+                $newqid=getLastInsertID('{{questions}}');
+                $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
+                $results['questions']++;
+            }
         }
     }
 
     // Import subquestions --------------------------------------------------------------
     if (isset($xml->subquestions))
     {
-
         foreach ($xml->subquestions->rows->row as $row)
         {
             $insertdata=array();
@@ -947,16 +950,30 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
             $insertdata['title']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['title']);
             $insertdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
             $insertdata['help']=translateLinks('survey', $iOldSID, $iNewSID, !empty($insertdata['help']) ? $insertdata['help'] : '');
-            if (isset($aQIDReplacements[$oldsqid])){
-                $insertdata['qid']=$aQIDReplacements[$oldsqid];
+            // Replace $insertdata['tid'] for Plugin system
+            // TODO replace by class from parent_qid
+            // Using priority: class,type
+            $findtid=false;
+            if (isset($insertdata['class'])){
+                $findtid=Question_types::model()->find("class=:class",array('class' => $insertdata['class']));
             }
-            if (isset($insertdata['type'])){
-                $insertdata['tid'] = Question_types::model()->findByAttributes(array('legacy' => $insertdata['type']))->getAttribute('tid');
-                //unset($insertdata['type']); //AJSL
-            } else {
-                $insertdata['tid'] = Question_types::model()->findByAttributes(array('class' => $insertdata['class']))->getAttribute('tid');
-                unset($insertdata['class']);
+            if(!$findtid && isset($insertdata['type'])){
+                $findtid=Question_types::model()->find("legacy=:legacy",array('legacy' => $insertdata['type']));
             }
+            if($findtid){
+                $insertdata['tid']=$findtid->tid;
+                $insertdata['type']=$findtid->legacy;// Actually can be used, but reworking this for Plugin
+            }else{
+                // Throw error ? Remove question with alert ? Fill a specific column with "needed plugin" ?
+                //continue; // Comment this actually break the survey if the tid are not found
+            }
+            $oParentQid=Questions::model()->find("qid=:qid",array('qid' => $insertdata['parent_qid']));
+            if($oParentQid){
+                $insertdata['tid']=0; // For actual system (20130207), subquestion don't have type ?
+            }
+            // Unset uneeded $insertdata
+            //unset($insertdata['type']); //Maybe for Plugin, but can be leave actually
+            unset($insertdata['class']);
             if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',true);
 
             $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
@@ -1805,13 +1822,25 @@ function XMLImportQuestion($sFullFilepath, $iNewSID, $newgid)
         {
             $insertdata['qid']=$aQIDReplacements[$oldqid];
         }
-        if (isset($insertdata['type'])){
-            $insertdata['tid'] = Question_types::model()->findByAttributes(array('legacy' => $insertdata['type']))->getAttribute('tid');
-            //unset($insertdata['type']); //AJSL
-        } else {
-            $insertdata['tid'] = Question_types::model()->findByAttributes(array('class' => $insertdata['class']))->getAttribute('tid');
-            unset($insertdata['class']);
+        // Replace $insertdata['tid'] for Plugin system
+        // Using priority: class,type
+        $findtid=false;
+        if (isset($insertdata['class'])){
+            $findtid=Question_types::model()->find("class=:class",array('class' => $insertdata['class']));
         }
+        if(!$findtid && isset($insertdata['type'])){
+            $findtid=Question_types::model()->find("legacy=:legacy",array('legacy' => $insertdata['type']));
+        }
+        if($findtid){
+            $insertdata['tid']=$findtid->tid;
+            $insertdata['type']=$findtid->legacy;// Actually can be used, but reworking this for Plugin
+        }else{
+            // Throw error ? Remove question with alert ? Fill a specific column with "needed plugin" ?
+            //continue; // Comment this actually break the survey if the tid are not found
+        }
+        // Unset uneeded $insertdata
+        //unset($insertdata['type']); //Maybe for Plugin, but can be leave actually
+        unset($insertdata['class']);
 
         $ques = new Questions;
         if ($insertdata)
@@ -1851,13 +1880,31 @@ function XMLImportQuestion($sFullFilepath, $iNewSID, $newgid)
             if (isset($aQIDReplacements[$oldsqid])){
                 $insertdata['qid']=$aQIDReplacements[$oldsqid];
             }
-            if (isset($insertdata['type'])){
-                $insertdata['tid'] = Question_types::model()->findByAttributes(array('legacy' => $insertdata['type']))->getAttribute('tid');
-                //unset($insertdata['type']); //AJSL
-            } else {
-                $insertdata['tid'] = Question_types::model()->findByAttributes(array('class' => $insertdata['class']))->getAttribute('tid');
-                unset($insertdata['class']);
+            // Replace $insertdata['tid'] for Plugin system
+            // TODO replace by class from parent_qid
+            // Using priority: class,type
+            $findtid=false;
+            if (isset($insertdata['class'])){
+                $findtid=Question_types::model()->find("class=:class",array('class' => $insertdata['class']));
             }
+            if(!$findtid && isset($insertdata['type'])){
+                $findtid=Question_types::model()->find("legacy=:legacy",array('legacy' => $insertdata['type']));
+            }
+            if($findtid){
+                $insertdata['tid']=$findtid->tid;
+                $insertdata['type']=$findtid->legacy;// Actually can be used, but reworking this for Plugin
+            }else{
+                // Throw error ? Remove question with alert ? Fill a specific column with "needed plugin" ?
+                //continue; // Comment this actually break the survey if the tid are not found
+            }
+            $oParentQid=Questions::model()->find("qid=:qid",array('qid' => $insertdata['parent_qid']));
+            if($oParentQid){
+                $insertdata['tid']=0; // For actual system (20130207), subquestion don't have type ?
+            }
+            // Unset uneeded $insertdata
+            //unset($insertdata['type']); //Maybe for Plugin, but can be leave actually
+            unset($insertdata['class']);
+
             if ($insertdata)
                 XSSFilterArray($insertdata);
             $ques = new Questions;
@@ -3628,7 +3675,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // then for subquestions (because we need to determine the new qids for the main questions first)
     if(isset($xml->questions))  // there could be surveys without a any questions
     {
-
         foreach ($xml->questions->rows->row as $row)
         {
             $insertdata=array();
@@ -3655,13 +3701,26 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 switchMSSQLIdentityInsert('questions',true);
 
             }
-            if (isset($insertdata['type'])){
-                $insertdata['tid'] = Question_types::model()->findByAttributes(array('legacy' => $insertdata['type']))->getAttribute('tid');
-                //unset($insertdata['type']); //AJSL
-            } else {
-                $insertdata['tid'] = Question_types::model()->findByAttributes(array('class' => $insertdata['class']))->getAttribute('tid');
-                unset($insertdata['class']);
+            // Replace $insertdata['tid'] for Plugin system
+            // Using priority: class,type
+            $findtid=false;
+            if (isset($insertdata['class'])){
+                $findtid=Question_types::model()->find("class=:class",array('class' => $insertdata['class']));
             }
+            if(!$findtid && isset($insertdata['type'])){
+                $findtid=Question_types::model()->find("legacy=:legacy",array('legacy' => $insertdata['type']));
+            }
+            if($findtid){
+                $insertdata['tid']=$findtid->tid;
+                $insertdata['type']=$findtid->legacy;// Actually can be used, but reworking this for Plugin
+            }else{
+                // Throw error ? Remove question with alert ? Fill a specific column with "needed plugin" ?
+                //continue; // Comment this actually break the survey if the tid are not found
+            }
+            // Unset uneeded $insertdata
+            //unset($insertdata['type']); //Maybe for Plugin, but can be leave actually
+            unset($insertdata['class']);
+
             if ($insertdata)
                 XSSFilterArray($insertdata);
             $newqid = Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [4]<br />");
@@ -3708,13 +3767,30 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['qid']=$aQIDReplacements[$oldsqid];
                 switchMSSQLIdentityInsert('questions',true);
             }
-            if (isset($insertdata['type'])){
-                $insertdata['tid'] = Question_types::model()->findByAttributes(array('legacy' => $insertdata['type']))->getAttribute('tid');
-                //unset($insertdata['type']); //AJSL
-            } else {
-                $insertdata['tid'] = Question_types::model()->findByAttributes(array('class' => $insertdata['class']))->getAttribute('tid');
-                unset($insertdata['class']);
+            // Replace $insertdata['tid'] for Plugin system
+            // TODO replace by class from parent_qid
+            // Using priority: class,type
+            $findtid=false;
+            if (isset($insertdata['class'])){
+                $findtid=Question_types::model()->find("class=:class",array('class' => $insertdata['class']));
             }
+            if(!$findtid && isset($insertdata['type'])){
+                $findtid=Question_types::model()->find("legacy=:legacy",array('legacy' => $insertdata['type']));
+            }
+            if($findtid){
+                $insertdata['tid']=$findtid->tid;
+                $insertdata['type']=$findtid->legacy;// Actually can be used, but reworking this for Plugin
+            }else{
+                // Throw error ? Remove question with alert ? Fill a specific column with "needed plugin" ?
+                //continue; // Comment this actually break the survey if the tid are not found
+            }
+            $oParentQid=Questions::model()->find("qid=:qid",array('qid' => $insertdata['parent_qid']));
+            if($oParentQid){
+                $insertdata['tid']=0; // For actual system (20130207), subquestion don't have type ?
+            }
+            // Unset uneeded $insertdata
+            //unset($insertdata['type']); //Maybe for Plugin, but can be leave actually
+            unset($insertdata['class']);
             if ($insertdata)
                 XSSFilterArray($insertdata);
             $newsqid =Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [5]<br />");

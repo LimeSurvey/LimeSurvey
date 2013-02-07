@@ -431,7 +431,7 @@ class CheckQuestion extends QuestionModule
             );
         }
 
-        return array("cfieldname"=>$rows['cfieldname'].$rows['value'],
+        return array("cfieldname"=>$row['cfieldname'].$row['value'],
         "value"=>$row['value'],
         "matchfield"=>$row['cfieldname'],
         "matchvalue"=>"Y",
