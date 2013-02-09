@@ -185,6 +185,7 @@ class ExpressionManager {
 'is_null' => array('is_null', 'LEMis_null', $this->gT('Finds whether a variable is NULL'), 'bool is_null(var)', 'http://www.php.net/manual/en/function.is-null.php', 1),
 'is_numeric' => array('is_numeric', 'LEMis_numeric', $this->gT('Finds whether a variable is a number or a numeric string'), 'bool is_numeric(var)', 'http://www.php.net/manual/en/function.is-numeric.php', 1),
 'is_string' => array('is_string', 'LEMis_string', $this->gT('Find whether the type of a variable is string'), 'bool is_string(var)', 'http://www.php.net/manual/en/function.is-string.php', 1),
+'join' => array('exprmgr_join', 'LEMjoin', $this->gT('Join strings, return joined string.This function is an alias of implode("",argN)'), 'string join(arg1,arg2,...,argN)', '', -1),
 'list' => array('exprmgr_list', 'LEMlist', $this->gT('Return comma-separated list of values'), 'string list(arg1, arg2, ... argN)', '', -2),
 'log' => array('log', 'Math.log', $this->gT('Natural logarithm'), 'number log(number)', 'http://www.php.net/manual/en/function.log.php', 1),
 'ltrim' => array('ltrim', 'ltrim', $this->gT('Strip whitespace (or other characters) from the beginning of a string'), 'string ltrim(string [, charlist])', 'http://www.php.net/manual/en/function.ltrim.php', 1,2),
@@ -2726,6 +2727,8 @@ there~if((one > two),'hi','there')
 64~if((one < two),pow(2,6),pow(6,2))
 H e l l o~implode(' ','H','e','l','l','o')
 1|2|3|4|5~implode('|',one,two,three,four,five)
+123~join(1,2,3)
+123 5~join(one,2,three," ",five)
 4~intval('4')
 4~intval('100',2)
 5~intval(5.7)
@@ -3376,6 +3379,16 @@ function exprmgr_list($args)
         }
     }
     return $result;
+}
+
+/**
+ * Join together $args[N]
+ * @param <type> $args
+ * @return <type>
+ */
+function exprmgr_join($args)
+{
+    return implode("",$args);
 }
 
 /**
