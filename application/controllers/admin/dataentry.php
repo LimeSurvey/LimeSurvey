@@ -791,8 +791,8 @@ class dataentry extends Survey_Common_Action
             $updateqr .= " WHERE id=$id";
             $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
 
-            $onerecord_link = $this->getController()->createUrl('/').'/admin/responses/view/surveyid/'.$surveyid.'/id/'.$id;
-            $allrecords_link = $this->getController()->createUrl('/').'/admin/responses/index/surveyid/'.$surveyid;
+            $onerecord_link = $this->getController()->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$id);
+            $allrecords_link = $this->getController()->createUrl('/admin/responses/sa/index/surveyid/'.$surveyid);
             $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>\n"
             .$clang->gT("Record has been updated.")."<br /><br />\n"
             ."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
@@ -822,7 +822,7 @@ class dataentry extends Survey_Common_Action
         'clang' => $clang
         );
 
-        if (hasSurveyPermission($surveyid, 'responses','read'))
+        if (hasSurveyPermission($surveyid, 'responses','create'))
         {
             if ($subaction == "insert" && hasSurveyPermission($surveyid,'responses','create'))
             {
@@ -1152,7 +1152,7 @@ class dataentry extends Survey_Common_Action
         if(isset($lang)) $lang=sanitize_languagecode($lang);
         $aViewUrls = array();
 
-        if (hasSurveyPermission($surveyid, 'responses', 'read'))
+        if (hasSurveyPermission($surveyid, 'responses', 'create'))
         {
             $clang = Yii::app()->lang;
 
@@ -1390,7 +1390,7 @@ class dataentry extends Survey_Common_Action
         // Make this safe for DB (*after* we undo first excel's
         // and then our escaping).
         $fieldvalues = array_map( 'dbQuoteAll', $fieldvalues );
-        $fieldvalues = str_replace( dbQuoteAll('{question_not_shown}'), 'NULL', $fieldvalues );
+        $fieldvalues = str_replace( dbQuoteAll('{question_not_shown}'), null, $fieldvalues );
 
         return $fieldvalues;
     }

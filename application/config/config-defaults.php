@@ -316,7 +316,10 @@ $config['auth_webserver_autocreate_profile'] = Array(
     'superadmin' => 0,
     'configurator' => 0,
     'manage_template' => 0,
-    'manage_label' => 0
+    'manage_label' => 0,
+    'manage_survey' => 0,
+    'manage_model' => 0,
+    'copy_model' => 0
 );
 
 /**
@@ -354,6 +357,14 @@ function hook_get_auth_webserver_profile($user_name)
 * allow these users to be able to use Javascript etc. .
 */
 $config['filterxsshtml'] = true;
+
+ /**
+ * allusercopymodel (boolean)
+ * If this option is set to true, then limesurvey operators can
+ * use/copy all survey model
+ * Otherwise they can use only model where this setting is set
+ */
+ $config['allusercopymodel'] = false;
 
 /**
 * usercontrolSameGroupPolicy (boolean)
@@ -440,6 +451,12 @@ $config['standard_templates_readonly'] =  true;
 * It can be used as a data analysis code book for querying data from the main response table.
 */
 $config['showsgqacode'] =  false;
+
+/**
+* When this settings is true/1 (default = false/0) then the printable survey option will show 
+* the raw relevance equation below the general fill-out instructions in case the question has conditions.
+*/
+$config['showrelevance'] =  false;
 
 /**
 *  PDF Export Settings

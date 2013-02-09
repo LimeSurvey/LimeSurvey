@@ -911,3 +911,6 @@ td.LEMerror  {
 	border: 2px solid #FF00FF;
 	color: red;
 }
+.popuptip {
+    display:none;
+}

@@ -81,13 +81,13 @@
         <input type='submit' value='<?php $clang->eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid); ?>', '_top')" />
         <br /><br />
 
-        <?php if(isset($thisid)): ?>
+        <?php if(isset($thisid) && hasSurveyPermission($surveyid, 'responses','read')): ?>
 			<input type='submit' value='<?php $clang->eT("View this record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/responses/sa/action/surveyid/'.$surveyid.'/id/'.$thisid); ?>', '_top')" />
 			<br /><br />
         <?php endif; ?>
 
         <?php if(isset($save)): ?>
-        	<input type='submit' value='<?php $clang->eT("Browse saved responses"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/saved/view/surveyid/'.$surveyid.'/all'); ?>', '_top')" />
+        	<input type='submit' value='<?php $clang->eT("Browse saved responses"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/saved/sa/view/surveyid/'.$surveyid.'/all'); ?>', '_top')" />
         	<br /><br />
 		<?php endif; ?>
 	</div>

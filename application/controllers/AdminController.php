@@ -237,7 +237,7 @@ class AdminController extends LSYii_Controller
             $userrights[$right]=($oUser->$right || $oUser->superadmin);
         }
         $userrights['initialsuperadmin']=(!$oUser->parent_id);
-        // initialsuperadminare a superadmin
+        // initialsuperadmin are a superadmin
         // initialsuperadmin can have less right than superadmin in session only: like old situation
         $userrights['superadmin']=($userrights['superadmin'] || $userrights['initialsuperadmin']);
         foreach($userrights as $right=>$value)

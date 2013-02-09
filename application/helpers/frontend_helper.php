@@ -872,38 +872,51 @@ function remove_nulls_from_array($array)
 * @param mixed $quotaexit
 */
 function submittokens($quotaexit = false) {
-    global $thissurvey;
-    global $surveyid;
-    global $clienttoken;
-
+    $surveyid=Yii::app()->getConfig('surveyID');
+    if(isset($_SESSION['survey_'.$surveyid]['s_lang']))
+    {
+        $thissurvey=getSurveyInfo($surveyid,$_SESSION['survey_'.$surveyid]['s_lang']);
+    }
+    else
+    {
+        $thissurvey=getSurveyInfo($surveyid);
+    }
+    if(isset($_SESSION['survey_'.$surveyid]['thistoken']['token']))
+    {
+        $clienttoken=$_SESSION['survey_'.$surveyid]['thistoken']['token'];
+    } else {
+        return;
+    }
     $clang        = Yii::app()->lang;
     $sitename     = Yii::app()->getConfig("sitename");
     $emailcharset = Yii::app()->getConfig("emailcharset");
     // Shift the date due to global timeadjust setting
     $today        = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
-    // check how many uses the token has left
-    $usesrow = Tokens_dynamic::model($surveyid)->findByAttributes(array('token' => $clienttoken));
-    if (!is_null($usesrow)) {
-            $usesleft = $usesrow->usesleft;
-            $participant_id = isset($usesrow->participant_id) ? $usesrow->participant_id : '';
+    $oTokenInformation = Tokens_dynamic::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+    // Fill some var for easy access
+    if ($oTokenInformation) {
+            $usesleft = $oTokenInformation->usesleft;
+            $participant_id = isset($oTokenInformation->participant_id) ? $oTokenInformation->participant_id : '';
+    } else {
+        return;
     }
 
     if ($quotaexit==true)
     {
-        $usesrow->completed = 'Q';
-        $usesrow->usesleft = $usesrow->usesleft-1;
+        $oTokenInformation->completed = 'Q';
+        $oTokenInformation->usesleft = $oTokenInformation->usesleft-1;
     }
     else
-    {        
-        if (isset($usesleft) && $usesleft<=1)
+    {
+        if ($usesleft<=1)
         {
             // Finish the token
             if (isTokenCompletedDatestamped($thissurvey))
             {
-                $usesrow->completed = $today;
+                $oTokenInformation->completed = $today;
             } else {
-                $usesrow->completed = 'Y';
+                $oTokenInformation->completed = 'Y';
             }
             if(!empty($participant_id))
             {
@@ -913,56 +926,54 @@ function submittokens($quotaexit = false) {
                 {
                     $slquery->date_completed = $today;
                 } else {
-                    // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
-                    $slquery->date_completed = $slquery->date_created;    
-                }                    
-                $slquery->save();
-            }
+                        // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
+                        $slquery->date_completed = $slquery->date_created;
+                    }
+                    $slquery->save();
+                }
         }
-        $usesrow->usesleft = $usesrow->usesleft-1;
+        $oTokenInformation->usesleft = $oTokenInformation->usesleft-1;
     }
-    $usesrow->save();
+    $oTokenInformation->save();
 
     if ($quotaexit == false) {
-        // TLR change to put date into sent and completed
-        $cnfquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token='" . $clienttoken . "' AND completed!='N' AND completed!=''";
+        if ($oTokenInformation && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y")
+        {
+            if($oTokenInformation->completed == "Y" || $oTokenInformation->completed == $today)
+            {
+                $from    = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
+                $to      = $oTokenInformation->email;
+                $subject = $thissurvey['email_confirm_subj'];
 
-        $cnfresult = dbExecuteAssoc($cnfquery);       //Checked
-        $cnfrow    = $cnfresult->read();
-        if (isset($cnfrow)) {
-            $from    = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-            $to      = $cnfrow['email'];
-            $subject = $thissurvey['email_confirm_subj'];
+                $aReplacementVars=array();
+                $aReplacementVars["ADMINNAME"]=$thissurvey['admin'];
+                $aReplacementVars["ADMINEMAIL"]=$thissurvey['adminemail'];
+                $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
+                //Fill with token info, because user can have his information with anonimity control
+                $aReplacementVars["FIRSTNAME"]=$oTokenInformation->firstname;
+                $aReplacementVars["LASTNAME"]=$oTokenInformation->lastname;
+                $aReplacementVars["TOKEN"]=$clienttoken;
+                $attrfieldnames=getAttributeFieldNames($surveyid);
+                foreach ($attrfieldnames as $attr_name)
+                {
+                    $aReplacementVars[strtoupper($attr_name)]=$oTokenInformation->$attr_name;
+                }
 
-            $fieldsarray["{ADMINNAME}"]         = $thissurvey['adminname'];
-            $fieldsarray["{ADMINEMAIL}"]        = $thissurvey['adminemail'];
-            $fieldsarray["{SURVEYNAME}"]        = $thissurvey['name'];
-            $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey['description'];
-            $fieldsarray["{FIRSTNAME}"]         = $cnfrow['firstname'];
-            $fieldsarray["{LASTNAME}"]          = $cnfrow['lastname'];
-            $fieldsarray["{TOKEN}"]             = $clienttoken;
-            $attrfieldnames                     = getAttributeFieldNames($surveyid);
-            foreach ($attrfieldnames as $attr_name) {
-                $fieldsarray["{" . strtoupper($attr_name) . "}"] = $cnfrow[$attr_name];
-            }
+                $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+                $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
+                $redata=array('thissurvey'=>$thissurvey);
+                $subject=templatereplace($subject,$aReplacementVars,$redata);
 
-            $dateformatdatat         = getDateFormatData($thissurvey['surveyls_dateformat']);
-            $numberformatdatat       = getRadixPointData($thissurvey['surveyls_numberformat']);
-            $fieldsarray["{EXPIRY}"] = convertDateTimeFormat($thissurvey["expiry"], 'Y-m-d H:i:s', $dateformatdatat['phpdate']);
+                $subject = html_entity_decode($subject, ENT_QUOTES, $emailcharset);
 
-            $subject = ReplaceFields($subject, $fieldsarray, true);
+                if (getEmailFormat($surveyid) == 'html') {
+                    $ishtml = true;
+                } else {
+                    $ishtml = false;
+                }
 
-            $subject = html_entity_decode($subject, ENT_QUOTES, $emailcharset);
-
-            if (getEmailFormat($surveyid) == 'html') {
-                $ishtml = true;
-            } else {
-                $ishtml = false;
-            }
-
-            if (trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
                 $message = $thissurvey['email_confirm'];
-                $message = ReplaceFields($message, $fieldsarray, true);
+                $message=templatereplace($message,$aReplacementVars,$redata);
 
                 if (!$ishtml) {
                     $message = strip_tags(breakToNewline(html_entity_decode($message, ENT_QUOTES, $emailcharset)));
@@ -971,7 +982,7 @@ function submittokens($quotaexit = false) {
                 }
 
                 //Only send confirmation email if there is a valid email address
-                if (validateEmailAddress($cnfrow['email'])) {
+                if (validateEmailAddress($to)) {
                     $aAttachments = unserialize($thissurvey['attachments']);
         
                     $aRelevantAttachments = array();
@@ -993,8 +1004,8 @@ function submittokens($quotaexit = false) {
                     SendEmailMessage($message, $subject, $to, $from, $sitename, $ishtml, null, $aRelevantAttachments);
                 }
             } else {
-                //There is nothing in the message or "Send confirmation emails" is set to "No" , so don't send a confirmation email
-                //This section only here as placeholder to indicate new feature :-)
+                // Leave it to send optional confirmation at closed token
+                // An idea for Plugin
             }
         }
     }
