@@ -884,12 +884,12 @@ class SurveyAdmin extends Survey_Common_Action
     public function copy()
     {
         $importsurvey = "";
-        $action = $_POST['action'];
-        @$iSurveyID = $_POST['sid'];
+        $action = Yii::app()->request->getParam('action');
+        $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
 
         if ($action == "importsurvey" || $action == "copysurvey")
         {
-            if (Yii::app()->request->getPost('copysurveytranslinksfields') == "on" || Yii::app()->request->getPost('translinksfields') == "on")
+            if (Yii::app()->request->getParam('copysurveytranslinksfields') == "on" || Yii::app()->request->getParam('translinksfields') == "on")
             {
                 $sTransLinks = true;
             }
@@ -941,7 +941,8 @@ class SurveyAdmin extends Survey_Common_Action
             }
             elseif ($action == 'copysurvey')
             {
-                $iSurveyID = sanitize_int($_POST['copysurveylist']);
+                $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
+                $thissurvey=getSurveyInfo($iSurveyID);
                 $exclude = array();
 
                 if (get_magic_quotes_gpc())
@@ -975,9 +976,23 @@ class SurveyAdmin extends Survey_Common_Action
                     $aData['sErrorMessage'] = $clang->gT("No survey ID has been provided. Cannot copy survey");
                     $aData['bFailed'] = true;
                 }
-
-                Yii::app()->loadHelper('export');
-                $copysurveydata = surveyGetXMLData($iSurveyID, $exclude);
+                elseif(!$thissurvey)
+                {
+                    $aData['sErrorMessage'] = $clang->gT("Invalid survey ID");
+                    $aData['bFailed'] = true;
+                }
+                elseif (!hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !hasSurveyPermission($iSurveyID, 'surveycontent', 'read')
+                        && !($thissurvey['type']=="M" && (User::GetUserRights("copy_model") || Yii::app()->getConfig('allusercopymodel')) )
+                        )
+                {
+                    $aData['sErrorMessage'] = $clang->gT("You don't have sufficient permissions.");
+                    $aData['bFailed'] = true;
+                }
+                else
+                {
+                    Yii::app()->loadHelper('export');
+                    $copysurveydata = surveyGetXMLData($iSurveyID, $exclude);
+                }
             }
 
             // Now, we have the survey : start importing
@@ -988,7 +1003,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aImportResults=importSurveyFile($sFullFilepath,(isset($_POST['translinksfields'])));
                 if (is_null($aImportResults)) $importerror = true;
             }
-            elseif ($action == 'copysurvey' && (empty($importerror) || !$importerror))
+            elseif ($action == 'copysurvey' && !$aData['bFailed'])
             {
                 $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName);
                 if (isset($exclude['conditions']))
