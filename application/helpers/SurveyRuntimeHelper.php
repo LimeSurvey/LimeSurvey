@@ -85,7 +85,7 @@ class SurveyRuntimeHelper {
 
         if ($previewgrp || $previewquestion)
         {
-            $_SESSION[$LEMsessid]['prevstep'] = 1;
+            $_SESSION[$LEMsessid]['prevstep'] = 2;
             $_SESSION[$LEMsessid]['maxstep'] = 0;
         }
         else
