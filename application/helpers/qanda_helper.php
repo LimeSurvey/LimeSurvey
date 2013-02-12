@@ -1177,7 +1177,7 @@ function do_date($ia)
                     */
                     if (trim($aQuestionAttributes['dropdown_dates_year_min'])!='')
                     {
-                        $yearmin = $aQuestionAttributes['dropdown_dates_year_min'];
+                        $yearmin = (int)LimeExpressionManager::ProcessString($aQuestionAttributes['dropdown_dates_year_min']);
                     }
                     else
                     {
@@ -1186,7 +1186,7 @@ function do_date($ia)
 
                     if (trim($aQuestionAttributes['dropdown_dates_year_max'])!='')
                     {
-                        $yearmax = $aQuestionAttributes['dropdown_dates_year_max'];
+                        $yearmax = (int)LimeExpressionManager::ProcessString($aQuestionAttributes['dropdown_dates_year_max']);
                     }
                     else
                     {
