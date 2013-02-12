@@ -4419,23 +4419,6 @@
         {
             //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
             $updatedValues = $this->updatedValues;
-
-            if (!$this->surveyOptions['deletenonvalues'])
-            {
-                $nonNullValues = array();
-                foreach($updatedValues as $key=>$value)
-                {
-                    if (!is_null($value))
-                    {
-                        if (isset($value['value']) && !is_null($value['value']))
-                        {
-                            $nonNullValues[$key] = $value;
-                        }
-                    }
-                }
-                $updatedValues = $nonNullValues;
-            }            
-            
             $message = '';
             $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
             if ($this->surveyOptions['active'] && !isset($_SESSION[$this->sessid]['srid']))
@@ -5185,7 +5168,7 @@
             ///////////////////////////
             // IS QUESTION RELEVANT? //
             ///////////////////////////
-            if (!isset($qInfo['relevance']) || $qInfo['relevance'] == '')
+            if (!isset($qInfo['relevance']) || $qInfo['relevance'] == '' )
             {
                 $relevanceEqn = 1;
             }
@@ -5760,7 +5743,7 @@
             // CREATE ARRAY OF VALUES THAT NEED TO BE SILENTLY UPDATED //
             /////////////////////////////////////////////////////////////
             $updatedValues=array();
-            if (!$qrel || !$grel)
+            if ((!$qrel || !$grel) && $LEM->surveyOptions['deletenonvalues'])
             {
                 // If not relevant, then always NULL it in the database
                 $sgqas = explode('|',$LEM->qid2code[$qid]);
@@ -5791,12 +5774,15 @@
                         $debug_qmessage .= '** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br />\n";
                     }
             }
-            foreach ($irrelevantSQs as $sq)
+            if ( $LEM->surveyOptions['deletenonvalues'] )
             {
-                // NULL irrelevant sub-questions
-                $_SESSION[$LEM->sessid][$sq] = NULL;
-                $updatedValues[$sq] = NULL;
-                $LEM->updatedValues[$sq]= NULL;
+                foreach ($irrelevantSQs as $sq)
+                {
+                    // NULL irrelevant sub-questions
+                    $_SESSION[$LEM->sessid][$sq] = NULL;
+                    $updatedValues[$sq] = NULL;
+                    $LEM->updatedValues[$sq]= NULL;
+                }
             }
 
             // Regardless of whether relevant or hidden, if there is a default value and $_SESSION[$LEM->sessid][$sgqa] is NULL, then use the default value in $_SESSION, but don't write to database
@@ -7502,7 +7488,7 @@ EOD;
                         }
                     }
                     $type = $qinfo['info']['type'];
-                    if ($relevant && $grelevant && $sqrelevant)
+                    if (($relevant && $grelevant && $sqrelevant) || !$LEM->surveyOptions['deletenonvalues'])
                     {
                         if ($qinfo['info']['hidden'] && !isset($_POST[$sq]))
                         {
