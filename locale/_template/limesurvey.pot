@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-02-12 23:05:55+00:00\n"
+"POT-Creation-Date: 2013-02-13 23:05:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -359,9 +359,9 @@ msgid "Survey name (ID):"
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:146
-#: application/controllers/admin/conditionsaction.php:1739
-#: application/controllers/admin/conditionsaction.php:2099
-#: application/controllers/admin/conditionsaction.php:2102
+#: application/controllers/admin/conditionsaction.php:1741
+#: application/controllers/admin/conditionsaction.php:2101
+#: application/controllers/admin/conditionsaction.php:2104
 #: application/controllers/admin/responses.php:666
 #: application/views/admin/export/statistics_view.php:1290
 #: application/views/admin/export/statistics_view.php:1293
@@ -804,7 +804,7 @@ msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:76
 #: application/controllers/admin/conditionsaction.php:92
-#: application/controllers/admin/conditionsaction.php:1917
+#: application/controllers/admin/conditionsaction.php:1919
 msgid "Regular expression"
 msgstr ""
 
@@ -839,7 +839,7 @@ msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:147
 #: application/controllers/admin/conditionsaction.php:695
-#: application/controllers/admin/conditionsaction.php:937
+#: application/controllers/admin/conditionsaction.php:939
 #: application/controllers/admin/dataentry.php:685
 #: application/controllers/admin/dataentry.php:1104
 #: application/controllers/admin/dataentry.php:1164
@@ -1063,7 +1063,7 @@ msgid "Uncertain"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:697
-#: application/controllers/admin/conditionsaction.php:938
+#: application/controllers/admin/conditionsaction.php:940
 #: application/controllers/admin/dataentry.php:684
 #: application/controllers/admin/dataentry.php:1107
 #: application/controllers/admin/dataentry.php:1170
@@ -1227,17 +1227,17 @@ msgid "Decrease"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:722
-#: application/controllers/admin/conditionsaction.php:848
-#: application/controllers/admin/conditionsaction.php:849
-#: application/controllers/admin/conditionsaction.php:869
-#: application/controllers/admin/conditionsaction.php:898
-#: application/controllers/admin/conditionsaction.php:942
-#: application/controllers/admin/conditionsaction.php:951
-#: application/controllers/admin/conditionsaction.php:962
-#: application/controllers/admin/conditionsaction.php:971
-#: application/controllers/admin/conditionsaction.php:993
-#: application/controllers/admin/conditionsaction.php:1013
-#: application/controllers/admin/conditionsaction.php:1489
+#: application/controllers/admin/conditionsaction.php:850
+#: application/controllers/admin/conditionsaction.php:851
+#: application/controllers/admin/conditionsaction.php:871
+#: application/controllers/admin/conditionsaction.php:900
+#: application/controllers/admin/conditionsaction.php:944
+#: application/controllers/admin/conditionsaction.php:953
+#: application/controllers/admin/conditionsaction.php:964
+#: application/controllers/admin/conditionsaction.php:973
+#: application/controllers/admin/conditionsaction.php:995
+#: application/controllers/admin/conditionsaction.php:1015
+#: application/controllers/admin/conditionsaction.php:1491
 #: application/controllers/admin/dataentry.php:1232
 #: application/helpers/admin/statistics_helper.php:690
 #: application/helpers/admin/statistics_helper.php:739
@@ -1278,23 +1278,23 @@ msgstr ""
 msgid "No answer"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:905
+#: application/controllers/admin/conditionsaction.php:907
 msgid "Group of checkboxes"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:920
+#: application/controllers/admin/conditionsaction.php:922
 msgid "Single checkbox"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:923
+#: application/controllers/admin/conditionsaction.php:925
 msgid "checked"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:924
+#: application/controllers/admin/conditionsaction.php:926
 msgid "not checked"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:946
+#: application/controllers/admin/conditionsaction.php:948
 #: application/controllers/admin/dataentry.php:750
 #: application/controllers/admin/printablesurvey.php:405
 #: application/controllers/admin/printablesurvey.php:708
@@ -1310,7 +1310,7 @@ msgstr ""
 msgid "Female"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:947
+#: application/controllers/admin/conditionsaction.php:949
 #: application/controllers/admin/dataentry.php:751
 #: application/controllers/admin/printablesurvey.php:404
 #: application/controllers/admin/printablesurvey.php:709
@@ -1326,7 +1326,7 @@ msgstr ""
 msgid "Male"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1007
+#: application/controllers/admin/conditionsaction.php:1009
 #: application/controllers/admin/dataentry.php:837
 #: application/controllers/admin/printablesurvey.php:467
 #: application/helpers/admin/statistics_helper.php:663
@@ -1365,141 +1365,141 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1024
+#: application/controllers/admin/conditionsaction.php:1026
 msgid "Before"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1045
+#: application/controllers/admin/conditionsaction.php:1047
 #: application/views/installer/precheck_view.php:56
 #: application/views/installer/precheck_view.php:109
 msgid "Current"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1062
+#: application/controllers/admin/conditionsaction.php:1064
 #: application/views/admin/survey/Question/editQuestion_view.php:216
 msgid "After"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1176
+#: application/controllers/admin/conditionsaction.php:1178
 msgid "Only show question %s IF"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1203
+#: application/controllers/admin/conditionsaction.php:1205
 #: application/views/admin/participants/attributeControl_view.php:21
 #: application/views/admin/participants/displayParticipants_view.php:86
 msgid "OR"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1222
+#: application/controllers/admin/conditionsaction.php:1224
 msgid "Delete this scenario"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1226
+#: application/controllers/admin/conditionsaction.php:1228
 msgid "Are you sure you want to delete all conditions set in this scenario?"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1229
+#: application/controllers/admin/conditionsaction.php:1231
 msgid "Edit scenario"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1355
+#: application/controllers/admin/conditionsaction.php:1357
 #: application/controllers/admin/printablesurvey.php:297
 #: application/views/admin/survey/copySurvey_view.php:47
 #: application/views/admin/survey/importSurvey_view.php:61
 msgid "and"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1362
+#: application/controllers/admin/conditionsaction.php:1364
 #: application/controllers/admin/printablesurvey.php:281
 #: application/controllers/admin/printablesurvey.php:577
 #: application/helpers/SurveyRuntimeHelper.php:483
 msgid "or"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1389
-#: application/controllers/admin/conditionsaction.php:1462
+#: application/controllers/admin/conditionsaction.php:1391
+#: application/controllers/admin/conditionsaction.php:1464
 msgid "From token table"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1393
-#: application/controllers/admin/conditionsaction.php:1466
+#: application/controllers/admin/conditionsaction.php:1395
+#: application/controllers/admin/conditionsaction.php:1468
 msgid "Inexistant token table"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1451
+#: application/controllers/admin/conditionsaction.php:1453
 #: application/views/installer/precheck_view.php:15
 msgid "Not found"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1585
+#: application/controllers/admin/conditionsaction.php:1587
 msgid "This question is always shown."
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1599
-#: application/controllers/admin/conditionsaction.php:1644
+#: application/controllers/admin/conditionsaction.php:1601
+#: application/controllers/admin/conditionsaction.php:1646
 #: application/views/admin/conditions/conditionshead_view.php:17
 msgid "Copy conditions"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1616
+#: application/controllers/admin/conditionsaction.php:1618
 msgid "No questions selected"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1616
+#: application/controllers/admin/conditionsaction.php:1618
 msgid "Check all"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1616
+#: application/controllers/admin/conditionsaction.php:1618
 msgid "Uncheck all"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1616
+#: application/controllers/admin/conditionsaction.php:1618
 msgid "selected"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1619
+#: application/controllers/admin/conditionsaction.php:1621
 msgid "Copy the selected conditions to"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1668
+#: application/controllers/admin/conditionsaction.php:1670
 msgid "There are no existing conditions in this survey."
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1704
+#: application/controllers/admin/conditionsaction.php:1706
 msgid "Edit condition"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1708
-#: application/controllers/admin/conditionsaction.php:1934
+#: application/controllers/admin/conditionsaction.php:1710
+#: application/controllers/admin/conditionsaction.php:1936
 msgid "Add condition"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1719
+#: application/controllers/admin/conditionsaction.php:1721
 msgid "Add scenario"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1720
+#: application/controllers/admin/conditionsaction.php:1722
 msgid "Default scenario"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1731
+#: application/controllers/admin/conditionsaction.php:1733
 msgid "Scenario"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1743
+#: application/controllers/admin/conditionsaction.php:1745
 msgid "Previous questions"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1744
-#: application/controllers/admin/conditionsaction.php:1867
+#: application/controllers/admin/conditionsaction.php:1746
+#: application/controllers/admin/conditionsaction.php:1869
 msgid "Token fields"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1801
+#: application/controllers/admin/conditionsaction.php:1803
 msgid "Comparison operator"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1816
+#: application/controllers/admin/conditionsaction.php:1818
 #: application/helpers/admin/statistics_helper.php:689
 #: application/helpers/admin/statistics_helper.php:738
 #: application/helpers/admin/statistics_helper.php:1861
@@ -1527,15 +1527,15 @@ msgstr ""
 msgid "Answer"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1864
+#: application/controllers/admin/conditionsaction.php:1866
 msgid "Predefined"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1865
+#: application/controllers/admin/conditionsaction.php:1867
 msgid "Constant"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1866
+#: application/controllers/admin/conditionsaction.php:1868
 #: application/controllers/admin/translate.php:539
 #: application/views/admin/conditions/conditionshead_view.php:21
 #: application/views/admin/quotas/viewquotasrow_view.php:47
@@ -1546,31 +1546,31 @@ msgstr ""
 msgid "Questions"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1868
+#: application/controllers/admin/conditionsaction.php:1870
 msgid "RegExp"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1875
+#: application/controllers/admin/conditionsaction.php:1877
 msgid "Predefined answer options for this question"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1881
+#: application/controllers/admin/conditionsaction.php:1883
 msgid "Constant value"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1899
+#: application/controllers/admin/conditionsaction.php:1901
 msgid "Answers from previous questions"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1911
+#: application/controllers/admin/conditionsaction.php:1913
 msgid "Attributes values from the participant's token"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1928
+#: application/controllers/admin/conditionsaction.php:1930
 msgid "Update condition"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1944
+#: application/controllers/admin/conditionsaction.php:1946
 #: application/views/admin/export/statistics_view.php:140
 #: application/views/admin/export/statistics_view.php:1244
 msgid "Clear"
