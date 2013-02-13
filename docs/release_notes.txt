@@ -61,6 +61,35 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.00+ (build 130206) to 2.00+ (build 130213) Feb 13, 2013
+-Fixed issue #7100: Short Free Text is limited to 20 characters (but DB is 255 varchar). Changed maximum length for short free text to match database variable length (65534 chars). (seanrife)
+-Fixed issue #7212: Config parameter deletenonvalues not working (Carsten Schmitz)
+-Fixed issue #7266: Unable to preview an inactive survey group with multiple numeric slider (Carsten Schmitz)
+-Fixed issue #7268: Expressions are not evaluated  for minimum/maximum year in date field  dropdown-variant (Carsten Schmitz)
+-Fixed issue #7269: Error when trying to edit an existing response (Carsten Schmitz)
+-Fixed issue #7270: Attached files won't download in response detail view (Carsten Schmitz)
+-Fixed issue #7271: Template Permission Page Won't Save Name Containing Dot (Denis Chenu)
+-Fixed issue #7274: Panel integration is not saving parameters (Carsten Schmitz)
+-Fixed issue #7275: "Check now" button doesn't work (Carsten Schmitz)
+-Fixed issue #7277: log(xx) seems to return an incorrect value (Denis Chenu)
+-Fixed issue #7278: Completing survey from pre-existing token fails on final submit (Carsten Schmitz)
+-Fixed issue #7290: Unable to mass delete tokens (Carsten Schmitz)
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Czech by slansky
+#Updated translation: Danish by robin_sharp
+#Updated translation: Estonian by klaster
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by anikoken
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup
+#Updated translation: Serbian by MilaVeljovic
+
+
 Changes from 2.00+ (build 130129) to 2.00+ (build 130206) Feb 6, 2013
 -New feature: Added new setting 'showrelevance' to config file -  When this settings is activated then the printable survey option will show the raw relevance equation below the general fill-out instructions in case the question has conditions (Carsten Schmitz)
 -New feature: New advanced question attribute to set a fill-out help text for the printable view (Carsten Schmitz)
