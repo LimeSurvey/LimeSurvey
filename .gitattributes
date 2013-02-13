@@ -7,6 +7,9 @@
 *.js text eol=lf
 *.pstpl text eol=lf
 *.html text eol=lf
+*.sql text eol=lf
+*.txt text eol=lf
+*.lss text eol=lf
 
 # Denote all files that are truly binary and should not be modified.
 *.jpg binary
