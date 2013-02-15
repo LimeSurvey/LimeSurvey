@@ -38,32 +38,32 @@ class surveypermission extends Survey_Common_Action {
             $userList=getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
             $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
             $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'surveysecurity.js');
-
+            $surveysecurity ="<div class='header ui-widget-header'>".$clang->gT("Survey permissions")."</div>\n";
             $result2 = Survey_permissions::model()->getUserDetails($surveyid);
-            $surveysecurity ="<div class='header ui-widget-header'>".$clang->gT("Survey permissions")."</div>\n"
-                . "<table class='surveysecurity'><thead>"
-                . "<tr>\n"
-                . "<th>".$clang->gT("Action")."</th>\n"
-                . "<th>".$clang->gT("Username")."</th>\n"
-                . "<th>".$clang->gT("User group")."</th>\n"
-                . "<th>".$clang->gT("Full name")."</th>\n";
-            foreach ($aBaseSurveyPermissions as $sPermission=>$aSubPermissions )
-            {
-                $surveysecurity.="<th><img src=\"{$imageurl}{$aSubPermissions['img']}_30.png\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
-            }
-            $surveysecurity .= "</tr></thead>\n";
-
-            // Foot first
-
-            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
-            {
-                $authorizedGroupsList = getUserGroupList(NULL,'simplegidarray');
-            }
-
-            $surveysecurity .= "<tbody>\n";
-            $row = 0;
             if(count($result2) > 0)
             {
+                    $surveysecurity = ""
+                    . "<table class='surveysecurity'><thead>"
+                    . "<tr>\n"
+                    . "<th>".$clang->gT("Action")."</th>\n"
+                    . "<th>".$clang->gT("Username")."</th>\n"
+                    . "<th>".$clang->gT("User group")."</th>\n"
+                    . "<th>".$clang->gT("Full name")."</th>\n";
+                foreach ($aBaseSurveyPermissions as $sPermission=>$aSubPermissions )
+                {
+                    $surveysecurity.="<th><img src=\"{$imageurl}{$aSubPermissions['img']}_30.png\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
+                }
+                $surveysecurity .= "</tr></thead>\n";
+
+                // Foot first
+
+                if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
+                {
+                    $authorizedGroupsList = getUserGroupList(NULL,'simplegidarray');
+                }
+
+                $surveysecurity .= "<tbody>\n";
+                $row = 0;
                 foreach ($result2 as $PermissionRow)
                 {
                     if(in_array($PermissionRow['uid'],$userList))
@@ -166,14 +166,13 @@ class surveypermission extends Survey_Common_Action {
                         $row++;
                     }
                 }
+                $surveysecurity .= "</tbody>\n"
+                . "</table>\n";
             }
-            if($row==0)
+            else
             {
-                $surveysecurity .= "<tr><td colspan='16'></td></tr>"; //fix error on empty table
+            
             }
-
-            $surveysecurity .= "</tbody>\n"
-            . "</table>\n";
             if(hasSurveyPermission($surveyid,'surveysecurity','create'))
             {
                 $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/adduser/surveyid/{$surveyid}"), 'post', array('class'=>"form44"))."<ul>\n"
