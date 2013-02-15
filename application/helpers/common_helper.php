@@ -5944,7 +5944,7 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 
         foreach ($fields_list as $fieldname)
             $criteria->mergeWith($fields_query[$fieldname]);
-
+        $criteria->mergeWith(array('condition'=>"submitdate IS NOT NULL"));
         $result = Survey_dynamic::model($iSurveyId)->count($criteria);
     }
 

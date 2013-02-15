@@ -2187,6 +2187,7 @@
                         $subqValidEqns = array();
                         foreach ($subqs as $sq) {
                             $sq_name = NULL;
+                            $subqValidSelector=NULL;
                             $sgqa = substr($sq['jsVarName'],4);
                             switch ($type)
                             {
@@ -2225,13 +2226,6 @@
                                         $subqValidEqn = '(is_empty('.$sq['varName'].'.NAOK) || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK))';
                                     }
                                     $subqValidSelector = $sq['jsVarName_on'];
-                                    break;
-                                case 'N': //NUMERICAL QUESTION TYPE
-                                case 'S': //SHORT FREE TEXT
-                                case 'T': //LONG FREE TEXT
-                                case 'U': //HUGE FREE TEXT
-                                    //                                $subqValidEqn = '(strlen('.$sq['varName'].'.NAOK)==0 || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK))';
-                                    //                                $subqValidSelector = 'question' . $questionNum . ' :input';
                                     break;
                                 default:
                                     break;

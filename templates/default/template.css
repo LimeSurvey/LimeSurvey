@@ -792,8 +792,8 @@ table.clearall-result td {
   margin: 0% 0% 0.5em 0.5em;
 }
 
-.outerframe.withindex div.missing td.questiontext {
-  background: red;
+.outerframe.withindex div.missing td.answer {
+  background: #FBFBEF;
 }
 
 /* END:  General list styles - - - -  - - -  - - - -
@@ -1475,7 +1475,7 @@ div.questionTitle {
 
 #index .container .row.odd { background: #EEF6FF; }
 #index .container .row.current { background: #1D2D45; color: #fff; }
-#index .container .row.missing { background: #CC0000; color: #fff; }
+#index .container .row.missing .hdr{ color: #990000; }
 #index .container input { margin: 1em; }
 
 /* Tips / Validation Messages */

@@ -274,11 +274,11 @@ class printablesurvey extends Survey_Common_Action
                     {
                         if( $s == 0 && count($scenarioresult) > 1)
                         {
-                            $sExplanation .= '<p class="scenario">'.self::_try_debug(__LINE__)." -------- Scenario {$scenariorow['scenario']} --------</p>\n\n";
+                            $sExplanation .= '<p class="scenario">'." -------- Scenario {$scenariorow['scenario']} --------</p>\n\n";
                         }
                         if($s > 0)
                         {
-                            $sExplanation .= '<p class="scenario">'.self::_try_debug(__LINE__).' -------- '.$clang->gT("or")." Scenario {$scenariorow['scenario']} --------</p>\n\n";
+                            $sExplanation .= '<p class="scenario">'.' -------- '.$clang->gT("or")." Scenario {$scenariorow['scenario']} --------</p>\n\n";
                         }
 
                         $x=0;
