@@ -2297,6 +2297,7 @@ function UpdateGroupList($surveyid, $language)
 /**
 * FieldArray contains all necessary information regarding the questions
 * This function is needed to update it in case the survey is switched to another language
+* @todo: Make 'fieldarray' obsolete by replacing with EM session info
 */
 function UpdateFieldArray()
 {
@@ -2313,9 +2314,11 @@ function UpdateFieldArray()
 
             $query = "SELECT title, question FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
             $usrow = Yii::app()->db->createCommand($query)->queryRow();
-            if (!$usrow) safeDie ("Couldn't get question <br />$query<br />");      //Checked
-            $questionarray[2]=$usrow['title'];
-            $questionarray[3]=$usrow['question'];
+            if ($usrow) 
+            {
+                $questionarray[2]=$usrow['title'];
+                $questionarray[3]=$usrow['question'];
+            }
             unset($questionarray);
         }
     }
