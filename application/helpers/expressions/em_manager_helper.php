@@ -6221,7 +6221,6 @@
                             $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
                             $relParts[] = "    }\n";
                         }
-                        $test=var_export ($arg,true);
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
                         if($arg['type']!='R') // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
                             $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
