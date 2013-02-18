@@ -3831,53 +3831,55 @@
             $sqpatt = implode('|',$sqpatts);
             $nosqpatt = implode('|',$nosqpatts);
             $vars = array();
-
-            foreach ($LEM->knownVars as $kv)
+            if(isset($LEM->knownVars))
             {
-                if ($type == 'self')
+                foreach ($LEM->knownVars as $kv)
                 {
-                    if (!isset($kv['qseq']) || $kv['qseq'] != $qseq || trim($kv['sgqa']) == '')
+                    if ($type == 'self')
                     {
-                        continue;
+                        if (!isset($kv['qseq']) || $kv['qseq'] != $qseq || trim($kv['sgqa']) == '')
+                        {
+                            continue;
+                        }
                     }
-                }
-                else
-                {
-                    if (!isset($kv['rootVarName']) || $kv['rootVarName'] != $qroot)
+                    else
                     {
-                        continue;
+                        if (!isset($kv['rootVarName']) || $kv['rootVarName'] != $qroot)
+                        {
+                            continue;
+                        }
                     }
-                }
-                if ($comments != '')
-                {
-                    if ($comments == 'Y' && !preg_match('/comment$/',$kv['sgqa']))
+                    if ($comments != '')
                     {
-                        continue;
+                        if ($comments == 'Y' && !preg_match('/comment$/',$kv['sgqa']))
+                        {
+                            continue;
+                        }
+                        if ($comments == 'N' && preg_match('/comment$/',$kv['sgqa']))
+                        {
+                            continue;
+                        }
                     }
-                    if ($comments == 'N' && preg_match('/comment$/',$kv['sgqa']))
-                    {
-                        continue;
-                    }
-                }
-                $sgq = $LEM->sid . 'X' . $kv['gid'] . 'X' . $kv['qid'];
-                $ext = substr($kv['sgqa'],strlen($sgq));
+                    $sgq = $LEM->sid . 'X' . $kv['gid'] . 'X' . $kv['qid'];
+                    $ext = substr($kv['sgqa'],strlen($sgq));
 
-                if ($sqpatt != '')
-                {
-                    if (!preg_match('/'.$sqpatt.'/',$ext))
+                    if ($sqpatt != '')
                     {
-                        continue;
+                        if (!preg_match('/'.$sqpatt.'/',$ext))
+                        {
+                            continue;
+                        }
                     }
-                }
-                if ($nosqpatt != '')
-                {
-                    if (preg_match('/'.$nosqpatt.'/',$ext))
+                    if ($nosqpatt != '')
                     {
-                        continue;
+                        if (preg_match('/'.$nosqpatt.'/',$ext))
+                        {
+                            continue;
+                        }
                     }
-                }
 
-                $vars[] = $kv['sgqa'] . $suffix;
+                    $vars[] = $kv['sgqa'] . $suffix;
+                }
             }
             if (count($vars) > 0)
             {
@@ -6219,8 +6221,10 @@
                             $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
                             $relParts[] = "    }\n";
                         }
+                        $test=var_export ($arg,true);
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
-                        $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
+                        if($arg['type']!='R') // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
+                            $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
                         $relParts[] = "  }\n  else {\n";
                         if ($sq['isExclusiveJS'] != '')
                         {
@@ -6258,7 +6262,8 @@
                             }
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
-                        $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
+                        if($arg['type']!='R') // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
+                            $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
                         switch ($sq['qtype'])
                         {
                             case 'L': //LIST drop-down/radio-button list
