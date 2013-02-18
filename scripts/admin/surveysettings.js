@@ -65,7 +65,7 @@ function PostParameterGrid()
 {
     rows= jQuery("#urlparams").jqGrid('getRowData');
     $('#allurlparams').val($.toJSON(rows));
-    if (($('#allowregister').val()=='Y' || $('#emailresponseto').val().trim()!='' || $('#emailnotificationto').val().trim()!='')&& $('#adminemail').val().trim()=='')
+    if (($('#allowregister').val()=='Y' || $.trim($('#emailresponseto').val())!='' || $.trim($('#emailnotificationto').val())!='')&& $.trim($('#adminemail').val())=='')
     {
         alert (sAdminEmailAddressNeeded);
         $("#tabs").tabs("select", 0); 
