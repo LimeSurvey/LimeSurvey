@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-02-18 23:05:53+00:00\n"
+"POT-Creation-Date: 2013-02-19 23:06:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1387,6 +1387,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:1205
 #: application/views/admin/participants/attributeControl_view.php:21
 #: application/views/admin/participants/displayParticipants_view.php:86
+#: application/views/admin/participants/sharePanel_view.php:26
 msgid "OR"
 msgstr ""
 
@@ -2835,6 +2836,7 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:69
 #: application/views/admin/participants/displayParticipants_view.php:171
 #: application/views/admin/participants/displayParticipants_view.php:192
+#: application/views/admin/participants/sharePanel_view.php:9
 #: application/views/admin/token/dummytokenform.php:17
 #: application/views/admin/token/tokenform.php:40
 #: application/views/admin/user/editusers.php:8
@@ -10123,6 +10125,7 @@ msgstr ""
 #: application/views/admin/participants/attributeControl_view.php:2
 #: application/views/admin/participants/attributeMapCSV_view.php:79
 #: application/views/admin/participants/displayParticipants_view.php:62
+#: application/views/admin/participants/sharePanel_view.php:17
 #: application/views/admin/survey/Question/editQuestion_view.php:247
 #: application/views/admin/survey/listSurveys_view.php:10
 #: application/views/admin/translate/translatetabs_view.php:9
@@ -10151,6 +10154,7 @@ msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:12
 #: application/views/admin/participants/displayParticipants_view.php:111
+#: application/views/admin/participants/sharePanel_view.php:19
 msgid "Refresh list"
 msgstr ""
 
@@ -10160,6 +10164,7 @@ msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:14
 #: application/views/admin/participants/displayParticipants_view.php:112
+#: application/views/admin/participants/sharePanel_view.php:20
 #: application/views/admin/survey/listSurveys_view.php:9
 #: application/views/admin/token/browse.php:40
 msgid "Page {0} of {1}"
@@ -10167,6 +10172,7 @@ msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:15
 #: application/views/admin/participants/displayParticipants_view.php:113
+#: application/views/admin/participants/sharePanel_view.php:21
 #: application/views/admin/survey/listSurveys_view.php:8
 #: application/views/admin/token/browse.php:39
 msgid "View {0} - {1} of {2}"
@@ -10177,6 +10183,7 @@ msgid "No attributes to view"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:17
+#: application/views/admin/participants/sharePanel_view.php:22
 msgid "Find"
 msgstr ""
 
@@ -10185,6 +10192,7 @@ msgstr ""
 #: application/views/admin/participants/attributeMapToken_view.php:81
 #: application/views/admin/participants/attributeMap_view.php:106
 #: application/views/admin/participants/displayParticipants_view.php:117
+#: application/views/admin/participants/sharePanel_view.php:23
 #: application/views/admin/survey/listSurveys_view.php:29
 #: application/views/admin/token/browse.php:48
 #: application/views/admin/usergroup/mailUserGroup_view.php:10
@@ -10192,11 +10200,13 @@ msgid "Reset"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:19
+#: application/views/admin/participants/sharePanel_view.php:24
 msgid "Search..."
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:20
 #: application/views/admin/participants/displayParticipants_view.php:85
+#: application/views/admin/participants/sharePanel_view.php:25
 msgid "AND"
 msgstr ""
 
@@ -10215,71 +10225,85 @@ msgid "Visible in participants panel"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:28
+#: application/views/admin/participants/sharePanel_view.php:27
 #: application/views/admin/survey/listSurveys_view.php:14
 msgid "equal"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:29
+#: application/views/admin/participants/sharePanel_view.php:28
 #: application/views/admin/survey/listSurveys_view.php:15
 msgid "not equal"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:30
+#: application/views/admin/participants/sharePanel_view.php:29
 #: application/views/admin/survey/listSurveys_view.php:16
 msgid "less"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:31
+#: application/views/admin/participants/sharePanel_view.php:30
 #: application/views/admin/survey/listSurveys_view.php:17
 msgid "less or equal"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:32
+#: application/views/admin/participants/sharePanel_view.php:31
 #: application/views/admin/survey/listSurveys_view.php:18
 msgid "greater"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:33
+#: application/views/admin/participants/sharePanel_view.php:32
 #: application/views/admin/survey/listSurveys_view.php:19
 msgid "greater or equal"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:34
+#: application/views/admin/participants/sharePanel_view.php:33
 #: application/views/admin/survey/listSurveys_view.php:20
 msgid "begins with"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:35
+#: application/views/admin/participants/sharePanel_view.php:34
 #: application/views/admin/survey/listSurveys_view.php:21
 msgid "does not begin with"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:36
+#: application/views/admin/participants/sharePanel_view.php:35
 #: application/views/admin/survey/listSurveys_view.php:22
 msgid "is in"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:37
+#: application/views/admin/participants/sharePanel_view.php:36
 #: application/views/admin/survey/listSurveys_view.php:23
 msgid "is not in"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:38
+#: application/views/admin/participants/sharePanel_view.php:37
 #: application/views/admin/survey/listSurveys_view.php:24
 msgid "ends with"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:39
+#: application/views/admin/participants/sharePanel_view.php:38
 #: application/views/admin/survey/listSurveys_view.php:25
 msgid "does not end with"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:40
+#: application/views/admin/participants/sharePanel_view.php:39
 #: application/views/admin/survey/listSurveys_view.php:26
 msgid "contains"
 msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:41
+#: application/views/admin/participants/sharePanel_view.php:40
 #: application/views/admin/survey/listSurveys_view.php:27
 msgid "does not contain"
 msgstr ""
@@ -10843,16 +10867,12 @@ msgstr ""
 
 #: application/views/admin/participants/participantsPanel_view.php:63
 #: application/views/admin/participants/participantsPanel_view.php:64
-#: application/views/admin/participants/sharePanel_view.php:18
+#: application/views/admin/participants/sharePanel_view.php:45
 msgid "Share panel"
 msgstr ""
 
 #: application/views/admin/participants/participantsPanel_view.php:105
 msgid "There are no participants to be exported"
-msgstr ""
-
-#: application/views/admin/participants/sharePanel_view.php:9
-msgid "E-Mail"
 msgstr ""
 
 #: application/views/admin/participants/sharePanel_view.php:10
@@ -10870,6 +10890,14 @@ msgstr ""
 
 #: application/views/admin/participants/sharePanel_view.php:14
 msgid "Can edit?"
+msgstr ""
+
+#: application/views/admin/participants/sharePanel_view.php:16
+msgid "Search shared participants"
+msgstr ""
+
+#: application/views/admin/participants/sharePanel_view.php:18
+msgid "Un-share selected participants"
 msgstr ""
 
 #: application/views/admin/participants/summary_view.php:2
