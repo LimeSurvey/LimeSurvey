@@ -61,6 +61,37 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.00+ (build 130213) to 2.00+ (build 130219) Feb 19, 2013
+-Fixed issue #7049: Webserver authentication not working when external access control is used (Carsten Schmitz)
+-Fixed issue #7264: Survey logic file: language problem (Carsten Schmitz)
+-Fixed issue #7273: Question wrongly marked as "missing" in red (Denis Chenu)
+-Fixed issue #7276: Question type date/time does not handle time correctly with popup calendar (Carsten Schmitz)
+-Fixed issue #7281: SQL error when entering condition screen for multiple choice questions and using MSSQL (Carsten Schmitz)
+-Fixed issue #7282: Public statistics layout uses quirks mode in browser (Carsten Schmitz)
+-Fixed issue #7286: Relevance Equation Problem with Ranking Question (Denis Chenu)
+-Fixed issue #7288: JavaScript Error in Survey Security Permissions (Denis Chenu)
+-Fixed issue #7296: Print version crashes in multi language surveys on MSSQL - thanks to user 'reslogic' (Carsten Schmitz)
+-Fixed issue #7298: Save your unfinished survey - Return to survey hyperlink doesn't work. (Denis Chenu)
+-Fixed issue #7301: Quota increase even though it's not a complete case (Denis Chenu)
+-Fixed issue #7304: Error in printable view if a question uses different conditions scenarios (Carsten Schmitz)
+-Fixed issue #7305: Error when running a survey with regex validation on text fields and debug mode enabled (Carsten Schmitz)
+-Fixed issue #7307: Token control not displayed when exporting results (Carsten Schmitz)
+-Fixed issue #7308: Deleting a question breaks group preview (Carsten Schmitz)
+-Fixed issue #7310: Unable to save survey general settings when using older IE versions (Carsten Schmitz)
+#Updated translation: Danish by robin_sharp
+#Updated translation: Finnish by tigger
+#Updated translation: German by c_schmitz
+#Updated translation: Italian by lfanfoni, floccs
+#Updated translation: Latvian by marcic, vipgroup
+#Updated translation: Mongolian by erka
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by amcorreia, mauriciofurtado
+#Updated translation: Romanian by filipguttman, oroles
+#Updated translation: Russian by vipgroup
+#Updated translation: Spanish (Spain) by larjona, valdomir, jaimealvarezv
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.00+ (build 130206) to 2.00+ (build 130213) Feb 13, 2013
 -Fixed issue #7100: Short Free Text is limited to 20 characters (but DB is 255 varchar). Changed maximum length for short free text to match database variable length (65534 chars). (seanrife)
 -Fixed issue #7212: Config parameter deletenonvalues not working (Carsten Schmitz)
