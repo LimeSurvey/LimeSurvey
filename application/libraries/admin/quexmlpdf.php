@@ -1463,6 +1463,7 @@ class quexmlpdf extends pdf {
 		}
 
 		//Question header
+        if (isset($question['text'])) $question['text'] = FlattenText($question['text']);
 		$this->drawQuestionHead($question['title'], $question['text'],$help,$specifier);
 
 		$text = "";
@@ -2217,7 +2218,6 @@ class quexmlpdf extends pdf {
 		}
 
 		$html .= "</table>";
-
 
 		$this->writeHTMLCell($this->getMainPageWidth(), 1, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,true);
 
