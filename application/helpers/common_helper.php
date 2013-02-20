@@ -5032,22 +5032,17 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
             $description=preg_replace('/'.$pattern.'/', $replacement, $description);
         }
 
-        if (strcmp($description,$qentry['description']) !=0  ||
-        strcmp($gpname,$qentry['group_name']) !=0)
+        if (strcmp($description,$qentry['description']) !=0  || strcmp($gpname,$qentry['group_name']) !=0)
         {
             // Update Fields
-
-            $data = array(
-            'description' => $description,
-            'group_name' => $gpname
-            );
-
             $where = array(
             'gid' => $gid,
             'language' => $language
             );
-
-            Groups::model()->update($data,$where);
+            $oGroup = Groups::model()->findByAttributes($where);
+            $oGroup->description= $description;
+            $oGroup->group_name= $gpname;
+            $oGroup->save();
 
         } // Enf if modified
     } // end while qentry
