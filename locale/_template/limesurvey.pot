@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-02-19 23:06:05+00:00\n"
+"POT-Creation-Date: 2013-02-20 23:06:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1754,8 +1754,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1207
 #: application/helpers/common_helper.php:1277
 #: application/helpers/common_helper.php:3973
-#: application/helpers/common_helper.php:7568
-#: application/helpers/common_helper.php:7608
+#: application/helpers/common_helper.php:7563
+#: application/helpers/common_helper.php:7603
 #: application/views/admin/dataentry/content_view.php:156
 #: application/views/admin/token/bounce.php:14
 #: application/views/admin/token/bounce.php:56
@@ -2211,7 +2211,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:349
 #: application/controllers/admin/responses.php:374
 #: application/controllers/admin/responses.php:615
-#: application/helpers/common_helper.php:6383
+#: application/helpers/common_helper.php:6378
 msgid "Access denied!"
 msgstr ""
 
@@ -3203,6 +3203,7 @@ msgstr ""
 #: application/controllers/admin/tokens.php:2305
 #: application/controllers/admin/tokens.php:2347
 #: application/controllers/admin/useraction.php:723
+#: application/helpers/common_helper.php:6384
 #: application/helpers/common_helper.php:6389
 #: application/helpers/common_helper.php:6394
 #: application/helpers/common_helper.php:6399
@@ -3211,21 +3212,20 @@ msgstr ""
 #: application/helpers/common_helper.php:6414
 #: application/helpers/common_helper.php:6419
 #: application/helpers/common_helper.php:6424
-#: application/helpers/common_helper.php:6429
-#: application/helpers/common_helper.php:6435
+#: application/helpers/common_helper.php:6430
+#: application/helpers/common_helper.php:6436
 #: application/helpers/common_helper.php:6441
 #: application/helpers/common_helper.php:6446
 #: application/helpers/common_helper.php:6451
 #: application/helpers/common_helper.php:6456
 #: application/helpers/common_helper.php:6461
-#: application/helpers/common_helper.php:6466
+#: application/helpers/common_helper.php:6467
 #: application/helpers/common_helper.php:6472
-#: application/helpers/common_helper.php:6477
+#: application/helpers/common_helper.php:6481
 #: application/helpers/common_helper.php:6486
-#: application/helpers/common_helper.php:6491
-#: application/helpers/common_helper.php:6498
-#: application/helpers/common_helper.php:6502
-#: application/helpers/common_helper.php:6506
+#: application/helpers/common_helper.php:6493
+#: application/helpers/common_helper.php:6497
+#: application/helpers/common_helper.php:6501
 #: application/helpers/frontend_helper.php:1331
 #: application/helpers/frontend_helper.php:1408
 #: application/helpers/frontend_helper.php:1578
@@ -3838,10 +3838,10 @@ msgstr ""
 #: application/helpers/common_helper.php:597
 #: application/helpers/common_helper.php:1206
 #: application/helpers/common_helper.php:1276
-#: application/helpers/common_helper.php:7139
-#: application/helpers/common_helper.php:7176
-#: application/helpers/common_helper.php:7567
-#: application/helpers/common_helper.php:7607
+#: application/helpers/common_helper.php:7134
+#: application/helpers/common_helper.php:7171
+#: application/helpers/common_helper.php:7562
+#: application/helpers/common_helper.php:7602
 #: application/helpers/qanda_helper.php:1361
 #: application/helpers/qanda_helper.php:1542
 #: application/helpers/qanda_helper.php:2125
@@ -6452,98 +6452,98 @@ msgstr ""
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:6388
+#: application/helpers/common_helper.php:6383
 msgid "You are not allowed dump the database!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6393
+#: application/helpers/common_helper.php:6388
 msgid "You are not allowed export a label set!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6398
+#: application/helpers/common_helper.php:6393
 msgid "You are not allowed to change user data!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6403
+#: application/helpers/common_helper.php:6398
 msgid "You are not allowed to create new surveys!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6408
+#: application/helpers/common_helper.php:6403
 msgid "You are not allowed to delete this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6413
+#: application/helpers/common_helper.php:6408
 msgid "You are not allowed to add new questions for this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6418
+#: application/helpers/common_helper.php:6413
 msgid "You are not allowed to activate this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6423
+#: application/helpers/common_helper.php:6418
 msgid "You are not allowed to stop this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6428
+#: application/helpers/common_helper.php:6423
 msgid "You are not allowed to add a group to this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6434
+#: application/helpers/common_helper.php:6429
 msgid "You are not allowed to order groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6440
+#: application/helpers/common_helper.php:6435
 msgid "You are not allowed to edit this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6445
+#: application/helpers/common_helper.php:6440
 msgid "You are not allowed to edit groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6450
+#: application/helpers/common_helper.php:6445
 msgid "You are not allowed to browse responses!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6455
+#: application/helpers/common_helper.php:6450
 msgid "You are not allowed to set assessment rules!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6460
+#: application/helpers/common_helper.php:6455
 msgid "You are not allowed to delete this group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6465
+#: application/helpers/common_helper.php:6460
 msgid "You are not allowed to import a survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6471
+#: application/helpers/common_helper.php:6466
 msgid "You are not allowed to import a group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6476
+#: application/helpers/common_helper.php:6471
 msgid "You are not allowed to to import a question!"
 msgstr ""
 
+#: application/helpers/common_helper.php:6480
 #: application/helpers/common_helper.php:6485
-#: application/helpers/common_helper.php:6490
 msgid "Security alert"
 msgstr ""
 
+#: application/helpers/common_helper.php:6480
 #: application/helpers/common_helper.php:6485
-#: application/helpers/common_helper.php:6490
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr ""
 
+#: application/helpers/common_helper.php:6480
 #: application/helpers/common_helper.php:6485
-#: application/helpers/common_helper.php:6490
 msgid "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
 msgstr ""
 
-#: application/helpers/common_helper.php:6495
+#: application/helpers/common_helper.php:6490
 msgid "You are not allowed to perform this operation!"
 msgstr ""
 
-#: application/helpers/common_helper.php:7249
+#: application/helpers/common_helper.php:7244
 msgid "SQL command failed: %s"
 msgstr ""
 
