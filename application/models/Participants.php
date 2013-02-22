@@ -352,64 +352,96 @@ class Participants extends CActiveRecord
         return $count;
     }
 
-    /*
-     * These functions delete the row marked in the navigator
-     * Parameters : row id's
-     * Return Data : None
-     */
-
-    function deleteParticipant($rows)
+    /**
+     * This function deletes the participant from the participants table,           
+     * references in the survey_links table (but not in matching tokens tables)
+     * and then all the participants attributes.
+     * @param $rows Participants ID separated by comma
+     * @return void
+     **/
+    function deleteParticipants($rows, $bFilter=true)
     {
-        /* This function deletes the participant from the participants table,
-           references in the survey_links table (but not in matching tokens tables)
-           and then all the participants attributes. */
-
-        // Converting the comma seperated id's to an array to delete multiple rows
-        $rowid = explode(",", $rows);
-        foreach ($rowid as $row)
+        // Converting the comma separated IDs to an array and assign chunks of 100 entries to have a reasonable query size
+        $aParticipantsIDChunks = array_chunk(explode(",", $rows),100); 
+        
+        foreach ($aParticipantsIDChunks as $aParticipantsIDs)
         {
-            Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
-            Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
-            Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
+
+            if ($bFilter)
+            {
+                $aParticipantsIDs=$this->filterParticipantIDs($aParticipantsIDs);
+            }
+
+            Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
+            
+            // Delete survey links
+            Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
+            // Delete participant attributes
+            Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
         }
     }
 
-    function deleteParticipantToken($rows)
+    
+    /**
+    * Filter an array of participants IDs according to permissions of the person being logged in
+    * 
+    * @param mixed $aParticipantsIDs
+    */
+    function filterParticipantIDs($aParticipantsIDs)
+    {
+            if (!Yii::app()->session['USER_RIGHT_SUPERADMIN'] && $bFilter) // If not super admin filter the participant IDs first to owner only
+            {
+                $aCondition=array('and','owner_id=:owner_uid',array('in', 'participant_id', $aParticipantsIDs));
+                $aParameter=array(':owner_uid'=>Yii::app()->session['loginID']);
+                $aParticipantIDs=Yii::app()->db->createCommand()->select('participant_id')->from(Survey_links::model()->tableName())->where($aCondition, $aParameter)->queryColumn();
+            }           
+            return $aParticipantsIDs;
+    }
+    
+    /**
+    * Deletes CPDB participants identified by their participant ID from token tables
+    * 
+    * @param mixed $sParticipantsIDs
+    */
+    function deleteParticipantToken($sParticipantsIDs)
     {
         /* This function deletes the participant from the participants table,
            the participant from any tokens table they're in (using the survey_links table to find them)
            and then all the participants attributes. */
-        $rowid = explode(",", $rows);
-        foreach ($rowid as $row)
+        $aParticipantsIDChunks = array_chunk(explode(",", $sParticipantsIDs),100); 
+        foreach ($aParticipantsIDChunks as $aParticipantsIDs)
         {
-            $tokens = Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = :pid')->bindParam(":pid", $row, PDO::PARAM_INT)->queryAll();
-
-            foreach ($tokens as $key => $value)
+            $aParticipantsIDs=$this->filterParticipantIDs($aParticipantsIDs);
+            $aSurveyIDs = Yii::app()->db->createCommand()->selectDistinct('survey_id')->from('{{survey_links}}')->where(array('in', 'participant_id', $aParticipantsIDs))->queryColumn();
+            foreach ($aSurveyIDs as $iSurveyID)
             {
-                $tokentable='{{tokens_'.intval($value['survey_id']).'}}';
-
-                if (Yii::app()->db->schema->getTable($tokentable))
+                if (hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
                 {
-                    Yii::app()->db->createCommand()
-                                  ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = :pid',array(':pid'=>$row)); // Deletes matching token table entries
-                    //Yii::app()->db->createCommand()->delete(Tokens::model()->tableName(), array('in', 'participant_id', $row));
+                    $sTokenTable='{{tokens_'.intval($iSurveyID).'}}';
+                    if (Yii::app()->db->schema->getTable($sTokenTable))
+                    {
+                        Yii::app()->db->createCommand()->delete($sTokenTable, array('in', 'participant_id', $aParticipantsIDs));
+                    }
                 }
             }
-            Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
-            Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
-            Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
-
+            $this->deleteParticipants($rows, false);
         }
     }
 
-    function deleteParticipantTokenAnswer($rows)
+    /**
+    * This function deletes the participant from the participants table,
+    * the participant from any tokens table they're in (using the survey_links table to find them),
+    * all responses in surveys they've been linked to,
+    * and then all the participants attributes.
+    * 
+    * @param mixed $sParticipantsIDs
+    */
+    function deleteParticipantTokenAnswer($sParticipantsIDs)
     {
-        /* This function deletes the participant from the participants table,
-           the participant from any tokens table they're in (using the survey_links table to find them),
-           all responses in surveys they've been linked to,
-           and then all the participants attributes. */
-        $rowid = explode(",", $rows);
-        foreach ($rowid as $row)
+        $aParticipantsIDs = explode(",", $sParticipantsIDs);
+        $aParticipantsIDs=$this->filterParticipantIDs($aParticipantsIDs);
+        
+        foreach ($aParticipantsIDs as $row)
         {
             $tokens = Yii::app()->db->createCommand()
                                     ->select('*')
@@ -433,7 +465,7 @@ class Participants extends CActiveRecord
                     $surveytable='{{survey_'.intval($value['survey_id']).'}}';
                     if ($datas=Yii::app()->db->schema->getTable($surveytable))
                     {
-                        if (!empty($token['token']) && isset($datas->columns['token'])) //Make sure we have a token value, and that tokens are used to link to the survey
+                        if (!empty($token['token']) && isset($datas->columns['token']) && hasSurveyPermission($iSurveyID, 'responses', 'delete')) //Make sure we have a token value, and that tokens are used to link to the survey
                         {
                             $gettoken = Yii::app()->db->createCommand()
                                                       ->select('*')
@@ -447,13 +479,15 @@ class Participants extends CActiveRecord
                                           ->bindParam(":token", $gettoken['token'], PDO::PARAM_STR); // Deletes matching responses from surveys
                         }
                     }
-                    Yii::app()->db->createCommand()
-                                  ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = :pid' , array(':pid'=>$value['participant_id'])); // Deletes matching token table entries
+                    if (hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
+                    {
+                        
+                        Yii::app()->db->createCommand()
+                                      ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = :pid' , array(':pid'=>$value['participant_id'])); // Deletes matching token table entries
+                    }
                 }
             }
-            Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
-            Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
-            Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
+            $this->deleteParticipants($rows, false);
         }
     }
 
