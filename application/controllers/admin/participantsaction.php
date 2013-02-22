@@ -452,7 +452,7 @@ class participantsaction extends Survey_Common_Action
         // Deletes from participants only
         if ($selectoption == 'po')
         {
-            Participants::model()->deleteParticipant($iParticipantId);
+            Participants::model()->deleteParticipants($iParticipantId);
         }
         // Deletes from central and token table
         elseif ($selectoption == 'ptt')
