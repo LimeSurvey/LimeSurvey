@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-02-22 23:05:56+00:00\n"
+"POT-Creation-Date: 2013-02-23 17:14:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1673,7 +1673,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:305
 #: application/controllers/admin/labels.php:100
 #: application/controllers/admin/labels.php:133
-#: application/controllers/admin/participantsaction.php:1099
+#: application/controllers/admin/participantsaction.php:1098
 #: application/controllers/admin/question.php:55
 #: application/controllers/admin/questiongroup.php:55
 #: application/controllers/admin/surveyadmin.php:262
@@ -2459,31 +2459,31 @@ msgstr ""
 msgid "%s participant(s) are to be copied "
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1468
+#: application/controllers/admin/participantsaction.php:1467
 msgid "%s participants have been shared"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1488
+#: application/controllers/admin/participantsaction.php:1487
 msgid "%s participants have been copied to the central participants table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1491
-#: application/controllers/admin/participantsaction.php:1515
-#: application/controllers/admin/participantsaction.php:1545
+#: application/controllers/admin/participantsaction.php:1490
+#: application/controllers/admin/participantsaction.php:1514
+#: application/controllers/admin/participantsaction.php:1544
 msgid "%s entries were not copied because they already existed"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1495
+#: application/controllers/admin/participantsaction.php:1494
 msgid "Attribute values for existing participants have been updated from the token records"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1512
-#: application/controllers/admin/participantsaction.php:1542
+#: application/controllers/admin/participantsaction.php:1511
+#: application/controllers/admin/participantsaction.php:1541
 msgid "%s participants have been copied to the survey token table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1519
-#: application/controllers/admin/participantsaction.php:1549
+#: application/controllers/admin/participantsaction.php:1518
+#: application/controllers/admin/participantsaction.php:1548
 msgid "Attribute values for existing participants have been updated from the participants records"
 msgstr ""
 
