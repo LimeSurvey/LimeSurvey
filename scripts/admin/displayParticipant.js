@@ -371,7 +371,9 @@ $(document).ready(function() {
                             }
                         }
                         jQuery("#displayparticipants").jqGrid('setGridParam',{
-                            url:jsonSearchUrl+'/'+searchconditions,
+                            mtype:'POST',
+                            postData:{searchcondition:searchconditions},
+                            url:jsonSearchUrl,
                             gridComplete: function(){
                                 if(jQuery("#displayparticipants").jqGrid('getGridParam', 'records') == 0) {
                                     var dialog_buttons={};
@@ -383,6 +385,7 @@ $(document).ready(function() {
                                         buttons: dialog_buttons,
                                         resizable: false
                                     });
+                                    jQuery("#displayparticipants").jqGrid('setGridParam',{mtype:'GET'});
                                 }
                             }}).trigger("reloadGrid");
                         $(this).dialog("close");

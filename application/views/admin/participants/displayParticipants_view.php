@@ -146,7 +146,7 @@ else
     var searchBtn = "<?php $clang->eT("Search", 'js') ?>";
     var shareMsg = "<?php $clang->eT("You can see and edit settings for shared participants in share panel.", 'js') ?>"; //PLEASE REVIEW
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/".$urlsearch); ?>";
-    var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getParticipantsResults_json/search/"); ?>";
+    var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getParticipantsResults_json"); ?>";
     var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/editParticipant"); ?>";
     var autowidth = "<?php echo $autowidth ?>";
     var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getSearchIDs"); ?>";

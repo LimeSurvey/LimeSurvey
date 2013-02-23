@@ -774,8 +774,7 @@ class participantsaction extends Survey_Common_Action
      */
     function getParticipantsResults_json()
     {
-        $searchcondition = Yii::app()->request->getQuery('search');
-        $searchcondition = urldecode($searchcondition);
+        $searchcondition = Yii::app()->request->getpost('searchcondition');
         $finalcondition = array();
         $condition = explode("||", $searchcondition);
         $search = Participants::model()->getParticipantsSearchMultipleCondition($condition);
