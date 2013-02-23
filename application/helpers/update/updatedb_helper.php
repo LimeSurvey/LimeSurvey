@@ -672,6 +672,7 @@ function db_upgrade_all($oldversion) {
             addColumn('{{question_attributes}}','language',"{$sVarchar}(20)");
 
             upgradeQuestionAttributes148();
+            upgradeTokens148();
             fixSubquestions();
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>148),"stg_name='DBVersion'");
         }
@@ -1087,6 +1088,20 @@ function upgradeSurveys156()
     }
 }
 
+// Add the usesleft field to all existing token tables
+function upgradeTokens148()
+{
+    $aTables = dbGetTablesLike("tokens%");
+    $sVarchar=Yii::app()->getConfig('varchar');
+    foreach ( $aTables as $sTable )
+    {
+        addColumn($sTable, 'participant_id', "{$sVarchar}(50)");
+        addColumn($sTable, 'blacklisted', "{$sVarchar}(17)");
+    }
+}
+
+
+
 function upgradeQuestionAttributes148()
 {
     global $modifyoutput;
@@ -1119,8 +1134,8 @@ function upgradeQuestionAttributes148()
 function upgradeSurveyTimings146()
 {
     global $modifyoutput;
-    $aTimingTables = dbGetTablesLike("%timings");
-    foreach ($aTimingTables as $sTable) {
+    $aTables = dbGetTablesLike("%timings");
+    foreach ($aTables as $sTable) {
         Yii::app()->db->createCommand()->renameColumn($sTable,'interviewTime','interviewtime');
     }
 }
@@ -1130,15 +1145,11 @@ function upgradeSurveyTimings146()
 function upgradeTokens145()
 {
     global $modifyoutput;
-    $surveyidresult = dbGetTablesLike("tokens%");
-    if (!$surveyidresult) {return "Database Error";}
-    else
+    $aTables = dbGetTablesLike("tokens%");
+    foreach ( $aTables as $sTable )
     {
-        foreach ( $surveyidresult as $sv )
-        {
-            addColumn(reset($sv),'usesleft',"integer NOT NULL default 1");
-            Yii::app()->db->createCommand()->update(reset($sv),array('usesleft'=>'0'),"completed<>'N'");
-        }
+        addColumn($sTable,'usesleft',"integer NOT NULL default 1");
+        Yii::app()->db->createCommand()->update($sTable,array('usesleft'=>'0'),"completed<>'N'");
     }
 }
 
@@ -1453,14 +1464,10 @@ function upgradeSurveyTables139()
 {
     global $modifyoutput;
     $dbprefix = Yii::app()->db->tablePrefix;
-    $surveyidresult = dbGetTablesLike("survey\_%");
-    if (empty($surveyidresult)) {return "Database Error";}
-    else
+    $aTables = dbGetTablesLike("survey\_%");
+    foreach ( $aTables as $sTable )
     {
-        foreach ( $surveyidresult as $sv )
-        {
-            addColumn(reset($sv),'lastpage','integer');
-        }
+        addColumn($sTable,'lastpage','integer');
     }
 }
 
@@ -1469,15 +1476,11 @@ function upgradeSurveyTables139()
 function upgradeTokenTables134()
 {
     global $modifyoutput;
-    $surveyidresult = dbGetTablesLike("tokens%");
-    if (!$surveyidresult) {return "Database Error";}
-    else
+    $aTables = dbGetTablesLike("tokens%");
+    foreach ( $aTables as $sTable )
     {
-        foreach ( $surveyidresult as $sv )
-        {
-            addColumn(reset($sv),'validfrom',"datetime");
-            addColumn(reset($sv),'validuntil',"datetime");
-        }
+        addColumn($sTable,'validfrom',"datetime");
+        addColumn($sTable,'validuntil',"datetime");
     }
 }
 
@@ -1486,15 +1489,11 @@ function upgradeTokens128()
 {
     global $modifyoutput;
     $sVarchar=Yii::app()->getConfig('varchar');
-    $surveyidresult = dbGetTablesLike("tokens%");
-    if (!$surveyidresult) {return "Database Error";}
-    else
+    $aTables = dbGetTablesLike("tokens%");
+    foreach ( $aTables as $sTable )
     {
-        foreach ( $surveyidresult as $sv )
-        {
-            addColumn(reset($sv),'remindersent',"{$sVarchar}(17) DEFAULT 'N'");
-            addColumn(reset($sv),'remindercount',"integer DEFAULT '0'");
-        }
+        addColumn($sTable,'remindersent',"{$sVarchar}(17) DEFAULT 'N'");
+        addColumn($sTable,'remindercount',"integer DEFAULT '0'");
     }
 }
 
@@ -1564,15 +1563,11 @@ function upgradeTokenTables126()
 {
     global $modifyoutput;
     $sVarchar=Yii::app()->getConfig('varchar');
-    $surveyidresult = dbGetTablesLike("tokens%");
-    if (!$surveyidresult) {return "Database Error";}
-    else
+    $aTables = dbGetTablesLike("tokens%");
+    foreach ( $aTables as $sTable )
     {
-        foreach ( $surveyidresult as $sv )
-        {
-            Yii::app()->db->createCommand()->alterColumn(reset($sv),'token',"{$sVarchar}(15)");
-            addColumn(reset($sv),'emailstatus',"{$sVarchar}(300) NOT NULL DEFAULT 'OK'");
-        }
+        Yii::app()->db->createCommand()->alterColumn($sTable,'token',"{$sVarchar}(15)");
+        addColumn($sTable,'emailstatus',"{$sVarchar}(300) NOT NULL DEFAULT 'OK'");
     }
 }
 
