@@ -477,7 +477,7 @@ class participantsaction extends Survey_Common_Action
         // Deletes from participants only
         if ($selectoption == 'po')
         {
-            Participants::model()->deleteParticipant($iParticipantId);
+            Participants::model()->deleteParticipants($iParticipantId);
         }
         // Deletes from central and token table
         elseif ($selectoption == 'ptt')
@@ -605,10 +605,13 @@ class participantsaction extends Survey_Common_Action
         $aData->records = count($records);
         $aData->total = ceil($aData->records / 10);
         $i = 0;
-
         foreach ($records as $row)
         {
-            $surveyname = Surveys_languagesettings::model()->getSurveyNames($row['survey_id']);
+            $oSurvey=Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByAttributes(array('sid' => $row['survey_id']));            
+            foreach($oSurvey->languagesettings as $oLanguageSetting)
+            {
+                $surveyname= $oLanguageSetting->surveyls_title;
+            }
             $surveylink = "";
             /* Check permissions of each survey before creating a link*/
             if (!hasSurveyPermission($row['survey_id'], 'tokens', 'read'))
@@ -618,7 +621,7 @@ class participantsaction extends Survey_Common_Action
             {
                 $surveylink = '<a href=' . Yii::app()->getController()->createUrl("/admin/tokens/sa/browse/surveyid/{$row['survey_id']}") . '>' . $row['survey_id'].'</a>';
             }
-            $aData->rows[$i]['cell'] = array($surveyname[0]['surveyls_title'], $surveylink, $row['token_id'], $row['date_created'], $row['date_invited'], $row['date_completed']);
+            $aData->rows[$i]['cell'] = array($surveyname, $surveylink, $row['token_id'], $row['date_created'], $row['date_invited'], $row['date_completed']);
             $i++;
         }
 
@@ -774,8 +777,7 @@ class participantsaction extends Survey_Common_Action
      */
     function getParticipantsResults_json()
     {
-        $searchcondition = Yii::app()->request->getQuery('search');
-        $searchcondition = urldecode($searchcondition);
+        $searchcondition = Yii::app()->request->getpost('searchcondition');
         $finalcondition = array();
         $condition = explode("||", $searchcondition);
         $search = Participants::model()->getParticipantsSearchMultipleCondition($condition);
@@ -1482,7 +1484,7 @@ class participantsaction extends Survey_Common_Action
         $overwriteman = Yii::app()->request->getPost('overwriteman');
         $createautomap = Yii::app()->request->getPost('createautomap');
 
-        $response = Participants::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman);
+        $response = Participants::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
         $clang = $this->getController()->lang;
 
         printf($clang->gT("%s participants have been copied to the central participants table"), $response['success']);

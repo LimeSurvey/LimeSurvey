@@ -1508,7 +1508,7 @@
                                     {
                                         if ($this->sgqaNaming)
                                         {
-                                            $base = substr(substr($sq['jsVarName'],4),0,-1);
+                                            $base = $sq['rowdivid']."#";
                                             $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
                                         }
                                         else
@@ -1594,7 +1594,7 @@
                                     {
                                         if ($this->sgqaNaming)
                                         {
-                                            $base = substr(substr($sq['jsVarName'],4),0,-1);
+                                            $base = $sq['rowdivid']."#";
                                             $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
                                         }
                                         else
@@ -2390,7 +2390,7 @@
                                 case 'U': //HUGE FREE TEXT
                                     if ($this->sgqaNaming)
                                     {
-                                        $subqValidEqn = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
+                                        $subqValidEqn = '(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
                                     }
                                     else
                                     {
@@ -3112,7 +3112,6 @@
                     case 'I': //Language Question
                     case 'Y': //YES/NO radio-buttons
                     case '*': //Equation
-                    case '1': //Array (Flexible Labels) dual scale
                     case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                     case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
                     case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
@@ -3130,6 +3129,10 @@
                             $jsVarName_on = 'java' . $sgqa;
                         }
                         $jsVarName = 'java' . $sgqa;
+                        break;
+                    case '1': //Array (Flexible Labels) dual scale
+                        $jsVarName = 'java' . str_replace('#','_',$sgqa);
+                        $jsVarName_on = $jsVarName;
                         break;
                     case ':': //ARRAY (Multi Flexi) 1 to 10
                     case ';': //ARRAY (Multi Flexi) Text
@@ -6526,7 +6529,8 @@
                     {
                         $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
                     }
-                    $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n    return;\n }\n";
+                    $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
+                    $qrelJS .= "  return;\n }\n";
                     $qrelJS .= implode("",$relParts);
                     $qrelJS .= "}\n";
                     $relEqns[] = $qrelJS;
@@ -7029,7 +7033,7 @@ EOT;
                 $rel = LimeExpressionManager::QuestionIsRelevant($i);
                 $question = LimeExpressionManager::ProcessString($testArg[3], $i, NULL, true, 1, 1);
 
-                $jsVarName='java' . $testArg[0];
+                $jsVarName='java' . str_replace('#','_',$testArg[0]);
 
                 $argInfo[] = array(
                 'num' => $i,

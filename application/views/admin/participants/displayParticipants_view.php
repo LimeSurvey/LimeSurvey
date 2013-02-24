@@ -146,7 +146,7 @@ else
     var searchBtn = "<?php $clang->eT("Search", 'js') ?>";
     var shareMsg = "<?php $clang->eT("You can see and edit settings for shared participants in share panel.", 'js') ?>"; //PLEASE REVIEW
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/".$urlsearch); ?>";
-    var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getParticipantsResults_json/search/"); ?>";
+    var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getParticipantsResults_json"); ?>";
     var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/editParticipant"); ?>";
     var autowidth = "<?php echo $autowidth ?>";
     var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getSearchIDs"); ?>";
@@ -287,16 +287,16 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
     <?php echo CHtml::form(array("admin/participants/sa/attributeMap"), 'post', array('id'=>'addsurvey','name'=>'addsurvey')); ?>
         <input type="hidden" name="participant_id" id="participant_id" value=""></input>
         <input type="hidden" name="count" id="count" value=""></input>
-        <div class='popupgroup'>
-            <h4><?php $clang->eT("Participants") ?></h4>
+        <fieldset class='popupgroup'>
+            <legend><?php $clang->eT("Participants") ?></legend>
             <div id='allinview' style='display: none'><?php $clang->eT("Add all participants in your current list to a survey.") ?></div>
             <div id='selecteditems' style='display: none'><?php $clang->eT("Add the selected participants to a survey.") ?></div>
             <br />
-        </div>
-        <div class='popupgroup'>
-		  <h4>
+        </fieldset>
+        <fieldset class='popupgroup'>
+		  <legend>
             <?php $clang->eT("Survey"); ?>
-          </h4>
+          </legend>
           <p>
             <?php
             if (!empty($tokensurveynames))
@@ -306,16 +306,15 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
                 {
                     $option[$row['surveyls_survey_id']] = $row['surveyls_title'];
                 }
-                echo CHtml::listBox('survey_id', 'id="survey_id"', $option, array('style'=>'width: 350px; border: 0px; font-size: 1.2em; cursor: pointer', 'size'=>7));
+                echo CHtml::listBox('survey_id', 'id="survey_id"', $option, array('style'=>'width: 400px; border: 0px; cursor: pointer', 'size'=>10));
             }
             ?>
           </p><br />
-        </div>
-        <div class='popupgroup'>
-          <h4>
+        </fieldset>
+        <fieldset class='popupgroup'>
+          <legend>
             <?php $clang->eT("Options") ?>
-          </h4>
-          <p>
+          </legend>
             <?php
             $data = array(
                 'id' => 'redirect',
@@ -326,8 +325,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
             echo CHtml::checkBox('redirect', TRUE, $data);
             ?>
             <label for='redirect'><?php $clang->eT("Display survey tokens after adding?"); ?></label>
-          </p>
-        </div>
+        </fieldset>
     </form>
 </div>
 <div id="notauthorised" title="notauthorised" style="display:none">
@@ -335,8 +333,8 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
 <?php $clang->eT("This is a shared participant and you are not authorised to edit it"); ?></p>
 
 </div>
-<div id="exportcsv" title="exportcsv" style="display:none">
-        <h4><?php $clang->eT("Attributes to export:"); ?></h4>
+<fieldset id="exportcsv" title="exportcsv" style="display:none">
+        <legend><?php $clang->eT("Attributes to export:"); ?></legend>
         <p>
             <select id="attributes" name="attributes" multiple="multiple" style='width: 350px' size=7>
                 <?php
@@ -347,6 +345,6 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
                 ?>
             </select>
         </p>
-</div>
+</fieldset>
 
 

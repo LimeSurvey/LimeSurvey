@@ -335,6 +335,8 @@ class Survey extends CActiveRecord
             Survey_permissions::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             Saved_control::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             Survey_url_parameters::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            //Remove any survey_links to the CPDB
+            Survey_links::model()->deleteLinksBySurvey($iSurveyID);
             Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
         }
     }

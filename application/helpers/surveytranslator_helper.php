@@ -128,7 +128,7 @@
 
         // Catalan
         $supportedLanguages['ca']['description'] = $clang->gT('Catalan');
-        $supportedLanguages['ca']['nativedescription'] = 'Catal&#940;';
+        $supportedLanguages['ca']['nativedescription'] = 'Catal&#224;';
         $supportedLanguages['ca']['rtl'] = false;
         $supportedLanguages['ca']['dateformat'] = 1;
         $supportedLanguages['ca']['radixpoint'] = 1;
