@@ -888,7 +888,6 @@ class Participants extends CActiveRecord
      * */
     function copytosurveyatt($surveyid, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false, $overwritest=false, $createautomap=true)
     {
-        debugbreak();
         Yii::app()->loadHelper('common');
         $duplicate = 0;
         $sucessfull = 0;
