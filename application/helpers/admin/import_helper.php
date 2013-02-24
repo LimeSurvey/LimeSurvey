@@ -3466,6 +3466,7 @@ function importSurveyFile($sFullFilepath, $bTranslateLinksFields, $sNewSurveyNam
             }
         }
         // Step 4 - import the timings file - if exists
+        Yii::app()->db->schema->refresh();
         foreach ($aFiles as $aFile)
         {
             if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lsi' && tableExists("survey_{$aImportResults['newsid']}_timings"))
@@ -4279,10 +4280,11 @@ function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
         $aLanguagesSupported[]=(string)$language;
     }
     $results['languages']=count($aLanguagesSupported);
-
-
-
-
+     // Return if there are no timing records to import
+    if (!isset($xml->timings->rows)) 
+    {
+        return $results;   
+    }
     switchMSSQLIdentityInsert('survey_'.$iSurveyID.'_timings',true);
     foreach ($xml->timings->rows->row as $row)
     {
