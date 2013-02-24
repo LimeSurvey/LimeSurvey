@@ -201,8 +201,8 @@ class Assessments extends Survey_Common_Action
             'sid' => $iSurveyID,
             'scope' => sanitize_paranoid_string($_POST['scope']),
             'gid' => sanitize_int($_POST['gid']),
-            'minimum' => sanitize_paranoid_string($_POST['minimum']),
-            'maximum' => sanitize_paranoid_string($_POST['maximum']),
+            'minimum' => intval($_POST['minimum']),
+            'maximum' => intval($_POST['maximum']),
             'name' => $_POST['name_' . $language],
             'language' => $language,
             'message' => $_POST['assessmentmessage_' . $language]
