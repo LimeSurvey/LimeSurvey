@@ -202,13 +202,6 @@ class Surveys_languagesettings extends CActiveRecord
         return $this->insertSomeRecords($data);
     }
 
-
-    function getSurveyNames($surveyid)
-    {
-        $lang = Yii::app()->session['adminlang'];
-        return Yii::app()->db->createCommand()->select('surveyls_title')->from('{{surveys_languagesettings}}')->where('surveyls_language = :adminlang AND surveyls_survey_id = :surveyid')->bindParam(":adminlang", $lang, PDO::PARAM_STR)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->queryAll();
-    }
-
     /**
      * Updates a single record identified by $condition with the
      * key/value pairs in the $data array. 
