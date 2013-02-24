@@ -1414,8 +1414,7 @@ function do_list_dropdown($ia)
     //End Time Limit Code
 
     $query = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ";
-    $result = Yii::app()->db->createCommand($query)->query();     //Checked
-    $row = $result->read(); $other = $row['other'];
+    $other = Yii::app()->db->createCommand($query)->queryScalar();     //Checked
 
     //question attribute random order set?
     if ($aQuestionAttributes['random_order']==1)
