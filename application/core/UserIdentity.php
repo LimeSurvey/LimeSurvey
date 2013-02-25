@@ -76,8 +76,11 @@ class UserIdentity extends CUserIdentity
                 $sUser=$_SERVER['REMOTE_USER'];
             } else {
                 $sUser = $_SERVER['LOGON_USER'];
-                $sUser = substr($sUser, strrpos($sUser, "\\")+1);
             }            
+            if (strpos($sUser,"\\")!==false) {
+                $sUser = substr($sUser, strrpos($sUser, "\\")+1);
+            }
+            
             $aUserMappings=Yii::app()->getConfig("auth_webserver_user_map");
             if (isset($aUserMappings[$sUser])) 
             {
