@@ -509,7 +509,7 @@ class SurveyRuntimeHelper {
                 }
                 $redata['completed'] = $completed;
                 echo templatereplace(file_get_contents($sTemplatePath."completed.pstpl"), array('completed' => $completed), $redata);
-                echo "\n<br />\n";
+                echo "\n";
                 if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING))
                 {
                     echo LimeExpressionManager::GetDebugTimingMessage();
