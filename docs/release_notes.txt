@@ -60,6 +60,47 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130219) to 2.00+ (build 130226) Feb 26, 2013
+-Fixed issue #4638: Array Dual Scale - Dual Dropdown - id contains # (Denis Chenu)
+-Fixed issue #6504: If admin language is not the same as survey language then survey names won't be shown for assigned surveys in central participants database (Carsten Schmitz)
+-Fixed issue #6946: "Quick-add" fail to parse expressions with ' " ' (Damien)
+-Fixed issue #6957: Error when using too many parameters in a search in central participant database (Carsten Schmitz)
+-Fixed issue #7049: Webserver authentication not working when external access control is used (Carsten Schmitz)
+-Fixed issue #7091: Missing translations  in Share panel (Carsten Schmitz)
+-Fixed issue #7175: Problems with attributes not being copied when copying from tokens to participants database (Carsten Schmitz)
+-Fixed issue #7191: Survey links not deleted when deactivating a survey (Carsten Schmitz)
+-Fixed issue #7193: A shared user can definitively delete a shared participant (Carsten Schmitz)
+-Fixed issue #7247: Token related error after submitting a survey (Carsten Schmitz)
+-Fixed issue #7299: Unable to open printable survey view (Carsten Schmitz)
+-Fixed issue #7309: Placeholders referring to dual scale question do not work (Denis Chenu)
+-Fixed issue #7313: Default value for date/time questions don't include time (Carsten Schmitz)
+-Fixed issue #7314: Print answers displays custom html code in answers column (Carsten Schmitz)
+-Fixed issue #7316: Unable to import .lss file (Carsten Schmitz)
+-Fixed issue #7318: Multiple Numerical - Subquestion validation - Input field and Tip in different way (Denis Chenu)
+-Fixed issue #7319: Incorrect native name for Catalan translation (Carsten Schmitz)
+-Fixed issue #7321: Internal server error when taking survey and using list(dropdown) question type (Carsten Schmitz)
+-Fixed issue #7322: Can't use negative values in assessment rules (Carsten Schmitz)
+-Fixed issue #7332: Unnecessary line break after inserting of completed.pstpl into final survey page (Sam Mousa)
+-Fixed issue: Notice in QueXML export when there is invalid HTML in question text (Carsten Schmitz)
+-Fixed issue: Survey timings not imported when importing survey archive (.lsa) (Carsten Schmitz)
+#Updated translation: Bulgarian by tnovakova
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Chinese (Taiwan) (Traditional) by katy50306
+#Updated translation: Czech by slansky
+#Updated translation: Danish by nielsb
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Lithuanian by apklausos, simasj
+#Updated translation: Mongolian by erka
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Romanian by filipguttman
+#Updated translation: Russian by vipgroup, Dominik
+#Updated translation: Turkish by kayazeren
 
 Changes from 2.00+ (build 130213) to 2.00+ (build 130219) Feb 19, 2013
 -Fixed issue #7049: Webserver authentication not working when external access control is used (Carsten Schmitz)
