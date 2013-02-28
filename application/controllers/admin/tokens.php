@@ -2158,6 +2158,20 @@ class tokens extends Survey_Common_Action
             $aData['iSurveyId'] = $iSurveyId;
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
+            $aTokenTableFields = getTokenFieldsAndNames($iSurveyId);
+            unset($aTokenTableFields['sent']);
+            unset($aTokenTableFields['remindersent']);
+            unset($aTokenTableFields['remindercount']);
+            unset($aTokenTableFields['usesleft']);
+            foreach ($aTokenTableFields as $sKey=>$sValue)
+            {
+                if ($sValue['description']!=$sKey) 
+                {
+                   $sValue['description'] .= ' - '.$sKey; 
+                }
+                $aNewTokenTableFields[$sKey]= $sValue['description'];
+            }
+            $aData['aTokenTableFields'] = $aNewTokenTableFields; 
             $this->_renderWrappedTemplate('token', array('tokenbar', 'csvupload'), $aData);
         }
     }
