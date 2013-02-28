@@ -3499,7 +3499,8 @@ function expr_mgr_htmlspecialchars_decode($string)
 function exprmgr_regexMatch($pattern, $input)
 {
     try {
-        $result = @preg_match($pattern, $input);
+        // 'u' is the regexp modifier for unicode so that non-ASCII string will nbe validated properly
+        $result = @preg_match($pattern.'u', $input);
     } catch (Exception $e) {
         $result = false;
         // How should errors be logged?
