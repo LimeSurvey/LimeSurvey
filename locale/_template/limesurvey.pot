@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-02-24 23:05:54+00:00\n"
+"POT-Creation-Date: 2013-02-28 23:05:57+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -101,7 +101,7 @@ msgstr ""
 
 #: application/controllers/AdminController.php:87
 #: application/controllers/admin/surveyadmin.php:485
-#: application/controllers/admin/tokens.php:2166
+#: application/controllers/admin/tokens.php:2180
 #: application/helpers/admin/import_helper.php:2604
 #: application/views/admin/authentication/forgotpassword.php:15
 #: application/views/admin/dataentry/active_html_view.php:95
@@ -850,7 +850,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1106
 #: application/controllers/admin/quotas.php:506
 #: application/controllers/admin/surveyadmin.php:675
-#: application/controllers/admin/tokens.php:2083
+#: application/controllers/admin/tokens.php:2097
 #: application/core/Survey_Common_Action.php:825
 #: application/helpers/admin/statistics_helper.php:1337
 #: application/helpers/admin/statistics_helper.php:1470
@@ -957,7 +957,7 @@ msgid "Yes"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:150
-#: application/controllers/admin/tokens.php:2149
+#: application/controllers/admin/tokens.php:2163
 #: application/views/admin/assessments_view.php:131
 #: application/views/admin/conditions/includes/conditions_scenario.php:13
 #: application/views/admin/labels/labelview_view.php:161
@@ -1074,7 +1074,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1108
 #: application/controllers/admin/quotas.php:507
 #: application/controllers/admin/surveyadmin.php:679
-#: application/controllers/admin/tokens.php:2085
+#: application/controllers/admin/tokens.php:2099
 #: application/core/Survey_Common_Action.php:821
 #: application/helpers/admin/statistics_helper.php:1338
 #: application/helpers/admin/statistics_helper.php:1471
@@ -2234,9 +2234,9 @@ msgstr ""
 #: application/controllers/admin/tokens.php:1456
 #: application/controllers/admin/tokens.php:1493
 #: application/controllers/admin/tokens.php:1762
-#: application/controllers/admin/tokens.php:2065
-#: application/controllers/admin/tokens.php:2122
-#: application/controllers/admin/tokens.php:2179
+#: application/controllers/admin/tokens.php:2079
+#: application/controllers/admin/tokens.php:2136
+#: application/controllers/admin/tokens.php:2193
 msgid "You do not have sufficient rights to access this page."
 msgstr ""
 
@@ -3202,8 +3202,8 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:346
 #: application/controllers/admin/surveypermission.php:534
 #: application/controllers/admin/surveypermission.php:637
-#: application/controllers/admin/tokens.php:2305
-#: application/controllers/admin/tokens.php:2347
+#: application/controllers/admin/tokens.php:2319
+#: application/controllers/admin/tokens.php:2361
 #: application/controllers/admin/useraction.php:723
 #: application/helpers/common_helper.php:6384
 #: application/helpers/common_helper.php:6389
@@ -3706,94 +3706,94 @@ msgstr ""
 msgid "Can't connect to the LDAP directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2080
-#: application/controllers/admin/tokens.php:2107
+#: application/controllers/admin/tokens.php:2094
+#: application/controllers/admin/tokens.php:2121
 msgid "Create tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2081
+#: application/controllers/admin/tokens.php:2095
 msgid "Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2098
+#: application/controllers/admin/tokens.php:2112
 msgid "Only %s token has been created."
 msgid_plural "Only %s tokens have been created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:2099
+#: application/controllers/admin/tokens.php:2113
 msgid "Need %s token."
 msgid_plural "Need %s tokens."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:2104
+#: application/controllers/admin/tokens.php:2118
 msgid "%s token has been created."
 msgid_plural "%s tokens have been created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:2143
-#: application/controllers/admin/tokens.php:2162
+#: application/controllers/admin/tokens.php:2157
+#: application/controllers/admin/tokens.php:2176
 msgid "Delete Tokens Table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2144
+#: application/controllers/admin/tokens.php:2158
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2144
+#: application/controllers/admin/tokens.php:2158
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2147
+#: application/controllers/admin/tokens.php:2161
 msgid "Delete Tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2163
+#: application/controllers/admin/tokens.php:2177
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2163
+#: application/controllers/admin/tokens.php:2177
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2213
+#: application/controllers/admin/tokens.php:2227
 #: application/views/admin/globalSettings_view.php:10
 #: application/views/admin/token/bounce.php:1
 #: application/views/admin/token/tokenbar.php:63
 msgid "Bounce settings"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2214
+#: application/controllers/admin/tokens.php:2228
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2287
+#: application/controllers/admin/tokens.php:2301
 #: application/views/admin/token/tokenwarning.php:6
 msgid "Tokens have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2293
+#: application/controllers/admin/tokens.php:2307
 msgid "Tokens already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2302
+#: application/controllers/admin/tokens.php:2316
 #: application/views/admin/export/exportresults_view.php:122
 #: application/views/admin/token/tokenbar.php:3
 #: application/views/admin/token/tokenwarning.php:3
 msgid "Token control"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2303
+#: application/controllers/admin/tokens.php:2317
 msgid "A token table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2344
+#: application/controllers/admin/tokens.php:2358
 msgid "Import old tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2345
+#: application/controllers/admin/tokens.php:2359
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr ""
 
@@ -6973,7 +6973,7 @@ msgstr ""
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:3510
+#: application/helpers/expressions/em_core_helper.php:3511
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -10826,12 +10826,12 @@ msgid "Filter blank email addresses:"
 msgstr ""
 
 #: application/views/admin/participants/importCSV_view.php:105
-#: application/views/admin/token/csvupload.php:46
+#: application/views/admin/token/csvupload.php:44
 msgid "CSV input format"
 msgstr ""
 
 #: application/views/admin/participants/importCSV_view.php:108
-#: application/views/admin/token/csvupload.php:47
+#: application/views/admin/token/csvupload.php:45
 msgid "File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."
 msgstr ""
 
@@ -13468,7 +13468,7 @@ msgid "Upload a file:"
 msgstr ""
 
 #: application/views/admin/templates/templatesummary_view.php:83
-#: application/views/admin/token/csvupload.php:40
+#: application/views/admin/token/csvupload.php:38
 msgid "Upload"
 msgstr ""
 
@@ -13687,11 +13687,11 @@ msgstr ""
 msgid "Duplicates are determined by:"
 msgstr ""
 
-#: application/views/admin/token/csvupload.php:48
+#: application/views/admin/token/csvupload.php:46
 msgid "Mandatory fields:"
 msgstr ""
 
-#: application/views/admin/token/csvupload.php:49
+#: application/views/admin/token/csvupload.php:47
 msgid "Optional fields:"
 msgstr ""
 
