@@ -445,7 +445,7 @@
 
         // Slovak
         $supportedLanguages['sk']['description'] = $clang->gT('Slovak');
-        $supportedLanguages['sk']['nativedescription'] = 'Slov&aacute;k';
+        $supportedLanguages['sk']['nativedescription'] = 'Sloven&#269;ina';
         $supportedLanguages['sk']['rtl'] = false;
         $supportedLanguages['sk']['dateformat'] = 4;
         $supportedLanguages['sk']['radixpoint'] = 1;
