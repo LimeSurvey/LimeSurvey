@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-02-28 23:05:57+00:00\n"
+"POT-Creation-Date: 2013-03-01 23:05:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1673,7 +1673,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:305
 #: application/controllers/admin/labels.php:100
 #: application/controllers/admin/labels.php:133
-#: application/controllers/admin/participantsaction.php:1101
+#: application/controllers/admin/participantsaction.php:1104
 #: application/controllers/admin/question.php:55
 #: application/controllers/admin/questiongroup.php:55
 #: application/controllers/admin/surveyadmin.php:262
@@ -1756,8 +1756,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1207
 #: application/helpers/common_helper.php:1277
 #: application/helpers/common_helper.php:3973
-#: application/helpers/common_helper.php:7563
-#: application/helpers/common_helper.php:7603
+#: application/helpers/common_helper.php:7564
+#: application/helpers/common_helper.php:7604
 #: application/views/admin/dataentry/content_view.php:156
 #: application/views/admin/token/bounce.php:14
 #: application/views/admin/token/bounce.php:56
@@ -2213,7 +2213,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:349
 #: application/controllers/admin/responses.php:374
 #: application/controllers/admin/responses.php:615
-#: application/helpers/common_helper.php:6378
+#: application/helpers/common_helper.php:6379
 msgid "Access denied!"
 msgstr ""
 
@@ -2459,31 +2459,31 @@ msgstr ""
 msgid "%s participant(s) are to be copied "
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1470
+#: application/controllers/admin/participantsaction.php:1473
 msgid "%s participants have been shared"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1490
+#: application/controllers/admin/participantsaction.php:1493
 msgid "%s participants have been copied to the central participants table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1493
-#: application/controllers/admin/participantsaction.php:1517
-#: application/controllers/admin/participantsaction.php:1547
+#: application/controllers/admin/participantsaction.php:1496
+#: application/controllers/admin/participantsaction.php:1520
+#: application/controllers/admin/participantsaction.php:1550
 msgid "%s entries were not copied because they already existed"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1497
+#: application/controllers/admin/participantsaction.php:1500
 msgid "Attribute values for existing participants have been updated from the token records"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1514
-#: application/controllers/admin/participantsaction.php:1544
+#: application/controllers/admin/participantsaction.php:1517
+#: application/controllers/admin/participantsaction.php:1547
 msgid "%s participants have been copied to the survey token table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1521
-#: application/controllers/admin/participantsaction.php:1551
+#: application/controllers/admin/participantsaction.php:1524
+#: application/controllers/admin/participantsaction.php:1554
 msgid "Attribute values for existing participants have been updated from the participants records"
 msgstr ""
 
@@ -3205,29 +3205,29 @@ msgstr ""
 #: application/controllers/admin/tokens.php:2319
 #: application/controllers/admin/tokens.php:2361
 #: application/controllers/admin/useraction.php:723
-#: application/helpers/common_helper.php:6384
-#: application/helpers/common_helper.php:6389
-#: application/helpers/common_helper.php:6394
-#: application/helpers/common_helper.php:6399
-#: application/helpers/common_helper.php:6404
-#: application/helpers/common_helper.php:6409
-#: application/helpers/common_helper.php:6414
-#: application/helpers/common_helper.php:6419
-#: application/helpers/common_helper.php:6424
-#: application/helpers/common_helper.php:6430
-#: application/helpers/common_helper.php:6436
-#: application/helpers/common_helper.php:6441
-#: application/helpers/common_helper.php:6446
-#: application/helpers/common_helper.php:6451
-#: application/helpers/common_helper.php:6456
-#: application/helpers/common_helper.php:6461
-#: application/helpers/common_helper.php:6467
-#: application/helpers/common_helper.php:6472
-#: application/helpers/common_helper.php:6481
-#: application/helpers/common_helper.php:6486
-#: application/helpers/common_helper.php:6493
-#: application/helpers/common_helper.php:6497
-#: application/helpers/common_helper.php:6501
+#: application/helpers/common_helper.php:6385
+#: application/helpers/common_helper.php:6390
+#: application/helpers/common_helper.php:6395
+#: application/helpers/common_helper.php:6400
+#: application/helpers/common_helper.php:6405
+#: application/helpers/common_helper.php:6410
+#: application/helpers/common_helper.php:6415
+#: application/helpers/common_helper.php:6420
+#: application/helpers/common_helper.php:6425
+#: application/helpers/common_helper.php:6431
+#: application/helpers/common_helper.php:6437
+#: application/helpers/common_helper.php:6442
+#: application/helpers/common_helper.php:6447
+#: application/helpers/common_helper.php:6452
+#: application/helpers/common_helper.php:6457
+#: application/helpers/common_helper.php:6462
+#: application/helpers/common_helper.php:6468
+#: application/helpers/common_helper.php:6473
+#: application/helpers/common_helper.php:6482
+#: application/helpers/common_helper.php:6487
+#: application/helpers/common_helper.php:6494
+#: application/helpers/common_helper.php:6498
+#: application/helpers/common_helper.php:6502
 #: application/helpers/frontend_helper.php:1331
 #: application/helpers/frontend_helper.php:1408
 #: application/helpers/frontend_helper.php:1578
@@ -3840,10 +3840,10 @@ msgstr ""
 #: application/helpers/common_helper.php:597
 #: application/helpers/common_helper.php:1206
 #: application/helpers/common_helper.php:1276
-#: application/helpers/common_helper.php:7134
-#: application/helpers/common_helper.php:7171
-#: application/helpers/common_helper.php:7562
-#: application/helpers/common_helper.php:7602
+#: application/helpers/common_helper.php:7135
+#: application/helpers/common_helper.php:7172
+#: application/helpers/common_helper.php:7563
+#: application/helpers/common_helper.php:7603
 #: application/helpers/qanda_helper.php:1361
 #: application/helpers/qanda_helper.php:1541
 #: application/helpers/qanda_helper.php:2124
@@ -6454,98 +6454,98 @@ msgstr ""
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:6383
+#: application/helpers/common_helper.php:6384
 msgid "You are not allowed dump the database!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6388
+#: application/helpers/common_helper.php:6389
 msgid "You are not allowed export a label set!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6393
+#: application/helpers/common_helper.php:6394
 msgid "You are not allowed to change user data!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6398
+#: application/helpers/common_helper.php:6399
 msgid "You are not allowed to create new surveys!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6403
+#: application/helpers/common_helper.php:6404
 msgid "You are not allowed to delete this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6408
+#: application/helpers/common_helper.php:6409
 msgid "You are not allowed to add new questions for this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6413
+#: application/helpers/common_helper.php:6414
 msgid "You are not allowed to activate this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6418
+#: application/helpers/common_helper.php:6419
 msgid "You are not allowed to stop this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6423
+#: application/helpers/common_helper.php:6424
 msgid "You are not allowed to add a group to this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6429
+#: application/helpers/common_helper.php:6430
 msgid "You are not allowed to order groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6435
+#: application/helpers/common_helper.php:6436
 msgid "You are not allowed to edit this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6440
+#: application/helpers/common_helper.php:6441
 msgid "You are not allowed to edit groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6445
+#: application/helpers/common_helper.php:6446
 msgid "You are not allowed to browse responses!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6450
+#: application/helpers/common_helper.php:6451
 msgid "You are not allowed to set assessment rules!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6455
+#: application/helpers/common_helper.php:6456
 msgid "You are not allowed to delete this group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6460
+#: application/helpers/common_helper.php:6461
 msgid "You are not allowed to import a survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6466
+#: application/helpers/common_helper.php:6467
 msgid "You are not allowed to import a group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6471
+#: application/helpers/common_helper.php:6472
 msgid "You are not allowed to to import a question!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6480
-#: application/helpers/common_helper.php:6485
+#: application/helpers/common_helper.php:6481
+#: application/helpers/common_helper.php:6486
 msgid "Security alert"
 msgstr ""
 
-#: application/helpers/common_helper.php:6480
-#: application/helpers/common_helper.php:6485
+#: application/helpers/common_helper.php:6481
+#: application/helpers/common_helper.php:6486
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr ""
 
-#: application/helpers/common_helper.php:6480
-#: application/helpers/common_helper.php:6485
+#: application/helpers/common_helper.php:6481
+#: application/helpers/common_helper.php:6486
 msgid "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
 msgstr ""
 
-#: application/helpers/common_helper.php:6490
+#: application/helpers/common_helper.php:6491
 msgid "You are not allowed to perform this operation!"
 msgstr ""
 
-#: application/helpers/common_helper.php:7244
+#: application/helpers/common_helper.php:7245
 msgid "SQL command failed: %s"
 msgstr ""
 
