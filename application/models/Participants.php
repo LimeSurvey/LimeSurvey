@@ -266,6 +266,8 @@ class Participants extends CActiveRecord
         
         $selectValue[] = "p.*";
         $selectValue[] = "luser.full_name as ownername";
+        $selectValue[] = "luser.users_name as username";
+        
         
         // Add survey count subquery
         $subQuery = Yii::app()->db->createCommand()
