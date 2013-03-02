@@ -260,7 +260,7 @@ class export extends Survey_Common_Action {
 
         if (Yii::app()->request->getPost('response_id'))
         {
-            $sFilter='id='.(int)Yii::app()->request->getPost('response_id');
+            $sFilter="{{survey_{$iSurveyID}}}.id=".(int)Yii::app()->request->getPost('response_id');
         }
         else
         {
