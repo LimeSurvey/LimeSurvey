@@ -18,6 +18,8 @@ class Tokens_dynamic extends LSActiveRecord
 {
 	protected static $sid = 0;
 
+    public $emailstatus='OK'; // Defaul value for email status
+
     /**
      * Returns the static model of Settings table
      *
