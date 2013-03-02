@@ -337,9 +337,9 @@ class ParticipantAttributeNames extends CActiveRecord
             Yii::app()->db->createCommand()
                       ->update('{{participant_attribute}}',
                                $data,
-                               'participant_id = :participant_id AND attribute_id = :attribute_id',
-                               array(':participant_id' => $data['participant_id'], ':attribute_id'=>$data['attribute_id']));
-        }
+                               'participant_id = :participant_id2 AND attribute_id = :attribute_id2',
+                               array(':participant_id2' => $data['participant_id'], ':attribute_id2'=>$data['attribute_id']));
+		}
 
     }
 

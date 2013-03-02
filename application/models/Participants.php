@@ -29,18 +29,18 @@
 class Participants extends CActiveRecord
 {
 
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return Participants
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return Participants
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
     /**
      * @return string the associated database table name
@@ -354,31 +354,31 @@ class Participants extends CActiveRecord
 
     function deleteParticipant($rows)
     {
-    	/* This function deletes the participant from the participants table,
-    	   references in the survey_links table (but not in matching tokens tables)
-    	   and then all the participants attributes. */
+        /* This function deletes the participant from the participants table,
+           references in the survey_links table (but not in matching tokens tables)
+           and then all the participants attributes. */
 
-		// Converting the comma seperated id's to an array to delete multiple rows
+        // Converting the comma seperated id's to an array to delete multiple rows
         $rowid = explode(",", $rows);
         foreach ($rowid as $row)
         {
             Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
-        	Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
-        	Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
+            Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
+            Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
         }
     }
 
     function deleteParticipantToken($rows)
     {
-    	/* This function deletes the participant from the participants table,
-    	   the participant from any tokens table they're in (using the survey_links table to find them)
-    	   and then all the participants attributes. */
+        /* This function deletes the participant from the participants table,
+           the participant from any tokens table they're in (using the survey_links table to find them)
+           and then all the participants attributes. */
         $rowid = explode(",", $rows);
         foreach ($rowid as $row)
         {
             $tokens = Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = :pid')->bindParam(":pid", $row, PDO::PARAM_INT)->queryAll();
 
-			foreach ($tokens as $key => $value)
+            foreach ($tokens as $key => $value)
             {
                 $tokentable='{{tokens_'.intval($value['survey_id']).'}}';
 
@@ -387,69 +387,69 @@ class Participants extends CActiveRecord
                     Yii::app()->db->createCommand()
                                   ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = :pid',array(':pid'=>$row)); // Deletes matching token table entries
                     //Yii::app()->db->createCommand()->delete(Tokens::model()->tableName(), array('in', 'participant_id', $row));
-				}
+                }
             }
-        	Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
-        	Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
-        	Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
+            Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
+            Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
+            Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
 
         }
     }
 
-	function deleteParticipantTokenAnswer($rows)
-	{
-		/* This function deletes the participant from the participants table,
-		   the participant from any tokens table they're in (using the survey_links table to find them),
-		   all responses in surveys they've been linked to,
-		   and then all the participants attributes. */
-		$rowid = explode(",", $rows);
-		foreach ($rowid as $row)
-		{
-			$tokens = Yii::app()->db->createCommand()
+    function deleteParticipantTokenAnswer($rows)
+    {
+        /* This function deletes the participant from the participants table,
+           the participant from any tokens table they're in (using the survey_links table to find them),
+           all responses in surveys they've been linked to,
+           and then all the participants attributes. */
+        $rowid = explode(",", $rows);
+        foreach ($rowid as $row)
+        {
+            $tokens = Yii::app()->db->createCommand()
                                     ->select('*')
                                     ->from('{{survey_links}}')
                                     ->where('participant_id = :row')
                                     ->bindParam(":row", $row, PDO::PARAM_INT)
                                     ->queryAll();
 
-			foreach ($tokens as $key => $value)
-			{
+            foreach ($tokens as $key => $value)
+            {
                 $tokentable='{{tokens_'.intval($value['survey_id']).'}}';
-				if (Yii::app()->db->schema->getTable($tokentable))
-				{
-					$tokenid = Yii::app()->db->createCommand()
+                if (Yii::app()->db->schema->getTable($tokentable))
+                {
+                    $tokenid = Yii::app()->db->createCommand()
                                              ->select('token')
                                              ->from('{{tokens_' . intval($value['survey_id']) . '}}')
                                              ->where('participant_id = :pid')
                                              ->bindParam(":pid", $value['participant_id'], PDO::PARAM_INT)
                                              ->queryAll();
-					$token = $tokenid[0];
+                    $token = $tokenid[0];
                     $surveytable='{{survey_'.intval($value['survey_id']).'}}';
-					if ($datas=Yii::app()->db->schema->getTable($surveytable))
-					{
-						if (!empty($token['token']) && isset($datas->columns['token'])) //Make sure we have a token value, and that tokens are used to link to the survey
-						{
-							$gettoken = Yii::app()->db->createCommand()
+                    if ($datas=Yii::app()->db->schema->getTable($surveytable))
+                    {
+                        if (!empty($token['token']) && isset($datas->columns['token'])) //Make sure we have a token value, and that tokens are used to link to the survey
+                        {
+                            $gettoken = Yii::app()->db->createCommand()
                                                       ->select('*')
                                                       ->from('{{survey_' . intval($value['survey_id']) . '}}')
                                                       ->where('token = :token')
                                                       ->bindParam(":token", $token['token'], PDO::PARAM_STR)
                                                       ->queryAll();
-							$gettoken = $gettoken[0];
-							Yii::app()->db->createCommand()
+                            $gettoken = $gettoken[0];
+                            Yii::app()->db->createCommand()
                                           ->delete('{{survey_' . intval($value['survey_id']) . '}}', 'token = :token')
                                           ->bindParam(":token", $gettoken['token'], PDO::PARAM_STR); // Deletes matching responses from surveys
-						}
-					}
-					Yii::app()->db->createCommand()
+                        }
+                    }
+                    Yii::app()->db->createCommand()
                                   ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = :pid' , array(':pid'=>$value['participant_id'])); // Deletes matching token table entries
-				}
-			}
-			Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
-			Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
-			Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
-		}
-	}
+                }
+            }
+            Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
+            Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
+            Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
+        }
+    }
 
     /*
      * Function builds a select query for searches through participants using the $condition field passed
@@ -466,8 +466,8 @@ class Participants extends CActiveRecord
      * */
     function getParticipantsSearchMultiple($condition, $page, $limit)
     {
-    	//http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
-    	//First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
+        //http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
+        //First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
 
         //As we iterate through the conditions we build up the $command query by adding conditions to it
         //
@@ -640,7 +640,7 @@ class Participants extends CActiveRecord
             }
         }
         
-    	if ($page == 0 && $limit == 0)
+        if ($page == 0 && $limit == 0)
         {
             $arr = Participants::model()->findAll($command);
             $data = array();
@@ -677,8 +677,8 @@ class Participants extends CActiveRecord
      */
     function getParticipantsSearchMultipleCondition($condition)
     {
-    	//http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
-    	//First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
+        //http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
+        //First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
 
         //As we iterate through the conditions we build up the $command query by adding conditions to it
         //
@@ -844,6 +844,7 @@ class Participants extends CActiveRecord
      * */
     function copytosurveyatt($surveyid, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false, $overwritest=false, $createautomap=true)
     {
+        debugbreak();
         Yii::app()->loadHelper('common');
         $duplicate = 0;
         $sucessfull = 0;
@@ -1181,7 +1182,7 @@ class Participants extends CActiveRecord
      *
      * @param int $surveyid The id of the survey, used to find the appropriate tokens table
      * @param array $newarr An array containing the names of token attributes that have to be created in the cpdb
-     * @param array $mapped An array containing the names of token attributes that are to be mapped to an existing cpdb attribute
+     * @param array $aMapped An array containing the names of token attributes that are to be mapped to an existing cpdb attribute
      * @param bool $overwriteauto If true, overwrites existing automatically mapped attribute values (where token fieldname=attribute_cpdb_n)
      * @param bool $overwriteman If true, overwrites manually mapped attribute values (where token fieldname=attribute_n)
      * @param bool $createautomap If true, updates manuall mapped token fields to fieldname=attribute_cpdb_n from fieldname=attribute_n, s in future mapping is automatic
@@ -1191,12 +1192,13 @@ class Participants extends CActiveRecord
      * @return array An array contaning list of successful and list of failed ids
      */
 
-    function copyToCentral($surveyid, $newarr, $mapped, $overwriteauto=false, $overwriteman=false, $createautomap=true)
+    function copyToCentral($surveyid, $newarr, $aMapped, $overwriteauto=false, $overwriteman=false, $createautomap=true)
     {
         $tokenid = Yii::app()->session['participantid']; //List of token_id's to add to participants table
         $duplicate = 0;
         $sucessfull = 0;
         $writearray = array();
+        $aAutoMapped=array();
         $attid = array(); //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
         $pid = "";
 
@@ -1217,7 +1219,7 @@ class Participants extends CActiveRecord
             if ($value[10] == 'c') /* This is going to cause a problem one day! It's deciding that an item is an automatically mapped because the 10th letter is "c"*/
             {
                 $autoattid = substr($value, 15);
-                $mapped[$autoattid] = $value;
+                $aAutoMapped[$autoattid] = $value;
             }
         }
 
@@ -1273,23 +1275,25 @@ class Participants extends CActiveRecord
                 {
                     $duplicate++;
                     //HERE is where we can add "overwrite" feature to update attribute values for existing participants
-                    if($overwriteauto == "true") {
-                        if (!empty($newarr))
+                    if($overwriteauto == "true" && !empty($newarr))
+                    {
+                        foreach ($newarr as $key => $value)
                         {
-                            foreach ($newarr as $key => $value)
-                            {
-                                Participants::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $attid[$key], $key);
-                            }
+                            Participants::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $attid[$key], $key);
                         }
                     }
-                    if($overwriteman == "true") {
-                        /* Now add mapped attribute values */
-                        if (!empty($mapped))
+                    if($overwriteman == "true" && !empty($aMapped))
+                    {
+                        foreach ($aMapped as $cpdbatt => $tatt)
                         {
-                            foreach ($mapped as $cpdbatt => $tatt)
-                            {
-                                Participants::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
-                            }
+                            Participants::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
+                        }
+                    }
+                    if($overwriteauto == "true" && !empty($aAutoMapped))
+                    {
+                        foreach ($aAutoMapped as $cpdbatt => $tatt)
+                        {
+                            Participants::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
                         }
                     }
                 }
@@ -1324,9 +1328,13 @@ class Participants extends CActiveRecord
                         }
                     }
                     /* Now add mapped attribute values */
-                    if (!empty($mapped))
+                    if (!empty($aMapped))
                     {
-                        foreach ($mapped as $cpdbatt => $tatt)
+                        foreach ($aMapped as $cpdbatt => $tatt)
+                        {
+                            Participants::model()->updateAttributeValueToken($surveyid,$pid,$cpdbatt,$tatt);
+                        }
+                        foreach ($aAutoMapped as $cpdbatt => $tatt)
                         {
                             Participants::model()->updateAttributeValueToken($surveyid,$pid,$cpdbatt,$tatt);
                         }
@@ -1382,9 +1390,9 @@ class Participants extends CActiveRecord
                                     'sid = '.$surveyid); //load description in the surveys table
             }
         }
-        if (!empty($mapped))
+        if (!empty($aMapped))
         {
-            foreach ($mapped as $cpdbatt => $tatt)
+            foreach ($aMapped as $cpdbatt => $tatt)
             {
                 if ($tatt[10] != 'c' && $createautomap=="true") //This attribute is not already mapped
                 {
@@ -1423,7 +1431,7 @@ class Participants extends CActiveRecord
         return $returndata;
     }
 
-	/*
+    /*
      * The purpose of this function is to check for duplicate in participants
      */
 
