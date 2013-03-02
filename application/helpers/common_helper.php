@@ -4744,7 +4744,9 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 
             if (!in_array($fieldname, $fields_list)) $fields_list[] = $fieldname;
 
-            $criteria->addColumnCondition(array($fieldname => $member), 'OR');
+                // Yii does not quote column names (duh!) so we have to do it.
+                $criteria->addColumnCondition(array(Yii::app()->db->quoteColumnName($fieldname) => $member['value']), 'OR');
+            }
 
             $fields_query[$fieldname] = $criteria;
         }
