@@ -2254,8 +2254,7 @@ function do_multiplechoice($ia)
     }
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
-    $qresult = dbExecuteAssoc($qquery);     //Checked
-    $qrow = $qresult->read(); $other = $qrow['other'];
+    $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
 
     if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
@@ -2639,8 +2638,7 @@ function do_multiplechoice_withcomments($ia)
     //    }
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
-    $qresult = Yii::app()->db->createCommand($qquery)->query();     //Checked
-    $qrow = $qresult->read(); $other = $qrow['other'];
+    $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked    
     if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
     } else {
@@ -4398,8 +4396,7 @@ function do_array_10point($ia)
     $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $qresult = dbExecuteAssoc($qquery);      //Checked
-    $qrow = $qresult->read(); $other = $qrow['other'];
+    $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['answer_width'])!='')
@@ -4843,8 +4840,7 @@ function do_array($ia)
 
     $checkconditionFunction = "checkconditions";
     $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $qresult = dbExecuteAssoc($qquery);     //Checked
-    $qrow = $qresult->read(); $other = $qrow['other'];
+    $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['answer_width'])!='')
@@ -5206,9 +5202,8 @@ function do_array_multitext($ia)
 
     $defaultvaluescript = "";
     $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-
-    $qresult = Yii::app()->db->createCommand($qquery)->query();
-    $qrow = $qresult->read(); $other = $qrow['other'];
+    $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
+    
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
@@ -5369,8 +5364,7 @@ function do_array_multitext($ia)
         $cellwidth=sprintf('%02d', $cellwidth);
 
         $ansquery = "SELECT count(question) FROM {{questions}} WHERE parent_qid={$ia[0]} and scale_id=0 AND question like '%|%'";
-        $ansresult = dbExecuteAssoc($ansquery)->read();
-        $ansresult = reset($ansresult);
+        $ansresult = Yii::app()->db->createCommand($ansquery)->queryScalar(); //Checked
         if ($ansresult>0)
         {
             $right_exists=true;
@@ -5572,8 +5566,7 @@ function do_array_multiflexi($ia)
     //echo '<pre>'; print_r($_POST); echo '</pre>';
     $defaultvaluescript = '';
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
-    $qresult = dbExecuteAssoc($qquery);
-    $qrow = $qresult->read(); $other = $qrow['other'];
+    $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['multiflexible_max'])!='' && trim($aQuestionAttributes['multiflexible_min']) ==''){
@@ -5924,8 +5917,8 @@ function do_arraycolumns($ia)
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $qresult = dbExecuteAssoc($qquery);    //Checked
-    $qrow = $qresult->read(); $other = $qrow['other'];
+    $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
+
     $lquery = "SELECT * FROM {{answers}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
     $oAnswers = dbExecuteAssoc($lquery);
     $aAnswers = $oAnswers->readAll(); 
