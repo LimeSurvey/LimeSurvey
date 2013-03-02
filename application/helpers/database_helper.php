@@ -187,7 +187,7 @@ function dbSelectTablesLike($table)
 */
 function dbGetTablesLike($table)
 {
-    return (array) Yii::app()->db->createCommand(dbSelectTablesLike("{{{$table}}}"))->queryAll();
+    return (array) Yii::app()->db->createCommand(dbSelectTablesLike("{{{$table}}}"))->queryColumn();
 }
 
 /**

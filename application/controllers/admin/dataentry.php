@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*   $Id$
 */
 
 /**
@@ -334,7 +333,7 @@ class dataentry extends Survey_Common_Action
             {
                 // show UI for choosing old table
 
-                $result = dbGetTablesLike("old\_survey\_%");
+                $aTables = dbGetTablesLike("old\_survey\_%");
 
                 $aOptionElements = array();
                 //$queryCheckColumnsActive = $schema->getTable($oldtable)->columnNames;
@@ -342,16 +341,14 @@ class dataentry extends Survey_Common_Action
                 //$resultActive = dbExecuteAssoc($queryCheckColumnsActive) or show_error("Error:<br />$query<br />");
                 $countActive = count($resultActive);
 
-                foreach ($result as $row)
+                foreach ($aTables as $sTable)
                 {
-                    $row = each($row);
-
                     //$resultOld = dbExecuteAssoc($queryCheckColumnsOld) or show_error("Error:<br />$query<br />");
-                    $resultOld = $schema->getTable($row[1])->columnNames;
+                    $resultOld = $schema->getTable($sTable)->columnNames;
 
                     if($countActive == count($resultOld)) //num_fields()
                     {
-                        $aOptionElements[$row[1]] = $row[1];
+                        $aOptionElements[$sTable] = $sTable;
                     }
                 }
                 $aHTMLOptions=array('empty'=>$clang->gT('Please select...'));
@@ -396,15 +393,15 @@ class dataentry extends Survey_Common_Action
                 $resultOldValues = dbExecuteAssoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
                 $iRecordCount = 0;
                 $aSRIDConversions=array();
-                foreach ($resultOldValues->readAll() as $row)
+                foreach ($resultOldValues->readAll() as $sTable)
                 {
-                    $iOldID=$row['id'];
-                    unset($row['id']);
+                    $iOldID=$sTable['id'];
+                    unset($sTable['id']);
                     // Remove NULL values
-                    $row=array_filter($row, 'strlen');
+                    $sTable=array_filter($sTable, 'strlen'); 
                     //$sInsertSQL=Yii::app()->db->GetInsertSQL($activetable, $row);
-                    $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("dbQuoteID", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll",array_values($row))).")";
-                    $result = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
+                    $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("dbQuoteID", array_keys($sTable))).") VALUES (".implode(",", array_map("dbQuoteAll",array_values($sTable))).")";
+                    $aTables = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
 
                     $aSRIDConversions[$iOldID] = getLastInsertID($activetable);
                     $iRecordCount++;
@@ -427,16 +424,16 @@ class dataentry extends Survey_Common_Action
                     $resultOldValues = dbExecuteAssoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
                     $iRecordCountT=0;
                     $aSRIDConversions=array();
-                    foreach ($resultOldValues->readAll() as $row)
+                    foreach ($resultOldValues->readAll() as $sTable)
                     {
-                        if (isset($aSRIDConversions[$row['id']]))
+                        if (isset($aSRIDConversions[$sTable['id']]))
                         {
-                            $row['id']=$aSRIDConversions[$row['id']];
+                            $sTable['id']=$aSRIDConversions[$sTable['id']];
                         }
                         else continue;
                         //$sInsertSQL=Yii::app()->db->GetInsertSQL($sNewTimingsTable,$row);
-                        $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",", array_map("dbQuoteID", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll", array_values($row))).")";
-                        $result = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
+                        $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",", array_map("dbQuoteID", array_keys($sTable))).") VALUES (".implode(",", array_map("dbQuoteAll", array_values($sTable))).")";
+                        $aTables = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
                         $iRecordCountT++;
                     }
                     Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
