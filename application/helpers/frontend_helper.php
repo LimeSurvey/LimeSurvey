@@ -226,6 +226,10 @@
             {
                 $route.="/action/previewgroup/gid/".intval(Yii::app()->request->getParam('gid',0));
             }
+            if (Yii::app()->request->getParam('token')!='')
+            {
+                $route.="/token/".Yii::app()->request->getParam('token');
+            }
             $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
             foreach ($slangs as $sLanguage)
             {
