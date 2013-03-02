@@ -118,7 +118,7 @@
                     } ?>
                 </select>
                 <br />&nbsp;</fieldset>
-            <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") & hasSurveyPermission($surveyid,'token','read')) { ?>
+            <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && hasSurveyPermission($surveyid,'tokens','read')) { ?>
                 <fieldset><legend><?php $clang->eT("Token control");?></legend>
                     <?php $clang->eT("Choose token fields");?>:
                     <img src='<?php echo $imageurl;?>/help.gif' alt='<?php $clang->eT("Help");?>' onclick='javascript:alert("<?php $clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js");?>")' /><br />
