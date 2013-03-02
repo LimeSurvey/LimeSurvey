@@ -170,7 +170,7 @@
 
                         </ul>
                     </li>
-                    <?php if($surveycontent) { ?>
+                    <?php if(hasSurveyPermission($surveyid,'surveycontent','read')) { ?>
                         <?php if($onelanguage) { ?>
                             <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
                                 <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php $clang->eT("Printable version");?></a></li>
