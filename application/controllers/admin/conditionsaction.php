@@ -899,8 +899,6 @@ class conditionsaction extends Survey_Common_Action {
                     ->bindValue(":lang1", $sLanguage, PDO::PARAM_STR)
                     ->bindValue(":lang2", $sLanguage, PDO::PARAM_STR)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-
-
                     
                     $querytoken = "SELECT count(*) as recordcount "
                     ."FROM {{conditions}} "
@@ -930,8 +928,6 @@ class conditionsaction extends Survey_Common_Action {
                     ->bindValue(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)
                     ->bindValue(":qid", $qid, PDO::PARAM_INT)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-                    
-                    
                     
                     $conditionscount=$conditionscount+$conditionscounttoken;
 
@@ -1206,7 +1202,6 @@ class conditionsaction extends Survey_Common_Action {
         }
         //END DISPLAY CONDITIONS FOR THIS QUESTION
 
-
         // BEGIN: DISPLAY THE COPY CONDITIONS FORM
         if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
         {
@@ -1305,7 +1300,6 @@ class conditionsaction extends Survey_Common_Action {
         {
             $qcount = 0;
         }
-
 
         //BEGIN: DISPLAY THE ADD or EDIT CONDITION FORM
         if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||

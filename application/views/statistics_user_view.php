@@ -1,7 +1,3 @@
-<?php 
-    doHeader();
-    echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir($sTemplatePath))."/startpage.pstpl"), array(), $redata);
-?>
 <script type='text/javascript'>
     var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/graph"); ?>";
 </script>
