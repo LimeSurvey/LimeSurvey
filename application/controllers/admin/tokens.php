@@ -860,28 +860,34 @@ class tokens extends Survey_Common_Action
     /**
     * Delete tokens
     */
-    function delete($iSurveyId)
+    function delete($iSurveyID)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
         $clang = $this->getController()->lang;
-
+        $iSurveyID = sanitize_int($iSurveyID);
+        $sTokenIDs = Yii::app()->request->getPost('tid');
+        /* Check permissions */
+        if (!hasSurveyPermission($iSurveyID, 'tokens', 'update'))
+        {
+            Yii::app()->session['flashmessage'] = $clang->gT("You do not have sufficient rights to access this page.");
+            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyID}"));
+        }
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
-        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyID . '}}');
         if (!$bTokenExists) //If no tokens table exists
         {
-            self::_newtokentable($iSurveyId);
+            self::_newtokentable($iSurveyID);
         }
         $iTokenId = Yii::app()->request->getPost('tid');
 
-        if (hasSurveyPermission($iSurveyId, 'tokens', 'delete'))
+        if (hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
         {
-            $aTokenIds = explode(',', $iTokenId); //Make the tokenids string into an array
+            $aTokenIds = explode(',', $sTokenIDs); //Make the tokenids string into an array
 
             //Delete any survey_links
-            Survey_links::model()->deleteTokenLink($aTokenIds, $iSurveyId);
+            Survey_links::model()->deleteTokenLink($aTokenIds, $iSurveyID);
 
             //Then delete the tokens
-            Tokens_dynamic::model($iSurveyId)->deleteRecords($aTokenIds);
+            Tokens_dynamic::model($iSurveyID)->deleteRecords($aTokenIds);
         }
     }
 
