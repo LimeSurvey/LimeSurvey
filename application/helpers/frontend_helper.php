@@ -221,6 +221,19 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
             {
                 $sHTMLCode .=" selected='selected'";
             }
+            if (Yii::app()->request->getParam('token')!='')
+            {
+                $route.="/token/".Yii::app()->request->getParam('token');
+            }
+            $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
+            foreach ($slangs as $sLanguage)
+            {
+                $sTargetURL=Yii::app()->getController()->createUrl($route."/lang/$sLanguage");
+                $sHTMLCode .= "<option value=\"{$sTargetURL}\" ";
+                if ($sLanguage==$sSelectedLanguage)
+                {
+                    $sHTMLCode .=" selected='selected'";
+                }
                 $sHTMLCode .= ">".$aAllLanguages[$sLanguage]['nativedescription']."</option>\n";
 
         }
