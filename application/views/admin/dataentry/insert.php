@@ -82,7 +82,7 @@
         <br /><br />
 
         <?php if(isset($thisid) && hasSurveyPermission($surveyid, 'responses','read')): ?>
-			<input type='submit' value='<?php $clang->eT("View this record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/responses/sa/action/surveyid/'.$surveyid.'/id/'.$thisid); ?>', '_top')" />
+			<input type='submit' value='<?php $clang->eT("View this record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$thisid); ?>', '_top')" />
 			<br /><br />
         <?php endif; ?>
 
