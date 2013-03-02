@@ -2257,7 +2257,7 @@ class remotecontrol_handle
             Survey_dynamic::sid($iSurveyID);
             $survey_dynamic = new Survey_dynamic;
             $aBasicDestinationFields=$survey_dynamic->tableSchema->columnNames;
-            $aResponseData=array_intersect($aResponseData,$aBasicDestinationFields);
+            $aResponseData=array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
             $result_id = $survey_dynamic->insertRecords($aResponseData);
 
             if ($result_id)
