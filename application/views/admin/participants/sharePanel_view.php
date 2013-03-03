@@ -15,7 +15,10 @@
 
     var sSearchMsg = "<?php $clang->eT("Search shared participants", 'js') ?>";
     var sLoadText = '<?php $clang->eT("Loading...",'js');?>';
-    var deleteSharesTxt="<?php $clang->eT("Un-share selected participants", 'js') ?>";
+    var sDeleteMsg = "<?php $clang->eT("Are you sure you want to un-share the selected participants?") ?>";
+    var sDeleteShares="<?php $clang->eT("Un-share selected participants", 'js') ?>";
+    var sSelectRowMsg = "<?php $clang->eT("Please select at least one participant.", 'js') ?>";
+    var sWarningMsg = "<?php $clang->eT("Warning", 'js') ?>";
     var refreshListTxt="<?php $clang->eT("Refresh list", 'js') ?>";
     var pageViewTxt= "<?php $clang->eT("Page {0} of {1}", 'js') ?>";
     var viewRecordTxt= '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';

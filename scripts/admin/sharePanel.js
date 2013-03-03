@@ -85,12 +85,32 @@ $(document).ready(function() {
         {add:false,
             del:true,
             edit:false,
-            deltitle: deleteSharesTxt, 
+            alertcap: sWarningMsg,
+            alerttext: sSelectRowMsg,
+            deltitle: sDeleteShares, 
             searchtitle: sSearchMsg,
             refreshtitle: refreshListTxt},
         {closeAfterDel: true,
             reloadAfterSubmit: true
-        },{},{},
+        },{},{
+            caption: sDeleteShares,
+            msg: sDeleteMsg,
+            width: 500,
+            afterShowForm: function($form) {
+                /* This code sets the position of the delete dialog to just below the last selected item */
+                /* Unless this would put the delete dialog off the page, in which case it will be pushed up a bit */
+                var dialog = $form.closest('div.ui-jqdialog'),
+                selRowId = jQuery("#sharePanel").jqGrid('getGridParam', 'selrow'),
+                selRowCoordinates = $('#'+selRowId).offset();
+                selRowCoordinates.top=selRowCoordinates.top+25;
+                selRowCoordinates.left=50;
+                if(selRowCoordinates.top+325 > jQuery(window).height()) {
+                    selRowCoordinates.top=selRowCoordinates.top-325;
+                }
+                dialog.offset(selRowCoordinates);
+            }
+            
+        },
         {   Find: sFindButtonCaption,
             Reset: sResetButtonCaption,
             width:600,
