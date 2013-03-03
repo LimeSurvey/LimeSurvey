@@ -2478,9 +2478,10 @@ function checkQuota($checkaction,$surveyid)
         $redata = compact(array_keys(get_defined_vars()));
         foreach($quota_info as $quota)
         {
-            $quota['Message']=templatereplace($quota['Message'],array(),$redata);
-            $quota['Url']=templatereplace($quota['Url'],array(),$redata);
-            $quota['UrlDescrip']=templatereplace($quota['UrlDescrip'],array(),$redata);
+            $quota['Message'] = templatereplace($quota['Message'],array(),$redata);
+            $quota['Url'] = passthruReplace($quota['Url'], $thissurvey);
+            $quota['Url'] = templatereplace($quota['Url'],array(),$redata);
+            $quota['UrlDescrip'] = templatereplace($quota['UrlDescrip'],array(),$redata);
             if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "1"))
             {
                 // If a token is used then mark the token as completed
