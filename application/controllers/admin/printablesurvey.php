@@ -345,7 +345,7 @@ class printablesurvey extends Survey_Common_Action
                             if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
                                 $tokenData = getTokenFieldsAndNames($surveyid);
                                 preg_match('/^{TOKEN:([^}]*)}$/',$distinctrow['cfieldname'],$extractedTokenAttr);
-                                $sExplanation .= "Your ".$tokenData[strtolower($extractedTokenAttr[1])]." ";
+                                $sExplanation .= "Your ".$tokenData[strtolower($extractedTokenAttr[1])]['description']." ";
                                 if($distinctrow['method']=='==')
                                 {
                                     $sExplanation .= $clang->gT("is")." ";
