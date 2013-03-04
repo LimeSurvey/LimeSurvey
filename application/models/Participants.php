@@ -735,7 +735,6 @@ class Participants extends CActiveRecord
             $sFieldname=$condition[$i*4];
             $sOperator=$condition[($i*4)+1];
             $sValue=$condition[($i*4)+2];
-            if(is_numeric($sValue)) $sValue=intval($sValue);
             $param = ':condition_'.$i;
             switch ($sOperator)
             {
