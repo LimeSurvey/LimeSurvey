@@ -538,6 +538,24 @@ CREATE TABLE prefix_templates (
   CONSTRAINT prefix_templates_pkey PRIMARY KEY ("folder")
 );
 
+--
+-- @todo Make name unique
+--
+
+CREATE TABLE `prefix_plugins` (
+  `id` integer PRIMARY KEY NOT NULL,
+  `name` character varying(50) NOT NULL,
+  `active` integer NOT NULL default '0'
+);
+
+CREATE TABLE `prefix_plugin_settings` (
+  `id` integer PRIMARY KEY NOT NULL,
+  `plugin_id` integer NOT NULL,
+  `model` character varying(50) NULL,
+  `model_id` integer NULL,
+  `key` character varying(50) NOT NULL,
+  `value` text NULL
+);
 
 --
 -- Secondary indexes

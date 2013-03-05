@@ -533,6 +533,25 @@ CREATE TABLE `prefix_templates` (
   PRIMARY KEY  (`folder`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
+--
+-- @todo Make name unique
+--
+CREATE TABLE `prefix_plugins` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(50) NOT NULL,
+  `active` int(1) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+CREATE TABLE `prefix_plugin_settings` (
+  `id` int(11) NOT NULL auto_increment,
+  `plugin_id` int(11) NOT NULL,
+  `model` varchar(50) NULL,
+  `model_id` int(11) NULL,
+  `key` varchar(50) NOT NULL,
+  `value` text NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 --
 -- Secondary indexes

@@ -1050,6 +1050,24 @@ function db_upgrade_all($oldversion) {
             
             // Not updating settings table as upgrade process takes care of that step now
         }
+        
+        if ($oldversion < 165)
+        {
+            Yii::app()->db->createCommand()->createTable('{{plugins}}', array(
+                'id' => 'pk',
+                'name' => 'string NOT NULL',
+                'active' => 'boolean'
+            ));
+            Yii::app()->db->createCommand()->createTable('{{plugin_settings}}', array(
+                'id' => 'pk',
+                'plugin_id' => 'integer NOT NULL',
+                'model' => 'string',
+                'model_id' => 'integer',
+                'key' => 'string',
+                'value' => 'text'
+            ));
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>165),"stg_name='DBVersion'");
+        }
         $oTransaction->commit();
     }
     catch(Exception $e)

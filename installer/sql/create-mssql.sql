@@ -527,6 +527,22 @@ CREATE TABLE [prefix_templates] (
   PRIMARY KEY  ([folder])
 );
 
+CREATE TABLE [prefix_plugins] (
+  [id] int(11) NOT NULL identity(1,1),
+  [name] varchar(50) NOT NULL,
+  [active] int(1) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+);
+
+CREATE TABLE [prefix_plugin_settings] (
+  [id] int(11) NOT NULL IDENTITY(1,1),
+  [plugin_id] int(11) NOT NULL,
+  [model] varchar(50) NULL,
+  [model_id] int(11) NULL,
+  [key] varchar(50) NOT NULL,
+  [value] text NULL,
+  PRIMARY KEY  (`id`),
+  );
 
 --
 -- Secondary indexes
