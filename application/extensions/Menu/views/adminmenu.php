@@ -5,7 +5,7 @@
     App()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(Yii::getPathOfAlias('ext.Menu.assets'). '/nav.js'));
     
     echo CHtml::tag('div', array(
-        'class' => 'titlebar',
+        'class' => 'maintitle titlebar',
         'id' => 'title-' . $menu['role']
     ), $menu['title']);
 ?>

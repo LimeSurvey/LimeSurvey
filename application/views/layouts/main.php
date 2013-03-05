@@ -42,13 +42,15 @@
         
     </head>
     <body>
-        <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
-        <?php $this->widget('ext.Menu.MenuWidget', $this->navData); ?>
-        <div id="content">
-        <?php echo $content; ?>
-        </div>
-        <div id="ajaxprogress" title="Ajax request in progress" style="text-align: center">
-            <img src="<?php echo Yii::app()->getConfig('adminstyleurl');?>/images/ajax-loader.gif"/>
+        <div class="wrapper">
+            <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
+            <?php $this->widget('ext.Menu.MenuWidget', $this->navData); ?>
+            <div id="content">
+            <?php echo $content; ?>
+            </div>
+            <div id="ajaxprogress" title="Ajax request in progress" style="text-align: center">
+                <img src="<?php echo Yii::app()->getConfig('adminstyleurl');?>/images/ajax-loader.gif"/>
+            </div>
         </div>
     </body>
 
