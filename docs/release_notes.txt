@@ -59,6 +59,38 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 2.00+ (build 130226) to 2.00+ (build 130226) Mar 5, 2013
+-Fixed issue #7177: Search on custom attribute field doesn't work if searched text is a number (Carsten Schmitz)
+-Fixed issue #7299: Unable to open printable survey view (Carsten Schmitz)
+-Fixed issue #7328: Quotas can not be viewed / processed in an active poll (Carsten Schmitz)
+-Fixed issue #7330: Invitation CSV import no longer takes in account extra attributes as duplication criteria (Carsten Schmitz)
+-Fixed issue #7331: When survey language is changed in welcome screen then the token key is not properly saved along the response (Carsten Schmitz)
+-Fixed issue #7335: SQL error (column ID ambiguous) when exporting a single response (Carsten Schmitz)
+-Fixed issue #7336: "Printable version" not available if the user has view/read permission in the survey (Carsten Schmitz)
+-Fixed issue #7337: RemoteControl2 API add_participant doesn't set 'emailstatus' to OK by default (Carsten Schmitz)
+-Fixed issue #7616: Missing translations in Share panel table (Carsten Schmitz)
+-Fixed issue #7617: Error in label set resource tab (Carsten Schmitz)
+-Fixed issue #7619: Wrong native name for Slovenian translation (Carsten Schmitz)
+-Fixed issue #7620: Problem validating accents with regular expression validation (Carsten Schmitz)
+-Fixed issue #7621: Not possible to use passthrough variables in quota URL (Carsten Schmitz)
+-Fixed issue #7622: Testing survey crashes when moving to group with multiple choice question (Carsten Schmitz)
+-Fixed issue #7625: Cannot include response and invitation infomation in confirmation message (Carsten Schmitz)
+-Fixed issue #7628: After inserting an response entry using data entry the link to view the record links back to response summary instead (Carsten Schmitz)
+-Fixed issue #7629: Fatal error on unexpected key/data when using RPC function add_response (Carsten Schmitz)
+-Fixed issue: No owner shown in central participants database if owner full name not set (Carsten Schmitz)
+#Updated translation: Bulgarian by tnovakova
+#Updated translation: Catalan by valdomir
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by debugz
+#Updated translation: Japanese by nomoto
+#Updated translation: Latvian by vipgroup, marcic
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Romanian by filipguttman
+#Updated translation: Russian by vipgroup
+
 
 Changes from 2.00+ (build 130219) to 2.00+ (build 130226) Feb 26, 2013
 -Fixed issue #4638: Array Dual Scale - Dual Dropdown - id contains # (Denis Chenu)
