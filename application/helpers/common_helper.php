@@ -433,10 +433,10 @@ function hasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
     {
         if (!Yii::app()->user->getIsGuest()) $iUID = Yii::app()->session['loginID'];
         else return false;
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
+        // Some user have acces to whole survey settings
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true;
+        if ($thissurvey && $iUID==$thissurvey['owner_id']) return true;
     }
-
-    if ($thissurvey && $iUID==$thissurvey['owner_id']) return true; //Survey owner has access to all
 
     if (!isset($aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]))
     {
@@ -1402,6 +1402,12 @@ function getSurveyInfo($surveyid, $languagecode='')
     else
     {
         $result = Surveys_languagesettings::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        if (is_null($result)) {
+            // When additional language was added, but not saved it does not exists
+            // We should revert to the base language then
+            $languagecode=Survey::model()->findByPk($surveyid)->language;
+            $result = Surveys_languagesettings::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        }
         if($result)
         {
             $thissurvey=array_merge($result->survey->attributes,$result->attributes);
@@ -1427,8 +1433,10 @@ function getSurveyInfo($surveyid, $languagecode='')
             if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=Yii::app()->getConfig('siteadminemail');}
             if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=Yii::app()->getConfig('siteadminname');}
             if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
+        
+            $staticSurveyInfo[$surveyid][$languagecode]=$thissurvey;
         }
-        $staticSurveyInfo[$surveyid][$languagecode]=$thissurvey;
+        
     }
 
     return $thissurvey;
@@ -2811,48 +2819,21 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         if ($questionid == false)
         {
             // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
-            if (isset(Yii::app()->session['fieldmap-' . $surveyid . '-randMaster']))
+            if (isset(Yii::app()->session['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']))
             {
-                $masterFieldmap = Yii::app()->session['fieldmap-' . $surveyid . '-randMaster'];
-                $mfieldmap = Yii::app()->session[$masterFieldmap];
+                $masterFieldmap = Yii::app()->session['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'];
+                $mfieldmap = Yii::app()->session['survey_'.$surveyid][$masterFieldmap];
 
                 foreach ($mfieldmap as $fieldname => $mf)
                 {
                     if (isset($fieldmap[$fieldname]))
                     {
-                        $f = $fieldmap[$fieldname];
-                        if (isset($f['question']))
-                        {
-                            $mf['question'] = $f['question'];
-                        }
-                        if (isset($f['subquestion']))
-                        {
-                            $mf['subquestion'] = $f['subquestion'];
-                        }
-                        if (isset($f['subquestion1']))
-                        {
-                            $mf['subquestion1'] = $f['subquestion1'];
-                        }
-                        if (isset($f['subquestion2']))
-                        {
-                            $mf['subquestion2'] = $f['subquestion2'];
-                        }
-                        if (isset($f['group_name']))
-                        {
-                            $mf['group_name'] = $f['group_name'];
-                        }
-                        if (isset($f['answerList']))
-                        {
-                            $mf['answerList'] = $f['answerList'];
-                        }
-                        if (isset($f['defaultvalue']))
-                        {
-                            $mf['defaultvalue'] = $f['defaultvalue'];
-                        }
-                        if (isset($f['help']))
-                        {
-                            $mf['help'] = $f['help'];
-                        }
+                        // This array holds the keys of translatable attributes
+                        $translatable = array_flip(array('question', 'subquestion', 'subquestion1', 'subquestion2', 'group_name', 'answerList', 'defaultValue', 'help'));
+                        // We take all translatable attributes from the new fieldmap
+                        $newText = array_intersect_key($fieldmap[$fieldname], $translatable);
+                        // And merge them with the other values from the random fieldmap like questionSeq, groupSeq etc.
+                        $mf = $newText + $mf;
                     }
                     $mfieldmap[$fieldname] = $mf;
                 }
@@ -3772,6 +3753,16 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Add a prefix to the answer field'),
     "caption"=>$clang->gT('Answer prefix'));
 
+    $qattributes["printable_help"]=array(
+    "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>201,
+    "inputtype"=>"text",
+    'i18n'=>true,
+    'default'=>"",
+    "help"=>$clang->gT('In the printable version replace the relevance equation with this explanation text.'),
+    "caption"=>$clang->gT("Relevance help for printable survey"));    
+    
     $qattributes["public_statistics"]=array(
     "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
     'category'=>$clang->gT('Statistics'),
@@ -5943,7 +5934,8 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
                 if (!in_array($fieldname, $fields_list))
                     $fields_list[] = $fieldname;
 
-                $criteria->addColumnCondition(array($fieldname => $member['value']), 'OR');
+                // Yii does not quote column names (duh!) so we have to do it.
+                $criteria->addColumnCondition(array(Yii::app()->db->quoteColumnName($fieldname) => $member['value']), 'OR');
             }
 
             $fields_query[$fieldname] = $criteria;
@@ -5953,7 +5945,7 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 
         foreach ($fields_list as $fieldname)
             $criteria->mergeWith($fields_query[$fieldname]);
-
+        $criteria->mergeWith(array('condition'=>"submitdate IS NOT NULL"));
         $result = Survey_dynamic::model($iSurveyId)->count($criteria);
     }
 
@@ -6276,22 +6268,17 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
             $description=preg_replace('/'.$pattern.'/', $replacement, $description);
         }
 
-        if (strcmp($description,$qentry['description']) !=0  ||
-        strcmp($gpname,$qentry['group_name']) !=0)
+        if (strcmp($description,$qentry['description']) !=0  || strcmp($gpname,$qentry['group_name']) !=0)
         {
             // Update Fields
-
-            $data = array(
-            'description' => $description,
-            'group_name' => $gpname
-            );
-
             $where = array(
             'gid' => $gid,
             'language' => $language
             );
-
-            Groups::model()->update($data,$where);
+            $oGroup = Groups::model()->findByAttributes($where);
+            $oGroup->description= $description;
+            $oGroup->group_name= $gpname;
+            $oGroup->save();
 
         } // Enf if modified
     } // end while qentry

@@ -704,7 +704,7 @@
             if (!is_null($sid)) {
                 if (isset($_SESSION['LEMsid']) && $sid != $_SESSION['LEMsid']) {
                     // then trying to use a new survey - so clear the LEM cache
-                    $_SESSION['LEMdirtyFlag'] = true;
+                    self::SetDirtyFlag();
                 }
                 $_SESSION['LEMsid'] = $sid;
             }
@@ -724,7 +724,7 @@
             }
             if ($_SESSION['LEMlang'] != $lang) {
                 // then changing languages, so clear cache
-                $_SESSION['LEMdirtyFlag'] = true;
+                    self::SetDirtyFlag();
             }
             $_SESSION['LEMlang'] = $lang;
         }
@@ -1508,7 +1508,7 @@
                                     {
                                         if ($this->sgqaNaming)
                                         {
-                                            $base = substr(substr($sq['jsVarName'],4),0,-1);
+                                            $base = $sq['rowdivid']."#";
                                             $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
                                         }
                                         else
@@ -1594,7 +1594,7 @@
                                     {
                                         if ($this->sgqaNaming)
                                         {
-                                            $base = substr(substr($sq['jsVarName'],4),0,-1);
+                                            $base = $sq['rowdivid']."#";
                                             $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
                                         }
                                         else
@@ -2187,6 +2187,7 @@
                         $subqValidEqns = array();
                         foreach ($subqs as $sq) {
                             $sq_name = NULL;
+                            $subqValidSelector=NULL;
                             $sgqa = substr($sq['jsVarName'],4);
                             switch ($type)
                             {
@@ -2225,13 +2226,6 @@
                                         $subqValidEqn = '(is_empty('.$sq['varName'].'.NAOK) || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK))';
                                     }
                                     $subqValidSelector = $sq['jsVarName_on'];
-                                    break;
-                                case 'N': //NUMERICAL QUESTION TYPE
-                                case 'S': //SHORT FREE TEXT
-                                case 'T': //LONG FREE TEXT
-                                case 'U': //HUGE FREE TEXT
-                                    //                                $subqValidEqn = '(strlen('.$sq['varName'].'.NAOK)==0 || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK))';
-                                    //                                $subqValidSelector = 'question' . $questionNum . ' :input';
                                     break;
                                 default:
                                     break;
@@ -2396,7 +2390,7 @@
                                 case 'U': //HUGE FREE TEXT
                                     if ($this->sgqaNaming)
                                     {
-                                        $subqValidEqn = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
+                                        $subqValidEqn = '(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
                                     }
                                     else
                                     {
@@ -3118,7 +3112,6 @@
                     case 'I': //Language Question
                     case 'Y': //YES/NO radio-buttons
                     case '*': //Equation
-                    case '1': //Array (Flexible Labels) dual scale
                     case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                     case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
                     case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
@@ -3136,6 +3129,10 @@
                             $jsVarName_on = 'java' . $sgqa;
                         }
                         $jsVarName = 'java' . $sgqa;
+                        break;
+                    case '1': //Array (Flexible Labels) dual scale
+                        $jsVarName = 'java' . str_replace('#','_',$sgqa);
+                        $jsVarName_on = $jsVarName;
                         break;
                     case ':': //ARRAY (Multi Flexi) 1 to 10
                     case ';': //ARRAY (Multi Flexi) Text
@@ -3837,53 +3834,55 @@
             $sqpatt = implode('|',$sqpatts);
             $nosqpatt = implode('|',$nosqpatts);
             $vars = array();
-
-            foreach ($LEM->knownVars as $kv)
+            if(isset($LEM->knownVars))
             {
-                if ($type == 'self')
+                foreach ($LEM->knownVars as $kv)
                 {
-                    if (!isset($kv['qseq']) || $kv['qseq'] != $qseq || trim($kv['sgqa']) == '')
+                    if ($type == 'self')
                     {
-                        continue;
+                        if (!isset($kv['qseq']) || $kv['qseq'] != $qseq || trim($kv['sgqa']) == '')
+                        {
+                            continue;
+                        }
                     }
-                }
-                else
-                {
-                    if (!isset($kv['rootVarName']) || $kv['rootVarName'] != $qroot)
+                    else
                     {
-                        continue;
+                        if (!isset($kv['rootVarName']) || $kv['rootVarName'] != $qroot)
+                        {
+                            continue;
+                        }
                     }
-                }
-                if ($comments != '')
-                {
-                    if ($comments == 'Y' && !preg_match('/comment$/',$kv['sgqa']))
+                    if ($comments != '')
                     {
-                        continue;
+                        if ($comments == 'Y' && !preg_match('/comment$/',$kv['sgqa']))
+                        {
+                            continue;
+                        }
+                        if ($comments == 'N' && preg_match('/comment$/',$kv['sgqa']))
+                        {
+                            continue;
+                        }
                     }
-                    if ($comments == 'N' && preg_match('/comment$/',$kv['sgqa']))
-                    {
-                        continue;
-                    }
-                }
-                $sgq = $LEM->sid . 'X' . $kv['gid'] . 'X' . $kv['qid'];
-                $ext = substr($kv['sgqa'],strlen($sgq));
+                    $sgq = $LEM->sid . 'X' . $kv['gid'] . 'X' . $kv['qid'];
+                    $ext = substr($kv['sgqa'],strlen($sgq));
 
-                if ($sqpatt != '')
-                {
-                    if (!preg_match('/'.$sqpatt.'/',$ext))
+                    if ($sqpatt != '')
                     {
-                        continue;
+                        if (!preg_match('/'.$sqpatt.'/',$ext))
+                        {
+                            continue;
+                        }
                     }
-                }
-                if ($nosqpatt != '')
-                {
-                    if (preg_match('/'.$nosqpatt.'/',$ext))
+                    if ($nosqpatt != '')
                     {
-                        continue;
+                        if (preg_match('/'.$nosqpatt.'/',$ext))
+                        {
+                            continue;
+                        }
                     }
-                }
 
-                $vars[] = $kv['sgqa'] . $suffix;
+                    $vars[] = $kv['sgqa'] . $suffix;
+                }
             }
             if (count($vars) > 0)
             {
@@ -4419,23 +4418,6 @@
         {
             //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
             $updatedValues = $this->updatedValues;
-
-            if (!$this->surveyOptions['deletenonvalues'])
-            {
-                $nonNullValues = array();
-                foreach($updatedValues as $key=>$value)
-                {
-                    if (!is_null($value))
-                    {
-                        if (isset($value['value']) && !is_null($value['value']))
-                        {
-                            $nonNullValues[$key] = $value;
-                        }
-                    }
-                }
-                $updatedValues = $nonNullValues;
-            }            
-            
             $message = '';
             $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
             if ($this->surveyOptions['active'] && !isset($_SESSION[$this->sessid]['srid']))
@@ -5185,7 +5167,7 @@
             ///////////////////////////
             // IS QUESTION RELEVANT? //
             ///////////////////////////
-            if (!isset($qInfo['relevance']) || $qInfo['relevance'] == '')
+            if (!isset($qInfo['relevance']) || $qInfo['relevance'] == '' )
             {
                 $relevanceEqn = 1;
             }
@@ -5760,7 +5742,7 @@
             // CREATE ARRAY OF VALUES THAT NEED TO BE SILENTLY UPDATED //
             /////////////////////////////////////////////////////////////
             $updatedValues=array();
-            if (!$qrel || !$grel)
+            if ((!$qrel || !$grel) && $LEM->surveyOptions['deletenonvalues'])
             {
                 // If not relevant, then always NULL it in the database
                 $sgqas = explode('|',$LEM->qid2code[$qid]);
@@ -5791,12 +5773,15 @@
                         $debug_qmessage .= '** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br />\n";
                     }
             }
-            foreach ($irrelevantSQs as $sq)
+            if ( $LEM->surveyOptions['deletenonvalues'] )
             {
-                // NULL irrelevant sub-questions
-                $_SESSION[$LEM->sessid][$sq] = NULL;
-                $updatedValues[$sq] = NULL;
-                $LEM->updatedValues[$sq]= NULL;
+                foreach ($irrelevantSQs as $sq)
+                {
+                    // NULL irrelevant sub-questions
+                    $_SESSION[$LEM->sessid][$sq] = NULL;
+                    $updatedValues[$sq] = NULL;
+                    $LEM->updatedValues[$sq]= NULL;
+                }
             }
 
             // Regardless of whether relevant or hidden, if there is a default value and $_SESSION[$LEM->sessid][$sgqa] is NULL, then use the default value in $_SESSION, but don't write to database
@@ -6240,7 +6225,8 @@
                             $relParts[] = "    }\n";
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
-                        $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
+                        if($arg['type']!='R') // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
+                            $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
                         $relParts[] = "  }\n  else {\n";
                         if ($sq['isExclusiveJS'] != '')
                         {
@@ -6278,7 +6264,8 @@
                             }
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
-                        $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
+                        if($arg['type']!='R') // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
+                            $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
                         switch ($sq['qtype'])
                         {
                             case 'L': //LIST drop-down/radio-button list
@@ -6542,7 +6529,8 @@
                     {
                         $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
                     }
-                    $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n    return;\n }\n";
+                    $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
+                    $qrelJS .= "  return;\n }\n";
                     $qrelJS .= implode("",$relParts);
                     $qrelJS .= "}\n";
                     $relEqns[] = $qrelJS;
@@ -7045,7 +7033,7 @@ EOT;
                 $rel = LimeExpressionManager::QuestionIsRelevant($i);
                 $question = LimeExpressionManager::ProcessString($testArg[3], $i, NULL, true, 1, 1);
 
-                $jsVarName='java' . $testArg[0];
+                $jsVarName='java' . str_replace('#','_',$testArg[0]);
 
                 $argInfo[] = array(
                 'num' => $i,
@@ -7444,15 +7432,26 @@ EOD;
             $qinfo = array();
             $_order=0;
             foreach ($data as $d)
-            {
-                $qinfo[$_order] = array(
-                'group_order' => $_order,
-                'gid' => $d['gid'],
-                'group_name' => $d['group_name'],
-                'description' =>  $d['description'],
-                'grelevance' => $d['grelevance'],
-                );
-                ++$_order;
+            { 
+                $gid[$d['gid']] = array(
+                    'group_order' => $_order,
+                    'gid' => $d['gid'],
+                    'group_name' => $d['group_name'],
+                    'description' =>  $d['description'],
+                    'grelevance' => $d['grelevance'],
+                 );
+                $qinfo[$_order] = $gid[$d['gid']];
+                ++$_order;                    
+            }
+            if (isset($_SESSION['survey_'.$surveyid]) && isset($_SESSION['survey_'.$surveyid]['grouplist'])) {
+                $_order=0;
+                $qinfo = array();
+                foreach ($_SESSION['survey_'.$surveyid]['grouplist'] as $info)
+                {
+                    $gid[$info['gid']]['group_order'] = $_order;
+                    $qinfo[$_order] = $gid[$info['gid']];
+                    ++$_order;
+                }
             }
 
             return $qinfo;
@@ -7491,7 +7490,7 @@ EOD;
                         }
                     }
                     $type = $qinfo['info']['type'];
-                    if ($relevant && $grelevant && $sqrelevant)
+                    if (($relevant && $grelevant && $sqrelevant) || !$LEM->surveyOptions['deletenonvalues'])
                     {
                         if ($qinfo['info']['hidden'] && !isset($_POST[$sq]))
                         {
@@ -8963,7 +8962,7 @@ EOD;
                 $LEM =& LimeExpressionManager::singleton();
                 return $LEM->sid;
         }  
-            
+        
     }
 
     /**
@@ -8988,6 +8987,6 @@ EOD;
         }
         return ($a['qseq'] < $b['qseq']) ? -1 : 1;
     }
-    
+  
   
 ?>

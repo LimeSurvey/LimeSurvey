@@ -67,14 +67,20 @@ class UserIdentity extends CUserIdentity
                 $this->errorCode = self::ERROR_NONE;
             }
         }
-        elseif(Yii::app()->getConfig("auth_webserver") === true && (isset($_SERVER['PHP_AUTH_USER'])||isset($_SERVER['LOGON_USER']))) // normal login through webserver authentication        
+        elseif(Yii::app()->getConfig("auth_webserver") === true && (isset($_SERVER['PHP_AUTH_USER'])||isset($_SERVER['LOGON_USER']) ||isset($_SERVER['REMOTE_USER']))) // normal login through webserver authentication        
         {
             if (isset($_SERVER['PHP_AUTH_USER'])) {
                 $sUser=$_SERVER['PHP_AUTH_USER'];
+            }
+            elseif (isset($_SERVER['REMOTE_USER'])) {
+                $sUser=$_SERVER['REMOTE_USER'];
             } else {
                 $sUser = $_SERVER['LOGON_USER'];
-                $sUser = substr($sUser, strrpos($sUser, "\\")+1);
             }            
+            if (strpos($sUser,"\\")!==false) {
+                $sUser = substr($sUser, strrpos($sUser, "\\")+1);
+            }
+            
             $aUserMappings=Yii::app()->getConfig("auth_webserver_user_map");
             if (isset($aUserMappings[$sUser])) 
             {

@@ -22,7 +22,7 @@ function loadHTMLEditor(event, ui)
    }
    if ($(sSelector+' iframe').size()==0)
    {
-        sCKEditorInstanceName='oFCKeditor_'+$(sSelector+' textarea').attr('id').replace(/-/i, "_");
+        sCKEditorInstanceName='oFCKeditor_'+$(sSelector+' textarea').attr('id').replace(/-/g, "_");
         eval("if (typeof "+sCKEditorInstanceName+" != 'undefined')"+sCKEditorInstanceName+".ReplaceTextarea();");
    }
 }

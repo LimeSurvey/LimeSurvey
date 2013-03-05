@@ -144,7 +144,9 @@ class update extends Survey_Common_Action
 
         list($error, $updateinfo, $cookies) = $this->_getChangedFiles($buildnumber, $updatebuild, $updatekey);
         $aData = $this->_getFileStatus($updateinfo);
-
+        $aReadOnlyFiles=array_unique($aData['readonlyfiles']);
+        sort($aReadOnlyFiles);
+        $aData['readonlyfiles']=$aReadOnlyFiles;
         Yii::app()->session['updateinfo'] = $updateinfo;
         Yii::app()->session['updatesession'] = $cookies;
 
@@ -424,7 +426,7 @@ class update extends Survey_Common_Action
         // We create this new language object here because the language files might have been overwritten earlier
         // and the pointers to the file from the application language are not valid anymore 
         $aLanguage = new Limesurvey_lang(Yii::app()->session['adminlang']);
-        $aData = array('clang' => $aLanguage);
+        $aData['clang'] = $aLanguage;
 
         $this->_renderWrappedTemplate('update', 'step4', $aData);
     }

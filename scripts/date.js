@@ -3,6 +3,8 @@ $(document).ready(function(){
     $(".popupdate").each(function(i,e) {
         var basename = e.id.substr(6);
         format=$('#dateformat'+basename).val();
+        format=format.replace(/H/gi,"0"); 
+        format=format.replace(/N/gi,"0"); 
         language=$('#datelanguage'+basename).val();
         yearrange=$('#dateyearrange'+basename).val();
         range=yearrange.split(':');

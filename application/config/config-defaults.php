@@ -313,6 +313,11 @@ $config['standard_templates_readonly'] =  true;
 */
 $config['showsgqacode'] =  false;
 
+/**
+* When this settings is true/1 (default = false/0) then the printable survey option will show 
+* the raw relevance equation below the general fill-out instructions in case the question has conditions.
+*/
+$config['showrelevance'] =  false;
 
 /**
 *  PDF Export Settings

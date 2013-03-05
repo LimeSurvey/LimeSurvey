@@ -756,14 +756,15 @@ class conditionsaction extends Survey_Common_Action {
                     $fquery = "SELECT sq.*, q.other"
                     ." FROM {{questions sq}}, {{questions q}}"
                     ." WHERE sq.sid=$iSurveyID AND sq.parent_qid=q.qid "
-                    . "AND q.language=:lang"
-                    ." AND sq.language=:lang"
+                    . "AND q.language=:lang1"
+                    ." AND sq.language=:lang2"
                     ." AND q.qid=:qid
                     AND sq.scale_id=0
                     ORDER BY sq.question_order";
                     $sLanguage=Survey::model()->findByPk($iSurveyID)->language;
                     $y_axis_db = Yii::app()->db->createCommand($fquery)
-                        ->bindParam(":lang", $sLanguage, PDO::PARAM_STR)
+                        ->bindParam(":lang1", $sLanguage, PDO::PARAM_STR)
+                        ->bindParam(":lang2", $sLanguage, PDO::PARAM_STR)
                         ->bindParam(":qid", $rows['qid'], PDO::PARAM_INT)
                         ->query();
 
@@ -772,14 +773,15 @@ class conditionsaction extends Survey_Common_Action {
                     FROM {{questions q}}, {{questions sq}}
                     WHERE q.sid=$iSurveyID
                     AND sq.parent_qid=q.qid
-                    AND q.language=:lang
-                    AND sq.language=:lang
+                    AND q.language=:lang1
+                    AND sq.language=:lang2
                     AND q.qid=:qid
                     AND sq.scale_id=1
                     ORDER BY sq.question_order";
 
                     $x_axis_db=Yii::app()->db->createCommand($aquery)
-                        ->bindParam(":lang", $sLanguage, PDO::PARAM_STR)
+                        ->bindParam(":lang1", $sLanguage, PDO::PARAM_STR)
+                        ->bindParam(":lang2", $sLanguage, PDO::PARAM_STR)
                         ->bindParam(":qid", $rows['qid'], PDO::PARAM_INT)
                         ->query() or safeDie ("Couldn't get answers to Array questions<br />$aquery<br />");
 
@@ -1282,8 +1284,6 @@ class conditionsaction extends Survey_Common_Action {
                     ->bindValue(":lang1", $sLanguage, PDO::PARAM_STR)
                     ->bindValue(":lang2", $sLanguage, PDO::PARAM_STR)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-
-
                     
                     $querytoken = "SELECT count(*) as recordcount "
                     ."FROM {{conditions}} "
@@ -1314,8 +1314,6 @@ class conditionsaction extends Survey_Common_Action {
                     ->bindValue(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)
                     ->bindValue(":qid", $qid, PDO::PARAM_INT)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-                    
-                    
                     
                     $conditionscount=$conditionscount+$conditionscounttoken;
 
@@ -1590,7 +1588,6 @@ class conditionsaction extends Survey_Common_Action {
         }
         //END DISPLAY CONDITIONS FOR THIS QUESTION
 
-
         // BEGIN: DISPLAY THE COPY CONDITIONS FORM
         if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
         {
@@ -1689,7 +1686,6 @@ class conditionsaction extends Survey_Common_Action {
         {
             $qcount = 0;
         }
-
 
         //BEGIN: DISPLAY THE ADD or EDIT CONDITION FORM
         if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||

@@ -133,8 +133,7 @@ $(document).ready(function(){
                                                           del:true,
                                                           edit:false,
                                                           refresh: true,
-                                                          search: true,
-
+                                                          search: true
                                                         },{},{},{ msg:delmsg, 
                                                                   bSubmit: sDelCaption,
                                                                   caption: sDelCaption,

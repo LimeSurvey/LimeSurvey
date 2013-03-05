@@ -47,7 +47,7 @@ class SurveyAdmin extends Survey_Common_Action
     public function index()
     {
         if (count(getSurveyList(true)) == 0)
-		{
+        {
             $this->_renderWrappedTemplate('super', 'firststeps');
         } else {
             $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/i18n/grid.locale-en.js");
@@ -311,10 +311,8 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function deactivate($iSurveyID = null)
     {
+        $iSurveyID = Yii::app()->request->getPost('sid', $iSurveyID);
         $iSurveyID = sanitize_int($iSurveyID);
-
-        $postsid = Yii::app()->request->getPost('sid', $iSurveyID);
-        $postsid = sanitize_int($postsid);
         $clang = $this->getController()->lang;
         $date = date('YmdHis'); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
 
@@ -328,7 +326,7 @@ class SurveyAdmin extends Survey_Common_Action
         else
         {
             //See if there is a tokens table for this survey
-            if (tableExists("{{tokens_{$postsid}}}"))
+            if (tableExists("{{tokens_{$iSurveyID}}}"))
             {
                 if (Yii::app()->db->getDriverName() == 'postgre')
                 {
@@ -339,8 +337,8 @@ class SurveyAdmin extends Survey_Common_Action
                     $deactivateresult = Yii::app()->db->createCommand($setidx)->query();
                 }
 
-                $toldtable = "{{tokens_{$postsid}}}";
-                $tnewtable = "{{old_tokens_{$postsid}_{$date}}}";
+                $toldtable = "{{tokens_{$iSurveyID}}}";
+                $tnewtable = "{{old_tokens_{$iSurveyID}_{$date}}}";
 
                 $tdeactivateresult = Yii::app()->db->createCommand()->renameTable($toldtable, $tnewtable);
 
@@ -348,10 +346,14 @@ class SurveyAdmin extends Survey_Common_Action
                 $aData['toldtable'] = $toldtable;
             }
 
+            //Remove any survey_links to the CPDB
+            Survey_links::model()->deleteLinksBySurvey($iSurveyID);
+            
+
             // IF there are any records in the saved_control table related to this survey, they have to be deleted
-            $result = Saved_control::model()->deleteSomeRecords(array('sid' => $postsid)); //Yii::app()->db->createCommand($query)->query();
-            $sOldSurveyTableName = Yii::app()->db->tablePrefix."survey_{$postsid}";
-            $sNewSurveyTableName = Yii::app()->db->tablePrefix."old_survey_{$postsid}_{$date}";
+            $result = Saved_control::model()->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
+            $sOldSurveyTableName = Yii::app()->db->tablePrefix."survey_{$iSurveyID}";
+            $sNewSurveyTableName = Yii::app()->db->tablePrefix."old_survey_{$iSurveyID}_{$date}";
             $aData['sNewSurveyTableName']=$sNewSurveyTableName;
             //Update the auto_increment value from the table before renaming
             $new_autonumber_start = 0;
@@ -391,11 +393,11 @@ class SurveyAdmin extends Survey_Common_Action
             $survey->active = 'N';
             $survey->save();
 
-            $prow = Survey::model()->find('sid = :sid', array(':sid' => $postsid));
+            $prow = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
             if ($prow->savetimings == "Y")
             {
-                $sOldTimingsTableName = Yii::app()->db->tablePrefix."survey_{$postsid}_timings";
-                $sNewTimingsTableName = Yii::app()->db->tablePrefix."old_survey_{$postsid}_timings_{$date}";
+                $sOldTimingsTableName = Yii::app()->db->tablePrefix."survey_{$iSurveyID}_timings";
+                $sNewTimingsTableName = Yii::app()->db->tablePrefix."old_survey_{$iSurveyID}_timings_{$date}";
 
                 $deactivateresult2 = Yii::app()->db->createCommand()->renameTable($sOldTimingsTableName, $sNewTimingsTableName);
                 $deactivateresult = ($deactivateresult && $deactivateresult2);
@@ -807,7 +809,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $tab_title[$i] = getLanguageNameFromCode($esrow['surveyls_language'], false);
 
                 if ($esrow['surveyls_language'] == Survey::model()->findByPk($iSurveyID)->language)
-                    $tab_title[$i] .= '(' . $clang->gT("Base Language") . ')';
+                    $tab_title[$i] .= '(' . $clang->gT("Base language") . ')';
 
                 $esrow = array_map('htmlspecialchars', $esrow);
                 $aData['esrow'] = $esrow;
@@ -854,12 +856,12 @@ class SurveyAdmin extends Survey_Common_Action
     public function copy()
     {
         $importsurvey = "";
-        $action = $_POST['action'];
-        @$iSurveyID = $_POST['sid'];
+        $action = Yii::app()->request->getParam('action');
+        $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
 
         if ($action == "importsurvey" || $action == "copysurvey")
         {
-            if (@$_POST['copysurveytranslinksfields'] == "on" || @$_POST['translinksfields'] == "on")
+            if (Yii::app()->request->getParam('copysurveytranslinksfields') == "on" || Yii::app()->request->getParam('translinksfields') == "on")
             {
                 $sTransLinks = true;
             }
@@ -911,7 +913,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
             elseif ($action == 'copysurvey')
             {
-                $iSurveyID = sanitize_int($_POST['copysurveylist']);
+                $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
                 $exclude = array();
 
                 if (get_magic_quotes_gpc())
@@ -939,15 +941,26 @@ class SurveyAdmin extends Survey_Common_Action
                 {
                     $exclude['conditions'] = true;
                 }
-
                 if (!$iSurveyID)
                 {
                     $aData['sErrorMessage'] = $clang->gT("No survey ID has been provided. Cannot copy survey");
                     $aData['bFailed'] = true;
                 }
-
-                Yii::app()->loadHelper('export');
-                $copysurveydata = surveyGetXMLData($iSurveyID, $exclude);
+                elseif(!Survey::model()->findByPk($iSurveyID))
+                {
+                    $aData['sErrorMessage'] = $clang->gT("Invalid survey ID");
+                    $aData['bFailed'] = true;
+                }
+                elseif (!hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !hasSurveyPermission($iSurveyID, 'surveycontent', 'export'))
+                {
+                    $aData['sErrorMessage'] = $clang->gT("You don't have sufficient permissions.");
+                    $aData['bFailed'] = true;
+                }
+                else
+                {
+                    Yii::app()->loadHelper('export');
+                    $copysurveydata = surveyGetXMLData($iSurveyID, $exclude);
+                }
             }
 
             // Now, we have the survey : start importing
@@ -958,7 +971,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aImportResults=importSurveyFile($sFullFilepath,(isset($_POST['translinksfields'])));
                 if (is_null($aImportResults)) $importerror = true;
             }
-            elseif ($action == 'copysurvey' && (empty($importerror) || !$importerror))
+            elseif ($action == 'copysurvey' && !$aData['bFailed'])
             {
                 $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName);
                 if (isset($exclude['conditions']))
@@ -1415,11 +1428,10 @@ class SurveyAdmin extends Survey_Common_Action
         $i = 0;
         $clang = $this->getController()->lang;
         $aData = new stdClass();
-
         foreach ($oResult as $oRow)
         {
             $aData->rows[$i]['id'] = $oRow['id'];
-            if ($oRow['question'] != '')
+            if (!is_null($oRow['question']))
             {
                         $oRow['title'] .= ': ' . ellipsize(flattenText($oRow['question'], false, true), 43, .70);
             }
@@ -1470,7 +1482,7 @@ class SurveyAdmin extends Survey_Common_Action
         if (empty($files))
         {
             $generalscripts_path = Yii::app()->getConfig('generalscripts');
-	        $adminscripts_path = Yii::app()->getConfig('adminscripts');
+            $adminscripts_path = Yii::app()->getConfig('adminscripts');
             $styleurl = Yii::app()->getConfig('styleurl');
                                                                             
             $js_files = array(

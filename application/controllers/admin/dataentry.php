@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*    $Id$
 */
 /*
 * We need this later:
@@ -169,7 +169,6 @@ class dataentry extends Survey_Common_Action
 
         $importcount = 0;
         $recordcount = 0;
-        $aFieldnames = array_map('dbQuoteID', $aFieldnames);
 
         // Find out which fields are datefields, these have to be null if the imported string is empty
         $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
@@ -198,36 +197,36 @@ class dataentry extends Survey_Common_Action
                 : array_combine($aFieldnames, $fieldvalues));
                 foreach ($datefields as $datefield)
                 {
-                    if (@$fielddata["'" . $datefield . "'"] == '') {
-                        unset($fielddata["'" . $datefield . "'"]);
+                    if (is_null(@$fielddata[ $datefield ])) {
+                        unset($fielddata[ $datefield ]);
                     }
                 }
 
                 foreach ($numericfields as $numericfield)
                 {
-                    if ($fielddata["`" . $numericfield . "`"] == '') {
-                        unset($fielddata["`" . $numericfield . "`"]);
+                    if ($fielddata[ $numericfield ] == '') {
+                        unset($fielddata[ $numericfield ]);
                     }
                 }
 
-                if (isset($fielddata['`submitdate`']) && $fielddata['`submitdate`'] == 'NULL') {
-                    unset ($fielddata['`submitdate`']);
+                if (isset($fielddata['submitdate']) && $fielddata['submitdate'] == 'NULL') {
+                    unset ($fielddata['submitdate']);
                 }
-                if ($fielddata['`lastpage`'] == '') $fielddata['`lastpage`'] = '0';
+                if ($fielddata['lastpage'] == '') $fielddata['lastpage'] = '0';
 
                 $recordexists = false;
-                if (isset($fielddata['`id`'])) {
-                    $result = $survey->findAllByAttributes(array('id' => $fielddata['`id`']));
+                if (isset($fielddata['id'])) {
+                    $result = $survey->findAllByAttributes(array('id' => $fielddata['id']));
                     $recordexists = $result > 0;
 
                     // Check if record with same id exists
                     if ($recordexists) {
                         if (Yii::app()->request->getPost('insert') == "ignore") {
-                            $aData['msgs'][] .= sprintf($clang->gT("Record ID %s was skipped because of duplicate ID."), $fielddata['`id`']);
+                            $aData['msgs'][] .= sprintf($clang->gT("Record ID %s was skipped because of duplicate ID."), $fielddata['id']);
                             continue;
                         }
                         if (Yii::app()->request->getPost('insert') == "replace") {
-                            $result = $survey->deleteSomeRecords(array('id' => $fielddata['`id`']));
+                            $result = $survey->deleteSomeRecords(array('id' => $fielddata['id']));
                             $recordexists = false;
                         }
                     }
@@ -373,7 +372,7 @@ class dataentry extends Survey_Common_Action
             {
                 // show UI for choosing old table
 
-                $result = dbGetTablesLike("old\_survey\_%");
+                $aTables = dbGetTablesLike("old\_survey\_%");
 
                 $aOptionElements = array();
                 //$queryCheckColumnsActive = $schema->getTable($oldtable)->columnNames;
@@ -381,16 +380,14 @@ class dataentry extends Survey_Common_Action
                 //$resultActive = dbExecuteAssoc($queryCheckColumnsActive) or show_error("Error:<br />$query<br />");
                 $countActive = count($resultActive);
 
-                foreach ($result as $row)
+                foreach ($aTables as $sTable)
                 {
-                    $row = each($row);
-
                     //$resultOld = dbExecuteAssoc($queryCheckColumnsOld) or show_error("Error:<br />$query<br />");
-                    $resultOld = $schema->getTable($row[1])->columnNames;
+                    $resultOld = $schema->getTable($sTable)->columnNames;
 
                     if($countActive == count($resultOld)) //num_fields()
                     {
-                        $aOptionElements[$row[1]] = $row[1];
+                        $aOptionElements[$sTable] = $sTable;
                     }
                 }
                 $aHTMLOptions=array('empty'=>$clang->gT('Please select...'));
@@ -411,8 +408,8 @@ class dataentry extends Survey_Common_Action
                 * - warnmeldung mehrsprachig
                 * - testen
                 */
-                //	if($aDatabasetype=="postgres")
-                //	{
+                //    if($aDatabasetype=="postgres")
+                //    {
                 $activetable = "{{survey_$surveyid}}";
 
                 //Fields we don't want to import
@@ -437,15 +434,15 @@ class dataentry extends Survey_Common_Action
                 $resultOldValues = dbExecuteAssoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
                 $iRecordCount = 0;
                 $aSRIDConversions=array();
-                foreach ($resultOldValues->readAll() as $row)
+                foreach ($resultOldValues->readAll() as $sTable)
                 {
-                    $iOldID=$row['id'];
-                    unset($row['id']);
+                    $iOldID=$sTable['id'];
+                    unset($sTable['id']);
                     // Remove NULL values
-                    $row=array_filter($row, 'strlen'); 
+                    $sTable=array_filter($sTable, 'strlen'); 
                     //$sInsertSQL=Yii::app()->db->GetInsertSQL($activetable, $row);
-                    $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("dbQuoteID", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll",array_values($row))).")";
-                    $result = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
+                    $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("dbQuoteID", array_keys($sTable))).") VALUES (".implode(",", array_map("dbQuoteAll",array_values($sTable))).")";
+                    $aTables = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
 
                     $aSRIDConversions[$iOldID] = getLastInsertID($activetable);
                     $iRecordCount++;
@@ -468,16 +465,16 @@ class dataentry extends Survey_Common_Action
                     $resultOldValues = dbExecuteAssoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
                     $iRecordCountT=0;
                     $aSRIDConversions=array();
-                    foreach ($resultOldValues->readAll() as $row)
+                    foreach ($resultOldValues->readAll() as $sTable)
                     {
-                        if (isset($aSRIDConversions[$row['id']]))
+                        if (isset($aSRIDConversions[$sTable['id']]))
                         {
-                            $row['id']=$aSRIDConversions[$row['id']];
+                            $sTable['id']=$aSRIDConversions[$sTable['id']];
                         }
                         else continue;
                         //$sInsertSQL=Yii::app()->db->GetInsertSQL($sNewTimingsTable,$row);
-                        $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",", array_map("dbQuoteID", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll", array_values($row))).")";
-                        $result = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
+                        $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",", array_map("dbQuoteID", array_keys($sTable))).") VALUES (".implode(",", array_map("dbQuoteAll", array_values($sTable))).")";
+                        $aTables = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
                         $iRecordCountT++;
                     }
                     Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
@@ -946,7 +943,7 @@ class dataentry extends Survey_Common_Action
                                 $dcols=0;
                             }
 
-                            //					while ($fname[3] == "M" && $question != "" && $question == $fname['type'])
+                            //                    while ($fname[3] == "M" && $question != "" && $question == $fname['type'])
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
@@ -1325,7 +1322,7 @@ class dataentry extends Survey_Common_Action
                             break;
                     }
 
-                    $aDataentryoutput .= "		</td>
+                    $aDataentryoutput .= "        </td>
                     </tr>\n";
                 } while ($fname=next($fnames));
             }
@@ -1497,8 +1494,8 @@ class dataentry extends Survey_Common_Action
 
             $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
 
-            $onerecord_link = $this->getController()->createUrl('/').'/admin/responses/view/surveyid/'.$surveyid.'/id/'.$id;
-            $allrecords_link = $this->getController()->createUrl('/').'/admin/responses/index/surveyid/'.$surveyid;
+            $onerecord_link = $this->getController()->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$id);
+            $allrecords_link = $this->getController()->createUrl('/admin/responses/sa/index/surveyid/'.$surveyid);
             $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>\n"
             .$clang->gT("Record has been updated.")."<br /><br />\n"
             ."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
@@ -1528,7 +1525,7 @@ class dataentry extends Survey_Common_Action
         'clang' => $clang
         );
 
-        if (hasSurveyPermission($surveyid, 'responses','read'))
+        if (hasSurveyPermission($surveyid, 'responses','create'))
         {
             if ($subaction == "insert" && hasSurveyPermission($surveyid,'responses','create'))
             {
@@ -1907,7 +1904,7 @@ class dataentry extends Survey_Common_Action
         if(isset($lang)) $lang=sanitize_languagecode($lang);
         $aViewUrls = array();
 
-        if (hasSurveyPermission($surveyid, 'responses', 'read'))
+        if (hasSurveyPermission($surveyid, 'responses', 'create'))
         {
             $clang = Yii::app()->lang;
 
@@ -2418,8 +2415,10 @@ class dataentry extends Survey_Common_Action
 
         // Make this safe for DB (*after* we undo first excel's
         // and then our escaping).
-        $fieldvalues = array_map( 'dbQuoteAll', $fieldvalues );
-        $fieldvalues = str_replace( dbQuoteAll('{question_not_shown}'), 'NULL', $fieldvalues );
+        foreach ($fieldvalues as &$sValue)
+        {
+            if ($sValue=='{question_not_shown}') $sValue=null;
+        }
 
         return $fieldvalues;
     }

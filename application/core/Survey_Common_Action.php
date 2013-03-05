@@ -575,7 +575,7 @@ class Survey_Common_Action extends CAction
         // EDIT SURVEY SETTINGS BUTTON
         $aData['surveysettings'] = hasSurveyPermission($iSurveyID, 'surveysettings', 'read');
         // Survey permission item
-        $aData['surveysecurity'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $surveyinfo['owner_id'] == Yii::app()->session['loginID'] || hasSurveyPermission($iSurveyID, 'surveysecurity', 'read'));
+        $aData['surveysecurity'] = hasSurveyPermission($iSurveyID, 'surveysecurity', 'read');
         // CHANGE QUESTION GROUP ORDER BUTTON
         $aData['surveycontent'] = hasSurveyPermission($iSurveyID, 'surveycontent', 'read');
         $aData['groupsum'] = (getGroupSum($iSurveyID, $surveyinfo['language']) > 1);
@@ -608,7 +608,11 @@ class Survey_Common_Action extends CAction
         $aData['responsescreate'] = hasSurveyPermission($iSurveyID, 'responses', 'create');
         $aData['responsesread'] = hasSurveyPermission($iSurveyID, 'responses', 'read');
         // TOKEN MANAGEMENT BUTTON
-        $aData['tokenmanagement'] = hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || hasSurveyPermission($iSurveyID, 'tokens', 'read');
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyID . '}}');
+        if(!$bTokenExists)
+            $aData['tokenmanagement'] = hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || hasSurveyPermission($iSurveyID, 'tokens', 'create');
+        else
+            $aData['tokenmanagement'] = hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || hasSurveyPermission($iSurveyID, 'tokens', 'create') || hasSurveyPermission($iSurveyID, 'tokens', 'read') || hasSurveyPermission($iSurveyID, 'tokens', 'export') || hasSurveyPermission($iSurveyID, 'tokens', 'import'); // and export / import ?
 
         $aData['gid'] = $gid; // = $this->input->post('gid');
 
@@ -649,20 +653,10 @@ class Survey_Common_Action extends CAction
     function _surveysummary($iSurveyID, $action=null, $gid=null)
     {
         $clang = $this->getController()->lang;
-
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
-        $condition = array('sid' => $iSurveyID, 'language' => $baselang);
-
-        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByPk($iSurveyID); //$sumquery1, 1) ; //Checked
-        if (is_null($sumresult1))
-        {
-            Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
-            $this->getController()->redirect($this->getController()->createUrl("admin/index"));
-        } //  if surveyid is invalid then die to prevent errors at a later time
-        $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
-        $surveyinfo = array_map('flattenText', $surveyinfo);
+        //$surveyinfo = array_map('flattenText', $surveyinfo);
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
+        $surveyinfo=getSurveyInfo($iSurveyID);
+        $baselang = $surveyinfo['language'];
         $activated = $surveyinfo['active'];
 
         $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $baselang);
@@ -812,7 +806,7 @@ class Survey_Common_Action extends CAction
 
         if ($surveyinfo['surveyls_url'] != "")
         {
-            $aData['endurl'] = " <a target='_blank' href=\"" . htmlspecialchars($surveyinfo['surveyls_url']) . "\" title=\"" . htmlspecialchars($surveyinfo['surveyls_url']) . "\">{$surveyinfo['surveyls_urldescription']}</a>";
+            $aData['endurl'] = " <a target='_blank' href=\"" . htmlspecialchars($surveyinfo['surveyls_url']) . "\" title=\"" . htmlspecialchars($surveyinfo['surveyls_url']) . "\">".flattenText($surveyinfo['surveyls_urldescription'])."</a>";
         }
         else
         {

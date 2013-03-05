@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*    $Id$
 */
 
 /**
@@ -109,8 +109,8 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
             }            
         }
         $row = array_change_key_case($row,CASE_UPPER);
-        //$row = $result->GetRowAssoc(true);	//Get assoc array, use uppercase
-        reset($fields);	//Jump to the first element in the field array
+        //$row = $result->GetRowAssoc(true);    //Get assoc array, use uppercase
+        reset($fields);    //Jump to the first element in the field array
         $i = 1;
         foreach ($fields as $field)
         {
@@ -1437,7 +1437,7 @@ function quexml_export($surveyi, $quexmllan)
 * Different SQL databases used different methods to combine strings together.
 * This function provides a wrapper.
 *
-* param s	variable number of string parameters
+* param s    variable number of string parameters
 *
 * Usage: $db->Concat($str1,$str2);
 *
@@ -1576,10 +1576,12 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     $xml->writeElement('LimeSurveyDocType','Question');
     $xml->writeElement('DBVersion', getGlobalSetting('DBVersion'));
     $xml->startElement('languages');
-
-    $questions = Questions::model()->find('qid=:qid or parent_qid=:pqid', array(':qid' => $qid, ':pqid' => $qid));
-    $xml->writeElement('language',$questions->language);
-
+    $aLanguages=Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+    $aLanguages[]=Survey::model()->findByPk($iSurveyID)->language;
+    foreach ($aLanguages as $sLanguage)
+    {
+        $xml->writeElement('language',$sLanguage);
+    }
     $xml->endElement();
     questionGetXMLStructure($xml,$gid,$qid);
     $xml->endElement(); // close columns

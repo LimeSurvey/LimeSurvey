@@ -243,7 +243,7 @@
         ,LimeReplacementFieldsQID : \"".$qID."\"
         ,LimeReplacementFieldsType : \"".$fieldtype."\"
         ,LimeReplacementFieldsAction : \"".$action."\"
-        ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/index/")."\"
+        ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
         ,width:'660'
         ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'
         ,smiley_path : \"".Yii::app()->getConfig('uploadurl')."/images/smiley/msn/\"\n"

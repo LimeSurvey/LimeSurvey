@@ -1,13 +1,19 @@
+<?php echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post', array('id'=>'resulttableform')); ?>
+    <input id='downloadfile' name='downloadfile' value='' type='hidden'>
+    <input id='sid' name='sid' value='<?php echo $surveyid; ?>' type='hidden'>
+    <input id='subaction' name='subaction' value='all' type='hidden'>
+</form>
+
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'><strong><?php echo sprintf($clang->gT("View response ID %d"), $id); ?></strong></div>
     <div class='menubar-main'>
         <div class='menubar-left'>
-            <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='16' alt='' />
-            <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
+            <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='16' alt=''>
+            <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt=''>
             <?php if($exist) { ?>
                 <?php if (isset($rlanguage))
                     { ?>
-                    <a href='<?php echo $this->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}/lang/$rlanguage"); ?>' title='<?php $clang->eT("Edit this entry"); ?>'>
+                    <a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}/lang/$rlanguage"); ?>' title='<?php $clang->eT("Edit this entry"); ?>'>
                         <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php $clang->gT("Edit this entry"); ?>' /></a>
                     <?php }
                     if (hasSurveyPermission($surveyid, 'responses', 'delete') && isset($rlanguage))
@@ -21,8 +27,8 @@
                     <?php }
                     if (hasFileUploadQuestion($surveyid))
                     { ?>
-                    <a href='#' title='<?php $clang->eT("Download files for this entry"); ?>' onclick="<?php echo convertGETtoPOST('?action=browse&amp;subaction=all&amp;downloadfile=' . $id . '&amp;sid=' . $surveyid); ?>" >
-                        <img src='<?php echo $sImageURL; ?>download.png' alt='<?php $clang->eT("Download files for this entry"); ?>' /></a>
+                    <a href='#' title='<?php $clang->eT("Download files for this entry"); ?>' >
+                        <img id='downloadfile_<?php echo $id;?>' src='<?php echo $sImageURL; ?>download.png' alt='<?php $clang->eT("Download files for this entry"); ?>' class='downloadfile'></a>
                     <?php } ?>
 
                 <a href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid/id/$id"); ?>' title='<?php $clang->eT("Export this Response"); ?>' >

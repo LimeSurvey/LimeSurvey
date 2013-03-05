@@ -4,7 +4,7 @@
 			<strong><?php $clang->eT("Title");?>:</strong>
 		</td>
 		<td class='settingentryhighlight'>
-			<?php echo $surveyinfo['surveyls_title']." (".$clang->gT("ID")." ".$surveyinfo['sid'].")";?>
+			<?php echo flattenText($surveyinfo['surveyls_title'])." (".$clang->gT("ID")." ".$surveyinfo['sid'].")";?>
 		</td>
 	</tr>
 	<tr>
@@ -40,7 +40,7 @@
         	<?php
                 if (trim($surveyinfo['surveyls_description']) != '')
                 {
-                    templatereplace($surveyinfo['surveyls_description']);
+                    templatereplace(flattenText($surveyinfo['surveyls_description']));
                     echo LimeExpressionManager::GetLastPrettyPrintExpression();
                 }
             ?>
@@ -52,7 +52,7 @@
 		</td>
         <td>
         	<?php
-                templatereplace($surveyinfo['surveyls_welcometext']);
+                templatereplace(flattenText($surveyinfo['surveyls_welcometext']));
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
             ?>
         </td>
@@ -63,7 +63,7 @@
 		</td>
         <td>
         	<?php
-                templatereplace($surveyinfo['surveyls_endtext']);
+                templatereplace(flattenText($surveyinfo['surveyls_endtext']));
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
             ?>
         </td>
@@ -82,7 +82,7 @@
 	    		<strong><?php $clang->eT("Fax to:");?></strong>
 	    	</td>
 	    	<td>
-	    		<?php echo$surveyinfo['faxto'];?>
+	    		<?php echo $surveyinfo['faxto'];?>
 	    	</td>
 	    </tr>
     <?php } ?>

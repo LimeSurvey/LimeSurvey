@@ -113,11 +113,10 @@
             }
         ?>
     </form>
-    <div id='up_resmgmt'>
+    <div id='up_resmgmt'>                              
         <div>
-            <?php echo CHtml::form('', 'post', array('id'=>'browselabelresources','name'=>'browselabelresources')); ?>
-                action='<?php echo $this->createUrl("admin/kcfinder/index/load/browse"); ?>' method='get' target="_blank">
-                <ul style='list-style-type:none; text-align:center'>
+            <?php echo CHtml::form('third_party/kcfinder/browse.php', 'get', array('id'=>'browselabelresources','class'=>'form30','name'=>'browselabelresources','target'=>'_blank')); ?>
+                <ul>
                     <li>
                         <label>&nbsp;</label>
                         <?php echo CHtml::dropDownList('type', 'files', array('files' => $clang->gT('Files'), 'flash' => $clang->gT('Flash'), 'images' => $clang->gT('Images'))); ?>
@@ -130,14 +129,14 @@
                             value="<?php $clang->eT("Export resources as ZIP archive") ?>"  />
                     </li>
                 </ul>
-            </form>
-            <?php echo CHtml::form('', 'post', array('id'=>'importlabelresources','class'=>'form30', 'name'=>'importlabelresources', 'enctype'=>'multipart/form-data')); ?>
-                action='<?php echo $this->createUrl('/admin/labels/importlabelresources') ?>' method='post'
-                onsubmit='return validatefilename(this, "<?php $clang->eT('Please select a file to import!', 'js') ?>");'>
-
                 <input type='hidden' name='lid' value='<?php echo $lid; ?>' />
-                <input type='hidden' name='action' value='importlabelresources' />
-                <ul style='list-style-type:none; text-align:center'>
+            </form>
+            <?php echo CHtml::form(array('admin/labels/sa/importlabelresources'), 'post', array('id'=>'importlabelresources',
+                                                                                      'class'=>'form30', 
+                                                                                      'name'=>'importlabelresources', 
+                                                                                      'enctype'=>'multipart/form-data',
+                                                                                      'onsubmit'=>'return validatefilename(this, "'.$clang->gT('Please select a file to import!', 'js').'");')); ?>
+                <ul>
                     <li>
                         <label for='the_file'><?php $clang->eT("Select ZIP file:") ?></label>
                         <input id='the_file' name="the_file" type="file" />
@@ -148,6 +147,8 @@
                             <?php echo !function_exists("zip_open") ? "onclick='alert(\"" . $clang->gT("zip library not supported by PHP, Import ZIP Disabled", "js") . "\");'" : "onclick='if (validatefilename(this.form,\"" . $clang->gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'" ?>/>
                     </li>
                 </ul>
+                <input type='hidden' name='lid' value='<?php echo $lid; ?>' />
+                <input type='hidden' name='action' value='importlabelresources' />
             </form>
         </div>
     </div>

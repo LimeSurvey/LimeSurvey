@@ -130,7 +130,7 @@
                 <td style='width:20%'><input type='text' name='new_user' /></td>
                 <td style='width:20%'><input type='text' name='new_email' /></td>
                 <td style='width:20%'><input type='text' name='new_full_name' /></td><td style='width:8%'>&nbsp;</td>
-                <td style='width:15%'><input type='submit' value='<?php $clang->eT("Add User");?>' />
+                <td style='width:15%'><input type='submit' value='<?php $clang->eT("Add user");?>' />
                     <input type='hidden' name='action' value='adduser' /></td>
             </tr></table></form><br />
     <?php } ?>

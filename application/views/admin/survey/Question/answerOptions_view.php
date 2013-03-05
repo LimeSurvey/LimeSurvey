@@ -40,7 +40,7 @@
         <?php foreach ($anslangs as $anslang)
             { ?>
             <li><a href='#tabpage_<?php echo $anslang; ?>'><?php echo getLanguageNameFromCode($anslang, false); ?>
-                    <?php if ($anslang==Survey::model()->findByPk($surveyid)->language) { ?> (<?php $clang->eT("Base Language"); ?>) <?php } ?></a>
+                    <?php if ($anslang==Survey::model()->findByPk($surveyid)->language) { ?> (<?php $clang->eT("Base language"); ?>) <?php } ?></a>
             </li>
             <?php } ?>
     </ul>

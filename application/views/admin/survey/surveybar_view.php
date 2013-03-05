@@ -170,7 +170,7 @@
 
                         </ul>
                     </li>
-                    <?php if($surveycontent) { ?>
+                    <?php if(hasSurveyPermission($surveyid,'surveycontent','read')) { ?>
                         <?php if($onelanguage) { ?>
                             <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
                                 <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php $clang->eT("Printable version");?></a></li>
@@ -220,7 +220,7 @@
                     } ?>
                     <?php if($responsesread) {
                             if($activated) { ?>
-                            <li><a href='<?php echo $this->createUrl("admin/saved/view/surveyid/$surveyid");?>' >
+                            <li><a href='<?php echo $this->createUrl("admin/saved/sa/view/surveyid/$surveyid");?>' >
                                 <img src='<?php echo $sImageURL;?>saved_30.png' alt='' /> <?php $clang->eT("Partial (saved) responses");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("This survey is not active - no responses are available","js");?>');" >

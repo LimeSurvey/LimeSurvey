@@ -114,6 +114,8 @@ p.url{font-size:1.2em;text-align:center;font-weight:bold}
 
 /* answer decoration */
 label:hover {color:#222;}
+.ranking-answers{overflow:auto}
+.dragDropRanking .answers-wrapper{overflow:visible}
 .dragDropTable li:hover,.dragDropRankList li:hover {color: #222;}
 input,button,select,textarea{font:inherit;}
 input[type="text"],input.text, textarea {
@@ -417,7 +419,7 @@ ul.text-list label,ul.text-list .label{text-align:right;}
 ul.subquestions-list .dynamic_sum span,ul.subquestions-list .dynamic_remaining span
  {width:5em;display: inline-block;font-weight: bold;text-align: center;}
 ul.subquestions-list .dynamic_remaining span{color:#999;}
-.radio-list li.radio-item,.subquestions-list li.checkbox-item {
+.radio-list li.answer-item,.checkbox-list li.answer-item {
   padding-left: 35%;padding-right: 0;
 }
 @media screen and (max-width: 480px) {
@@ -433,7 +435,9 @@ ul.subquestions-list .dynamic_remaining span{color:#999;}
   white-space: normal
   display:block;
 }
-.cols-2-ul .answer-item,.cols-3-ul .answer-item,.cols-4-ul .answer-item,.cols-5-ul .answer-item,.cols-6-ul .answer-item,.cols-7-ul .answer-item,.cols-8-ul .answer-item
+ .cols-2-ul .answer-item,.cols-3-ul .answer-item,.cols-4-ul .answer-item,.cols-5-ul .answer-item,.cols-6-ul .answer-item,.cols-7-ul .answer-item,.cols-8-ul .answer-item
+,.cols-2-ul.radio-list .answer-item,.cols-3-ul.radio-list .answer-item,.cols-4-ul.radio-list .answer-item,.cols-5-ul.radio-list .answer-item,.cols-6-ul.radio-list .answer-item,.cols-7-ul.radio-list .answer-item,.cols-8-ul.radio-list .answer-item
+,.cols-2-ul.checkbox-list .answer-item,.cols-3-ul.checkbox-list .answer-item,.cols-4-ul.checkbox-list .answer-item,.cols-5-ul.checkbox-list .answer-item,.cols-6-ul.checkbox-list .answer-item,.cols-7-ul.checkbox-list .answer-item,.cols-8-ul.checkbox-list .answer-item
 {
   padding-left: 30px;padding-right: 5px;
   display:block;
@@ -444,8 +448,11 @@ ul.subquestions-list .dynamic_remaining span{color:#999;}
   float:left;margin-left:-25px;margin-right:0;
 }
 /*column_style table*/
-table.answers-list,table.subquestions-list{table-layout:fixed;border:0 none #fff}
-table.answers-list td,table.subquestions-list td{border:0 none #fff;padding:0}
+/* Review this */
+table.cols-2 ,table.cols-3 ,table.cols-4 ,table.cols-5 ,table.cols-6 ,table.cols-7 ,table.cols-8
+    {table-layout:fixed;border:0 none #fff}
+table.cols-2 td,table.cols-3 td,table.cols-4 td,table.cols-5 td,table.cols-6 td,table.cols-7 td,table.cols-8 td
+    {border:0 none #fff;padding:0}
 .cols-2 ul,.cols-3 ul,.cols-4 ul,.cols-5 ul,.cols-6 ul,.cols-7 ul,.cols-8 ul{padding:0;margin:0;}
 table.cols-2 .answer-item,table.cols-3 .answer-item,table.cols-4 .answer-item,table.cols-5 .answer-item,table.cols-6 .answer-item,table.cols-7 .answer-item,table.cols-8 .answer-item
 {

@@ -939,17 +939,22 @@ function multi_set(ids,_radix)
 }
 
 //Special function for array dual scale in drop down layout to check conditions
-function array_dual_dd_checkconditions(value, name, type, rank, condfunction)
-{
-   if (value == '') {
-        //If value is set to empty, reset both drop downs and check conditions
-        if (rank == 0) { dualname = name.replace(/#0/g,"#1"); }
-        else if (rank == 1) { dualname = name.replace(/#1/g,"#0"); }
-        document.getElementsByName(dualname)[0].value=value;
-        condfunction(value, dualname, type);
-   }
-    condfunction(value, name, type);
-}
+/* 
+Deactivated 20130221
+Why do this: a user can answer one select and not another one
+Never change default behaviour if it's not good for respondant
+*/
+//function array_dual_dd_checkconditions(value, name, type, rank, condfunction)
+//{
+//   if (value == '') {
+//        //If value is set to empty, reset both drop downs and check conditions
+//        if (rank == 0) { dualname = name.replace(/#0/g,"#1"); }
+//        else if (rank == 1) { dualname = name.replace(/#1/g,"#0"); }
+//        document.getElementsByName(dualname)[0].value=value;
+//        condfunction(value, dualname, type);
+//   }
+//    condfunction(value, name, type);
+//}
 
 /* Maxlengt on textarea */
 function maxlengthtextarea(){

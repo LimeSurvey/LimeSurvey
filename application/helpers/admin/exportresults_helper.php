@@ -1637,6 +1637,7 @@ class PdfWriter extends Writer
         $pdfdefaultfont=Yii::app()->getConfig('pdfdefaultfont');
         $pdffontsize=Yii::app()->getConfig('pdffontsize');
         $pdforientation=Yii::app()->getConfig('pdforientation');
+        $clang = new limesurvey_lang($sLanguageCode);
 
         if ($oOptions->output=='file') 
         {
@@ -1673,6 +1674,7 @@ class PdfWriter extends Writer
         $this->pdf->AddPage();
         $this->pdf->intopdf("PDF export ".date("Y.m.d-H:i", time()));
         //Set some pdf metadata
+        Yii::app()->loadHelper('surveytranslator');
         $lg=array();
         $lg['a_meta_charset'] = 'UTF-8';
         if (getLanguageRTL($sLanguageCode))
@@ -1683,8 +1685,8 @@ class PdfWriter extends Writer
         {
             $lg['a_meta_dir'] = 'ltr';
         }
-        $lg['a_meta_language'] = $statlangcode;
-        $lg['w_page']=$statlang->gT("page");
+        $lg['a_meta_language'] = $sLanguageCode;
+        $lg['w_page']=$clang->gT("page");
         $this->pdf->setLanguageArray($lg);
 
         $this->separator="\t";

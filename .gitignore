@@ -9,3 +9,4 @@
 /tmp/*.png
 /tmp/*.xls
 /upload/.htaccess
+/nbproject

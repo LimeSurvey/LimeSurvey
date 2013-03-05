@@ -545,9 +545,10 @@ class UserAction extends Survey_Common_Action
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1) {
             $templaterights = array();
             $tresult = Template::model()->findAll();
+            $postvalue= array_flip($_POST);
             foreach ($tresult as $trow)
             {
-                if (isset($_POST[$trow["folder"] . "_use"]))
+                if (isset($postvalue[$trow["folder"] . "_use"]))
                     $templaterights[$trow["folder"]] = 1;
                 else
                     $templaterights[$trow["folder"]] = 0;

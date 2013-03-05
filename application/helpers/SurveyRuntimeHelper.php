@@ -25,6 +25,9 @@ class SurveyRuntimeHelper {
         global $errormsg;
 
         extract($args);
+        if (!$thissurvey) {
+            $thissurvey = getSurveyInfo($surveyid);
+        }
         $LEMsessid = 'survey_' . $surveyid;
         $sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
         if (isset ($_SESSION['survey_'.$surveyid]['templatepath']))
@@ -87,7 +90,7 @@ class SurveyRuntimeHelper {
 
         if ($previewgrp || $previewquestion)
         {
-            $_SESSION[$LEMsessid]['prevstep'] = 1;
+            $_SESSION[$LEMsessid]['prevstep'] = 2;
             $_SESSION[$LEMsessid]['maxstep'] = 0;
         }
         else
@@ -251,7 +254,7 @@ class SurveyRuntimeHelper {
             {
                 $_SESSION[$LEMsessid]['test']=time();
                 display_first_page();
-                exit;
+                Yii::app()->end(); // So we can still see debug messages
             }
 
             //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
@@ -506,7 +509,7 @@ class SurveyRuntimeHelper {
                 }
                 $redata['completed'] = $completed;
                 echo templatereplace(file_get_contents($sTemplatePath."completed.pstpl"), array('completed' => $completed), $redata);
-                echo "\n<br />\n";
+                echo "\n";
                 if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING))
                 {
                     echo LimeExpressionManager::GetDebugTimingMessage();
@@ -633,7 +636,7 @@ class SurveyRuntimeHelper {
 
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
         {
-            $gid = $gl[0];
+            $gid = $gl['gid'];
             $qnumber = 0;
 
             if ($surveyMode != 'survey')
@@ -910,10 +913,10 @@ END;
         $_gseq = -1;
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
         {
-            $gid = $gl[0];
+            $gid = $gl['gid'];
             ++$_gseq;
-            $groupname = $gl[1];
-            $groupdescription = $gl[2];
+            $groupname = $gl['group_name'];
+            $groupdescription = $gl['description'];
 
             if ($surveyMode != 'survey' && $gid != $onlyThisGID)
             {
@@ -1092,7 +1095,7 @@ END;
                             $grel = !LimeExpressionManager::GroupIsIrrelevantOrHidden($gseq);
                             if ($grel)
                             {
-                                $gtitle = LimeExpressionManager::ProcessString($g[1]);
+                                $gtitle = LimeExpressionManager::ProcessString($g['group_name']);
                                 echo '<h3>' . flattenText($gtitle) . "</h3>";
                             }
                             $lastGseq = $stepInfo['gseq'];
@@ -1115,7 +1118,7 @@ END;
 
                     if ($surveyMode == 'group')
                     {
-                        $indexlabel = LimeExpressionManager::ProcessString($g[1]);
+                        $indexlabel = LimeExpressionManager::ProcessString($g['group_name']);
                     }
                     else
                     {

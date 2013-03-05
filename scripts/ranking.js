@@ -4,7 +4,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   if (typeof samechoiceheight === 'undefined'){samechoiceheight=true;}
   if (typeof samelistheight === 'undefined'){ samelistheight=true;}
   var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
-  var rankingname= $("#ranking-"+qID+"-name").text();
+  var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text();
   var rankingnamewidth=rankingname.length;
   //Add a class to the question
   $('#question'+qID+'').addClass('dragDropRanking');
@@ -102,7 +102,8 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
 
 function updateDragDropRank(qID){
   var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
-  var rankingname= $("#ranking-"+qID+"-name").text();
+  var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text();
+  var relevancename= "relevance"+$("#ranking-"+qID+"-name").text();
   var rankingnamewidth=rankingname.length;
   $('#question'+qID+' .select-item select').val('');
   $('#sortable-rank-'+qID+' li').each(function(index) {
@@ -111,7 +112,11 @@ function updateDragDropRank(qID){
     liValue = liID.substr(rankingnamewidth);
     $('#question'+qID+' .select-item select').eq(index).val(liValue);
   });
-  $('#question'+qID+' .select-item select').each(function(){
+  // Update #relevance and lauch checkconditions function
+  $("[id^=" + relevancename + "]").val('0');
+  $('#question'+qID+' .select-item select').each(function(index){
+    number=index+1;
+    if($(this).val()!=""){$("#"+relevancename+number).val("1");}
     checkconditions($(this).val(),$(this).attr("name"),'select-one','onchange');
   });
     $('#sortable-rank-'+qID+' li').removeClass("error");
@@ -128,13 +133,19 @@ function sortableAlert (qID,showpopups)
 }
 function loadDragDropRank(qID){
   var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
-  var rankingname= $("#ranking-"+qID+"-name").text();
+  var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text();
+  var relevancename= "relevance"+$("#ranking-"+qID+"-name").text();
   var rankingnamewidth=rankingname.length;
-  $('#question'+qID+' .select-item select').each(function(){
+  // Update #relevance 
+  $("[id^=" + relevancename + "]").val('0');
+  $('#question'+qID+' .select-item select').each(function(index){
     if($(this).val()!=''){
+        number=index+1;
+        $("#"+relevancename+number).val("1");
         $('#sortable-choice-'+qID+' li#'+rankingname+$(this).val()).appendTo('#sortable-rank-'+qID);
     }
   });
+
   $('#sortable-rank-'+qID+' li').removeClass("error");
   $('#sortable-choice-'+qID+' li').removeClass("error");
   $('#sortable-rank-'+qID+' li:gt('+(maxanswers*1-1)+')').addClass("error");

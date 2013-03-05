@@ -124,7 +124,7 @@ class Statistics_userController extends LSYii_Controller {
 		    require_once(APPPATH.'third_party/pchart/pchart/pData.class');
 		    require_once(APPPATH.'third_party/pchart/pchart/pCache.class');
 
-		    $MyCache = new pCache(Yii::app()->getConfig("tempdir").'/');
+		    $MyCache = new pCache(Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR);
 		    //$currentuser is created as prefix for pchart files
 		    if (isset($_SERVER['REDIRECT_REMOTE_USER']))
 		    {
@@ -156,13 +156,6 @@ class Statistics_userController extends LSYii_Controller {
 		$surveylanguage= $language;
 		sendCacheHeaders();
 		$condition = false;
-		$header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-		. "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
-		if (getLanguageRTL($surveylanguage))
-		{
-			$condition = true;
-		    $header.=" dir=\"rtl\" ";
-		}
 		$sitename = Yii::app()->getConfig("sitename");
 
 		$data['surveylanguage'] = $surveylanguage;
@@ -362,7 +355,25 @@ class Statistics_userController extends LSYii_Controller {
 		}// end if -> for removing the error message in case there are no filters
 		$summary = $allfields;
 
+        
+        // Get the survey inforamtion
+        $thissurvey = getSurveyInfo($surveyid,$language);
+
+        //SET THE TEMPLATE DIRECTORY
+        if (!isset($thissurvey['templatedir']) || !$thissurvey['templatedir'])
+        {
+            $data['sTemplatePath'] = validateTemplateDir("default");
+        }
+        else
+        {
+            $data['sTemplatePath'] = validateTemplateDir($thissurvey['templatedir']);
+        }
+        
+        
 		//---------- CREATE STATISTICS ----------
+        $redata = compact(array_keys(get_defined_vars()));
+        doHeader();
+        echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir($data['sTemplatePath'])).DIRECTORY_SEPARATOR."startpage.pstpl"),array(), $redata);
 
 
 		//some progress bar stuff
@@ -439,19 +450,6 @@ class Statistics_userController extends LSYii_Controller {
 		    $prb->hide();
 		}
 
-        // Get the survey inforamtion
-        $thissurvey = getSurveyInfo($surveyid,$language);
-
-        //SET THE TEMPLATE DIRECTORY
-        if (!isset($thissurvey['templatedir']) || !$thissurvey['templatedir'])
-        {
-            $data['sTemplatePath'] = validateTemplateDir("default");
-        }
-        else
-        {
-            $data['sTemplatePath'] = validateTemplateDir($thissurvey['templatedir']);
-        }
-        
         $redata = compact(array_keys(get_defined_vars()));
         $data['redata'] = $redata;
         header_includes('statistics_user.js');

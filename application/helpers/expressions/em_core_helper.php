@@ -185,8 +185,9 @@ class ExpressionManager {
 'is_null' => array('is_null', 'LEMis_null', $this->gT('Finds whether a variable is NULL'), 'bool is_null(var)', 'http://www.php.net/manual/en/function.is-null.php', 1),
 'is_numeric' => array('is_numeric', 'LEMis_numeric', $this->gT('Finds whether a variable is a number or a numeric string'), 'bool is_numeric(var)', 'http://www.php.net/manual/en/function.is-numeric.php', 1),
 'is_string' => array('is_string', 'LEMis_string', $this->gT('Find whether the type of a variable is string'), 'bool is_string(var)', 'http://www.php.net/manual/en/function.is-string.php', 1),
+'join' => array('exprmgr_join', 'LEMjoin', $this->gT('Join strings, return joined string.This function is an alias of implode("",argN)'), 'string join(arg1,arg2,...,argN)', '', -1),
 'list' => array('exprmgr_list', 'LEMlist', $this->gT('Return comma-separated list of values'), 'string list(arg1, arg2, ... argN)', '', -2),
-'log' => array('log', 'Math.log', $this->gT('Natural logarithm'), 'number log(number)', 'http://www.php.net/manual/en/function.log.php', 1),
+'log' => array('exprmgr_log', 'LEMlog', $this->gT('The logarithm of number to base, if given, or the natural logarithm. '), 'number log(number,base=e)', 'http://www.php.net/manual/en/function.log.php', -2),
 'ltrim' => array('ltrim', 'ltrim', $this->gT('Strip whitespace (or other characters) from the beginning of a string'), 'string ltrim(string [, charlist])', 'http://www.php.net/manual/en/function.ltrim.php', 1,2),
 'max' => array('max', 'Math.max', $this->gT('Find highest value'), 'number max(arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.max.php', -2),
 'min' => array('min', 'Math.min', $this->gT('Find lowest value'), 'number min(arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.min.php', -2),
@@ -345,11 +346,8 @@ class ExpressionManager {
                 if ($bBothNumeric) {
                     $result = array(($arg1[0] + $arg2[0]),$token[1],'NUMBER');
                 }
-                else if ($bBothString) {
-                    $result = array($arg1[0] . $arg2[0],$token[1],'STRING');
-                }
                 else {
-                    $result = array(NAN,$token[1],'NUMBER');
+                    $result = array($arg1[0] . $arg2[0],$token[1],'STRING');
                 }
                 break;
             case '-':
@@ -1227,6 +1225,7 @@ class ExpressionManager {
             return '';
         }
         $tokens = $this->RDP_tokens;
+        // TODOSHNOULLE
         $stringParts=array();
         $numTokens = count($tokens);
         for ($i=0;$i<$numTokens;++$i)
@@ -2001,7 +2000,7 @@ class ExpressionManager {
                     if (!$this->RDP_onlyparse) {
                         switch($funcName) {
                             case 'sprintf':
-                                // PHP doesn't let you pass array of parameters to sprintf, so must use call_user_func_array
+                                // PHP doesn't let you pass array of parameters to function, so must use call_user_func_array
                                 $result = call_user_func_array('sprintf',$params);
                                 break;
                             default:
@@ -2027,7 +2026,6 @@ class ExpressionManager {
                                 case 'cos':
                                 case 'exp':
                                 case 'is_nan':
-                                case 'log':
                                 case 'sin':
                                 case 'sqrt':
                                 case 'tan':
@@ -2731,6 +2729,8 @@ there~if((one > two),'hi','there')
 64~if((one < two),pow(2,6),pow(6,2))
 H e l l o~implode(' ','H','e','l','l','o')
 1|2|3|4|5~implode('|',one,two,three,four,five)
+123~join(1,2,3)
+123 5~join(one,2,three," ",five)
 4~intval('4')
 4~intval('100',2)
 5~intval(5.7)
@@ -3385,6 +3385,35 @@ function exprmgr_list($args)
 }
 
 /**
+ * return log($arg[0],$arg[1]=e)
+ * @param <type> $args
+ * @return float
+ */
+function exprmgr_log($args)
+{
+    if (count($args) < 1)
+    {
+        return NAN;
+    }
+    $number=$args[0];
+    if(!is_numeric($number)){return NAN;}
+    $base=(isset($args[1]))?$args[1]:exp(1);
+    if(!is_numeric($base)){return NAN;}
+    if(floatval($base)<=0){return NAN;}
+    return log($number,$base);
+}
+
+/**
+ * Join together $args[N]
+ * @param <type> $args
+ * @return <type>
+ */
+function exprmgr_join($args)
+{
+    return implode("",$args);
+}
+
+/**
  * Join together $args[1-N] with $arg[0]
  * @param <type> $args
  * @return <type>
@@ -3474,7 +3503,8 @@ function expr_mgr_htmlspecialchars_decode($string)
 function exprmgr_regexMatch($pattern, $input)
 {
     try {
-        $result = @preg_match($pattern, $input);
+        // 'u' is the regexp modifier for unicode so that non-ASCII string will nbe validated properly
+        $result = @preg_match($pattern.'u', $input);
     } catch (Exception $e) {
         $result = false;
         // How should errors be logged?

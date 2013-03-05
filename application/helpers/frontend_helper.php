@@ -226,6 +226,10 @@
             {
                 $route.="/action/previewgroup/gid/".intval(Yii::app()->request->getParam('gid',0));
             }
+            if (Yii::app()->request->getParam('token')!='')
+            {
+                $route.="/token/".Yii::app()->request->getParam('token');
+            }
             $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
             foreach ($slangs as $sLanguage)
             {
@@ -912,8 +916,15 @@
     */
     function submittokens($quotaexit=false)
     {
-        global $thissurvey;
-        global $surveyid;
+        $surveyid=Yii::app()->getConfig('surveyID');
+        if(isset($_SESSION['survey_'.$surveyid]['s_lang']))
+        {
+            $thissurvey=getSurveyInfo($surveyid,$_SESSION['survey_'.$surveyid]['s_lang']);
+        }
+        else
+        {
+            $thissurvey=getSurveyInfo($surveyid);
+        }
         $clienttoken=$_SESSION['survey_'.$surveyid]['thistoken']['token'];
 
         $clang = Yii::app()->lang;
@@ -923,94 +934,89 @@
         $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
         // check how many uses the token has left
-        $usesrow = Tokens_dynamic::model($surveyid)->findByAttributes(array('token' => $clienttoken));
-        if (!is_null($usesrow)) {
-                $usesleft = $usesrow->usesleft;
-                $participant_id = isset($usesrow->participant_id) ? $usesrow->participant_id : '';
+        $oTokenInformation = Tokens_dynamic::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+        if ($oTokenInformation)
+        {
+                $usesleft = $oTokenInformation->usesleft;
+                $participant_id = isset($oTokenInformation->participant_id) ? $oTokenInformation->participant_id : '';
         }
 
         if ($quotaexit==true)
         {
-            $usesrow->completed = 'Q';
-            $usesrow->usesleft = $usesrow->usesleft-1;
+            $oTokenInformation->completed = 'Q';
+            $oTokenInformation->usesleft = $oTokenInformation->usesleft-1;
         }
         else
-        {        
+        {
             if (isset($usesleft) && $usesleft<=1)
             {
                 // Finish the token
                 if (isTokenCompletedDatestamped($thissurvey))
                 {
-                    $usesrow->completed = $today;
+                    $oTokenInformation->completed = $today;
                 } else {
-                    $usesrow->completed = 'Y';
+                    $oTokenInformation->completed = 'Y';
                 }
                 if(!empty($participant_id))
                 {
-                    $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$usesrow->tid));
+                    $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$oTokenInformation->tid));
                     
                     if (isTokenCompletedDatestamped($thissurvey))
                     {
                         $slquery->date_completed = $today;
                     } else {
                         // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
-                        $slquery->date_completed = $slquery->date_created;    
-                    }                    
+                        $slquery->date_completed = $slquery->date_created;
+                    }
                     $slquery->save();
                 }
             }
-            $usesrow->usesleft = $usesrow->usesleft-1;
+            $oTokenInformation->usesleft = $oTokenInformation->usesleft-1;
         }
-        $usesrow->save();
-
+        $oTokenInformation->save();
         if ($quotaexit==false)
         {
-            // TLR change to put date into sent and completed
-            $cnfquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token='".$clienttoken."' AND completed!='N' AND completed!=''";
-
-            $cnfresult = dbExecuteAssoc($cnfquery);       //Checked
-            $cnfrow = $cnfresult->read();
-            if (isset($cnfrow))
+            if ($oTokenInformation && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y")
             {
-                $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-                $to = $cnfrow['email'];
-                $subject=$thissurvey['email_confirm_subj'];
-
-                $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
-                $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
-                $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
-                $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
-                $fieldsarray["{FIRSTNAME}"]=$cnfrow['firstname'];
-                $fieldsarray["{LASTNAME}"]=$cnfrow['lastname'];
-                $fieldsarray["{TOKEN}"]=$clienttoken;
-                $attrfieldnames=getAttributeFieldNames($surveyid);
-                foreach ($attrfieldnames as $attr_name)
+                if($oTokenInformation->completed == "Y" || $oTokenInformation->completed == $today)
                 {
-                    $fieldsarray["{".strtoupper($attr_name)."}"]=$cnfrow[$attr_name];
-                }
+                    $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
+                    $to = $oTokenInformation->email;
+                    $subject=$thissurvey['email_confirm_subj'];
 
-                $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
-                $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
-                $fieldsarray["{EXPIRY}"]=convertDateTimeFormat($thissurvey["expiry"],'Y-m-d H:i:s',$dateformatdatat['phpdate']);
+                    $aReplacementVars=array();
+                    $aReplacementVars["ADMINNAME"]=$thissurvey['admin'];
+                    $aReplacementVars["ADMINEMAIL"]=$thissurvey['adminemail'];
+                    $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
+                    //Fill with token info, because user can have his information with anonimity control
+                    $aReplacementVars["FIRSTNAME"]=$oTokenInformation->firstname;
+                    $aReplacementVars["LASTNAME"]=$oTokenInformation->lastname;
+                    $aReplacementVars["TOKEN"]=$clienttoken;
+                    $attrfieldnames=getAttributeFieldNames($surveyid);
+                    foreach ($attrfieldnames as $attr_name)
+                    {
+                        $aReplacementVars[strtoupper($attr_name)]=$oTokenInformation->$attr_name;
+                    }
 
-                $subject=ReplaceFields($subject, $fieldsarray, true);
+                    $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+                    $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
+                    $redata=array('thissurvey'=>$thissurvey);
+                    $subject=templatereplace($subject,$aReplacementVars,$redata);
 
-                $subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
+                    $subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
 
-                if (getEmailFormat($surveyid) == 'html')
-                {
-                    $ishtml=true;
-                }
-                else
-                {
-                    $ishtml=false;
-                }
+                    if (getEmailFormat($surveyid) == 'html')
+                    {
+                        $ishtml=true;
+                    }
+                    else
+                    {
+                        $ishtml=false;
+                    }
 
-                if (trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y")
-                {
                     $message=$thissurvey['email_confirm'];
-                    $message=ReplaceFields($message, $fieldsarray, true);
-
+                    //$message=ReplaceFields($message, $fieldsarray, true);
+                    $message=templatereplace($message,$aReplacementVars,$redata);
                     if (!$ishtml)
                     {
                         $message=strip_tags(breakToNewline(html_entity_decode($message,ENT_QUOTES,$emailcharset)));
@@ -1021,15 +1027,14 @@
                     }
 
                     //Only send confirmation email if there is a valid email address
-                    if (validateEmailAddress($cnfrow['email']))
+                    if (validateEmailAddress($to))
                     {
                         SendEmailMessage($message, $subject, $to, $from, $sitename,$ishtml);
                     }
                 }
                 else
                 {
-                    //There is nothing in the message or "Send confirmation emails" is set to "No" , so don't send a confirmation email
-                    //This section only here as placeholder to indicate new feature :-)
+                    // Leave it to send optional confirmation at closed token
                 }
             }
         }
@@ -1255,13 +1260,14 @@
     */
     function buildsurveysession($surveyid,$preview=false)
     {
-        global $thissurvey, $secerror, $clienttoken;
+        global $secerror, $clienttoken;
         global $tokensexist;
         //global $surveyid;
         global $templang, $move, $rooturl;
 
         $clang = Yii::app()->lang;
 
+        $thissurvey = getSurveyInfo($surveyid);
         if (empty($templang))
         {
             $templang=$thissurvey['language'];
@@ -1591,6 +1597,8 @@
     unset($_SESSION['survey_'.$surveyid]['insertarray']);
     unset($_SESSION['survey_'.$surveyid]['thistoken']);
     unset($_SESSION['survey_'.$surveyid]['fieldnamesInfo']);
+    unset($_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']);
+    unset($_SESSION['survey_'.$surveyid]['groupReMap']);
     $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
 
 
@@ -1625,7 +1633,7 @@
     }
 
 
-    UpdateSessionGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+    UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
     $sQuery = "SELECT count(*)\n"
     ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
@@ -1707,7 +1715,7 @@
         $_SESSION['survey_'.$surveyid]['thistoken']=getTokenData($surveyid, $clienttoken);
     }
     $qtypes=getQuestionTypeList('','array');
-    $fieldmap=createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+    $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
 
     // Randomization groups for groups
@@ -1729,20 +1737,16 @@
         shuffle($aShuffledIDs);
         $aGIDCompleteMap=$aGIDCompleteMap+array_combine($aGIDs,$aShuffledIDs);
     }
-    $_SESSION['survey_'.$surveyid]['groupReMap']=$aGIDCompleteMap;
+    $_SESSION['survey_' . $surveyid]['groupReMap'] = $aGIDCompleteMap;
 
+    $randomized = false;    // So we can trigger reorder once for group and question randomization
     // Now adjust the grouplist
     if (count($aRandomGroups)>0)
     {
+        $randomized = true;    // So we can trigger reorder once for group and question randomization
         // Now adjust the grouplist
-        foreach ($aGIDCompleteMap as $iOldGid=>$iNewGid)
-        {
-            if (!isset($_SESSION['survey_'.$surveyid]['grouplist'][$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
-            {
-                $_SESSION['survey_'.$surveyid]['grouplist']=arraySwapAssoc($iOldGid,$iNewGid,$_SESSION['survey_'.$surveyid]['grouplist']);
-            }
-            $_SESSION['survey_'.$surveyid]['grouplist'][$iNewGid]['shuffled']=true;
-        }
+        Yii::import('application.helpers.frontend_helper', true);   // make sure frontend helper is loaded
+        UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
         // ... and the fieldmap
 
         // First create a fieldmap with GID as key
@@ -1751,27 +1755,31 @@
             if (isset($aField['gid']))
             {
                 $GroupFieldMap[$aField['gid']][]=$aField;
-            }
+            } 
             else{
                 $GroupFieldMap['other'][]=$aField;
             }
         }
         // swap it
-        foreach ($aGIDCompleteMap as $iOldGid=>$iNewGid)
+        foreach ($GroupFieldMap as $iOldGid => $fields)
         {
-            if (!isset($GroupFieldMap[$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
+            $iNewGid = $iOldGid;
+            if (isset($aGIDCompleteMap[$iOldGid]))
             {
-                $GroupFieldMap=arraySwapAssoc($iOldGid,$iNewGid,$GroupFieldMap);
+                $iNewGid = $aGIDCompleteMap[$iOldGid];
             }
-            $GroupFieldMap[$iNewGid]['shuffled']=true;
+            $newGroupFieldMap[$iNewGid] = $GroupFieldMap[$iNewGid];
         }
+        $GroupFieldMap = $newGroupFieldMap;
         // and convert it back to a fieldmap
         unset($fieldmap);
         foreach($GroupFieldMap as $aGroupFields)
         {
             foreach ($aGroupFields as $aField)
             {
-                if (isset($aField['fieldname'])) $fieldmap[$aField['fieldname']]=$aField;  // isset() because of the shuffled flag above
+                if (isset($aField['fieldname'])) {
+                    $fieldmap[$aField['fieldname']] = $aField;  // isset() because of the shuffled flag above
+                }
             }
         }
         unset($GroupFieldMap);
@@ -1799,7 +1807,8 @@
     // If we have randomization groups set, then lets cycle through each group and
     // replace questions in the group with a randomly chosen one from the same group
     if (count($randomGroups) > 0)
-    {       
+    {
+        $randomized   = true;    // So we can trigger reorder once for group and question randomization
         $copyFieldMap = array();
         $oldQuestOrder = array();
         $newQuestOrder = array();
@@ -1817,17 +1826,19 @@
         foreach ($fieldmap as $fieldkey => $fieldval)
         {
             $found = 0;
-            foreach ($randomGroups as $gkey=>$gval)
+            foreach ($randomGroups as $gkey => $gval)
             {
                 // We found a qid that is in the randomization group
                 if (isset($fieldval['qid']) && in_array($fieldval['qid'],$oldQuestOrder[$gkey]))
                 {
                     // Get the swapped question
-                    $oldQuestFlip = array_flip($oldQuestOrder[$gkey]);
-                    foreach($fieldmap as $key => $field) {
-                        if (isset($field['qid']) && $field['qid'] == $newQuestOrder[$gkey][$oldQuestFlip[$fieldval['qid']]]) {
-                            $field['random_gid'] = $fieldval['gid'];
-                            $copyFieldMap[$key] = $field;
+                    $idx = array_search($fieldval['qid'],$oldQuestOrder[$gkey]);
+                    foreach ($fieldmap as $key => $field)
+                    {
+                        if (isset($field['qid']) && $field['qid'] == $newQuestOrder[$gkey][$idx])
+                        {
+                            $field['random_gid'] = $fieldval['gid'];   // It is possible to swap to another group
+                            $copyFieldMap[$key]  = $field;
                         }
                     }
                     $found = 1;
@@ -1843,27 +1854,30 @@
             }
             reset($randomGroups);
         }
+        $fieldmap = $copyFieldMap;
+    }
+
+    if ($randomized === true)
+    {
         // reset the sequencing counts
-        $gseq=-1;
-        $_gid=-1;
-        $qseq=-1;
-        $_qid=-1;
-        $copyFieldMap2 = array();
-        foreach ($copyFieldMap as $key=>$val)
+        $gseq = -1;
+        $_gid = -1;
+        $qseq = -1;
+        $_qid = -1;
+        $copyFieldMap = array();
+        foreach ($fieldmap as $key => $val)
         {
-            if (isset($val['random_gid']))
+            if ($val['gid'] != '')
             {
-                if ($val['gid'] != '' && $val['random_gid'] != '' && $val['random_gid'] != $_gid)
+                if (isset($val['random_gid']))
                 {
-                    $_gid = $val['random_gid'];
-                    ++$gseq;
+                    $gid = $val['random_gid'];
+                } else {
+                    $gid = $val['gid'];
                 }
-            }
-            else
-            {
-                if ($val['gid'] != '' && $val['gid'] != $_gid)
+                if ($gid != $_gid)
                 {
-                    $_gid = $val['gid'];
+                    $_gid = $gid;
                     ++$gseq;
                 }
             }
@@ -1873,20 +1887,22 @@
                 $_qid = $val['qid'];
                 ++$qseq;
             }
+
             if ($val['gid'] != '' && $val['qid'] != '')
             {
-                $val['groupSeq'] = $gseq;
+                $val['groupSeq']    = $gseq;
                 $val['questionSeq'] = $qseq;
             }
-            $copyFieldMap2[$key] = $val;
+
+            $copyFieldMap[$key] = $val;
         }
+        $fieldmap = $copyFieldMap;
         unset($copyFieldMap);
-        $fieldmap=$copyFieldMap2;
 
         $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
         $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
     }
-
+    
     // TMSW Conditions->Relevance:  don't need hasconditions, or usedinconditions
 
     $_SESSION['survey_'.$surveyid]['fieldmap']=$fieldmap;
@@ -2253,27 +2269,39 @@ function UpdateGroupList($surveyid, $language)
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
     $query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
     $result = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />");  //Checked
+    $groupList = array();
     foreach ($result->readAll() as $row)
     {
-        $_SESSION['survey_'.$surveyid]['grouplist'][$row['gid']]=array($row['gid'], $row['group_name'], $row['description']);
+        $group = array(
+            'gid'         => $row['gid'], 
+            'group_name'  => $row['group_name'],
+            'description' =>  $row['description']);
+        $groupList[] = $group;
+        $gidList[$row['gid']] = $group;
     }
+    
     if (isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap'])>0)
     {
         // Now adjust the grouplist
-        foreach ($_SESSION['survey_'.$surveyid]['groupReMap'] as $iOldGid=>$iNewGid)
-        {
-            if (!isset($_SESSION['survey_'.$surveyid]['grouplist'][$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
-            {
-                $_SESSION['survey_'.$surveyid]['grouplist']=arraySwapAssoc($iOldGid,$iNewGid,$_SESSION['survey_'.$surveyid]['grouplist']);
+        $groupRemap = $_SESSION['survey_'.$surveyid]['groupReMap'];
+        $groupListCopy = $groupList;
+        foreach ($groupList as $gseq => $info) {
+            $gid = $info['gid']; 
+            if (isset($groupRemap[$gid])) {
+                $gid = $groupRemap[$gid];
             }
-            $_SESSION['survey_'.$surveyid]['grouplist'][$iNewGid]['shuffled']=true;
+            $groupListCopy[$gseq] = $gidList[$gid];
         }
-    }
+        $groupList = $groupListCopy;
+     }
+     
+     $_SESSION['survey_'.$surveyid]['grouplist'] = $groupList;
 }
 
 /**
 * FieldArray contains all necessary information regarding the questions
 * This function is needed to update it in case the survey is switched to another language
+* @todo: Make 'fieldarray' obsolete by replacing with EM session info
 */
 function UpdateFieldArray()
 {
@@ -2290,9 +2318,11 @@ function UpdateFieldArray()
 
             $query = "SELECT title, question FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
             $usrow = Yii::app()->db->createCommand($query)->queryRow();
-            if (!$usrow) safeDie ("Couldn't get question <br />$query<br />");      //Checked
-            $questionarray[2]=$usrow['title'];
-            $questionarray[3]=$usrow['question'];
+            if ($usrow) 
+            {
+                $questionarray[2]=$usrow['title'];
+                $questionarray[3]=$usrow['question'];
+            }
             unset($questionarray);
         }
     }
@@ -2448,9 +2478,10 @@ function checkQuota($checkaction,$surveyid)
         $redata = compact(array_keys(get_defined_vars()));
         foreach($quota_info as $quota)
         {
-            $quota['Message']=templatereplace($quota['Message'],array(),$redata);
-            $quota['Url']=templatereplace($quota['Url'],array(),$redata);
-            $quota['UrlDescrip']=templatereplace($quota['UrlDescrip'],array(),$redata);
+            $quota['Message'] = templatereplace($quota['Message'],array(),$redata);
+            $quota['Url'] = passthruReplace($quota['Url'], $thissurvey);
+            $quota['Url'] = templatereplace($quota['Url'],array(),$redata);
+            $quota['UrlDescrip'] = templatereplace($quota['UrlDescrip'],array(),$redata);
             if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "1"))
             {
                 // If a token is used then mark the token as completed
@@ -2658,19 +2689,6 @@ function resetTimers()
     $cookie=new CHttpCookie('limesurvey_timers', '');
     $cookie->expire = time()- 3600;
     Yii::app()->request->cookies['limesurvey_timers'] = $cookie;
-}
-
-function UpdateSessionGroupList($surveyid, $language)
-//1. SESSION VARIABLE: grouplist
-//A list of groups in this survey, ordered by group name.
-{
-    unset ($_SESSION['survey_'.$surveyid]['grouplist']);
-    $query = "SELECT * FROM {{groups}} WHERE sid={$surveyid} AND language='".$language."' ORDER BY group_order";
-    $result = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />".$connect->ErrorMsg());  //Checked
-    foreach($result->readAll() as $row)
-    {
-        $_SESSION['survey_'.$surveyid]['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
-    }
 }
 
 //For multilanguage surveys
