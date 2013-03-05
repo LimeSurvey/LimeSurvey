@@ -5,6 +5,10 @@ class Example extends PluginBase {
     static protected $description = 'Example plugin';
     
     protected $settings = array(
+        'logo' => array(
+                'type' => 'logo',
+                'path' => 'assets/logo.png'
+            ),
         'message' => array(
             'type' => 'string',
             'label' => 'Message'

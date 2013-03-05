@@ -1,0 +1,31 @@
+div.pluginsettings * {
+    padding: 0px;
+    margin: 0px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+div.pluginsettings {
+    width: 500px;
+    margin: auto;
+    text-align: center;
+    
+}
+div.pluginsettings ol {
+    list-style: none;
+}
+
+div.pluginsettings label, div.pluginsettings input {
+    width: 250px;
+    display: inline-block;
+}
+
+div.pluginsettings li {
+    margin-top: 10px;
+}
+
+div.pluginsettings input[type=submit], div.pluginsettings img {
+    margin: auto;
+    display: block;
+    margin-top: 20px;
+}
