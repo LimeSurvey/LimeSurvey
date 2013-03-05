@@ -29,6 +29,33 @@ function comparePermission($aPermissionA,$aPermissionB)
 }
 
 /**
+ * Helper function to replace calls to Yii::app() and enable correct code completion.
+ * @return LSYii_Application
+ */
+function App()
+{
+    return Yii::app();
+}
+
+/**
+ * Translation helper function.
+ * @param string $string
+ * @param string $escapemode
+ */
+function gT($string, $escapemode = 'html')
+{
+    Yii::import('application.libraries.Limesurvey_lang');
+    if (isset(App()->lang))
+    {
+        return App()->lang->gT($string, $escapemode);
+    }
+    else
+    {
+        return $string;
+    }
+}
+
+/**
 * getQuestionTypeList() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
 *    question type
 *

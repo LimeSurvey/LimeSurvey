@@ -36,6 +36,7 @@ class InstallerController extends CController {
     */
     public $lang = null;
 
+    public $layout = false;
     /**
     * Checks for action specific authorization and then executes an action
     *

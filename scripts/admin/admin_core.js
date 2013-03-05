@@ -1,6 +1,7 @@
 //$Id: admin_core.js 10154 2011-05-31 11:45:24Z c_schmitz $
 
 $(document).ready(function(){
+    initializeAjaxProgress();
     if(typeof(userdateformat) !== 'undefined')
         {
         $(".popupdate").each(function(i,e) {
@@ -203,11 +204,12 @@ $(document).ready(function(){
         $('#groupdetails').show();
     });
     $('#tabs').tabs();
-    $("#flashmessage").notify().notify('create','themeroller',{},{custom:true,
+    $(".flashmessage").each(function() {
+        $(this).notify().notify('create','themeroller',{},{custom:true,
         speed: 500,
         expires: 5000
+        });
     });
-
     if ($("#question_type").not('.none').length > 0 && $("#question_type").attr('type')!='hidden'){
         $("#question_type").msDropDown({onInit:qTypeDropdownInit});
 
@@ -662,5 +664,26 @@ function removeCSRFDivs()
        grandfather = $(parent).parent();
        grandfather.append(this);
        parent.remove();
+    });
+}
+
+function initializeAjaxProgress()
+{
+    $('#ajaxprogress').dialog({
+            'modal' : true,
+            'closeOnEscape' : false,
+            'title' : $('#ajaxprogress').attr('title'),
+            'autoOpen' : false,
+            'minHeight': 0,
+            'resizable': false
+        });
+    $('#ajaxprogress').bind('ajaxStart', function()
+    {
+        $(this).dialog('open');
+    });
+    $('#ajaxprogress').bind('ajaxStop', function()
+    {
+        
+        $(this).dialog('close');
     });
 }

@@ -1,5 +1,4 @@
-<div id="flash-<?php echo $key; ?>"class="flashmessage" style="display:none;">
-    
+<div id="flash-<?php echo $key; ?>" class="flashmessage" style="display:none;">
     <div id="themeroller" class="ui-state-highlight ui-corner-all">
         <!-- close link -->
         <a class="ui-notify-close" href="#">

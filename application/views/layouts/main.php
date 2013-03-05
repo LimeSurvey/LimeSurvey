@@ -11,7 +11,8 @@
             $cs->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.qtip.js');
             $cs->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.notify.js');
             $cs->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'admin_core.js');
-            $cs->registerScript('LimeScript', $this->widget('ext.LimeScript.LimeScript', array(), true), CClientScript::POS_HEAD);
+            //$cs->registerScript('LimeScript', $this->widget('ext.LimeScript.LimeScript', array(), true), CClientScript::POS_HEAD);
+            
         ?>
         
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('third_party');?>jqueryui/css/smoothness/jquery-ui-1.10.0.custom.css" />

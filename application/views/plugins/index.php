@@ -2,7 +2,9 @@
 <?php
     /* @var $this ConfigController */
     /* @var $dataProvider CActiveDataProvider */
+
     $dataProvider = new CArrayDataProvider($data);
+    
     $gridColumns = array(
         array(// display the 'name' attribute
             'class' => 'CLinkColumn',
@@ -17,6 +19,7 @@
             'urlExpression' => function($data) { return $data['active'] == 0 ? array("/plugins/activate", "id" => $data['id']) : array("/plugins/activate", "id" => $data['id']); }    
         )
     );
+        
         /*
             array(            // display a column with "view", "update" and "delete" buttons
             'class' => 'CallbackColumn',
@@ -25,6 +28,7 @@
         )
     );
         */
+        
     $this->widget('application.extensions.GridViewWidget', array(
         'dataProvider'=>$dataProvider,
         'columns'=>$gridColumns,

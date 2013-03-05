@@ -605,5 +605,8 @@ $config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."tem
 $config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
 $config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
 
+// Use alias notation, we should move to this format everywhere.
+$config['plugindir']               = 'webroot.plugins';
+
 return $config;
 //settings deleted

@@ -13,6 +13,8 @@ class FlashMessage extends CWidget {
             $this->render('message', compact('key', 'message'));
         }
         
+        
+        
     }
 }
 ?>
