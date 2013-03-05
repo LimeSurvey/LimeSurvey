@@ -4824,10 +4824,10 @@ function getArrayFilterExcludesForQuestion($qid)
 
 
 
-function CSVEscape($str)
+function CSVEscape($sString)
 {
-    $str= str_replace('\n','\%n',$str);
-    return '"' . str_replace('"','""', $str) . '"';
+    $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $sString);
+    return '"' . str_replace('"','""', $sString) . '"';
 }
 
 function convertCSVRowToArray($string, $seperator, $quotechar)
