@@ -17,8 +17,17 @@
 class LSYii_Application extends CWebApplication
 {
     protected $config = array();
+    /**
+     * @var Limesurvey_lang 
+     */
     public $lang = null;
 
+    /**
+     *
+     * @var PluginManager
+     */
+    protected $pluginManager;
+    
     /**
     * Initiates the application
     *
@@ -111,11 +120,30 @@ class LSYii_Application extends CWebApplication
         }
 
         foreach ($settings as $key => $value)
-        {
             $this->setConfig($key, $value);
-        }        
+        
+        // Now initialize the plugin manager
+        $this->initPluginManager(); 
+        
     }
-
+    
+    /**
+     * This method handles initialization of the plugin manager
+     * 
+     * When you want to insert your own plugin manager, or experiment with different settings
+     * then this is where you should do that.
+     */
+    public function initPluginManager()
+    {
+        Yii::import('application.libraries.PluginManager.*');
+        Yii::import('application.libraries.PluginManager.Storage.*');
+        Yii::import('application.libraries.PluginManager.Question.*');
+        $this->pluginManager = new PluginManager('LimesurveyApi');
+        
+        // And load the active plugins
+        $this->pluginManager->loadPlugins();
+    }
+    
     /**
     * Loads a helper
     *
@@ -151,6 +179,25 @@ class LSYii_Application extends CWebApplication
     public function setConfig($name, $value)
     {
         $this->config[$name] = $value;
+    }
+    
+    /**
+     * Set a 'flash message'. 
+     * 
+     * A flahs message will be shown on the next request and can contain a message
+     * to tell that the action was successful or not. The message is displayed and
+     * cleared when it is shown in the view using the widget:
+     * <code>
+     * $this->widget('application.extensions.FlashMessage.FlashMessage');
+     * </code> 
+     * 
+     * @param string $message
+     * @return LSYii_Application Provides a fluent interface
+     */
+    public function setFlashMessage($message)
+    {
+        $this->session['flashmessage'] = $message;
+        return $this;
     }
 
     /**
@@ -194,7 +241,16 @@ class LSYii_Application extends CWebApplication
     {
         $this->lang = $lang;
     }
-
+    
+    /**
+     * Get the pluginManager
+     * 
+     * @return PluginManager
+     */
+    public function getPluginManager()
+    {
+        return $this->pluginManager;
+    }
 }
 
 /**
