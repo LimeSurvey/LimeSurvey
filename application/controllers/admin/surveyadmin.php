@@ -1233,6 +1233,11 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['clang'] = $clang;
         $aData['esrow'] = $esrow;
         $aData['surveyid'] = $iSurveyID;
+        
+        $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
+        $beforeSurveySettings->set('survey', $iSurveyID);
+        App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
+        $aData['pluginSettings'] = $beforeSurveySettings->get('surveysettings');
         return $aData;
     }
 

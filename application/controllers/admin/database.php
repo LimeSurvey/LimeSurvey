@@ -965,6 +965,16 @@ class database extends Survey_Common_Action
 
         if (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && hasSurveyPermission($surveyid,'surveysettings','update'))
         {
+             // Save plugin settings.
+            $pluginSettings = App()->request->getPost('plugin', array());
+            foreach($pluginSettings as $plugin => $settings)
+            {
+                $settingsEvent = new PluginEvent('newSurveySettings');
+                $settingsEvent->set('settings', $settings);
+                $settingsEvent->set('survey', $surveyid);
+                App()->getPluginManager()->dispatchEvent($settingsEvent, $plugin);
+            }
+            
             Yii::app()->loadHelper('surveytranslator');
             Yii::app()->loadHelper('database');
             $formatdata=getDateFormatData(Yii::app()->session['dateformat']);

@@ -23,7 +23,6 @@ class Example extends PluginBase {
          * Here you should handle subscribing to the events your plugin will handle
          */
         $this->subscribe('afterPluginLoad', 'helloWorld');
-        $this->subscribe('afterAdminMenuLoaded');
         $this->subscribe('beforeSurveySettings');
         $this->subscribe('newSurveySettings');
     }
@@ -32,19 +31,6 @@ class Example extends PluginBase {
     /*
      * Below are the actual methods that handle events
      */
-    
-    public function afterAdminMenuLoaded(PluginEvent $event)
-    {
-        $menu = $event->get('menu', array());
-        $menu['left'][]=array(
-                'href' => "http://docs.limesurvey.org",
-                'alt' => gT('LimeSurvey online manual'),
-                'image' => 'showhelp.png'
-            );
-        
-        $event->set('menu', $menu);
-    }
-
     public function helloWorld(PluginEvent $event) 
     {
         $this->pluginManager->getAPI()->setFlash($this->get('message', null, null, 'Example popup. Change this via plugin settings.'));
@@ -63,7 +49,7 @@ class Example extends PluginBase {
             'settings' => array(
                 'message' => array(
                     'type' => 'string',
-                    'label' => 'Message to show to users:',
+                    'label' => 'Example survey specific setting (not used):',
                     'current' => $this->get('message', 'Survey', $event->get('survey'))
                 )
             )
