@@ -508,6 +508,29 @@ class SurveyRuntimeHelper {
                     echo $content;
                 }
                 $redata['completed'] = $completed;
+                
+                // @todo Remove direct session access.
+                $event = new PluginEvent('afterSurveyCompleted');
+                $event->set('responseId', $_SESSION[$LEMsessid]['srid']);
+                $event->set('surveyId', $surveyid);
+                App()->getPluginManager()->dispatchEvent($event);
+                if ($event->get('blocks', null) != null)
+                {
+                    $blocks = array();
+                    foreach ($event->get('blocks') as $blockData)
+                    {
+                        
+                        $defaults = array(
+                            'class' => array('pluginblock'),
+                            'contents' => '',
+                            'id' => ''
+                        );
+                        $blockData = array_merge($defaults, $blockData);
+                        $blocks[] = CHtml::tag('div', array('id' => $blockData['id'], 'class' => implode(' ', $blockData['class'])), $blockData['contents']);
+                    }
+                }
+                $redata['completed'] = implode("\n", $blocks) ."\n". $redata['completed'];
+                
                 echo templatereplace(file_get_contents($sTemplatePath."completed.pstpl"), array('completed' => $completed), $redata);
                 echo "\n";
                 if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING))
