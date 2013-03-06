@@ -511,7 +511,10 @@ class SurveyRuntimeHelper {
                 
                 // @todo Remove direct session access.
                 $event = new PluginEvent('afterSurveyCompleted');
-                $event->set('responseId', $_SESSION[$LEMsessid]['srid']);
+                if (isset($_SESSION[$LEMsessid]['srid']))
+                {
+                    $event->set('responseId', $_SESSION[$LEMsessid]['srid']);
+                }
                 $event->set('surveyId', $surveyid);
                 App()->getPluginManager()->dispatchEvent($event);
                 if ($event->get('blocks', null) != null)

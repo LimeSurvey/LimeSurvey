@@ -31,17 +31,6 @@
         }
         
         /**
-         * Loads token information into EM.
-         * @param int $surveyId
-         * @param string $token
-         */
-        
-        public function EMloadTokenInformation($surveyId, $token = null)
-        {
-            LimeExpressionManager::singleton()->loadTokenInformation($surveyId, $token);
-        }
-        
-        /**
          * Gets a response from the database.
          * @param int $surveyId
          * @param int $responseId
