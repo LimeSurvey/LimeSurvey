@@ -818,16 +818,15 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
     // Import group table ===================================================================================
 
 
-    $query = "SELECT MAX(group_order) AS maxqo FROM {{groups}} WHERE sid=$iNewSID";
-    $res = Yii::app()->db->createCommand($query)->queryScalar();
-    if ($res == false)
+    $query = "SELECT MAX(group_order) AS maxgo FROM {{groups}} WHERE sid=$iNewSID";
+    $iGroupOrder = Yii::app()->db->createCommand($query)->queryScalar();
+    if ($iGroupOrder === false)
     {
-        $newgrouporder=0;
+        $iNewGroupOrder=0;
     }
     else
     {
-        $newgrouporder=$res;
-        $newgrouporder++;
+        $iNewGroupOrder=$iGroupOrder+1;
     }
 
     foreach ($xml->groups->rows->row as $row)
@@ -839,7 +838,7 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
         }
         $iOldSID=$insertdata['sid'];
         $insertdata['sid']=$iNewSID;
-        $insertdata['group_order']=$newgrouporder;
+        $insertdata['group_order']=$iNewGroupOrder;
         $oldgid=$insertdata['gid']; unset($insertdata['gid']); // save the old qid
 
         // now translate any links
@@ -2083,7 +2082,7 @@ function CSVImportLabelset($sFullFilepath, $options)
                 {
                     foreach($csarray as $key=>$val)
                     {
-                        //			echo $val."-".$newcs."<br/>";  For debug purposes
+                        //            echo $val."-".$newcs."<br/>";  For debug purposes
                         if ($val == $newcs)
                         {
                             $lsmatch=$key;
