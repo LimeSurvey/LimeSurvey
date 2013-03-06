@@ -1089,15 +1089,27 @@ class participantsaction extends Survey_Common_Action
 
     function attributeMapCSV()
     {
-        $config['upload_path'] = './tmp/upload';
-        $config['allowed_types'] = 'text/x-csv|text/plain|application/octet-stream|csv';
-        $config['max_size'] = '1000';
 
         $clang = $this->getController()->lang;
-        $sFilePath = preg_replace('/\\\/', '/', Yii::app()->getConfig('tempdir')) . "/" . $_FILES['the_file']['name'];
-        $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
-        $errorinupload = '';
-        $filterblankemails = Yii::app()->request->getPost('filterbea');
+        $sRandomFileName=randomChars(20);
+        $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
+
+        $aPathinfo = pathinfo($_FILES['the_file']['name']);
+        $sExtension = $pathinfo['extension'];
+        if (strtolower($sExtension)=='csv')
+        {
+            $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
+            $errorinupload = '';
+            $filterblankemails = Yii::app()->request->getPost('filterbea');
+        }
+        else
+        {
+            $templateData['error_msg'] = sprintf($clang->gT("This is not a .csv file."), Yii::app()->getConfig('tempdir'));
+            $errorinupload = array('error' => $this->upload->display_errors());
+            Yii::app()->session['summary'] = array('errorinupload' => $errorinupload);
+            $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'));
+        }
+        
 
         if (!$bMoveFileResult)
         {
@@ -1132,7 +1144,7 @@ class participantsaction extends Survey_Common_Action
             $aData = array(
                 'attributes' => $attributes,
                 'firstline' => $selectedcsvfields,
-                'fullfilepath' => $sFilePath,
+                'fullfilepath' => $sRandomFileName,
                 'linecount' => $linecount - 1,
                 'filterbea' => $filterblankemails,
                 'participant_id_exists' => in_array('participant_id', $fieldlist)
@@ -1151,9 +1163,9 @@ class participantsaction extends Survey_Common_Action
         $seperator = Yii::app()->request->getPost('seperatorused');
         $newarray = Yii::app()->request->getPost('newarray');
         $mappedarray = Yii::app()->request->getPost('mappedarray');
-        $sFilePath = Yii::app()->request->getPost('fullfilepath');
         $filterblankemails = Yii::app()->request->getPost('filterbea');
         $overwrite = Yii::app()->request->getPost('overwrite');
+        $sFilePath = Yii::app()->getConfig('tempdir') . '/' . basename(Yii::app()->request->getPost('fullfilepath'));
         $errorinupload = "";
         $recordcount = 0;
         $mandatory = 0;
@@ -1216,7 +1228,7 @@ class participantsaction extends Survey_Common_Action
                 {
                     foreach ($mappedarray as $key => $value)
                     {
-                        array_push($allowedfieldnames, $value);
+                        array_push($allowedfieldnames, strtolower($value));
                     }
                 }
                 //For Attributes
@@ -1243,7 +1255,7 @@ class participantsaction extends Survey_Common_Action
                 {
                     $firstline[$index] = preg_replace("/(.*) <[^,]*>$/", "$1", $fieldname);
                     $fieldname = $firstline[$index];
-                    if (!in_array(strtolower($fieldname), $allowedfieldnames))
+                    if (!in_array(strtolower($fieldname), $allowedfieldnames) && !in_array($fieldname,$mappedarray))
                     {
                         $ignoredcolumns[] = $fieldname;
                     } else {
@@ -1370,7 +1382,7 @@ class participantsaction extends Survey_Common_Action
                             	//saving in this import
                             	if (in_array($key, $allowedfieldnames)) {
                                     foreach ($mappedarray as $attid => $attname) {
-                                        if ($attname == $key) {
+                                        if (strtolower($attname) == $key) {
                                             if (!empty($value)) {
                                                 $aData = array('participant_id' => $writearray['participant_id'],
                                                                'attribute_id' => $attid,
