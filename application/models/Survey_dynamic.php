@@ -332,5 +332,53 @@ class Survey_dynamic extends LSActiveRecord
         }
         return $previous;
     }
+    
+    
+         /**
+     * Function that returns a timeline of the surveys submissions
+     *
+     * @param string sType
+     * @param string dStart
+     * @param string dEnd
+     *
+     * @access public
+     * @return array
+     */
+    public function timeline($sType, $dStart, $dEnd) 
+    {
+		
+		$sid = self::$sid;		
+		$oSurvey=Survey::model()->findByPk($sid);
+		if ($oSurvey['datestamp']!='Y') {
+			   return false;
+		}
+		else
+		{		
+			$criteria=new CDbCriteria;
+			$criteria->select = 'date(submitdate) as sDate , COUNT(*) as sCount';
+			$criteria->addCondition('submitdate >= :dstart');
+			$criteria->addCondition('submitdate <= :dend');	
+			$criteria->order="sDate";
+			switch ($sType)
+			{
+			case 'hour':
+						$criteria->select .= ', HOUR(submitdate) as sHour';
+						$criteria->group = 'DATE(submitdate) , HOUR(submitdate)';  
+						break;
+			case 'day':
+			default:
+						$criteria->select .= ', DAY(submitdate) as sDay';
+						$criteria->group = 'DATE(submitdate) ';  
+						break;
+			}		
+			
+			$criteria->params[':dstart'] = $dStart;
+			$criteria->params[':dend'] = $dEnd; 
+			$oResult = $this->findAll($criteria);
+			return $oResult;
+			
+		}
+
+	}
 }
 ?>
