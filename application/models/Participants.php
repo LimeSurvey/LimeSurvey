@@ -426,7 +426,7 @@ class Participants extends CActiveRecord
                     }
                 }
             }
-            $this->deleteParticipants($rows, false);
+            $this->deleteParticipants($sParticipantsIDs, false);
         }
     }
 
@@ -489,7 +489,7 @@ class Participants extends CActiveRecord
                     }
                 }
             }
-            $this->deleteParticipants($rows, false);
+            $this->deleteParticipants($sParticipantsIDs, false);
         }
     }
 
