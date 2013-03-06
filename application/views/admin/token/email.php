@@ -68,8 +68,7 @@
 
                     <ul>
                         <li><label for='from_<?php echo $language; ?>'><?php $clang->eT("From"); ?>:</label>
-                            <input type='text' size='50' id='from_<?php echo $language; ?>' name='from_<?php echo $language; ?>' value="<?php echo "{$thissurvey[$baselang]['adminname']} <{$thissurvey[$baselang]['adminemail']}>"; ?>" /></li>
-
+                            <input type='text' size='50' id='from_<?php echo $language; ?>' name='from_<?php echo $language; ?>' value="<?php echo htmlspecialchars($thissurvey[$baselang]['adminname'],ENT_QUOTES,'UTF-8')."<".htmlspecialchars($thissurvey[$baselang]['adminemail'],ENT_QUOTES,'UTF-8').">"; ?>" /></li>
                         <li><label for='subject_<?php echo $language; ?>'><?php $clang->eT("Subject"); ?>:</label>
                             <input type='text' size='83' id='subject_<?php echo $language; ?>' name='subject_<?php echo $language; ?>' value="<?php echo $subject; ?>" /></li>
 
