@@ -287,7 +287,7 @@ function sanitize_float($float, $min='', $max='')
 {
     $float = str_replace(',','.',$float);
     // GMP library allows for high precision and high value numbers
-    if (function_exists('gmp_init'))
+    if (function_exists('gmp_init') && defined('GMP_VERSION') && version_compare(GMP_VERSION,'4.3.2')==1)
     {
         $gNumber = gmp_init($float);
         if(($min != '' && gmp_cmp($gNumber,$min)<0) || ($max != '' && gmp_cmp($gNumber,$max)>0))
