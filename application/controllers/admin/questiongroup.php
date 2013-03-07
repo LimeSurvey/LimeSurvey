@@ -46,7 +46,7 @@ class questiongroup extends Survey_Common_Action
             $importgroup = "\n";
             $importgroup .= "\n";
 
-            $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
+            $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
             $aPathInfo = pathinfo($sFullFilepath);
             $sExtension = $aPathInfo['extension'];
 

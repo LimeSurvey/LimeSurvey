@@ -296,7 +296,7 @@ class dataentry extends Survey_Common_Action
     private function _moveUploadedFile($aData)
     {
         $clang = $this->getController()->lang;
-        $the_full_file_path = Yii::app()->getConfig('tempdir') . "/" . $_FILES['the_file']['name'];
+        $the_full_file_path = Yii::app()->getConfig('tempdir') . "/" . randomChars(20);
 
         $move_uploaded_file_result = @move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path);
 
