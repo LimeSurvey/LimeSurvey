@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-03-06 23:05:53+00:00\n"
+"POT-Creation-Date: 2013-03-07 23:05:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -101,7 +101,7 @@ msgstr ""
 
 #: application/controllers/AdminController.php:87
 #: application/controllers/admin/surveyadmin.php:485
-#: application/controllers/admin/tokens.php:2180
+#: application/controllers/admin/tokens.php:2179
 #: application/helpers/admin/import_helper.php:2603
 #: application/views/admin/authentication/forgotpassword.php:15
 #: application/views/admin/dataentry/active_html_view.php:95
@@ -850,7 +850,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1106
 #: application/controllers/admin/quotas.php:506
 #: application/controllers/admin/surveyadmin.php:675
-#: application/controllers/admin/tokens.php:2097
+#: application/controllers/admin/tokens.php:2096
 #: application/core/Survey_Common_Action.php:825
 #: application/helpers/admin/statistics_helper.php:1337
 #: application/helpers/admin/statistics_helper.php:1470
@@ -957,7 +957,7 @@ msgid "Yes"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:150
-#: application/controllers/admin/tokens.php:2163
+#: application/controllers/admin/tokens.php:2162
 #: application/views/admin/assessments_view.php:131
 #: application/views/admin/conditions/includes/conditions_scenario.php:13
 #: application/views/admin/labels/labelview_view.php:162
@@ -1075,7 +1075,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1108
 #: application/controllers/admin/quotas.php:507
 #: application/controllers/admin/surveyadmin.php:679
-#: application/controllers/admin/tokens.php:2099
+#: application/controllers/admin/tokens.php:2098
 #: application/core/Survey_Common_Action.php:821
 #: application/helpers/admin/statistics_helper.php:1338
 #: application/helpers/admin/statistics_helper.php:1471
@@ -2235,9 +2235,9 @@ msgstr ""
 #: application/controllers/admin/tokens.php:1456
 #: application/controllers/admin/tokens.php:1493
 #: application/controllers/admin/tokens.php:1762
-#: application/controllers/admin/tokens.php:2079
-#: application/controllers/admin/tokens.php:2136
-#: application/controllers/admin/tokens.php:2193
+#: application/controllers/admin/tokens.php:2078
+#: application/controllers/admin/tokens.php:2135
+#: application/controllers/admin/tokens.php:2192
 msgid "You do not have sufficient rights to access this page."
 msgstr ""
 
@@ -3207,8 +3207,8 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:346
 #: application/controllers/admin/surveypermission.php:534
 #: application/controllers/admin/surveypermission.php:637
-#: application/controllers/admin/tokens.php:2319
-#: application/controllers/admin/tokens.php:2361
+#: application/controllers/admin/tokens.php:2318
+#: application/controllers/admin/tokens.php:2360
 #: application/controllers/admin/useraction.php:723
 #: application/helpers/common_helper.php:6385
 #: application/helpers/common_helper.php:6390
@@ -3711,94 +3711,94 @@ msgstr ""
 msgid "Can't connect to the LDAP directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2094
-#: application/controllers/admin/tokens.php:2121
+#: application/controllers/admin/tokens.php:2093
+#: application/controllers/admin/tokens.php:2120
 msgid "Create tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2095
+#: application/controllers/admin/tokens.php:2094
 msgid "Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2112
+#: application/controllers/admin/tokens.php:2111
 msgid "Only %s token has been created."
 msgid_plural "Only %s tokens have been created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:2113
+#: application/controllers/admin/tokens.php:2112
 msgid "Need %s token."
 msgid_plural "Need %s tokens."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:2118
+#: application/controllers/admin/tokens.php:2117
 msgid "%s token has been created."
 msgid_plural "%s tokens have been created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:2157
-#: application/controllers/admin/tokens.php:2176
+#: application/controllers/admin/tokens.php:2156
+#: application/controllers/admin/tokens.php:2175
 msgid "Delete Tokens Table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2158
+#: application/controllers/admin/tokens.php:2157
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2158
+#: application/controllers/admin/tokens.php:2157
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2161
+#: application/controllers/admin/tokens.php:2160
 msgid "Delete Tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2177
+#: application/controllers/admin/tokens.php:2176
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2177
+#: application/controllers/admin/tokens.php:2176
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2227
+#: application/controllers/admin/tokens.php:2226
 #: application/views/admin/globalSettings_view.php:10
 #: application/views/admin/token/bounce.php:1
 #: application/views/admin/token/tokenbar.php:63
 msgid "Bounce settings"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2228
+#: application/controllers/admin/tokens.php:2227
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2301
+#: application/controllers/admin/tokens.php:2300
 #: application/views/admin/token/tokenwarning.php:6
 msgid "Tokens have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2307
+#: application/controllers/admin/tokens.php:2306
 msgid "Tokens already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2316
+#: application/controllers/admin/tokens.php:2315
 #: application/views/admin/export/exportresults_view.php:122
 #: application/views/admin/token/tokenbar.php:3
 #: application/views/admin/token/tokenwarning.php:3
 msgid "Token control"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2317
+#: application/controllers/admin/tokens.php:2316
 msgid "A token table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2358
+#: application/controllers/admin/tokens.php:2357
 msgid "Import old tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2359
+#: application/controllers/admin/tokens.php:2358
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr ""
 
