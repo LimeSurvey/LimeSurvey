@@ -1830,9 +1830,8 @@ class tokens extends Survey_Common_Action
             $firstline = array();
 
             $sPath = Yii::app()->getConfig('tempdir');
-            $sFileName = $_FILES['the_file']['name'];
             $sFileTmpName = $_FILES['the_file']['tmp_name'];
-            $sFilePath = $sPath . '/' . $sFileName;
+            $sFilePath = $sPath . '/' . randomChars(20);
 
             if (!@move_uploaded_file($sFileTmpName, $sFilePath))
             {
