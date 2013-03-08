@@ -3265,7 +3265,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Display'),
     'sortorder'=>120,
     'inputtype'=>'text',
-    "help"=>$clang->gT('Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists'),
+    "help"=>$clang->gT('Text shown on each subquestion row between both scales in dropdown mode'),
     "caption"=>$clang->gT('Dropdown separator'));
 
     $qattributes["dualscale_headerA"]=array(
