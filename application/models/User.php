@@ -16,6 +16,12 @@
 class User extends CActiveRecord
 {
     /**
+    * @var string Default value for user language
+    */
+    public $lang='auto';
+
+    
+    /**
     * Returns the static model of Settings table
     *
     * @static
@@ -86,6 +92,11 @@ class User extends CActiveRecord
 
         return $data;
     }
+    /**
+    * 
+    * 
+    * @param mixed $postuserid
+    */
     function parentAndUser($postuserid)
     {
         $user = Yii::app()->db->createCommand()
