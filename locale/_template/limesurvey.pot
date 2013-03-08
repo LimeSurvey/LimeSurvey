@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-03-07 23:05:53+00:00\n"
+"POT-Creation-Date: 2013-03-08 23:05:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1275,8 +1275,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:6350
 #: application/helpers/qanda_helper.php:6386
 #: application/helpers/qanda_helper.php:6398
-#: application/helpers/qanda_helper.php:6563
-#: application/helpers/qanda_helper.php:6603
+#: application/helpers/qanda_helper.php:6566
+#: application/helpers/qanda_helper.php:6606
 #: application/views/admin/dataentry/content_view.php:29
 msgid "No answer"
 msgstr ""
@@ -1675,7 +1675,7 @@ msgstr ""
 #: application/controllers/admin/labels.php:100
 #: application/controllers/admin/labels.php:133
 #: application/controllers/admin/participantsaction.php:1116
-#: application/controllers/admin/question.php:55
+#: application/controllers/admin/question.php:54
 #: application/controllers/admin/questiongroup.php:55
 #: application/controllers/admin/surveyadmin.php:262
 #: application/controllers/admin/surveyadmin.php:891
@@ -2694,49 +2694,49 @@ msgstr ""
 msgid "Please choose no more than %s items."
 msgstr ""
 
-#: application/controllers/admin/question.php:59
+#: application/controllers/admin/question.php:58
 #: application/controllers/admin/questiongroup.php:60
 msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr ""
 
-#: application/controllers/admin/question.php:62
+#: application/controllers/admin/question.php:61
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr ""
 
-#: application/controllers/admin/question.php:78
+#: application/controllers/admin/question.php:77
 msgid "Unknown file extension"
 msgstr ""
 
-#: application/controllers/admin/question.php:195
+#: application/controllers/admin/question.php:194
 #: application/views/admin/survey/Question/editdefaultvalues_view.php:36
 msgid "<No default value>"
 msgstr ""
 
-#: application/controllers/admin/question.php:195
+#: application/controllers/admin/question.php:194
 msgid "Checked"
 msgstr ""
 
-#: application/controllers/admin/question.php:322
+#: application/controllers/admin/question.php:321
 msgid "Some example answer option"
 msgstr ""
 
-#: application/controllers/admin/question.php:488
+#: application/controllers/admin/question.php:487
 msgid "Some example subquestion"
 msgstr ""
 
-#: application/controllers/admin/question.php:875
+#: application/controllers/admin/question.php:874
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed."
 msgstr ""
 
-#: application/controllers/admin/question.php:876
+#: application/controllers/admin/question.php:875
 msgid "Look at survey logic files"
 msgstr ""
 
-#: application/controllers/admin/question.php:909
+#: application/controllers/admin/question.php:908
 msgid "Question was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/question.php:915
+#: application/controllers/admin/question.php:914
 msgid "You are not authorized to delete questions."
 msgstr ""
 
@@ -3852,8 +3852,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1361
 #: application/helpers/qanda_helper.php:1541
 #: application/helpers/qanda_helper.php:2124
-#: application/helpers/qanda_helper.php:6543
-#: application/helpers/qanda_helper.php:6584
+#: application/helpers/qanda_helper.php:6546
+#: application/helpers/qanda_helper.php:6587
 #: application/views/admin/dataentry/content_view.php:84
 #: application/views/admin/dataentry/content_view.php:94
 #: application/views/admin/labels/labelsetsbar_view.php:22
@@ -5501,7 +5501,7 @@ msgid "Dropdown prefix/suffix"
 msgstr ""
 
 #: application/helpers/common_helper.php:3268
-msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
+msgid "Text shown on each subquestion row between both scales in dropdown mode"
 msgstr ""
 
 #: application/helpers/common_helper.php:3269
@@ -7530,7 +7530,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:5547
 #: application/helpers/qanda_helper.php:5902
 #: application/helpers/qanda_helper.php:6052
-#: application/helpers/qanda_helper.php:6621
+#: application/helpers/qanda_helper.php:6624
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
