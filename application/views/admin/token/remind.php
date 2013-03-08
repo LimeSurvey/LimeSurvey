@@ -33,7 +33,7 @@
             }
             echo "<div id='tabpage_{$language}'><ul>"
             . "<li><label for='from_$language' >" . $clang->gT("From") . ":</label>\n"
-            . "<input type='text' size='50' name='from_$language' id='from_$language' value=\"".htmlspecialchars($thissurvey['adminname'],ENT_QUOTES,'UTF-8')."<".htmlspecialchars($thissurvey['adminemail'],ENT_QUOTES,'UTF-8').">\" /></li>\n"
+            . "<input type='text' size='50' name='from_$language' id='from_$language' value=\"".htmlspecialchars($thissurvey['adminname'],ENT_QUOTES,'UTF-8')." <".htmlspecialchars($thissurvey['adminemail'],ENT_QUOTES,'UTF-8').">\" /></li>\n"
             . "<li><label for='subject_$language' >" . $clang->gT("Subject") . ":</label>";
 
             $fieldsarray["{ADMINNAME}"] = $thissurvey['adminname'];
