@@ -6431,12 +6431,15 @@ function do_array_dual($ia)
                 $ddsuffix='';
             }
             if (trim($aQuestionAttributes['dropdown_separators'])!='') {
-                list ($postanswSep, $interddSep) =explode('|',$aQuestionAttributes['dropdown_separators']);
-                $postanswSep = $postanswSep;// Not used, nether in 2.0 or 1.92: category ?
-                $interddSep = $interddSep;// it's in seperator .... replace by $rigth/center like before are the best solution
+                $aSeparator =explode('|',$aQuestionAttributes['dropdown_separators']);
+                if (isset($aSeparator[1])) {
+                    $interddSep=$aSeparator[1];
+                } 
+                else {
+                    $interddSep=$aSeparator[0];
+                }
             }
             else {
-                $postanswSep = '';
                 $interddSep = '';
             }
             $colspan_1 = '';
