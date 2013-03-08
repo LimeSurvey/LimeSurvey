@@ -48,8 +48,7 @@ class question extends Survey_Common_Action
         if ($action == 'importquestion')
         {
             $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
-            $aPathInfo = pathinfo($sFullFilepath);
-            $sExtension = $aPathInfo['extension'];
+            $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
 
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
                 $fatalerror = sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
