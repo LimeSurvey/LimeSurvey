@@ -882,29 +882,25 @@ class SurveyAdmin extends Survey_Common_Action
             // Start traitment and messagebox
             $aData['bFailed'] = false; // Put a var for continue
 
+            $aPathInfo = pathinfo($_FILES['the_file']['name']);
+            if (isset($aPathInfo['extension']))
+            {
+                $sExtension = $aPathInfo['extension'];
+            }
+            else
+            {
+                $sExtension = "";
+            }            
+            
             if ($action == 'importsurvey')
             {
 
-                $the_full_file_path = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
-                if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
+                $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20).'.'.$sExtension;
+                if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
                 {
                     $aData['sErrorMessage'] = sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
                     $aData['bFailed'] = true;
                 }
-                else
-                {
-                    $sFullFilepath = $the_full_file_path;
-                    $aPathInfo = pathinfo($sFullFilepath);
-                    if (isset($aPathInfo['extension']))
-                    {
-                        $sExtension = $aPathInfo['extension'];
-                    }
-                    else
-                    {
-                        $sExtension = "";
-                    }
-                }
-
                 if (!$aData['bFailed'] && (strtolower($sExtension) != 'csv' && strtolower($sExtension) != 'lss' && strtolower($sExtension) != 'txt' && strtolower($sExtension) != 'lsa'))
                 {
                     $aData['sErrorMessage'] = sprintf($clang->gT("Import failed. You specified an invalid file type '%s'."), $sExtension);
