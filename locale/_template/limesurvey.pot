@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-03-08 23:05:58+00:00\n"
+"POT-Creation-Date: 2013-03-09 23:05:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1678,7 +1678,7 @@ msgstr ""
 #: application/controllers/admin/question.php:54
 #: application/controllers/admin/questiongroup.php:55
 #: application/controllers/admin/surveyadmin.php:262
-#: application/controllers/admin/surveyadmin.php:891
+#: application/controllers/admin/surveyadmin.php:901
 #: application/controllers/admin/templates.php:142
 #: application/controllers/admin/templates.php:257
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
@@ -2788,7 +2788,7 @@ msgid "Remaining"
 msgstr ""
 
 #: application/controllers/admin/responses.php:58
-#: application/controllers/admin/surveyadmin.php:951
+#: application/controllers/admin/surveyadmin.php:947
 #: application/core/Survey_Common_Action.php:363
 #: application/core/Survey_Common_Action.php:517
 msgid "Invalid survey ID"
@@ -3035,25 +3035,25 @@ msgstr ""
 msgid "Survey copy summary"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:910
+#: application/controllers/admin/surveyadmin.php:906
 msgid "Import failed. You specified an invalid file type '%s'."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:946
+#: application/controllers/admin/surveyadmin.php:942
 msgid "No survey ID has been provided. Cannot copy survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:956
+#: application/controllers/admin/surveyadmin.php:952
 #: application/views/admin/participants/blacklist_view.php:73
 #: application/views/admin/participants/userControl_view.php:43
 msgid "You don't have sufficient permissions."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1098
+#: application/controllers/admin/surveyadmin.php:1094
 msgid "The new question group/question order was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1370
+#: application/controllers/admin/surveyadmin.php:1366
 #: application/views/admin/labels/labelview_view.php:138
 #: application/views/admin/labels/labelview_view.php:147
 #: application/views/admin/survey/Question/editQuestion_view.php:283
@@ -3065,26 +3065,26 @@ msgstr ""
 msgid "Please select a file to import!"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1373
+#: application/controllers/admin/surveyadmin.php:1369
 #: application/views/admin/labels/labelview_view.php:147
 #: application/views/admin/templates/importform_view.php:17
 msgid "zip library not supported by PHP, Import ZIP Disabled"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1398
+#: application/controllers/admin/surveyadmin.php:1394
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1440
+#: application/controllers/admin/surveyadmin.php:1436
 #: application/views/admin/survey/editSurvey_view.php:37
 msgid "(No target question)"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1523
+#: application/controllers/admin/surveyadmin.php:1519
 msgid "Survey could not be created because it did not have a title"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1655
+#: application/controllers/admin/surveyadmin.php:1651
 msgid "Survey was successfully added."
 msgstr ""
 
