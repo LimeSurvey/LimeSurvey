@@ -188,7 +188,7 @@ class RegisterController extends LSYii_Controller {
         ) or safeDie ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
         */
         $tid = getLastInsertID($token->tableName());;
-
+        $token=$token->token;
 
         $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
         $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
