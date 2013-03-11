@@ -365,7 +365,6 @@ class Participants extends CActiveRecord
     {
         // Converting the comma separated IDs to an array and assign chunks of 100 entries to have a reasonable query size
         $aParticipantsIDChunks = array_chunk(explode(",", $rows),100); 
-        
         foreach ($aParticipantsIDChunks as $aParticipantsIDs)
         {
 
@@ -389,15 +388,15 @@ class Participants extends CActiveRecord
     * 
     * @param mixed $aParticipantsIDs
     */
-    function filterParticipantIDs($aParticipantsIDs)
+    function filterParticipantIDs($aParticipantIDs)
     {
-            if (!Yii::app()->session['USER_RIGHT_SUPERADMIN'] && $bFilter) // If not super admin filter the participant IDs first to owner only
+            if (!Yii::app()->session['USER_RIGHT_SUPERADMIN']) // If not super admin filter the participant IDs first to owner only
             {
-                $aCondition=array('and','owner_id=:owner_uid',array('in', 'participant_id', $aParticipantsIDs));
+                $aCondition=array('and','owner_uid=:owner_uid',array('in', 'participant_id', $aParticipantIDs));
                 $aParameter=array(':owner_uid'=>Yii::app()->session['loginID']);
-                $aParticipantIDs=Yii::app()->db->createCommand()->select('participant_id')->from(Survey_links::model()->tableName())->where($aCondition, $aParameter)->queryColumn();
+                $aParticipantIDs=Yii::app()->db->createCommand()->select('participant_id')->from(Participants::model()->tableName())->where($aCondition, $aParameter)->queryColumn();
             }           
-            return $aParticipantsIDs;
+            return $aParticipantIDs;
     }
     
     /**
