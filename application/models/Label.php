@@ -40,21 +40,41 @@ class Label extends CActiveRecord
 	 */
 	public function primaryKey()
 	{
-		return 'lid';
+		return 'lid,language';
 	}
+    /**
+    * Returns the static model of Settings table
+    *
+    * @static
+    * @access public
+    * @param string $class
+    * @return CActiveRecord
+    */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+    /**
+    * Returns this model's validation rules
+    *
+    */
+    public function rules()
+    {
+        return array(
+            array('lid','numerical', 'integerOnly'=>true),
+            array('code', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+                            'condition'=>'lid = :lid AND language=:language',
+                            'params'=>array(':lid'=>$this->lid,':language'=>$this->language)
+                    ),
+                    'message'=>'{attribute} "{value}" is already in use.'),
+            array('title','LSYii_Validators'),
+            array('sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
+            array('assessment_value','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+        );
+    }
+
 
 	function getAllRecords($condition=FALSE)
 	{

@@ -14,6 +14,12 @@ $(document).ready(function(){
     $('#tokenattribute').css({'height' : height-200});
     $('#centralattribute').css({'height' : height-200});
     $('#newcreated').css({'height' : height-200});
+	var ncHeadingHeight = $('#newcreated .heading').outerHeight();
+	$('.newcreate').css({
+		'padding-bottom':0,
+		'min-height':$('#newcreated').height()-ncHeadingHeight-5
+	});
+	
     $("#overwrite").click(function(){
         if($("#overwrite").is(':checked')) {attoverwrite=true;} else {attoverwrite=false;}
     });
