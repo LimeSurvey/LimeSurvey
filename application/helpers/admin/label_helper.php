@@ -157,7 +157,7 @@ function modlabelsetanswers($lid)
 
     if ($ajax)
         $lid = insertlabelset();
-
+    $aErrors=array();
     if (count(array_unique($data->{'codelist'})) == count($data->{'codelist'}))
     {
 
@@ -178,38 +178,33 @@ function modlabelsetanswers($lid)
 
                 $strTemp = 'text_'.$lang;
                 $title = $codeObj->$strTemp;
+                $sortorder = $index;
 
-                $p = new CHtmlPurifier();
-
-                if (Yii::app()->getConfig('filterxsshtml'))
-                    $title = $p->purify($title);
+                $oLabel = new Label();
+                $oLabel->lid=$lid;
+                $oLabel->code=$actualcode;
+                $oLabel->title=$title;
+                $oLabel->sortorder=$sortorder;
+                $oLabel->assessment_value=$assessmentvalue;
+                $oLabel->language=$lang;
+                if($oLabel->validate())
+                {
+                    $result=$oLabel->save();
+                }
                 else
-                    $title = html_entity_decode($title, ENT_QUOTES, "UTF-8");
-
-
-                // Fix bug with FCKEditor saving strange BR types
-                $title = fixCKeditorText($title);
-                $sort_order = $index;
-
-                $insertdata = array(
-                'lid' => $lid,
-                'code' => $actualcode,
-                'title' => $title,
-                'sortorder' => $sort_order,
-                'assessment_value' => $assessmentvalue,
-                'language' => $lang
-                );
-
-                //$query = "INSERT INTO ".db_table_name('labels')." (`lid`,`code`,`title`,`sortorder`, `assessment_value`, `language`)
-                //    VALUES('$lid',$actualcode,$title,$sort_order,$assessmentvalue,$lang)";
-
-                $result = Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
+                {
+                    $aErrors[]=$oLabel->getErrors();
+                }
             }
         }
-
-
-        Yii::app()->session['flashmessage'] = $clang->gT("Labels sucessfully updated");
-
+        if(count($aErrors))
+        {
+            Yii::app()->session['flashmessage'] = $clang->gT("Labels updated but with some error");
+        }
+        else
+        {
+            Yii::app()->session['flashmessage'] = $clang->gT("Labels sucessfully updated");
+        }
     }
     else
     {
