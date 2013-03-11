@@ -481,7 +481,7 @@ class SurveyAdmin extends Survey_Common_Action
                 }
                 $aViewUrls['output'].="<p>" .
                 $clang->gT("Database error!!")."\n <font color='red'>" ."</font>\n" .
-                "<pre>".implode(' ', $aResult['error'])."</pre>\n
+                "<pre>".var_export ($aResult['error'],true)."</pre>\n
                 <a href='".Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID)."'>".$clang->gT("Main Admin Screen")."</a>\n</div>" ;
             }
             else
