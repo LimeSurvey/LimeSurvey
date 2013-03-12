@@ -490,7 +490,7 @@ class index extends CAction {
                 $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
             }
         }
-        if ($tokensexist == 1 && isset($token) && $token && tableExists("{{tokens_".$surveyid."}}")&& !$previewmode) //check if token is in a valid time frame
+        if ($tokensexist == 1 && isset($token) && $token && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) //check if token is in a valid time frame
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
