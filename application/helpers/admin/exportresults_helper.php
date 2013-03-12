@@ -1005,16 +1005,10 @@ abstract class Writer implements IWriter
                 {
                     $subHeading .= ' '.$this->getOtherSubHeading();
                 }
-                elseif (!$isComment)
+                else
                 {
                     $subHeading .= ' ['.$answerCode.']';
                 }
-                if (isset($isComment) && $isComment == true)
-                {
-                    $subHeading .= ' '.$this->getCommentSubHeading();
-                    $comment = false;
-                }
-
                 break;
 
             case ':':
