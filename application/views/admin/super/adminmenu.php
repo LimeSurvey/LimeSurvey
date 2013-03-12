@@ -87,7 +87,7 @@
                     <img src='<?php echo $sImageURL;?>cpdb.png' alt='<?php $clang->eT("Central participant database/panel");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php } ?>
             <a href="<?php echo $this->createUrl("plugins/"); ?>" >
-                <img src='<?php echo $sImageURL;?>share.png' alt='<?php $clang->eT("Plugin manager");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
+                <img src='<?php echo $sImageURL;?>plugin.png' alt='<?php $clang->eT("Plugin manager");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
         </div>
         <div class='menubar-right'>
             <label for='surveylist'><?php $clang->eT("Surveys:");?></label>

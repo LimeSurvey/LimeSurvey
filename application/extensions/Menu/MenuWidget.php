@@ -70,7 +70,7 @@
             $menu['items']['left'][] = array(
                 'href' => array('/plugins'),
                 'alt' => gT('Plugin manager'),
-                'image' => 'share.png'
+                'image' => 'plugin.png'
             );
 
             $surveys = getSurveyList(true);
