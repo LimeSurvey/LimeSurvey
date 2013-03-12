@@ -77,7 +77,7 @@ class index extends CAction {
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         }
 
-
+        $previewmode=false;
         if (isset($param['action']) && (in_array($param['action'],array('previewgroup','previewquestion'))))
         {
             if(!$this->_canUserPreviewSurvey($surveyid))
@@ -93,10 +93,6 @@ class index extends CAction {
                 if((intval($param['qid']) && $param['action']=='previewquestion')) $previewmode='question';
                 if((intval($param['gid']) && $param['action']=='previewgroup')) $previewmode='group';
             }
-        }
-        else
-        {
-            $previewmode=false; // No need $previewmode for survey
         }
 
         if ( $this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists) )
