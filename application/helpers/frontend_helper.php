@@ -1976,7 +1976,7 @@
     // Prefill questions/answers from command line params
     $reservedGetValues= array('token','sid','gid','qid','lang','newtest','action');
     $startingValues=array();
-    if (isset($_GET) && !$preview)
+    if (isset($_GET))
     {
         foreach ($_GET as $k=>$v)
         {
@@ -1987,6 +1987,7 @@
         }
     }
     $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
+
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url

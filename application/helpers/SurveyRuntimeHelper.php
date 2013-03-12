@@ -864,27 +864,27 @@ class SurveyRuntimeHelper {
                 ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 END;
 
-        if ($previewgrp)
-        {
-            // force the group to be visible, even if irrelevant - will not always work
-            print <<<END
-    $('#relevanceG' + LEMgseq).val(1);
-    $(document).ready(function() {
-        $('#group-' + LEMgseq).show();
-    });
-    $(document).change(function() {
-        $('#group-' + LEMgseq).show();
-    });
-    $(document).bind('keydown',function(e) {
-                if (e.keyCode == 9) {
-                    $('#group-' + LEMgseq).show();
-                    return true;
-                }
-                return true;
-            });
+#        if ($previewgrp && false)
+#        {
+#            // force the group to be visible, even if irrelevant - will not always work
+#            print <<<END
+#    $('#relevanceG' + LEMgseq).val(1);
+#    $(document).ready(function() {
+#        $('#group-' + LEMgseq).show();
+#    });
+#    $(document).change(function() {
+#        $('#group-' + LEMgseq).show();
+#    });
+#    $(document).bind('keydown',function(e) {
+#                if (e.keyCode == 9) {
+#                    $('#group-' + LEMgseq).show();
+#                    return true;
+#                }
+#                return true;
+#            });
 
-END;
-        }
+#END;
+#        }
         
         print <<<END
             }
@@ -975,7 +975,7 @@ END;
                     continue; // skip this one
                 }
 
-                if ((!$qinfo['relevant'] && !$previewquestion) || ($qinfo['hidden'] && $qinfo['info']['type'] == '*'))
+                if (!$qinfo['relevant'] || ($qinfo['hidden'] && $qinfo['info']['type'] == '*'))
                 {
                     $n_q_display = ' style="display: none;"';
                 }
@@ -1032,26 +1032,26 @@ END;
 
         LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
-        if ($previewquestion){
-            // force the question to be visible, even if irrelevant
-            echo "
-        <script type='text/javascript'>
-    $('#relevance" . $_qid . "').val(1);
-    $(document).ready(function() {
-        $('#question" . $_qid . "').show();
-    });
-    $(document).change(function() {
-        $('#question" . $_qid . "').show();
-    });
-    $(document).bind('keydown',function(e) {
-                if (e.keyCode == 9) {
-                    $('#question" . $_qid . "').show();
-                    return true;
-                }
-                return true;
-            });
-         </script>";
-        }
+#        if ($previewquestion && false){
+#            // force the question to be visible, even if irrelevant
+#            echo "
+#        <script type='text/javascript'>
+#    $('#relevance" . $_qid . "').val(1);
+#    $(document).ready(function() {
+#        $('#question" . $_qid . "').show();
+#    });
+#    $(document).change(function() {
+#        $('#question" . $_qid . "').show();
+#    });
+#    $(document).bind('keydown',function(e) {
+#                if (e.keyCode == 9) {
+#                    $('#question" . $_qid . "').show();
+#                    return true;
+#                }
+#                return true;
+#            });
+#         </script>";
+#        }
         LimeExpressionManager::FinishProcessingPage();
 
         if (!$previewgrp && !$previewquestion)
