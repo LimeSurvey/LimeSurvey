@@ -90,18 +90,29 @@
              // If post handle data.
              if (App()->request->isPostRequest)
              {
-                 $settings =  $pluginObject->getPluginSettings(false);
-                 $save = array();
-                 foreach ($settings as $name => $setting)
-                 {
-                     $save[$name] = App()->request->getPost($name, null);
-                     
+                 if (!is_null(App()->request->getPost('ok'))) {
+                    $settings =  $pluginObject->getPluginSettings(false);
+                    $save = array();
+                    foreach ($settings as $name => $setting)
+                    {
+                        $save[$name] = App()->request->getPost($name, null);
+
+                    }
+                    $pluginObject->saveSettings($save);
+                    Yii::app()->user->setFlash('pluginmanager', 'Settings saved');   
+                    
+                 } else {
+                    // Ok buttons was not pressed, assume cancel
                  }
-                 $pluginObject->saveSettings($save);
-             }
-                 
+                 $this->forward('plugins/index', true);
+             }                
              
              $settings =  $pluginObject->getPluginSettings();
+             if (empty($settings)) {
+                 // And show a message
+                 Yii::app()->user->setFlash('pluginmanager', 'This plugin has no settings');
+                 $this->forward('plugins/index', true);
+             }
              $this->render('/plugins/configure', compact('settings', 'plugin'));
              
          }

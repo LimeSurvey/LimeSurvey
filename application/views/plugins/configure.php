@@ -23,7 +23,8 @@
             
         }
         echo CHtml::closeTag('ol');
-        echo CHtml::submitButton('Save plugin settings');
+        echo CHtml::submitButton('Save plugin settings', array('name'=>'ok'));
+        echo CHtml::submitButton('Cancel', array('name'=>'cancel'));
         echo CHtml::endForm();
 
     ?>
