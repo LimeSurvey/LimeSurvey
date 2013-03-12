@@ -77,14 +77,22 @@ class index extends CAction {
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         }
 
-
-        if (isset($param['action']) && (in_array($param['action'],array('previewgroup','previewquestion'))) && !$this->_canUserPreviewSurvey($surveyid))
+        $previewmode=false;
+        if (isset($param['action']) && (in_array($param['action'],array('previewgroup','previewquestion'))))
         {
-            $asMessage = array(
-                $clang->gT('Error'),
-                $clang->gT("We are sorry but you don't have permissions to do this.")
-            );
-            $this->_niceExit($redata, __LINE__, null, $asMessage);
+            if(!$this->_canUserPreviewSurvey($surveyid))
+            {
+                $asMessage = array(
+                    $clang->gT('Error'),
+                    $clang->gT("We are sorry but you don't have permissions to do this.")
+                );
+                $this->_niceExit($redata, __LINE__, null, $asMessage);
+            }
+            else
+            {
+                if((intval($param['qid']) && $param['action']=='previewquestion')) $previewmode='question';
+                if((intval($param['gid']) && $param['action']=='previewgroup')) $previewmode='group';
+            }
         }
 
         if ( $this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists) )
@@ -149,6 +157,7 @@ class index extends CAction {
         {
             LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
             $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
+            if($previewmode) LimeExpressionManager::SetPreviewMode($previewmode);
             UpdateGroupList($surveyid, $clang->langcode);  // to refresh the language strings in the group list session variable
             UpdateFieldArray();        // to refresh question titles and question text
 
@@ -341,7 +350,7 @@ class index extends CAction {
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
         //MAKE SURE SURVEY HASN'T EXPIRED
-        if ($thissurvey['expiry']!='' and dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)>$thissurvey['expiry'] && $thissurvey['active']!='N')
+        if ($thissurvey['expiry']!='' and dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)>$thissurvey['expiry'] && $thissurvey['active']!='N' && !$previewmode)
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
@@ -354,7 +363,7 @@ class index extends CAction {
         }
 
         //MAKE SURE SURVEY IS ALREADY VALID
-        if ($thissurvey['startdate']!='' and  dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)<$thissurvey['startdate'] && $thissurvey['active']!='N')
+        if ($thissurvey['startdate']!='' and  dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)<$thissurvey['startdate'] && $thissurvey['active']!='N' && !$previewmode)
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
@@ -463,7 +472,7 @@ class index extends CAction {
             
             $aRow = Yii::app()->db->createCommand($sQuery)->queryRow();
             $tokendata = $aRow; 
-            if (!$aRow || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y'))
+            if (!$aRow || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') && !$previewmode)
             {
                 sendCacheHeaders();
                 doHeader();
@@ -481,7 +490,7 @@ class index extends CAction {
                 $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
             }
         }
-        if ($tokensexist == 1 && isset($token) && $token && tableExists("{{tokens_".$surveyid."}}")) //check if token is in a valid time frame
+        if ($tokensexist == 1 && isset($token) && $token && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) //check if token is in a valid time frame
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
@@ -625,7 +634,7 @@ class index extends CAction {
             }
         }
         // Preview action : Preview right already tested before
-        if (isset($param['action']) && (in_array($param['action'],array('previewgroup','previewquestion'))))
+        if ($previewmode)
         {
             // Unset all SESSION: be sure to have the last version
             unset($_SESSION['fieldmap-' . $surveyid . $clang->langcode]);// Needed by createFieldMap: else fieldmap can be outdated
