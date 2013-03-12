@@ -1,6 +1,7 @@
 <script type="text/javascript">
-    var redUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/displayParticipants"; ?>";
-    var copyUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/addToCentral"; ?>";
+    var redUrl = "<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>";
+    var copyUrl = "<?php echo $this->createUrl("/admin/participants/sa/addToCentral"); ?>";
+    
     var surveyId = "<?php echo Yii::app()->request->getQuery('sid'); ?>";
 
     /* LANGUAGE */
