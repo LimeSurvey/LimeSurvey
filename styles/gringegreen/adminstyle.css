@@ -1372,13 +1372,13 @@ div.right {
 }
 
 #advancedquestionsettings fieldset {
-    width:600px;
-    margin:0 auto;
+    width:49%;
+    margin:0 15%;
     display: block;
 }
 
 #advancedquestionsettings textarea{
-    width:200px;
+    width:380px;
 }
 
 .statistics-tbl-separator td {
