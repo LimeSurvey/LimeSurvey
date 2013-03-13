@@ -56,7 +56,7 @@ class GlobalSettings extends Survey_Common_Action
     public function updatecheck()
     {
         updateCheck();
-        $this->getController()->redirect('admin/globalsettings');
+        $this->getController()->redirect(array('admin/globalsettings'));
     }
         
     private function _displaySettings()
@@ -116,7 +116,7 @@ class GlobalSettings extends Survey_Common_Action
         }
 
         if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] != 1) {
-            $this->getController()->redirect($this->getController()->createUrl('/admin'));
+            $this->getController()->redirect(array('/admin'));
         }
         $clang = $this->getController()->lang;
         Yii::app()->loadHelper('surveytranslator');

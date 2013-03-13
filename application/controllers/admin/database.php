@@ -127,7 +127,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
         }
 
@@ -222,7 +222,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('/admin/question/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                $this->getController()->redirect(array('/admin/question/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
 
             //$action='editansweroptions';
@@ -356,7 +356,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('/admin/question/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                $this->getController()->redirect(array('/admin/question/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
         }
 
@@ -586,7 +586,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
         }
 
@@ -878,9 +878,9 @@ class database extends Survey_Common_Action
             else
             {
                 if(Yii::app()->request->getPost('newpage') == "return") {
-                    $this->getController()->redirect($this->getController()->createUrl('admin/question/sa/editquestion/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                    $this->getController()->redirect(array('admin/question/sa/editquestion/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
                 } else {
-                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                    $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
                 }
             }
         }
@@ -959,7 +959,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid));
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$surveyid));
             }
         }
 
@@ -1141,18 +1141,18 @@ class database extends Survey_Common_Action
 
             if (Yii::app()->request->getPost('action') == "updatesurveysettingsandeditlocalesettings")
             {
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/editlocalsettings/surveyid/'.$surveyid));
+                $this->getController()->redirect(array('admin/survey/sa/editlocalsettings/surveyid/'.$surveyid));
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid));
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$surveyid));
             }
 
         }
 
         if (!$action)
         {
-            $this->getController()->redirect("/admin","refresh");
+            $this->getController()->redirect(array("/admin"),"refresh");
         }
 
 

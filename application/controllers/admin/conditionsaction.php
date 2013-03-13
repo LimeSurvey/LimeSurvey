@@ -167,7 +167,7 @@ class conditionsaction extends Survey_Common_Action {
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
                 Conditions::model()->deleteRecords("qid in (select qid from {{questions}} where sid={$iSurveyID})");
                 Yii::app()->session['flashmessage']=$clang->gT("All conditions in this survey have been deleted.");
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyID));
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
 
             }
         }

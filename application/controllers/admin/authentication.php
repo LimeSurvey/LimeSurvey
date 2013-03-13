@@ -203,7 +203,7 @@ class Authentication extends Survey_Common_Action
     {
         if (!Yii::app()->user->getIsGuest())
         {
-            Yii::app()->request->redirect($this->getController()->createUrl('/admin'));
+            Yii::app()->request->redirect(array('/admin'));
         }
     }
 
@@ -237,7 +237,7 @@ class Authentication extends Survey_Common_Action
         }
         else
         {
-            Yii::app()->request->redirect($this->getController()->createUrl('/admin'));
+            Yii::app()->request->redirect(array('/admin'));
         }
     }
 

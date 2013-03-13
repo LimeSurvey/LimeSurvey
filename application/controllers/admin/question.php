@@ -907,12 +907,12 @@ class question extends Survey_Common_Action
 
             Yii::app()->session['flashmessage'] = $clang->gT("Question was successfully deleted.");
 
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
         else
         {
             Yii::app()->session['flashmessage'] = $clang->gT("You are not authorized to delete questions.");
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
     }
 

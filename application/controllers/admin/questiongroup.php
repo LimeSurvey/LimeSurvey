@@ -152,7 +152,7 @@ class questiongroup extends Survey_Common_Action
                     $errorstring.= getLanguageNameFromCode($grouplang, false) . "\\n";
 
             if ($errorstring != '')
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $surveyid));
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid));
 
             else
             {
@@ -214,7 +214,7 @@ class questiongroup extends Survey_Common_Action
                     $gid = $groupid;
                 Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("New question group was saved.");
             }
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
     }
 
@@ -245,7 +245,7 @@ class questiongroup extends Survey_Common_Action
             else
                 Yii::app()->user->setFlash('flashmessage', $clang->gT('Group could not be deleted'));
             LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $iSurveyId));
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyId));
         }
     }
 
@@ -397,7 +397,7 @@ class questiongroup extends Survey_Common_Action
             }
 
             Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Question group successfully saved.");
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
     }
 

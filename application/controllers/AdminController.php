@@ -141,7 +141,7 @@ class AdminController extends LSYii_Controller
         {
             $usrow = getGlobalSetting('DBVersion');
             if ((int) $usrow < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
-                $this->redirect($this->createUrl('/admin/update/sa/db'));
+                $this->redirect(array('/admin/update/sa/db'));
         }
 
         if ($action != "update" && $action != "db")
@@ -152,7 +152,7 @@ class AdminController extends LSYii_Controller
 
                 Yii::app()->session['redirectopage'] = Yii::app()->request->requestUri;
 
-                $this->redirect($this->createUrl('/admin/authentication/sa/login'));
+                $this->redirect(array('/admin/authentication/sa/login'));
             }
             elseif (!empty($this->user_id)  && $action != "remotecontrol")
             {
@@ -160,7 +160,7 @@ class AdminController extends LSYii_Controller
                 {
                     Yii::app()->session->clear();
                     Yii::app()->session->close();
-                    $this->redirect($this->createUrl('/admin/authentication/sa/login'));
+                    $this->redirect(array('/admin/authentication/sa/login'));
                 }
                 
             }

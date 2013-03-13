@@ -56,12 +56,12 @@ class responses extends Survey_Common_Action
         if(!$thissurvey)// Already done in Survey_Common_Action
         {
             Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
-            $this->getController()->redirect($this->getController()->createUrl("admin/index"));
+            $this->getController()->redirect(array("admin/index"));
         }
         elseif($thissurvey['active'] != 'Y')
         {
             Yii::app()->session['flashmessage'] = $clang->gT("This survey has not been activated. There are no results to browse.");
-            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
 
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.

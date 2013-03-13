@@ -111,7 +111,7 @@ class SurveyAdmin extends Survey_Common_Action
             $_SESSION['flashmessage'] = $clang->gT("Question codes were successfully regenerated.");
             LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         }
-        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $iSurveyID));
+        $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
 
 
@@ -737,7 +737,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aData['issuperadmin'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == true);
                 $this->_deleteSurvey($iSurveyID);
                 Yii::app()->session['flashmessage'] = $clang->gT("Survey deleted.");
-                $this->getController()->redirect($this->getController()->createUrl("admin/index"));
+                $this->getController()->redirect(array("admin/index"));
             }
             else
             {
@@ -1092,7 +1092,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("The new question group/question order was successfully saved.");
-        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $iSurveyID));
+        $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
 
     /**
@@ -1401,7 +1401,7 @@ class SurveyAdmin extends Survey_Common_Action
         $dExpirationdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dExpirationdate = dateShift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
         Survey::model()->updateByPk($iSurveyID,array('expires' => $dExpirationdate));
-        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $iSurveyID));
+        $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
 
     /**
@@ -1658,7 +1658,7 @@ class SurveyAdmin extends Survey_Common_Action
             // Update survey permissions
             Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $iNewSurveyid));
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iNewSurveyid));
         }
     }
 

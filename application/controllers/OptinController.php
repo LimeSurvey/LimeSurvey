@@ -35,7 +35,7 @@ class OptinController extends LSYii_Controller {
 
         if (!$iSurveyID)
         {
-            $this->redirect($this->getController()->createUrl('/'));
+            $this->redirect(array('/'));
         }
         $iSurveyID = (int)$iSurveyID;
 

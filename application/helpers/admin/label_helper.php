@@ -199,7 +199,7 @@ function modlabelsetanswers($lid)
         }
         if(count($aErrors))
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("Labels updated but with some error");
+            Yii::app()->session['flashmessage'] = $clang->gT("Not all labels were updated successfully.");
         }
         else
         {
