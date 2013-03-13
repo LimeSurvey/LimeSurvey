@@ -37,7 +37,7 @@
         <link rel="icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />
         <?php //echo $firebug ?>
 
-        
+        <?php $this->widget('ext.LimeScript.LimeScript'); ?>
         <title>Limesurvey Administration</title>
         
     </head>

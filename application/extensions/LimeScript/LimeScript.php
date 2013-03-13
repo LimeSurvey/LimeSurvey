@@ -7,6 +7,8 @@
     {
         public function run()
         {
+            App()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(Yii::getPathOfAlias('ext.LimeScript.assets'). '/script.js'));
+            
             $data = array();
             $data['baseUrl']                    = Yii::app()->getBaseUrl(true);
             $data['showScriptName']             = Yii::app()->urlManager->showScriptName;
@@ -14,7 +16,9 @@
             $data['layoutPath']                 = Yii::app()->getLayoutPath();
             $data['adminImageUrl']              = Yii::app()->getConfig('adminimageurl');
             $data['replacementFields']['path']  = App()->createUrl("admin/limereplacementfields/sa/index/");
-            $this->render('script', compact('data'));
+            $json = json_encode($data, JSON_FORCE_OBJECT);
+            $script = "LS.data = $json";
+            App()->getClientScript()->registerScript('LimeScript', $script);
         }
     }
 
