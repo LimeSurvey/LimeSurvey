@@ -320,13 +320,6 @@ class AdminController extends LSYii_Controller
         if (!empty(Yii::app()->session['dateformat']))
             $data['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
-        // Prepare flashmessage
-        if (!empty(Yii::app()->session['flashmessage']) && Yii::app()->session['flashmessage'] != '')
-        {
-            $data['flashmessage'] = Yii::app()->session['flashmessage'];
-            unset(Yii::app()->session['flashmessage']);
-        }
-
         $data['css_admin_includes'] = $this->_css_admin_includes(array(), true);
 
         $out = $this->renderPartial("/admin/super/header", $data, true);
