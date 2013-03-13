@@ -4628,7 +4628,13 @@ function TSVImportSurvey($sFullFilepath)
     {
         $result = Survey::model()->deleteSurvey($iNewSID);
     }
-
+    else
+    {
+        LimeExpressionManager::SetSurveyId($iNewSID);
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
+        LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
+    }
+    
     return $results;
 }
 
