@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl');?>adminstyle.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('styleurl');?>adminstyle.css" />
     <?php
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.qtip.js');
     if(!empty($css_admin_includes)) {
         foreach ($css_admin_includes as $cssinclude)
         {
@@ -35,6 +36,7 @@
     <link rel="shortcut icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />
     <?php echo $firebug ?>
+    <?php $this->widget('ext.LimeScript.LimeScript'); ?>
 </head>
 <body>
 <?php if(isset($formatdata)) { ?>
@@ -44,21 +46,5 @@
     </script>
     <?php } ?>
 <div class='wrapper'>
-    <?php if(isset($flashmessage)) { ?>
-        <div id="flashmessage" style="display:none;">
-
-            <div id="themeroller" class="ui-state-highlight ui-corner-all">
-                <!-- close link -->
-                <a class="ui-notify-close" href="#">
-                    <span class="ui-icon ui-icon-close" style="float:right">&nbsp;</span>
-                </a>
-
-                <!-- alert icon -->
-                <span style="float:left; margin:2px 5px 0 0;" class="ui-icon ui-icon-info">&nbsp;</span>
-                <p><?php echo $flashmessage; ?></p><br>
-            </div>
-
-            <!-- other templates here, maybe.. -->
-        </div>
-    <?php } ?>
+    <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
     <div class='maintitle'><?php echo $sitename; ?></div>

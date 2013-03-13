@@ -329,7 +329,16 @@ class AdminController extends LSYii_Controller
 
         $data['css_admin_includes'] = $this->_css_admin_includes(array(), true);
 
-        return $this->renderPartial("/admin/super/header", $data, $return);
+        $out = $this->renderPartial("/admin/super/header", $data, true);
+        App()->getClientScript()->render($out);
+        if ($return)
+        {
+            return $out;
+        }
+        else
+        {
+            echo $out;
+        }
     }
 
     /**

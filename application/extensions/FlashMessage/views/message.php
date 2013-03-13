@@ -9,6 +9,4 @@
         <span style="float:left; margin:2px 5px 0 0;" class="ui-icon ui-icon-info">&nbsp;</span>
         <p><?php echo $message; ?></p><br>
     </div>
-
-    <!-- other templates here, maybe.. -->
 </div>
