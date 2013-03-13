@@ -226,12 +226,12 @@ class Usergroups extends Survey_Common_Action
                 if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
                     Yii::app()->session['flashmessage'] = $clang->gT("User group successfully saved!");
 					$aData['ugid'] = $ugid;
-                    Yii::app()->request->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));
+                    $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));
                 }
                 else
                 {
                     Yii::app()->session['flashmessage'] = $clang->gT("Failed to edit user group!");
-                    Yii::app()->request->redirect(array('admin/usergroups/sa/edit/ugid/'.$ugid));
+                    $this->getController()->redirect(array('admin/usergroups/sa/edit/ugid/'.$ugid));
                 }
 
             }
