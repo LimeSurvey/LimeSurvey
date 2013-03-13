@@ -51,11 +51,11 @@
 
             echo "<input type='text' size='83' id='subject_$language' name='subject_$language' value=\"$subject\" /></li><li>\n"
             . "<label for='message_$language'>" . $clang->gT("Message") . ":</label>\n"
+            . "<div  class='htmleditor'>\n"
             . "<textarea name='message_$language' id='message_$language' rows='20' cols='80' >";
-
             echo htmlspecialchars($textarea);
-
             echo "</textarea>"
+            . "</div>\n"
             . getEditor("email-rem", "message_$language", "[" . $clang->gT("Reminder Email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens")
             . "</li>\n"
             . "</ul></div>";
