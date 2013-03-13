@@ -44,7 +44,7 @@ class OptoutController extends LSYii_Controller {
 
         if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
         {
-            $this->redirect(Yii::app()->getController()->createUrl('/'));
+            $this->redirect(array('/'));
         }
         $iSurveyID = (int)$iSurveyID; //Make sure it's an integer (protect from SQL injects)
         //Check that there is a SID
@@ -127,7 +127,7 @@ class OptoutController extends LSYii_Controller {
 
         if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
         {
-            $this->redirect(Yii::app()->getController()->createUrl('/'));
+            $this->redirect(array('/'));
         }
         $iSurveyID = (int)$iSurveyID; //Make sure it's an integer (protect from SQL injects)
         //Check that there is a SID
