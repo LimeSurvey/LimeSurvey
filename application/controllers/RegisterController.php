@@ -58,7 +58,7 @@ class RegisterController extends LSYii_Controller {
         }
         if (!$surveyid)
         {
-            Yii::app()->request->redirect(Yii::app()->baseUrl);
+            $this->getController()->redirect(Yii::app()->baseUrl);
         }
 
         // Get passed language from form, so that we dont loose this!
@@ -110,7 +110,7 @@ class RegisterController extends LSYii_Controller {
         if ($register_errormsg != "")
         {
             $_SESSION['survey_'.$surveyid]['register_errormsg']=$register_errormsg;
-            Yii::app()->request->redirect(array('survey/index/sid/'.$surveyid));
+            $this->getController()->redirect(array('survey/index/sid/'.$surveyid));
         }
 
         //Check if this email already exists in token database
@@ -121,7 +121,7 @@ class RegisterController extends LSYii_Controller {
         {
             $register_errormsg=$clang->gT("The email you used has already been registered.");
             $_SESSION['survey_'.$surveyid]['register_errormsg']=$register_errormsg;
-            Yii::app()->request->redirect(array('survey/index/sid/'.$surveyid));
+            $this->getController()->redirect(array('survey/index/sid/'.$surveyid));
             //include "index.php";
             //exit;
         }
