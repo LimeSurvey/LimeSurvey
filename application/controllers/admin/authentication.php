@@ -203,7 +203,7 @@ class Authentication extends Survey_Common_Action
     {
         if (!Yii::app()->user->getIsGuest())
         {
-            Yii::app()->request->redirect(array('/admin'));
+            $this->getController()->redirect(array('/admin'));
         }
     }
 
@@ -233,11 +233,11 @@ class Authentication extends Survey_Common_Action
     {
         if (strlen(Yii::app()->session['redirectopage']) > 1)
         {
-            Yii::app()->request->redirect(Yii::app()->session['redirectopage']);
+            $this->getController()->redirect(Yii::app()->session['redirectopage']);
         }
         else
         {
-            Yii::app()->request->redirect(array('/admin'));
+            $this->getController()->redirect(array('/admin'));
         }
     }
 
