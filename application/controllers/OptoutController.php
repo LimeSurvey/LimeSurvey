@@ -103,7 +103,7 @@ class OptoutController extends LSYii_Controller {
             $thistpl=getTemplatePath($thissurvey['templatedir']);
         }
 
-        $this->_renderHtml($html,$thistpl);
+        $this->_renderHtml($html,$thistpl,$thissurvey);
     }
 
     /* This function is run when opting out of the participants system. The other function /optout/token
@@ -203,16 +203,19 @@ class OptoutController extends LSYii_Controller {
             $thistpl=getTemplatePath($thissurvey['templatedir']);
         }
 
-        $this->_renderHtml($html,$thistpl);
+        $this->_renderHtml($html,$thistpl, $thissurvey);
     }
 
-    private function _renderHtml($html,$thistpl)
+    private function _renderHtml($html, $thistpl, $aSurveyInfo)
     {
         sendCacheHeaders();
         doHeader();
+        $aSupportData=array('thissurvey'=>$aSurveyInfo);
+        echo templatereplace(file_get_contents($thistpl.DIRECTORY_SEPARATOR.'startpage.pstpl'),array(), $aSupportData);
         $data['html'] = $html;
         $data['thistpl'] = $thistpl;
         $this->render('/opt_view',$data);
+        echo templatereplace(file_get_contents($thistpl.DIRECTORY_SEPARATOR.'endpage.pstpl'),array(), $aSupportData);
         doFooter();
     }
 
