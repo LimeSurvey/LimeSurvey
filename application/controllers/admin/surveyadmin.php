@@ -138,7 +138,7 @@ class SurveyAdmin extends Survey_Common_Action
     function fakebrowser()
     {
         $aData['clang'] = $this->getController()->lang;
-        Yii::app()->getController()->render('/admin/survey/newSurveyBrowserMessage', $aData);
+        Yii::app()->getController()->renderPartial('/admin/survey/newSurveyBrowserMessage', $aData);
     }    
 
     /**
