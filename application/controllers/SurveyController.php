@@ -15,7 +15,7 @@
 class SurveyController extends LSYii_Controller
 {
     public $lang = null;
-
+    
     /**
      * Initialises this controller, does some basic checks and setups
      *

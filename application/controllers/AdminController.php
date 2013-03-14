@@ -311,8 +311,8 @@ class AdminController extends LSYii_Controller
         $data['baseurl'] = Yii::app()->baseUrl . '/';
         $data['datepickerlang']="";
         if (Yii::app()->session["adminlang"] != 'en')
-            $data['datepickerlang'] = "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."jquery/locale/jquery.ui.datepicker-".Yii::app()->session["adminlang"].".js\"></script>\n";
-
+            App ()->getClientScript ()->registerScriptFile (Yii::app()->getConfig('generalscripts')."jquery/locale/jquery.ui.datepicker-".Yii::app()->session["adminlang"].".js");
+            
         $data['sitename'] = Yii::app()->getConfig("sitename");
         $data['admintheme'] = Yii::app()->getConfig("admintheme");
         $data['firebug'] = useFirebug();
@@ -322,6 +322,7 @@ class AdminController extends LSYii_Controller
 
         $data['css_admin_includes'] = $this->_css_admin_includes(array(), true);
 
+        
         $out = $this->renderPartial("/admin/super/header", $data, true);
         App()->getClientScript()->render($out);
         if ($return)
@@ -373,7 +374,7 @@ class AdminController extends LSYii_Controller
         $data['js_admin_includes']  = $this->_js_admin_includes(array(), true);
         $data['css_admin_includes'] = $this->_css_admin_includes(array(), true);
 
-        return $this->render("/admin/super/footer", $data, $return);
+        return $this->renderPartial("/admin/super/footer", $data, $return);
 
     }
 
@@ -393,7 +394,7 @@ class AdminController extends LSYii_Controller
         $data['class'] = $class;
         $data['clang'] = $this->lang;
 
-        $this->render('/admin/super/messagebox', $data);
+        $this->renderPartial('/admin/super/messagebox', $data);
     }
 
     /**
@@ -424,7 +425,7 @@ class AdminController extends LSYii_Controller
         $data['surveyid'] = $surveyid;
         $data['iconsize'] = Yii::app()->getConfig('adminthemeiconsize');
         $data['sImageURL'] = Yii::app()->getConfig('adminimageurl');
-        $this->render("/admin/super/adminmenu", $data);
+        $this->renderPartial("/admin/super/adminmenu", $data);
 
     }
 
@@ -439,7 +440,7 @@ class AdminController extends LSYii_Controller
 
         unset(Yii::app()->session['metaHeader']);
 
-        return $this->render('/admin/endScripts_view', array());
+        return $this->renderPartial('/admin/endScripts_view', array());
     }
 
     public function _css_admin_includes($includes = array(), $reset = false)

@@ -59,12 +59,12 @@ class participantsaction extends Survey_Common_Action
      */
     private function _loadjqGrid($sScript = '', $aData = array())
     {
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/i18n/grid.locale-en.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/jquery.jqGrid.min.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/plugins/jquery.searchFilter.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/src/grid.celledit.js');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/ui.jqgrid.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/jquery.ui.datepicker.css');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/js/jquery.jqGrid.min.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/js/i18n/grid.locale-en.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/plugins/jquery.searchFilter.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/src/grid.celledit.js');
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . 'jqgrid/css/ui.jqgrid.css');
+        
         
         if (!empty($sScript))
         {

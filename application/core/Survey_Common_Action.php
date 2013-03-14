@@ -283,14 +283,14 @@ class Survey_Common_Action extends CAction
             {
                 if (is_numeric($sViewKey))
                 {
-                    Yii::app()->getController()->render($sViewPath . $viewUrl, $aData);
+                    Yii::app()->getController()->renderPartial($sViewPath . $viewUrl, $aData);
                 }
                 elseif (is_array($viewUrl))
                 {
                     foreach ($viewUrl as $aSubData)
                     {
                         $aSubData = array_merge($aData, $aSubData);
-                        Yii::app()->getController()->render($sViewPath . $sViewKey, $aSubData);
+                        Yii::app()->getController()->renderPartial($sViewPath . $sViewKey, $aSubData);
                     }
                 }
             }

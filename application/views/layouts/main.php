@@ -13,8 +13,6 @@
             $cs->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'admin_core.js');
             
             
-            $cs->registerCssFile(Yii::app()->getConfig('third_party'). "jqueryui/css/smoothness/jquery-ui-1.10.0.custom.css");
-            
             $cs->registerCssFile(Yii::app()->getConfig('adminstyleurl'). "/jquery-ui/jquery-ui.css");
             $cs->registerCssFile(Yii::app()->getConfig('adminstyleurl'). "printablestyle.css", "print");
             $cs->registerCssFile(Yii::app()->getConfig('styleurl'). "adminstyle.css");

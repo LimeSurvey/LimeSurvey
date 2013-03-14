@@ -50,16 +50,6 @@ class SurveyAdmin extends Survey_Common_Action
         {
             $this->_renderWrappedTemplate('super', 'firststeps');
         } else {
-            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/i18n/grid.locale-en.js");
-            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/jquery.jqGrid.min.js");
-            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jquery.coookie.js");
-            $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "listsurvey.js");
-            $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
-            $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
-            $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
-            $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/ui.jqgrid.css");
-            $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/jquery.ui.datepicker.css");
-
             Yii::app()->loadHelper('surveytranslator');
 
             $aData['issuperadmin'] = false;
@@ -816,7 +806,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aData['action'] = "editsurveylocalesettings";
                 $aData['clang'] = $clang;
 
-                $tab_content[$i] = $this->getController()->render('/admin/survey/editLocalSettings_view', $aData, true);
+                $tab_content[$i] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aData, true);
 
                 $i++;
             }
