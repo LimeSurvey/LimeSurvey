@@ -3,26 +3,20 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <?php 
-            /* @var $cs CClientScript */
-            $cs=Yii::app()->getClientScript();
-            $cs->registerCoreScript('jquery');
-            $cs->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqueryui/js/jquery-ui-1.10.0.custom.js');
-            $cs->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.ui.touch-punch.min.js');
-            $cs->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.qtip.js');
-            $cs->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.notify.js');
-            $cs->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'admin_core.js');
-            
-            
-            $cs->registerCssFile(Yii::app()->getConfig('adminstyleurl'). "/jquery-ui/jquery-ui.css");
-            $cs->registerCssFile(Yii::app()->getConfig('adminstyleurl'). "printablestyle.css", "print");
-            $cs->registerCssFile(Yii::app()->getConfig('styleurl'). "adminstyle.css");
-            $cs->registerCssFile(Yii::app()->getConfig('adminstyleurl'). "adminstyle.css");
-            $cs->registerCssFile(Yii::app()->getConfig('third_party'). "jqueryui/css/smoothness/jquery-ui-1.10.0.custom.css");
-            /*
-             * if ($bIsRTL){?>
-            <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl');?>adminstyle-rtl.css" /><?php
-            }*/
-        
+            App()->getClientScript()->registerPackage('jqueryui');
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-qtip/jquery.qtip-1.0.0-rc3.min.js');
+            App()->getClientScript()->registerPackage('jquery-cookie');
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );
+            App()->getClientScript()->registerPackage('jqgrid');
+
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
+
         ?>
         
         

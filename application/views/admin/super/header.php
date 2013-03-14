@@ -16,18 +16,6 @@
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
-
-        
-        if ($bIsRTL)
-        {
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle-rtl.css" );
-        }
-
-        foreach ($css_admin_includes as $cssinclude)
-        {
-            App()->getClientScript()->registerCssFile($cssinclude);
-        }
-   
     ?>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     
