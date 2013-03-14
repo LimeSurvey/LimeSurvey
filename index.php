@@ -175,7 +175,7 @@
 require_once BASEPATH . 'yii' . EXT;
 require_once APPPATH . 'core/LSYii_Application' . EXT;
 
-$config = APPPATH . 'config/config' . EXT;
+$config = APPPATH . 'config/internal' . EXT;
 
 if (!file_exists($config)) {
     $config = APPPATH . 'config/config-sample-mysql' . EXT;        

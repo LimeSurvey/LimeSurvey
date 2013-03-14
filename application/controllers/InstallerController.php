@@ -994,6 +994,7 @@ class InstallerController extends CController {
             ."|"                                                                    ."\n"
             ."*/"                                                                   ."\n"
             . "return array("                             . "\n"
+            /*
             ."\t"     . "'basePath' => dirname(dirname(__FILE__))," . "\n"
             ."\t"     . "'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime'," . "\n"
             ."\t"     . "'name' => 'LimeSurvey',"                   . "\n"
@@ -1007,7 +1008,7 @@ class InstallerController extends CController {
             ."\t\t"   . "'application.modules.*',"                  . "\n"
             ."\t"     . "),"                                        . "\n"
             ."\t"     . ""                                          . "\n"
-
+            */
             ."\t"     . "'components' => array("                    . "\n"
             ."\t\t"   . "'db' => array("                            . "\n"
             ."\t\t\t" . "'connectionString' => '$sDsn',"            . "\n";
@@ -1027,7 +1028,7 @@ class InstallerController extends CController {
 
             $dbdata .="\t\t" . "),"                                          . "\n"
             ."\t\t"   . ""                                          . "\n"
-
+                    
             ."\t\t"   . "// Uncomment the following line if you need table-based sessions". "\n"
             ."\t\t"   . "// 'session' => array ("                      . "\n"
             ."\t\t\t" . "// 'class' => 'system.web.CDbHttpSession',"   . "\n"
