@@ -1,9 +1,7 @@
 <?php
 class FlashMessage extends CWidget {
     public function run() {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqueryui/js/jquery-ui-1.10.0.custom.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-notify/src/jquery.notify.js');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . 'jquery-notify/ui.notify.css');
+        App()->getClientScript()->registerPackage('jquery-notify');
         if (!empty(App()->session['flashmessage']) && Yii::app()->session['flashmessage'] != '')
         {
             $message = App()->session['flashmessage'];

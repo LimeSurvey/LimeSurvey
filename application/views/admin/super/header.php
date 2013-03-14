@@ -2,20 +2,15 @@
 <html lang="<?php echo $adminlang; ?>"<?php echo $languageRTL;?>>
 <head>
     <?php 
-        App()->getClientScript()->registerCoreScript('jquery');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqueryui/js/jquery-ui-1.10.0.custom.min.js');
+        App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-qtip/jquery.qtip-1.0.0-rc3.min.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-cookie/jquery.cookie.js');
+        App()->getClientScript()->registerPackage('jquery-cookie');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/js/jquery.jqGrid.min.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/js/i18n/grid.locale-en.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/plugins/jquery.searchFilter.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/src/grid.celledit.js');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . 'jqgrid/css/ui.jqgrid.css');
+        App()->getClientScript()->registerPackage('jqgrid');
 
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listsurvey.js");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
