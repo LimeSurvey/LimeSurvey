@@ -22,5 +22,5 @@ function selectGroup(event)
 
 function selectSurvey(event)
 {
-    window.location.href = LS.createUrl('surveys/view', { 'id' : $(this).val()});
+    window.location.href = LS.createUrl('admin/survey', { 'sa' : 'view', 'surveyid' : $(this).val()});
 }
