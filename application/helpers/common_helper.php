@@ -4564,11 +4564,19 @@ function flattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=fals
     else {
         $sNicetext = strip_tags($sNicetext);
     }
-    // ~\R~u : see "What \R matches" and "Newline sequences" in http://www.pcre.org/pcre.txt
+    // ~\R~u : see "What \R matches" and "Newline sequences" in http://www.pcre.org/pcre.txt - only available since PCRE 7.0
     if ($bStripNewLines ){  // strip new lines
-        $sNicetext = preg_replace(array('~\R~u'),array(' '), $sNicetext);
+        if (version_compare(substr(PCRE_VERSION,0,strpos(PCRE_VERSION,' ')),'7.0')>-1)
+        {
+            $sNicetext = preg_replace(array('~\R~u'),array(' '), $sNicetext);
+        }
+        else
+        {
+            // Poor man's replacement for line feeds
+            $sNicetext = str_replace(array("\r\n","\n", "\r"), array(' ',' ',' '), $sNicetext);
+        }
     }
-    else // unify newlines to \r\n
+    elseif (version_compare(substr(PCRE_VERSION,0,strpos(PCRE_VERSION,' ')),'7.0')>-1)// unify newlines to \r\n
     {
         $sNicetext = preg_replace(array('~\R~u'), array("\r\n"), $sNicetext);
     }
