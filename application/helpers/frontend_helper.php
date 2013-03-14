@@ -992,6 +992,10 @@
                     $aReplacementVars["FIRSTNAME"]=$oTokenInformation->firstname;
                     $aReplacementVars["LASTNAME"]=$oTokenInformation->lastname;
                     $aReplacementVars["TOKEN"]=$clienttoken;
+                    // added survey url in replacement vars
+                    $surveylink = Yii::app()->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'],'token'=>$clienttoken));
+                    $aReplacementVars['SURVEYURL'] = $surveylink;
+                    
                     $attrfieldnames=getAttributeFieldNames($surveyid);
                     foreach ($attrfieldnames as $attr_name)
                     {
