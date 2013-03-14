@@ -1,3 +1,7 @@
+<?php
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listsurvey.js");
+?>
+
 <br />
 <script type='text/javascript'>
     var getuserurl = '<?php echo $this->createUrl('admin/survey/sa/ajaxgetusers'); ?>';
