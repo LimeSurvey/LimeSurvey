@@ -4008,7 +4008,7 @@
             $LEM->indexGseq=array();
             $LEM->indexQseq=array();
             $LEM->qrootVarName2arrayFilter=array();
-
+            templatereplace("{}"); // Needed for coreReplacements in relevance equation (in all mode)
             if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 0)
             {
                 $startingValues = array();
