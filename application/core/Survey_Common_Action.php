@@ -426,10 +426,10 @@ class Survey_Common_Action extends CAction
         $aData['condarray'] = $condarray;
         $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
         $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
-        $questionsummary .= $this->getController()->render('/admin/survey/Question/questionbar_view', $aData, true);
+        $questionsummary .= $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
         $finaldata['display'] = $questionsummary;
 
-        $this->getController()->render('/survey_view', $finaldata);
+        $this->getController()->renderPartial('/survey_view', $finaldata);
     }
 
     /**
@@ -493,12 +493,12 @@ class Survey_Common_Action extends CAction
             $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
             $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
 
-            $groupsummary .= $this->getController()->render('/admin/survey/QuestionGroups/questiongroupbar_view', $aData, true);
+            $groupsummary .= $this->getController()->renderPartial('/admin/survey/QuestionGroups/questiongroupbar_view', $aData, true);
         }
         $groupsummary .= "\n</table>\n";
 
         $finaldata['display'] = $groupsummary;
-        $this->getController()->render('/survey_view', $finaldata);
+        $this->getController()->renderPartial('/survey_view', $finaldata);
     }
 
     /**
@@ -642,7 +642,7 @@ class Survey_Common_Action extends CAction
         $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
         $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
 
-        $this->getController()->render("/admin/survey/surveybar_view", $aData);
+        $this->getController()->renderPartial("/admin/survey/surveybar_view", $aData);
     }
 
     /**
@@ -872,7 +872,7 @@ class Survey_Common_Action extends CAction
         $aData['clang'] = $clang;
         $aData['surveyinfo'] = $surveyinfo;
 
-        $this->getController()->render("/admin/survey/surveySummary_view", $aData);
+        $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData);
     }
 
     /**
@@ -893,7 +893,7 @@ class Survey_Common_Action extends CAction
         rsort($tmp_survlangs);
         $aData['tmp_survlangs'] = $tmp_survlangs;
 
-        $this->getController()->render("/admin/responses/browsemenubar_view", $aData);
+        $this->getController()->renderPartial("/admin/responses/browsemenubar_view", $aData);
     }
     /**
     * Load menu bar of user group controller.
@@ -931,7 +931,7 @@ class Survey_Common_Action extends CAction
 
         $data['ugid'] = $ugid;
         $data['imageurl'] = Yii::app()->getConfig("adminimageurl"); // Don't came from rendertemplate ?
-        $this->getController()->render('/admin/usergroup/usergroupbar_view', $data);
+        $this->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
     }
 
     protected function _filterImportedResources($extractdir, $destdir)

@@ -55,5 +55,18 @@ return array(
         'depends' => array(
             'jquery'
         )
+    ),
+    'jquery-superfish' => array(
+        'baseUrl' => 'third_party/jquery-superfish',
+        'js' => array(
+            'js/superfish.js'
+        ),
+        'css' => array(
+            'css/superfish.css'
+        ),
+        'depends' => array(
+            'jquery'
+        )
+        
     )
 );
