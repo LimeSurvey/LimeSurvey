@@ -155,7 +155,7 @@ function loadDragDropRank(qID){
 function fixChoiceHeight(qID){
   maxHeight=0;
   $('.connectedSortable'+qID+' li').each(function(){
-    if ($(this).height()>maxHeight){
+    if ($(this).actual('height')>maxHeight){
       maxHeight=$(this).actual('height');
     }
   });
