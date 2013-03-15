@@ -21,7 +21,7 @@ $(document).ready(function(){
             duration: 'fast'
         }, $.datepicker.regional[userlanguage]);
     }
-
+    $(".sf-menu").superfish({});
     $('button,input[type=submit],input[type=button],input[type=reset]').addClass("limebutton ui-state-default ui-corner-all");
     $('button,input[type=submit],input[type=button],input[type=reset]').hover(
     function(){
