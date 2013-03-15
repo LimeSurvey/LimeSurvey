@@ -18,7 +18,7 @@
 <input type='hidden' name='language' value="<?php echo $esrow['language'];?>" />
 </form>
 <?php
-    $controller->renderrenderPartial('/admin/survey/subview/tabResourceManagement_view',$data);
+    $controller->renderPartial('/admin/survey/subview/tabResourceManagement_view',$data);
 ?>
 </div>
 
