@@ -108,8 +108,10 @@ class Save {
         // - "value" which is the value of the response
         //We start by generating the first 5 values which are consistent for all rows.
 
-        global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep;
+        global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $clang, $clienttoken, $thisstep;
 
+        $timeadjust = getGlobalSetting('timeadjust');
+        
         //Check that the required fields have been completed.
         $errormsg = '';
         if (empty($_POST['savename'])) $errormsg .= $clang->gT("You must supply a name for this saved session.")."<br />\n";
