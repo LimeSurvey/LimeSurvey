@@ -36,7 +36,7 @@ $internalConfig = array(
 	)
 );
 
-$userConfig = require('config.php');
+$userConfig = require(dirname(__FILE__) . '/config.php');
 return CMap::mergeArray($internalConfig, $userConfig);
 /* End of file internal.php */
 /* Location: ./application/config/internal.php */

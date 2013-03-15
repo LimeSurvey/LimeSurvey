@@ -13,7 +13,6 @@
             $data['baseUrl']                    = Yii::app()->getBaseUrl(true);
             $data['showScriptName']             = Yii::app()->urlManager->showScriptName;
             $data['urlFormat']                  = Yii::app()->urlManager->urlFormat;
-            $data['layoutPath']                 = Yii::app()->getLayoutPath();
             $data['adminImageUrl']              = Yii::app()->getConfig('adminimageurl');
             $data['replacementFields']['path']  = App()->createUrl("admin/limereplacementfields/sa/index/");
             $json = json_encode($data, JSON_FORCE_OBJECT);

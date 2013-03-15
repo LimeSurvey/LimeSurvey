@@ -100,11 +100,11 @@
         if ($load == false)
         {
 
-            return $controller->render('/admin/survey/prepareEditorScript_view',$data,true);
+            return $controller->renderPartial('/admin/survey/prepareEditorScript_view',$data,true);
         }
         else
         {
-            $controller->render('/admin/survey/prepareEditorScript_view',$data);
+            $controller->renderPartial('/admin/survey/prepareEditorScript_view',$data);
         }
     }
 

@@ -4,13 +4,13 @@
     $data['action'] = $action;
 	$yii = Yii::app();
 	$controller = $yii->getController();
-    $controller->render('/admin/survey/subview/tab_view',$data);
-    $controller->render('/admin/survey/subview/tabGeneralEditSurvey_view',$data);
-    $controller->render('/admin/survey/subview/tabPresentation_view',$data);
-    $controller->render('/admin/survey/subview/tabPublication_view',$data);
-    $controller->render('/admin/survey/subview/tabNotification_view',$data);
-    $controller->render('/admin/survey/subview/tabTokens_view',$data);
-    $controller->render('/admin/survey/subview/tabPanelIntegration_view',$data);
+    $controller->renderPartial('/admin/survey/subview/tab_view',$data);
+    $controller->renderPartial('/admin/survey/subview/tabGeneralEditSurvey_view',$data);
+    $controller->renderPartial('/admin/survey/subview/tabPresentation_view',$data);
+    $controller->renderPartial('/admin/survey/subview/tabPublication_view',$data);
+    $controller->renderPartial('/admin/survey/subview/tabNotification_view',$data);
+    $controller->renderPartial('/admin/survey/subview/tabTokens_view',$data);
+    $controller->renderPartial('/admin/survey/subview/tabPanelIntegration_view',$data);
 ?>
 <input type='hidden' id='surveysettingsaction' name='action' value='updatesurveysettings' />
 <input type='hidden' id='sid' name='sid' value="<?php echo $esrow['sid'];?>" />
@@ -18,7 +18,7 @@
 <input type='hidden' name='language' value="<?php echo $esrow['language'];?>" />
 </form>
 <?php
-    $controller->render('/admin/survey/subview/tabResourceManagement_view',$data);
+    $controller->renderrenderPartial('/admin/survey/subview/tabResourceManagement_view',$data);
 ?>
 </div>
 
