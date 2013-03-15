@@ -834,9 +834,6 @@ class InstallerController extends CController {
         if (!check_DirectoryWriteable(Yii::app()->getConfig('uploaddir').'/', $data, 'uploaddir', 'uerror',true) )
             $bProceed = false;
         
-        if (!check_DirectoryWriteable(Yii::app()->getConfig('rootdir').'/assets', $data, 'assetsdir', 'aerror',true) )
-            $bProceed = false;
-        
         // Session writable check
         $session = Yii::app()->session; /* @var $session CHttpSession */
         $sessionWritable = ($session->get('saveCheck', null)==='save');
