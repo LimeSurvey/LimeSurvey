@@ -177,7 +177,7 @@ require_once APPPATH . 'core/LSYii_Application' . EXT;
 
 $config = APPPATH . 'config/internal' . EXT;
 
-if (!file_exists($config)) {
+if (!file_exists(APPPATH . 'config/config' . EXT)) {
     $config = APPPATH . 'config/config-sample-mysql' . EXT;        
     
     // If Yii can not start due to unwritable runtimePath, present an error    
