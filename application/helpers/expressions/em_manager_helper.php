@@ -4566,7 +4566,7 @@
                     $query .= $_SESSION[$this->sessid]['srid'];
 
                     if (!dbExecuteAssoc($query))
-                    {
+                    {                 
                         echo submitfailed('');  // TODO - report SQL error?
 
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
@@ -4574,7 +4574,7 @@
                         }
                     }
                     // Save Timings if needed
-                    if ($this->surveyOptions['savetimings']) {
+                    elseif ($this->surveyOptions['savetimings']) {
                         Yii::import("application.libraries.Save");
                         $cSave = new Save();
                         $cSave->set_answer_time();
