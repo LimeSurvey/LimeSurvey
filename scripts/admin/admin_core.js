@@ -22,6 +22,7 @@ $(document).ready(function(){
         }, $.datepicker.regional[userlanguage]);
     }
     $(".sf-menu").superfish({});
+    $(".sf-menu").find("img").removeAttr("alt");;
     $('button,input[type=submit],input[type=button],input[type=reset]').addClass("limebutton ui-state-default ui-corner-all");
     $('button,input[type=submit],input[type=button],input[type=reset]').hover(
     function(){
@@ -32,9 +33,42 @@ $(document).ready(function(){
     }
     )
 
+    // Call the popuptip hover rel attribute
+    $('.popuptip').each(function(){
+        if($(this).attr('rel')){
+            content=$(this).html();
+            tiptarget=$("#"+$(this).attr('rel'));
+            //if($("#"+$(this).attr('rel')).find('img').length==1){ tiptarget=$("#"+$(this).attr('rel')).find('img');}
+            tiptarget.qtip({
+                content:{
+                    text:content
+                },
+                style: {
+                    name: 'light',
+                    tip:true,
+                    border: {
+                        width: 1,
+                        radius: 5
+                    }
+                },
+                position: {
+                    adjust: {
+                        screen: true, scroll:true},
+                    corner: {
+                        target: 'bottomMiddle',
+                        tooltip: 'topMiddle'
+                        }
+                },
+                show: {effect: {length:50}},
+                hide: {when: 'mouseout', fixed: true, delay: 500}
+            });
+            $("#"+$(this).attr('rel')).find("img").removeAttr("alt"); // Remove children img attr alt, the  default tooltip can apply.
+        }
+    });
+
 
     // Loads the tooltips for the toolbars  except the surveybar
-    $('img[alt],input[src]').not('.surveybar img').each(function() {
+    $('img[alt],input[src]').each(function() {
         if($(this).attr('alt') != '')
             {
             $(this).qtip({
@@ -123,33 +157,33 @@ $(document).ready(function(){
         }}
     });
 
-    $('#previewquestion').qtip({
-        content:{
-            text:$('#previewquestionpopup')
-        },
-        style: {name: 'cream',
-            tip:true,
-            color:'#111111',
-            border: {
-                width: 1,
-                radius: 5,
-                color: '#EADF95'}
-        },
-        position: {adjust: {
-                screen: true, scroll:true},
-            corner: {
-                target: 'bottomMiddle',
-                tooltip: 'topMiddle'}
-        },
-        show: {effect: {length:50},
-            when: {
-                event:'click'
-        }},
-        hide: {fixed:true,
-            when: {
-                event:'unfocus'
-        }}
-    });
+//    $('#previewquestion').qtip({
+//        content:{
+//            text:$('#previewquestionpopup')
+//        },
+//        style: {name: 'cream',
+//            tip:true,
+//            color:'#111111',
+//            border: {
+//                width: 1,
+//                radius: 5,
+//                color: '#EADF95'}
+//        },
+//        position: {adjust: {
+//                screen: true, scroll:true},
+//            corner: {
+//                target: 'bottomMiddle',
+//                tooltip: 'topMiddle'}
+//        },
+//        show: {effect: {length:50},
+//            when: {
+//                event:'click'
+//        }},
+//        hide: {fixed:true,
+//            when: {
+//                event:'unfocus'
+//        }}
+//    });
 
     $('.tipme').each(function() {
         if($(this).attr('alt') != '')

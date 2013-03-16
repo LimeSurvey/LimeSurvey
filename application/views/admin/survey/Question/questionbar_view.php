@@ -1,13 +1,6 @@
 <?php
 $aReplacementData=array();
-if (isset($tmp_survlangs)) { ?>
-    <div class="langpopup" id="previewquestionpopup"><?php $clang->eT("Please select a language:"); ?><ul>
-            <?php foreach ($tmp_survlangs as $tmp_lang)
-                { ?>
-                <li><a target='_blank' onclick="$('#previewquestion').qtip('hide');" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $tmp_lang); ?>' accesskey='d'><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
-                <?php } ?>
-        </ul></div>
-    <?php } ?>
+?>
 <div class='menubar-title ui-widget-header'>
     <strong><?php $clang->eT("Question"); ?></strong> <span class='basic'><?php echo ellipsize(FlattenText($qrrow['question']),200); ?> (<?php echo $clang->gT("ID").":".$qid; ?>)</span>
 </div>
@@ -16,18 +9,21 @@ if (isset($tmp_survlangs)) { ?>
         <img id='separator16' src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
         <?php if(hasSurveyPermission($surveyid,'surveycontent','read'))
             {
-                if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
-                { ?>
-                <a accesskey='q' href="<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>" target="_blank">
+            ?>
+                <a accesskey='q' id='questionpreviewlink' ' href="<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>" target="_blank">
                     <img src='<?php echo $sImageURL; ?>preview.png' alt='<?php $clang->eT("Preview this question"); ?>' /></a>
+                <?php if (isset($tmp_survlangs) && count($tmp_survlangs) > 0)
+                { ?>
+                <div class="popuptip" rel="questionpreviewlink"><?php $clang->eT("Preview this question in:"); ?>
+                    <ul>
+                    <?php foreach ($tmp_survlangs as $tmp_lang){ ?>
+                        <li><a target='_blank' href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $tmp_lang); ?>' ><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
+                    <?php } ?>
+                    </ul>
+                </div>
+                <?php } ?>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-                <?php } else { ?>
-                <a accesskey='q' id='previewquestion'>
-                    <img src='<?php echo $sImageURL; ?>preview.png' title='' alt='<?php $clang->eT("Preview This Question"); ?>' /></a>
-                <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt=''  />
-
-                <?php }
-        } ?>
+        <?php } ?>
 
 
         <?php  if(hasSurveyPermission($surveyid,'surveycontent','update'))

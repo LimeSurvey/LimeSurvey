@@ -369,18 +369,7 @@ class Survey_Common_Action extends CAction
         $aData['activated'] = $surveyinfo['active'];
 
         $qrrow = $qrrow->attributes;
-        if (hasSurveyPermission($iSurveyID, 'surveycontent', 'read'))
-        {
-            if (count(Survey::model()->findByPk($iSurveyID)->additionalLanguages) != 0)
-            {
-                Yii::app()->loadHelper('surveytranslator');
-                $tmp_survlangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-                $baselang = Survey::model()->findByPk($iSurveyID)->language;
-                $tmp_survlangs[] = $baselang;
-                rsort($tmp_survlangs);
-                $aData['tmp_survlangs'] = $tmp_survlangs;
-            }
-        }
+        $aData['languagelist'] = Survey::model()->findByPk($iSurveyID)->getAllLanguages();
         $aData['qtypes'] = $qtypes = getQuestionTypeList('', 'array');
         if ($action == 'editansweroptions' || $action == "editsubquestions" || $action == "editquestion" || $action == "editdefaultvalues" || $action =="editdefaultvalues" || $action == "copyquestion")
         {
@@ -462,7 +451,7 @@ class Survey_Common_Action extends CAction
         $surveyinfo = array_map('flattenText', $surveyinfo);
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $aData['activated'] = $activated = $surveyinfo['active'];
-
+        $languagelist=Survey::model()->findByPk($iSurveyID)->getAllLanguages();
         foreach ($grpresult as $grow)
         {
             $grow = $grow->attributes;
@@ -473,7 +462,7 @@ class Survey_Common_Action extends CAction
             $aData['qid'] = $qid;
             $aData['QidPrev'] = $QidPrev = getQidPrevious($iSurveyID, $gid, $qid);
             $aData['QidNext'] = $QidNext = getQidNext($iSurveyID, $gid, $qid);
-
+            $aData['languagelist']=$languagelist;
             if ($action == 'editgroup' || $action == 'addquestion' || $action == 'viewquestion' || $action == "editdefaultvalues")
             {
                 $gshowstyle = "style='display: none'";
@@ -482,7 +471,6 @@ class Survey_Common_Action extends CAction
             {
                 $gshowstyle = "";
             }
-
             $aData['gshowstyle'] = $gshowstyle;
             $aData['surveyid'] = $iSurveyID;
             $aData['gid'] = $gid;
@@ -560,13 +548,10 @@ class Survey_Common_Action extends CAction
         }
 
         $aData['baselang'] = Survey::model()->findByPk($iSurveyID)->language;
+        $aData['additionallanguages'] = Survey::model()->findByPk($iSurveyID)->getAdditionalLanguages();
+        $aData['languagelist'] =  Survey::model()->findByPk($iSurveyID)->getAllLanguages();
+        $aData['onelanguage']=(count($aData['languagelist'])==1);
 
-        $tmp_survlangs = Survey::model()->findByPk($iSurveyID)->getAdditionalLanguages();
-        $aData['onelanguage']=(count($tmp_survlangs)==0);
-        $aData['additionallanguages'] = $tmp_survlangs;
-        $tmp_survlangs[] = $aData['baselang'];
-        rsort($tmp_survlangs);
-        $aData['languagelist'] = $tmp_survlangs;
 
         $aData['hasadditionallanguages'] = (count($aData['additionallanguages']) > 0);
 
@@ -886,12 +871,7 @@ class Survey_Common_Action extends CAction
         $aData['sImageURL'] = Yii::app()->getConfig("adminimageurl");
         $aData['clang'] = Yii::app()->lang;
         $aData['surveyid'] = $iSurveyID;
-
-        $tmp_survlangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
-        $tmp_survlangs[] = $baselang;
-        rsort($tmp_survlangs);
-        $aData['tmp_survlangs'] = $tmp_survlangs;
+        $aData['languagelist'] = Survey::model()->findByPk($iSurveyID)->getAllLanguages();
 
         $this->getController()->renderPartial("/admin/responses/browsemenubar_view", $aData);
     }

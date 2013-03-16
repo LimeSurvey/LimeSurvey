@@ -198,6 +198,20 @@ class Survey extends CActiveRecord
     }
 
     /**
+    * Returns all languages array
+    *
+    * @access public
+    * @return array
+    */
+    public function getAllLanguages()
+    {
+        $sLanguages = self::getAdditionalLanguages();
+        $baselang=$this->language;
+        array_unshift($sLanguages,$baselang);
+        return $sLanguages;
+    }
+
+    /**
     * Returns the additional token attributes
     *
     * @access public

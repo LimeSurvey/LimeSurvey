@@ -24,7 +24,7 @@
                         <img src='<?php echo $sImageURL; ?>document.png' alt='<?php $clang->eT("Display Responses"); ?>' /></a>
 
                     <div class="langpopup" id="browselangpopup"><?php $clang->eT("Please select a language:"); ?><ul>
-                            <?php foreach ($tmp_survlangs as $tmp_lang)
+                            <?php foreach ($languagelist as $tmp_lang)
                                 { ?>
                                 <li><a href="<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid/start/0/limit/50/order/asc/browselang/$tmp_lang"); ?>" accesskey='b'><?php echo getLanguageNameFromCode($tmp_lang, false); ?></a></li>
                                 <?php } ?>

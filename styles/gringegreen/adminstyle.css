@@ -193,9 +193,8 @@ div.menubar .ui-widget-header
 }
 
 .menubar-left img{
-    float:left;
     border:0;
-    padding:3px 1px;
+    padding:3px 0;
 }
 
 .menubar-right > img{

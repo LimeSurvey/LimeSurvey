@@ -8,8 +8,18 @@
         <?php if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <img id='separator4' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
-            <a href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" target="_blank">
+            <a id="grouppreviewlink" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" target="_blank">
                 <img src='<?php echo $imageurl; ?>preview.png' alt='<?php $clang->eT("Preview current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
+                <?php if (count($languagelist) > 1)
+                { ?>
+                <div class="popuptip" rel="grouppreviewlink"><?php $clang->eT("Preview this question group in:"); ?>
+                    <ul>
+                    <?php foreach ($languagelist as $tmp_lang){ ?>
+                        <li><a target="_blank" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $tmp_lang); ?>" ><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
+                    <?php } ?>
+                    </ul>
+                </div>
+                <?php } ?>
             <?php }
             else{ ?>
             <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
