@@ -12,11 +12,11 @@ $aReplacementData=array();
             ?>
                 <a accesskey='q' id='questionpreviewlink' ' href="<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>" target="_blank">
                     <img src='<?php echo $sImageURL; ?>preview.png' alt='<?php $clang->eT("Preview this question"); ?>' /></a>
-                <?php if (isset($tmp_survlangs) && count($tmp_survlangs) > 0)
+                <?php if (count($languagelist) > 1)
                 { ?>
                 <div class="popuptip" rel="questionpreviewlink"><?php $clang->eT("Preview this question in:"); ?>
                     <ul>
-                    <?php foreach ($tmp_survlangs as $tmp_lang){ ?>
+                    <?php foreach ($languagelist as $tmp_lang){ ?>
                         <li><a target='_blank' href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $tmp_lang); ?>' ><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
                     <?php } ?>
                     </ul>
