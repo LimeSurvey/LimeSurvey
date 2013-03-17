@@ -805,8 +805,7 @@ body .ui-tooltip {
 	color: #666;
 }
 .ui-widget-header {
-	border: 1px solid #cdf078;
-	background: #fefefe url(images/ui-bg_flat_100_fefefe_40x100.png) 50% 50% repeat-x;
+	border: 0px;
 	color: #666;
 	font-weight: bold;
 }
