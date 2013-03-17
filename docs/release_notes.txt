@@ -60,6 +60,46 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130311) to 2.00+ (build 130317) Mar 17, 2013
+-New feature: Use SGQA identifier to prefill some answer with URL in preview mode (Denis Chenu)
+-Fixed issue #7193: A shared user can definitively delete a shared participant (Carsten Schmitz)
+-Fixed issue #7195: Impossible to add participants from survey to CPDB (Carsten Schmitz)
+-Fixed issue #7315: Validation regex not being checked / not working (logic test ok) in preview mode (Denis Chenu)
+-Fixed issue #7633: SURVEYURL not being replaced in confirmation email (ravindrakhokharia)
+-Fixed issue #7643: Answer code is not set in comment field headings when exporting responses (Carsten Schmitz)
+-Fixed issue #7654: Better handling of numbers in Excel export - patch by slansky (Carsten Schmitz)
+-Fixed issue #7656: Can not use coreReplacements var in Relevance (Denis Chenu)
+-Fixed issue #7658: Group preview expressions not working right after import (Carsten Schmitz)
+-Fixed issue #7659: OptOut/OptIn page does not load the related template (Carsten Schmitz)
+-Fixed issue #7660: Misplaced HTML editor when sending invitations (Denis Chenu)
+-Fixed issue #7661: Capital 'R' missing in certain title elements in administration (Carsten Schmitz)
+-Fixed issue #7662: Obsolete 'close window' link in clear logo completed template (Carsten Schmitz)
+-Fixed issue #7666: Incorrect date value in saved_control table. (Carsten Schmitz)
+-Fixed issue #7670: Unable to browse responses in other language than default (Carsten Schmitz)
+-Fixed issue #7673: When survey is deactivated during previewing a survey a system error message is shown for survey admins (Carsten Schmitz)
+-Fixed issue: Can not test group if token exist or if survey is not started (Denis Chenu)
+-Fixed issue: Choice heigths are set too low with conditional ranking question (Denis Chenu)
+-Fixed issue: CPDB .csv import not working (Carsten Schmitz)
+-Fixed issue: Wrong redirect after update check (Carsten Schmitz)
+#Updated translation: Catalan by valdomir
+#Updated translation: Czech by slansky
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hindi by ajparag
+#Updated translation: Italian by lfanfoni, riboeri
+#Updated translation: Kurdish (Sorani) by Ayeneh
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Romanian by filipguttman
+#Updated translation: Russian by vipgroup
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by gogl
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.00+ (build 130305) to 2.00+ (build 130311) Mar 11, 2013
 -Fixed issue #6509: Central Participant Database: Attributes mapping is difficult with high number of attributes (UI) (tpartner)
 -Fixed issue #7010: Line breaks not properly handled in response export to CSV (Carsten Schmitz)
