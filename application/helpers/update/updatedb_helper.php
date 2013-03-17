@@ -1066,6 +1066,7 @@ function db_upgrade_all($oldversion) {
                 'key' => 'string',
                 'value' => 'text'
             ));
+            alterColumn('{{surveys_languagesettings}}','surveyls_url',"text");
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>165),"stg_name='DBVersion'");
         }
         $oTransaction->commit();

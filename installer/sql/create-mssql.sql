@@ -438,7 +438,7 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_description] varchar(max) NULL,
   [surveyls_welcometext] varchar(max) NULL,
   [surveyls_endtext] varchar(max) NULL,
-  [surveyls_url] varchar(255) NULL,
+  [surveyls_url] varchar(max) NULL,
   [surveyls_urldescription] varchar(255) NULL,
   [surveyls_email_invite_subj] varchar(255) NULL,
   [surveyls_email_invite] varchar(max) NULL,

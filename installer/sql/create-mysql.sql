@@ -443,7 +443,7 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_description` TEXT NULL,
   `surveyls_welcometext` TEXT NULL,
   `surveyls_endtext` TEXT NULL,
-  `surveyls_url` varchar(255) NULL,
+  `surveyls_url` TEXT NULL,
   `surveyls_urldescription` varchar(255) NULL,
   `surveyls_email_invite_subj` varchar(255) NULL,
   `surveyls_email_invite` TEXT NULL,

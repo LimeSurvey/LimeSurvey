@@ -449,7 +449,7 @@ CREATE TABLE prefix_surveys_languagesettings (
     surveyls_description text,
     surveyls_welcometext text,
     surveyls_endtext text,
-    surveyls_url character varying(255),
+    surveyls_url text,
     surveyls_urldescription character varying(255),
     surveyls_email_invite_subj character varying(255),
     surveyls_email_invite text,
