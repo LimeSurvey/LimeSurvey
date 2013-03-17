@@ -68,24 +68,19 @@ class responses extends Survey_Common_Action
 
         $aData['surveyinfo'] = $thissurvey;
 
-        if (isset($browselang) && $browselang != '')
+        if (Yii::app()->request->getParam('browselang'))
         {
-            Yii::app()->session['browselang'] = $browselang;
-            $aData['language'] = Yii::app()->session['browselang'];
-        }
-        elseif (isset(Yii::app()->session['browselang']))
-        {
-            $aData['language'] = Yii::app()->session['browselang'];
+            $aData['language'] = Yii::app()->request->getParam('browselang');
             $aData['languagelist'] = $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             $aData['languagelist'][] = Survey::model()->findByPk($iSurveyId)->language;
             if (!in_array($aData['language'], $languagelist))
             {
-                $aData['language'] = Survey::model()->findByPk($iSurveyId)->language;
+                $aData['language'] = $thissurvey['language'];
             }
         }
         else
         {
-            $aData['language'] = Survey::model()->findByPk($iSurveyId)->language;
+            $aData['language'] = $thissurvey['language'];
         }
 
         $aData['qulanguage'] = Survey::model()->findByPk($iSurveyId)->language;

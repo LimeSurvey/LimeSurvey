@@ -871,7 +871,17 @@ class Survey_Common_Action extends CAction
         $aData['sImageURL'] = Yii::app()->getConfig("adminimageurl");
         $aData['clang'] = Yii::app()->lang;
         $aData['surveyid'] = $iSurveyID;
-        $aData['languagelist'] = Survey::model()->findByPk($iSurveyID)->getAllLanguages();
+        $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/superfish.js';
+        $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/hoverIntent.js';
+        $this->getController()->_js_admin_includes($js_admin_includes);
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
+        
+
+        $tmp_survlangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+        $tmp_survlangs[] = $baselang;
+        rsort($tmp_survlangs);
+        $aData['tmp_survlangs'] = $tmp_survlangs;
 
         $this->getController()->renderPartial("/admin/responses/browsemenubar_view", $aData);
     }
