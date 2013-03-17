@@ -779,8 +779,8 @@ function convertGETtoPOST($url)
         $arrayParam[] = "'".$paramname."'";
         $arrayVal[] = substr($value, 0, 9) != "document." ? "'".$value."'" : $value;
     }
-    //	$Paramlist = "[" . implode(",",$arrayParam) . "]";
-    //	$Valuelist = "[" . implode(",",$arrayVal) . "]";
+    //    $Paramlist = "[" . implode(",",$arrayParam) . "]";
+    //    $Valuelist = "[" . implode(",",$arrayVal) . "]";
     $Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
     $Valuelist = "new Array(" . implode(",",$arrayVal) . ")";
     $callscript = "sendPost('$calledscript','',$Paramlist,$Valuelist);";
@@ -1981,7 +1981,7 @@ function validateEmailAddress($email){
     $dot_atom_text_domain    = "(?:$atext_domain+(?:\\x2e$atext_domain+)*)";
 
 
-    $dot_atom    	   = "(?:$cfws?$dot_atom_text$cfws?)";
+    $dot_atom           = "(?:$cfws?$dot_atom_text$cfws?)";
     $dot_atom_domain   = "(?:$cfws?$dot_atom_text_domain$cfws?)";
 
 
@@ -3688,34 +3688,34 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Numbers only')
     );
 
-    $qattributes['show_totals'] =	array(
-    'types' =>	';',
-    'category' =>	$clang->gT('Other'),
-    'sortorder' =>	151,
-    'inputtype'	=> 'singleselect',
-    'options' =>	array(
-    'X' =>	$clang->gT('Off'),
-    'R' =>	$clang->gT('Rows'),
-    'C' =>	$clang->gT('Columns'),
-    'B' =>	$clang->gT('Both rows and columns')
+    $qattributes['show_totals'] =    array(
+    'types' =>    ';',
+    'category' =>    $clang->gT('Other'),
+    'sortorder' =>    151,
+    'inputtype'    => 'singleselect',
+    'options' =>    array(
+    'X' =>    $clang->gT('Off'),
+    'R' =>    $clang->gT('Rows'),
+    'C' =>    $clang->gT('Columns'),
+    'B' =>    $clang->gT('Both rows and columns')
     ),
-    'default' =>	'X',
-    'help' =>	$clang->gT('Show totals for either rows, columns or both rows and columns'),
-    'caption' =>	$clang->gT('Show totals for')
+    'default' =>    'X',
+    'help' =>    $clang->gT('Show totals for either rows, columns or both rows and columns'),
+    'caption' =>    $clang->gT('Show totals for')
     );
 
-    $qattributes['show_grand_total'] =	array(
-    'types' =>	';',
-    'category' =>	$clang->gT('Other'),
-    'sortorder' =>	152,
-    'inputtype' =>	'singleselect',
-    'options' =>	array(
-    0 =>	$clang->gT('No'),
-    1 =>	$clang->gT('Yes')
+    $qattributes['show_grand_total'] =    array(
+    'types' =>    ';',
+    'category' =>    $clang->gT('Other'),
+    'sortorder' =>    152,
+    'inputtype' =>    'singleselect',
+    'options' =>    array(
+    0 =>    $clang->gT('No'),
+    1 =>    $clang->gT('Yes')
     ),
-    'default' =>	0,
-    'help' =>	$clang->gT('Show grand total for either columns or rows'),
-    'caption' =>	$clang->gT('Show grand total')
+    'default' =>    0,
+    'help' =>    $clang->gT('Show grand total for either columns or rows'),
+    'caption' =>    $clang->gT('Show grand total')
     );
 
     $qattributes["input_boxes"]=array(
@@ -4537,7 +4537,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
         }
     }
     $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
-    if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
+    if (get_magic_quotes_gpc() != "0")    {$body = stripcslashes($body);}
     if ($ishtml) {
         $mail->IsHTML(true);
         $mail->Body = $body;
@@ -4739,7 +4739,7 @@ function getArrayFiltersForQuestion($qid)
                 foreach ($qresult->readAll() as $code)
                 {
                     if (Yii::app()->session[$fields[1].$code['title']] == "Y"
-                    || Yii::app()->session[$fields[1]] == $code['title'])			 array_push($selected,$code['title']);
+                    || Yii::app()->session[$fields[1]] == $code['title'])             array_push($selected,$code['title']);
                 }
 
                 //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
@@ -4789,7 +4789,7 @@ function getArrayFilterExcludesForQuestion($qid)
     static $cache = array();
 
     // TODO: Check list_filter values to make sure questions are previous?
-    //	$surveyid = Yii::app()->getConfig('sid');
+    //    $surveyid = Yii::app()->getConfig('sid');
     $surveyid=returnGlobal('sid');
     $qid=sanitize_int($qid);
 
@@ -4874,15 +4874,14 @@ function convertCSVRowToArray($string, $seperator, $quotechar)
 
 function createPassword()
 {
-    $pwchars = "abcdefhjmnpqrstuvwxyz23456789";
-    $password_length = 12;
-    $passwd = '';
-
-    for ($i=0; $i<$password_length; $i++)
+    $aCharacters = "ABCDEGHJIKLMNOPQURSTUVWXYZabcdefhjmnpqrstuvwxyz23456789";
+    $iPasswordLength = 12;
+    $sPassword = '';
+    for ($i=0; $i<$iPasswordLength; $i++)
     {
-        $passwd .= $pwchars[(int)floor(rand(0,strlen($pwchars)-1))];
+        $sPassword .= $aCharacters[(int)floor(rand(0,strlen($aCharacters)-1))];
     }
-    return $passwd;
+    return $sPassword;
 }
 
 function languageDropdown($surveyid,$selected)
@@ -5725,9 +5724,9 @@ function updateCheck()
 /**
 * Return the goodchars to be used when filtering input for numbers.
 *
-* @param $lang 	string	language used, for localisation
-* @param $integer	bool	use only integer
-* @param $negative	bool	allow negative values
+* @param $lang     string    language used, for localisation
+* @param $integer    bool    use only integer
+* @param $negative    bool    allow negative values
 */
 function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
     $goodchars = "0123456789";
@@ -5740,8 +5739,8 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
 /**
 * Return array with token attribute.
 *
-* @param $surveyid 	int	the surveyid
-* @param $token	string	token code
+* @param $surveyid     int    the surveyid
+* @param $token    string    token code
 *
 * @return Array of token data
 */
@@ -5902,7 +5901,7 @@ function SSLRedirect($enforceSSLMode)
 {
     $url = 'http'.$enforceSSLMode.'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     if (!headers_sent())
-    {	// If headers not sent yet... then do php redirect
+    {    // If headers not sent yet... then do php redirect
         //ob_clean();
         header('Location: '.$url);
         //ob_flush();
@@ -7738,11 +7737,11 @@ function arraySwapAssoc($key1, $key2, $array) {
 *
 * This public static function will strip tags from a string, split it at its max_length and ellipsize
 *
-* @param	string		string to ellipsize
-* @param	integer		max length of string
-* @param	mixed		int (1|0) or float, .5, .2, etc for position to split
-* @param	string		ellipsis ; Default '...'
-* @return	string		ellipsized string
+* @param    string        string to ellipsize
+* @param    integer        max length of string
+* @param    mixed        int (1|0) or float, .5, .2, etc for position to split
+* @param    string        ellipsis ; Default '...'
+* @return    string        ellipsized string
 */
 function ellipsize($str, $max_length, $position = 1, $ellipsis = '&hellip;')
 {
@@ -7822,9 +7821,9 @@ function getBrowserLanguage()
 
 /**
 * This function add string to css or js header for public surevy
-* @param	string		string to ellipsize
-* @param	string		max length of string
-* @return	array		array of string for js or css to be included
+* @param    string        string to ellipsize
+* @param    string        max length of string
+* @return    array        array of string for js or css to be included
 *
 */
 

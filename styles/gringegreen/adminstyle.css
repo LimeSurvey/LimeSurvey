@@ -748,6 +748,11 @@ ul.assessmentscope li label:first-child {
     padding:4px;
 }
 
+.users
+{
+    max-width:1200px;
+}
+
 .users td,
 .surveysecurity td,
 .listsurveys td {
@@ -759,7 +764,10 @@ ul.assessmentscope li label:first-child {
 {
     margin-left:2px;
 }
-
+.users td:first-child
+{
+    text-align: left;
+}
 .assessmentlist td form,
 #users td form {
     display:inline;

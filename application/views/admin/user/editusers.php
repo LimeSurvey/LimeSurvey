@@ -51,7 +51,7 @@
             ?>
             <tr>
 
-                <td style='padding:3px;'>
+                <td style='padding:3px;'>          
                     <?php if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $usr['uid'] == Yii::app()->session['loginID'] || (Yii::app()->session['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == Yii::app()->session['loginID'])) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/modifyuser'), 'post');?>            
                             <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php $clang->eT("Edit this user");?>' />
@@ -71,15 +71,6 @@
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>
                         <?php }
-                        if (Yii::app()->session['loginID'] == "1" && $usr['parent_id'] !=1 ) { ?>
-
-                        <?php echo CHtml::form(array('admin/user/sa/setasadminchild'), 'post');?>            
-                            <input type='image' src='<?php echo $imageurl;?>takeownership.png' alt='<?php $clang->eT("Take ownership");?>' />
-                            <input type='hidden' name='action' value='setasadminchild' />
-                            <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
-                            <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
-                        </form>
-                        <?php }
                         if ((Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1)  && $usr['uid']!=1) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/setusertemplates'), 'post');?>            
                             <input type='image' src='<?php echo $imageurl;?>templatepermissions_small.png' alt='<?php $clang->eT("Set template permissions for this user");?>' />
@@ -95,8 +86,16 @@
                             <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>
-                        <?php } ?>
+                        <?php } 
+                        if (Yii::app()->session['loginID'] == "1" && $usr['parent_id'] !=1 ) { ?>
 
+                        <?php echo CHtml::form(array('admin/user/sa/setasadminchild'), 'post');?>            
+                            <input type='image' src='<?php echo $imageurl;?>takeownership.png' alt='<?php $clang->eT("Take ownership");?>' />
+                            <input type='hidden' name='action' value='setasadminchild' />
+                            <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
+                            <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
+                        </form>
+                        <?php } ?>
                 </td>
                 <td><?php echo htmlspecialchars($usr['user']);?></td>
                 <td><a href='mailto:<?php echo htmlspecialchars($usr['email']);?>'><?php echo htmlspecialchars($usr['email']);?></a></td>
