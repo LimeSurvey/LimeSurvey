@@ -1095,7 +1095,7 @@ class participantsaction extends Survey_Common_Action
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
 
         $aPathinfo = pathinfo($_FILES['the_file']['name']);
-        $sExtension = $pathinfo['extension'];
+        $sExtension = $aPathinfo['extension'];
         if (strtolower($sExtension)=='csv')
         {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
