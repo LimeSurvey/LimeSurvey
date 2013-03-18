@@ -5,6 +5,12 @@
  * Defining them here allows for easy inclusion in views.
  */
 return array(
+    'jquery' => array(
+        'baseUrl' => 'third_party/jquery/',
+        'js' => array(
+            'jquery-1.9.1.min.js'
+        )
+    ),
     'jqgrid' => array(
         'baseUrl' => 'third_party/jqgrid/',
         'js' => array(
@@ -77,5 +83,19 @@ return array(
         'depends' => array(
             'jquery'
         )
+    ),
+    
+    'jquery-qtip' => array(
+        'baseUrl' => 'third_party/jquery-qtip',
+        'js' => array(
+            'dist/jquery.qtip.js'
+        ),
+        'css' => array(
+            'dist/jquery.qtip.css'
+        ),
+        'depends' => array(
+            'jquery'
+        )
+        
     )
 );

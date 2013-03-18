@@ -3,7 +3,7 @@ $(document).ready(function(){
 
     var old_owner = '';
 
-    $(".ownername_edit").live('click',function(){
+    $(document).on('click', ".ownername_edit", function(){
         var oldThis = this;
         var ownername_edit_id = $(this).attr('id');
         var survey_id = ownername_edit_id.slice(15);
@@ -26,7 +26,7 @@ $(document).ready(function(){
         });
     });
 
-    $(".ownername_button").live('click',function(){
+    $(document).on('click',".ownername_button", function(){
         var oldThis = this;
         var initial_text = $(this).attr('initial_text');
         var ownername_select_id = $(this).attr('id');

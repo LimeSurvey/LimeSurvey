@@ -72,6 +72,9 @@ $(document).ready(function(){
         if($(this).attr('alt') != '')
             {
             $(this).qtip({
+                content: {
+                    attr: 'alt'
+                },
                 style: {name: 'light',
                     tip:true,
                     border: {
@@ -189,6 +192,9 @@ $(document).ready(function(){
         if($(this).attr('alt') != '')
             {
             $(this).qtip({
+                content: {
+                    attr: 'alt'
+                },
                 style: {name: 'cream',
                     tip:true,
                     color:'#111111',
