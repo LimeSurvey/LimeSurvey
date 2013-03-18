@@ -324,7 +324,7 @@ class AdminController extends LSYii_Controller
         
         $out = $this->renderPartial("/admin/super/header", $data, true);
         
-        App()->getClientScript()->render($out);
+        
         if ($return)
         {
             return $out;
