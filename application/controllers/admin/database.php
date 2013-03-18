@@ -1018,7 +1018,8 @@ class database extends Survey_Common_Action
 
             $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
             Survey_url_parameters::model()->deleteAllByAttributes(array('sid'=>$surveyid));
-
+            var_dump($aURLParams);
+            die();
             foreach($aURLParams as $aURLParam)
             {
                 $aURLParam['parameter']=trim($aURLParam['parameter']);

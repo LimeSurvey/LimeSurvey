@@ -1478,25 +1478,23 @@ class SurveyAdmin extends Survey_Common_Action
             $styleurl = Yii::app()->getConfig('styleurl');
                                                                             
             $js_files = array(
-            $adminscripts_path . 'surveysettings.js',
-            $generalscripts_path . 'jquery/jqGrid/js/i18n/grid.locale-en.js',
-            $generalscripts_path . 'jquery/jqGrid/js/jquery.jqGrid.min.js',
-            $generalscripts_path . 'jquery/jquery.json.min.js',
+                $adminscripts_path . 'surveysettings.js',
             );
 
             $css_files = array(
-            $generalscripts_path . 'jquery/jqGrid/css/ui.jqgrid.css',
             );
         }
 
         foreach ($js_files as $file)
         {
-            $this->getController()->_js_admin_includes($file);
+            App()->getClientScript()->registerScriptFile($file);
+            
         }
+        App()->getClientScript()->registerPackage('jquery-json');
 
         foreach ($css_files as $file)
         {
-            $this->getController()->_css_admin_includes($file);
+            App()->getClientScript()->registerCss($file);
         }
     }
 
