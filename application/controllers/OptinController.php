@@ -19,8 +19,7 @@
  *
  * @package LimeSurvey
  * @copyright 2011
- * @version $Id$
- * @access public
+  * @access public
  */
 class OptinController extends LSYii_Controller {
 

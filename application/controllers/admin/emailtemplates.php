@@ -17,8 +17,7 @@
  *
  * @package LimeSurvey
  * @copyright 2011
- * @version $Id$
- * @access public
+  * @access public
  */
 
 class emailtemplates extends Survey_Common_Action {

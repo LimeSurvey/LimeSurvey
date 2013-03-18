@@ -10,8 +10,7 @@
     * other free or open source software licenses.
     * See COPYRIGHT.php for copyright notices and details.
     *
-    *	$Id$
-    */
+       */
     /**
     * Description of LimeExpressionManager
     * This is a wrapper class around ExpressionManager that implements a Singleton and eases

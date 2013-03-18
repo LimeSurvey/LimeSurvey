@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 // Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
 

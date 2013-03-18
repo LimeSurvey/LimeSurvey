@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*    $Id$
 */
 
 // There will be a file for each database (accordingly named to the dbADO scheme)
