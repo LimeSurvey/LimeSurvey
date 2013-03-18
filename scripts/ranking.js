@@ -80,7 +80,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   if(samelistheight){fixListHeight(qID);}
   
   // Allow users to double click to move to selections from list to list
-  $('#sortable-choice-'+qID+' li').live('dblclick', function() {
+  $(document).on('dblclick', '#sortable-choice-'+qID+' li', function() {
       if($(maxanswers>0 && '#sortable-rank-'+qID+' li').length >= maxanswers) {
         sortableAlert (qID,showpopups,maxanswers);
         if(showpopups){return false;}
@@ -92,7 +92,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
       updateDragDropRank(qID);
     }
     });
-    $('#sortable-rank-'+qID+' li').live('dblclick', function() {
+    $(document).on('dblclick', '#sortable-rank-'+qID+' li', function() {
       $(this).appendTo('#sortable-choice-'+qID+'');
       $('#sortable-choice-'+qID+'').sortable('refresh');
       $('#sortable-rank-'+qID+'').sortable('refresh');

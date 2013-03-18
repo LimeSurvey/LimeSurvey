@@ -73,7 +73,7 @@ $(document).ready(function()
 			}
 		}
 	});
-	$(".location").live('focusout',function(event){
+	$(document).on('focusout', ".location",function(event){
 		var question = $(event.target).attr('name');
 		var name = question.substr(0,question.length - 2);
 		var coordinates = $(event.target).attr('value');
@@ -135,14 +135,14 @@ function addClassEmpty(){
         }
       });
 
-    $(".answer-item input.text,.text-item input[type=text]").live("blur", function(){ 
+    $(document).on("blur", ".answer-item input.text,.text-item input[type=text]", function(){ 
       if ($(this).val() == ""){
         $(this).addClass('empty');
       }else{
         $(this).removeClass('empty');
       }
     });
-    $(".answer-item textarea").live("blur", function(){ 
+    $(document).on("blur", ".answer-item textarea", function(){ 
       if ($(this).val() == ""){
         $(this).addClass('empty');
       }else{
