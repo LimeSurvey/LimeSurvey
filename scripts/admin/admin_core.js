@@ -72,6 +72,7 @@ $(document).ready(function(){
                     classes: "qtip-light qtip-rounded"
                 },
                 position: {
+                    viewport: $(window),
                     at: "bottom right"
                 },
                 hide: {
@@ -105,6 +106,7 @@ $(document).ready(function(){
                     classes: "qtip-cream qtip-rounded"
                 },
                 position: {
+                    viewport: $(window),
                     at: "bottom right"
                 }
             });
@@ -124,6 +126,7 @@ $(document).ready(function(){
                     classes: "qtip-cream qtip-rounded"
                 },
                 position: {
+                        viewport: $(window),
                         at: 'top right',
                         tooltip: 'bottom left'
                     }
