@@ -109,11 +109,11 @@
                                 <img src='<?php echo $sImageURL;?>translate_disabled_30.png' alt=''/> <?php $clang->eT("Quick-translation");?></a></li>
                             <?php } ?>
                         <?php } ?>
-                    <?php if (hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
+                    <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
                         <li><a href="<?php echo $this->createUrl("admin/expressions"); ?>">
                             <img src='<?php echo $sImageURL;?>expressionmanager_30.png' alt=''/> <?php $clang->eT("Expression Manager");?></a></li>
                         <?php } ?>
-                    <?php if (hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
+                    <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
                         <li>
                             <?php if ($conditionscount>0){?>
                                 <a href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$surveyid}"); ?>">
@@ -170,7 +170,7 @@
 
                         </ul>
                     </li>
-                    <?php if(hasSurveyPermission($surveyid,'surveycontent','read')) { ?>
+                    <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')) { ?>
                         <?php if($onelanguage) { ?>
                             <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
                                 <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php $clang->eT("Printable version");?></a></li>
@@ -290,7 +290,7 @@
 
 
 
-            <?php if(hasSurveyPermission($surveyid,'surveycontent','create'))
+            <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
                 {
                     if ($activated)
                     { ?>

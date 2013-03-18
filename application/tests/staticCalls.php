@@ -73,7 +73,7 @@ function checkStatic($line)
 'Quota::',
 'Survey_url_parameters::',
 'Survey_languagesettings::',
-'Survey_permissions::',
+'Permission::',
 'Saved_control::',
 'Quota_members::',
 'Quota_languagesettings::',

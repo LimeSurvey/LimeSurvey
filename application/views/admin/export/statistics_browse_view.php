@@ -1,7 +1,7 @@
 <?php
 $clang = Yii::app()->lang;
 ?>
-<?php if(hasSurveyPermission($surveyid,'responses','read')){ ?>
+<?php if(Permission::model()->hasSurveyPermission($surveyid,'responses','read')){ ?>
     <div class='statisticscolumnid'>
         <?php
         $image="sort_none.png";
@@ -40,7 +40,7 @@ $clang = Yii::app()->lang;
 <?php
 foreach ($data as $row) {
 ?>
-<?php if(hasSurveyPermission($surveyid,'responses','read')){ ?>
+<?php if(Permission::model()->hasSurveyPermission($surveyid,'responses','read')){ ?>
     <div class='statisticscolumnid'>
         <a href='<?php echo Yii::app()->getController()->createUrl("admin/responses/sa/view/surveyid/".$surveyid."/id/".$row['id']); ?>' target='_blank'>
             <img src='<?php echo Yii::app()->getConfig('adminimageurl') . "/search.gif" ?>' title='<?php $clang->eT("View response"); ?>'/>

@@ -145,7 +145,7 @@
                     } ?>
                     <button class='btnlsbrowser' id='btnlsbrowser_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Predefined label sets...'); ?></button>
                     <button class='btnquickadd' id='btnquickadd_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Quick add...'); ?></button>
-                    <?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1){ ?>
+                    <?php if(Permission::model()->hasGlobalPermission('global_superadmin','read') || hasGlobalPermission('global_labelsets','create')){ ?>
                         <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php $clang->eT('Save as label set'); ?></button>
                         <?php } ?>
 

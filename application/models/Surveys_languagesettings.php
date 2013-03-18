@@ -183,7 +183,7 @@ class Surveys_languagesettings extends CActiveRecord
 
         if ($hasPermission)
         {
-            $this->db->where('a.sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid=:uid AND permission=\'survey\' and read_p=1) ')->bindParam(":uid", $this->session->userdata("loginID"), PDO::PARAM_INT);
+            $this->db->where('a.sid IN (SELECT sid FROM {{permissions}} WHERE uid=:uid AND permission=\'survey\' and read_p=1) ')->bindParam(":uid", $this->session->userdata("loginID"), PDO::PARAM_INT);
         }
         $this->db->order_by('active DESC, surveyls_title');
         return $this->db->get();

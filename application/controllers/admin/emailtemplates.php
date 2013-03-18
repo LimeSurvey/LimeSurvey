@@ -83,7 +83,7 @@ class emailtemplates extends Survey_Common_Action {
     function update($iSurveyId)
     {
         $clang = $this->getController()->lang;
-        if (hasSurveyPermission($iSurveyId, 'surveylocale','update'))
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale','update'))
         {
             $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             $languagelist[] = Survey::model()->findByPk($iSurveyId)->language;

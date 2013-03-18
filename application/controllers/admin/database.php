@@ -42,7 +42,7 @@ class database extends Survey_Common_Action
         $qid = returnGlobal('qid');
         // if $action is not passed, check post data.
 
-        if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        if(Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('global_superadmin','read'))
         {
             $filter = new CHtmlPurifier();
             $filter->options = array('URI.AllowedSchemes'=>array(
@@ -54,7 +54,7 @@ class database extends Survey_Common_Action
         else
             $xssfilter = false;
 
-        if ($action == "updatedefaultvalues" && hasSurveyPermission($surveyid, 'surveycontent','update'))
+        if ($action == "updatedefaultvalues" && Permission::model()->hasSurveyPermission($surveyid, 'surveycontent','update'))
         {
 
             $questlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
@@ -129,7 +129,7 @@ class database extends Survey_Common_Action
         }
 
 
-        if ($action == "updateansweroptions" && hasSurveyPermission($surveyid, 'surveycontent','update'))
+        if ($action == "updateansweroptions" && Permission::model()->hasSurveyPermission($surveyid, 'surveycontent','update'))
         {
             Yii::app()->loadHelper('database');
             $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
@@ -227,7 +227,7 @@ class database extends Survey_Common_Action
         }
 
 
-        if ($action == "updatesubquestions" && hasSurveyPermission($surveyid, 'surveycontent','update'))
+        if ($action == "updatesubquestions" && Permission::model()->hasSurveyPermission($surveyid, 'surveycontent','update'))
         {
 
             Yii::app()->loadHelper('database');
@@ -357,7 +357,7 @@ class database extends Survey_Common_Action
             }
         }
 
-        if (in_array($action, array('insertquestion', 'copyquestion')) && hasSurveyPermission($surveyid, 'surveycontent','create'))
+        if (in_array($action, array('insertquestion', 'copyquestion')) && Permission::model()->hasSurveyPermission($surveyid, 'surveycontent','create'))
         {
             $baselang = Survey::model()->findByPk($surveyid)->language;
             if (strlen(Yii::app()->request->getPost('title')) < 1)
@@ -587,7 +587,7 @@ class database extends Survey_Common_Action
             }
         }
 
-        if ($action == "updatequestion" && hasSurveyPermission($surveyid, 'surveycontent','update'))
+        if ($action == "updatequestion" && Permission::model()->hasSurveyPermission($surveyid, 'surveycontent','update'))
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
 
@@ -883,7 +883,7 @@ class database extends Survey_Common_Action
         }
 
 
-        if (($action == "updatesurveylocalesettings") && hasSurveyPermission($surveyid,'surveylocale','update'))
+        if (($action == "updatesurveylocalesettings") && Permission::model()->hasSurveyPermission($surveyid,'surveylocale','update'))
         {
             $languagelist = Survey::model()->findByPk($surveyid)->additionalLanguages;
             $languagelist[]=Survey::model()->findByPk($surveyid)->language;
@@ -960,7 +960,7 @@ class database extends Survey_Common_Action
             }
         }
 
-        if (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && hasSurveyPermission($surveyid,'surveysettings','update'))
+        if (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update'))
         {
              // Save plugin settings.
             $pluginSettings = App()->request->getPost('plugin', array());
@@ -1013,7 +1013,7 @@ class database extends Survey_Common_Action
             fixLanguageConsistency($surveyid,Yii::app()->request->getPost('languageids'));
             $template = Yii::app()->request->getPost('template');
 
-            if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights(Yii::app()->session['loginID'], $template)) $template = "default";
+            if(!Permission::model()->hasGlobalPermission('global_superadmin','read') && !hasGlobalPermission('global_templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $template)) $template = "default";
 
             $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
             Survey_url_parameters::model()->deleteAllByAttributes(array('sid'=>$surveyid));

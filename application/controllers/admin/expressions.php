@@ -20,7 +20,7 @@ class Expressions extends Survey_Common_Action {
 	        $surveyid=(int)$_REQUEST['sid'];
 	        $needpermission=true;
 	    }
-        if($needpermission && !hasSurveyPermission($surveyid,'surveycontent','read'))
+        if($needpermission && !Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
         {
             $clang = $this->getController()->lang;
             $aData['surveyid'] = (int)$_REQUEST['sid'];

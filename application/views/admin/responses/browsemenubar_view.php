@@ -9,13 +9,13 @@
             <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='11' />
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
 
-            <?php if (hasSurveyPermission($surveyid, 'responses', 'read'))
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read'))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>summary.png' title='' alt='<?php $clang->eT("Show summary information"); ?>' /></a>
                 <?php } ?>
         </div>
-        <?php if (hasSurveyPermission($surveyid, 'responses', 'read'))
+        <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read'))
             { ?>
         <ul class='sf-menu'>
             <?php if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0) { ?>
@@ -56,12 +56,12 @@
             <?php } ?>
         <div class='menubar-left'>
             <?php 
-                if (hasSurveyPermission($surveyid, 'responses', 'create'))
+                if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create'))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>dataentry.png' alt='<?php $clang->eT("Dataentry Screen for Survey"); ?>' /></a>
                 <?php }
-                if (hasSurveyPermission($surveyid, 'statistics', 'read'))
+                if (Permission::model()->hasSurveyPermission($surveyid, 'statistics', 'read'))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>statistics.png' alt='<?php $clang->eT("Get statistics from these responses"); ?>' /></a>
@@ -72,7 +72,7 @@
                     <?php }
             } ?>
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-            <?php if (hasSurveyPermission($surveyid, 'responses', 'export'))
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'export'))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>export.png' alt='<?php $clang->eT("Export results to application"); ?>' /></a>
@@ -84,7 +84,7 @@
                     <img src='<?php echo $sImageURL; ?>exportr.png' alt='<?php $clang->eT("Export results to a R data file"); ?>' /></a>
                 <?php
                 }
-                if (hasSurveyPermission($surveyid, 'responses', 'create'))
+                if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create'))
                 {
                 ?>
                 <a href='<?php echo $this->createUrl("admin/dataentry/sa/import/surveyid/$surveyid"); ?>'>
@@ -92,22 +92,22 @@
                 <?php } ?>
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
 
-            <?php if (hasSurveyPermission($surveyid, 'responses', 'read'))
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read'))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/saved/sa/view/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>saved.png' title='' alt='<?php $clang->eT("View Saved but not submitted Responses"); ?>' /></a>
                 <?php }
-                if (hasSurveyPermission($surveyid, 'responses', 'import'))
+                if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'import'))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/dataentry/sa/vvimport/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>importvv.png' alt='<?php $clang->eT("Import a VV survey file"); ?>' /></a>
                 <?php }
-                if (hasSurveyPermission($surveyid, 'responses', 'export'))
+                if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'export'))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/export/sa/vvexport/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>exportvv.png' title='' alt='<?php $clang->eT("Export a VV survey file"); ?>' /></a>
                 <?php }
-                if (hasSurveyPermission($surveyid, 'responses', 'delete') && $thissurvey['anonymized'] == 'N' && $thissurvey['tokenanswerspersistence'] == 'Y')
+                if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete') && $thissurvey['anonymized'] == 'N' && $thissurvey['tokenanswerspersistence'] == 'Y')
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/dataentry/sa/iteratesurvey/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>iterate.png' title='' alt='<?php $clang->eT("Iterate survey"); ?>' /></a>

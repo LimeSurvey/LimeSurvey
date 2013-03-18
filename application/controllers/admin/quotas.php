@@ -61,7 +61,7 @@ class quotas extends Survey_Common_Action
 
     private function _checkPermissions($iSurveyId, $sPermission)
     {
-        if (!empty($sPermission) && !hasSurveyPermission($iSurveyId, 'quotas', $sPermission)) {
+        if (!empty($sPermission) && !Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', $sPermission)) {
             die();
         }
     }
@@ -368,7 +368,7 @@ class quotas extends Survey_Common_Action
         $clang = $aData['clang'];
         $aViewUrls = array();
 
-        if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && hasSurveyPermission($iSurveyId, 'quotas', 'create'))
+        if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
             $result = Quota::model()->findAllByPk(Yii::app()->request->getPost('quota_id'));
             foreach ($result as $aQuotaDetails)
@@ -389,7 +389,7 @@ class quotas extends Survey_Common_Action
             }
         }
 
-        if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && hasSurveyPermission($iSurveyId, 'quotas', 'create'))
+        if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
             $aResults = Quota::model()->findByPk(Yii::app()->request->getPost('quota_qid'));
             $sQuotaName = $aResults['name'];
