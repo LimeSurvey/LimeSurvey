@@ -31,7 +31,10 @@ $internalConfig = array(
         
         'clientScript' => array(
             'packages' => require('third_party.php')
-        )
+        ),
+        'user' => array(
+            'class' => 'LSWebUser',
+        ),
 	
 	)
 );
