@@ -53,7 +53,7 @@ $(document).ready(function(){
      }
     )
 
-    if ($.cookie('surveysecurityas')=='false')
+    if ($.cookie('userpermissions')!='true')
     {
         $('.userpermissions .extended').hide();
     }
@@ -86,9 +86,9 @@ $(document).ready(function(){
             $('.userpermissions .extended').fadeOut();
         }
         updateExtendedButton(!extendoptionsvisible);
-        $.cookie('surveysecurityas',!extendoptionsvisible);
+        $.cookie('userpermissions',!extendoptionsvisible);
     })
-    updateExtendedButton(true);
+    updateExtendedButton(false);
 });
 
 function updateExtendedButton(bVisible)
