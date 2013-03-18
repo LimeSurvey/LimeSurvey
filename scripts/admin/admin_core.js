@@ -36,31 +36,25 @@ $(document).ready(function(){
     // Call the popuptip hover rel attribute
     $('.popuptip').each(function(){
         if($(this).attr('rel')){
-            content=$(this).html();
+            htmlcontent=$(this).html();
             tiptarget=$("#"+$(this).attr('rel'));
             //if($("#"+$(this).attr('rel')).find('img').length==1){ tiptarget=$("#"+$(this).attr('rel')).find('img');}
             tiptarget.qtip({
-                content:{
-                    text:content
+                content: {
+                    text: htmlcontent
                 },
                 style: {
-                    name: 'light',
-                    tip:true,
-                    border: {
-                        width: 1,
-                        radius: 5
-                    }
+                    classes: "qtip-light qtip-rounded"
                 },
                 position: {
-                    adjust: {
-                        screen: true, scroll:true},
-                    corner: {
-                        target: 'bottomMiddle',
-                        tooltip: 'topMiddle'
-                        }
+                    at: "bottom center",
+                    my: "top center"
                 },
-                show: {effect: {length:50}},
-                hide: {when: 'mouseout', fixed: true, delay: 500}
+                hide: {
+                    fixed: true,
+                    delay: 500,
+                    event: "mouseout"
+                }
             });
             $("#"+$(this).attr('rel')).find("img").removeAttr("alt"); // Remove children img attr alt, the  default tooltip can apply.
         }
@@ -69,27 +63,20 @@ $(document).ready(function(){
 
     // Loads the tooltips for the toolbars  except the surveybar
     $('img[alt],input[src]').each(function() {
-        if($(this).attr('alt') != '')
-            {
+        if($(this).attr('alt') != ''){
             $(this).qtip({
                 content: {
-                    attr: 'alt'
+                    attr: "alt"
                 },
-                style: {name: 'light',
-                    tip:true,
-                    border: {
-                        width: 1,
-                        radius: 5
-                    }
+                style: {
+                    classes: "qtip-light qtip-rounded"
                 },
-                position: {adjust: {
-                        screen: true, scroll:true},
-                    corner: {
-                        target: 'bottomRight'}
+                position: {
+                    at: "bottom right"
                 },
-                show: {effect: {length:50}},
-                hide: {when: 'mouseout'}
-
+                hide: {
+                    event: "mouseout"
+                }
             });
         }
     });
@@ -114,104 +101,32 @@ $(document).ready(function(){
         if($(this).attr('title') != '')
             {
             $(this).qtip({
-                style: {name: 'cream',
-                    tip:true,
-                    color:'#1D2D45',
-                    border: {
-                        width: 1,
-                        radius: 5,
-                        color: '#EADF95'}
+                style: {
+                    classes: "qtip-cream qtip-rounded"
                 },
-                position: {adjust: {
-                        screen: true, scroll:true},
-                    corner: {
-                        target: 'bottomRight'}
-                },
-                show: {effect: {length:50}}
+                position: {
+                    at: "bottom right"
+                }
             });
         }
     });
 
-    $('.dosurvey').qtip({
-        content:{
-            text:$('#dosurveylangpopup')
-        },
-        style: {name: 'cream',
-            tip:true,
-            color:'#1D2D45',
-            border: {
-                width: 1,
-                radius: 5,
-                color: '#EADF95'}
-        },
-        position: {adjust: {
-                screen: true, scroll:true},
-            corner: {
-                target: 'bottomMiddle',
-                tooltip: 'topMiddle'}
-        },
-        show: {effect: {length:50},
-            when: {
-                event:'click'
-        }},
-        hide: {fixed:true,
-            when: {
-                event:'unfocus'
-        }}
-    });
-
-//    $('#previewquestion').qtip({
-//        content:{
-//            text:$('#previewquestionpopup')
-//        },
-//        style: {name: 'cream',
-//            tip:true,
-//            color:'#111111',
-//            border: {
-//                width: 1,
-//                radius: 5,
-//                color: '#EADF95'}
-//        },
-//        position: {adjust: {
-//                screen: true, scroll:true},
-//            corner: {
-//                target: 'bottomMiddle',
-//                tooltip: 'topMiddle'}
-//        },
-//        show: {effect: {length:50},
-//            when: {
-//                event:'click'
-//        }},
-//        hide: {fixed:true,
-//            when: {
-//                event:'unfocus'
-//        }}
-//    });
-
+    //Still used ?
     $('.tipme').each(function() {
         if($(this).attr('alt') != '')
             {
-            $(this).qtip({
+            $(this).qtip(
+            {
                 content: {
                     attr: 'alt'
                 },
-                style: {name: 'cream',
-                    tip:true,
-                    color:'#111111',
-                    border: {
-                        width: 1,
-                        radius: 5,
-                        color: '#EADF95'}
+                style: {
+                    classes: "qtip-cream qtip-rounded"
                 },
-                position: {adjust: {
-                        screen: true, scroll:true},
-                    corner: {
-                        target: 'topRight',
-                        tooltip: 'bottomLeft'
+                position: {
+                        at: 'top right',
+                        tooltip: 'bottom left'
                     }
-                },
-                show: {effect: {length:100}}
-
             });
         }
     });

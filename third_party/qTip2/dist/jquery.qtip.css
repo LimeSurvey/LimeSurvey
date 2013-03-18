@@ -1,18 +1,18 @@
 /*!
- * qTip2 - Pretty powerful tooltips - v2.0.1
+ * qTip2 - Pretty powerful tooltips - v2.0.1-35-
  * http://qtip2.com
  *
- * Copyright (c) 2012 Craig Michael Thompson
+ * Copyright (c) 2013 Craig Michael Thompson
  * Released under the MIT, GPL licenses
  * http://jquery.org/license
  *
- * Date: Mon Dec 31 2012 02:55 GMT+0000
+ * Date: Sun Mar 10 2013 03:07 GMT+0000
  * Plugins: svg ajax tips modal viewport imagemap ie6
  * Styles: basic css3
  */
 
 /* Core qTip styles */
-.qtip, .qtip{
+.qtip{
 	position: absolute;
 	left: -28000px;
 	top: -28000px;
@@ -25,6 +25,9 @@
 	line-height: 12px;
 
 	direction: ltr;
+
+	box-shadow: none;
+	padding: 0;
 }
 
 	.qtip-content{
@@ -245,6 +248,12 @@
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
+}
+
+.qtip-rounded .qtip-titlebar{
+	-moz-border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+	border-radius: 5px 5px 0 0;
 }
 
 /* Youtube tooltip style */
@@ -560,10 +569,18 @@
 	margin: 0 auto;
 	overflow: hidden;
 	z-index: 10;
+	
 }
 
+	/* Opera bug #357 - Incorrect tip position
+	https://github.com/Craga89/qTip2/issues/367 */
+	x:-o-prefocus, .qtip .qtip-tip{
+		visibility: hidden;
+	}
+
 	.qtip .qtip-tip,
-	.qtip .qtip-tip .qtip-vml{
+	.qtip .qtip-tip .qtip-vml,
+	.qtip .qtip-tip canvas{
 		position: absolute;
 
 		color: #123456;

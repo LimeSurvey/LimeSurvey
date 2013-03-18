@@ -23,22 +23,30 @@
 		FALSE = false,
 		NULL = null,
 
-		// Side names and other stuff
+		// Common variables
 		X = 'x', Y = 'y',
 		WIDTH = 'width',
 		HEIGHT = 'height',
+
+		// Positioning sides
 		TOP = 'top',
 		LEFT = 'left',
 		BOTTOM = 'bottom',
 		RIGHT = 'right',
 		CENTER = 'center',
+
+		// Position adjustment types
 		FLIP = 'flip',
 		FLIPINVERT = 'flipinvert',
 		SHIFT = 'shift',
 
+		// Used by image load detection (see core.js)
+		BLANKIMG = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==', 
+
 		// Shortcut vars
 		QTIP, PLUGINS, MOUSE,
 		NAMESPACE = 'qtip',
+		HASATTR = 'data-hasqtip',
 		usedIDs = {},
 		widget = ['ui-widget', 'ui-tooltip'],
 		selector = 'div.qtip.'+NAMESPACE,

@@ -1,5 +1,5 @@
 /* Core qTip styles */
-.qtip, .qtip{
+.qtip{
 	position: absolute;
 	left: -28000px;
 	top: -28000px;
@@ -12,6 +12,9 @@
 	line-height: 12px;
 
 	direction: ltr;
+
+	box-shadow: none;
+	padding: 0;
 }
 
 	.qtip-content{

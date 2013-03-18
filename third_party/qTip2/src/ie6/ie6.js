@@ -1,8 +1,10 @@
+var IE6;
+
 /* 
  * BGIFrame adaption (http://plugins.jquery.com/project/bgiframe)
  * Special thanks to Brandon Aaron
  */
-function IE6(api)
+function Ie6(api)
 {
 	var self = this,
 		elems = api.elements,
@@ -138,19 +140,15 @@ function IE6(api)
 	self.init();
 }
 
-PLUGINS.ie6 = function(api)
+IE6 = PLUGINS.ie6 = function(api)
 {
-	var browser = $.browser,
-		self = api.plugins.ie6;
+	var self = api.plugins.ie6;
 	
 	// Proceed only if the browser is IE6
-	if(!(browser.msie && (''+browser.version).charAt(0) === '6')) {
-		return FALSE;
-	}
+	if(PLUGINS.ie !== 6) { return FALSE; }
 
-	return 'object' === typeof self ? self : (api.plugins.ie6 = new IE6(api));
+	return 'object' === typeof self ? self : (api.plugins.ie6 = new Ie6(api));
 };
 
-// Plugin needs to be initialized on render
-PLUGINS.ie6.initialize = 'render';
+IE6.initialize = 'render';
 

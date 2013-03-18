@@ -1,11 +1,13 @@
+var AJAX,
+	AJAXNS = '.qtip-ajax',
+	RSCRIPT = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+
 function Ajax(api)
 {
 	var self = this,
 		tooltip = api.elements.tooltip,
 		opts = api.options.content.ajax,
 		defaults = QTIP.defaults.content.ajax,
-		namespace = '.qtip-ajax',
-		rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
 		first = TRUE,
 		stop = FALSE,
 		xhr;
@@ -22,7 +24,7 @@ function Ajax(api)
 				self.load();
 			}
 			else {
-				tooltip.unbind(namespace);
+				tooltip.unbind(AJAXNS);
 			}
 		}
 	};
@@ -31,7 +33,7 @@ function Ajax(api)
 		init: function() {
 			// Make sure ajax options are enabled and bind event
 			if(opts && opts.url) {
-				tooltip.unbind(namespace)[ opts.once ? 'one' : 'bind' ]('tooltipshow'+namespace, self.load);
+				tooltip.unbind(AJAXNS)[ opts.once ? 'one' : 'bind' ]('tooltipshow'+AJAXNS, self.load);
 			}
 
 			return self;
@@ -92,7 +94,7 @@ function Ajax(api)
 					content = $('<div/>')
 						// inject the contents of the document in, removing the scripts
 						// to avoid any 'Permission Denied' errors in IE
-						.append(content.replace(rscript, ""))
+						.append(content.replace(RSCRIPT, ""))
 						
 						// Locate the specified elements
 						.find(selector);
@@ -135,18 +137,17 @@ function Ajax(api)
 	self.init();
 }
 
-
-PLUGINS.ajax = function(api)
+AJAX = PLUGINS.ajax = function(api)
 {
 	var self = api.plugins.ajax;
 	
 	return 'object' === typeof self ? self : (api.plugins.ajax = new Ajax(api));
 };
 
-PLUGINS.ajax.initialize = 'render';
+AJAX.initialize = 'render';
 
 // Setup plugin sanitization
-PLUGINS.ajax.sanitize = function(options)
+AJAX.sanitize = function(options)
 {
 	var content = options.content, opts;
 	if(content && 'ajax' in content) {

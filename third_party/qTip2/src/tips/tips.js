@@ -1,3 +1,7 @@
+var TIP,
+	TIPNS = '.qtip-tip',
+	HASCANVAS = !!document.createElement('canvas').getContext;
+
 // Tip coordinates calculator
 function calculateTip(corner, width, height)
 {	
@@ -36,8 +40,6 @@ function Tip(qTip, command)
 		},
 		color = { },
 		border = opts.border || 0,
-		namespace = '.qtip-tip',
-		hasCanvas = !!($('<canvas />')[0] || {}).getContext,
 		tiphtml;
 
 	self.corner = NULL;
@@ -139,7 +141,7 @@ function Tip(qTip, command)
 		// Viewport "shift" specific adjustments
 		if(shift.left = (horizontal === SHIFT && !!adjust.left)) {
 			if(newCorner.x === CENTER) {
-				css['margin-left'] = shift.x = offset['margin-left'];
+				css['margin-left'] = shift.x = offset['margin-left'] - adjust.left;
 			}
 			else {
 				props = offset.right !== undefined ?
@@ -155,7 +157,7 @@ function Tip(qTip, command)
 		}
 		if(shift.top = (vertical === SHIFT && !!adjust.top)) {
 			if(newCorner.y === CENTER) {
-				css['margin-top'] = shift.y = offset['margin-top'];
+				css['margin-top'] = shift.y = offset['margin-top'] - adjust.top;
 			}
 			else {
 				props = offset.bottom !== undefined ?
@@ -234,15 +236,16 @@ function Tip(qTip, command)
 	function parseRadius(corner) {
 		var isTitleTop = elems.titlebar && corner.y === TOP,
 			elem = isTitleTop ? elems.titlebar : elems.content,
-			moz = $.browser.mozilla,
-			prefix = moz ? '-moz-' : $.browser.webkit ? '-webkit-' : '',
+			mozPrefix = '-moz-', webkitPrefix = '-webkit-',
 			nonStandard = 'border-radius-' + corner.y + corner.x,
 			standard = 'border-' + corner.y + '-' + corner.x + '-radius',
 			css = function(c) { return parseInt(elem.css(c), 10) || parseInt(tooltip.css(c), 10); },
 			val;
 
 		whileVisible(function() {
-			val = css(standard) || css(prefix + standard) || css(prefix + nonStandard) || css(nonStandard) || 0;
+			val = css(standard) || css(nonStandard) ||
+				css(mozPrefix + standard) || css(mozPrefix + nonStandard) || 
+				css(webkitPrefix + standard) || css(webkitPrefix + nonStandard) || 0;
 		});
 		return val;
 	}
@@ -315,7 +318,7 @@ function Tip(qTip, command)
 	$.extend(self, {
 		init: function()
 		{
-			var enabled = parseCorner() && (hasCanvas || $.browser.msie);
+			var enabled = parseCorner() && (HASCANVAS || PLUGINS.ie);
 
 			// Determine tip corner and type
 			if(enabled) {
@@ -324,7 +327,7 @@ function Tip(qTip, command)
 				self.update();
 
 				// Bind update events
-				tooltip.unbind(namespace).bind('tooltipmove'+namespace, reposition);
+				tooltip.unbind(TIPNS).bind('tooltipmove'+TIPNS, reposition);
 			}
 			
 			return enabled;
@@ -343,7 +346,7 @@ function Tip(qTip, command)
 			elems.tip = $('<div />', { 'class': 'qtip-tip' }).css({ width: width, height: height }).prependTo(tooltip);
 
 			// Create tip drawing element(s)
-			if(hasCanvas) {
+			if(HASCANVAS) {
 				// save() as soon as we create the canvas element so FF2 doesn't bork on our first restore()!
 				$('<canvas />').appendTo(elems.tip)[0].getContext('2d').save();
 			}
@@ -352,7 +355,7 @@ function Tip(qTip, command)
 				elems.tip.html(vml + vml);
 
 				// Prevent mousing down on the tip since it causes problems with .live() handling in IE due to VML
-				$('*', elems.tip).bind('click mousedown', function(event) { event.stopPropagation(); });
+				$('*', elems.tip).bind('click'+TIPNS+' mousedown'+TIPNS, function(event) { event.stopPropagation(); });
 			}
 		},
 
@@ -435,7 +438,7 @@ function Tip(qTip, command)
 			}
 
 			// Canvas drawing implementation
-			if(hasCanvas) {
+			if(HASCANVAS) {
 				// Set the canvas size using calculated size
 				inner.attr(newSize);
 
@@ -482,8 +485,8 @@ function Tip(qTip, command)
 					',' + coords[1][1] + ' ' + coords[2][0] + ',' + coords[2][1] + ' xe';
 
 				// Setup VML-specific offset for pixel-perfection
-				translate[2] = border && /^(r|b)/i.test(corner.string()) ?
-					parseFloat($.browser.version, 10) === 8 ? 2 : 1 : 0;
+				translate[2] = border && /^(r|b)/i.test(corner.string()) ? 
+					PLUGINS.ie === 8 ? 2 : 1 : 0;
 
 				// Set initial CSS
 				inner.css({
@@ -516,8 +519,18 @@ function Tip(qTip, command)
 				});
 			}
 
+			// Opera bug #357 - Incorrect tip position
+			// https://github.com/Craga89/qTip2/issues/367
+			setTimeout(function() {
+				elems.tip.css({
+					display: 'inline-block',
+					visibility: 'visible'
+				});
+			}, 1);
+
 			// Position if needed
 			if(position !== FALSE) { self.position(corner); }
+
 		},
 
 		// Tip positioning method
@@ -570,19 +583,26 @@ function Tip(qTip, command)
 		
 		destroy: function()
 		{
-			// Remove the tip element
-			if(elems.tip) { elems.tip.remove(); }
-			elems.tip = false;
-
 			// Unbind events
-			tooltip.unbind(namespace);
+			tooltip.unbind(TIPNS);
+
+			// Remove the tip element(s)
+			if(elems.tip) {
+				elems.tip.find('*').remove()
+					.end().remove();
+			}
+
+			// Delete references
+			delete self.corner;
+			delete self.mimic;
+			delete self.size;
 		}
 	});
 
 	self.init();
 }
 
-PLUGINS.tip = function(api)
+TIP = PLUGINS.tip = function(api)
 {
 	var self = api.plugins.tip;
 	
@@ -590,16 +610,16 @@ PLUGINS.tip = function(api)
 };
 
 // Initialize tip on render
-PLUGINS.tip.initialize = 'render';
+TIP.initialize = 'render';
 
 // Setup plugin sanitization options
-PLUGINS.tip.sanitize = function(options)
+TIP.sanitize = function(options)
 {
 	var style = options.style, opts;
 	if(style && 'tip' in style) {
 		opts = options.style.tip;
 		if(typeof opts !== 'object'){ options.style.tip = { corner: opts }; }
-		if(!(/string|boolean/i).test(typeof opts['corner'])) { opts['corner'] = TRUE; }
+		if(!(/string|boolean/i).test(typeof opts.corner)) { opts.corner = TRUE; }
 		if(typeof opts.width !== 'number'){ delete opts.width; }
 		if(typeof opts.height !== 'number'){ delete opts.height; }
 		if(typeof opts.border !== 'number' && opts.border !== TRUE){ delete opts.border; }

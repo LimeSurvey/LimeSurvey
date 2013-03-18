@@ -1,78 +1,3 @@
-/*!
- * qTip2 - Pretty powerful tooltips - v2.0.1
- * http://qtip2.com
- *
- * Copyright (c) 2012 Craig Michael Thompson
- * Released under the MIT, GPL licenses
- * http://jquery.org/license
- *
- * Date: Mon Dec 31 2012 02:55 GMT+0000
- * Plugins: svg ajax tips modal viewport imagemap ie6
- * Styles: basic css3
- */
-
-/*jslint browser: true, onevar: true, undef: true, nomen: true, bitwise: true, regexp: true, newcap: true, immed: true, strict: true */
-/*global window: false, jQuery: false, console: false, define: false */
-
-/* Cache window, document, undefined */
-(function( window, document, undefined ) {
-
-// Uses AMD or browser globals to create a jQuery plugin.
-(function( factory ) {
-	"use strict";
-	if(typeof define === 'function' && define.amd) {
-		define(['jquery'], factory);
-	}
-	else if(jQuery && !jQuery.fn.qtip) {
-		factory(jQuery);
-	}
-}
-(function($) {
-	/* This currently causes issues with Safari 6, so for it's disabled */
-	//"use strict"; // (Dis)able ECMAScript "strict" operation for this function. See more: http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/
-
-	// Munge the primitives - Paul Irish tip
-	var TRUE = true,
-		FALSE = false,
-		NULL = null,
-
-		// Side names and other stuff
-		X = 'x', Y = 'y',
-		WIDTH = 'width',
-		HEIGHT = 'height',
-		TOP = 'top',
-		LEFT = 'left',
-		BOTTOM = 'bottom',
-		RIGHT = 'right',
-		CENTER = 'center',
-		FLIP = 'flip',
-		FLIPINVERT = 'flipinvert',
-		SHIFT = 'shift',
-
-		// Shortcut vars
-		QTIP, PLUGINS, MOUSE,
-		NAMESPACE = 'qtip',
-		usedIDs = {},
-		widget = ['ui-widget', 'ui-tooltip'],
-		selector = 'div.qtip.'+NAMESPACE,
-		defaultClass = NAMESPACE + '-default',
-		focusClass = NAMESPACE + '-focus',
-		hoverClass = NAMESPACE + '-hover',
-		replaceSuffix = '_replacedByqTip',
-		oldtitle = 'oldtitle',
-		trackingBound;
-
-	// Store mouse coordinates
-	function storeMouse(event)
-	{
-		MOUSE = {
-			pageX: event.pageX,
-			pageY: event.pageY,
-			type: 'mousemove',
-			scrollX: window.pageXOffset || document.body.scrollLeft || document.documentElement.scrollLeft,
-			scrollY: window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop
-		};
-	}
 // Option object sanitizer
 function sanitizeOptions(opts)
 {
@@ -110,7 +35,8 @@ function sanitizeOptions(opts)
 	}
 
 	if('show' in opts && invalid(opts.show)) {
-		opts.show = opts.show.jquery ? { target: opts.show } : { event: opts.show };
+		opts.show = opts.show.jquery ? { target: opts.show } : 
+			opts.show === TRUE ? { ready: TRUE } : { event: opts.show };
 	}
 
 	if('hide' in opts && invalid(opts.hide)) {
@@ -361,67 +287,72 @@ function QTip(target, options, id, attr)
 		// Content is a regular string, insert the new content
 		else { elem.html(content); }
 
-		// Image detection
-		function detectImages(next) {
-			var images, srcs = {};
+		/* 
+		 * New images loaded detection method slimmed down from David DeSandro's plugin
+		 *    GitHub: https://github.com/desandro/imagesloaded/
+		 */
+		function imagesLoaded(next) {
+			var elem = $(this),
+				images = elem.find('img').add( elem.filter('img') ),
+				loaded = [];
 
-			function imageLoad(image) {
-				// Clear src from object and any timers and events associated with the image
-				if(image) {
-					delete srcs[image.src];
-					clearTimeout(self.timers.img[image.src]);
-					$(image).unbind(namespace);
-				}
+			function imgLoaded( img ) {
+				// don't proceed if BLANKIMG image, or image is already loaded
+				if(img.src === BLANKIMG || $.inArray(img, loaded) !== -1) { return; }
 
-				// If queue is empty after image removal, update tooltip and continue the queue
-				if($.isEmptyObject(srcs)) {
-					if(reposition !== FALSE) {
-						self.reposition(cache.event);
-					}
+				// store element in loaded images array
+				loaded.push(img);
 
-					next();
+				// cache image and its state for future calls
+				$.data(img, 'imagesLoaded', { src: img.src });
+
+				// call doneLoading and clean listeners if all images are loaded
+				if(images.length === loaded.length) {
+					setTimeout(next);
+					images.unbind('.imagesLoaded');
 				}
 			}
 
-			// Find all content images without dimensions, and if no images were found, continue
-			if((images = elem.find('img[src]:not([height]):not([width])')).length === 0) { return imageLoad(); }
+			// No images? Proceed with next
+			if(!images.length) { return next(); }
 
-			// Apply timer to each image to poll for dimensions
-			images.each(function(i, elem) {
-				// Skip if the src is already present
-				if(srcs[elem.src] !== undefined) { return; }
+			images.bind('load.imagesLoaded error.imagesLoaded', function(event) {
+				imgLoaded(event.target);
+			})
+			.each(function(i, el) {
+				var src = el.src, cached = $.data(el, 'imagesLoaded');
 
-				// Keep track of how many times we poll for image dimensions.
-				// If it doesn't return in a reasonable amount of time, it's better
-				// to display the tooltip, rather than hold up the queue.
-				var iterations = 0, maxIterations = 3;
+				/*
+				 * Find out if this image has been already checked for status, and
+				 * if it was and src has not changed, call imgLoaded on it. Also,
+				 * if complete is true and browser supports natural sizes, try to 
+				 * check for image status manually
+				 */
+				if((cached && cached.src === src) || (el.complete && el.naturalWidth)) {
+					imgLoaded(el);
+				}
 
-				(function timer(){
-					// When the dimensions are found, remove the image from the queue
-					if(elem.height || elem.width || (iterations > maxIterations)) { return imageLoad(elem); }
-
-					// Increase iterations and restart timer
-					iterations += 1;
-					self.timers.img[elem.src] = setTimeout(timer, 700);
-				}());
-
-				// Also apply regular load/error event handlers
-				$(elem).bind('error'+namespace+' load'+namespace, function(){ imageLoad(this); });
-
-				// Store the src and element in our object
-				srcs[elem.src] = elem;
+				/*
+				 * Cached images don't fire load sometimes, so we reset src, but only when
+				 * dealing with IE, or image is complete (loaded) and failed manual check
+				 * 
+				 * Webkit hack from http://groups.google.com/group/jquery-dev/browse_thread/thread/eee6ab7b2da50e1f
+				 */
+				else if(el.readyState || el.complete) {
+					el.src = BLANKIMG; el.src = src;
+				}
 			});
 		}
 
 		/*
-		* If we're still rendering... insert into 'fx' queue our image dimension
-		* checker which will halt the showing of the tooltip until image dimensions
-		* can be detected properly.
-		*/
-		if(self.rendered < 0) { tooltip.queue('fx', detectImages); }
+		 * If we're still rendering... insert into 'fx' queue our image dimension
+		 * checker which will halt the showing of the tooltip until image dimensions
+		 * can be detected properly.
+		 */
+		if(self.rendered < 0) { tooltip.queue('fx', imagesLoaded); }
 
 		// We're fully rendered, so reset isDrawing flag and proceed without queue delay
-		else { isDrawing = 0; detectImages($.noop); }
+		else { isDrawing = 0; imagesLoaded.call(tooltip[0], $.noop); }
 
 		return self;
 	}
@@ -441,7 +372,7 @@ function QTip(target, options, id, attr)
 				show: $.trim('' + options.show.event).split(' '),
 				hide: $.trim('' + options.hide.event).split(' ')
 			},
-			IE6 = $.browser.msie && parseInt($.browser.version, 10) === 6;
+			IE6 = PLUGINS.ie === 6;
 
 		// Define show event method
 		function showMethod(event)
@@ -466,7 +397,7 @@ function QTip(target, options, id, attr)
 			if(tooltip.hasClass(disabledClass) || isPositioning || isDrawing) { return FALSE; }
 
 			// Check if new target was actually the tooltip element
-			var relatedTarget = $(event.relatedTarget || event.target),
+			var relatedTarget = $(event.relatedTarget),
 				ontoTooltip = relatedTarget.closest(selector)[0] === tooltip[0],
 				ontoTarget = relatedTarget[0] === targets.show[0];
 
@@ -475,7 +406,11 @@ function QTip(target, options, id, attr)
 			clearTimeout(self.timers.hide);
 
 			// Prevent hiding if tooltip is fixed and event target is the tooltip. Or if mouse positioning is enabled and cursor momentarily overlaps
-			if((posOptions.target === 'mouse' && ontoTooltip) || (options.hide.fixed && ((/mouse(out|leave|move)/).test(event.type) && (ontoTooltip || ontoTarget)))) {
+			if(this !== relatedTarget[0] && 
+				(posOptions.target === 'mouse' && ontoTooltip) || 
+				(options.hide.fixed && (
+					(/mouse(out|leave|move)/).test(event.type) && (ontoTooltip || ontoTarget))
+				)) {
 				try { event.preventDefault(); event.stopImmediatePropagation(); } catch(e) {} return;
 			}
 
@@ -515,8 +450,10 @@ function QTip(target, options, id, attr)
 		if(/mouse(out|leave)/i.test(options.hide.event)) {
 			// Hide tooltips when leaving current window/frame (but not select/option elements)
 			if(options.hide.leave === 'window') {
-				targets.window.bind('mouseout'+namespace+' blur'+namespace, function(event) {
-					if(!/select|option/.test(event.target.nodeName) && !event.relatedTarget) { self.hide(event); }
+				targets.document.bind('mouseout'+namespace+' blur'+namespace, function(event) {
+					if(!/select|option/.test(event.target.nodeName) && !event.relatedTarget) {
+						self.hide(event);
+					}
 				});
 			}
 		}
@@ -533,9 +470,9 @@ function QTip(target, options, id, attr)
 		}
 
 		/*
-		* Make sure hoverIntent functions properly by using mouseleave to clear show timer if
-		* mouseenter/mouseout is used for show.event, even if it isn't in the users options.
-		*/
+		 * Make sure hoverIntent functions properly by using mouseleave to clear show timer if
+		 * mouseenter/mouseout is used for show.event, even if it isn't in the users options.
+		 */
 		else if(/mouse(over|enter)/i.test(options.show.event)) {
 			targets.hide.bind('mouseleave'+namespace, function(event) {
 				clearTimeout(self.timers.show);
@@ -550,7 +487,7 @@ function QTip(target, options, id, attr)
 					isAncestor = elem.parents(selector).filter(tooltip[0]).length > 0;
 
 				if(elem[0] !== target[0] && elem[0] !== tooltip[0] && !isAncestor &&
-					!target.has(elem[0]).length && !elem.attr('disabled')
+					!target.has(elem[0]).length && enabled
 				) {
 					self.hide(event);
 				}
@@ -645,21 +582,23 @@ function QTip(target, options, id, attr)
 		}
 
 		// Adjust tooltip position on scroll of the window or viewport element if present
-		targets.window.bind('scroll'+namespace, repositionMethod);
+		if(posOptions.adjust.scroll) {
+			targets.window.add(posOptions.container).bind('scroll'+namespace, repositionMethod);
+		}
 	}
 
 	function unassignEvents()
 	{
 		var targets = [
-				options.show.target[0],
-				options.hide.target[0],
-				self.rendered && elements.tooltip[0],
-				options.position.container[0],
-				options.position.viewport[0],
-				options.position.container.closest('html')[0], // unfocus
-				window,
-				document
-			];
+			options.show.target[0],
+			options.hide.target[0],
+			self.rendered && elements.tooltip[0],
+			options.position.container[0],
+			options.position.viewport[0],
+			options.position.container.closest('html')[0], // unfocus
+			window,
+			document
+		];
 
 		// Check if tooltip is rendered
 		if(self.rendered) {
@@ -742,8 +681,8 @@ function QTip(target, options, id, attr)
 
 	$.extend(self, {
 		/*
-		* Psuedo-private API methods
-		*/
+		 * Psuedo-private API methods
+		 */
 		_triggerEvent: function(type, args, event)
 		{
 			var callback = $.Event('tooltip'+type);
@@ -754,8 +693,8 @@ function QTip(target, options, id, attr)
 		},
 
 		/*
-		* Public API methods
-		*/
+		 * Public API methods
+		 */
 		render: function(show)
 		{
 			if(self.rendered) { return self; } // If tooltip has already been rendered, exit
@@ -832,10 +771,10 @@ function QTip(target, options, id, attr)
 			assignEvents();
 
 			/* Queue this part of the render process in our fx queue so we can
-			* load images before the tooltip renders fully.
-			*
-			* See: updateContent method
-			*/
+			 * load images before the tooltip renders fully.
+			 *
+			 * See: updateContent method
+			 */
 			tooltip.queue('fx', function(next) {
 				// tooltiprender event
 				self._triggerEvent('render');
@@ -927,9 +866,9 @@ function QTip(target, options, id, attr)
 			sanitizeOptions(options);
 
 			/*
-			* Execute any valid callbacks for the set options
-			* Also set isPositioning/isDrawing so we don't get loads of redundant repositioning calls.
-			*/
+			 * Execute any valid callbacks for the set options
+			 * Also set isPositioning/isDrawing so we don't get loads of redundant repositioning calls.
+			 */
 			isPositioning = 1; $.each(option, callback); isPositioning = 0;
 
 			// Update position if needed
@@ -962,6 +901,7 @@ function QTip(target, options, id, attr)
 				otherOpts = options[ !state ? 'show' : 'hide' ],
 				posOptions = options.position,
 				contentOptions = options.content,
+				width = tooltip.css('width'),
 				visible = tooltip[0].offsetWidth > 0,
 				animate = state || opts.target.length === 1,
 				sameTarget = !event || opts.target.length < 2 || cache.target[0] === event.target,
@@ -974,7 +914,7 @@ function QTip(target, options, id, attr)
 			if(!tooltip.is(':animated') && visible === state && sameTarget) { return self; }
 
 			// tooltipshow/tooltiphide events
-			if(!self._triggerEvent(type, [90])) { return self; }
+			if(!self._triggerEvent(type, [90]) && !self.destroyed) { return self; }
 
 			// Set ARIA hidden status attribute
 			$.attr(tooltip[0], 'aria-hidden', !!!state);
@@ -997,12 +937,15 @@ function QTip(target, options, id, attr)
 					trackingBound = TRUE;
 				}
 
-				// Update the tooltip position
+				// Update the tooltip position (set width first to prevent viewport/max-width issues)
+				if(!width) { tooltip.css('width', tooltip.outerWidth()); }
 				self.reposition(event, arguments[2]);
+				if(!width) { tooltip.css('width', ''); }
 
 				// Hide other tooltips if tooltip is solo
 				if(!!opts.solo) {
-					$(selector, opts.solo).not(tooltip).qtip('hide', $.Event('tooltipsolo'));
+					(typeof opts.solo === 'string' ? $(opts.solo) : $(selector, opts.solo))
+						.not(tooltip).not(opts.target).qtip('hide', $.Event('tooltipsolo'));
 				}
 			}
 			else {
@@ -1026,7 +969,7 @@ function QTip(target, options, id, attr)
 			function after() {
 				if(state) {
 					// Prevent antialias from disappearing in IE by removing filter
-					if($.browser.msie) { tooltip[0].style.removeAttribute('filter'); }
+					if(PLUGINS.ie) { tooltip[0].style.removeAttribute('filter'); }
 
 					// Remove overflow setting to prevent tip bugs
 					tooltip.css('overflow', '');
@@ -1168,7 +1111,7 @@ function QTip(target, options, id, attr)
 				event = MOUSE && MOUSE.pageX && (adjust.mouse || !event || !event.pageX) ? { pageX: MOUSE.pageX, pageY: MOUSE.pageY } :
 					(event && (event.type === 'resize' || event.type === 'scroll') ? cache.event :
 					event && event.pageX && event.type === 'mousemove' ? event :
-					!adjust.mouse && cache.origin && cache.origin.pageX && options.show.distance ? cache.origin :
+					(!adjust.mouse || options.show.distance) && cache.origin && cache.origin.pageX ? cache.origin :
 					event) || event || cache.event || MOUSE || {};
 
 				// Use event coordinates for position
@@ -1210,19 +1153,21 @@ function QTip(target, options, id, attr)
 					}
 				}
 
-				// Use Imagemap/SVG plugins if needed
+				// Check if the target is an <AREA> element
 				else if(PLUGINS.imagemap && target.is('area')) {
 					adjusted = PLUGINS.imagemap(self, target, at, PLUGINS.viewport ? method : FALSE);
 				}
+
+				// Check if the target is an SVG element
 				else if(PLUGINS.svg && target[0].ownerSVGElement) {
 					adjusted = PLUGINS.svg(self, target, at, PLUGINS.viewport ? method : FALSE);
 				}
 
+				// Otherwise use regular jQuery methods
 				else {
 					targetWidth = target.outerWidth(FALSE);
 					targetHeight = target.outerHeight(FALSE);
-
-					position = PLUGINS.offset(target, container);
+					position = target.offset();
 				}
 
 				// Parse returned plugin values into proper variables
@@ -1232,6 +1177,10 @@ function QTip(target, options, id, attr)
 					offset = adjusted.offset;
 					position = adjusted.position;
 				}
+
+
+				// Adjust position to take into account offset parents
+				position = PLUGINS.offset(target, position, container);
 
 				// Adjust for position.fixed tooltips (and also iOS scroll bug in v3.2-4.0 & v4.3-4.3.2)
 				if((PLUGINS.iOS > 3.1 && PLUGINS.iOS < 4.1) || 
@@ -1280,7 +1229,7 @@ function QTip(target, options, id, attr)
 				tooltip.queue(function(next) {
 					// Reset attributes to avoid cross-browser rendering bugs
 					$(this).css({ opacity: '', height: '' });
-					if($.browser.msie) { this.style.removeAttribute('filter'); }
+					if(PLUGINS.ie) { this.style.removeAttribute('filter'); }
 
 					next();
 				});
@@ -1311,49 +1260,79 @@ function QTip(target, options, id, attr)
 
 		enable: function() { return self.disable(FALSE); },
 
-		destroy: function()
+		destroy: function(immediate)
 		{
-			var t = target[0],
-				title = $.attr(t, oldtitle),
-				elemAPI = target.data('qtip');
-
 			// Set flag the signify destroy is taking place to plugins
+			// and ensure it only gets destroyed once!
+			if(self.destroyed) { return; }
 			self.destroyed = TRUE;
 
-			// Destroy tooltip and  any associated plugins if rendered
-			if(self.rendered) {
-				tooltip.stop(1,0).remove();
+			function process() {
+				var t = target[0],
+					title = $.attr(t, oldtitle),
+					elemAPI = target.data('qtip');
 
-				$.each(self.plugins, function() {
-					if(this.destroy) { this.destroy(); }
-				});
-			}
+				// Destroy tooltip and  any associated plugins if rendered
+				if(self.rendered) {
+					// Destroy all plugins
+					$.each(self.plugins, function(name) {
+						if(this.destroy) { this.destroy(); }
+						delete self.plugins[name];
+					});
 
-			// Clear timers and remove bound events
-			clearTimeout(self.timers.show);
-			clearTimeout(self.timers.hide);
-			unassignEvents();
+					// Remove all descendants and tooltip element
+					tooltip.stop(1,0).find('*').remove().end().remove();
 
-			// If the API if actually this qTip API...
-			if(!elemAPI || self === elemAPI) {
-				// Remove api object
-				$.removeData(t, 'qtip');
-
-				// Reset old title attribute if removed
-				if(options.suppress && title) {
-					$.attr(t, 'title', title);
-					target.removeAttr(oldtitle);
+					// Set rendered flag
+					self.rendered = FALSE;
 				}
 
-				// Remove ARIA attributes
-				target.removeAttr('aria-describedby');
+				// Clear timers and remove bound events
+				clearTimeout(self.timers.show);
+				clearTimeout(self.timers.hide);
+				unassignEvents();
+
+				// If the API if actually this qTip API...
+				if(!elemAPI || self === elemAPI) {
+					// Remove api object
+					target.removeData('qtip').removeAttr(HASATTR);
+
+					// Reset old title attribute if removed
+					if(options.suppress && title) {
+						target.attr('title', title);
+						target.removeAttr(oldtitle);
+					}
+
+					// Remove ARIA attributes
+					target.removeAttr('aria-describedby');
+				}
+
+				// Remove qTip events associated with this API
+				target.unbind('.qtip-'+id);
+
+				// Remove ID from used id objects, and delete object references
+				// for better garbage collection and leak protection
+				delete usedIDs[self.id];
+				delete self.options; delete self.elements;
+				delete self.cache; delete self.timers;
+				delete self.checks;
 			}
 
-			// Remove qTip events associated with this API
-			target.unbind('.qtip-'+id);
+			var isHiding = FALSE;
 
-			// Remove ID from sued id object
-			delete usedIDs[self.id];
+			// If an immediate destory is needed
+			if(immediate !== TRUE) {
+				// Check to see if the hide call below suceeds
+				tooltip.bind('tooltiphide', function() {
+					// Set the hiding flag and process on hidden
+					isHiding = TRUE;
+					tooltip.bind('tooltiphidden', process);
+				});
+				self.hide();
+			}
+
+			// If we're not in the process of hiding... process
+			if(!isHiding) { process(); }
 
 			return target;
 		}
@@ -1361,16 +1340,15 @@ function QTip(target, options, id, attr)
 }
 
 // Initialization method
-function init(id, opts)
+function init(elem, id, opts)
 {
 	var obj, posOptions, attr, config, title,
 
 	// Setup element references
-	elem = $(this),
 	docBody = $(document.body),
 
 	// Use document body instead of document element if needed
-	newTarget = this === document ? docBody : elem,
+	newTarget = elem[0] === document ? docBody : elem,
 
 	// Grab metadata from element if plugin is present
 	metadata = (elem.metadata) ? elem.metadata(opts.metadata) : NULL,
@@ -1420,7 +1398,7 @@ function init(id, opts)
 	posOptions.my = new PLUGINS.Corner(posOptions.my);
 
 	// Destroy previous tooltip if overwrite is enabled, or skip element if not
-	if($.data(this, 'qtip')) {
+	if(elem.data('qtip')) {
 		if(config.overwrite) {
 			elem.qtip('destroy');
 		}
@@ -1429,18 +1407,23 @@ function init(id, opts)
 		}
 	}
 
+	// Add has-qtip attribute
+	elem.attr(HASATTR, true);
+
 	// Remove title attribute and store it if present
-	if(config.suppress && (title = $.attr(this, 'title'))) {
+	if(config.suppress && (title = elem.attr('title'))) {
 		// Final attr call fixes event delegatiom and IE default tooltip showing problem
-		$(this).removeAttr('title').attr(oldtitle, title).attr('title', '');
+		elem.removeAttr('title').attr(oldtitle, title).attr('title', '');
 	}
 
 	// Initialize the tooltip and add API reference
 	obj = new QTip(elem, config, id, !!attr);
-	$.data(this, 'qtip', obj);
+	elem.data('qtip', obj);
 
 	// Catch remove/removeqtip events on target element to destroy redundant tooltip
-	elem.bind('remove.qtip-'+id+' removeqtip.qtip-'+id, function(){ obj.destroy(); });
+	elem.one('remove.qtip-'+id+' removeqtip.qtip-'+id, function() { 
+		var api; if((api = $(this).data('qtip'))) { api.destroy(); }
+	});
 
 	return obj;
 }
@@ -1514,7 +1497,7 @@ QTIP.bind = function(opts, event)
 		namespace = '.qtip-'+id+'-create';
 
 		// Initialize the qTip and re-grab newly sanitized options
-		api = init.call(this, id, opts);
+		api = init($(this), id, opts);
 		if(api === FALSE) { return TRUE; }
 		options = api.options;
 
@@ -1531,19 +1514,19 @@ QTIP.bind = function(opts, event)
 		};
 
 		/*
-		* Make sure hoverIntent functions properly by using mouseleave as a hide event if
-		* mouseenter/mouseout is used for show.event, even if it isn't in the users options.
-		*/
+		 * Make sure hoverIntent functions properly by using mouseleave as a hide event if
+		 * mouseenter/mouseout is used for show.event, even if it isn't in the users options.
+		 */
 		if(/mouse(over|enter)/i.test(events.show) && !/mouse(out|leave)/i.test(events.hide)) {
 			events.hide += ' mouseleave' + namespace;
 		}
 
 		/*
-		* Also make sure initial mouse targetting works correctly by caching mousemove coords
-		* on show targets before the tooltip has rendered.
-		*
-		* Also set onTarget when triggered to keep mouse tracking working
-		*/
+		 * Also make sure initial mouse targetting works correctly by caching mousemove coords
+		 * on show targets before the tooltip has rendered.
+		 *
+		 * Also set onTarget when triggered to keep mouse tracking working
+		 */
 		targets.show.bind('mousemove'+namespace, function(event) {
 			storeMouse(event);
 			api.cache.onTarget = TRUE;
@@ -1582,8 +1565,7 @@ QTIP.bind = function(opts, event)
 
 		// Prerendering is enabled, create tooltip now
 		if(options.show.ready || options.prerender) { hoverIntent(event); }
-	})
-	.attr('data-hasqtip', TRUE);
+	});
 };
 
 // Setup base plugins
@@ -1615,10 +1597,9 @@ PLUGINS = QTIP.plugins = {
 	},
 
 	// Custom (more correct for qTip!) offset calculator
-	offset: function(elem, container) {
-		var pos = elem.offset(),
-			docBody = elem.closest('body'),
-			quirks = $.browser.msie && document.compatMode !== 'CSS1Compat',
+	offset: function(elem, pos, container) {
+		var docBody = elem.closest('body'),
+			quirks = PLUGINS.ie && document.compatMode !== 'CSS1Compat',
 			parent = container, scrolled,
 			coffset, overflow;
 
@@ -1653,16 +1634,30 @@ PLUGINS = QTIP.plugins = {
 	},
 
 	/*
-	* iOS version detection
-	*/
+	 * IE version detection
+	 *
+	 * Adapted from: http://ajaxian.com/archives/attack-of-the-ie-conditional-comment
+	 * Credit to James Padolsey for the original implemntation!
+	 */
+	ie: (function(){
+		var v = 3, div = document.createElement('div');
+		while ((div.innerHTML = '<!--[if gt IE '+(++v)+']><i></i><![endif]-->')) {
+			if(!div.getElementsByTagName('i')[0]) { break; }
+		}
+		return v > 4 ? v : FALSE;
+	}()),
+ 
+	/*
+	 * iOS version detection
+	 */
 	iOS: parseFloat( 
 		('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1])
 		.replace('undefined', '3_2').replace('_', '.').replace('_', '')
 	) || FALSE,
 
 	/*
-	* jQuery-specific $.fn overrides
-	*/
+	 * jQuery-specific $.fn overrides
+	 */
 	fn: {
 		/* Allow other plugins to successfully retrieve the title of an element with a qTip applied */
 		attr: function(attr, val) {
@@ -1726,8 +1721,8 @@ $.each(PLUGINS.fn, function(name, func) {
 if(!$.ui) {
 	$['cleanData'+replaceSuffix] = $.cleanData;
 	$.cleanData = function( elems ) {
-		for(var i = 0, elem; (elem = elems[i]) !== undefined; i++) {
-			try { $( elem ).triggerHandler('removeqtip'); }
+		for(var i = 0, elem; (elem = $( elems[i] )).length && elem.attr(HASATTR); i++) {
+			try { elem.triggerHandler('removeqtip'); }
 			catch( e ) {}
 		}
 		$['cleanData'+replaceSuffix]( elems );
@@ -1735,7 +1730,7 @@ if(!$.ui) {
 }
 
 // Set global qTip properties
-QTIP.version = '2.0.1';
+QTIP.version = '@VERSION';
 QTIP.nextid = 0;
 QTIP.inactiveEvents = 'click dblclick mousedown mouseup mousemove mouseleave mouseenter'.split(' ');
 QTIP.zindex = 15000;
@@ -1764,6 +1759,7 @@ QTIP.defaults = {
 		adjust: {
 			x: 0, y: 0,
 			mouse: TRUE,
+			scroll: TRUE,
 			resize: TRUE,
 			method: 'flipinvert flipinvert'
 		},
@@ -1813,6 +1809,3 @@ QTIP.defaults = {
 	}
 };
 
-
-}));
-}( window, document ));
