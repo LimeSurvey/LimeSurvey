@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 
 /**
@@ -18,7 +17,6 @@
 *
 * @package LimeSurvey
 * @copyright 2011
-* @version $Id$
 * @access public
 */
 class RegisterController extends LSYii_Controller {

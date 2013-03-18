@@ -20,7 +20,6 @@ if (!defined('BASEPATH'))
 * @package LimeSurvey
 * @author
 * @copyright 2011
-* @version $Id$
 */
 class templates extends Survey_Common_Action
 {

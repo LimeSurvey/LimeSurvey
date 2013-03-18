@@ -17,7 +17,6 @@
 * @package LimeSurvey
 * @author
 * @copyright 2011
-* @version $Id$
 * @access public
 */
 class database extends Survey_Common_Action

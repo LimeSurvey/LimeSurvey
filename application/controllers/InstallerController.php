@@ -21,7 +21,6 @@
 * @package LimeSurvey
 * @author Shubham Sachdeva
 * @copyright 2011
-* @version $Id$
 * @access public
 */
 class InstallerController extends CController {
