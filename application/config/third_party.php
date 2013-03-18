@@ -68,5 +68,14 @@ return array(
             'jquery'
         )
         
+    ),
+    'jquery-json' => array(
+        'baseUrl' => 'third_party/jquery-json',
+        'js' => array(
+            'jquery.json-2.4.min.js'
+        ),
+        'depends' => array(
+            'jquery'
+        )
     )
 );
