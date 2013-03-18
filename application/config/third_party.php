@@ -97,5 +97,14 @@ return array(
             'jquery'
         )
         
+    ),
+    'jquery-tablesorter' => array(
+        'baseUrl' => 'third_party/jquery-tablesorter',
+        'js' => array(
+            'jquery.tablesorter.min.js'
+        ),
+        'depends' => array(
+            'jquery'
+        )
     )
 );

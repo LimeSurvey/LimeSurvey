@@ -1,0 +1,31 @@
+10
+
+dir
+5
+https://tablesorter.googlecode.com/svn/trunk/addons
+https://tablesorter.googlecode.com/svn
+
+
+
+2009-10-02T08:54:38.707056Z
+3
+christian.bach
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+dbe5111a-81cf-11de-b558-27974e103503
+
+pager
+dir
+
