@@ -1518,11 +1518,11 @@ table.limetable tbody tr.highlight {
 thead th
 {
 }
-
+.userpermissions,
 .usersurveypermissions {
     text-align:center;
 }
-
+.userpermissions th,
 .usersurveypermissions th{
     padding:0 2em;
 }

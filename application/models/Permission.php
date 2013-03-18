@@ -89,16 +89,16 @@ class Permission extends CActiveRecord
     {
         $clang = Yii::app()->lang;
         $aPermissions=array(
-            'global_surveys'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Surveys"),'description'=>$clang->gT("Permission to create, view, update and delete any surveys"),'img'=>'survey'),
-            'global_users'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Users"),'description'=>$clang->gT("Permission to create, view, update and delete users"),'img'=>'user'),
-            'global_usergroups'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("User groups"),'description'=>$clang->gT("Permission to create, view, update and delete user groups"),'img'=>'user'),
-            'global_templates'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Templates"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import templates"),'img'=>'template'),
-            'global_labelsets'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Label sets"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import label sets/labels"),'img'=>'template'),
-            'global_settings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Settings"),'description'=>$clang->gT("Permission to view and update global settings"),'img'=>'settings'),
-            'global_participantpanel'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Participant panel"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import participants in the participant panel"),'img'=>'settings'),
-            'global_superadmin'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Superadministrator"),'description'=>$clang->gT("Unlimited administration permissions"),'img'=>'superadmin')
+            'global_surveys'=>array('create'=>true,'read'=>false,'update'=>false,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Surveys"),'description'=>$clang->gT("Permission to create and delete any surveys"),'img'=>'survey'),
+            'global_users'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Users"),'description'=>$clang->gT("Permission to create, view, update and delete users"),'img'=>'security'),
+            'global_usergroups'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("User groups"),'description'=>$clang->gT("Permission to create, view, update and delete user groups"),'img'=>'usergroup'),
+            'global_templates'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Templates"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import templates"),'img'=>'templates'),
+            'global_labelsets'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Label sets"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import label sets/labels"),'img'=>'labels'),
+            'global_settings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Settings"),'description'=>$clang->gT("Permission to view and update global settings"),'img'=>'global'),
+            'global_participantpanel'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Participant panel"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import participants in the participant panel"),'img'=>'cpdb'),
         );
         uasort($aPermissions,"comparePermission");
+        $aPermissions=array('global_superadmin'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Superadministrator"),'description'=>$clang->gT("Unlimited administration permissions"),'img'=>'superadmin'))+$aPermissions;
         return $aPermissions;
     }    
     

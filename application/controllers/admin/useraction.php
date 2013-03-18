@@ -396,7 +396,47 @@ class UserAction extends Survey_Common_Action
     
     function savepermissions()
     {
-        
+        $clang = Yii::app()->lang;
+        $iUserID=(int)App()->request->getPost('uid');
+        // A user may not modify his own permissions
+        if (Yii::app()->session['loginID']==$iUserID) {
+            Yii::app()->session['flashmessage'] = $clang->gT("You are not allowed to edit your own user permissions.");
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
+
+        $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
+        $aPermissions=array();
+        foreach ($aBaseUserPermissions as $sPermissionKey=>$aCRUDPermissions)
+        {
+            foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
+            {
+                if (!in_array($sCRUDKey,array('create','read','update','delete','import','export'))) continue;
+
+                if ($CRUDValue)
+                {
+                    if(isset($_POST["perm_{$sPermissionKey}_{$sCRUDKey}"])){
+                        $aPermissions[$sPermissionKey][$sCRUDKey]=1;
+                    }
+                    else
+                    {
+                        $aPermissions[$sPermissionKey][$sCRUDKey]=0;
+                    }
+                }
+            }
+        }
+
+        if (Permission::model()->setPermission($iUserID, 0, $aPermissions))
+        {
+            Yii::app()->session['flashmessage'] = $clang->gT("User permissions were successfully updated.");
+            $this->getController()->redirect(array("admin/user/sa/index"));
+            
+        }
+        else
+        {
+            Yii::app()->session['flashmessage'] = $clang->gT("There was a problem updating the user permissions.");
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
+
     }
     
     function setuserpermissions()
@@ -427,92 +467,6 @@ class UserAction extends Survey_Common_Action
             echo accessDenied('setuserpermissions');
             die();
         } 
-    }
-
-    /**
-    * User Rights POST
-    */
-    function userrights()
-    {
-        $clang = Yii::app()->lang;
-        $postuserid = Yii::app()->request->getPost("uid");
-        $aViewUrls = array();
-
-        // A user can't modify his own rights
-        if ($postuserid != Yii::app()->session['loginID']) {
-            $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
-            $sresultcount = count($sresult);
-
-            if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && $sresultcount > 0) { // Not Admin, just a user with childs
-                $rights = array();
-
-                $rights['create_survey'] = (isset($_POST['create_survey']) && Yii::app()->session['USER_RIGHT_CREATE_SURVEY'])
-                ? 1 : 0;
-                $rights['configurator'] = (isset($_POST['configurator']) && Yii::app()->session['USER_RIGHT_CONFIGURATOR'])
-                ? 1 : 0;
-                $rights['create_user'] = (isset($_POST['create_user']) && Yii::app()->session['USER_RIGHT_CREATE_USER'])
-                ? 1 : 0;
-                $rights['participant_panel'] = (isset($_POST['participant_panel']) && !Permission::model()->hasGlobalPermission('global_participantpanel','read'))
-                ? 1 : 0;
-                $rights['delete_user'] = (isset($_POST['delete_user']) && Yii::app()->session['USER_RIGHT_DELETE_USER'])
-                ? 1 : 0;
-                $rights['manage_template'] = (isset($_POST['manage_template']) && !Permission::model()->hasGlobalPermission('global_templates','read'))
-                ? 1 : 0;
-                $rights['manage_label'] = (isset($_POST['manage_label']) && Yii::app()->session['USER_RIGHT_MANAGE_LABEL'])
-                ? 1 : 0;
-
-                $rights['superadmin'] = 0; // ONLY Initial Superadmin can give this right
-
-                if ($postuserid != 1)
-                    setuserpermissions($postuserid, $rights);
-            }
-            elseif (Permission::model()->hasGlobalPermission('global_superadmin','read'))
-            {
-                $rights = array();
-
-                // Only Initial Superadmin can give this right
-                if (isset($_POST['superadmin'])) {
-                    // Am I original Superadmin ?
-                    // Initial SuperAdmin has parent_id == 0
-                    $adminresult = User::model()->getuidfromparentid('0');
-                    $row = $adminresult;
-                    if ($row['uid'] == Yii::app()->session['loginID']) // it's the original superadmin !!!
-                    {
-                        $rights['superadmin'] = 1;
-                    }
-                    else
-                    {
-                        $rights['superadmin'] = 0;
-                    }
-                }
-                else
-                {
-                    $rights['superadmin'] = 0;
-                }
-
-                $rights['create_survey'] = (isset($_POST['create_survey']) || $rights['superadmin']) ? 1 : 0;
-                $rights['configurator'] = (isset($_POST['configurator']) || $rights['superadmin']) ? 1 : 0;
-                $rights['create_user'] = (isset($_POST['create_user']) || $rights['superadmin']) ? 1 : 0;
-                $rights['participant_panel'] = (isset($_POST['participant_panel']) || $rights['superadmin']) ? 1 : 0;
-                $rights['delete_user'] = (isset($_POST['delete_user']) || $rights['superadmin']) ? 1 : 0;
-                $rights['manage_template'] = (isset($_POST['manage_template']) || $rights['superadmin']) ? 1 : 0;
-                $rights['manage_label'] = (isset($_POST['manage_label']) || $rights['superadmin']) ? 1 : 0;
-
-                setuserpermissions($postuserid, $rights);
-            }
-            else
-            {
-                echo accessDenied('userrights');
-                die();
-            }
-            $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("User permissions were updated successfully."), 'successheader');
-        }
-        else
-        {
-            $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("You are not allowed to change your own permissions!"), 'warningheader');
-        }
-
-        $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
     function setusertemplates()
