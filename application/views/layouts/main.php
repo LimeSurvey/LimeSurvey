@@ -4,7 +4,8 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <?php 
             App()->getClientScript()->registerPackage('jqueryui');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-qtip/jquery.qtip-1.0.0-rc3.min.js');
+            App()->getClientScript()->registerPackage('jquery-qtip');
+            App()->getClientScript()->registerPackage('jquery-superfish');
             App()->getClientScript()->registerPackage('jquery-cookie');
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
@@ -24,6 +25,7 @@
         <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />
         <link rel="icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />
         <?php $this->widget('ext.LimeScript.LimeScript'); ?>
+        <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
         <title>Limesurvey Administration</title>
         
     </head>

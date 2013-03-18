@@ -30,6 +30,7 @@
     <link rel="icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />
     <?php echo $firebug ?>
     <?php $this->widget('ext.LimeScript.LimeScript'); ?>
+    <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
 </head>
 <body>
 <?php if(isset($formatdata)) { ?>

@@ -337,7 +337,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
     static $cached = null;
 
     $timeadjust = getGlobalSetting('timeadjust');
-    $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
+    $clang = new Limesurvey_lang(isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en');
 
     if(is_null($cached)) {
         if (!Permission::model()->hasGlobalPermission('global_superadmin','read'))

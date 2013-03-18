@@ -215,6 +215,7 @@ class Survey_Common_Action extends CAction
 
 
         // Header
+        ob_start();
         if(!isset($aData['display']['header']) || $aData['display']['header'] !== false)
         {
             // Send HTTP header
@@ -323,6 +324,11 @@ class Survey_Common_Action extends CAction
 
         if(!isset($aData['display']['footer']) || $aData['display']['footer'] !== false)
             Yii::app()->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+        
+        $out = ob_get_contents();
+        ob_clean();
+        App()->getClientScript()->render($out);
+        echo $out;
     }
 
     /**
