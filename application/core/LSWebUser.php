@@ -8,12 +8,9 @@
         
         public function __construct() 
         {
-            if (!isset($_SESSION[$this->sessionVariable]))
-            {
-                $_SESSION[$this->sessionVariable] = array();
-            }
-        }
-        
+
+            
+        }        
         public function getStateKeyPrefix() 
         {
             return $this->sessionVariable;
@@ -21,7 +18,7 @@
         
         public function getState($key, $defaultValue = null) 
         {
-            if (!Hash::check($_SESSION[$this->sessionVariable], $key))
+            if (!isset($_SESSION[$this->sessionVariable]) || !Hash::check($_SESSION[$this->sessionVariable], $key))
             {
                 return $defaultValue;
             }
@@ -33,13 +30,15 @@
         
         public function setState($key, $value, $defaultValue = null) 
         {
+            $current = isset($_SESSION[$this->sessionVariable]) ? $_SESSION[$this->sessionVariable] : array();
             if($value === $defaultValue)
             {
-                $_SESSION[$this->sessionVariable] = Hash::remove($_SESSION[$this->sessionVariable], $key);
+                
+                $_SESSION[$this->sessionVariable] = Hash::remove($current, $key);
             }
             else
             {
-                $_SESSION[$this->sessionVariable] = Hash::insert($_SESSION[$this->sessionVariable], $key, $value);
+                $_SESSION[$this->sessionVariable] = Hash::insert($current, $key, $value);
             }
                 
             
