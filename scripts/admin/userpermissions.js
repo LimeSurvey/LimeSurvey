@@ -1,13 +1,6 @@
-
 $(document).ready(function(){
-    $(".surveysecurity").tablesorter({
-        widgets: ['zebra'],
-	    sortList: [[2,0]],
- 	    headers: { 19: { sorter: false} }
-    });
 
-
-    $(".usersurveypermissions").tablesorter({
+    $(".userpermissions").tablesorter({
          widgets: ['zebra'],
          headers: { 0: { sorter: false},
                     2: { sorter: false},
@@ -25,12 +18,24 @@ $(document).ready(function(){
     $(".markrow").click(
         function(){
             $(this).fadeTo(1, 1);
-            $(this).closest('tr').find('input').prop('checked',$(this).prop('checked'));
+            bChecked=this.checked;
+            if (this.name=='all_global_superadmin')
+            {
+                $(this).closest('table').find('input').prop('checked',bChecked).fadeTo(1, 1);
+            }
+            else
+            {
+                $(this).closest('tr').find('input').prop('checked',bChecked);
+            }
         }
     )
 
     $('.extended input').click(
      function(){
+            if (this.name=='perm_global_superadmin_read')
+            {
+                $(this).closest('table').find('input').prop('checked',this.checked).fadeTo(1, 1);
+            }
             $(this).closest('tr').find('.markrow').fadeTo(1, 1);
             if ($(this).closest('tr').find('.extended input:checked').size()==$(this).closest('tr').find('.extended input').size())
             {
@@ -48,12 +53,12 @@ $(document).ready(function(){
      }
     )
 
-    if ($.cookie('surveysecurityas')=='false')
+    if ($.cookie('userpermissions')!='true')
     {
-        $('.usersurveypermissions .extended').hide();
+        $('.userpermissions .extended').hide();
     }
 
-    $('.usersurveypermissions tr').each(function(){
+    $('.userpermissions tr').each(function(){
             $(this).find('.markrow').fadeTo(1, 1);
             if ($(this).find('.extended input:checked').size()==$(this).closest('tr').find('.extended input').size())
             {
@@ -71,19 +76,19 @@ $(document).ready(function(){
     })
 
     $('#btnToggleAdvanced').click(function(){
-        extendoptionsvisible=$('.usersurveypermissions .extended').is(':visible');
+        extendoptionsvisible=$('.userpermissions .extended').is(':visible');
         if (extendoptionsvisible==false)
         {
-            $('.usersurveypermissions .extended').fadeIn('slow');
+            $('.userpermissions .extended').fadeIn('slow');
         }
         else
         {
-            $('.usersurveypermissions .extended').fadeOut();
+            $('.userpermissions .extended').fadeOut();
         }
         updateExtendedButton(!extendoptionsvisible);
-        $.cookie('surveysecurityas',!extendoptionsvisible);
+        $.cookie('userpermissions',!extendoptionsvisible);
     })
-    updateExtendedButton(true);
+    updateExtendedButton(false);
 });
 
 function updateExtendedButton(bVisible)

@@ -171,7 +171,7 @@ class Survey extends CActiveRecord
         $loginID = (int) $loginID;
         $criteria = $this->getDBCriteria();
         $criteria->mergeWith(array(
-            'condition' => 'sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid = :uid AND permission = :permission AND read_p = 1)
+            'condition' => 'sid IN (SELECT sid FROM {{permissions}} WHERE uid = :uid AND permission = :permission AND read_p = 1)
                             OR owner_id = :owner_id',
         ));
         $criteria->params[':uid'] = $loginID;
@@ -345,7 +345,7 @@ class Survey extends CActiveRecord
             Assessment::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             Groups::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             Surveys_languagesettings::model()->deleteAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
-            Survey_permissions::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            Permission::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             Saved_control::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             Survey_url_parameters::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             //Remove any survey_links to the CPDB

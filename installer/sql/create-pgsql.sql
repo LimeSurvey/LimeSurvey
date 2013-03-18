@@ -208,6 +208,23 @@ CREATE TABLE prefix_participants (
 
 
 --
+-- Table structure for table permissions
+--
+CREATE TABLE prefix_permissions (
+	sid integer NOT NULL,
+	uid integer NOT NULL,
+	permission character varying(20) NOT NULL,
+	create_p integer DEFAULT 0 NOT NULL,
+    read_p integer DEFAULT 0 NOT NULL,
+	update_p integer DEFAULT 0 NOT NULL,
+	delete_p integer DEFAULT 0 NOT NULL,
+    import_p integer DEFAULT 0 NOT NULL,
+    export_p integer DEFAULT 0 NOT NULL,
+    CONSTRAINT prefix_permissions_pkey PRIMARY KEY (sid,uid,permission)
+);
+
+
+--
 -- Table structure for table question_attributes
 --
 CREATE TABLE prefix_question_attributes (
@@ -289,7 +306,6 @@ CREATE TABLE prefix_quota_members (
 CREATE INDEX prefix_quota_members_ixcode_idx ON prefix_quota_members USING btree (sid, qid, quota_id, code);
 
 
-
 --
 -- Table structure for table saved_control
 --
@@ -341,23 +357,6 @@ CREATE TABLE prefix_survey_links (
   "date_invited" timestamp,
   "date_completed" timestamp,
   CONSTRAINT prefix_survey_links_pkey PRIMARY KEY (participant_id,token_id,survey_id)
-);
-
-
---
--- Table structure for table survey_permissions
---
-CREATE TABLE prefix_survey_permissions (
-	sid integer NOT NULL,
-	uid integer NOT NULL,
-	permission character varying(20) NOT NULL,
-	create_p integer DEFAULT 0 NOT NULL,
-    read_p integer DEFAULT 0 NOT NULL,
-	update_p integer DEFAULT 0 NOT NULL,
-	delete_p integer DEFAULT 0 NOT NULL,
-    import_p integer DEFAULT 0 NOT NULL,
-    export_p integer DEFAULT 0 NOT NULL,
-    CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission)
 );
 
 
@@ -580,4 +579,4 @@ create index labels_code_idx on prefix_labels (code);
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '165');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '166');

@@ -87,7 +87,7 @@
             echo CHtml::link(CHtml::image($export['src'], $export['alt']), $this->createUrl('admin/participants/sa/exporttocsvAll'));
             echo CHtml::image($seperator['src'], $seperator['alt'], $seperator['options']);
             echo CHtml::link(CHtml::image($blacklist['src'], $blacklist['alt']), $this->createUrl('admin/participants/sa/blacklistControl'));
-            if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+            if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
             {
                 echo CHtml::link(CHtml::image($globalsettings['src'], $globalsettings['alt']), $this->createUrl('admin/participants/sa/userControl'));
             }

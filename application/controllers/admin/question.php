@@ -653,7 +653,7 @@ class question extends Survey_Common_Action
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         Yii::app()->session['FileManagerContext'] = "create:question:{$surveyid}";
 
-        if (hasSurveyPermission($surveyid, 'surveycontent', 'read'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             $clang = $this->getController()->lang;
             $surveyinfo = getSurveyInfo($surveyid);
@@ -848,7 +848,7 @@ class question extends Survey_Common_Action
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
 
-        if (hasSurveyPermission($surveyid, 'surveycontent', 'delete'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete'))
         {
             if (!isset($qid))
                 $qid = returnGlobal('qid');

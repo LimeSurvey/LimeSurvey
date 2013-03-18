@@ -23,7 +23,7 @@
             <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='78' height='20' />
             <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
 
-            <?php if($ugid && $grpresultcount > 0 && (Yii::app()->session['loginID'] == $grow['owner_id'] || hasGlobalPermission('USER_RIGHT_SUPERADMIN')))
+            <?php if($ugid && $grpresultcount > 0 && (Yii::app()->session['loginID'] == $grow['owner_id'] || Permission::model()->hasGlobalPermission('global_usergroups','update')))
                 { ?>
                 <a href="<?php echo $this->createUrl("admin/usergroups/sa/edit/ugid/".$ugid); ?>">
                     <img src='<?php echo $imageurl; ?>edit.png' alt='<?php $clang->eT("Edit current user group"); ?>' name='EditUserGroup' /></a>
@@ -33,7 +33,7 @@
                 <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='40' height='20' />
                 <?php }
 
-                if($ugid && $grpresultcount > 0 &&  (Yii::app()->session['loginID'] == $grow['owner_id'] || hasGlobalPermission('USER_RIGHT_SUPERADMIN')))
+                if($ugid && $grpresultcount > 0 &&  (Yii::app()->session['loginID'] == $grow['owner_id'] || Permission::model()->hasGlobalPermission('global_usergroups','delete')))
                 { ?>
 
                 <a href='#' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl('admin/usergroups/sa/delete/ugid/'.$ugid)); ?>}">
@@ -50,7 +50,7 @@
             <label for="ugid"><?php $clang->eT("User groups"); ?>:</label>  <select name='ugid' id='ugid' onchange="window.location=this.options[this.selectedIndex].value">
                 <?php echo getUserGroupList($ugid,'optionlist'); ?>
             </select>
-            <?php if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+            <?php if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/usergroups/sa/add"); ?>'>
                     <img src='<?php echo $imageurl; ?>add.png' alt='<?php $clang->eT("Add new user group"); ?>' /></a>

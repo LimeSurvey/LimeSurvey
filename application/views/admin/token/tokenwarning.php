@@ -5,7 +5,7 @@
     <div class='warningheader'><?php $clang->eT("Warning"); ?></div>
     <br /><strong><?php $clang->eT("Tokens have not been initialised for this survey."); ?></strong><br /><br />
     <?php
-        if (hasSurveyPermission($surveyid, 'surveysettings', 'update') || HasSurveyPermission($surveyid, 'tokens','create'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($surveyid, 'tokens','create'))
         {
             $clang->eT("If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL.");
         ?><br /><br />
@@ -34,7 +34,7 @@
     }
 
     // Do not offer old postgres token tables for restore since these are having an issue with missing index
-    if ($tcount > 0 && (hasSurveyPermission($surveyid, 'surveysettings', 'update') || HasSurveyPermission($surveyid, 'tokens','create')))
+    if ($tcount > 0 && (Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($surveyid, 'tokens','create')))
     {
     ?>
     <br /><div class='header ui-widget-header'><?php $clang->eT("Restore options"); ?></div>

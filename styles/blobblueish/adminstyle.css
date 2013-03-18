@@ -1492,11 +1492,11 @@ thead th
     background-color:#E1E7EF;
 }
 
+.userpermissions,
 .usersurveypermissions {
     text-align:center;
 }
-
-
+.userpermissions th,
 .usersurveypermissions th{
     padding:0 2em;
 }
