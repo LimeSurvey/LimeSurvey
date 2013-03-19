@@ -1190,6 +1190,30 @@ class remotecontrol_handle
 			return array('status' => 'Invalid session key');
     }
 
+    /**
+     * RPC Routine to find response IDs given a survey ID and a token.
+     * @param string $sSessionKey
+     * @param int $iSurveyID
+     * @param string $sToken
+     */
+    public function get_response_ids($sSessionKey, $iSurveyID, $sToken)
+    {
+        if ($this->_checkSessionKey($sSessionKey))
+        {
+            $responses = Survey_dynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken));
+            $result = array();
+            foreach ($responses as $response)
+            {
+                $result[] = $response->id;
+            }
+            return $result;
+        }
+        else
+        {
+            return array('status' => 'Invalid Session Key');
+        }
+        
+    }
 
     /**
      * RPC Routine to return properties of a group of a survey .

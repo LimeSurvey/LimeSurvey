@@ -58,13 +58,7 @@ class participantsaction extends Survey_Common_Action
      */
     private function _loadjqGrid($sScript = '', $aData = array())
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/js/jquery.jqGrid.min.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/js/i18n/grid.locale-en.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/plugins/jquery.searchFilter.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/src/grid.celledit.js');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . 'jqgrid/css/ui.jqgrid.css');
-        
-        
+        App()->getClientScript()->registerPackage('jqgrid');
         if (!empty($sScript))
         {
             $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . $sScript . '.js');
