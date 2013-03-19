@@ -90,3 +90,6 @@ nav select, nav label {
     display: inline-block;
     
 }
+
+/* Fix bootstrap causing menu to disappear on FF */
+nav.menubar { clear: both; }
