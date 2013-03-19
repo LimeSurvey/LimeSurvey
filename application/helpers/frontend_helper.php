@@ -1284,8 +1284,7 @@
         $loadsecurity = returnGlobal('loadsecurity');
 
         // NO TOKEN REQUIRED BUT CAPTCHA ENABLED FOR SURVEY ACCESS
-        if ($tokensexist == 0 &&
-        isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']))
+        if ($tokensexist == 0 && isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']) && !$preview)
         {
 
             // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
