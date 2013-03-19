@@ -39,7 +39,14 @@
         
         protected function menuMain()
         {
-            $menu['title'] = App()->getConfig('sitename');
+            $title = CHtml::tag('strong', array(), gT('Administration'));
+            if(Yii::app()->session['loginID'])
+            {
+                $title .= ' -- ' . gT("Logged in as:");
+                $text = Yii::app()->session['user'] . ' ' . CHtml::image(Yii::app()->getConfig('adminimageurl'). 'profile_edit.png', gT("Edit your personal preferences"));
+                $title .= CHtml::link($text, array("/admin/user/sa/personalsettings"));
+            }
+            $menu['title'] = CHtml::tag('div', array('class'=>'menubar-title-left'), $title);
             $menu['role'] = 'main';
             $menu['imageUrl'] = App()->getConfig('adminimageurl');
             $menu['items']['left'][] = array(
@@ -90,7 +97,7 @@
                 'value' => $this->surveyId
             );
             $menu['items']['right'][] = array(
-                'href' => array('/surveys'),
+                'href' => array('/admin/survey/sa/index'),
                 'alt' => gT('Detailed list of surveys'),
                 'image' => 'surveylist.png'
             );
@@ -324,7 +331,7 @@
                 
             );
             
-            http://ls20.befound.nl/index.php?r=admin/questiongroup/sa/add/surveyid/597865
+            //http://ls20.befound.nl/index.php?r=admin/questiongroup/sa/add/surveyid/597865
             return $menu;
         }
         
