@@ -43,8 +43,8 @@
             if(Yii::app()->session['loginID'])
             {
                 $title .= ' -- ' . gT("Logged in as:");
-                $text = Yii::app()->session['user'] . ' ' . CHtml::image(Yii::app()->getConfig('adminimageurl'). 'profile_edit.png', gT("Edit your personal preferences"));
-                $title .= CHtml::link($text, array("/admin/user/sa/personalsettings"));
+                $text = ' ' . Yii::app()->session['user'] . ' ' . CHtml::image(Yii::app()->getConfig('adminimageurl'). 'profile_edit.png', gT("Edit your personal preferences"));
+                $title .=  CHtml::tag('strong', array(), CHtml::link($text, array("/admin/user/sa/personalsettings")));
             }
             $menu['title'] = CHtml::tag('div', array('class'=>'menubar-title-left'), $title);
             $menu['role'] = 'main';
@@ -106,11 +106,6 @@
             $menu['items']['right'][] = 'separator';
 
             
-            $menu['items']['right'][] = array(
-                'href' => array('admin/user/sa/personalsettings'),
-                'alt' => gT('Edit your personal preferences'),
-                'image' => 'edit.png'
-            );
             $menu['items']['right'][] = array(
                 'href' => array('admin/authentication/sa/logout'),
                 'alt' => gT('Logout'),
