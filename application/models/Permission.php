@@ -297,6 +297,7 @@ class Permission extends CActiveRecord
             $aPermissionCache[0][$iUserID]['global_superadmin']['read_p']= $bPermission;
         }
         
+        if ($aPermissionCache[0][$iUserID]['global_superadmin']['read_p']) return true;
         if (!isset($aPermissionCache[$iSurveyID][$iUserID][$sPermission][$sCRUD]))
         {
             $query = $this->findByAttributes(array("sid"=> $iSurveyID,"uid"=> $iUserID,"permission"=>$sPermission));
