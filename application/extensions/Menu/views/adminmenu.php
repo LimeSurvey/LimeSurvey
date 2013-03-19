@@ -4,7 +4,7 @@
     App()->getClientScript()->registerCssFile(App()->getAssetManager()->publish(Yii::getPathOfAlias('ext.Menu.assets'). '/nav.css'));
     App()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(Yii::getPathOfAlias('ext.Menu.assets'). '/nav.js'));
 ?>
-<nav class="menubar">
+<div class="menubar">
     <?php 
         if (isset($menu['title']))
         {
@@ -14,10 +14,12 @@
         }
         if (isset($menu['items']))
         {
+            echo '<nav class="menubar">';
             echo $this->renderMenu($menu);
+            echo '</nav>';
         }
     ?>
-</nav>
+</div>
 <?php
 
 /*
