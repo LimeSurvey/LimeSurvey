@@ -859,11 +859,7 @@
                     {
                         $row=array_values($row);
                         $myfield2 = $myfield . "$row[0]";
-                        echo "<!-- $myfield2 - ";
-
-                        if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
-
-                        echo " -->\n";
+                        echo "<!-- $myfield2 -->\n";
 
                         if ($counter2 == 4)
                         {
