@@ -16,7 +16,7 @@
                     <a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}/lang/$rlanguage"); ?>' title='<?php $clang->eT("Edit this entry"); ?>'>
                         <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php $clang->gT("Edit this entry"); ?>' /></a>
                     <?php }
-                    if (hasSurveyPermission($surveyid, 'responses', 'delete') && isset($rlanguage))
+                    if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete') && isset($rlanguage))
                     { ?>
                     <a href='#' title='<?php $clang->eT("Delete this entry"); ?>' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?", "js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/dataentry/sa/delete/id/$id/sid/$surveyid")); ?>}">
                         <img src='<?php echo $sImageURL; ?>delete.png' alt='<?php $clang->eT("Delete this entry"); ?>' /></a>

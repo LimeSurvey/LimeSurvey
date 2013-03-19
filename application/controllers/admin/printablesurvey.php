@@ -29,7 +29,7 @@ class printablesurvey extends Survey_Common_Action
     function index($surveyid, $lang = null)
     {
         $surveyid = sanitize_int($surveyid);
-        if(!hasSurveyPermission($surveyid,'surveycontent','read'))
+        if(!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
         {
             $clang = $this->getController()->lang;
             $aData['surveyid'] = $surveyid;

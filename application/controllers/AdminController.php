@@ -233,18 +233,6 @@ class AdminController extends LSYii_Controller
     {
         $user = User::model()->findByPk($loginID);
 
-        if (!empty($user))
-        {
-            Yii::app()->session['USER_RIGHT_SUPERADMIN']        = $user->superadmin;
-            Yii::app()->session['USER_RIGHT_CREATE_SURVEY']     = ($user->create_survey || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] = ($user->participant_panel || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_CONFIGURATOR']      = ($user->configurator || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_CREATE_USER']       = ($user->create_user || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_DELETE_USER']       = ($user->delete_user || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE']   = ($user->manage_template || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_MANAGE_LABEL']      = ($user->manage_label || $user->superadmin);
-        }
-
         // SuperAdmins
         // * original superadmin with uid=1 unless manually changed and defined
         //   in config-defaults.php
@@ -261,7 +249,6 @@ class AdminController extends LSYii_Controller
 
         if ($initialSuperadmin === true)
         {
-            Yii::app()->session['USER_RIGHT_SUPERADMIN'] = 1;
             Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 1;
         }
         else
@@ -420,7 +407,7 @@ class AdminController extends LSYii_Controller
             Yii::app()->session['flashmessage'] = $clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
         }
 
-        $data['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && getGlobalSetting("updatelastcheck")>0 && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );
+        $data['showupdate'] = (Permission::model()->hasGlobalPermission('global_superadmin','read') && getGlobalSetting("updatelastcheck")>0 && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );
         $data['updateversion'] = getGlobalSetting("updateversion");
         $data['updatebuild'] = getGlobalSetting("updatebuild");
         $data['surveyid'] = $surveyid;

@@ -231,7 +231,7 @@ class remotecontrol_handle
     {
        if ($this->_checkSessionKey($sSessionKey))
        {
-		   if( Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+		   if(Permission::model()->hasGlobalPermission('global_superadmin','read'))
 		   {
 			   if (Yii::app()->getConfig($sSetttingName) !== false)
 					return Yii::app()->getConfig($sSetttingName);
@@ -265,7 +265,7 @@ class remotecontrol_handle
 		Yii::app()->loadHelper("surveytranslator");
 		if ($this->_checkSessionKey($sSessionKey))
         {
-			if (Yii::app()->session['USER_RIGHT_CREATE_SURVEY'])
+			if (Permission::model()->hasGlobalPermission('global_surveys','create'))
 			{
 				if( $sSurveyTitle=='' || $sSurveyLanguage=='' || !array_key_exists($sSurveyLanguage,getLanguageDataRestricted()) || !in_array($sformat, array('A','G','S')))
 					return array('status' => 'Faulty parameters');
@@ -303,7 +303,7 @@ class remotecontrol_handle
 
 					$langsettings = new Surveys_languagesettings;
 					$langsettings->insertNewSurvey($aInsertData);
-					Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
+					Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 
 					return (int)$iNewSurveyid;
 				}
@@ -331,7 +331,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if (hasSurveyPermission($iSurveyID, 'survey', 'delete'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
             {
                 Survey::model()->deleteSurvey($iSurveyID,true);
                 return array('status' => 'OK');
@@ -358,7 +358,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+            if (Permission::model()->hasGlobalPermission('global_surveys','create'))
             {
                 if (!in_array($sImportDataType,array('zip','csv','xls','lss'))) return array('status' => 'Invalid extension');
                 Yii::app()->loadHelper('admin/import');
@@ -399,7 +399,7 @@ class remotecontrol_handle
              {
                  return array('status' => 'Error: Invalid survey ID');
              }
-             if (hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
+             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
                  {
                      $aBasicDestinationFields=Survey::model()->tableSchema->columnNames;
                      $aSurveySettings=array_intersect($aSurveySettings,$aBasicDestinationFields);
@@ -438,7 +438,7 @@ class remotecontrol_handle
             {
                 return array('status' => 'Error: Invalid survey ID');
             }
-            if (hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
             {
                 // Remove fields that may not be modified
                 unset($aSurveyData['sid']);
@@ -509,7 +509,7 @@ class remotecontrol_handle
        {
 		   $sCurrentUser =  Yii::app()->session['user'];
 
-		   if( Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+		   if( Permission::model()->hasGlobalPermission('global_superadmin','read') )
 		   {
 				if ($sUser == null)
 					$aUserSurveys = Survey::model()->findAll(); //list all surveys
@@ -569,7 +569,7 @@ class remotecontrol_handle
             if (is_null($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
 
-            if (hasSurveyPermission($iSurveyID, 'surveyactivation', 'update'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update'))
             {
                 Yii::app()->loadHelper('admin/activate');
                 $aActivateResults = activateSurvey($iSurveyID);
@@ -709,7 +709,7 @@ class remotecontrol_handle
 			if (!isset($oSurvey))
 				return array('status' => 'Invalid surveyid');
 
-			if (hasSurveyPermission($iSurveyID, 'survey', 'read'))
+			if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read'))
 			{
 				if(in_array($sStatName, $aPermittedTokenStats))
 				{
@@ -788,7 +788,7 @@ class remotecontrol_handle
             {
                 return array('status' => 'Error: Invalid survey ID');
             }
-            if (hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
             {
                 Yii::app()->loadHelper('surveytranslator');
                 $aLanguages=getLanguageData();
@@ -854,7 +854,7 @@ class remotecontrol_handle
                 return array('status' => 'Error: Invalid survey ID');
             }
 
-            if (hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
             {
 
                 Yii::app()->loadHelper('surveytranslator');
@@ -911,7 +911,7 @@ class remotecontrol_handle
 			{
 				return array('status' => 'Error: Invalid survey ID');
 			}
-			if (hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
+			if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
 				{
 					$aBasicDestinationFields=Surveys_languagesettings::model()->tableSchema->columnNames;
 					$aSurveyLocaleSettings=array_intersect($aSurveyLocaleSettings,$aBasicDestinationFields);
@@ -969,7 +969,7 @@ class remotecontrol_handle
 			if (!array_key_exists($sLanguage,getLanguageDataRestricted()))
 				return array('status' => 'Error: Invalid language');
 
-            if (hasSurveyPermission($iSurveyID, 'surveylocale', 'update'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update'))
             {
                 // Remove fields that may not be modified
                 unset($aSurveyLocaleData['surveyls_language']);
@@ -1032,7 +1032,7 @@ class remotecontrol_handle
 	{
 		if ($this->_checkSessionKey($sSessionKey))
         {
-			if (hasSurveyPermission($iSurveyID, 'survey', 'update'))
+			if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
 				$oSurvey = Survey::model()->findByPk($iSurveyID);
 				if (!isset($oSurvey))
@@ -1079,7 +1079,7 @@ class remotecontrol_handle
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
 
-            if (hasSurveyPermission($iSurveyID, 'surveycontent', 'delete'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete'))
             {
 				$oGroup = Groups::model()->findByAttributes(array('gid' => $iGroupID));
 				if (!isset($oGroup))
@@ -1130,7 +1130,7 @@ class remotecontrol_handle
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
 
-            if (hasSurveyPermission($iSurveyID, 'survey', 'update'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
 				if($oSurvey->getAttribute('active') =='Y')
 					return array('status' => 'Error:Survey is active and not editable');
@@ -1233,7 +1233,7 @@ class remotecontrol_handle
 			if (!isset($oGroup))
 				return array('status' => 'Error: Invalid group ID');
 
-			if (hasSurveyPermission($oGroup->sid, 'survey', 'read'))
+			if (Permission::model()->hasSurveyPermission($oGroup->sid, 'survey', 'read'))
 			{
 				$aBasicDestinationFields=Groups::model()->tableSchema->columnNames;
 				$aGroupSettings=array_intersect($aGroupSettings,$aBasicDestinationFields);
@@ -1273,7 +1273,7 @@ class remotecontrol_handle
             {
                 return array('status' => 'Error: Invalid group ID');
             }
-            if (hasSurveyPermission($oGroup->sid, 'survey', 'update'))
+            if (Permission::model()->hasSurveyPermission($oGroup->sid, 'survey', 'update'))
             {
                 $aResult = array();
                 // Remove fields that may not be modified
@@ -1342,7 +1342,7 @@ class remotecontrol_handle
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
 
-			if (hasSurveyPermission($iSurveyID, 'survey', 'read'))
+			if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read'))
 			{
 				$oGroupList = Groups::model()->findAllByAttributes(array("sid"=>$iSurveyID));
 				if(count($oGroupList)==0)
@@ -1384,7 +1384,7 @@ class remotecontrol_handle
 
 			$iSurveyID = $oQuestion['sid'];
 
-            if (hasSurveyPermission($iSurveyID, 'surveycontent', 'delete'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete'))
             {
 				$oSurvey = Survey::model()->findByPk($iSurveyID);
 
@@ -1452,7 +1452,7 @@ class remotecontrol_handle
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
 
-            if (hasSurveyPermission($iSurveyID, 'survey', 'update'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
 				if($oSurvey->getAttribute('active') =='Y')
 					return array('status' => 'Error:Survey is Active and not editable');
@@ -1551,7 +1551,7 @@ class remotecontrol_handle
 
 		    $iSurveyID = $oQuestion->sid;
 
-			if (hasSurveyPermission($iSurveyID, 'survey', 'read'))
+			if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read'))
 			{
 				if (is_null($sLanguage))
 					$sLanguage=Survey::model()->findByPk($iSurveyID)->language;
@@ -1680,7 +1680,7 @@ class remotecontrol_handle
 
 			$iSurveyID = $oQuestion->sid;
 
-            if (hasSurveyPermission($iSurveyID, 'survey', 'update'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
 				if (is_null($sLanguage))
 					$sLanguage=Survey::model()->findByPk($iSurveyID)->language;
@@ -1767,7 +1767,7 @@ class remotecontrol_handle
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
 
-			if (hasSurveyPermission($iSurveyID, 'survey', 'read'))
+			if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read'))
 			{
 				if (is_null($sLanguage))
 					$sLanguage=$oSurvey->language;
@@ -1828,7 +1828,7 @@ class remotecontrol_handle
             return array('status' => 'Error: Invalid survey ID');
         }
 
-        if (hasSurveyPermission($iSurveyID, 'tokens', 'create'))
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create'))
         {
             if (!Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}'))
                 return array('status' => 'No token table');
@@ -1885,7 +1885,7 @@ class remotecontrol_handle
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
 
-			if (hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
+			if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
 			{
 				if(!tableExists("{{tokens_$iSurveyID}}"))
 					return array('status' => 'Error: No token table');
@@ -1933,7 +1933,7 @@ class remotecontrol_handle
 			if (!isset($surveyidExists))
 				return array('status' => 'Error: Invalid survey ID');
 
-			if (hasSurveyPermission($iSurveyID, 'tokens', 'read'))
+			if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read'))
 			{
 				if(!tableExists("{{tokens_$iSurveyID}}"))
 					return array('status' => 'Error: No token table');
@@ -1981,7 +1981,7 @@ class remotecontrol_handle
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
 
-			if (hasSurveyPermission($iSurveyID, 'tokens', 'update'))
+			if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update'))
 			{
 				if(!tableExists("{{tokens_$iSurveyID}}"))
 					return array('status' => 'Error: No token table');
@@ -2049,7 +2049,7 @@ class remotecontrol_handle
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
 
-			if (hasSurveyPermission($iSurveyID, 'tokens', 'read'))
+			if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read'))
 			{
 				if(!tableExists("{{tokens_$iSurveyID}}"))
 					return array('status' => 'Error: No token table');
@@ -2094,7 +2094,7 @@ class remotecontrol_handle
     public function activate_tokens($sSessionKey, $iSurveyID, $aAttributeFields=array())
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
-        if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+        if (Permission::model()->hasGlobalPermission('global_surveys','create'))
         {
             $oSurvey=Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey))
@@ -2143,7 +2143,7 @@ class remotecontrol_handle
 		if (!isset($oSurvey))
 			return array('status' => 'Error: Invalid survey ID');
 
-		if (hasSurveyPermission($iSurveyID, 'tokens', 'update'))
+		if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update'))
 		{
 
 			if(!tableExists("{{tokens_$iSurveyID}}"))
@@ -2190,7 +2190,7 @@ class remotecontrol_handle
 		if (!isset($oSurvey))
 			return array('status' => 'Error: Invalid survey ID');
 
-		if (hasSurveyPermission($iSurveyID, 'tokens', 'update'))
+		if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update'))
 		{
 			$timeadjust = Yii::app()->getConfig("timeadjust");
 
@@ -2257,7 +2257,7 @@ class remotecontrol_handle
             return array('status' => 'Error: Invalid survey ID');
         }
 
-        if (hasSurveyPermission($iSurveyID, 'responses', 'create'))
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create'))
         {
             if (!Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '}}'))
                 return array('status' => 'No survey response table');
@@ -2318,7 +2318,7 @@ class remotecontrol_handle
         if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data');
 		if(!$count = Survey_dynamic::model($iSurveyID)->count()) return array('status' => 'No Data');
 
-        if (!hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
         if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
         if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
         if($sDocumentType=='xls'){

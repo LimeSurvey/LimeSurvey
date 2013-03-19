@@ -340,7 +340,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
     $clang = new Limesurvey_lang(isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en');
 
     if(is_null($cached)) {
-        if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
+        if (!Permission::model()->hasGlobalPermission('global_superadmin','read'))
             $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
         else
             $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
@@ -436,81 +436,6 @@ function getSurveyList($returnarray=false, $surveyid=false)
         $surveyselecter = "<option value=''>".$clang->gT("None")."</option>\n".$surveyselecter;
     }
     return $surveyselecter;
-}
-
-/**
-* Returns true if a user has permissions in the particular survey
-*
-* @param $iSID The survey ID
-* @param $sPermission
-* @param $sCRUD
-* @param $iUID User ID - if not given the one of the current user is used
-* @return bool
-*/
-function hasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
-{
-    if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
-    $sCRUD=$sCRUD.'_p';
-
-    $thissurvey=getSurveyInfo($iSID);
-    if (!$thissurvey) return false;
-
-    $aSurveyPermissionCache = Yii::app()->getConfig("aSurveyPermissionCache");
-    if (is_null($iUID))
-    {
-        if (!Yii::app()->user->getIsGuest()) $iUID = Yii::app()->session['loginID'];
-        else return false;
-        // Some user have acces to whole survey settings
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true;
-        if ($thissurvey && $iUID==$thissurvey['owner_id']) return true;
-    }
-
-    if (!isset($aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]))
-    {
-        $query = Survey_permissions::model()->findByAttributes(array("sid"=> $iSID,"uid"=> $iUID,"permission"=>$sPermission));
-        $bPermission = is_null($query) ? array() : $query->attributes;
-        if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
-        {
-            $bPermission=false;
-        }
-        else
-        {
-            $bPermission=true;
-        }
-        $aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]=$bPermission;
-    }
-    Yii::app()->setConfig("aSurveyPermissionCache", $aSurveyPermissionCache);
-    return $aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD];
-}
-
-/**
-* Returns true if a user has global permission for a certain action. Available permissions are
-*
-* USER_RIGHT_CREATE_SURVEY
-* USER_RIGHT_CONFIGURATOR
-* USER_RIGHT_CREATE_USER
-* USER_RIGHT_DELETE_USER
-* USER_RIGHT_SUPERADMIN
-* USER_RIGHT_MANAGE_TEMPLATE
-* USER_RIGHT_MANAGE_LABEL
-*
-* @param $sPermission
-* @return bool
-*/
-function hasGlobalPermission($sPermission)
-{
-    if (!Yii::app()->user->getIsGuest()) $iUID = !Yii::app()->user->getId();
-    else return false;
-    if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
-    if (Yii::app()->session[$sPermission]==1)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-
 }
 
 function getTemplateList()
@@ -1316,7 +1241,7 @@ function getUserList($outputformat='fullinfoarray')
         $myuid=sanitize_int(Yii::app()->session['loginID']);
     }
     $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
-    if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && isset($usercontrolSameGroupPolicy) &&
+    if (!Permission::model()->hasGlobalPermission('global_superadmin','read') && isset($usercontrolSameGroupPolicy) &&
     $usercontrolSameGroupPolicy == true)
     {
         if (isset($myuid))
@@ -1324,11 +1249,11 @@ function getUserList($outputformat='fullinfoarray')
             $sDatabaseType = Yii::app()->db->getDriverName();
             if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv")
             {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,create_survey,participant_panel,configurator,create_user,delete_user,superadmin,manage_template,manage_label,CAST(password as varchar) as password';
+                $sSelectFields = 'users_name,uid,email,full_name,parent_id,CAST(password as varchar) as password';
             }
             else
             {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,create_survey,participant_panel,configurator,create_user,delete_user,superadmin,manage_template,manage_label,password';
+                $sSelectFields = 'users_name,uid,email,full_name,parent_id,password';
             }
 
             // List users from same group as me + all my childs
@@ -1367,18 +1292,17 @@ function getUserList($outputformat='fullinfoarray')
 
     $userlist = array();
     $userlist[0] = "Reserved for logged in user";
-    //while ($srow = $uresult->readAll())
     foreach ($uresult as $srow)
     {
         if ($outputformat != 'onlyuidarray')
         {
             if ($srow['uid'] != Yii::app()->session['loginID'])
             {
-                $userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "participant_panel"=>$srow['participant_panel'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);           //added by Dennis modified by Moses
+                $userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'] );
             }
             else
             {
-                $userlist[0] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'],"participant_panel"=>$srow['participant_panel'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);
+                $userlist[0] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'] );
             }
         }
         else
@@ -2964,7 +2888,7 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 * @param int $uid the user id
 * @param mixed $rights rights array
 */
-function setUserRights($uid, $rights)
+function setuserpermissions($uid, $rights)
 {
     $uid=sanitize_int($uid);
     $updates = "create_survey=".$rights['create_survey']
@@ -7134,7 +7058,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
     $clang = Yii::app()->lang;
     //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
-    if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
+    if (!Permission::model()->hasGlobalPermission('global_superadmin','read'))
     {
         $sQuery .="AND uid = ".Yii::app()->session['loginID'];
     }
@@ -7567,11 +7491,12 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
     $surveyid=sanitize_int($surveyid);
 
     $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a
-    LEFT OUTER JOIN (SELECT uid AS id FROM {{survey_permissions}} WHERE sid = {$surveyid}) AS b ON a.uid = b.id
+    LEFT OUTER JOIN (SELECT uid AS id FROM {{permissions}} WHERE sid = {$surveyid}) AS b ON a.uid = b.id
     WHERE id IS NULL ";
     if (!$bIncludeSuperAdmins)
     {
-        $sSurveyIDQuery.='and superadmin=0 ';
+      // @todo: Adjust for new permission system - not urgent since it it just display
+      //   $sSurveyIDQuery.='and superadmin=0 ';     
     }
     $sSurveyIDQuery.= 'ORDER BY a.users_name';
     $oSurveyIDResult = Yii::app()->db->createCommand($sSurveyIDQuery)->query();  //Checked
@@ -7610,7 +7535,7 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
     LEFT JOIN (
     SELECT b.ugid
     FROM {{user_in_groups}} AS b
-    LEFT JOIN (SELECT * FROM {{survey_permissions}}
+    LEFT JOIN (SELECT * FROM {{permissions}}
     WHERE sid = {$surveyid}) AS c ON b.uid = c.uid WHERE c.uid IS NULL
     ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL";
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query();  //Checked

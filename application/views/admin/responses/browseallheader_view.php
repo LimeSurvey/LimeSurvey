@@ -101,7 +101,7 @@
 <tfoot>
     <tr>
         <td colspan=<?php echo $fncount + 2; ?>>
-<?php if (hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
+<?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
 <img id='imgDeleteMarkedResponses' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php $clang->eT('Delete marked responses'); ?>' />
 <?php } ?>
 <?php if (hasFileUploadQuestion($iSurveyId)) { ?>

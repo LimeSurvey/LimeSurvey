@@ -1,5 +1,3 @@
-//$Id: surveysecurity.js 9376 2010-10-31 15:13:46Z c_schmitz $
-
 $(document).ready(function(){
     $(".surveysecurity").tablesorter({
         widgets: ['zebra'],
@@ -26,7 +24,7 @@ $(document).ready(function(){
     $(".markrow").click(
         function(){
             $(this).fadeTo(1, 1);
-            $(this).closest('tr').find('input').attr('checked',$(this).attr('checked'));
+            $(this).closest('tr').find('input').prop('checked',$(this).prop('checked'));
         }
     )
 
@@ -35,15 +33,15 @@ $(document).ready(function(){
             $(this).closest('tr').find('.markrow').fadeTo(1, 1);
             if ($(this).closest('tr').find('.extended input:checked').size()==$(this).closest('tr').find('.extended input').size())
             {
-                $(this).closest('tr').find('.markrow').attr('checked',true);
+                $(this).closest('tr').find('.markrow').prop('checked',true);
             }
             else if ($(this).closest('tr').find('.extended input:checked').size()==0)
             {
-                $(this).closest('tr').find('.markrow').attr('checked',false);
+                $(this).closest('tr').find('.markrow').prop('checked',false);
             }
             else
             {
-                $(this).closest('tr').find('.markrow').attr('checked',true);
+                $(this).closest('tr').find('.markrow').prop('checked',true);
                 $(this).closest('tr').find('.markrow').fadeTo(1, .4); //greyed
             }
      }
@@ -58,15 +56,15 @@ $(document).ready(function(){
             $(this).find('.markrow').fadeTo(1, 1);
             if ($(this).find('.extended input:checked').size()==$(this).closest('tr').find('.extended input').size())
             {
-                $(this).find('.markrow').attr('checked',true);
+                $(this).find('.markrow').prop('checked',true);
             }
             else if ($(this).find('.extended input:checked').size()==0)
             {
-                $(this).find('.markrow').attr('checked',false);
+                $(this).find('.markrow').prop('checked',false);
             }
             else
             {
-                $(this).find('.markrow').attr('checked',true);
+                $(this).find('.markrow').prop('checked',true);
                 $(this).find('.markrow').fadeTo(1, .4); //greyed
             }
     })

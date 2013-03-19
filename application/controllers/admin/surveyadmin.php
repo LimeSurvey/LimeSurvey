@@ -54,7 +54,7 @@ class SurveyAdmin extends Survey_Common_Action
             Yii::app()->loadHelper('surveytranslator');
 
             $aData['issuperadmin'] = false;
-            if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+            if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
             {
                 $aData['issuperadmin'] = true;
             }
@@ -65,7 +65,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     public function regenquestioncodes($iSurveyID, $sSubAction )
     {
-        if (hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
         {
             $clang = $this->getController()->lang;
 
@@ -112,7 +112,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     function newsurvey()
     {
-        if (!hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+        if (!Permission::model()->hasGlobalPermission('global_surveys','create'))
             $this->getController()->error('No permission');
 
         $this->_registerScriptFiles();
@@ -152,7 +152,7 @@ class SurveyAdmin extends Survey_Common_Action
         if (is_null($iSurveyID) || !$iSurveyID)
             $this->getController()->error('Invalid survey id');
 
-        if (!hasSurveyPermission($iSurveyID, 'surveysettings', 'read') && !hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read') && !Permission::model()->hasGlobalPermission('global_surveys','read'))
             $this->getController()->error('No permission');
 
         $this->_registerScriptFiles();
@@ -410,7 +410,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function activate($iSurveyID)
     {
-        if (!hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) die();
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) die();
         $clang = Yii::app()->lang;
 
         $iSurveyID = (int) $iSurveyID;
@@ -546,7 +546,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $query_condition = 'sid=:sid';
         $params[':sid']=$intSurveyId;
-        if (!hasGlobalPermission("USER_RIGHT_SUPERADMIN"))
+        if (!Permission::model()->hasGlobalPermission('global_superadmin','create'))
         {
             $query_condition .= ' AND owner_id=:uid';
             $params[':uid']=$owner_id;
@@ -584,7 +584,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $surveys = Survey::model();
         //!!! Is this even possible to execute?
-        if (empty(Yii::app()->session['USER_RIGHT_SUPERADMIN']))
+        if (!Permission::model()->hasGlobalPermission('global_superadmin','read'))
             $surveys->permission(Yii::app()->user->getId());
         $surveys = $surveys->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
         $aSurveyEntries = new stdClass();
@@ -605,7 +605,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
             elseif ($rows['active'] == "Y")
             {
-                if (hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
+                if (Permission::model()->hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
                     $aSurveyEntry[] = '<!--c--><a href="' . $this->getController()->createUrl('admin/survey/sa/deactivate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'active.png" alt="' . $clang->gT("This survey is active - click here to stop this survey.") . '"/></a>';
                 }
@@ -619,7 +619,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $condition = "sid={$rows['sid']} AND language='" . $rows['language'] . "'";
                 $questionsCountResult = Questions::model()->count($condition);
 
-                if ($questionsCountResult>0 && hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
+                if ($questionsCountResult>0 && Permission::model()->hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
                     $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/sa/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'inactive.png" title="" alt="' . $clang->gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
                 }
@@ -642,7 +642,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aSurveyEntry[] = '<!--' . $rows['datecreated'] . '-->' . $datetimeobj->convert($dateformatdetails['phpdate']);
 
             //Set Owner
-            if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] || Yii::app()->session['loginID']==$rows['owner_id'])
+            if(Permission::model()->hasGlobalPermission('global_superadmin','read') || Yii::app()->session['loginID']==$rows['owner_id'])
             {
                 $aSurveyEntry[] = $rows['users_name'] . ' (<a class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
             }
@@ -721,11 +721,11 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID = (int) $iSurveyID;
         $clang = $this->getController()->lang;
 
-        if (hasSurveyPermission($iSurveyID, 'survey', 'delete'))
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
         {
             if ($delete == 'yes')
             {
-                $aData['issuperadmin'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == true);
+                $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('global_superadmin','read');
                 $this->_deleteSurvey($iSurveyID);
                 Yii::app()->session['flashmessage'] = $clang->gT("Survey deleted.");
                 $this->getController()->redirect(array("admin/index"));
@@ -752,7 +752,7 @@ class SurveyAdmin extends Survey_Common_Action
         {
             foreach(explode(',',$iSurveyIDs) as $iSurveyID)
             {
-                if (hasSurveyPermission($iSurveyID, 'survey', 'delete'))
+                if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
                 {
                     $this->_deleteSurvey($iSurveyID);
                 }
@@ -772,9 +772,9 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
         $aViewUrls = array();
 
-        if (hasSurveyPermission($iSurveyID, 'surveylocale', 'read'))
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read'))
         {
-            if (hasSurveyPermission($iSurveyID, 'surveylocale', 'update'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update'))
             {
                 Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
             }
@@ -826,7 +826,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
             $editsurvey .= CHtml::closeTag('div');
 
-            $aData['has_permissions'] = hasSurveyPermission($iSurveyID, 'surveylocale', 'update');
+            $aData['has_permissions'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update');
             $aData['surveyls_language'] = $esrow["surveyls_language"];
             $aData['additional_content'] = $editsurvey;
 
@@ -938,7 +938,7 @@ class SurveyAdmin extends Survey_Common_Action
                     $aData['sErrorMessage'] = $clang->gT("Invalid survey ID");
                     $aData['bFailed'] = true;
                 }
-                elseif (!hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !hasSurveyPermission($iSurveyID, 'surveycontent', 'export'))
+                elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export'))
                 {
                     $aData['sErrorMessage'] = $clang->gT("You don't have sufficient permissions.");
                     $aData['bFailed'] = true;
@@ -968,7 +968,7 @@ class SurveyAdmin extends Survey_Common_Action
                 }
                 if (!isset($exclude['permissions']))
                 {
-                    Survey_permissions::model()->copySurveyPermissions($iSurveyID,$aImportResults['newsid']);
+                    Permission::model()->copySurveyPermissions($iSurveyID,$aImportResults['newsid']);
                 }
             }
             else
@@ -1002,7 +1002,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $iSurveyID = (int)$iSurveyID;
 
-        if (!empty($_POST['orgdata']) && hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
+        if (!empty($_POST['orgdata']) && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
         {
             $this->_reorderGroup($iSurveyID);
         }
@@ -1382,7 +1382,7 @@ class SurveyAdmin extends Survey_Common_Action
     function expire($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
-        if (!hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
         {
             die();
         }
@@ -1505,7 +1505,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     function insert($iSurveyID=null)
     {
-        if (Yii::app()->session['USER_RIGHT_CREATE_SURVEY'])
+        if (Permission::model()->hasGlobalPermission('global_surveys','create'))
         {
             // Check if survey title was set
             if (!$_POST['surveyls_title'])
@@ -1517,7 +1517,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             // Check if template may be used
             $sTemplate = $_POST['template'];
-            if (!$sTemplate || (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights(Yii::app()->session['loginID'], $_POST['template'])))
+            if (!$sTemplate || (!Permission::model()->hasGlobalPermission('global_superadmin','read') && !hasGlobalPermission('global_templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $_POST['template'])))
             {
                 $sTemplate = "default";
             }
@@ -1645,7 +1645,7 @@ class SurveyAdmin extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = $this->getController()->lang->gT("Survey was successfully added.");
 
             // Update survey permissions
-            Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
+            Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iNewSurveyid));
         }

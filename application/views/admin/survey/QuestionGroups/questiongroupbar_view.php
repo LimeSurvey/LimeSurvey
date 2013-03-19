@@ -5,7 +5,7 @@
     <div class='menubar-left'>
 
 
-        <?php if(hasSurveyPermission($surveyid,'surveycontent','update'))
+        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <img id='separator4' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <a id="grouppreviewlink" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" target="_blank">
@@ -25,14 +25,14 @@
             <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <?php } ?>
 
-        <?php if(hasSurveyPermission($surveyid,'surveycontent','update'))
+        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <img id='separator5' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <a href="<?php echo $this->createUrl('admin/questiongroup/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
                 <img src='<?php echo $imageurl; ?>edit.png' alt='<?php $clang->eT("Edit current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
             <?php } ?>
 
-        <?php if(hasSurveyPermission($surveyid,'surveycontent','read'))
+        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
             { ?>
             <img id='separator6' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <a  target='_blank' href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
@@ -40,7 +40,7 @@
             <?php } ?>
 
         <?php
-            if (hasSurveyPermission($surveyid,'surveycontent','delete'))
+            if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete'))
             {
                 if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y"))
                 {
@@ -64,7 +64,7 @@
                 <img src='<?php echo $imageurl; ?>blank.gif' alt='' height="<?php echo $iIconSize;?>" width='40' />
                 <?php }
             }
-            if(hasSurveyPermission($surveyid,'surveycontent','export'))
+            if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
 
             <a href='<?php echo $this->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>'>
@@ -114,7 +114,7 @@
             <a href='#'>
                 <img src='<?php echo $imageurl; ?>add_disabled.png' title='' alt='<?php echo $clang->gT("Disabled").' - '.$clang->gT("This survey is currently active."); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>" /></a>
             <?php }
-            elseif(hasSurveyPermission($surveyid,'surveycontent','create'))
+            elseif(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
             { ?>
             <a href='<?php echo $this->createUrl("admin/question/sa/addquestion/surveyid/".$surveyid."/gid/".$gid); ?>'>
                 <img src='<?php echo $imageurl; ?>add.png' title='' alt='<?php $clang->eT("Add new question to group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>" /></a>

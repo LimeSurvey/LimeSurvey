@@ -28,7 +28,7 @@ class saved extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $aViewUrls = array();
 
-        if (!hasSurveyPermission($iSurveyId, 'responses', 'read'))
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read'))
         {
             die();
         }

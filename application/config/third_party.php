@@ -85,8 +85,8 @@ return array(
         )
     ),
     
-    'jquery-qtip' => array(
-        'baseUrl' => 'third_party/jquery-qtip',
+    'qTip2' => array(
+        'baseUrl' => 'third_party/qTip2',
         'js' => array(
             'dist/jquery.qtip.js'
         ),

@@ -389,7 +389,7 @@ class Participants extends CActiveRecord
     */
     function filterParticipantIDs($aParticipantIDs)
     {
-            if (!Yii::app()->session['USER_RIGHT_SUPERADMIN']) // If not super admin filter the participant IDs first to owner only
+            if (!Permission::model()->hasGlobalPermission('global_superadmin','read')) // If not super admin filter the participant IDs first to owner only
             {
                 $aCondition=array('and','owner_uid=:owner_uid',array('in', 'participant_id', $aParticipantIDs));
                 $aParameter=array(':owner_uid'=>Yii::app()->session['loginID']);
@@ -415,7 +415,7 @@ class Participants extends CActiveRecord
             $aSurveyIDs = Yii::app()->db->createCommand()->selectDistinct('survey_id')->from('{{survey_links}}')->where(array('in', 'participant_id', $aParticipantsIDs))->queryColumn();
             foreach ($aSurveyIDs as $iSurveyID)
             {
-                if (hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
+                if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
                 {
                     $sTokenTable='{{tokens_'.intval($iSurveyID).'}}';
                     if (Yii::app()->db->schema->getTable($sTokenTable))
@@ -465,7 +465,7 @@ class Participants extends CActiveRecord
                     $surveytable='{{survey_'.intval($value['survey_id']).'}}';
                     if ($datas=Yii::app()->db->schema->getTable($surveytable))
                     {
-                        if (!empty($token['token']) && isset($datas->columns['token']) && hasSurveyPermission($iSurveyID, 'responses', 'delete')) //Make sure we have a token value, and that tokens are used to link to the survey
+                        if (!empty($token['token']) && isset($datas->columns['token']) && Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete')) //Make sure we have a token value, and that tokens are used to link to the survey
                         {
                             $gettoken = Yii::app()->db->createCommand()
                                                       ->select('*')
@@ -479,7 +479,7 @@ class Participants extends CActiveRecord
                                           ->bindParam(":token", $gettoken['token'], PDO::PARAM_STR); // Deletes matching responses from surveys
                         }
                     }
-                    if (hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
+                    if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
                     {
                         
                         Yii::app()->db->createCommand()

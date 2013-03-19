@@ -1068,6 +1068,24 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{surveys_languagesettings}}','surveyls_url',"text");
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>165),"stg_name='DBVersion'");
         }
+
+        if ($oldversion < 166)
+        {
+            Yii::app()->db->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');
+            alterColumn('{{permissions}}', 'permission', "{$sVarchar}(50)", false);
+            upgradePermissions166();
+            dropColumn('{{users}}','create_survey');
+            dropColumn('{{users}}','create_user');
+            dropColumn('{{users}}','delete_user');
+            dropColumn('{{users}}','superadmin');
+            dropColumn('{{users}}','configurator');
+            dropColumn('{{users}}','manage_template');
+            dropColumn('{{users}}','manage_label');      
+            dropColumn('{{users}}','participant_panel');      
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>166),"stg_name='DBVersion'");
+        }
+        
+        
         $oTransaction->commit();
     }
     catch(Exception $e)
@@ -1080,6 +1098,95 @@ function db_upgrade_all($oldversion) {
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
 }
+
+/** 
+* Converts global permissions from users table to the new permission syste,
+*/
+function upgradePermissions166()
+{
+      $oUsers=User::model()->findAll();
+      foreach($oUsers as $oUser)
+      {
+          if ($oUser->create_survey==1)
+          {
+              $oPermission=new Permission;
+              $oPermission->sid=0;
+              $oPermission->uid=$oUser->uid;
+              $oPermission->permission='global_surveys';
+              $oPermission->create_p=1;
+              $oPermission->save();
+          }
+          if ($oUser->create_user==1 || $oUser->delete_user==1)
+          {
+              $oPermission=new Permission;
+              $oPermission->sid=0;
+              $oPermission->uid=$oUser->uid;
+              $oPermission->permission='global_users';
+              $oPermission->create_p=$oUser->create_user;
+              $oPermission->delete_p=$oUser->delete_user;
+              $oPermission->update_p=1;
+              $oPermission->read_p=1;
+              $oPermission->save();
+          }
+          if ($oUser->superadmin==1)
+          {
+              $oPermission=new Permission;
+              $oPermission->sid=0;
+              $oPermission->uid=$oUser->uid;
+              $oPermission->permission='global_superadmin';
+              $oPermission->read_p=1;
+              $oPermission->save();
+          }          
+          if ($oUser->configurator==1)
+          {
+              $oPermission=new Permission;
+              $oPermission->sid=0;
+              $oPermission->uid=$oUser->uid;
+              $oPermission->permission='global_settings';
+              $oPermission->update_p=1;
+              $oPermission->read_p=1;
+              $oPermission->save();
+          }          
+          if ($oUser->manage_template==1)
+          {
+              $oPermission=new Permission;
+              $oPermission->sid=0;
+              $oPermission->uid=$oUser->uid;
+              $oPermission->permission='global_templates';
+              $oPermission->create_p=1;
+              $oPermission->read_p=1;
+              $oPermission->update_p=1;
+              $oPermission->delete_p=1;
+              $oPermission->import_p=1;
+              $oPermission->export_p=1;
+              $oPermission->save();
+          }                 
+          if ($oUser->manage_label==1)
+          {
+              $oPermission=new Permission;
+              $oPermission->sid=0;
+              $oPermission->uid=$oUser->uid;
+              $oPermission->permission='global_labelsets';
+              $oPermission->create_p=1;
+              $oPermission->read_p=1;
+              $oPermission->update_p=1;
+              $oPermission->delete_p=1;
+              $oPermission->import_p=1;
+              $oPermission->export_p=1;
+              $oPermission->save();
+          }                 
+          if ($oUser->participant_panel==1)
+          {
+              $oPermission=new Permission;
+              $oPermission->sid=0;
+              $oPermission->uid=$oUser->uid;
+              $oPermission->permission='global_participantpanel';
+              $oPermission->create_p=1;
+              $oPermission->save();
+          }                 
+      }
+}
+
 
 function upgradeSurveys156()
 {

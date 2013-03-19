@@ -6,7 +6,7 @@
         App()->getClientScript()->registerPackage('jquery-cookie');
         App()->getClientScript()->registerPackage('jquery-superfish');
         App()->getClientScript()->registerPackage('jqgrid');
-        App()->getClientScript()->registerPackage('jquery-qtip');
+        App()->getClientScript()->registerPackage('qTip2');
         //App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-qtip/jquery.qtip-1.0.0-rc3.min.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );

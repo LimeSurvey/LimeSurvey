@@ -42,7 +42,7 @@ class Usergroups extends Survey_Common_Action
 
             // user must be in user group or superadmin
             $result = User_in_groups::model()->findAllByPk(array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
-            if (count($result) > 0 || Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+            if (count($result) > 0 || Permission::model()->hasGlobalPermission('global_superadmin','read'))
             {
                 $criteria = new CDbCriteria;
                 $criteria->compare('ugid',$ugid)->addNotInCondition('users.uid',array(Yii::app()->session['loginID']));
@@ -132,7 +132,7 @@ class Usergroups extends Survey_Common_Action
         $aViewUrls = array();
         $aData = array();
 
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
+        if (Permission::model()->hasGlobalPermission('global_usergroups','delete')) {
 
             if (!empty($ugid) && ($ugid > -1)) {
                 $result = User_groups::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
@@ -166,32 +166,29 @@ class Usergroups extends Survey_Common_Action
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         $aData = array();
 
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
+        if (Permission::model()->hasGlobalPermission('global_usergroups','create')) {
 
             if ($action == "usergroupindb") {
+                $db_group_name = $_POST['group_name'];
+                $db_group_description = $_POST['group_description'];
 
-                if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
-                    $db_group_name = $_POST['group_name'];
-                    $db_group_description = $_POST['group_description'];
-
-                    if (isset($db_group_name) && strlen($db_group_name) > 0) {
-                        if (strlen($db_group_name) > 21) {
-                            list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group name length more than 20 characters.")));
-                        }
-                        elseif (User_groups::model()->find("name='$db_group_name'")) {
-                            list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group already exists.")));
-                        }
-                        else
-                        {
-                            $ugid = User_groups::model()->addGroup($db_group_name, $db_group_description);
-                            Yii::app()->session['flashmessage'] = $clang->gT("User group successfully added!");
-                            list($aViewUrls, $aData) = $this->index($ugid, true);
-                        }
+                if (isset($db_group_name) && strlen($db_group_name) > 0) {
+                    if (strlen($db_group_name) > 21) {
+                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group name length more than 20 characters.")));
+                    }
+                    elseif (User_groups::model()->find("name='$db_group_name'")) {
+                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group already exists.")));
                     }
                     else
                     {
-                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group Name was not supplied.")));
+                        $ugid = User_groups::model()->addGroup($db_group_name, $db_group_description);
+                        Yii::app()->session['flashmessage'] = $clang->gT("User group successfully added!");
+                        list($aViewUrls, $aData) = $this->index($ugid, true);
                     }
+                }
+                else
+                {
+                    list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group Name was not supplied.")));
                 }
             }
             else
@@ -214,7 +211,7 @@ class Usergroups extends Survey_Common_Action
         $ugid = (int)$ugid;
         $clang = Yii::app()->lang;
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
+        if (Permission::model()->hasGlobalPermission('global_usergroups','update')) {
             if ($action == "editusergroupindb") {
 
                 $ugid = (int)$_POST['ugid'];
@@ -303,7 +300,7 @@ class Usergroups extends Survey_Common_Action
 
                     //	output users
                     $userloop[$row]["rowclass"] = $bgcc;
-                    if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
+                    if (Permission::model()->hasGlobalPermission('global_superadmin','update')) {
                         $userloop[$row]["displayactions"] = true;
                     } else {
                         $userloop[$row]["displayactions"] = false;
@@ -337,7 +334,7 @@ class Usergroups extends Survey_Common_Action
 
     function user($ugid, $action = 'add')
     {
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != true || !in_array($action, array('add', 'remove')))
+        if (!Permission::model()->hasGlobalPermission('global_usergroups','read') || !in_array($action, array('add', 'remove')))
         {
             die('access denied');
         }

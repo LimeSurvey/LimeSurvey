@@ -167,9 +167,9 @@ class labels extends Survey_Common_Action
         $lid = sanitize_int($lid);
         $aViewUrls = array();
 
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1)
+        if (hasGlobalPermission('global_labelsets','read'))
         {
-            if ($sa == "editlabelset")
+            if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('global_labelsets','update'))
             {
                 $result = Labelsets::model()->findAllByAttributes(array('lid' => $lid));
                 foreach ($result as $row)
@@ -186,7 +186,7 @@ class labels extends Survey_Common_Action
             $aData['action'] = $sa;
             $aData['lid'] = $lid;
 
-            if ($sa == "newlabelset")
+            if ($sa == "newlabelset" && Permission::model()->hasGlobalPermission('global_labelsets','create'))
             {
                 $langids = Yii::app()->session['adminlang'];
                 $tabitem = $clang->gT("Create new label set");
@@ -238,7 +238,7 @@ class labels extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'labels.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.json.min.js');
         // Checks if user have the sufficient rights to manage the labels
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1)
+        if (Permission::model()->hasGlobalPermission('global_labelsets','read'))
         {
             // Get a result containing labelset with the specified id
             $result = Labelsets::model()->findByAttributes(array('lid' => $lid));
@@ -319,7 +319,7 @@ class labels extends Survey_Common_Action
      */
     public function process()
     {
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1)
+        if ( Permission::model()->hasGlobalPermission('global_labelsets','update'))
         {
             if (isset($_POST['method']) && get_magic_quotes_gpc())
                 $_POST['method'] = stripslashes($_POST['method']);

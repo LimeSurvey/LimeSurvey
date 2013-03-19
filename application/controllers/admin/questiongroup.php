@@ -103,7 +103,7 @@ class questiongroup extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $aViewUrls = $aData = array();
 
-        if (hasSurveyPermission($surveyid, 'surveycontent', 'read'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             $clang = $this->getController()->lang;
 
@@ -136,7 +136,7 @@ class questiongroup extends Survey_Common_Action
      */
     public function insert($surveyid)
     {
-        if (hasSurveyPermission($surveyid, 'surveycontent', 'create'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create'))
         {
             Yii::app()->loadHelper('surveytranslator');
 
@@ -226,7 +226,7 @@ class questiongroup extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($iSurveyId);
 
-        if (hasSurveyPermission($iSurveyId, 'surveycontent', 'delete'))
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'delete'))
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyId);
 
@@ -263,7 +263,7 @@ class questiongroup extends Survey_Common_Action
         $gid = sanitize_int($gid);
         $aViewUrls = $aData = array();
 
-        if (hasSurveyPermission($surveyid, 'surveycontent', 'read'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             Yii::app()->session['FileManagerContext'] = "edit:group:{$surveyid}";
 
@@ -349,7 +349,7 @@ class questiongroup extends Survey_Common_Action
         $group = Groups::model()->findByAttributes(array('gid' => $gid));
         $surveyid = $group->sid;
 
-        if (hasSurveyPermission($surveyid, 'surveycontent', 'update'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
         {
             Yii::app()->loadHelper('surveytranslator');
 
