@@ -17,7 +17,7 @@
                 $json = json_encode($data, JSON_FORCE_OBJECT);
                 $script = "LSdebug = $json;\n";
                 $script .= "console.dir(LSdebug)\n";
-                App()->getClientScript()->registerScript('LimeScript', $script, CClientScript::POS_HEAD);
+                App()->getClientScript()->registerScript('LimeDebug', $script, CClientScript::POS_HEAD);
             }
         }
     }
