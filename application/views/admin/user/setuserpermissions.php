@@ -1,5 +1,5 @@
 
-<div class='header ui-widget-header'><?php printf($clang->gT("Edit survey permissions for user %s"),"<span style='font-style:italic'>".$oUser->users_name."</span>"); ?></div>
+<div class='header ui-widget-header'><?php printf($clang->gT("Edit user permissions for user %s"),"<span style='font-style:italic'>".$oUser->users_name."</span>"); ?></div>
 <br />
 <?php echo CHtml::form(array("admin/user/sa/savepermissions"), 'post');?>
 <table style='margin:0 auto;' class='userpermissions'><thead>
