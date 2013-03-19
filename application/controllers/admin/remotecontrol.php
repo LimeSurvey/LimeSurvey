@@ -54,7 +54,7 @@ class remotecontrol extends Survey_Common_Action
             exit;
         } else {
             // Disabled output of API methods for now
-            if (1 == 2 && in_array($RPCType, array('xml', 'json'))) {
+            if (Yii::app()->getConfig("rpc_publish_api") == true && in_array($RPCType, array('xml', 'json'))) {
                 $reflector = new ReflectionObject($oHandler);
                 foreach ($reflector->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
                     /* @var $method ReflectionMethod */
