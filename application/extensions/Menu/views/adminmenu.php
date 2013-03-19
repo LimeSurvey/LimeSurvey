@@ -3,20 +3,23 @@
     
     App()->getClientScript()->registerCssFile(App()->getAssetManager()->publish(Yii::getPathOfAlias('ext.Menu.assets'). '/nav.css'));
     App()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(Yii::getPathOfAlias('ext.Menu.assets'). '/nav.js'));
-    
-    echo CHtml::tag('div', array(
-        'class' => 'maintitle titlebar',
-        'id' => 'title-' . $menu['role']
-    ), $menu['title']);
 ?>
-<nav class="menubar">
+<div class="menubar">
     <?php 
+        if (isset($menu['title']))
+        {
+            echo '<div class="menubar-title ui-widget-header">';
+            echo $menu['title'];
+            echo '</div>';
+        }
         if (isset($menu['items']))
         {
+            echo '<nav class="menubar">';
             echo $this->renderMenu($menu);
+            echo '</nav>';
         }
     ?>
-</nav>
+</div>
 <?php
 
 /*

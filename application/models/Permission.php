@@ -79,7 +79,7 @@ class Permission extends CActiveRecord
     
     
     /**
-     * Returns the global permissions
+     * Returns the global permissions including description and title
      *
      * @access public
      * @static
@@ -94,7 +94,7 @@ class Permission extends CActiveRecord
             'global_usergroups'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("User groups"),'description'=>$clang->gT("Permission to create, view, update and delete user groups"),'img'=>'usergroup'),
             'global_templates'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Templates"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import templates"),'img'=>'templates'),
             'global_labelsets'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Label sets"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import label sets/labels"),'img'=>'labels'),
-            'global_settings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Settings"),'description'=>$clang->gT("Permission to view and update global settings"),'img'=>'global'),
+            'global_settings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>true,'export'=>false,'title'=>$clang->gT("Settings & Plugins"),'description'=>$clang->gT("Permission to view and update global settings & plugins and to delete and import plugins"),'img'=>'global'),
             'global_participantpanel'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>true,'title'=>$clang->gT("Participant panel"),'description'=>$clang->gT("Permission to create your own participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),'img'=>'cpdb'),
         );
         uasort($aPermissions,"comparePermission");

@@ -1,7 +1,21 @@
-//$Id: admin_core.js 10154 2011-05-31 11:45:24Z c_schmitz $
+/*
+ * JavaScript functions for LimeSurvey administrator
+ *
+ * This file is part of LimeSurvey
+ * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
+
 
 $(document).ready(function(){
     initializeAjaxProgress();
+    tableCellAdapters();
     if(typeof(userdateformat) !== 'undefined')
         {
         $(".popupdate").each(function(i,e) {
@@ -645,3 +659,24 @@ function initializeAjaxProgress()
         $(this).dialog('close');
     });
 }
+
+/**
+ * Adapt cell to have a click on cell do a click on input:radio or input:checkbox (if unique)
+ * Using delegate the can be outside document.ready
+ */
+function tableCellAdapters()
+{
+    $('table').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label,tbody th input:checkbox,tbody th input:radio,tbody th label',"click", function(e) {
+        e.stopPropagation();
+    });
+    $('table').delegate('tbody td,tbody th',"click", function() {
+        if($(this).find("input:radio,input:checkbox").length==1)
+        {
+          $(this).find("input:radio").click();
+          $(this).find("input:radio").triggerHandler("click");
+          $(this).find("input:checkbox").click();
+          $(this).find("input:checkbox").triggerHandler("click");
+        }
+    });
+}
+
