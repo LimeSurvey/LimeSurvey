@@ -13,6 +13,16 @@ $(document).ready(function(){
     $('#tokenattribute').css({ 'height' : height-200});
     $('#centralattribute').css({ 'height' : height-200});
     $('#newcreated').css({ 'height' : height-200});
+	var ncHeadingHeight = $('#newcreated .heading').outerHeight();
+	$('.newcreate').css({
+		'padding-bottom':0,
+		'min-height':$('#newcreated').height()-ncHeadingHeight-5
+	});
+	var taHeadingHeight = $('#tokenattribute .heading').outerHeight();
+	$('#tokenatt').css({
+		'min-height':$('#tokenattribute').height()-taHeadingHeight-5
+	});
+	
     $("#tokenatt").sortable({ connectWith:'.centralatt,.newcreate',helper: 'clone',appendTo: 'body'});
     $("ul.centralatt").sortable({
         helper: 'clone',

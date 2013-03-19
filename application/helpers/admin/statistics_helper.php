@@ -574,6 +574,8 @@ class statistics_helper {
       */
      protected $sheet;
      
+     protected $xlsPercents;
+     
      /**
       * The current Excel workbook we are working on
       * 
@@ -2343,8 +2345,8 @@ class statistics_helper {
 
                         $this->xlsRow++;
                         $this->sheet->write($this->xlsRow,0,$label[$i]);
-                        $this->sheet->write($this->xlsRow,1,$grawdata[$i]);
-                        $this->sheet->write($this->xlsRow,2,sprintf("%01.2f", $gdata[$i]). "%");
+                        $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
+                        $this->sheet->writeNumber($this->xlsRow,2,$gdata[$i]/100, $this->xlsPercents);
 
                         break;
                     case 'pdf':
@@ -2443,8 +2445,8 @@ class statistics_helper {
 
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow,0,$label[$i]);
-                                $this->sheet->write($this->xlsRow,1,$grawdata[$i]);
-                                $this->sheet->write($this->xlsRow,2,sprintf("%01.2f", $percentage)."%");
+                                $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
+                                $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
 
                                 break;
                             case 'pdf':
@@ -2505,9 +2507,9 @@ class statistics_helper {
 
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow,0,$label[$i]);
-                                $this->sheet->write($this->xlsRow,1,$grawdata[$i]);
-                                $this->sheet->write($this->xlsRow,2,sprintf("%01.2f", $percentage)."%");
-                                $this->sheet->write($this->xlsRow,3,sprintf("%01.2f", $percentage)."%");
+                                $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
+                                $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
+                                $this->sheet->writeNumber($this->xlsRow,3,$percentage/100, $this->xlsPercents);
 
                                 break;
                             case 'pdf':
@@ -2575,9 +2577,9 @@ class statistics_helper {
 
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow,0,$label[$i]);
-                                $this->sheet->write($this->xlsRow,1,$grawdata[$i]);
-                                $this->sheet->write($this->xlsRow,2,sprintf("%01.2f", $percentage)."%");
-                                $this->sheet->write($this->xlsRow,3,sprintf("%01.2f", $aggregatedgdata)."%");
+                                $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
+                                $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
+                                $this->sheet->writeNumber($this->xlsRow,3,$aggregatedgdata/100, $this->xlsPercents);
 
                                 break;
                             case 'pdf':
@@ -2640,9 +2642,9 @@ class statistics_helper {
 
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow,0,$label[$i]);
-                                $this->sheet->write($this->xlsRow,1,$grawdata[$i]);
-                                $this->sheet->write($this->xlsRow,2,sprintf("%01.2f", $percentage)."%");
-                                $this->sheet->write($this->xlsRow,3,sprintf("%01.2f", $aggregatedgdata)."%");
+                                $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
+                                $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
+                                $this->sheet->writeNumber($this->xlsRow,3,$aggregatedgdata/100, $this->xlsPercents);
 
                                 break;
                             case 'pdf':
@@ -2702,13 +2704,13 @@ class statistics_helper {
 
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow,0,$statlang->gT("Sum")." (".$statlang->gT("Answers").")");
-                                $this->sheet->write($this->xlsRow,1,$sumitems);
-                                $this->sheet->write($this->xlsRow,2,$sumpercentage."%");
-                                $this->sheet->write($this->xlsRow,3,$sumpercentage."%");
+                                $this->sheet->writeNumber($this->xlsRow,1,$sumitems);
+                                $this->sheet->writeNumber($this->xlsRow,2,$sumpercentage/100, $this->xlsPercents);
+                                $this->sheet->writeNumber($this->xlsRow,3,$sumpercentage/100, $this->xlsPercents);
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow,0,$statlang->gT("Number of cases"));
-                                $this->sheet->write($this->xlsRow,1,$TotalCompleted);
-                                $this->sheet->write($this->xlsRow,2,$casepercentage."%");
+                                $this->sheet->writeNumber($this->xlsRow,1,$TotalCompleted);
+                                $this->sheet->writeNumber($this->xlsRow,2,$casepercentage/100, $this->xlsPercents);
 
                                 break;
                             case 'pdf':
@@ -2752,8 +2754,8 @@ class statistics_helper {
 
                             $this->xlsRow++;
                             $this->sheet->write($this->xlsRow,0,$label[$i]);
-                            $this->sheet->write($this->xlsRow,1,$grawdata[$i]);
-                            $this->sheet->write($this->xlsRow,2,sprintf("%01.2f", $gdata[$i])."%");
+                            $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
+                            $this->sheet->writeNumber($this->xlsRow,2,$gdata[$i]/100, $this->xlsPercents);
 
                             break;
                         case 'pdf':
@@ -2882,11 +2884,11 @@ class statistics_helper {
 
                         $this->xlsRow++;
                         $this->sheet->write($this->xlsRow,0,$statlang->gT("Arithmetic mean"));
-                        $this->sheet->write($this->xlsRow,1,$am);
+                        $this->sheet->writeNumber($this->xlsRow,1,$am);
 
                         $this->xlsRow++;
                         $this->sheet->write($this->xlsRow,0,$statlang->gT("Standard deviation"));
-                        $this->sheet->write($this->xlsRow,1,$stddev);
+                        $this->sheet->writeNumber($this->xlsRow,1,$stddev);
 
                         break;
                     case 'pdf':
@@ -3265,6 +3267,8 @@ class statistics_helper {
 
             // Creating the first worksheet
             $this->sheet = $this->workbook->addWorksheet(utf8_decode('results-survey'.$surveyid));
+            $this->xlsPercents = &$this->workbook->addFormat();
+            $this->xlsPercents->setNumFormat('0.00%');
             $this->sheet->setInputEncoding('utf-8');
             $this->sheet->setColumn(0,20,20);
             $separator="~|";
@@ -3320,16 +3324,16 @@ class statistics_helper {
             case "xls":
                 $this->xlsRow = 0;
                 $this->sheet->write($this->xlsRow,0,$statlang->gT("Number of records in this query:",'unescaped'));
-                $this->sheet->write($this->xlsRow,1,$results);
+                $this->sheet->writeNumber($this->xlsRow,1,$results);
                 $this->xlsRow++;
                 $this->sheet->write($this->xlsRow,0,$statlang->gT("Total records in survey:",'unescaped'));
-                $this->sheet->write($this->xlsRow,1,$total);
+                $this->sheet->writeNumber($this->xlsRow,1,$total);
 
                 if($total)
                 {
                     $this->xlsRow++;
                     $this->sheet->write($this->xlsRow,0,$statlang->gT("Percentage of total:",'unescaped'));
-                    $this->sheet->write($this->xlsRow,1,$percent."%");
+                    $this->sheet->writeNumber($this->xlsRow,1,$results/$total, $this->xlsPercents);
                 }
 
                 break;
@@ -3390,7 +3394,7 @@ class statistics_helper {
         //only continue if we have something to output
         if ($results > 0)
         {
-            if($outputType=='html' && $browse === true && hasSurveyPermission($surveyid,'responses','read'))
+            if($outputType=='html' && $browse === true && Permission::model()->hasSurveyPermission($surveyid,'responses','read'))
             {
                 //add a buttons to browse results
                 $statisticsoutput .= CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}"), 'post',array('target'=>'_blank'))."\n"

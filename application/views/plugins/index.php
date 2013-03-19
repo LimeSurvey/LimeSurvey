@@ -15,7 +15,7 @@
         array(// display the activation link
             'class' => 'CLinkColumn',
             'header' => 'Activation status',
-            'labelExpression' => function($data) { return ($data['active'] == 0 ? 'activate' : 'deactivate'); },
+            'labelExpression' => function($data) { return ($data['active'] == 0 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', 'Activate', array('width' => 16, 'height' => 16)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', 'Deactivate', array('width' => 16, 'height' => 16))); },
             'urlExpression' => function($data) { return $data['active'] == 0 ? array("/plugins/activate", "id" => $data['id']) : array("/plugins/activate", "id" => $data['id']); }    
         )
     );
@@ -29,7 +29,7 @@
     );
         */
         
-    $this->widget('application.extensions.GridViewWidget', array(
+    $this->widget('bootstrap.widgets.TbExtendedGridView', array(
         'dataProvider'=>$dataProvider,
         'columns'=>$gridColumns,
         'rowCssClassExpression'=> function ($data, $row) { return ($row % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },

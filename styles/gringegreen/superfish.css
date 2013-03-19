@@ -141,3 +141,19 @@ li.sfHover > a > .sf-sub-indicator {
 .sf-shadow ul.sf-shadow-off {
 	background: transparent;
 }
+
+.sf-menu li {
+	background:		#FFFFFF;
+}
+.sf-menu li li {
+	background:		#FFFFFF;
+}
+.sf-menu li li li {
+	background:		#FFFFFF;
+}
+
+.sf-menu a {
+	border-left:	1px solid #fff;
+	border-top:		1px solid #FFFFFF;
+	text-decoration:none;
+}

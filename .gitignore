@@ -10,4 +10,5 @@
 /tmp/*.xls
 /upload/.htaccess
 /nbproject
-/assets/*
+/tmp/assets/*
+.svn

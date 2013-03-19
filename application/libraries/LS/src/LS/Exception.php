@@ -1,7 +1,7 @@
 <?php
 /*
  * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -10,8 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
- */
+  */
 
 /**
  * LS Base Exception Class

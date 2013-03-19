@@ -84,3 +84,9 @@ nav li:hover > ol {
 nav li:hover{
     background-color: #e0dfde;
 }
+
+nav select, nav label {
+    margin: 0px;
+    display: inline-block;
+    
+}

@@ -1,0 +1,182 @@
+/*
+	Imports
+*/
+
+@import "variables.less";
+@import "mixins.less";
+
+// These "required" form colors were pulled from forms.less
+@requiredText:        #b94a48;
+@baseRequiredBorder:  #ee5f5b;
+
+/*
+	Grid view
+*/
+
+.grid-view {
+	padding-top: 20px;
+
+	table.items {
+		th a {
+			display: block;
+			position: relative;
+
+			.caret {
+				display: none;
+				position: absolute;
+				right: 5px;
+				top: 7px;
+			}
+
+			&.asc .caret {
+				display: block;
+			}
+
+			&.desc .caret {
+				border-bottom: 4px solid @tableBorder;
+				border-top: none;
+				display: block;
+			}
+		}
+
+		tr.selected td {
+			background: @tableBackgroundHover;
+		}
+	}
+
+	.filters {
+		.filter-container {
+			padding: 0 15px 0 0;
+		}
+
+		input,
+		select {
+			margin-bottom: 0;
+			width: 100%;
+		}
+	}
+
+	.button-column {
+		text-align: center;
+		width: 50px;
+	}
+
+	.checkbox-column {
+		width: 15px;
+	}
+
+	.summary {
+		margin-bottom: 5px;
+		text-align: right;
+	}
+
+	.pager {
+		margin-top: 5px;
+	}
+
+	.empty {
+		font-style: italic;
+	}
+}
+
+.grid-view-loading {
+	background: url(../img/loading.gif) no-repeat;
+}
+
+/*
+	List view
+*/
+
+.list-view {
+    padding-top: 20px;
+
+	.summary {
+		margin-bottom: 5px;
+		text-align: right;
+	}
+
+	.pager {
+		margin-top: 5px;
+	}
+
+	.sorter {
+		margin: 0 0 5px 0;
+		text-align: right;
+
+		ul {
+			display: inline;
+			list-style: none outside none;
+			margin: 0;
+			padding: 0;
+		}
+
+		li {
+			display: inline;
+			margin: 0 0 0 5px;
+			padding: 0;
+		}
+
+		a .caret {
+			position: absolute;
+			right: 5px;
+			top: 7px;
+
+			&.desc .caret {
+				border-bottom: 4px solid @tableBorder;
+				border-top: none;
+			}
+		}
+	}
+}
+
+.list-view-loading {
+	background: url(../img/loading.gif) no-repeat;
+}
+
+/*
+	Detail view
+*/
+
+.detail-view {
+	.null {
+      color: lighten(@red, 50%);
+	}
+
+	th {
+		text-align: right;
+		width: 160px;
+	}
+}
+
+/*
+	Form
+*/
+
+span.required {
+	color: @requiredText;
+}
+
+.form-inline,
+.form-horizontal,
+.form-vertical {
+	label.error {
+		color: @requiredText;
+	}
+
+	select.error,
+	input.error,
+	textarea.error {
+		border-color: @baseRequiredBorder;
+		color: @requiredText;
+
+		&:focus {
+			border-color: darken(@baseRequiredBorder, 10%);
+		    .box-shadow(0 0 6px lighten(@baseRequiredBorder, 20%));
+		}
+	}
+
+	.help-block.error,
+	.help-inline.error {
+		color: @requiredText;
+	}
+}

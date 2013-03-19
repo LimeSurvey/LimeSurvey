@@ -103,7 +103,16 @@ class LSYii_Application extends CWebApplication
             'enableCookieValidation'=>false   // Enable to activate cookie protection
         ));
 
+        if (!isset($config['components']['assetManager']))
+        {
+            $config['components']['assetManager']=array();
+        }        
+        $config['components']['assetManager']=array_merge_recursive($config['components']['assetManager'],array(
+            'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets'   // Enable to activate cookie protection
+        ));
+
         parent::__construct($config);
+        Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
         // Load the default and environmental settings from different files into self.
         $ls_config = require(APPPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config-defaults.php');
         $email_config = require(APPPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'email.php');
@@ -121,6 +130,8 @@ class LSYii_Application extends CWebApplication
 
         foreach ($settings as $key => $value)
             $this->setConfig($key, $value);
+
+        $this->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(true) . '/tmp/assets');        
         
         // Now initialize the plugin manager
         $this->initPluginManager(); 

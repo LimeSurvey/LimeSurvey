@@ -42,7 +42,7 @@
             <div id="<?php echo $eqrow['language']; ?>">
             <?php $eqrow  = array_map('htmlspecialchars', $eqrow); ?>
                 <ul><li>
-                        <label for='title'> <?php $clang->eT("Code:"); ?></label><input type='text' size='20' maxlength='20' id='title' name='title' value="<?php echo $eqrow['title']; ?>" /> <?php if ($copying) $clang->eT("Note: You MUST enter a new question code!"); ?>
+                        <label for='title'> <?php $clang->eT("Code:"); ?></label><input type='text' size='20' maxlength='20' id='title' required='required' name='title' value="<?php echo $eqrow['title']; ?>" /> <?php if ($copying) $clang->eT("Note: You MUST enter a new question code!"); ?>
                     </li><li>
                         <label for='question_<?php echo $eqrow['language']; ?>'><?php $clang->eT("Question:"); ?></label>
                         <div class="htmleditor">
@@ -277,7 +277,7 @@
     {
 
 
-        if (hasSurveyPermission($surveyid,'surveycontent','import'))
+        if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
         { ?>
         <br /><div class='header ui-widget-header'><?php $clang->eT("...or import a question"); ?></div>
         <?php echo CHtml::form(array("admin/question/sa/import"), 'post', array('id'=>'importquestion', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return validatefilename(this, '".$clang->gT("Please select a file to import!",'js')."');")); ?>

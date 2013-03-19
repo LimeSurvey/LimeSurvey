@@ -1,43 +1,39 @@
 <?php
 $aReplacementData=array();
-if (isset($tmp_survlangs)) { ?>
-    <div class="langpopup" id="previewquestionpopup"><?php $clang->eT("Please select a language:"); ?><ul>
-            <?php foreach ($tmp_survlangs as $tmp_lang)
-                { ?>
-                <li><a target='_blank' onclick="$('#previewquestion').qtip('hide');" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $tmp_lang); ?>' accesskey='d'><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
-                <?php } ?>
-        </ul></div>
-    <?php } ?>
+?>
 <div class='menubar-title ui-widget-header'>
     <strong><?php $clang->eT("Question"); ?></strong> <span class='basic'><?php echo ellipsize(FlattenText($qrrow['question']),200); ?> (<?php echo $clang->gT("ID").":".$qid; ?>)</span>
 </div>
 <div class='menubar-main'>
     <div class='menubar-left'>
         <img id='separator16' src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-        <?php if(hasSurveyPermission($surveyid,'surveycontent','read'))
+        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
             {
-                if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
-                { ?>
-                <a accesskey='q' href="<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>" target="_blank">
+            ?>
+                <a accesskey='q' id='questionpreviewlink' ' href="<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>" target="_blank">
                     <img src='<?php echo $sImageURL; ?>preview.png' alt='<?php $clang->eT("Preview this question"); ?>' /></a>
+                <?php if (count($languagelist) > 1)
+                { ?>
+                <div class="popuptip" rel="questionpreviewlink"><?php $clang->eT("Preview this question in:"); ?>
+                    <ul>
+                    <?php foreach ($languagelist as $tmp_lang){ ?>
+                        <li><a target='_blank' href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $tmp_lang); ?>' ><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
+                    <?php } ?>
+                    </ul>
+                </div>
+                <?php } ?>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-                <?php } else { ?>
-                <a accesskey='q' id='previewquestion'>
-                    <img src='<?php echo $sImageURL; ?>preview.png' title='' alt='<?php $clang->eT("Preview This Question"); ?>' /></a>
-                <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt=''  />
-
-                <?php }
-        } ?>
+        <?php } ?>
 
 
-        <?php  if(hasSurveyPermission($surveyid,'surveycontent','update'))
+        <?php  if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
 
             <a href='<?php echo $this->createUrl("admin/question/sa/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>'>
                 <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php $clang->eT("Edit Current Question"); ?>' /></a>
             <?php } ?>
 
-        <?php if(hasSurveyPermission($surveyid,'surveycontent','read'))
+        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
             { ?>
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt=''  />
             <a target='_blank' href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>">
@@ -47,7 +43,7 @@ if (isset($tmp_survlangs)) { ?>
             {?>
             <a href='#'
                 onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/question/sa/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
-                <img style='<?php echo (hasSurveyPermission($surveyid,'surveycontent','delete')?'':'visibility: hidden;');?>' src='<?php echo $sImageURL; ?>delete.png' alt='<?php $clang->eT("Delete current question"); ?>'/></a>
+                <img style='<?php echo (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete')?'':'visibility: hidden;');?>' src='<?php echo $sImageURL; ?>delete.png' alt='<?php $clang->eT("Delete current question"); ?>'/></a>
             <?php }
             else
             { ?>
@@ -58,7 +54,7 @@ if (isset($tmp_survlangs)) { ?>
 
 
 
-            if(hasSurveyPermission($surveyid,'surveycontent','export'))
+            if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
             <a href='<?php echo $this->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/$qid");?>'>
                 <img src='<?php echo $sImageURL; ?>dumpquestion.png' alt='<?php $clang->eT("Export this question"); ?>' /></a>
@@ -69,7 +65,7 @@ if (isset($tmp_survlangs)) { ?>
 
 
 
-        <?php if(hasSurveyPermission($surveyid,'surveycontent','create'))
+        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
             {
                 if ($activated != "Y")
                 { ?>
@@ -89,7 +85,7 @@ if (isset($tmp_survlangs)) { ?>
             <img src='<?php echo $sImageURL; ?>blank.gif' alt='' height="<?php echo $iIconSize;?>" width='40' />
             <?php }
 
-            if(hasSurveyPermission($surveyid,'surveycontent','update'))
+            if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <a href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
                 <img src='<?php echo $sImageURL; ?>conditions.png' alt='<?php $clang->eT("Set conditions for this question"); ?>'  /></a>
@@ -104,7 +100,7 @@ if (isset($tmp_survlangs)) { ?>
 
 
 
-            if(hasSurveyPermission($surveyid,'surveycontent','read'))
+            if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
             {
                 if ($qtypes[$qrrow['type']]['subquestions'] >0)
                 { ?>
@@ -120,7 +116,7 @@ if (isset($tmp_survlangs)) { ?>
 
 
 
-            if(hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0)
+            if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0)
             { ?>
             <a href='<?php echo $this->createUrl('admin/question/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                 <img src='<?php echo $sImageURL; ?>answers.png' alt='<?php $clang->eT("Edit answer options for this question"); ?>' /></a>
@@ -133,7 +129,7 @@ if (isset($tmp_survlangs)) { ?>
 
 
 
-            if(hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
+            if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
             { ?>
             <a href='<?php echo $this->createUrl('admin/question/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                 <img src='<?php echo $sImageURL; ?>defaultanswers.png' alt='<?php $clang->eT("Edit default answers for this question"); ?>' /></a>

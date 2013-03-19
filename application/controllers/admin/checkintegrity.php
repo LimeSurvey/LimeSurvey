@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 /**
  * CheckIntegrity Controller
@@ -27,7 +26,7 @@ class CheckIntegrity extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] != 1) {
+        if (!Permission::model()->hasGlobalPermission('global_settings','read')){
             die();
         }
 
@@ -46,7 +45,7 @@ class CheckIntegrity extends Survey_Common_Action
         $clang = Yii::app()->lang;
         $oldsmultidelete=Yii::app()->request->getPost('oldsmultidelete', array());
         $aData['messages'] = array();
-        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1 && Yii::app()->request->getPost('ok') == 'Y') {
+        if ( Permission::model()->hasGlobalPermission('global_settings','update') && Yii::app()->request->getPost('ok') == 'Y') {
             $aDelete = $this->_checkintegrity();
             if (isset($aDelete['redundanttokentables'])) {
                 foreach ($aDelete['redundanttokentables'] as $aTokenTable)
@@ -80,7 +79,7 @@ class CheckIntegrity extends Survey_Common_Action
     {
         $aData = array();
         $clang = Yii::app()->lang;
-        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1 && Yii::app()->request->getPost('ok') == 'Y') {
+        if (Permission::model()->hasGlobalPermission('global_settings','update') && Yii::app()->request->getPost('ok') == 'Y') {
             $aDelete = $this->_checkintegrity();
 
             // TMSW Conditions->Relevance:  Update this to process relevance instead
@@ -343,7 +342,7 @@ class CheckIntegrity extends Survey_Common_Action
         foreach ($surveys as $survey) $sids[] = $survey['sid'];
         $criteria->addNotInCondition('sid', $sids, 'OR');
 
-        Survey_permissions::model()->deleteAll($criteria);
+        Permission::model()->deleteAll($criteria);
         
 
         // Deactivate surveys that have a missing response table
@@ -367,7 +366,7 @@ class CheckIntegrity extends Survey_Common_Action
         foreach ($aResult->readAll() as $aRow)
         {
             $sTableName = substr(reset($aRow), strlen($sDBPrefix));
-            if ($sTableName == 'survey_permissions' || $sTableName == 'survey_links' || $sTableName == 'survey_url_parameters') continue;
+            if ($sTableName == 'survey_links' || $sTableName == 'survey_url_parameters') continue;
             $aTableName=explode('_',$sTableName);
             if (isset($aTableName[1]) && ctype_digit($aTableName[1]))
             {

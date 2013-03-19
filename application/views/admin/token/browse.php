@@ -73,7 +73,7 @@
     var invitemsg = "<?php echo $clang->eT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"); ?>"
     var remindmsg = "<?php echo $clang->eT("Send reminder email to the selected entries (if they have already received the invitation email)"); ?>"
     var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/email/action/invite/surveyid/{$surveyid}/tokenids/|"); ?>";
-    <?php if (!hasGlobalPermission('USER_RIGHT_PARTICIPANT_PANEL')){?>
+    <?php if (!Permission::model()->hasGlobalPermission('global_participantpanel','read')){?>
     var bParticipantPanelPermission=false;
     <?php 
     } else {?>
@@ -168,7 +168,7 @@
 <br/>
 <table id="displaytokens"></table> <div id="pager"></div>
 
-<?php if (hasGlobalPermission('USER_RIGHT_PARTICIPANT_PANEL')) { ?>
+<?php if (Permission::model()->hasGlobalPermission('global_participantpanel','read')) { ?>
     <div id="addcpdb" title="addsurvey" style="display:none">
         <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
         <p>

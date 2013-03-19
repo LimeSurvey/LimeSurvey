@@ -23,7 +23,7 @@
     <td <?php echo $highlight;?>><?php echo $completed;?></td>
     <td><?php echo $quotalisting['qlimit'];?></td>
     <td style="padding: 3px;">
-        <?php if (hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
+        <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
             <?php echo CHtml::form(array("admin/quotas/sa/editquota/surveyid/{$iSurveyId}"), 'post'); ?>
                 <input name="submit" type="submit" class="submit" value="<?php $clang->eT("Edit");?>" />
                 <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
@@ -31,7 +31,7 @@
                 <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />
                 <input type="hidden" name="subaction" value="quota_editquota" />
             </form>
-            <?php } if (hasSurveyPermission($iSurveyId, 'quotas','delete')) { ?>
+            <?php } if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','delete')) { ?>
             <?php echo CHtml::form(array("admin/quotas/sa/delquota/surveyid/{$iSurveyId}"), 'post'); ?>
                 <input name="submit" type="submit" class="submit" value="<?php $clang->eT("Remove");?>" />
                 <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
@@ -49,7 +49,7 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td style="padding: 3px;">
-        <?php if (hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
+        <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
             <?php echo CHtml::form(array("admin/quotas/sa/new_answer/surveyid/{$iSurveyId}"), 'post'); ?>
                 <input name="submit" type="submit" class="quota_new" value="<?php $clang->eT("Add answer");?>" />
                 <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />

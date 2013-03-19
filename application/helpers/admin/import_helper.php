@@ -358,7 +358,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                     }
                 }
             }
-            if (isset($lsmatch) || (Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] != 1))
+            if (isset($lsmatch) || !Permission::model()->hasGlobalPermission('global_labelsets','import'))
             {
                 //There is a matching labelset or the user is not allowed to edit labels -
                 // So, we will delete this one and refer to the matched one.
@@ -2691,7 +2691,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
     // DO SURVEY_RIGHTS
 
-    Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'],$iNewSID);
+    Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'],$iNewSID);
 
     $importresults['deniedcountls'] =0;
 
@@ -2780,7 +2780,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                     }
                 }
             }
-            if (isset($lsmatch) || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] != 1)
+            if (isset($lsmatch) || Permission::model()->hasGlobalPermission('global_labelsets','import'))
             {
                 //There is a matching labelset or the user is not allowed to edit labels -
                 // So, we will delete this one and refer to the matched one.
@@ -3949,7 +3949,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     }
 
     // Set survey rights
-    Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'],$iNewSID);
+    Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'],$iNewSID);
     $aOldNewFieldmap=reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDReplacements);
     $results['FieldReMap']=$aOldNewFieldmap;
     LimeExpressionManager::SetSurveyId($iNewSID);
@@ -4178,7 +4178,7 @@ function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
 
 function XSSFilterArray(&$array)
 {
-    if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+    if(Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('global_superadmin','read'))
     {
         $filter = new CHtmlPurifier();
         $filter->options = array('URI.AllowedSchemes'=>array(
@@ -4628,7 +4628,13 @@ function TSVImportSurvey($sFullFilepath)
     {
         $result = Survey::model()->deleteSurvey($iNewSID);
     }
-
+    else
+    {
+        LimeExpressionManager::SetSurveyId($iNewSID);
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
+        LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
+    }
+    
     return $results;
 }
 

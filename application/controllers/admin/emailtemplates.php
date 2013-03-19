@@ -1,7 +1,7 @@
 <?php
 /*
  * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -17,8 +17,7 @@
  *
  * @package LimeSurvey
  * @copyright 2011
- * @version $Id$
- * @access public
+  * @access public
  */
 
 class emailtemplates extends Survey_Common_Action {
@@ -84,7 +83,7 @@ class emailtemplates extends Survey_Common_Action {
     function update($iSurveyId)
     {
         $clang = $this->getController()->lang;
-        if (hasSurveyPermission($iSurveyId, 'surveylocale','update'))
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale','update'))
         {
             $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             $languagelist[] = Survey::model()->findByPk($iSurveyId)->language;
@@ -109,7 +108,7 @@ class emailtemplates extends Survey_Common_Action {
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Email templates successfully saved.");
         }
-        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyId));
+        $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyId));
     }
 
 

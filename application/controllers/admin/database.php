@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 * LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -10,8 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* $Id$
-*
 */
 /**
 * Database
@@ -19,7 +17,6 @@
 * @package LimeSurvey
 * @author
 * @copyright 2011
-* @version $Id$
 * @access public
 */
 class database extends Survey_Common_Action
@@ -45,7 +42,7 @@ class database extends Survey_Common_Action
         $qid = returnGlobal('qid');
         // if $action is not passed, check post data.
 
-        if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        if(Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('global_superadmin','read'))
         {
             $filter = new CHtmlPurifier();
             $filter->options = array('URI.AllowedSchemes'=>array(
@@ -57,7 +54,7 @@ class database extends Survey_Common_Action
         else
             $xssfilter = false;
 
-        if ($action == "updatedefaultvalues" && hasSurveyPermission($surveyid, 'surveycontent','update'))
+        if ($action == "updatedefaultvalues" && Permission::model()->hasSurveyPermission($surveyid, 'surveycontent','update'))
         {
 
             $questlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
@@ -127,12 +124,12 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
         }
 
 
-        if ($action == "updateansweroptions" && hasSurveyPermission($surveyid, 'surveycontent','update'))
+        if ($action == "updateansweroptions" && Permission::model()->hasSurveyPermission($surveyid, 'surveycontent','update'))
         {
             Yii::app()->loadHelper('database');
             $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
@@ -222,7 +219,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('/admin/question/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                $this->getController()->redirect(array('/admin/question/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
 
             //$action='editansweroptions';
@@ -230,7 +227,7 @@ class database extends Survey_Common_Action
         }
 
 
-        if ($action == "updatesubquestions" && hasSurveyPermission($surveyid, 'surveycontent','update'))
+        if ($action == "updatesubquestions" && Permission::model()->hasSurveyPermission($surveyid, 'surveycontent','update'))
         {
 
             Yii::app()->loadHelper('database');
@@ -356,11 +353,11 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('/admin/question/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                $this->getController()->redirect(array('/admin/question/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
         }
 
-        if (in_array($action, array('insertquestion', 'copyquestion')) && hasSurveyPermission($surveyid, 'surveycontent','create'))
+        if (in_array($action, array('insertquestion', 'copyquestion')) && Permission::model()->hasSurveyPermission($surveyid, 'surveycontent','create'))
         {
             $baselang = Survey::model()->findByPk($surveyid)->language;
             if (strlen(Yii::app()->request->getPost('title')) < 1)
@@ -586,11 +583,11 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
         }
 
-        if ($action == "updatequestion" && hasSurveyPermission($surveyid, 'surveycontent','update'))
+        if ($action == "updatequestion" && Permission::model()->hasSurveyPermission($surveyid, 'surveycontent','update'))
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
 
@@ -878,15 +875,15 @@ class database extends Survey_Common_Action
             else
             {
                 if(Yii::app()->request->getPost('newpage') == "return") {
-                    $this->getController()->redirect($this->getController()->createUrl('admin/question/sa/editquestion/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                    $this->getController()->redirect(array('admin/question/sa/editquestion/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
                 } else {
-                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                    $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
                 }
             }
         }
 
 
-        if (($action == "updatesurveylocalesettings") && hasSurveyPermission($surveyid,'surveylocale','update'))
+        if (($action == "updatesurveylocalesettings") && Permission::model()->hasSurveyPermission($surveyid,'surveylocale','update'))
         {
             $languagelist = Survey::model()->findByPk($surveyid)->additionalLanguages;
             $languagelist[]=Survey::model()->findByPk($surveyid)->language;
@@ -959,11 +956,11 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid));
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$surveyid));
             }
         }
 
-        if (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && hasSurveyPermission($surveyid,'surveysettings','update'))
+        if (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update'))
         {
              // Save plugin settings.
             $pluginSettings = App()->request->getPost('plugin', array());
@@ -1016,11 +1013,12 @@ class database extends Survey_Common_Action
             fixLanguageConsistency($surveyid,Yii::app()->request->getPost('languageids'));
             $template = Yii::app()->request->getPost('template');
 
-            if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights(Yii::app()->session['loginID'], $template)) $template = "default";
+            if(!Permission::model()->hasGlobalPermission('global_superadmin','read') && !hasGlobalPermission('global_templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $template)) $template = "default";
 
             $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
             Survey_url_parameters::model()->deleteAllByAttributes(array('sid'=>$surveyid));
-
+            var_dump($aURLParams);
+            die();
             foreach($aURLParams as $aURLParam)
             {
                 $aURLParam['parameter']=trim($aURLParam['parameter']);
@@ -1141,18 +1139,18 @@ class database extends Survey_Common_Action
 
             if (Yii::app()->request->getPost('action') == "updatesurveysettingsandeditlocalesettings")
             {
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/editlocalsettings/surveyid/'.$surveyid));
+                $this->getController()->redirect(array('admin/survey/sa/editlocalsettings/surveyid/'.$surveyid));
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid));
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$surveyid));
             }
 
         }
 
         if (!$action)
         {
-            $this->getController()->redirect("/admin","refresh");
+            $this->getController()->redirect(array("/admin"),"refresh");
         }
 
 

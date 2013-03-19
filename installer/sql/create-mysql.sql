@@ -203,6 +203,23 @@ CREATE TABLE `prefix_participants` (
 
 
 --
+-- Table structure for table permissions
+--
+CREATE TABLE `prefix_permissions` (
+	`sid` int(11) NOT NULL,
+	`uid` int(11) NOT NULL,
+	`permission` varchar(20) NOT NULL,
+	`create_p` int(11) NOT NULL default '0',
+    `read_p` int(11) NOT NULL default '0',
+	`update_p` int(11) NOT NULL default '0',
+	`delete_p` int(11) NOT NULL default '0',
+    `import_p` int(11) NOT NULL default '0',
+    `export_p` int(11) NOT NULL default '0',
+	PRIMARY KEY (sid, uid, permission)
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
 -- Table structure for table question_attributes
 --
 CREATE TABLE `prefix_question_attributes` (
@@ -338,23 +355,6 @@ CREATE TABLE `prefix_survey_links` (
 
 
 --
--- Table structure for table survey_permissions
---
-CREATE TABLE `prefix_survey_permissions` (
-	`sid` int(11) NOT NULL,
-	`uid` int(11) NOT NULL,
-	`permission` varchar(20) NOT NULL,
-	`create_p` int(11) NOT NULL default '0',
-    `read_p` int(11) NOT NULL default '0',
-	`update_p` int(11) NOT NULL default '0',
-	`delete_p` int(11) NOT NULL default '0',
-    `import_p` int(11) NOT NULL default '0',
-    `export_p` int(11) NOT NULL default '0',
-	PRIMARY KEY (sid, uid, permission)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
 -- Table structure for table survey_url_parameters
 --
 CREATE TABLE `prefix_survey_url_parameters` (
@@ -443,7 +443,7 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_description` TEXT NULL,
   `surveyls_welcometext` TEXT NULL,
   `surveyls_endtext` TEXT NULL,
-  `surveyls_url` varchar(255) NULL,
+  `surveyls_url` TEXT NULL,
   `surveyls_urldescription` varchar(255) NULL,
   `surveyls_email_invite_subj` varchar(255) NULL,
   `surveyls_email_invite` TEXT NULL,
@@ -533,8 +533,9 @@ CREATE TABLE `prefix_templates` (
   PRIMARY KEY  (`folder`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
+
 --
--- @todo Make name unique
+-- Table structure for table plugins
 --
 CREATE TABLE `prefix_plugins` (
   `id` int(11) NOT NULL auto_increment,
@@ -543,6 +544,10 @@ CREATE TABLE `prefix_plugins` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
+
+--
+-- Table structure for table plugin_settings
+--
 CREATE TABLE `prefix_plugin_settings` (
   `id` int(11) NOT NULL auto_increment,
   `plugin_id` int(11) NOT NULL,
@@ -552,6 +557,7 @@ CREATE TABLE `prefix_plugin_settings` (
   `value` text NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
 
 --
 -- Secondary indexes
@@ -575,4 +581,4 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '165');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '166');

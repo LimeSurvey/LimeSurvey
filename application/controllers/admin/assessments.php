@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 
 /**
@@ -53,7 +52,7 @@ class Assessments extends Survey_Common_Action
         if ($action == "assessmentdelete")
              $this->_delete($iSurveyID, $_POST['id']);
 
-        if (hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
             $clang = $this->getController()->lang;
 
             if ($iSurveyID == '') {
@@ -91,7 +90,7 @@ class Assessments extends Survey_Common_Action
         $aData['actionvalue'] = "assessmentadd";
         $aData['editId'] = '';
 
-        if ($action == "assessmentedit" && hasSurveyPermission($iSurveyID, 'assessments', 'update')) {
+        if ($action == "assessmentedit" && Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update')) {
             $aData = $this->_collectEditData($surveyLanguage, $aData, $clang);
         }
 
@@ -145,7 +144,7 @@ class Assessments extends Survey_Common_Action
      */
     private function _add($iSurveyID)
     {
-        if (hasSurveyPermission($iSurveyID, 'assessments', 'create')) {
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'create')) {
             $first = true;
             $assessmentId = -1;
             $languages = Yii::app()->getConfig("assessmentlangs");
@@ -170,7 +169,7 @@ class Assessments extends Survey_Common_Action
      */
     private function _update($iSurveyID)
     {
-        if (hasSurveyPermission($iSurveyID, 'assessments', 'update') && isset($_POST['id'])) {
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update') && isset($_POST['id'])) {
 
             $aid = sanitize_int($_POST['id']);
             $languages = Yii::app()->getConfig("assessmentlangs");
@@ -187,7 +186,7 @@ class Assessments extends Survey_Common_Action
      */
     private function _delete($iSurveyID, $assessmentId)
     {
-        if (hasSurveyPermission($iSurveyID, 'assessments', 'delete')) {
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'delete')) {
             Assessment::model()->deleteAllByAttributes(array('id' => $assessmentId, 'sid' => $iSurveyID));
         }
     }

@@ -992,6 +992,10 @@
                     $aReplacementVars["FIRSTNAME"]=$oTokenInformation->firstname;
                     $aReplacementVars["LASTNAME"]=$oTokenInformation->lastname;
                     $aReplacementVars["TOKEN"]=$clienttoken;
+                    // added survey url in replacement vars
+                    $surveylink = Yii::app()->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'],'token'=>$clienttoken));
+                    $aReplacementVars['SURVEYURL'] = $surveylink;
+                    
                     $attrfieldnames=getAttributeFieldNames($surveyid);
                     foreach ($attrfieldnames as $attr_name)
                     {
@@ -1976,7 +1980,7 @@
     // Prefill questions/answers from command line params
     $reservedGetValues= array('token','sid','gid','qid','lang','newtest','action');
     $startingValues=array();
-    if (isset($_GET) && !$preview)
+    if (isset($_GET))
     {
         foreach ($_GET as $k=>$v)
         {
@@ -1987,6 +1991,7 @@
         }
     }
     $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
+
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url

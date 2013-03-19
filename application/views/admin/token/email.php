@@ -73,8 +73,10 @@
                             <input type='text' size='83' id='subject_<?php echo $language; ?>' name='subject_<?php echo $language; ?>' value="<?php echo $subject; ?>" /></li>
 
                         <li><label for='message_<?php echo $language; ?>'><?php $clang->eT("Message"); ?>:</label>
+                            <div class="htmleditor">
                             <textarea name='message_<?php echo $language; ?>' id='message_<?php echo $language; ?>' rows='20' cols='80'><?php echo htmlspecialchars($textarea); ?></textarea>
                             <?php echo getEditor("email-inv", "message_$language", "[" . $clang->gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
+                            </div>
                         </li>
                     </ul></div>
                 <?php } ?>

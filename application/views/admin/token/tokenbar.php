@@ -8,12 +8,12 @@
             <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
             <a href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>"><img src='<?php echo $imageurl; ?>summary.png' alt='<?php $clang->eT("Show token summary"); ?>'/></a>
             <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
-            <?php if (hasSurveyPermission($surveyid, 'tokens', 'read')){ ?>
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'read')){ ?>
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>">
                     <img src='<?php echo $imageurl; ?>document.png' alt='<?php $clang->eT("Display tokens"); ?>' />
                 </a>
             <?php } ?>
-            <?php if (hasSurveyPermission($surveyid, 'tokens', 'create')){ ?>
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'create')){ ?>
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid"); ?>">
                     <img src='<?php echo $imageurl; ?>add.png' title='' alt='<?php $clang->eT("Add new token entry"); ?>' />
                 </a>
@@ -21,13 +21,13 @@
                     <img src='<?php echo $imageurl; ?>create_dummy_token.png' title='' alt='<?php $clang->eT("Create dummy tokens"); ?>' />
                 </a>
             <?php } ?>
-            <?php if (hasSurveyPermission($surveyid, 'tokens', 'update') || hasSurveyPermission($iSurveyID, 'surveysettings', 'update')){ ?>
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')){ ?>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$surveyid"); ?>">
                     <img src='<?php echo $imageurl; ?>token_manage.png' title='' alt='<?php $clang->eT("Manage additional attribute fields"); ?>' />
                 </a>
             <?php } ?>
-            <?php if (hasSurveyPermission($surveyid, 'tokens', 'import')){ ?>
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'import')){ ?>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/import/surveyid/$surveyid") ?>">
                     <img src='<?php echo $imageurl; ?>importcsv.png' title='' alt='<?php $clang->eT("Import tokens from CSV file"); ?>' />
@@ -36,12 +36,12 @@
                     <img src='<?php echo $imageurl; ?>importldap.png' alt='<?php $clang->eT("Import tokens from LDAP query"); ?>' />
                 </a>
             <?php } ?>
-            <?php if (hasSurveyPermission($surveyid, 'tokens', 'export')){ ?>
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'export')){ ?>
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/exportdialog/surveyid/$surveyid"); ?>">
                     <img src='<?php echo $imageurl; ?>exportcsv.png' alt='<?php $clang->eT("Export tokens to CSV file"); ?>' />
                 </a>
             <?php } ?>
-            <?php if (hasSurveyPermission($surveyid, 'tokens', 'update')){ ?>
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')){ ?>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <a href='<?php echo $this->createUrl("admin/emailtemplates/sa/index/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $imageurl; ?>emailtemplates.png' alt='<?php $clang->eT("Edit email templates"); ?>' />
@@ -58,19 +58,19 @@
                 </a>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
             <?php } ?>
-            <?php if (hasSurveyPermission($surveyid, 'tokens', 'update')){ ?>
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')){ ?>
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/bouncesettings/surveyid/$surveyid"); ?>">
                     <img src='<?php echo $imageurl; ?>bounce_settings.png' alt='<?php $clang->eT("Bounce settings"); ?>' />
                 </a>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
             <?php } ?>
-            <?php if(Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] == 1 && hasSurveyPermission($surveyid, 'tokens', 'create')){ ?>
+            <?php if(Permission::model()->hasGlobalPermission('global_participantpanel','read') && Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'create')){ ?>
                 <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
                     <img src='<?php echo $imageurl; ?>cpdb.png' alt='<?php $clang->eT("Central participant database/panel"); ?>' />
                 </a>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
             <?php } ?>
-            <?php if (hasSurveyPermission($surveyid, 'surveysettings', 'update') || HasSurveyPermission($surveyid, 'tokens','delete')){ ?>
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($surveyid, 'tokens','delete')){ ?>
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/kill/surveyid/$surveyid"); ?>">
                     <img src='<?php echo $imageurl; ?>delete.png' alt='<?php $clang->eT("Delete tokens table"); ?>' />
                 </a>

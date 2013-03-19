@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 
 /**
@@ -35,7 +34,7 @@ class export extends Survey_Common_Action {
         $action = Yii::app()->request->getParam('action');
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
-        if ( hasSurveyPermission($iSurveyID, 'surveycontent', 'export') )
+        if ( Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') )
         {
             $this->_surveyexport($action, $iSurveyID);
             return;
@@ -49,7 +48,7 @@ class export extends Survey_Common_Action {
     */
     public function surveyarchives()
     {
-        if ( ! $this->session->userdata('USER_RIGHT_SUPERADMIN') )
+        if ( ! Permission::model()->hasGlobalPermission('global_superadmin','read') )
         {
             die('Access denied.');
         }
@@ -140,7 +139,7 @@ class export extends Survey_Common_Action {
         if ( ! isset($convertspacetous) ) { $convertspacetous = returnGlobal('convertspacetous'); }
         $clang = Yii::app()->lang;
 
-        if ( ! hasSurveyPermission($iSurveyID, 'responses', 'export') )
+        if ( ! Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export') )
         {
             $this->getController()->error('Access denied!');
         }
@@ -856,7 +855,7 @@ class export extends Survey_Common_Action {
         //Exports all responses to a survey in special "Verified Voting" format.
         $clang = $this->getController()->lang;
 
-        if ( ! hasSurveyPermission($iSurveyID, 'responses','export') )
+        if ( ! Permission::model()->hasSurveyPermission($iSurveyID, 'responses','export') )
         {
             return;
         }

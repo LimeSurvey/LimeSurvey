@@ -10,11 +10,9 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 /*
- * $Id$
- *
+  *
  * Copyright (c) 2002,2003 Free Software Foundation
  * developed under the custody of the
  * Open Web Application Security Project

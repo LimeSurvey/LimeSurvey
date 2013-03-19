@@ -1,0 +1,148 @@
+.clearfix { *zoom:1; }
+.clearfix:before, .clearfix:after {
+    display:table;
+    content:"";
+    line-height:0;
+}
+.clearfix:after { clear:both; }
+.hide-text {
+    font:0 / 0 a;
+    color:transparent;
+    text-shadow:none;
+    background-color:transparent;
+    border:0;
+}
+.input-block-level {
+    display:block;
+    width:100%;
+    min-height:30px;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+}
+.grid-view { padding-top:20px; }
+.grid-view table.items th a {
+    display:block;
+    position:relative;
+}
+.grid-view table.items th a .caret {
+    display:none;
+    position:absolute;
+    right:5px;
+    top:7px;
+}
+.grid-view table.items th a.asc .caret { display:block; }
+.grid-view table.items th a.desc .caret {
+    border-bottom:4px solid #000000;
+    border-top:none;
+    display:block;
+}
+.grid-view table.items tr.selected td { background:#eeeeee; }
+.grid-view .filters .filter-container { padding:0 15px 0 0; }
+.grid-view .filters input, .grid-view .filters select {
+    margin-bottom:0;
+    width:100%;
+}
+.grid-view .button-column {
+    text-align:center;
+    width:50px;
+}
+.grid-view .checkbox-column { width:15px; }
+.grid-view .summary {
+    margin-bottom:5px;
+    text-align:right;
+}
+.grid-view .pager { margin-top:5px; }
+.grid-view .empty { font-style:italic; }
+.grid-view-loading { background:url(../img/loading.gif) no-repeat; }
+.list-view { padding-top:20px; }
+.list-view .summary {
+    margin-bottom:5px;
+    text-align:right;
+}
+.list-view .pager { margin-top:5px; }
+.list-view .sorter {
+    margin:0 0 5px 0;
+    text-align:right;
+}
+.list-view .sorter ul {
+    display:inline;
+    list-style:none outside none;
+    margin:0;
+    padding:0;
+}
+.list-view .sorter li {
+    display:inline;
+    margin:0 0 0 5px;
+    padding:0;
+}
+.list-view .sorter a .caret {
+    position:absolute;
+    right:5px;
+    top:7px;
+}
+.list-view .sorter a .caret.desc .caret {
+    border-bottom:4px solid #000000;
+    border-top:none;
+}
+.list-view-loading { background:url(../img/loading.gif) no-repeat; }
+.detail-view .null { color:#ffc0cb; }
+.detail-view th {
+    text-align:right;
+    width:160px;
+}
+span.required { color:#ff0000; }
+.form-inline label.error, .form-horizontal label.error, .form-vertical label.error { color:#b94a48; }
+.form-inline select.error, .form-inline input.error, .form-inline textarea.error, .form-horizontal select.error, .form-horizontal input.error, .form-horizontal textarea.error, .form-vertical select.error, .form-vertical input.error, .form-vertical textarea.error {
+    border-color:#b94a48;
+    color:#b94a48;
+}
+.form-inline select.error:focus, .form-inline input.error:focus, .form-inline textarea.error:focus, .form-horizontal select.error:focus, .form-horizontal input.error:focus, .form-horizontal textarea.error:focus, .form-vertical select.error:focus, .form-vertical input.error:focus, .form-vertical textarea.error:focus {
+    border-color:#953b39;
+    -webkit-box-shadow:0 0 6px #d59392;
+    -moz-box-shadow:0 0 6px #d59392;
+    box-shadow:0 0 6px #d59392;
+}
+.form-inline .help-block.error, .form-inline .help-inline.error, .form-horizontal .help-block.error, .form-horizontal .help-inline.error, .form-vertical .help-block.error, .form-vertical .help-inline.error { color:#b94a48; }
+
+.select2-container {
+    margin-bottom:9px;
+}
+.select2-container-multi .select2-choices {
+    height:20px;
+    font-size:14px;
+    line-height:20px;
+    border:1px solid #CCCCCC;
+    color:#555555;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
+}
+.select2-container-multi.select2-dropdown-open .select2-choices {
+    -webkit-border-radius:3px 3px 0 0;
+    -moz-border-radius:3px 3px 0 0;
+    border-radius:3px 3px 0 0;
+}
+
+/* Responsive Tables */
+table th { font-weight: bold; }
+table td, table th { padding: 9px 10px; text-align: left; }
+
+/* Mobile */
+@media only screen and (max-width: 767px) {
+
+    table.responsive { margin-bottom: 0; }
+
+    .pinned { position: absolute; left: 0; top: 0; background: #fff; width: 35%; overflow: hidden; overflow-x: scroll; border-right: 1px solid #ccc; border-left: 1px solid #ccc; }
+    .pinned table { border-right: none; border-left: none; width: 100%; }
+    .pinned table th, .pinned table td { white-space: nowrap; }
+    .pinned td:last-child { border-bottom: 0; }
+
+    div.table-wrapper { position: relative; margin-bottom: 20px; overflow: hidden; border-right: 1px solid #ccc; }
+    div.table-wrapper div.scrollable table { margin-left: 35%; }
+    div.table-wrapper div.scrollable { overflow: scroll; overflow-y: hidden; }
+
+    table.responsive td, table.responsive th { position: relative; white-space: nowrap; overflow: hidden; }
+    table.responsive th:first-child, table.responsive td:first-child, table.responsive td:first-child, table.responsive.pinned td { display: none; }
+
+}

@@ -70,7 +70,7 @@
             $menu['items']['left'][] = array(
                 'href' => array('/plugins'),
                 'alt' => gT('Plugin manager'),
-                'image' => 'share.png'
+                'image' => 'plugin.png'
             );
 
             $surveys = getSurveyList(true);
@@ -482,7 +482,7 @@
         
         protected function globalSettings()
         {
-            if ($this->hasRight('USER_RIGHT_CONFIGURATOR'))
+            if (Permission::model()->hasGlobalPermission('global_settings','read'))
             {
                 return array(
                     'href' => array('admin/globalsettings'),
@@ -494,7 +494,7 @@
 
         protected function checkIntegrity()
         {
-            if ($this->hasRight('USER_RIGHT_CONFIGURATOR'))
+            if (Permission::model()->hasGlobalPermission('global_settings','read'))
             {
                 return array(
                     'href' => array('admin/checkintegrity'),
@@ -507,7 +507,7 @@
         
         protected function createSurvey()
         {
-            if ($this->hasRight('USER_RIGHT_CREATE_SURVEY'))
+            if (Permission::model()->hasGlobalPermission('global_surveys','create'))
             {
                 return array(
                     'href' => array("admin/survey/sa/newsurvey"),
@@ -518,7 +518,7 @@
         }
         protected function dumpDatabase()
         {
-            if ($this->hasRight('USER_RIGHT_SUPERADMIN'))
+            if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
             {
                 if (in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli')) || Yii::app()->getConfig('demo_mode') == true)
                 {
@@ -541,7 +541,7 @@
 
         protected function editLabels()
         {
-            if ($this->hasRight("USER_RIGHT_MANAGE_LABEL"))
+            if (Permission::model()->hasGlobalPermission('global_labelsets','read'))
             {
                 return array(
                     'href' => array('admin/labels'),
@@ -553,7 +553,7 @@
 
         protected function editTemplates()
         {
-            if ($this->hasRight('USER_RIGHT_MANAGE_TEMPLATE'))
+            if (Permission::model()->hasGlobalPermission('global_templates','read'))
             {
                 return array(
                     'href' => array('admin/templates/'),
@@ -565,7 +565,7 @@
 
         protected function participantDatabase()
         {
-            if ($this->hasRight('USER_RIGHT_PARTICIPANT_PANEL'))
+            if (Permission::model()->hasGlobalPermission('global_participantpanel','read'))
             {
                 return array(
                     'alt' => gT('Central participant database/panel'),
@@ -575,18 +575,6 @@
             }
         }
 
-        /**
-         * Function to check for rights for the current user.
-         * Currently these rights are stored in the session directly. Since
-         * this is bad practice this function is created to easily refactor
-         * changing in the way rights are checked.
-         * 
-         * @param type $right
-         */
-        protected function hasRight($right)
-        {
-            return (Yii::app()->session[$right] == 1);
-        }
     }
 
 ?>

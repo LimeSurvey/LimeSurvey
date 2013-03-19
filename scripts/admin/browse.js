@@ -12,9 +12,9 @@
 * $Id: browse.js 10251 2011-06-10 17:33:49Z tpartner $
 */
 $(document).ready(function(){
-
-
-
+    $('ul.sf-menu').superfish({
+        speed:'fast'
+    }); 
     $("#selectall").click(function(){
         $('.cbResponseMarker').attr('checked',$(this).attr('checked'));
     });

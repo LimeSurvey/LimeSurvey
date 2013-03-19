@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 
 /**
@@ -27,7 +26,7 @@ class GlobalSettings extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] != 1) {
+        if (!Permission::model()->hasGlobalPermission('global_settings','read')) {
             die();
         }
     }
@@ -56,7 +55,7 @@ class GlobalSettings extends Survey_Common_Action
     public function updatecheck()
     {
         updateCheck();
-        $this->getController()->redirect('admin/globalsettings');
+        $this->getController()->redirect(array('admin/globalsettings'));
     }
         
     private function _displaySettings()
@@ -115,8 +114,8 @@ class GlobalSettings extends Survey_Common_Action
             return;
         }
 
-        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] != 1) {
-            $this->getController()->redirect($this->getController()->createUrl('/admin'));
+        if (!Permission::model()->hasGlobalPermission('global_settings','update')) {
+            $this->getController()->redirect(array('/admin'));
         }
         $clang = $this->getController()->lang;
         Yii::app()->loadHelper('surveytranslator');

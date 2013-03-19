@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 
 /**
@@ -62,14 +61,14 @@ class quotas extends Survey_Common_Action
 
     private function _checkPermissions($iSurveyId, $sPermission)
     {
-        if (!empty($sPermission) && !hasSurveyPermission($iSurveyId, 'quotas', $sPermission)) {
+        if (!empty($sPermission) && !Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', $sPermission)) {
             die();
         }
     }
 
     function _redirectToIndex($iSurveyId)
     {
-        $this->getController()->redirect($this->getController()->createUrl("/admin/quotas/sa/index/surveyid/$iSurveyId"));
+        $this->getController()->redirect(array("/admin/quotas/sa/index/surveyid/$iSurveyId"));
     }
 
     function index($iSurveyId, $quickreport = false)
@@ -369,7 +368,7 @@ class quotas extends Survey_Common_Action
         $clang = $aData['clang'];
         $aViewUrls = array();
 
-        if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && hasSurveyPermission($iSurveyId, 'quotas', 'create'))
+        if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
             $result = Quota::model()->findAllByPk(Yii::app()->request->getPost('quota_id'));
             foreach ($result as $aQuotaDetails)
@@ -390,7 +389,7 @@ class quotas extends Survey_Common_Action
             }
         }
 
-        if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && hasSurveyPermission($iSurveyId, 'quotas', 'create'))
+        if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
             $aResults = Quota::model()->findByPk(Yii::app()->request->getPost('quota_qid'));
             $sQuotaName = $aResults['name'];

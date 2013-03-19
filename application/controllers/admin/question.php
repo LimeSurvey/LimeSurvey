@@ -13,7 +13,6 @@ if (!defined('BASEPATH'))
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 
 /**
@@ -22,7 +21,6 @@ if (!defined('BASEPATH'))
 * @package LimeSurvey
 * @author
 * @copyright 2011
-* @version $Id$
 * @access public
 */
 class question extends Survey_Common_Action
@@ -655,7 +653,7 @@ class question extends Survey_Common_Action
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         Yii::app()->session['FileManagerContext'] = "create:question:{$surveyid}";
 
-        if (hasSurveyPermission($surveyid, 'surveycontent', 'read'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             $clang = $this->getController()->lang;
             $surveyinfo = getSurveyInfo($surveyid);
@@ -850,7 +848,7 @@ class question extends Survey_Common_Action
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
 
-        if (hasSurveyPermission($surveyid, 'surveycontent', 'delete'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete'))
         {
             if (!isset($qid))
                 $qid = returnGlobal('qid');
@@ -907,12 +905,12 @@ class question extends Survey_Common_Action
 
             Yii::app()->session['flashmessage'] = $clang->gT("Question was successfully deleted.");
 
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
         else
         {
             Yii::app()->session['flashmessage'] = $clang->gT("You are not authorized to delete questions.");
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
     }
 

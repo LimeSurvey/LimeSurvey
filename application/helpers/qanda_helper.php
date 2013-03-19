@@ -1295,7 +1295,7 @@ function do_date($ia)
     {
         if ($clang->langcode !== 'en')
         {
-            header_includes(Yii::app()->getConfig("generalscripts").'jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js');
+            Yii::app()->getClientScript()->registerScriptFile(App()->baseUrl . "third_party/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-{$clang->langcode}.js");
         }
 
         // Format the date  for output

@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 
 /**
@@ -56,36 +55,31 @@ class responses extends Survey_Common_Action
         if(!$thissurvey)// Already done in Survey_Common_Action
         {
             Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
-            $this->getController()->redirect($this->getController()->createUrl("admin/index"));
+            $this->getController()->redirect(array("admin/index"));
         }
         elseif($thissurvey['active'] != 'Y')
         {
             Yii::app()->session['flashmessage'] = $clang->gT("This survey has not been activated. There are no results to browse.");
-            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
 
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
 
         $aData['surveyinfo'] = $thissurvey;
 
-        if (isset($browselang) && $browselang != '')
+        if (Yii::app()->request->getParam('browselang'))
         {
-            Yii::app()->session['browselang'] = $browselang;
-            $aData['language'] = Yii::app()->session['browselang'];
-        }
-        elseif (isset(Yii::app()->session['browselang']))
-        {
-            $aData['language'] = Yii::app()->session['browselang'];
+            $aData['language'] = Yii::app()->request->getParam('browselang');
             $aData['languagelist'] = $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             $aData['languagelist'][] = Survey::model()->findByPk($iSurveyId)->language;
             if (!in_array($aData['language'], $languagelist))
             {
-                $aData['language'] = Survey::model()->findByPk($iSurveyId)->language;
+                $aData['language'] = $thissurvey['language'];
             }
         }
         else
         {
-            $aData['language'] = Survey::model()->findByPk($iSurveyId)->language;
+            $aData['language'] = $thissurvey['language'];
         }
 
         $aData['qulanguage'] = Survey::model()->findByPk($iSurveyId)->language;
@@ -98,7 +92,7 @@ class responses extends Survey_Common_Action
 
     public function view($iSurveyID, $iId, $sBrowseLang = '')
     {
-        if(hasSurveyPermission($iSurveyID,'responses','read'))
+        if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
         {
             $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
             $oBrowseLanguage = new Limesurvey_lang($aData['language']);
@@ -111,7 +105,7 @@ class responses extends Survey_Common_Action
             $fieldmap = createFieldMap($iSurveyID, 'full', false, false, $aData['language']);
 
             //add token to top of list if survey is not private
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && hasSurveyPermission($iSurveyID,'tokens','read'))
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
             {
                 $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
                 $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
@@ -186,7 +180,7 @@ class responses extends Survey_Common_Action
             {
                 //SHOW INDIVIDUAL RECORD
                 $oCriteria = new CDbCriteria();
-                if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}") && hasSurveyPermission($iSurveyID,'tokens','read'))
+                if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
                 {
                     $oCriteria = Survey_dynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
                 }
@@ -308,7 +302,7 @@ class responses extends Survey_Common_Action
             $clang = $aData['clang'];
             $aData['num_total_answers'] = Survey_dynamic::model($iSurveyID)->count();
             $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
-            if (tableExists('{{tokens_' . $iSurveyID . '}}') && hasSurveyPermission($iSurveyID,'tokens','read'))
+            if (tableExists('{{tokens_' . $iSurveyID . '}}') && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
             {
                 $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}');
                 $aData['tokeninfo'] = Tokens_dynamic::model($iSurveyID)->summary();
@@ -331,7 +325,7 @@ class responses extends Survey_Common_Action
         //Delete Individual answer using inrow delete buttons/links - checked
         if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked')
         {
-            if(hasSurveyPermission($iSurveyID,'responses','delete'))
+            if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete'))
             {
                 $iResponseID = (int) Yii::app()->request->getPost('deleteanswer'); // sanitize the value
                 // delete the files 
@@ -355,7 +349,7 @@ class responses extends Survey_Common_Action
             // Delete the marked responses - checked
             if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked')
             {
-                if(hasSurveyPermission($iSurveyID,'responses','delete'))
+                if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete'))
                 {
                     $this->_deleteFiles($iSurveyID,Yii::app()->request->getPost('markedresponses'),$aData['language']);
                     foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
@@ -377,7 +371,7 @@ class responses extends Survey_Common_Action
             // Download all files for all marked responses  - checked
             elseif (Yii::app()->request->getPost('downloadfile') && Yii::app()->request->getPost('downloadfile') === 'marked')
             {
-                if(hasSurveyPermission($iSurveyID,'responses','read'))
+                if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
                 {
                     // Now, zip all the files in the filelist
                     $zipfilename = "Responses_for_survey_{$iSurveyID}.zip";
@@ -388,7 +382,7 @@ class responses extends Survey_Common_Action
         // Download all files for this entry - checked
         elseif (Yii::app()->request->getPost('downloadfile') && Yii::app()->request->getPost('downloadfile') != '' && Yii::app()->request->getPost('downloadfile') !== true)
         {
-            if(hasSurveyPermission($iSurveyID,'responses','read'))
+            if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
             {
                 // Now, zip all the files in the filelist
                 $zipfilename = "Files_for_responses_" . Yii::app()->request->getPost('downloadfile') . ".zip";
@@ -397,7 +391,7 @@ class responses extends Survey_Common_Action
         }
         elseif (Yii::app()->request->getParam('downloadindividualfile') != '')
         {
-            if(hasSurveyPermission($iSurveyID,'responses','read'))
+            if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
             {
                 $iId = (int) Yii::app()->request->getParam('id');
                 $downloadindividualfile = Yii::app()->request->getParam('downloadindividualfile');
@@ -437,7 +431,7 @@ class responses extends Survey_Common_Action
          * it containts
          *             $fnames[] = array(<dbfieldname>, <some strange title>, <questiontext>, <group_id>, <questiontype>);
          */
-        if(hasSurveyPermission($iSurveyID,'responses','read'))
+        if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
         {
             if (Yii::app()->request->getPost('sql'))
             {
@@ -446,7 +440,7 @@ class responses extends Survey_Common_Action
             //add token to top of list if survey is not private
             if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) ) //add token to top of list if survey is not private
             {
-                if(hasSurveyPermission($iSurveyID,'tokens','read'))
+                if(Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
                 {
                     $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
                     $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
@@ -515,7 +509,7 @@ class responses extends Survey_Common_Action
             if(!$limit){$limit=50;}
             $oCriteria = new CDbCriteria;
             //Create the query
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && hasSurveyPermission($iSurveyID,'tokens','read'))
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
             {
                 $oCriteria = Survey_dynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
             }
@@ -629,7 +623,7 @@ class responses extends Survey_Common_Action
             die();
 
         if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked' 
-            && hasSurveyPermission($iSurveyID, 'responses', 'delete'))
+            && Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete'))
         {
             $iResponseID=(int) Yii::app()->request->getPost('deleteanswer');
             Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
@@ -639,7 +633,7 @@ class responses extends Survey_Common_Action
         if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0)
         {
             if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked' && 
-                hasSurveyPermission($iSurveyID, 'responses', 'delete'))
+                Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete'))
             {
                 foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
                 {

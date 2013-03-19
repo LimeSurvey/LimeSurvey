@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 
 /**
@@ -18,8 +17,7 @@
  *
  * @package LimeSurvey
  * @copyright 2011
- * @version $Id$
- * @access public
+  * @access public
  */
 class OptoutController extends LSYii_Controller {
 
@@ -44,7 +42,7 @@ class OptoutController extends LSYii_Controller {
 
         if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
         {
-            $this->redirect(Yii::app()->getController()->createUrl('/'));
+            $this->redirect(array('/'));
         }
         $iSurveyID = (int)$iSurveyID; //Make sure it's an integer (protect from SQL injects)
         //Check that there is a SID
@@ -103,7 +101,7 @@ class OptoutController extends LSYii_Controller {
             $thistpl=getTemplatePath($thissurvey['templatedir']);
         }
 
-        $this->_renderHtml($html,$thistpl);
+        $this->_renderHtml($html,$thistpl,$thissurvey);
     }
 
     /* This function is run when opting out of the participants system. The other function /optout/token
@@ -127,7 +125,7 @@ class OptoutController extends LSYii_Controller {
 
         if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
         {
-            $this->redirect(Yii::app()->getController()->createUrl('/'));
+            $this->redirect(array('/'));
         }
         $iSurveyID = (int)$iSurveyID; //Make sure it's an integer (protect from SQL injects)
         //Check that there is a SID
@@ -203,16 +201,19 @@ class OptoutController extends LSYii_Controller {
             $thistpl=getTemplatePath($thissurvey['templatedir']);
         }
 
-        $this->_renderHtml($html,$thistpl);
+        $this->_renderHtml($html,$thistpl, $thissurvey);
     }
 
-    private function _renderHtml($html,$thistpl)
+    private function _renderHtml($html, $thistpl, $aSurveyInfo)
     {
         sendCacheHeaders();
         doHeader();
+        $aSupportData=array('thissurvey'=>$aSurveyInfo);
+        echo templatereplace(file_get_contents($thistpl.DIRECTORY_SEPARATOR.'startpage.pstpl'),array(), $aSupportData);
         $data['html'] = $html;
         $data['thistpl'] = $thistpl;
         $this->render('/opt_view',$data);
+        echo templatereplace(file_get_contents($thistpl.DIRECTORY_SEPARATOR.'endpage.pstpl'),array(), $aSupportData);
         doFooter();
     }
 

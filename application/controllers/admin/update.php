@@ -26,6 +26,7 @@ class update extends Survey_Common_Action
     */
     function index($sSubAction = null)
     {
+        updateCheck();
         $this->_RunUpdaterUpdate();
         Yii::import('application.libraries.admin.http.httpRequestIt');
 
@@ -419,7 +420,6 @@ class update extends Survey_Common_Action
             }
             fclose($handle);
         }
-        setGlobalSetting('updatelastcheck','1980-01-01 00:00');
         setGlobalSetting('updateavailable','0');
         setGlobalSetting('updatebuild','');
         setGlobalSetting('updateversion','');

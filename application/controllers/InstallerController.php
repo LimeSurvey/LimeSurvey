@@ -21,7 +21,6 @@
 * @package LimeSurvey
 * @author Shubham Sachdeva
 * @copyright 2011
-* @version $Id$
 * @access public
 */
 class InstallerController extends CController {
@@ -85,7 +84,7 @@ class InstallerController extends CController {
 
             case 'index' :
             default :
-                $this->redirect($this->createUrl('installer/welcome'));
+                $this->redirect(array('installer/welcome'));
                 break;
 
         }
@@ -132,7 +131,7 @@ class InstallerController extends CController {
         if (!empty($_POST['installerLang']))
         {
             Yii::app()->session['installerLang'] = $_POST['installerLang'];
-            $this->redirect($this->createUrl('installer/license'));
+            $this->redirect(array('installer/license'));
         }
         $this->loadHelper('surveytranslator');
         Yii::app()->session->remove('configFileWritten');
@@ -172,7 +171,7 @@ class InstallerController extends CController {
 
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post')
         {
-            $this->redirect($this->createUrl('installer/precheck'));
+            $this->redirect(array('installer/precheck'));
         }
         Yii::app()->session['saveCheck'] = 'save';  // Checked in next step
 
@@ -318,7 +317,7 @@ class InstallerController extends CController {
                         //wrte config file! as we no longer redirect to optional view
                         $this->_writeConfigFile();
 
-                        //$this->redirect($this->createUrl("installer/loadOptView"));
+                        //$this->redirect(array("installer/loadOptView"));
                         header("refresh:5;url=".$this->createUrl("/admin"));
                         echo sprintf( $clang->gT('The database you specified is up to date. You\'ll be redirected in 5 seconds. If not, click <a href="%s">here</a>.', 'unescaped'), $this->createUrl("/admin"));
                         exit();
@@ -415,7 +414,7 @@ class InstallerController extends CController {
     {
         // check status. to be called only when database don't exist else rdirect to proper link.
         if(!Yii::app()->session['databaseDontExist']) {
-            $this->redirect($this->createUrl('installer/welcome'));
+            $this->redirect(array('installer/welcome'));
         }
 
         $aData['clang'] = $clang = $this->lang;
@@ -519,7 +518,7 @@ class InstallerController extends CController {
     {
         if (!Yii::app()->session['populatedatabase'])
         {
-            $this->redirect($this->createUrl('installer/welcome'));
+            $this->redirect(array('installer/welcome'));
         }
 
         $aData['clang'] = $clang = $this->lang;
@@ -581,7 +580,7 @@ class InstallerController extends CController {
         Yii::app()->session['optconfig_message'] = $confirmation;
         unset(Yii::app()->session['populatedatabase']);
 
-        $this->redirect($this->createUrl('installer/optional'));
+        $this->redirect(array('installer/optional'));
     }
 
     /**
@@ -652,7 +651,7 @@ class InstallerController extends CController {
             } else {
                 // if passwords don't match, redirect to proper link.
                 Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', $clang->gT("Passwords don't match."));
-                $this->redirect($this->createUrl('installer/optional'));
+                $this->redirect(array('installer/optional'));
             }
         } elseif(empty(Yii::app()->session['configFileWritten'])) {
             $this->_writeConfigFile();
@@ -834,9 +833,6 @@ class InstallerController extends CController {
         if (!check_DirectoryWriteable(Yii::app()->getConfig('uploaddir').'/', $data, 'uploaddir', 'uerror',true) )
             $bProceed = false;
         
-        if (!check_DirectoryWriteable(Yii::app()->getConfig('rootdir').'/assets', $data, 'assetsdir', 'aerror',true) )
-            $bProceed = false;
-        
         // Session writable check
         $session = Yii::app()->session; /* @var $session CHttpSession */
         $sessionWritable = ($session->get('saveCheck', null)==='save');
@@ -994,6 +990,7 @@ class InstallerController extends CController {
             ."|"                                                                    ."\n"
             ."*/"                                                                   ."\n"
             . "return array("                             . "\n"
+            /*
             ."\t"     . "'basePath' => dirname(dirname(__FILE__))," . "\n"
             ."\t"     . "'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime'," . "\n"
             ."\t"     . "'name' => 'LimeSurvey',"                   . "\n"
@@ -1007,7 +1004,7 @@ class InstallerController extends CController {
             ."\t\t"   . "'application.modules.*',"                  . "\n"
             ."\t"     . "),"                                        . "\n"
             ."\t"     . ""                                          . "\n"
-
+            */
             ."\t"     . "'components' => array("                    . "\n"
             ."\t\t"   . "'db' => array("                            . "\n"
             ."\t\t\t" . "'connectionString' => '$sDsn',"            . "\n";
@@ -1027,7 +1024,7 @@ class InstallerController extends CController {
 
             $dbdata .="\t\t" . "),"                                          . "\n"
             ."\t\t"   . ""                                          . "\n"
-
+                    
             ."\t\t"   . "// Uncomment the following line if you need table-based sessions". "\n"
             ."\t\t"   . "// 'session' => array ("                      . "\n"
             ."\t\t\t" . "// 'class' => 'system.web.CDbHttpSession',"   . "\n"

@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 /**
  * This is the model class for table "{{{{participant_attribute_names}}}}".

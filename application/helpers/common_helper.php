@@ -337,10 +337,10 @@ function getSurveyList($returnarray=false, $surveyid=false)
     static $cached = null;
 
     $timeadjust = getGlobalSetting('timeadjust');
-    $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
+    $clang = new Limesurvey_lang(isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en');
 
     if(is_null($cached)) {
-        if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
+        if (!Permission::model()->hasGlobalPermission('global_superadmin','read'))
             $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
         else
             $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
@@ -436,81 +436,6 @@ function getSurveyList($returnarray=false, $surveyid=false)
         $surveyselecter = "<option value=''>".$clang->gT("None")."</option>\n".$surveyselecter;
     }
     return $surveyselecter;
-}
-
-/**
-* Returns true if a user has permissions in the particular survey
-*
-* @param $iSID The survey ID
-* @param $sPermission
-* @param $sCRUD
-* @param $iUID User ID - if not given the one of the current user is used
-* @return bool
-*/
-function hasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
-{
-    if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
-    $sCRUD=$sCRUD.'_p';
-
-    $thissurvey=getSurveyInfo($iSID);
-    if (!$thissurvey) return false;
-
-    $aSurveyPermissionCache = Yii::app()->getConfig("aSurveyPermissionCache");
-    if (is_null($iUID))
-    {
-        if (!Yii::app()->user->getIsGuest()) $iUID = Yii::app()->session['loginID'];
-        else return false;
-        // Some user have acces to whole survey settings
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true;
-        if ($thissurvey && $iUID==$thissurvey['owner_id']) return true;
-    }
-
-    if (!isset($aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]))
-    {
-        $query = Survey_permissions::model()->findByAttributes(array("sid"=> $iSID,"uid"=> $iUID,"permission"=>$sPermission));
-        $bPermission = is_null($query) ? array() : $query->attributes;
-        if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
-        {
-            $bPermission=false;
-        }
-        else
-        {
-            $bPermission=true;
-        }
-        $aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]=$bPermission;
-    }
-    Yii::app()->setConfig("aSurveyPermissionCache", $aSurveyPermissionCache);
-    return $aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD];
-}
-
-/**
-* Returns true if a user has global permission for a certain action. Available permissions are
-*
-* USER_RIGHT_CREATE_SURVEY
-* USER_RIGHT_CONFIGURATOR
-* USER_RIGHT_CREATE_USER
-* USER_RIGHT_DELETE_USER
-* USER_RIGHT_SUPERADMIN
-* USER_RIGHT_MANAGE_TEMPLATE
-* USER_RIGHT_MANAGE_LABEL
-*
-* @param $sPermission
-* @return bool
-*/
-function hasGlobalPermission($sPermission)
-{
-    if (!Yii::app()->user->getIsGuest()) $iUID = !Yii::app()->user->getId();
-    else return false;
-    if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
-    if (Yii::app()->session[$sPermission]==1)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-
 }
 
 function getTemplateList()
@@ -779,8 +704,8 @@ function convertGETtoPOST($url)
         $arrayParam[] = "'".$paramname."'";
         $arrayVal[] = substr($value, 0, 9) != "document." ? "'".$value."'" : $value;
     }
-    //	$Paramlist = "[" . implode(",",$arrayParam) . "]";
-    //	$Valuelist = "[" . implode(",",$arrayVal) . "]";
+    //    $Paramlist = "[" . implode(",",$arrayParam) . "]";
+    //    $Valuelist = "[" . implode(",",$arrayVal) . "]";
     $Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
     $Valuelist = "new Array(" . implode(",",$arrayVal) . ")";
     $callscript = "sendPost('$calledscript','',$Paramlist,$Valuelist);";
@@ -1316,7 +1241,7 @@ function getUserList($outputformat='fullinfoarray')
         $myuid=sanitize_int(Yii::app()->session['loginID']);
     }
     $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
-    if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && isset($usercontrolSameGroupPolicy) &&
+    if (!Permission::model()->hasGlobalPermission('global_superadmin','read') && isset($usercontrolSameGroupPolicy) &&
     $usercontrolSameGroupPolicy == true)
     {
         if (isset($myuid))
@@ -1324,11 +1249,11 @@ function getUserList($outputformat='fullinfoarray')
             $sDatabaseType = Yii::app()->db->getDriverName();
             if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv")
             {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,create_survey,participant_panel,configurator,create_user,delete_user,superadmin,manage_template,manage_label,CAST(password as varchar) as password';
+                $sSelectFields = 'users_name,uid,email,full_name,parent_id,CAST(password as varchar) as password';
             }
             else
             {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,create_survey,participant_panel,configurator,create_user,delete_user,superadmin,manage_template,manage_label,password';
+                $sSelectFields = 'users_name,uid,email,full_name,parent_id,password';
             }
 
             // List users from same group as me + all my childs
@@ -1367,18 +1292,17 @@ function getUserList($outputformat='fullinfoarray')
 
     $userlist = array();
     $userlist[0] = "Reserved for logged in user";
-    //while ($srow = $uresult->readAll())
     foreach ($uresult as $srow)
     {
         if ($outputformat != 'onlyuidarray')
         {
             if ($srow['uid'] != Yii::app()->session['loginID'])
             {
-                $userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "participant_panel"=>$srow['participant_panel'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);           //added by Dennis modified by Moses
+                $userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'] );
             }
             else
             {
-                $userlist[0] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'],"participant_panel"=>$srow['participant_panel'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);
+                $userlist[0] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'] );
             }
         }
         else
@@ -1981,7 +1905,7 @@ function validateEmailAddress($email){
     $dot_atom_text_domain    = "(?:$atext_domain+(?:\\x2e$atext_domain+)*)";
 
 
-    $dot_atom    	   = "(?:$cfws?$dot_atom_text$cfws?)";
+    $dot_atom           = "(?:$cfws?$dot_atom_text$cfws?)";
     $dot_atom_domain   = "(?:$cfws?$dot_atom_text_domain$cfws?)";
 
 
@@ -2964,7 +2888,7 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 * @param int $uid the user id
 * @param mixed $rights rights array
 */
-function setUserRights($uid, $rights)
+function setuserpermissions($uid, $rights)
 {
     $uid=sanitize_int($uid);
     $updates = "create_survey=".$rights['create_survey']
@@ -3688,34 +3612,34 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Numbers only')
     );
 
-    $qattributes['show_totals'] =	array(
-    'types' =>	';',
-    'category' =>	$clang->gT('Other'),
-    'sortorder' =>	151,
-    'inputtype'	=> 'singleselect',
-    'options' =>	array(
-    'X' =>	$clang->gT('Off'),
-    'R' =>	$clang->gT('Rows'),
-    'C' =>	$clang->gT('Columns'),
-    'B' =>	$clang->gT('Both rows and columns')
+    $qattributes['show_totals'] =    array(
+    'types' =>    ';',
+    'category' =>    $clang->gT('Other'),
+    'sortorder' =>    151,
+    'inputtype'    => 'singleselect',
+    'options' =>    array(
+    'X' =>    $clang->gT('Off'),
+    'R' =>    $clang->gT('Rows'),
+    'C' =>    $clang->gT('Columns'),
+    'B' =>    $clang->gT('Both rows and columns')
     ),
-    'default' =>	'X',
-    'help' =>	$clang->gT('Show totals for either rows, columns or both rows and columns'),
-    'caption' =>	$clang->gT('Show totals for')
+    'default' =>    'X',
+    'help' =>    $clang->gT('Show totals for either rows, columns or both rows and columns'),
+    'caption' =>    $clang->gT('Show totals for')
     );
 
-    $qattributes['show_grand_total'] =	array(
-    'types' =>	';',
-    'category' =>	$clang->gT('Other'),
-    'sortorder' =>	152,
-    'inputtype' =>	'singleselect',
-    'options' =>	array(
-    0 =>	$clang->gT('No'),
-    1 =>	$clang->gT('Yes')
+    $qattributes['show_grand_total'] =    array(
+    'types' =>    ';',
+    'category' =>    $clang->gT('Other'),
+    'sortorder' =>    152,
+    'inputtype' =>    'singleselect',
+    'options' =>    array(
+    0 =>    $clang->gT('No'),
+    1 =>    $clang->gT('Yes')
     ),
-    'default' =>	0,
-    'help' =>	$clang->gT('Show grand total for either columns or rows'),
-    'caption' =>	$clang->gT('Show grand total')
+    'default' =>    0,
+    'help' =>    $clang->gT('Show grand total for either columns or rows'),
+    'caption' =>    $clang->gT('Show grand total')
     );
 
     $qattributes["input_boxes"]=array(
@@ -4537,7 +4461,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
         }
     }
     $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
-    if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
+    if (get_magic_quotes_gpc() != "0")    {$body = stripcslashes($body);}
     if ($ishtml) {
         $mail->IsHTML(true);
         $mail->Body = $body;
@@ -4591,11 +4515,19 @@ function flattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=fals
     else {
         $sNicetext = strip_tags($sNicetext);
     }
-    // ~\R~u : see "What \R matches" and "Newline sequences" in http://www.pcre.org/pcre.txt
+    // ~\R~u : see "What \R matches" and "Newline sequences" in http://www.pcre.org/pcre.txt - only available since PCRE 7.0
     if ($bStripNewLines ){  // strip new lines
-        $sNicetext = preg_replace(array('~\R~u'),array(' '), $sNicetext);
+        if (version_compare(substr(PCRE_VERSION,0,strpos(PCRE_VERSION,' ')),'7.0')>-1)
+        {
+            $sNicetext = preg_replace(array('~\R~u'),array(' '), $sNicetext);
+        }
+        else
+        {
+            // Poor man's replacement for line feeds
+            $sNicetext = str_replace(array("\r\n","\n", "\r"), array(' ',' ',' '), $sNicetext);
+        }
     }
-    else // unify newlines to \r\n
+    elseif (version_compare(substr(PCRE_VERSION,0,strpos(PCRE_VERSION,' ')),'7.0')>-1)// unify newlines to \r\n
     {
         $sNicetext = preg_replace(array('~\R~u'), array("\r\n"), $sNicetext);
     }
@@ -4731,7 +4663,7 @@ function getArrayFiltersForQuestion($qid)
                 foreach ($qresult->readAll() as $code)
                 {
                     if (Yii::app()->session[$fields[1].$code['title']] == "Y"
-                    || Yii::app()->session[$fields[1]] == $code['title'])			 array_push($selected,$code['title']);
+                    || Yii::app()->session[$fields[1]] == $code['title'])             array_push($selected,$code['title']);
                 }
 
                 //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
@@ -4781,7 +4713,7 @@ function getArrayFilterExcludesForQuestion($qid)
     static $cache = array();
 
     // TODO: Check list_filter values to make sure questions are previous?
-    //	$surveyid = Yii::app()->getConfig('sid');
+    //    $surveyid = Yii::app()->getConfig('sid');
     $surveyid=returnGlobal('sid');
     $qid=sanitize_int($qid);
 
@@ -4866,15 +4798,14 @@ function convertCSVRowToArray($string, $seperator, $quotechar)
 
 function createPassword()
 {
-    $pwchars = "abcdefhjmnpqrstuvwxyz23456789";
-    $password_length = 12;
-    $passwd = '';
-
-    for ($i=0; $i<$password_length; $i++)
+    $aCharacters = "ABCDEGHJIKLMNOPQURSTUVWXYZabcdefhjmnpqrstuvwxyz23456789";
+    $iPasswordLength = 12;
+    $sPassword = '';
+    for ($i=0; $i<$iPasswordLength; $i++)
     {
-        $passwd .= $pwchars[(int)floor(rand(0,strlen($pwchars)-1))];
+        $sPassword .= $aCharacters[(int)floor(rand(0,strlen($aCharacters)-1))];
     }
-    return $passwd;
+    return $sPassword;
 }
 
 function languageDropdown($surveyid,$selected)
@@ -5717,9 +5648,9 @@ function updateCheck()
 /**
 * Return the goodchars to be used when filtering input for numbers.
 *
-* @param $lang 	string	language used, for localisation
-* @param $integer	bool	use only integer
-* @param $negative	bool	allow negative values
+* @param $lang     string    language used, for localisation
+* @param $integer    bool    use only integer
+* @param $negative    bool    allow negative values
 */
 function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
     $goodchars = "0123456789";
@@ -5732,8 +5663,8 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
 /**
 * Return array with token attribute.
 *
-* @param $surveyid 	int	the surveyid
-* @param $token	string	token code
+* @param $surveyid     int    the surveyid
+* @param $token    string    token code
 *
 * @return Array of token data
 */
@@ -5894,7 +5825,7 @@ function SSLRedirect($enforceSSLMode)
 {
     $url = 'http'.$enforceSSLMode.'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     if (!headers_sent())
-    {	// If headers not sent yet... then do php redirect
+    {    // If headers not sent yet... then do php redirect
         //ob_clean();
         header('Location: '.$url);
         //ob_flush();
@@ -7127,7 +7058,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
     $clang = Yii::app()->lang;
     //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
-    if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
+    if (!Permission::model()->hasGlobalPermission('global_superadmin','read'))
     {
         $sQuery .="AND uid = ".Yii::app()->session['loginID'];
     }
@@ -7560,11 +7491,12 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
     $surveyid=sanitize_int($surveyid);
 
     $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a
-    LEFT OUTER JOIN (SELECT uid AS id FROM {{survey_permissions}} WHERE sid = {$surveyid}) AS b ON a.uid = b.id
+    LEFT OUTER JOIN (SELECT uid AS id FROM {{permissions}} WHERE sid = {$surveyid}) AS b ON a.uid = b.id
     WHERE id IS NULL ";
     if (!$bIncludeSuperAdmins)
     {
-        $sSurveyIDQuery.='and superadmin=0 ';
+      // @todo: Adjust for new permission system - not urgent since it it just display
+      //   $sSurveyIDQuery.='and superadmin=0 ';     
     }
     $sSurveyIDQuery.= 'ORDER BY a.users_name';
     $oSurveyIDResult = Yii::app()->db->createCommand($sSurveyIDQuery)->query();  //Checked
@@ -7603,7 +7535,7 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
     LEFT JOIN (
     SELECT b.ugid
     FROM {{user_in_groups}} AS b
-    LEFT JOIN (SELECT * FROM {{survey_permissions}}
+    LEFT JOIN (SELECT * FROM {{permissions}}
     WHERE sid = {$surveyid}) AS c ON b.uid = c.uid WHERE c.uid IS NULL
     ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL";
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query();  //Checked
@@ -7730,11 +7662,11 @@ function arraySwapAssoc($key1, $key2, $array) {
 *
 * This public static function will strip tags from a string, split it at its max_length and ellipsize
 *
-* @param	string		string to ellipsize
-* @param	integer		max length of string
-* @param	mixed		int (1|0) or float, .5, .2, etc for position to split
-* @param	string		ellipsis ; Default '...'
-* @return	string		ellipsized string
+* @param    string        string to ellipsize
+* @param    integer        max length of string
+* @param    mixed        int (1|0) or float, .5, .2, etc for position to split
+* @param    string        ellipsis ; Default '...'
+* @return    string        ellipsized string
 */
 function ellipsize($str, $max_length, $position = 1, $ellipsis = '&hellip;')
 {
@@ -7814,9 +7746,9 @@ function getBrowserLanguage()
 
 /**
 * This function add string to css or js header for public surevy
-* @param	string		string to ellipsize
-* @param	string		max length of string
-* @return	array		array of string for js or css to be included
+* @param    string        string to ellipsize
+* @param    string        max length of string
+* @return    array        array of string for js or css to be included
 *
 */
 

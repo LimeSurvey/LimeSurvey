@@ -46,3 +46,8 @@ div.htmleditor {
     margin-left: 1px;
     margin-right: 1px;
 }
+.popuptip {
+    position:absolute;left:-99999em;
+}
+.menubar a{display:inline-block;}
+

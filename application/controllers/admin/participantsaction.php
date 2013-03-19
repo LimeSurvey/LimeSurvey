@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 
 function subval_sort($a, $subkey, $order)
@@ -44,7 +43,7 @@ class participantsaction extends Survey_Common_Action
 {
     public function runWithParams($params)
     {
-        if (!hasGlobalPermission('USER_RIGHT_PARTICIPANT_PANEL'))
+        if (!Permission::model()->hasGlobalPermission('global_participantpanel','read'))
         {
             die('No permission');
         }
@@ -59,12 +58,12 @@ class participantsaction extends Survey_Common_Action
      */
     private function _loadjqGrid($sScript = '', $aData = array())
     {
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/i18n/grid.locale-en.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/jquery.jqGrid.min.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/plugins/jquery.searchFilter.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/src/grid.celledit.js');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/ui.jqgrid.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/jquery.ui.datepicker.css');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/js/jquery.jqGrid.min.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/js/i18n/grid.locale-en.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/plugins/jquery.searchFilter.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqgrid/src/grid.celledit.js');
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . 'jqgrid/css/ui.jqgrid.css');
+        
         
         if (!empty($sScript))
         {
@@ -103,7 +102,7 @@ class participantsaction extends Survey_Common_Action
         $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
         
         //If super admin all the participants will be visible
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+        if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
         {
             $iUserID = null;
         } else {
@@ -153,7 +152,7 @@ class participantsaction extends Survey_Common_Action
         $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
         
         //If super admin all the participants will be visible
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+        if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
         {
             $iUserID = null;
         } else {
@@ -178,7 +177,7 @@ class participantsaction extends Survey_Common_Action
         $iUserID = Yii::app()->session['loginID'];
 
         // if superadmin all the records in the cpdb will be displayed
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+        if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
         {
             $iTotalRecords = Participants::model()->count();
         }
@@ -224,7 +223,7 @@ class participantsaction extends Survey_Common_Action
         //Should be all surveys owned by user (or all surveys for super admin)
         $surveys = Survey::model();
         //!!! Is this even possible to execute?
-        if (empty(Yii::app()->session['USER_RIGHT_SUPERADMIN']))
+        if (!Permission::model()->hasGlobalPermission('global_superadmin','read'))
             $surveys->permission(Yii::app()->user->getId());
 
         $aSurveyNames = $surveys->model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
@@ -311,7 +310,7 @@ class participantsaction extends Survey_Common_Action
         $aData->page = 1;
 
         // If super administrator all the share info in the links table will be shown
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+        if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
         {
             $records = Participants::model()->getParticipantSharedAll();
             $aData->records = count($records);
@@ -564,7 +563,7 @@ class participantsaction extends Survey_Common_Action
             $stg ->stg_value=Yii::app()->request->getPost('userideditable');
             $stg->save();
         }
-        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('admin/participants/sa/userControl'));
+        Yii::app()->getController()->redirect(array('admin/participants/sa/userControl'));
     }
 
     /**
@@ -587,7 +586,7 @@ class participantsaction extends Survey_Common_Action
                 $stg->save();
             }
         }
-        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('admin/participants/sa/blacklistControl'));
+        Yii::app()->getController()->redirect(array('admin/participants/sa/blacklistControl'));
     }
 
     /**
@@ -614,7 +613,7 @@ class participantsaction extends Survey_Common_Action
             }
             $surveylink = "";
             /* Check permissions of each survey before creating a link*/
-            if (!hasSurveyPermission($row['survey_id'], 'tokens', 'read'))
+            if (!Permission::model()->hasSurveyPermission($row['survey_id'], 'tokens', 'read'))
             {
                 $surveylink = $row['survey_id'];
             } else
@@ -685,7 +684,7 @@ class participantsaction extends Survey_Common_Action
         // if there is no search condition the participants will be counted on the basis of who is logged in
         else
         {
-            if (Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be visible
+            if (Permission::model()->hasGlobalPermission('global_superadmin','read')) //If super admin all the participants will be visible
             {
                 $count = Participants::model()->getParticipantsCountWithoutLimit();
             }
@@ -718,7 +717,7 @@ class participantsaction extends Survey_Common_Action
 
             foreach ($query as $key => $value)
             {
-                if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+                if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
                 {
                     $participantid .= "," . $value['participant_id']; // combine the participant id's in an string
                 } else
@@ -734,7 +733,7 @@ class participantsaction extends Survey_Common_Action
         else// if no search condition
         {
             $participantid = ""; // initiallise the participant id to blank
-            if (Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be visible
+            if (Permission::model()->hasGlobalPermission('global_superadmin','read')) //If super admin all the participants will be visible
             {
                 $query = Participants::model()->getParticipantsWithoutLimit(); // get all the participant id if it is a super admin
             }
@@ -808,7 +807,7 @@ class participantsaction extends Survey_Common_Action
         $aData = new stdClass;
         
         //If super admin all the participants will be visible
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+        if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
         {
             $iUserID = null;
         } else {
@@ -1059,7 +1058,7 @@ class participantsaction extends Survey_Common_Action
             );
             ParticipantAttributeNames::model()->saveAttributeValue($editattvalue);
         }
-        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('admin/participants/sa/attributeControl'));
+        Yii::app()->getController()->redirect(array('admin/participants/sa/attributeControl'));
     }
 
     /*
@@ -1070,7 +1069,7 @@ class participantsaction extends Survey_Common_Action
         $iAttributeId = Yii::app()->request->getQuery('aid');
         $iValueId = Yii::app()->request->getQuery('vid');
         ParticipantAttributeNames::model()->delAttributeValues($iAttributeId, $iValueId);
-        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('/admin/participants/sa/viewAttribute/aid/' . $iAttributeId));
+        Yii::app()->getController()->redirect(array('/admin/participants/sa/viewAttribute/aid/' . $iAttributeId));
     }
 
     /*
@@ -1095,7 +1094,7 @@ class participantsaction extends Survey_Common_Action
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
 
         $aPathinfo = pathinfo($_FILES['the_file']['name']);
-        $sExtension = $pathinfo['extension'];
+        $sExtension = $aPathinfo['extension'];
         if (strtolower($sExtension)=='csv')
         {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);

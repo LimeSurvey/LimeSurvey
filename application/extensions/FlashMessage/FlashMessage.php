@@ -1,6 +1,7 @@
 <?php
 class FlashMessage extends CWidget {
     public function run() {
+        App()->getClientScript()->registerPackage('jquery-notify');
         if (!empty(App()->session['flashmessage']) && Yii::app()->session['flashmessage'] != '')
         {
             $message = App()->session['flashmessage'];
@@ -12,9 +13,6 @@ class FlashMessage extends CWidget {
         {
             $this->render('message', compact('key', 'message'));
         }
-        
-        
-        
     }
 }
 ?>

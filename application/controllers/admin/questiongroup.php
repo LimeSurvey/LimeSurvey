@@ -13,7 +13,6 @@ if (!defined('BASEPATH'))
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 
 /**
@@ -22,8 +21,7 @@ if (!defined('BASEPATH'))
  * @package LimeSurvey
  * @author
  * @copyright 2011
- * @version $Id$
- * @access public
+  * @access public
  */
 class questiongroup extends Survey_Common_Action
 {
@@ -47,7 +45,7 @@ class questiongroup extends Survey_Common_Action
             $importgroup .= "\n";
 
             $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
-            $aPathInfo = pathinfo($sFullFilepath);
+            $aPathInfo = pathinfo($_FILES['the_file']['name']);
             $sExtension = $aPathInfo['extension'];
 
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
@@ -105,7 +103,7 @@ class questiongroup extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $aViewUrls = $aData = array();
 
-        if (hasSurveyPermission($surveyid, 'surveycontent', 'read'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             $clang = $this->getController()->lang;
 
@@ -138,7 +136,7 @@ class questiongroup extends Survey_Common_Action
      */
     public function insert($surveyid)
     {
-        if (hasSurveyPermission($surveyid, 'surveycontent', 'create'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create'))
         {
             Yii::app()->loadHelper('surveytranslator');
 
@@ -152,7 +150,7 @@ class questiongroup extends Survey_Common_Action
                     $errorstring.= getLanguageNameFromCode($grouplang, false) . "\\n";
 
             if ($errorstring != '')
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $surveyid));
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid));
 
             else
             {
@@ -214,7 +212,7 @@ class questiongroup extends Survey_Common_Action
                     $gid = $groupid;
                 Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("New question group was saved.");
             }
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
     }
 
@@ -228,7 +226,7 @@ class questiongroup extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($iSurveyId);
 
-        if (hasSurveyPermission($iSurveyId, 'surveycontent', 'delete'))
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'delete'))
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyId);
 
@@ -245,7 +243,7 @@ class questiongroup extends Survey_Common_Action
             else
                 Yii::app()->user->setFlash('flashmessage', $clang->gT('Group could not be deleted'));
             LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $iSurveyId));
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyId));
         }
     }
 
@@ -265,7 +263,7 @@ class questiongroup extends Survey_Common_Action
         $gid = sanitize_int($gid);
         $aViewUrls = $aData = array();
 
-        if (hasSurveyPermission($surveyid, 'surveycontent', 'read'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             Yii::app()->session['FileManagerContext'] = "edit:group:{$surveyid}";
 
@@ -351,7 +349,7 @@ class questiongroup extends Survey_Common_Action
         $group = Groups::model()->findByAttributes(array('gid' => $gid));
         $surveyid = $group->sid;
 
-        if (hasSurveyPermission($surveyid, 'surveycontent', 'update'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
         {
             Yii::app()->loadHelper('surveytranslator');
 
@@ -397,7 +395,7 @@ class questiongroup extends Survey_Common_Action
             }
 
             Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Question group successfully saved.");
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
     }
 

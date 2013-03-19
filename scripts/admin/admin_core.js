@@ -1,7 +1,21 @@
-//$Id: admin_core.js 10154 2011-05-31 11:45:24Z c_schmitz $
+/*
+ * JavaScript functions for LimeSurvey administrator
+ *
+ * This file is part of LimeSurvey
+ * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
+
 
 $(document).ready(function(){
     initializeAjaxProgress();
+    tableCellAdapters();
     if(typeof(userdateformat) !== 'undefined')
         {
         $(".popupdate").each(function(i,e) {
@@ -21,7 +35,8 @@ $(document).ready(function(){
             duration: 'fast'
         }, $.datepicker.regional[userlanguage]);
     }
-
+    $(".sf-menu").superfish({});
+    $(".sf-menu").find("img").removeAttr("alt");;
     $('button,input[type=submit],input[type=button],input[type=reset]').addClass("limebutton ui-state-default ui-corner-all");
     $('button,input[type=submit],input[type=button],input[type=reset]').hover(
     function(){
@@ -32,27 +47,51 @@ $(document).ready(function(){
     }
     )
 
+    // Call the popuptip hover rel attribute
+    $('.popuptip').each(function(){
+        if($(this).attr('rel')){
+            htmlcontent=$(this).html();
+            tiptarget=$("#"+$(this).attr('rel'));
+            //if($("#"+$(this).attr('rel')).find('img').length==1){ tiptarget=$("#"+$(this).attr('rel')).find('img');}
+            tiptarget.qtip({
+                content: {
+                    text: htmlcontent
+                },
+                style: {
+                    classes: "qtip-light qtip-rounded"
+                },
+                position: {
+                    at: "bottom center",
+                    my: "top center"
+                },
+                hide: {
+                    fixed: true,
+                    delay: 500,
+                    event: "mouseout"
+                }
+            });
+            $("#"+$(this).attr('rel')).find("img").removeAttr("alt"); // Remove children img attr alt, the  default tooltip can apply.
+        }
+    });
+
 
     // Loads the tooltips for the toolbars  except the surveybar
-    $('img[alt],input[src]').not('.surveybar img').each(function() {
-        if($(this).attr('alt') != '')
-            {
+    $('img[alt],input[src]').each(function() {
+        if($(this).attr('alt') != ''){
             $(this).qtip({
-                style: {name: 'light',
-                    tip:true,
-                    border: {
-                        width: 1,
-                        radius: 5
-                    }
+                content: {
+                    attr: "alt"
                 },
-                position: {adjust: {
-                        screen: true, scroll:true},
-                    corner: {
-                        target: 'bottomRight'}
+                style: {
+                    classes: "qtip-light qtip-rounded"
                 },
-                show: {effect: {length:50}},
-                hide: {when: 'mouseout'}
-
+                position: {
+                    viewport: $(window),
+                    at: "bottom right"
+                },
+                hide: {
+                    event: "mouseout"
+                }
             });
         }
     });
@@ -77,101 +116,34 @@ $(document).ready(function(){
         if($(this).attr('title') != '')
             {
             $(this).qtip({
-                style: {name: 'cream',
-                    tip:true,
-                    color:'#1D2D45',
-                    border: {
-                        width: 1,
-                        radius: 5,
-                        color: '#EADF95'}
+                style: {
+                    classes: "qtip-cream qtip-rounded"
                 },
-                position: {adjust: {
-                        screen: true, scroll:true},
-                    corner: {
-                        target: 'bottomRight'}
-                },
-                show: {effect: {length:50}}
+                position: {
+                    viewport: $(window),
+                    at: "bottom right"
+                }
             });
         }
     });
 
-    $('.dosurvey').qtip({
-        content:{
-            text:$('#dosurveylangpopup')
-        },
-        style: {name: 'cream',
-            tip:true,
-            color:'#1D2D45',
-            border: {
-                width: 1,
-                radius: 5,
-                color: '#EADF95'}
-        },
-        position: {adjust: {
-                screen: true, scroll:true},
-            corner: {
-                target: 'bottomMiddle',
-                tooltip: 'topMiddle'}
-        },
-        show: {effect: {length:50},
-            when: {
-                event:'click'
-        }},
-        hide: {fixed:true,
-            when: {
-                event:'unfocus'
-        }}
-    });
-
-    $('#previewquestion').qtip({
-        content:{
-            text:$('#previewquestionpopup')
-        },
-        style: {name: 'cream',
-            tip:true,
-            color:'#111111',
-            border: {
-                width: 1,
-                radius: 5,
-                color: '#EADF95'}
-        },
-        position: {adjust: {
-                screen: true, scroll:true},
-            corner: {
-                target: 'bottomMiddle',
-                tooltip: 'topMiddle'}
-        },
-        show: {effect: {length:50},
-            when: {
-                event:'click'
-        }},
-        hide: {fixed:true,
-            when: {
-                event:'unfocus'
-        }}
-    });
-
+    //Still used ?
     $('.tipme').each(function() {
         if($(this).attr('alt') != '')
             {
-            $(this).qtip({
-                style: {name: 'cream',
-                    tip:true,
-                    color:'#111111',
-                    border: {
-                        width: 1,
-                        radius: 5,
-                        color: '#EADF95'}
+            $(this).qtip(
+            {
+                content: {
+                    attr: 'alt'
                 },
-                position: {adjust: {
-                        screen: true, scroll:true},
-                    corner: {
-                        target: 'topRight',
-                        tooltip: 'bottomLeft'
+                style: {
+                    classes: "qtip-cream qtip-rounded"
+                },
+                position: {
+                        viewport: $(window),
+                        at: 'top right',
+                        tooltip: 'bottom left'
                     }
-                },
-                show: {effect: {length:100}}
-
             });
         }
     });
@@ -687,3 +659,24 @@ function initializeAjaxProgress()
         $(this).dialog('close');
     });
 }
+
+/**
+ * Adapt cell to have a click on cell do a click on input:radio or input:checkbox (if unique)
+ * Using delegate the can be outside document.ready
+ */
+function tableCellAdapters()
+{
+    $('table').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label,tbody th input:checkbox,tbody th input:radio,tbody th label',"click", function(e) {
+        e.stopPropagation();
+    });
+    $('table').delegate('tbody td,tbody th',"click", function() {
+        if($(this).find("input:radio,input:checkbox").length==1)
+        {
+          $(this).find("input:radio").click();
+          $(this).find("input:radio").triggerHandler("click");
+          $(this).find("input:checkbox").click();
+          $(this).find("input:checkbox").triggerHandler("click");
+        }
+    });
+}
+

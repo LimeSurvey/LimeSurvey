@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 # override the default TCPDF config file
 if(!defined('K_TCPDF_EXTERNAL_CONFIG')) {

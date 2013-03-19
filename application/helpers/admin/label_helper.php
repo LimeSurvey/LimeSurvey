@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 
 //include_once("login_check.php");
@@ -199,7 +198,7 @@ function modlabelsetanswers($lid)
         }
         if(count($aErrors))
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("Labels updated but with some error");
+            Yii::app()->session['flashmessage'] = $clang->gT("Not all labels were updated successfully.");
         }
         else
         {

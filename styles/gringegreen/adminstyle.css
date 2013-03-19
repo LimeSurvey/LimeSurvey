@@ -193,9 +193,8 @@ div.menubar .ui-widget-header
 }
 
 .menubar-left img{
-    float:left;
     border:0;
-    padding:3px 1px;
+    padding:3px 0;
 }
 
 .menubar-right > img{
@@ -749,6 +748,11 @@ ul.assessmentscope li label:first-child {
     padding:4px;
 }
 
+.users
+{
+    max-width:1200px;
+}
+
 .users td,
 .surveysecurity td,
 .listsurveys td {
@@ -760,7 +764,10 @@ ul.assessmentscope li label:first-child {
 {
     margin-left:2px;
 }
-
+.users td:first-child
+{
+    text-align: left;
+}
 .assessmentlist td form,
 #users td form {
     display:inline;
@@ -1372,13 +1379,13 @@ div.right {
 }
 
 #advancedquestionsettings fieldset {
-    width:600px;
-    margin:0 auto;
+    width:49%;
+    margin:0 15%;
     display: block;
 }
 
 #advancedquestionsettings textarea{
-    width:200px;
+    width:380px;
 }
 
 .statistics-tbl-separator td {
@@ -1511,11 +1518,11 @@ table.limetable tbody tr.highlight {
 thead th
 {
 }
-
+.userpermissions,
 .usersurveypermissions {
     text-align:center;
 }
-
+.userpermissions th,
 .usersurveypermissions th{
     padding:0 2em;
 }

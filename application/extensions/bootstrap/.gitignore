@@ -1,0 +1,46 @@
+# cache directories
+Thumbs.db
+*.DS_Store
+*.empty
+
+#phpstorm project files
+.idea
+
+#netbeans project files
+nbproject
+
+#zend studio project files
+.buildpath
+.project
+.settings
+
+# sass cache files
+*.sass-cache
+
+# mac deployment helpers
+switch
+#index
+
+# runtime and cache directories
+/backend/www/assets
+/backend/runtime
+
+/frontend/www/assets
+/frontend/runtime
+
+/console/runtime
+
+# configuration files created locally by post deployment script or by a developer
+/backend/config/*-env.php
+/backend/config/*-local.php
+
+/frontend/config/*-env.php
+/frontend/config/*-local.php
+
+/common/config/*-env.php
+/common/config/*-local.php
+
+/console/config/*-env.php
+/console/config/*-local.php
+
+

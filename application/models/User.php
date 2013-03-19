@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 
 class User extends CActiveRecord
@@ -282,7 +281,7 @@ class User extends CActiveRecord
     */
     public function getCommonUID($surveyid, $postusergroupid)
     {
-        $query2 = "SELECT b.uid FROM (SELECT uid FROM {{survey_permissions}} WHERE sid = :surveyid) AS c RIGHT JOIN {{user_in_groups}} AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = :postugid";
+        $query2 = "SELECT b.uid FROM (SELECT uid FROM {{permissions}} WHERE sid = :surveyid) AS c RIGHT JOIN {{user_in_groups}} AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = :postugid";
         return Yii::app()->db->createCommand($query2)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->bindParam(":postugid", $postusergroupid, PDO::PARAM_INT)->query(); //Checked
     }
 }

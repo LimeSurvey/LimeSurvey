@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 
 /**
@@ -18,7 +17,6 @@
 *
 * @package LimeSurvey
 * @copyright 2011
-* @version $Id$
 * @access public
 */
 class RegisterController extends LSYii_Controller {
@@ -58,7 +56,7 @@ class RegisterController extends LSYii_Controller {
         }
         if (!$surveyid)
         {
-            Yii::app()->request->redirect(Yii::app()->baseUrl);
+            $this->getController()->redirect(Yii::app()->baseUrl);
         }
 
         // Get passed language from form, so that we dont loose this!
@@ -110,7 +108,7 @@ class RegisterController extends LSYii_Controller {
         if ($register_errormsg != "")
         {
             $_SESSION['survey_'.$surveyid]['register_errormsg']=$register_errormsg;
-            Yii::app()->request->redirect(Yii::app()->createUrl('survey/index/sid/'.$surveyid));
+            $this->getController()->redirect(array('survey/index/sid/'.$surveyid));
         }
 
         //Check if this email already exists in token database
@@ -121,7 +119,7 @@ class RegisterController extends LSYii_Controller {
         {
             $register_errormsg=$clang->gT("The email you used has already been registered.");
             $_SESSION['survey_'.$surveyid]['register_errormsg']=$register_errormsg;
-            Yii::app()->request->redirect(Yii::app()->createUrl('survey/index/sid/'.$surveyid));
+            $this->getController()->redirect(array('survey/index/sid/'.$surveyid));
             //include "index.php";
             //exit;
         }
@@ -188,7 +186,7 @@ class RegisterController extends LSYii_Controller {
         ) or safeDie ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
         */
         $tid = getLastInsertID($token->tableName());;
-
+        $token=$token->token;
 
         $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
         $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];

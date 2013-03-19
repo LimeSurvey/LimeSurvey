@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 /**
 * This function replaces keywords in a text and is mainly intended for templates
@@ -94,6 +93,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_surveyid = Yii::app()->getConfig('surveyID');
     if (!isset($showxquestions)) { $showxquestions = Yii::app()->getConfig('showxquestions'); }
     if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
+    if($_surveyid && !isset($thissurvey))
+    {
+        $thissurvey=getSurveyInfo($_surveyid,$s_lang);
+    }
     if (!isset($captchapath)) { $captchapath = ''; }
     if (!isset($sitename)) { $sitename=Yii::app()->getConfig('sitename'); }
     if (!isset($saved_id) && isset(Yii::app()->session['survey_'.$_surveyid]['srid'])) { $saved_id=Yii::app()->session['survey_'.$_surveyid]['srid'];}

@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -19,8 +19,7 @@
  *
  * @package LimeSurvey
  * @copyright 2011
- * @version $Id$
- * @access public
+  * @access public
  */
 class OptinController extends LSYii_Controller {
 
@@ -35,7 +34,7 @@ class OptinController extends LSYii_Controller {
 
         if (!$iSurveyID)
         {
-            $this->redirect($this->getController()->createUrl('/'));
+            $this->redirect(array('/'));
         }
         $iSurveyID = (int)$iSurveyID;
 
@@ -99,17 +98,20 @@ class OptinController extends LSYii_Controller {
         {
             $thistpl=getTemplatePath($thissurvey['templatedir']);
         }
-        $this->_renderHtml($html,$thistpl,$clang);
+        $this->_renderHtml($html,$thistpl,$clang,$thissurvey);
     }
 
-    private function _renderHtml($html,$thistpl,$clang)
+    private function _renderHtml($html,$thistpl, $oLanguage, $aSurveyInfo)
     {
         sendCacheHeaders();
         doHeader();
+        $aSupportData=array('thissurvey'=>$aSurveyInfo, 'clang'=>$oLanguage);
+        echo templatereplace(file_get_contents($thistpl.DIRECTORY_SEPARATOR.'startpage.pstpl'),array(), $aSupportData);
         $data['html'] = $html;
         $data['thistpl'] = $thistpl;
-        $data['clang'] = $clang;
         $this->render('/opt_view',$data);
+        echo templatereplace(file_get_contents($thistpl.DIRECTORY_SEPARATOR.'endpage.pstpl'),array(), $aSupportData);
         doFooter();
     }
+
 }

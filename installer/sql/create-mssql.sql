@@ -201,6 +201,23 @@ CREATE TABLE [prefix_participants] (
 
 
 --
+-- Table structure for table permissions
+--
+CREATE TABLE [prefix_permissions] (
+  [sid] int NOT NULL,
+  [uid] int NOT NULL,
+  [permission] varchar(20) NOT NULL,
+  [create_p] int NOT NULL default '0',
+  [read_p] int NOT NULL default '0',
+  [update_p] int NOT NULL default '0',
+  [delete_p] int NOT NULL default '0',
+  [import_p] int NOT NULL default '0',
+  [export_p] int NOT NULL default '0',
+  PRIMARY KEY ([sid], [uid],[permission])
+);
+
+
+--
 -- Table structure for table question_attributes
 --
 CREATE TABLE [prefix_question_attributes] (
@@ -334,23 +351,6 @@ CREATE TABLE [prefix_survey_links] (
 
 
 --
--- Table structure for table survey_permissions
---
-CREATE TABLE [prefix_survey_permissions] (
-  [sid] int NOT NULL,
-  [uid] int NOT NULL,
-  [permission] varchar(20) NOT NULL,
-  [create_p] int NOT NULL default '0',
-  [read_p] int NOT NULL default '0',
-  [update_p] int NOT NULL default '0',
-  [delete_p] int NOT NULL default '0',
-  [import_p] int NOT NULL default '0',
-  [export_p] int NOT NULL default '0',
-  PRIMARY KEY ([sid], [uid],[permission])
-);
-
-
---
 -- Table structure for table survey_url_parameters
 --
 CREATE TABLE prefix_survey_url_parameters (
@@ -438,7 +438,7 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_description] varchar(max) NULL,
   [surveyls_welcometext] varchar(max) NULL,
   [surveyls_endtext] varchar(max) NULL,
-  [surveyls_url] varchar(255) NULL,
+  [surveyls_url] varchar(max) NULL,
   [surveyls_urldescription] varchar(255) NULL,
   [surveyls_email_invite_subj] varchar(255) NULL,
   [surveyls_email_invite] varchar(max) NULL,
@@ -567,4 +567,4 @@ create index [labels_code_idx] on [prefix_labels] ([code]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '165');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '166');

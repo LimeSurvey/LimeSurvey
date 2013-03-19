@@ -11,27 +11,31 @@ $(document).ready(function(){
         if($(this).attr('alt') != '')
         {
              $(this).qtip({
-               style: { name: 'cream',
-                        tip:true,
-                        color:'#1D2D45',
-                        border: {
-                             width: 1,
-                             radius: 5,
-                             color: '#EADF95'}
-                       },
-               position: { adjust: {
-                        screen: true, scroll:true },
-                        corner: {
-                                target: 'topRight',
-                                tooltip: 'bottomLeft'}
-                        },
-                show: {effect: { length:50},
-                       delay:1000
-                      },
-                hide: { when: 'mouseout' },
-                api: { onRender: function() {$(this.options.hide.when.target).bind('click', this.hide);}}
-
-               });
+                'content': {
+                    'attr': 'alt'
+                },
+                'style': {
+                    'tip': true,
+                    'classes': "qtip-cream"
+                },
+                'position': {
+                    'adjust': {
+                        'method': "flip flip"
+                    },
+                    'viewport': $(window),
+                    'at': "top right",
+                    'my': "bottom left"
+                },
+                'show': {
+                    'delay': 00
+                },
+                'hide': {
+                    'event': "mouseout"
+                },
+                'events': {
+                    'render': function (event, api) {$(api.options.hide.when.target).bind('click', api.hide);}
+                }
+            });
         }
     });
     $(".saveandreturn").click(function() {
