@@ -1,5 +1,6 @@
 $(document).ready(function(){
-
+    $('#perm_global_superadmin_read').insertAfter($('#all_global_superadmin'));
+    $('#all_global_superadmin').remove();
     $(".userpermissions").tablesorter({
          widgets: ['zebra'],
          headers: { 0: { sorter: false},
@@ -19,18 +20,11 @@ $(document).ready(function(){
         function(){
             $(this).fadeTo(1, 1);
             bChecked=this.checked;
-            if (this.name=='all_global_superadmin')
-            {
-                $(this).closest('table').find('input').prop('checked',bChecked).fadeTo(1, 1);
-            }
-            else
-            {
-                $(this).closest('tr').find('input').prop('checked',bChecked);
-            }
+            $(this).closest('tr').find('input').prop('checked',bChecked);
         }
     )
 
-    $('.extended input').click(
+    $('.extended input,#perm_global_superadmin_read').click(
      function(){
             if (this.name=='perm_global_superadmin_read')
             {

@@ -78,7 +78,7 @@ class UserAction extends Survey_Common_Action
 
     function adduser()
     {
-        if (Permission::model()->hasGlobalPermission('global_users','create')) {
+        if (!Permission::model()->hasGlobalPermission('global_users','create')) {
             die(accessDenied('adduser'));
         }
 
@@ -405,6 +405,7 @@ class UserAction extends Survey_Common_Action
         }
 
         $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
+        
         $aPermissions=array();
         foreach ($aBaseUserPermissions as $sPermissionKey=>$aCRUDPermissions)
         {
@@ -425,11 +426,10 @@ class UserAction extends Survey_Common_Action
             }
         }
 
-        if (Permission::model()->setPermission($iUserID, 0, $aPermissions))
+        if (Permission::model()->setPermissions($iUserID, 0, $aPermissions))
         {
             Yii::app()->session['flashmessage'] = $clang->gT("User permissions were successfully updated.");
             $this->getController()->redirect(array("admin/user/sa/index"));
-            
         }
         else
         {
@@ -451,9 +451,30 @@ class UserAction extends Survey_Common_Action
             die();
         }
         // Check permissions
-        if (Permission::model()->hasGlobalPermission('global_superadmin','read') || (Permission::model()->hasGlobalPermission('global_users','update') && $oUser && Yii::app()->session['loginID'] != $iUserID))
+        $aBasePermissions=Permission::model()->getGlobalBasePermissions();
+        if (!Permission::model()->hasGlobalPermission('global_superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
         {
-            $aData['aBasePermissions']=Permission::model()->getGlobalBasePermissions();
+            Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
+            
+            $aFilteredPermissions=array();
+            foreach  ($aBasePermissions as $PermissionName=>$aPermission)
+            {
+                foreach ($aPermission as $sPermissionKey=>&$sPermissionValue)
+                {
+                    if ($sPermissionKey!='title' && $sPermissionKey!='img' && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) $sPermissionValue=false;
+                }
+                // Only show a row for that permission if there is at least one permission he may give to other users
+                if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export'])
+                {
+                    $aFilteredPermissions[$PermissionName]=$aPermission;
+                }
+            }
+            $aBasePermissions=$aFilteredPermissions;
+        }
+        
+        if ($oUser && (Permission::model()->hasGlobalPermission('global_superadmin','read') || (Permission::model()->hasGlobalPermission('global_users','update') &&  Yii::app()->session['loginID'] != $iUserID)))
+        {
+            $aData['aBasePermissions']=$aBasePermissions;
             $data['sImageURL'] = Yii::app()->getConfig("imageurl");
             
             $aData['oUser'] =$oUser;

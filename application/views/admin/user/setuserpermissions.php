@@ -19,7 +19,7 @@
         { ?>
         <tr><td><img src='<?php echo $sImageURL.$aCRUDPermissions['img'];?>_30.png' alt='<?php echo $aCRUDPermissions['description'];?>'/></td>
             <td><?php if ($sPermissionKey=='global_superadmin') {?> <span style='font-weight:bold'> <?php }; echo $aCRUDPermissions['title']; if ($sPermissionKey=='global_superadmin') {?> </span> <?php };?></td>
-            <td><input type="checkbox" class="markrow" name='all_<?php echo $sPermissionKey;?>' /></td>
+            <td><input type="checkbox" class="markrow" id='all_<?php echo $sPermissionKey;?>' name='all_<?php echo $sPermissionKey;?>' /></td>
             <?php
                 foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
                 {
@@ -32,12 +32,10 @@
                         {
                             if (!($sPermissionKey=='survey' && $sCRUDKey=='read'))
                             { ?>
-                            <input type="checkbox"  class="checkboxbtn" name='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>'
-                                <?php 
-                                    if(Permission::model()->hasGlobalPermission( $sPermissionKey, $sCRUDKey, $oUser->uid)) {?>
-                                    checked="checked"
-                                    <?php } ?>
-                                />
+                            <input type="checkbox"  class="checkboxbtn" name='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>' id='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>' <?php 
+                                if(Permission::model()->hasGlobalPermission( $sPermissionKey, $sCRUDKey, $oUser->uid)) {?>
+                                checked="checked"
+                                <?php } ?>/>
                             <?php
                             }
                         }
@@ -50,7 +48,7 @@
     } ?>
 
     </table>
-    <p><input type='submit' value='<?php $clang->eT("Save Now");?>' />
+    <p><input type='submit' value='<?php $clang->eT("Save");?>' />
     <input type='hidden' name='perm_survey_read' value='1' />
     <input type='hidden' name='action' value='surveyrights' />
     <input type='hidden' name='uid' value='<?php echo $oUser->uid;?>' />

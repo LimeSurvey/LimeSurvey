@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
     $(".surveysecurity").tablesorter({
         widgets: ['zebra'],

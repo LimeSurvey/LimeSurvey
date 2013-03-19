@@ -89,13 +89,13 @@ class Permission extends CActiveRecord
     {
         $clang = Yii::app()->lang;
         $aPermissions=array(
-            'global_surveys'=>array('create'=>true,'read'=>false,'update'=>false,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Surveys"),'description'=>$clang->gT("Permission to create and delete any surveys"),'img'=>'survey'),
+            'global_surveys'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>true,'title'=>$clang->gT("Surveys"),'description'=>$clang->gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),'img'=>'survey'),
             'global_users'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Users"),'description'=>$clang->gT("Permission to create, view, update and delete users"),'img'=>'security'),
             'global_usergroups'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("User groups"),'description'=>$clang->gT("Permission to create, view, update and delete user groups"),'img'=>'usergroup'),
             'global_templates'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Templates"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import templates"),'img'=>'templates'),
             'global_labelsets'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Label sets"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import label sets/labels"),'img'=>'labels'),
             'global_settings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Settings"),'description'=>$clang->gT("Permission to view and update global settings"),'img'=>'global'),
-            'global_participantpanel'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Participant panel"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import participants in the participant panel"),'img'=>'cpdb'),
+            'global_participantpanel'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>true,'title'=>$clang->gT("Participant panel"),'description'=>$clang->gT("Permission to create your own participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),'img'=>'cpdb'),
         );
         uasort($aPermissions,"comparePermission");
         $aPermissions=array('global_superadmin'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Superadministrator"),'description'=>$clang->gT("Unlimited administration permissions"),'img'=>'superadmin'))+$aPermissions;
@@ -104,34 +104,70 @@ class Permission extends CActiveRecord
     
 
     /**
-     * Sets permissions
+     * Sets permissions (global or survey-specific) for a survey administrator
+     * Checks what permissions may be set and automatically filters invalid ones. 
+     * A permission may be invalid if the permission does not exist or that particular user may not give that permission
+     * 
      */
-    public static function setPermission($uid, $sid, $permissions)
+    public static function setPermissions($iUserID, $iSurveyID, $aPermissions)
     {
-        $iUserID = sanitize_int($uid);
-        $condition = array('sid' => $sid, 'uid' => $uid);
-        self::model()->deleteAllByAttributes($condition);
-        $bResult=true;
-        foreach ($permissions as $sPermissionname=>$aPermissions)
+        $iUserID = sanitize_int($iUserID);
+        
+        // Filter global permissions on save
+        if ($iSurveyID==0)
         {
-            $aPermissions['create']= (isset($aPermissions['create']) && $aPermissions['create'])? 1:0;
-            $aPermissions['read']= (isset($aPermissions['read']) && $aPermissions['read'])? 1:0;
-            $aPermissions['update']= (isset($aPermissions['update']) && $aPermissions['update'])? 1:0;
-            $aPermissions['delete']= (isset($aPermissions['delete']) && $aPermissions['delete'])? 1:0;
-            $aPermissions['import']= (isset($aPermissions['import']) && $aPermissions['import'])? 1:0;
-            $aPermissions['export']= (isset($aPermissions['export']) && $aPermissions['export'])? 1:0;
-            if ($aPermissions['create']==1 || $aPermissions['read']==1 ||$aPermissions['update']==1 || $aPermissions['delete']==1  || $aPermissions['import']==1  || $aPermissions['export']==1)
+            $aBasePermissions=Permission::model()->getGlobalBasePermissions();
+            if (!Permission::model()->hasGlobalPermission('global_superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
+            {
+                // Make sure that he owns the user he wants to give global permissions for
+                $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
+                if (!$oUser) {
+                    die('You are not allowed to set permisisons for this user');
+                }
+                $aFilteredPermissions=array();
+                foreach  ($aBasePermissions as $PermissionName=>$aPermission)
+                {
+                    foreach ($aPermission as $sPermissionKey=>&$sPermissionValue)
+                    {
+                        if ($sPermissionKey!='title' && $sPermissionKey!='img' && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) $sPermissionValue=false;
+                    }
+                    // Only have a row for that permission if there is at least one permission he may give to other users
+                    if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export'])
+                    {
+                        $aFilteredPermissions[$PermissionName]=$aPermission;
+                    }
+                }
+                $aBasePermissions=$aFilteredPermissions;        
+            }
+        }
+        else
+        {
+            $aBasePermissions=$this->getBasePermissions();
+            
+        }
+
+        $condition = array('sid' => $iSurveyID, 'uid' => $iUserID);
+        Permission::model()->deleteAllByAttributes($condition);
+        foreach ($aBasePermissions as $sPermissionname=>$aPermission)
+        {
+            $aPermission['create']= (isset($aPermissions[$sPermissionname]['create']) && $aPermissions[$sPermissionname]['create'])? 1:0;
+            $aPermission['read']= (isset($aPermissions[$sPermissionname]['read']) && $aPermissions[$sPermissionname]['read'])? 1:0;
+            $aPermission['update']= (isset($aPermissions[$sPermissionname]['update']) && $aPermissions[$sPermissionname]['update'])? 1:0;
+            $aPermission['delete']= (isset($aPermissions[$sPermissionname]['delete']) && $aPermissions[$sPermissionname]['delete'])? 1:0;
+            $aPermission['import']= (isset($aPermissions[$sPermissionname]['import']) && $aPermissions[$sPermissionname]['import'])? 1:0;
+            $aPermission['export']= (isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export'])? 1:0;
+            if ($aPermission['create']==1 || $aPermission['read']==1 ||$aPermission['update']==1 || $aPermission['delete']==1  || $aPermission['import']==1  || $aPermission['export']==1)
             {
                 $data = array(
-                    'sid' => $sid,
-                    'uid' => $uid,
+                    'sid' => $iSurveyID,
+                    'uid' => $iUserID,
                     'permission' => $sPermissionname,
-                    'create_p' => $aPermissions['create'],
-                    'read_p' => $aPermissions['read'],
-                    'update_p' => $aPermissions['update'],
-                    'delete_p' => $aPermissions['delete'],
-                    'import_p' => $aPermissions['import'],
-                    'export_p' => $aPermissions['export']
+                    'create_p' => $aPermission['create'],
+                    'read_p' => $aPermission['read'],
+                    'update_p' => $aPermission['update'],
+                    'delete_p' => $aPermission['delete'],
+                    'import_p' => $aPermission['import'],
+                    'export_p' => $aPermission['export']
                 );
 
                 $permission = new self;
@@ -160,49 +196,7 @@ class Permission extends CActiveRecord
             }
         }
 
-        $this->setSurveyPermissions($iUserID, $iSurveyID, $aPermissionsToSet);
-    }
-
-    /** setSurveyPermissions
-    * Set the survey permissions for a user. Beware that all survey permissions for the particual survey are removed before the new ones are written.
-    *
-    * @param int $iUserID The User ID
-    * @param int $iSurveyID The Survey ID
-    * @param array $aPermissions  Array with permissions in format <permissionname>=>array('create'=>0/1,'read'=>0/1,'update'=>0/1,'delete'=>0/1)
-    */
-    function setSurveyPermissions($iUserID, $iSurveyID, $aPermissions)
-    {
-        $iUserID=sanitize_int($iUserID);
-        $condition = array('sid' => $iSurveyID, 'uid' => $iUserID);
-        $this->deleteSomeRecords($condition);
-        $bResult=true;
-
-        foreach($aPermissions as $sPermissionname=>$aPermissions)
-        {
-            if (!isset($aPermissions['create'])) {$aPermissions['create']=0;}
-            if (!isset($aPermissions['read'])) {$aPermissions['read']=0;}
-            if (!isset($aPermissions['update'])) {$aPermissions['update']=0;}
-            if (!isset($aPermissions['delete'])) {$aPermissions['delete']=0;}
-            if (!isset($aPermissions['import'])) {$aPermissions['import']=0;}
-            if (!isset($aPermissions['export'])) {$aPermissions['export']=0;}
-            if ($aPermissions['create']==1 || $aPermissions['read']==1 ||$aPermissions['update']==1 || $aPermissions['delete']==1  || $aPermissions['import']==1  || $aPermissions['export']==1)
-            {
-
-                $data = array();
-                $data = array(
-                'sid' => $iSurveyID,
-                'uid' => $iUserID,
-                'permission' => $sPermissionname,
-                'create_p' => $aPermissions['create'],
-                'read_p' => $aPermissions['read'],
-                'update_p' => $aPermissions['update'],
-                'delete_p' => $aPermissions['delete'],
-                'import_p' => $aPermissions['import'],
-                'export_p' => $aPermissions['export']
-                );
-                $this->insertSomeRecords($data);
-            }
-        }
+        $this->setPermissions($iUserID, $iSurveyID, $aPermissionsToSet);
     }
 
     function deleteSomeRecords($condition)
@@ -269,6 +263,7 @@ class Permission extends CActiveRecord
     */
     function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD, $iUserID=null)
     {
+        static $aPermissionCache;
         if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
         $sCRUD=$sCRUD.'_p';
 
@@ -278,7 +273,6 @@ class Permission extends CActiveRecord
             if (!$thissurvey) return false;
         }
 
-        $aPermissionCache = Yii::app()->getConfig("aPermissionCache");
         if (is_null($iUserID))
         {
             if (!Yii::app()->user->getIsGuest()) $iUserID = Yii::app()->session['loginID'];
@@ -317,7 +311,6 @@ class Permission extends CActiveRecord
             }
             $aPermissionCache[$iSurveyID][$iUserID][$sPermission][$sCRUD]=$bPermission;
         }
-        Yii::app()->setConfig("aPermissionCache", $aPermissionCache);
         return $aPermissionCache[$iSurveyID][$iUserID][$sPermission][$sCRUD];
     }
     

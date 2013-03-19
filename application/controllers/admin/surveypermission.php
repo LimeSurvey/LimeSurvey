@@ -617,14 +617,14 @@ class surveypermission extends Survey_Common_Action {
                 {
                     foreach ($oResult as $aRow)
                     {
-                        Permission::model()->setPermission($aRow->uid, $surveyid, $aPermissions);
+                        Permission::model()->setPermissions($aRow->uid, $surveyid, $aPermissions);
                     }
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Survey permissions for all users in this group were successfully updated.")."</div>\n";
                 }
             }
             else
             {
-                if (Permission::model()->setPermission($postuserid, $surveyid, $aPermissions))
+                if (Permission::model()->setPermissions($postuserid, $surveyid, $aPermissions))
                 {
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Survey permissions were successfully updated.")."</div>\n";
                 }

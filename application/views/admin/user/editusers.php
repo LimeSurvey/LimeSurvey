@@ -15,14 +15,14 @@
         <tr >
             <td style='padding:3px;'>
                 <?php echo CHtml::form(array('admin/user/sa/modifyuser'), 'post');?>            
-                    <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php $clang->eT("Edit user");?>' />
+                    <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php $clang->eT("Edit this user");?>' />
                     <input type='hidden' name='action' value='modifyuser' />
                     <input type='hidden' name='uid' value='<?php echo htmlspecialchars($usrhimself['uid']);?>' />
                 </form>
 
                 <?php if ($usrhimself['parent_id'] != 0 && Permission::model()->hasGlobalPermission('global_users','delete') ) { ?>
                 <?php echo CHtml::form(array('admin/user/sa/deluser'), 'post', array('onsubmit'=>'return confirm("'.$clang->gT("Are you sure you want to delete this entry?","js").'")') );?>            
-                        <input type='submit' value='<?php $clang->eT("Delete");?>' />
+                        <input type='image' src='<?php echo $imageurl;?>token_delete.png' alt='<?php $clang->eT("Delete this user");?>' />
                         <input type='hidden' name='action' value='deluser' />
                         <input type='hidden' name='user' value='<?php echo htmlspecialchars($usrhimself['user']);?>' />
                         <input type='hidden' name='uid' value='<?php echo $usrhimself['uid'];?>' />
@@ -71,7 +71,7 @@
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>
                         <?php }
-                        if ((Permission::model()->hasGlobalPermission('global_superadmin','read') || hasGlobalPermission('global_templates','read'))  && $usr['uid']!=1) { ?>
+                        if ((Permission::model()->hasGlobalPermission('global_superadmin','read') || Permission::model()->hasGlobalPermission('global_templates','read'))  && $usr['uid']!=1) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/setusertemplates'), 'post');?>            
                             <input type='image' src='<?php echo $imageurl;?>templatepermissions_small.png' alt='<?php $clang->eT("Set template permissions for this user");?>' />
                             <input type='hidden' name='action' value='setusertemplates' />

@@ -1134,9 +1134,6 @@ function upgradePermissions166()
               $oPermission->sid=0;
               $oPermission->uid=$oUser->uid;
               $oPermission->permission='global_superadmin';
-              $oPermission->create_p=1;
-              $oPermission->delete_p=1;
-              $oPermission->update_p=1;
               $oPermission->read_p=1;
               $oPermission->save();
           }          
@@ -1185,11 +1182,6 @@ function upgradePermissions166()
               $oPermission->uid=$oUser->uid;
               $oPermission->permission='global_participantpanel';
               $oPermission->create_p=1;
-              $oPermission->read_p=1;
-              $oPermission->update_p=1;
-              $oPermission->delete_p=1;
-              $oPermission->import_p=1;
-              $oPermission->export_p=1;
               $oPermission->save();
           }                 
       }
