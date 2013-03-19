@@ -6,6 +6,8 @@
      */
     class BigData {
         
+        
+        
         /**
          * This function combines json_encode and echo.
          * If a stream is passed (or is part of the array) it's content will be
@@ -96,7 +98,7 @@
             }
         }
         
-        private static function json_echo_array($json)
+        protected static function json_echo_array($json)
         {
             echo '[';
                 foreach ($json as $key => $entry)
@@ -108,12 +110,12 @@
                 echo ']';
         }
         
-        private static function json_echo_number($json)
+        protected static function json_echo_number($json)
         {
             echo $json;
         }
 
-        private static function json_echo_object($json)
+        protected static function json_echo_object($json)
         {
             echo '{';
                 foreach ($json as $key => $entry)
@@ -125,12 +127,12 @@
                 echo '}';
         }
         
-        private static function json_echo_string($json)
+        protected static function json_echo_string($json)
         {
             echo json_encode($json);
         }
         
-        private static function json_echo_stream($json)
+        protected static function json_echo_stream($json)
         {
             // Encode stream to base64.
             echo "'";
@@ -138,6 +140,97 @@
             fpassthru($json);
             echo "'";
         }
+        
+        
+        protected static function tag($name, $data)
+        {
+            echo "<$name>$data</$name>\n";
+        }
+        /**
+         * This function encodes PHP data to an XMLRPC response.
+         */
+        public static function xmlrpc_echo($data)
+        {
+            if ((is_array($data) && self::isAssociative($data)) || is_object($data))
+            {
+                self::xmlrpc_echo_object($data);
+            }
+            elseif (is_array($data))
+            {
+                self::xmlrpc_echo_array($data);
+            }
+            elseif (is_numeric($data))
+            {
+                self::xmlrpc_echo_number($data);
+            }
+            elseif (is_string($data))
+            {
+                self::xmlrpc_echo_string($data);
+            }
+            elseif (self::isStream($data))
+            {
+                self::xmlrpc_echo_stream($data);
+            }            
+        }
+        
+        protected static function xmlrpc_echo_array($data)
+        {
+            echo '<array>';
+            echo '<data>';
+            foreach ($data as $element)
+            {
+                echo '<value>';
+                self::xmlrpc_echo($element);
+                echo '</value>';
+            }
+            echo '</data>';
+            echo '</array>';
+        }
+        /**
+         * Prints XMLRPC numeric types.
+         * @param type $data
+         */
+        protected static function xmlrpc_echo_number($data)
+        {
+            if (is_float($data))
+            {
+                self::tag('double', $data);
+            }
+            elseif (is_int($data))
+            {
+                self::tag('int', $data);
+            }
+        }
+        
+        protected static function xmlrpc_echo_object($data)
+        {
+            echo '<struct>';
+            foreach ($data as $key => $value)
+            {
+                echo '<member>';
+                echo '<name>';
+                self::xmlrpc_echo_string($key);
+                echo '</name>';
+                echo '<value>';
+                self::xmlrpc_echo($value);
+                echo '</value>';
+                
+                echo '</member>';
+            }
+            echo '</struct>';
+        }
+        
+        protected static function xmlrpc_echo_stream($data)
+        {
+            echo '<base64>';
+            stream_filter_append($data, 'convert.base64-encode', STREAM_FILTER_READ, array('line-length' => 50, 'line-break-chars' => "\n"));
+            echo '</base64>';
+        }
+        protected static function xmlrpc_echo_string($data)
+        {
+            self::tag('string', "<![CDATA[$data]]>");
+        }
+        
     }
 
 ?>
