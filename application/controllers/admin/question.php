@@ -254,10 +254,10 @@ class question extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'answers.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'answers.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
 
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
@@ -424,10 +424,10 @@ class question extends Survey_Common_Action
         $aData['gid'] = $gid = sanitize_int($gid);
         $aData['qid'] = $qid = sanitize_int($qid);
 
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'subquestions.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
 
@@ -820,7 +820,7 @@ class question extends Survey_Common_Action
                 $oqresult = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang, 'parent_qid'=> 0), array('order' => 'question_order'));
                 $aData['oqresult'] = $oqresult;
             }
-            $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'questions.js');
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'questions.js');
 
             $aViewUrls['editQuestion_view'][] = $aData;
             $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
@@ -1262,7 +1262,7 @@ EOD;
     */
     protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array())
     {
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);

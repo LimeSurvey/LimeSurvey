@@ -37,8 +37,8 @@ class UserAction extends Survey_Common_Action
     */
     public function index()
     {
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts').'users.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts').'users.js');
 
         $userlist = getUserList();
         $usrhimself = $userlist[0];
@@ -492,8 +492,8 @@ class UserAction extends Survey_Common_Action
 
     function setusertemplates()
     {
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'users.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'users.js');
         $aData['postuser']  = Yii::app()->request->getPost("user");
         $aData['postemail'] = Yii::app()->request->getPost("email");
         $postuserid = Yii::app()->request->getPost("uid");

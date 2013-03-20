@@ -910,8 +910,8 @@ class dataentry extends Survey_Common_Action
                             }
                             $aDataentryoutput .="</div>";
                             $aDataentryoutput .= '</div>';
-                            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.actual/jquery.actual.min.js');
-                            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'ranking.js');
+                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.actual/jquery.actual.min.js');
+                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                             $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             $aDataentryoutput .= "<script type='text/javascript'>\n"
                                 .  "  <!--\n"
@@ -2163,8 +2163,8 @@ class dataentry extends Survey_Common_Action
                                     $answers[] = $ansrow;
                                 }
                             $cdata['answers']=$answers;
-                            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.actual/jquery.actual.min.js');
-                            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'ranking.js');
+                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.actual/jquery.actual.min.js');
+                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                             $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             unset($answers);
                             break;
