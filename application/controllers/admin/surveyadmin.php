@@ -861,10 +861,6 @@ class SurveyAdmin extends Survey_Common_Action
 
         if ($action == "importsurvey" || $action == "copysurvey")
         {
-            if (Yii::app()->request->getParam('copysurveytranslinksfields') == "on" || Yii::app()->request->getParam('translinksfields') == "on")
-            {
-                $sTransLinks = true;
-            }
             $clang = $this->getController()->lang;
 
             // Start the HTML
@@ -969,7 +965,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
             elseif ($action == 'copysurvey' && !$aData['bFailed'])
             {
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName);
+                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName,NULL,(isset($_POST['translinksfields'])));
                 if (isset($exclude['conditions']))
                 {
                     Questions::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);
