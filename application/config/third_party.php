@@ -106,5 +106,29 @@ return array(
         'depends' => array(
             'jquery'
         )
+    ),
+    'jquery-multiselect' => array(
+        'baseUrl' => 'third_party/jquery-multiselect',
+        'js' => array(
+            'src/jquery.multiselect.min.js',
+            'src/jquery.multiselect.filter.min.js'
+        ),
+        'css' => array(
+            'jquery.multiselect.css',
+            'jquery.multiselect.filter.css'
+        ),
+        'depends' => array(
+            'jquery'
+        )
+    ),
+    'ace' => array(
+        'baseUrl' => 'third_party/ace',
+        'js' => array(
+            'ace.js'
+
+
+        ),
     )
+
+
 );

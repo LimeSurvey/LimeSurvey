@@ -1,15 +1,8 @@
 <?php if (is_template_editable($templatename)==true)
-    { ?>
-    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.js" ></script>
-    <?php if ($sEditorFileType=='htmlmixed')
-        {?>
-        <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/mode/xml/xml.js" ></script>
-        <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.js" ></script>
-        <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/mode/css/css.js" ></script>
-        <?php }
+    {
+        App()->getClientScript()->registerPackage('ace');
+        App()->getClientScript()->registerPackage('jquery');
     ?>
-    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/mode/<?php echo $sEditorFileType; ?>/<?php echo $sEditorFileType; ?>.js" ></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/js/codemirror-ui.js" ></script>
     <script type="text/javascript">
         var editorfiletype='<?php echo $sEditorFileType; ?>';
     </script>
@@ -39,14 +32,11 @@
             <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
             <input type='hidden' name='action' value='templatesavechanges' />
 
-            <textarea name='changes' id='changes' rows='20' cols='40' class='codepress html <?php echo $templateclasseditormode; ?>' style='width:100%'>
+            <textarea name='changes' id='changes' rows='20' cols='40' data-filetype="<?php echo $sEditorFileType; ?>"class='ace' style='width:100%'>
                 <?php if (isset($editfile)) {
                         echo textarea_encode(filetext($templatename,$editfile,$templates));
                 } ?>
             </textarea>
-            <script type="text/javascript">
-                var codemirropath = '<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/js/';
-            </script>
             <p>
                 <?php if (is_writable($templates[$templatename])) { ?>
                     <input type='submit' value='<?php $clang->eT("Save changes"); ?>'

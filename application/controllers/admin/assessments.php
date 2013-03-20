@@ -75,8 +75,8 @@ class Assessments extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array())
     {
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'assessments.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
+        App()->getClientScript()->registerPackage('jquery-tablesorter');
+        App()->getClientScript()->registerPackage('jquery-superfish');
 
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }

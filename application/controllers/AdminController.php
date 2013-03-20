@@ -307,9 +307,6 @@ class AdminController extends LSYii_Controller
         if (!empty(Yii::app()->session['dateformat']))
             $data['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $data['css_admin_includes'] = $this->_css_admin_includes(array(), true);
-
-        
         $out = $this->renderPartial("/admin/super/header", $data, true);
         
         
@@ -358,9 +355,6 @@ class AdminController extends LSYii_Controller
 
         $data['imageurl'] = Yii::app()->getConfig("imageurl");
         $data['url'] = $url;
-
-        $data['js_admin_includes']  = $this->_js_admin_includes(array(), true);
-        $data['css_admin_includes'] = $this->_css_admin_includes(array(), true);
 
         return $this->renderPartial("/admin/super/footer", $data, $return);
 
@@ -429,35 +423,5 @@ class AdminController extends LSYii_Controller
         unset(Yii::app()->session['metaHeader']);
 
         return $this->renderPartial('/admin/endScripts_view', array());
-    }
-
-    public function _css_admin_includes($includes = array(), $reset = false)
-    {
-        return $this->_admin_includes('css', $includes, $reset);
-    }
-
-    public function _js_admin_includes($includes = array(), $reset = false)
-    {
-        return $this->_admin_includes('js', $includes, $reset);
-    }
-
-    private function _admin_includes($method, $includes = array(), $reset = false)
-    {
-        $method = in_array($method, array('js', 'css')) ? $method : 'js';
-        $includes = (array) $includes;
-        $admin_includes = (array) Yii::app()->getConfig("{$method}_admin_includes");
-        $admin_includes = array_merge($admin_includes, $includes);
-        $admin_includes = array_filter($admin_includes);
-        $admin_includes = array_unique($admin_includes);
-        if ($reset == true)
-        {
-            Yii::app()->setConfig("{$method}_admin_includes", array());
-        }
-        else
-        {
-            Yii::app()->setConfig("{$method}_admin_includes", $admin_includes);
-        }
-
-        return $admin_includes;
     }
 }

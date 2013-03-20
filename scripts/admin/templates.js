@@ -1,15 +1,16 @@
-// $Id: templates.js 9697 2011-01-16 18:37:40Z shnoulle $
 // based on TTabs from http://interface.eyecon.ro/
 
 $(document).ready(function(){
-// activate codemirror
+    /*
+    // activate codemirror
 		$('#changes').not('.none').each(function(index) {
 		               var textarea = $(this).get(0) ;
-		               var uiOptions = { path : codemirropath, searchMode : 'inline', buttons : ['undo','redo','jump','reindent','about'] }
+		               var uiOptions = { path : codemirrorpath, searchMode : 'inline', buttons : ['undo','redo','jump','reindent','about'] }
 		               var codeMirrorOptions = { mode: editorfiletype }
 		               var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);
 		});
-
+    */
+    initializeAce();
     $('#iphone').click(function(){
       $('#previewiframe').css("width", "320px");
       $('#previewiframe').css("height", "396px");
@@ -31,3 +32,31 @@ $(document).ready(function(){
       $('#previewiframe').css("height", "768px");
     });
 });
+
+
+function initializeAce()
+{
+    LS.ace = [];
+    $('textarea.ace').each(function() {
+        // Append a div with the same dimensions.
+        var id = 'ace' + LS.ace.length;
+        $(this).after('<div style="background-color: grey;" id="' + id + '"></div>');
+        $('#' + id).css('width', $(this).css('width'));
+        $('#' + id).css('height', $(this).css('height'));
+        $(this).hide();
+        var editor = ace.edit(id);
+        var textarea = $(this);
+        LS.ace.push(editor);
+        editor.setValue($(this).val());
+        editor.getSession().setTabSize(4);
+        editor.getSession().setUseSoftTabs(true);
+        editor.setHighlightActiveLine(true);
+        editor.getSession().setMode("ace/mode/" + $(this).data('filetype'));
+        editor.getSession().on('change', function (e) {
+            $(textarea).val(editor.getValue());
+
+
+        });
+    })
+
+}

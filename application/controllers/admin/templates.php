@@ -317,12 +317,7 @@ class templates extends Survey_Common_Action
     {
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile);
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'templates.js');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/mode/css/css.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/mode/xml/xml.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/css/codemirror-ui.css');
-
+        App()->getClientScript()->registerPackage('ace');
         $this->_renderWrappedTemplate('templates', $aViewUrls);
 
         if ($screenname != 'welcome')
@@ -607,10 +602,9 @@ class templates extends Survey_Common_Action
             @fwrite($fnew, getHeader());
             foreach ($cssfiles as $cssfile)
                 $myoutput = str_replace($cssfile['name'], $cssfile['name'] . "?t=$time", $myoutput);
-
-            foreach ($myoutput as $line)
-                @fwrite($fnew, $line);
-
+            $myoutput = implode("\n", $myoutput);
+            App()->getClientScript()->render($myoutput);
+            @fwrite($fnew, $myoutput);
             @fclose($fnew);
         }
 
@@ -619,11 +613,11 @@ class templates extends Survey_Common_Action
         {
            case 'css':$sEditorFileType='css';
            break;
-           case 'pstpl':$sEditorFileType='htmlmixed';
+           case 'pstpl':$sEditorFileType='html';
            break;
            case 'js':$sEditorFileType='javascript';
            break;
-           default: $sEditorFileType='htmlmixed';
+           default: $sEditorFileType='html';
            break;
         }
 

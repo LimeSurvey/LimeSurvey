@@ -1133,8 +1133,6 @@ class conditionsaction extends Survey_Common_Action {
 
         //END: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
 
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig("publicstyleurl").'jquery.multiselect.css');
-
         $aViewUrls = array();
 
         $aData['clang'] = $clang;
@@ -1190,7 +1188,6 @@ class conditionsaction extends Survey_Common_Action {
             if ($scenariocount > 0)
             {
 
-                //self::_js_admin_includes($this->config->item("generalscripts").'jquery/jquery.checkgroup.js');
                 App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/jquery.checkgroup.js');
                 foreach ($scenarioresult as $scenarionr)
                 {
