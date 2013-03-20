@@ -142,7 +142,7 @@ class Permission extends CActiveRecord
         }
         else
         {
-            $aBasePermissions=$this->getBasePermissions();
+            $aBasePermissions=Permission::model()->getBasePermissions();
             
         }
 
