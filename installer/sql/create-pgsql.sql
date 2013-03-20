@@ -465,6 +465,7 @@ CREATE TABLE prefix_surveys_languagesettings (
     email_admin_responses_subj character varying(255),
     email_admin_responses text,
     surveyls_numberformat integer NOT NULL DEFAULT 0,
+    attachments text DEFAULT NULL,
     CONSTRAINT prefix_surveys_languagesettings_pkey PRIMARY KEY (surveyls_survey_id, surveyls_language)
 );
 
@@ -579,4 +580,4 @@ create index labels_code_idx on prefix_labels (code);
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '166');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '167');

@@ -455,6 +455,7 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [email_admin_responses_subj] varchar(255) NULL,
   [email_admin_responses] varchar(max) NULL,
   [surveyls_numberformat] int NOT NULL DEFAULT 0,
+  [attachments] varchar(max) default null,
   PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
 );
 
@@ -567,4 +568,4 @@ create index [labels_code_idx] on [prefix_labels] ([code]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '166');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '167');

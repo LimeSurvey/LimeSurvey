@@ -460,7 +460,7 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `email_admin_responses_subj` varchar(255) NULL,
   `email_admin_responses` TEXT NULL,
   `surveyls_numberformat` INT NOT NULL DEFAULT 0,
-
+  `attachments` text DEFAULT NULL,
   PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -581,4 +581,4 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '166');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '167');

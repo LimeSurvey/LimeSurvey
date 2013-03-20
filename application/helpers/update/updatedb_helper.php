@@ -1085,6 +1085,11 @@ function db_upgrade_all($oldversion) {
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>166),"stg_name='DBVersion'");
         }
         
+        if ($oldversion < 167)
+        {
+            addColumn('{{surveys_languagesettings}}', 'attachments', 'text');
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>167),"stg_name='DBVersion'");
+        }
         
         $oTransaction->commit();
     }
