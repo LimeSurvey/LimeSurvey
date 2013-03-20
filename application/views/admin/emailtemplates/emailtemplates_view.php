@@ -76,11 +76,12 @@ ul.editor-parent {
             ?>
     </div>
     <p>
-        <input type='submit' class='standardbtn' value='<?php $clang->eT("Save"); ?>' />
-        <input type='hidden' name='action' value='tokens' />
-        <input type='hidden' name='language' value="<?php echo $esrow->surveyls_language; ?>" />
+        <?php echo CHtml::htmlButton($clang->gT('Save'),array('type'=>'submit','value'=>'save','name'=>'save')) ?>
+        <?php echo CHtml::htmlButton($clang->gT('Save and close'),array('type'=>'submit','value'=>'saveclose','name'=>'save')) ?>
+        <?php echo CHtml::hiddenField('action','tokens'); ?>
+        <?php echo CHtml::hiddenField('language',$esrow->surveyls_language); ?>
     </p>
-    </form>
+    <?php echo CHtml::endForm() ?>
 <div id="attachment-relevance-editor" style="display: none; overflow: hidden;">
     <textarea style="resize: none; height: 90%; width: 100%; box-sizing: border-box">
 
