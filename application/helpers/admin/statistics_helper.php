@@ -161,8 +161,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
 
             $counter=0;
             foreach ($lblout as $sLabelName)
-            {
-                $DataSet->SetSerieName($sLabelName, "Serie$counter");
+            {                                  
+                $DataSet->SetSerieName(html_entity_decode($sLabelName,null,'UTF-8'), "Serie$counter");
                 $counter++;
             }
 

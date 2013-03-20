@@ -47,7 +47,7 @@ $(document).ready(function(){
      }
     )
 
-    if ($.cookie('surveysecurityas')=='false')
+    if ($.cookie('surveysecurityas')!='true')
     {
         $('.usersurveypermissions .extended').hide();
     }
