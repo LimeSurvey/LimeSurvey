@@ -36,7 +36,7 @@ class translate extends Survey_Common_Action {
             return;
         }
 
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig("adminscripts") . 'translation.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts") . 'translation.js');
 
         $clang = Yii::app()->lang;
         $baselang = Survey::model()->findByPk($iSurveyID)->language;

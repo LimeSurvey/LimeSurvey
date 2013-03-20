@@ -6,12 +6,12 @@
 	<meta name="author" content="" />
     <link rel="stylesheet" href="<?php echo Yii::app()->getConfig('adminstyleurl'); ?>grid.css" type="text/css" media="all" />
     <link rel="stylesheet" href="<?php echo Yii::app()->getConfig('adminstyleurl'); ?>adminstyle.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="<?php echo Yii::app()->getConfig('adminstyleurl');?>jquery-ui/jquery-ui.css" type="text/css" media="all" />
     <link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>/styles/admin/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="<?php echo $this->createUrl('/');?>styles/admin/favicon.ico" type="image/x-icon" />
 	 <!--<link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />  -->
-	<script src="<?php echo Yii::app()->getConfig('generalscripts');?>jquery/jquery.js" type="text/javascript"></script>
-	<script src="<?php echo Yii::app()->getConfig('generalscripts');?>jquery/jquery-ui.js" type="text/javascript"></script>
+    <?php
+        App()->getClientScript()->registerPackage('jqueryui');
+    ?>
     <script type="text/javascript">
 	$(function() {
 

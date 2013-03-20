@@ -61,7 +61,7 @@ class participantsaction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jqgrid');
         if (!empty($sScript))
         {
-            $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . $sScript . '.js');
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . $sScript . '.js');
             $this->_renderWrappedTemplate('participants', array('participantsPanel', $sScript), $aData);
         }
     }
@@ -244,8 +244,8 @@ class participantsaction extends Survey_Common_Action
             'urlsearch' => $urlSearch
         );
 
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/i18n/grid.locale-en.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/jquery.jqGrid.min.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/i18n/grid.locale-en.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/jquery.jqGrid.min.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')  . 'displayParticipants.css');
@@ -1566,7 +1566,7 @@ class participantsaction extends Survey_Common_Action
     function attributeMap()
     {
         Yii::app()->loadHelper('common');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "attributeMap.js");
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "attributeMap.js");
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') ."attributeMap.css");
 
         $iSurveyId = Yii::app()->request->getPost('survey_id');
@@ -1642,7 +1642,7 @@ class participantsaction extends Survey_Common_Action
     function attributeMapToken()
     {
         Yii::app()->loadHelper('common');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "attributeMapToken.js");
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "attributeMapToken.js");
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') ."attributeMapToken.css");
 
         $iSurveyId = Yii::app()->request->getQuery('sid');

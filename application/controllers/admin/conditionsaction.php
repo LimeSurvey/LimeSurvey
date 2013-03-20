@@ -1191,7 +1191,7 @@ class conditionsaction extends Survey_Common_Action {
             {
 
                 //self::_js_admin_includes($this->config->item("generalscripts").'jquery/jquery.checkgroup.js');
-                $this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/jquery.checkgroup.js');
+                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/jquery.checkgroup.js');
                 foreach ($scenarioresult as $scenarionr)
                 {
                     $scenariotext = "";
@@ -1606,7 +1606,7 @@ class conditionsaction extends Survey_Common_Action {
             if (isset($conditionsList) && is_array($conditionsList))
             {
                 //TIBO
-                $this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/jquery.multiselect.min.js');
+                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/jquery.multiselect.min.js');
 
                 // TODO
                 $aViewUrls['output'] .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( { autoOpen: true, noneSelectedText: '".$clang->gT("No questions selected")."', checkAllText: '".$clang->gT("Check all")."', uncheckAllText: '".$clang->gT("Uncheck all")."', selectedText: '# ".$clang->gT("selected")."', beforeclose: function(){ return false;},height: 200 } ); });</script>";
@@ -1915,8 +1915,8 @@ class conditionsaction extends Survey_Common_Action {
             $aViewUrls['output'] .= "</div>\n"; // end conditiontarget div
 
 
-            $this->getController()->_js_admin_includes(Yii::app()->getConfig("adminscripts").'conditions.js');
-            $this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/lime-conditions-tabs.js');
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts").'conditions.js');
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/lime-conditions-tabs.js');
 
             if ($subaction == "editthiscondition" && isset($p_cid))
             {

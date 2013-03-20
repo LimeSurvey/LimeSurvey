@@ -268,9 +268,9 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyId);
         }
         // Javascript
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "tokens.js");
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jquery.multiselect.min.js");
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jquery-ui-timepicker-addon.js");
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "tokens.js");
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "jquery/jquery.multiselect.min.js");
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "jquery/jquery-ui-timepicker-addon.js");
         // CSS
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/jquery.ui.datepicker.css");
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') . "displayParticipants.css");
@@ -1795,7 +1795,7 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyId);
         }
 
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'tokens.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'tokens.js');
 
         $aEncodings = array(
         "armscii8" => $clang->gT("ARMSCII-8 Armenian")
@@ -2256,7 +2256,7 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "tokenbounce.js");
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "tokenbounce.js");
             $this->_renderWrappedTemplate('token', array('tokenbar', 'bounce'), $aData);
         }
     }

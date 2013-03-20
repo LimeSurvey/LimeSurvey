@@ -15,7 +15,13 @@ class index extends CAction {
 
     public function run()
     {
+        ob_start();
+        ob_implicit_flush(false);
         $this->action();
+        $out = ob_get_clean();
+        App()->getClientScript()->render($out);
+        echo $out;
+
     }
 
     function action()

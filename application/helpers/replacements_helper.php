@@ -177,27 +177,25 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if(stripos ($line,"{TEMPLATEJS}"))
     {
+
         $js_header_includes =header_includes(false,'js');
-        $_jqueryuijsurl=Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js";
-        $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."jquery/jquery.js'></script>\n";
-        $_templatejs.= "<script type='text/javascript' src='{$_jqueryuijsurl}'></script>\n";
-        $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."jquery/jquery.ui.touch-punch.min.js'></script>\n";
+        App()->getClientScript()->registerPackage('jqueryui');
         if($js_header_includes){
             foreach ($js_header_includes as $jsinclude)
             {
                 if (substr($jsinclude,0,4) == 'http' || substr($jsinclude,0,strlen(Yii::app()->getConfig('publicurl'))) == Yii::app()->getConfig('publicurl'))
                 {
-                    $_templatejs .= "<script type='text/javascript' src='{$jsinclude}'></script>\n";
+                    App()->getClientScript()->registerScriptFile($jsinclude);
                 }
                 else
                 {
-                    $_templatejs .= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts').$jsinclude."'></script>\n";
+                    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts').$jsinclude);
                 }
             }
         }
-        $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."survey_runtime.js'></script>\n";
-        $_templatejs.= "<script type='text/javascript' src='{$templateurl}template.js'></script>\n";
-        $_templatejs.= useFirebug();
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");;
+        App()->getClientScript()->registerScriptFile($templateurl . 'template.js');
+        useFirebug();
     }
 
     // surveyformat

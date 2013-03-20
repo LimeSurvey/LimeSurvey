@@ -516,11 +516,10 @@ class Survey_Common_Action extends CAction
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $activated = ($surveyinfo['active'] == 'Y');
 
-        $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/jquery.coookie.js';
-        $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/superfish.js';
         $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/hoverIntent.js';
-        $js_admin_includes[] = Yii::app()->getConfig('adminscripts') . 'surveytoolbar.js';
-        $this->getController()->_js_admin_includes($js_admin_includes);
+        App()->getClientScript()->registerPackage('jquery-superfish');
+        App()->getClientScript()->registerPackage('jquery-cookie');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveytoolbar.js');
 
         //Parse data to send to view
         $aData['clang'] = $clang;
@@ -878,7 +877,7 @@ class Survey_Common_Action extends CAction
         $aData['surveyid'] = $iSurveyID;
         $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/superfish.js';
         $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/hoverIntent.js';
-        $this->getController()->_js_admin_includes($js_admin_includes);
+        App()->getClientScript()->registerScriptFile($js_admin_includes);
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
         
 

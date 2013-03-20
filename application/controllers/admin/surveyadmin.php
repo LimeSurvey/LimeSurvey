@@ -1048,8 +1048,8 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['aGroupsAndQuestions'] = $aGrouplist;
         $aData['surveyid'] = $iSurveyID;
 
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.ui.nestedSortable.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'organize.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.ui.nestedSortable.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'organize.js');
 
         $this->_renderWrappedTemplate('survey', 'organizeGroupsAndQuestions_view', $aData);
     }

@@ -5553,7 +5553,7 @@ function useFirebug()
 {
     if(FIREBUG == true)
     {
-        return '<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>';
+        App()->getClientScript()->registerScriptFile('http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js');
     };
 };
 
@@ -7327,7 +7327,6 @@ function getPrintableHeader()
     global $rooturl,$homeurl;
     $headelements = '
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script type="text/javascript" src="'.Yii::app()->getConfig('generalscripts').'jquery/jquery.js"></script>
     <script type="text/javascript" src="'.Yii::app()->getConfig('adminscripts').'printablesurvey.js"></script>
     ';
     return $headelements;
