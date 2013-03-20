@@ -86,7 +86,7 @@ class emailtemplates extends Survey_Common_Action {
         $uploadUrl = Yii::app()->getBaseUrl(true) . Yii::app()->getConfig('uploadurl');
         // We need the real path since we check that the resolved file name starts with this path.
         $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
-        
+        $save=Yii::app()->request->getPost('save','');
         $clang = $this->getController()->lang;
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale','update'))
         {
@@ -147,7 +147,10 @@ class emailtemplates extends Survey_Common_Action {
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Email templates successfully saved.");
         }
-        $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyId));
+        if($save=='saveclose')
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyId));
+        else
+            self::index($iSurveyId);
     }
 
 
