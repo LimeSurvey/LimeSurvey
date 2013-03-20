@@ -37,7 +37,7 @@ class surveypermission extends Survey_Common_Action {
             $aBaseSurveyPermissions=Permission::model()->getBasePermissions();
             $userList=getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
             App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveysecurity.js');
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "surveypermissions.js");
             $surveysecurity ="<div class='header ui-widget-header'>".$clang->gT("Survey permissions")."</div>\n";
             $result2 = Permission::model()->getUserDetails($surveyid);
             if(count($result2) > 0)
@@ -400,7 +400,7 @@ class surveypermission extends Survey_Common_Action {
         if( Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update') )
         {
             App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveysecurity.js');
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "surveypermissions.js");
             if ($action == "setsurveysecurity")
             {
                 $query = "select users_name from {{users}} where uid=:uid";
