@@ -158,6 +158,26 @@ class Survey_Common_Action extends CAction
             }
         }
 
+        // Fill param with according existing param, replace existing parameters.
+        // iGroupId/gid can be found with qid/iQuestionId
+        if($params['iQuestionId'])
+        {
+            $oQuestion=Questions::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
+            if($oQuestion)
+            {
+                $params['iGroupId']=$params['gid']=$oQuestion->gid;
+            }
+        }
+        // iSurveyId/iSurveyID/sid can be found with gid/iGroupId
+        if($params['iGroupId'])
+        {
+            $oGroup=Groups::model()->find("gid=:gid",array(":gid"=>$params['iGroupId']));//Move this in model to use cache
+            if($oGroup)
+            {
+                $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oGroup->sid;
+            }
+        }
+
         // Finally return the populated array
         return $params;
     }

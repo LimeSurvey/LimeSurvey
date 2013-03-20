@@ -47,7 +47,7 @@
         */
         public function primaryKey()
         {
-            return 'gid';
+            return 'gid,language';
         }
 
 
@@ -58,8 +58,14 @@
     public function rules()
     {
         return array(
-        array('group_name,description','LSYii_Validators'),
-        array('group_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('primary', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+                            'condition'=>'gid = :gid AND language=:language',
+                            'params'=>array(':gid'=>$this->gid,':language'=>$this->language)
+                    ),
+                    'message'=>'{attribute} "{value}" is already in use.'),
+            array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
+            array('group_name,description','LSYii_Validators'),
+            array('group_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
         );
     }
 
