@@ -14,6 +14,17 @@
  */
 class LSActiveRecord extends CActiveRecord
 {
+    
+    public function behaviors(){
+        return array(
+            'CTimestampBehavior' => array(
+                'class' => 'zii.behaviors.CTimestampBehavior',
+                'createAttribute' => 'created',
+                'updateAttribute' => 'modified',
+            )
+        );
+    }
+    
     /**
      * Modified version that default to do the same as the original, but allows via a
      * third parameter to retrieve the result as array instead of active records. This
