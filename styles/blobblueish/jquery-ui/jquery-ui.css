@@ -1,7 +1,7 @@
 /*! jQuery UI - v1.10.2 - 2013-03-20
 * http://jqueryui.com
 * Includes: jquery.ui.core.css, jquery.ui.resizable.css, jquery.ui.selectable.css, jquery.ui.accordion.css, jquery.ui.autocomplete.css, jquery.ui.button.css, jquery.ui.datepicker.css, jquery.ui.dialog.css, jquery.ui.menu.css, jquery.ui.progressbar.css, jquery.ui.slider.css, jquery.ui.spinner.css, jquery.ui.tabs.css, jquery.ui.tooltip.css
-* To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Verdana%2C%20Arial%2C%20sans-serif&fwDefault=bold&fsDefault=10pt&cornerRadius=5px&bgColorHeader=%23d2e0f2&bgTextureHeader=gloss_wave&bgImgOpacityHeader=90&borderColorHeader=%23d2e0f2&fcHeader=%231d2d45&iconColorHeader=%2385a2c7&bgColorContent=%23f8f8ff&bgTextureContent=flat&bgImgOpacityContent=100&borderColorContent=%23d2e0f2&fcContent=%23222222&iconColorContent=%236da8d5&bgColorDefault=%23dfeffc&bgTextureDefault=flat&bgImgOpacityDefault=85&borderColorDefault=%2379b7e7&fcDefault=%235670a1&iconColorDefault=%236da8d5&bgColorHover=%23d0e5f5&bgTextureHover=flat&bgImgOpacityHover=75&borderColorHover=%2379b7e7&fcHover=%231d5987&iconColorHover=%234582b0&bgColorActive=%23ffffff&bgTextureActive=flat&bgImgOpacityActive=100&borderColorActive=%2379b7e7&fcActive=%234e8632&iconColorActive=%235fab2b&bgColorHighlight=%23dfeffc&bgTextureHighlight=flat&bgImgOpacityHighlight=55&borderColorHighlight=%235670a1&fcHighlight=%23000&iconColorHighlight=%232e83ff&bgColorError=%23fef1ec&bgTextureError=flat&bgImgOpacityError=95&borderColorError=%23cd0a0a&fcError=%23cd0a0a&iconColorError=%23cd0a0a&bgColorOverlay=%23aaaaaa&bgTextureOverlay=flat&bgImgOpacityOverlay=0&opacityOverlay=70&bgColorShadow=%23aaaaaa&bgTextureShadow=flat&bgImgOpacityShadow=0&opacityShadow=30&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
+* To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Verdana%2C%20Arial%2C%20sans-serif&fwDefault=bold&fsDefault=10pt&cornerRadius=5px&bgColorHeader=%23d2e0f2&bgTextureHeader=gloss_wave&bgImgOpacityHeader=90&borderColorHeader=%23d2e0f2&fcHeader=%231d2d45&iconColorHeader=%2385a2c7&bgColorContent=%23f8f8ff&bgTextureContent=flat&bgImgOpacityContent=100&borderColorContent=%23d2e0f2&fcContent=%23222222&iconColorContent=%236da8d5&bgColorDefault=%23dfeffc&bgTextureDefault=flat&bgImgOpacityDefault=85&borderColorDefault=%2379b7e7&fcDefault=%235670a1&iconColorDefault=%236da8d5&bgColorHover=%23d0e5f5&bgTextureHover=flat&bgImgOpacityHover=75&borderColorHover=%2379b7e7&fcHover=%231d5987&iconColorHover=%234582b0&bgColorActive=%23ffffff&bgTextureActive=flat&bgImgOpacityActive=100&borderColorActive=%2379b7e7&fcActive=%234e8632&iconColorActive=%235fab2b&bgColorHighlight=%23FBF8BC&bgTextureHighlight=flat&bgImgOpacityHighlight=55&borderColorHighlight=%2396B1E3&fcHighlight=%23363636&iconColorHighlight=%231d5987&bgColorError=%23fef1ec&bgTextureError=flat&bgImgOpacityError=95&borderColorError=%23cd0a0a&fcError=%23cd0a0a&iconColorError=%23cd0a0a&bgColorOverlay=%23aaaaaa&bgTextureOverlay=flat&bgImgOpacityOverlay=0&opacityOverlay=70&bgColorShadow=%23aaaaaa&bgTextureShadow=flat&bgImgOpacityShadow=0&opacityShadow=30&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
 * Copyright 2013 jQuery Foundation and other contributors Licensed MIT */
 
 /* Layout helpers
@@ -869,14 +869,14 @@ body .ui-tooltip {
 .ui-state-highlight,
 .ui-widget-content .ui-state-highlight,
 .ui-widget-header .ui-state-highlight {
-	border: 1px solid #5670a1;
-	background: #dfeffc url(images/ui-bg_flat_55_dfeffc_40x100.png) 50% 50% repeat-x;
-	color: #000;
+	border: 1px solid #96B1E3;
+	background: #FBF8BC url(images/ui-bg_flat_55_FBF8BC_40x100.png) 50% 50% repeat-x;
+	color: #363636;
 }
 .ui-state-highlight a,
 .ui-widget-content .ui-state-highlight a,
 .ui-widget-header .ui-state-highlight a {
-	color: #000;
+	color: #363636;
 }
 .ui-state-error,
 .ui-widget-content .ui-state-error,
@@ -944,7 +944,7 @@ body .ui-tooltip {
 	background-image: url(images/ui-icons_5fab2b_256x240.png);
 }
 .ui-state-highlight .ui-icon {
-	background-image: url(images/ui-icons_2e83ff_256x240.png);
+	background-image: url(images/ui-icons_1d5987_256x240.png);
 }
 .ui-state-error .ui-icon,
 .ui-state-error-text .ui-icon {
