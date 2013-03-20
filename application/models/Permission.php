@@ -42,7 +42,7 @@ class Permission extends CActiveRecord
      * @static
      * @access public
      * @param string $class
-     * @return CActiveRecord
+     * @return Permission
      */
     public static function model($class = __CLASS__)
     {
@@ -142,7 +142,7 @@ class Permission extends CActiveRecord
         }
         else
         {
-            $aBasePermissions=$this->getBasePermissions();
+            $aBasePermissions=Permission::model()->getBasePermissions();
             
         }
 
