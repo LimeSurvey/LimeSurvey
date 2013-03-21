@@ -126,7 +126,7 @@ class labels extends Survey_Common_Action
             Yii::app()->loadHelper('admin/import');
 
             $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
-            $aPathInfo = pathinfo($sFullFilepath);
+            $aPathInfo = pathinfo($_FILES['the_file']['name']);
             $sExtension = !empty($aPathInfo['extension']) ? $aPathInfo['extension'] : '';
 
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
