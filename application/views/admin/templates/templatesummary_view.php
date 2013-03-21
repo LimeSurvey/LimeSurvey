@@ -1,7 +1,7 @@
 <?php if (is_template_editable($templatename)==true)
     {
-        App()->getClientScript()->registerPackage('ace');
-        App()->getClientScript()->registerPackage('jquery');
+        App()->getClientScript()->registerPackage('jquery-ace');
+        
     ?>
     <script type="text/javascript">
         var editorfiletype='<?php echo $sEditorFileType; ?>';

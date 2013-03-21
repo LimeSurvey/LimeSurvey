@@ -124,10 +124,21 @@ return array(
     'ace' => array(
         'baseUrl' => 'third_party/ace',
         'js' => array(
-            'ace.js'
+            'ace.js',
+            '../../scripts/ace.js'
 
 
         ),
+    ),
+     'jquery-ace' => array(
+        'baseUrl' => 'third_party/jquery-ace',
+        'js' => array(
+            'jquery.ace.js',
+        ),
+        'depends' => array(
+            'jquery',
+            'ace'
+        )
     )
 
 
