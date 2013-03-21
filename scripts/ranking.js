@@ -9,7 +9,8 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   //Add a class to the question
   $('#question'+qID+'').addClass('dragDropRanking');
   // Hide the default answers list
-  $('#question'+qID+' .answers-list').hide();
+  // Display for media oral, maybe use !window.matchMedia("(oral)").matches but still hidden if user use default browser with screen reader ?
+  $('#question'+qID+' .answers-list').addClass("hide");
 
 
   // Add connected sortables elements to the question
@@ -76,9 +77,8 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     }
   }).disableSelection();
 
-  if(samechoiceheight){fixChoiceHeight(qID);}
-  if(samelistheight){fixListHeight(qID);}
-  
+  // Adapt choice and list height
+  fixChoiceListHeight(qID,samechoiceheight,samelistheight);
   // Allow users to double click to move to selections from list to list
   $(document).on('dblclick', '#sortable-choice-'+qID+' li', function() {
       if($(maxanswers>0 && '#sortable-rank-'+qID+' li').length >= maxanswers) {
@@ -151,22 +151,34 @@ function loadDragDropRank(qID){
   $('#sortable-rank-'+qID+' li:gt('+(maxanswers*1-1)+')').addClass("error");
 }
 
-// All choice at same height
-function fixChoiceHeight(qID){
-  maxHeight=0;
-  $('.connectedSortable'+qID+' li').each(function(){
-    if ($(this).actual('height')>maxHeight){
-      maxHeight=$(this).actual('height');
+// Fix choix and list heigth according to parameter
+function fixChoiceListHeight(qID,samechoiceheight,samelistheight){
+  if(samechoiceheight)
+  {
+    var maxHeight=0;
+    $('.connectedSortable'+qID+' li').each(function(){
+      if ($(this).actual('height')>maxHeight){
+        maxHeight=$(this).actual('height');
+      }
+    });
+    $('.connectedSortable'+qID+' li').height(maxHeight);
+  }
+  if(samelistheight)
+  {
+    if(samechoiceheight)
+    {
+      $('.connectedSortable'+qID).height(maxHeight*$('.connectedSortable'+qID+' li').length);
     }
-  });
-  $('.connectedSortable'+qID+' li').height(maxHeight);
+    else
+    {
+      var totalHeight=0;
+      $('.connectedSortable'+qID+' li').each(function(){
+      console.log(totalHeight);
+        totalHeight=totalHeight+$(this).actual('outerHeight',{includeMargin:true});;
+      });
+      $('.connectedSortable'+qID).height(totalHeight);
+    }
+  }
 }
-// Make the 2 list at maximum height
-function fixListHeight(qID){
-  totalHeight=0;
-  $('.connectedSortable'+qID+' li').each(function(){
-    totalHeight=totalHeight+$(this).actual('outerHeight',{includeMargin:true});;
-  });
-  $('.connectedSortable'+qID).height(totalHeight);
-}
+
 
