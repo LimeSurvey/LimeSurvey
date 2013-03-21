@@ -173,7 +173,6 @@ function fixChoiceListHeight(qID,samechoiceheight,samelistheight){
     {
       var totalHeight=0;
       $('.connectedSortable'+qID+' li').each(function(){
-      console.log(totalHeight);
         totalHeight=totalHeight+$(this).actual('outerHeight',{includeMargin:true});;
       });
       $('.connectedSortable'+qID).height(totalHeight);
