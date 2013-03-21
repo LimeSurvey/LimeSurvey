@@ -536,7 +536,6 @@ class Survey_Common_Action extends CAction
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $activated = ($surveyinfo['active'] == 'Y');
 
-        $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/hoverIntent.js';
         App()->getClientScript()->registerPackage('jquery-superfish');
         App()->getClientScript()->registerPackage('jquery-cookie');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveytoolbar.js');
@@ -895,11 +894,7 @@ class Survey_Common_Action extends CAction
         $aData['sImageURL'] = Yii::app()->getConfig("adminimageurl");
         $aData['clang'] = Yii::app()->lang;
         $aData['surveyid'] = $iSurveyID;
-        $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/superfish.js';
-        $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/hoverIntent.js';
-        App()->getClientScript()->registerScriptFile($js_admin_includes);
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
-        
+        App()->getClientScript()->registerPackage('jquery-superfish');
 
         $tmp_survlangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
         $baselang = Survey::model()->findByPk($iSurveyID)->language;

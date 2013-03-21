@@ -65,7 +65,8 @@ return array(
     'jquery-superfish' => array(
         'baseUrl' => 'third_party/jquery-superfish',
         'js' => array(
-            'js/superfish.js'
+            'js/superfish.js',
+            'js/hoverIntent.js'
         ),
         'css' => array(
             'css/superfish.css'
