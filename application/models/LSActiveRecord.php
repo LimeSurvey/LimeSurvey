@@ -16,11 +16,13 @@ class LSActiveRecord extends CActiveRecord
 {
     
     public function behaviors(){
+        $sCreateFieldName=($this->hasAttribute('created')?'created':null);
+        $sUpdateFieldName=($this->hasAttribute('modified')?'modified':null);
         return array(
             'CTimestampBehavior' => array(
                 'class' => 'zii.behaviors.CTimestampBehavior',
-                'createAttribute' => 'created',
-                'updateAttribute' => 'modified',
+                'createAttribute' => $sCreateFieldName,
+                'updateAttribute' => $sUpdateFieldName
             )
         );
     }
