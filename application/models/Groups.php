@@ -58,9 +58,9 @@
     public function rules()
     {
         return array(
-            array('primary', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                            'condition'=>'gid = :gid AND language=:language',
-                            'params'=>array(':gid'=>$this->gid,':language'=>$this->language)
+            array('gid', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+                            'condition'=>'language=:language',
+                            'params'=>array(':language'=>$this->language)
                     ),
                     'message'=>'{attribute} "{value}" is already in use.'),
             array('language','length', 'min' => 2, 'max'=>20),// in array languages ?

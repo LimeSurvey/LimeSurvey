@@ -79,10 +79,10 @@
         public function rules()
         {
             return array(
-                array('title','required','length', 'min' => 1, 'max'=>20),
-                array('primary', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                                'condition'=>'qid = :qid AND language=:language',
-                                'params'=>array(':qid'=>$this->qid,':language'=>$this->language)
+#                array('title','required','length', 'min' => 1, 'max'=>20),
+                array('qid', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+                                'condition'=>'language=:language',
+                                'params'=>array(':language'=>$this->language)
                         ),
                         'message'=>'{attribute} "{value}" is already in use.'),
                 array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
