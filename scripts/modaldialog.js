@@ -32,9 +32,8 @@ $(document).ready(function() {
                     pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
                 }
                 if (pass) {
-                    $(this).dialog('close');
                     $('iframe#uploader').remove();
-                    $(this).dialog('destroy');
+                    $(this).dialog('destroy').remove();
                     checkconditions();
                 }
             };
@@ -68,7 +67,7 @@ $(document).ready(function() {
                         }
                         if (pass) {
                             $('iframe#uploader').remove();
-                            $(this).dialog('destroy');
+                            $(this).dialog('destroy').remove();
                             checkconditions();
                         }
                         return true;
