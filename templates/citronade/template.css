@@ -434,6 +434,7 @@ ul.subquestions-list .dynamic_remaining span{color:#999;}
   padding: 0;
   white-space: normal
   display:block;
+  width:100%;
 }
  .colstyle-ul li.answer-item
 ,.colstyle-ul.radio-list li.answer-item
@@ -474,7 +475,7 @@ ul.colstyle-css .answer-item
 ul.colstyle-css .radio
 ,ul.colstyle-css .checkbox
 {
-  float:left;
+  float:left;width:100%;
 }
 ul.colstyle-css label
 {

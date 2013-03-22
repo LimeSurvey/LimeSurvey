@@ -900,6 +900,7 @@ ul.colstyle-css,table.colstyle-table
 ul.colstyle-css li,ul.colstyle-ul
 {
   float: left;
+  width: 100%;
   padding: 0;
   white-space: normal
 }
