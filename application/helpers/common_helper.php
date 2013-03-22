@@ -995,7 +995,10 @@ function setupColumns($columns, $answer_count,$wrapperclass="",$itemclass="")
     {
         $column_style = 'ul';
     };
-
+    if(!is_null($column_style)) // Add a global class for all column, 1 column too.
+    {
+        $wrapperclass.= " colstyle-{$column_style}";
+    }
     if($columns < 2)
     {
         $column_style = null;
