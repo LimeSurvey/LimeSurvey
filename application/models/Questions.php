@@ -80,7 +80,6 @@
         public function rules()
         {
             return array(
-                array('title','required'),
                 array('title,question,help','LSYii_Validators'),
                 array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
                 array('mandatory', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
