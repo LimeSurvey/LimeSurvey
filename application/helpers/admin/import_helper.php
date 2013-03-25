@@ -3661,12 +3661,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($insertdata)
                 XSSFilterArray($insertdata);
-            $newsqid =Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [5]<br />");
-            if (!isset($insertdata['qid']))
+            $newsqid =Questions::model()->insertRecords($insertdata);
+            if (!isset($insertdata['qid']) && $newsqid)
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array
             }
-            else
+            elseif (isset($insertdata['qid']))
             {
                 switchMSSQLIdentityInsert('questions',false);
             }
