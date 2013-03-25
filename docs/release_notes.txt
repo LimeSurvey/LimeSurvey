@@ -60,6 +60,33 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130317) to 2.00+ (build 130325) Mar 25, 2013
+-New feature: Extra class for multi column: colstyle-ul, colstyle-table and colstyle-css with display columns settings (Denis Chenu)
+-Fixed issue #7261: Internet Explorer: short free text not accessible after file upload (Denis Chenu)
+-Fixed issue #7675: Last check time improperly set after completion of ComfortUpdate (Carsten Schmitz)
+-Fixed issue #7681: Trying to filter statistics by an array question choice gives error (Carsten Schmitz)
+-Fixed issue #7684: HTML entities visible in statistics graphs (Carsten Schmitz)
+-Fixed issue #7685: Mulitple choice question type doesn't display correctly when 'display columns' with IE8 or little screen (Denis Chenu)
+-Fixed issue #7690: Always converts resource links when copying survey (Carsten Schmitz)
+-Fixed issue #7695: Error importing a label set (Carsten Schmitz)
+-Fixed issue: Error when tryin to import a sub-/question with a blank title field (Carsten Schmitz)
+-Fixed issue: Security question is shown when previewing a question group or question (Carsten Schmitz)
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Chinese (Taiwan) (Traditional) by katy50306
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Greek by kiolalis
+#Updated translation: Hindi by ajparag
+#Updated translation: Latvian by vipgroup
+#Updated translation: Lithuanian by apklausos, simasj
+#Updated translation: Malay by asklinux
+#Updated translation: Russian by Dangar, vipgroup, JNNSoftSign
+#Updated translation: Slovenian by kaysersoze
+#Updated translation: Ukrainian by TatyAly, myksyd, JNNSoftSign
+
 Changes from 2.00+ (build 130311) to 2.00+ (build 130317) Mar 17, 2013
 -New feature: Use SGQA identifier to prefill some answer with URL in preview mode (Denis Chenu)
 -Fixed issue #7193: A shared user can definitively delete a shared participant (Carsten Schmitz)
