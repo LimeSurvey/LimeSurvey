@@ -1,3 +1,17 @@
+/*
+ * JavaScript functions in survey taking
+ *
+ * This file is part of LimeSurvey
+ * Copyright (C) 2007-2013 The LimeSurvey Project Team
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
+ 
 var DOM1;
 $(document).ready(function()
 {
@@ -9,7 +23,7 @@ $(document).ready(function()
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
-	prepareCellAdapters();
+	tableCellAdapters();
     if (typeof(focus_element) != 'undefined')
     {
         $(focus_element).focus();
@@ -120,33 +134,51 @@ function navbuttonsJqueryUi(){
     $('#movesubmitbtn, input.saveall, input.clearall').button();
 }
 
-// Put a empty class on empty answer text item (limit to answers part)
-function addClassEmpty(){
-      $('.answer-item input.text[value=""]').addClass('empty');
-      $('.answer-item input[type=text][value=""]').addClass('empty');
-      $('.answer-item textarea').each(function(index) {
-        if ($(this).val() == ""){
-          $(this).addClass('empty');
-        }
-      });
-
-    $(document).on("blur", ".answer-item input.text,.text-item input[type=text]", function(){ 
-      if ($(this).val() == ""){
-        $(this).addClass('empty');
-      }else{
-        $(this).removeClass('empty');
-      }
-    });
-    $(document).on("blur", ".answer-item textarea", function(){ 
-      if ($(this).val() == ""){
-        $(this).addClass('empty');
-      }else{
-        $(this).removeClass('empty');
-      }
-    });
+/**
+ * Put a empty class on empty answer text item (limit to answers part)
+ * @author Denis Chenu / Shnoulle
+ */
+// 
+function addClassEmpty()
+{
+	$('.answer-item input.text[value=""]').addClass('empty');
+	$('.answer-item input[type=text][value=""]').addClass('empty');
+	$('.answer-item textarea').each(function(index) {
+	if ($(this).val() == ""){
+		$(this).addClass('empty');
+	}
+	});
+	$("body").delegate(".answer-item input.text,.text-item input[type=text],.answer-item textarea","blur focusout",function(){
+	if ($(this).val() == ""){
+		$(this).addClass('empty');
+	}else{
+		$(this).removeClass('empty');
+	}
+	});
 }
 
+/**
+ * Adapt cell to have a click on cell do a click on input:radio or input:checkbox (if unique)
+ * Using delegate the can be outside document.ready
+ * @author Denis Chenu / Shnoulle
+ */
+function tableCellAdapters()
+{
+	$('table.question').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label',"click", function(e) {
+		e.stopPropagation();
+	});
+	$('table.question').delegate('tbody td',"click", function() {
+		if($(this).find("input:radio,input:checkbox").length==1)
+		{
+			$(this).find("input:radio").click();
+			$(this).find("input:radio").triggerHandler("click");
+			$(this).find("input:checkbox").click();
+			$(this).find("input:checkbox").triggerHandler("click");
+		}
+	});
+}
 
+// This part need to be moved in another external file
 gmaps = new Object;
 osmaps = new Object;
 zoom = [];
@@ -319,73 +351,6 @@ function match_regex(testedstring,str_regexp)
 	if (str_regexp == '' || testedstring == '') return false;
 	pattern = new RegExp(str_regexp);
 	return pattern.test(testedstring)
-}
-
-function cellAdapter(evt,src)
-{
-	var eChild = null, eChildren = src.getElementsByTagName('INPUT');
-	var curCount = eChildren.length;
-	//This cell contains multiple controls, don't know which to set.
-	if (eChildren.length > 1)
-	{
-		//Some cells contain hidden fields
-		for (i = 0; i < eChildren.length; i++)
-		{
-			if ( ( eChildren[i].type == 'radio' || eChildren[i].type == 'checkbox' ) && eChild == null)
-				eChild = eChildren[i];
-			else if ( ( eChildren[i].type == 'radio' || eChildren[i].type == 'checkbox' ) && eChild != null)
-			{
-				//A cell with multiple radio buttons -- unhandled
-				return;
-			}
-
-		}
-	}
-	else eChild = eChildren[0];
-
-	if (eChild && eChild.type == 'radio')
-	{
-		eChild.checked = true;
-		//Make sure the change propagates to the conditions handling mechanism
-		if(eChild.onclick) eChild.onclick(evt);
-		if(eChild.onchange) eChild.onchange(evt);
-	}
-	else if (eChild && eChild.type == 'checkbox')
-	{
-		eChild.checked = !eChild.checked;
-		//Make sure the change propagates to the conditions handling mechanism
-		if(eChild.onclick) eChild.onclick(evt);
-		if(eChild.onchange) eChild.onchange(evt);
-	}
-}
-
-function prepareCellAdapters()
-	{
-	if (!DOM1) return;
-	var formCtls = document.getElementsByTagName('INPUT');
-	var ptr = null;
-	var foundTD = false;
-	for (var i = 0; i < formCtls.length; i++)
-	{
-		ptr = formCtls[i];
-		if (ptr.type == 'radio' || ptr.type == 'checkbox')
-{
-			foundTD = false;
-			while (ptr && !foundTD)
-	{
-				if(ptr.nodeName == 'TD')
-		{
-					foundTD = true;
-					ptr.onclick =
-						function(evt){
-							return cellAdapter(evt,this);
-						};
-					continue;
-				}
-				ptr = ptr.parentNode;
-			}
-		}
-	}
 }
 
 function addHiddenField(theform,thename,thevalue)
