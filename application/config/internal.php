@@ -41,7 +41,7 @@ $internalConfig = array(
 	)
 );
 
-if (!file_exists(APPPATH . 'config/config.php')) {
+if (!file_exists(dirname(__FILE__) .  'config/config.php')) {
     $userConfig = require(dirname(__FILE__) . '/config-sample-mysql.php');
 } else {
     $userConfig = require(dirname(__FILE__) . '/config.php');

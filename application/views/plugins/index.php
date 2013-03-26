@@ -16,7 +16,7 @@
             'class' => 'CLinkColumn',
             'header' => 'Status',
             'labelExpression' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', 'Activated', array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', 'Deactivated', array('width' => 32, 'height' => 32))); },
-            'urlExpression' => function($data) { return '#'; }
+            'url' => '#'
         ),
         array(// display the activation link
             'class' => 'CLinkColumn',
