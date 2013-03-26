@@ -175,13 +175,10 @@
 require_once BASEPATH . 'yii' . EXT;
 require_once APPPATH . 'core/LSYii_Application' . EXT;
 
-$config = APPPATH . 'config/internal' . EXT;
+$config = require_once(APPPATH . 'config/internal' . EXT);
 
-if (!file_exists(APPPATH . 'config/config' . EXT)) {
-    $config = APPPATH . 'config/config-sample-mysql' . EXT;        
-    
+if (!file_exists(APPPATH . 'config/config' . EXT)) {    
     // If Yii can not start due to unwritable runtimePath, present an error    
-    $config = require($config);
     $runtimePath = $config['runtimePath'];
     if (!is_dir($runtimePath) || !is_writable($runtimePath)) {
         // @@TODO: present html page styled like the installer
