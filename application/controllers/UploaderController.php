@@ -10,6 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
+ *	$Id$
  */
 
 class UploaderController extends AdminController {
@@ -236,6 +237,7 @@ class UploaderController extends AdminController {
 		    }
 		return;
 		}
+		$clang = Yii::app()->lang;
 		$meta ='<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'jquery/jquery.js"></script>';
 		$meta .= '<script type="text/javascript">
 		    var uploadurl = "'.$this->createUrl('/uploader/index/mode/upload/').'";
@@ -244,18 +246,8 @@ class UploaderController extends AdminController {
 		    var fieldname = "'.$param['fieldname'].'";
 		    var questgrppreview  = '.$param['preview'].';
 		</script>';
-		$meta .='<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/ajaxupload.js"></script>
-		<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/uploader.js"></script>
-		<link type="text/css" href="'.Yii::app()->getConfig("publicstyleurl").'uploader.css" rel="stylesheet" />';
-
-		$clang = Yii::app()->lang;
-
-		$header = getHeader($meta);
-
-		echo $header;
-
-		echo "<script type='text/javascript'>
-		        var translt = {
+		$meta .= "<script type='text/javascript'>
+		        translt = {
 		             titleFld: '" . $clang->gT('Title','js') . "',
 		             commentFld: '" . $clang->gT('Comment','js') . "',
 		             errorNoMoreFiles: '" . $clang->gT('Sorry, no more files can be uploaded!','js') . "',
@@ -268,7 +260,15 @@ class UploaderController extends AdminController {
 		             errorTooMuch: '" . $clang->gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
 		             errorNeedMoreConfirm: '" . $clang->gT("You need to upload %s more files for this question.\nAre you sure you want to exit?",'js') . "'
 		            };
+		        showpopups=".Yii::app()->getConfig("showpopups").";
 		    </script>\n";
+		$meta .='<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/ajaxupload.js"></script>
+		<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/uploader.js"></script>
+		<link type="text/css" href="'.Yii::app()->getConfig("publicstyleurl").'uploader.css" rel="stylesheet" />';
+
+		$header = getHeader($meta);
+
+		echo $header;
 
 		$fn = $param['fieldname'];
 		$qid = $param['qid'];

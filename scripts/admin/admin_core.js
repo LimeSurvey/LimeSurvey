@@ -176,6 +176,7 @@ $(document).ready(function(){
         $('#groupdetails').show();
     });
     $('#tabs').tabs();
+    $('.tab-nav').tabs();
     $(".flashmessage").each(function() {
         $(this).notify().notify('create','themeroller',{},{custom:true,
         speed: 500,

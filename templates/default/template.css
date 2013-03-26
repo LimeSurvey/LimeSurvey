@@ -892,20 +892,30 @@ table.clearall-result td {
   margin-top: 2px;
   *margin-top: -2px; /* IE7 and below */
 }
-
-ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
-  {
+ul.colstyle-css,table.colstyle-table
+{
   width: 98%;
   margin: 0% auto 0% auto;
 }
-
-ul.cols-2 li,ul.cols-2-ul,ul.cols-3 li,ul.cols-3-ul,ul.cols-4 li,ul.cols-4-ul,ul.cols-5 li,ul.cols-5-ul,ul.cols-6 li,ul.cols-6-ul,ul.cols-7 li,ul.cols-7-ul,ul.cols-8 li,ul.cols-8-ul
-  {
+ul.colstyle-css li,ul.colstyle-ul
+{
   float: left;
+  width: 100%;
   padding: 0;
   white-space: normal
 }
-
+/* deactivate display:inline-block for col style */
+.multiple-opt .answer ul.colstyle-css li label,.multiple-opt .answer ul.colstyle-ul li label,.multiple-opt .answer table.colstyle-table li label,
+.multiple-opt-comments .answer ul.colstyle-css li label,.multiple-opt-comments .answer ul.colstyle-ul li label,.multiple-opt-comments .answer table.colstyle-table li label
+{
+    display: inline;
+}
+.list-radio .answer ul.colstyle-css li label,.list-radio .answer ul.colstyle-ul li label,.list-radio .answer table.colstyle-table li label,
+.list-with-comment .answer ul.colstyle-css li label,.list-with-comment .answer ul.colstyle-ul li label,.list-with-comment .answer table.colstyle-table li label
+{
+    display: inline;
+}
+/* multi column width */
 ul.cols-2 li,ul.cols-2-ul,table.cols-2 td {
   width: 48%;
 }

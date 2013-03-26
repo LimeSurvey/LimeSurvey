@@ -766,7 +766,7 @@ button.ui-button::-moz-focus-inner {
 	display: block;
 	border-width: 0;
 	padding: 1em 1.4em;
-	background: none;
+    background-color: #fafafa ;
 }
 .ui-tooltip {
 	padding: 8px;
@@ -797,8 +797,7 @@ body .ui-tooltip {
 	font-size: 1em;
 }
 .ui-widget-content {
-	border: 1px solid #cdf078;
-	background: #fafafa url(images/ui-bg_flat_100_fafafa_40x100.png) 50% 50% repeat-x;
+	border: 0px solid #cdf078;
 	color: #666;
 }
 .ui-widget-content a {
@@ -808,6 +807,7 @@ body .ui-tooltip {
 	border: 0px;
 	color: #666;
 	font-weight: bold;
+    font-size:90%;
 }
 .ui-widget-header a {
 	color: #666;
@@ -818,15 +818,14 @@ body .ui-tooltip {
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
-	border: 1px solid #cdf078;
-	background: #e2f6be url(images/ui-bg_flat_100_e2f6be_40x100.png) 50% 50% repeat-x;
-	font-weight: normal;
+	border: 1px solid #E2F6BE;
+	background-color: #fafafa;
 	color: #666666;
 }
 .ui-state-default a,
 .ui-state-default a:link,
 .ui-state-default a:visited {
-	color: #666666;
+	color: #000;
 	text-decoration: none;
 }
 .ui-state-hover,
@@ -836,8 +835,7 @@ body .ui-tooltip {
 .ui-widget-content .ui-state-focus,
 .ui-widget-header .ui-state-focus {
 	border: 1px solid #94d200;
-	background: #e2f6be url(images/ui-bg_flat_100_e2f6be_40x100.png) 50% 50% repeat-x;
-	font-weight: normal;
+	background: #e2f6be none 50% 50% repeat-x;
 	color: #666;
 }
 .ui-state-hover a,
@@ -850,15 +848,14 @@ body .ui-tooltip {
 .ui-state-active,
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active {
-	border: 1px solid #cdf078;
-	background: #fafafa url(images/ui-bg_flat_100_fafafa_40x100.png) 50% 50% repeat-x;
-	font-weight: normal;
+	border: 1px solid #EFFBDB;
+	background-color: #EFFBDB;
 	color: #666;
 }
 .ui-state-active a,
 .ui-state-active a:link,
 .ui-state-active a:visited {
-	color: #666;
+	color: #000;
 	text-decoration: none;
 }
 
@@ -867,14 +864,14 @@ body .ui-tooltip {
 .ui-state-highlight,
 .ui-widget-content .ui-state-highlight,
 .ui-widget-header .ui-state-highlight {
-	border: 1px solid #1f871c;
-	background: #fafafa url(images/ui-bg_flat_55_fafafa_40x100.png) 50% 50% repeat-x;
+	border: 1px solid #EFFBDB;
+	background: #fafafa;
 	color: #666;
 }
 .ui-state-highlight a,
 .ui-widget-content .ui-state-highlight a,
 .ui-widget-header .ui-state-highlight a {
-	color: #666;
+	color: #000;
 }
 .ui-state-error,
 .ui-widget-content .ui-state-error,

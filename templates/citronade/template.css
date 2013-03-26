@@ -428,63 +428,64 @@ ul.subquestions-list .dynamic_remaining span{color:#999;}
 
 /* Multi column */
 /*column_style ul*/
-.cols-2-ul,.cols-3-ul,.cols-4-ul,.cols-5-ul,.cols-6-ul,.cols-7-ul,.cols-8-ul
+.colstyle-ul
 {
   float: left;
   padding: 0;
   white-space: normal
   display:block;
+  width:100%;
 }
- .cols-2-ul .answer-item,.cols-3-ul .answer-item,.cols-4-ul .answer-item,.cols-5-ul .answer-item,.cols-6-ul .answer-item,.cols-7-ul .answer-item,.cols-8-ul .answer-item
-,.cols-2-ul.radio-list .answer-item,.cols-3-ul.radio-list .answer-item,.cols-4-ul.radio-list .answer-item,.cols-5-ul.radio-list .answer-item,.cols-6-ul.radio-list .answer-item,.cols-7-ul.radio-list .answer-item,.cols-8-ul.radio-list .answer-item
-,.cols-2-ul.checkbox-list .answer-item,.cols-3-ul.checkbox-list .answer-item,.cols-4-ul.checkbox-list .answer-item,.cols-5-ul.checkbox-list .answer-item,.cols-6-ul.checkbox-list .answer-item,.cols-7-ul.checkbox-list .answer-item,.cols-8-ul.checkbox-list .answer-item
+ .colstyle-ul li.answer-item
+,.colstyle-ul.radio-list li.answer-item
+,.colstyle-ul.checkbox-list li.answer-item
 {
   padding-left: 30px;padding-right: 5px;
   display:block;
 }
-.cols-2-ul .radio,.cols-3-ul .radio,.cols-4-ul .radio,.cols-5-ul .radio,.cols-6-ul .radio,.cols-7-ul .radio,.cols-8-ul .radio
-,.cols-2-ul .checkbox,.cols-3-ul .checkbox,.cols-4-ul .checkbox,.cols-5-ul .checkbox,.cols-6-ul .checkbox,.cols-7-ul .checkbox,.cols-8-ul .checkbox
+.colstyle-ul .radio
+,.colstyle-ul .checkbox
 {
   float:left;margin-left:-25px;margin-right:0;
 }
 /*column_style table*/
 /* Review this */
-table.cols-2 ,table.cols-3 ,table.cols-4 ,table.cols-5 ,table.cols-6 ,table.cols-7 ,table.cols-8
+table.colstyle-table
     {table-layout:fixed;border:0 none #fff}
-table.cols-2 td,table.cols-3 td,table.cols-4 td,table.cols-5 td,table.cols-6 td,table.cols-7 td,table.cols-8 td
+table.colstyle-table td
     {border:0 none #fff;padding:0}
-.cols-2 ul,.cols-3 ul,.cols-4 ul,.cols-5 ul,.cols-6 ul,.cols-7 ul,.cols-8 ul{padding:0;margin:0;}
-table.cols-2 .answer-item,table.cols-3 .answer-item,table.cols-4 .answer-item,table.cols-5 .answer-item,table.cols-6 .answer-item,table.cols-7 .answer-item,table.cols-8 .answer-item
+table.colstyle-table td ul{padding:0;margin:0;}
+table.colstyle-table .answer-item
 {
   padding-left: 30px;padding-right: 5px;
   display:block;
 }
-table.cols-2 .radio,table.cols-3 .radio,table.cols-4 .radio,table.cols-5 .radio,table.cols-6 .radio,table.cols-7 .radio,table.cols-8 .radio
-,table.cols-2 .checkbox,table.cols-3 .checkbox,table.cols-4 .checkbox,table.cols-5 .checkbox,table.cols-6 .checkbox,table.cols-7 .checkbox,table.cols-8 .checkbox
+table.colstyle-table .radio
+,table.colstyle-table .checkbox
 {
   float:left;margin-left:-25px;margin-right:0;
 }
 /*column_style css */
-ul.cols-2 .answer-item,ul.cols-3 .answer-item,ul.cols-4 .answer-item,ul.cols-5 .answer-item,ul.cols-6 .answer-item,ul.cols-7 .answer-item,ul.cols-8 .answer-item
+ul.colstyle-css .answer-item
   {display:block;float:left}
-ul.cols-2 .answer-item,ul.cols-3 .answer-item,ul.cols-4 .answer-item,ul.cols-5 .answer-item,ul.cols-6 .answer-item,ul.cols-7 .answer-item,ul.cols-8 .answer-item
+ul.colstyle-css .answer-item
 {
   padding-left: 0;padding-right: 0;
 }
-ul.cols-2 .radio,ul.cols-3 .radio,ul.cols-4 .radio,ul.cols-5 .radio,ul.cols-6 .radio,ul.cols-7 .radio,ul.cols-8 .radio
-,ul.cols-2 .checkbox,ul.cols-3 .checkbox,ul.cols-4 .checkbox,ul.cols-5 .checkbox,ul.cols-6 .checkbox,ul.cols-7 .checkbox,ul.cols-8 .checkbox
+ul.colstyle-css .radio
+,ul.colstyle-css .checkbox
 {
-  float:left;
+  float:left;width:100%;
 }
-ul.cols-2 label,ul.cols-3 label,ul.cols-4 label,ul.cols-5 label,ul.cols-6 label,ul.cols-7 label,ul.cols-8 label
+ul.colstyle-css label
 {
   display:block;margin-left:30px;margin-right:0;
 }
-ul.cols-2 .other-item .checkbox,ul.cols-3 .other-item .checkbox,ul.cols-4 .other-item .checkbox,ul.cols-5 .other-item .checkbox,ul.cols-6 .other-item .checkbox,ul.cols-7 .other-item .checkbox,ul.cols-8 .other-item .checkbox
+ul.colstyle-css .other-item .checkbox
 {
   display:none;
 }
-ul.cols-2 .other-item label,ul.cols-3 .other-item label,ul.cols-4 .other-item label,ul.cols-5 .other-item label,ul.cols-6 .other-item label,ul.cols-7 .other-item label,ul.cols-8 .other-item label
+ul.colstyle-css .other-item label
 {
   display:block;margin:0;
 }

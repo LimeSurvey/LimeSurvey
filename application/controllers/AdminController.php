@@ -35,7 +35,7 @@ class AdminController extends LSYii_Controller
             updateCheck();
 
         //unset(Yii::app()->session['FileManagerContext']);
-
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
         $this->user_id = Yii::app()->user->getId();
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid'));}         //SurveyID
         if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid'));}                //Usergroup-ID

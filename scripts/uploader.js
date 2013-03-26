@@ -228,9 +228,10 @@ function passJSON(fieldname, show_title, show_comment, pos) {
 function saveAndExit(fieldname, show_title, show_comment, pos) {
     var filecount = parseInt($('#'+fieldname+'_filecount').val());
     var minfiles  = parseInt($('#'+fieldname+'_minfiles').val());
-    if (minfiles != 0 && filecount < minfiles)
+
+    if (minfiles != 0 && filecount < minfiles && showpopups)
     {
-        var confirmans = confirm(translt.errorNeedMore.replace('%s', (minfiles - filecount)))
+        var confirmans = confirm(translt.errorNeedMoreConfirm.replace('%s', (minfiles - filecount)))
         if (confirmans)
         {
             passJSON(fieldname, show_title, show_comment, pos);
