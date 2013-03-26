@@ -34,7 +34,7 @@
                     <tr>
                         <td style="width: 428px;">
                             <b><?php echo CHtml::activeLabelEx($model, 'dblocation', array('label' => $clang->gT("Database location"))); ?></b><br />
-                            <div class="description-field"><?php $clang->eT('Set this to the IP/net location of your database server. In most cases "localhost" will work.'); ?> </div>
+                            <div class="description-field"><?php $clang->eT('Set this to the IP/net location of your database server. In most cases "localhost" will work. You can force Unix socket with complete socket path.'); ?> </div>
                         </td>
                         <td style="width: 224px;" align="right"><?php echo CHtml::activeTextField($model, 'dblocation', array('required' => 'required')) ?></td>
                     </tr>

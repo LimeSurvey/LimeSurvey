@@ -1104,7 +1104,11 @@ class InstallerController extends CController {
         switch ($sDatabaseType) {
             case 'mysql':
             case 'mysqli':
-                $dsn = "mysql:host={$sDatabaseLocation};port={$sDatabasePort};dbname={$sDatabaseName};";
+                // MySQL allow unix_socket for database location, then test if $sDatabaseLocation start with "/"
+                if(substr($sDatabaseLocation,0,1)=="/") 
+                    $dsn = "mysql:unix_socket={$sDatabaseLocation};dbname={$sDatabaseName};";
+                else
+                    $dsn = "mysql:host={$sDatabaseLocation};port={$sDatabasePort};dbname={$sDatabaseName};";
                 break;
             case 'pgsql':
                 if (empty($sDatabasePwd))
@@ -1129,7 +1133,6 @@ class InstallerController extends CController {
             default:
                 throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
         }
-
         return $dsn;
     }
 
