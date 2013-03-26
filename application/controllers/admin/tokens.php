@@ -272,9 +272,9 @@ class tokens extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "jquery/jquery.multiselect.min.js");
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "jquery/jquery-ui-timepicker-addon.js");
         // CSS
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/jquery.ui.datepicker.css");
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') . "displayParticipants.css");
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-timepicker.css");
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/jquery.ui.datepicker.css");
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "displayParticipants.css");
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-timepicker.css");
 
         Yii::app()->loadHelper('surveytranslator');
         Yii::import('application.libraries.Date_Time_Converter', true);
