@@ -10,13 +10,13 @@ class ShowResponse extends PluginBase {
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
-        $this->subscribe('afterSurveyCompleted', 'showResponse');
+        $this->subscribe('afterSurveyCompleted', 'showTheResponse');
     }
     
     /*
      * Below are the actual methods that handle events
      */
-    public function showResponse(PluginEvent $event) 
+    public function showTheResponse(PluginEvent $event) 
     {
         $surveyId = $event->get('surveyId');
         $responseId = $event->get('responseId');

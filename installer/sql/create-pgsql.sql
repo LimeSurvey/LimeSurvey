@@ -502,19 +502,13 @@ CREATE TABLE prefix_users (
     parent_id integer NOT NULL,
     lang character varying(20),
     email character varying(320),
-    create_survey integer DEFAULT 0 NOT NULL,
-    create_user integer DEFAULT 0 NOT NULL,
-    participant_panel integer DEFAULT 0 NOT NULL,
-    delete_user integer DEFAULT 0 NOT NULL,
-    superadmin integer DEFAULT 0 NOT NULL,
-    configurator integer DEFAULT 0 NOT NULL,
-    manage_template integer DEFAULT 0 NOT NULL,
-    manage_label integer DEFAULT 0 NOT NULL,
     htmleditormode character varying(7) DEFAULT 'default',
     templateeditormode character varying(7) DEFAULT 'default' NOT NULL,
     questionselectormode character varying(7) DEFAULT 'default' NOT NULL,
 	one_time_pw bytea,
-    "dateformat" integer DEFAULT 1 NOT NULL
+    "dateformat" integer DEFAULT 1 NOT NULL,
+    "created" timestamp,
+    "modified" timestamp
 );
 
 

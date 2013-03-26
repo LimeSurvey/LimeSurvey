@@ -14,11 +14,17 @@
         ),
         array(// display the activation link
             'class' => 'CLinkColumn',
-            'header' => 'Activation status',
+            'header' => 'Status',
+            'labelExpression' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', 'Activated', array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', 'Deactivated', array('width' => 32, 'height' => 32))); },
+            'url' => '#'
+        ),
+        array(// display the activation link
+            'class' => 'CLinkColumn',
+            'header' => 'Action',
             'labelExpression' => function($data) { return ($data['active'] == 0 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', 'Activate', array('width' => 16, 'height' => 16)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', 'Deactivate', array('width' => 16, 'height' => 16))); },
-            'urlExpression' => function($data) { return $data['active'] == 0 ? array("/plugins/activate", "id" => $data['id']) : array("/plugins/activate", "id" => $data['id']); }    
+            'urlExpression' => function($data) { return $data['active'] == 0 ? array("/plugins/activate", "id" => $data['id']) : array("/plugins/activate", "id" => $data['id']); }
         )
-    );
+    ); 
         
         /*
             array(            // display a column with "view", "update" and "delete" buttons

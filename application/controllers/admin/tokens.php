@@ -68,15 +68,14 @@ class tokens extends Survey_Common_Action
     */
     function bounceprocessing($iSurveyId)
     {
-        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $iSurveyId = sanitize_int($iSurveyId);
+        $clang = $this->getController()->lang; 
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
         {
             $clang->eT("No token table.");
             return;
         }
-        $iSurveyId = sanitize_int($iSurveyId);
-        $clang = $this->getController()->lang;
         $thissurvey = getSurveyInfo($iSurveyId);
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
@@ -884,12 +883,6 @@ class tokens extends Survey_Common_Action
     */
     function addDummies($iSurveyId, $subaction = '')
     {
-        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
-        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
-        if (!$bTokenExists) //If no tokens table exists
-        {
-            self::_newtokentable($iSurveyId);
-        }
         $iSurveyId = sanitize_int($iSurveyId);
         $clang = $this->getController()->lang;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
@@ -898,6 +891,11 @@ class tokens extends Survey_Common_Action
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
 
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $this->getController()->loadHelper("surveytranslator");
 
         if (!empty($subaction) && $subaction == 'add')
@@ -1060,6 +1058,17 @@ class tokens extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyId;
         $aData['tokenfields'] = getAttributeFieldNames($iSurveyId);
         $aData['tokenfielddata'] = $aData['thissurvey']['attributedescriptions'];
+        // Prepare token fiel list for dropDownList
+        $tokenfieldlist=array();
+        foreach($aData['tokenfields'] as $tokenfield){
+            if (isset($aData['tokenfielddata'][$tokenfield]))
+                $descrition = $aData['tokenfielddata'][$tokenfield]['description'];
+            else
+                $descrition = "";
+            $descrition=sprintf($clang->gT("Attribute %s (%s)"),str_replace("attribute_","",$tokenfield),$descrition);
+            $tokenfieldlist[]=array("id"=>$tokenfield,"descrition"=>$descrition);
+        }
+        $aData['tokenfieldlist'] = $tokenfieldlist; 
         $languages = array_merge((array) Survey::model()->findByPk($iSurveyId)->language, Survey::model()->findByPk($iSurveyId)->additionalLanguages);
         $captions = array();
         foreach ($languages as $language)
@@ -1111,6 +1120,66 @@ class tokens extends Survey_Common_Action
         Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s field(s) were successfully added."), $number2add);
         Yii::app()->getController()->redirect(array("/admin/tokens/sa/managetokenattributes/surveyid/$iSurveyId"));
 
+    }
+
+    /**
+    * Delete token attributes
+    */
+    function deletetokenattributes($iSurveyId)
+    {
+        $clang = $this->getController()->lang;
+        $iSurveyId = sanitize_int($iSurveyId);
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            Yii::app()->session['flashmessage'] = $clang->gT("No token table.");
+            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+        }
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+        {
+            Yii::app()->session['flashmessage'] = $clang->gT("You do not have sufficient rights to access this page.");
+            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+        }
+
+        $aData['thissurvey'] = getSurveyInfo($iSurveyId);
+        $aData['surveyid'] = $iSurveyId;
+        $confirm=Yii::app()->request->getPost('confirm','');
+        $cancel=Yii::app()->request->getPost('cancel','');
+        $tokenfields = getAttributeFieldNames($iSurveyId);
+        $sAttributeToDelete=Yii::app()->request->getPost('deleteattribute','');
+        tracevar($sAttributeToDelete);
+        if(!in_array($sAttributeToDelete,$tokenfields)) $sAttributeToDelete=false;
+        tracevar($sAttributeToDelete);
+        if ($cancel=='cancel')
+        {
+            Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl("/admin/tokens/sa/managetokenattributes/surveyid/$iSurveyId"));
+        }
+        elseif ($confirm!='confirm' && $sAttributeToDelete)
+        {
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
+            'title' => sprintf($clang->gT("Delete token attribute %s"),$sAttributeToDelete),
+            'message' => "<p>".$clang->gT("If you remove this attribute, you will lose all information.") . "</p>\n"
+            . CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$iSurveyId}"), 'post',array('id'=>'attributenumber'))
+            . CHtml::hiddenField('deleteattribute',$sAttributeToDelete)
+            . CHtml::hiddenField('sid',$iSurveyId)
+            . CHtml::htmlButton($clang->gT('Delete attribute'),array('type'=>'submit','value'=>'confirm','name'=>'confirm'))
+            . CHtml::htmlButton($clang->gT('Cancel'),array('type'=>'submit','value'=>'cancel','name'=>'cancel'))
+            . CHtml::endForm()
+            )), $aData);
+        }
+        elseif($sAttributeToDelete)
+        {
+            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->dropColumn("{{tokens_".intval($iSurveyId)."}}", $sAttributeToDelete))->execute();
+            LimeExpressionManager::SetDirtyFlag();
+            Yii::app()->session['flashmessage'] = sprintf($clang->gT("Attribute %s was deleted."), $sAttributeToDelete);
+            Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl("/admin/tokens/sa/managetokenattributes/surveyid/$iSurveyId"));
+        }
+        else
+        {
+            Yii::app()->session['flashmessage'] = $clang->gT("The selected attribute was invalid.");
+            Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl("/admin/tokens/sa/managetokenattributes/surveyid/$iSurveyId"));
+        }
     }
 
     /**

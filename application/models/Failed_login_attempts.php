@@ -19,7 +19,7 @@ class Failed_login_attempts extends CActiveRecord
 	 * @static
 	 * @access public
      * @param string $class
-	 * @return CActiveRecord
+	 * @return Failed_login_attempts
 	 */
 	public static function model($class = __CLASS__)
 	{

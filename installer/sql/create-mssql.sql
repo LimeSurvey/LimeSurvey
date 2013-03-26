@@ -492,19 +492,13 @@ CREATE TABLE [prefix_users] (
   [parent_id] int NOT NULL,
   [lang] varchar(20),
   [email] varchar(320),
-  [create_survey] int NOT NULL default '0',
-  [create_user] int NOT NULL default '0',
-  [participant_panel] int NOT NULL default '0',
-  [delete_user] int NOT NULL default '0',
-  [superadmin] int NOT NULL default '0',
-  [configurator] int NOT NULL default '0',
-  [manage_template] int NOT NULL default '0',
-  [manage_label] int NOT NULL default '0',
   [htmleditormode] varchar(7) default 'default',
   [templateeditormode] varchar(7) NOT NULL default 'default',
   [questionselectormode] varchar(7)  NOT NULL default 'default',
   [one_time_pw] text,
-  [dateformat] int NOT NULL DEFAULT 1
+  [dateformat] int NOT NULL DEFAULT 1,
+  [created] datetime,
+  [modified] datetime
 );
 
 

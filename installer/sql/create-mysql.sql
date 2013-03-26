@@ -497,19 +497,13 @@ CREATE TABLE `prefix_users` (
   `parent_id` int(11) NOT NULL,
   `lang` varchar(20),
   `email` varchar(320),
-  `create_survey` int(11) NOT NULL default '0',
-  `create_user` int(11) NOT NULL default '0',
-  `participant_panel` int(11) NOT NULL default '0',
-  `delete_user` int(11) NOT NULL default '0',
-  `superadmin` int(11) NOT NULL default '0',
-  `configurator` int(11) NOT NULL default '0',
-  `manage_template` int(11) NOT NULL default '0',
-  `manage_label` int(11) NOT NULL default '0',
   `htmleditormode` varchar(7) default 'default',
   `templateeditormode` varchar(7) NOT NULL default 'default',
   `questionselectormode` varchar(7) NOT NULL default 'default',
   `one_time_pw` BLOB,
-  `dateformat` INT NOT NULL DEFAULT 1
+  `dateformat` INT NOT NULL DEFAULT 1,
+  `created` datetime,
+  `modified` datetime
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
