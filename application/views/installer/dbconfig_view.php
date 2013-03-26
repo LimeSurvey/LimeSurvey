@@ -1,9 +1,8 @@
-<?php $this->render("/installer/header_view", compact('progressValue', 'clang')); ?>
 <?php echo CHtml::beginForm($this->createUrl('installer/database')); ?>
 
 <div class="container_6">
 
-    <?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+    <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
 
     <div class="grid_4 table">
 
@@ -94,5 +93,3 @@
 </div>
 
 <?php echo CHtml::endForm(); ?>
-
-<?php $this->render("/installer/footer_view"); ?>

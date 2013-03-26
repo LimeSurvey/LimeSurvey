@@ -10,7 +10,6 @@ $internalConfig = array(
 	'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
 	'name' => 'LimeSurvey',
 	'defaultController' => 'survey',
-	
 	'import' => array(
 		'application.core.*',
 		'application.models.*',
@@ -31,6 +30,9 @@ $internalConfig = array(
         
         'clientScript' => array(
             'packages' => require('third_party.php')
+        ),
+        'assetManager' => array(
+            'baseUrl' => '/tmp/assets'
         ),
         'user' => array(
             'class' => 'LSWebUser',

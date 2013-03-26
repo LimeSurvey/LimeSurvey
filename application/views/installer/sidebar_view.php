@@ -6,7 +6,20 @@
 <div class="grid_2 table">
 <p class="maintitle"><?php $clang->eT("Progress"); ?></p>
 <p><?php printf($clang->gT("%s%% completed"),$progressValue); ?></p>
-<div style="width: 280px; height: 20px; margin-left: 6px;" id="progressbar"></div>
+<?php
+/*
+<div style="width: 280px; height: 20px; margin-left: 6px;" id="progressbar">
+
+</div>
+*/
+    Yii::app()->bootstrap->init();
+    $this->widget('ext.bootstrap.widgets.TbProgress', array(
+            'type' => 'success',
+            'striped' => true,
+            'animated' => true,
+            'percent' => $progressValue,
+        ));
+    ?>
 <br />
 <div id="steps">
 <table class="grid_2" >

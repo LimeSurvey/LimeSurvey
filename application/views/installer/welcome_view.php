@@ -1,10 +1,8 @@
-<?php $this->render("/installer/header_view", compact('progressValue', 'clang')); ?>
-
 <?php echo CHtml::form(array("installer/welcome"), 'post'); ?>
 
 <div class="container_6">
 
-<?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+<?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
 
 <div class="grid_4 table">
 
@@ -54,4 +52,3 @@ echo CHtml::dropDownList('installerLang', 'en', $languages, array('style' => 'wi
 
 
 </form>
-<?php $this->render("/installer/footer_view"); ?>

@@ -35,7 +35,7 @@ class InstallerController extends CController {
     */
     public $lang = null;
 
-    public $layout = false;
+    public $layout = 'installer';
     /**
     * Checks for action specific authorization and then executes an action
     *
@@ -140,7 +140,7 @@ class InstallerController extends CController {
         $aData['title'] = $clang->gT('Welcome');
         $aData['descp'] = $clang->gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
         $aData['classesForStep'] = array('on','off','off','off','off','off');
-        $aData['progressValue'] = 0;
+        $aData['progressValue'] = 10;
 
         if (isset(Yii::app()->session['installerLang']))
         {
@@ -167,7 +167,7 @@ class InstallerController extends CController {
         $aData['title'] = $clang->gT('License');
         $aData['descp'] = $clang->gT('GNU General Public License:');
         $aData['classesForStep'] = array('off','on','off','off','off','off');
-        $aData['progressValue']=0;
+        $aData['progressValue']= 15;
 
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post')
         {

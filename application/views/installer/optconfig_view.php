@@ -1,10 +1,8 @@
-<?php $this->render("/installer/header_view", compact('progressValue', 'clang')); ?>
-
 <?php echo CHtml::beginForm($this->createUrl('installer/optional')); ?>
 
 <div class="container_6">
 
-<?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+<?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
 
 <div class="grid_4 table">
 
@@ -103,5 +101,3 @@ echo CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' =
 
 
 <?php echo CHtml::endForm(); ?>
-
-<?php $this->render("/installer/footer_view"); ?>

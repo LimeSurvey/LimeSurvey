@@ -1,8 +1,6 @@
-<?php $this->render("/installer/header_view", compact('progressValue', 'clang')); ?>
-
 <div class="container_6">
 
-<?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+<?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
 
 <div class="grid_4 table">
 
@@ -39,4 +37,3 @@
 </form>
 </div>
 </div>
-<?php $this->render("/installer/footer_view"); ?>
