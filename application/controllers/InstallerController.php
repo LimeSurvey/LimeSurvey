@@ -378,7 +378,7 @@ class InstallerController extends CController {
                         $aValues['adminoutputText'].= sprintf($clang->gT('A database named "%s" already exists.'),$model->dbname)."<br /><br />\n"
                         .$clang->gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
 
-                        $values['next'] =  array(
+                        $aValues['next'] =  array(
                             'action' => 'installer/populatedb',
                             'label' => 'Populate database',
                             'name' => 'createdbstep2',
@@ -664,7 +664,7 @@ class InstallerController extends CController {
                     $aData['pwd'] = $defaultpass;
 
                     $this->render('/installer/success_view', $aData);
-                    exit();
+                    return;
                 }
             } else {
                 // if passwords don't match, redirect to proper link.

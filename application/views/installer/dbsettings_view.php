@@ -23,7 +23,7 @@
                         if (isset($next))
                         {
                             echo CHtml::form(array($next['action']), 'post');
-                            echo CHtml::button($clang->gT($next['label']), array(
+                            echo CHtml::submitButton($clang->gT($next['label']), array(
                                 'name' => $next['name'],
                                 'class' => 'btn'
                             ));

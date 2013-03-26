@@ -25,7 +25,7 @@ function dirReport($dir, $write, $clang)
 
     if ($error)
     {
-       return '<b><font color="red">'.$a.' &amp; '.$b.'</font></b>';
+       return '<font color="red">'.$a.' &amp; '.$b.'</font>';
     }
     else
     {
@@ -44,101 +44,101 @@ function dirReport($dir, $write, $clang)
         <fieldset>
         <legend><?php $clang->eT("Minimum requirements"); ?></legend>
 
-        <table style="width: 100%; margin-top: 0px; border-top-width: 1px; ">
+        <table>
         <tr>
                <td>&nbsp;</td>
-               <td align="center" style="width: 225px;"><b><?php $clang->eT("Required"); ?></b></td>
-               <td align="center" style="width: 225px;"><b><?php $clang->eT("Current"); ?></b></td>
+               <td><?php $clang->eT("Required"); ?></td>
+               <td><?php $clang->eT("Current"); ?></td>
         </tr>
         <tr>
-               <td style="width: 209px;"><?php $clang->eT("PHP version"); ?></td>
-               <td align="center" style="width: 225px;">5.1.6+</td>
-               <td align="center" style="width: 225px;"><?php if (isset($verror) && $verror) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Outdated"); ?>: <?php echo $phpVersion; ?></span></b>
+               <td><?php $clang->eT("PHP version"); ?></td>
+               <td>5.1.6+</td>
+               <td><?php if (isset($verror) && $verror) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Outdated"); ?>: <?php echo $phpVersion; ?></span>
                <?php } else { ?><?php echo $phpVersion ; ?> <?php } ?></td>
         </tr>
         <tr>
-               <td style="width: 209px;"><?php $clang->eT("PHP PDO driver library"); ?></td>
-               <td align="center" style="width: 225px;"><?php $clang->eT("At least one installed"); ?></td>
-               <td align="center" style="width: 225px;"><?php if (count($dbtypes)==0) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("None found"); ?></span></b>
+               <td><?php $clang->eT("PHP PDO driver library"); ?></td>
+               <td><?php $clang->eT("At least one installed"); ?></td>
+               <td><?php if (count($dbtypes)==0) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("None found"); ?></span>
                <?php } else { ?><?php echo implode(', ',$dbtypes); ?> <?php } ?></td>
         </tr>
         <tr>
-               <td style="width: 209px;"><?php $clang->eT("PHP mbstring library"); ?></td>
-               <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Yes" /></td>
-               <td align="center" style="width: 225px;"><?php echo $mbstringPresent; ?></td>
+               <td><?php $clang->eT("PHP mbstring library"); ?></td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Yes" /></td>
+               <td><?php echo $mbstringPresent; ?></td>
         </tr>
         <tr>
-               <td style="width: 209px;"><?php $clang->eT("PHP/PECL JSON library"); ?></td>
-               <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Yes" /></td>
-               <td align="center" style="width: 225px;"><?php echo $bJSONPresent; ?></td>
+               <td><?php $clang->eT("PHP/PECL JSON library"); ?></td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Yes" /></td>
+               <td><?php echo $bJSONPresent; ?></td>
         </tr>
         <tr>
-               <td style="width: 209px;">/application/config <?php $clang->eT("directory"); ?></td>
-               <td align="center" style="width: 225px;"><?php $clang->eT("Found & writable"); ?></td>
-               <td align="center" style="width: 225px;"><?php  echo dirReport($configPresent,$configWritable,$clang); ?></td>
+               <td>/application/config <?php $clang->eT("directory"); ?></td>
+               <td><?php $clang->eT("Found & writable"); ?></td>
+               <td><?php  echo dirReport($configPresent,$configWritable,$clang); ?></td>
         </tr>
         <tr>
-               <td style="width: 209px;">/upload <?php $clang->eT("directory"); ?></td>
-               <td align="center" style="width: 225px;"><?php $clang->eT("Found & writable"); ?></td>
-               <td align="center" style="width: 225px;"><?php  echo dirReport($uploaddirPresent,$uploaddirWritable,$clang); ?></td>
+               <td>/upload <?php $clang->eT("directory"); ?></td>
+               <td><?php $clang->eT("Found & writable"); ?></td>
+               <td><?php  echo dirReport($uploaddirPresent,$uploaddirWritable,$clang); ?></td>
         </tr>
         <tr>
-               <td style="width: 209px;">/tmp <?php $clang->eT("directory"); ?></td>
-               <td align="center" style="width: 225px;"><?php $clang->eT("Found & writable"); ?></td>
-               <td align="center" style="width: 225px;"><?php  echo dirReport($tmpdirPresent,$tmpdirWritable,$clang); ?></td>
+               <td>/tmp <?php $clang->eT("directory"); ?></td>
+               <td><?php $clang->eT("Found & writable"); ?></td>
+               <td><?php  echo dirReport($tmpdirPresent,$tmpdirWritable,$clang); ?></td>
         </tr>
         <tr>
-               <td style="width: 209px;"><?php $clang->eT("Session writable"); ?></td>
-               <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
-               <td align="center" style="width: 225px;"><?php echo $sessionWritableImg; if (!$sessionWritable) echo '<br/>session.save_path: ' . session_save_path(); ?></td>
+               <td><?php $clang->eT("Session writable"); ?></td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+               <td><?php echo $sessionWritableImg; if (!$sessionWritable) echo '<br/>session.save_path: ' . session_save_path(); ?></td>
         </tr>
 
         </table>
         </fieldset>
         <fieldset>
         <legend><?php $clang->eT('Optional modules'); ?></legend>
-        <table style="width: 100%; margin-top: 0px; border-top-width: 1px;" >
+        <table>
         <tr>
-               <td style="width: 209px;">&nbsp;</td>
-               <td align="center" style="width: 225px;"><b><?php $clang->eT('Recommended'); ?></b></td>
-               <td align="center" style="width: 225px;"><b><?php $clang->eT('Current'); ?></b></td>
+               <td>&nbsp;</td>
+               <td><?php $clang->eT('Recommended'); ?></td>
+               <td><?php $clang->eT('Current'); ?></td>
         </tr>
         <tr>
-               <td style="width: 209px;">PHP GD library</td>
-               <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
-               <td align="center" style="width: 225px;"><?php echo $gdPresent ; ?></td>
+               <td>PHP GD library</td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+               <td><?php echo $gdPresent ; ?></td>
         </tr>
         <tr>
-               <td style="width: 209px;">PHP LDAP library</td>
-               <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
-               <td align="center" style="width: 225px;"><?php echo $ldapPresent ; ?></td>
+               <td>PHP LDAP library</td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+               <td><?php echo $ldapPresent ; ?></td>
         </tr>
         <tr>
-               <td style="width: 209px;">PHP zip library</td>
-               <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
-               <td align="center" style="width: 225px;"><?php echo $zipPresent ; ?></td>
+               <td>PHP zip library</td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+               <td><?php echo $zipPresent ; ?></td>
         </tr>
         <tr>
-               <td style="width: 209px;">PHP zlib library</td>
-               <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
-               <td align="center" style="width: 225px;"><?php echo $zlibPresent ; ?></td>
+               <td>PHP zlib library</td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+               <td><?php echo $zlibPresent ; ?></td>
         </tr>
         <tr>
-               <td style="width: 209px;">PHP imap library</td>
-               <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
-               <td align="center" style="width: 225px;"><?php echo $bIMAPPresent ; ?></td>
+               <td>PHP imap library</td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+               <td><?php echo $bIMAPPresent ; ?></td>
         </tr>
 
         </table>
         </fieldset>
-        <div class="row">
+        <div class="row navigator">
             <div class="span3" >
                 <input class="btn" type="button" value="<?php $clang->eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
             </div>
-            <div class="span3" style="text-align: center;">
+            <div class="span3">
                 <input class="btn" type="button" value="<?php $clang->eT('Check again'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
             </div>
-            <div class="span3" style="text-align: right;">
+            <div class="span3">
 
                 <?php if (isset($next) && $next== TRUE) { ?>
                 <input class="btn" type="button" value="<?php $clang->eT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />

@@ -24,8 +24,12 @@
             echo CHtml::tag('p', array(), $clang->gT('Your preferred language will be used through out the installation process.'));
             ?>
             </fieldset>
-            <div style="text-align: right; margin-top: 50px;">
-            <input class='btn' type="submit" value="<?php $clang->eT('Start installation'); ?>" />
+            <div class="row navigator">
+                <div class="span3"></div>
+                <div class="span3"></div>
+                <div class="span3">
+                    <input class='btn' type="submit" value="<?php $clang->eT('Start installation'); ?>" />
+                </div>
             </div>
         <?php echo CHtml::endForm(); ?>
     </div>
