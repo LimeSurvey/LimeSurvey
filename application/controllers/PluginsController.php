@@ -51,6 +51,7 @@
                 $data[] = array(
                     'id' => $plugin->id,
                     'name' => $plugin->name,
+                    'description' => $discoveredPlugins[$plugin->name]['description'],
                     'active' => $plugin->active,
                     'new' => !in_array($plugin->name, $installedNames)
                 );

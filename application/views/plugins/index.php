@@ -6,12 +6,6 @@
     $dataProvider = new CArrayDataProvider($data);
     
     $gridColumns = array(
-        array(// display the 'name' attribute
-            'class' => 'CLinkColumn',
-            'header' => 'Plugin',
-            'labelExpression' => function($data) { return $data['name']; },
-            'urlExpression' => function($data) { return array("/plugins/configure", "id" => $data['id']); }    
-        ),
         array(// display the activation link
             'class' => 'CLinkColumn',
             'header' => 'Status',
@@ -23,7 +17,18 @@
             'header' => 'Action',
             'labelExpression' => function($data) { return ($data['active'] == 0 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', 'Activate', array('width' => 16, 'height' => 16)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', 'Deactivate', array('width' => 16, 'height' => 16))); },
             'urlExpression' => function($data) { return $data['active'] == 0 ? array("/plugins/activate", "id" => $data['id']) : array("/plugins/activate", "id" => $data['id']); }
-        )
+        ),
+        array(// display the 'name' attribute
+            'class' => 'CLinkColumn',
+            'header' => 'Plugin',
+            'labelExpression' => function($data) { return $data['name']; },
+            'urlExpression' => function($data) { return array("/plugins/configure", "id" => $data['id']); }    
+        ),
+        array(// display the 'name' attribute
+            'class' => 'CDataColumn',
+            'header' => 'Description',
+            'name' => 'description'
+        ),
     ); 
         
         /*
