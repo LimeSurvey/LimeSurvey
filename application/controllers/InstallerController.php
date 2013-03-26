@@ -625,7 +625,22 @@ class InstallerController extends CController {
                 if ($this->connection->getActive() == true) {
                     $password_hash=hash('sha256', $defaultpass);
                     try {
-                        $this->connection->createCommand()->insert('{{users}}', array('users_name' => $defaultuser, 'password' => $password_hash, 'full_name' => $siteadminname, 'parent_id' => 0, 'lang' => $defaultlang, 'email' => $siteadminemail, 'create_survey' => 1, 'create_user' => 1, 'participant_panel' => 1, 'delete_user' => 1, 'superadmin' => 1, 'configurator' => 1, 'manage_template' => 1, 'manage_label' => 1));
+                        $user=new User;
+                        $user->users_name=$defaultuser;
+                        $user->password=$password_hash;
+                        $user->full_name=$siteadminname;
+                        $user->parent_id=0;
+                        $user->lang=$defaultlang;
+                        $user->email=$siteadminemail;
+                        $user->save();
+                        
+                        $permission=new Permission;
+                        $permission->sid=0;
+                        $permission->uid=$user->uid;
+                        $permission->permission='global_superadmin';
+                        $permission->read_p=1;
+                        $permission->save();
+                        
                         $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => self::_getRandomString()));
 
                         foreach(array('sitename', 'siteadminname', 'siteadminemail', 'siteadminbounce', 'defaultlang') as $insert) {
