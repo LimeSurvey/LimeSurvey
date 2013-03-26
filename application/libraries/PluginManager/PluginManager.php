@@ -41,7 +41,7 @@
             }
             
             $this->pluginDirs[] = 'webroot.plugins';           // User plugins
-            $this->pluginDirs[] = 'webroot.application.core';  // Core plugins
+            $this->pluginDirs[] = 'webroot.application.core.plugins';  // Core plugins
         }
         /**
          * Returns the storage instance of type $storageClass.
