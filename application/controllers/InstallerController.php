@@ -364,9 +364,11 @@ class InstallerController extends CController {
                         .$clang->gT("The database you specified does not exist:")."<br /><br />\n<strong>".$model->dbname."</strong><br /><br />\n"
                         .$clang->gT("LimeSurvey can attempt to create this database for you.")."<br /><br />\n";
 
-                        $values['adminoutputForm'] =  CHtml::form(array('installer/createdb'), 'post').
-                        "<input type='submit' value='"
-                        .$clang->gT("Create database")."' class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' /></form>";
+                        $values['next'] =  array(
+                            'action' => 'installer/createdb',
+                            'label' => 'Create database',
+                            'name' => '',
+                        );
                     }
                     elseif ($dbexistsbutempty) //&& !(returnGlobal('createdbstep2')==$clang->gT("Populate database")))
                     {
@@ -377,9 +379,11 @@ class InstallerController extends CController {
                         $values['adminoutputText'].= sprintf($clang->gT('A database named "%s" already exists.'),$model->dbname)."<br /><br />\n"
                         .$clang->gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
 
-                        $values['adminoutputForm'] =  CHtml::form(array('installer/populatedb'), 'post')
-                        ."<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='".$clang->gT("Populate database")."' />"
-                        ."</form>";
+                        $values['next'] =  array(
+                            'action' => 'installer/populatedb',
+                            'label' => 'Populate database',
+                            'name' => 'createdbstep2',
+                        );
                     }
                     elseif (!$dbexistsbutempty)
                     {
