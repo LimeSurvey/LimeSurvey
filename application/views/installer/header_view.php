@@ -10,7 +10,7 @@
     <link rel="icon" href="<?php echo $this->createUrl('/');?>styles/admin/favicon.ico" type="image/x-icon" />
 	 <!--<link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />  -->
     <?php
-        App()->getClientScript()->registerPackage('jqueryui');
+        Yii::app()->getClientScript()->registerPackage('jqueryui');
     ?>
     <script type="text/javascript">
 	$(function() {
