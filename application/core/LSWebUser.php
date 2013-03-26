@@ -8,9 +8,23 @@
         
         public function __construct() 
         {
-
+            $this->loginUrl = Yii::app()->createUrl('admin/authentication', array('sa' => 'login'));
             
-        }        
+        }
+
+        public function checkAccess($operation, $params = array(), $allowCaching = true)
+        {
+            if ($operation == 'administrator')
+            {
+                return Permission::model()->hasGlobalPermission('global_superadmin', 'read');
+            }
+            else
+            {
+                return parent::checkAccess($operation, $params, $allowCaching);
+            }
+            
+        }
+
         public function getStateKeyPrefix() 
         {
             return $this->sessionVariable;
@@ -51,6 +65,7 @@
         {
             $this->setState($key, null);
         }
+
         public function setState($key, $value, $defaultValue = null) 
         {
             $current = isset($_SESSION[$this->sessionVariable]) ? $_SESSION[$this->sessionVariable] : array();
@@ -65,6 +80,7 @@
                 
             
         }
+
         public function hasState($key) 
         {
             return isset($_SESSION[$this->sessionVariable]) && Hash::check($_SESSION[$this->sessionVariable], $key);

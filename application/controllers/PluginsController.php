@@ -10,7 +10,19 @@
          * @var array of mixed.
          */
         protected $properties = array();
-        
+
+        public function accessRules()
+        {
+            $rules = array(
+                array('allow', 'roles' => array('administrator')),
+                array('deny')
+            );
+
+
+            // Note the order; rules are numerically indexed and we want to
+            // parents rules to be executed only if ours dont apply.
+            return array_merge($rules, parent::accessRules());
+        }
         public function actionIndex()
         {
             // Scan the plugins folder.
@@ -117,15 +129,12 @@
              
          }
          
-         /**
-          * Allows for array configuration that loads helpers.
-          * @param type $view
-          * @return boolean
-          */
-         
-         public function beforeRender($view) {
-             parent::beforeRender($view);
-             return true;
+         public function filters()
+         {
+             $filters = array(
+                 'accessControl'
+             );
+             return array_merge(parent::filters(), $filters);
          }
          
          public function __get($property)
