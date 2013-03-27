@@ -35,66 +35,10 @@ $(document).ready(function(){
             duration: 'fast'
         }, $.datepicker.regional[userlanguage]);
     }
-    $(".sf-menu").superfish({});
-    $(".sf-menu").find("img").removeAttr("alt");;
-    $('button,input[type=submit],input[type=button],input[type=reset]').addClass("limebutton ui-state-default ui-corner-all");
-    $('button,input[type=submit],input[type=button],input[type=reset]').hover(
-    function(){
-        $(this).addClass("ui-state-hover");
-    },
-    function(){
-        $(this).removeClass("ui-state-hover");
-    }
-    )
-
-    // Call the popuptip hover rel attribute
-    $('.popuptip').each(function(){
-        if($(this).attr('rel')){
-            htmlcontent=$(this).html();
-            tiptarget=$("#"+$(this).attr('rel'));
-            //if($("#"+$(this).attr('rel')).find('img').length==1){ tiptarget=$("#"+$(this).attr('rel')).find('img');}
-            tiptarget.qtip({
-                content: {
-                    text: htmlcontent
-                },
-                style: {
-                    classes: "qtip-light qtip-rounded"
-                },
-                position: {
-                    at: "bottom center",
-                    my: "top center"
-                },
-                hide: {
-                    fixed: true,
-                    delay: 500,
-                    event: "mouseout"
-                }
-            });
-            $("#"+$(this).attr('rel')).find("img").removeAttr("alt"); // Remove children img attr alt, the  default tooltip can apply.
-        }
-    });
-
-
-    // Loads the tooltips for the toolbars  except the surveybar
-    $('img[alt],input[src]').each(function() {
-        if($(this).attr('alt') != ''){
-            $(this).qtip({
-                content: {
-                    attr: "alt"
-                },
-                style: {
-                    classes: "qtip-light qtip-rounded"
-                },
-                position: {
-                    viewport: $(window),
-                    at: "bottom right"
-                },
-                hide: {
-                    event: "mouseout"
-                }
-            });
-        }
-    });
+    $(".sf-menu").superfish({speed: 'fast'});
+    doToolTip();
+    $('button,input[type=submit],input[type=button],input[type=reset]').button();
+    $('button,input[type=submit],input[type=button],input[type=reset]').addClass("limebutton");
 
     $(".progressbar").each(function(){
         var pValue = parseInt($(this).attr('name'));
@@ -108,44 +52,6 @@ $(document).ready(function(){
         }
 
         $("div",this).html(pValue + "%");
-    });
-
-
-
-    $('label[title]').each(function() {
-        if($(this).attr('title') != '')
-            {
-            $(this).qtip({
-                style: {
-                    classes: "qtip-cream qtip-rounded"
-                },
-                position: {
-                    viewport: $(window),
-                    at: "bottom right"
-                }
-            });
-        }
-    });
-
-    //Still used ?
-    $('.tipme').each(function() {
-        if($(this).attr('alt') != '')
-            {
-            $(this).qtip(
-            {
-                content: {
-                    attr: 'alt'
-                },
-                style: {
-                    classes: "qtip-cream qtip-rounded"
-                },
-                position: {
-                        viewport: $(window),
-                        at: 'top right',
-                        tooltip: 'bottom left'
-                    }
-            });
-        }
     });
 
 
@@ -305,6 +211,131 @@ function validatefilename (form, strmessage )
     return true ;
 }
 
+function doToolTip()
+{
+    // ToolTip on menu
+    $(".sf-menu li").each(function() {
+        tipcontent=$(this).children("a").children("img").attr('alt');
+        if(tipcontent && tipcontent!=""){
+            $(this).qtip({
+                content: {
+                    text: tipcontent
+                },
+                style: {
+                    classes: "qtip-light qtip-rounded"
+                },
+                position: {
+                    my: 'bottom left',
+                    at: "top right"
+                }
+            });
+        }
+    });
+    $(".sf-menu a > img[alt]").removeAttr("alt");
+    $("a").each(function() {
+        tipcontent=$(this).children("img").attr('alt');
+        if(!tipcontent){tipcontent=$(this).attr('title');}
+        if(tipcontent && tipcontent!=""){
+            $(this).qtip({
+                content: {
+                    text: tipcontent
+                },
+                style: {
+                    classes: "qtip-light qtip-rounded"
+                },
+                position: {
+                    viewport: $(window),
+                    at: 'bottom right',
+                }
+            });
+        }
+    });
+    $("a > img[alt]").removeAttr("alt");
+    
+    // Call the popuptip hover rel attribute
+    $('.popuptip').each(function(){
+        if($(this).attr('rel')){
+            htmlcontent=$(this).html();
+            tiptarget=$("#"+$(this).attr('rel'));
+            //if($("#"+$(this).attr('rel')).find('img').length==1){ tiptarget=$("#"+$(this).attr('rel')).find('img');}
+            tiptarget.qtip({
+                content: {
+                    text: htmlcontent
+                },
+                style: {
+                    classes: "qtip-light qtip-rounded"
+                },
+                position: {
+                    at: "bottom center",
+                    my: "top center"
+                },
+                hide: {
+                    fixed: true,
+                    delay: 500,
+                    event: "mouseout"
+                }
+            });
+            $("#"+$(this).attr('rel')).find("img").removeAttr("alt"); // Remove children img attr alt, the  default tooltip can apply.
+        }
+    });
+    // On label
+    $('label[title]').each(function() {
+        if($(this).attr('title') != '')
+            {
+            $(this).qtip({
+                style: {
+                    classes: "qtip-cream qtip-rounded"
+                },
+                position: {
+                    viewport: $(window),
+                    at: "bottom right"
+                }
+            });
+        }
+    });
+    // Loads the tooltips on image
+    $('img[alt],input[src]').each(function() {
+        if($(this).attr('alt') != ''){
+            $(this).qtip({
+                content: {
+                    attr: "alt"
+                },
+                style: {
+                    classes: "qtip-light qtip-rounded"
+                },
+                position: {
+                    viewport: $(window),
+                    at: "bottom right"
+                },
+                hide: {
+                    event: "mouseout"
+                }
+            });
+        }
+    });
+
+    //Still used ?
+    $('.tipme').each(function() {
+        if($(this).attr('alt') != '')
+            {
+            $(this).qtip(
+            {
+                content: {
+                    attr: 'alt'
+                },
+                style: {
+                    classes: "qtip-cream qtip-rounded"
+                },
+                position: {
+                        viewport: $(window),
+                        at: 'top right',
+                        tooltip: 'bottom left'
+                    }
+            });
+        }
+    });
+
+}
 
 // If the length of the element's string is 0 then display helper message
 function isEmpty(elem, helperMsg)
