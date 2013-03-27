@@ -3362,6 +3362,7 @@ function exprmgr_if($test,$ok,$error)
  * Return true if the variable is an integer
  * @param string $arg
  * @return boolean
+ * @link http://www.php.net/manual/en/function.is-int.php#87670
  */
 function exprmgr_int($arg)
 {
