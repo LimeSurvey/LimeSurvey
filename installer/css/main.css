@@ -106,9 +106,10 @@ table td + td {
 table td, table th {
     width: 33%;
     padding: 1px;
-
+}       
+table th {
+    text-align: center;
 }
-
 div.navigator {
     margin-top: 30px;
 }
