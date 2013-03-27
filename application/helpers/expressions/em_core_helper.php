@@ -10,6 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
+ *	$Id$
  */
 /**
  * Description of ExpressionManager
@@ -179,7 +180,7 @@ class ExpressionManager {
 'intval' => array('intval', 'LEMintval', $this->gT('Get the integer value of a variable'), 'int intval(number [, base=10])', 'http://www.php.net/manual/en/function.intval.php', 1,2),
 'is_empty' => array('exprmgr_empty', 'LEMempty', $this->gT('Determine whether a variable is considered to be empty'), 'bool is_empty(var)', 'http://www.php.net/manual/en/function.empty.php', 1),
 'is_float' => array('is_float', 'LEMis_float', $this->gT('Finds whether the type of a variable is float'), 'bool is_float(var)', 'http://www.php.net/manual/en/function.is-float.php', 1),
-'is_int' => array('is_int', 'LEMis_int', $this->gT('Find whether the type of a variable is integer'), 'bool is_int(var)', 'http://www.php.net/manual/en/function.is-int.php', 1),
+'is_int' => array('exprmgr_int', 'LEMis_int', $this->gT('Find whether the type of a variable is integer'), 'bool is_int(var)', 'http://www.php.net/manual/en/function.is-int.php', 1),
 'is_nan' => array('is_nan', 'isNaN', $this->gT('Finds whether a value is not a number'), 'bool is_nan(var)', 'http://www.php.net/manual/en/function.is-nan.php', 1),
 'is_null' => array('is_null', 'LEMis_null', $this->gT('Finds whether a variable is NULL'), 'bool is_null(var)', 'http://www.php.net/manual/en/function.is-null.php', 1),
 'is_numeric' => array('is_numeric', 'LEMis_numeric', $this->gT('Finds whether a variable is a number or a numeric string'), 'bool is_numeric(var)', 'http://www.php.net/manual/en/function.is-numeric.php', 1),
@@ -1981,7 +1982,6 @@ class ExpressionManager {
         $funcName = $func[0];
         $numArgs = count($params);
         $result=1;  // default value for $this->RDP_onlyparse
-
         if (function_exists($funcName)) {
             $numArgsAllowed = array_slice($func, 5);    // get array of allowable argument counts from end of $func
             $argsPassed = is_array($params) ? count($params) : 0;
@@ -2009,7 +2009,6 @@ class ExpressionManager {
                     }
                 // Call  function with the params passed
                 } elseif (in_array($argsPassed, $numArgsAllowed)) {
-
                     switch ($argsPassed) {
                     case 0:
                         if (!$this->RDP_onlyparse) {
@@ -2039,7 +2038,7 @@ class ExpressionManager {
                                     break;
                                 default:
                                     $result = $funcName($params[0]);
-                                     break;
+                                    break;
                             }
                         }
                         break;
@@ -3359,6 +3358,15 @@ function exprmgr_if($test,$ok,$error)
     }
 }
 
+/**
+ * Return true if the variable is an integer
+ * @param string $arg
+ * @return boolean
+ */
+function exprmgr_int($arg)
+{
+    return ($arg !== true) && ((string)(int) $arg) === ((string) $arg);
+}
 /**
  * Join together $args[0-N] with ', '
  * @param <type> $args
