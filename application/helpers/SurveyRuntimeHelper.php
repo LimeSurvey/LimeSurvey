@@ -509,7 +509,7 @@ class SurveyRuntimeHelper {
                 $redata['completed'] = $completed;
                 
                 // @todo Remove direct session access.
-                $event = new PluginEvent('afterSurveyCompleted');
+                $event = new PluginEvent('afterSurveyComplete');
                 if (isset($_SESSION[$LEMsessid]['srid']))
                 {
                     $event->set('responseId', $_SESSION[$LEMsessid]['srid']);

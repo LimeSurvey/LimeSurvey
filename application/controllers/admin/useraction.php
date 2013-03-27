@@ -351,14 +351,14 @@ class UserAction extends Survey_Common_Action
             }
             else
             {
-                if (empty($sPassword))
+                $oRecord = User::model()->findByPk($postuserid);
+                $oRecord->email= $this->escape($email);
+                $oRecord->full_name= $this->escape($full_name);
+                if (!empty($sPassword))
                 {
-                    $uresult = User::model()->updateByPk($postuserid, array('email' => $this->escape($email), 'full_name' => $this->escape($full_name)));
+                    $oRecord->password= hash('sha256', $sPassword);
                 }
-                else
-                {
-                    $uresult = User::model()->updateByPk($postuserid, array('email' => $this->escape($email), 'full_name' => $this->escape($full_name), 'password' => hash('sha256', $sPassword)));
-                }
+                $oRecord->save();
 
                 if (empty($sPassword)) {
                     $extra = $clang->gT("Username") . ": $users_name<br />" . $clang->gT("Password") . ": (" . $clang->gT("Unchanged") . ")<br />\n";

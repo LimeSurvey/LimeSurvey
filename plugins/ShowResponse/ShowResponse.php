@@ -10,7 +10,7 @@ class ShowResponse extends PluginBase {
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
-        $this->subscribe('afterSurveyCompleted', 'showTheResponse');
+        $this->subscribe('afterSurveyComplete', 'showTheResponse');
     }
     
     /*

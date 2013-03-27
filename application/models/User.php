@@ -12,7 +12,7 @@
 *
 */
 
-class User extends CActiveRecord
+class User extends LSActiveRecord
 {
     /**
     * @var string Default value for user language
@@ -180,7 +180,6 @@ class User extends CActiveRecord
         {
             $this->password=stream_get_contents($this->password,-1,0); 
         }
-        
         return parent::beforeSave();
     }
     
