@@ -20,7 +20,7 @@
             <ul class='sf-menu'>
                 <li><a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>'>
                         <img src='<?php echo $sImageURL; ?>document.png' title='' alt='<?php $clang->eT("Display Responses"); ?>' /></a>
-                        <?php if (count($tmp_survlangs)) { ?>
+                        <?php if (count($tmp_survlangs) > 1) { ?>
                         <ul>
                             <?php foreach ($tmp_survlangs as $tmp_lang) { ?>
                                 <li>
@@ -32,7 +32,7 @@
                 </li>
                 <li><a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/start/0/limit/50/order/desc"); ?>'>
                         <img src='<?php echo $sImageURL; ?>viewlast.png' title='' alt='<?php $clang->eT("Display Last 50 Responses"); ?>' /></a>
-                    <?php if (count($tmp_survlangs)) { ?>
+                    <?php if (count($tmp_survlangs) > 1) { ?>
                         <ul>
                             <?php foreach ($tmp_survlangs as $tmp_lang) { ?>
                                 <li>
