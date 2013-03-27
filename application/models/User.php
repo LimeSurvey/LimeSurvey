@@ -193,8 +193,8 @@ class User extends LSActiveRecord
     function deleteUser($iUserID)
     {
         $iUserID= (int)$iUserID;
-        $iRecordsAffected = Yii::app()->db->createCommand()->from('{{users}}')->delete('{{users}}', "uid={$iUserID}");
-        return (bool) $iRecordsAffected;
+        $oUser=$this->findByPk($iUserID);
+        return (bool) $oUser->delete();
     }
 
     /**

@@ -37,7 +37,7 @@ class UserAction extends Survey_Common_Action
     */
     public function index()
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
+        App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts').'users.js');
 
         $userlist = getUserList();
@@ -492,7 +492,7 @@ class UserAction extends Survey_Common_Action
 
     function setusertemplates()
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
+        App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'users.js');
         $aData['postuser']  = Yii::app()->request->getPost("user");
         $aData['postemail'] = Yii::app()->request->getPost("email");

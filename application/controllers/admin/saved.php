@@ -33,7 +33,7 @@ class saved extends Survey_Common_Action
             die();
         }
 
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
+        App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'saved.js');
 
         $aThisSurvey = getSurveyInfo($iSurveyId);

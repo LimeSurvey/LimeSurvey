@@ -16,6 +16,7 @@
             $this->subscribe('newSurveySettings');
             $this->subscribe('beforeActivate');
             $this->subscribe('beforeUserSave');
+            $this->subscribe('beforeUserDelete');
         }
 
         /**
@@ -66,10 +67,10 @@
             $oUserData=$event->getSender();
             $oCurrentUser=$this->api->getCurrentUser();
             $oOldUser=$this->api->getUser($oUserData->uid);
-            $aOldValues=$oOldUser->getAttributes();
-            unset($aOldValues['password']);
-            if (count(array_diff_assoc($aNewValues,$aOldValues)))
+            if ($oOldUser)
             {
+                $aOldValues=$oOldUser->getAttributes();
+                unset($aOldValues['password']);
                 $oAutoLog=new mdlAuditlog();
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='user';
