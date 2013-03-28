@@ -6,7 +6,55 @@
     */
     class LimesurveyApi
     {
+        /**
+         * Gets the id of a plugin given its name.
+         * @param string $pluginName
+         * @return int Id of the plugin, null if not found.
+         */
+        protected function getPluginId($pluginName)
+        {
+            $plugin = Plugin::model()->findByAttributes(array(
+                'name' => $pluginName
+            ));
+            if ($plugin !== null)
+            {
+                return $plugin->id;
+            }
+        }
+        /**
+         * Generates the real table name from plugin and tablename.
+         * @param mixed $sPluginName
+         * @param string $sTableName
+         */
+        protected function getTableName($plugin, $tableName)
+        {
+            $parts = array(App()->getDb()->tablePrefix);
+            if (is_object($plugin))
+            {
+                if (method_exists($plugin, 'name'))
+                {
+                    $parts[] = $this->getPluginId($plugin->name());
+                }
+                else
+                {
+                    $parts[] = $this->getPluginId(get_class($plugin));
+                }
+            }
+            elseif (is_int($plugin))
+            {
+                $parts[] = $plugin;
 
+            }
+            elseif (is_string($plugin))
+            {
+                $parts[] = $this->getPluginId($plugin);
+            }
+            $parts[] = $tableName;
+            if (!in_array(null, $parts))
+            {
+                return implode('_', $parts);
+            }
+        }
         /**
         * Sets a flash message to be shown to the user.
         * @param html $message
@@ -19,26 +67,73 @@
 
         /**
         * Builds and executes a SQL statement for creating a new DB table.
-        *
-        * @param string $table the name of the table to be created. The name will be properly quoted and prefixed by the method.
-        * @param array $columns the columns (name=>definition) in the new table.
-        * @param string $options additional SQL fragment that will be appended to the generated SQL.
+        * @param mixed $plugin The plugin object, id or name.
+        * @param string $sTableName the name of the table to be created. The name will be properly quoted and prefixed by the method.
+        * @param array $aColumns the columns (name=>definition) in the new table.
+        * @param string $sOptions additional SQL fragment that will be appended to the generated SQL.
         * @return integer number of rows affected by the execution.
         */        
-        public function createTable($sTableName, $aColumns, $sOptions=null)
+        public function createTable($plugin, $sTableName, $aColumns, $sOptions=null)
         {
-            Yii:app()->loadHelper('database');
-            return createTable('{{'.$sTableName.'}}', $aColumns, $sOptions=null);
+            if (null !== $sTableName = $this->getTableName($plugin, $sTableName))
+            {
+                return App()->getDb()->createCommand()->createTable($sTableName,$aColumns,$sOptions);
+            }
+            return false;
+        }
+
+        /**
+         * Gets an activerecord object associated to the table.
+         * @param string $sPluginName
+         * @param string $sTableName
+         * @return PluginDynamic
+         */
+        public function getTable($sPluginName, $sTableName)
+        {
+            $plugin = Plugin::model()->findByAttributes(array(
+                'name' => $sPluginName
+            ));
+            if ($plugin !== null)
+            {
+                $sTableName = implode('_', array(
+                    App()->getDb()->tablePrefix,
+                    $plugin->id,
+                    $sTableName
+                ));
+
+                if (!isset($sScenario))
+                {
+                    return PluginDynamic::model($sTableName);
+                }
+            }
+        }
+
+        public function newModel($sPluginName, $sTableName)
+        {
+            $plugin = Plugin::model()->findByAttributes(array(
+                'name' => $sPluginName
+            ));
+            if ($plugin !== null)
+            {
+                $sTableName = implode('_', array(
+                    App()->getDb()->tablePrefix,
+                    $plugin->id,
+                    $sTableName
+                ));
+                return new PluginDynamic($sTableName);
+            }
         }
 
         /**
         * Check if a table does exist in the database
-        *
+        * @param mixed $plugin
         * @param string $sTableName Table name to check for (without dbprefix!))
         * @return boolean True or false if table exists or not
         */
-        public function tableExists($sTableName) {
-            return tableExists($sTableName);
+        public function tableExists($plugin, $sTableName)
+        {
+            $sTableName =  $this->getTableName($plugin, $sTableName);
+            return isset($sTableName) && in_array($sTableName, App()->getDb()->getSchema()->getTableNames());
         }
 
         /**
@@ -117,7 +212,21 @@
             }
             return false;
         }
-
+        /**
+         * Gets an array of old response tables for a survey.
+         * @param int $surveyId
+         */
+        public function getOldResponseTables($surveyId)
+        {
+            $tables = array();
+            $base = App()->getDb()->tablePrefix . 'survey_' . $surveyId;
+            foreach (App()->getDb()->getSchema()->getTableNames() as $table)
+            {
+                if (strpos($table, $base) === 0)
+                $tables = $table;
+            }
+            return $tables;
+        }
         /**
         * Retrieves user details for a user
         * Returns null if the user does not exist anymore for some reason (should not really happen)
