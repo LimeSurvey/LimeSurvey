@@ -15,6 +15,15 @@ class Authdb extends PluginBase
         $this->subscribe('newLoginForm');
         $this->subscribe('afterLoginFormSubmit');
         $this->subscribe('newUserSession');
+        $this->subscribe('beforeDeactivate');
+    }
+
+    public function beforeDeactivate(PluginEvent $event)
+    {
+        $event->set('success', false);
+
+        // Optionally set a custom error message.
+        $event->set('message', gT('Core plugin can not be disabled.'));
     }
     
     public function beforeLogin(PluginEvent $event)

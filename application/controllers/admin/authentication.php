@@ -32,6 +32,22 @@ class Authentication extends Survey_Common_Action
     public function index()
     {
         $this->_redirectIfLoggedIn();
+        
+        // Make sure after first run / update the authdb plugin is registered and active
+        // it can not be deactivated
+        if (!class_exists('Authdb', false)) {
+            $plugin = Plugin::model()->findByAttributes(array('name'=>'Authdb'));
+            if (!$plugin) {
+                $plugin = new Plugin();
+                $plugin->name = 'Authdb';
+                $plugin->active = 1;
+                $plugin->save();                
+                App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
+            } else {
+                $plugin->status = 1;
+                $plugin->save();
+            }
+        }
 
         $beforeLogin = new PluginEvent('beforeLogin');
         $beforeLogin->set('identity', new LSUserIdentity('', ''));
@@ -235,7 +251,7 @@ class Authentication extends Survey_Common_Action
     */
     private function _doRedirect()
     {
-        $returnUrl = App()->user->getReturnUrl('/admin');
+        $returnUrl = App()->user->getReturnUrl(array('/admin'));
         $this->getController()->redirect($returnUrl);
     }
 

@@ -69,7 +69,8 @@
                     if ($result->get('success', true)) {
                         $status = 0;
                     } else {
-                        App()->user->setFlash('pluginActivation', gT('Failed to deactivate the plugin.'));
+                        $message = $result->get('message', gT('Failed to deactivate the plugin.'));
+                        App()->user->setFlash('pluginActivation', $message);
                         $this->redirect(array('plugins/'));
                     }
 
@@ -80,7 +81,8 @@
                     if ($result->get('success', true)) {
                         $status = 1;
                     } else {
-                        App()->user->setFlash('pluginActivation', $result->get('message', gT('Failed to activate plugin.')));
+                        $message = $result->get('message', gT('Failed to activate the plugin.'));
+                        App()->user->setFlash('pluginActivation', $message);
                         $this->redirect(array('plugins/'));
                     }
                 }
