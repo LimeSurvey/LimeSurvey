@@ -518,17 +518,11 @@ class SurveyRuntimeHelper {
                 App()->getPluginManager()->dispatchEvent($event);
                 if ($event->get('blocks', null) != null)
                 {
-                    $blocks = array();
-                    foreach ($event->get('blocks') as $blockData)
+                    $blocks = $event->getAllContent();
+                    foreach ($blocks as $blockData)
                     {
-                        
-                        $defaults = array(
-                            'class' => array('pluginblock'),
-                            'contents' => '',
-                            'id' => ''
-                        );
-                        $blockData = array_merge($defaults, $blockData);
-                        $blocks[] = CHtml::tag('div', array('id' => $blockData['id'], 'class' => implode(' ', $blockData['class'])), $blockData['contents']);
+                        /* @var $blockData PluginEventContent */
+                        $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass(), $blockData->getContent()));
                     }
                 }
                 $redata['completed'] = implode("\n", $blocks) ."\n". $redata['completed'];

@@ -88,7 +88,7 @@ class LSActiveRecord extends CActiveRecord
      */
     public function beforeSave()
     {
-        $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('before'.get_class($this).'Save', $this), $plugin->name);
+        App()->getPluginManager()->dispatchEvent(new PluginEvent('before'.get_class($this).'Save', $this));
         return parent::beforeSave();
     }    
 
@@ -101,7 +101,7 @@ class LSActiveRecord extends CActiveRecord
      */    
     public function beforeDelete()
     {
-        $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('before'.get_class($this).'Delete', $this), $plugin->name);
+        App()->getPluginManager()->dispatchEvent(new PluginEvent('before'.get_class($this).'Delete', $this));
         return parent::beforeDelete();
     }    
 

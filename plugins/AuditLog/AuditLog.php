@@ -51,7 +51,8 @@
             
             if (count(array_diff_assoc($aNewValues,$aOldValues)))
             {
-                $oAutoLog=new mdlAuditlog();
+                
+                $oAutoLog = $this->api->newModel($this, 'auditlog');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='user';
                 $oAutoLog->action=$sAction;
@@ -71,7 +72,7 @@
             {
                 $aOldValues=$oOldUser->getAttributes();
                 unset($aOldValues['password']);
-                $oAutoLog=new mdlAuditlog();
+                $oAutoLog = $this->api->newModel($this, 'auditlog');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='user';
                 $oAutoLog->action='delete';
@@ -85,9 +86,9 @@
                                                             
         public function beforeActivate(PluginEvent $event)
         {
-            if (!$this->api->tableExists('auditlog'))
+            if (!$this->api->tableExists($this, 'auditlog'))
             {
-                $this->api->createTable('auditlog', array('id'=>'pk',
+                $this->api->createTable($this, 'auditlog', array('id'=>'pk',
                     'created'=>'datetime',
                     'uid'=>'string',
                     'entity'=>'string',

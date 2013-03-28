@@ -3,7 +3,8 @@ class ShowResponse extends PluginBase {
     protected $storage = 'DbStorage';    
     static protected $description = 'Example plugin: handle a survey response';
     
-    public function __construct(PluginManager $manager, $id) {
+    public function __construct(PluginManager $manager, $id) 
+    {
         parent::__construct($manager, $id);
         
         
@@ -18,12 +19,12 @@ class ShowResponse extends PluginBase {
      */
     public function showTheResponse(PluginEvent $event) 
     {
-        $surveyId = $event->get('surveyId');
+        $surveyId   = $event->get('surveyId');
         $responseId = $event->get('responseId');
-        $response = $this->pluginManager->getAPI()->getResponse($surveyId, $responseId);
-        $blocks = $event->get('blocks', array());
-        $blocks[] = array('contents'=>'You response was:<br/><pre>' . print_r($response, true) . '</pre>');
-        $event->set('blocks', $blocks);
+        $response   = $this->pluginManager->getAPI()->getResponse($surveyId, $responseId);
+        
+        $event->getContent($this)
+              ->addContent('You response was:<br/><pre>' . print_r($response, true) . '</pre>');
     }
     
     
