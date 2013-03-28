@@ -17,8 +17,34 @@
             $this->subscribe('beforeActivate');
             $this->subscribe('beforeUserSave');
             $this->subscribe('beforeUserDelete');
+            $this->subscribe('beforePermissionSetSave');
         }
 
+        public function beforePermissionSetSave(PluginEvent $event)
+        {
+            $aNewPermissions=$event->get('aNewPermissions');
+            $iSurveyID=$event->get('iSurveyID');
+            $iUserID=$event->get('iUserID');
+            $oCurrentUser=$this->api->getCurrentUser();
+            $oOldPermission=$this->api->getUserPermissionSet($iUserID,$iSurveyID);
+            $sAction='update';
+                        
+
+            
+            if (count(array_diff_assoc_recursive($aNewPermissions,$oOldPermission)))
+            {
+                $oAutoLog=new mdlAuditlog();
+                $oAutoLog->uid=$oCurrentUser->uid;
+                $oAutoLog->entity='permission';
+                $oAutoLog->action=$sAction;
+                $oAutoLog->oldvalues=json_encode(array_diff_assoc_recursive($oOldPermission,$aNewPermissions));
+                $oAutoLog->newvalues=json_encode(array_diff_assoc_recursive($aNewPermissions,$oOldPermission));
+                $oAutoLog->fields=implode(',',array_keys(array_diff_assoc_recursive($aNewPermissions,$oOldPermission)));
+                $oAutoLog->save();
+            }
+        }
+        
+        
         /**
         * Function catches if a user was modified or created
         * All data except for the password hash is saved
