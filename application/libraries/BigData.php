@@ -58,7 +58,7 @@
         
         protected static function isStream($item)
         {
-            return is_resource($item);
+            return is_object($item) && get_class($item) == 'BigFile';
         }
         
         protected static function isAssociative($array)
@@ -76,7 +76,11 @@
         
         protected static function json_echo_data($json)
         {
-            if ((is_array($json) && self::isAssociative($json)) || is_object($json))
+            if (self::isStream($json))
+            {
+                self::json_echo_stream($json);
+            }
+            elseif ((is_array($json) && self::isAssociative($json)) || is_object($json))
             {
                 self::json_echo_object($json);
             }
@@ -91,10 +95,6 @@
             elseif (is_string($json))
             {
                 self::json_echo_string($json);
-            }
-            elseif (self::isStream($json))
-            {
-                self::json_echo_stream($json);
             }
         }
         
@@ -151,7 +151,11 @@
          */
         public static function xmlrpc_echo($data)
         {
-            if ((is_array($data) && self::isAssociative($data)) || is_object($data))
+            if (self::isStream($data))
+            {
+                self::xmlrpc_echo_stream($data);
+            }
+            elseif ((is_array($data) && self::isAssociative($data)) || is_object($data))
             {
                 self::xmlrpc_echo_object($data);
             }
@@ -167,10 +171,7 @@
             {
                 self::xmlrpc_echo_string($data);
             }
-            elseif (self::isStream($data))
-            {
-                self::xmlrpc_echo_stream($data);
-            }            
+    
         }
         
         protected static function xmlrpc_echo_array($data)
@@ -223,7 +224,9 @@
         protected static function xmlrpc_echo_stream($data)
         {
             echo '<base64>';
+            $data->
             stream_filter_append($data, 'convert.base64-encode', STREAM_FILTER_READ, array('line-length' => 50, 'line-break-chars' => "\n"));
+
             echo '</base64>';
         }
         protected static function xmlrpc_echo_string($data)
@@ -231,6 +234,45 @@
             self::tag('string', "<![CDATA[$data]]>");
         }
         
+    }
+
+    class BigFile {
+
+        protected $fileName;
+        protected $deleteAfterUse;
+        protected $defaultEcho;
+
+        public function __construct($fileName, $deleteAfterUse = true, $defaultEcho ='base64')
+        {
+            $this->fileName = $fileName;
+            $this->deleteAfterUse = true;
+            $this->defaultEcho = $defaultEcho;
+
+        }
+
+        public function render($type = null)
+        {
+            if (!isset($type))
+            {
+                $type = $this->defaultEcho;
+            }
+            if (method_exists($this, "echo_{$type}"))
+            {
+                call_user_func(array($this, "echo_{$type}"));
+            }
+            if ($this->deleteAfterUse)
+            {
+                unlink($this->fileName);
+            }
+        }
+        
+        protected function echo_base64()
+        {
+            $fileHandle = fopen($this->fileName, 'r');
+            stream_filter_append($fileHandle, 'convert.base64-encode', STREAM_FILTER_READ, array('line-length' => 50, 'line-break-chars' => "\n"));
+            fpassthru($fileHandle);
+            fclose($fileHandle);
+        }
     }
 
 ?>

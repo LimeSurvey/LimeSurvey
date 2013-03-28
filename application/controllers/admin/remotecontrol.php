@@ -51,9 +51,9 @@ class remotecontrol extends Survey_Common_Action
             }
             elseif($RPCType=='json')
             {
-                Yii::app()->loadLibrary('jsonRPCServer');
+                Yii::app()->loadLibrary('LSjsonRPCServer');
 
-                jsonRPCServer::handle($oHandler);
+                LSjsonRPCServer::handle($oHandler);
             }
             exit;
         } else {
@@ -2348,10 +2348,7 @@ class remotecontrol_handle
         $oFomattingOptions->output='file';
         $oExport=new ExportSurveyResultsService();
         $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions, '');
-        $sFileData = file_get_contents($sTempFile);
-        unlink($sTempFile);
-
-        return base64_encode($sFileData);
+        return new BigFile($sTempFile, true, 'base64');
     }
 
 
