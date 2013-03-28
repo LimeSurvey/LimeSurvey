@@ -103,7 +103,7 @@ class participantsaction extends Survey_Common_Action
             $iUserID = Yii::app()->session['loginID'];
         }
 
-        $query = Participants::model()->getParticipants(0, 0, $attid, null, $search, $iUserID);
+        $query = Participant::model()->getParticipants(0, 0, $attid, null, $search, $iUserID);
         if (!$query)
             return false;
 
@@ -154,7 +154,7 @@ class participantsaction extends Survey_Common_Action
         }
         
 
-        $count = Participants::model()->getParticipantsCount($attid, $search, $iUserID);
+        $count = Participant::model()->getParticipantsCount($attid, $search, $iUserID);
 
         if ($count > 0) {
             return sprintf($clang->gT("Export %s participant(s) to CSV"), $count);
@@ -173,21 +173,21 @@ class participantsaction extends Survey_Common_Action
         // if superadmin all the records in the cpdb will be displayed
         if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
         {
-            $iTotalRecords = Participants::model()->count();
+            $iTotalRecords = Participant::model()->count();
         }
         // if not only the participants on which he has right on (shared and owned)
         else
         {
-            $iTotalRecords = Participants::model()->getParticipantsOwnerCount($iUserID);
+            $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserID);
         }
 
         // gets the count of participants, their attributes and other such details
         $aData = array(
             'totalrecords' => $iTotalRecords,
-            'owned' => Participants::model()->count('owner_uid = ' . $iUserID),
-            'shared' => Participants::model()->getParticipantsSharedCount($iUserID),
+            'owned' => Participant::model()->count('owner_uid = ' . $iUserID),
+            'shared' => Participant::model()->getParticipantsSharedCount($iUserID),
             'attributecount' => ParticipantAttributeNames::model()->count(),
-            'blacklisted' => Participants::model()->count('owner_uid = ' . $iUserID . ' AND blacklisted = \'Y\'')
+            'blacklisted' => Participant::model()->count('owner_uid = ' . $iUserID . ' AND blacklisted = \'Y\'')
         );
 
         // loads the participant panel and summary view
@@ -303,7 +303,7 @@ class participantsaction extends Survey_Common_Action
         // If super administrator all the share info in the links table will be shown
         if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
         {
-            $records = Participants::model()->getParticipantSharedAll();
+            $records = Participant::model()->getParticipantSharedAll();
             $aData->records = count($records);
             $aData->total = ceil($aData->records / 10);
             $i = 0;
@@ -322,7 +322,7 @@ class participantsaction extends Survey_Common_Action
         // otherwise only the shared participants by that user
         else
         {
-            $records = Participants::model()->getParticipantShared(Yii::app()->session['loginID']);
+            $records = Participant::model()->getParticipantShared(Yii::app()->session['loginID']);
             $aData->records = count($records);
             $aData->total = ceil($aData->records / 10);
             $i = 0;
@@ -467,17 +467,17 @@ class participantsaction extends Survey_Common_Action
         // Deletes from participants only
         if ($selectoption == 'po')
         {
-            Participants::model()->deleteParticipants($iParticipantId);
+            Participant::model()->deleteParticipants($iParticipantId);
         }
         // Deletes from central and token table
         elseif ($selectoption == 'ptt')
         {
-            Participants::model()->deleteParticipantToken($iParticipantId);
+            Participant::model()->deleteParticipantToken($iParticipantId);
         }
         // Deletes from central , token and assosiated responses as well
         elseif ($selectoption == 'ptta')
         {
-            Participants::model()->deleteParticipantTokenAnswer($iParticipantId);
+            Participant::model()->deleteParticipantTokenAnswer($iParticipantId);
         }
     }
 
@@ -519,7 +519,7 @@ class participantsaction extends Survey_Common_Action
                 'blacklisted' => Yii::app()->request->getPost('blacklisted'),
                 'owner_uid' => $oid
             );
-            Participants::model()->updateRow($aData);
+            Participant::model()->updateRow($aData);
         }
         // if add it will insert a new row
         elseif ($operation == 'add')
@@ -532,9 +532,10 @@ class participantsaction extends Survey_Common_Action
                 'email' => Yii::app()->request->getPost('email'),
                 'language' => Yii::app()->request->getPost('language'),
                 'blacklisted' => Yii::app()->request->getPost('blacklisted'),
-                'owner_uid' => $oid
+                'owner_uid' => $oid,
+                'created_by' => $oid
             );
-            Participants::model()->insertParticipant($aData);
+            Participant::model()->insertParticipant($aData);
         }
     }
 
@@ -630,7 +631,7 @@ class participantsaction extends Survey_Common_Action
         if ($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("||", $searchcondition);
-            $search = Participants::model()->getParticipantsSearchMultipleCondition($condition);
+            $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
         } else {
             $search = null;
         }
@@ -668,7 +669,7 @@ class participantsaction extends Survey_Common_Action
             $participantid = "";
             $condition = explode("||", $searchcondition);
 
-            $query = Participants::model()->getParticipantsSearchMultiple($condition, 0, 0);
+            $query = Participant::model()->getParticipantsSearchMultiple($condition, 0, 0);
 
             printf( $this->getController()->lang->gT("%s participant(s) are to be copied "), count($query));
         }
@@ -677,11 +678,11 @@ class participantsaction extends Survey_Common_Action
         {
             if (Permission::model()->hasGlobalPermission('global_superadmin','read')) //If super admin all the participants will be visible
             {
-                $count = Participants::model()->getParticipantsCountWithoutLimit();
+                $count = Participant::model()->getParticipantsCountWithoutLimit();
             }
             else
             {
-                $query = Participants::model()->getParticipantsOwner(Yii::app()->session['loginID']);
+                $query = Participant::model()->getParticipantsOwner(Yii::app()->session['loginID']);
                 $count = count($query);
             }
 
@@ -704,7 +705,7 @@ class participantsaction extends Survey_Common_Action
         {
             $participantid = "";
             $condition = explode("||", $searchcondition);  // explode the condition to the array
-            $query = Participants::model()->getParticipantsSearchMultiple($condition, 0, 0);
+            $query = Participant::model()->getParticipantsSearchMultiple($condition, 0, 0);
 
             foreach ($query as $key => $value)
             {
@@ -713,7 +714,7 @@ class participantsaction extends Survey_Common_Action
                     $participantid .= "," . $value['participant_id']; // combine the participant id's in an string
                 } else
                 {
-                    if(Participants::model()->is_owner($value['participant_id']))
+                    if(Participant::model()->is_owner($value['participant_id']))
                     {
                         $participantid .= "," . $value['participant_id']; // combine the participant id's in an string
                     }
@@ -726,11 +727,11 @@ class participantsaction extends Survey_Common_Action
             $participantid = ""; // initiallise the participant id to blank
             if (Permission::model()->hasGlobalPermission('global_superadmin','read')) //If super admin all the participants will be visible
             {
-                $query = Participants::model()->getParticipantsWithoutLimit(); // get all the participant id if it is a super admin
+                $query = Participant::model()->getParticipantsWithoutLimit(); // get all the participant id if it is a super admin
             }
             else // get participants on which the user has right on
             {
-                $query = Participants::model()->getParticipantsOwner(Yii::app()->session['loginID']);
+                $query = Participant::model()->getParticipantsOwner(Yii::app()->session['loginID']);
             }
 
             foreach ($query as $key => $value)
@@ -754,7 +755,7 @@ class participantsaction extends Survey_Common_Action
         if ($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("||", $searchcondition);
-            $search = Participants::model()->getParticipantsSearchMultipleCondition($condition);
+            $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
         } else {
             $search = null;
         }
@@ -770,7 +771,7 @@ class participantsaction extends Survey_Common_Action
         $searchcondition = Yii::app()->request->getpost('searchcondition');
         $finalcondition = array();
         $condition = explode("||", $searchcondition);
-        $search = Participants::model()->getParticipantsSearchMultipleCondition($condition);
+        $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
         return $this->getParticipants_json($search);
     }
 
@@ -804,13 +805,13 @@ class participantsaction extends Survey_Common_Action
         } else {
             $iUserID = Yii::app()->session['loginID'];
         }
-        $aData->records = Participants::model()->getParticipantsCount($attid, $search, $iUserID);
+        $aData->records = Participant::model()->getParticipantsCount($attid, $search, $iUserID);
         $aData->total = ceil($aData->records / $limit);
         if ($page>$aData->total) {
             $page = $aData->total;
         }
         $aData->page = $page;
-        $records = Participants::model()->getParticipants($page, $limit,$attid, $order, $search, $iUserID);
+        $records = Participant::model()->getParticipants($page, $limit,$attid, $order, $search, $iUserID);
         
         
         $aRowToAdd=array();
@@ -962,7 +963,7 @@ class participantsaction extends Survey_Common_Action
             'blacklisted' => Yii::app()->request->getPost('blacklisted'),
             'owner_uid' => Yii::app()->request->getPost('owner_uid'));
 
-        Participants::model()->insertParticipant($aData);
+        Participant::model()->insertParticipant($aData);
     }
 
     /*
@@ -1294,7 +1295,7 @@ class participantsaction extends Survey_Common_Action
                     $aData = "firstname = ".Yii::app()->db->quoteValue($writearray['firstname'])." AND lastname = ".Yii::app()->db->quoteValue($writearray['lastname'])." AND email = ".Yii::app()->db->quoteValue($writearray['email'])." AND owner_uid = '".Yii::app()->session['loginID']."'";
                 }
                 //End of HACK
-				$aData = Participants::model()->checkforDuplicate($aData, "participant_id");
+				$aData = Participant::model()->checkforDuplicate($aData, "participant_id");
                 if ($aData !== false) {
                     $thisduplicate = 1;
                     $dupcount++;
@@ -1390,7 +1391,7 @@ class participantsaction extends Survey_Common_Action
                     //If any of the mandatory fields are blank, then don't import this user
                     if(!$dontimport)
                     {
-                        Participants::model()->insertParticipantCSV($writearray);
+                        Participant::model()->insertParticipantCSV($writearray);
                         $imported++;
                     }
             	}
@@ -1489,7 +1490,7 @@ class participantsaction extends Survey_Common_Action
         $overwriteman = Yii::app()->request->getPost('overwriteman');
         $createautomap = Yii::app()->request->getPost('createautomap');
 
-        $response = Participants::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
+        $response = Participant::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
         $clang = $this->getController()->lang;
 
         printf($clang->gT("%s participants have been copied to the central participants table"), $response['success']);
@@ -1508,7 +1509,7 @@ class participantsaction extends Survey_Common_Action
      */
     function addToToken()
     {
-        $response = Participants::model()->copytoSurvey(Yii::app()->request
+        $response = Participant::model()->copytoSurvey(Yii::app()->request
                                                          ->getPost('participantid'),
                                                Yii::app()->request
                                                          ->getPost('surveyid'), Yii::app()
@@ -1544,7 +1545,7 @@ class participantsaction extends Survey_Common_Action
         $clang = $this->getController()->lang;
         if (empty($newcreate[0])) { $newcreate = array(); }
 
-        $response = Participants::model()->copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);
+        $response = Participant::model()->copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);
 
         printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {

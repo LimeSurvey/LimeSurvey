@@ -3,23 +3,24 @@
 
         protected $storage = 'DbStorage';    
         static protected $description = 'Example plugin';
-
+        protected $tablePrefix= 'al';
+        
         public function __construct(PluginManager $manager, $id) {
             parent::__construct($manager, $id);
 
-
-            /**
-            * Here you should handle subscribing to the events your plugin will handle
-            */
-            //$this->subscribe('afterPluginLoad', 'helloWorld');
             $this->subscribe('beforeSurveySettings');
             $this->subscribe('newSurveySettings');
             $this->subscribe('beforeActivate');
             $this->subscribe('beforeUserSave');
             $this->subscribe('beforeUserDelete');
-            $this->subscribe('beforePermissionSetSave');
+            $this->subscribe('beforePermissionSetSave'); 
+            $this->subscribe('beforeParticipantSave'); 
         }
 
+        /**
+        * Saves permissions changes to the audit log
+        * @param PluginEvent $event
+        */
         public function beforePermissionSetSave(PluginEvent $event)
         {
             $aNewPermissions=$event->get('aNewPermissions');
@@ -27,13 +28,11 @@
             $iUserID=$event->get('iUserID');
             $oCurrentUser=$this->api->getCurrentUser();
             $oOldPermission=$this->api->getUserPermissionSet($iUserID,$iSurveyID);
-            $sAction='update';
-                        
+            $sAction='update';   // Permissions are in general only updated (either you have a permission or you don't)
 
-            
             if (count(array_diff_assoc_recursive($aNewPermissions,$oOldPermission)))
             {
-                $oAutoLog=new mdlAuditlog();
+                $oAutoLog = $this->api->newModel($this, 'auditlog');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='permission';
                 $oAutoLog->action=$sAction;
@@ -44,10 +43,42 @@
             }
         }
         
+        /**
+        * Function catches if a participant was modified or created
+        * All data is saved - only the password hash is anonymized for security reasons
+        * 
+        * @param PluginEvent $event
+        */
+        public function beforeParticipantSave(PluginEvent $event)
+        {
+            $oNewParticipant=$event->getSender();
+            if ($oNewParticipant->isNewRecord)
+            {
+                return;
+            }
+            $oCurrentUser=$this->api->getCurrentUser();
+
+            $aOldValues=$this->api->getParticipant($oNewParticipant->participant_id)->getAttributes();
+            $aNewValues=$oNewParticipant->getAttributes();
+
+            if (count(array_diff_assoc($aNewValues,$aOldValues)))
+            {
+                
+                $oAutoLog = $this->api->newModel($this, 'auditlog');
+                $oAutoLog->uid=$oCurrentUser->uid;
+                $oAutoLog->entity='participant';
+                $oAutoLog->action='update';
+                $oAutoLog->oldvalues=json_encode(array_diff_assoc($aOldValues,$aNewValues));
+                $oAutoLog->newvalues=json_encode(array_diff_assoc($aNewValues,$aOldValues));
+                $oAutoLog->fields=implode(',',array_keys(array_diff_assoc($aNewValues,$aOldValues)));
+                $oAutoLog->save();
+            }
+        }        
+        
         
         /**
         * Function catches if a user was modified or created
-        * All data except for the password hash is saved
+        * All data is saved - only the password hash is anonymized for security reasons
         * 
         * @param PluginEvent $event
         */

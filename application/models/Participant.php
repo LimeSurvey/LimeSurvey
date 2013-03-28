@@ -25,7 +25,7 @@
  * @property string $blacklisted
  * @property integer $owner_uid
  */
-class Participants extends CActiveRecord
+class Participant extends LSActiveRecord
 {
 
     /**
@@ -212,7 +212,7 @@ class Participants extends CActiveRecord
      */
     function getParticipantsCountWithoutLimit()
     {
-        return Participants::model()->count();    
+        return Participant::model()->count();    
     }
     
     function getParticipantsWithoutLimit()
@@ -372,7 +372,7 @@ class Participants extends CActiveRecord
                 $aParticipantsIDs=$this->filterParticipantIDs($aParticipantsIDs);
             }
 
-            Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
+            Yii::app()->db->createCommand()->delete(Participant::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
             
             // Delete survey links
             Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
@@ -393,7 +393,7 @@ class Participants extends CActiveRecord
             {
                 $aCondition=array('and','owner_uid=:owner_uid',array('in', 'participant_id', $aParticipantIDs));
                 $aParameter=array(':owner_uid'=>Yii::app()->session['loginID']);
-                $aParticipantIDs=Yii::app()->db->createCommand()->select('participant_id')->from(Participants::model()->tableName())->where($aCondition, $aParameter)->queryColumn();
+                $aParticipantIDs=Yii::app()->db->createCommand()->select('participant_id')->from(Participant::model()->tableName())->where($aCondition, $aParameter)->queryColumn();
             }           
             return $aParticipantIDs;
     }
@@ -682,7 +682,7 @@ class Participants extends CActiveRecord
         
         if ($page == 0 && $limit == 0)
         {
-            $arr = Participants::model()->findAll($command);
+            $arr = Participant::model()->findAll($command);
             $data = array();
             foreach ($arr as $t)
             {
@@ -693,7 +693,7 @@ class Participants extends CActiveRecord
         {
             $command->limit = $limit;
             $command->offset = $start;
-            $arr = Participants::model()->findAll($command);
+            $arr = Participant::model()->findAll($command);
             $data = array();
             foreach ($arr as $t)
             {
@@ -1051,7 +1051,7 @@ class Participants extends CActiveRecord
                         $numberofattributes = count($attributesadded);
                         for ($a = 0; $a < $numberofattributes; $a++)
                         {
-                            Participants::model()->updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
+                            Participant::model()->updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
                         }
                     }
                     //If there are automapped attributes, add those values to the token entry for this participant
@@ -1060,7 +1060,7 @@ class Participants extends CActiveRecord
                         foreach ($mapped as $key => $value)
                         {
                             if ($key[10] == 'c') { //We know it's automapped because the 11th letter is 'c'
-                                Participants::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                                Participant::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
                             }
                         }
                     }
@@ -1072,7 +1072,7 @@ class Participants extends CActiveRecord
                         foreach ($mapped as $key => $value)
                         {
                             if ($key[10] != 'c' && $key[9]=='_') { //It's not an auto field because it's 11th character isn't 'c'
-                                Participants::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                                Participant::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
                             }
                         }
                     }
@@ -1083,7 +1083,7 @@ class Participants extends CActiveRecord
                         foreach($mapped as $key=>$value)
                         {
                             if((strlen($key) > 8 && $key[10] != 'c' && $key[9] !='_') || strlen($key) < 9) {
-                                Participants::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                                Participant::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
                             }
                         }
                     }
@@ -1119,7 +1119,7 @@ class Participants extends CActiveRecord
                     $numberofattributes = count($attributesadded);
                     for ($a = 0; $a < $numberofattributes; $a++)
                     {
-                        Participants::model()->updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
+                        Participant::model()->updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
                     }
                 }
                 //If there are any automatically mapped attributes, add those values to the token entry for this participant
@@ -1127,7 +1127,7 @@ class Participants extends CActiveRecord
                 {
                     foreach ($mapped as $key => $value)
                     {
-                        Participants::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                        Participant::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
                     }
                 }
                 $sucessfull++;
@@ -1321,21 +1321,21 @@ class Participants extends CActiveRecord
                     {
                         foreach ($newarr as $key => $value)
                         {
-                            Participants::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $attid[$key], $key);
+                            Participant::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $attid[$key], $key);
                         }
                     }
                     if($overwriteman == "true" && !empty($aMapped))
                     {
                         foreach ($aMapped as $cpdbatt => $tatt)
                         {
-                            Participants::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
+                            Participant::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
                         }
                     }
                     if($overwriteauto == "true" && !empty($aAutoMapped))
                     {
                         foreach ($aAutoMapped as $cpdbatt => $tatt)
                         {
-                            Participants::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
+                            Participant::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
                         }
                     }
                 }
@@ -1366,7 +1366,7 @@ class Participants extends CActiveRecord
                     {
                         foreach ($newarr as $key => $value)
                         {
-                            Participants::model()->updateAttributeValueToken($surveyid, $pid, $attid[$key], $key);
+                            Participant::model()->updateAttributeValueToken($surveyid, $pid, $attid[$key], $key);
                         }
                     }
                     /* Now add mapped attribute values */
@@ -1374,11 +1374,11 @@ class Participants extends CActiveRecord
                     {
                         foreach ($aMapped as $cpdbatt => $tatt)
                         {
-                            Participants::model()->updateAttributeValueToken($surveyid,$pid,$cpdbatt,$tatt);
+                            Participant::model()->updateAttributeValueToken($surveyid,$pid,$cpdbatt,$tatt);
                         }
                         foreach ($aAutoMapped as $cpdbatt => $tatt)
                         {
-                            Participants::model()->updateAttributeValueToken($surveyid,$pid,$cpdbatt,$tatt);
+                            Participant::model()->updateAttributeValueToken($surveyid,$pid,$cpdbatt,$tatt);
                         }
                     }
                     $sucessfull++;

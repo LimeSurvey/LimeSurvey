@@ -248,6 +248,16 @@
             return Permission::model()->getPermissions($iUserID,$iSurveyID);
         }        
         
+        /**
+        * Retrieves Participant data
+        * @param $iParticipantID int The Participant ID
+        * Returns null if the user does not exist anymore for some reason (should not really happen)
+        * @return User
+        */
+        public function getParticipant($iParticipantID){
+            return Participant::model()->findByPk($iParticipantID);
+        }         
+        
     }
 
 ?>

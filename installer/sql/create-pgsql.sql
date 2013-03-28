@@ -203,7 +203,10 @@ CREATE TABLE prefix_participants (
   "email" character varying(80),
   "language" character varying(40),
   "blacklisted" character varying(1) NOT NULL,
-  "owner_uid" integer NOT NULL
+  "owner_uid" integer NOT NULL,
+  "created_by" integer NOT NULL,
+  "created" timestamp,
+  "modified" timestamp
 );
 
 
@@ -574,4 +577,4 @@ create index labels_code_idx on prefix_labels (code);
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '167');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '168');
