@@ -65,7 +65,7 @@ class Authentication extends Survey_Common_Action
             $this->_renderWrappedTemplate('authentication', 'login', $aData);
         } else {
              // Handle getting the post and populating the identity there
-            $authMethod = App()->getRequest()->getPost('authMethod');
+            $authMethod = App()->getRequest()->getPost('authMethod', $identity->plugin);
             $identity->plugin = $authMethod;
 
             $event = new PluginEvent('afterLoginFormSubmit');
