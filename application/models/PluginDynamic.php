@@ -7,16 +7,22 @@
     {
         private static $_models = array();
 
+        private $_md;								// meta data
+	
         protected $tableName;
 
         /**
          * @param string $scenario
          * @param string $sTableName
          */
-        public function __construct($sTableName, $scenario = 'insert')
+        public function __construct($sTableName = null, $scenario = 'insert')
         {
-            parent::__construct($scenario);
+            if (!isset($sTableName))
+            {
+                throw new Exception('sTableName missing.');
+            }
             $this->tableName = $sTableName;
+            parent::__construct($scenario);
         }
 
         /**
@@ -31,7 +37,7 @@
             {
                 if (!isset(self::$_models[$sTableName]))
                 {
-                    $model = self::$_models[$sTableName] = new PluginDynamic($sTableName);
+                    $model = self::$_models[$sTableName] = new PluginDynamic($sTableName, null);
                     $model->_md = new CActiveRecordMetaData($model);
                     $model->attachBehaviors($model->behaviors());
                 }
@@ -43,9 +49,21 @@
          * Gets the tablename for the current model.
          */
         public function tableName() {
-            parent::tableName();
+            return $this->tableName;
         }
 
+        /**
+         * Override
+         * @return CActiveRecordMetaData the meta for this AR class.
+         */
+        public function getMetaData()
+        {
+            if($this->_md!==null)
+                return $this->_md;
+            else
+                return $this->_md=self::model($this->tableName())->_md;
+
+        }
 
     }
 

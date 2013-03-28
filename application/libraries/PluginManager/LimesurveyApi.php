@@ -13,13 +13,7 @@
          */
         protected function getTableName(iPlugin $plugin, $tableName)
         {
-            $parts = array(App()->getDb()->tablePrefix);
-            $parts[] = $plugin->getName();
-            $parts[] = $tableName;
-            if (!in_array(null, $parts))
-            {
-                return implode('_', $parts);
-            }
+            return App()->getDb()->tablePrefix . $plugin->getName() . "_$tableName";
         }
         /**
         * Sets a flash message to be shown to the user.
@@ -73,7 +67,7 @@
         {
             if (null !== $table = $this->getTableName($plugin, $sTableName))
             {
-                return new PluginDynamic($sTableName, $scenario);
+                return new PluginDynamic($table, $scenario);
             }
         }
 
