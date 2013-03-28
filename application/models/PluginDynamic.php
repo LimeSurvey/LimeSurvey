@@ -25,14 +25,18 @@
          * @param type $className
          * @return Plugin
          */
-        public static function model($sTableName) {
-            if (!isset(self::$_models[$sTableName]))
+        public static function model($sTableName = null)
+        {
+            if (isset($sTableName))
             {
-                $model = self::$_models[$sTableName] = new PluginDynamic($sTableName);
-    			$model->_md = new CActiveRecordMetaData($model);
-        		$model->attachBehaviors($model->behaviors());
+                if (!isset(self::$_models[$sTableName]))
+                {
+                    $model = self::$_models[$sTableName] = new PluginDynamic($sTableName);
+                    $model->_md = new CActiveRecordMetaData($model);
+                    $model->attachBehaviors($model->behaviors());
+                }
+                return self::$_models[$sTableName];
             }
-            return self::$_models[$sTableName];
         }
 
         /**
