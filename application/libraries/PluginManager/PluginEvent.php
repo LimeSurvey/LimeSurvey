@@ -9,6 +9,13 @@ class PluginEvent
     protected $_event = '';
     
     /**
+     * This array holds the content blocks that plugins generate, idexed by plugin name
+     * 
+     * @var array of PluginEventContent
+     */
+    protected $_content = array();
+    
+    /**
      * The class who fired the event, or null when not set
      * 
      * @var object 
@@ -48,7 +55,7 @@ class PluginEvent
         
         return $this;
     }
-    
+
     /**
      * Get a value for the given key. 
      * 
@@ -96,6 +103,47 @@ class PluginEvent
     }
     
     /**
+     * Return an array of pluginname / PluginEventContent but only when it has content
+     * 
+     * @return array PluginEventContent
+     */
+    public function getAllContent()
+    {
+        $output = array();
+        foreach($this->_content as $plugin => $content)
+        {
+            /* @var $content PluginEventContent */
+            if ($content->hasContent()) {
+                $output[$plugin] = $content; 
+            }
+        }
+        
+        return $output;
+    }
+    
+    /**
+     * Returns content for the given plugin(name)
+     * 
+     * When there is no content yet, it will return an empty content object.
+     * 
+     * @param PluginBase|string $plugin The plugin we want content for or a string name
+     * @return PluginEventContent
+     */
+    public function getContent($plugin) {
+        if (is_string($plugin)) {
+            $pluginName = $plugin;
+        } elseif ($plugin instanceof PluginBase) {
+            $pluginName = get_class($plugin);
+        }
+        
+        if (array_key_exists($pluginName, $this->_content)) {
+            return $this->_content[$pluginName];
+        } else {
+            return $this->setContent($pluginName);
+        }
+    }
+    
+    /**
      * Return the name of the event
      * 
      * @return string
@@ -119,6 +167,16 @@ class PluginEvent
         } else {
             return false;
         }
+    }
+    
+    /**
+     * Returns true when execution of this event was stopped using $this->stop()
+     * 
+     * @return boolean
+     */
+    public function isStopped()
+    {
+        return $this->_stop;
     }
     
     /**
@@ -150,20 +208,37 @@ class PluginEvent
     }
     
     /**
+     * Set content for $plugin, replacing any preexisting content
+     * 
+     * @param PluginBase|string $plugin The plugin setting the context or a string name
+     * @param string $content
+     * @param string $cssClass
+     * @param string $id
+     * @return PluginEventContent
+     */
+    public function setContent($plugin, $content = null, $cssClass = null, $id = null)
+    {
+        if (is_string($plugin)) {
+            $pluginName = $plugin;
+        } elseif ($plugin instanceof PluginBase) {
+            $pluginName = get_class($plugin);
+        }
+        
+        $contentObject = new PluginEventContent($content, $cssClass, $id);
+        if (isset($pluginName)) {
+            $this->_content[$pluginName] = $contentObject;
+        } else {
+            $this->_content[] = $contentObject;
+        }
+        
+        return $contentObject;        
+    }
+    
+    /**
      * Halt execution of this event by other plugins
      */
     public function stop()
     {
         $this->_stop = true;
-    }
-    
-    /**
-     * Returns true when execution of this event was stopped using $this->stop()
-     * 
-     * @return boolean
-     */
-    public function isStopped()
-    {
-        return $this->_stop;
     }
 }
