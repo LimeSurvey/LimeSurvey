@@ -175,7 +175,7 @@ class OptoutController extends LSYii_Controller {
                 if(!empty($datas->participant_id) && $datas->participant_id != "")
                 {
                     //Participant also exists in central db
-                    $cpdb = Participants::model()->find('participant_id = :participant_id', array(":participant_id"=>$datas->participant_id));
+                    $cpdb = Participant::model()->find('participant_id = :participant_id', array(":participant_id"=>$datas->participant_id));
                     if($cpdb->blacklisted=="Y")
                     {
                         $html .= "<br />";
