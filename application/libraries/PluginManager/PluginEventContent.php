@@ -5,7 +5,7 @@ class PluginEventContent {
     const PREPEND = 'prepend';
     
     protected $_content = null;
-    protected $_cssClass = 'pluginblock';
+    protected $_cssClass = array('pluginblock'=>'pluginblock');
     protected $_cssId = '';
     
     public function __construct($content = null, $cssClass = null, $id = null) {
@@ -42,6 +42,8 @@ class PluginEventContent {
         } else {
             $this->_content = $content . $this->_content;
         }
+        
+        return $this;
     }
     
     /**

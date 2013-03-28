@@ -237,6 +237,17 @@
         }
 
         
+        /**
+        * Retrieves user permission details for a user
+        * @param $iUserID int The User ID
+        * @param  $iSurveyID int The related survey IF for survey permissions - if 0 then global permissions will be retrieved
+        * Returns null if the user does not exist anymore for some reason (should not really happen)
+        * @return User
+        */
+        public function getUserPermissionSet($iUserID, $iSurveyID=0){
+            return Permission::model()->getPermissions($iUserID,$iSurveyID);
+        }        
+        
     }
 
 ?>

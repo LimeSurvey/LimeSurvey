@@ -12,7 +12,7 @@
    *
    */
 
-class Permission extends CActiveRecord
+class Permission extends LSActiveRecord
 {
     /**
      * Returns the table's name
@@ -102,6 +102,30 @@ class Permission extends CActiveRecord
         return $aPermissions;
     }    
     
+    public static function getPermissions($iUserID, $iSurveyID=0)
+    {
+        if ($iSurveyID)
+        {
+            $aBasePermissions=Permission::model()->getBasePermissions();
+        }
+        else
+        {   
+            $aBasePermissions=Permission::model()->getGlobalBasePermissions();
+        }
+                
+        foreach ($aBasePermissions as $sPermission=>&$aPermissionDetail){
+            $oCurrentPermissions=Permission::model()->findByAttributes(array('uid'=>$iUserID,'sid'=>$iSurveyID, 'permission'=>$sPermission));
+            if ($aPermissionDetail['create']) $aPermissionDetail['create']=($oCurrentPermissions?(boolean)$oCurrentPermissions->create_p:false);
+            if ($aPermissionDetail['read']) $aPermissionDetail['read']=($oCurrentPermissions?(boolean)$oCurrentPermissions->read_p:false);
+            if ($aPermissionDetail['update']) $aPermissionDetail['update']=($oCurrentPermissions?(boolean)$oCurrentPermissions->update_p:false);
+            if ($aPermissionDetail['delete']) $aPermissionDetail['delete']=($oCurrentPermissions?(boolean)$oCurrentPermissions->delete_p:false);
+            if ($aPermissionDetail['import']) $aPermissionDetail['import']=($oCurrentPermissions?(boolean)$oCurrentPermissions->import_p:false);
+            if ($aPermissionDetail['export']) $aPermissionDetail['export']=($oCurrentPermissions?(boolean)$oCurrentPermissions->export_p:false);
+        }
+        return $aBasePermissions;
+    }
+    
+    
 
     /**
      * Sets permissions (global or survey-specific) for a survey administrator
@@ -146,28 +170,38 @@ class Permission extends CActiveRecord
             
         }
 
+        foreach ($aBasePermissions as $sPermissionname=>&$aPermission)
+        {
+            $aPermission['create']= (isset($aPermissions[$sPermissionname]['create']) && $aPermissions[$sPermissionname]['create']);
+            $aPermission['read']= (isset($aPermissions[$sPermissionname]['read']) && $aPermissions[$sPermissionname]['read']);
+            $aPermission['update']= (isset($aPermissions[$sPermissionname]['update']) && $aPermissions[$sPermissionname]['update']);
+            $aPermission['delete']= (isset($aPermissions[$sPermissionname]['delete']) && $aPermissions[$sPermissionname]['delete']);
+            $aPermission['import']= (isset($aPermissions[$sPermissionname]['import']) && $aPermissions[$sPermissionname]['import']);
+            $aPermission['export']= (isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export']);
+        }
+        
         $condition = array('sid' => $iSurveyID, 'uid' => $iUserID);
+        $oEvent=new PluginEvent('beforePermissionSetSave');
+        $oEvent->set('aNewPermissions',$aBasePermissions);
+        $oEvent->set('iSurveyID',$iSurveyID);
+        $oEvent->set('iUserID',$iUserID);
+        $result = App()->getPluginManager()->dispatchEvent($oEvent);
+        
         Permission::model()->deleteAllByAttributes($condition);
         foreach ($aBasePermissions as $sPermissionname=>$aPermission)
         {
-            $aPermission['create']= (isset($aPermissions[$sPermissionname]['create']) && $aPermissions[$sPermissionname]['create'])? 1:0;
-            $aPermission['read']= (isset($aPermissions[$sPermissionname]['read']) && $aPermissions[$sPermissionname]['read'])? 1:0;
-            $aPermission['update']= (isset($aPermissions[$sPermissionname]['update']) && $aPermissions[$sPermissionname]['update'])? 1:0;
-            $aPermission['delete']= (isset($aPermissions[$sPermissionname]['delete']) && $aPermissions[$sPermissionname]['delete'])? 1:0;
-            $aPermission['import']= (isset($aPermissions[$sPermissionname]['import']) && $aPermissions[$sPermissionname]['import'])? 1:0;
-            $aPermission['export']= (isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export'])? 1:0;
-            if ($aPermission['create']==1 || $aPermission['read']==1 ||$aPermission['update']==1 || $aPermission['delete']==1  || $aPermission['import']==1  || $aPermission['export']==1)
+            if ($aPermission['create'] || $aPermission['read'] ||$aPermission['update'] || $aPermission['delete']  || $aPermission['import']  || $aPermission['export'])
             {
                 $data = array(
                     'sid' => $iSurveyID,
                     'uid' => $iUserID,
                     'permission' => $sPermissionname,
-                    'create_p' => $aPermission['create'],
-                    'read_p' => $aPermission['read'],
-                    'update_p' => $aPermission['update'],
-                    'delete_p' => $aPermission['delete'],
-                    'import_p' => $aPermission['import'],
-                    'export_p' => $aPermission['export']
+                    'create_p' => (int)$aPermission['create'],
+                    'read_p' => (int)$aPermission['read'],
+                    'update_p' => (int)$aPermission['update'],
+                    'delete_p' => (int)$aPermission['delete'],
+                    'import_p' => (int)$aPermission['import'],
+                    'export_p' => (int)$aPermission['export']
                 );
 
                 $permission = new self;
