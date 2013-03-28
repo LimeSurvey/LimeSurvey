@@ -11,7 +11,7 @@
          * @param iPlugin $plugin
          * @param string $tableName
          */
-        protected function getTableName(iPlugin $plugin, string $tableName)
+        protected function getTableName(iPlugin $plugin, $tableName)
         {
             $parts = array(App()->getDb()->tablePrefix);
             $parts[] = $plugin->getName();
@@ -83,7 +83,7 @@
         * @param string $sTableName Table name to check for (without dbprefix!))
         * @return boolean True or false if table exists or not
         */
-        public function tableExists(iPlugin $plugin, string $sTableName)
+        public function tableExists(iPlugin $plugin, $sTableName)
         {
             $sTableName =  $this->getTableName($plugin, $sTableName);
             return isset($sTableName) && in_array($sTableName, App()->getDb()->getSchema()->getTableNames());
