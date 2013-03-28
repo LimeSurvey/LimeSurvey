@@ -1092,6 +1092,17 @@ function db_upgrade_all($oldversion) {
             addColumn('{{users}}', 'modified', 'datetime');
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>167),"stg_name='DBVersion'");
         }
+
+        if ($oldversion < 168)
+        {
+            addColumn('{{participants}}', 'created', 'datetime');
+            addColumn('{{participants}}', 'modified', 'datetime');
+            addColumn('{{participants}}', 'created_by', 'integer');
+            Yii::app()->db->createCommand('update {{participants}} set created_by=owner_uid')->query();
+            alterColumn('{{participants}}', 'created_by', "integer", false);
+            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>168),"stg_name='DBVersion'");
+        }
+
         
         $oTransaction->commit();
     }

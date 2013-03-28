@@ -4225,7 +4225,7 @@ function do_array_5point($ia)
     global $notanswered, $thissurvey;
     $extraclass ="";
     $clang = Yii::app()->lang;
-
+    $caption=$clang->gT("An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. "); 
     $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
@@ -4272,7 +4272,8 @@ function do_array_5point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
-    $answer = "\n<table class=\"question subquestion-list questions-list\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a five point Likert scale array\">\n\n"
+    $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\">\n"
+    . "<caption class=\"hide read\">{$caption}</caption>\n" 
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
     $odd_even = '';
@@ -4288,8 +4289,8 @@ function do_array_5point($ia)
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
     }
     $answer .= "\t</colgroup>\n\n"
-    . "\t<thead>\n<tr class=\"array1\">\n"
-    . "\t<th>&nbsp;</th>\n";
+    . "\t<thead>\n<tr class=\"array1 dontread\">\n"
+    . "\t<td>&nbsp;</td>\n";
     for ($xc=1; $xc<=5; $xc++)
     {
         $answer .= "\t<th>$xc</th>\n";
@@ -4335,13 +4336,14 @@ function do_array_5point($ia)
         $answer_t_content .= "\" />\n\t</th>\n";
         for ($i=1; $i<=5; $i++)
         {
-            $answer_t_content .= "\t<td class=\"answer_cell_00$i answer-item radio-item\">\n<label for=\"answer$myfname-$i\">"
-            ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\" title=\"$i\"";
+            $answer_t_content .= "\t<td class=\"answer_cell_00$i answer-item radio-item\">\n"
+            . "<label class=\"hide read\" for=\"answer$myfname-$i\">{$i}</label>\n"
+            ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\"";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)
             {
                 $answer_t_content .= CHECKED;
             }
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
+            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</td>\n";
         }
 
         $answertext2 = dTexts__run($ansrow['question']);
@@ -4358,13 +4360,14 @@ function do_array_5point($ia)
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
-            $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n<label for=\"answer$myfname-\">"
-            ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer').'"';
+            $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
+            ."<label class=\"hide read\" for=\"answer$myfname-\">".$clang->gT('No answer')."</label>"
+            ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
                 $answer_t_content .= CHECKED;
             }
-            $answer_t_content .= " onclick='$checkconditionFunction(this.value, this.name, this.type)'  />\n</label>\n\t</td>\n";
+            $answer_t_content .= " onclick='$checkconditionFunction(this.value, this.name, this.type)'  />\n</td>\n";
         }
 
         $answer_t_content .= "</tr>\n";
@@ -4392,7 +4395,7 @@ function do_array_10point($ia)
     global $notanswered, $thissurvey;
     $extraclass ="";
     $clang = Yii::app()->lang;
-
+    $caption=$clang->gT("An array with sub-question on each line. The answers are value from 1 to 10 and are contained in the table header. "); 
     $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -4411,6 +4414,7 @@ function do_array_10point($ia)
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
+        $caption.=$clang->gT("The last cell are for no answer. "); 
     }
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
@@ -4426,7 +4430,8 @@ function do_array_10point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
-    $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a ten point Likert scale array\" >\n\n"
+    $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\" >\n"
+    . "<caption class=\"hide read\">{$caption}</caption>\n" 
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 
@@ -4442,8 +4447,8 @@ function do_array_10point($ia)
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth$\" />\n";
     }
     $answer .= "\t</colgroup>\n\n"
-    . "\t<thead>\n<tr class=\"array1\">\n"
-    . "\t<th>&nbsp;</th>\n";
+    . "\t<thead>\n<tr class=\"array1 dontread\">\n"
+    . "\t<td>&nbsp;</td>\n";
     for ($xc=1; $xc<=10; $xc++)
     {
         $answer .= "\t<th>$xc</th>\n";
@@ -4482,25 +4487,27 @@ function do_array_10point($ia)
 
         for ($i=1; $i<=10; $i++)
         {
-            $answer_t_content .= "\t<td class=\"answer_cell_00$i answer-item radio-item\">\n<label for=\"answer$myfname-$i\">\n"
-            ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\" title=\"$i\"";
+            $answer_t_content .= "\t<td class=\"answer_cell_00$i answer-item radio-item\">\n"
+            ."<label class=\"hide read\" for=\"answer$myfname-$i\">{$i}</label>\n"
+            ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\"";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)
             {
                 $answer_t_content .= CHECKED;
             }
             // --> START NEW FEATURE - SAVE
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
+            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n";
             // --> END NEW FEATURE - SAVE
         }
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1)
         {
-            $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n<label for=\"answer$myfname-\">\n"
-            ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer')."\"";
+            $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
+            ."<label class=\"hide read\" for=\"answer$myfname-\">".$clang->gT('No answer')."</label>"
+            ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
                 $answer_t_content .= CHECKED;
             }
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
+            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n";
 
         }
         $answer_t_content .= "</tr>\n";
@@ -4518,7 +4525,7 @@ function do_array_yesnouncertain($ia)
     global $notanswered, $thissurvey;
     $extraclass ="";
     $clang = Yii::app()->lang;
-
+    $caption=$clang->gT("An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. "); 
     $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -4538,6 +4545,7 @@ function do_array_yesnouncertain($ia)
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
+        $caption.=$clang->gT("The last cell are for no answer. "); 
     }
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
@@ -4552,7 +4560,8 @@ function do_array_yesnouncertain($ia)
     $aSubquestions = $ansresult->readAll();
     $anscount = count($aSubquestions);
     $fn = 1;
-    $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a Yes/No/uncertain Likert scale array\">\n"
+    $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\">\n"
+    . "<caption class=\"hide read\">{$caption}</caption>\n" 
     . "\t<colgroup class=\"col-responses\">\n"
     . "\n\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
     $odd_even = '';
@@ -4569,12 +4578,12 @@ function do_array_yesnouncertain($ia)
     $answer .= "\t</colgroup>\n\n"
     . "\t<thead>\n<tr class=\"array1\">\n"
     . "\t<td>&nbsp;</td>\n"
-    . "\t<th>".$clang->gT('Yes')."</th>\n"
-    . "\t<th>".$clang->gT('Uncertain')."</th>\n"
-    . "\t<th>".$clang->gT('No')."</th>\n";
+    . "\t<th class=\"dontread\">".$clang->gT('Yes')."</th>\n"
+    . "\t<th class=\"dontread\">".$clang->gT('Uncertain')."</th>\n"
+    . "\t<th class=\"dontread\">".$clang->gT('No')."</th>\n";
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
+        $answer .= "\t<th class=\"dontread\">".$clang->gT('No answer')."</th>\n";
     }
     $answer .= "</tr>\n\t</thead>";
     $answer_t_content = '<tbody>';
@@ -4606,16 +4615,18 @@ function do_array_yesnouncertain($ia)
             $answer_t_content .= "\t<th class=\"answertext\">\n"
             . $hiddenfield
             . "\t\t\t\t$answertext</th>\n"
-            . "\t<td class=\"answer_cell_Y answer-item radio-item\">\n<label for=\"answer$myfname-Y\">\n"
-            . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-Y\" value=\"Y\" title=\"".$clang->gT('Yes').'"';
+            . "\t<td class=\"answer_cell_Y answer-item radio-item\">\n"
+            . "<label class=\"hide read\" for=\"answer$myfname-Y\">".$clang->gT('Yes')."</label>\n"
+            . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-Y\" value=\"Y\" ";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
             {
                 $answer_t_content .= CHECKED;
             }
             // --> START NEW FEATURE - SAVE
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</label>\n\t</td>\n"
-            . "\t<td class=\"answer_cell_U answer-item radio-item\">\n<label for=\"answer$myfname-U\">\n"
-            . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-U\" value=\"U\" title=\"".$clang->gT('Uncertain')."\"";
+            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n"
+            . "\t<td class=\"answer_cell_U answer-item radio-item\">\n"
+            . "<label class=\"hide read\" for=\"answer$myfname-U\">".$clang->gT('Uncertain')."</label>\n"
+            . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-U\" value=\"U\" ";
             // --> END NEW FEATURE - SAVE
 
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'U')
@@ -4624,8 +4635,9 @@ function do_array_yesnouncertain($ia)
             }
             // --> START NEW FEATURE - SAVE
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n"
-            . "\t<td class=\"answer_cell_N answer-item radio-item\">\n<label for=\"answer$myfname-N\">\n"
-            . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-N\" value=\"N\" title=\"".$clang->gT('No').'"';
+            . "\t<td class=\"answer_cell_N answer-item radio-item\">\n"
+            . "<label class=\"hide read\" for=\"answer$myfname-N\">".$clang->gT('No')."</label>\n"
+            . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-N\" value=\"N\" ";
             // --> END NEW FEATURE - SAVE
 
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'N')
@@ -4633,7 +4645,7 @@ function do_array_yesnouncertain($ia)
                 $answer_t_content .= CHECKED;
             }
             // --> START NEW FEATURE - SAVE
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n"
+            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
             // --> END NEW FEATURE - SAVE
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -4644,8 +4656,9 @@ function do_array_yesnouncertain($ia)
 
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
-                $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n\t<label for=\"answer$myfname-\">\n"
-                . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer')."\"";
+                $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
+                . "\t<label class=\"hide read\" for=\"answer$myfname-\">".$clang->gT('No answer')."</label>\n"
+                . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
                 if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
                 {
                     $answer_t_content .= CHECKED;
@@ -4670,7 +4683,7 @@ function do_array_increasesamedecrease($ia)
     global $notanswered;
     $extraclass ="";
     $clang = Yii::app()->lang;
-
+    $caption=$clang->gT("An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. "); 
     $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -4688,6 +4701,7 @@ function do_array_increasesamedecrease($ia)
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
+        $caption.=$clang->gT("The last cell are for no answer. "); 
     }
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
@@ -4708,7 +4722,8 @@ function do_array_increasesamedecrease($ia)
 
     $fn = 1;
 
-    $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - Increase/Same/Decrease Likert scale array\">\n"
+    $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\">\n"
+    . "<caption class=\"hide read\">{$caption}</caption>\n" 
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 
@@ -4725,7 +4740,7 @@ function do_array_increasesamedecrease($ia)
     }
     $answer .= "\t</colgroup>\n"
     . "\t<thead>\n"
-    . "<tr>\n"
+    . "<tr class=\"dontread\">\n"
     . "\t<td>&nbsp;</td>\n"
     . "\t<th>".$clang->gT('Increase')."</th>\n"
     . "\t<th>".$clang->gT('Same')."</th>\n"
@@ -4768,19 +4783,17 @@ function do_array_increasesamedecrease($ia)
         $answer_body .= "\" />\n\t</th>\n";
 
         $answer_body .= "\t<td class=\"answer_cell_I answer-item radio-item\">\n"
-        . "<label for=\"answer$myfname-I\">\n"
-        ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" title=\"".$clang->gT('Increase').'"';
+        . "<label class=\"hide read\" for=\"answer$myfname-I\">".$clang->gT('Increase')."</label>\n"
+        ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" ";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'I')
         {
             $answer_body .= CHECKED;
         }
-
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-        . "</label>\n"
         . "\t</td>\n"
         . "\t<td class=\"answer_cell_S answer-item radio-item\">\n"
-        . "<label for=\"answer$myfname-S\">\n"
-        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" title=\"".$clang->gT('Same').'"';
+        . "<label class=\"hide read\" for=\"answer$myfname-S\">".$clang->gT('Same')."</label>\n"
+        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" ";
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'S')
         {
@@ -4788,11 +4801,10 @@ function do_array_increasesamedecrease($ia)
         }
 
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-        . "</label>\n"
         . "\t</td>\n"
         . "\t<td class=\"answer_cell_D answer-item radio-item\">\n"
-        . "<label for=\"answer$myfname-D\">\n"
-        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" title=\"".$clang->gT('Decrease').'"';
+        . "<label class=\"hide read\" for=\"answer$myfname-D\">".$clang->gT('Decrease')."<label>\n"
+        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" ";
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'D')
         {
@@ -4800,7 +4812,6 @@ function do_array_increasesamedecrease($ia)
         }
 
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-        . "</label>\n"
         . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {$answer_body .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];}
@@ -4809,14 +4820,13 @@ function do_array_increasesamedecrease($ia)
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $answer_body .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-            . "<label for=\"answer$myfname-\">\n"
-            . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer').'"';
+            . "<label class=\"hide read\" for=\"answer$myfname-\">".$clang->gT('No answer')."<label>\n"
+            . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
                 $answer_body .= CHECKED;
             }
             $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-            . "</label>\n"
             . "\t</td>\n";
         }
         $answer_body .= "</tr>\n";
@@ -4837,7 +4847,7 @@ function do_array($ia)
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
     $clang = Yii::app()->lang;
-
+    $caption="";// Just leave empty, are replaced after
     $checkconditionFunction = "checkconditions";
     $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
@@ -4857,10 +4867,12 @@ function do_array($ia)
     {
         $useDropdownLayout = true;
         $extraclass .=" dropdown-list";
+        $caption=$clang->gT("An array with sub-question on each line. You have to select your answer."); 
     }
     else
     {
         $useDropdownLayout = false;
+        $caption=$clang->gT("An array with sub-question on each line. The answers are contained in the table header. "); 
     }
     if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
     {
@@ -4902,17 +4914,20 @@ function do_array($ia)
         $fn=1;
 
         $numrows = count($labelans);
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-        {
-            ++$numrows;
-        }
         if ($right_exists)
         {
             ++$numrows;
+            $caption.=$clang->gT("After answers, a cell give some information. "); 
+        }
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+        {
+            ++$numrows;
+            $caption.=$clang->gT("The last cell are for no answer. "); 
         }
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-        $answer_start = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question\" >\n";
+        $answer_start = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" >\n"
+        . "<caption class=\"hide read\">{$caption}</caption>\n";
         $answer_head_line= "\t<td>&nbsp;</td>\n";
             foreach ($labelans as $ld)
             {
@@ -4923,7 +4938,7 @@ function do_array($ia)
             {
                 $answer_head_line .= "\t<th>".$clang->gT('No answer')."</th>\n";
             }
-        $answer_head = "\t<thead><tr>\n".$answer_head_line."</tr></thead>\n\t\n";
+        $answer_head = "\t<thead><tr class=\"dontread\">\n".$answer_head_line."</tr></thead>\n\t\n";
 
         $answer = '<tbody>';
         $trbc = '';
@@ -4936,7 +4951,7 @@ function do_array($ia)
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
-                    $answer .= "<tr class=\"repeat headings\">{$answer_head_line}</tr>";
+                    $answer .= "<tr class=\"dontread repeat headings\">{$answer_head_line}</tr>";
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
@@ -4976,16 +4991,14 @@ function do_array($ia)
             foreach ($labelcode as $ld)
             {
                 $answer .= "\t\t\t<td class=\"answer_cell_00$ld answer-item radio-item\">\n"
-                . "<label for=\"answer$myfname-$ld\">\n"
-                . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
-                . HTMLEscape(strip_tags($labelans[$thiskey])).'"';
+                . "<label class=\"hide read\" for=\"answer$myfname-$ld\">{$labelans[$thiskey]}</label>\n"
+                . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" ";
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ld)
                 {
                     $answer .= CHECKED;
                 }
                 // --> START NEW FEATURE - SAVE
                 $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-                . "</label>\n"
                 . "\t</td>\n";
                 // --> END NEW FEATURE - SAVE
 
@@ -5003,8 +5016,9 @@ function do_array($ia)
 
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
-                $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n<label for=\"answer$myfname-\">\n"
-                ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" title=\"".$clang->gT('No answer').'"';
+                $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
+                ."<label class=\"hide read\" for=\"answer$myfname-\">".$clang->gT('No answer')."</label>\n"
+                ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" ";
                 if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
                 {
                     $answer .= CHECKED;
@@ -5185,7 +5199,7 @@ function do_array_multitext($ia)
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
     $clang = Yii::app()->lang;
-
+    $caption=$clang->gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. "); 
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
@@ -5243,6 +5257,7 @@ function do_array_multitext($ia)
         $q_table_id_HTML = ' id="'.$q_table_id.'"';
         $num_class = ' numbers-only';
         $extraclass.=" numberonly";
+        $caption.=$clang->gT("Each answers are number. "); 
         switch ($aQuestionAttributes['show_totals'])
         {
             case 'R':
@@ -5264,6 +5279,7 @@ function do_array_multitext($ia)
                     <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
                     </td>';
                 };
+                $caption.=$clang->gT("The last row show the total for the column. "); 
                 break;
             case 'C':
                 $totals_class = $show_totals = 'col';
@@ -5283,6 +5299,7 @@ function do_array_multitext($ia)
                     <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
                     </td>';
                 };
+                $caption.=$clang->gT("The last column show the total for the row. "); 
                 break;
             case 'B':
                 $totals_class = $show_totals = 'both';
@@ -5310,6 +5327,7 @@ function do_array_multitext($ia)
                     $grand_total = '
                     <td>&nbsp;</td>';
                 };
+                $caption.=$clang->gT("The last row show the total for the column and the last column show the total for the row. "); 
                 break;
         };
         if(!empty($totals_class))
@@ -5369,6 +5387,7 @@ function do_array_multitext($ia)
         {
             $right_exists=true;
             $answerwidth=$answerwidth/2;
+            $caption.=$clang->gT("The last cell give some information. "); 
         }
         else
         {
@@ -5413,11 +5432,14 @@ function do_array_multitext($ia)
         }
         $answer_cols .= "\t</colgroup>\n";
 
-        $answer_head = "\n\t<thead>\n\t\t<tr>\n"
+        $answer_head = "\n\t<thead>\n\t\t<tr class=\"dontread\">\n"
         . $answer_head_line
         . "</tr>\n\t</thead>\n";
 
-        $answer = "\n<table$q_table_id_HTML class=\"question subquestions-list questions-list{$extraclass}$num_class"."$totals_class\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array of text responses\">\n" . $answer_cols . $answer_head;
+        $answer = "\n<table$q_table_id_HTML class=\"question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\" >\n"
+        . "<caption class=\"hide read\">{$caption}</caption>\n" 
+        . $answer_cols 
+        . $answer_head;
         $answer .= "<tbody>";
         $trbc = '';
         foreach ($aQuestions as $ansrow)
@@ -5427,7 +5449,7 @@ function do_array_multitext($ia)
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
-                    $answer .= "<tr class=\"repeat headings\">\n"
+                    $answer .= "<tr class=\"repeat headings dontread\">\n"
                     . $answer_head_line
                     . "</tr>\n";
                 }
@@ -5476,14 +5498,12 @@ function do_array_multitext($ia)
                 $myfname2=$myfname."_$ld";
                 $myfname2value = isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] : "";
                 $answer .= "\t<td class=\"answer_cell_00$ld answer-item text-item\">\n"
-                . "\t\t\t\t<label for=\"answer{$myfname2}\">\n"
+                . "\t\t\t\t<label class=\"hide read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n"
                 . "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
-                . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" class=\"".$kpclass."\" {$maxlength} title=\""
-                . flattenText($labelans[$thiskey]).'" '
-                . 'size="'.$inputwidth.'" '
+                . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" class=\"".$kpclass."\" {$maxlength} size=\"$inputwidth\" "
                 . ' value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
                 $inputnames[]=$myfname2;
-                $answer .= "\t\t\t\t</label>\n\t\t\t</td>\n";
+                $answer .= "\t\t\t</td>\n";
                 $thiskey += 1;
             }
             if (strpos($answertextsave,'|'))
@@ -5561,7 +5581,7 @@ function do_array_multiflexi($ia)
     $extraclass ="";
     $answertypeclass = "";
     $clang = Yii::app()->lang;
-
+    $caption=$clang->gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. "); 
     $checkconditionFunction = "fixnum_checkconditions";
     //echo '<pre>'; print_r($_POST); echo '</pre>';
     $defaultvaluescript = '';
@@ -5620,16 +5640,19 @@ function do_array_multiflexi($ia)
         $maxvalue=1;
         $checkboxlayout=true;
         $answertypeclass =" checkbox";
+        $caption.=$clang->gT("Check or uncheck the answer for each subquestion. ");
     }
     elseif ($aQuestionAttributes['input_boxes']!=0 )
     {
         $inputboxlayout=true;
         $answertypeclass .=" numeric-item text";
         $extraclass .= " numberonly";
+        $caption.=$clang->gT("Each answers are a number. "); 
     }
     else
     {
         $answertypeclass =" dropdown";
+        $caption.=$clang->gT("Select the answer for each subquestion. "); 
     }
     if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
     {
@@ -5687,7 +5710,13 @@ function do_array_multiflexi($ia)
 
         $sQuery = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." AND scale_id=0 AND question like '%|%'";
         $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
-        if ($iCount>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
+        if ($iCount>0) {
+            $right_exists=true;
+            $answerwidth=$answerwidth/2;
+            $caption.=$clang->gT("The last cell give some information. "); 
+        } else {
+            $right_exists=false;
+        }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
@@ -5734,13 +5763,16 @@ function do_array_multiflexi($ia)
             $odd_even = alternation($odd_even);
             $mycols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
         }
-        $answer_head = "\n\t<thead>\n<tr>\n"
+        $answer_head = "\n\t<thead>\n<tr class=\"dontread\">\n"
         . $answer_head_line
         . "</tr>\n\t</thead>\n";
         $mycols .= "\t</colgroup>\n";
 
         $trbc = '';
-        $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question with dropdown responses\">\n" . $mycols . $answer_head . "\n";
+        $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\">\n"
+        . "<caption class=\"hide read\">{$caption}</caption>\n" 
+        . $mycols 
+        . $answer_head . "\n";
         $answer .= "<tbody>";
         foreach ($ansresult as $ansrow)
         {
@@ -5749,7 +5781,7 @@ function do_array_multiflexi($ia)
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
-                    $answer .= "<tr class=\"repeat headings\">\n"
+                    $answer .= "<tr class=\"repeat headings dontread\">\n"
                     . $answer_head_line
                     . "</tr>\n\n";
                 }
@@ -5810,9 +5842,8 @@ function do_array_multiflexi($ia)
                         $myfname2_java_value = "";
                     }
                     $answer .= "\t<td class=\"answer_cell_00$ld question-item answer-item {$answertypeclass}-item $extraclass\">\n"
-                    . "<label for=\"answer{$myfname2}\">\n"
-                    . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n";
-
+                    . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n"
+                    . "<label class=\"hide read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n"; 
                     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
                     $sSeperator = $sSeperator['seperator'];
                     if($inputboxlayout == false) {
@@ -5840,8 +5871,7 @@ function do_array_multiflexi($ia)
                         }
                         $answer .= "\" />\n";
                     }
-                    $answer .= "</label>\n"
-                    . "\t</td>\n";
+                    $answer .= "\t</td>\n";
 
                     $inputnames[]=$myfname2;
                     $thiskey++;
@@ -5860,7 +5890,6 @@ function do_array_multiflexi($ia)
                         $setmyvalue = '';
                     }
                     $answer .= "\t<td class=\"answer_cell_00$ld question-item answer-item {$answertypeclass}-item\">\n"
-                    //					. "<label for=\"answer{$myfname2}\">\n"
                     . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" value=\"$myvalue\"/>\n"
                     . "\t<input type=\"hidden\" name=\"$myfname2\" id=\"answer{$myfname2}\" value=\"$myvalue\" />\n";
                     $answer .= "\t<input type=\"checkbox\" class=\"checkbox {$extraclass}\" name=\"cbox_$myfname2\" id=\"cbox_$myfname2\" $setmyvalue "
@@ -5874,6 +5903,7 @@ function do_array_multiflexi($ia)
                     . " }; return true;\" "
                     //					. " onchange=\"checkconditions(this.value, this.name, this.type)\" "
                     . " />\n";
+                    $answer .=  "<label class=\"hide read\" for=\"cbox_{$myfname2}\">{$labelans[$thiskey]}</label>\n"; 
                     $inputnames[]=$myfname2;
                     //					$answer .= "</label>\n"
                     $answer .= ""
@@ -5914,6 +5944,7 @@ function do_arraycolumns($ia)
     $clang = Yii::app()->lang;
     $extraclass = "";
     $checkconditionFunction = "checkconditions";
+    $caption=$clang->gT("An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. ");
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -5951,7 +5982,8 @@ function do_arraycolumns($ia)
             $fn=1;
             $cellwidth=$anscount;
             $cellwidth=round(( 50 / $cellwidth ) , 1);
-            $answer = "\n<table class=\"question subquestions-list questions-list\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question with a single response per column\">\n\n"
+            $answer = "\n<table class=\"question subquestions-list questions-list\">\n"
+            . "<caption class=\"hide read\">{$caption}</caption>\n" 
             . "\t<colgroup class=\"col-responses\">\n"
             . "\t<col class=\"col-answers\" width=\"50%\" />\n";
             $odd_even = '';
@@ -6000,16 +6032,15 @@ function do_arraycolumns($ia)
             foreach($labels as $ansrow)
             {
                 $answer .= "<tr>\n"
-                . "\t<th class=\"arraycaptionleft\">{$ansrow['answer']}</th>\n";
+                . "\t<th class=\"arraycaptionleft dontread\">{$ansrow['answer']}</th>\n";
                 foreach ($anscode as $ld)
                 {
                     //if (!isset($trbc) || $trbc == 'array1') {$trbc = 'array2';} else {$trbc = 'array1';}
                     $myfname=$ia[1].$ld;
                     $answer .= "\t<td class=\"answer_cell_00$ld answer-item radio-item\">\n"
-                    . "<label for=\"answer".$myfname.'-'.$ansrow['code']."\">\n"
+                    . "<label class=\"hide read\" for=\"answer".$myfname.'-'.$ansrow['code']."\">{$ansrow['answer']}</label>\n"
                     . "\t<input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
-                    . 'id="answer'.$myfname.'-'.$ansrow['code'].'" '
-                    . 'title="'.HTMLEscape(strip_tags($ansrow['answer'])).'"';
+                    . 'id="answer'.$myfname.'-'.$ansrow['code'].'" ';
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
                     {
                         $answer .= CHECKED;
@@ -6058,14 +6089,14 @@ function do_arraycolumns($ia)
 // ---------------------------------------------------------------
 function do_array_dual($ia)
 {
+    $clang = Yii::app()->lang;
     global $thissurvey;
     global $notanswered;
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
     $answertypeclass = ""; // Maybe not
-    $clang = Yii::app()->lang;
-
+    $caption="";// Just leave empty, are replaced after 
     $inputnames=array();
     $labelans1=array();
     $labelans=array();
@@ -6095,7 +6126,8 @@ function do_array_dual($ia)
         $useDropdownLayout = true;
         $extraclass .=" dropdown-list";
         $answertypeclass .=" dropdown";
-        $doDualScaleFunction="doDualScaleDropDown";// javascript funtion to lauch at end of answers 
+        $doDualScaleFunction="doDualScaleDropDown";// javascript funtion to lauch at end of answers
+        $caption=$clang->gT("An array with sub-question on each line, with 2 answers to provide on each line. You have to select the answer."); 
     }
     else
     {
@@ -6103,6 +6135,7 @@ function do_array_dual($ia)
         $extraclass .=" radio-list";
         $answertypeclass .=" radio";
         $doDualScaleFunction="doDualScaleRadio";
+        $caption=$clang->gT("An array with sub-question on each line, with 2 answers to provide on each line. The answers are contained in the table header. "); 
     }
     if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
     {
@@ -6174,7 +6207,10 @@ function do_array_dual($ia)
             $numrows=count($labelans0) + count($labelans1);
             // Add needed row and fill some boolean: shownoanswer, rightexists, centerexists
             $shownoanswer=($ia[6] != "Y" && SHOW_NO_ANSWER == 1);
-            if($shownoanswer) {$numrows++;}
+            if($shownoanswer) {
+                $numrows++;
+                $caption.=$clang->gT("The last cell are for no answer. "); 
+            }
             if($rightexists) {$numrows++;}
             if($centerexists) {$numrows++;}
             $cellwidth=$columnswidth/$numrows;
@@ -6217,7 +6253,7 @@ function do_array_dual($ia)
                 $mycolumns .=  "\t<col class=\"col-no-answer\"  width=\"$cellwidth%\" />\n";
                 $answer_head_line .= "\n\t<th class=\"header_no_answer\">".$clang->gT('No answer')."</th>\n";
             }
-            $answer_head2 = "\n<tr class=\"array1 header_row\">\n"
+            $answer_head2 = "\n<tr class=\"array1 header_row dontread\">\n"
             . $answer_head_line
             . "</tr>\n";
             // build first row of header if needed
@@ -6246,7 +6282,8 @@ function do_array_dual($ia)
             {
                 $answer_head1 = "";
             }
-            $answer .= "\n<table class=\"question subquestions-list questions-list\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a dual array type question\">\n"
+            $answer .= "\n<table class=\"question subquestions-list questions-list\">\n"
+            . "<caption class=\"hide read\">{$caption}</caption>\n"
             . $mycolumns
             . "\n\t<thead>\n"
             . $answer_head1
@@ -6330,14 +6367,13 @@ function do_array_dual($ia)
                 foreach ($labelcode0 as $ld)
                 {
                     $answer .= "\t<td class=\"answer_cell_1_00$ld answer-item {$answertypeclass}-item\">\n"
-                    . "<label for=\"answer$myfname-$ld\">\n"
-                    . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname0\" value=\"$ld\" id=\"answer$myfid0-$ld\" title=\""
-                    . HTMLEscape(strip_tags($labelans0[$thiskey])).'"';
+                    . "<label class=\"hide read\" for=\"answer{$myfid0}-{$ld}\">$labelans0[$thiskey]</label>\n"
+                    . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname0\" value=\"$ld\" id=\"answer$myfid0-$ld\" ";
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld)
                     {
                         $answer .= CHECKED;
                     }
-                    $answer .= "  />\n</label>\n";
+                    $answer .= "  />\n";
                     $answer .= "\n\t</td>\n";
                     $thiskey++;
                 }
@@ -6346,14 +6382,13 @@ function do_array_dual($ia)
                     $answer .= "\t<td class=\"dual_scale_separator information-item\">";
                     if ($shownoanswer)// No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
                     {
-                        $answer .=  "<label for='answer$myfid0-' class= \"jshide\">\n"
-                        . "\t<input class='radio' type='radio' name='$myfname0' value='' id='answer$myfid0-' title='".$clang->gT("No answer")."'";
+                        $answer .=  "<label for='answer$myfid0-' class= \"hide read\">".$clang->gT("No answer")."</label>"
+                        . "\t<input class='radio jshide read' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
                         {
                             $answer .= CHECKED;
                         }
-                        $answer .= " />\n"
-                        . "</label>\n"; 
+                        $answer .= " />\n";
                     }
                     $answer .= "{$answertextcenter}</td>\n"; // separator
                     array_push($inputnames,$myfname1);
@@ -6361,14 +6396,13 @@ function do_array_dual($ia)
                     foreach ($labelcode1 as $ld) // second label set
                     {
                         $answer .= "\t<td class=\"answer_cell_2_00$ld  answer-item radio-item\">\n";
-                        $answer .= "<label for=\"answer$myfname1-$ld\">\n"
-                        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname1\" value=\"$ld\" id=\"answer$myfid1-$ld\" title=\""
-                        . HTMLEscape(strip_tags($labelans1[$thiskey])).'"';
+                        $answer .= "<label class=\"hide read\" for=\"answer{$myfid1}-{$ld}\">{$labelans1[$thiskey]}</label>\n"
+                        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname1\" value=\"$ld\" id=\"answer$myfid1-$ld\" ";
                         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld)
                         {
                             $answer .= CHECKED;
                         }
-                        $answer .= " />\n</label>\n";
+                        $answer .= " />\n";
                         $answer .= "\t</td>\n";
                         $thiskey++;
                     }
@@ -6382,27 +6416,25 @@ function do_array_dual($ia)
                     $answer .= "\t<td class=\"dual_scale_no_answer answer-item radio-item noanswer-item\">\n";
                     if (count($labelans1)>0)
                     {
-                        $answer .= "<label for='answer$myfid1-'>\n"
-                        . "\t<input class='radio' type='radio' name='$myfname1' value='' id='answer$myfid1-' title='".$clang->gT("No answer")."'";
+                        $answer .= "<label class='hide read' for='answer$myfid1-'>".$clang->gT("No answer")."</label>"
+                        . "\t<input class='radio' type='radio' name='$myfname1' value='' id='answer$myfid1-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == "")
                         {
                             $answer .= CHECKED;
                         }
                         // --> START NEW FEATURE - SAVE
-                        $answer .= " />\n"
-                        . "</label>\n";
+                        $answer .= " />\n";
                     }
                     else
                     {
-                        $answer .= "<label for='answer$myfid0-'>\n"
-                        . "\t<input class='radio' type='radio' name='$myfname0' value='' id='answer$myfid0-' title='".$clang->gT("No answer")."'";
+                        $answer .= "<label class='hide read' for='answer$myfid0-'>".$clang->gT("No answer")."<label>\n"
+                        . "\t<input class='radio' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
                         {
                             $answer .= CHECKED;
                         }
                         // --> START NEW FEATURE - SAVE
-                        $answer .= " />\n"
-                        . "</label>\n";
+                        $answer .= " />\n";
                     }
                     $answer .= "\t</td>\n";
                 }
@@ -6445,7 +6477,8 @@ function do_array_dual($ia)
             $colspan_1 = '';
             $colspan_2 = '';
             $suffix_cell = '';
-            $answer .= "\n<table class=\"question subquestion-list questions-list dropdown-list\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an dual array type question\">\n\n"
+            $answer .= "\n<table class=\"question subquestion-list questions-list dropdown-list\">\n"
+            . "<caption class=\"hide read\">{$caption}</caption>\n"
             . "\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
 
             if($ddprefix != '' || $ddsuffix != '')
@@ -6522,9 +6555,7 @@ function do_array_dual($ia)
                 list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc subquestion-list questions-list dropdown-list");
                 $answer .= $htmltbody2;
                 $answer .= "\t<th class=\"answertext\">\n"
-                . "<label for=\"answer$myfname\">\n"
-                . "$answertext\n"
-                . "</label>\n";
+                . "<label for=\"answer$myfid0\">{$answertext}</label>\n";
                 // Hidden answers used by EM: sure can be added in javascript
                 $answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid0\" id=\"java$myfid0\" value=\"";
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0])) {$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0];}
@@ -6581,6 +6612,7 @@ function do_array_dual($ia)
                     $answer .= "\t<td class='ddprefix information-item'>$ddprefix</td>\n";
                 }
                 $answer .= "\t<td class=\"answer-item dropdown-item\">\n"
+                . "<label class=\"hide read\" for=\"answer{$myfid1}\">{$answertext}</label>"
                 . "<select name=\"$myfname1\" id=\"answer$myfid1\">\n";
                 if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {

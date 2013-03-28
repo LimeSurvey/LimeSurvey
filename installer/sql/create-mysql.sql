@@ -198,6 +198,9 @@ CREATE TABLE `prefix_participants` (
   `language` varchar(40) DEFAULT NULL,
   `blacklisted` varchar(1) NOT NULL,
   `owner_uid` int(11) NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `created` datetime,
+  `modified` datetime,
   PRIMARY KEY  (`participant_id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -575,4 +578,4 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '167');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '168');

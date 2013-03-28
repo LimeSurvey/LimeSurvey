@@ -196,6 +196,9 @@ CREATE TABLE [prefix_participants] (
   [language] varchar(40),
   [blacklisted] varchar(1) NOT NULL,
   [owner_uid] int NOT NULL,
+  [created_by] int NOT NULL,
+  [created] datetime,
+  [modified] datetime,
   PRIMARY KEY  ([participant_id])
 );
 
@@ -562,4 +565,4 @@ create index [labels_code_idx] on [prefix_labels] ([code]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '167');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '168');

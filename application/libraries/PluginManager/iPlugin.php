@@ -30,7 +30,12 @@ interface iPlugin {
      * @return array
      */
     public function getPluginSettings($getValues = true);
-    
+
+    /**
+     * Gets the name for the plugin, this must be unique.
+     * @return string Plugin name, max length: 20.
+     */
+    public static function getName();
     /**
      * Returns a reference to the storage interface for the plugin.
      * @return iPluginStorage 
