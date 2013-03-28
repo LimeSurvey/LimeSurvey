@@ -3,7 +3,8 @@
 
         protected $storage = 'DbStorage';    
         static protected $description = 'Example plugin';
-        protected $tablePrefix= 'al';
+        static protected $name = 'auditlog';
+       
         
         public function __construct(PluginManager $manager, $id) {
             parent::__construct($manager, $id);
@@ -32,7 +33,7 @@
 
             if (count(array_diff_assoc_recursive($aNewPermissions,$oOldPermission)))
             {
-                $oAutoLog = $this->api->newModel($this, 'auditlog');
+                $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='permission';
                 $oAutoLog->action=$sAction;
@@ -64,7 +65,7 @@
             if (count(array_diff_assoc($aNewValues,$aOldValues)))
             {
                 
-                $oAutoLog = $this->api->newModel($this, 'auditlog');
+                $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='participant';
                 $oAutoLog->action='update';
@@ -109,7 +110,7 @@
             if (count(array_diff_assoc($aNewValues,$aOldValues)))
             {
                 
-                $oAutoLog = $this->api->newModel($this, 'auditlog');
+                $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='user';
                 $oAutoLog->action=$sAction;
@@ -129,7 +130,7 @@
             {
                 $aOldValues=$oOldUser->getAttributes();
                 unset($aOldValues['password']);
-                $oAutoLog = $this->api->newModel($this, 'auditlog');
+                $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='user';
                 $oAutoLog->action='delete';
@@ -143,9 +144,9 @@
                                                             
         public function beforeActivate(PluginEvent $event)
         {
-            if (!$this->api->tableExists($this, 'auditlog'))
+            if (!$this->api->tableExists($this, 'log'))
             {
-                $this->api->createTable($this, 'auditlog', array('id'=>'pk',
+                $this->api->createTable($this, 'log', array('id'=>'pk',
                     'created'=>'datetime',
                     'uid'=>'string',
                     'entity'=>'string',
