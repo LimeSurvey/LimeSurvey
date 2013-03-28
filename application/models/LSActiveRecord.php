@@ -75,4 +75,34 @@ class LSActiveRecord extends CActiveRecord
         $criteria = $this->getCommandBuilder()->createCriteria($condition, $params);
         return $this->query($criteria, true, false);  //Notice the third parameter 'false'
     }
+    
+    
+     /**
+     * This method is invoked before saving a record (after validation, if any).
+     * The default implementation raises the {@link onBeforeSave} event.
+     * You may override this method to do any preparation work for record saving.
+     * Use {@link isNewRecord} to determine whether the saving is
+     * for inserting or updating record.
+     * Make sure you call the parent implementation so that the event is raised properly.
+     * @return boolean whether the saving should be executed. Defaults to true.
+     */
+    public function beforeSave()
+    {
+        $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('before'.get_class($this).'Save', $this), $plugin->name);
+        return parent::beforeSave();
+    }    
+
+    /**
+     * This method is invoked before deleting a record.
+     * The default implementation raises the {@link onBeforeDelete} event.
+     * You may override this method to do any preparation work for record deletion.
+     * Make sure you call the parent implementation so that the event is raised properly.
+     * @return boolean whether the record should be deleted. Defaults to true.
+     */    
+    public function beforeDelete()
+    {
+        $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('before'.get_class($this).'Delete', $this), $plugin->name);
+        return parent::beforeDelete();
+    }    
+
 }

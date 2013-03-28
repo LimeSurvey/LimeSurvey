@@ -44,12 +44,15 @@ function dirReport($dir, $write, $clang)
         <fieldset>
         <legend><?php $clang->eT("Minimum requirements"); ?></legend>
 
-        <table>
+        <table class='table-striped'>
+        <thead>
         <tr>
-               <td>&nbsp;</td>
-               <td><?php $clang->eT("Required"); ?></td>
-               <td><?php $clang->eT("Current"); ?></td>
+               <th>&nbsp;</th>
+               <th class='text-center'><?php $clang->eT("Required"); ?></th>
+               <th class='text-center'><?php $clang->eT("Current"); ?></th>
         </tr>
+        </thead>
+        <tbody>        
         <tr>
                <td><?php $clang->eT("PHP version"); ?></td>
                <td>5.1.6+</td>
@@ -92,17 +95,20 @@ function dirReport($dir, $write, $clang)
                <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
                <td><?php echo $sessionWritableImg; if (!$sessionWritable) echo '<br/>session.save_path: ' . session_save_path(); ?></td>
         </tr>
-
+        </tbody>
         </table>
         </fieldset>
         <fieldset>
         <legend><?php $clang->eT('Optional modules'); ?></legend>
-        <table>
-        <tr>
-               <td>&nbsp;</td>
-               <td><?php $clang->eT('Recommended'); ?></td>
-               <td><?php $clang->eT('Current'); ?></td>
-        </tr>
+        <table class='table-striped'>
+        <thead>
+            <tr>
+                   <th>&nbsp;</th>
+                   <th><?php $clang->eT('Recommended'); ?></th>
+                   <th><?php $clang->eT('Current'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
         <tr>
                <td>PHP GD library</td>
                <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
@@ -128,6 +134,7 @@ function dirReport($dir, $write, $clang)
                <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
                <td><?php echo $bIMAPPresent ; ?></td>
         </tr>
+        </tbody>        
 
         </table>
         </fieldset>

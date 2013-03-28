@@ -353,7 +353,6 @@ class Tokens_dynamic extends LSActiveRecord
      */
     public function beforeSave()
     {
-         // Postgres delivers bytea fields as streams :-o - if this is not done it looks like Postgres saves something unexpected
         if ($this->usesleft>0)
         {
             $this->completed='N'; 

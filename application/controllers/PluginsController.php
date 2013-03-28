@@ -69,17 +69,19 @@
                     if ($result->get('success', true)) {
                         $status = 0;
                     } else {
-                        echo "Failed to deactivate";
-                        Yii::app()->end(); 
+                        App()->user->setFlash('pluginActivation', gT('Failed to deactivate the plugin.'));
+                        $this->redirect(array('plugins/'));
                     }
 
                 } else {
+                    // Load the plugin:
+                    App()->getPluginManager()->loadPlugin($plugin->name, $id);
                     $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeActivate', $this), $plugin->name);
                     if ($result->get('success', true)) {
                         $status = 1;
                     } else {
-                        echo "Failed to activate";
-                        Yii::app()->end();
+                        App()->user->setFlash('pluginActivation', $result->get('message', gT('Failed to activate plugin.')));
+                        $this->redirect(array('plugins/'));
                     }
                 }
                 $plugin->active = $status;

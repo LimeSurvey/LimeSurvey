@@ -12,7 +12,7 @@
 *
 */
 
-class User extends CActiveRecord
+class User extends LSActiveRecord
 {
     /**
     * @var string Default value for user language
@@ -180,7 +180,6 @@ class User extends CActiveRecord
         {
             $this->password=stream_get_contents($this->password,-1,0); 
         }
-        
         return parent::beforeSave();
     }
     
@@ -194,8 +193,8 @@ class User extends CActiveRecord
     function deleteUser($iUserID)
     {
         $iUserID= (int)$iUserID;
-        $iRecordsAffected = Yii::app()->db->createCommand()->from('{{users}}')->delete('{{users}}', "uid={$iUserID}");
-        return (bool) $iRecordsAffected;
+        $oUser=$this->findByPk($iUserID);
+        return (bool) $oUser->delete();
     }
 
     /**

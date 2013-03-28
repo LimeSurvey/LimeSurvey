@@ -118,7 +118,7 @@
                 'image' => 'showhelp.png'
             );
 
-            $event = new PluginEvent('afterAdminMenuLoaded', $this);
+            $event = new PluginEvent('afterAdminMenuLoad', $this);
             $event->set('menu', $menu);
             
             $result = App()->getPluginManager()->dispatchEvent($event);

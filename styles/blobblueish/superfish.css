@@ -156,3 +156,9 @@ li.sfHover > a > .sf-sub-indicator {
 .sf-shadow ul.sf-shadow-off {
 	background: transparent;
 }
+.sf-menu a {
+    border: 0 none #CFDEFF;
+}
+.sf-menu a, .sf-menu a:visited {
+    color: #1133AA !important;
+}
