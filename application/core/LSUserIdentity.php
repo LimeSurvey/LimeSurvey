@@ -23,9 +23,7 @@ class LSUserIdentity extends CUserIdentity {
      *  
      * @var int
      */
-    public $id = null;
-    
-    public $plugin = null;    
+    public $id = null; 
 
     /**
      * A User::model() object
