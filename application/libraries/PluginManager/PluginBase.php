@@ -98,7 +98,7 @@
 
         public static function getName()
         {
-            return self::$name;
+            return static::$name;
         }
         /**
          * Returns the plugin storage and takes care of
