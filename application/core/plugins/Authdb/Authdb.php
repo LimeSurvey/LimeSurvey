@@ -12,38 +12,104 @@ class Authdb extends PluginBase
          * Here you should handle subscribing to the events your plugin will handle
          */
         $this->subscribe('beforeLogin');
-        $this->subscribe('afterCreateLoginForm');
+        $this->subscribe('newLoginForm');
+        $this->subscribe('afterLoginFormSubmit');
+        $this->subscribe('newUserSession');
     }
     
     public function beforeLogin(PluginEvent $event)
     {
+        $event->set('default', get_class($this));   // This is the default login method, should be configurable from plugin settings
+        
         // We can skip the login form here and set username/password etc.
         
-        /* @var $identity UserIdentity */
+        /* @var $identity LSUserIdentity */
         $identity = $event->get('identity');
         
-        if (App()->getRequest()->isPostRequest() && !is_null(Yii::app()->request->getQuery('onepass'))) {
+        if (App()->getRequest()->getIsPostRequest() && !is_null(Yii::app()->request->getQuery('onepass'))) {
             // We have a one time password, skip the login form
-            $identity->onepass = Yii::app()->getRequest()->getQuery('onepass');
+            $identity->setConfig(array('onepass'=>Yii::app()->getRequest()->getQuery('onepass')));
             $identity->username = Yii::app()->getRequest()->getQuery('user');
             $event->stop(); // Skip the login form
         }
     }
     
-    public function afterCreateLoginForm(PluginEvent $event)
+    public function newLoginForm(PluginEvent $event)
     {
-        // Here we can influence the way the login form looks
-        $blocks = $event->get('blocks', array());
-        
-        $blocks['Authdb'] = '';
-        $event->set('blocks', $blocks);
+        $event->getContent($this)
+              ->addContent(CHtml::tag('li', array(), "<label for='user'>"  . gT("Username") . "</label><input name='user' id='user' type='text' size='40' maxlength='40' value='' />"))
+              ->addContent(CHtml::tag('li', array(), "<label for='password'>"  . gT("Password") . "</label><input name='password' id='password' type='password' size='40' maxlength='40' value='' />"));
     }
     
-    public function afterLoginPost(PluginEvent $event)
+    public function afterLoginFormSubmit(PluginEvent $event)
     {
-        // Here we handle the authentication, using the posted form data
-        $blocks = $event->get('blocks', array());
-        $event->set('blocks', $blocks);
+        // Here we handle moving post data to the identity
+        /* @var $identity LSUserIdentity */
+        $identity = $event->get('identity');
+        
+        $request = App()->getRequest();
+        if ($request->getIsPostRequest()) {
+            $identity->username = $request->getPost('user');
+            $identity->password = $request->getPost('password');
+        }
+        
+        $event->set('identity', $identity);
+    }
+    
+    public function newUserSession(PluginEvent $event)
+    {
+        // Here we do the actual authentication
+        /* @var $identity LSUserIdentity */
+        $identity = $event->getSender();
+        
+        $username = $identity->username;
+        $password = $identity->password;
+        $config = $identity->getConfig();
+        $onepass  = isset($config['onepass']) ? $config['onepass'] : '';
+        
+        $user = User::model()->findByAttributes(array('users_name' => $username));
+        
+        if ($user !== null)
+        {
+            if (gettype($user->password)=='resource')
+            {
+                $sStoredPassword=stream_get_contents($user->password,-1,0);  // Postgres delivers bytea fields as streams :-o
+            }
+            else
+            {
+                $sStoredPassword=$user->password;
+            }
+        }
+        else
+        {
+            $event->set('result', new LSAuthResult(LSUserIdentity::ERROR_USERNAME_INVALID));
+            return;
+        }
+
+        if ($onepass != '' && Yii::app()->getConfig("use_one_time_passwords") && md5($onepass) == $user->one_time_pw)
+        {
+            $user->one_time_pw='';
+            $user->save();
+            $identity->id = $user->uid;
+            $identity->user = $user;
+            $event->set('result', new LSAuthResult(LSUserIdentity::ERROR_NONE));
+            return;
+        }
+        
+        
+        if ($sStoredPassword !== hash('sha256', $password))
+        {
+            $event->set('result', new LSAuthResult(LSUserIdentity::ERROR_PASSWORD_INVALID));
+            return;
+        }
+        else
+        {
+            $identity->id = $user->uid;
+            $identity->user = $user;
+            $event->set('result', new LSAuthResult(LSUserIdentity::ERROR_NONE));
+            return;
+        }
+        
     }
     
     

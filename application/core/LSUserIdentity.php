@@ -16,19 +16,23 @@ class LSUserIdentity extends CUserIdentity {
     const ERROR_IP_LOCKED_OUT = 98;
     const ERROR_UNKNOWN_HANDLER = 99;
     
+    protected $config = array();
+    
     /**
      * The userid
      *  
      * @var int
      */
-    protected $id = null;
+    public $id = null;
+    
+    public $plugin = null;    
 
     /**
      * A User::model() object
      * 
      * @var User
      */
-    protected $user;
+    public $user;
     
     /**
      * This is the name of the plugin to handle authentication
@@ -40,44 +44,120 @@ class LSUserIdentity extends CUserIdentity {
 
     public function authenticate() {
         // First initialize the result, we can later retieve it to get the exact error code/message
-        $this->_result = new LSAuthResult();
+        $result = new LSAuthResult(self::ERROR_NONE);
         
         // Check if the ip is locked out
         if (Failed_login_attempts::model()->isLockedOut()) {
-            $this->_result->setError(self::ERROR_IP_LOCKED_OUT);
+            $message = sprintf(gT('You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
+            $result->setError(self::ERROR_IP_LOCKED_OUT, $message);
         }
         
         // If still ok, continue
-        if ($this->_result->isValid())
+        if ($result->isValid())
         { 
             if (is_null($this->plugin)) {
-                $this->_result->setError(self::ERROR_UNKNOWN_HANDLER);
+                $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
                 // Delegate actual authentication to plugin
-                $authEvent = new PluginEvent('newSession', $this);
+                $authEvent = new PluginEvent('newUserSession', $this);
                 App()->getPluginManager()->dispatchEvent($authEvent, array($this->plugin));
-                $result = $authEvent->get('result');
-                if ($result instanceof LSAuthResult) {
-                
+                $pluginResult = $authEvent->get('result');
+                if ($pluginResult instanceof LSAuthResult) {
+                    $result = $pluginResult;
+                } else {
+                    $result->setError(self::ERROR_UNKNOWN_IDENTITY);
                 }
             }
         }
          
-        @session_regenerate_id(); // Prevent session fixation
-        if ($this->_result->isValid()) {
+        if ($result->isValid()) {
             // Perform postlogin
             $this->postLogin();
-            
         } else {
             // Log a failed attempt
             $userHostAddress = App()->request->getUserHostAddress();
             Failed_login_attempts::model()->addAttempt($userHostAddress);
+            App()->session->regenerateID(); // Handled on login by Yii
         }
         
-        return $this->_result->isValid();        
+        $this->errorCode = $result->getCode();
+        $this->errorMessage = $result->getMessage();
+        
+        return $result->isValid();        
+    }
+    
+    public function getConfig()
+    {
+        return $this->config;
+    }
+    
+    /**
+    * Returns the current user's ID
+    *
+    * @access public
+    * @return int
+    */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+    * Returns the active user's record
+    *
+    * @access public
+    * @return User
+    */
+    public function getUser()
+    {
+        return $this->user;
+    }
+       
+    protected function postLogin()
+    {
+        $user = $this->getUser();
+        App()->user->login($this);
+        
+        // Check for default password
+        if ($this->password === 'password') {
+            App()->user->setFlash('pwdnotify', gT('Warning: You are still using the default password (\'password\'). Please change your password and re-login again.'));
+        }
+
+        // Do session setup      
+        Yii::app()->session['loginID'] = (int) $user->uid;
+        Yii::app()->session['user'] = $user->users_name;
+        Yii::app()->session['full_name'] = $user->full_name;
+        Yii::app()->session['htmleditormode'] = $user->htmleditormode;
+        Yii::app()->session['templateeditormode'] = $user->templateeditormode;
+        Yii::app()->session['questionselectormode'] = $user->questionselectormode;
+        Yii::app()->session['dateformat'] = $user->dateformat;
+        Yii::app()->session['session_hash'] = hash('sha256',getGlobalSetting('SessionName').$user->users_name.$user->uid);
+        
+        // Perform language settings
+        if (App()->request->getPost('loginlang','default') != 'default')
+        {
+            $user->lang = sanitize_languagecode(App()->request->getPost('loginlang'));
+            $user->save();
+            $sLanguage=$user->lang;
+        }
+        else if ($user->lang=='auto' || $user->lang=='')
+        {
+            $sLanguage=getBrowserLanguage();
+        }
+        else
+        {
+            $sLanguage=$user->lang;
+        }
+
+        Yii::app()->session['adminlang'] = $sLanguage;
+        App()->getController()->lang= new limesurvey_lang($sLanguage);
     }
     
     public function setPlugin($name) {
         $this->plugin = $name;
     }
+    
+    public function setConfig($config) {
+        $this->config = $config;
+    }    
 }

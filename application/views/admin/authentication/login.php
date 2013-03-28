@@ -3,10 +3,26 @@
         <div class='header ui-widget-header'><?php echo $summary; ?></div>
         <br />
         <ul style='width: 500px; margin-left: auto; margin-right: auto'>
-            <li><label for='user'><?php $clang->eT("Username"); ?></label>
-                <input name='user' id='user' type='text' size='40' maxlength='40' value='' /></li>
-            <li><label for='password'><?php $clang->eT("Password"); ?></label>
-                <input name='password' id='password' type='password' size='40' maxlength='40' /></li>
+            <?php 
+            $pluginNames = array_keys($pluginContent);
+            if (!isset($defaultAuth)) {
+                // Make sure we have a default auth, if not set, use the first one we find
+                $defaultAuth = reset($pluginNames);
+            }
+            if (count($pluginContent)>1) {
+                $selectedAuth = App()->getRequest()->getPost('authMethod', $defaultAuth);
+          ?><li><label for='authMethod'><?php $clang->eT("Authentication method"); ?></label><?php
+                echo CHtml::dropDownList('authMethod', $selectedAuth, $methods);
+            } else {
+                echo CHtml::hiddenField('authMethod', $defaultAuth);
+                $selectedAuth = $defaultAuth;
+            }
+            if (isset($pluginContent[$selectedAuth])) {
+                $blockData = $pluginContent[$selectedAuth];
+                /* @var $blockData PluginEventContent */
+                echo CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
+            }
+            ?>
             <li><label for='loginlang'><?php $clang->eT("Language"); ?></label>
                 <select id='loginlang' name='loginlang'>
                     <option value="default" selected="selected"><?php $clang->eT('Default'); ?></option>
@@ -24,7 +40,7 @@
             </li>
         </ul>
     <p><input type='hidden' name='action' value='login' />
-        <input class='action' type='submit' value='<?php $clang->eT("Login"); ?>' /><br />&nbsp;
+        <input class='action' type='submit' name='login_submit' value='<?php $clang->eT("Login"); ?>' /><br />&nbsp;
         <br/>
         <?php
         if (Yii::app()->getConfig("display_user_password_in_email") === true)

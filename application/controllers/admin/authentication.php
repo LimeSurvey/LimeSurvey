@@ -32,38 +32,52 @@ class Authentication extends Survey_Common_Action
     public function index()
     {
         $this->_redirectIfLoggedIn();
-        $bCanLogin = $this->_userCanLogin();
 
-        if ($bCanLogin && !is_array($bCanLogin))
+        $beforeLogin = new PluginEvent('beforeLogin');
+        $beforeLogin->set('identity', new LSUserIdentity('', ''));
+
+        App()->getPluginManager()->dispatchEvent($beforeLogin);
+        /* @var $identity LSUserIdentity */
+        $identity = $beforeLogin->get('identity');
+
+        if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit')))
         {
-            if (Yii::app()->request->getPost('action') ||  !is_null(Yii::app()->request->getQuery('onepass')) || Yii::app()->getConfig('auth_webserver') === true)
+            $newLoginForm = new PluginEvent('newLoginForm');    
+            App()->getPluginManager()->dispatchEvent($newLoginForm);
+            $aData['summary'] = $this->_getSummary('logout');
+            $aData['pluginContent'] = $newLoginForm->getAllContent();
+            $this->_renderWrappedTemplate('authentication', 'login', $aData);
+        } else {
+             // Handle getting the post and populating the identity there
+            $authMethod = App()->getRequest()->getPost('authMethod');
+            $identity->plugin = $authMethod;
+
+            $event = new PluginEvent('afterLoginFormSubmit');
+            $event->set('identity', $identity);
+            App()->getPluginManager()->dispatchEvent($event, array($authMethod));
+            $identity = $event->get('identity');
+
+            // Now authenticate
+            if ($identity->authenticate()) 
             {
+                Failed_login_attempts::model()->deleteAttempts();
 
-                $aData = $this->_doLogin(Yii::app()->request->getParam('user'), Yii::app()->request->getPost('password'),Yii::app()->request->getQuery('onepass',''));
+                $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
+                Yii::app()->session['just_logged_in'] = true;
+                Yii::app()->session['loginsummary'] = $this->_getSummary();
+                $this->_doRedirect();
 
-                if (!isset($aData['errormsg']))
-                {
-                    Failed_login_attempts::model()->deleteAttempts();
-
-                    $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
-                    Yii::app()->session['just_logged_in'] = true;
-                    Yii::app()->session['loginsummary'] = $this->_getSummary();
-                    $this->_doRedirect();
-                    die();
+            } else {
+                // Failed
+                $message = $identity->errorMessage;
+                if (empty($message)) {
+                    // If no message, return a default message
+                    $clang = $this->getController()->lang;
+                    $message = $clang->gT('Incorrect username and/or password!');
                 }
-                else
-                {
-                    $this->_renderWrappedTemplate('authentication', 'error', $aData);
-                }
+                App()->user->setFlash('loginError', $message);
+                $this->getController()->redirect(array('/admin/authentication/sa/login'));
             }
-            else
-            {
-                $this->_showLoginForm();
-            }
-        }
-        else
-        {
-            $this->_renderWrappedTemplate('authentication', 'error', $bCanLogin);
         }
     }
 
@@ -72,8 +86,9 @@ class Authentication extends Survey_Common_Action
     */
     public function logout()
     {
-        Yii::app()->user->logout();
-        $this->_showLoginForm($this->getController()->lang->gT('Logout successful.'));
+        App()->user->logout();
+        App()->user->setFlash('loginmessage', gT('Logout successful.'));
+        $this->getController()->redirect(array('/admin/authentication/sa/login'));
     }
 
     /**
@@ -150,16 +165,6 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Show login screen
-    * @param optional message
-    */
-    protected function _showLoginForm($sLogoutSummary = '')
-    {
-        $aData['summary'] = $this->_getSummary('logout', $sLogoutSummary);
-        $this->_renderWrappedTemplate('authentication', 'login', $aData);
-    }
-
-    /**
     * Get's the summary
     * @param string $sMethod login|logout
     * @param string $sSummary Default summary
@@ -230,136 +235,8 @@ class Authentication extends Survey_Common_Action
     */
     private function _doRedirect()
     {
-        if (strlen(Yii::app()->session['redirectopage']) > 1)
-        {
-            $this->getController()->redirect(Yii::app()->session['redirectopage']);
-        }
-        else
-        {
-            $this->getController()->redirect(array('/admin'));
-        }
-    }
-
-    /**
-    * Do the actual login work
-    * Note: This function is replicated in parts in remotecontrol.php controller - if you change this don't forget to make according changes there, too (which is why we should make a login helper)
-    * @param string $sUsername The username to login with
-    * @param string $sPassword The password to login with
-    * @return Array of data containing errors for the view
-    */
-    private function _doLogin($sUsername, $sPassword, $sOneTimePassword)
-    {
-        $identity = new UserIdentity(sanitize_user($sUsername), $sPassword);
-
-        if (!$identity->authenticate($sOneTimePassword))
-        {
-            return $this->_getAuthenticationFailedErrorMessage();
-        }
-        @session_regenerate_id(); // Prevent session fixation
-        return $this->_setLoginSessions($identity);
-    }
-
-    /**
-    * Sets the login sessions
-    * @param UserIdentity $identity
-    * @return bool True
-    */
-    private function _setLoginSessions($identity)
-    {
-        $user = $identity->getUser();
-
-        Yii::app()->user->login($identity);
-        $this->_checkForUsageOfDefaultPassword();
-        $this->_setSessionData($user);
-        $this->_setLanguageSettings($user);
-
-        return true;
-    }
-
-    /**
-    * Sets the session data
-    * @param CActiveRecord $user
-    */
-    private function _setSessionData($user)
-    {
-        Yii::app()->session['loginID'] = (int) $user->uid;
-        Yii::app()->session['user'] = $user->users_name;
-        Yii::app()->session['full_name'] = $user->full_name;
-        Yii::app()->session['htmleditormode'] = $user->htmleditormode;
-        Yii::app()->session['templateeditormode'] = $user->templateeditormode;
-        Yii::app()->session['questionselectormode'] = $user->questionselectormode;
-        Yii::app()->session['dateformat'] = $user->dateformat;
-        Yii::app()->session['session_hash'] = hash('sha256',getGlobalSetting('SessionName').$user->users_name.$user->uid);
-    }
-
-    /**
-    * Sets the language settings for the user
-    * @param CActiveRecord $user
-    */
-    private function _setLanguageSettings($user)
-    {
-        if (Yii::app()->request->getPost('loginlang','default') != 'default')
-        {
-            $user->lang = sanitize_languagecode(Yii::app()->request->getPost('loginlang'));
-            $user->save();
-            $sLanguage=$user->lang;
-        }
-        else if ($user->lang=='auto' || $user->lang=='')
-        {
-            $sLanguage= getBrowserLanguage();
-        }
-        else
-        {
-            $sLanguage=$user->lang;
-        }
-
-        Yii::app()->session['adminlang'] = $sLanguage;
-        $this->getController()->lang= new limesurvey_lang($sLanguage);
-    }
-
-    /**
-    * Checks if the user is using default password
-    */
-    private function _checkForUsageOfDefaultPassword()
-    {
-        $clang = $this->getController()->lang;
-        Yii::app()->session['pw_notify'] = false;
-        if (strtolower(Yii::app()->request->getPost('password','') ) === 'password')
-        {
-            Yii::app()->session['pw_notify'] = true;
-            Yii::app()->session['flashmessage'] = $clang->gT('Warning: You are still using the default password (\'password\'). Please change your password and re-login again.');
-        }
-    }
-
-    /**
-    * Get the authentication failed error messages
-    * @return array Data
-    */
-    private function _getAuthenticationFailedErrorMessage()
-    {
-        $clang = $this->getController()->lang;
-        $aData = array();
-
-        $userHostAddress = Yii::app()->request->getUserHostAddress();
-        $bUserNotFound = Failed_login_attempts::model()->addAttempt($userHostAddress);
-
-        if ($bUserNotFound)
-        {
-            $aData['errormsg'] = $clang->gT('Incorrect username and/or password!');
-            $aData['maxattempts'] = '';
-        }
-
-        $bLockedOut = Failed_login_attempts::model()->isLockedOut($userHostAddress);
-
-        if ($bLockedOut)
-        {
-            $aData['maxattempts'] = sprintf(
-            $clang->gT('You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again.'),
-            Yii::app()->getConfig('timeOutTime') / 60
-            );
-        }
-
-        return $aData;
+        $returnUrl = App()->user->getReturnUrl('/admin');
+        $this->getController()->redirect($returnUrl);
     }
 
     /**
