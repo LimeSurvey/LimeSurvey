@@ -35,10 +35,11 @@ class Authdb extends PluginBase
         /* @var $identity LSUserIdentity */
         $identity = $event->get('identity');
         
-        if (App()->getRequest()->getIsPostRequest() && !is_null(Yii::app()->request->getQuery('onepass'))) {
+        $request = $this->api->getRequest();
+        if ($request->getIsPostRequest() && !is_null($request->getQuery('onepass'))) {
             // We have a one time password, skip the login form
-            $identity->setConfig(array('onepass'=>Yii::app()->getRequest()->getQuery('onepass')));
-            $identity->username = Yii::app()->getRequest()->getQuery('user');
+            $identity->setConfig(array('onepass'=>$request()->getQuery('onepass')));
+            $identity->username = $request()->getQuery('user');
             $event->stop(); // Skip the login form
         }
     }
@@ -56,7 +57,7 @@ class Authdb extends PluginBase
         /* @var $identity LSUserIdentity */
         $identity = $event->get('identity');
         
-        $request = App()->getRequest();
+        $request = $this->api->getRequest();
         if ($request->getIsPostRequest()) {
             $identity->username = $request->getPost('user');
             $identity->password = $request->getPost('password');

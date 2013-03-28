@@ -94,9 +94,19 @@
             $result = LimeExpressionManager::ProcessString($expression);
             return $result;
         }
+        
+        /**
+         * Get the current request object
+         * 
+         * @return LSHttpRequest
+         */
+        public function getRequest()
+        {
+            return App()->getRequest();
+        }
 
         /**
-        * Gets a response from the database.
+        * Gets a survey response from the database.
         * 
         * @param int $surveyId
         * @param int $responseId
