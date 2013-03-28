@@ -14,6 +14,7 @@
         protected $storage = 'DummyStorage';
         
         static protected $description = 'Base plugin object';
+        static protected $name = 'PluginBase';
         private $store = null;
         protected $settings = array();
         
@@ -93,6 +94,11 @@
                 }
             }
             return $settings;
+        }
+
+        public static function getName()
+        {
+            return self::$name;
         }
         /**
          * Returns the plugin storage and takes care of

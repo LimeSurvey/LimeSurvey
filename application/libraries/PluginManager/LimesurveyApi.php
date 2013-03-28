@@ -7,48 +7,14 @@
     class LimesurveyApi
     {
         /**
-         * Gets the id of a plugin given its name.
-         * @param string $pluginName
-         * @return int Id of the plugin, null if not found.
-         */
-        protected function getPluginId($pluginName)
-        {
-            $plugin = Plugin::model()->findByAttributes(array(
-                'name' => $pluginName
-            ));
-            if ($plugin !== null)
-            {
-                return $plugin->id;
-            }
-        }
-        /**
          * Generates the real table name from plugin and tablename.
-         * @param mixed $sPluginName
-         * @param string $sTableName
+         * @param iPlugin $plugin
+         * @param string $tableName
          */
-        protected function getTableName($plugin, $tableName)
+        protected function getTableName(iPlugin $plugin, string $tableName)
         {
             $parts = array(App()->getDb()->tablePrefix);
-            if (is_object($plugin))
-            {
-                if (method_exists($plugin, 'name'))
-                {
-                    $parts[] = $this->getPluginId($plugin->name());
-                }
-                else
-                {
-                    $parts[] = $this->getPluginId(get_class($plugin));
-                }
-            }
-            elseif (is_int($plugin))
-            {
-                $parts[] = $plugin;
-
-            }
-            elseif (is_string($plugin))
-            {
-                $parts[] = $this->getPluginId($plugin);
-            }
+            $parts[] = $plugin->getName();
             $parts[] = $tableName;
             if (!in_array(null, $parts))
             {
@@ -84,43 +50,30 @@
 
         /**
          * Gets an activerecord object associated to the table.
-         * @param string $sPluginName
+         * @param iPlugin $plugin
          * @param string $sTableName
          * @return PluginDynamic
          */
-        public function getTable($sPluginName, $sTableName)
+        public function getTable(iPlugin $plugin, $sTableName)
         {
-            $plugin = Plugin::model()->findByAttributes(array(
-                'name' => $sPluginName
-            ));
-            if ($plugin !== null)
+            if (null !== $table = $this->getTableName($plugin, $sTableName))
             {
-                $sTableName = implode('_', array(
-                    App()->getDb()->tablePrefix,
-                    $plugin->id,
-                    $sTableName
-                ));
-
-                if (!isset($sScenario))
-                {
-                    return PluginDynamic::model($sTableName);
-                }
+                return PluginDynamic::model($table);
             }
         }
 
-        public function newModel($sPluginName, $sTableName)
+        /**
+         * Creates a new active record object instance.
+         * @param iPlugin $plugin
+         * @param string $sTableNamem
+         * @param string $scenario
+         * @return PluginDynamic
+         */
+        public function newModel(iPlugin $plugin, $sTableName, $scenario = 'insert')
         {
-            $plugin = Plugin::model()->findByAttributes(array(
-                'name' => $sPluginName
-            ));
-            if ($plugin !== null)
+            if (null !== $table = $this->getTableName($plugin, $sTableName))
             {
-                $sTableName = implode('_', array(
-                    App()->getDb()->tablePrefix,
-                    $plugin->id,
-                    $sTableName
-                ));
-                return new PluginDynamic($sTableName);
+                return new PluginDynamic($sTableName, $scenario);
             }
         }
 
@@ -130,7 +83,7 @@
         * @param string $sTableName Table name to check for (without dbprefix!))
         * @return boolean True or false if table exists or not
         */
-        public function tableExists($plugin, $sTableName)
+        public function tableExists(iPlugin $plugin, string $sTableName)
         {
             $sTableName =  $this->getTableName($plugin, $sTableName);
             return isset($sTableName) && in_array($sTableName, App()->getDb()->getSchema()->getTableNames());
