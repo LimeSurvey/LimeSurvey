@@ -62,6 +62,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     forcePlaceholderSize: true,
     placeholder: 'ui-sortable-placeholder',
     helper: 'clone',
+    delay: 200,
     revert: 50,
     receive: function(event, ui) {
       if($(this).attr("id")=='sortable-rank-'+qID && $(maxanswers>0 && '#sortable-rank-'+qID+' li').length > maxanswers) {
@@ -80,19 +81,19 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   if(samelistheight){fixListHeight(qID);}
   
   // Allow users to double click to move to selections from list to list
-  $('#sortable-choice-'+qID+' li').live('dblclick', function() {
-      if($(maxanswers>0 && '#sortable-rank-'+qID+' li').length >= maxanswers) {
-        sortableAlert (qID,showpopups,maxanswers);
-        if(showpopups){return false;}
-    }
-    else {
-      $(this).appendTo('#sortable-rank-'+qID+'');
-      $('#sortable-choice-'+qID+'').sortable('refresh');
-      $('#sortable-rank-'+qID+'').sortable('refresh');
-      updateDragDropRank(qID);
-    }
+    $('#sortable-choice-'+qID).delegate('li','dblclick', function() {
+        if($(maxanswers>0 && '#sortable-rank-'+qID+' li').length >= maxanswers) {
+          sortableAlert (qID,showpopups,maxanswers);
+          if(showpopups){return false;}
+      }
+      else {
+        $(this).appendTo('#sortable-rank-'+qID+'');
+        $('#sortable-choice-'+qID+'').sortable('refresh');
+        $('#sortable-rank-'+qID+'').sortable('refresh');
+        updateDragDropRank(qID);
+      }
     });
-    $('#sortable-rank-'+qID+' li').live('dblclick', function() {
+    $('#sortable-rank-'+qID).delegate('li','dblclick', function() {
       $(this).appendTo('#sortable-choice-'+qID+'');
       $('#sortable-choice-'+qID+'').sortable('refresh');
       $('#sortable-rank-'+qID+'').sortable('refresh');
