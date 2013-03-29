@@ -371,7 +371,14 @@ class Participant extends LSActiveRecord
             {
                 $aParticipantsIDs=$this->filterParticipantIDs($aParticipantsIDs);
             }
-
+            foreach($aParticipantsIDs as $aID){
+                $oParticipant=Participant::model()->findByPk($aID);
+                if ($oParticipant)
+                {
+                    $oParticipant->delete();
+                }
+            }
+            
             Yii::app()->db->createCommand()->delete(Participant::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
             
             // Delete survey links

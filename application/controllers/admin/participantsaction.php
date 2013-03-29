@@ -243,7 +243,7 @@ class participantsaction extends Survey_Common_Action
             'tokensurveynames' => $tSurveyNames,
             'urlsearch' => $urlSearch
         );
-
+        App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jqgrid');
         App()->getClientScript()->registerPackage('jquery-multiselect');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl')  . 'displayParticipants.css');

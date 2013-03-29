@@ -16,6 +16,7 @@
             $this->subscribe('beforeUserDelete');
             $this->subscribe('beforePermissionSetSave'); 
             $this->subscribe('beforeParticipantSave'); 
+            $this->subscribe('beforeParticipantDelete'); 
         }
 
         /**
@@ -36,6 +37,7 @@
                 $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='permission';
+                $oAutoLog->entityid=$aNewPermissions['uid'].'-'.$aNewPermissions['sid'];
                 $oAutoLog->action=$sAction;
                 $oAutoLog->oldvalues=json_encode(array_diff_assoc_recursive($oOldPermission,$aNewPermissions));
                 $oAutoLog->newvalues=json_encode(array_diff_assoc_recursive($aNewPermissions,$oOldPermission));
@@ -64,17 +66,40 @@
 
             if (count(array_diff_assoc($aNewValues,$aOldValues)))
             {
-                
                 $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='participant';
                 $oAutoLog->action='update';
+                $oAutoLog->entityid=$aNewValues['participant_id'];
                 $oAutoLog->oldvalues=json_encode(array_diff_assoc($aOldValues,$aNewValues));
                 $oAutoLog->newvalues=json_encode(array_diff_assoc($aNewValues,$aOldValues));
                 $oAutoLog->fields=implode(',',array_keys(array_diff_assoc($aNewValues,$aOldValues)));
                 $oAutoLog->save();
             }
         }        
+        
+        /**
+        * Function catches if a participant was modified or created
+        * All data is saved - only the password hash is anonymized for security reasons
+        * 
+        * @param PluginEvent $event
+        */
+        public function beforeParticipantDelete(PluginEvent $event)
+        {
+            $oNewParticipant=$event->getSender();
+            $oCurrentUser=$this->api->getCurrentUser();
+
+            $aValues=$oNewParticipant->getAttributes();
+
+            $oAutoLog = $this->api->newModel($this, 'log');
+            $oAutoLog->uid=$oCurrentUser->uid;
+            $oAutoLog->entity='participant';
+            $oAutoLog->action='delete';
+            $oAutoLog->entityid=$aValues['participant_id'];
+            $oAutoLog->oldvalues=json_encode($aValues);
+            $oAutoLog->fields=implode(',',array_keys($aValues));
+            $oAutoLog->save();
+        }            
         
         
         /**
@@ -109,10 +134,10 @@
             
             if (count(array_diff_assoc($aNewValues,$aOldValues)))
             {
-                
                 $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='user';
+                if ($sAction=='update') $oAutoLog->entityid=$oOldUser['uid'];
                 $oAutoLog->action=$sAction;
                 $oAutoLog->oldvalues=json_encode(array_diff_assoc($aOldValues,$aNewValues));
                 $oAutoLog->newvalues=json_encode(array_diff_assoc($aNewValues,$aOldValues));
@@ -133,6 +158,7 @@
                 $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='user';
+                $oAutoLog->entityid=$oOldUser['uid'];
                 $oAutoLog->action='delete';
                 $oAutoLog->oldvalues=json_encode($aOldValues);
                 $oAutoLog->fields=implode(',',array_keys($aOldValues));
@@ -150,6 +176,7 @@
                     'created'=>'datetime',
                     'uid'=>'string',
                     'entity'=>'string',
+                    'entityid'=>'string',
                     'action'=>'string',
                     'fields'=>'text',
                     'oldvalues'=>'text',

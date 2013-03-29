@@ -4634,7 +4634,7 @@ function do_array_yesnouncertain($ia)
                 $answer_t_content .= CHECKED;
             }
             // --> START NEW FEATURE - SAVE
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n"
+            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n"
             . "\t<td class=\"answer_cell_N answer-item radio-item\">\n"
             . "<label class=\"hide read\" for=\"answer$myfname-N\">".$clang->gT('No')."</label>\n"
             . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-N\" value=\"N\" ";
@@ -4803,7 +4803,7 @@ function do_array_increasesamedecrease($ia)
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
         . "\t</td>\n"
         . "\t<td class=\"answer_cell_D answer-item radio-item\">\n"
-        . "<label class=\"hide read\" for=\"answer$myfname-D\">".$clang->gT('Decrease')."<label>\n"
+        . "<label class=\"hide read\" for=\"answer$myfname-D\">".$clang->gT('Decrease')."</label>\n"
         . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" ";
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'D')
@@ -4820,7 +4820,7 @@ function do_array_increasesamedecrease($ia)
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $answer_body .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-            . "<label class=\"hide read\" for=\"answer$myfname-\">".$clang->gT('No answer')."<label>\n"
+            . "<label class=\"hide read\" for=\"answer$myfname-\">".$clang->gT('No answer')."</label>\n"
             . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
@@ -5024,7 +5024,7 @@ function do_array($ia)
                     $answer .= CHECKED;
                 }
                 // --> START NEW FEATURE - SAVE
-                $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\"  />\n</label>\n\t</td>\n";
+                $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\"  />\n\t</td>\n";
                 // --> END NEW FEATURE - SAVE
             }
 
@@ -6052,7 +6052,7 @@ function do_arraycolumns($ia)
                         // because I think $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] is always set (by save.php ??) !
                         // should remove the !isset part I think !!
                     }
-                    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
+                    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n";
                 }
                 unset($trbc);
                 $answer .= "</tr>\n";
@@ -6500,7 +6500,7 @@ function do_array_dual($ia)
             {
                 $answer .= "\t</colgroup>\n";
             }
-            $answer .= "\t<col class=\"ddarrayseparator\"{$separatorwidth} />\n";
+            $answer .= "\t<col class=\"ddarrayseparator\" width=\"{$separatorwidth}%\" />\n";
             if($ddprefix != '' || $ddsuffix != '')
             {
                 $answer .= "\t<colgroup width=\"$cellwidth%\">\n";
