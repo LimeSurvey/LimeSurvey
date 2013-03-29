@@ -159,8 +159,8 @@ class RegisterController extends LSYii_Controller {
         $postattribute2=sanitize_xss_string(strip_tags(returnGlobal('register_attribute2')));   */
 
         // Insert new entry into tokens db
-        Tokens_dynamic::sid($thissurvey['sid']);
-        $token = new Tokens_dynamic;
+        TokenDynamic::sid($thissurvey['sid']);
+        $token = new TokenDynamic;
         $token->firstname = $postfirstname;
         $token->lastname = $postlastname;
         $token->email = Yii::app()->request->getPost('register_email');

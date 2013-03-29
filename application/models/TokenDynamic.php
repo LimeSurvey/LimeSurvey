@@ -13,7 +13,7 @@
      *	Files Purpose: lots of common functions
 */
 
-class Tokens_dynamic extends LSActiveRecord
+class TokenDynamic extends LSActiveRecord
 {
 	protected static $sid = 0;
 
@@ -25,7 +25,7 @@ class Tokens_dynamic extends LSActiveRecord
      * @static
      * @access public
      * @param int $surveyid
-     * @return Tokens_dynamic
+     * @return TokenDynamic
      */
     public static function model($sid = NULL)
     {
@@ -183,7 +183,7 @@ class Tokens_dynamic extends LSActiveRecord
 			
 		$command->order = 'tid';	
 
-		$oResult = Tokens_dynamic::model()->findAll($command);
+		$oResult = TokenDynamic::model()->findAll($command);
 		return $oResult;
     }
 
@@ -455,7 +455,7 @@ class Tokens_dynamic extends LSActiveRecord
     
     function deleteToken($tokenid)
     {
-        $dlquery = "DELETE FROM ".Tokens_dynamic::tableName()." WHERE tid=:tokenid";
+        $dlquery = "DELETE FROM ".TokenDynamic::tableName()." WHERE tid=:tokenid";
         return Yii::app()->db->createCommand($dlquery)->bindParam(":tokenid", $tokenid)->query();
     }
 
@@ -463,7 +463,7 @@ class Tokens_dynamic extends LSActiveRecord
     {
     	foreach($iTokenIds as &$currentrow)
 			$currentrow = Yii::app()->db->quoteValue($currentrow);
-        $dlquery = "DELETE FROM ".Tokens_dynamic::tableName()." WHERE tid IN (".implode(", ", $iTokenIds).")";
+        $dlquery = "DELETE FROM ".TokenDynamic::tableName()." WHERE tid IN (".implode(", ", $iTokenIds).")";
         return Yii::app()->db->createCommand($dlquery)->query();
     }
 

@@ -70,7 +70,7 @@ class OptoutController extends LSYii_Controller {
         }
         else
         {
-            $row = Tokens_dynamic::model($iSurveyID)->getEmailStatus($sToken);
+            $row = TokenDynamic::model($iSurveyID)->getEmailStatus($sToken);
 
             if ($row == false)
             {
@@ -81,7 +81,7 @@ class OptoutController extends LSYii_Controller {
                 $usresult = $row['emailstatus'];
                 if ($usresult == 'OK')
                 {
-                    $usresult = Tokens_dynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OptOut');
+                    $usresult = TokenDynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OptOut');
                     $html = $clang->gT('You have been successfully removed from this survey.');
                 }
                 else
@@ -153,8 +153,8 @@ class OptoutController extends LSYii_Controller {
         }
         else
         {
-            $row = Tokens_dynamic::model($iSurveyID)->getEmailStatus($sToken);
-            $datas = Tokens_dynamic::model($iSurveyID)->find('token = :token', array(":token"=>$sToken));
+            $row = TokenDynamic::model($iSurveyID)->getEmailStatus($sToken);
+            $datas = TokenDynamic::model($iSurveyID)->find('token = :token', array(":token"=>$sToken));
 
             if ($row == false)
             {
@@ -165,7 +165,7 @@ class OptoutController extends LSYii_Controller {
                 $usresult = $row['emailstatus'];
                 if ($usresult == 'OK')
                 {
-                    $usresult = Tokens_dynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OptOut');
+                    $usresult = TokenDynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OptOut');
                     $html = $clang->gT('You have been successfully removed from this survey.');
                 }
                 else

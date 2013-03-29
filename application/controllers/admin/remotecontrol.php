@@ -720,7 +720,7 @@ class remotecontrol_handle
 				if(in_array($sStatName, $aPermittedTokenStats))
 				{
 					if (tableExists('{{tokens_' . $iSurveyID . '}}'))
-						$summary = Tokens_dynamic::model($iSurveyID)->summary();
+						$summary = TokenDynamic::model($iSurveyID)->summary();
 					else
 						return array('status' => 'No available data');
 				}
@@ -1845,13 +1845,13 @@ class remotecontrol_handle
             foreach ($aParticipantData as &$aParticipant)
             {
                 $aParticipant=array_intersect_key($aParticipant,$aDestinationFields);
-                Tokens_dynamic::sid($iSurveyID);
-                $token = new Tokens_dynamic;
+                TokenDynamic::sid($iSurveyID);
+                $token = new TokenDynamic;
 
                 if ($new_token_id=$token->insertParticipant($aParticipant))
                 {
                      if ($bCreateToken)
-                        $token_string = Tokens_dynamic::model()->createToken($new_token_id);
+                        $token_string = TokenDynamic::model()->createToken($new_token_id);
                     else
                         $token_string = '';
 
@@ -1899,13 +1899,13 @@ class remotecontrol_handle
 				$aResult=array();
 				foreach($aTokenIDs as $iTokenID)
 				{
-					$tokenidExists = Tokens_dynamic::model($iSurveyID)->findByPk($iTokenID);
+					$tokenidExists = TokenDynamic::model($iSurveyID)->findByPk($iTokenID);
 					if (!isset($tokenidExists))
 						$aResult[$iTokenID]='Invalid token ID';
 					else
 					{
 					Survey_links::deleteTokenLink(array($iTokenID), $iSurveyID);
-					if(Tokens_dynamic::model($iSurveyID)->deleteRecords(array($iTokenID)))
+					if(TokenDynamic::model($iSurveyID)->deleteRecords(array($iTokenID)))
 						$aResult[$iTokenID]='Deleted';
 					else
 						$aResult[$iTokenID]='Deletion went wrong';
@@ -1944,12 +1944,12 @@ class remotecontrol_handle
 				if(!tableExists("{{tokens_$iSurveyID}}"))
 					return array('status' => 'Error: No token table');
 
-				$oToken = Tokens_dynamic::model($iSurveyID)->findByPk($iTokenID);
+				$oToken = TokenDynamic::model($iSurveyID)->findByPk($iTokenID);
 				if (!isset($oToken))
 					return array('status' => 'Error: Invalid tokenid');
 
                 $aResult=array();
-                $aBasicDestinationFields=Tokens_dynamic::model()->tableSchema->columnNames;
+                $aBasicDestinationFields=TokenDynamic::model()->tableSchema->columnNames;
                 $aTokenProperties=array_intersect($aTokenProperties,$aBasicDestinationFields);
 
 				if (empty($aTokenProperties))
@@ -1992,7 +1992,7 @@ class remotecontrol_handle
 				if(!tableExists("{{tokens_$iSurveyID}}"))
 					return array('status' => 'Error: No token table');
 
-				$oToken = Tokens_dynamic::model($iSurveyID)->findByPk($iTokenID);
+				$oToken = TokenDynamic::model($iSurveyID)->findByPk($iTokenID);
 				if (!isset($oToken))
 					return array('status' => 'Error: Invalid tokenid');
 
@@ -2000,7 +2000,7 @@ class remotecontrol_handle
 				// Remove fields that may not be modified
 				unset($aTokenData['tid']);
 
-				$aBasicDestinationFields=array_flip(Tokens_dynamic::model()->tableSchema->columnNames);
+				$aBasicDestinationFields=array_flip(TokenDynamic::model()->tableSchema->columnNames);
 				$aTokenData=array_intersect_key($aTokenData,$aBasicDestinationFields);
 				$aTokenAttributes = $oToken->getAttributes();
 
@@ -2061,9 +2061,9 @@ class remotecontrol_handle
 					return array('status' => 'Error: No token table');
 
 				if($bUnused)
-					$oTokens = Tokens_dynamic::model($iSurveyID)->findAll(array('condition'=>"completed = 'N'", 'limit' => $iLimit, 'offset' => $iStart));
+					$oTokens = TokenDynamic::model($iSurveyID)->findAll(array('condition'=>"completed = 'N'", 'limit' => $iLimit, 'offset' => $iStart));
 				else
-					$oTokens = Tokens_dynamic::model($iSurveyID)->findAll(array('limit' => $iLimit, 'offset' => $iStart));
+					$oTokens = TokenDynamic::model($iSurveyID)->findAll(array('limit' => $iLimit, 'offset' => $iStart));
 
 				if(count($oTokens)==0)
 					return array('status' => 'No Tokens found');
@@ -2158,7 +2158,7 @@ class remotecontrol_handle
 			$iMaxEmails = (int)Yii::app()->getConfig("maxemails");
 			$SQLemailstatuscondition = "emailstatus = 'OK'";
 
-			$oTokens = Tokens_dynamic::model($iSurveyID);
+			$oTokens = TokenDynamic::model($iSurveyID);
 			$aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, true, $SQLemailstatuscondition);
 			$aAllTokens = $oTokens->findUninvited(false, 0, true, $SQLemailstatuscondition);
 			if (empty($aResultTokens))
@@ -2222,7 +2222,7 @@ class remotecontrol_handle
 			if(!is_null($iMaxReminders))
 				$SQLremindercountcondition = "remindercount < " . $iMaxReminders;
 
-			$oTokens = Tokens_dynamic::model($iSurveyID);
+			$oTokens = TokenDynamic::model($iSurveyID);
 			$aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
 			$aAllTokens = $oTokens->findUninvited(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
 

@@ -685,7 +685,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']);
                 if (tableExists('tokens_' . $rows['sid'] ))
                 {
-                    $cntResult = Tokens_dynamic::countAllAndCompleted($rows['sid']);
+                    $cntResult = TokenDynamic::countAllAndCompleted($rows['sid']);
                     $tokens = $cntResult['cntall'];
                     $tokenscompleted = $cntResult['cntcompleted'];
 

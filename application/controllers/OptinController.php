@@ -64,7 +64,7 @@ class OptinController extends LSYii_Controller {
         }
         else
         {
-            $row = Tokens_dynamic::model($iSurveyID)->getEmailStatus($sToken);
+            $row = TokenDynamic::model($iSurveyID)->getEmailStatus($sToken);
 
             if ($row == false)
             {
@@ -75,7 +75,7 @@ class OptinController extends LSYii_Controller {
                 $usresult = $row['emailstatus'];
                 if ($usresult=='OptOut')
                 {
-                    $usresult = Tokens_dynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OK');
+                    $usresult = TokenDynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OK');
                     $html = $clang->gT('You have been successfully added back to this survey.');
                 }
                 else if ($usresult=='OK')
