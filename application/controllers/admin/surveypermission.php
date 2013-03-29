@@ -69,7 +69,7 @@ class surveypermission extends Survey_Common_Action {
                     if(in_array($PermissionRow['uid'],$userList))
                     {
 
-                        $result3 = User_in_groups::model()->with('users')->findAll('users.uid = :uid',array(':uid' => $PermissionRow['uid']));
+                        $result3 = UserInGroups::model()->with('users')->findAll('users.uid = :uid',array(':uid' => $PermissionRow['uid']));
                         foreach ($result3 as $resul3row)
                         {
                             if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
@@ -83,7 +83,7 @@ class surveypermission extends Survey_Common_Action {
                         {
                             $group_ids_query = implode(",", $group_ids);
                             unset($group_ids);
-                            $result4 = User_groups::model()->findAll("ugid IN ($group_ids_query)");                        
+                            $result4 = UserGroup::model()->findAll("ugid IN ($group_ids_query)");                        
 
                             foreach ($result4 as $resul4row)
                             {
@@ -410,7 +410,7 @@ class surveypermission extends Survey_Common_Action {
             }
             else
             {
-                $resrow = User_groups::model()->find('ugid = :ugid',array(':ugid' => $postusergroupid));
+                $resrow = UserGroup::model()->find('ugid = :ugid',array(':ugid' => $postusergroupid));
                 $sUsergroupName=$resrow['name'];
                 $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for group %s"),"<span style='font-style:italic'>".$sUsergroupName."</span>")."</div>";
             }
@@ -612,7 +612,7 @@ class surveypermission extends Survey_Common_Action {
 
             if (isset($postusergroupid) && $postusergroupid>0)
             {
-                $oResult = User_in_groups::model()->findAll('ugid = :ugid AND uid <> :uid AND uid <> :iOwnerID',array(':ugid' => $postusergroupid, ':uid' => Yii::app()->session['loginID'], ':iOwnerID' => $iOwnerID));
+                $oResult = UserInGroups::model()->findAll('ugid = :ugid AND uid <> :uid AND uid <> :iOwnerID',array(':ugid' => $postusergroupid, ':uid' => Yii::app()->session['loginID'], ':iOwnerID' => $iOwnerID));
                 if(count($oResult) > 0)
                 {
                     foreach ($oResult as $aRow)

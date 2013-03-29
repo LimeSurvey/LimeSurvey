@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class User_groups extends CActiveRecord {
+class UserGroup extends CActiveRecord {
 
 	/**
 	 * Returns the static model of Settings table
@@ -144,7 +144,7 @@ class User_groups extends CActiveRecord {
 
 	function updateGroup($name, $description, $ugid)
     {
-		$group = User_groups::model()->findByPk($ugid);
+		$group = UserGroup::model()->findByPk($ugid);
 		$group->name=$name;
 		$group->description=$description;
 		$group->save();
@@ -168,7 +168,7 @@ class User_groups extends CActiveRecord {
 
         $aParams[':ugid']=$ugid;
 		$criteria->params=$aParams;
-		$result=User_groups::model()->find($criteria);
+		$result=UserGroup::model()->find($criteria);
 		return $result;
 	}
 
@@ -200,7 +200,7 @@ class User_groups extends CActiveRecord {
         }
         
         
-		$group = User_groups::model()->find($sCondition, $aParams);
+		$group = UserGroup::model()->find($sCondition, $aParams);
 		$group->delete();
         
 		if($group->getErrors())
