@@ -24,7 +24,7 @@ class Dumpdb extends Survey_Common_Action {
     {
         parent::__construct($controller, $id);
 
-        if (!Permission::model()->hasGlobalPermission('global_superadmin','read'))
+        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
         {
             die();
         }

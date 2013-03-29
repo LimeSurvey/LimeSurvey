@@ -237,7 +237,7 @@ class remotecontrol_handle
     {
        if ($this->_checkSessionKey($sSessionKey))
        {
-		   if(Permission::model()->hasGlobalPermission('global_superadmin','read'))
+		   if(Permission::model()->hasGlobalPermission('superadmin','read'))
 		   {
 			   if (Yii::app()->getConfig($sSetttingName) !== false)
 					return Yii::app()->getConfig($sSetttingName);
@@ -271,7 +271,7 @@ class remotecontrol_handle
 		Yii::app()->loadHelper("surveytranslator");
 		if ($this->_checkSessionKey($sSessionKey))
         {
-			if (Permission::model()->hasGlobalPermission('global_surveys','create'))
+			if (Permission::model()->hasGlobalPermission('surveys','create'))
 			{
 				if( $sSurveyTitle=='' || $sSurveyLanguage=='' || !array_key_exists($sSurveyLanguage,getLanguageDataRestricted()) || !in_array($sformat, array('A','G','S')))
 					return array('status' => 'Faulty parameters');
@@ -364,7 +364,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if (Permission::model()->hasGlobalPermission('global_surveys','create'))
+            if (Permission::model()->hasGlobalPermission('surveys','create'))
             {
                 if (!in_array($sImportDataType,array('zip','csv','xls','lss'))) return array('status' => 'Invalid extension');
                 Yii::app()->loadHelper('admin/import');
@@ -515,7 +515,7 @@ class remotecontrol_handle
        {
 		   $sCurrentUser =  Yii::app()->session['user'];
 
-		   if( Permission::model()->hasGlobalPermission('global_superadmin','read') )
+		   if( Permission::model()->hasGlobalPermission('superadmin','read') )
 		   {
 				if ($sUser == null)
 					$aUserSurveys = Survey::model()->findAll(); //list all surveys
@@ -2100,7 +2100,7 @@ class remotecontrol_handle
     public function activate_tokens($sSessionKey, $iSurveyID, $aAttributeFields=array())
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
-        if (Permission::model()->hasGlobalPermission('global_surveys','create'))
+        if (Permission::model()->hasGlobalPermission('surveys','create'))
         {
             $oSurvey=Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey))

@@ -401,7 +401,7 @@ class AdminController extends LSYii_Controller
             Yii::app()->session['flashmessage'] = $clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
         }
 
-        $data['showupdate'] = (Permission::model()->hasGlobalPermission('global_superadmin','read') && getGlobalSetting("updatelastcheck")>0 && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );
+        $data['showupdate'] = (Permission::model()->hasGlobalPermission('superadmin','read') && getGlobalSetting("updatelastcheck")>0 && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );
         $data['updateversion'] = getGlobalSetting("updateversion");
         $data['updatebuild'] = getGlobalSetting("updatebuild");
         $data['surveyid'] = $surveyid;

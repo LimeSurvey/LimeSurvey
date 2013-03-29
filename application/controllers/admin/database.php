@@ -42,7 +42,7 @@ class database extends Survey_Common_Action
         $qid = returnGlobal('qid');
         // if $action is not passed, check post data.
 
-        if(Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('global_superadmin','read'))
+        if(Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin','read'))
         {
             $filter = new CHtmlPurifier();
             $filter->options = array('URI.AllowedSchemes'=>array(
@@ -1013,7 +1013,7 @@ class database extends Survey_Common_Action
             fixLanguageConsistency($surveyid,Yii::app()->request->getPost('languageids'));
             $template = Yii::app()->request->getPost('template');
 
-            if(!Permission::model()->hasGlobalPermission('global_superadmin','read') && !hasGlobalPermission('global_templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $template)) $template = "default";
+            if(!Permission::model()->hasGlobalPermission('superadmin','read') && !hasGlobalPermission('templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $template)) $template = "default";
 
             $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
             Survey_url_parameters::model()->deleteAllByAttributes(array('sid'=>$surveyid));

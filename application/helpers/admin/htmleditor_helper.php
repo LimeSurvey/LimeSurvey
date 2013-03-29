@@ -57,7 +57,7 @@
                 $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
                 $labelid = $contextarray[2];
                 // check if the user has label management right and labelid defined
-                if (Permission::model()->hasGlobalPermission('global_labelsets','update') && isset($labelid) && $labelid != '')
+                if (Permission::model()->hasGlobalPermission('labelsets','update') && isset($labelid) && $labelid != '')
                 {
                     $_SESSION['KCFINDER']['disabled'] = false;
                     $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/labels/{$labelid}/";

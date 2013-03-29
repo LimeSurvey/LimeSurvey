@@ -48,7 +48,7 @@
                 ?>
             </table>
             <?php
-                if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
+                if (Permission::model()->hasGlobalPermission('superadmin','read'))
                 {
                 ?>
                 <p><input type="button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/globalsettings/showphpinfo"); ?>')" value="<?php $clang->eT("Show PHPInfo"); ?>" />

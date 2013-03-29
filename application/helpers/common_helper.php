@@ -331,7 +331,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
     $clang = new Limesurvey_lang(isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en');
 
     if(is_null($cached)) {
-        if (!Permission::model()->hasGlobalPermission('global_superadmin','read'))
+        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
             $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
         else
             $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
@@ -1235,7 +1235,7 @@ function getUserList($outputformat='fullinfoarray')
         $myuid=sanitize_int(Yii::app()->session['loginID']);
     }
     $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
-    if (!Permission::model()->hasGlobalPermission('global_superadmin','read') && isset($usercontrolSameGroupPolicy) &&
+    if (!Permission::model()->hasGlobalPermission('superadmin','read') && isset($usercontrolSameGroupPolicy) &&
     $usercontrolSameGroupPolicy == true)
     {
         if (isset($myuid))
@@ -7065,7 +7065,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
     $clang = Yii::app()->lang;
     //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
-    if (!Permission::model()->hasGlobalPermission('global_superadmin','read'))
+    if (!Permission::model()->hasGlobalPermission('superadmin','read'))
     {
         $sQuery .="AND uid = ".Yii::app()->session['loginID'];
     }

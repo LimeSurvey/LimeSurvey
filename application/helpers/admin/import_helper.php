@@ -358,7 +358,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                     }
                 }
             }
-            if (isset($lsmatch) || !Permission::model()->hasGlobalPermission('global_labelsets','import'))
+            if (isset($lsmatch) || !Permission::model()->hasGlobalPermission('labelsets','import'))
             {
                 //There is a matching labelset or the user is not allowed to edit labels -
                 // So, we will delete this one and refer to the matched one.
@@ -2780,7 +2780,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                     }
                 }
             }
-            if (isset($lsmatch) || Permission::model()->hasGlobalPermission('global_labelsets','import'))
+            if (isset($lsmatch) || Permission::model()->hasGlobalPermission('labelsets','import'))
             {
                 //There is a matching labelset or the user is not allowed to edit labels -
                 // So, we will delete this one and refer to the matched one.
@@ -4178,7 +4178,7 @@ function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
 
 function XSSFilterArray(&$array)
 {
-    if(Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('global_superadmin','read'))
+    if(Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin','read'))
     {
         $filter = new CHtmlPurifier();
         $filter->options = array('URI.AllowedSchemes'=>array(

@@ -484,7 +484,7 @@
         
         protected function globalSettings()
         {
-            if (Permission::model()->hasGlobalPermission('global_settings','read'))
+            if (Permission::model()->hasGlobalPermission('settings','read'))
             {
                 return array(
                     'href' => array('admin/globalsettings'),
@@ -496,7 +496,7 @@
 
         protected function checkIntegrity()
         {
-            if (Permission::model()->hasGlobalPermission('global_settings','read'))
+            if (Permission::model()->hasGlobalPermission('settings','read'))
             {
                 return array(
                     'href' => array('admin/checkintegrity'),
@@ -509,7 +509,7 @@
         
         protected function createSurvey()
         {
-            if (Permission::model()->hasGlobalPermission('global_surveys','create'))
+            if (Permission::model()->hasGlobalPermission('surveys','create'))
             {
                 return array(
                     'href' => array("admin/survey/sa/newsurvey"),
@@ -520,7 +520,7 @@
         }
         protected function dumpDatabase()
         {
-            if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
+            if (Permission::model()->hasGlobalPermission('superadmin','read'))
             {
                 if (in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli')) || Yii::app()->getConfig('demo_mode') == true)
                 {
@@ -543,7 +543,7 @@
 
         protected function editLabels()
         {
-            if (Permission::model()->hasGlobalPermission('global_labelsets','read'))
+            if (Permission::model()->hasGlobalPermission('labelsets','read'))
             {
                 return array(
                     'href' => array('admin/labels'),
@@ -555,7 +555,7 @@
 
         protected function editTemplates()
         {
-            if (Permission::model()->hasGlobalPermission('global_templates','read'))
+            if (Permission::model()->hasGlobalPermission('templates','read'))
             {
                 return array(
                     'href' => array('admin/templates/'),
@@ -567,7 +567,7 @@
 
         protected function participantDatabase()
         {
-            if (Permission::model()->hasGlobalPermission('global_participantpanel','read'))
+            if (Permission::model()->hasGlobalPermission('participantpanel','read'))
             {
                 return array(
                     'alt' => gT('Central participant database/panel'),

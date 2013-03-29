@@ -43,7 +43,7 @@ class participantsaction extends Survey_Common_Action
 {
     public function runWithParams($params)
     {
-        if (!Permission::model()->hasGlobalPermission('global_participantpanel','read'))
+        if (!Permission::model()->hasGlobalPermission('participantpanel','read'))
         {
             die('No permission');
         }
@@ -96,7 +96,7 @@ class participantsaction extends Survey_Common_Action
         $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
         
         //If super admin all the participants will be visible
-        if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
+        if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
             $iUserID = null;
         } else {
@@ -146,7 +146,7 @@ class participantsaction extends Survey_Common_Action
         $attid = ParticipantAttributeNames::model()->getVisibleAttributes();
         
         //If super admin all the participants will be visible
-        if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
+        if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
             $iUserID = null;
         } else {
@@ -171,7 +171,7 @@ class participantsaction extends Survey_Common_Action
         $iUserID = Yii::app()->session['loginID'];
 
         // if superadmin all the records in the cpdb will be displayed
-        if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
+        if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
             $iTotalRecords = Participant::model()->count();
         }
@@ -217,7 +217,7 @@ class participantsaction extends Survey_Common_Action
         //Should be all surveys owned by user (or all surveys for super admin)
         $surveys = Survey::model();
         //!!! Is this even possible to execute?
-        if (!Permission::model()->hasGlobalPermission('global_superadmin','read'))
+        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
             $surveys->permission(Yii::app()->user->getId());
 
         $aSurveyNames = $surveys->model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
@@ -301,7 +301,7 @@ class participantsaction extends Survey_Common_Action
         $aData->page = 1;
 
         // If super administrator all the share info in the links table will be shown
-        if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
+        if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
             $records = Participant::model()->getParticipantSharedAll();
             $aData->records = count($records);
@@ -676,7 +676,7 @@ class participantsaction extends Survey_Common_Action
         // if there is no search condition the participants will be counted on the basis of who is logged in
         else
         {
-            if (Permission::model()->hasGlobalPermission('global_superadmin','read')) //If super admin all the participants will be visible
+            if (Permission::model()->hasGlobalPermission('superadmin','read')) //If super admin all the participants will be visible
             {
                 $count = Participant::model()->getParticipantsCountWithoutLimit();
             }
@@ -709,7 +709,7 @@ class participantsaction extends Survey_Common_Action
 
             foreach ($query as $key => $value)
             {
-                if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
+                if (Permission::model()->hasGlobalPermission('superadmin','read'))
                 {
                     $participantid .= "," . $value['participant_id']; // combine the participant id's in an string
                 } else
@@ -725,7 +725,7 @@ class participantsaction extends Survey_Common_Action
         else// if no search condition
         {
             $participantid = ""; // initiallise the participant id to blank
-            if (Permission::model()->hasGlobalPermission('global_superadmin','read')) //If super admin all the participants will be visible
+            if (Permission::model()->hasGlobalPermission('superadmin','read')) //If super admin all the participants will be visible
             {
                 $query = Participant::model()->getParticipantsWithoutLimit(); // get all the participant id if it is a super admin
             }
@@ -799,7 +799,7 @@ class participantsaction extends Survey_Common_Action
         $aData = new stdClass;
         
         //If super admin all the participants will be visible
-        if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
+        if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
             $iUserID = null;
         } else {

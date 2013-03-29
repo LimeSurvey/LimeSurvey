@@ -27,7 +27,7 @@ class LSYii_Validators extends CValidator {
 
     public function __construct()
     {
-        $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('global_superadmin','read'));
+        $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin','read'));
     }
 
     protected function validateAttribute($object,$attribute)

@@ -56,7 +56,7 @@ class Permission extends LSActiveRecord
      * @static
      * @return array
      */
-    public static function getBasePermissions()
+    public static function getSurveyBasePermissions()
     {
         $clang = Yii::app()->lang;
         $aPermissions=array(
@@ -89,16 +89,16 @@ class Permission extends LSActiveRecord
     {
         $clang = Yii::app()->lang;
         $aPermissions=array(
-            'global_surveys'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>true,'title'=>$clang->gT("Surveys"),'description'=>$clang->gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),'img'=>'survey'),
-            'global_users'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Users"),'description'=>$clang->gT("Permission to create, view, update and delete users"),'img'=>'security'),
-            'global_usergroups'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("User groups"),'description'=>$clang->gT("Permission to create, view, update and delete user groups"),'img'=>'usergroup'),
-            'global_templates'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Templates"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import templates"),'img'=>'templates'),
-            'global_labelsets'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Label sets"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import label sets/labels"),'img'=>'labels'),
-            'global_settings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>true,'export'=>false,'title'=>$clang->gT("Settings & Plugins"),'description'=>$clang->gT("Permission to view and update global settings & plugins and to delete and import plugins"),'img'=>'global'),
-            'global_participantpanel'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>true,'title'=>$clang->gT("Participant panel"),'description'=>$clang->gT("Permission to create your own participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),'img'=>'cpdb'),
+            'surveys'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>true,'title'=>$clang->gT("Surveys"),'description'=>$clang->gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),'img'=>'survey'),
+            'users'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Users"),'description'=>$clang->gT("Permission to create, view, update and delete users"),'img'=>'security'),
+            'usergroups'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("User groups"),'description'=>$clang->gT("Permission to create, view, update and delete user groups"),'img'=>'usergroup'),
+            'templates'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Templates"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import templates"),'img'=>'templates'),
+            'labelsets'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Label sets"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import label sets/labels"),'img'=>'labels'),
+            'settings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>true,'export'=>false,'title'=>$clang->gT("Settings & Plugins"),'description'=>$clang->gT("Permission to view and update global settings & plugins and to delete and import plugins"),'img'=>'global'),
+            'participantpanel'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>true,'title'=>$clang->gT("Participant panel"),'description'=>$clang->gT("Permission to create your own participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),'img'=>'cpdb'),
         );
         uasort($aPermissions,"comparePermission");
-        $aPermissions=array('global_superadmin'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Superadministrator"),'description'=>$clang->gT("Unlimited administration permissions"),'img'=>'superadmin'))+$aPermissions;
+        $aPermissions=array('superadmin'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Superadministrator"),'description'=>$clang->gT("Unlimited administration permissions"),'img'=>'superadmin'))+$aPermissions;
         return $aPermissions;
     }    
     
@@ -106,7 +106,7 @@ class Permission extends LSActiveRecord
     {
         if ($iSurveyID)
         {
-            $aBasePermissions=Permission::model()->getBasePermissions();
+            $aBasePermissions=Permission::model()->getSurveyBasePermissions();
         }
         else
         {   
@@ -124,8 +124,6 @@ class Permission extends LSActiveRecord
         }
         return $aBasePermissions;
     }
-    
-    
 
     /**
      * Sets permissions (global or survey-specific) for a survey administrator
@@ -133,15 +131,15 @@ class Permission extends LSActiveRecord
      * A permission may be invalid if the permission does not exist or that particular user may not give that permission
      * 
      */
-    public static function setPermissions($iUserID, $iSurveyID, $aPermissions)
+    public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions)
     {
         $iUserID = sanitize_int($iUserID);
         
         // Filter global permissions on save
-        if ($iSurveyID==0)
+        if ($sEntityName=='global')
         {
             $aBasePermissions=Permission::model()->getGlobalBasePermissions();
-            if (!Permission::model()->hasGlobalPermission('global_superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
+            if (!Permission::model()->hasGlobalPermission('superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
             {
                 // Make sure that he owns the user he wants to give global permissions for
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
@@ -164,10 +162,9 @@ class Permission extends LSActiveRecord
                 $aBasePermissions=$aFilteredPermissions;        
             }
         }
-        else
+        elseif ($sEntityName=='survey')
         {
-            $aBasePermissions=Permission::model()->getBasePermissions();
-            
+            $aBasePermissions=Permission::model()->getSurveyBasePermissions();
         }
 
         foreach ($aBasePermissions as $sPermissionname=>&$aPermission)
@@ -180,10 +177,10 @@ class Permission extends LSActiveRecord
             $aPermission['export']= (isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export']);
         }
         
-        $condition = array('sid' => $iSurveyID, 'uid' => $iUserID);
+        $condition = array('sid' => $iEntityID, 'uid' => $iUserID);
         $oEvent=new PluginEvent('beforePermissionSetSave');
         $oEvent->set('aNewPermissions',$aBasePermissions);
-        $oEvent->set('iSurveyID',$iSurveyID);
+        $oEvent->set('iSurveyID',$iEntityID);
         $oEvent->set('iUserID',$iUserID);
         $result = App()->getPluginManager()->dispatchEvent($oEvent);
         
@@ -193,7 +190,7 @@ class Permission extends LSActiveRecord
             if ($aPermission['create'] || $aPermission['read'] ||$aPermission['update'] || $aPermission['delete']  || $aPermission['import']  || $aPermission['export'])
             {
                 $data = array(
-                    'sid' => $iSurveyID,
+                    'sid' => $iEntityID,
                     'uid' => $iUserID,
                     'permission' => $sPermissionname,
                     'create_p' => (int)$aPermission['create'],
@@ -215,8 +212,7 @@ class Permission extends LSActiveRecord
 
     function giveAllSurveyPermissions($iUserID, $iSurveyID)
     {
-        $aPermissions=$this->getBasePermissions();
-
+        $aPermissions=$this->getSurveyBasePermissions();
         $aPermissionsToSet=array();
         foreach ($aPermissions as $sPermissionName=>$aPermissionDetails)
         {
@@ -229,8 +225,7 @@ class Permission extends LSActiveRecord
 
             }
         }
-
-        $this->setPermissions($iUserID, $iSurveyID, $aPermissionsToSet);
+        $this->setPermissions($iUserID, $iSurveyID, 'survey', $aPermissionsToSet);
     }
 
     function deleteSomeRecords($condition)
@@ -261,9 +256,9 @@ class Permission extends LSActiveRecord
 
     function getUserDetails($surveyid)
     {
-        $sQuery = "SELECT p.sid, p.uid, u.users_name, u.full_name FROM {{permissions}} AS p INNER JOIN {{users}}  AS u ON p.uid = u.uid
-            WHERE p.sid = :surveyid AND u.uid != :userid
-            GROUP BY p.sid, p.uid, u.users_name, u.full_name
+        $sQuery = "SELECT p.entity_id, p.uid, u.users_name, u.full_name FROM {{permissions}} AS p INNER JOIN {{users}}  AS u ON p.uid = u.uid
+            WHERE p.entity_id = :surveyid AND u.uid != :userid and p.entity='survey'
+            GROUP BY p.entity_id, p.uid, u.users_name, u.full_name
             ORDER BY u.users_name";
         $iUserID=Yii::app()->user->getId();
         return Yii::app()->db->createCommand($sQuery)->bindParam(":userid", $iUserID, PDO::PARAM_INT)->bindParam("surveyid", $surveyid, PDO::PARAM_INT)->query()->readAll(); //Checked
@@ -271,7 +266,7 @@ class Permission extends LSActiveRecord
 
     function copySurveyPermissions($iSurveyIDSource,$iSurveyIDTarget)
     {
-        $aRows=self::model()->findAll('sid=:sid', array(':sid'=>$iSurveyIDSource));
+        $aRows=self::model()->findAll("entity_id=:sid AND entity='survey'", array(':sid'=>$iSurveyIDSource));
         foreach ($aRows as $aRow)
         {
             $aRow['sid']=$iSurveyIDTarget;
@@ -287,38 +282,39 @@ class Permission extends LSActiveRecord
     
     
     /**
-    * Checks if a user has a certain permission in the given survey
+    * Checks if a user has a certain permission
     *
-    * @param $iSurveyID integer The survey ID
+    * @param $iEntityID integer The entity ID
+    * @param $sEntityName string The entity name
     * @param $sPermission string Name of the permission
     * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
-    function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD, $iUserID=null)
+    function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD, $iUserID=null)
     {
         static $aPermissionCache;
         if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
         $sCRUD=$sCRUD.'_p';
 
-        if ($iSurveyID>0)
-        {
-            $thissurvey=getSurveyInfo($iSurveyID);
-            if (!$thissurvey) return false;
-        }
-
         if (is_null($iUserID))
         {
             if (!Yii::app()->user->getIsGuest()) $iUserID = Yii::app()->session['loginID'];
             else return false;
-            // Some user types have access to whole survey settings
-            if (isset($thissurvey) && $iUserID==$thissurvey['owner_id']) return true;
+        }
+        
+        if ($iEntityID>0 && $sEntityName=='survey')
+        {
+            $thissurvey=getSurveyInfo($iEntityID);
+            if (!$thissurvey) return false;
+            // If you own a survey you have access to the whole survey
+            if ($iEntityID==$thissurvey['owner_id']) return true;
         }
 
         // Check if superadmin and cache it
-        if (!isset($aPermissionCache[0][$iUserID]['global_superadmin']['read_p']))
+        if (!isset($aPermissionCache[0]['global'][$iUserID]['superadmin']['read_p']))
         {
-            $aPermission = $this->findByAttributes(array("sid"=>0,"uid"=> $iUserID,"permission"=>'global_superadmin'));
+            $aPermission = $this->findByAttributes(array("entity_id"=>0,'entity'=>'global', "uid"=> $iUserID, "permission"=>'superadmin'));
             $bPermission = is_null($aPermission) ? array() : $aPermission->attributes;
             if (!isset($bPermission['read_p']) || $bPermission['read_p']==0)
             {
@@ -328,13 +324,13 @@ class Permission extends LSActiveRecord
             {
                 $bPermission=true;
             }            
-            $aPermissionCache[0][$iUserID]['global_superadmin']['read_p']= $bPermission;
+            $aPermissionCache[0]['global'][$iUserID]['superadmin']['read_p']= $bPermission;
         }
         
-        if ($aPermissionCache[0][$iUserID]['global_superadmin']['read_p']) return true;
-        if (!isset($aPermissionCache[$iSurveyID][$iUserID][$sPermission][$sCRUD]))
+        if ($aPermissionCache[0]['global'][$iUserID]['superadmin']['read_p']) return true;
+        if (!isset($aPermissionCache[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]))
         {
-            $query = $this->findByAttributes(array("sid"=> $iSurveyID,"uid"=> $iUserID,"permission"=>$sPermission));
+            $query = $this->findByAttributes(array("sid"=> $iEntityID, "uid"=> $iUserID, "entity"=>$sEntityName, "permission"=>$sPermission));
             $bPermission = is_null($query) ? array() : $query->attributes;
             if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
             {
@@ -344,9 +340,9 @@ class Permission extends LSActiveRecord
             {
                 $bPermission=true;
             }
-            $aPermissionCache[$iSurveyID][$iUserID][$sPermission][$sCRUD]=$bPermission;
+            $aPermissionCache[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]=$bPermission;
         }
-        return $aPermissionCache[$iSurveyID][$iUserID][$sPermission][$sCRUD];
+        return $aPermissionCache[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD];
     }
     
     /**
@@ -358,8 +354,34 @@ class Permission extends LSActiveRecord
     */
     function hasGlobalPermission($sPermission, $sCRUD, $iUserID=null)
     {
-        return $this->hasSurveyPermission(0, $sPermission, $sCRUD, $iUserID);
+        return $this->hasPermission(0, 'global', $sPermission, $sCRUD, $iUserID);
     }    
     
+    /**
+    * Checks if a user has a certain permission in the given survey
+    *
+    * @param $iSurveyID integer The survey ID
+    * @param $sPermission string Name of the permission
+    * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
+    * @param $iUserID integer User ID - if not given the one of the current user is used
+    * @return bool True if user has the permission
+    */
+    function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD, $iUserID=null)
+    {
+        return $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
+    }        
 
+    /**
+    * Returns true if a user has permission to use a certain template
+    * @param $sPermission string Name of the permission - see function getGlobalPermissions
+    * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
+    * @param $iUserID integer User ID - if not given the one of the current user is used
+    * @return bool True if user has the permission
+    */
+    function hasTemplatePermission($sTemplateName, $sCRUD='read', $iUserID=null)
+    {
+        return $this->hasPermission(0, 'template', $sTemplateName, $sCRUD, $iUserID);
+    }    
+    
+    
 }

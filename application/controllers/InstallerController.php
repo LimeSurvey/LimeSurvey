@@ -638,9 +638,10 @@ class InstallerController extends CController {
                         $user->save();
                         
                         $permission=new Permission;
-                        $permission->sid=0;
+                        $permission->enitity_id=0;
+                        $permission->enitity='global';
                         $permission->uid=$user->uid;
-                        $permission->permission='global_superadmin';
+                        $permission->permission='superadmin';
                         $permission->read_p=1;
                         $permission->save();
                         
