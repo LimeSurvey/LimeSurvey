@@ -214,16 +214,18 @@ CREATE TABLE prefix_participants (
 -- Table structure for table permissions
 --
 CREATE TABLE prefix_permissions (
-	sid integer NOT NULL,
+    id serial NOT NULL,
+	entity varying(50) NOT NULL,
+	entity_id varying(100) NOT NULL,
 	uid integer NOT NULL,
-	permission character varying(20) NOT NULL,
+	permission character varying(100) NOT NULL,
 	create_p integer DEFAULT 0 NOT NULL,
     read_p integer DEFAULT 0 NOT NULL,
 	update_p integer DEFAULT 0 NOT NULL,
 	delete_p integer DEFAULT 0 NOT NULL,
     import_p integer DEFAULT 0 NOT NULL,
     export_p integer DEFAULT 0 NOT NULL,
-    CONSTRAINT prefix_permissions_pkey PRIMARY KEY (sid,uid,permission)
+    CONSTRAINT prefix_permissions_pkey PRIMARY KEY (id)
 );
 
 
