@@ -16,9 +16,7 @@ return array(
         'js' => array(
             'js/jquery.jqGrid.min.js',
             'js/i18n/grid.locale-en.js',
-            'plugins/jquery.searchFilter.js',
-            'src/grid.celledit.js',
-
+            'plugins/jquery.searchFilter.js'
         ),
         'css' => array(
             'css/ui.jqgrid.css'
