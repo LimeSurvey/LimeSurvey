@@ -524,8 +524,9 @@ class SurveyRuntimeHelper {
                         /* @var $blockData PluginEventContent */
                         $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
                     }
+                    $redata['completed'] = implode("\n", $blocks) ."\n". $redata['completed'];
                 }
-                $redata['completed'] = implode("\n", $blocks) ."\n". $redata['completed'];
+                
                 
                 echo templatereplace(file_get_contents($sTemplatePath."completed.pstpl"), array('completed' => $completed), $redata);
                 echo "\n";

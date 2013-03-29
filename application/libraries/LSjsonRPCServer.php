@@ -1,5 +1,6 @@
-<?php 
+<?php
     Yii::import('application.libraries.BigData', true);
+    Yii::import('application.libraries.jsonRPCServer');
     class LSjsonRPCServer extends jsonRPCServer
     {
         /**
@@ -9,8 +10,7 @@
 	 * @return boolean
 	 */
 	public static function handle($object) {
-
-		// checks if a JSON-RCP request has been received
+        // checks if a JSON-RCP request has been received
 		if (
 			$_SERVER['REQUEST_METHOD'] != 'POST' ||
 			empty($_SERVER['CONTENT_TYPE']) ||
@@ -19,11 +19,10 @@
 			// This is not a JSON-RPC request
 			return false;
 		}
-
+        
 		// reads the input data
 		$request = json_decode(file_get_contents('php://input'),true);
-
-		// executes the task on local object
+        // executes the task on local object
 		try {
 			if ($result = @call_user_func_array(array($object,$request['method']),$request['params'])) {
 				$response = array (
