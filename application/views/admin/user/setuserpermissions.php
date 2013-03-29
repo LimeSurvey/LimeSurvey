@@ -2,7 +2,7 @@
 <div class='header ui-widget-header'><?php printf($clang->gT("Edit user permissions for user %s"),"<span style='font-style:italic'>".$oUser->users_name."</span>"); ?></div>
 <br />
 <?php echo CHtml::form(array("admin/user/sa/savepermissions"), 'post');?>
-<table style='margin:0 auto;' class='userpermissions'><thead>
+<table style='margin:0 auto;' class='userpermissions activecell'><thead>
 
         <tr><th></th><th><?php $clang->eT("Permission");?></th>
             <th><input type='button' id='btnToggleAdvanced' value='<<' /></th>

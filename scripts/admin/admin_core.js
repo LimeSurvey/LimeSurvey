@@ -698,10 +698,10 @@ function initializeAjaxProgress()
  */
 function tableCellAdapters()
 {
-    $('table').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label,tbody th input:checkbox,tbody th input:radio,tbody th label',"click", function(e) {
+    $('table.activecell').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label,tbody th input:checkbox,tbody th input:radio,tbody th label',"click", function(e) {
         e.stopPropagation();
     });
-    $('table').delegate('tbody td,tbody th',"click", function() {
+    $('table.activecell').delegate('tbody td,tbody th',"click", function() {
         if($(this).find("input:radio,input:checkbox").length==1)
         {
           $(this).find("input:radio").click();
