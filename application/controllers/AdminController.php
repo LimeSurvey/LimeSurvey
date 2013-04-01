@@ -149,7 +149,7 @@ class AdminController extends LSYii_Controller
                 if (!empty($action) && $action != 'index')
                     Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
 
-                Yii::app()->session['redirectopage'] = Yii::app()->request->requestUri;
+                App()->user->setReturnUrl(App()->request->requestUri);
 
                 $this->redirect(array('/admin/authentication/sa/login'));
             }
