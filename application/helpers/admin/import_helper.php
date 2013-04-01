@@ -3513,16 +3513,16 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata[(string)$key]=(string)$value;
         }
         if (!in_array($insertdata['surveyls_language'],$aLanguagesSupported)) continue;
-
+        // Assign new survey ID
         $insertdata['surveyls_survey_id']=$iNewSID;
+        // Assign new survey name (if a copy)
+        if ($sNewSurveyName != NULL)
+        {
+            $insertdata['surveyls_title']=$sNewSurveyName;
+        }
         if ($bTranslateInsertansTags)
         {
-            if ($sNewSurveyName == NULL)
-            {
-                $insertdata['surveyls_title']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_title']);
-            } else {
-                $insertdata['surveyls_title']=translateLinks('survey', $iOldSID, $iNewSID, $sNewSurveyName);
-            }
+            $insertdata['surveyls_title']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_title']);
             if (isset($insertdata['surveyls_description'])) $insertdata['surveyls_description']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_description']);
             if (isset($insertdata['surveyls_welcometext'])) $insertdata['surveyls_welcometext']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_welcometext']);
             if (isset($insertdata['surveyls_urldescription']))$insertdata['surveyls_urldescription']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_urldescription']);
