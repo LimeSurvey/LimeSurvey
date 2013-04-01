@@ -1762,7 +1762,7 @@ function tokensExport($iSurveyID)
 
     if (Yii::app()->request->getPost('tokendeleteexported') && !empty($aExportedTokens))
     {
-        Tokens_dynamic::model($iSurveyID)->deleteByPk($aExportedTokens);
+        TokenDynamic::model($iSurveyID)->deleteByPk($aExportedTokens);
     }
 }
 

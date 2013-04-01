@@ -132,13 +132,12 @@
             echo json_encode($json);
         }
         
-        protected static function json_echo_stream($json)
+        protected static function json_echo_stream(BigFile $data)
         {
             // Encode stream to base64.
-            echo "'";
-            stream_filter_append($json, 'convert.base64-encode', STREAM_FILTER_READ, array('line-length' => 50, 'line-break-chars' => "\n"));
-            fpassthru($json);
-            echo "'";
+            echo '"';
+            $data->render();
+            echo '"';
         }
         
         
@@ -224,8 +223,8 @@
         protected static function xmlrpc_echo_stream($data)
         {
             echo '<base64>';
-            $data->
-            stream_filter_append($data, 'convert.base64-encode', STREAM_FILTER_READ, array('line-length' => 50, 'line-break-chars' => "\n"));
+            echo $data->fileName;
+            //stream_filter_append($data, 'convert.base64-encode', STREAM_FILTER_READ, array('line-length' => 50, 'line-break-chars' => "\n"));
 
             echo '</base64>';
         }
@@ -238,7 +237,7 @@
 
     class BigFile {
 
-        protected $fileName;
+        public $fileName;
         protected $deleteAfterUse;
         protected $defaultEcho;
 

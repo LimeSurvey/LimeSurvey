@@ -934,7 +934,7 @@
         $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
         // check how many uses the token has left
-        $oTokenInformation = Tokens_dynamic::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+        $oTokenInformation = TokenDynamic::model($surveyid)->findByAttributes(array('token' => $clienttoken));
         if ($oTokenInformation)
         {
                 $usesleft = $oTokenInformation->usesleft;
@@ -1482,9 +1482,9 @@
         //check if token actually does exist
         // check also if it is allowed to change survey after completion
         if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-            $oTokenEntry = Tokens_dynamic::model($surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
+            $oTokenEntry = TokenDynamic::model($surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
         } else {
-            $oTokenEntry = Tokens_dynamic::model($surveyid)->find("token=:token AND (completed = 'N' or completed='')", array(':token'=>trim(strip_tags($clienttoken))));
+            $oTokenEntry = TokenDynamic::model($surveyid)->find("token=:token AND (completed = 'N' or completed='')", array(':token'=>trim(strip_tags($clienttoken))));
         }
 
         if (is_null($oTokenEntry) ||  ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
@@ -1522,15 +1522,15 @@
             //check if tokens actually haven't been already used
             $areTokensUsed = usedTokens(trim(strip_tags($clienttoken)),$surveyid);
             //check if token actually does exist
-            $oTokenEntry = Tokens_dynamic::model($surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
+            $oTokenEntry = TokenDynamic::model($surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
 
             if ($thissurvey['alloweditaftercompletion'] == 'Y' )
             {
-                $oTokenEntry = Tokens_dynamic::model($surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
+                $oTokenEntry = TokenDynamic::model($surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
             }
             else
             {
-                $oTokenEntry = Tokens_dynamic::model($surveyid)->find("token=:token  AND (completed = 'N' or completed='')", array(':token'=>trim(strip_tags($clienttoken))));
+                $oTokenEntry = TokenDynamic::model($surveyid)->find("token=:token  AND (completed = 'N' or completed='')", array(':token'=>trim(strip_tags($clienttoken))));
            }
             if (is_null($oTokenEntry) || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
             {

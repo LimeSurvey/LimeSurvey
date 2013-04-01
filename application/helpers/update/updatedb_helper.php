@@ -1072,7 +1072,15 @@ function db_upgrade_all($oldversion) {
         if ($oldversion < 166)
         {
             Yii::app()->db->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');
-            alterColumn('{{permissions}}', 'permission', "{$sVarchar}(50)", false);
+            alterColumn('{{permissions}}', 'permission', "{$sVarchar}(100)", false);
+            Yii::app()->db->createCommand()->renameColumn('{{permissions}}','sid','entity_id');
+            alterColumn('{{permissions}}', 'entity_id', "{$sVarchar}(100)", false);
+            addColumn('{{permissions}}','entity',"{$sVarchar}(50)");
+            Yii::app()->db->createCommand("update {{permissions}} set entity='survey'")->query();
+            dropPrimaryKey('permissions');
+            addColumn('{{permissions}}','id','pk');
+            Yii::app()->db->createCommand()->createIndex('idxPermissions','{{permissions}}','entity_id,entity,permission,uid',true);
+            
             upgradePermissions166();
             dropColumn('{{users}}','create_survey');
             dropColumn('{{users}}','create_user');
@@ -1081,7 +1089,8 @@ function db_upgrade_all($oldversion) {
             dropColumn('{{users}}','configurator');
             dropColumn('{{users}}','manage_template');
             dropColumn('{{users}}','manage_label');      
-            dropColumn('{{users}}','participant_panel');      
+            dropColumn('{{users}}','participant_panel');   
+            Yii::app()->db->createCommand()->dropTable('{{templates_rights}}');
             Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>166),"stg_name='DBVersion'");
         }
         
@@ -1118,91 +1127,111 @@ function db_upgrade_all($oldversion) {
 }
 
 /** 
-* Converts global permissions from users table to the new permission syste,
+* Converts global permissions from users table to the new permission system,
+* and converts template permissions from template_rights to new permission table
 */
 function upgradePermissions166()
 {
-      $oUsers=User::model()->findAll();
-      foreach($oUsers as $oUser)
-      {
-          if ($oUser->create_survey==1)
-          {
-              $oPermission=new Permission;
-              $oPermission->sid=0;
-              $oPermission->uid=$oUser->uid;
-              $oPermission->permission='global_surveys';
-              $oPermission->create_p=1;
-              $oPermission->save();
-          }
-          if ($oUser->create_user==1 || $oUser->delete_user==1)
-          {
-              $oPermission=new Permission;
-              $oPermission->sid=0;
-              $oPermission->uid=$oUser->uid;
-              $oPermission->permission='global_users';
-              $oPermission->create_p=$oUser->create_user;
-              $oPermission->delete_p=$oUser->delete_user;
-              $oPermission->update_p=1;
-              $oPermission->read_p=1;
-              $oPermission->save();
-          }
-          if ($oUser->superadmin==1)
-          {
-              $oPermission=new Permission;
-              $oPermission->sid=0;
-              $oPermission->uid=$oUser->uid;
-              $oPermission->permission='global_superadmin';
-              $oPermission->read_p=1;
-              $oPermission->save();
-          }          
-          if ($oUser->configurator==1)
-          {
-              $oPermission=new Permission;
-              $oPermission->sid=0;
-              $oPermission->uid=$oUser->uid;
-              $oPermission->permission='global_settings';
-              $oPermission->update_p=1;
-              $oPermission->read_p=1;
-              $oPermission->save();
-          }          
-          if ($oUser->manage_template==1)
-          {
-              $oPermission=new Permission;
-              $oPermission->sid=0;
-              $oPermission->uid=$oUser->uid;
-              $oPermission->permission='global_templates';
-              $oPermission->create_p=1;
-              $oPermission->read_p=1;
-              $oPermission->update_p=1;
-              $oPermission->delete_p=1;
-              $oPermission->import_p=1;
-              $oPermission->export_p=1;
-              $oPermission->save();
-          }                 
-          if ($oUser->manage_label==1)
-          {
-              $oPermission=new Permission;
-              $oPermission->sid=0;
-              $oPermission->uid=$oUser->uid;
-              $oPermission->permission='global_labelsets';
-              $oPermission->create_p=1;
-              $oPermission->read_p=1;
-              $oPermission->update_p=1;
-              $oPermission->delete_p=1;
-              $oPermission->import_p=1;
-              $oPermission->export_p=1;
-              $oPermission->save();
-          }                 
-          if ($oUser->participant_panel==1)
-          {
-              $oPermission=new Permission;
-              $oPermission->sid=0;
-              $oPermission->uid=$oUser->uid;
-              $oPermission->permission='global_participantpanel';
-              $oPermission->create_p=1;
-              $oPermission->save();
-          }                 
-      }
+    $oUsers=User::model()->findAll();
+    foreach($oUsers as $oUser)
+    {
+        if ($oUser->create_survey==1)
+        {
+            $oPermission=new Permission;
+            $oPermission->entity_id=0;
+            $oPermission->entity='global';
+            $oPermission->uid=$oUser->uid;
+            $oPermission->permission='surveys';
+            $oPermission->create_p=1;
+            $oPermission->save();
+        }
+        if ($oUser->create_user==1 || $oUser->delete_user==1)
+        {
+            $oPermission=new Permission;
+            $oPermission->entity_id=0;
+            $oPermission->entity='global';
+            $oPermission->uid=$oUser->uid;
+            $oPermission->permission='users';
+            $oPermission->create_p=$oUser->create_user;
+            $oPermission->delete_p=$oUser->delete_user;
+            $oPermission->update_p=1;
+            $oPermission->read_p=1;
+            $oPermission->save();
+        }
+        if ($oUser->superadmin==1)
+        {
+            $oPermission=new Permission;
+            $oPermission->entity_id=0;
+            $oPermission->entity='global';
+            $oPermission->uid=$oUser->uid;
+            $oPermission->permission='superadmin';
+            $oPermission->read_p=1;
+            $oPermission->save();
+        }          
+        if ($oUser->configurator==1)
+        {
+            $oPermission=new Permission;
+            $oPermission->entity_id=0;
+            $oPermission->entity='global';
+            $oPermission->uid=$oUser->uid;
+            $oPermission->permission='settings';
+            $oPermission->update_p=1;
+            $oPermission->read_p=1;
+            $oPermission->save();
+        }          
+        if ($oUser->manage_template==1)
+        {
+            $oPermission=new Permission;
+            $oPermission->entity_id=0;
+            $oPermission->entity='global';
+            $oPermission->uid=$oUser->uid;
+            $oPermission->permission='templates';
+            $oPermission->create_p=1;
+            $oPermission->read_p=1;
+            $oPermission->update_p=1;
+            $oPermission->delete_p=1;
+            $oPermission->import_p=1;
+            $oPermission->export_p=1;
+            $oPermission->save();
+        }                 
+        if ($oUser->manage_label==1)
+        {
+            $oPermission=new Permission;
+            $oPermission->entity_id=0;
+            $oPermission->entity='global';
+            $oPermission->uid=$oUser->uid;
+            $oPermission->permission='labelsets';
+            $oPermission->create_p=1;
+            $oPermission->read_p=1;
+            $oPermission->update_p=1;
+            $oPermission->delete_p=1;
+            $oPermission->import_p=1;
+            $oPermission->export_p=1;
+            $oPermission->save();
+        }                 
+        if ($oUser->participant_panel==1)
+        {
+            $oPermission=new Permission;
+            $oPermission->entity_id=0;
+            $oPermission->entity='global';
+            $oPermission->uid=$oUser->uid;
+            $oPermission->permission='participantpanel';
+            $oPermission->create_p=1;
+            $oPermission->save();
+        }                 
+    } 
+    $sQuery = "SELECT * FROM {{templates_rights}}";
+    $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
+    foreach ( $oResult as $aRow )
+    {
+            $oPermission=new Permission;
+            $oPermission->entity_id=0;
+            $oPermission->entity='template';
+            $oPermission->uid=$aRow['uid'];
+            $oPermission->permission=$aRow['folder'];
+            $oPermission->read_p=1;
+            $oPermission->save();
+    }
 }
 
 

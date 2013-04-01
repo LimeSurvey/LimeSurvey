@@ -26,7 +26,7 @@ class CheckIntegrity extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        if (!Permission::model()->hasGlobalPermission('global_settings','read')){
+        if (!Permission::model()->hasGlobalPermission('settings','read')){
             die();
         }
 
@@ -45,7 +45,7 @@ class CheckIntegrity extends Survey_Common_Action
         $clang = Yii::app()->lang;
         $oldsmultidelete=Yii::app()->request->getPost('oldsmultidelete', array());
         $aData['messages'] = array();
-        if ( Permission::model()->hasGlobalPermission('global_settings','update') && Yii::app()->request->getPost('ok') == 'Y') {
+        if ( Permission::model()->hasGlobalPermission('settings','update') && Yii::app()->request->getPost('ok') == 'Y') {
             $aDelete = $this->_checkintegrity();
             if (isset($aDelete['redundanttokentables'])) {
                 foreach ($aDelete['redundanttokentables'] as $aTokenTable)
@@ -79,7 +79,7 @@ class CheckIntegrity extends Survey_Common_Action
     {
         $aData = array();
         $clang = Yii::app()->lang;
-        if (Permission::model()->hasGlobalPermission('global_settings','update') && Yii::app()->request->getPost('ok') == 'Y') {
+        if (Permission::model()->hasGlobalPermission('settings','update') && Yii::app()->request->getPost('ok') == 'Y') {
             $aDelete = $this->_checkintegrity();
 
             // TMSW Conditions->Relevance:  Update this to process relevance instead

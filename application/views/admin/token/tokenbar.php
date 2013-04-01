@@ -64,7 +64,7 @@
                 </a>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
             <?php } ?>
-            <?php if(Permission::model()->hasGlobalPermission('global_participantpanel','read') && Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'create')){ ?>
+            <?php if(Permission::model()->hasGlobalPermission('participantpanel','read') && Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'create')){ ?>
                 <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
                     <img src='<?php echo $imageurl; ?>cpdb.png' alt='<?php $clang->eT("Central participant database/panel"); ?>' />
                 </a>

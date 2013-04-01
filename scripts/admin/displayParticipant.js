@@ -333,7 +333,7 @@ $(document).ready(function() {
         {
             caption:"",
             title: fullSearchTitle,
-            buttonicon:'searchicon',
+            buttonicon:'ui-icon-search',
             onClickButton:function(){
                 var dialog_buttons={};
                 dialog_buttons[searchBtn]=function(){

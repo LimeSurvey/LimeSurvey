@@ -41,12 +41,12 @@ class Usergroups extends Survey_Common_Action
         if ($action == "mailsendusergroup") {
 
             // user must be in user group or superadmin
-            $result = User_in_groups::model()->findAllByPk(array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
-            if (count($result) > 0 || Permission::model()->hasGlobalPermission('global_superadmin','read'))
+            $result = UserInGroups::model()->findAllByPk(array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
+            if (count($result) > 0 || Permission::model()->hasGlobalPermission('superadmin','read'))
             {
                 $criteria = new CDbCriteria;
                 $criteria->compare('ugid',$ugid)->addNotInCondition('users.uid',array(Yii::app()->session['loginID']));
-                $eguresult = User_in_groups::model()->with('users')->findAll($criteria);
+                $eguresult = UserInGroups::model()->with('users')->findAll($criteria);
                 //die('me');
                 $to = '';
 
@@ -110,7 +110,7 @@ class Usergroups extends Survey_Common_Action
         {
             $where = array('and', 'a.ugid =' . $ugid, 'uid =' . Yii::app()->session['loginID']);
             $join = array('where' => "{{user_in_groups}} AS b", 'on' => 'a.ugid = b.ugid');
-            $result = User_groups::model()->join(array('a.ugid', 'a.name', 'a.owner_id', 'b.uid'), "{{user_groups}} AS a", $where, $join, 'name');
+            $result = UserGroup::model()->join(array('a.ugid', 'a.name', 'a.owner_id', 'b.uid'), "{{user_groups}} AS a", $where, $join, 'name');
 
             $crow = $result;
             $aData['ugid'] = $ugid;
@@ -132,12 +132,12 @@ class Usergroups extends Survey_Common_Action
         $aViewUrls = array();
         $aData = array();
 
-        if (Permission::model()->hasGlobalPermission('global_usergroups','delete')) {
+        if (Permission::model()->hasGlobalPermission('usergroups','delete')) {
 
             if (!empty($ugid) && ($ugid > -1)) {
-                $result = User_groups::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
+                $result = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
                 if ($result->count() > 0) {  // OK - AR count
-                    $delquery_result = User_groups::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
+                    $delquery_result = UserGroup::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
 
                     if ($delquery_result) //Checked)
                     {
@@ -166,7 +166,7 @@ class Usergroups extends Survey_Common_Action
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         $aData = array();
 
-        if (Permission::model()->hasGlobalPermission('global_usergroups','create')) {
+        if (Permission::model()->hasGlobalPermission('usergroups','create')) {
 
             if ($action == "usergroupindb") {
                 $db_group_name = $_POST['group_name'];
@@ -176,12 +176,12 @@ class Usergroups extends Survey_Common_Action
                     if (strlen($db_group_name) > 21) {
                         list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group name length more than 20 characters.")));
                     }
-                    elseif (User_groups::model()->find("name='$db_group_name'")) {
+                    elseif (UserGroup::model()->find("name='$db_group_name'")) {
                         list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group already exists.")));
                     }
                     else
                     {
-                        $ugid = User_groups::model()->addGroup($db_group_name, $db_group_description);
+                        $ugid = UserGroup::model()->addGroup($db_group_name, $db_group_description);
                         Yii::app()->session['flashmessage'] = $clang->gT("User group successfully added!");
                         list($aViewUrls, $aData) = $this->index($ugid, true);
                     }
@@ -211,14 +211,14 @@ class Usergroups extends Survey_Common_Action
         $ugid = (int)$ugid;
         $clang = Yii::app()->lang;
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
-        if (Permission::model()->hasGlobalPermission('global_usergroups','update')) {
+        if (Permission::model()->hasGlobalPermission('usergroups','update')) {
             if ($action == "editusergroupindb") {
 
                 $ugid = (int)$_POST['ugid'];
 
                 $db_name = $_POST['name'];
                 $db_description = $_POST['description'];
-                if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
+                if (UserGroup::model()->updateGroup($db_name, $db_description, $ugid)) {
                     Yii::app()->session['flashmessage'] = $clang->gT("User group successfully saved!");
 					$aData['ugid'] = $ugid;
                     $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));
@@ -232,7 +232,7 @@ class Usergroups extends Survey_Common_Action
             }
             else
             {
-                $result = User_groups::model()->requestEditGroup($ugid, Yii::app()->session['loginID']);
+                $result = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session['loginID']);
                 $aData['esrow'] = $result;
                 $aData['ugid'] = $result->ugid;
                 $aViewUrls = 'editUserGroup_view';
@@ -269,7 +269,7 @@ class Usergroups extends Survey_Common_Action
             if ($ugid) {
                 $ugid = sanitize_int($ugid);
                 $aData["usergroupid"] = $ugid;
-                $result = User_groups::model()->requestViewGroup($ugid, Yii::app()->session["loginID"]);
+                $result = UserGroup::model()->requestViewGroup($ugid, Yii::app()->session["loginID"]);
                 $crow = $result[0];
                 if ($result) {
                     $aData["groupfound"] = true;
@@ -300,7 +300,7 @@ class Usergroups extends Survey_Common_Action
 
                     //	output users
                     $userloop[$row]["rowclass"] = $bgcc;
-                    if (Permission::model()->hasGlobalPermission('global_superadmin','update')) {
+                    if (Permission::model()->hasGlobalPermission('superadmin','update')) {
                         $userloop[$row]["displayactions"] = true;
                     } else {
                         $userloop[$row]["displayactions"] = false;
@@ -334,7 +334,7 @@ class Usergroups extends Survey_Common_Action
 
     function user($ugid, $action = 'add')
     {
-        if (!Permission::model()->hasGlobalPermission('global_usergroups','read') || !in_array($action, array('add', 'remove')))
+        if (!Permission::model()->hasGlobalPermission('usergroups','read') || !in_array($action, array('add', 'remove')))
         {
             die('access denied');
         }
@@ -342,7 +342,7 @@ class Usergroups extends Survey_Common_Action
         $clang = Yii::app()->lang;
         $uid = (int) Yii::app()->request->getPost('uid');
 
-        $group = User_groups::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
+        $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
 
         if (empty($group))
         {
@@ -357,12 +357,12 @@ class Usergroups extends Survey_Common_Action
                     list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed.') . '<br />' . $clang->gT('You can not add or remove the group owner from the group.')));
                 }
 
-                $user_in_group = User_in_groups::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
+                $user_in_group = UserInGroups::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
 
                 switch ($action)
                 {
                     case 'add' :
-                        if (empty($user_in_group) && User_in_groups::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid)))
+                        if (empty($user_in_group) && UserInGroups::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid)))
                         {
                             list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => $clang->gT('User added.')));
                         }
@@ -373,7 +373,7 @@ class Usergroups extends Survey_Common_Action
 
                         break;
                     case 'remove' :
-                        if (!empty($user_in_group) && User_in_groups::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid)))
+                        if (!empty($user_in_group) && UserInGroups::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid)))
                         {
                             list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => $clang->gT('User removed.')));
                         }

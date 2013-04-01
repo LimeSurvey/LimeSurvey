@@ -16,7 +16,7 @@
         {
             if ($operation == 'administrator')
             {
-                return Permission::model()->hasGlobalPermission('global_superadmin', 'read');
+                return Permission::model()->hasGlobalPermission('superadmin', 'read');
             }
             else
             {

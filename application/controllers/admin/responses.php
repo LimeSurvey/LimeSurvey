@@ -305,7 +305,7 @@ class responses extends Survey_Common_Action
             if (tableExists('{{tokens_' . $iSurveyID . '}}') && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
             {
                 $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}');
-                $aData['tokeninfo'] = Tokens_dynamic::model($iSurveyID)->summary();
+                $aData['tokeninfo'] = TokenDynamic::model($iSurveyID)->summary();
             }
 
             $aViewUrls[] = 'browseindex_view';

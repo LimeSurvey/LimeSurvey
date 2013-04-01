@@ -916,7 +916,7 @@ class Survey_Common_Action extends CAction
 
         if (!empty($ugid)) {
             $sQuery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = {$ugid}";
-            if (!Permission::model()->hasGlobalPermission('global_superadmin','read'))
+            if (!Permission::model()->hasGlobalPermission('superadmin','read'))
             {
                 $sQuery .=" AND gu.uid = ".Yii::app()->session['loginID'];
             }

@@ -2,7 +2,7 @@
 <div class='header ui-widget-header'><?php printf($clang->gT("Edit user permissions for user %s"),"<span style='font-style:italic'>".$oUser->users_name."</span>"); ?></div>
 <br />
 <?php echo CHtml::form(array("admin/user/sa/savepermissions"), 'post');?>
-<table style='margin:0 auto;' class='userpermissions'><thead>
+<table style='margin:0 auto;' class='userpermissions activecell'><thead>
 
         <tr><th></th><th><?php $clang->eT("Permission");?></th>
             <th><input type='button' id='btnToggleAdvanced' value='<<' /></th>
@@ -18,7 +18,7 @@
         foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions)
         { ?>
         <tr><td><img src='<?php echo $sImageURL.$aCRUDPermissions['img'];?>_30.png' alt='<?php echo $aCRUDPermissions['description'];?>'/></td>
-            <td><?php if ($sPermissionKey=='global_superadmin') {?> <strong class='warning'> <?php }; echo $aCRUDPermissions['title']; if ($sPermissionKey=='global_superadmin') {?> </span> <?php };?></td>
+            <td><?php if ($sPermissionKey=='superadmin') {?> <strong class='warning'> <?php }; echo $aCRUDPermissions['title']; if ($sPermissionKey=='superadmin') {?> </span> <?php };?></td>
             <td><input type="checkbox" class="markrow" id='all_<?php echo $sPermissionKey;?>' name='all_<?php echo $sPermissionKey;?>' /></td>
             <?php
                 foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)

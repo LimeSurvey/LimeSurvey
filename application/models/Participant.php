@@ -371,7 +371,14 @@ class Participant extends LSActiveRecord
             {
                 $aParticipantsIDs=$this->filterParticipantIDs($aParticipantsIDs);
             }
-
+            foreach($aParticipantsIDs as $aID){
+                $oParticipant=Participant::model()->findByPk($aID);
+                if ($oParticipant)
+                {
+                    $oParticipant->delete();
+                }
+            }
+            
             Yii::app()->db->createCommand()->delete(Participant::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
             
             // Delete survey links
@@ -389,7 +396,7 @@ class Participant extends LSActiveRecord
     */
     function filterParticipantIDs($aParticipantIDs)
     {
-            if (!Permission::model()->hasGlobalPermission('global_superadmin','read')) // If not super admin filter the participant IDs first to owner only
+            if (!Permission::model()->hasGlobalPermission('superadmin','read')) // If not super admin filter the participant IDs first to owner only
             {
                 $aCondition=array('and','owner_uid=:owner_uid',array('in', 'participant_id', $aParticipantIDs));
                 $aParameter=array(':owner_uid'=>Yii::app()->session['loginID']);

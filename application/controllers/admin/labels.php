@@ -167,9 +167,9 @@ class labels extends Survey_Common_Action
         $lid = sanitize_int($lid);
         $aViewUrls = array();
 
-        if (hasGlobalPermission('global_labelsets','read'))
+        if (hasGlobalPermission('labelsets','read'))
         {
-            if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('global_labelsets','update'))
+            if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets','update'))
             {
                 $result = Labelsets::model()->findAllByAttributes(array('lid' => $lid));
                 foreach ($result as $row)
@@ -186,7 +186,7 @@ class labels extends Survey_Common_Action
             $aData['action'] = $sa;
             $aData['lid'] = $lid;
 
-            if ($sa == "newlabelset" && Permission::model()->hasGlobalPermission('global_labelsets','create'))
+            if ($sa == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets','create'))
             {
                 $langids = Yii::app()->session['adminlang'];
                 $tabitem = $clang->gT("Create new label set");
@@ -238,7 +238,7 @@ class labels extends Survey_Common_Action
         App()->getClientScript->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
         App()->getClientScript->registerPackage('jquery-json');
         // Checks if user have the sufficient rights to manage the labels
-        if (Permission::model()->hasGlobalPermission('global_labelsets','read'))
+        if (Permission::model()->hasGlobalPermission('labelsets','read'))
         {
             // Get a result containing labelset with the specified id
             $result = Labelsets::model()->findByAttributes(array('lid' => $lid));
@@ -319,7 +319,7 @@ class labels extends Survey_Common_Action
      */
     public function process()
     {
-        if ( Permission::model()->hasGlobalPermission('global_labelsets','update'))
+        if ( Permission::model()->hasGlobalPermission('labelsets','update'))
         {
             if (isset($_POST['method']) && get_magic_quotes_gpc())
                 $_POST['method'] = stripslashes($_POST['method']);

@@ -16,7 +16,7 @@
     </ul>
 <div id='usercontrol-1'>
         <?php
-        if (Permission::model()->hasGlobalPermission('global_superadmin','read'))
+        if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
             $attribute = array('class' => 'form44');
             echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeBlacklistValues'), 'post', $attribute);
