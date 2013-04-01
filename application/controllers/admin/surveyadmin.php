@@ -879,6 +879,16 @@ class SurveyAdmin extends Survey_Common_Action
                 $aData['sHeader'] = $clang->gT("Import survey data");
                 $aData['sSummaryHeader'] = $clang->gT("Survey structure import summary");
                 $importingfrom = "http";
+                $aPathInfo = pathinfo($_FILES['the_file']['name']);
+                if (isset($aPathInfo['extension']))
+                {
+                    $sExtension = $aPathInfo['extension'];
+                }
+                else
+                {
+                    $sExtension = "";
+                }            
+                
             }
             elseif ($action == 'copysurvey')
             {
@@ -887,7 +897,6 @@ class SurveyAdmin extends Survey_Common_Action
             }
             // Start traitment and messagebox
             $aData['bFailed'] = false; // Put a var for continue
-                                                             
             
             if ($action == 'importsurvey')
             {
@@ -909,14 +918,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
                 $exclude = array();
 
-                if (get_magic_quotes_gpc())
-                {
-                    $sNewSurveyName = stripslashes($_POST['copysurveyname']);
-                }
-                else
-                {
-                    $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
-                }
+                $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
 
                 if (Yii::app()->request->getPost('copysurveyexcludequotas') == "on")
                 {
