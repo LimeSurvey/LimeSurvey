@@ -9,7 +9,7 @@
     <?php
         if (isset($plugin['name']))
         {
-            echo CHtml::tag('h1', array(), "Settings for plugin {$plugin['name']}");
+            echo CHtml::tag('h1', array(), sprintf(gT("Settings for plugin %s"), $plugin['name']));
         }
 
         Yii::import("application.helpers.PluginSettingsHelper");
@@ -23,8 +23,8 @@
             
         }
         echo CHtml::closeTag('ol');
-        echo CHtml::submitButton('Save plugin settings', array('name'=>'ok'));
-        echo CHtml::submitButton('Cancel', array('name'=>'cancel'));
+        echo CHtml::submitButton(gT('Save plugin settings'), array('name'=>'ok'));
+        echo CHtml::submitButton(gT('Cancel'), array('name'=>'cancel'));
         echo CHtml::endForm();
 
     ?>

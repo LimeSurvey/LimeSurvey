@@ -51,6 +51,7 @@
             $menu['imageUrl'] = App()->getConfig('adminimageurl');
             $menu['items']['left'][] = array(
                 'href' => array('admin/survey'),
+                'alt' => gT('Default administration page'),
                 'image' => 'home.png',
             );
             $menu['items']['left'][] = 'separator';
@@ -489,7 +490,7 @@
                 return array(
                     'href' => array('admin/globalsettings'),
                     'image' => 'global.png',
-                    'alt' => gT('Global Settings')
+                    'alt' => gT('Global settings')
                 );
             }
         }
