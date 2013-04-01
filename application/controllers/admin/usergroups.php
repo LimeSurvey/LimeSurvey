@@ -41,12 +41,12 @@ class Usergroups extends Survey_Common_Action
         if ($action == "mailsendusergroup") {
 
             // user must be in user group or superadmin
-            $result = UserInGroups::model()->findAllByPk(array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
+            $result = UserInGroup::model()->findAllByPk(array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
             if (count($result) > 0 || Permission::model()->hasGlobalPermission('superadmin','read'))
             {
                 $criteria = new CDbCriteria;
                 $criteria->compare('ugid',$ugid)->addNotInCondition('users.uid',array(Yii::app()->session['loginID']));
-                $eguresult = UserInGroups::model()->with('users')->findAll($criteria);
+                $eguresult = UserInGroup::model()->with('users')->findAll($criteria);
                 //die('me');
                 $to = '';
 
@@ -357,12 +357,12 @@ class Usergroups extends Survey_Common_Action
                     list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed.') . '<br />' . $clang->gT('You can not add or remove the group owner from the group.')));
                 }
 
-                $user_in_group = UserInGroups::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
+                $user_in_group = UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
 
                 switch ($action)
                 {
                     case 'add' :
-                        if (empty($user_in_group) && UserInGroups::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid)))
+                        if (empty($user_in_group) && UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid)))
                         {
                             list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => $clang->gT('User added.')));
                         }
@@ -373,7 +373,7 @@ class Usergroups extends Survey_Common_Action
 
                         break;
                     case 'remove' :
-                        if (!empty($user_in_group) && UserInGroups::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid)))
+                        if (!empty($user_in_group) && UserInGroup::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid)))
                         {
                             list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => $clang->gT('User removed.')));
                         }

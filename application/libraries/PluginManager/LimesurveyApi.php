@@ -201,8 +201,8 @@
         * Returns null if the user does not exist anymore for some reason (should not really happen)
         * @return User
         */
-        public function getUserPermissionSet($iUserID, $iSurveyID=0){
-            return Permission::model()->getPermissions($iUserID,$iSurveyID);
+        public function getPermissionSet($iUserID, $iEntityID=null, $sEntityName=null){
+            return Permission::model()->getPermissions($iUserID, $iEntityID, $sEntityName);
         }        
         
         /**

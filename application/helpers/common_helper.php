@@ -7497,7 +7497,7 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
     $surveyid=sanitize_int($surveyid);
 
     $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a
-    LEFT OUTER JOIN (SELECT uid AS id FROM {{permissions}} WHERE sid = {$surveyid}) AS b ON a.uid = b.id
+    LEFT OUTER JOIN (SELECT uid AS id FROM {{permissions}} WHERE entity_id = {$surveyid} and entity='survey') AS b ON a.uid = b.id
     WHERE id IS NULL ";
     if (!$bIncludeSuperAdmins)
     {
@@ -7542,7 +7542,7 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
     SELECT b.ugid
     FROM {{user_in_groups}} AS b
     LEFT JOIN (SELECT * FROM {{permissions}}
-    WHERE sid = {$surveyid}) AS c ON b.uid = c.uid WHERE c.uid IS NULL
+    WHERE entity_id = {$surveyid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
     ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL";
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query();  //Checked
     $aResult=$surveyidresult->readAll();

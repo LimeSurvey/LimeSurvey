@@ -102,26 +102,38 @@ class Permission extends LSActiveRecord
         return $aPermissions;
     }    
     
-    public static function getPermissions($iUserID, $iSurveyID=0)
+    public static function getPermissions($iUserID, $iEntityID=null, $sEntityName=null)
     {
-        if ($iSurveyID)
+        if ($sEntityName=='survey')
         {
             $aBasePermissions=Permission::model()->getSurveyBasePermissions();
         }
-        else
+        elseif ($sEntityName=='global')
         {   
             $aBasePermissions=Permission::model()->getGlobalBasePermissions();
         }
-                
-        foreach ($aBasePermissions as $sPermission=>&$aPermissionDetail){
-            $oCurrentPermissions=Permission::model()->findByAttributes(array('uid'=>$iUserID,'sid'=>$iSurveyID, 'permission'=>$sPermission));
-            if ($aPermissionDetail['create']) $aPermissionDetail['create']=($oCurrentPermissions?(boolean)$oCurrentPermissions->create_p:false);
-            if ($aPermissionDetail['read']) $aPermissionDetail['read']=($oCurrentPermissions?(boolean)$oCurrentPermissions->read_p:false);
-            if ($aPermissionDetail['update']) $aPermissionDetail['update']=($oCurrentPermissions?(boolean)$oCurrentPermissions->update_p:false);
-            if ($aPermissionDetail['delete']) $aPermissionDetail['delete']=($oCurrentPermissions?(boolean)$oCurrentPermissions->delete_p:false);
-            if ($aPermissionDetail['import']) $aPermissionDetail['import']=($oCurrentPermissions?(boolean)$oCurrentPermissions->import_p:false);
-            if ($aPermissionDetail['export']) $aPermissionDetail['export']=($oCurrentPermissions?(boolean)$oCurrentPermissions->export_p:false);
-        }
+        
+        if (is_null($sEntityName))
+        {
+            $oPermissions=Permission::model()->findAllByAttributes(array('uid'=>$iUserID));
+            $aBasePermissions = array();
+            foreach($oPermissions as $oPermission)
+            {
+                $aBasePermissions[$oPermission->id] = $oPermission->attributes;
+            }
+        }   
+        else
+        {
+            foreach ($aBasePermissions as $sPermission=>&$aPermissionDetail){
+                $oCurrentPermissions=Permission::model()->findByAttributes(array('uid'=>$iUserID,'sid'=>$iSurveyID, 'permission'=>$sPermission));
+                if ($aPermissionDetail['create']) $aPermissionDetail['create']=($oCurrentPermissions?(boolean)$oCurrentPermissions->create_p:false);
+                if ($aPermissionDetail['read']) $aPermissionDetail['read']=($oCurrentPermissions?(boolean)$oCurrentPermissions->read_p:false);
+                if ($aPermissionDetail['update']) $aPermissionDetail['update']=($oCurrentPermissions?(boolean)$oCurrentPermissions->update_p:false);
+                if ($aPermissionDetail['delete']) $aPermissionDetail['delete']=($oCurrentPermissions?(boolean)$oCurrentPermissions->delete_p:false);
+                if ($aPermissionDetail['import']) $aPermissionDetail['import']=($oCurrentPermissions?(boolean)$oCurrentPermissions->import_p:false);
+                if ($aPermissionDetail['export']) $aPermissionDetail['export']=($oCurrentPermissions?(boolean)$oCurrentPermissions->export_p:false);
+            }
+        }     
         return $aBasePermissions;
     }
 
@@ -177,7 +189,7 @@ class Permission extends LSActiveRecord
             $aPermission['export']= (isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export']);
         }
         
-        $condition = array('sid' => $iEntityID, 'uid' => $iUserID);
+        $condition = array('entity_id' => $iEntityID, 'uid' => $iUserID);
         $oEvent=new PluginEvent('beforePermissionSetSave');
         $oEvent->set('aNewPermissions',$aBasePermissions);
         $oEvent->set('iSurveyID',$iEntityID);
@@ -190,7 +202,8 @@ class Permission extends LSActiveRecord
             if ($aPermission['create'] || $aPermission['read'] ||$aPermission['update'] || $aPermission['delete']  || $aPermission['import']  || $aPermission['export'])
             {
                 $data = array(
-                    'sid' => $iEntityID,
+                    'entity_id' => $iEntityID,
+                    'entity' => $sEntityName,
                     'uid' => $iUserID,
                     'permission' => $sPermissionname,
                     'create_p' => (int)$aPermission['create'],
@@ -330,7 +343,7 @@ class Permission extends LSActiveRecord
         if ($aPermissionCache[0]['global'][$iUserID]['superadmin']['read_p']) return true;
         if (!isset($aPermissionCache[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]))
         {
-            $query = $this->findByAttributes(array("sid"=> $iEntityID, "uid"=> $iUserID, "entity"=>$sEntityName, "permission"=>$sPermission));
+            $query = $this->findByAttributes(array("entity_id"=> $iEntityID, "uid"=> $iUserID, "entity"=>$sEntityName, "permission"=>$sPermission));
             $bPermission = is_null($query) ? array() : $query->attributes;
             if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
             {

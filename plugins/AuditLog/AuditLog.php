@@ -29,7 +29,7 @@
             $iSurveyID=$event->get('iSurveyID');
             $iUserID=$event->get('iUserID');
             $oCurrentUser=$this->api->getCurrentUser();
-            $oOldPermission=$this->api->getUserPermissionSet($iUserID,$iSurveyID);
+            $oOldPermission=$this->api->getPermissionSet($iUserID, $iSurveyID, 'survey');
             $sAction='update';   // Permissions are in general only updated (either you have a permission or you don't)
 
             if (count(array_diff_assoc_recursive($aNewPermissions,$oOldPermission)))

@@ -69,7 +69,7 @@ class surveypermission extends Survey_Common_Action {
                     if(in_array($PermissionRow['uid'],$userList))
                     {
 
-                        $result3 = UserInGroups::model()->with('users')->findAll('users.uid = :uid',array(':uid' => $PermissionRow['uid']));
+                        $result3 = UserInGroup::model()->with('users')->findAll('users.uid = :uid',array(':uid' => $PermissionRow['uid']));
                         foreach ($result3 as $resul3row)
                         {
                             if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
@@ -318,7 +318,7 @@ class surveypermission extends Survey_Common_Action {
 
                 if($postuserid > 0){
 
-                    $isrresult = Permission::model()->insertSomeRecords(array('sid' => $surveyid, 'uid' => $postuserid, 'permission' => 'survey', 'read_p' => 1));
+                    $isrresult = Permission::model()->insertSomeRecords(array('entity_id' => $surveyid, 'entity'=>'survey', 'uid' => $postuserid, 'permission' => 'survey', 'read_p' => 1));
 
                     if($isrresult)
                     {
@@ -612,7 +612,7 @@ class surveypermission extends Survey_Common_Action {
 
             if (isset($postusergroupid) && $postusergroupid>0)
             {
-                $oResult = UserInGroups::model()->findAll('ugid = :ugid AND uid <> :uid AND uid <> :iOwnerID',array(':ugid' => $postusergroupid, ':uid' => Yii::app()->session['loginID'], ':iOwnerID' => $iOwnerID));
+                $oResult = UserInGroup::model()->findAll('ugid = :ugid AND uid <> :uid AND uid <> :iOwnerID',array(':ugid' => $postusergroupid, ':uid' => Yii::app()->session['loginID'], ':iOwnerID' => $iOwnerID));
                 if(count($oResult) > 0)
                 {
                     foreach ($oResult as $aRow)
