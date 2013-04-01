@@ -866,6 +866,16 @@ class SurveyAdmin extends Survey_Common_Action
             // Start the HTML
             if ($action == 'importsurvey')
             {
+                $aPathInfo = pathinfo($_FILES['the_file']['name']);
+                if (isset($aPathInfo['extension']))
+                {
+                    $sExtension = $aPathInfo['extension'];
+                }
+                else
+                {
+                    $sExtension = "";
+                }            
+                
                 $aData['sHeader'] = $clang->gT("Import survey data");
                 $aData['sSummaryHeader'] = $clang->gT("Survey structure import summary");
                 $importingfrom = "http";
@@ -877,16 +887,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
             // Start traitment and messagebox
             $aData['bFailed'] = false; // Put a var for continue
-
-            $aPathInfo = pathinfo($_FILES['the_file']['name']);
-            if (isset($aPathInfo['extension']))
-            {
-                $sExtension = $aPathInfo['extension'];
-            }
-            else
-            {
-                $sExtension = "";
-            }            
+                                                             
             
             if ($action == 'importsurvey')
             {
