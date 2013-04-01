@@ -230,6 +230,29 @@ CREATE TABLE prefix_permissions (
 
 
 --
+-- Table structure for table plugins
+--
+CREATE TABLE prefix_plugins (
+  id integer PRIMARY KEY NOT NULL,
+  name character varying(50) NOT NULL,
+  active integer NOT NULL default '0'
+);
+
+
+--
+-- Table structure for table plugin_settings
+--
+CREATE TABLE prefix_plugin_settings (
+  id integer PRIMARY KEY NOT NULL,
+  plugin_id integer NOT NULL,
+  model character varying(50) NULL,
+  model_id integer NULL,
+  key character varying(50) NOT NULL,
+  value text NULL
+);
+
+
+--
 -- Table structure for table question_attributes
 --
 CREATE TABLE prefix_question_attributes (
@@ -537,24 +560,6 @@ CREATE TABLE prefix_templates (
   CONSTRAINT prefix_templates_pkey PRIMARY KEY ("folder")
 );
 
---
--- @todo Make name unique
---
-
-CREATE TABLE `prefix_plugins` (
-  `id` integer PRIMARY KEY NOT NULL,
-  `name` character varying(50) NOT NULL,
-  `active` integer NOT NULL default '0'
-);
-
-CREATE TABLE `prefix_plugin_settings` (
-  `id` integer PRIMARY KEY NOT NULL,
-  `plugin_id` integer NOT NULL,
-  `model` character varying(50) NULL,
-  `model_id` integer NULL,
-  `key` character varying(50) NOT NULL,
-  `value` text NULL
-);
 
 --
 -- Secondary indexes
@@ -574,6 +579,7 @@ create index quota_idx2 on prefix_quota (sid);
 create index saved_control_idx2 on prefix_saved_control (sid);
 create index parent_qid_idx on prefix_questions (parent_qid);
 create index labels_code_idx on prefix_labels (code);
+create unique index permissions_idx2 ON lime_permissions (entity_id, entity_name, uid, permission);
 
 
 --
