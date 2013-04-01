@@ -53,7 +53,8 @@ class remotecontrol extends Survey_Common_Action
                 Yii::app()->loadLibrary('LSjsonRPCServer');
                 if (!isset($_SERVER['CONTENT_TYPE']))
                 {
-                    $_SERVER['CONTENT_TYPE'] = explode(';', $_SERVER['HTTP_CONTENT_TYPE'])[0];
+                    $serverContentType = explode(';', $_SERVER['HTTP_CONTENT_TYPE']);
+                    $_SERVER['CONTENT_TYPE'] = reset($serverContentType);
                 }
                 LSjsonRPCServer::handle($oHandler);
             }
@@ -87,7 +88,7 @@ class remotecontrol extends Survey_Common_Action
     public function test()
     {
         $RPCType=Yii::app()->getConfig("RPCInterface");
-        $serverUrl = Yii::app()->getBaseUrl(true).'/'.dirname(Yii::app()->request->getPathInfo());
+        $serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
         $sFileToImport=dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR.'limesurvey2_sample_survey_english.lss';
 
         if ($RPCType == 'xml') {
@@ -2365,14 +2366,10 @@ class remotecontrol_handle
      */
     protected function _doLogin($sUsername, $sPassword)
     {
-        if (Failed_login_attempts::model()->isLockedOut())
-            return false;
-
         $identity = new UserIdentity(sanitize_user($sUsername), $sPassword);
 
         if (!$identity->authenticate())
         {
-            Failed_login_attempts::model()->addAttempt();
             return false;
         }
         else
