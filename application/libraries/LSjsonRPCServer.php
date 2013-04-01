@@ -1,5 +1,6 @@
 <?php 
     Yii::import('application.libraries.BigData', true);
+    Yii::import('application.libraries.jsonRPCServer', true);
     class LSjsonRPCServer extends jsonRPCServer
     {
         /**

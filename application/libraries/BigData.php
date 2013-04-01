@@ -17,7 +17,7 @@
          * @param array $json
          * @param int $options Same flags used in JSON_ENCODE.
          */
-        public static function json_echo($json, $options)
+        public static function json_echo($json, $options = 0)
         {
             // Scan array for any streams.
             $hasStream = array_reduce($json, array('BigData', 'hasStream'), false);
