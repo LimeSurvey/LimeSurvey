@@ -99,7 +99,7 @@ class remotecontrol extends Survey_Common_Action
             $client = new jsonRPCClient($serverUrl);
         }
 
-        $sSessionKey= $client->call('get_session_key', array('admin','1voudig'));
+        $sSessionKey= $client->call('get_session_key', array('admin','password'));
         if (is_array($sSessionKey)) {echo $sSessionKey['status']; die();}
         else
         {
