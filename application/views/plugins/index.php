@@ -8,25 +8,25 @@
     $gridColumns = array(
         array(// display the activation link
             'class' => 'CLinkColumn',
-            'header' => 'Status',
-            'labelExpression' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', 'Activated', array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', 'Deactivated', array('width' => 32, 'height' => 32))); },
+            'header' => gT('Status'),
+            'labelExpression' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); },
             'url' => '#'
         ),
         array(// display the activation link
             'class' => 'CLinkColumn',
-            'header' => 'Action',
-            'labelExpression' => function($data) { return ($data['active'] == 0 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', 'Activate', array('width' => 16, 'height' => 16)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', 'Deactivate', array('width' => 16, 'height' => 16))); },
+            'header' => gT('Action'),
+            'labelExpression' => function($data) { return ($data['active'] == 0 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Activate'), array('width' => 16, 'height' => 16)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16))); },
             'urlExpression' => function($data) { return $data['active'] == 0 ? array("/plugins/activate", "id" => $data['id']) : array("/plugins/activate", "id" => $data['id']); }
         ),
         array(// display the 'name' attribute
             'class' => 'CLinkColumn',
-            'header' => 'Plugin',
+            'header' => gT('Plugin'),
             'labelExpression' => function($data) { return $data['name']; },
             'urlExpression' => function($data) { return array("/plugins/configure", "id" => $data['id']); }    
         ),
         array(// display the 'name' attribute
             'class' => 'CDataColumn',
-            'header' => 'Description',
+            'header' => gT('Description'),
             'name' => 'description'
         ),
     ); 

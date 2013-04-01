@@ -10,6 +10,15 @@
         {
             $this->loginUrl = Yii::app()->createUrl('admin/authentication', array('sa' => 'login'));
             
+            // Try to fix missing language in plugin controller
+            Yii::import('application.libraries.Limesurvey_lang');
+            if (empty(Yii::app()->session['adminlang'])) 
+            {
+                 Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
+            }
+               
+            $lang = new Limesurvey_lang(Yii::app()->session['adminlang']);
+            Yii::app()->setLang($lang);
         }
 
         public function checkAccess($operation, $params = array(), $allowCaching = true)
