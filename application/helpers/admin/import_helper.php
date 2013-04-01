@@ -3516,7 +3516,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         // Assign new survey ID
         $insertdata['surveyls_survey_id']=$iNewSID;
         // Assign new survey name (if a copy)
-        if ($sNewSurveyName == NULL)
+        if ($sNewSurveyName != NULL)
         {
             $insertdata['surveyls_title']=$sNewSurveyName;
         }
