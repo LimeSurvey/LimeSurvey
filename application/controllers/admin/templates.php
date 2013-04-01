@@ -467,7 +467,7 @@ class templates extends Survey_Common_Action
                 }
 
                 Template::model()->deleteAllByAttributes(array('folder' => $templatename));
-                Templates_rights::model()->deleteAllByAttributes(array('folder' => $templatename));
+                Permission::model()->deleteAllByAttributes(array('permission' => $templatename,'entity' => 'template'));
 
                 Yii::app()->session['flashmessage'] = sprintf($clang->gT("Template '%s' was successfully deleted."), $templatename);
             }

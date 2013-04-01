@@ -105,7 +105,7 @@ class UserAction extends Survey_Common_Action
 
             if ($iNewUID) {
                 // add default template to template rights for user
-                Templates_rights::model()->insertRecords(array('uid' => $iNewUID, 'folder' => Yii::app()->getConfig("defaulttemplate"), 'use' => '1'));
+                Permission::model()->insertRecords(array('uid' => $iNewUID, 'permission' => Yii::app()->getConfig("defaulttemplate"), 'entity'=>$template, 'read_p' => 1));
 
                 // add new user to userlist
                 $sresult = User::model()->getAllRecords(array('uid' => $iNewUID));
@@ -500,14 +500,15 @@ class UserAction extends Survey_Common_Action
         $aData['postuserid'] = $postuserid;
         $aData['postfull_name'] = Yii::app()->request->getPost("full_name");
         $this->_refreshtemplates();
+        $templaterights=array();
         foreach (getUserList() as $usr)
         {
             if ($usr['uid'] == $postuserid)
             {
-                $trights = Templates_rights::model()->findAllByAttributes(array('uid' => $usr['uid']));
+                $trights = Permission::model()->findAllByAttributes(array('uid' => $usr['uid'],'entity'=>'template'));
                 foreach ($trights as $srow)
                 {
-                    $templaterights[$srow["folder"]] = array("use"=>$srow["use"]);
+                    $templaterights[$srow["permission"]] = array("use"=>$srow["read_p"]);
                 }
                 $templates = Template::model()->findAll();
                 $aData['list'][] = array('templaterights'=>$templaterights,'templates'=>$templates);
@@ -523,27 +524,28 @@ class UserAction extends Survey_Common_Action
 
         // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
         if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','update')) {
-            $templaterights = array();
+            $aTemplatePermissions = array();
             $tresult = Template::model()->findAll();
             $postvalue= array_flip($_POST);
             foreach ($tresult as $trow)
             {
                 if (isset($postvalue[$trow["folder"] . "_use"]))
-                    $templaterights[$trow["folder"]] = 1;
+                    $aTemplatePermissions[$trow["folder"]] = 1;
                 else
-                    $templaterights[$trow["folder"]] = 0;
+                    $aTemplatePermissions[$trow["folder"]] = 0;
             }
-            foreach ($templaterights as $key => $value)
+            foreach ($aTemplatePermissions as $key => $value)
             {
-                $rights = Templates_rights::model()->findByPk(array('folder' => $key, 'uid' => $postuserid));
-                if (empty($rights))
+                $oPermission = Permission::model()->findByPk(array('permission' => $key, 'uid' => $postuserid, 'entity'=>'template'));
+                if (empty($oPermission))
                 {
-                    $rights = new Templates_rights;
-                    $rights->uid = $postuserid;
-                    $rights->folder = $key;
+                    $oPermission = new Permission;
+                    $oPermission->uid = $postuserid;
+                    $oPermission->permission = $key;
+                    $oPermission->entity='template';
                 }
-                $rights->use = $value;
-                $uresult = $rights->save();
+                $oPermission->read_p = $value;
+                $uresult = $oPermission->save();
             }
             if ($uresult !== false) {
                 $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set template permissions"), $clang->gT("Template permissions were updated successfully."), "successheader");
