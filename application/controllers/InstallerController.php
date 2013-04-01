@@ -363,7 +363,7 @@ class InstallerController extends CController {
                         .$clang->gT("The database you specified does not exist:")."<br /><br />\n<strong>".$model->dbname."</strong><br /><br />\n"
                         .$clang->gT("LimeSurvey can attempt to create this database for you.")."<br /><br />\n";
 
-                        $values['next'] =  array(
+                        $aValues['next'] =  array(
                             'action' => 'installer/createdb',
                             'label' => 'Create database',
                             'name' => '',
@@ -496,8 +496,11 @@ class InstallerController extends CController {
             ."<strong><font class='successtitle'>\n"
             .$clang->gT("Database has been created.")."</font></strong><br /><br />\n"
             .$clang->gT("Please continue with populating the database.")."<br /><br />\n";
-            $aData['adminoutputForm'] =  CHtml::form(array('installer/populatedb'), 'post')
-            ."<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='".$clang->gT("Populate database")."' /></form>";
+            $aData['next'] =  array(
+                'action' => 'installer/populatedb',
+                'label' => 'Populate database',
+                'name' => 'createdbstep2',
+            );
         }
         else
         {
