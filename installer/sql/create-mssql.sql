@@ -207,16 +207,17 @@ CREATE TABLE [prefix_participants] (
 -- Table structure for table permissions
 --
 CREATE TABLE [prefix_permissions] (
-  [sid] int NOT NULL,
+  [id] int NOT NULL IDENTITY (1,1) PRIMARY KEY,
+  [entity] varchar(50) NOT NULL,
+  [entity_id] varchar(100) NOT NULL,
   [uid] int NOT NULL,
-  [permission] varchar(20) NOT NULL,
+  [permission] varchar(100) NOT NULL,
   [create_p] int NOT NULL default '0',
   [read_p] int NOT NULL default '0',
   [update_p] int NOT NULL default '0',
   [delete_p] int NOT NULL default '0',
   [import_p] int NOT NULL default '0',
-  [export_p] int NOT NULL default '0',
-  PRIMARY KEY ([sid], [uid],[permission])
+  [export_p] int NOT NULL default '0'
 );
 
 
