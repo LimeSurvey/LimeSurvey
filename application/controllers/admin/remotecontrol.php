@@ -53,7 +53,8 @@ class remotecontrol extends Survey_Common_Action
                 Yii::app()->loadLibrary('LSjsonRPCServer');
                 if (!isset($_SERVER['CONTENT_TYPE']))
                 {
-                    $_SERVER['CONTENT_TYPE'] = explode(';', $_SERVER['HTTP_CONTENT_TYPE'])[0];
+                    $serverContentType = explode(';', $_SERVER['HTTP_CONTENT_TYPE']);
+                    $_SERVER['CONTENT_TYPE'] = reset($serverContentType);
                 }
                 LSjsonRPCServer::handle($oHandler);
             }
@@ -98,7 +99,7 @@ class remotecontrol extends Survey_Common_Action
             $client = new jsonRPCClient($serverUrl);
         }
 
-        $sSessionKey= $client->call('get_session_key', array('admin','password'));
+        $sSessionKey= $client->call('get_session_key', array('admin','1voudig'));
         if (is_array($sSessionKey)) {echo $sSessionKey['status']; die();}
         else
         {
