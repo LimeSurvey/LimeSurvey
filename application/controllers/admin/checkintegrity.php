@@ -340,7 +340,8 @@ class CheckIntegrity extends Survey_Common_Action
         $surveys = Survey::model()->findAll();
         $sids = array();
         foreach ($surveys as $survey) $sids[] = $survey['sid'];
-        $criteria->addNotInCondition('sid', $sids, 'OR');
+        $criteria->addNotInCondition('entity_id', $sids, 'OR');
+        $criteria->addCondition("entity='survey'");
 
         Permission::model()->deleteAll($criteria);
         

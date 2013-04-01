@@ -60,6 +60,13 @@ function dirReport($dir, $write, $clang)
                <?php } else { ?><?php echo $phpVersion ; ?> <?php } ?></td>
         </tr>
         <tr>
+               <td><?php $clang->eT("Minimum memory available"); ?></td>
+               <td>64MB</td>
+               <td><?php 
+               if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Outdated"); ?>: <?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
+               <?php } else { ?><?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB <?php } ?></td>
+        </tr>
+        <tr>
                <td><?php $clang->eT("PHP PDO driver library"); ?></td>
                <td><?php $clang->eT("At least one installed"); ?></td>
                <td><?php if (count($dbtypes)==0) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("None found"); ?></span>

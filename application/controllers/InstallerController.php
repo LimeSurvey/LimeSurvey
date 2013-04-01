@@ -830,6 +830,10 @@ class InstallerController extends CController {
         if (version_compare(PHP_VERSION, '5.1.6', '<'))
             $bProceed = !$data['verror'] = true;
 
+        if ($this->return_bytes(ini_get('memory_limit'))/1024/1024<64)
+            $bProceed = !$data['bMemoryError'] = true;
+        
+            
         // mbstring library check
         if (!check_PHPFunction('mb_convert_encoding', $data['mbstringPresent']))
             $bProceed = false;
@@ -1232,5 +1236,26 @@ class InstallerController extends CController {
             }
         }
     }
+    
+    /**
+    * This function returns the full number from a PHP ini value
+    * 
+    * @param string $sValue
+    */
+    function return_bytes($sValue) {
+        $sValue = trim($sValue);
+        $last = strtolower($sValue[strlen($sValue)-1]);
+        switch($last) {
+            // The 'G' modifier is available since PHP 5.1.0
+            case 'g':
+                $sValue *= 1024;
+            case 'm':
+                $sValue *= 1024;
+            case 'k':
+                $sValue *= 1024;
+        }
+
+        return $sValue;
+    }    
 
 }
