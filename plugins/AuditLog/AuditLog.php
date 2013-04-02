@@ -2,8 +2,8 @@
     class AuditLog extends PluginBase {
 
         protected $storage = 'DbStorage';    
-        static protected $description = 'Example plugin';
-        static protected $name = 'auditlog';
+        static protected $description = 'Core: Create an audit log of changes';
+        static protected $name = 'Audit Log';
        
         
         public function __construct(PluginManager $manager, $id) {

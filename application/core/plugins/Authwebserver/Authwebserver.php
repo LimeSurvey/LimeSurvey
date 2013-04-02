@@ -4,6 +4,7 @@ class Authwebserver extends AuthPluginBase
     protected $storage = 'DbStorage';    
     
     static protected $description = 'Core: Webserver authentication';
+    static protected $name = 'Webserver';
     
     public function __construct(PluginManager $manager, $id) {
         parent::__construct($manager, $id);

@@ -1,7 +1,8 @@
 <?php
 class ShowResponse extends PluginBase {
     protected $storage = 'DbStorage';    
-    static protected $description = 'Example plugin: handle a survey response';
+    static protected $description = 'Demo: handle a survey response';
+    static protected $name = 'Show response';
     
     public function __construct(PluginManager $manager, $id) 
     {

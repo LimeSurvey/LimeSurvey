@@ -3,6 +3,7 @@ class Example extends PluginBase {
 
     protected $storage = 'DbStorage';    
     static protected $description = 'Example plugin';
+    static protected $name = 'Example';
     
     protected $settings = array(
         'logo' => array(

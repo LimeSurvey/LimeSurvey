@@ -207,7 +207,8 @@
                 }
             }
             $result['description'] = $class::getDescription();
-            $result['name'] = $pluginName;
+            $result['pluginName'] = $class::getName();
+            $result['pluginClass'] = $class;
             return $result;
         }
         

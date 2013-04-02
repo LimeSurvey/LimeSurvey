@@ -6,6 +6,7 @@ class Authdb extends AuthPluginBase
     protected $_onepass = null;
     
     static protected $description = 'Core: Database authentication';
+    static protected $name = 'LimeSurvey internal database';
     
     public function __construct(PluginManager $manager, $id) {
         parent::__construct($manager, $id);

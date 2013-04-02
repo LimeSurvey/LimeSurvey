@@ -13,16 +13,24 @@
             'url' => '#'
         ),
         array(// display the activation link
-            'class' => 'CLinkColumn',
+            'class' => 'CDataColumn',
+            'type' => 'raw',
             'header' => gT('Action'),
-            'labelExpression' => function($data) { return ($data['active'] == 0 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Activate'), array('width' => 16, 'height' => 16)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16))); },
-            'urlExpression' => function($data) { return $data['active'] == 0 ? array("/plugins/activate", "id" => $data['id']) : array("/plugins/activate", "id" => $data['id']); }
+            'value' => function($data) {
+                if ($data['active'] == 0)
+                { 
+                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Activate'), array('width' => 16, 'height' => 16)), array("/plugins/deactivate", "id" => $data['id']));
+                } else {
+                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16)), array("/plugins/deactivate", "id" => $data['id'])); 
+                }
+                $output .= CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'survey_settings_30.png', gT('Configure'), array('width' => 16, 'height' => 16, 'style' => 'margin-left: 8px;')), array("/plugins/configure", "id" => $data['id'])); 
+                return $output;
+            }
         ),
         array(// display the 'name' attribute
-            'class' => 'CLinkColumn',
+            'class' => 'CDataColumn',
             'header' => gT('Plugin'),
-            'labelExpression' => function($data) { return $data['name']; },
-            'urlExpression' => function($data) { return array("/plugins/configure", "id" => $data['id']); }    
+            'name' => 'name'
         ),
         array(// display the 'name' attribute
             'class' => 'CDataColumn',

@@ -15,7 +15,12 @@
                     $selectedAuth = $defaultAuth;
                 }
           ?><li><label for='authMethod'><?php $clang->eT("Authentication method"); ?></label><?php
-                echo CHtml::dropDownList('authMethod', $selectedAuth, array_combine($pluginNames, $pluginNames), array('onChange'=>'this.form.submit();'));
+                $possibleAuthMethods = array();
+                foreach($pluginNames as $plugin) {
+                    $info = App()->getPluginManager()->getPluginInfo($plugin);
+                    $possibleAuthMethods[$plugin] = $info['pluginName'];
+                }
+                echo CHtml::dropDownList('authMethod', $selectedAuth, $possibleAuthMethods, array('onChange'=>'this.form.submit();'));
             } else {
                 echo CHtml::hiddenField('authMethod', $defaultAuth);
                 $selectedAuth = $defaultAuth;
