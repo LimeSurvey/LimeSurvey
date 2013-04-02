@@ -1,7 +1,7 @@
 <?php echo CHtml::form(array("admin/user/sa/usertemplates"), 'post', array('name'=>'modtemplaterightsform', 'id'=>'modtemplaterightsform')); ?>
 
 	<div class='header ui-widget-header'><?php $clang->eT('Edit template permissions');?></div>
-    <table id="user-template-rights" class="activecell" style="margin:0 auto;">
+    <table id="user-template-permissions" class="activecell" style="margin:0 auto;">
 	<thead>
 	<tr>
 	<th colspan="2" class="header">
