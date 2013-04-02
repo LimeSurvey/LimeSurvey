@@ -1,7 +1,8 @@
 <?php
 class ShowResponse extends PluginBase {
     protected $storage = 'DbStorage';    
-    static protected $description = 'Example plugin: handle a survey response';
+    static protected $description = 'Demo: handle a survey response';
+    static protected $name = 'Show response';
     
     public function __construct(PluginManager $manager, $id) 
     {
@@ -17,8 +18,9 @@ class ShowResponse extends PluginBase {
     /*
      * Below are the actual methods that handle events
      */
-    public function showTheResponse(PluginEvent $event) 
+    public function showTheResponse() 
     {
+        $event      = $this->getEvent();
         $surveyId   = $event->get('surveyId');
         $responseId = $event->get('responseId');
         $response   = $this->pluginManager->getAPI()->getResponse($surveyId, $responseId);

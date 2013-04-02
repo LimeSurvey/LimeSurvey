@@ -24,20 +24,7 @@ abstract class AuthPluginBase extends PluginBase {
     {
         return $this->_password;
     }
-    
-    /**
-     * Get the user object for a given username
-     * 
-     * @param string $username
-     * @return User|null Returns the user, or null when not found
-     */
-    protected function getUserByName($username)
-    {
-        $user = User::model()->findByAttributes(array('users_name' => $username));
         
-        return $user;
-    }
-    
     /**
      * Get the username (if set)
      * 
@@ -60,6 +47,7 @@ abstract class AuthPluginBase extends PluginBase {
         $identity = $this->getEvent()->get('identity');
         $identity->id = $user->uid;
         $identity->user = $user;
+        $identity = $this->getEvent()->set('identity', $identity);
         $event->set('result', new LSAuthResult(self::ERROR_NONE));
         
         return $this;
@@ -78,6 +66,21 @@ abstract class AuthPluginBase extends PluginBase {
         $identity = $this->getEvent()->get('identity');
         $identity->id = null;
         $event->set('result', new LSAuthResult($code, $message));
+        
+        return $this;
+    }
+    
+    /**
+     * Set this plugin to handle the authentication
+     * 
+     * @return AuthPluginBase
+     */
+    public function setAuthPlugin()
+    {
+        $event = $this->getEvent();
+        $identity = $this->getEvent()->get('identity');
+        $identity->plugin = $this;
+        $this->getEvent()->stop();
         
         return $this;
     }

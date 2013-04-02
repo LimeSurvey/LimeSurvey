@@ -15,6 +15,13 @@ interface iPlugin {
      * Return the description for this plugin
      */
     public static function getDescription();
+    
+    /**
+     * Get the current event this plugin is responding to
+     * 
+     * @return PluginEvent
+     */
+    public function getEvent();
 
     /**
      * Get the id of this plugin (set by PluginManager on instantiation)
@@ -41,4 +48,13 @@ interface iPlugin {
      * @return iPluginStorage 
      */
     public function getStore();
+    
+    /**
+     * Set the event to the plugin, this method is executed by the PluginManager
+     * just before dispatching the event.
+     * 
+     * @param PluginEvent $event
+     * @return PluginBase
+     */
+   public function setEvent(PluginEvent $event);
 }

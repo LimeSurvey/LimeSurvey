@@ -35,10 +35,10 @@
             // Install newly discovered plugins.
             foreach ($discoveredPlugins as $discoveredPlugin)
             {
-                if (!in_array($discoveredPlugin['name'], $installedNames))
+                if (!in_array($discoveredPlugin['pluginClass'], $installedNames))
                 {
                     $plugin = new Plugin();
-                    $plugin->name = $discoveredPlugin['name'];
+                    $plugin->name = $discoveredPlugin['pluginClass'];
                     $plugin->active = 0;
                     $plugin->save();
                 }
@@ -50,7 +50,7 @@
             {
                 $data[] = array(
                     'id' => $plugin->id,
-                    'name' => $plugin->name,
+                    'name' => $discoveredPlugins[$plugin->name]['pluginName'],
                     'description' => $discoveredPlugins[$plugin->name]['description'],
                     'active' => $plugin->active,
                     'new' => !in_array($plugin->name, $installedNames)
@@ -64,17 +64,7 @@
             $plugin = Plugin::model()->findByPk($id);
             if (!is_null($plugin)) {
                 $status = $plugin->active;
-                if ($status == 1) {
-                    $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeDeactivate', $this), $plugin->name);
-                    if ($result->get('success', true)) {
-                        $status = 0;
-                    } else {
-                        $message = $result->get('message', gT('Failed to deactivate the plugin.'));
-                        App()->user->setFlash('pluginActivation', $message);
-                        $this->redirect(array('plugins/'));
-                    }
-
-                } else {
+                if ($status == 0) {
                     // Load the plugin:
                     App()->getPluginManager()->loadPlugin($plugin->name, $id);
                     $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeActivate', $this), $plugin->name);
@@ -86,6 +76,27 @@
                         $this->redirect(array('plugins/'));
                     }
                 }
+                $plugin->active = $status;
+                $plugin->save();
+            }
+            $this->redirect(array('plugins/'));
+        }
+        
+        public function actionDeactivate($id)
+        {
+            $plugin = Plugin::model()->findByPk($id);
+            if (!is_null($plugin)) {
+                $status = $plugin->active;
+                if ($status == 1) {
+                    $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeDeactivate', $this), $plugin->name);
+                    if ($result->get('success', true)) {
+                        $status = 0;
+                    } else {
+                        $message = $result->get('message', gT('Failed to deactivate the plugin.'));
+                        App()->user->setFlash('pluginActivation', $message);
+                        $this->redirect(array('plugins/'));
+                    }
+                }                
                 $plugin->active = $status;
                 $plugin->save();
             }
