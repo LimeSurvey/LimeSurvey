@@ -7,6 +7,19 @@
     class LimesurveyApi
     {
         /**
+         * Read a key from the application config, and when not set
+         * return the default value
+         * 
+         * @param string $key          The key to search for in the application config
+         * @param mixed  $defaultValue Value to return when not found, default is false
+         * @return mixed
+         */
+        public function getConfigKey($key, $defaultValue = false)
+        {
+            return App()->getConfig($key, $defaultValue);
+        }
+        
+        /**
          * Generates the real table name from plugin and tablename.
          * @param iPlugin $plugin
          * @param string $tableName

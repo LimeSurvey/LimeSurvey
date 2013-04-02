@@ -35,7 +35,7 @@ class Authwebserver extends PluginBase
                 $sUser = substr($sUser, strrpos($sUser, "\\")+1);
             }
             
-            $aUserMappings=Yii::app()->getConfig("auth_webserver_user_map");
+            $aUserMappings=$this->api->getConfigKey('auth_webserver_user_map', array());
             if (isset($aUserMappings[$sUser])) 
             {
                $sUser = $aUserMappings[$sUser];
@@ -63,9 +63,9 @@ class Authwebserver extends PluginBase
                 // describing the default profile for this user
                 $aUserProfile = hook_get_auth_webserver_profile($sUser);
             }
-            elseif (Yii::app()->getConfig("auth_webserver_autocreate_user"))
+            elseif ($this->api->getConfigKey('auth_webserver_autocreate_user'))
             {
-                $aUserProfile=Yii::app()->getConfig("auth_webserver_autocreate_profile"); 
+                $aUserProfile=$this->api->getConfigKey('auth_webserver_autocreate_profile');
             }
         } else {
             $identity->id = $oUser->uid;
@@ -76,7 +76,7 @@ class Authwebserver extends PluginBase
 
 
 
-        if (Yii::app()->getConfig("auth_webserver_autocreate_user") && isset($aUserProfile) && is_null($oUser))
+        if ($this->api->getConfigKey('auth_webserver_autocreate_user') && isset($aUserProfile) && is_null($oUser))
         { // user doesn't exist but auto-create user is set
             $oUser=new User;
             $oUser->users_name=$sUser;

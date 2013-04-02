@@ -10,6 +10,12 @@
          */
         protected $api = null;
         
+        /**
+         *
+         * @var PluginEvent
+         */
+        protected $event = null;
+        
         protected $id = null;
         protected $storage = 'DummyStorage';
         
@@ -59,6 +65,16 @@
         public static function getDescription()
         {
             return static::$description;
+        }
+        
+        /**
+         * Get the current event this plugin is responding to
+         * 
+         * @return PluginEvent
+         */
+        public function getEvent()
+        {
+            return $this->event;
         }
         
         /**
@@ -191,6 +207,19 @@
         protected function set($key, $data, $model = null, $id = null)
         {
             return $this->getStore()->set($this, $key, $data, $model, $id);
+        }
+        
+        /**
+         * Set the event to the plugin, this method is executed by the PluginManager
+         * just before dispatching the event.
+         * 
+         * @param PluginEvent $event
+         * @return PluginBase
+         */
+        public function setEvent(PluginEvent $event)
+        {
+            $this->event = $event;
+            return $this;
         }
     
         /**
