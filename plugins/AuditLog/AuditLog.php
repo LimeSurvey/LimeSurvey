@@ -3,7 +3,7 @@
 
         protected $storage = 'DbStorage';    
         static protected $description = 'Core: Create an audit log of changes';
-        static protected $name = 'Audit Log';
+        static protected $name = 'auditlog';
        
         
         public function __construct(PluginManager $manager, $id) {
