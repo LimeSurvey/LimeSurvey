@@ -187,20 +187,20 @@
          * Gets the description of a plugin. The description is accessed via a
          * static function inside the plugin file.
          *
-         * @param string $pluginName
+         * @param string $pluginClass The classname of the plugin
          */
-        public function getPluginInfo($pluginName, $pluginDir = null)
+        public function getPluginInfo($pluginClass, $pluginDir = null)
         {
             $result = array();
-            $class = "{$pluginName}";
+            $class = "{$pluginClass}";
             if (!class_exists($class, false)) {
                 if (!is_null($pluginDir)) {
-                    Yii::import($pluginDir . ".$pluginName.*");
+                    Yii::import($pluginDir . ".$pluginClass.*");
                   } else {
                     foreach ($this->pluginDirs as $pluginDir) {
-                        $file = Yii::getPathOfAlias($pluginDir . ".$pluginName.{$pluginName}") . ".php";
+                        $file = Yii::getPathOfAlias($pluginDir . ".$pluginClass.{$pluginClass}") . ".php";
                         if (file_exists($file)) {
-                            Yii::import($pluginDir . ".$pluginName.*");
+                            Yii::import($pluginDir . ".$pluginClass.*");
                             break;
                         }
                     }
