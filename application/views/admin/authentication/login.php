@@ -10,13 +10,17 @@
                 $defaultAuth = reset($pluginNames);
             }
             if (count($pluginContent)>1) {
-                $selectedAuth = App()->getRequest()->getPost('authMethod', $defaultAuth);
+                $selectedAuth = App()->getRequest()->getParam('authMethod', $defaultAuth);
+                if (!in_array($selectedAuth, $pluginNames)) {
+                    $selectedAuth = $defaultAuth;
+                }
           ?><li><label for='authMethod'><?php $clang->eT("Authentication method"); ?></label><?php
-                echo CHtml::dropDownList('authMethod', $selectedAuth, $methods);
+                echo CHtml::dropDownList('authMethod', $selectedAuth, array_combine($pluginNames, $pluginNames), array('onChange'=>'this.form.submit();'));
             } else {
                 echo CHtml::hiddenField('authMethod', $defaultAuth);
                 $selectedAuth = $defaultAuth;
             }
+          ?></li><?php
             if (isset($pluginContent[$selectedAuth])) {
                 $blockData = $pluginContent[$selectedAuth];
                 /* @var $blockData PluginEventContent */

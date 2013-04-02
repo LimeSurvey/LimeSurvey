@@ -214,7 +214,7 @@
          * @param string $username
          * @return User|null Returns the user, or null when not found
          */
-        protected function getUserByName($username)
+        public function getUserByName($username)
         { 
             $user = User::model()->findByAttributes(array('users_name' => $username));
 
