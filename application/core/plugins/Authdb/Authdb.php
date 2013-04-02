@@ -39,7 +39,7 @@ class Authdb extends AuthPluginBase
             // We have a one time password, skip the login form
             $this->setOnePass($request()->getQuery('onepass'));
             $this->setUsername($request()->getQuery('user'));
-            $this->getEvent()->stop(); // Skip the login form
+            $this->setAuthPlugin(); // This plugin will handle authentication ans skips the login form
         }
     }
     
