@@ -143,8 +143,7 @@
                      && (empty($target) || in_array(get_class($subscription[0]), $target))) 
                     {
                         $subscription[0]->setEvent($event);
-                        call_user_func($subscription, $event);
-                        $event = $subscription[0]->getEvent();
+                        call_user_func($subscription);
                     }
                 }
             }

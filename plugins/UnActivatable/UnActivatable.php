@@ -10,8 +10,9 @@
             $this->subscribe('beforeActivate');
         }
 
-        public function beforeActivate(PluginEvent $event)
+        public function beforeActivate()
         {
+            $event = $this->getEvent();
             $event->set('success', false);
 
             // Optionally set a custom error message.

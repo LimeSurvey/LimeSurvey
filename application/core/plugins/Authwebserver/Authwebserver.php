@@ -1,5 +1,5 @@
 <?php
-class Authwebserver extends PluginBase
+class Authwebserver extends AuthPluginBase
 {
     protected $storage = 'DbStorage';    
     
@@ -15,11 +15,8 @@ class Authwebserver extends PluginBase
         $this->subscribe('newUserSession');
     }
 
-    public function beforeLogin(PluginEvent $event)
-    {
-        /* @var $identity LSUserIdentity */
-        $identity = $event->get('identity');
-        
+    public function beforeLogin()
+    {       
         // normal login through webserver authentication    
         if (isset($_SERVER['PHP_AUTH_USER'])||isset($_SERVER['LOGON_USER']) ||isset($_SERVER['REMOTE_USER']))    
         {
@@ -40,21 +37,17 @@ class Authwebserver extends PluginBase
             {
                $sUser = $aUserMappings[$sUser];
             }
-            $identity->username = $sUser;
-            $identity->plugin = get_class($this);
-            $event->stop();
+            $this->setUsername($sUser);
+            $this->setAuthPlugin(); // This plugin handles authentication, halt further execution of auth plugins
         }
-        
-        $event->set('identity', $identity);
     }
     
-    public function newUserSession(PluginEvent $event)
+    public function newUserSession()
     {
         /* @var $identity LSUserIdentity */
-        $identity = $event->getSender();
-        $sUser = $identity->username;
+        $sUser = $this->getUserName();
         
-        $oUser=User::model()->findByAttributes(array('users_name'=>$sUser));
+        $oUser = $this->getUserByName($sUser);
         if (is_null($oUser))
         {
             if (function_exists("hook_get_auth_webserver_profile"))
@@ -68,13 +61,9 @@ class Authwebserver extends PluginBase
                 $aUserProfile=$this->api->getConfigKey('auth_webserver_autocreate_profile');
             }
         } else {
-            $identity->id = $oUser->uid;
-            $identity->user = $oUser;
-            $event->set('result', new LSAuthResult(LSUserIdentity::ERROR_NONE));
+            $this->setAuthSuccess($oUser);
             return;
         }
-
-
 
         if ($this->api->getConfigKey('auth_webserver_autocreate_user') && isset($aUserProfile) && is_null($oUser))
         { // user doesn't exist but auto-create user is set
@@ -106,13 +95,12 @@ class Authwebserver extends PluginBase
                 }
 
                 // read again user from newly created entry
-                $identity->id = $oUser->uid;
-                $identity->user = $oUser;                    
-                $event->set('result', new LSAuthResult(LSUserIdentity::ERROR_NONE));                   
+                $this->setAuthSuccess($oUser);
+                return;
             }
             else
             {
-                $event->set('result', new LSAuthResult(LSUserIdentity::ERROR_USERNAME_INVALID));
+                $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             }
 
         }

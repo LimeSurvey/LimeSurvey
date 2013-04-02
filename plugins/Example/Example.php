@@ -31,7 +31,7 @@ class Example extends PluginBase {
     /*
      * Below are the actual methods that handle events
      */
-    public function helloWorld(PluginEvent $event) 
+    public function helloWorld() 
     {
         $this->pluginManager->getAPI()->setFlash($this->get('message', null, null, 'Example popup. Change this via plugin settings.'));
     }
@@ -40,10 +40,10 @@ class Example extends PluginBase {
      * This event is fired by the administration panel to gather extra settings
      * available for a survey.
      * The plugin should return setting meta data.
-     * @param PluginEvent $event
      */
-    public function beforeSurveySettings(PluginEvent $event)
+    public function beforeSurveySettings()
     {
+        $event = $this->getEvent();
         $event->set("surveysettings.{$this->id}", array(
             'name' => get_class($this),
             'settings' => array(
@@ -56,8 +56,9 @@ class Example extends PluginBase {
          ));
     }
     
-    public function newSurveySettings(PluginEvent $event)
+    public function newSurveySettings()
     {
+        $event = $this->getEvent();
         foreach ($event->get('settings') as $name => $value)
         {
             

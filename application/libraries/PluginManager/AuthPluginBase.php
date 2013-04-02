@@ -60,6 +60,7 @@ abstract class AuthPluginBase extends PluginBase {
         $identity = $this->getEvent()->get('identity');
         $identity->id = $user->uid;
         $identity->user = $user;
+        $identity = $this->getEvent()->set('identity', $identity);
         $event->set('result', new LSAuthResult(self::ERROR_NONE));
         
         return $this;
@@ -78,6 +79,21 @@ abstract class AuthPluginBase extends PluginBase {
         $identity = $this->getEvent()->get('identity');
         $identity->id = null;
         $event->set('result', new LSAuthResult($code, $message));
+        
+        return $this;
+    }
+    
+    /**
+     * Set this plugin to handle the authentication
+     * 
+     * @return AuthPluginBase
+     */
+    public function setAuthPlugin()
+    {
+        $event = $this->getEvent();
+        $identity = $this->getEvent()->get('identity');
+        $identity->plugin = $this;
+        $this->getEvent()->stop();
         
         return $this;
     }

@@ -21,10 +21,10 @@
 
         /**
         * Saves permissions changes to the audit log
-        * @param PluginEvent $event
         */
-        public function beforePermissionSetSave(PluginEvent $event)
+        public function beforePermissionSetSave()
         {
+            $event = $this->getEvent();
             $aNewPermissions=$event->get('aNewPermissions');
             $iSurveyID=$event->get('iSurveyID');
             $iUserID=$event->get('iUserID');
@@ -49,12 +49,10 @@
         /**
         * Function catches if a participant was modified or created
         * All data is saved - only the password hash is anonymized for security reasons
-        * 
-        * @param PluginEvent $event
         */
-        public function beforeParticipantSave(PluginEvent $event)
+        public function beforeParticipantSave()
         {
-            $oNewParticipant=$event->getSender();
+            $oNewParticipant=$this->getEvent()->getSender();
             if ($oNewParticipant->isNewRecord)
             {
                 return;
@@ -81,12 +79,10 @@
         /**
         * Function catches if a participant was modified or created
         * All data is saved - only the password hash is anonymized for security reasons
-        * 
-        * @param PluginEvent $event
         */
-        public function beforeParticipantDelete(PluginEvent $event)
+        public function beforeParticipantDelete()
         {
-            $oNewParticipant=$event->getSender();
+            $oNewParticipant=$this->getEvent()->getSender();
             $oCurrentUser=$this->api->getCurrentUser();
 
             $aValues=$oNewParticipant->getAttributes();
@@ -105,12 +101,10 @@
         /**
         * Function catches if a user was modified or created
         * All data is saved - only the password hash is anonymized for security reasons
-        * 
-        * @param PluginEvent $event
         */
-        public function beforeUserSave(PluginEvent $event)
+        public function beforeUserSave()
         {
-            $oUserData=$event->getSender();
+            $oUserData=$this->getEvent()->getSender();
             $oCurrentUser=$this->api->getCurrentUser();
             $oOldUser=$this->api->getUser($oUserData->uid);
             if (!$oOldUser)
@@ -146,9 +140,9 @@
             }
         }
                                                             
-        public function beforeUserDelete(PluginEvent $event)
+        public function beforeUserDelete()
         {
-            $oUserData=$event->getSender();
+            $oUserData=$this->getEvent()->getSender();
             $oCurrentUser=$this->api->getCurrentUser();
             $oOldUser=$this->api->getUser($oUserData->uid);
             if ($oOldUser)
@@ -168,7 +162,7 @@
 
         
                                                             
-        public function beforeActivate(PluginEvent $event)
+        public function beforeActivate()
         {
             if (!$this->api->tableExists($this, 'log'))
             {
@@ -188,10 +182,10 @@
         * This event is fired by the administration panel to gather extra settings
         * available for a survey.
         * The plugin should return setting meta data.
-        * @param PluginEvent $event
         */
-        public function beforeSurveySettings(PluginEvent $event)
+        public function beforeSurveySettings()
         {
+            $event = $this->getEvent();
             $event->set("surveysettings.{$this->id}", array(
                 'name' => get_class($this),
                 'settings' => array(
@@ -209,8 +203,9 @@
             ));
         }
 
-        public function newSurveySettings(PluginEvent $event)
+        public function newSurveySettings()
         {
+            $event = $this->getEvent();
             foreach ($event->get('settings') as $name => $value)
             {
                 $this->set($name, $value, 'Survey', $event->get('survey'));

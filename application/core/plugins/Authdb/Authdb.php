@@ -20,15 +20,15 @@ class Authdb extends AuthPluginBase
         $this->subscribe('beforeDeactivate');
     }
 
-    public function beforeDeactivate(PluginEvent $event)
+    public function beforeDeactivate()
     {
-        $event->set('success', false);
+        $this->getEvent()->set('success', false);
 
         // Optionally set a custom error message.
-        $event->set('message', gT('Core plugin can not be disabled.'));
+        $this->getEvent()->set('message', gT('Core plugin can not be disabled.'));
     }
     
-    public function beforeLogin(PluginEvent $event)
+    public function beforeLogin()
     {
         $this->getEvent()->set('default', get_class($this));   // This is the default login method, should be configurable from plugin settings
         
@@ -53,14 +53,14 @@ class Authdb extends AuthPluginBase
         return $this->_onepass;
     }
     
-    public function newLoginForm(PluginEvent $event)
+    public function newLoginForm()
     {
-        $event->getContent($this)
-              ->addContent(CHtml::tag('li', array(), "<label for='user'>"  . gT("Username") . "</label><input name='user' id='user' type='text' size='40' maxlength='40' value='' />"))
-              ->addContent(CHtml::tag('li', array(), "<label for='password'>"  . gT("Password") . "</label><input name='password' id='password' type='password' size='40' maxlength='40' value='' />"));
+        $this->getEvent()->getContent($this)
+             ->addContent(CHtml::tag('li', array(), "<label for='user'>"  . gT("Username") . "</label><input name='user' id='user' type='text' size='40' maxlength='40' value='' />"))
+             ->addContent(CHtml::tag('li', array(), "<label for='password'>"  . gT("Password") . "</label><input name='password' id='password' type='password' size='40' maxlength='40' value='' />"));
     }
     
-    public function afterLoginFormSubmit(PluginEvent $event)
+    public function afterLoginFormSubmit()
     {
         // Here we handle post data        
         $request = $this->api->getRequest();
@@ -70,7 +70,7 @@ class Authdb extends AuthPluginBase
         }
     }
     
-    public function newUserSession(PluginEvent $event)
+    public function newUserSession()
     {
         // Here we do the actual authentication       
         $username = $this->getUsername();
