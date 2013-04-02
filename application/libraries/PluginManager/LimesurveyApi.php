@@ -198,12 +198,27 @@
             return $tables;
         }
         /**
-        * Retrieves user details for a user
-        * Returns null if the user does not exist anymore for some reason (should not really happen)
-        * @return User
-        */
+         * Retrieves user details for a user
+         * Returns null if the user does not exist anymore for some reason (should not really happen)
+         * 
+         * @param int $iUserID The userid
+         * @return User
+         */
         public function getUser($iUserID){
             return User::model()->findByPk($iUserID);
+        }
+        
+        /**
+         * Get the user object for a given username
+         * 
+         * @param string $username
+         * @return User|null Returns the user, or null when not found
+         */
+        protected function getUserByName($username)
+        { 
+            $user = User::model()->findByAttributes(array('users_name' => $username));
+
+            return $user;
         }
 
         

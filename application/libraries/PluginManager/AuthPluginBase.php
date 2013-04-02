@@ -24,20 +24,7 @@ abstract class AuthPluginBase extends PluginBase {
     {
         return $this->_password;
     }
-    
-    /**
-     * Get the user object for a given username
-     * 
-     * @param string $username
-     * @return User|null Returns the user, or null when not found
-     */
-    protected function getUserByName($username)
-    {
-        $user = User::model()->findByAttributes(array('users_name' => $username));
         
-        return $user;
-    }
-    
     /**
      * Get the username (if set)
      * 

@@ -77,7 +77,7 @@ class Authdb extends AuthPluginBase
         $password = $this->getPassword();
         $onepass  = $this->getOnePass();
         
-        $user = $this->getUserByName($username);
+        $user = $this->api->getUserByName($username);
         
         if ($user !== null)
         {

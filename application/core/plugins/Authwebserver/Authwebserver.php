@@ -47,7 +47,7 @@ class Authwebserver extends AuthPluginBase
         /* @var $identity LSUserIdentity */
         $sUser = $this->getUserName();
         
-        $oUser = $this->getUserByName($sUser);
+        $oUser = $this->api->getUserByName($sUser);
         if (is_null($oUser))
         {
             if (function_exists("hook_get_auth_webserver_profile"))
