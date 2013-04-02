@@ -37,7 +37,7 @@
                 $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='permission';
-                $oAutoLog->entityid=$aNewPermissions['uid'].'-'.$aNewPermissions['sid'];
+                $oAutoLog->entityid=$iSurveyID;
                 $oAutoLog->action=$sAction;
                 $oAutoLog->oldvalues=json_encode(array_diff_assoc_recursive($oOldPermission,$aNewPermissions));
                 $oAutoLog->newvalues=json_encode(array_diff_assoc_recursive($aNewPermissions,$oOldPermission));

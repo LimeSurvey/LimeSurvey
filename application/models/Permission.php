@@ -125,7 +125,7 @@ class Permission extends LSActiveRecord
         else
         {
             foreach ($aBasePermissions as $sPermission=>&$aPermissionDetail){
-                $oCurrentPermissions=Permission::model()->findByAttributes(array('uid'=>$iUserID,'sid'=>$iSurveyID, 'permission'=>$sPermission));
+                $oCurrentPermissions=Permission::model()->findByAttributes(array('uid'=>$iUserID,'entity_id'=>$iEntityID, 'permission'=>$sPermission));
                 if ($aPermissionDetail['create']) $aPermissionDetail['create']=($oCurrentPermissions?(boolean)$oCurrentPermissions->create_p:false);
                 if ($aPermissionDetail['read']) $aPermissionDetail['read']=($oCurrentPermissions?(boolean)$oCurrentPermissions->read_p:false);
                 if ($aPermissionDetail['update']) $aPermissionDetail['update']=($oCurrentPermissions?(boolean)$oCurrentPermissions->update_p:false);
