@@ -4,7 +4,8 @@
         <tr>
             <th><?php $clang->eT("Action");?></th>
 
-            <th style='width:20%'><?php $clang->eT("Username");?></th>
+            <th style='width:5%'><?php $clang->eT("User ID");?></th>
+            <th style='width:15%'><?php $clang->eT("Username");?></th>
             <th style='width:20%'><?php $clang->eT("Email");?></th>
             <th style='width:20%'><?php $clang->eT("Full name");?></th>
             <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
@@ -31,6 +32,7 @@
 
             </td>
 
+            <td><strong><?php echo $usrhimself['uid'];?></strong></td>
             <td><strong><?php echo htmlspecialchars($usrhimself['user']);?></strong></td>
             <td><strong><?php echo htmlspecialchars($usrhimself['email']);?></strong></td>
             <td><strong><?php echo htmlspecialchars($usrhimself['full_name']);?></strong></td>
@@ -97,6 +99,7 @@
                         </form>
                         <?php } ?>
                 </td>
+                <td><?php echo $usr['uid'];?></td>
                 <td><?php echo htmlspecialchars($usr['user']);?></td>
                 <td><a href='mailto:<?php echo htmlspecialchars($usr['email']);?>'><?php echo htmlspecialchars($usr['email']);?></a></td>
                 <td><?php echo htmlspecialchars($usr['full_name']);?></td>

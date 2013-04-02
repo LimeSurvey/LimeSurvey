@@ -891,32 +891,32 @@ table.templatecontrol select
 }
 
 /* Added by evan to help usability on the user template rights form in useradmin/userrighthandling.php */
-table#user-template-rights
+table#user-template-permissions
 {
     width: 50%;
     border: none;
     border-collapse: collapse
 }
 
-table#user-template-rights thead{
+table#user-template-permissions thead{
 }
 
-table#user-template-rights tr.row_odd
+table#user-template-permissions tr.row_odd
 {
     background-color: #EBF2FA;
 }
-table#user-template-rights tr:hover
+table#user-template-permissions tr:hover
 {
     background-color: #D1D1DF;
 }
-table#user-template-rights tr td
-,table#user-template-rights tr th
-,table#user-template-rights tfoot tr td
+table#user-template-permissions tr td
+,table#user-template-permissions tr th
+,table#user-template-permissions tfoot tr td
 {
     border: none;
     text-align: center;
 }
-table#user-template-rights tbody tr td:first-child
+table#user-template-permissions tbody tr td:first-child
 {
     text-align: left;
 }

@@ -105,7 +105,7 @@ class UserAction extends Survey_Common_Action
 
             if ($iNewUID) {
                 // add default template to template rights for user
-                Permission::model()->insertRecords(array('uid' => $iNewUID, 'permission' => Yii::app()->getConfig("defaulttemplate"), 'entity'=>$template, 'read_p' => 1));
+                Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => Yii::app()->getConfig("defaulttemplate"), 'entity'=>'template', 'read_p' => 1));
 
                 // add new user to userlist
                 $sresult = User::model()->getAllRecords(array('uid' => $iNewUID));
@@ -536,13 +536,14 @@ class UserAction extends Survey_Common_Action
             }
             foreach ($aTemplatePermissions as $key => $value)
             {
-                $oPermission = Permission::model()->findByPk(array('permission' => $key, 'uid' => $postuserid, 'entity'=>'template'));
+                $oPermission = Permission::model()->findByAttributes(array('permission' => $key, 'uid' => $postuserid, 'entity'=>'template'));
                 if (empty($oPermission))
                 {
                     $oPermission = new Permission;
                     $oPermission->uid = $postuserid;
                     $oPermission->permission = $key;
                     $oPermission->entity='template';
+                    $oPermission->entity_id=0;
                 }
                 $oPermission->read_p = $value;
                 $uresult = $oPermission->save();
