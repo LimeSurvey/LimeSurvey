@@ -1,7 +1,9 @@
 <?php
-class Authdb extends PluginBase
+class Authdb extends AuthPluginBase
 {
-    protected $storage = 'DbStorage';    
+    protected $storage = 'DbStorage';
+    
+    protected $_onepass = null;
     
     static protected $description = 'Core: Database authentication';
     
@@ -28,20 +30,27 @@ class Authdb extends PluginBase
     
     public function beforeLogin(PluginEvent $event)
     {
-        $event->set('default', get_class($this));   // This is the default login method, should be configurable from plugin settings
+        $this->getEvent()->set('default', get_class($this));   // This is the default login method, should be configurable from plugin settings
         
         // We can skip the login form here and set username/password etc.
-        
-        /* @var $identity LSUserIdentity */
-        $identity = $event->get('identity');
         
         $request = $this->api->getRequest();
         if ($request->getIsPostRequest() && !is_null($request->getQuery('onepass'))) {
             // We have a one time password, skip the login form
-            $identity->setConfig(array('onepass'=>$request()->getQuery('onepass')));
-            $identity->username = $request()->getQuery('user');
-            $event->stop(); // Skip the login form
+            $this->setOnePass($request()->getQuery('onepass'));
+            $this->setUsername($request()->getQuery('user'));
+            $this->getEvent()->stop(); // Skip the login form
         }
+    }
+    
+    /**
+     * Get the onetime password (if set)
+     * 
+     * @return string|null
+     */
+    protected function getOnePass()
+    {
+        return $this->_onepass;
     }
     
     public function newLoginForm(PluginEvent $event)
@@ -53,31 +62,22 @@ class Authdb extends PluginBase
     
     public function afterLoginFormSubmit(PluginEvent $event)
     {
-        // Here we handle moving post data to the identity
-        /* @var $identity LSUserIdentity */
-        $identity = $event->get('identity');
-        
+        // Here we handle post data        
         $request = $this->api->getRequest();
         if ($request->getIsPostRequest()) {
-            $identity->username = $request->getPost('user');
-            $identity->password = $request->getPost('password');
+            $this->setUsername( $request->getPost('user'));
+            $this->setPassword($request->getPost('password'));
         }
-        
-        $event->set('identity', $identity);
     }
     
     public function newUserSession(PluginEvent $event)
     {
-        // Here we do the actual authentication
-        /* @var $identity LSUserIdentity */
-        $identity = $event->getSender();
+        // Here we do the actual authentication       
+        $username = $this->getUsername();
+        $password = $this->getPassword();
+        $onepass  = $this->getOnePass();
         
-        $username = $identity->username;
-        $password = $identity->password;
-        $config = $identity->getConfig();
-        $onepass  = isset($config['onepass']) ? $config['onepass'] : '';
-        
-        $user = User::model()->findByAttributes(array('users_name' => $username));
+        $user = $this->getUserByName($username);
         
         if ($user !== null)
         {
@@ -92,7 +92,7 @@ class Authdb extends PluginBase
         }
         else
         {
-            $event->set('result', new LSAuthResult(LSUserIdentity::ERROR_USERNAME_INVALID));
+            $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
 
@@ -100,27 +100,29 @@ class Authdb extends PluginBase
         {
             $user->one_time_pw='';
             $user->save();
-            $identity->id = $user->uid;
-            $identity->user = $user;
-            $event->set('result', new LSAuthResult(LSUserIdentity::ERROR_NONE));
+            $this->setAuthSuccess($user);
             return;
-        }
-        
+        }        
         
         if ($sStoredPassword !== hash('sha256', $password))
         {
-            $event->set('result', new LSAuthResult(LSUserIdentity::ERROR_PASSWORD_INVALID));
-            return;
-        }
-        else
-        {
-            $identity->id = $user->uid;
-            $identity->user = $user;
-            $event->set('result', new LSAuthResult(LSUserIdentity::ERROR_NONE));
+            $this->setAuthFailure(self::ERROR_PASSWORD_INVALID);
             return;
         }
         
+        $this->setAuthSuccess($user);
     }
     
-    
+    /**
+     * Set the onetime password
+     * 
+     * @param type $onepass
+     * @return Authdb
+     */
+    protected function setOnePass($onepass)
+    {
+        $this->_onepass = $onepass;
+        
+        return $this;
+    }
 }
