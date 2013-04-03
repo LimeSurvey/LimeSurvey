@@ -263,7 +263,6 @@ class GlobalSettings extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "jquery/jquery.selectboxes.min.js");
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "globalsettings.js");
 
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);

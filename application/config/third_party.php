@@ -137,6 +137,15 @@ return array(
         'depends' => array(
             'jquery',
         )
+    ),
+    'jquery-selectboxes' => array(
+        'baseUrl' => 'third_party/jquery-selectboxes/selectboxes',
+        'js' => array(
+            'jquery.selectboxes.js'
+        ),
+        'depends' => array(
+            'jquery'
+        )
     )
 
 

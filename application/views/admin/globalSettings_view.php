@@ -1,3 +1,7 @@
+<?php
+    App()->getClientScript()->registerPackage('jquery-selectboxes');
+
+?>
 <script type="text/javascript">
     var msgAtLeastOneLanguageNeeded = '<?php $clang->eT("You must set at last one available language.",'js'); ?>';
 </script>
