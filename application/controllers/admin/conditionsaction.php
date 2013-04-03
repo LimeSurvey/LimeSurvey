@@ -1913,7 +1913,7 @@ class conditionsaction extends Survey_Common_Action {
 
 
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts").'conditions.js');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/lime-conditions-tabs.js');
+            //App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/lime-conditions-tabs.js');
 
             if ($subaction == "editthiscondition" && isset($p_cid))
             {

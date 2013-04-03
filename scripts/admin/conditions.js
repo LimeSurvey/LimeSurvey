@@ -69,7 +69,6 @@ $(document).ready(function(){
 
 function populateCanswersSelect(evt) {
 	var fname = $('#cquestions').val();
-
 	// empty the canswers Select
 	$('#canswers option').remove();
 	var Keys = new Array();
@@ -79,39 +78,33 @@ function populateCanswersSelect(evt) {
 			Keys[Keys.length]=i;
 		}
 	}
+
 	for (var i=0;i<QFieldnames.length;i++) {
 		if (QFieldnames[i] == fname) {
 			$('#cqid').val(Qcqids[i]);
 			if (Qtypes[i] == 'P' || Qtypes[i] == 'M')
 			{
-				$('#conditiontarget').tabs('option','enable', 0);
+				$('#conditiontarget').tabs('enable', 0);
 				$('#conditiontarget').tabs('option','active', 0);
-				$('#conditiontarget').tabs('option','disable', 1);
-				$('#conditiontarget').tabs('option','disable', 2);
-				$('#conditiontarget').tabs('option','disable', 3);
-				$('#conditiontarget').tabs('option','disable', 4);
+				$('#conditiontarget').tabs('enable', 1);
+				$('#conditiontarget').tabs('disable', 2);
+				$('#conditiontarget').tabs('disable', 3);
+				$('#conditiontarget').tabs('disable', 4);
 				if ($('#method').val() != '==' || $('#method').val() != '!=')
 				{
 					$('#method').val('==');
 				}
-				$('#method').find('option').each( function() {
-					if ($(this).val() != '==' && $(this).val() != '!=')
-					{
-						$(this).attr('disabled','disabled');
-					}
-				});
+				$('#method option').not("[value='==']").not("[value='!=']").attr('disabled','disabled');
 			}
 			else
 			{
-				$('#conditiontarget').tabs('option','enable', 0);
-				$('#conditiontarget').tabs('option','enable', 1);
-				$('#conditiontarget').tabs('option','enable', 2);
-				if (!isAnonymousSurvey) $('#conditiontarget').tabs('option','enable', 3);
-				$('#conditiontarget').tabs('option','enable', 4);
+				$('#conditiontarget').tabs('enable', 0);
+				$('#conditiontarget').tabs('enable', 1);
+				$('#conditiontarget').tabs('enable', 2);
+				if (!isAnonymousSurvey) $('#conditiontarget').tabs('enable', 3);
+				$('#conditiontarget').tabs('enable', 4);
 				selectTabFromOper();
-				$('#method').find('option').each( function() {
-					$(this).attr('disabled','')
-				});
+				$('#method option').removeAttr('disabled');
 			}
 		}
 	}
@@ -136,20 +129,20 @@ function populateCanswersSelect(evt) {
 function selectTabFromOper() {
 	var val = $('#method').val();
 	if(val == 'RX') {
-		$('#conditiontarget').tabs('option','enable', 4);
+		$('#conditiontarget').tabs('enable', 4);
 		$('#conditiontarget').tabs('option','active', 4);
-		$('#conditiontarget').tabs('option','disable', 0);
-		$('#conditiontarget').tabs('option','disable', 1);
-		$('#conditiontarget').tabs('option','disable', 2);
-		$('#conditiontarget').tabs('option','disable', 3);
+		$('#conditiontarget').tabs('disable', 0);
+		$('#conditiontarget').tabs('disable', 1);
+		$('#conditiontarget').tabs('disable', 2);
+		$('#conditiontarget').tabs('disable', 3);
 	}
 	else {
-		$('#conditiontarget').tabs('option','enable', 0);
-		$('#conditiontarget').tabs('option','enable', 1);
-		$('#conditiontarget').tabs('option','enable', 2);
+		$('#conditiontarget').tabs('enable', 0);
+		$('#conditiontarget').tabs('enable', 1);
+		$('#conditiontarget').tabs('enable', 2);
 		if (!isAnonymousSurvey) $('#conditiontarget').tabs('enable', 3);
 		$('#conditiontarget').tabs('option','active', 0);
-		$('#conditiontarget').tabs('option','disable', 4);
+		$('#conditiontarget').tabs('disable', 4);
 	}
 }
 
@@ -157,13 +150,12 @@ $(document).ready(function(){
 	$('#conditiontarget').tabs({
 		fx: {
 			opacity: 'toggle',
-       		     duration: 100
+       		duration: 100
 		}
 	});
-
-	$('#conditiontarget').bind('tabsselect', function(event, ui) {
-		$('#editTargetTab').val('#' + ui.panel.id);	
-
+    
+	$('#conditiontarget').on('tabsactivate', function(event, ui) {
+		$('#editTargetTab').val('#' + ui.newPanel.prop("id"));	
 	});
 
 	$('#conditionsource').tabs({
@@ -173,9 +165,8 @@ $(document).ready(function(){
 		}
 	});
 
-	$('#conditionsource').bind('tabsselect', function(event, ui) {
-		$('#editSourceTab').val('#' + ui.panel.id);	
-
+	$('#conditionsource').on('tabsactivate', function(event, ui) {
+		$('#editSourceTab').val('#' + ui.newPanel.prop("id"));	
 	});
 
 	// disable RegExp tab onload (new condition)
