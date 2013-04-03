@@ -81,10 +81,15 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
     // Build array that has to be returned
     $fields = SPSSFieldMap($iSurveyID);
 
+    // Now see if we have parameters for from (offset) & num (limit)
+    $limit = App()->getRequest()->getParam('limit');
+    $offset = App()->getRequest()->getParam('offset');
+    
     //Now get the query string with all fields to export
-    $query = SPSSGetQuery($iSurveyID);
-
-    $result=Yii::app()->db->createCommand($query)->query();
+    $query = SPSSGetQuery($iSurveyID, $limit, $offset);
+    
+    $result = $query->query();
+    
     $rownr = 0;
 
     foreach ($result as $row) {
@@ -506,42 +511,46 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
 /**
 * Creates a query string with all fields for the export
 * @param
-* @return string
+* @return CDbCommand
 */
-function SPSSGetQuery($iSurveyID) {
+function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
 
     $bDataAnonymized=(Survey::model()->findByPk($iSurveyID)->anonymized=='Y');
     $tokensexist=tableExists('tokens_'.$iSurveyID);
 
-
-
     #See if tokens are being used
+    $query = App()->db->createCommand();
+    $query->from('{{survey_' . $iSurveyID . '}} s');
+    $columns = array('s.*');
     if (isset($tokensexist) && $tokensexist == true && !$bDataAnonymized && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
-        $query="SELECT ";
         $tokenattributes=array_keys(getTokenFieldsAndNames($iSurveyID,false));
         foreach ($tokenattributes as $attributefield) {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
-                $query .= Yii::app()->db->quoteColumnName( 't.' . $attributefield) . ',';
+                $columns[] = 't.' . $attributefield;
             }
         }
-        $query .= "s.*
-        FROM {{survey_$iSurveyID}} s
-        LEFT JOIN {{tokens_$iSurveyID}} t ON s.token = t.token";
-    } else {
-        $query = "SELECT s.*
-        FROM {{survey_$iSurveyID}} s";
+        
+        $query->leftJoin('{{tokens_' . $iSurveyID . '}} t',  App()->db->quoteColumnName('s.token') . ' = ' .  App()->db->quoteColumnName('t.token'));
+        //LEFT JOIN {{tokens_$iSurveyID}} t ON ";
     }
+    $query->select($columns);
     switch (incompleteAnsFilterState()) {
         case 'incomplete':
             //Inclomplete answers only
-            $query .= ' WHERE s.submitdate is null ';
+            $query->where('s.submitdate IS NULL');
             break;
         case 'complete':
             //Inclomplete answers only
-            $query .= ' WHERE s.submitdate is not null ';
+            $query->where('s.submitdate IS NOT');
             break;
     }
+    
+    if (!empty($limit) & !is_null($offset)) 
+    {
+        $query->limit((int) $limit,  (int) $offset);
+    }
+    
     return $query;
 }
 

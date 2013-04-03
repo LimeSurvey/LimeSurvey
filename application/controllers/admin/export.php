@@ -393,8 +393,8 @@ class export extends Survey_Common_Action {
             $fields = SPSSFieldMap($iSurveyID);
 
             //Now get the query string with all fields to export
-            $query = SPSSGetQuery($iSurveyID);
-            $result = Yii::app()->db->createCommand($query)->query();
+            $query = SPSSGetQuery($iSurveyID, 500, 0);  // Sample first 500 responses for adjusting fieldmap
+            $result = $query->query();
 
             $num_fields = 0;
             //Now we check if we need to adjust the size of the field or the type of the field
@@ -677,9 +677,8 @@ class export extends Survey_Common_Action {
             $fields = SPSSFieldMap($iSurveyID,"V");
 
             //Now get the query string with all fields to export
-            $query = SPSSGetQuery($iSurveyID);
-
-            $result = Yii::app()->db->createCommand($query)->query(); //Checked
+            $query = SPSSGetQuery($iSurveyID, 500, 0);  // Sample first 500 responses for adjusting fieldmap
+            $result = $query->query();
 
             $num_fields = 0;
             //Now we check if we need to adjust the size of the field or the type of the field

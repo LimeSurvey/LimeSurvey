@@ -10,7 +10,11 @@
         </select>
     </li>
     <li><label for='dlstructure'><?php $clang->eT("Step 1:");?></label><input type='submit' name='dlstructure' id='dlstructure' value='<?php $clang->eT("Export R syntax file");?>'/></li>
-    <li><label for='dldata'/><?php $clang->eT("Step 2:");?></label><input type='submit' name='dldata' id='dldata' value='<?php $clang->eT("Export .csv data file");?>'/></li></ul>
+    <li><label for='dldata'/><?php $clang->eT("Step 2:");?></label><input type='submit' name='dldata' id='dldata' value='<?php $clang->eT("Export .csv data file");?>'/></li>
+    <li><label><?php $clang->eT("Optional");?></label></li>
+    <li><label for='limit'><?php $clang->eT("Limit:");?></label></li><input type='text' name='limit' value='<?php echo App()->getRequest()->getParam('limit');?>' />
+    <li><label for='offset'><?php $clang->eT("Offset:");?></label></li><input type='text' name='offset' value='<?php echo App()->getRequest()->getParam('offset');?>' />
+</ul>
 </form>
 
 <p><div class='messagebox ui-corner-all'><div class='header ui-widget-header'><?php $clang->eT("Instructions for the impatient");?></div>
