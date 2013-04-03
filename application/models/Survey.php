@@ -25,7 +25,31 @@ class Survey extends LSActiveRecord
      * @var array
      */
     protected $findByPkCache = array();
-    
+
+    /**
+     * Expires a survey. If the object was invoked using find or new surveyId can be ommited.
+     * @param int $surveyId
+     */
+    public function expire($surveyId = null)
+    {
+        $dateTime = new DateTime('-1 day');
+        $dateTime->add(Yii::app()->getConfig('timeadjust'));
+        
+        if (!isset($surveyId))
+        {
+            $this->expires = $dateTime;
+            if ($this->scenario == 'update')
+            {
+                return $this->save();
+            }
+        }
+        else
+        {
+            self::model()->updateByPk($surveyId,array('expires' => $dateTime));
+        }
+
+    }
+
     /**
     * Returns the table's name
     *

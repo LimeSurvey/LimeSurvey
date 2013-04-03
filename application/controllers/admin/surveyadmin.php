@@ -1377,24 +1377,8 @@ class SurveyAdmin extends Survey_Common_Action
         }
         $clang = $this->getController()->lang;
         Yii::app()->session['flashmessage'] = $clang->gT("The survey was successfully expired by setting an expiration date in the survey settings.");
-        $this->_expireSurvey($iSurveyID);
-        $dExpirationdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
-        $dExpirationdate = dateShift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
-        Survey::model()->updateByPk($iSurveyID,array('expires' => $dExpirationdate));
+        Survey::model()->expire($iSurveyID);
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
-    }
-
-    /**
-    * Expires a survey
-    *
-    * @param mixed $iSurveyID The survey ID
-    * @return False if not successful
-    */
-    private function _expireSurvey($iSurveyID)
-    {
-        $dExpirationdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
-        $dExpirationdate = dateShift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
-        return Survey::model()->updateByPk($iSurveyID,array('expires' => $dExpirationdate));
     }
 
     function getUrlParamsJSON($iSurveyID)

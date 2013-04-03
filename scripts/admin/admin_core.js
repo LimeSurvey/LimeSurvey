@@ -90,8 +90,15 @@ $(document).ready(function(){
         });
     });
     if ($("#question_type").not('.none').length > 0 && $("#question_type").attr('type')!='hidden'){
-        $("#question_type").msDropDown({onInit:qTypeDropdownInit});
 
+        /*
+        $("#question_type").msDropDown({
+            'on' : {
+                'create' :qTypeDropdownInit
+            }
+        });
+        */
+       qTypeDropdownInit();
         $("#question_type").change(function(event){
             var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
             OtherSelection(selected_value);
@@ -108,30 +115,40 @@ $(document).ready(function(){
 
 function qTypeDropdownInit()
 {
-    $("#question_type_child a").each(function(index,element){
+    $("#question_type_child li.enabled").each(function(index,element){
 
-        $(element).qtip({
+              $(element).qtip({
             style: {
-                margin: 15,
-                width: 450,
-                height: 'auto',
-                border: {
-                    width: 4,
-                    radius: 2
-                }
+                classes: 'qtip-questiontype'
             },
             content: getToolTip($(element).text()),
             position: {
-                corner:{
-                    target: 'leftMiddle',
-                    tooltip:'rightMiddle'
-                },
-                adjust:{
-                    screen: true
+                my: 'top left',
+                at: 'middle right',
+                viewport: $(window),
+                adjust: {
+                    x: 16
                 }
+            }
+        });
+
+
+    });
+    $("#question_type option").each(function(index,element){
+
+        $(element).qtip({
+            style: {
+                classes: 'qtip-questiontype'
             },
-            show: 'mouseover'
-            //hide: 'mouseout'
+            content: getToolTip($(element).text()),
+            position: {
+                my: 'top left',
+                at: 'middle right',
+                viewport: $(window),
+                adjust: {
+                    x: 16
+                }
+            }
         });
 
     });
@@ -245,7 +262,7 @@ function doToolTip()
                 },
                 position: {
                     viewport: $(window),
-                    at: 'bottom right',
+                    at: 'bottom right'
                 }
             });
         }

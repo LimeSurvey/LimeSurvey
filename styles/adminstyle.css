@@ -51,3 +51,10 @@ div.htmleditor {
 }
 .menubar a{display:inline-block;}
 
+.qtip-questiontype {
+    z-index: 100000;
+    background-color: white;
+    border: 1px solid #ddd;
+    max-width: 468px;
+    width: 468px;
+}

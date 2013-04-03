@@ -254,12 +254,10 @@ class question extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'answers.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
-
+        
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         $aData['display']['menu_bars']['qid_action'] = 'editansweroptions';
@@ -424,11 +422,9 @@ class question extends Survey_Common_Action
         $aData['gid'] = $gid = sanitize_int($gid);
         $aData['qid'] = $qid = sanitize_int($qid);
 
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'subquestions.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
 
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
@@ -958,7 +954,7 @@ class question extends Survey_Common_Action
         }
         $aData['bIsActive'] = ($thissurvey['active']=='Y');
         $aData['attributedata'] = $aAttributesPrepared;
-        $this->getController()->render('/admin/survey/Question/advanced_settings_view', $aData);
+        $this->getController()->renderPartial('/admin/survey/Question/advanced_settings_view', $aData);
     }
 
     /**
@@ -1262,9 +1258,8 @@ EOD;
     */
     protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
         App()->getClientScript()->registerPackage('superfish');
+        App()->getClientScript()->registerPackage('jquery-msdropdown');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }
