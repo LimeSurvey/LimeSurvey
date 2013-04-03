@@ -30,7 +30,7 @@ class remotecontrol extends Survey_Common_Action
     {
         $oHandler=new remotecontrol_handle($this->controller);
         $RPCType=Yii::app()->getConfig("RPCInterface");
-        if (true || Yii::app()->getRequest()->isPostRequest) {
+        if (Yii::app()->getRequest()->isPostRequest) {
             if ($RPCType=='xml')
             {
                 $cur_path = get_include_path();
