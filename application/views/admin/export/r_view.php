@@ -1,20 +1,27 @@
 <div class='header ui-widget-header'><?php $clang->eT("Export result data to R");?></div>
-<?php echo CHtml::form(array('admin/export/sa/exportr/sid/'.$surveyid), 'post', array('id'=>'exportr'));?>
-    <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
-    <input type='hidden' name='action' value='exportr' />
-<ul>
-    <li><label for='completionstate'><?php $clang->eT("Data selection:");?></label><select id='completionstate' name='completionstate' onchange='this.form.submit();'>
-            <option value='complete' <?php echo$selecthide;?>><?php $clang->eT("Completed responses only");?></option>
-            <option value='all' <?php echo$selectshow;?>><?php $clang->eT("All responses");?></option>
-            <option value='incomplete' <?php echo$selectinc;?>><?php $clang->eT("Incomplete responses only");?></option>
-        </select>
-    </li>
-    <li><label for='dlstructure'><?php $clang->eT("Step 1:");?></label><input type='submit' name='dlstructure' id='dlstructure' value='<?php $clang->eT("Export R syntax file");?>'/></li>
-    <li><label for='dldata'/><?php $clang->eT("Step 2:");?></label><input type='submit' name='dldata' id='dldata' value='<?php $clang->eT("Export .csv data file");?>'/></li>
-    <li><label><?php $clang->eT("Optional");?></label></li>
-    <li><label for='limit'><?php $clang->eT("Limit:");?></label></li><input type='text' name='limit' value='<?php echo App()->getRequest()->getParam('limit');?>' />
-    <li><label for='offset'><?php $clang->eT("Offset:");?></label></li><input type='text' name='offset' value='<?php echo App()->getRequest()->getParam('offset');?>' />
-</ul>
+<?php echo CHtml::form(array('admin/export/sa/exportr/sid/'.$surveyid), 'post', array('id'=>'exportr', 'class'=>'wrap2columns'));?>
+    <fieldset>
+        <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
+        <input type='hidden' name='action' value='exportr' />
+        <ul>
+            <li><label for='completionstate'><?php $clang->eT("Data selection:");?></label><select id='completionstate' name='completionstate' onchange='this.form.submit();'>
+                    <option value='complete' <?php echo$selecthide;?>><?php $clang->eT("Completed responses only");?></option>
+                    <option value='all' <?php echo$selectshow;?>><?php $clang->eT("All responses");?></option>
+                    <option value='incomplete' <?php echo$selectinc;?>><?php $clang->eT("Incomplete responses only");?></option>
+                </select>
+            </li>
+            <li><label for='dlstructure'><?php $clang->eT("Step 1:");?></label><input type='submit' name='dlstructure' id='dlstructure' value='<?php $clang->eT("Export R syntax file");?>'/></li>
+            <li><label for='dldata'/><?php $clang->eT("Step 2:");?></label><input type='submit' name='dldata' id='dldata' value='<?php $clang->eT("Export .csv data file");?>'/></li>
+        </ul>
+    </fieldset>
+    <fieldset>
+        <legend><?php $clang->eT("Optional");?></legend>
+        <ul>
+            <li><label></label></li>
+            <li><label for='limit'><?php $clang->eT("Limit:");?></label><input type='text' name='limit' value='<?php echo App()->getRequest()->getParam('limit');?>' /></li>
+            <li><label for='offset'><?php $clang->eT("Offset:");?></label><input type='text' name='offset' value='<?php echo App()->getRequest()->getParam('offset');?>' /></li>
+        </ul>
+    </fieldset>
 </form>
 
 <p><div class='messagebox ui-corner-all'><div class='header ui-widget-header'><?php $clang->eT("Instructions for the impatient");?></div>
