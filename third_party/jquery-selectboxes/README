@@ -1,0 +1,13 @@
+Plugins for jQuery:
+
+checkbox manipulation - working with checkboxes
+dialogIframe - Opens links in an iframe in a jQuery UI Dialog box
+dialogImage - Opens images in a jQuery UI Dialog box
+fix Q tags - wrap q tags with proper quotes in Internet Explorer
+focus fields - add an outline and background to text inputs when they are given focus
+jQIR - replace text with images
+newsticker - a news ticker for sequentially showing each item in a list
+numeric - allow only numbers to be typed into a text box
+preload images - preload any images that you may use in the future (e.g. for image rollovers)
+select box manipulation - add/remove options in select boxes as well as sort them
+time picker - display a list of times when you click on an input

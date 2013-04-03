@@ -5084,7 +5084,7 @@ function hasTemplateManageRights($userid, $templatefolder) {
     $criteria = new CDbCriteria;
     $criteria->addColumnCondition(array('uid' => $userid));
     $criteria->addSearchCondition('folder', $templatefolder);
-    $query=Templates_rights::model()->find($criteria);
+    $query=Permission::model()->find($criteria);
     //if ($result->RecordCount() == 0)  return false;
     if (is_null($query))  return false;
 
