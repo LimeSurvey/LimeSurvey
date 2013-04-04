@@ -50,7 +50,7 @@ class SurveyRuntimeHelper {
                 break;
         }
         $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
-        $radix = $radix['seperator'];
+        $radix = $radix['separator'];
 
         $surveyOptions = array(
         'active' => ($thissurvey['active'] == 'Y'),

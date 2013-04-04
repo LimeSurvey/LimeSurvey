@@ -886,7 +886,7 @@ class Participant extends LSActiveRecord
      * @param int $surveyid The survey id
      * @param array $mapped An array containing a list of already existing/mapped attributes in the form of "token_field_name"=>"participant_attribute_id"
      * @param array $newcreate An array containing new attributes to create in the tokens table
-     * @param string $participantid A comma seperated string containing the participant ids of the participants we are adding
+     * @param string $participantid A comma separated string containing the participant ids of the participants we are adding
      * @param bool $overwriteauto If true, overwrite automatically mapped data
      * @param bool $overwriteman If true, overwrite manually mapped data
      * @param bool $overwritest If true, overwrite standard fields (ie: names, email, participant_id, token)

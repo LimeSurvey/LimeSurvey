@@ -697,7 +697,7 @@ class participantsaction extends Survey_Common_Action
     {
         $searchcondition = basename(Yii::app()->request->getPost('searchcondition')); // get the search condition from the URL
         /* a search contains posted data inside $_POST['searchcondition'].
-        * Each seperate query is made up of 3 fields, seperated by double-pipes ("|")
+        * Each separate query is made up of 3 fields, separated by double-pipes ("|")
         * EG: fname||eq||jason||lname||ct||c
         *
         */
@@ -1117,7 +1117,7 @@ class participantsaction extends Survey_Common_Action
             $regularfields = array('firstname', 'participant_id', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
             $csvread = fopen($sFilePath, 'r');
 
-            $seperator = Yii::app()->request->getPost('seperatorused');
+            $separator = Yii::app()->request->getPost('separatorused');
             $firstline = fgetcsv($csvread, 1000, ',');
             $selectedcsvfields = array();
             foreach ($firstline as $key => $value)
@@ -1151,7 +1151,7 @@ class participantsaction extends Survey_Common_Action
     {
         unset(Yii::app()->session['summary']);
         $characterset = Yii::app()->request->getPost('characterset');
-        $seperator = Yii::app()->request->getPost('seperatorused');
+        $separator = Yii::app()->request->getPost('separatorused');
         $newarray = Yii::app()->request->getPost('newarray');
         $mappedarray = Yii::app()->request->getPost('mappedarray');
         $filterblankemails = Yii::app()->request->getPost('filterbea');
@@ -1177,7 +1177,7 @@ class participantsaction extends Survey_Common_Action
         $tokenlistarray = file($sFilePath);
 
         // open it and trim the endings
-        $separator = Yii::app()->request->getPost('seperatorused');
+        $separator = Yii::app()->request->getPost('separatorused');
         $uploadcharset = Yii::app()->request->getPost('characterset');
         /* The $newarray contains a list of fields that will be used
            to create new attributes */

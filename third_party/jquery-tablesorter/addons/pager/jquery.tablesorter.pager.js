@@ -3,7 +3,7 @@
 		tablesorterPager: new function() {
 			
 			function updatePageDisplay(c) {
-				var s = $(c.cssPageDisplay,c.container).val((c.page+1) + c.seperator + c.totalPages);	
+				var s = $(c.cssPageDisplay,c.container).val((c.page+1) + c.separator + c.totalPages);	
 			}
 			
 			function setPageSize(table,size) {
@@ -134,7 +134,7 @@
 				cssLast: '.last',
 				cssPageDisplay: '.pagedisplay',
 				cssPageSize: '.pagesize',
-				seperator: "/",
+				separator: "/",
 				positionFixed: true,
 				appender: this.appender
 			};

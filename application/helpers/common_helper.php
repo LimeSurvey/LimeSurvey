@@ -3276,7 +3276,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Logic'),
     'sortorder'=>130,
     'inputtype'=>'text',
-    "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon.'),
+    "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semikolon.'),
     "caption"=>$clang->gT('Exclusive option'));
 
     $qattributes["exclude_all_others_auto"]=array(
@@ -4796,9 +4796,9 @@ function CSVEscape($sString)
     return '"' . str_replace('"','""', $sString) . '"';
 }
 
-function convertCSVRowToArray($string, $seperator, $quotechar)
+function convertCSVRowToArray($string, $separator, $quotechar)
 {
-    $fields=preg_split('/' . $seperator . '(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
+    $fields=preg_split('/' . $separator . '(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
     $fields=array_map('CSVUnquote',$fields);
     return $fields;
 }
@@ -6475,7 +6475,7 @@ function accessDenied($action,$sid='')
 /**
 * cleanLanguagesFromSurvey() removes any languages from survey tables that are not in the passed list
 * @param string $sid - the currently selected survey
-* @param string $availlangs - space seperated list of additional languages in survey
+* @param string $availlangs - space separated list of additional languages in survey
 * @return bool - always returns true
 */
 function cleanLanguagesFromSurvey($sid, $availlangs)
@@ -6529,7 +6529,7 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
 /**
 * fixLanguageConsistency() fixes missing groups, questions, answers, quotas & assessments for languages on a survey
 * @param string $sid - the currently selected survey
-* @param string $availlangs - space seperated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
+* @param string $availlangs - space separated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
 * @return bool - always returns true
 */
 function fixLanguageConsistency($sid, $availlangs='')

@@ -215,7 +215,7 @@ $.Autocompleter = function(input, options) {
 		if ( options.multiple ) {
 			var words = trimWords($input.val());
 			if ( words.length > 1 ) {
-				var seperator = options.multipleSeparator.length;
+				var separator = options.multipleSeparator.length;
 				var cursorAt = $(input).selection().start;
 				var wordAt, progress = 0;
 				$.each(words, function(i, word) {
@@ -225,11 +225,11 @@ $.Autocompleter = function(input, options) {
                         // Following return caused IE8 to set cursor to the start of the line.
 						// return false;
 					}
-					progress += seperator;
+					progress += separator;
 				});
 				words[wordAt] = v;
 				// TODO this should set the cursor to the right position, but it gets overriden somewhere
-				//$.Autocompleter.Selection(input, progress + seperator, progress + seperator);
+				//$.Autocompleter.Selection(input, progress + separator, progress + separator);
 				v = words.join( options.multipleSeparator );
 			}
 			v += options.multipleSeparator;

@@ -538,7 +538,7 @@ class SimpleUrl {
     }
 
     /**
-     *    A pipe seperated list of all TLDs that result in two part
+     *    A pipe separated list of all TLDs that result in two part
      *    domain names.
      *    @return string        Pipe separated list.
      *    @access public

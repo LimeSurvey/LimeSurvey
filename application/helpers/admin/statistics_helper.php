@@ -470,7 +470,7 @@ function buildSelects($allfields, $surveyid, $language) {
                 elseif (($firstletter == "T" || $firstletter == "Q" ) && $_POST[$pv] != "")
                 {
                     $selectSubs = array();
-                    //We intepret and * and % as wildcard matches, and use ' OR ' and , as the seperators
+                    //We intepret and * and % as wildcard matches, and use ' OR ' and , as the separators
                     $pvParts = explode(",",str_replace('*','%', str_replace(' OR ',',',$_POST[$pv])));
                     if(is_array($pvParts) AND count($pvParts)){
                         foreach($pvParts AS $pvPart){
@@ -704,7 +704,7 @@ class statistics_helper {
             $tmpqid=substr($qqid, 0, strlen($qqid)-1);
 
             //check if we have a QID that actually exists. if not create them by substringing. Note that
-            //all of this is due to the fact that when we create a field for an subquestion, we don't seperate
+            //all of this is due to the fact that when we create a field for an subquestion, we don't separate
             //the question id from the subquestion id - and this is a weird, backwards way of doing that.
             while (!in_array ($tmpqid,$legitqids)) $tmpqid=substr($tmpqid, 0, strlen($tmpqid)-1);
             //length of QID

@@ -1085,7 +1085,7 @@ class question extends Survey_Common_Action
         );
 
         $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
-        $radix = $radix['seperator'];
+        $radix = $radix['separator'];
         $surveyOptions = array(
         'radix'=>$radix,
         'tempdir'=>Yii::app()->getConfig('tempdir')

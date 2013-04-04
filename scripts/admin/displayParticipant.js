@@ -262,7 +262,7 @@ $(document).ready(function() {
         }
     });
 
-    $.jgrid.formatter.integer.thousandsSeparator=''; //Removes the default spacing as a thousands seperator
+    $.jgrid.formatter.integer.thousandsSeparator=''; //Removes the default spacing as a thousands separator
     //Todo - global setting for all jqGrids to match language/regional number formats
 
     /* Set up default buttons in the main jqGrid Pager */

@@ -293,7 +293,7 @@ class printablesurvey extends Survey_Common_Action
 
                             if($x > 0)
                             {
-                                $sExplanation .= ' <em class="scenario-and-seperator">'.$clang->gT('and').'</em> ';
+                                $sExplanation .= ' <em class="scenario-and-separator">'.$clang->gT('and').'</em> ';
                             }
                             if(trim($distinctrow['method'])=='') //If there is no method chosen assume "equals"
                             {
@@ -573,7 +573,7 @@ class printablesurvey extends Survey_Common_Action
 
                             if (count($conditions) > 1)
                             {
-                                $sExplanation .=  "'".implode("' <em class='scenario-or-seperator'>".$clang->gT("or")."</em> '", $conditions)."'";
+                                $sExplanation .=  "'".implode("' <em class='scenario-or-separator'>".$clang->gT("or")."</em> '", $conditions)."'";
                             }
                             elseif (count($conditions) == 1)
                             {
@@ -583,7 +583,7 @@ class printablesurvey extends Survey_Common_Action
                             // Following line commented out because answer_section  was lost, but is required for some question types
                             //$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
                             if($distinctrow['cqid']){
-                                $sExplanation .= " <span class='scenario-at-seperator'>".$clang->gT("at question")."</span> '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
+                                $sExplanation .= " <span class='scenario-at-separator'>".$clang->gT("at question")."</span> '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
                             }
                             else{
                                 $sExplanation .= " ".$distinctrow['value'] ;

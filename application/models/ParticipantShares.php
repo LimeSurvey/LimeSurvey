@@ -127,7 +127,7 @@ class ParticipantShares extends CActiveRecord
 
     function deleteRow($rows)
     {
-		// Converting the comma seperated id's to an array to delete multiple rows
+		// Converting the comma separated id's to an array to delete multiple rows
 		$rowid=explode(",",$rows);
         foreach($rowid as $row)
 		{

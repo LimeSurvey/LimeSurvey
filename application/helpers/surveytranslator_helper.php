@@ -557,7 +557,7 @@
 
 
     /**
-    *  Returns avaliable formats for Radix Points (Decimal Seperators) or returns
+    *  Returns avaliable formats for Radix Points (Decimal Separators) or returns
     *  radix point info about a specific format.
     *
     *  @param int $format Format ID/Number [optional]
@@ -566,8 +566,8 @@
     {
         $clang = Yii::app()->lang;
         $aRadixFormats = array (
-        0=>array('seperator'=> '.', 'desc'=> $clang->gT('Dot (.)')),
-        1=>array('seperator'=> ',', 'desc'=> $clang->gT('Comma (,)'))
+        0=>array('separator'=> '.', 'desc'=> $clang->gT('Dot (.)')),
+        1=>array('separator'=> ',', 'desc'=> $clang->gT('Comma (,)'))
         );
 
         // hack for fact that null sometimes sent to this function

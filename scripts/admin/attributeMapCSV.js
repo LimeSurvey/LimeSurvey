@@ -126,7 +126,7 @@ $(document).ready(function() {
 
 		$("#processing").load(copyUrl, {
 		    characterset: characterset,
-		    seperatorused : seperator,
+		    separatorused : separator,
 		    fullfilepath : thefilepath,
 		    newarray : newcurrentarray,
 		    mappedarray : mappedarray,

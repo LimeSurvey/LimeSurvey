@@ -66,22 +66,22 @@
             </select>
         </li>
         <li>
-            <label for="seperatorused" id="seperatorused">
-                <?php $clang->eT("Seperator used:"); ?>
+            <label for="separatorused" id="separatorused">
+                <?php $clang->eT("Separator used:"); ?>
             </label>
             <?php
-            $seperatorused = array("comma" => $clang->gT("Comma")
+            $separatorused = array("comma" => $clang->gT("Comma")
                 , "semicolon" => $clang->gT("Semicolon"));
             ?>
 
-            <select name="seperatorused">
+            <select name="separatorused">
                 <option value="auto" selected="selected"><?php $clang->eT("(Autodetect)"); ?></option>
                 <?php
-                $seperatorused_keys = array_keys($seperatorused);
+                $separatorused_keys = array_keys($separatorused);
                 $i = 0;
-                foreach ($seperatorused as $seperator):
+                foreach ($separatorused as $separator):
                     ?>
-                    <option value="<?php echo ($seperatorused_keys[$i++]); ?>"><?php echo $seperator; ?></option>
+                    <option value="<?php echo ($separatorused_keys[$i++]); ?>"><?php echo $separator; ?></option>
                     <?php
                 endforeach;
                 ?>

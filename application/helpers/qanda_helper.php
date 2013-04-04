@@ -1785,8 +1785,8 @@ function do_list_radio($ia)
     if (isset($other) && $other=='Y')
     {
 
-        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-        $sSeperator = $sSeperator['seperator'];
+        $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeparator = $sSeparator['separator'];
 
         if ($aQuestionAttributes['other_numbers_only']==1)
         {
@@ -1813,7 +1813,7 @@ function do_list_radio($ia)
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname];
             if ($aQuestionAttributes['other_numbers_only']==1)
             {
-                $dispVal = str_replace('.',$sSeperator,$dispVal);
+                $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
             $answer_other = ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
@@ -2244,8 +2244,8 @@ function do_multiplechoice($ia)
 
     if ($aQuestionAttributes['other_numbers_only']==1)
     {
-        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-        $sSeperator= $sSeperator['seperator'];
+        $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeparator= $sSeparator['separator'];
         $oth_checkconditionFunction = "fixnum_checkconditions";
     }
     else
@@ -2401,7 +2401,7 @@ function do_multiplechoice($ia)
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
             if ($aQuestionAttributes['other_numbers_only']==1)
             {
-                $dispVal = str_replace('.',$sSeperator,$dispVal);
+                $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
             $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
         }
@@ -2441,7 +2441,7 @@ function do_multiplechoice($ia)
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
             if ($aQuestionAttributes['other_numbers_only']==1)
             {
-                $dispVal = str_replace('.',$sSeperator,$dispVal);
+                $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
             $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
         }
@@ -2584,8 +2584,8 @@ function do_multiplechoice_withcomments($ia)
 
     if ($aQuestionAttributes['other_numbers_only']==1)
     {
-        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-        $sSeperator = $sSeperator['seperator'];
+        $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeparator = $sSeparator['separator'];
         $oth_checkconditionFunction = "fixnum_checkconditions";
     }
     else
@@ -2731,7 +2731,7 @@ function do_multiplechoice_withcomments($ia)
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
             if ($aQuestionAttributes['other_numbers_only']==1)
             {
-                $dispVal = str_replace('.',$sSeperator,$dispVal);
+                $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
             $answer_main .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
@@ -2934,8 +2934,8 @@ function do_multipleshorttext($ia)
 
     if ($aQuestionAttributes['numbers_only']==1)
     {
-        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-        $sSeperator = $sSeperator['seperator'];
+        $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeparator = $sSeparator['separator'];
         $extraclass .=" numberonly";
         $checkconditionFunction = "fixnum_checkconditions";
     }
@@ -3050,7 +3050,7 @@ function do_multipleshorttext($ia)
                     $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
                     if ($aQuestionAttributes['numbers_only']==1)
                     {
-                        $dispVal = str_replace('.',$sSeperator,$dispVal);
+                        $dispVal = str_replace('.',$sSeparator,$dispVal);
                     }
                     $answer_main .= $dispVal;
                 }
@@ -3092,7 +3092,7 @@ function do_multipleshorttext($ia)
                     $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
                     if ($aQuestionAttributes['numbers_only']==1)
                     {
-                        $dispVal = str_replace('.',$sSeperator,$dispVal);
+                        $dispVal = str_replace('.',$sSeparator,$dispVal);
                     }
                     $answer_main .= $dispVal;
                 }
@@ -3125,8 +3125,8 @@ function do_multiplenumeric($ia)
     $checkconditionFunction = "fixnum_checkconditions";
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $answer='';
-    $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-    $sSeperator = $sSeperator['seperator'];
+    $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $sSeparator = $sSeparator['separator'];
     //Must turn on the "numbers only javascript"
     $extraclass .=" numberonly";
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
@@ -3393,13 +3393,13 @@ function do_multiplenumeric($ia)
 
             if ($slider_layout === false)
             {
-                $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-                $sSeperator = $sSeperator['seperator'];
+                $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+                $sSeparator = $sSeparator['separator'];
 
                 $answer_main .= "<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
-                    $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]);
+                    $dispVal = str_replace('.',$sSeparator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]);
                     $answer_main .= $dispVal;
                 }
 
@@ -3545,8 +3545,8 @@ function do_multiplenumeric($ia)
     color: #0f0;
     }
     */
-    $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-    $sSeperator = $sSeperator['seperator'];
+    $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $sSeparator = $sSeparator['separator'];
     //    if ($max_num_value || $equals_num_value || $min_num_value)
     //    { //Do value validation
     //        $answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1]."\" />\n";
@@ -3564,7 +3564,7 @@ function do_multiplenumeric($ia)
     //        $answer .= "       totalvalue_".$ia[1]."=(";
     //        $answer .= implode(" + ", $javainputnames);
     //        $answer .= ")/1000;\n";
-    //        $answer .= "       $('#totalvalue_{$ia[1]}').val((parseFloat(totalvalue_{$ia[1]})+'').split('.').join('{$sSeperator}'));\n";
+    //        $answer .= "       $('#totalvalue_{$ia[1]}').val((parseFloat(totalvalue_{$ia[1]})+'').split('.').join('{$sSeparator}'));\n";
     //        $answer .= "       var ua = navigator.appVersion.indexOf('MSIE');\n";
     //        $answer .= "       var ieAtt = ua != -1 ? 'className' : 'class';\n";
     //        $answer .= "       switch(method)\n";
@@ -3715,13 +3715,13 @@ function do_numerical($ia)
     else
     {
         $acomma=getRadixPointData($thissurvey['surveyls_numberformat']);
-        $acomma = $acomma['seperator'];
+        $acomma = $acomma['separator'];
         $integeronly=0;
     }
 
-    $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-    $sSeperator = $sSeperator['seperator'];
-    $fValue = str_replace('.',$sSeperator,$fValue);
+    $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $sSeparator = $sSeparator['separator'];
+    $fValue = str_replace('.',$sSeparator,$fValue);
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -3765,8 +3765,8 @@ function do_shortfreetext($ia)
 
     if ($aQuestionAttributes['numbers_only']==1)
     {
-        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-        $sSeperator = $sSeperator['seperator'];
+        $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeparator = $sSeparator['separator'];
         $extraclass .=" numberonly";
         $checkconditionFunction = "fixnum_checkconditions";
     }
@@ -3844,7 +3844,7 @@ function do_shortfreetext($ia)
             $dispVal = str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
             if ($aQuestionAttributes['numbers_only']==1)
             {
-                $dispVal = str_replace('.',$sSeperator,$dispVal);
+                $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
             $answer .= $dispVal;
         }
@@ -3933,7 +3933,7 @@ function do_shortfreetext($ia)
         $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         if ($aQuestionAttributes['numbers_only']==1)
         {
-            $dispVal = str_replace('.',$sSeperator,$dispVal);
+            $dispVal = str_replace('.',$sSeparator,$dispVal);
         }
         $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
         $answer .= " value=\"$dispVal\"";
@@ -5211,8 +5211,8 @@ function do_array_multitext($ia)
     }
 
     $checkconditionFunction = "checkconditions";
-    $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-    $sSeperator = $sSeperator['seperator'];
+    $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $sSeparator = $sSeparator['separator'];
 
     $defaultvaluescript = "";
     $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -5535,7 +5535,7 @@ function do_array_multitext($ia)
         {
             if ($aQuestionAttributes['numbers_only']==1)
             {
-                $radix = $sSeperator;
+                $radix = $sSeparator;
             }
             else {
                 $radix = 'X';   // to indicate that should not try to change entered values
@@ -5844,8 +5844,8 @@ function do_array_multiflexi($ia)
                     $answer .= "\t<td class=\"answer_cell_00$ld question-item answer-item {$answertypeclass}-item $extraclass\">\n"
                     . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n"
                     . "<label class=\"hide read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n"; 
-                    $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-                    $sSeperator = $sSeperator['seperator'];
+                    $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+                    $sSeparator = $sSeparator['separator'];
                     if($inputboxlayout == false) {
                         $answer .= "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
                         . HTMLEscape($labelans[$thiskey]).'"'
@@ -5853,11 +5853,11 @@ function do_array_multiflexi($ia)
                         . "<option value=\"\">".$clang->gT('...')."</option>\n";
 
                         for($ii=$minvalue; ($reverse? $ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue) {
-                            $answer .= '<option value="'.str_replace('.',$sSeperator,$ii).'"';
+                            $answer .= '<option value="'.str_replace('.',$sSeparator,$ii).'"';
                             if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == $ii) {
                                 $answer .= SELECTED;
                             }
-                            $answer .= ">".str_replace('.',$sSeperator,$ii)."</option>\n";
+                            $answer .= ">".str_replace('.',$sSeparator,$ii)."</option>\n";
                         }
                         $answer .= "\t</select>\n";
                     } elseif ($inputboxlayout == true)
@@ -5867,7 +5867,7 @@ function do_array_multiflexi($ia)
                         . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\""
                         . " value=\"";
                         if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && is_numeric($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {
-                            $answer .= str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]);
+                            $answer .= str_replace('.',$sSeparator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]);
                         }
                         $answer .= "\" />\n";
                     }
@@ -6214,7 +6214,7 @@ function do_array_dual($ia)
             if($rightexists) {$numrows++;}
             if($centerexists) {$numrows++;}
             $cellwidth=$columnswidth/$numrows;
-            //$cellwidth=sprintf("%02d", $cellwidth); // No reason to do this, except to leave place for seperator ?  But then table can not be the same in all browser
+            //$cellwidth=sprintf("%02d", $cellwidth); // No reason to do this, except to leave place for separator ?  But then table can not be the same in all browser
 
             // Header row and colgroups
             $mycolumns = "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
@@ -6230,8 +6230,8 @@ function do_array_dual($ia)
             $mycolumns .= "\t</colgroup>\n";
             if (count($labelans1)>0) // if second label set is used
             {
-                $seperatorwidth=($centerexists)? "width=\"$cellwidth%\" ":"";
-                $mycolumns .=  "\t<col class=\"seperator\" {$seperatorwidth}/>\n";
+                $separatorwidth=($centerexists)? "width=\"$cellwidth%\" ":"";
+                $mycolumns .=  "\t<col class=\"separator\" {$separatorwidth}/>\n";
                 $mycolumns .= "\t<colgroup class=\"col-responses group-2\">\n";
                 $answer_head_line .= "\n\t<td class=\"header_separator\">&nbsp;</td>\n\n"; // Separator : and No answer for accessibility for first colgroup
                 foreach ($labelans1 as $ld)
@@ -6245,7 +6245,7 @@ function do_array_dual($ia)
             if($shownoanswer || $rightexists)
             {
                 $rigthwidth=($rightexists)? "width=\"$cellwidth%\" ":"";
-                $mycolumns .=  "\t<col class=\"seperator rigth_separator\" {$rigthwidth}/>\n";
+                $mycolumns .=  "\t<col class=\"separator rigth_separator\" {$rigthwidth}/>\n";
                 $answer_head_line .= "\n\t<td class=\"header_separator rigth_separator\">&nbsp;</td>\n";
             }
             if($shownoanswer)

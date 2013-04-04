@@ -66,7 +66,7 @@
         'width' => 35,
         'style' => 'margin-left:5px');
 
-    $seperator = array('src' => $sImageURL.'separator.gif',
+    $separator = array('src' => $sImageURL.'separator.gif',
         'alt' => '',
         'options'=> array(
         'class' => 'separator'),
@@ -82,18 +82,18 @@
             echo CHtml::link(CHtml::image($home['src'], $home['alt']), Yii::app()->getController()->createUrl("/admin"));
             echo CHtml::link(CHtml::image($information['src'], $information['alt']), $this->createUrl('admin/participants/sa/index'));
             echo CHtml::link(CHtml::image($display['src'], $display['alt']), $this->createUrl('admin/participants/sa/displayParticipants'));
-            echo CHtml::image($seperator['src'], $seperator['alt'], $seperator['options']);
+            echo CHtml::image($separator['src'], $separator['alt'], $separator['options']);
             echo CHtml::link(CHtml::image($import['src'], $import['alt']), $this->createUrl('admin/participants/sa/importCSV'));
             echo CHtml::link(CHtml::image($export['src'], $export['alt']), $this->createUrl('admin/participants/sa/exporttocsvAll'));
-            echo CHtml::image($seperator['src'], $seperator['alt'], $seperator['options']);
+            echo CHtml::image($separator['src'], $separator['alt'], $separator['options']);
             echo CHtml::link(CHtml::image($blacklist['src'], $blacklist['alt']), $this->createUrl('admin/participants/sa/blacklistControl'));
             if (Permission::model()->hasGlobalPermission('superadmin','read'))
             {
                 echo CHtml::link(CHtml::image($globalsettings['src'], $globalsettings['alt']), $this->createUrl('admin/participants/sa/userControl'));
             }
-            echo CHtml::image($seperator['src'], $seperator['alt'], $seperator['options']);
+            echo CHtml::image($separator['src'], $separator['alt'], $separator['options']);
             echo CHtml::link(CHtml::image($attributecontrol['src'], $attributecontrol['alt']), $this->createUrl('admin/participants/sa/attributeControl'));
-            echo CHtml::image($seperator['src'], $seperator['alt'], $seperator['options']);
+            echo CHtml::image($separator['src'], $separator['alt'], $separator['options']);
             echo CHtml::link(CHtml::image($sharepanel['src'], $sharepanel['alt']), $this->createUrl('admin/participants/sa/sharePanel'));
             ?>
         </div>
