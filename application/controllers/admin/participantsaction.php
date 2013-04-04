@@ -590,7 +590,7 @@ class participantsaction extends Survey_Common_Action
     function getSurveyInfo_json()
     {
         $participantid = Yii::app()->request->getQuery('pid');
-        $records = Survey_links::model()->findAllByAttributes((array('participant_id' => $participantid)));
+        $records = SurveyLink::model()->findAllByAttributes((array('participant_id' => $participantid)));
         $aData = new stdClass();
         $aData->page = 1;
         $aData->records = count($records);

@@ -66,7 +66,7 @@ class emailtemplates extends Survey_Common_Action {
         foreach ($grplangs as $key => $grouplang)
         {
             $aData['bplangs'][$key] = new limesurvey_lang($grouplang);
-            $aData['attrib'][$key] = Surveys_languagesettings::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
+            $aData['attrib'][$key] = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
             $aData['attrib'][$key]['attachments'] = unserialize($aData['attrib'][$key]['attachments']);
             $aData['defaulttexts'][$key] = templateDefaultTexts($aData['bplangs'][$key],$sEscapeMode);
         }
@@ -143,7 +143,7 @@ class emailtemplates extends Survey_Common_Action {
                     'email_admin_responses' => $_POST['email_admin_detailed_notification_'.$langname],
                     'attachments' => serialize($_POST['attachments'][$langname])
                 );
-                $usquery = Surveys_languagesettings::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
+                $usquery = SurveyLanguageSetting::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Email templates successfully saved.");
         }

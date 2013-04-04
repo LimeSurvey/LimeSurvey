@@ -871,7 +871,7 @@ class tokens extends Survey_Common_Action
             $aTokenIds = explode(',', $sTokenIDs); //Make the tokenids string into an array
 
             //Delete any survey_links
-            Survey_links::model()->deleteTokenLink($aTokenIds, $iSurveyID);
+            SurveyLink::model()->deleteTokenLink($aTokenIds, $iSurveyID);
 
             //Then delete the tokens
             TokenDynamic::model($iSurveyID)->deleteRecords($aTokenIds);
@@ -1072,7 +1072,7 @@ class tokens extends Survey_Common_Action
         $languages = array_merge((array) Survey::model()->findByPk($iSurveyId)->language, Survey::model()->findByPk($iSurveyId)->additionalLanguages);
         $captions = array();
         foreach ($languages as $language)
-            $captions[$language] = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language))->attributeCaptions;
+            $captions[$language] = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language))->attributeCaptions;
         $aData['languages'] = $languages;
         $aData['tokencaptions'] = $captions;
         $aData['nrofattributes'] = 0;
@@ -1220,7 +1220,7 @@ class tokens extends Survey_Common_Action
         Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => serialize($fieldcontents)));
         foreach ($languages as $language)
         {
-            $ls = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language));
+            $ls = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language));
             $ls->surveyls_attributecaptions = serialize($captions[$language]);
             $ls->save();
         }
@@ -1486,7 +1486,7 @@ class tokens extends Survey_Common_Action
                             //Update central participant survey_links
                             if(!empty($emrow['participant_id']))
                             {
-                                $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid',array(':pid'=>$emrow['participant_id'],':sid'=>$iSurveyId,':tid'=>$emrow['tid']));
+                                $slquery = SurveyLink::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid',array(':pid'=>$emrow['participant_id'],':sid'=>$iSurveyId,':tid'=>$emrow['tid']));
                                 $slquery->date_invited = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
                                 $slquery->save();
                             }
@@ -2264,7 +2264,7 @@ class tokens extends Survey_Common_Action
             Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => "a:0:{}"));
 
             //Remove any survey_links to the CPDB
-            Survey_links::model()->deleteLinksBySurvey($iSurveyId);
+            SurveyLink::model()->deleteLinksBySurvey($iSurveyId);
 
             $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => $clang->gT("Delete Tokens Table"),
@@ -2446,7 +2446,7 @@ class tokens extends Survey_Common_Action
             TokenDynamic::model($iSurveyId)->checkColumns();
 
             //Add any survey_links from the renamed table
-            Survey_links::model()->rebuildLinksFromTokenTable($iSurveyId);
+            SurveyLink::model()->rebuildLinksFromTokenTable($iSurveyId);
 
             $this->_renderWrappedTemplate('token', array('message' => array(
             'title' => $clang->gT("Import old tokens"),

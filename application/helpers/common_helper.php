@@ -1346,12 +1346,12 @@ function getSurveyInfo($surveyid, $languagecode='')
     }
     else
     {
-        $result = Surveys_languagesettings::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
         if (is_null($result)) {
             // When additional language was added, but not saved it does not exists
             // We should revert to the base language then
             $languagecode=Survey::model()->findByPk($surveyid)->language;
-            $result = Surveys_languagesettings::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+            $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
         }
         if($result)
         {
@@ -6181,7 +6181,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
             'surveyls_language' => $language
             );
 
-            Surveys_languagesettings::model()->updateRecord($data,$where);
+            SurveyLanguageSetting::model()->updateRecord($data,$where);
 
         } // Enf if modified
     } // end while qentry

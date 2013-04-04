@@ -11,7 +11,7 @@
     * See COPYRIGHT.php for copyright notices and details.
     *
        */
-    class Survey_url_parameters extends CActiveRecord{
+    class SurveyURLParameter extends CActiveRecord{
         /**
         * Returns the static model of Settings table
         *

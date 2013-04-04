@@ -4480,8 +4480,8 @@
                 }
                 //Insert Row for Timings, if needed
                 if ($this->surveyOptions['savetimings']) {
-                    Survey_timings::sid($this->sid);
-                    $oSurveyTimings = new Survey_timings;
+                    SurveyTimingDynamic::sid($this->sid);
+                    $oSurveyTimings = new SurveyTimingDynamic;
                     
                     $tdata = array(
                     'id'=>$srid,

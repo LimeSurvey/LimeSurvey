@@ -696,7 +696,7 @@
         {
             $languagecode=Survey::model()->findByPk($surveyid)->language;
         }
-        $data = Surveys_languagesettings::model()->getDateFormat($surveyid,$languagecode);
+        $data = SurveyLanguageSetting::model()->getDateFormat($surveyid,$languagecode);
 
         if(empty($data))
         {

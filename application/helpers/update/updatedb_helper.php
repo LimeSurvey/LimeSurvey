@@ -1255,7 +1255,7 @@ function upgradeSurveys156()
 
             $aValues=array('surveyls_email_confirm_subj'=>$aDefaultTexts['confirmation_subject'],
             'surveyls_email_confirm'=>$aDefaultTexts['confirmation']);
-            Surveys_languagesettings::model()->updateAll($aValues,'surveyls_survey_id=:sid',array(':sid'=>$aSurveyRow['surveyls_survey_id']));
+            SurveyLanguageSetting::model()->updateAll($aValues,'surveyls_survey_id=:sid',array(':sid'=>$aSurveyRow['surveyls_survey_id']));
         }
     }
 }

@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * 	$Id: Survey_links.php 11999 2012-01-12 10:26:32Z gautamgupta $
+ * 	$Id: SurveyLink.php 11999 2012-01-12 10:26:32Z gautamgupta $
  * 	Files Purpose: lots of common functions
  */
 

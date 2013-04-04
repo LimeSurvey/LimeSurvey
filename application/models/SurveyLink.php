@@ -13,7 +13,7 @@
   * 	Files Purpose: lots of common functions
  */
 
-class Survey_links extends CActiveRecord
+class SurveyLink extends CActiveRecord
 {
 
 	/**
@@ -22,7 +22,7 @@ class Survey_links extends CActiveRecord
 	 * @static
 	 * @access public
      * @param string $class
-	 * @return Survey_links
+	 * @return SurveyLink
 	 */
 	public static function model($class = __CLASS__)
 	{
@@ -66,7 +66,7 @@ class Survey_links extends CActiveRecord
         $this->deleteLinksBySurvey($iSurveyId);
         $tableName="{{tokens_".$iSurveyId."}}";
         $dateCreated=date('Y-m-d H:i:s', time());
-        $query = "INSERT INTO ".Survey_links::tableName()." (participant_id, token_id, survey_id, date_created) SELECT participant_id, tid, '".$iSurveyId."', '".$dateCreated."' FROM ".$tableName." WHERE participant_id IS NOT NULL";
+        $query = "INSERT INTO ".SurveyLink::tableName()." (participant_id, token_id, survey_id, date_created) SELECT participant_id, tid, '".$iSurveyId."', '".$dateCreated."' FROM ".$tableName." WHERE participant_id IS NOT NULL";
         return Yii::app()->db->createCommand($query)
                              ->query();
     }
@@ -84,7 +84,7 @@ class Survey_links extends CActiveRecord
      * @return true|false
      * */
     function deleteTokenLink($iTokenIds, $surveyId) {
-        $query = "DELETE FROM ".Survey_links::tableName()." WHERE token_id IN (".implode(", ", $iTokenIds).") AND survey_id=:survey_id";
+        $query = "DELETE FROM ".SurveyLink::tableName()." WHERE token_id IN (".implode(", ", $iTokenIds).") AND survey_id=:survey_id";
         return Yii::app()->db->createCommand($query)
                              ->bindParam(":survey_id", $surveyId)
                              ->query();
@@ -100,7 +100,7 @@ class Survey_links extends CActiveRecord
      * @return true|false
      * */
     function deleteLinksBySurvey($surveyId) {
-        $query = "DELETE FROM ".Survey_links::tableName(). " WHERE survey_id = :survey_id";
+        $query = "DELETE FROM ".SurveyLink::tableName(). " WHERE survey_id = :survey_id";
         return Yii::app()->db->createCommand($query)
                              ->bindParam(":survey_id", $surveyId)
                              ->query();

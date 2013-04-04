@@ -194,8 +194,8 @@ class CheckIntegrity extends Survey_Common_Action
 
         $criteria = new CDbCriteria;
         $criteria->compare('surveyls_survey_id', $surveyls_survey_ids);
-        Surveys_languagesettings::model()->deleteAll($criteria);
-        if (Surveys_languagesettings::model()->hasErrors()) safeDie(Surveys_languagesettings::model()->getError());
+        SurveyLanguageSetting::model()->deleteAll($criteria);
+        if (SurveyLanguageSetting::model()->hasErrors()) safeDie(SurveyLanguageSetting::model()->getError());
         $aData['messages'][] = sprintf($clang->gT('Deleting survey languagesettings: %u survey languagesettings deleted'), count($surveyLanguageSettings));
         return array($criteria, $aData);
     }
@@ -570,10 +570,10 @@ class CheckIntegrity extends Survey_Common_Action
             {
                 if ($langname)
                 {
-                    $oLanguageSettings = Surveys_languagesettings::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$survey->sid,':langname'=>$langname));
+                    $oLanguageSettings = SurveyLanguageSetting::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$survey->sid,':langname'=>$langname));
                     if(!$oLanguageSettings)
                     {
-                        $oLanguageSettings= new Surveys_languagesettings;
+                        $oLanguageSettings= new SurveyLanguageSetting;
                         $languagedetails=getLanguageDetails($langname);
                         $insertdata = array(
                             'surveyls_survey_id' => $survey->sid,
@@ -599,8 +599,8 @@ class CheckIntegrity extends Survey_Common_Action
         foreach ($surveys as $survey) $sids[] = $survey['sid'];
         $criteria = new CDbCriteria;
         $criteria->addNotInCondition('surveyls_survey_id', $sids);
-        $surveys_languagesettings = Surveys_languagesettings::model()->findAll($criteria);
-        if (Surveys_languagesettings::model()->hasErrors()) safeDie(Surveys_languagesettings::model()->getError());
+        $surveys_languagesettings = SurveyLanguageSetting::model()->findAll($criteria);
+        if (SurveyLanguageSetting::model()->hasErrors()) safeDie(SurveyLanguageSetting::model()->getError());
 
         foreach ($surveys_languagesettings as $surveys_languagesetting)
         {

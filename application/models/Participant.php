@@ -382,7 +382,7 @@ class Participant extends LSActiveRecord
             Yii::app()->db->createCommand()->delete(Participant::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
             
             // Delete survey links
-            Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
+            Yii::app()->db->createCommand()->delete(SurveyLink::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
             // Delete participant attributes
             Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
         }

@@ -13,7 +13,7 @@
   * 	Files Purpose: lots of common functions
  */
 
-class Survey_timings extends LSActiveRecord
+class SurveyTimingDynamic extends LSActiveRecord
 {
     protected static $sid = 0;
     

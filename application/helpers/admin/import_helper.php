@@ -2677,7 +2677,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
         unset($surveylsrowdata['lastpage']);
         $surveylsrowdata['surveyls_survey_id']=$iNewSID;
 
-        $lsiresult = Surveys_languagesettings::model()->insertNewSurvey($surveylsrowdata) or safeDie("<br />".$clang->gT("Import of this survey file failed")."<br />");
+        $lsiresult = SurveyLanguageSetting::model()->insertNewSurvey($surveylsrowdata) or safeDie("<br />".$clang->gT("Import of this survey file failed")."<br />");
 
     }
 
@@ -3533,7 +3533,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
 
 
-        $result = Surveys_languagesettings::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [2]<br />");
+        $result = SurveyLanguageSetting::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [2]<br />");
     }
 
 
@@ -3943,7 +3943,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['targetqid'] =$aQIDReplacements[(int)$insertdata['targetqid']]; // remap the qid
             }
             unset($insertdata['id']);
-            $result=Survey_url_parameters::model()->insertRecord($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[14]<br />");
+            $result=SurveyURLParameter::model()->insertRecord($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[14]<br />");
             $results['survey_url_parameters']++;
         }
     }
@@ -4167,7 +4167,7 @@ function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
             $insertdata[$key]=(string)$value;
         }
 
-        $result = Survey_timings::model($iSurveyID)->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[17]<br />");
+        $result = SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[17]<br />");
 
         $results['responses']++;
     }
@@ -4358,7 +4358,7 @@ function TSVImportSurvey($sFullFilepath)
         }
 
 
-        $result = Surveys_languagesettings::model()->insertNewSurvey($insertdata);//
+        $result = SurveyLanguageSetting::model()->insertNewSurvey($insertdata);//
         if(!$result){
             $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Failed to insert survey language");
             break;

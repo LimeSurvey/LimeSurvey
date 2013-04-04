@@ -308,7 +308,7 @@ class remotecontrol_handle
 						'surveyls_language' => $sSurveyLanguage,
 						);
 
-					$langsettings = new Surveys_languagesettings;
+					$langsettings = new SurveyLanguageSetting;
 					$langsettings->insertNewSurvey($aInsertData);
 					Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 
@@ -545,7 +545,7 @@ class remotecontrol_handle
 
 			foreach ($aUserSurveys as $oSurvey)
 				{
-				$oSurveyLanguageSettings = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $oSurvey->primaryKey, 'surveyls_language' => $oSurvey->language));
+				$oSurveyLanguageSettings = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $oSurvey->primaryKey, 'surveyls_language' => $oSurvey->language));
 				if (!isset($oSurveyLanguageSettings))
 					$aSurveyTitle = '';
 				else
@@ -824,7 +824,7 @@ class remotecontrol_handle
                     'surveyls_title' => '',
                     'surveyls_dateformat' => $languagedetails['dateformat']
                     );
-                    $setting= new Surveys_languagesettings;
+                    $setting= new SurveyLanguageSetting;
                     foreach ($insertdata as $k => $v)
                         $setting->$k = $v;
                     $setting->save();
@@ -882,7 +882,7 @@ class remotecontrol_handle
                 try
                 {
                     $oSurvey->save(); // save the change to database
-                    Surveys_languagesettings::model()->deleteByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLanguage));
+                    SurveyLanguageSetting::model()->deleteByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLanguage));
                     cleanLanguagesFromSurvey($iSurveyID,$oSurvey->additional_languages);
                     return array('status' => 'OK');
                 }
@@ -920,14 +920,14 @@ class remotecontrol_handle
 			}
 			if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
 				{
-					$aBasicDestinationFields=Surveys_languagesettings::model()->tableSchema->columnNames;
+					$aBasicDestinationFields=SurveyLanguageSetting::model()->tableSchema->columnNames;
 					$aSurveyLocaleSettings=array_intersect($aSurveyLocaleSettings,$aBasicDestinationFields);
 
 					if ($sLang == NULL || !array_key_exists($sLang,getLanguageDataRestricted()))
 						$sLang = $oSurvey->language;
 
 
-					$oSurveyLocale=Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang));
+					$oSurveyLocale=SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang));
 					$aResult = array();
 
 					if (empty($aSurveyLocaleSettings))
@@ -983,10 +983,10 @@ class remotecontrol_handle
                 unset($aSurveyLocaleData['surveyls_survey_id']);
 
                 // Remove invalid fields
-                $aDestinationFields=array_flip(Surveys_languagesettings::model()->tableSchema->columnNames);
+                $aDestinationFields=array_flip(SurveyLanguageSetting::model()->tableSchema->columnNames);
 
                 $aSurveyLocaleData=array_intersect_key($aSurveyLocaleData,$aDestinationFields);
-                $oSurveyLocale = Surveys_languagesettings::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLanguage));
+                $oSurveyLocale = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLanguage));
 
                 $aLangAttributes = $oSurveyLocale->getAttributes();
                 $aResult = array();
@@ -1905,7 +1905,7 @@ class remotecontrol_handle
 						$aResult[$iTokenID]='Invalid token ID';
 					else
 					{
-					Survey_links::deleteTokenLink(array($iTokenID), $iSurveyID);
+					SurveyLink::deleteTokenLink(array($iTokenID), $iSurveyID);
 					if(TokenDynamic::model($iSurveyID)->deleteRecords(array($iTokenID)))
 						$aResult[$iTokenID]='Deleted';
 					else

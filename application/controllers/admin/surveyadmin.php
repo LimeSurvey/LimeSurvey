@@ -338,7 +338,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
 
             //Remove any survey_links to the CPDB
-            Survey_links::model()->deleteLinksBySurvey($iSurveyID);
+            SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
             
 
             // IF there are any records in the saved_control table related to this survey, they have to be deleted
@@ -795,7 +795,7 @@ class SurveyAdmin extends Survey_Common_Action
                 Yii::app()->loadHelper('surveytranslator');
                 $bplang = $this->getController()->lang; //new lang($grouplang);
 
-                $esrow = Surveys_languagesettings::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $grouplang))->getAttributes();
+                $esrow = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $grouplang))->getAttributes();
 
                 $tab_title[$i] = getLanguageNameFromCode($esrow['surveyls_language'], false);
 
@@ -1612,7 +1612,7 @@ class SurveyAdmin extends Survey_Common_Action
             'surveyls_numberformat' => (int) $_POST['numberformat']
             );
 
-            $langsettings = new Surveys_languagesettings;
+            $langsettings = new SurveyLanguageSetting;
             $langsettings->insertNewSurvey($aInsertData);
 
             Yii::app()->session['flashmessage'] = $this->getController()->lang->gT("Survey was successfully added.");

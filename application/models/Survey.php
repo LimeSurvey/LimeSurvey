@@ -94,7 +94,7 @@ class Survey extends LSActiveRecord
     public function relations()
     {
         return array(
-        'languagesettings' => array(self::HAS_MANY, 'Surveys_languagesettings', 'surveyls_survey_id'),
+        'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id'),
         'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 't.owner_id = owner.uid'),
         );
     }
@@ -260,7 +260,7 @@ class Survey extends LSActiveRecord
                     );
                     $languagesettings[$fieldname] = $desc;
                 }
-                $ls = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $this->sid, 'surveyls_language' => $this->language));
+                $ls = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $this->sid, 'surveyls_language' => $this->language));
             self::model()->updateByPk($this->sid, array('attributedescriptions' => serialize($fields)));
             $ls->surveyls_attributecaptions = serialize($languagesettings);
             $ls->save();
@@ -368,12 +368,12 @@ class Survey extends LSActiveRecord
             Questions::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             Assessment::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             Groups::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            Surveys_languagesettings::model()->deleteAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
+            SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
             Permission::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             Saved_control::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            Survey_url_parameters::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             //Remove any survey_links to the CPDB
-            Survey_links::model()->deleteLinksBySurvey($iSurveyID);
+            SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
             Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
         }
     }

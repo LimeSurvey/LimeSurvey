@@ -202,7 +202,7 @@ class index extends CAction {
 #                WHERE surveyls_survey_id={$rows['sid']}
 #                AND surveyls_language='{$sDisplayLanguage}'";
 #                $resultlang=Yii::app()->db->createCommand($querylang)->queryRow();
-                $resultlang=Surveys_languagesettings::model()->find(
+                $resultlang=SurveyLanguageSetting::model()->find(
                         "surveyls_survey_id=:surveyls_survey_id AND surveyls_language=:surveyls_language",
                         array(':surveyls_survey_id'=>intval($rows['sid']),':surveyls_language'=>$sDisplayLanguage)
                 );

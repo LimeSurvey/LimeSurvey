@@ -959,7 +959,7 @@
                 }
                 if(!empty($participant_id))
                 {
-                    $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$oTokenInformation->tid));
+                    $slquery = SurveyLink::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$oTokenInformation->tid));
                     
                     if (isTokenCompletedDatestamped($thissurvey))
                     {
@@ -2043,7 +2043,7 @@
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url
-    $oResult=Survey_url_parameters::model()->getParametersForSurvey($surveyid);
+    $oResult=SurveyURLParameter::model()->getParametersForSurvey($surveyid);
     foreach($oResult->readAll() as $aRow)
     {
         if(isset($_GET[$aRow['parameter']]) && !$preview)

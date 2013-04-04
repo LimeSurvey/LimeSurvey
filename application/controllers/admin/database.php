@@ -942,9 +942,9 @@ class database extends Survey_Common_Action
                     'surveyls_dateformat' => Yii::app()->request->getPost('dateformat_'.$langname),
                     'surveyls_numberformat' => Yii::app()->request->getPost('numberformat_'.$langname)
                     );
-                    $Surveys_languagesettings=Surveys_languagesettings::model()->findByPk(array('surveyls_survey_id'=>$postsid, 'surveyls_language'=>$langname));
-                    $Surveys_languagesettings->attributes=$data;
-                    $Surveys_languagesettings->save(); // save the change to database
+                    $SurveyLanguageSetting=SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$postsid, 'surveyls_language'=>$langname));
+                    $SurveyLanguageSetting->attributes=$data;
+                    $SurveyLanguageSetting->save(); // save the change to database
 
                 }
             }
@@ -1016,7 +1016,7 @@ class database extends Survey_Common_Action
             if(!Permission::model()->hasGlobalPermission('superadmin','read') && !hasGlobalPermission('templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $template)) $template = "default";
 
             $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
-            Survey_url_parameters::model()->deleteAllByAttributes(array('sid'=>$surveyid));
+            SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$surveyid));
             foreach($aURLParams as $aURLParam)
             {
                 $aURLParam['parameter']=trim($aURLParam['parameter']);
@@ -1031,7 +1031,7 @@ class database extends Survey_Common_Action
                 if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
                 $aURLParam['sid']=$surveyid;
 
-                $param = new Survey_url_parameters;
+                $param = new SurveyURLParameter;
                 foreach ($aURLParam as $k => $v)
                     $param->$k = $v;
                 $param->save();
@@ -1101,17 +1101,17 @@ class database extends Survey_Common_Action
                 $i++;
             }
 
-            Surveys_languagesettings::model()->deleteAll($sqlstring, $params);
+            SurveyLanguageSetting::model()->deleteAll($sqlstring, $params);
             $usresult=true;
 
             foreach (Survey::model()->findByPk($surveyid)->additionalLanguages as $langname)
             {
                 if ($langname)
                 {
-                    $oLanguageSettings = Surveys_languagesettings::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$surveyid,':langname'=>$langname));
+                    $oLanguageSettings = SurveyLanguageSetting::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$surveyid,':langname'=>$langname));
                     if(!$oLanguageSettings)
                     {
-                        $oLanguageSettings= new Surveys_languagesettings;
+                        $oLanguageSettings= new SurveyLanguageSetting;
                         $languagedetails=getLanguageDetails($langname);
                         $insertdata = array(
                             'surveyls_survey_id' => $surveyid,

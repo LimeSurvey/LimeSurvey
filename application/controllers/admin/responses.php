@@ -334,7 +334,7 @@ class responses extends Survey_Common_Action
                 Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
                 // delete timings if savetimings is set
                 if($aData['surveyinfo']['savetimings'] == "Y"){
-                    Survey_timings::model($iSurveyID)->deleteByPk($iResponseID);
+                    SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
                 }
                 Yii::app()->session['flashmessage'] = sprintf($clang->gT("Response ID %s was successfully deleted."),$iResponseID);
             }
@@ -358,7 +358,7 @@ class responses extends Survey_Common_Action
                         Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
                         // delete timings if savetimings is set
                         if($aData['surveyinfo']['savetimings'] == "Y"){
-                            Survey_timings::model($iSurveyID)->deleteByPk($iResponseID);
+                            SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
                         }
                     }
                     Yii::app()->session['flashmessage'] = sprintf($clang->ngT("%s response was successfully deleted.","%s responses were successfully deleted.",count(Yii::app()->request->getPost('markedresponses'))),count(Yii::app()->request->getPost('markedresponses')),'js');
@@ -627,7 +627,7 @@ class responses extends Survey_Common_Action
         {
             $iResponseID=(int) Yii::app()->request->getPost('deleteanswer');
             Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
-            Survey_timings::model($iSurveyID)->deleteByPk($iResponseID);
+            SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
         }
 
         if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0)
@@ -639,7 +639,7 @@ class responses extends Survey_Common_Action
                 {
                     $iResponseID=(int) $iResponseID;
                     Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
-                    Survey_timings::model($iSurveyID)->deleteByPk($iResponseID);
+                    SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
                 }
             }
         }
@@ -691,7 +691,7 @@ class responses extends Survey_Common_Action
         $oCriteria->select = 'tid';
         $oCriteria->join = "INNER JOIN {{survey_{$iSurveyID}}} s ON t.id=s.id";
         $oCriteria->condition = 'submitdate IS NOT NULL';
-        $dtcount = Survey_timings::model($iSurveyID)->count($oCriteria); // or die("Couldn't get response data");
+        $dtcount = SurveyTimingDynamic::model($iSurveyID)->count($oCriteria); // or die("Couldn't get response data");
 
         if ($limit > $dtcount)
         {
@@ -706,7 +706,7 @@ class responses extends Survey_Common_Action
         $oCriteria->offset = $start;
         $oCriteria->limit = $limit;
 
-        $dtresult = Survey_timings::model($iSurveyID)->findAllAsArray($oCriteria);
+        $dtresult = SurveyTimingDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
         $dtcount2 = count($dtresult);
         $cells = $fncount + 1;
 
@@ -774,7 +774,7 @@ class responses extends Survey_Common_Action
         }
 
         //interview Time statistics
-        $aData['statistics'] = Survey_timings::model($iSurveyId)->statistics();
+        $aData['statistics'] = SurveyTimingDynamic::model($iSurveyId)->statistics();
         $aData['num_total_answers'] = Survey_dynamic::model($iSurveyID)->count();
         $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
         $aViewUrls[] = 'browsetimefooter_view';

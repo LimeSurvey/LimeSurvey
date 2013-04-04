@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class Surveys_languagesettings extends CActiveRecord
+class SurveyLanguageSetting extends CActiveRecord
 {
 	/**
 	 * Returns the table's name
@@ -21,7 +21,7 @@ class Surveys_languagesettings extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{surveys_languagesettings}}';
+		return '{{SurveyLanguageSetting}}';
 	}
 
 	/**
@@ -41,7 +41,7 @@ class Surveys_languagesettings extends CActiveRecord
 	 * @static
 	 * @access public
      * @param string $class
-	 * @return Surveys_languagesettings
+	 * @return SurveyLanguageSetting
 	 */
 	public static function model($class = __CLASS__)
 	{
@@ -156,7 +156,7 @@ class Surveys_languagesettings extends CActiveRecord
 
 	function getAllRecords($condition=FALSE, $return_query = TRUE)
 	{
-		$query = Yii::app()->db->createCommand()->select('*')->from('{{surveys_languagesettings}}');
+		$query = Yii::app()->db->createCommand()->select('*')->from('{{SurveyLanguageSetting}}');
 		if ($condition != FALSE)
 		{
 			$query->where($condition);
@@ -167,8 +167,8 @@ class Surveys_languagesettings extends CActiveRecord
     function getDateFormat($surveyid,$languagecode)
     {
 		return Yii::app()->db->createCommand()->select('surveyls_dateformat')
-            ->from('{{surveys_languagesettings}}')
-            ->join('{{surveys}}','{{surveys}}.sid = {{surveys_languagesettings}}.surveyls_survey_id AND surveyls_survey_id = :surveyid')
+            ->from('{{SurveyLanguageSetting}}')
+            ->join('{{surveys}}','{{surveys}}.sid = {{SurveyLanguageSetting}}.surveyls_survey_id AND surveyls_survey_id = :surveyid')
             ->where('surveyls_language = :langcode')
             ->bindParam(":langcode", $languagecode, PDO::PARAM_STR)
 			->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)
@@ -179,7 +179,7 @@ class Surveys_languagesettings extends CActiveRecord
     {
         $this->db->select('a.*, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_url');
         $this->db->from('surveys AS a');
-        $this->db->join('surveys_languagesettings','surveyls_survey_id=a.sid AND surveyls_language=a.language');
+        $this->db->join('SurveyLanguageSetting','surveyls_survey_id=a.sid AND surveyls_language=a.language');
 
         if ($hasPermission)
         {
@@ -191,7 +191,7 @@ class Surveys_languagesettings extends CActiveRecord
 
     function getAllData($sid,$lcode)
     {
-    	$query = 'SELECT * FROM {{surveys}}, {{surveys_languagesettings}} WHERE sid=? AND surveyls_survey_id=? AND surveyls_language=?';
+    	$query = 'SELECT * FROM {{surveys}}, {{SurveyLanguageSetting}} WHERE sid=? AND surveyls_survey_id=? AND surveyls_language=?';
         return $this->db->query($query, array($sid, $sid, $lcode));
     }
 

@@ -294,7 +294,7 @@ class Save {
         }
         else
         {
-            $aColumnNames=Survey_timings::model($thissurvey['sid'])->getTableSchema()->columnNames;
+            $aColumnNames=SurveyTimingDynamic::model($thissurvey['sid'])->getTableSchema()->columnNames;
             $setField .= "time";
             if (!in_array($setField,$aColumnNames)) die('Invalid last group timing fieldname');
             $setField = Yii::app()->db->quoteColumnName($setField);
