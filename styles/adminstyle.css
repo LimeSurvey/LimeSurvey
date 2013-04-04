@@ -51,10 +51,34 @@ div.htmleditor {
 }
 .menubar a{display:inline-block;}
 
+
+.menubar select {
+    margin-bottom: 0px;
+   
+}
 .qtip-questiontype {
     z-index: 100000;
     background-color: white;
     border: 1px solid #ddd;
     max-width: 468px;
     width: 468px;
+}
+
+
+/******************************************************************************/
+/* Bootstrap overrides.                                                       */
+/******************************************************************************/
+label {display: inline-block !important;}
+.select{
+    width: 250px;
+    margin-left: 10px;
+}
+
+.select * {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+li input {
+    margin: 0px;
 }

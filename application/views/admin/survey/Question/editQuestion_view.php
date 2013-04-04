@@ -101,6 +101,7 @@
                              <div class="htmleditor">
                             <textarea cols='50' rows='4' id='question_<?php echo $addlanguage; ?>' name='question_<?php echo $addlanguage; ?>'></textarea>
                             </div>
+
                             <?php echo getEditor("question-text","question_".$addlanguage, "[".$clang->gT("Question:", "js")."](".$addlanguage.")",$surveyid,$gid,$qid,$action); ?>
                         </li><li>
                             <label for='help_<?php echo $addlanguage; ?>'><?php $clang->eT("Help:"); ?></label>
@@ -116,13 +117,45 @@
             <ul>
                 <li><label for='question_type'><?php $clang->eT("Question Type:"); ?></label>
                     <?php if ($activated != "Y")
-                        { ?>
+                        {
+
+                            foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
+                            {
+                                if (!isset($groups[$questionType['group']]))
+                                {
+                                    $groups[$questionType['group']] = array();
+                                }
+                                $groups[$questionType['group']][$key] = $questionType['description'];
+                                
+                            }
+                            $this->widget('ext.bootstrap.widgets.TbSelect2', array(
+                                'data' => $groups,
+                                'name' => 'type',
+                                'options' => array(
+                                    'width' => '300px',
+                                    'minimumResultsForSearch' => 1000
+                                ),
+                                'events' => array(
+                                ),
+                                'htmlOptions' => array(
+                                    'id' => 'question_type'
+                                )
+                            ));
+                            $script = '$("#question_type option").addClass("questionType");';
+                            App()->getClientScript()->registerScript('add_class_to_options', $script);
+                        /*
+                         * ?>
+
 
                         <select id='question_type' style='margin-bottom:5px' name='type' class='<?php echo $selectormodeclass; ?>'>
                             <?php echo getQuestionTypeList($eqrow['type'],'group'); ?>
 
                         </select>
-                        <?php }
+                        <?php
+                         *
+                         */
+
+                        }
                         else
                         {
 
