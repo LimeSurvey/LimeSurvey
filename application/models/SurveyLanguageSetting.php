@@ -21,7 +21,7 @@ class SurveyLanguageSetting extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{SurveyLanguageSetting}}';
+		return '{{surveys_languagesettings}}';
 	}
 
 	/**
