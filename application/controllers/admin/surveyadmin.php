@@ -673,7 +673,7 @@ class SurveyAdmin extends Survey_Common_Action
             //Set Responses
             if ($rows['active'] == "Y")
             {
-                $cntResult = Survey_dynamic::countAllAndPartial($rows['sid']);
+                $cntResult = SurveyDynamic::countAllAndPartial($rows['sid']);
                 $all = $cntResult['cntall'];
                 $partial = $cntResult['cntpartial'];
 

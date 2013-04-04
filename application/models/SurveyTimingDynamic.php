@@ -73,7 +73,7 @@ class SurveyTimingDynamic extends LSActiveRecord
     public function relations()
     {
         return array(
-        'id' => array(self::BELONGS_TO, 'Survey_dynamic', 'id'),
+        'id' => array(self::BELONGS_TO, 'SurveyDynamic', 'id'),
         );
     }
 

@@ -90,7 +90,7 @@ function checkStatic($line)
 'ExpressionManager::',
 '\'::\'',
 'Labelsets::',
-'Survey_dynamic::',
+'SurveyDynamic::',
 'PEAR::',
 'Settings_global::',
 'Zend_Http_Client::',

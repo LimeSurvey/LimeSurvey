@@ -756,13 +756,13 @@ class remotecontrol_handle
 							return $summary['tkcompleted'];
 						break;
 					case 'completed_responses':
-						return Survey_dynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
+						return SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
 						break;
 					case 'incomplete_responses':
-						return Survey_dynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
+						return SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
 						break;
 					case 'full_responses';
-						return Survey_dynamic::model($iSurveyID)->count();
+						return SurveyDynamic::model($iSurveyID)->count();
 						break;
 					default:
 						return array('status' => 'Data is not available');
@@ -1207,7 +1207,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $responses = Survey_dynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken));
+            $responses = SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken));
             $result = array();
             foreach ($responses as $response)
             {
@@ -2285,8 +2285,8 @@ class remotecontrol_handle
                     $aResponseData['startdate'] = date("Y-m-d H:i:s");
             }
 
-            Survey_dynamic::sid($iSurveyID);
-            $survey_dynamic = new Survey_dynamic;
+            SurveyDynamic::sid($iSurveyID);
+            $survey_dynamic = new SurveyDynamic;
             $aBasicDestinationFields=$survey_dynamic->tableSchema->columnNames;
             $aResponseData=array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
             $result_id = $survey_dynamic->insertRecords($aResponseData);
@@ -2323,7 +2323,7 @@ class remotecontrol_handle
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         Yii::app()->loadHelper('admin/exportresults');
         if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data');
-		if(!$count = Survey_dynamic::model($iSurveyID)->count()) return array('status' => 'No Data');
+		if(!$count = SurveyDynamic::model($iSurveyID)->count()) return array('status' => 'No Data');
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
         if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);

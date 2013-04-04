@@ -5911,7 +5911,7 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
         foreach ($fields_list as $fieldname)
             $criteria->mergeWith($fields_query[$fieldname]);
         $criteria->mergeWith(array('condition'=>"submitdate IS NOT NULL"));
-        $result = Survey_dynamic::model($iSurveyId)->count($criteria);
+        $result = SurveyDynamic::model($iSurveyId)->count($criteria);
     }
 
     return $result;
@@ -5932,7 +5932,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     $oLanguage = new Limesurvey_lang($sLanguageCode);
 
     //Get response data
-    $idrow = Survey_dynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
+    $idrow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
 
     // Create array of non-null values - those are the relevant ones
     $aRelevantFields = array();

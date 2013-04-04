@@ -112,7 +112,7 @@ class dataentry extends Survey_Common_Action
         {
             if (Yii::app()->request->getParam('unfinalizeanswers') == 'true')
             {
-                Survey_dynamic::sid($surveyid);
+                SurveyDynamic::sid($surveyid);
                 Yii::app()->db->createCommand("DELETE from {{survey_$surveyid}} WHERE submitdate IS NULL AND token in (SELECT * FROM ( SELECT answ2.token from {{survey_$surveyid}} AS answ2 WHERE answ2.submitdate IS NOT NULL) tmp )")->execute();
                 // Then set all remaining answers to incomplete state
                 Yii::app()->db->createCommand("UPDATE {{survey_$surveyid}} SET submitdate=NULL, lastpage=NULL")->execute();
@@ -134,8 +134,8 @@ class dataentry extends Survey_Common_Action
         unlink($filePath); //delete the uploaded file
         unset($aFileContents[0]); //delete the first line
 
-        Survey_dynamic::sid($surveyid);
-        $survey = new Survey_dynamic;
+        SurveyDynamic::sid($surveyid);
+        $survey = new SurveyDynamic;
 
         list($aFieldnames, $nbOfFields) = $this->_getFieldInfo($aFileContents);
 
@@ -1725,8 +1725,8 @@ class dataentry extends Survey_Common_Action
                         }
                     }
 
-                    Survey_dynamic::sid($surveyid);
-                    $new_response = new Survey_dynamic;
+                    SurveyDynamic::sid($surveyid);
+                    $new_response = new SurveyDynamic;
                     foreach($insert_data as $column => $value)
                     {
                         $new_response->$column = $value;

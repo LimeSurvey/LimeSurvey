@@ -126,7 +126,7 @@
         */
         public function getResponse($surveyId, $responseId)
         {
-            $response = Survey_dynamic::model($surveyId)->findByPk($responseId)->attributes;
+            $response = SurveyDynamic::model($surveyId)->findByPk($responseId)->attributes;
 
             // Now map the response to the question codes if possible, duplicate question codes will result in the
             // old sidXgidXqid code for the second time the code is found

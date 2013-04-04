@@ -222,7 +222,7 @@
             if (isset($this->responseId))
             {
                 $surveyId = Questions::model()->findFieldByPk($this->questionId, 'sid');
-                $response = Survey_dynamic::model($surveyId)->findByPk($this->responseId);
+                $response = SurveyDynamic::model($surveyId)->findByPk($this->responseId);
                 $columns = $this->getColumns();
                 foreach ($columns as &$column)
                 {

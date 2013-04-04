@@ -420,7 +420,7 @@ class tokens extends Survey_Common_Action
                 if(isset($token['token']) && $token['token'])
                     $visibleTokens[] = $token['token'];
             }
-            $answers = Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$visibleTokens));
+            $answers = SurveyDynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$visibleTokens));
             foreach($answers as $answer) {
                 $answeredTokens[$answer['token']] = $answer['token'];
             }

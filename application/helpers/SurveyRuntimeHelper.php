@@ -290,7 +290,7 @@ class SurveyRuntimeHelper {
                 }
                 else 
                 {
-                    // TODO : update lastpage to $_SESSION[$LEMsessid]['step'] in Survey_dynamic
+                    // TODO : update lastpage to $_SESSION[$LEMsessid]['step'] in SurveyDynamic
                 }
             }
 

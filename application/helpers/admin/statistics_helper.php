@@ -297,7 +297,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
 */
 function getQuestionMapData($sField, $qsid)
 {
-    $aresult = Survey_dynamic::model($qsid)->findAll();
+    $aresult = SurveyDynamic::model($qsid)->findAll();
 
     $d = array ();
 
@@ -2232,7 +2232,7 @@ class statistics_helper {
             }
             if (incompleteAnsFilterState() == "incomplete") {$criteria->addCondition("submitdate IS NULL");}
             elseif (incompleteAnsFilterState() == "complete") {$criteria->addCondition("submitdate IS NOT NULL");}
-            $multiNotDisplayed=Survey_dynamic::model($surveyid)->count($criteria);
+            $multiNotDisplayed=SurveyDynamic::model($surveyid)->count($criteria);
             if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == "on") )
             {
                 //counter
@@ -3623,7 +3623,7 @@ class statistics_helper {
             if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
             $search['order']=$sortby.' '.$sortmethod;
         }
-        $results=Survey_dynamic::model($surveyid)->findAll($search);
+        $results=SurveyDynamic::model($surveyid)->findAll($search);
         $output=array();
         foreach($results as $row) {
             $output[]=array("id"=>$row['id'], "value"=>$row[$column]);

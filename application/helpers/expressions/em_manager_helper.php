@@ -4465,8 +4465,8 @@
                 }
 
                 $sdata = array_filter($sdata);
-                Survey_dynamic::sid($this->sid);
-                $oSurvey = new Survey_dynamic;
+                SurveyDynamic::sid($this->sid);
+                $oSurvey = new SurveyDynamic;
                 
                 $iNewID = $oSurvey->insertRecords($sdata); 
                 if ($iNewID)    // Checked

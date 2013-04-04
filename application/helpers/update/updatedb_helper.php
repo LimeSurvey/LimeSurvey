@@ -2074,7 +2074,7 @@ function upgradeSurveyTables164()
     } else {
         foreach ( $surveyidresult as $sv )
         {
-            $token = Survey_dynamic::model($sv['sid'])->getTableSchema()->getColumn('token');
+            $token = SurveyDynamic::model($sv['sid'])->getTableSchema()->getColumn('token');
             if (is_null($token)) {
                 addColumn('{{survey_'.$sv['sid'].'}}','token','varchar(36)');
             } elseif ($token->size < 36) {

@@ -154,7 +154,7 @@ class Save {
                     "startlanguage" => $_SESSION['survey_'.$surveyid]['s_lang'],
                     "refurl" => getenv("HTTP_REFERER")
                 );
-                if (Survey_dynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
+                if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
                 {
                     $srid = getLastInsertID('{{survey_' . $surveyid . '}}');
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;

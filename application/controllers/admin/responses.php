@@ -167,9 +167,9 @@ class responses extends Survey_Common_Action
                 $iId = 1;
             }
 
-            $exist = Survey_dynamic::model($iSurveyID)->exist($iId);
-            $next = Survey_dynamic::model($iSurveyID)->next($iId,true);
-            $previous = Survey_dynamic::model($iSurveyID)->previous($iId,true);
+            $exist = SurveyDynamic::model($iSurveyID)->exist($iId);
+            $next = SurveyDynamic::model($iSurveyID)->next($iId,true);
+            $previous = SurveyDynamic::model($iSurveyID)->previous($iId,true);
             $aData['exist'] = $exist;
             $aData['next'] = $next;
             $aData['previous'] = $previous;
@@ -182,7 +182,7 @@ class responses extends Survey_Common_Action
                 $oCriteria = new CDbCriteria();
                 if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
                 {
-                    $oCriteria = Survey_dynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
+                    $oCriteria = SurveyDynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
                 }
                 // If admin ask an specific response, then show it
                 // Don't add incompleteAnsFilterState
@@ -191,14 +191,14 @@ class responses extends Survey_Common_Action
     #            elseif (incompleteAnsFilterState() == 'complete')
     #                $oCriteria->addCondition('submitdate >= ' . mktime(0, 0, 0, 1, 1, 1980));
                 $oCriteria->addCondition("id = {$iId}");
-                $iIdresult = Survey_dynamic::model($iSurveyID)->findAllAsArray($oCriteria);
+                $iIdresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
                 foreach ($iIdresult as $iIdrow)
                 {
                     $iId = $iIdrow['id'];
                     $rlanguage = $iIdrow['startlanguage'];
                 }
-                $next = Survey_dynamic::model($iSurveyID)->next($iId);
-                $previous = Survey_dynamic::model($iSurveyID)->previous($iId);
+                $next = SurveyDynamic::model($iSurveyID)->next($iId);
+                $previous = SurveyDynamic::model($iSurveyID)->previous($iId);
 
                 if (isset($rlanguage))
                 {
@@ -300,8 +300,8 @@ class responses extends Survey_Common_Action
         }
 
             $clang = $aData['clang'];
-            $aData['num_total_answers'] = Survey_dynamic::model($iSurveyID)->count();
-            $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
+            $aData['num_total_answers'] = SurveyDynamic::model($iSurveyID)->count();
+            $aData['num_completed_answers'] = SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
             if (tableExists('{{tokens_' . $iSurveyID . '}}') && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
             {
                 $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}');
@@ -331,7 +331,7 @@ class responses extends Survey_Common_Action
                 // delete the files 
                 $this->_deleteFiles($iSurveyID,array($iResponseID),$aData['language']);
                 // delete the row
-                Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
+                SurveyDynamic::model($iSurveyID)->deleteByPk($iResponseID);
                 // delete timings if savetimings is set
                 if($aData['surveyinfo']['savetimings'] == "Y"){
                     SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
@@ -355,7 +355,7 @@ class responses extends Survey_Common_Action
                     foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
                     {
                         $iResponseID= (int) $iResponseID;
-                        Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
+                        SurveyDynamic::model($iSurveyID)->deleteByPk($iResponseID);
                         // delete timings if savetimings is set
                         if($aData['surveyinfo']['savetimings'] == "Y"){
                             SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
@@ -397,7 +397,7 @@ class responses extends Survey_Common_Action
                 $downloadindividualfile = Yii::app()->request->getParam('downloadindividualfile');
                 $fieldname = Yii::app()->request->getParam('fieldname');
                 
-                $oRow = Survey_dynamic::model($iSurveyID)->findByAttributes(array('id' => $iId));
+                $oRow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id' => $iId));
                 $phparray = json_decode_ls($oRow->$fieldname);
 
                 for ($i = 0; $i < count($phparray); $i++)
@@ -511,7 +511,7 @@ class responses extends Survey_Common_Action
             //Create the query
             if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
             {
-                $oCriteria = Survey_dynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
+                $oCriteria = SurveyDynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
             }
 
             if (incompleteAnsFilterState() == "incomplete")
@@ -523,7 +523,7 @@ class responses extends Survey_Common_Action
                 $oCriteria->addCondition("submitdate IS NOT NULL");
             }
 
-            $dtcount = Survey_dynamic::model($iSurveyID)->count($oCriteria);// or die("Couldn't get response data<br />");
+            $dtcount = SurveyDynamic::model($iSurveyID)->count($oCriteria);// or die("Couldn't get response data<br />");
 
             if ($limit > $dtcount)
             {
@@ -542,7 +542,7 @@ class responses extends Survey_Common_Action
             $oCriteria->offset = $start;
             $oCriteria->limit = $limit;
 
-            $dtresult = Survey_dynamic::model($iSurveyID)->findAllAsArray($oCriteria);
+            $dtresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
 
             $dtcount2 = count($dtresult);
             $cells = $fncount + 1;
@@ -626,7 +626,7 @@ class responses extends Survey_Common_Action
             && Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete'))
         {
             $iResponseID=(int) Yii::app()->request->getPost('deleteanswer');
-            Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
+            SurveyDynamic::model($iSurveyID)->deleteByPk($iResponseID);
             SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
         }
 
@@ -638,7 +638,7 @@ class responses extends Survey_Common_Action
                 foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
                 {
                     $iResponseID=(int) $iResponseID;
-                    Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
+                    SurveyDynamic::model($iSurveyID)->deleteByPk($iResponseID);
                     SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
                 }
             }
@@ -775,8 +775,8 @@ class responses extends Survey_Common_Action
 
         //interview Time statistics
         $aData['statistics'] = SurveyTimingDynamic::model($iSurveyId)->statistics();
-        $aData['num_total_answers'] = Survey_dynamic::model($iSurveyID)->count();
-        $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
+        $aData['num_total_answers'] = SurveyDynamic::model($iSurveyID)->count();
+        $aData['num_completed_answers'] = SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
         $aViewUrls[] = 'browsetimefooter_view';
         $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
@@ -806,7 +806,7 @@ class responses extends Survey_Common_Action
             if (!empty($fuqtquestions))
             {
                 // find all responses (filenames) to the fuqt questions
-                $filearray = Survey_dynamic::model($iSurveyID)->findAllByAttributes(array('id' => $responseId));
+                $filearray = SurveyDynamic::model($iSurveyID)->findAllByAttributes(array('id' => $responseId));
                 $filecount = 0;
                 foreach ($filearray as $metadata)
                 {
@@ -856,7 +856,7 @@ class responses extends Survey_Common_Action
         {
             $responseId = (int) $responseId; // sanitize the value
 
-            $filearray = Survey_dynamic::model($iSurveyID)->findAllByAttributes(array('id' => $responseId)) or die('Could not download response');
+            $filearray = SurveyDynamic::model($iSurveyID)->findAllByAttributes(array('id' => $responseId)) or die('Could not download response');
             $metadata = array();
             $filecount = 0;
             foreach ($filearray as $metadata)

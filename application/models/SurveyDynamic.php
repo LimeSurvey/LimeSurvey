@@ -13,7 +13,7 @@
   * 	Files Purpose: lots of common functions
  */
 
-class Survey_dynamic extends LSActiveRecord
+class SurveyDynamic extends LSActiveRecord
 {
     protected static $sid = 0;
 
@@ -23,7 +23,7 @@ class Survey_dynamic extends LSActiveRecord
      * @static
      * @access public
      * @param int $surveyid
-     * @return Survey_dynamic
+     * @return SurveyDynamic
      */
     public static function model($sid = NULL)
     {         
@@ -116,7 +116,7 @@ class Survey_dynamic extends LSActiveRecord
      */
     public static function deleteSomeRecords($condition = FALSE)
     {
-        $survey = new Survey_dynamic;
+        $survey = new SurveyDynamic;
         $criteria = new CDbCriteria;
 
         if ($condition != FALSE)
