@@ -978,100 +978,25 @@ function do_5pointchoice($ia)
     }
     $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
     $inputnames[]=$ia[1];
-    if($aQuestionAttributes['slider_rating']==1){
-        header_includes('jquery.rating.css','css');
-        header_includes('jquery.rating.js','js');
-        $answer.="
-        <script type=\"text/javascript\">
-        document.write('";
-        $answer.='<ul id="'.$id.'div" class="answers-list stars-wrapper"><li class="item-list answer-star"><input type="radio" id="stars1" name="stars" class="'.$id.'st" value="1"/></li><li class="item-list answer-star"><input type="radio" id="stars2" name="stars" class="'.$id.'st" value="2"/></li><li class="item-list answer-star"><input type="radio" name="stars" id="stars3" class="'.$id.'st" value="3"/></li><li class="item-list answer-star"><input type="radio" id="stars4" name="stars" class="'.$id.'st" value="4"/></li><li class="item-list answer-star"><input type="radio" name="stars" id="stars5" class="'.$id.'st" value="5"/></li><li class="item-list answer-star"></u>';
-        $answer.="');
-        </script>
-        ";
-        $answer.="
-        <script type=\"text/javascript\">
-        $('#$id').hide();
-        var checked = $('#$id input:checked').attr('value');
-        if(checked!=''){
-        $('#stars'+checked).attr('checked','checked');
-        }
-        $('.{$id}st').rating({
-        callback: function(value,link){
-        if(value==undefined || value==''){
-        $('#$id input').each(function(){ $(this).removeAttr('checked');});
-        $('#{$id} #NoAnswer').attr('checked','checked');
-        }
-        else{
-        $('#$id input').each(function(){ $(this).removeAttr('checked');});
-        $('#answer$ia[1]'+value).attr('checked','checked');
-        }
-        checkconditions(value,'$ia[1]','radio');
-        }
 
-        });
-        </script>
-        ";
+    if($aQuestionAttributes['slider_rating']==1){
+        header_includes('star-rating.css','css');
+        header_includes('star-rating.js','js');
+        $answer .= "<script type='text/javascript'>\n"
+        . "  <!--\n"
+        ." doRatingStar({$ia[0]});\n"
+        ." -->\n"
+        ."</script>\n";
     }
 
     if($aQuestionAttributes['slider_rating']==2){
-        if(!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) OR $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]==''){
-            $value=1;
-        }else{
-            $value=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-        }
-        $answer.="
-        <script type=\"text/javascript\">
-        document.write('";
-        $answer.="<div style=\"float:left;\">'+
-        '<div style=\"text-align:center; margin-bottom:6px; width:370px;\"><div style=\"width:2%; float:left;\">1</div><div style=\"width:46%;float:left;\">2</div><div style=\"width:4%;float:left;\">3</div><div style=\"width:46%;float:left;\">4</div><div style=\"width:2%;float:left;\">5</div></div><br/>'+
-        '<div id=\"{$id}sliderBg\" style=\"background-image:url(\'{$imageurl}/sliderBg.png\'); text-align:center; background-repeat:no-repeat; height:22px; width:396px;\">'+
-        '<center>'+
-        '<div id=\"{$id}slider\" style=\"width:365px;\"></div>'+
-        '</center>'+
-        '</div></div>'+
-        '<div id=\"{$id}emoticon\" style=\"text-align:left; margin:10px; padding-left:10px;\"><img id=\"{$id}img1\" style=\"margin-left:10px;\" src=\".{$imageurl}/emoticons/{$value}.png\"/><img id=\"{$id}img2\" style=\"margin-left:-31px;margin-top:-31px;\" src=\"{$imageurl}/emoticons/{$value}.png\" />'+
-        '</div>";
-        $answer.="');
-        </script>
-        ";
-        $answer.="
-        <script type=\"text/javascript\">
-        $('#$id').hide();
-        var value=$value;
-        var checked = $('#$id input:checked').attr('value');
-        if(checked!=''){
-        value=checked;
-        }
-        var time=200;
-        var old=value;
-        $('#{$id}slider').slider({
-        value: value,
-        min: 1,
-        max: 5,
-        step: 1,
-        slide: function(event,ui){
-        $('#{$id}img2').attr('src','{$imageurl}/emoticons/'+ui.value+'.png');
-        $('#{$id}img2').fadeIn(time);
-        $('#$id input').each(function(){ $(this).removeAttr('checked');});
-        $('#answer$ia[1]'+ui.value).attr('checked','checked');
-        $('#{$id}img1').fadeOut(time,function(){
-        $('#{$id}img1').attr('src',$('#{$id}img2').attr('src'));
-        $('#{$id}img1').show();
-        $('#{$id}img2').hide();
-        });
-        $checkconditionFunction(ui.value,'$ia[1]','radio');
-        }
-        });
-        $('#{$id}slider a').css('background-image', 'url(\'{$imageurl}/slider.png\')');
-        $('#{$id}slider a').css('width', '11px');
-        $('#{$id}slider a').css('height', '28px');
-        $('#{$id}slider a').css('border', 'none');
-        //$('#{$id}slider').css('background-image', 'url(\'{$imageurl}/sliderBg.png\')');
-        $('#{$id}slider').css('visibility','hidden');
-        $('#{$id}slider a').css('visibility', 'visible');
-        </script>
-        ";
-
+        header_includes('slider-rating.css','css');
+        header_includes('slider-rating.js','js');
+        $answer .= "<script type='text/javascript'>\n"
+        . " <!--\n"
+        ." doRatingSlider({$ia[0]});\n"
+        ." -->\n"
+        ."</script>\n";
     }
     return array($answer, $inputnames);
 }
