@@ -45,7 +45,7 @@ class LSUserIdentity extends CUserIdentity {
         $result = new LSAuthResult(self::ERROR_NONE);
         
         // Check if the ip is locked out
-        if (Failed_login_attempts::model()->isLockedOut()) {
+        if (FailedLoginAttempt::model()->isLockedOut()) {
             $message = sprintf(gT('You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
             $result->setError(self::ERROR_IP_LOCKED_OUT, $message);
         }
@@ -75,7 +75,7 @@ class LSUserIdentity extends CUserIdentity {
         } else {
             // Log a failed attempt
             $userHostAddress = App()->request->getUserHostAddress();
-            Failed_login_attempts::model()->addAttempt($userHostAddress);
+            FailedLoginAttempt::model()->addAttempt($userHostAddress);
             App()->session->regenerateID(); // Handled on login by Yii
         }
         

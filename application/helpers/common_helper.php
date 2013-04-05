@@ -507,7 +507,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
 {
     $clang = Yii::app()->lang;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $qrows = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang, 'parent_qid' => 0),array('order'=>'question_order'));
+    $qrows = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang, 'parent_qid' => 0),array('order'=>'question_order'));
 
     if (!isset($sQuestionselecter)) {$sQuestionselecter="";}
     foreach ($qrows as $qrow)
@@ -561,7 +561,7 @@ function getGidPrevious($surveyid, $gid)
 
     if (!$surveyid) {$surveyid=returnGlobal('sid');}
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $qresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
+    $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
 
     $i = 0;
     $iPrev = -1;
@@ -590,7 +590,7 @@ function getQidPrevious($surveyid, $gid, $qid)
 {
     $clang = Yii::app()->lang;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $qrows = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid'=>0),array('order'=>'question_order'));
+    $qrows = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid'=>0),array('order'=>'question_order'));
 
     $i = 0;
     $iPrev = -1;
@@ -627,7 +627,7 @@ function getGidNext($surveyid, $gid)
 
     //$gquery = "SELECT gid FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
-    $qresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
+    $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
 
     $GidNext="";
     $i = 0;
@@ -659,7 +659,7 @@ function getQidNext($surveyid, $gid, $qid)
 {
     $clang = Yii::app()->lang;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $qrows = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid' => 0), array('order'=>'question_order'));
+    $qrows = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid' => 0), array('order'=>'question_order'));
 
 
     $i = 0;
@@ -746,7 +746,7 @@ function getGroupSum($surveyid, $lang)
 {
     //$condn = "WHERE sid=".$surveyid." AND language='".$lang."'"; //Getting a count of questions for this survey
     $condn = array('sid'=>$surveyid,'language'=>$lang);
-    $sumresult3 = count(Groups::model()->findAllByAttributes($condn)); //Checked)
+    $sumresult3 = count(QuestionGroup::model()->findAllByAttributes($condn)); //Checked)
 
     return $sumresult3 ;
 }
@@ -762,7 +762,7 @@ function getMaxGroupOrder($surveyid)
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
     //$max_sql = "SELECT max( group_order ) AS max FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}'" ;
-    $query = Groups::model()->find(array('order' => 'group_order desc'));
+    $query = QuestionGroup::model()->find(array('order' => 'group_order desc'));
     $current_max = !is_null($query) ? $query->group_order : '';
 
     if($current_max!="")
@@ -786,7 +786,7 @@ function getGroupOrder($surveyid,$gid)
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
     //$grporder_sql = "SELECT group_order FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}' AND gid=$gid" ;
-    $grporder_result = Groups::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang)); //Checked
+    $grporder_result = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang)); //Checked
     $grporder_row = $grporder_result->attributes ;
     $group_order = $grporder_row['group_order'];
     if($group_order=="")
@@ -1170,7 +1170,7 @@ function getGroupList3($gid,$surveyid)
 
     //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
-    $gidresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
+    $gidresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
 
     foreach ($gidresult as $gv)
     {
@@ -1198,7 +1198,7 @@ function getGroupListLang($gid, $language, $surveyid)
     $groupselecter="";
     if (!$surveyid) {$surveyid=returnGlobal('sid');}
 
-    $gidresult = Groups::model()->findAll(array('condition'=>'sid=:surveyid AND language=:language',
+    $gidresult = QuestionGroup::model()->findAll(array('condition'=>'sid=:surveyid AND language=:language',
     'order'=>'group_order',
     'params'=>array(':surveyid'=>$surveyid,':language'=>$language)));   //Checked)
     foreach ($gidresult as $gv)
@@ -1480,12 +1480,12 @@ function fixSortOrderAnswers($qid,$surveyid=null) //Function rewrites the sortor
     $qid=sanitize_int($qid);
     $baselang = Survey::model()->findByPk($surveyid)->language;
 
-    Answers::model()->updateSortOrder($qid,$baselang);
+    Answer::model()->updateSortOrder($qid,$baselang);
 }
 
 /**
 * This function rewrites the sortorder for questions inside the named group
-* REMOVED the 2012-08-08 : replaced by Questions::model()->updateQuestionOrder
+* REMOVED the 2012-08-08 : replaced by Question::model()->updateQuestionOrder
 * @param integer $groupid the group id
 * @param integer $surveyid the survey id
 */
@@ -1496,7 +1496,7 @@ function fixSortOrderQuestions($groupid, $surveyid) //Function rewrites the sort
     $surveyid = sanitize_int($surveyid);
     $baselang = Survey::model()->findByPk($surveyid)->language;
 
-    $questions = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $baselang));
+    $questions = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $baselang));
     $p = 0;
     foreach ($questions as $question)
     {
@@ -1515,13 +1515,13 @@ function shiftOrderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortor
 
     $baselang = Survey::model()->findByPk($sid)->language;
 
-    Questions::model()->updateQuestionOrder($gid,$baselang,$shiftvalue);
+    Question::model()->updateQuestionOrder($gid,$baselang,$shiftvalue);
 }
 
 function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for groups
 {
     $baselang = Survey::model()->findByPk($surveyid)->language;
-    Groups::model()->updateGroupOrder($surveyid,$baselang);
+    QuestionGroup::model()->updateGroupOrder($surveyid,$baselang);
 }
 
 function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites the cfieldname for a question after group change
@@ -1530,8 +1530,8 @@ function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites th
     $qid=sanitize_int($qid);
     $oldgid=sanitize_int($oldgid);
     $newgid=sanitize_int($newgid);
-    Conditions::model()->updateCFieldName($surveyid,$qid,$oldgid,$newgid);
-    // TMSW Conditions->Relevance:  Call LEM->ConvertConditionsToRelevance() when done
+    Condition::model()->updateCFieldName($surveyid,$qid,$oldgid,$newgid);
+    // TMSW Condition->Relevance:  Call LEM->ConvertConditionsToRelevance() when done
 }
 
 
@@ -1642,7 +1642,7 @@ function getSIDGIDQIDAIDType($fieldcode)
         $fieldtoselect = array('type');
         $condition = "qid = ".$fqid." AND language='".$s_lang."'";
 
-        $result = Questions::model()->findAllByAttributes(array('qid' => $fqid, 'language' => $s_lang));
+        $result = Question::model()->findAllByAttributes(array('qid' => $fqid, 'language' => $s_lang));
 
         if ( count($result) == 0 )
         { // question doesn't exist
@@ -1714,7 +1714,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
             case "^":
             case "I":
             case "R":
-                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage);
+                $result = Answer::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage);
                 foreach($result as $row)
                 {
                     $this_answer=$row['answer'];
@@ -1776,7 +1776,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 {
                     $iScaleID=0;
                 }
-                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage,$iScaleID);
+                $result = Answer::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage,$iScaleID);
                 foreach($result as $row)
                 {
                     $this_answer=$row['answer'];
@@ -2103,7 +2103,7 @@ function validateTemplateDir($sTemplateName)
                 case "K": // Multiple Numerical
                 case "Q": // Multiple Short Text
                     //get answers
-                    $result = Questions::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
+                    $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
 
                     //go through all the (multiple) answers
                     foreach($result as $row)
@@ -2119,7 +2119,7 @@ function validateTemplateDir($sTemplateName)
                 case "F": // FlEXIBLE ARRAY
                 case "H": // ARRAY (By Column)
                     //get answers
-                    $result = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
+                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
 
                     //go through all the (multiple) answers
                     foreach($result as $row)
@@ -2137,11 +2137,11 @@ function validateTemplateDir($sTemplateName)
                     break;
                 case ";":  //ARRAY (Multi Flex) (Text)
                 case ":":  //ARRAY (Multi Flex) (Numbers)
-                    $result = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 0", 'question_order');
+                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 0", 'question_order');
                    
                     foreach($result as $row)
                     {
-                        $fresult = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 1", 'question_order');
+                        $fresult = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 1", 'question_order');
                         foreach($fresult as $frow)
                         {
                             $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
@@ -2151,7 +2151,7 @@ function validateTemplateDir($sTemplateName)
                     break;
                 case "R": //RANKING
                     //get some answers
-                    $result = Answers::model()->getQuestionsForStatistics('code, answer', "qid=$flt[qid] AND language = '{$sLanguage}'", 'sortorder, answer');
+                    $result = Answer::model()->getQuestionsForStatistics('code, answer', "qid=$flt[qid] AND language = '{$sLanguage}'", 'sortorder, answer');
                     //get number of answers
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     $i=0;
@@ -2168,7 +2168,7 @@ function validateTemplateDir($sTemplateName)
                     break;
                 case "1": // MULTI SCALE
                     //get answers
-                    $result = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
+                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
                     //loop through answers
                     foreach($result as $row)
                     {
@@ -2258,7 +2258,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
 
     // Select which question IDs have default values
-    $_aDefaultValues = Defaultvalues::model()->with(array('question' => array('condition' => 'question.sid=' . $surveyid)))->findAll();
+    $_aDefaultValues = DefaultValue::model()->with(array('question' => array('condition' => 'question.sid=' . $surveyid)))->findAll();
     $aDefaultValues = array();
     foreach ($_aDefaultValues as $k => $v)
         $aDefaultValues[] = $v->qid;
@@ -2403,7 +2403,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $_groupOrder = $arow['group_order'];
             ++$groupSeq;
         }
-        // Conditions indicators are obsolete with EM.  However, they are so tightly coupled into LS code that easider to just set values to 'N' for now and refactor later.
+        // Condition indicators are obsolete with EM.  However, they are so tightly coupled into LS code that easider to just set values to 'N' for now and refactor later.
         $conditions = 'N';
         $usedinconditions = 'N';
 
@@ -2590,7 +2590,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         elseif ($arow['type'] == "R")
         {
             //MULTI ENTRY
-            $data = Answers::model()->findAllByAttributes(array('qid' => $arow['qid'], 'language' => $sLanguage));
+            $data = Answer::model()->findAllByAttributes(array('qid' => $arow['qid'], 'language' => $sLanguage));
             $data = count($data);
             $slots=$data;
             for ($i=1; $i<=$slots; $i++)
@@ -2906,7 +2906,7 @@ function getSavedCount($surveyid)
 {
     $surveyid=(int)$surveyid;
 
-    return Saved_control::model()->getCountOfAll($surveyid);
+    return SavedControl::model()->getCountOfAll($surveyid);
 }
 
 /**
@@ -2929,7 +2929,7 @@ function buildLabelSetCheckSumArray()
     /**$query = "SELECT lid
     FROM ".db_table_name('labelsets')."
     ORDER BY lid"; */
-    $result = Labelsets::model()->getLID();//($query) or safeDie("safe_died collecting labelset ids<br />$query<br />");  //Checked)
+    $result = LabelSet::model()->getLID();//($query) or safeDie("safe_died collecting labelset ids<br />$query<br />");  //Checked)
     $csarray=array();
     foreach($result as $row)
     {
@@ -2964,7 +2964,7 @@ function getQuestionAttributeValues($iQID)
     if (isset($cache[$iQID])) {
         return $cache[$iQID];
     }
-    $row = Questions::model()->findByAttributes(array('qid' => $iQID)); //, 'parent_qid' => 0), array('group' => 'type')
+    $row = Question::model()->findByAttributes(array('qid' => $iQID)); //, 'parent_qid' => 0), array('group' => 'type')
     if (empty($row)) // Question was deleted while running the survey
     {
         $cache[$iQID] = false;
@@ -3007,7 +3007,7 @@ function getQuestionAttributeValues($iQID)
         }
     }
 
-    $result = Question_attributes::model()->findAllByAttributes(array('qid' => $iQID));
+    $result = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQID));
     foreach ($result as $row)
     {
         $row = $row->attributes;
@@ -4664,7 +4664,7 @@ function getArrayFiltersForQuestion($qid)
                 // we found the target question, now we need to know what the answers where, we know its a multi!
                 $fields[0]=sanitize_int($fields[0]);
                 //$query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".Yii::app()->session[$surveyid]['s_lang']."' order by question_order";
-                $qresult=Questions::model()->findAllByAttributes(array("parent_qid"=> $fields[0], "language"=> Yii::app()->session[$surveyid]['s_lang']), array('order' => "question_order"));
+                $qresult=Question::model()->findAllByAttributes(array("parent_qid"=> $fields[0], "language"=> Yii::app()->session[$surveyid]['s_lang']), array('order' => "question_order"));
                 $selected = array();
                 //while ($code = $qresult->fetchRow())
                 foreach ($qresult->readAll() as $code)
@@ -4675,7 +4675,7 @@ function getArrayFiltersForQuestion($qid)
 
                 //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                 //$query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
-                $qresult=Questions::model()->findAllByAttributes(array("qid"=>$fields[0]));
+                $qresult=Question::model()->findAllByAttributes(array("qid"=>$fields[0]));
                 foreach ($qresult->readAll() as $row) {$other=$row['other'];}
                 if($other == "Y")
                 {
@@ -4700,7 +4700,7 @@ function getGroupsByQuestion($surveyid) {
     $output=array();
 
     $surveyid=sanitize_int($surveyid);
-    $result=Questions::model()->findAllByAttributes(array("sid"=>$surveyid));
+    $result=Question::model()->findAllByAttributes(array("sid"=>$surveyid));
 
     foreach ($qresult->readAll() as $val)
     {
@@ -6079,14 +6079,14 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
             'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
             'AutoloadUrl' => $survey_quotas['autoload_url']));
 
-            $result_qe = Quota_members::model()->findAllByAttributes(array('quota_id'=>$survey_quotas['id']));
+            $result_qe = QuotaMember::model()->findAllByAttributes(array('quota_id'=>$survey_quotas['id']));
             $quota_info[$x]['members'] = array();
             if (count($result_qe) > 0)
             {
                 foreach ($result_qe as $quota_entry)
                 {
                     $quota_entry = $quota_entry->attributes;
-                    $result_quest=Questions::model()->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
+                    $result_quest=Question::model()->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
                     $qtype=$result_quest->attributes;
 
                     $fieldnames = "0";
@@ -6240,7 +6240,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
             'gid' => $gid,
             'language' => $language
             );
-            $oGroup = Groups::model()->findByAttributes($where);
+            $oGroup = QuestionGroup::model()->findByAttributes($where);
             $oGroup->description= $description;
             $oGroup->group_name= $gpname;
             $oGroup->save();
@@ -6285,13 +6285,13 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
             'language' => $language
             );
 
-            Questions::model()->updateByPk($where,$data);
+            Question::model()->updateByPk($where,$data);
 
         } // Enf if modified
     } // end while qentry
 
     # translate 'answer' INSERTANS tags in answers
-    $result=Answers::model()->oldNewInsertansTags($newsid,$oldsid);
+    $result=Answer::model()->oldNewInsertansTags($newsid,$oldsid);
 
     //while ($qentry = $res->FetchRow())
     foreach ($result as $qentry)
@@ -6322,7 +6322,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
             'language' => $language
             );
 
-            Answers::model()->update($data,$where);
+            Answer::model()->update($data,$where);
 
         } // Enf if modified
     } // end while qentry
@@ -6503,7 +6503,7 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
         }
     }
 
-    // Remove From Answers Table
+    // Remove From Answer Table
     $query = "SELECT qid FROM {{questions}} WHERE sid='{$sid}' AND $sqllang";
     $qidresult = dbExecuteAssoc($query);
 
@@ -6519,7 +6519,7 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
     $query = "DELETE FROM {{questions}} WHERE sid='{$sid}' AND $sqllang";
     dbExecuteAssoc($query);
 
-    // Remove From Groups Table
+    // Remove From QuestionGroup Table
     $query = "DELETE FROM {{groups}} WHERE sid='{$sid}' AND $sqllang";
     dbExecuteAssoc($query);
 
@@ -6743,7 +6743,7 @@ function getLastInsertID($sTableName)
     }
 }
 
-// TMSW Conditions->Relevance:  This function is not needed?  Optionally replace this with call to EM to get similar info
+// TMSW Condition->Relevance:  This function is not needed?  Optionally replace this with call to EM to get similar info
 /**
 * getGroupDepsForConditions() get Dependencies between groups caused by conditions
 * @param string $sid - the currently selected survey
@@ -6861,7 +6861,7 @@ function getGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
     return null;
 }
 
-// TMSW Conditions->Relevance:  This function is not needed?  Optionally replace this with call to EM to get similar info
+// TMSW Condition->Relevance:  This function is not needed?  Optionally replace this with call to EM to get similar info
 /**
 * getQuestDepsForConditions() get Dependencies between groups caused by conditions
 * @param string $sid - the currently selected survey
@@ -6936,7 +6936,7 @@ function getQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
     return null;
 }
 
-// TMSW Conditions->Relevance:  This function is not needed - could replace with a message from EM output.
+// TMSW Condition->Relevance:  This function is not needed - could replace with a message from EM output.
 /**
 * checkMoveQuestionConstraintsForConditions()
 * @param string $sid - the currently selected survey
@@ -7253,7 +7253,7 @@ function getLabelSets($languages = null)
         (languages like :lang_like3_$k))");
     }
 
-    $result = Labelsets::model()->findAll($criteria);
+    $result = LabelSet::model()->findAll($criteria);
     $labelsets=array();
     foreach ($result as $row)
         $labelsets[] = array($row->lid, $row->label_name);

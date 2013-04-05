@@ -178,7 +178,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData = array_merge($aData, $this->_tabPanelIntegration($esrow));
         $aData = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
 
-        $oResult = Questions::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
+        $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
 
         $aData['questions'] = $oResult;
         $aData['display']['menu_bars']['surveysummary'] = "editsurveysettings";
@@ -342,7 +342,7 @@ class SurveyAdmin extends Survey_Common_Action
             
 
             // IF there are any records in the saved_control table related to this survey, they have to be deleted
-            $result = Saved_control::model()->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
+            $result = SavedControl::model()->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
             $sOldSurveyTableName = Yii::app()->db->tablePrefix."survey_{$iSurveyID}";
             $sNewSurveyTableName = Yii::app()->db->tablePrefix."old_survey_{$iSurveyID}_{$date}";
             $aData['sNewSurveyTableName']=$sNewSurveyTableName;
@@ -617,7 +617,7 @@ class SurveyAdmin extends Survey_Common_Action
             else
             {
                 $condition = "sid={$rows['sid']} AND language='" . $rows['language'] . "'";
-                $questionsCountResult = Questions::model()->count($condition);
+                $questionsCountResult = Question::model()->count($condition);
 
                 if ($questionsCountResult>0 && Permission::model()->hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
@@ -952,8 +952,8 @@ class SurveyAdmin extends Survey_Common_Action
                 $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName,NULL,(isset($_POST['translinksfields'])));
                 if (isset($exclude['conditions']))
                 {
-                    Questions::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);
-                    Groups::model()->updateAll(array('grelevance'=>'1'),'sid='.$aImportResults['newsid']);
+                    Question::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);
+                    QuestionGroup::model()->updateAll(array('grelevance'=>'1'),'sid='.$aImportResults['newsid']);
                 }
                 if (!isset($exclude['permissions']))
                 {
@@ -1008,7 +1008,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);
 
-        $aGrouplist = Groups::model()->getGroups($iSurveyID);
+        $aGrouplist = QuestionGroup::model()->getGroups($iSurveyID);
         $initializedReplacementFields = false;
 
         foreach ($aGrouplist as $iGID => $aGroup)
@@ -1019,7 +1019,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $initializedReplacementFields = true;
             }
 
-            $oQuestionData = Questions::model()->getQuestions($iSurveyID, $aGroup['gid'], $sBaseLanguage);
+            $oQuestionData = Question::model()->getQuestions($iSurveyID, $aGroup['gid'], $sBaseLanguage);
 
             $qs = array();
             $junk = array();
@@ -1055,7 +1055,7 @@ class SurveyAdmin extends Survey_Common_Action
         foreach ($AOrgData['list'] as $ID => $parent)
         {
             if ($parent == 'root' && $ID[0] == 'g') {
-                Groups::model()->updateAll(array('group_order' => $grouporder), 'gid=:gid', array(':gid' => (int)substr($ID, 1)));
+                QuestionGroup::model()->updateAll(array('group_order' => $grouporder), 'gid=:gid', array(':gid' => (int)substr($ID, 1)));
                 $grouporder++;
             }
             elseif ($ID[0] == 'q')
@@ -1063,9 +1063,9 @@ class SurveyAdmin extends Survey_Common_Action
                 if (!isset($questionorder[(int)substr($parent, 1)]))
                     $questionorder[(int)substr($parent, 1)] = 0;
 
-                Questions::model()->updateAll(array('question_order' => $questionorder[(int)substr($parent, 1)], 'gid' => (int)substr($parent, 1)), 'qid=:qid', array(':qid' => (int)substr($ID, 1)));
+                Question::model()->updateAll(array('question_order' => $questionorder[(int)substr($parent, 1)], 'gid' => (int)substr($parent, 1)), 'qid=:qid', array(':qid' => (int)substr($ID, 1)));
 
-                Questions::model()->updateAll(array('gid' => (int)substr($parent, 1)), 'parent_qid=:parent_qid', array(':parent_qid' => (int)substr($ID, 1)));
+                Question::model()->updateAll(array('gid' => (int)substr($parent, 1)), 'parent_qid=:parent_qid', array(':parent_qid' => (int)substr($ID, 1)));
 
                 $questionorder[(int)substr($parent, 1)]++;
             }

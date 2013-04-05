@@ -117,7 +117,7 @@ class question extends Survey_Common_Action
         $baselang = Survey::model()->findByPk($surveyid)->language;
         array_unshift($questlangs, $baselang);
 
-        $questionrow = Questions::model()->findByAttributes(array(
+        $questionrow = Question::model()->findByAttributes(array(
         'qid' => $qid,
         'gid' => $gid,
         'language' => $baselang
@@ -137,7 +137,7 @@ class question extends Survey_Common_Action
                 {
                     $langopts[$language][$questionrow['type']][$scale_id] = array();
 
-                    $defaultvalue = Defaultvalues::model()->findByAttributes(array(
+                    $defaultvalue = DefaultValue::model()->findByAttributes(array(
                     'specialtype' => '',
                     'qid' => $qid,
                     'scale_id' => $scale_id,
@@ -148,7 +148,7 @@ class question extends Survey_Common_Action
 
                     $langopts[$language][$questionrow['type']][$scale_id]['defaultvalue'] = $defaultvalue;
 
-                    $answerresult = Answers::model()->findAllByAttributes(array(
+                    $answerresult = Answer::model()->findAllByAttributes(array(
                     'qid' => $qid,
                     'language' => $language
                     ), array('order' => 'sortorder'));
@@ -156,7 +156,7 @@ class question extends Survey_Common_Action
 
                     if ($questionrow['other'] == 'Y')
                     {
-                        $defaultvalue = Defaultvalues::model()->findByAttributes(array(
+                        $defaultvalue = DefaultValue::model()->findByAttributes(array(
                         'specialtype' => 'other',
                         'qid' => $qid,
                         'scale_id' => $scale_id,
@@ -177,7 +177,7 @@ class question extends Survey_Common_Action
                 {
                     $langopts[$language][$questionrow['type']][$scale_id] = array();
 
-                    $sqresult = Questions::model()->findAllByAttributes(array(
+                    $sqresult = Question::model()->findAllByAttributes(array(
                     'sid' => $surveyid,
                     'gid' => $gid,
                     'parent_qid' => $qid,
@@ -193,7 +193,7 @@ class question extends Survey_Common_Action
 
                     foreach ($sqresult as $aSubquestion)
                     {
-                        $defaultvalue = Defaultvalues::model()->findByAttributes(array(
+                        $defaultvalue = DefaultValue::model()->findByAttributes(array(
                         'specialtype' => '',
                         'qid' => $qid,
 						'sqid' => $aSubquestion['qid'],
@@ -213,7 +213,7 @@ class question extends Survey_Common_Action
             if ($qtproperties[$questionrow['type']]['answerscales'] == 0 &&
             $qtproperties[$questionrow['type']]['subquestions'] == 0)
             {
-                $defaultvalue = Defaultvalues::model()->findByAttributes(array(
+                $defaultvalue = DefaultValue::model()->findByAttributes(array(
                 'specialtype' => '',
                 'qid' => $qid,
                 'scale_id' => 0,
@@ -293,7 +293,7 @@ class question extends Survey_Common_Action
         $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
-        $qrow = Questions::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
+        $qrow = Question::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
         $qtype = $qrow['type'];
 
         $qtypes = getQuestionTypeList('', 'array');
@@ -307,11 +307,11 @@ class question extends Survey_Common_Action
         {
             $ans = new CDbCriteria;
             $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$baselang'");
-            $qresult = Answers::model()->count($ans);
+            $qresult = Answer::model()->count($ans);
 
             if ((int)$qresult==0)
             {
-                $oAnswer= new Answers;
+                $oAnswer= new Answer;
                 $oAnswer->qid = $qid;
                 $oAnswer->code = 'A1';
                 $oAnswer->answer = $clang->gT('Some example answer option');
@@ -330,18 +330,18 @@ class question extends Survey_Common_Action
             {
                 $ans = new CDbCriteria;
                 $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$language'");
-                $iAnswerCount = Answers::model()->count($ans);
+                $iAnswerCount = Answer::model()->count($ans);
 
                 // Means that no record for the language exists in the answers table
                 if (empty($iAnswerCount))
                 {
-                    foreach (Answers::model()->findAllByAttributes(array(
+                    foreach (Answer::model()->findAllByAttributes(array(
                     'qid' => $qid,
                     'scale_id' => $i,
                     'language' => $baselang
                     )) as $answer)
 
-                    $oAnswer= new Answers;
+                    $oAnswer= new Answer;
                     $oAnswer->qid = $answer->qid;
                     $oAnswer->code = $answer->code;
                     $oAnswer->answer = $answer->answer;
@@ -361,21 +361,21 @@ class question extends Survey_Common_Action
         $criteria = new CDbCriteria;
         $criteria->addColumnCondition(array('qid' => $qid));
         $criteria->addNotInCondition('language', $anslangs);
-        $languageresult = Answers::model()->deleteAll($criteria);
+        $languageresult = Answer::model()->deleteAll($criteria);
 
         if (!isset($_POST['ansaction']))
         {
             // Check if any nulls exist. If they do, redo the sortorders
             $ans = new CDbCriteria;
             $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$baselang'");
-            $cacount = Answers::model()->count($ans);
+            $cacount = Answer::model()->count($ans);
             if (!empty($cacount))
-                Answers::model()->updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
+                Answer::model()->updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
         }
 
         Yii::app()->loadHelper('admin/htmleditor');
 
-        $row = Answers::model()->findByAttributes(array(
+        $row = Answer::model()->findByAttributes(array(
         'qid' => $qid,
         'language' => Survey::model()->findByPk($surveyid)->language
         ), array('order' => 'sortorder desc'));
@@ -456,7 +456,7 @@ class question extends Survey_Common_Action
         $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
-        $resultrow = Questions::model()->findByPk(array('qid' => $qid, 'language' => $baselang))->attributes;
+        $resultrow = Question::model()->findByPk(array('qid' => $qid, 'language' => $baselang))->attributes;
 
         $sQuestiontype = $resultrow['type'];
         $aQuestiontypeInfo = getQuestionTypeList($sQuestiontype, 'array');
@@ -464,7 +464,7 @@ class question extends Survey_Common_Action
 
         for ($iScale = 0; $iScale < $iScaleCount; $iScale++)
         {
-            $subquestiondata = Questions::model()->findAllByAttributes(array(
+            $subquestiondata = Question::model()->findAllByAttributes(array(
             'parent_qid' => $qid,
             'language' => $baselang,
             'scale_id' => $iScale
@@ -472,7 +472,7 @@ class question extends Survey_Common_Action
 
             if (empty($subquestiondata))
             {
-                //Questions::model()->insert();
+                //Question::model()->insert();
                 $data = array(
                 'sid' => $surveyid,
                 'gid' => $gid,
@@ -483,9 +483,9 @@ class question extends Survey_Common_Action
                 'language' => $baselang,
                 'scale_id' => $iScale,
                 );
-                Questions::model()->insertRecords($data);
+                Question::model()->insertRecords($data);
 
-                $subquestiondata = Questions::model()->findAllByAttributes(array(
+                $subquestiondata = Question::model()->findAllByAttributes(array(
                 'parent_qid' => $qid,
                 'language' => $baselang,
                 'scale_id' => $iScale
@@ -497,7 +497,7 @@ class question extends Survey_Common_Action
             {
                 foreach ($subquestiondata as $row)
                 {
-                    $qrow = Questions::model()->count('
+                    $qrow = Question::model()->count('
                     parent_qid = :qid AND
                     language = :language AND
                     qid = '.$row->qid.' AND
@@ -513,7 +513,7 @@ class question extends Survey_Common_Action
                     {
                         switchMSSQLIdentityInsert('questions', true);
 
-                        $question = new Questions;
+                        $question = new Question;
                         $question->qid = $row->qid;
                         $question->sid = $surveyid;
                         $question->gid = $row->gid;
@@ -525,7 +525,7 @@ class question extends Survey_Common_Action
                         $question->scale_id = $iScale;
                         $question->save();
                         /** //activerecord is not not new bugfix!
-                        Questions::model()->insert(array(
+                        Question::model()->insert(array(
                         'qid' => $row->qid,
                         'sid' => $surveyid,
                         'gid' => $row->gid,
@@ -549,30 +549,30 @@ class question extends Survey_Common_Action
         $criteria = new CDbCriteria;
         $criteria->addColumnCondition(array('parent_qid' => $qid));
         $criteria->addNotInCondition('language', $anslangs);
-        Questions::model()->deleteAll($criteria);
+        Question::model()->deleteAll($criteria);
 
         // Check sort order for subquestions
-        $qresult = Questions::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
+        $qresult = Question::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
         if (!is_null($qresult))
             $qtype = $qresult->type;
 
         if (!empty($_POST['ansaction']))
         {
             // Check if any nulls exist. If they do, redo the sortorders
-            $cacount = Questions::model()->count(array(
+            $cacount = Question::model()->count(array(
             'parent_qid' => $qid,
             'question_order' => null,
             'language' => $baselang
             ));
 
             if ($cacount)
-                Answers::model()->updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
+                Answer::model()->updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
         }
 
         Yii::app()->loadHelper('admin/htmleditor');
 
         // Print Key Control JavaScript
-        $result = Questions::model()->findAllBYAttributes(array(
+        $result = Question::model()->findAllBYAttributes(array(
         'parent_qid' => $qid,
         'language' => Survey::model()->findByPk($surveyid)->language
         ), array('order' => 'question_order desc'));
@@ -614,7 +614,7 @@ class question extends Survey_Common_Action
                 $criteria->condition = 'parent_qid = :pqid AND language = :language AND scale_id = :scale_id';
                 $criteria->order = 'question_order, title ASC';
                 $criteria->params = array(':pqid' => $qid, ':language' => $anslang, ':scale_id' => $scale_id);
-                $aData['results'][$anslang][$scale_id] = Questions::model()->findAll($criteria);
+                $aData['results'][$anslang][$scale_id] = Question::model()->findAll($criteria);
             }
         }
 
@@ -672,7 +672,7 @@ class question extends Survey_Common_Action
                 Yii::app()->session['FileManagerContext'] = "edit:question:{$surveyid}";
                 $aData['display']['menu_bars']['qid_action'] = 'editquestion';
 
-                $egresult = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
+                $egresult = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
 
                 foreach ($egresult as $esrow)
                 {
@@ -704,7 +704,7 @@ class question extends Survey_Common_Action
                 {
                     if ($value != 99)
                     {
-                        Questions::model()->insert(array(
+                        Question::model()->insert(array(
                         'qid' => $qid,
                         'sid' => $surveyid,
                         'gid' => $gid,
@@ -721,7 +721,7 @@ class question extends Survey_Common_Action
                     }
                 }
 
-                $eqresult = Questions::model()->with('groups')->together()->findByAttributes(array(
+                $eqresult = Question::model()->with('groups')->together()->findByAttributes(array(
                 'sid' => $surveyid,
                 'gid' => $gid,
                 'qid' => $qid,
@@ -779,7 +779,7 @@ class question extends Survey_Common_Action
                 $criteria->addColumnCondition(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
                 $criteria->params[':lang'] = $baselang;
                 $criteria->addCondition('language != :lang');
-                $aqresult = Questions::model()->findAll($criteria);
+                $aqresult = Question::model()->findAll($criteria);
                 $aData['aqresult'] = $aqresult;
             }
 
@@ -813,7 +813,7 @@ class question extends Survey_Common_Action
             {
                 // Get the questions for this group
                 $baselang = Survey::model()->findByPk($surveyid)->language;
-                $oqresult = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang, 'parent_qid'=> 0), array('order' => 'question_order'));
+                $oqresult = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang, 'parent_qid'=> 0), array('order' => 'question_order'));
                 $aData['oqresult'] = $oqresult;
             }
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'questions.js');
@@ -852,8 +852,8 @@ class question extends Survey_Common_Action
             LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);
 
             // Check if any other questions have conditions which rely on this question. Don't delete if there are.
-            // TMSW Conditions->Relevance:  Allow such deletes - can warn about missing relevance separately.
-            $ccresult = Conditions::model()->findAllByAttributes(array('cqid' => $qid));
+            // TMSW Condition->Relevance:  Allow such deletes - can warn about missing relevance separately.
+            $ccresult = Condition::model()->findAllByAttributes(array('cqid' => $qid));
             $cccount = count($ccresult);
 
             // There are conditions dependent on this question
@@ -874,25 +874,25 @@ class question extends Survey_Common_Action
             }
             else
             {
-                $row = Questions::model()->findByAttributes(array('qid' => $qid))->attributes;
+                $row = Question::model()->findByAttributes(array('qid' => $qid))->attributes;
                 $gid = $row['gid'];
 
                 // See if there are any conditions/attributes/answers/defaultvalues for this question,
                 // and delete them now as well
-                Conditions::model()->deleteAllByAttributes(array('qid' => $qid));
-                Question_attributes::model()->deleteAllByAttributes(array('qid' => $qid));
-                Answers::model()->deleteAllByAttributes(array('qid' => $qid));
+                Condition::model()->deleteAllByAttributes(array('qid' => $qid));
+                QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $qid));
+                Answer::model()->deleteAllByAttributes(array('qid' => $qid));
 
                 $criteria = new CDbCriteria;
                 $criteria->addCondition('qid = :qid1 or parent_qid = :qid2');
                 $criteria->params[':qid1'] = $qid;
                 $criteria->params[':qid2'] = $qid;
-                Questions::model()->deleteAll($criteria);
+                Question::model()->deleteAll($criteria);
 
-                Defaultvalues::model()->deleteAllByAttributes(array('qid' => $qid));
-                Quota_members::model()->deleteAllByAttributes(array('qid' => $qid));
+                DefaultValue::model()->deleteAllByAttributes(array('qid' => $qid));
+                QuotaMember::model()->deleteAllByAttributes(array('qid' => $qid));
 
-                Questions::model()->updateQuestionOrder($gid, $surveyid);
+                Question::model()->updateQuestionOrder($gid, $surveyid);
 
                 $qid = "";
                 $postqid = "";
@@ -925,7 +925,7 @@ class question extends Survey_Common_Action
         $aLanguages = array_merge(array(Survey::model()->findByPk($surveyid)->language), Survey::model()->findByPk($surveyid)->additionalLanguages);
         $thissurvey = getSurveyInfo($surveyid);
 
-        $aAttributesWithValues = Questions::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
+        $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
         uasort($aAttributesWithValues, 'categorySort');
 
         $aAttributesPrepared = array();
@@ -968,7 +968,7 @@ class question extends Survey_Common_Action
         $lid=returnglobal('lid');
         Yii::app()->loadHelper('surveytranslator');
 
-        $labelsetdata=Labelsets::model()->find('lid=:lid',array(':lid' => $lid)); //$connect->GetArray($query);
+        $labelsetdata=LabelSet::model()->find('lid=:lid',array(':lid' => $lid)); //$connect->GetArray($query);
 
         $labelsetlanguages=explode(' ',$labelsetdata->languages);
         foreach  ($labelsetlanguages as $language){
@@ -1070,7 +1070,7 @@ class question extends Survey_Common_Action
 
         Yii::app()->session['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
 
-        $qrows = Questions::model()->findByAttributes(array('sid' => $surveyid, 'qid' => $qid, 'language' => $language))->getAttributes();
+        $qrows = Question::model()->findByAttributes(array('sid' => $surveyid, 'qid' => $qid, 'language' => $language))->getAttributes();
 
         $ia = array(
         0 => $qid,

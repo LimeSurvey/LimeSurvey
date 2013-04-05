@@ -13,7 +13,7 @@
      *	Files Purpose: lots of common functions
 */
 
-class Question_attributes extends CActiveRecord
+class SettingGlobal extends CActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table
@@ -36,7 +36,7 @@ class Question_attributes extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{question_attributes}}';
+		return '{{settings_global}}';
 	}
 
 	/**
@@ -47,38 +47,29 @@ class Question_attributes extends CActiveRecord
 	 */
 	public function primaryKey()
 	{
-		return 'qaid';
+		return 'stg_name';
 	}
-
-    public function getQuestionAttributes($qid)
+	function updateSetting($settingname, $settingvalue)
     {
-		return Yii::app()->db->createCommand()
-			->select()
-			->from($this->tableName())
-			->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid, PDO::PARAM_STR)
-			->order('qaid asc')
-			->query();
-    }
 
-	public static function insertRecords($data)
-    {
-        $attrib = new self;
-		foreach ($data as $k => $v)
-			$attrib->$k = $v;
-		return $attrib->save();
-    }
+        $data = array(
+            'stg_name' => $settingname,
+            'stg_value' => $settingvalue
+        );
 
-    public function getQuestionsForStatistics($fields, $condition, $orderby=FALSE)
-    {
-        $command = Yii::app()->db->createCommand()
-        ->select($fields)
-        ->from($this->tableName())
-        ->where($condition);
-        if ($orderby != FALSE)
+        $user = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
+        $query = $user->queryRow('settings_global');
+        $user1 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
+        if(count($query) == 0)
         {
-            $command->order($orderby);
+            return $user1->insert('{{settings_global}}', $data);
         }
-        return $command->queryAll();
+        else
+        {
+            $user2 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where('stg_name = :setting_name')->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
+            return $user2->update('{{settings_global}}', array('stg_value' => $settingvalue));
+        }
+
     }
 }
 ?>

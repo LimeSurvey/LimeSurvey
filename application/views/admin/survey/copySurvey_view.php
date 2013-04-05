@@ -32,7 +32,7 @@
             <?php }
             if (isset($aImportResults['conditions']))
             { ?>
-                <li><?php $clang->eT("Conditions"); ?>: <?php echo $aImportResults['conditions']; ?></li>
+                <li><?php $clang->eT("Condition"); ?>: <?php echo $aImportResults['conditions']; ?></li>
             <?php }
             if (isset($aImportResults['labelsets']))
             { ?>

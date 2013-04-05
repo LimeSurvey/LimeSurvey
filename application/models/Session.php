@@ -13,10 +13,10 @@
      *	Files Purpose: lots of common functions
 */
 
-class Expression_errors extends CActiveRecord
+class Session extends CActiveRecord
 {
 	/**
-	 * Returns the static model of Settings table
+	 * Returns the static model of Session table
 	 *
 	 * @static
 	 * @access public
@@ -36,36 +36,18 @@ class Expression_errors extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{expression_errors}}';
+		return '{{sessions}}';
 	}
 
 	/**
 	 * Returns the primary key of this table
 	 *
 	 * @access public
-	 * @return array
+	 * @return string
 	 */
 	public function primaryKey()
 	{
-		return array('scid');
+		return 'id';
 	}
-
-	function getAllRecords($condition=FALSE)
-	{
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);
-		}
-
-		$data = $this->db->get('expression_errors');
-
-		return $data;
-	}
-
-    function insertRecords($data)
-    {
-
-        return $this->db->insert('expression_errors',$data);
-    }
-
 }
+?>

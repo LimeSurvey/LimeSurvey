@@ -52,7 +52,7 @@
 
                     <?php }
                     else
-                    // TMSW Conditions->Relevance:  Should be allowed to delete group even if there are conditions/relevance, since separate view will show exceptions
+                    // TMSW Condition->Relevance:  Should be allowed to delete group even if there are conditions/relevance, since separate view will show exceptions
 
                     { ?>
                     <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid/gid/$gid"); ?>' onclick="alert('<?php $clang->eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>'); return false;">
@@ -174,7 +174,7 @@
     </tr>
     <?php
     }
-    // TMSW Conditions->Relevance:  Use relevance equation or different EM query to show dependencies
+    // TMSW Condition->Relevance:  Use relevance equation or different EM query to show dependencies
     if (!is_null($condarray))
     { ?>
     <tr><td><strong>

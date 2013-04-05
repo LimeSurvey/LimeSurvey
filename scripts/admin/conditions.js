@@ -122,7 +122,7 @@ function populateCanswersSelect(evt) {
 				}
 			}
 		}
-		document.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Answers[Keys[i]], Codes[Keys[i]],false,optionSelected);
+		document.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Answer[Keys[i]], Codes[Keys[i]],false,optionSelected);
 	}
 }
 

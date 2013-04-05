@@ -286,7 +286,7 @@
     }
 
 
-    // TMSW Conditions->Relevance:  this function is not needed.  Use EM to NULL fields that are irrelevant
+    // TMSW Condition->Relevance:  this function is not needed.  Use EM to NULL fields that are irrelevant
     function checkconfield($value)
     {
         global $surveyid,$thissurvey,$qattributes;
@@ -586,7 +586,7 @@
         return $fieldisdisplayed;
     }
 
-    // TMSW Conditions->Relevance:  Not needed - use EM to check mandatories
+    // TMSW Condition->Relevance:  Not needed - use EM to check mandatories
     function checkmandatorys($move, $backok=null)
     {
         global $thisstep;
@@ -683,7 +683,7 @@
         return $notanswered;
     }
 
-    // TMSW Conditions->Relevance:  Not needed - use EM to check mandatories
+    // TMSW Condition->Relevance:  Not needed - use EM to check mandatories
     function checkconditionalmandatorys($move, $backok=null)
     {
         global $thisstep;
@@ -728,7 +728,7 @@
                 {
                     //The question has an answer, and the answer was displaying
                 }
-                elseif ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtccm]) || $_POST[$dtccm] == "on")) // Question and Answers is on, there is no answer, but it's a multiple
+                elseif ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtccm]) || $_POST[$dtccm] == "on")) // Question and Answer is on, there is no answer, but it's a multiple
 
                 {
                     if (isset($move) && $move == "moveprev")
@@ -1777,7 +1777,7 @@
     $criteria = new CDbCriteria;
     $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION['survey_'.$surveyid]['s_lang']));
     $criteria->addCondition("randomization_group != ''");
-    $oData = Groups::model()->findAll($criteria);
+    $oData = QuestionGroup::model()->findAll($criteria);
     foreach($oData as $aGroup)
     {
         $aRandomGroups[$aGroup['randomization_group']][] = $aGroup['gid'];
@@ -1955,7 +1955,7 @@
         $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
     }
     
-    // TMSW Conditions->Relevance:  don't need hasconditions, or usedinconditions
+    // TMSW Condition->Relevance:  don't need hasconditions, or usedinconditions
 
     $_SESSION['survey_'.$surveyid]['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)

@@ -384,7 +384,7 @@ class Participant extends LSActiveRecord
             // Delete survey links
             Yii::app()->db->createCommand()->delete(SurveyLink::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
             // Delete participant attributes
-            Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
+            Yii::app()->db->createCommand()->delete(ParticipantAttribute::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
         }
     }
 
@@ -948,7 +948,7 @@ class Participant extends LSActiveRecord
                     $previousattribute[$newname]=$previousattribute[$key];
                     unset($previousattribute[$key]);
                     //Rename the token field the name of the participant_attribute
-                    $attributedetails=ParticipantAttributeNames::model()->getAttributeNames($val);
+                    $attributedetails=ParticipantAttributeName::model()->getAttributeNames($val);
                     $previousattribute[$newname]['description']=$attributedetails[0]['attribute_name'];
                     $previousattribute=serialize($previousattribute);
 
@@ -1466,7 +1466,7 @@ class Participant extends LSActiveRecord
                     $previousattribute[$newname]=$previousattribute[$tatt];
                     unset($previousattribute[$tatt]);
                     //Rename the token field the name of the participant_attribute
-                    $attributedetails=ParticipantAttributeNames::model()->getAttributeNames($cpdbatt);
+                    $attributedetails=ParticipantAttributeName::model()->getAttributeNames($cpdbatt);
                     $previousattribute[$newname]['description']=$attributedetails[0]['attribute_name'];
                     $previousattribute = serialize($previousattribute);
                     //$newstring = str_replace($tatt, $newname, $previousattribute['attributedescriptions']);

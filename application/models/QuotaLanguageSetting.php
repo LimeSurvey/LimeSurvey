@@ -13,7 +13,7 @@
      *	Files Purpose: lots of common functions
 */
 
-class Defaultvalues extends CActiveRecord
+class QuotaLanguageSetting extends CActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table
@@ -36,22 +36,22 @@ class Defaultvalues extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{defaultvalues}}';
+		return '{{quota_languagesettings}}';
 	}
 
 	/**
 	 * Returns the primary key of this table
 	 *
 	 * @access public
-	 * @return array
+	 * @return string
 	 */
 	public function primaryKey()
 	{
-		return array('qid', 'specialtype', 'scale_id', 'sqid', 'language');
+		return 'quotals_id';
 	}
 
 	/**
-	 * Relations with questions
+	 * Returns the relations
 	 *
 	 * @access public
 	 * @return array
@@ -59,18 +59,17 @@ class Defaultvalues extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'question' => array(self::HAS_ONE, 'Questions', '',
-						'on' => 't.qid = question.qid',
-			),
+			'quota' => array(self::BELONGS_TO, 'Quota', '',
+				'on' => 'quota.id = t.quotals_quota_id'),
 		);
 	}
 
 	function insertRecords($data)
     {
-        $values = new self;
+        $settings = new self;
 		foreach ($data as $k => $v)
-			$values->$k = $v;
-		return $values->save();
+			$settings->$k = $v;
+		return $settings->save();
     }
 }
 ?>

@@ -14,7 +14,7 @@
  * 	Files Purpose: lots of common functions
  */
 
-class Participant_attribute extends CActiveRecord
+class ParticipantAttribute extends CActiveRecord
 {
 
 	/**
@@ -57,7 +57,7 @@ class Participant_attribute extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'participant_attribute_names'=>array(self::BELONGS_TO, 'ParticipantAttributeNames', 'attribute_id')
+            'participant_attribute_names'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
         );
     }
 
