@@ -115,46 +115,44 @@ $(document).ready(function(){
 
 function qTypeDropdownInit()
 {
-    $("#question_type_child li.enabled").each(function(index,element){
+    $(document).ready(function () {
+        $("#question_type option").each(function(index,element){
+            $(element).qtip({
+                style: {
+                    classes: 'qtip-questiontype'
+                },
+                content: getToolTip($(element).text()),
+                position: {
+                    my : 'top left',
+                    at: 'top right',
+                    target: $('label[for=question_type]'),
+                    viewport: $(window),
+                    adjust: {
+                        x: 20
+                    }
 
-              $(element).qtip({
-            style: {
-                classes: 'qtip-questiontype'
-            },
-            content: getToolTip($(element).text()),
-            position: {
-                my: 'top left',
-                at: 'middle right',
-                viewport: $(window),
-                adjust: {
-                    x: 16
                 }
-            }
+            });
+
         });
-
-
     });
-    $("#question_type option").each(function(index,element){
-
-        $(element).qtip({
-            style: {
-                classes: 'qtip-questiontype'
-            },
-            content: getToolTip($(element).text()),
-            position: {
-                my: 'top left',
-                at: 'middle right',
-                viewport: $(window),
-                adjust: {
-                    x: 16
-                }
+    $(document).ready(function() {
+        $('body').on('mouseenter mouseleave', 'li.questionType', function(e) {
+            if (e.type = 'mouseenter')
+            {
+                // Hide all others if we show a new one.
+                $('#question_type option').qtip('hide');
+                $($(e.currentTarget).data().select2Data.element).qtip('option', 'position.target', $(e.currentTarget)).qtip('show');
             }
+            else
+            {
+                $($(e.currentTarget).data().select2Data.element).qtip('hide');
+            }
+            
+            
         });
-
     });
 }
-
-
 
 
 var aToolTipData = {
@@ -390,6 +388,7 @@ function ev_gecko_select_keyup_ev(Ev) {
 }
 
 function init_gecko_select_hack() {
+    return true;
     var selects = document.getElementsByTagName("SELECT");
     for(i=0; i<selects.length; i++)
         selects.item(i).addEventListener("keyup", ev_gecko_select_keyup_ev, false);

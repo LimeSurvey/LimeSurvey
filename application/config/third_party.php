@@ -147,12 +147,4 @@ return array(
             'jquery'
         )
     ),
-    'jquery-msdropdown' => array(
-        'baseUrl' => 'third_party/jquery-msdropdown/',
-        'js' => array('js/msdropdown/jquery.dd.js'),
-        'css' => array('css/msdropdown/dd.css'),
-        'depends' => array('jquery')
-    )
-
-
 );

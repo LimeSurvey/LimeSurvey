@@ -448,11 +448,20 @@
             {
                 $listData = $item['values'];
             }
-            $result .= CHtml::dropDownList($item['name'], $item['value'], $listData, array(
-                'id' => $item['name'],
-                'prompt' => gT('Please choose...')
-            ));
-            
+            $result .= $this->widget('ext.bootstrap.widgets.TbSelect2', array(
+                'name' => $item['name'],
+                'value' => $item['value'],
+                'data' => $listData,
+                'options' => array(
+                    'minimumResultsForSearch' => 20,
+                    'placeholder' => gT('Please choose...')
+                ),
+                'htmlOptions' => array(
+                    'class' => 'select',
+                    'id' => $item['name'],
+                    'prompt' => ''//gT('Please choose...')
+                )
+            ), true);
             return $result;
         }
         

@@ -1,6 +1,3 @@
-div.htmleditor {
-    display: inline-block;
-}
 /*** Minimized/Maximized Toolbar ***/
 
 .cke_minimized .cke_break,
@@ -37,6 +34,11 @@ div.htmleditor {
 	margin-top: 0.2em !important;
 }
 
+/* HTML editor */
+div.htmleditor {
+    display: inline-block;
+}
+
 .imagelink {
     float:left;
 }
@@ -51,10 +53,34 @@ div.htmleditor {
 }
 .menubar a{display:inline-block;}
 
+
+.menubar select {
+    margin-bottom: 0px;
+   
+}
 .qtip-questiontype {
     z-index: 100000;
     background-color: white;
     border: 1px solid #ddd;
     max-width: 468px;
     width: 468px;
+}
+
+
+/******************************************************************************/
+/* Bootstrap overrides.                                                       */
+/******************************************************************************/
+label {display: inline-block;}/* override but leave admin template to override again */
+.select{
+    width: 250px;
+    margin-left: 10px;
+}
+
+.select * {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+li input {
+    margin: 0px;
 }
