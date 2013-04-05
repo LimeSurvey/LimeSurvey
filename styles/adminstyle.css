@@ -81,11 +81,28 @@ label {display: inline-block;}/* override but leave admin template to override a
     box-sizing: border-box;
 }
 
-li input, li select {
-    margin: 0px !important;
-
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    border-radius: 4px 4px 4px 4px;
+    color: #555555;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 20px;
+    height: 26px;
+    margin-bottom: 0px;
+    padding: 2px;
+    vertical-align: middle;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+/* Fix input height for jqgrid (survey overview) */
+div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
+    height: 18px;
+}
+/* Fixes li not expanding to size of containing table. (Survey settings add language interface) */
+form li {
+    overflow: hidden;
 }
 
 table td, table th {
-    padding: 0px;
+    padding: 1px;
 }
