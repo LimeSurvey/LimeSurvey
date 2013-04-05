@@ -27,6 +27,7 @@ class AdminController extends LSYii_Controller
     protected function _init()
     {
         parent::_init();
+        App()->getComponent('bootstrap')->init();
         $updatelastcheck = getGlobalSetting('updatelastcheck');
 
         $this->_sessioncontrol();
