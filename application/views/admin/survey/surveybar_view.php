@@ -298,7 +298,7 @@
                     else
                     { ?>
 
-                    <a href="<?php echo $this->createUrl("admin/questiongroup/sa/add/surveyid/$surveyid"); ?>">
+                    <a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/$surveyid"); ?>">
                         <img src='<?php echo $sImageURL; ?>add.png' alt='<?php $clang->eT("Add new group to survey"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
                     <?php }
             } ?>

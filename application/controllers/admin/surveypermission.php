@@ -69,7 +69,7 @@ class surveypermission extends Survey_Common_Action {
                     if(in_array($PermissionRow['uid'],$userList))
                     {
 
-                        $result3 = UserInGroup::model()->with('users')->findAll('users.uid = :uid',array(':uid' => $PermissionRow['uid']));
+                        $result3 = UserInGroup::model()->with('User')->findAll('users.uid = :uid',array(':uid' => $PermissionRow['uid']));
                         foreach ($result3 as $resul3row)
                         {
                             if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||

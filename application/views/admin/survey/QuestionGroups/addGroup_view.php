@@ -17,7 +17,7 @@
             <?php } ?>
     </ul>
 
-    <?php echo CHtml::form(array("admin/questiongroup/sa/insert/surveyid/{$surveyid}"), 'post', array('id'=>'newquestiongroup', 'name'=>'newquestiongroup', 'class'=>'form30')); ?>
+    <?php echo CHtml::form(array("admin/questiongroups/sa/insert/surveyid/{$surveyid}"), 'post', array('id'=>'newquestiongroup', 'name'=>'newquestiongroup', 'class'=>'form30')); ?>
         <?php
             foreach ($grplangs as $grouplang)
             { ?>
@@ -49,7 +49,7 @@
     <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
         { ?>
         <div id="import">
-            <?php echo CHtml::form(array("admin/questiongroup/sa/import"), 'post', array('id'=>'importgroup', 'name'=>'importgroup', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.$clang->gT('Please select a file to import!','js').'");')); ?>
+            <?php echo CHtml::form(array("admin/questiongroups/sa/import"), 'post', array('id'=>'importgroup', 'name'=>'importgroup', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.$clang->gT('Please select a file to import!','js').'");')); ?>
                 <ul>
                     <li>
                         <label for='the_file'><?php $clang->eT("Select question group file (*.lsg/*.csv):"); ?></label>

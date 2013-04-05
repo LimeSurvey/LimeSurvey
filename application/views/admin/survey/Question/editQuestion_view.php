@@ -1,5 +1,5 @@
 <script type='text/javascript'>
-    var attr_url = "<?php echo $this->createUrl('/admin/question/sa/ajaxquestionattributes'); ?>";
+    var attr_url = "<?php echo $this->createUrl('/admin/questions/sa/ajaxquestionattributes'); ?>";
     var imgurl = '<?php echo Yii::app()->getConfig('imageurl'); ?>';
 </script>
 <?php PrepareEditorScript(true, $this); ?>
@@ -313,7 +313,7 @@
         if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
         { ?>
         <br /><div class='header ui-widget-header'><?php $clang->eT("...or import a question"); ?></div>
-        <?php echo CHtml::form(array("admin/question/sa/import"), 'post', array('id'=>'importquestion', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return validatefilename(this, '".$clang->gT("Please select a file to import!",'js')."');")); ?>
+        <?php echo CHtml::form(array("admin/questions/sa/import"), 'post', array('id'=>'importquestion', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return validatefilename(this, '".$clang->gT("Please select a file to import!",'js')."');")); ?>
             <ul>
                 <li>
                     <label for='the_file'><?php $clang->eT("Select LimeSurvey question file (*.lsq/*.csv)"); ?>:</label>

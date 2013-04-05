@@ -28,7 +28,7 @@
         <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <img id='separator5' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
-            <a href="<?php echo $this->createUrl('admin/questiongroup/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
+            <a href="<?php echo $this->createUrl('admin/questiongroups/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
                 <img src='<?php echo $imageurl; ?>edit.png' alt='<?php $clang->eT("Edit current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
             <?php } ?>
 
@@ -47,7 +47,7 @@
                     if (is_null($condarray))
                     { ?>
 
-                    <a href='#' onclick="if (confirm('<?php $clang->eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { window.open('<?php echo $this->createUrl("admin/questiongroup/sa/delete/surveyid/$surveyid/gid/$gid"); ?>','_top'); }">
+                    <a href='#' onclick="if (confirm('<?php $clang->eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { window.open('<?php echo $this->createUrl("admin/questiongroups/sa/delete/surveyid/$surveyid/gid/$gid"); ?>','_top'); }">
                         <img src='<?php echo $imageurl; ?>delete.png' alt='<?php $clang->eT("Delete current question group"); ?>' title='' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
 
                     <?php }
@@ -116,7 +116,7 @@
             <?php }
             elseif(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
             { ?>
-            <a href='<?php echo $this->createUrl("admin/question/sa/addquestion/surveyid/".$surveyid."/gid/".$gid); ?>'>
+            <a href='<?php echo $this->createUrl("admin/questions/sa/addquestion/surveyid/".$surveyid."/gid/".$gid); ?>'>
                 <img src='<?php echo $imageurl; ?>add.png' title='' alt='<?php $clang->eT("Add new question to group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>" /></a>
             <?php } ?>
 

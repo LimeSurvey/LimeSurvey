@@ -29,7 +29,7 @@ $aReplacementData=array();
         <?php  if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
 
-            <a href='<?php echo $this->createUrl("admin/question/sa/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>'>
+            <a href='<?php echo $this->createUrl("admin/questions/sa/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>'>
                 <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php $clang->eT("Edit Current Question"); ?>' /></a>
             <?php } ?>
 
@@ -42,7 +42,7 @@ $aReplacementData=array();
         <?php if ($activated != "Y")
             {?>
             <a href='#'
-                onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/question/sa/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
+                onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/questions/sa/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
                 <img style='<?php echo (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete')?'':'visibility: hidden;');?>' src='<?php echo $sImageURL; ?>delete.png' alt='<?php $clang->eT("Delete current question"); ?>'/></a>
             <?php }
             else
@@ -69,7 +69,7 @@ $aReplacementData=array();
             {
                 if ($activated != "Y")
                 { ?>
-                <a href='<?php echo $this->createUrl("admin/question/sa/copyquestion/surveyid/$surveyid/gid/$gid/qid/$qid");?>'>
+                <a href='<?php echo $this->createUrl("admin/questions/sa/copyquestion/surveyid/$surveyid/gid/$gid/qid/$qid");?>'>
                     <img src='<?php echo $sImageURL; ?>copy.png'  alt='<?php $clang->eT("Copy Current Question"); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                 <?php }
@@ -104,7 +104,7 @@ $aReplacementData=array();
             {
                 if ($qtypes[$qrrow['type']]['subquestions'] >0)
                 { ?>
-                <a href='<?php echo $this->createUrl('admin/question/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
+                <a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                     <img src='<?php echo $sImageURL; ?><?php if ($qtypes[$qrrow['type']]['subquestions']==1){?>subquestions.png<?php } else {?>subquestions2d.png<?php } ?>' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a>
                 <?php }
             }
@@ -118,7 +118,7 @@ $aReplacementData=array();
 
             if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0)
             { ?>
-            <a href='<?php echo $this->createUrl('admin/question/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
+            <a href='<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                 <img src='<?php echo $sImageURL; ?>answers.png' alt='<?php $clang->eT("Edit answer options for this question"); ?>' /></a>
             <?php }
             else
@@ -131,7 +131,7 @@ $aReplacementData=array();
 
             if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
             { ?>
-            <a href='<?php echo $this->createUrl('admin/question/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
+            <a href='<?php echo $this->createUrl('admin/questions/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                 <img src='<?php echo $sImageURL; ?>defaultanswers.png' alt='<?php $clang->eT("Edit default answers for this question"); ?>' /></a>
             <?php } ?>
     </div>
@@ -188,7 +188,7 @@ $aReplacementData=array();
         { ?>
         <tr ><td></td><td>
                 <span class='statusentryhighlight'>
-                    <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/sa/answeroptions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add answer options to this question"); ?>
+                    <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/questions/sa/answeroptions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add answer options to this question"); ?>
                         <img src='<?php echo $sImageURL; ?>answers_20.png' title='<?php $clang->eT("Edit answer options for this question"); ?>' /></a></span></td></tr>
         <?php }
 
@@ -197,7 +197,7 @@ $aReplacementData=array();
         { ?>
         <tr ><td></td><td>
                 <span class='statusentryhighlight'>
-                    <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/sa/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add subquestions to this question"); ?>
+                    <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/questions/sa/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add subquestions to this question"); ?>
                         <img src='<?php echo $sImageURL; ?><?php if ($qtypes[$qrrow['type']]['subquestions']==1){?>subquestions_20<?php } else {?>subquestions2d_20<?php } ?>.png' title='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a></span></td></tr>
         <?php }
 

@@ -23,7 +23,7 @@ if (!defined('BASEPATH'))
  * @copyright 2011
   * @access public
  */
-class questiongroup extends Survey_Common_Action
+class questiongroups extends Survey_Common_Action
 {
 
     /**

@@ -323,11 +323,11 @@
                 'alt' => gT('Add new group to survey'),
                 'type' => 'link',
                 'image' => 'add.png',
-                'href' => array('admin/questiongroup', 'sa' =>  'add', 'surveyid' => $surveyId)
+                'href' => array('admin/questiongroups', 'sa' =>  'add', 'surveyid' => $surveyId)
                 
             );
             
-            //http://ls20.befound.nl/index.php?r=admin/questiongroup/sa/add/surveyid/597865
+            //http://ls20.befound.nl/index.php?r=admin/questiongroups/sa/add/surveyid/597865
             return $menu;
         }
         
@@ -350,7 +350,7 @@
                 'alt' => gT('Edit current question group'),
                 'type' => 'link',
                 'image' => 'edit.png',
-                'href' => array('admin/questiongroup', 'sa' => 'edit', 'surveyid' => $group->sid, 'gid' => $groupId)
+                'href' => array('admin/questiongroups', 'sa' => 'edit', 'surveyid' => $group->sid, 'gid' => $groupId)
             );
             $menu['items']['left'][] = 'separator';
             
