@@ -29,7 +29,7 @@ function updateset($lid)
     $newlanidarray = explode(" ",trim($postlanguageids));
 
     $oldlangidsarray = array();
-    $labelset = Labelsets::model()->findByAttributes(array('lid' => $lid));
+    $labelset = LabelSet::model()->findByAttributes(array('lid' => $lid));
     $oldlangidsarray = explode(' ', $labelset->languages);
 
     $addlangidsarray = array_diff($newlanidarray, $oldlangidsarray);
@@ -115,7 +115,7 @@ function insertlabelset()
     );
 
     //$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ({$postlabel_name},{$postlanguageids})";
-    $result=Labelsets::model()->insertRecords($data);
+    $result=LabelSet::model()->insertRecords($data);
     if (!$result)
     {
         safeDie("Inserting the label set failed:<br />".$query."<br />");

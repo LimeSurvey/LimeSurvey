@@ -171,7 +171,7 @@ class labels extends Survey_Common_Action
         {
             if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets','update'))
             {
-                $result = Labelsets::model()->findAllByAttributes(array('lid' => $lid));
+                $result = LabelSet::model()->findAllByAttributes(array('lid' => $lid));
                 foreach ($result as $row)
                 {
                     $row = $row->attributes;
@@ -241,7 +241,7 @@ class labels extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('labelsets','read'))
         {
             // Get a result containing labelset with the specified id
-            $result = Labelsets::model()->findByAttributes(array('lid' => $lid));
+            $result = LabelSet::model()->findByAttributes(array('lid' => $lid));
 
             // If there is label id in the variable $lid and there are labelset records in the database
             $labelset_exists = !empty($result);
@@ -366,7 +366,7 @@ class labels extends Survey_Common_Action
 
     public function getAllSets()
     {
-        $results = Labelsets::model()->findAll();
+        $results = LabelSet::model()->findAll();
 
         $output = array();
 
@@ -391,7 +391,7 @@ class labels extends Survey_Common_Action
         $language = trim($language);
         if ($lid == 0)
         {
-            $lset = new Labelsets;
+            $lset = new LabelSet;
             $lset->label_name = sanitize_xss_string(Yii::app()->getRequest()->getPost('laname'));
             $lset->languages = sanitize_xss_string($language);
             $lset->save();

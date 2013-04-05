@@ -130,7 +130,7 @@
 
         protected function menuQuestion($questionId)
         {
-            $question = Questions::model()->findByPk($questionId);
+            $question = Question::model()->findByPk($questionId);
             
             $menu['title'] = "Question {$question->code} (id: {$questionId})";
             $menu['role'] = 'question';
@@ -313,10 +313,10 @@
                 )
             );
             $menu['items']['right'][] = array(
-                'title' => 'Groups:',
+                'title' => 'QuestionGroup:',
                 'type' => 'select',
                 'name' => 'grouplist',
-                'values' => Groups::model()->findListByAttributes(array('sid' => $surveyId), 'group_name', 'gid'),
+                'values' => QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name', 'gid'),
                 'value' => $this->groupId
             );
             $menu['items']['right'][] = array(
@@ -333,7 +333,7 @@
         
         protected function menuGroup($groupId)
         {
-            $group = Groups::model()->findByAttributes(array('gid' => $groupId));
+            $group = QuestionGroup::model()->findByAttributes(array('gid' => $groupId));
             $menu['title'] = "Group {$group->group_name} (id: {$groupId})";
             $menu['role'] = 'group';
             $menu['imageUrl'] = App()->getConfig('adminimageurl');
@@ -360,7 +360,7 @@
                 'type' => 'select',
                 'title' => gT('Questions'),
                 'name' => 'questionlist',
-                'values' => Questions::model()->findListByAttributes(array('sid' => $group->sid, 'gid' => $groupId), 'code', 'qid'),
+                'values' => Question::model()->findListByAttributes(array('sid' => $group->sid, 'gid' => $groupId), 'code', 'qid'),
                 'value' => $this->questionId
             );
             $menu['items']['right'][] = array(

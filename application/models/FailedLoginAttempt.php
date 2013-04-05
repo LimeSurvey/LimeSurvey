@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class Failed_login_attempts extends CActiveRecord
+class FailedLoginAttempt extends CActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table
@@ -19,7 +19,7 @@ class Failed_login_attempts extends CActiveRecord
 	 * @static
 	 * @access public
      * @param string $class
-	 * @return Failed_login_attempts
+	 * @return FailedLoginAttempt
 	 */
 	public static function model($class = __CLASS__)
 	{
@@ -117,7 +117,7 @@ class Failed_login_attempts extends CActiveRecord
 		}
 		else
 		{
-			$record = new Failed_login_attempts;
+			$record = new FailedLoginAttempt;
 			$record->ip = $ip;
 			$record->number_attempts = 1;
 			$record->last_attempt = $timestamp;

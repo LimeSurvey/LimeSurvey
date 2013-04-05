@@ -536,7 +536,7 @@ class dataentry extends Survey_Common_Action
 
 
             // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-            // $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist)
+            // $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answer if exist)
 
             $fnames['completed'] = array('fieldname'=>"completed", 'question'=>$clang->gT("Completed"), 'type'=>'completed');
 
@@ -565,7 +565,7 @@ class dataentry extends Survey_Common_Action
                     $password = Yii::app()->request->getParam('accesscode');
                 }
 
-                $svresult= Saved_control::model()->findAllByAttributes(
+                $svresult= SavedControl::model()->findAllByAttributes(
                 array(
                 'sid' => $surveyid,
                 'identifier' => Yii::app()->request->getParam('identifier'),
@@ -579,7 +579,7 @@ class dataentry extends Survey_Common_Action
                     $saver['ip'] = $svrow['ip'];
                 }
 
-                $svresult = Saved_control::model()->findAllByAttributes(array('scid'=>$saver['scid']));
+                $svresult = SavedControl::model()->findAllByAttributes(array('scid'=>$saver['scid']));
                 foreach($svresult as $svrow)
                 {
                     $responses[$svrow['fieldname']] = $svrow['value'];
@@ -1973,7 +1973,7 @@ class dataentry extends Survey_Common_Action
                     // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?
                     //                    LimeExpressionManager::ProcessRelevance($qidattributes['relevance'],$deqrow['qid'],NULL,$deqrow['type'],$hidden);
 
-                    // TMSW Conditions->Relevance:  Show relevance equation instead of conditions here - better yet, have data entry use survey-at-a-time but with different view
+                    // TMSW Condition->Relevance:  Show relevance equation instead of conditions here - better yet, have data entry use survey-at-a-time but with different view
 
                     $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
                     $relevance = trim($qinfo['info']['relevance']);
@@ -2429,14 +2429,14 @@ class dataentry extends Survey_Common_Action
         $output = "";
         if(!empty($qidattributes['array_filter']))
         {
-            $newquestiontext = Questions::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
+            $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
             $output .= "\n<p class='extrahelp'>
             ".sprintf($clang->gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext['question'])))."
             </p>\n";
         }
         if(!empty($qidattributes['array_filter_exclude']))
         {
-            $newquestiontext = Questions::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
+            $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
 
             $output .= "\n    <p class='extrahelp'>
             ".sprintf($clang->gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext['question']))."

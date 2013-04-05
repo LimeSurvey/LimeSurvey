@@ -13,7 +13,7 @@
        *	Files Purpose: lots of common functions
     */
 
-    class Groups extends CActiveRecord
+    class QuestionGroup extends CActiveRecord
     {
         /**
         * Returns the static model of Settings table
@@ -144,10 +144,10 @@
 
         public static function deleteWithDependency($groupId, $surveyId)
         {
-            $questionIds = Groups::getQuestionIdsInGroup($groupId);
-            Questions::deleteAllById($questionIds);
+            $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
+            Question::deleteAllById($questionIds);
             Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
-            return Groups::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
+            return QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
         }
 
         private static function getQuestionIdsInGroup($groupId) {

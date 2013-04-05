@@ -63,7 +63,7 @@
         public function relations()
         {
             return array(
-            'groups' => array(self::HAS_ONE, 'Groups', '',
+            'groups' => array(self::HAS_ONE, 'QuestionGroup', '',
             'on' => 't.gid = groups.gid AND t.language = groups.language'
             ),
             'parents' => array(self::HAS_ONE, 'Questions', '',
@@ -275,13 +275,13 @@
                 $questionsIds = array($questionsIds);
             }
 
-            Yii::app()->db->createCommand()->delete(Conditions::model()->tableName(), array('in', 'qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(Question_attributes::model()->tableName(), array('in', 'qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(Answers::model()->tableName(), array('in', 'qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(Questions::model()->tableName(), array('in', 'parent_qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(Questions::model()->tableName(), array('in', 'qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(Defaultvalues::model()->tableName(), array('in', 'qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(Quota_members::model()->tableName(), array('in', 'qid', $questionsIds));
+            Yii::app()->db->createCommand()->delete(Condition::model()->tableName(), array('in', 'qid', $questionsIds));
+            Yii::app()->db->createCommand()->delete(QuestionAttribute::model()->tableName(), array('in', 'qid', $questionsIds));
+            Yii::app()->db->createCommand()->delete(Answer::model()->tableName(), array('in', 'qid', $questionsIds));
+            Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'parent_qid', $questionsIds));
+            Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'qid', $questionsIds));
+            Yii::app()->db->createCommand()->delete(DefaultValue::model()->tableName(), array('in', 'qid', $questionsIds));
+            Yii::app()->db->createCommand()->delete(QuotaMember::model()->tableName(), array('in', 'qid', $questionsIds));
         }
 
         function getAllRecords($condition, $order=FALSE)

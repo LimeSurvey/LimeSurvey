@@ -356,21 +356,21 @@ class Survey extends LSActiveRecord
                 Yii::app()->db->createCommand()->dropTable("{{tokens_".intval($iSurveyID)."}}");
             }
 
-            $oResult = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID));
+            $oResult = Question::model()->findAllByAttributes(array('sid' => $iSurveyID));
             foreach ($oResult as $aRow)
             {
-                Answers::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                Conditions::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
-                Question_attributes::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                Defaultvalues::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                Answer::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                Condition::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
+                QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                DefaultValue::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
             }
 
-            Questions::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            Question::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             Assessment::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            Groups::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            QuestionGroup::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
             Permission::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            Saved_control::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            SavedControl::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             //Remove any survey_links to the CPDB
             SurveyLink::model()->deleteLinksBySurvey($iSurveyID);

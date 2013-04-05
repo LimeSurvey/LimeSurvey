@@ -18,7 +18,7 @@ injectglobalsettings();
 
 function injectglobalsettings()
 {
-	$settings = Settings_global::model()->findAll();
+	$settings = SettingGlobal::model()->findAll();
 
     //if ($dbvaluearray!==false)
     if (count($settings) > 0)
@@ -41,7 +41,7 @@ function getGlobalSetting($settingname)
 
     if ($dbvalue === false)
     {
-    	$dbvalue = Settings_global::model()->findByPk($settingname);
+    	$dbvalue = SettingGlobal::model()->findByPk($settingname);
 
         if ($dbvalue === null)
         {
@@ -72,14 +72,14 @@ function setGlobalSetting($settingname, $settingvalue)
         return; //don't save
     }
 
-	if ($record = Settings_global::model()->findByPk($settingname))
+	if ($record = SettingGlobal::model()->findByPk($settingname))
 	{
 		$record->stg_value = $settingvalue;
 		$record->save();
 	}
 	else
 	{
-		$record = new Settings_global;
+		$record = new SettingGlobal;
 		$record->stg_name = $settingname;
 		$record->stg_value = $settingvalue;
 		$record->save();

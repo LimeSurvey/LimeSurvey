@@ -19,7 +19,7 @@
  * @property string $attribute_type
  * @property string $visible
  */
-class ParticipantAttributeNames extends CActiveRecord
+class ParticipantAttributeName extends CActiveRecord
 {
     /**
      * Returns the primary key of this table
@@ -32,12 +32,12 @@ class ParticipantAttributeNames extends CActiveRecord
     }
 
     /**
-     * Returns the static model of ParticipantAttributeNames table
+     * Returns the static model of ParticipantAttributeName table
      *
      * @static
      * @access public
      * @param string $class
-     * @return ParticipantAttributeNames
+     * @return ParticipantAttributeName
      */
     public static function model($class = __CLASS__) {
         $model = parent::model($class);
@@ -98,8 +98,8 @@ class ParticipantAttributeNames extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-            'participant_attribute_names_lang'=>array(self::HAS_MANY, 'ParticipantAttributeNamesLang', 'attribute_id'),
-            'participant_attribute'=>array(self::HAS_ONE, 'Participant_attribute', 'attribute_id')
+            'participant_attribute_names_lang'=>array(self::HAS_MANY, 'ParticipantAttributeNameLang', 'attribute_id'),
+            'participant_attribute'=>array(self::HAS_ONE, 'ParticipantAttribute', 'attribute_id')
 		);
 	}
 
@@ -155,10 +155,10 @@ class ParticipantAttributeNames extends CActiveRecord
         $currentlang=Yii::app()->session['adminlang'];
         $output=array();
         //First get all the distinct id's that are visible
-        $ids = ParticipantAttributeNames::model()->findAll("visible = 'TRUE'");
+        $ids = ParticipantAttributeName::model()->findAll("visible = 'TRUE'");
         //Then find a language for each one - the current $lang, if possible, english second, otherwise, the first in the list
         foreach($ids as $id) {
-            $langs=ParticipantAttributeNamesLang::model()->findAll("attribute_id = :attribute_id", array(":attribute_id"=>$id->attribute_id));
+            $langs=ParticipantAttributeNameLang::model()->findAll("attribute_id = :attribute_id", array(":attribute_id"=>$id->attribute_id));
             $language=null;
             foreach($langs as $lang) {
                 //If we can find a language match, set the language and exit
@@ -198,7 +198,7 @@ class ParticipantAttributeNames extends CActiveRecord
             $findCriteria=new CDbCriteria();
             $findCriteria->addCondition('participant_id = :participant_id');
             $findCriteria->params = array(':participant_id'=>$participant_id);
-            $records=ParticipantAttributeNames::model()->with('participant_attribute_names_lang', 'participant_attribute')
+            $records=ParticipantAttributeName::model()->with('participant_attribute_names_lang', 'participant_attribute')
                                                        ->findAll($findCriteria);
             foreach($records as $row) { //Iterate through each attribute
                 $thisname="";
@@ -219,7 +219,7 @@ class ParticipantAttributeNames extends CActiveRecord
 
         } else {
             $findCriteria=new CDbCriteria();
-            $records=ParticipantAttributeNames::model()->with('participant_attribute_names_lang', 'participant_attribute')->findAll($findCriteria);
+            $records=ParticipantAttributeName::model()->with('participant_attribute_names_lang', 'participant_attribute')->findAll($findCriteria);
             foreach($records as $row) { //Iterate through each attribute
                 $thisname="";
                 $thislang="";
@@ -256,7 +256,7 @@ class ParticipantAttributeNames extends CActiveRecord
         $findCriteria->offset=$offset;
         $findCriteria->limit=$limit;
         $output=array();
-        $records = ParticipantAttributeNames::model()->with('participant_attribute_names_lang')->findAll($findCriteria);
+        $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($findCriteria);
         foreach($records as $row) { //Iterate through each attribute
             $thisname="";
             $thislang="";
@@ -308,7 +308,7 @@ class ParticipantAttributeNames extends CActiveRecord
 
         $criteria = new CDbCriteria();
         $criteria->addNotInCondition('t.attribute_id', $attributeid);
-        $records = ParticipantAttributeNames::model()->with('participant_attribute_names_lang')->findAll($criteria);
+        $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($criteria);
         foreach($records as $row) { //Iterate through each attribute
             $thisname="";
             $thislang="";
@@ -345,7 +345,7 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function editParticipantAttributeValue($data)
     {
-        $query = Participant_attribute::model()->find('participant_id = :participant_id AND attribute_id=:attribute_id',
+        $query = ParticipantAttribute::model()->find('participant_id = :participant_id AND attribute_id=:attribute_id',
                                                       array(':participant_id'=>$data['participant_id'],
                                                             ':attribute_id'=>$data['attribute_id'])
                                                       );

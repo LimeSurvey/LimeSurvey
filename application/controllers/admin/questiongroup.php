@@ -89,7 +89,7 @@ class questiongroup extends Survey_Common_Action
             //$aData['display']['menu_bars']['surveysummary'] = 'importgroup';
 
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'import_view', $aData);
-            // TMSW Conditions->Relevance:  call LEM->ConvertConditionsToRelevance() after import
+            // TMSW Condition->Relevance:  call LEM->ConvertConditionsToRelevance() after import
         }
     }
 
@@ -181,7 +181,7 @@ class questiongroup extends Survey_Common_Action
                             'grelevance' => $_POST['grelevance'],
                         );
 
-                        $group = new Groups;
+                        $group = new QuestionGroup;
                         foreach ($aData as $k => $v)
                             $group->$k = $v;
                         $group->save();
@@ -201,7 +201,7 @@ class questiongroup extends Survey_Common_Action
                             'randomization_group' => $_POST['randomization_group']
                         );
 
-                        $group = new Groups;
+                        $group = new QuestionGroup;
                         foreach ($aData as $k => $v)
                             $group->$k = $v;
                         $group->save();
@@ -233,7 +233,7 @@ class questiongroup extends Survey_Common_Action
             $iGroupId = sanitize_int($iGroupId);
             $clang = $this->getController()->lang;
 
-            $iGroupsDeleted = Groups::deleteWithDependency($iGroupId, $iSurveyId);
+            $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupId, $iSurveyId);
 
             if ($iGroupsDeleted !== 1)
             {
@@ -278,7 +278,7 @@ class questiongroup extends Survey_Common_Action
             $grplangs = array_flip($aLanguages);
 
             // Check out the intgrity of the language versions of this group
-            $egresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid));
+            $egresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid));
             foreach ($egresult as $esrow)
             {
                 $esrow = $esrow->attributes;
@@ -286,7 +286,7 @@ class questiongroup extends Survey_Common_Action
                 // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE
                 if (!in_array($esrow['language'], $aLanguages))
                 {
-                    Groups::model()->deleteAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $esrow['language']));
+                    QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $esrow['language']));
                 }
                 else
                 {
@@ -303,7 +303,7 @@ class questiongroup extends Survey_Common_Action
                 if ($value != 'exists')
                 {
                     $basesettings['language'] = $key;
-                    $group = new Groups;
+                    $group = new QuestionGroup;
                     foreach ($basesettings as $k => $v)
                         $group->$k = $v;
                     switchMSSQLIdentityInsert('groups', true);
@@ -314,7 +314,7 @@ class questiongroup extends Survey_Common_Action
             $first = true;
             foreach ($aLanguages as $sLanguage)
             {
-                $oResult = Groups::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $sLanguage));
+                $oResult = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $sLanguage));
                 $aData['aGroupData'][$sLanguage] = $oResult->attributes;
                 $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
                 if ($first)
@@ -346,7 +346,7 @@ class questiongroup extends Survey_Common_Action
     {
         $gid = (int) $gid;
 
-        $group = Groups::model()->findByAttributes(array('gid' => $gid));
+        $group = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
         $surveyid = $group->sid;
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
@@ -383,7 +383,7 @@ class questiongroup extends Survey_Common_Action
                         'sid' => $surveyid,
                         'language' => $grplang
                     );
-                    $group = Groups::model()->findByAttributes($condition);
+                    $group = QuestionGroup::model()->findByAttributes($condition);
                     foreach ($aData as $k => $v)
                         $group->$k = $v;
                     $ugresult = $group->save();

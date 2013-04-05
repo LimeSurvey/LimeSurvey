@@ -395,7 +395,7 @@ class Statistics_userController extends LSYii_Controller {
 
 
 		// 1: Get list of questions with answers chosen
-		//"Getting Questions and Answers ..." is shown above the bar
+		//"Getting Questions and Answer ..." is shown above the bar
 		$prb->setLabelValue('txt1',$clang->gT('Getting questions and answers ...'));
 		$prb->moveStep(5);
 

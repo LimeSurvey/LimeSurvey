@@ -76,7 +76,7 @@ class Authentication extends Survey_Common_Action
             // Now authenticate
             if ($identity->authenticate()) 
             {
-                Failed_login_attempts::model()->deleteAttempts();
+                FailedLoginAttempt::model()->deleteAttempts();
 
                 $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
                 Yii::app()->session['just_logged_in'] = true;
@@ -233,7 +233,7 @@ class Authentication extends Survey_Common_Action
     */
     private function _userCanLogin()
     {
-        $failed_login_attempts = Failed_login_attempts::model();
+        $failed_login_attempts = FailedLoginAttempt::model();
         $failed_login_attempts->cleanOutOldAttempts();
 
         if ($failed_login_attempts->isLockedOut())

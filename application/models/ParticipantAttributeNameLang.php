@@ -19,7 +19,7 @@
  * @property string $attribute_type
  * @property string $visible
  */
-class ParticipantAttributeNamesLang extends CActiveRecord
+class ParticipantAttributeNameLang extends CActiveRecord
 {
 	/**
 	 * Returns the static model of Participant Attribute Names Lang table
@@ -76,7 +76,7 @@ class ParticipantAttributeNamesLang extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-            'participant_attribute_names'=>array(self::BELONGS_TO, 'ParticipantAttributeNames', 'attribute_id')
+            'participant_attribute_names'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
 		);
 	}
 

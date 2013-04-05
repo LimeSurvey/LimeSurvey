@@ -162,7 +162,7 @@ class Survey_Common_Action extends CAction
         // iGroupId/gid can be found with qid/iQuestionId
         if(isset($params['iQuestionId']))
         {
-            $oQuestion=Questions::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
+            $oQuestion=Question::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
             if($oQuestion)
             {
                 $params['iGroupId']=$params['gid']=$oQuestion->gid;
@@ -171,7 +171,7 @@ class Survey_Common_Action extends CAction
         // iSurveyId/iSurveyID/sid can be found with gid/iGroupId
         if(isset($params['iGroupId']))
         {
-            $oGroup=Groups::model()->find("gid=:gid",array(":gid"=>$params['iGroupId']));//Move this in model to use cache
+            $oGroup=QuestionGroup::model()->find("gid=:gid",array(":gid"=>$params['iGroupId']));//Move this in model to use cache
             if($oGroup)
             {
                 $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oGroup->sid;
@@ -367,15 +367,15 @@ class Survey_Common_Action extends CAction
 
         //Show Question Details
         //Count answer-options for this question
-        $qrr = Answers::model()->findAllByAttributes(array('qid' => $qid, 'language' => $baselang));
+        $qrr = Answer::model()->findAllByAttributes(array('qid' => $qid, 'language' => $baselang));
 
         $aData['qct'] = $qct = count($qrr);
 
         //Count sub-questions for this question
-        $sqrq = Questions::model()->findAllByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
+        $sqrq = Question::model()->findAllByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
         $aData['sqct'] = $sqct = count($sqrq);
 
-        $qrrow = Questions::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
+        $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
 
         $questionsummary = "<div class='menubar'>\n";
 
@@ -412,7 +412,7 @@ class Survey_Common_Action extends CAction
         $aData['clang'] = $clang;
         $aData['qrrow'] = $qrrow;
         $aData['baselang'] = $baselang;
-        $aAttributesWithValues = Questions::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyID, $baselang);
+        $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyID, $baselang);
         $DisplayArray = array();
         foreach ($aAttributesWithValues as $aAttribute)
         {
@@ -458,10 +458,10 @@ class Survey_Common_Action extends CAction
 
         Yii::app()->loadHelper('replacements');
         // TODO: check that surveyid and thus baselang are always set here
-        $sumresult4 = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID, 'gid' => $gid, 'language' => $baselang));
+        $sumresult4 = Question::model()->findAllByAttributes(array('sid' => $iSurveyID, 'gid' => $gid, 'language' => $baselang));
         $sumcount4 = count($sumresult4);
 
-        $grpresult = Groups::model()->findAllByAttributes(array('gid' => $gid, 'language' => $baselang));
+        $grpresult = QuestionGroup::model()->findAllByAttributes(array('gid' => $gid, 'language' => $baselang));
 
         // Check if other questions/groups are dependent upon this group
         $condarray = getGroupDepsForConditions($iSurveyID, "all", $gid, "by-targgid");
@@ -551,7 +551,7 @@ class Survey_Common_Action extends CAction
         $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $baselang);
 
         //$sumquery3 =  "SELECT * FROM ".db_table_name('questions')." WHERE sid={$iSurveyID} AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
-        $sumresult3 = Questions::model()->findAllByAttributes($condition); //Checked
+        $sumresult3 = Question::model()->findAllByAttributes($condition); //Checked
         $sumcount3 = count($sumresult3);
 
         $aData['canactivate'] = $sumcount3 > 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
@@ -600,9 +600,9 @@ class Survey_Common_Action extends CAction
         $aData['surveytranslate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'read');
         // RESET SURVEY LOGIC BUTTON
         //$sumquery6 = "SELECT count(*) FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')." as q WHERE c.qid = q.qid AND q.sid=$iSurveyID"; //Getting a count of conditions for this survey
-        // TMSW Conditions->Relevance:  How is conditionscount used?  Should Relevance do the same?
+        // TMSW Condition->Relevance:  How is conditionscount used?  Should Relevance do the same?
 
-        $iConditionCount = Conditions::model()->with(Array('questions'=>array('condition'=>'sid ='.$iSurveyID)))->count();
+        $iConditionCount = Condition::model()->with(Array('questions'=>array('condition'=>'sid ='.$iSurveyID)))->count();
 
         $aData['surveycontent'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
         $aData['conditionscount'] = ($iConditionCount > 0);
@@ -669,13 +669,13 @@ class Survey_Common_Action extends CAction
 
         $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $baselang);
 
-        $sumresult3 = Questions::model()->findAllByAttributes($condition); //Checked
+        $sumresult3 = Question::model()->findAllByAttributes($condition); //Checked
         $sumcount3 = count($sumresult3);
 
         $condition = array('sid' => $iSurveyID, 'language' => $baselang);
 
         //$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid={$iSurveyID} AND language='".$baselang."'"; //Getting a count of groups for this survey
-        $sumresult2 = Groups::model()->findAllByAttributes($condition); //Checked
+        $sumresult2 = QuestionGroup::model()->findAllByAttributes($condition); //Checked
         $sumcount2 = count($sumresult2);
 
         //SURVEY SUMMARY

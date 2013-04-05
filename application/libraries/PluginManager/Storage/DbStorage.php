@@ -112,7 +112,7 @@ class DbStorage implements iPluginStorage {
                 $attributes['attribute'] = $key;
             }
 
-            $records = Question_attributes::model()->findAllByAttributes($attributes);
+            $records = QuestionAttribute::model()->findAllByAttributes($attributes);
             if (count($records) > 0)
             {
                 foreach ($records as $record)
@@ -165,7 +165,7 @@ class DbStorage implements iPluginStorage {
      */
     protected function getQuestionBase($questionId, $key, $default)
     {
-        $question = Questions::model()->findByPk($questionId);
+        $question = Question::model()->findByPk($questionId);
         if ($question != null && isset($question->attributes[$key]))
         {
             return $question->attributes[$key];
@@ -275,10 +275,10 @@ class DbStorage implements iPluginStorage {
                 'attribute'       => $key,
                 'language' => $language
             );
-            $record = Question_attributes::model()->findByAttributes($attributes);
+            $record = QuestionAttribute::model()->findByAttributes($attributes);
             if (is_null($record)) {
                 // New setting
-                $record = Question_attributes::model()->populateRecord($attributes);
+                $record = QuestionAttribute::model()->populateRecord($attributes);
                 $record->setIsNewRecord(true);
             } 
 
@@ -306,7 +306,7 @@ class DbStorage implements iPluginStorage {
      */
     protected function setQuestionBase($questionId, $key, $data)
     {
-        $question = Questions::model()->findByPk($questionId);
+        $question = Question::model()->findByPk($questionId);
         if ($question != null && $question->setAttribute($key, $data))
         {
             return $question->save();

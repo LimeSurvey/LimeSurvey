@@ -12,7 +12,7 @@
  *
  */
 
-class Answers extends CActiveRecord
+class Answer extends CActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table
@@ -20,7 +20,7 @@ class Answers extends CActiveRecord
 	 * @static
 	 * @access public
      * @param string $class
-	 * @return Answers
+	 * @return Answer
 	 */
 	public static function model($class = __CLASS__)
 	{
@@ -61,7 +61,7 @@ class Answers extends CActiveRecord
             'questions' => array(self::HAS_ONE, 'Questions', '',
                 'on' => 't.qid = questions.qid',
             ),
-            'groups' => array(self::HAS_ONE, 'Groups', '', 'through' => 'questions',
+            'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'through' => 'questions',
                 'on' => 'questions.gid = groups.gid'
             ),
         );

@@ -20,7 +20,7 @@
  * @property string $date_added
  * @property string $can_edit
  */
-class ParticipantShares extends CActiveRecord
+class ParticipantShare extends CActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table
@@ -122,7 +122,7 @@ class ParticipantShares extends CActiveRecord
         $criteria = new CDbCriteria;
         $criteria->addCondition("participant_id = '$participantId'");
 		$criteria->addCondition("share_uid = '$shareuid' ");
-        ParticipantShares::model()->updateAll($updatedata,$criteria);
+        ParticipantShare::model()->updateAll($updatedata,$criteria);
     }
 
     function deleteRow($rows)

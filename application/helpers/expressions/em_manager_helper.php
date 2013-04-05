@@ -744,7 +744,7 @@
         }
 
         /**
-        * Do bulk-update/save of Conditions to Relevance
+        * Do bulk-update/save of Condition to Relevance
         * @param <integer> $surveyId - if NULL, processes the entire database, otherwise just the specified survey
         * @param <integer> $qid - if specified, just updates that one question
         * @return array of query strings
@@ -772,7 +772,7 @@
         }
 
         /**
-        * This reverses UpgradeConditionsToRelevance().  It removes Relevance for questions that have Conditions
+        * This reverses UpgradeConditionsToRelevance().  It removes Relevance for questions that have Condition
         * @param <integer> $surveyId
         * @param <integer> $qid
         */
@@ -794,7 +794,7 @@
 
         /**
         * If $qid is set, returns the relevance equation generated from conditions (or NULL if there are no conditions for that $qid)
-        * If $qid is NULL, returns an array of relevance equations generated from Conditions, keyed on the question ID
+        * If $qid is NULL, returns an array of relevance equations generated from Condition, keyed on the question ID
         * @param <integer> $surveyId
         * @param <integer> $qid - if passed, only generates relevance equation for that question - otherwise genereates for all questions with conditions
         * @return array of generated relevance strings, indexed by $qid
@@ -915,7 +915,7 @@
                 }
                 else
                 {
-                    // Conditions uses ' ' to mean not answered, but internally it is really stored as ''.  Fix this
+                    // Condition uses ' ' to mean not answered, but internally it is really stored as ''.  Fix this
                     if ($value === '" "' || $value == '""') {
                         if ($row['method'] == '==')
                         {
@@ -4592,7 +4592,7 @@
                     }
                     else if ($this->surveyOptions['allowsave'] && isset($_SESSION[$this->sessid]['scid']))
                     {
-                        Saved_control::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$thisstep));
+                        SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$thisstep));
                     }
                     // Check Quotas
                     $bQuotaMatched = false;

@@ -2426,7 +2426,7 @@ class tokens extends Survey_Common_Action
                 $name=$fieldname;
                 if($fieldname[10]=='c') { //This belongs to a cpdb attribute
                     $cpdbattid=substr($fieldname,15);
-                    $data=ParticipantAttributeNames::model()->getAttributeName($cpdbattid, Yii::app()->session['adminlang']);
+                    $data=ParticipantAttributeName::model()->getAttributeName($cpdbattid, Yii::app()->session['adminlang']);
                     $name=$data['attribute_name'];
                 }
                 if (!isset($fieldcontents[$fieldname]))

@@ -13,7 +13,7 @@
  *
  */
 
-class Labelsets extends CActiveRecord
+class LabelSet extends CActiveRecord
 {
 	/**
 	 * Returns the table's name
