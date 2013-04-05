@@ -77,7 +77,7 @@
         */
         public function relations()
         {
-            return array('questions' => array(self::HAS_MANY, 'Questions', 'gid'));
+            return array('questions' => array(self::HAS_MANY, 'Question', 'gid'));
         }
 
         function getAllRecords($condition=FALSE, $order=FALSE, $return_query = TRUE)
