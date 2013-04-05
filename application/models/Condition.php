@@ -62,7 +62,7 @@
         public function relations()
         {
             return array(
-            'questions' => array(self::HAS_ONE, 'Questions', '',
+            'questions' => array(self::HAS_ONE, 'Question', '',
             'on' => 't.cqid = questions.qid',
             ),
             );

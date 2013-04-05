@@ -850,7 +850,6 @@ class participantsaction extends Survey_Common_Action
     {
         $iParticipantId = Yii::app()->request->getQuery('pid');
         $records = ParticipantAttributeName::model()->getParticipantVisibleAttribute($iParticipantId);
-        //$getallattributes = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll();
         $records = subval_sort($records, "attribute_name", "asc");
 
         $i = 0;

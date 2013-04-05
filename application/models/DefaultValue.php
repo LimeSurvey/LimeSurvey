@@ -59,7 +59,7 @@ class DefaultValue extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'question' => array(self::HAS_ONE, 'Questions', '',
+			'question' => array(self::HAS_ONE, 'Question', '',
 						'on' => 't.qid = question.qid',
 			),
 		);
