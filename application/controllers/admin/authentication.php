@@ -58,6 +58,9 @@ class Authentication extends Survey_Common_Action
 
         if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit')))
         {
+            if (!is_null($beforeLogin->get('default'))) {
+                $aData['defaultAuth'] = $beforeLogin->get('default');
+            }
             $newLoginForm = new PluginEvent('newLoginForm');    
             App()->getPluginManager()->dispatchEvent($newLoginForm);
             $aData['summary'] = $this->_getSummary('logout');
