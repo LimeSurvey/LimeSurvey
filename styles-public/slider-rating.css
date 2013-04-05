@@ -9,7 +9,7 @@
 .slider-background{clear:both;display:block;background:transparent url(img/slider-background.png) no-repeat 0 0;padding:0 15px 0 13px;height:22px;}
 .slider-background .slider-rating
 ,.page-odd .slider-background .slider-rating
-  {visibility:hidden;height:22px;}
+  {visibility:hidden;height:22px;width:366px;}
 .slider-rating a.ui-slider-handle
 ,.page-odd .slider-rating a.ui-slider-handle
 {
