@@ -19,7 +19,7 @@
             'value' => function($data) {
                 if ($data['active'] == 0)
                 { 
-                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Activate'), array('width' => 16, 'height' => 16)), array("/plugins/deactivate", "id" => $data['id']));
+                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Activate'), array('width' => 16, 'height' => 16)), array("/plugins/activate", "id" => $data['id']));
                 } else {
                     $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16)), array("/plugins/deactivate", "id" => $data['id'])); 
                 }
