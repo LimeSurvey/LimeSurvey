@@ -67,7 +67,7 @@
                 if (isset($cquestions))
                 {
                 ?>
-                <optgroup label='<?php $clang->eT("Previous Answers Fields");?>'>
+                <optgroup label='<?php $clang->eT("Previous answer fields");?>'>
                     <?php
                         foreach ($cquestions as $cqn)
                         {

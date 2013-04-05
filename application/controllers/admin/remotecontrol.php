@@ -198,7 +198,7 @@ class remotecontrol_handle
             $this->_jumpStartSession($username);
             $sSessionKey = randomChars(32);
 
-            $session = new Sessions;
+            $session = new Session;
             $session->id = $sSessionKey;
             $session->expire = time() + Yii::app()->getConfig('iSessionExpirationTime');
             $session->data = $username;
@@ -219,10 +219,10 @@ class remotecontrol_handle
      */
     public function release_session_key($sSessionKey)
     {
-        Sessions::model()->deleteAllByAttributes(array('id' => $sSessionKey));
+        Session::model()->deleteAllByAttributes(array('id' => $sSessionKey));
         $criteria = new CDbCriteria;
         $criteria->condition = 'expire < ' . time();
-        Sessions::model()->deleteAll($criteria);
+        Session::model()->deleteAll($criteria);
         return 'OK';
     }
 
@@ -625,7 +625,7 @@ class remotecontrol_handle
 		if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
 			$sLanguage = $oSurvey->language;
 
-		$oAllQuestions =Questions::model()->getQuestionList($iSurveyID, $sLanguage);
+		$oAllQuestions =Question::model()->getQuestionList($iSurveyID, $sLanguage);
        	if (!isset($oAllQuestions))
 				return array('status' => 'No available data');
 				
@@ -637,7 +637,7 @@ class remotecontrol_handle
             if(is_array($groupIDs)) 
             {   
                 //check that every value of the array belongs to the survey defined
-                $aGroups = Groups::model()->findAllByAttributes(array('sid' => $iSurveyID));
+                $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID));
 
                 foreach( $aGroups as $group)
                     $validGroups[] = $group['gid'];
@@ -1048,7 +1048,7 @@ class remotecontrol_handle
 				if($oSurvey['active']=='Y')
 					return array('status' => 'Error:Survey is active and not editable');
 
-				$oGroup = new Groups;
+				$oGroup = new QuestionGroup;
 				$oGroup->sid = $iSurveyID;
 				$oGroup->group_name =  $sGroupTitle;
                 $oGroup->description = $sGroupDescription;
@@ -1088,7 +1088,7 @@ class remotecontrol_handle
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete'))
             {
-				$oGroup = Groups::model()->findByAttributes(array('gid' => $iGroupID));
+				$oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
 				if (!isset($oGroup))
 					return array('status' => 'Error: Invalid group ID');
 
@@ -1099,7 +1099,7 @@ class remotecontrol_handle
 				if(isset($depented_on))
 					return array('status' => 'Group with depencdencies - deletion not allowed');
 
-				$iGroupsDeleted = Groups::deleteWithDependency($iGroupID, $iSurveyID);
+				$iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupID, $iSurveyID);
 
 				if ($iGroupsDeleted === 1)
 				{
@@ -1173,7 +1173,7 @@ class remotecontrol_handle
                 {
 					$iNewgid = $aImportResults['newgid'];
 
-					$oGroup = Groups::model()->findByAttributes(array('gid' => $iNewgid));
+					$oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iNewgid));
 					$slang=$oGroup['language'];
 					if($sNewGroupName!='')
 					$oGroup->setAttribute('group_name',$sNewGroupName);
@@ -1236,13 +1236,13 @@ class remotecontrol_handle
 	{
        if ($this->_checkSessionKey($sSessionKey))
        {
-		   $oGroup = Groups::model()->findByAttributes(array('gid' => $iGroupID));
+		   $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
 			if (!isset($oGroup))
 				return array('status' => 'Error: Invalid group ID');
 
 			if (Permission::model()->hasSurveyPermission($oGroup->sid, 'survey', 'read'))
 			{
-				$aBasicDestinationFields=Groups::model()->tableSchema->columnNames;
+				$aBasicDestinationFields=QuestionGroup::model()->tableSchema->columnNames;
 				$aGroupSettings=array_intersect($aGroupSettings,$aBasicDestinationFields);
 
 				if (empty($aGroupSettings))
@@ -1275,7 +1275,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $oGroup=Groups::model()->findByAttributes(array('gid' => $iGroupID));
+            $oGroup=QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
             if (is_null($oGroup))
             {
                 return array('status' => 'Error: Invalid group ID');
@@ -1287,7 +1287,7 @@ class remotecontrol_handle
                 unset($aGroupData['sid']);
                 unset($aGroupData['gid']);
                 // Remove invalid fields
-                $aDestinationFields=array_flip(Groups::model()->tableSchema->columnNames);
+                $aDestinationFields=array_flip(QuestionGroup::model()->tableSchema->columnNames);
                 $aGroupData=array_intersect_key($aGroupData,$aDestinationFields);
 				$aGroupAttributes = $oGroup->getAttributes();
 				if (empty($aGroupData))
@@ -1351,7 +1351,7 @@ class remotecontrol_handle
 
 			if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read'))
 			{
-				$oGroupList = Groups::model()->findAllByAttributes(array("sid"=>$iSurveyID));
+				$oGroupList = QuestionGroup::model()->findAllByAttributes(array("sid"=>$iSurveyID));
 				if(count($oGroupList)==0)
 					return array('status' => 'No groups found');
 
@@ -1385,7 +1385,7 @@ class remotecontrol_handle
 	{
         if ($this->_checkSessionKey($sSessionKey))
         {
-			$oQuestion = Questions::model()->findByAttributes(array('qid' => $iQuestionID));
+			$oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
 			if (!isset($oQuestion))
 				return array('status' => 'Error: Invalid question ID');
 
@@ -1399,7 +1399,7 @@ class remotecontrol_handle
 					return array('status' => 'Survey is active and not editable');
 				$iGroupID=$oQuestion['gid'];
 
-				$oCondition = Conditions::model()->findAllByAttributes(array('cqid' => $iQuestionID));
+				$oCondition = Condition::model()->findAllByAttributes(array('cqid' => $iQuestionID));
 				if(count($oCondition)>0)
 					return array('status' => 'Cannot delete Question. Others rely on this question');
 
@@ -1407,18 +1407,18 @@ class remotecontrol_handle
 
 				try
 				{
-					Conditions::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-					Question_attributes::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-					Answers::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
+					Condition::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
+					QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
+					Answer::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
 
 					$sCriteria = new CDbCriteria;
 					$sCriteria->addCondition('qid = :qid or parent_qid = :qid');
 					$sCriteria->params[':qid'] = $iQuestionID;
-					Questions::model()->deleteAll($sCriteria);
+					Question::model()->deleteAll($sCriteria);
 
-					Defaultvalues::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-					Quota_members::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-					Questions::updateSortOrder($iGroupID, $iSurveyID);
+					DefaultValue::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
+					QuotaMember::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
+					Question::updateSortOrder($iGroupID, $iSurveyID);
 
                 return (int)$iQuestionID;
 				}
@@ -1464,7 +1464,7 @@ class remotecontrol_handle
 				if($oSurvey->getAttribute('active') =='Y')
 					return array('status' => 'Error:Survey is Active and not editable');
 
-				$oGroup = Groups::model()->findByAttributes(array('gid' => $iGroupID));
+				$oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
 				if (!isset($oGroup))
 					return array('status' => 'Error: Invalid group ID');
 
@@ -1505,7 +1505,7 @@ class remotecontrol_handle
 					fixLanguageConsistency($iSurveyID);
 					$iNewqid = $aImportResults['newqid'];
 
-					$oQuestion = Questions::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $iGroupID, 'qid' => $iNewqid));
+					$oQuestion = Question::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $iGroupID, 'qid' => $iNewqid));
 					if($sNewQuestionTitle!=NULL)
 						$oQuestion->setAttribute('title',$sNewQuestionTitle);
 					if($sNewqQuestion!='')
@@ -1552,7 +1552,7 @@ class remotecontrol_handle
        if ($this->_checkSessionKey($sSessionKey))
        {
 		    Yii::app()->loadHelper("surveytranslator");
-			$oQuestion = Questions::model()->findByAttributes(array('qid' => $iQuestionID));
+			$oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
 			if (!isset($oQuestion))
 				return array('status' => 'Error: Invalid questionid');
 
@@ -1566,11 +1566,11 @@ class remotecontrol_handle
 				if (!array_key_exists($sLanguage,getLanguageDataRestricted()))
 					return array('status' => 'Error: Invalid language');
 
-				$oQuestion = Questions::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=>$sLanguage));
+				$oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=>$sLanguage));
 				if (!isset($oQuestion))
 					return array('status' => 'Error: Invalid questionid');
 
-				$aBasicDestinationFields=Questions::model()->tableSchema->columnNames;
+				$aBasicDestinationFields=Question::model()->tableSchema->columnNames;
 				array_push($aBasicDestinationFields,'available_answers')	;
 				array_push($aBasicDestinationFields,'subquestions')	;
 				array_push($aBasicDestinationFields,'attributes')	;
@@ -1586,7 +1586,7 @@ class remotecontrol_handle
                 {
 					if ($sPropertyName == 'available_answers' || $sPropertyName == 'subquestions')
 					{
-						$oSubQuestions =  Questions::model()->findAllByAttributes(array('parent_qid' => $iQuestionID,'language'=>$sLanguage ),array('order'=>'title') );
+						$oSubQuestions =  Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionID,'language'=>$sLanguage ),array('order'=>'title') );
 						if (count($oSubQuestions)>0)
 						{
 	    					$aData = array();
@@ -1610,7 +1610,7 @@ class remotecontrol_handle
 					}
 					else if ($sPropertyName == 'attributes')
 					{
-						$oAttributes =  Question_attributes::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> null ),array('order'=>'attribute') );
+						$oAttributes =  QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> null ),array('order'=>'attribute') );
 						if (count($oAttributes)>0)
 						{
 							$aData = array();
@@ -1624,7 +1624,7 @@ class remotecontrol_handle
 					}
 					else if ($sPropertyName == 'attributes_lang')
 					{
-						$oAttributes =  Question_attributes::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage ),array('order'=>'attribute') );
+						$oAttributes =  QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage ),array('order'=>'attribute') );
 						if (count($oAttributes)>0)
 						{
 							$aData = array();
@@ -1638,7 +1638,7 @@ class remotecontrol_handle
 					}
 					else if ($sPropertyName == 'answeroptions')
 					{
-						$oAttributes = Answers::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage ),array('order'=>'sortorder') );
+						$oAttributes = Answer::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage ),array('order'=>'sortorder') );
 						if (count($oAttributes)>0)
 						{
 							$aData = array();
@@ -1681,7 +1681,7 @@ class remotecontrol_handle
         if ($this->_checkSessionKey($sSessionKey))
         {
             Yii::app()->loadHelper("surveytranslator");
-            $oQuestion=Questions::model()->findByAttributes(array('qid' => $iQuestionID));
+            $oQuestion=Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (is_null($oQuestion))
                 return array('status' => 'Error: Invalid group ID');
 
@@ -1695,7 +1695,7 @@ class remotecontrol_handle
 				if (!array_key_exists($sLanguage,getLanguageDataRestricted()))
 					return array('status' => 'Error: Invalid language');
 
-				$oQuestion = Questions::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=>$sLanguage));
+				$oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=>$sLanguage));
 				if (!isset($oQuestion))
 					return array('status' => 'Error: Invalid questionid');
 
@@ -1707,7 +1707,7 @@ class remotecontrol_handle
                 unset($aQuestionData['language']);
                 unset($aQuestionData['type']);
                 // Remove invalid fields
-                $aDestinationFields=array_flip(Questions::model()->tableSchema->columnNames);
+                $aDestinationFields=array_flip(Question::model()->tableSchema->columnNames);
                 $aQuestionData=array_intersect_key($aQuestionData,$aDestinationFields);
                 $aQuestionAttributes = $oQuestion->getAttributes();
 
@@ -1732,7 +1732,7 @@ class remotecontrol_handle
 					try
 					{
 						$bSaveResult=$oQuestion->save(); // save the change to database
-						Questions::model()->updateQuestionOrder($oQuestion->gid, $oQuestion->sid);
+						Question::model()->updateQuestionOrder($oQuestion->gid, $oQuestion->sid);
 						$aResult[$sFieldName]=$bSaveResult;
 						//unset fields that failed
 						if (!$bSaveResult)
@@ -1784,16 +1784,16 @@ class remotecontrol_handle
 
 				if($iGroupID!=NULL)
 				{
-					$oGroup = Groups::model()->findByAttributes(array('gid' => $iGroupID));
+					$oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
 					$sGroupSurveyID = $oGroup['sid'];
 
 					if($sGroupSurveyID != $iSurveyID)
 						return array('status' => 'Error: IMissmatch in surveyid and groupid');
 					else
-						$aQuestionList = Questions::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$iGroupID,"parent_qid"=>"0","language"=>$sLanguage));
+						$aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$iGroupID,"parent_qid"=>"0","language"=>$sLanguage));
 				}
 				else
-					$aQuestionList = Questions::model()->findAllByAttributes(array("sid"=>$iSurveyID,"parent_qid"=>"0", "language"=>$sLanguage));
+					$aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID,"parent_qid"=>"0", "language"=>$sLanguage));
 
 				if(count($aQuestionList)==0)
 					return array('status' => 'No questions found');
@@ -2416,8 +2416,8 @@ class remotecontrol_handle
     {
         $criteria = new CDbCriteria;
         $criteria->condition = 'expire < ' . time();
-        Sessions::model()->deleteAll($criteria);
-        $oResult = Sessions::model()->findByPk($sSessionKey);
+        Session::model()->deleteAll($criteria);
+        $oResult = Session::model()->findByPk($sSessionKey);
 
         if (is_null($oResult))
             return false;

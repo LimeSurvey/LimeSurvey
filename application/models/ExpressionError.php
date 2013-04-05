@@ -13,7 +13,7 @@
      *	Files Purpose: lots of common functions
 */
 
-class Quota_languagesettings extends CActiveRecord
+class ExpressionError extends CActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table
@@ -36,40 +36,36 @@ class Quota_languagesettings extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{quota_languagesettings}}';
+		return '{{expression_errors}}';
 	}
 
 	/**
 	 * Returns the primary key of this table
 	 *
 	 * @access public
-	 * @return string
+	 * @return array
 	 */
 	public function primaryKey()
 	{
-		return 'quotals_id';
+		return array('scid');
 	}
 
-	/**
-	 * Returns the relations
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function relations()
+	function getAllRecords($condition=FALSE)
 	{
-		return array(
-			'quota' => array(self::BELONGS_TO, 'Quota', '',
-				'on' => 'quota.id = t.quotals_quota_id'),
-		);
+		if ($condition != FALSE)
+		{
+			$this->db->where($condition);
+		}
+
+		$data = $this->db->get('expression_errors');
+
+		return $data;
 	}
 
-	function insertRecords($data)
+    function insertRecords($data)
     {
-        $settings = new self;
-		foreach ($data as $k => $v)
-			$settings->$k = $v;
-		return $settings->save();
+
+        return $this->db->insert('expression_errors',$data);
     }
+
 }
-?>

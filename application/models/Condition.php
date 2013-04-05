@@ -16,7 +16,7 @@
     *     Files Purpose: lots of common functions
     */
 
-    class Conditions extends CActiveRecord
+    class Condition extends CActiveRecord
     {
         /**
         * Returns the static model of Settings table
@@ -62,7 +62,7 @@
         public function relations()
         {
             return array(
-            'questions' => array(self::HAS_ONE, 'Questions', '',
+            'questions' => array(self::HAS_ONE, 'Question', '',
             'on' => 't.cqid = questions.qid',
             ),
             );

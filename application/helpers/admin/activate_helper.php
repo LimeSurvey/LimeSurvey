@@ -54,7 +54,7 @@ function fixNumbering($fixnumbering, $iSurveyID)
             $result = db_execute_assosc($query);
         }
     }
-    // TMSW Conditions->Relevance:  (1) Call LEM->ConvertConditionsToRelevance()when done. (2) Should relevance for old conditions be removed first?
+    // TMSW Condition->Relevance:  (1) Call LEM->ConvertConditionsToRelevance()when done. (2) Should relevance for old conditions be removed first?
     //Now question_attributes
     $query = "UPDATE {{question_attributes}} SET qid=$newqid WHERE qid=$oldqid";
     $result = db_execute_assosc($query);

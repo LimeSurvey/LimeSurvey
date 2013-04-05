@@ -13,7 +13,7 @@
      *	Files Purpose: lots of common functions
 */
 
-class Quota_members extends CActiveRecord
+class QuotaMember extends CActiveRecord
 {
     /**
      * Returns the static model of Settings table
@@ -21,7 +21,7 @@ class Quota_members extends CActiveRecord
      * @static
      * @access public
      * @param string $class
-     * @return Quota_members
+     * @return QuotaMember
      */
     public static function model($class = __CLASS__)
     {

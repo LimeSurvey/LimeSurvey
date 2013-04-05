@@ -1501,7 +1501,7 @@ function upgradeTables143()
         $aInsert['question_order']=$row['sortorder'];
         $aInsert['language']=$row['language'];
 
-        $iLastInsertID=Questions::model()->insertRecords($aInsert);
+        $iLastInsertID=Question::model()->insertRecords($aInsert);
         if (!isset($aInsert['qid']))
         {
             $aQIDReplacements[$row['qid'].'_'.$row['code']]=$iLastInsertID;
@@ -1573,7 +1573,7 @@ function upgradeTables143()
             $aInsert['question_order']=$lrow['sortorder'];
             $aInsert['language']=$lrow['language'];
             $aInsert['scale_id']=1;
-            $iLastInsertID=Questions::model()->insertRecords($aInsert);
+            $iLastInsertID=Question::model()->insertRecords($aInsert);
 
             if (isset($aInsert['qid']))
             {

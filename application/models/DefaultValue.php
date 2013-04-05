@@ -13,10 +13,10 @@
      *	Files Purpose: lots of common functions
 */
 
-class Sessions extends CActiveRecord
+class DefaultValue extends CActiveRecord
 {
 	/**
-	 * Returns the static model of Session table
+	 * Returns the static model of Settings table
 	 *
 	 * @static
 	 * @access public
@@ -36,18 +36,41 @@ class Sessions extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{sessions}}';
+		return '{{defaultvalues}}';
 	}
 
 	/**
 	 * Returns the primary key of this table
 	 *
 	 * @access public
-	 * @return string
+	 * @return array
 	 */
 	public function primaryKey()
 	{
-		return 'id';
+		return array('qid', 'specialtype', 'scale_id', 'sqid', 'language');
 	}
+
+	/**
+	 * Relations with questions
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function relations()
+	{
+		return array(
+			'question' => array(self::HAS_ONE, 'Question', '',
+						'on' => 't.qid = question.qid',
+			),
+		);
+	}
+
+	function insertRecords($data)
+    {
+        $values = new self;
+		foreach ($data as $k => $v)
+			$values->$k = $v;
+		return $values->save();
+    }
 }
 ?>

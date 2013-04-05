@@ -221,7 +221,7 @@
         {
             if (isset($this->responseId))
             {
-                $surveyId = Questions::model()->findFieldByPk($this->questionId, 'sid');
+                $surveyId = Question::model()->findFieldByPk($this->questionId, 'sid');
                 $response = SurveyDynamic::model($surveyId)->findByPk($this->responseId);
                 $columns = $this->getColumns();
                 foreach ($columns as &$column)
@@ -254,7 +254,7 @@
          */
         public function loadSubQuestions($questionId)
         {
-            $subQuestions = Questions::model()->findAllByAttributes(array(
+            $subQuestions = Question::model()->findAllByAttributes(array(
                 'parent_id' => $questionId
             ));
             foreach ($subQuestions as $subQuestion)

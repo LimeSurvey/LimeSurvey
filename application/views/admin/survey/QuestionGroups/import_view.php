@@ -6,7 +6,7 @@
     <div class='successheader'><?php $clang->eT("Success") ?></div><br />
     <strong><u><?php $clang->gT("Question group import summary") ?></u></strong><br />
     <ul style="text-align:left;">
-        <li><?php echo $clang->gT("Groups") .": " .$aImportResults['groups'] ?></li>
+        <li><?php echo $clang->gT("QuestionGroup") .": " .$aImportResults['groups'] ?></li>
         <li><?php echo $clang->gT("Questions").": ".$aImportResults['questions'] ?></li>
         <li><?php echo $clang->gT("Subquestions").": ".$aImportResults['subquestions'] ?></li>
         <li><?php echo $clang->gT("Answers").": ".$aImportResults['answers'] ?></li>

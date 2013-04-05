@@ -166,7 +166,7 @@
         */
         public function getGroupList($surveyId)
         {
-            $result = Groups::model()->findListByAttributes(array('sid' => $surveyId), 'group_name');
+            $result = QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name');
             return $result;
         }
         

@@ -150,7 +150,7 @@ div.menubar .ui-widget-header
     vertical-align: middle;
     max-height:40px;
     border:0;
-    margin:0 -2px;
+    margin:0;
 }
 
 .menubar-title {
@@ -310,11 +310,14 @@ td {
     opacity:.50;
 }
 
-input, select, button {
-    color: navy;
-    font: 10px verdana, arial, sans-serif;
+select, textarea, 
+input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]
+{
+    color:navy;
 }
-
+input, textarea { /* override bootstrap */
+    width: auto;
+}
 /* Uncomment these styles if you are using a system theme with a dark background
 and are having difficulty seeing text in inputs, textareas and dropdown selects. */
 /*
@@ -334,17 +337,8 @@ border: 1px solid #828790;
 */
 
 input[disabled], textarea[disabled], select[disabled], button[disabled] {
-    color: #999 !important;
-    background: #EEE !important;
-    border:1px solid #ccc !important;
-}
 
-textarea {
-    font-size: 10px;
-    color: navy;
-    font-family: verdana, arial, sans-serif;
 }
-
 
 .subtitle {
     font-size: 10px;
@@ -1443,16 +1437,50 @@ div.right {
 
 .limebutton
 {
-    outline: 0;
-    margin:1px 4px 1px 0;
-    padding: 1px 1em;
-    text-decoration:none !important;
-    cursor:pointer;
-    font-size:0.9em;
-    text-align: center;
-    zoom: 1;
+  display: inline-block;
+  *display: inline;
+  padding: 4px 14px;
+  font-size: 14px;
+  line-height: 20px;
+  *line-height: 20px;
+  text-align: center;
+  vertical-align: middle;
+/*  font-weight:bold;*/
+  cursor: pointer;
+  border: 1px solid #bbbbbb;
+  *border: 0;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  *zoom: 1;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+     -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
+.limebutton
+{
+  border-color: #79B7E7;
+  border-color: rgba(121, 183, 231, 0.3) rgba(121, 183, 231, 0.3) rgba(121, 183, 231, 0.5);
+  color: #1D5987;
+  background-color: #dfeffc;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dfeffc), to(#c8e4fa));
+  background-image: -webkit-linear-gradient(top, #dfeffc, #c8e4fa);
+  background-image: -o-linear-gradient(top, #dfeffc, #c8e4fa);
+  background-image: linear-gradient(to bottom, #dfeffc, #c8e4fa);
+  background-image: -moz-linear-gradient(top, #dfeffc, #c8e4fa);
+  background-repeat: repeat-x;
 
+  border-color: #79B7E7 #79B7E7 #5f8eb3;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffdfeffc', endColorstr='#ffc8e4fa', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+.limebutton:focus,.limebutton:hover,.limebutton:active
+{
+  background-position:0 -15px;
+  color: #444;
+  background-color: #c8e4fa;
+}
 #emailtemplates .ui-tabs-panel .limebutton {
     margin: 3px 20% 10px 30.5%;
 }

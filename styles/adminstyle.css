@@ -1,6 +1,3 @@
-div.htmleditor {
-    display: inline-block;
-}
 /*** Minimized/Maximized Toolbar ***/
 
 .cke_minimized .cke_break,
@@ -37,6 +34,11 @@ div.htmleditor {
 	margin-top: 0.2em !important;
 }
 
+/* HTML editor */
+div.htmleditor {
+    display: inline-block;
+}
+
 .imagelink {
     float:left;
 }
@@ -68,7 +70,7 @@ div.htmleditor {
 /******************************************************************************/
 /* Bootstrap overrides.                                                       */
 /******************************************************************************/
-label {display: inline-block !important;}
+label {display: inline-block;}/* override but leave admin template to override again */
 .select{
     width: 250px;
     margin-left: 10px;

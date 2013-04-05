@@ -402,7 +402,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage');
     # Build array that has to be returned
     for ($i=0; $i < $num_results; $i++) {
-        #Conditions for SPSS fields:
+        #Condition for SPSS fields:
         # - Length may not be longer than 8 characters
         # - Name may not begin with a digit
         $fieldname = $fieldnames[$i];
@@ -636,7 +636,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
     $sdump = "";
     if (!isset($exclude['answers']))
     {
-        //Answers table
+        //Answer table
         $aquery = "SELECT {{answers}}.*
         FROM {{answers}}, {{questions}}
         WHERE {{answers}}.language={{questions}}.language
@@ -653,7 +653,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
 
     if (!isset($exclude['conditions']))
     {
-        //Conditions table
+        //Condition table
         $cquery = "SELECT DISTINCT {{conditions}}.*
         FROM {{conditions}}, {{questions}}
         WHERE {{conditions}}.qid={{questions}}.qid
@@ -667,7 +667,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
 
     buildXMLFromQuery($xmlwriter,$query);
 
-    // Groups
+    // QuestionGroup
     $gquery = "SELECT *
     FROM {{groups}}
     WHERE sid=$iSurveyID
@@ -1482,7 +1482,7 @@ function group_export($action, $iSurveyID, $gid)
     $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
     $xml->startElement('languages');
 
-    $lresult = Groups::model()->findAllByAttributes(array('gid' => $gid), array('select'=>'language','group' => 'language'));
+    $lresult = QuestionGroup::model()->findAllByAttributes(array('gid' => $gid), array('select'=>'language','group' => 'language'));
     foreach($lresult as $row)
     {
         $xml->writeElement('language',$row->language);
@@ -1495,7 +1495,7 @@ function group_export($action, $iSurveyID, $gid)
 
 function groupGetXMLStructure($xml,$gid)
 {
-    // Groups
+    // QuestionGroup
     $gquery = "SELECT *
     FROM {{groups}}
     WHERE gid=$gid";
@@ -1513,14 +1513,14 @@ function groupGetXMLStructure($xml,$gid)
     WHERE gid=$gid and parent_qid>0 order by question_order, language, scale_id";
     buildXMLFromQuery($xml,$qquery,'subquestions');
 
-    //Answers
+    //Answer
     $aquery = "SELECT DISTINCT {{answers}}.*
     FROM {{answers}}, {{questions}}
     WHERE ({{answers}}.qid={{questions}}.qid)
     AND ({{questions}}.gid=$gid)";
     buildXMLFromQuery($xml,$aquery);
 
-    //Conditions - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
+    //Condition - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
     $cquery = "SELECT DISTINCT c.*
     FROM {{conditions}} c, {{questions}} q, {{questions}} b
     WHERE (c.cqid=q.qid)
@@ -1561,7 +1561,7 @@ function groupGetXMLStructure($xml,$gid)
 // DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR
 // ON ANOTHER SURVEY SETUP DUMP ALL DATA WITH RELATED QID FROM THE FOLLOWING TABLES
 //  - Questions
-//  - Answers
+//  - Answer
 //  - Question attributes
 //  - Default values
 function questionExport($action, $iSurveyID, $gid, $qid)
@@ -1612,7 +1612,7 @@ function questionGetXMLStructure($xml,$gid,$qid)
     buildXMLFromQuery($xml,$qquery,'subquestions');
 
 
-    // Answers table
+    // Answer table
     $aquery = "SELECT *
     FROM {{answers}}
     WHERE qid = $qid order by language, scale_id, sortorder";
