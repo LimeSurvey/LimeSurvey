@@ -66,7 +66,7 @@
             'groups' => array(self::HAS_ONE, 'QuestionGroup', '',
             'on' => 't.gid = groups.gid AND t.language = groups.language'
             ),
-            'parents' => array(self::HAS_ONE, 'Questions', '',
+            'parents' => array(self::HAS_ONE, 'Question', '',
             'on' => 't.parent_qid = parents.qid',
             ),
             );
