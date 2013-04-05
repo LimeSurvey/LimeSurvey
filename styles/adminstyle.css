@@ -79,6 +79,11 @@ label {display: inline-block !important;}
     box-sizing: border-box;
 }
 
-li input {
-    margin: 0px;
+li input, li select {
+    margin: 0px !important;
+
+}
+
+table td, table th {
+    padding: 0px;
 }
