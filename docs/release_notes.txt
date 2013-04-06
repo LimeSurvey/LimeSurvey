@@ -60,6 +60,27 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.00+ (build 130325) to 2.00+ (build 130406) Apr 06, 2013
+-Fixed issue #7694: When clicking on showing last 50 answers first 50 are shown (Denis Chenu)
+-Fixed issue #7698: EM's is_int() function causes problems when validating subquestions (Denis Chenu)
+-Fixed issue #7718: Cancelling the delete survey operation leads to error (Carsten Schmitz)
+-Fixed issue #7720: Copying a survey results in the new survey with same name of the original survey (Carsten Schmitz)
+-Fixed issue: Template RTL compatibility (Tal Tabakman)
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: Italian (Informal) by filipguttman
+#Updated translation: Latvian by marcic
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by amcorreia, santanabeto, mauriciofurtado
+#Updated translation: Portuguese (Portugal) by algarvio, nostradumusfdx, samarta
+#Updated translation: Romanian by filipguttman
+#Updated translation: Russian by vipgroup
+#Updated translation: Slovenian by kaysersoze
+#Updated translation: Ukrainian by myksyd
+
+
+
 Changes from 2.00+ (build 130317) to 2.00+ (build 130325) Mar 25, 2013
 -New feature: Extra class for multi column: colstyle-ul, colstyle-table and colstyle-css with display columns settings (Denis Chenu)
 -Fixed issue #7261: Internet Explorer: short free text not accessible after file upload (Denis Chenu)
