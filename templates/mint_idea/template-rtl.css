@@ -114,7 +114,7 @@ ul.cols-2 li,ul.cols-2-ul,ul.cols-3 li,ul.cols-3-ul,ul.cols-4 li,ul.cols-4-ul,ul
 }
 #limesurvey table.question tbody th.answertext,#limesurvey table.question tbody th.arraycaptionleft
   {
-  text-align: left;
+  text-align: right;
 }
 .array-flexible-column tbody th.arraycaptionleft {
   padding-left: 1em;padding-right: 0;
