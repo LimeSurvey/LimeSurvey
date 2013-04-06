@@ -11,15 +11,15 @@
         <div class='menubar-left'>
             <?php if (!isset($_POST['sql']))
                 { ?>
-                <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/start/0/limit/$limit"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>0,'limit'=>$limit)); ?>'>
                     <img src='<?php echo $sImageURL; ?>databegin.png' alt='<?php $clang->eT("Show start..."); ?>' /></a>
-                <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/start/$last/limit/$limit"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>$last,'limit'=>$limit)); ?>'>
                     <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous.."); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>blank.gif' width='13' height='20' alt='' />
 
-                <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/start/$next/limit/$limit"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>$next,'limit'=>$limit)); ?>'>
                     <img src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' /></a>
-                <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/start/$end/limit/$limit"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>$end,'limit'=>$limit)); ?>'>
                     <img src='<?php echo $sImageURL; ?>dataend.png' alt='<?php $clang->eT("Show last.."); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                 <?php

@@ -507,6 +507,8 @@ class responses extends Survey_Common_Action
 
             $start = Yii::app()->request->getParam('start', 0);
             $limit = Yii::app()->request->getParam('limit', 50);
+            $order = Yii::app()->request->getParam('order', 'asc');
+
             if(!$limit){$limit=50;}
             $oCriteria = new CDbCriteria;
             //Create the query
@@ -530,7 +532,6 @@ class responses extends Survey_Common_Action
             {
                 $limit = $dtcount;
             }
-
             //NOW LETS SHOW THE DATA
             if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
                 $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
@@ -539,7 +540,7 @@ class responses extends Survey_Common_Action
                 $oCriteria->addCondition('t.token = ' . Yii::app()->db->quoteValue($tokenRequest));
             }
 
-            $oCriteria->order = 'id ' . (Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
+            $oCriteria->order = 'id ' . ($order == 'desc' ? 'desc' : 'asc');
             $oCriteria->offset = $start;
             $oCriteria->limit = $limit;
 
@@ -547,6 +548,11 @@ class responses extends Survey_Common_Action
 
             $dtcount2 = count($dtresult);
             $cells = $fncount + 1;
+            // Fix start if order is desc, only if actual start is 0
+            if($order == 'desc' && $start==0)
+            {
+                $start=$dtcount-count($dtresult);
+            }
 
             //CONTROL MENUBAR
             $last = $start - $limit;
