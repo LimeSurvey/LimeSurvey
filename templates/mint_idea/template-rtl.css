@@ -36,6 +36,7 @@ dd {
 }
 .survey-question-help img {
   padding: 0 0 0 10px;
+  float:right;
 }
 .asterisk {padding-left:1em;}
 .choice-5-pt-radio .survey-question-answer li,.list-radio-flexible .survey-question-answer li,.list-radio .survey-question-answer li,.list-with-comment .survey-question-answer li,.multiple-opt .survey-question-answer li,.multiple-opt-comments .survey-question-answer li,.multiple-short-txt .survey-question-answer li,.numeric-multi .survey-question-answer li,.yes-no .survey-question-answer li,.gender .survey-question-answer li
@@ -113,7 +114,7 @@ ul.cols-2 li,ul.cols-2-ul,ul.cols-3 li,ul.cols-3-ul,ul.cols-4 li,ul.cols-4-ul,ul
 }
 #limesurvey table.question tbody th.answertext,#limesurvey table.question tbody th.arraycaptionleft
   {
-  text-align: left;
+  text-align: right;
 }
 .array-flexible-column tbody th.arraycaptionleft {
   padding-left: 1em;padding-right: 0;
@@ -161,3 +162,5 @@ ul.cols-2 li,ul.cols-2-ul,ul.cols-3 li,ul.cols-3-ul,ul.cols-4 li,ul.cols-4-ul,ul
 .dragDropTable .dragDropChoiceList li span.DDRnumberprefix {
 	float: right;
 }
+
+.answertext {text-align:right;}
