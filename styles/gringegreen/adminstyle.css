@@ -262,7 +262,7 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 #questiondetails td+td {
     text-align:left;
 }
-#questionactioncopy{
+.extra-action{
     float: right;
     margin-top: -60px
 }

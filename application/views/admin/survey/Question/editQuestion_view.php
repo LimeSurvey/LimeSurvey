@@ -34,7 +34,7 @@
         ?>
     </ul>
     <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmeditquestion','name'=>'frmeditquestion','onsubmit'=>"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');")); ?>
-            <div id='questionactioncopy'>
+            <div id='questionactioncopy' class='extra-action'>
                 <p><input type='button' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
                 <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
             </div>
