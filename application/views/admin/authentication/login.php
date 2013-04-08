@@ -29,7 +29,7 @@
             if (isset($pluginContent[$selectedAuth])) {
                 $blockData = $pluginContent[$selectedAuth];
                 /* @var $blockData PluginEventContent */
-                echo CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
+                echo $blockData->getContent();
             }
             ?>
             <li><label for='loginlang'><?php $clang->eT("Language"); ?></label>

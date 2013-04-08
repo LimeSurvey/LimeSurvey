@@ -16,8 +16,8 @@ class AuthLDAP extends AuthPluginBase
             'label' => 'Domain suffix for username e.g. @mydomain.com'
         ),
         'is_default' => array(
-            'type' => 'boolean',
-            'label' => 'Should this plugin present itself as default authentication method?'
+            'type' => 'checkbox',
+            'label' => 'Check to make default authentication method'
         )
     );
     
