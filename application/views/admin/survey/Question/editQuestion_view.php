@@ -151,16 +151,16 @@
                                 {
                                     $aQtypeData[]=array('code'=>$key,'description'=>$questionType['description'],'group'=>$questionType['group']);
                                 }
-                                echo CHtml::dropDownList('question_type','category',CHtml::listData($aQtypeData,'code','description','group'),
-                                    array('class' => 'none','options' => array($eqrow['type']=>array('selected'=>true))));
+                                echo CHtml::dropDownList('type','category',CHtml::listData($aQtypeData,'code','description','group'),
+                                    array('class' => 'none','id'=>'question_type','options' => array($eqrow['type']=>array('selected'=>true)))
+                                );
                             }
                         }
                         else
                         {
-
                             $qtypelist=getQuestionTypeList('','array');
                             echo "{$qtypelist[$eqrow['type']]['description']} - ".$clang->gT("Cannot be changed (survey is active)"); ?>
-                        <input type='hidden' name='type' id='question_type' value='<?php echo $eqrow['type']; ?>' />
+                            <input type='hidden' name='type' id='question_type' value='<?php echo $eqrow['type']; ?>' />
                         <?php } ?>
 
                 </li>
