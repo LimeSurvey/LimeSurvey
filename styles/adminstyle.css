@@ -90,7 +90,6 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 }
 /* Specific select ?*/
 .select{
-    width: 250px;
     margin-left: 10px;
 }
 
@@ -105,6 +104,9 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     display: inline-block;
     font-size: 14px;
     line-height: 20px;
+    height: 26px;
+    min-width: 6em;
+    width:auto;
     min-height: 26px;
     margin-bottom: 0px;
     padding: 2px;

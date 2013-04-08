@@ -1764,10 +1764,11 @@ function tokensExport($iSurveyID)
         }
         $tokenoutput = substr($tokenoutput,0,-1); // remove last comma
         $tokenoutput .= "\n";
+        echo $tokenoutput;
+        $tokenoutput='';
 
         $aExportedTokens[] = $brow['tid'];
     }
-    echo $tokenoutput;
 
     if (Yii::app()->request->getPost('tokendeleteexported') && !empty($aExportedTokens))
     {
