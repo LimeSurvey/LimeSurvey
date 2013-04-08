@@ -314,9 +314,9 @@ function getSurveyList($returnarray=false, $surveyid=false)
 
     if(is_null($cached)) {
         if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
-            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
+            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll(array('order'=>'surveyls_title'));
         else
-            $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
+            $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll(array('order'=>'surveyls_title'));
 
         $surveynames = array();
         foreach ($surveyidresult as $result)
