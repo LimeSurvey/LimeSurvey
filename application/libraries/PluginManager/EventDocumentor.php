@@ -29,7 +29,7 @@ function scanFile($fileName)
     global $events;
     $contents = file_get_contents($fileName);
     
-    $regex = '/(\$[[:alnum:]]*)[[:space:]]*=[[:space:]]*new[[:space:]]*PluginEvent[[:space:]]*\([[:space:]]*[\'"]+(.*)[\'"]+/';
+    $regex = '/(\$.*)*new[[:space:]]*PluginEvent[[:space:]]*\([[:space:]]*[\'"]+(.*)[\'"]+/';
     
     $count = preg_match_all($regex, $contents, $matches);
     if ($count > 0)
