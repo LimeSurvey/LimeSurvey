@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-04-06 22:05:39+00:00\n"
+"POT-Creation-Date: 2013-04-08 22:06:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4449,7 +4449,7 @@ msgstr ""
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr ""
 
-#: application/helpers/admin/exportresults_helper.php:1683
+#: application/helpers/admin/exportresults_helper.php:1671
 #: application/helpers/admin/statistics_helper.php:3226
 msgid "page"
 msgstr ""
