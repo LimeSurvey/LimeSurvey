@@ -1,3 +1,7 @@
+<?php 
+    App()->getClientScript()->registerPackage('jquery-nestedSortable');
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'organize.js');
+?>
 <div class='header ui-widget-header'><?php $clang->eT('Organize question groups/questions');?></div>
 <p>
     <?php $clang->eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?><br />
