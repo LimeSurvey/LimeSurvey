@@ -206,8 +206,8 @@
                     }
                 }
             }
-            $result['description'] = $class::getDescription();
-            $result['pluginName'] = $class::getName();
+            $result['description'] = call_user_func(array($class, 'getDescription'));
+            $result['pluginName'] = call_user_func(array($class, 'getName'));
             $result['pluginClass'] = $class;
             return $result;
         }
