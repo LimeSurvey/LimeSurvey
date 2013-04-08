@@ -118,43 +118,42 @@
                 <li><label for='question_type'><?php $clang->eT("Question Type:"); ?></label>
                     <?php if ($activated != "Y")
                         {
-
-                            foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
+                            if($selectormodeclass!="none")
                             {
-                                if (!isset($groups[$questionType['group']]))
+                                foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
                                 {
-                                    $groups[$questionType['group']] = array();
+                                    if (!isset($groups[$questionType['group']]))
+                                    {
+                                        $groups[$questionType['group']] = array();
+                                    }
+                                    $groups[$questionType['group']][$key] = $questionType['description'];
                                 }
-                                $groups[$questionType['group']][$key] = $questionType['description'];
-                                
+                                $this->widget('ext.bootstrap.widgets.TbSelect2', array(
+                                    'data' => $groups,
+                                    'name' => 'type',
+                                    'options' => array(
+                                        'width' => '300px',
+                                        'minimumResultsForSearch' => 1000
+                                    ),
+                                    'events' => array(
+                                    ),
+                                    'htmlOptions' => array(
+                                        'id' => 'question_type'
+                                    )
+                                ));
+                                $script = '$("#question_type option").addClass("questionType");';
+                                App()->getClientScript()->registerScript('add_class_to_options', $script);
                             }
-                            $this->widget('ext.bootstrap.widgets.TbSelect2', array(
-                                'data' => $groups,
-                                'name' => 'type',
-                                'options' => array(
-                                    'width' => '300px',
-                                    'minimumResultsForSearch' => 1000
-                                ),
-                                'events' => array(
-                                ),
-                                'htmlOptions' => array(
-                                    'id' => 'question_type'
-                                )
-                            ));
-                            $script = '$("#question_type option").addClass("questionType");';
-                            App()->getClientScript()->registerScript('add_class_to_options', $script);
-                        /*
-                         * ?>
-
-
-                        <select id='question_type' style='margin-bottom:5px' name='type' class='<?php echo $selectormodeclass; ?>'>
-                            <?php echo getQuestionTypeList($eqrow['type'],'group'); ?>
-
-                        </select>
-                        <?php
-                         *
-                         */
-
+                            else
+                            {
+                                $aQtypeData=array();
+                                foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
+                                {
+                                    $aQtypeData[]=array('code'=>$key,'description'=>$questionType['description'],'group'=>$questionType['group']);
+                                }
+                                echo CHtml::dropDownList('question_type','category',CHtml::listData($aQtypeData,'code','description','group'),
+                                    array('class' => 'none','options' => array($eqrow['type']=>array('selected'=>true))));
+                            }
                         }
                         else
                         {
