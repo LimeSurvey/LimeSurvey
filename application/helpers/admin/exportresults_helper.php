@@ -273,18 +273,6 @@ class SurveyDao
 				$aAnswer['answer']=stripTagsFull($aAnswer['answer']);
              $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']]=$aAnswer;
         }
-        //Load tokens
-        if (tableExists('{{tokens_' . $intId . '}}') && Permission::model()->hasSurveyPermission($intId,'tokens','read'))
-        {
-            $sQuery = 'SELECT t.* FROM {{tokens_' . $intId . '}} AS t;';
-            $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
-            $survey->tokens = $recordSet;
-        }
-        else
-        {
-            $survey->tokens=array();
-        }
-
         //Load language settings
         $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.';';
         $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
