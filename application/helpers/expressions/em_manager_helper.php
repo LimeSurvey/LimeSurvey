@@ -1287,6 +1287,34 @@
                 // code_filter:  WZ
                 // This can be skipped, since question types 'W' (list-dropdown-flexible) and 'Z'(list-radio-flexible) are no longer supported
 
+                // Default validation for question type
+                switch ($type)
+                {
+                    case 'R':
+                        if ($hasSubqs) {
+                            $subqs = $qinfo['subqs'];
+                            $sq_names=array();
+                            foreach($subqs as $subq)
+                            {
+                                $sq_names[] = $subq['varName'].".NAOK";
+                            }
+                            if (!isset($validationEqn[$questionNum]))
+                            {
+                                $validationEqn[$questionNum] = array();
+                            }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'default',
+                            'class' => 'default',
+                            'eqn' =>  'unique(' . implode(',',$sq_names) . ')',
+                            'qid' => $questionNum,
+                            );
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
                 // equals_num_value
                 // Validation:= sum(sq1,...,sqN) == value (which could be an expression).
                 if (isset($qattr['equals_num_value']) && trim($qattr['equals_num_value']) != '')
@@ -2453,7 +2481,15 @@
                 // Put these in the order you with them to appear in messages.
                 $qtips=array();
 
-             // min/max answers
+                // Default validation qtip without attribute
+                switch ($type)
+                {
+                    case 'R':
+                        $qtips['default']=$this->gT("All your answers must be different.");
+                    default:
+                        break;
+                }
+                // min/max answers
                 if ($min_answers!='' || $max_answers!='')
                 {
                     $_minA = (($min_answers == '') ? "''" : $min_answers);
@@ -5605,7 +5641,6 @@
                         break;
                 }
             }
-
             ///////////////////////////////////////////////
             // DETECT ANY VIOLATIONS OF VALIDATION RULES //
             ///////////////////////////////////////////////
@@ -6322,12 +6357,14 @@
                         $allJsVarsUsed = array_merge($allJsVarsUsed,$_sqValidVars);
                         $valJsVarsUsed = array_merge($valJsVarsUsed,$_sqValidVars);
                         $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
-
-                        $valParts[] = "\n  if(" . $validationJS . "){\n";
-                        $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('error').addClass('good');;\n";
-                        $valParts[] = "  }\n  else {\n";
-                        $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
-                        $valParts[] = "  }\n";
+                        if($_validationJS!='')
+                        {
+                            $valParts[] = "\n  if(" . $validationJS . "){\n";
+                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('error').addClass('good');;\n";
+                            $valParts[] = "  }\n  else {\n";
+                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
+                            $valParts[] = "  }\n";
+                        }
                     }
 
                     // Set color-coding for validation equations
@@ -6361,30 +6398,32 @@
                             $allJsVarsUsed = array_merge($allJsVarsUsed,$_vars);
                             $valJsVarsUsed = array_merge($valJsVarsUsed,$_vars);
                             $_validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
-
-                            $valParts[] = "\n  if(" . $_validationJS . "){\n";
-                            $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass . "').removeClass('error').addClass('good');\n";
-                            $valParts[] = "  }\n  else {\n";
-                            $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass ."').removeClass('good').addClass('error');\n";
-                            switch ($vclass)
+                            if($_validationJS!='')
                             {
-                                case 'sum_range':
-                                    $valParts[] = "    isValidSum" . $arg['qid'] . "=false;\n";
-                                    break;
-                                case 'other_comment_mandatory':
-                                    $valParts[] = "    isValidOtherComment" . $arg['qid'] . "=false;\n";
-                                    break;
-                                    //                            case 'num_answers':
-                                    //                            case 'value_range':
-                                    //                            case 'sq_fn_validation':
-                                    //                            case 'q_fn_validation':
-                                    //                            case 'regex_validation':
-                                default:
-                                    $valParts[] = "    isValidOther" . $arg['qid'] . "=false;\n";
-                                    break;
+                                $valParts[] = "\n  if(" . $_validationJS . "){\n";
+                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass . "').removeClass('error').addClass('good');\n";
+                                $valParts[] = "  }\n  else {\n";
+                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass ."').removeClass('good').addClass('error');\n";
+                                switch ($vclass)
+                                {
+                                    case 'sum_range':
+                                        $valParts[] = "    isValidSum" . $arg['qid'] . "=false;\n";
+                                        break;
+                                    case 'other_comment_mandatory':
+                                        $valParts[] = "    isValidOtherComment" . $arg['qid'] . "=false;\n";
+                                        break;
+                                        //                            case 'num_answers':
+                                        //                            case 'value_range':
+                                        //                            case 'sq_fn_validation':
+                                        //                            case 'q_fn_validation':
+                                        //                            case 'regex_validation':
+                                    default:
+                                        $valParts[] = "    isValidOther" . $arg['qid'] . "=false;\n";
+                                        break;
 
+                                }
+                                $valParts[] = "  }\n";
                             }
-                            $valParts[] = "  }\n";
                         }
 
                         $valParts[] = "\n  if(isValidSum" . $arg['qid'] . "){\n";
