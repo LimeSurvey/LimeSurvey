@@ -14,7 +14,7 @@ $(document).ready(function(){
             old_owner =  $($(oldThis).parent()).html();
 
             old_owner = (old_owner.split("("))[0];
-            $($(oldThis).parent()).html('<select class="ownername_select" id="ownername_select_'+survey_id+'"></select>'
+            $($(oldThis).parent()).html('<select class="ownername_select" id="ownername_select_'+survey_id+'"></select>\n'
             + '<input class="ownername_button" id="ownername_button_'+survey_id+'" type="button" initial_text="'+initial_text+'" value="'+delBtnCaption+'">');
             $(oData).each(function(key,value){
                 $('#ownername_select_'+survey_id).

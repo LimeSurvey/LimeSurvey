@@ -368,7 +368,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
                 $inactivesurveys .= "<option ";
                 if(Yii::app()->user->getId() == $sv['owner_id'])
                 {
-                    $inactivesurveys .= " style=\"font-weight: bold;\"";
+                    $inactivesurveys .= " class='mysurvey emphasis'";
                 }
                 if ($sv['sid'] == $surveyid)
                 {
@@ -380,7 +380,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
                 $expiredsurveys .="<option ";
                 if (Yii::app()->user->getId() == $sv['owner_id'])
                 {
-                    $expiredsurveys .= " style=\"font-weight: bold;\"";
+                    $expiredsurveys .= " class='mysurvey emphasis'";
                 }
                 if ($sv['sid'] == $surveyid)
                 {
@@ -392,7 +392,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
                 $activesurveys .= "<option ";
                 if(Yii::app()->user->getId() == $sv['owner_id'])
                 {
-                    $activesurveys .= " style=\"font-weight: bold;\"";
+                    $activesurveys .= " class='mysurvey emphasis'";
                 }
                 if ($sv['sid'] == $surveyid)
                 {

@@ -215,7 +215,9 @@ div.menubar .ui-widget-header
     color: #333;
     width: 200px;
 }
-
+.menubar option.emphasis{
+    font-weight:700
+}
 .menubar-right .arrow-wrapper {
     display: inline; /* For IE */
     position: relative;
