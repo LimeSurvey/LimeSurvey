@@ -106,6 +106,15 @@ return array(
             'jquery'
         )
     ),
+    'jquery-nestedSortable' => array(
+        'baseUrl' => 'third_party/jquery-nestedSortable',
+        'js' => array(
+            'jquery.mjs.nestedSortable.js'
+        ),
+        'depends' => array(
+            'jqueryui'
+        )
+    ),
     'jquery-multiselect' => array(
         'baseUrl' => 'third_party/jquery-multiselect',
         'js' => array(

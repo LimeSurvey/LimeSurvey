@@ -71,6 +71,24 @@ div.htmleditor {
 /* Bootstrap overrides.                                                       */
 /******************************************************************************/
 label {display: inline-block;}/* override but leave admin template to override again */
+/* Fixes li not expanding to size of containing table. (Survey settings add language interface) */
+form li {
+    overflow: hidden;
+}
+/* Fix padding on table cell */
+table td, table th {
+    padding: 1px;
+}
+/* Fix select width, bootstrap set it for mobile */
+select {
+    width: auto;
+}
+/* Fix select and input width, taken from getskeleton and other */
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]
+{
+    max-width:99%;
+}
+/* Specific select ?*/
 .select{
     margin-left: 10px;
 }
@@ -79,7 +97,7 @@ label {display: inline-block;}/* override but leave admin template to override a
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-
+/* Why copy/paste bootstrap default here ?*/
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
     border-radius: 4px 4px 4px 4px;
     color: #555555;
@@ -89,6 +107,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     height: 26px;
     min-width: 6em;
     width:auto;
+    min-height: 26px;
     margin-bottom: 0px;
     padding: 2px;
     vertical-align: middle;
@@ -99,11 +118,8 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
     height: 18px;
 }
-/* Fixes li not expanding to size of containing table. (Survey settings add language interface) */
-form li {
-    overflow: hidden;
-}
-
-table td, table th {
-    padding: 1px;
+/* fix jqgrid th height */
+.ui-jqgrid .ui-jqgrid-htable th {
+    height: auto;
+    padding: 0 2px;
 }

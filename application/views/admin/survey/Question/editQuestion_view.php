@@ -34,7 +34,7 @@
         ?>
     </ul>
     <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmeditquestion','name'=>'frmeditquestion','onsubmit'=>"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');")); ?>
-            <div id='questionactioncopy'>
+            <div id='questionactioncopy' class='extra-action'>
                 <p><input type='button' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
                 <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
             </div>
@@ -118,50 +118,49 @@
                 <li><label for='question_type'><?php $clang->eT("Question Type:"); ?></label>
                     <?php if ($activated != "Y")
                         {
-
-                            foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
+                            if($selectormodeclass!="none")
                             {
-                                if (!isset($groups[$questionType['group']]))
+                                foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
                                 {
-                                    $groups[$questionType['group']] = array();
+                                    if (!isset($groups[$questionType['group']]))
+                                    {
+                                        $groups[$questionType['group']] = array();
+                                    }
+                                    $groups[$questionType['group']][$key] = $questionType['description'];
                                 }
-                                $groups[$questionType['group']][$key] = $questionType['description'];
-                                
+                                $this->widget('ext.bootstrap.widgets.TbSelect2', array(
+                                    'data' => $groups,
+                                    'name' => 'type',
+                                    'options' => array(
+                                        'width' => '300px',
+                                        'minimumResultsForSearch' => 1000
+                                    ),
+                                    'events' => array(
+                                    ),
+                                    'htmlOptions' => array(
+                                        'id' => 'question_type'
+                                    )
+                                ));
+                                $script = '$("#question_type option").addClass("questionType");';
+                                App()->getClientScript()->registerScript('add_class_to_options', $script);
                             }
-                            $this->widget('ext.bootstrap.widgets.TbSelect2', array(
-                                'data' => $groups,
-                                'name' => 'type',
-                                'options' => array(
-                                    'width' => '300px',
-                                    'minimumResultsForSearch' => 1000
-                                ),
-                                'events' => array(
-                                ),
-                                'htmlOptions' => array(
-                                    'id' => 'question_type'
-                                )
-                            ));
-                            $script = '$("#question_type option").addClass("questionType");';
-                            App()->getClientScript()->registerScript('add_class_to_options', $script);
-                        /*
-                         * ?>
-
-
-                        <select id='question_type' style='margin-bottom:5px' name='type' class='<?php echo $selectormodeclass; ?>'>
-                            <?php echo getQuestionTypeList($eqrow['type'],'group'); ?>
-
-                        </select>
-                        <?php
-                         *
-                         */
-
+                            else
+                            {
+                                $aQtypeData=array();
+                                foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
+                                {
+                                    $aQtypeData[]=array('code'=>$key,'description'=>$questionType['description'],'group'=>$questionType['group']);
+                                }
+                                echo CHtml::dropDownList('type','category',CHtml::listData($aQtypeData,'code','description','group'),
+                                    array('class' => 'none','id'=>'question_type','options' => array($eqrow['type']=>array('selected'=>true)))
+                                );
+                            }
                         }
                         else
                         {
-
                             $qtypelist=getQuestionTypeList('','array');
                             echo "{$qtypelist[$eqrow['type']]['description']} - ".$clang->gT("Cannot be changed (survey is active)"); ?>
-                        <input type='hidden' name='type' id='question_type' value='<?php echo $eqrow['type']; ?>' />
+                            <input type='hidden' name='type' id='question_type' value='<?php echo $eqrow['type']; ?>' />
                         <?php } ?>
 
                 </li>

@@ -210,6 +210,7 @@ div.menubar .ui-widget-header
     color: #333;
     width: 200px;
 }
+.menubar option.emphasis{color:navy}
 
 .menubar-right .arrow-wrapper {
     display: inline; /* For IE */
@@ -260,10 +261,11 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 #questiondetails td+td {
     text-align:left;
 }
-#questionactioncopy{
+.extra-action{
     float: right;
+    margin-top:-2em;
 }
-#questionactioncopy p{
+.extra-action p{
     margin: 0
 }
 .outlinetable {
@@ -339,6 +341,7 @@ border: 1px solid #828790;
 input[disabled], textarea[disabled], select[disabled], button[disabled] {
 
 }
+
 
 .subtitle {
     font-size: 10px;

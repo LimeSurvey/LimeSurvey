@@ -215,7 +215,9 @@ div.menubar .ui-widget-header
     color: #333;
     width: 200px;
 }
-
+.menubar option.emphasis{
+    font-weight:700
+}
 .menubar-right .arrow-wrapper {
     display: inline; /* For IE */
     position: relative;
@@ -262,7 +264,7 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 #questiondetails td+td {
     text-align:left;
 }
-#questionactioncopy{
+.extra-action{
     float: right;
     margin-top: -60px
 }
