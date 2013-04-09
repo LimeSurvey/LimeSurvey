@@ -76,12 +76,12 @@
             {
                 if (!isset($currentgroup))
                 {
-                    $currentgroup = $fn[1];
+                    $currentgroup = $fn[0];
                     $gbc = "odd";
                 }
-                if ($currentgroup != $fn[1])
+                if ($currentgroup != $fn[0])
                 {
-                    $currentgroup = $fn[1];
+                    $currentgroup = $fn[0];
                     if ($gbc == "odd")
                     {
                         $gbc = "even";
@@ -93,7 +93,10 @@
                 }
             ?>
             <th class='<?php echo $gbc; ?>'>
-                <strong><?php echo flattenText(stripJavaScript($fn[1]), true); ?></strong>
+                <?php if(isset($fn['code'])){ ?>
+                    <span class="qcode"><?php echo $fn['code']; ?></span>
+                <?php }?>
+                <span class="questiontext"><?php echo $fn[1]; ?></span> 
             </th>
             <?php } ?>
     </tr>

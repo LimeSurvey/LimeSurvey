@@ -126,38 +126,41 @@ class responses extends Survey_Common_Action
                 if ($field['type'] == 'answer_time')
                     continue;
         
-                $question = $field['question'];
+                //$question = $field['question'];
+                $question = viewHelper::getFieldText($field);
+
                 if ($field['type'] != "|")
                 {
-                    if (isset($field['subquestion']) && $field['subquestion'] != '')
-                        $question .=' (' . $field['subquestion'] . ')';
-                    if (isset($field['subquestion1']) && isset($field['subquestion2']))
-                        $question .=' (' . $field['subquestion1'] . ':' . $field['subquestion2'] . ')';
-                    if (isset($field['scale_id']))
-                        $question .='[' . $field['scale'] . ']';
-                    $fnames[] = array($field['fieldname'], $question);
+#                    if (isset($field['subquestion']) && $field['subquestion'] != '')
+#                        $question .=' (' . $field['subquestion'] . ')';
+#                    if (isset($field['subquestion1']) && isset($field['subquestion2']))
+#                        $question .=' (' . $field['subquestion1'] . ':' . $field['subquestion2'] . ')';
+#                    if (isset($field['scale_id']))
+#                        $question .='[' . $field['scale'] . ']';
+                    $fnames[] = array($field['fieldname'], $question,'code'=>viewHelper::getFieldCode($field));
+                }
+                elseif ($field['aid'] !== 'filecount')
+                {
+                    $qidattributes = getQuestionAttributeValues($field['qid']);
+
+                    for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
+                    {
+                        $filenum=sprintf($clang->gT("File %s"),$i + 1);
+                        if ($qidattributes['show_title'] == 1)
+                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang('Title').")",'code'=>viewHelper::getFieldCode($field).'[title]', "type" => "|", "metadata" => "title", "index" => $i);
+
+                        if ($qidattributes['show_comment'] == 1)
+                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang('Comment').")",'code'=>viewHelper::getFieldCode($field).'[comment]', "type" => "|", "metadata" => "comment", "index" => $i);
+
+                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang('File name').")",'code'=>viewHelper::getFieldCode($field).'[name]', "type" => "|", "metadata" => "name", "index" => $i);
+                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang('File size').")",'code'=>viewHelper::getFieldCode($field).'[size]', "type" => "|", "metadata" => "size", "index" => $i);
+
+                        //$fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
+                    }
                 }
                 else
                 {
-                    if ($field['aid'] !== 'filecount')
-                    {
-                        $qidattributes = getQuestionAttributeValues($field['qid']);
-
-                        for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
-                        {
-                            if ($qidattributes['show_title'] == 1)
-                                $fnames[] = array($field['fieldname'], "File " . ($i + 1) . " - " . $field['question'] . " (Title)", "type" => "|", "metadata" => "title", "index" => $i);
-
-                            if ($qidattributes['show_comment'] == 1)
-                                $fnames[] = array($field['fieldname'], "File " . ($i + 1) . " - " . $field['question'] . " (Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
-
-                            $fnames[] = array($field['fieldname'], "File " . ($i + 1) . " - " . $field['question'] . " (File name)", "type" => "|", "metadata" => "name", "index" => $i);
-                            $fnames[] = array($field['fieldname'], "File " . ($i + 1) . " - " . $field['question'] . " (File size)", "type" => "|", "metadata" => "size", "index" => $i);
-                            //$fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
-                        }
-                    }
-                    else
-                        $fnames[] = array($field['fieldname'], "File count");
+                    $fnames[] = array($field['fieldname'], $clang->gT("File count"));
                 }
             }
 
@@ -470,35 +473,36 @@ class responses extends Survey_Common_Action
                         continue;
                     if ($fielddetails['type'] == 'answer_time')
                         continue;
-                    if (isset($fielddetails['subquestion']) && $fielddetails['subquestion'] != '')
-                        $question .=' (' . $fielddetails['subquestion'] . ')';
-                    if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
-                        $question .=' (' . $fielddetails['subquestion1'] . ':' . $fielddetails['subquestion2'] . ')';
-                    if (isset($fielddetails['scale_id']))
-                        $question .='[' . $fielddetails['scale'] . ']';
-                    $fnames[] = array($fielddetails['fieldname'], $question);
+
+#                    if (isset($fielddetails['subquestion']) && $fielddetails['subquestion'] != '')
+#                        $question .=' (' . $fielddetails['subquestion'] . ')';
+#                    if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
+#                        $question .=' (' . $fielddetails['subquestion1'] . ':' . $fielddetails['subquestion2'] . ')';
+#                    if (isset($fielddetails['scale_id']))
+#                        $question .='[' . $fielddetails['scale'] . ']';
+                    $question = viewHelper::getFieldText($fielddetails);
+                    $fnames[] = array($fielddetails['fieldname'], $question,'code'=>viewHelper::getFieldCode($fielddetails));
+                }
+                elseif ($fielddetails['aid'] !== 'filecount')
+                {
+                    $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
+                    for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
+                    {
+                        $filenum=sprintf($clang->gT("File %s"),$i + 1);
+                        if ($qidattributes['show_title'] == 1)
+                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang('Title').")",'code'=>viewHelper::getFieldCode($fielddetails).'[title]', "type" => "|", "metadata" => "title", "index" => $i);
+                        if ($qidattributes['show_comment'] == 1)
+                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang('Comment').")",'code'=>viewHelper::getFieldCode($fielddetails).'[comment]', "type" => "|", "metadata" => "comment", "index" => $i);
+
+                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang('File name').")",'code'=>viewHelper::getFieldCode($fielddetails).'[name]', "type" => "|", "metadata" => "name", "index" => $i);
+                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang('File size').")",'code'=>viewHelper::getFieldCode($fielddetails).'[size]', "type" => "|", "metadata" => "size", "index" => $i);
+
+                        //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
+                    }
                 }
                 else
                 {
-                    if ($fielddetails['aid'] !== 'filecount')
-                    {
-                        $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
-
-                        for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
-                        {
-                            if ($qidattributes['show_title'] == 1)
-                                $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Title)", "type" => "|", "metadata" => "title", "index" => $i);
-
-                            if ($qidattributes['show_comment'] == 1)
-                                $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
-
-                            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File name)", "type" => "|", "metadata" => "name", "index" => $i);
-                            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File size)", "type" => "|", "metadata" => "size", "index" => $i);
-                            //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
-                        }
-                    }
-                    else
-                        $fnames[] = array($fielddetails['fieldname'], "File count");
+                    $fnames[] = array($fielddetails['fieldname'], $clang->gT("File count"));
                 }
             }
 

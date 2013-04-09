@@ -24,41 +24,13 @@ $(document).ready(function(){
         $("#browseresults").submit();
     });
     
-    $('#browseresponses').qtip({
-        content:{
-            text:$('#browselangpopup')
-        },
-        style: { name: 'cream',
-            tip:true,
-            color:'#111111',
-            border: {
-                width: 1,
-                radius: 5,
-                color: '#EADF95'}
-        },
-        position: { adjust: {
-            screen: true, scroll:true },
-            corner: {
-                target: 'bottomMiddle',
-                tooltip: 'topMiddle'}
-        },
-        show: {effect: { length:50},
-            when: {
-                event:'click'
-        }},
-        hide: {fixed:true,
-            when: {
-                event:'unfocus'
-        }}
-    });
-
     // Fix the heigh of the cell
     $('.browsetable td').each(function(){
         if ($(this).text().length> 30){
             $(this).html("<span class=\"content\" title=\""+htmlspecialchars(htmlspecialchars($(this).text(),'ENT_HTML_QUOTE_DOUBLE'),'ENT_QUOTES')+"\">"+$(this).html()+"</span>");
         }
     });
-    $('.browsetable th strong').each(function(){
+    $('.browsetable th .questiontext').each(function(){
         if ($(this).text().length> 30){
             $(this).addClass("content");
             $(this).attr("title",$(this).text());
@@ -77,7 +49,7 @@ $(document).ready(function(){
             }
         }
     });
-    $('.browsetable th strong.content').qtip({
+    $('.browsetable th .content').qtip({
         hide: {
             fixed: true,
             delay: 500
