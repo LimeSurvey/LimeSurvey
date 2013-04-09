@@ -331,10 +331,13 @@ function getSurveyList($returnarray=false, $surveyid=false)
     $clang = new Limesurvey_lang(isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en');
 
     if(is_null($cached)) {
-        if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
-            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
-        else
-            $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
+        $args = array('order'=>'surveyls_title');
+        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+        {
+            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll($args);
+        } else {
+            $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll($args);
+        }
 
         $surveynames = array();
         foreach ($surveyidresult as $result)
