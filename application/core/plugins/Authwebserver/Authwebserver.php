@@ -30,7 +30,11 @@ class Authwebserver extends AuthPluginBase
                 $sUser = $_SERVER['LOGON_USER'];
             }            
             if (strpos($sUser,"\\")!==false) {
+                // Get username for DOMAIN\USER
                 $sUser = substr($sUser, strrpos($sUser, "\\")+1);
+            } elseif (strpos($sUser,"@")!==false) {
+                // Get username for USER@DOMAIN
+                $sUser = substr($sUser, 0, strrpos($sUser, "@"));
             }
             
             $aUserMappings=$this->api->getConfigKey('auth_webserver_user_map', array());
