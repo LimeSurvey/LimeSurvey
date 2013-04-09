@@ -94,25 +94,20 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 }
 
 .select * {
+    -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-/* Why copy/paste bootstrap default here ?*/
+/* Think this can be in template/adminstyle.css */
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
-    border-radius: 4px 4px 4px 4px;
-    color: #555555;
-    display: inline-block;
-    font-size: 14px;
-    line-height: 20px;
-    height: 26px;
     min-width: 6em;
     width:auto;
     min-height: 26px;
     margin-bottom: 0px;
     padding: 2px;
-    vertical-align: middle;
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 /* Fix input height for jqgrid (survey overview) */
 div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
