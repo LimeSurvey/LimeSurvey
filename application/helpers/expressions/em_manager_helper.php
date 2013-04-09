@@ -1315,6 +1315,59 @@
                         break;
                 }
 
+                // commented_checkbox : only for checkbox with comment ("P")
+                if($type=="P" && !isset($qattr['commented_checkbox'])) $qattr['commented_checkbox']='checked'; // EM don't get default value http://bugs.limesurvey.org/view.php?id=7750
+                $commented_checkbox='';
+                if (isset($qattr['commented_checkbox']) && trim($qattr['commented_checkbox']) != '')
+                {
+                    switch ($type)
+                    {
+                        case 'P':
+                            if ($hasSubqs) {
+                                $commented_checkbox=$qattr['commented_checkbox'];
+                                $subqs = $qinfo['subqs'];
+                                switch ($commented_checkbox)
+                                {
+                                    case 'checked':
+                                        $sq_eqn_commented_checkbox=array();
+                                        foreach($subqs as $subq)
+                                        {
+                                            $sq_eqn_commented_checkbox[] = "(is_empty({$subq['varName']}.NAOK) and !is_empty({$subq['varName']}comment.NAOK))";
+                                        }
+                                        $eqn="sum(".implode(",",$sq_eqn_commented_checkbox).")==0";
+                                        break;
+                                    case 'unchecked':
+                                        $sq_eqn_commented_checkbox=array();
+                                        foreach($subqs as $subq)
+                                        {
+                                            $sq_eqn_commented_checkbox[] = "(!is_empty({$subq['varName']}.NAOK) and !is_empty({$subq['varName']}comment.NAOK))";
+                                        }
+                                        $eqn="sum(".implode(",",$sq_eqn_commented_checkbox).")==0";
+                                        break;
+                                    case 'allways':
+                                    default:
+                                        break;
+                                }
+                                if($commented_checkbox!="allways")
+                                {
+                                    if (!isset($validationEqn[$questionNum]))
+                                    {
+                                        $validationEqn[$questionNum] = array();
+                                    }
+                                    $validationEqn[$questionNum][] = array(
+                                    'qtype' => $type,
+                                    'type' => 'commented_checkbox',
+                                    'class' => 'commented_checkbox',
+                                    'eqn' =>  $eqn,
+                                    'qid' => $questionNum,
+                                    );
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 // equals_num_value
                 // Validation:= sum(sq1,...,sqN) == value (which could be an expression).
                 if (isset($qattr['equals_num_value']) && trim($qattr['equals_num_value']) != '')
@@ -2486,8 +2539,26 @@
                 {
                     case 'R':
                         $qtips['default']=$this->gT("All your answers must be different.");
+                        break;
                     default:
                         break;
+                }
+
+                if($commented_checkbox && $commented_checkbox!='allways')
+                {
+                    switch ($commented_checkbox)
+                    {
+                        case 'checked':
+                            $qtips['commented_checkbox']=$this->gT("Comment only when you choose an answer.");
+                            break;
+                        case 'unchecked':
+                            $qtips['commented_checkbox']=$this->gT("Comment only when you don't choose an answer.");
+                            break;
+                        case 'allways':
+                        default:
+                            $qtips['commented_checkbox']=$this->gT("Comment your answers.");
+                            break;
+                    }
                 }
                 // min/max answers
                 if ($min_answers!='' || $max_answers!='')
@@ -5672,7 +5743,7 @@
                     $stringToParse = '';
                     foreach ($LEM->qid2validationEqn[$qid]['tips'] as $vclass=>$vtip)
                     {
-                        $stringToParse .= "<div id='vmsg_" . $qid  . '_' . $vclass . "' class='em_" . $vclass . "'>" . $vtip . "</div>\n";
+                        $stringToParse .= "<div id='vmsg_" . $qid  . '_' . $vclass . "' class='em_" . $vclass . " emtip'>" . $vtip . "</div>\n";
                     }
                     $prettyPrintValidTip = $stringToParse;
                     $validTip = $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
@@ -6108,7 +6179,7 @@
             $jsParts=array();
             $allJsVarsUsed=array();
             $rowdividList=array();   // list of subquestions needing relevance entries
-            $jsParts[] = '<script type="text/javascript" src="'.Yii::app()->getConfig('generalscripts').'expressions/em_javascript.js"></script>';
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");;
             $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
             $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
             if ($LEM->surveyMode == 'group')

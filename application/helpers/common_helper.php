@@ -3153,6 +3153,33 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Filter the available answers by this value'),
     "caption"=>$clang->gT('Code filter'));
 
+    $qattributes["commented_checkbox"]=array(
+    "types"=>"P",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>110,
+    'inputtype'=>'singleselect',
+    'options'=>array(
+        "allways"=>$clang->gT('No control on checkbox'),
+        "checked"=>$clang->gT('Checkbox is checked'),
+        "unchecked"=>$clang->gT('Checkbox is unchecked'),
+        ),
+    'default' => "checked",
+    'help'=>$clang->gT('Choose when user can add a comment'),
+    'caption'=>$clang->gT('Comment only when'));
+
+    $qattributes["commented_checkbox_auto"]=array(
+    "types"=>"P",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>111,
+    'inputtype'=>'singleselect',
+    'options'=>array(
+        "0"=>$clang->gT('No'),
+        "1"=>$clang->gT('Yes'),
+        ),
+    'default' => "1",
+    'help'=>$clang->gT('Use javascript function to remove text and uncheck checkbox (or use Expression Manager only).'),
+    'caption'=>$clang->gT('Remove text or uncheck checkbox automatically'));
+
     $qattributes["display_columns"]=array(
     "types"=>"LM",
     'category'=>$clang->gT('Display'),
@@ -4200,7 +4227,7 @@ function questionAttributes($returnByName=false)
     $qattributes["random_group"]=array(
     "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
     'category'=>$clang->gT('Logic'),
-    'sortorder'=>100,
+    'sortorder'=>180,
     'inputtype'=>'text',
     "help"=>$clang->gT("Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"),
     "caption"=>$clang->gT("Randomization group name"));

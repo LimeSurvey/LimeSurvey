@@ -2526,41 +2526,6 @@ function do_multiplechoice_withcomments($ia)
     {
         $othertext=$clang->gT('Other:');
     }
-    //    // Check if the max_answers attribute is set
-    //    $maxansw=0;
-    //    $callmaxanswscriptcheckbox = '';
-    //    $callmaxanswscriptcheckbox2 = '';
-    $callmaxanswscriptother = '';
-    //    $maxanswscript = '';
-    //    if (trim($aQuestionAttributes['max_answers'])!='') {
-    //        $maxansw=$aQuestionAttributes['max_answers'];
-    //        $callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
-    //        $callmaxanswscriptcheckbox2= "limitmaxansw_{$ia[0]}";
-    //        $callmaxanswscriptother = "onkeyup=\"limitmaxansw_{$ia[0]}(this)\"";
-    //
-    //        $maxanswscript = "\t<script type='text/javascript'>\n"
-    //        . "\t<!--\n"
-    //        . "function limitmaxansw_{$ia[0]}(me)\n"
-    //        . "\t{\n"
-    //        . "\tmax=$maxansw\n"
-    //        . "\tcount=0;\n"
-    //        . "\tif (max == 0) { return count; }\n";
-    //    }
-    //
-    //    // Check if the min_answers attribute is set
-    //    $minansw=0;
-    //    $minanswscript = "";
-    //    if (trim($aQuestionAttributes["min_answers"])!='')
-    //    {
-    //        $minansw=trim($aQuestionAttributes["min_answers"]);
-    //        $minanswscript = "<script type='text/javascript'>\n"
-    //        . "\t<!--\n"
-    //        . "oldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
-    //        . "function ensureminansw_{$ia[0]}()\n"
-    //        . "{\n"
-    //        . "\tcount=0;\n"
-    //        ;
-    //    }
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
     $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked    
@@ -2617,12 +2582,9 @@ function do_multiplechoice_withcomments($ia)
                 $answer_main .= CHECKED;
             }
         }
-        $answer_main .=" onclick='cancelBubbleThis(event);$checkconditionFunction(this.value, this.name, this.type);if (!$(this).attr(\"checked\")) { $(\"#answer$myfname2\").val(\"\"); $checkconditionFunction(document.getElementById(\"answer{$myfname2}\").value,\"$myfname2\",\"checkbox\");}' />\n"
+        $answer_main .=" onclick='$checkconditionFunction(this.value, this.name, this.type);' />\n"
         . "\t<label for=\"answer$myfname\" class=\"answertext\">\n"
         . $ansrow['question']."</label>\n";
-
-        //        if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
-        //        if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
         $answer_main .= "<input type='hidden' name='java$myfname' id='java$myfname' value='";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -2632,12 +2594,10 @@ function do_multiplechoice_withcomments($ia)
         $answer_main .= "' />\n";
         $fn++;
         $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment hide \">".$clang->gT('Make a comment on your choice here:')."</label>\n"
-        ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT('Make a comment on your choice here:')."' value='";
+        ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' value='";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
-        // --> START NEW FEATURE - SAVE
-        $answer_main .= "' onkeyup='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname2}\").value,\"$myfname2\",\"text\");$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,document.getElementById(\"answer{$myfname}\").name, document.getElementById(\"answer{$myfname}\").type);}' />\n</span>\n"
+        $answer_main .= "' onkeyup='$checkconditionFunction(this.value,this.name,this.type);' />\n</span>\n"
         . "\t</li>\n";
-        // --> END NEW FEATURE - SAVE
 
         $fn++;
         $inputnames[]=$myfname;
@@ -2650,7 +2610,7 @@ function do_multiplechoice_withcomments($ia)
         $anscount = $anscount + 2;
         $answer_main .= "\t<li class=\"other question-item answer-item checkbox-text-item other-item\" id=\"javatbd$myfname\">\n<span class=\"option\">\n"
         . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
-        $answer_main .= " onkeyup='$oth_checkconditionFunction(this.value, this.name, this.type); if($.trim(this.value)==\"\") { $(\"#answer$myfname2\").val(\"\"); $checkconditionFunction(\"\",\"$myfname2\",\"text\"); }'";
+        $answer_main .= " onkeyup='$oth_checkconditionFunction(this.value, this.name, this.type);'";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
         {
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
@@ -2662,7 +2622,7 @@ function do_multiplechoice_withcomments($ia)
         }
         $fn++;
         // --> START NEW FEATURE - SAVE
-        $answer_main .= "  $callmaxanswscriptother />\n\t</label>\n</span>\n"
+        $answer_main .= " />\n\t</label>\n</span>\n"
         . "<span class=\"comment\">\n\t<label for=\"answer$myfname2\" class=\"answer-comment hide\">".$clang->gT('Make a comment on your choice here:')."\t</label>\n"
         . '<input class="text '.$kpclass.'" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'"'
         . " onkeyup='$checkconditionFunction(this.value,this.name,this.type);'"
@@ -2670,41 +2630,24 @@ function do_multiplechoice_withcomments($ia)
         // --> END NEW FEATURE - SAVE
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
-        // --> START NEW FEATURE - SAVE
         $answer_main .= "\"/>\n";
-
-        //        if ($maxansw > 0)
-        //        {
-        //            if ($aQuestionAttributes['other_comment_mandatory']==1)
-        //            {
-        //                $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
-        //            }
-        //            else
-        //            {
-        //                $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n";
-        //            }
-        //        }
-        //
-        //        if ($minansw > 0)
-        //        {
-        //            if ($aQuestionAttributes['other_comment_mandatory']==1)
-        //            {
-        //                $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
-        //            }
-        //            else
-        //            {
-        //                $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n";
-        //            }
-        //        }
-
         $answer_main .= "</span>\n\t</li>\n";
-        // --> END NEW FEATURE - SAVE
 
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
     }
     $answer .= "<ul class=\"subquestions-list questions-list checkbox-text-list\">\n".$answer_main."</ul>\n";
-
+    if($aQuestionAttributes['commented_checkbox']!="allways" && $aQuestionAttributes['commented_checkbox_auto'])
+    {
+        header_includes("multiplechoice_withcomments.js");
+#        $script= " doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');\n";
+#        App()->getClientScript()->registerScript("doMultipleChoiceWithComments",$script,CClientScript::POS_HEAD);// Deactivate now: need to be after question, and just after
+        $answer .= "<script type='text/javascript'>\n"
+        . "  /*<![CDATA[*/\n"
+        ." doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');\n"
+        ." /*]]>*/\n"
+        ."</script>\n";
+    }
     return array($answer, $inputnames);
 }
 

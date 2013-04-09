@@ -189,12 +189,16 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                 }
                 else
                 {
-                    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts').$jsinclude);
+                    if(file_exists($templatedir.DIRECTORY_SEPARATOR.$jsinclude)){
+                        App()->getClientScript()->registerScriptFile($templateurl.$jsinclude);
+                    }else{
+                        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts').$jsinclude);
+                    }
                 }
             }
         }
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");;
-        App()->getClientScript()->registerScriptFile($templateurl . 'template.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
+        App()->getClientScript()->registerScriptFile($templateurl . 'template.js',CClientScript::POS_END);
         useFirebug();
     }
 
