@@ -918,12 +918,12 @@ class questions extends Survey_Common_Action
     */
     public function ajaxquestionattributes()
     {
-        $surveyid = (int) $_POST['sid'];
-        $qid = (int) $_POST['qid'];
-        $type = $_POST['question_type'];
-
-        $aLanguages = array_merge(array(Survey::model()->findByPk($surveyid)->language), Survey::model()->findByPk($surveyid)->additionalLanguages);
+        $surveyid = (int) Yii::app()->request->getParam('sid',0);
+        $qid = (int) Yii::app()->request->getParam('qid',0);
+        $type = Yii::app()->request->getParam('question_type');
         $thissurvey = getSurveyInfo($surveyid);
+        if(!$thissurvey) die();
+        $aLanguages = array_merge(array(Survey::model()->findByPk($surveyid)->language), Survey::model()->findByPk($surveyid)->additionalLanguages);
 
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
         uasort($aAttributesWithValues, 'categorySort');
