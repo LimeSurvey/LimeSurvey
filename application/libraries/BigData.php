@@ -96,6 +96,10 @@
             {
                 self::json_echo_string($json);
             }
+            elseif (is_null($json))
+            {
+                echo json_encode(null);
+            }
         }
         
         protected static function json_echo_array($json)
@@ -118,11 +122,17 @@
         protected static function json_echo_object($json)
         {
             echo '{';
+                end($json);
+                $lastKey = key($json);
+                reset($json);
                 foreach ($json as $key => $entry)
                 {
                     echo json_encode($key) . ':';
                     self::json_echo_data($entry);
-                    echo ', '; // The extra comma is allowed: { 1: 'test', 2: 'test',} is valid.
+                    if ($lastKey !== $key)
+                    {
+                        echo ', '; // The extra comma is allowed: { 1: 'test', 2: 'test',} is valid.
+                    }
                 }
                 echo '}';
         }
@@ -223,8 +233,7 @@
         protected static function xmlrpc_echo_stream($data)
         {
             echo '<base64>';
-            echo $data->fileName;
-            //stream_filter_append($data, 'convert.base64-encode', STREAM_FILTER_READ, array('line-length' => 50, 'line-break-chars' => "\n"));
+            stream_filter_append($data, 'convert.base64-encode', STREAM_FILTER_READ);
 
             echo '</base64>';
         }
@@ -268,7 +277,7 @@
         protected function echo_base64()
         {
             $fileHandle = fopen($this->fileName, 'r');
-            stream_filter_append($fileHandle, 'convert.base64-encode', STREAM_FILTER_READ, array('line-length' => 50, 'line-break-chars' => "\n"));
+            stream_filter_append($fileHandle, 'convert.base64-encode', STREAM_FILTER_READ);
             fpassthru($fileHandle);
             fclose($fileHandle);
         }
