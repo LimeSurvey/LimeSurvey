@@ -1316,7 +1316,6 @@
                 }
 
                 // commented_checkbox : only for checkbox with comment ("P")
-                if($type=="P" && !isset($qattr['commented_checkbox'])) $qattr['commented_checkbox']='checked'; // EM don't get default value http://bugs.limesurvey.org/view.php?id=7750
                 $commented_checkbox='';
                 if (isset($qattr['commented_checkbox']) && trim($qattr['commented_checkbox']) != '')
                 {
@@ -1588,7 +1587,7 @@
 
                 // min_answers
                 // Validation:= count(sq1,...,sqN) >= value (which could be an expression).
-                if (isset($qattr['min_answers']) && trim($qattr['min_answers']) != '')
+                if (isset($qattr['min_answers']) && trim($qattr['min_answers']) != '' && trim($qattr['min_answers']) != '0')
                 {
                     $min_answers = $qattr['min_answers'];
                     if ($hasSubqs) {
@@ -2152,9 +2151,10 @@
 
                 // min_num_of_files
                 // Validation:= sq_filecount >= value (which could be an expression).
-                if (isset($qattr['min_num_of_files']) && trim($qattr['min_num_of_files']) != '')
+                if (isset($qattr['min_num_of_files']) && trim($qattr['min_num_of_files']) != '' && trim($qattr['min_num_of_files']) != '0')
                 {
                     $min_num_of_files = $qattr['min_num_of_files'];
+
                     $eqn='';
                     $sgqa = $qinfo['sgqa'];
                     switch ($type)
@@ -2184,7 +2184,6 @@
                 {
                     $min_num_of_files = '';
                 }
-
                 // max_num_of_files
                 // Validation:= sq_filecount <= value (which could be an expression).
                 if (isset($qattr['max_num_of_files']) && trim($qattr['max_num_of_files']) != '')
@@ -2615,7 +2614,7 @@
                 if ($min_num_of_files !='' || $max_num_of_files !='')
                 {
                     $_minA = (($min_num_of_files == '') ? "''" : $min_num_of_files);
-                    $_maxA = (($max_num_of_files == '') ? "''" : $max_num_of_files    );
+                    $_maxA = (($max_num_of_files == '') ? "''" : $max_num_of_files);
                     // TODO - create em_num_files class so can sepately style num_files vs. num_answers
                     $qtips['num_answers']=
                         "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)!=1,sprintf('".$this->gT("Please upload at least %s files")."',fixnum($_minA)),'')}" .
@@ -2916,7 +2915,7 @@
                 $this->groupId2groupSeq[$aGroupInfo['gid']] = $aGroupInfo['group_order'];
             }
 
-            $qattr = $this->getQuestionAttributesForEM($surveyid,NULL,$_SESSION['LEMlang']);
+            $qattr = $this->getQuestionAttributesForEM($surveyid,0,$_SESSION['LEMlang']);
 
             $this->qattr = $qattr;
 
@@ -7382,7 +7381,7 @@ EOD;
         public static function UpgradeQuestionAttributes($changeDB=false,$surveyid=NULL,$onlythisqid=NULL)
         {
             $LEM =& LimeExpressionManager::singleton();
-            $qattrs = $LEM->getQuestionAttributesForEM($surveyid,$onlythisqid);
+            $qattrs = $LEM->getQuestionAttributesForEM($surveyid,$onlythisqid,$_SESSION['LEMlang']);
 
             $qupdates = array();
 
@@ -7435,64 +7434,140 @@ EOD;
             }
         }
 
-        private function getQuestionAttributesForEM($surveyid=NULL,$qid=NULL, $lang=NULL)
+        /**
+        * Return array of language-specific answer codes
+        * @param int $surveyid
+        * @param int $qid
+        * @param string $lang
+        * @return <type>
+        */
+        private function getQuestionAttributesForEM($surveyid=0,$qid=0, $lang='')
         {
-            if (!is_null($qid)) {
-                $where = " a.qid = ".$qid." and a.qid=b.qid";
-            }
-            else if (!is_null($surveyid)) {
-                    $where = " a.qid=b.qid and b.sid=".$surveyid;
-                }
-                else {
-                    $where = " a.qid=b.qid";
-            }
-            if (!is_null($lang)) {
-                $lang = " and a.language='".$lang."' and b.language='".$lang."'";
-            }
-
-            $databasetype = Yii::app()->db->getDriverName();
-            if ($databasetype=='mssql' || $databasetype=="sqlsrv")
+            // Fix old param (NULL)
+            if(is_null($surveyid)) $surveyid=0;
+            if(is_null($qid)) $qid=0;
+            if(is_null($lang)) $lang='';
+            // Fill $lang if possible
+            if(!$lang && isset($_SESSION['LEMlang']))
+                $lang=$_SESSION['LEMlang'];
+            // Actually seem uncesserry : only one call for each page, then commented
+#            static $aStaticQuestionAttributesForEM=array();
+#            if(isset($aStaticQuestionAttributesForEM[$surveyid][$qid][$lang]))
+#            {
+#                return $aStaticQuestionAttributesForEM[$surveyid][$qid][$lang];
+#            }
+#            if($qid && isset($aStaticQuestionAttributesForEM[$surveyid][0][$lang]))
+#            {
+#                return $aStaticQuestionAttributesForEM[$surveyid][0][$lang][$qid];
+#            }
+            $aQid=array();
+            if($qid)
             {
-                $query = "select distinct a.qid, a.attribute, CAST(a.value as varchar(max)) as value";
+                $oQids= Question::model()->findAll(array(
+                    'select'=>'qid',
+                    'group'=>'qid',
+                    'distinct'=>true,
+                    'condition'=>"qid=:qid and parent_qid=0",
+                    'params'=>array(':qid'=>$qid)
+                    ));
+            }
+            elseif($surveyid)
+            {
+                $oQids= Question::model()->findAll(array(
+                    'select'=>'qid',
+                    'group'=>'qid',
+                    'distinct'=>true,
+                    'condition'=>"sid=:sid and parent_qid=0",
+                    'params'=>array(':sid'=>$surveyid)
+                    ));
             }
             else
             {
-                $query = "select distinct a.qid, a.attribute, a.value";
+                $oQids= Question::model()->findAll(array(
+                    'select'=>'qid',
+                    'group'=>'qid',
+                    'distinct'=>true,
+                    'condition'=>"parent_qid=0",
+                    ));
             }
-
-            $query .= " from {{question_attributes}} as a, {{questions}} as b"
-            ." where " . $where
-            .$lang
-            ." order by a.qid, a.attribute";
-
-            $data = dbExecuteAssoc($query);
-            $qattr = array();
-
-            foreach($data->readAll() as $row) {
-                $qattr[$row['qid']][$row['attribute']] = $row['value'];
-            }
-
-            if (!is_null($lang))
+            $aQuestionAttributesForEM=array();
+            foreach($oQids as $oQid)
             {
-                // Then get non-language specific first, and overwrite with language-specific
-                $qattr2 = $qattr;
-                $qattr = $this->getQuestionAttributesForEM($surveyid,$qid);
-                foreach ($qattr2 as $q => $qattrs) {
-                    if (isset($qattrs) && is_array($qattrs)) {
-                        foreach ($qattrs as $attr=>$value) {
-                            $qattr[$q][$attr] = $value;
+                $aAttributesValues=QuestionAttribute::model()->getQuestionAttributes($oQid->qid);
+                // Change array lang to value
+                foreach($aAttributesValues as &$aAttributeValue)
+                {
+                    if(is_array($aAttributeValue))
+                    {
+                        if(isset($aAttributeValue[$lang]))
+                            $aAttributeValue=$aAttributeValue[$lang];
+                        else
+                        {
+                            reset($aAttributeValue);
+                            $aAttributeValue=current($aAttributeValue);
                         }
                     }
                 }
+                $aQuestionAttributesForEM[$oQid->qid]=$aAttributesValues;
             }
+#            $aStaticQuestionAttributesForEM[$surveyid][$qid][$lang]=$aQuestionAttributesForEM;
+            return $aQuestionAttributesForEM;
+#            if (!is_null($qid)) {
+#                $where = " a.qid = ".$qid." and a.qid=b.qid";
+#            }
+#            else if (!is_null($surveyid)) {
+#                    $where = " a.qid=b.qid and b.sid=".$surveyid;
+#                }
+#                else {
+#                    $where = " a.qid=b.qid";
+#            }
+#            if (!is_null($lang)) {
+#                $lang = " and a.language='".$lang."' and b.language='".$lang."'";
+#            }
 
-            return $qattr;
+#            $databasetype = Yii::app()->db->getDriverName();
+#            if ($databasetype=='mssql' || $databasetype=="sqlsrv")
+#            {
+#                $query = "select distinct a.qid, a.attribute, CAST(a.value as varchar(max)) as value";
+#            }
+#            else
+#            {
+#                $query = "select distinct a.qid, a.attribute, a.value";
+#            }
+
+#            $query .= " from {{question_attributes}} as a, {{questions}} as b"
+#            ." where " . $where
+#            .$lang
+#            ." order by a.qid, a.attribute";
+
+#            $data = dbExecuteAssoc($query);
+#            $qattr = array();
+
+#            foreach($data->readAll() as $row) {
+#                $qattr[$row['qid']][$row['attribute']] = $row['value'];
+#            }
+
+#            if (!is_null($lang))
+#            {
+#                // Then get non-language specific first, and overwrite with language-specific
+#                $qattr2 = $qattr;
+#                $qattr = $this->getQuestionAttributesForEM($surveyid,$qid);
+#                foreach ($qattr2 as $q => $qattrs) {
+#                    if (isset($qattrs) && is_array($qattrs)) {
+#                        foreach ($qattrs as $attr=>$value) {
+#                            $qattr[$q][$attr] = $value;
+#                        }
+#                    }
+#                }
+#            }
+#            return $qattr;
         }
 
         /**
         * Return array of language-specific answer codes
-        * @param <type> $surveyid
-        * @param <type> $qid
+        * @param int $surveyid
+        * @param int $qid
+        * @param string $lang
         * @return <type>
         */
 
