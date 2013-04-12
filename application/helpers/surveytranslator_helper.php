@@ -484,6 +484,20 @@
         $supportedLanguages['es']['rtl'] = false;
         $supportedLanguages['es']['dateformat'] = 5;
         $supportedLanguages['es']['radixpoint'] = 1;
+        
+        // Spanish (Argentina)
+        $supportedLanguages['es-AR']['description'] = $clang->gT('Spanish (Argentina)');
+        $supportedLanguages['es-AR']['nativedescription'] = 'Espa&#241;ol rioplatense';
+        $supportedLanguages['es-AR']['rtl'] = false;
+        $supportedLanguages['es-AR']['dateformat'] = 5;
+        $supportedLanguages['es-AR']['radixpoint'] = 0;
+
+        // Spanish (Argentina) (Informal)
+        $supportedLanguages['es-AR-informal']['description'] = $clang->gT('Spanish (Argentina) (Informal)');
+        $supportedLanguages['es-AR-informal']['nativedescription'] = 'Espa&#241;ol rioplatense informal';
+        $supportedLanguages['es-AR-informal']['rtl'] = false;
+        $supportedLanguages['es-AR-informal']['dateformat'] = 5;
+        $supportedLanguages['es-AR-informal']['radixpoint'] = 0;
 
         // Spanish (Chile)
         $supportedLanguages['es-CL']['description'] = $clang->gT('Spanish (Chile)');
