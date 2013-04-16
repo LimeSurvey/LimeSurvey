@@ -1188,7 +1188,7 @@ class conditionsaction extends Survey_Common_Action {
             if ($scenariocount > 0)
             {
 
-                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/jquery.checkgroup.js');
+                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts").'checkgroup.js');
                 foreach ($scenarioresult as $scenarionr)
                 {
                     $scenariotext = "";
@@ -1239,7 +1239,7 @@ class conditionsaction extends Survey_Common_Action {
                     $aData['scenariotext'] = $scenariotext;
                     $aData['scenarionr'] = $scenarionr;
                     if (!isset($aViewUrls['output'])) $aViewUrls['output']='';
-                    $aViewUrls['output'] .= $this->getController()->render('/admin/conditions/includes/conditions_scenario',
+                    $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/conditions_scenario',
                     $aData, TRUE);
 
                     unset($currentfield);
@@ -1503,7 +1503,7 @@ class conditionsaction extends Survey_Common_Action {
 
                                 //$aViewUrls['includes/conditions_edit'][] = $aData;
 
-                                $aViewUrls['output'] .= $this->getController()->render('/admin/conditions/includes/conditions_edit',$aData, TRUE);
+                                $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/conditions_edit',$aData, TRUE);
 
                                 // now sets e corresponding hidden input field
                                 // depending on the leftOperandType
