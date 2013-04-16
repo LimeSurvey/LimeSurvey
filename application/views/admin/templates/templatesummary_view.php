@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div style='float:left;width:70%; padding:1.3em;' >
+    <div class="templateeditor">
         <?php echo CHtml::form(array('admin/templates/sa/templatesavechanges'), 'post', array('id'=>'editTemplate', 'name'=>'editTemplate')); ?>
         
             <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />

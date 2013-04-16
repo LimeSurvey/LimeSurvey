@@ -124,3 +124,9 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
     height: 4em;
     overflow: hidden;
 }
+
+.templateeditor {
+    float:left;
+    width:70%; 
+    padding:1em;
+}
