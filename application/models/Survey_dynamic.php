@@ -17,10 +17,6 @@
 class Survey_dynamic extends LSActiveRecord
 {
     protected static $sid = 0;
-    protected $sHour;
-    protected $sDay;
-    protected $sCount;
-    protected $sDate; 
 
     /**
      * Returns the static model of Settings table
@@ -346,37 +342,35 @@ class Survey_dynamic extends LSActiveRecord
      */
     public function timeline($sType, $dStart, $dEnd) 
     {
-		
+			
 		$sid = self::$sid;		
 		$oSurvey=Survey::model()->findByPk($sid);
 		if ($oSurvey['datestamp']!='Y') {
 			   return false;
 		}
 		else
-		{		
+		{	
 			$criteria=new CDbCriteria;
-			$criteria->select = 'date(submitdate) as sDate , COUNT(*) as sCount';
+			$criteria->select = 'submitdate';
 			$criteria->addCondition('submitdate >= :dstart');
 			$criteria->addCondition('submitdate <= :dend');	
-			$criteria->order="sDate";
-			switch ($sType)
-			{
-			case 'hour':
-						$criteria->select .= ', HOUR(submitdate) as sHour';
-						$criteria->group = 'DATE(submitdate) , HOUR(submitdate)';  
-						break;
-			case 'day':
-			default:
-						$criteria->select .= ', DAY(submitdate) as sDay';
-						$criteria->group = 'DATE(submitdate) ';  
-						break;
-			}		
+			$criteria->order="submitdate";
 			
 			$criteria->params[':dstart'] = $dStart;
 			$criteria->params[':dend'] = $dEnd; 
 			$oResult = $this->findAll($criteria);
-			return $oResult;
 			
+			if($sType=="hour")
+				$dFormat = "Y-m-d_G";
+			else
+				$dFormat = "Y-m-d";
+			
+			foreach($oResult as $sResult)
+			{		
+				$aRes[] = date($dFormat,strtotime($sResult['submitdate']));		
+			}
+				
+			return array_count_values($aRes);
 		}
 
 	}

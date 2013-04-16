@@ -703,15 +703,7 @@ class remotecontrol_handle
 		$oResponses = Survey_dynamic::model($iSurveyID)->timeline($sType, $dStart, $dEnd);
 		if (empty($oResponses))  return array('status' => 'No valid Data');
 
-		foreach($oResponses as $aResponse){
-			$timeSlot = $aResponse['sDate'];
-			
-			if($aResponse['sHour']!=null)
-				$timeSlot =$timeSlot."::". $aResponse['sHour'];
-
-			$aResult[$timeSlot] = $aResponse['sCount'];
-		}
-		return $aResult;
+		return $oResponses;
 		
 	}
 	
