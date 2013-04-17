@@ -138,7 +138,9 @@
                                     'events' => array(
                                     ),
                                     'htmlOptions' => array(
-                                        'id' => 'question_type'
+                                        'id' => 'question_type',
+                                        'options' => array(
+                                        $eqrow['type']=>array('selected'=>true))
                                     )
                                 ));
                                 $script = '$("#question_type option").addClass("questionType");';
