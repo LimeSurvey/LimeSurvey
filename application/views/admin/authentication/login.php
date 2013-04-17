@@ -48,19 +48,20 @@
                 </select>
             </li>
         </ul>
-    <p><input type='hidden' name='action' value='login' />
-        <input class='action' type='submit' name='login_submit' value='<?php $clang->eT("Login"); ?>' /><br />&nbsp;
-        <br/>
-        <?php
-        if (Yii::app()->getConfig("display_user_password_in_email") === true)
-        {
-            ?>
-            <a href='<?php echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>'><?php $clang->eT("Forgot your password?"); ?></a><br />&nbsp;
+        <p><input type='hidden' name='action' value='login' />
+            <input class='action' type='submit' name='login_submit' value='<?php $clang->eT("Login"); ?>' /><br />
+            <br/>
             <?php
-        }
-        ?>
-    </p><br />
-    </div></form>
+            if (Yii::app()->getConfig("display_user_password_in_email") === true)
+            {
+                ?>
+                <a href='<?php echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>'><?php $clang->eT("Forgot your password?"); ?></a><br />
+                <?php
+            }
+            ?>
+        </p>
+    </div>
+<?php echo CHtml::endForm(); ?>
 <script type='text/javascript'>
     document.getElementById('user').focus();
 </script>
