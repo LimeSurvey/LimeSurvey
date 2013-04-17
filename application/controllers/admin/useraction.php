@@ -358,13 +358,13 @@ class UserAction extends Survey_Common_Action
                 {
                     $oRecord->password= hash('sha256', $sPassword);
                 }
-                $oRecord->save();
+                $uresult = $oRecord->save();    // store result of save in uresult
 
                 if (empty($sPassword)) {
                     $extra = $clang->gT("Username") . ": $users_name<br />" . $clang->gT("Password") . ": (" . $clang->gT("Unchanged") . ")<br />\n";
                     $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
                 }
-                elseif ($uresult && !empty($sPassword))
+                elseif ($uresult && !empty($sPassword)) // When saved successfully
                 {
                     if ($sPassword != 'password')
                         Yii::app()->session['pw_notify'] = FALSE;
@@ -383,9 +383,9 @@ class UserAction extends Survey_Common_Action
                     $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
                 }
                 else
-                {
+                {   //Saving the user failed for some reason, message about email is not helpful here
                     // Username and/or email adress already exists.
-                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Could not modify user data. Email address already exists."), 'warningheader');
+                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Could not modify user data."), 'warningheader');
                 }
             }
         }
