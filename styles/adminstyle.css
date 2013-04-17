@@ -99,6 +99,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     box-sizing: border-box;
 }
 /* Think this can be in template/adminstyle.css */
+label, legend,
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
     min-width: 6em;
     width:auto;
@@ -108,7 +109,26 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    font-size: 1em;
 }
+
+legend {
+    min-width: 0;
+    border: 0px;
+}
+
+/* fixing login form password/login height in IE */
+#loginform input { 
+    height: auto;
+    min-height: 0;
+}
+
+/* Make line spacing more compact for advanced question settings */
+li label {
+    line-height: 1em;
+    margin-top: .4em;
+}
+
 /* Fix input height for jqgrid (survey overview) */
 div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
     height: 18px;
