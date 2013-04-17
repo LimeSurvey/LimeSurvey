@@ -150,3 +150,21 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
     width:70%; 
     padding:1em;
 }
+
+/* Make jqgrid pagers fit in IE */
+.ui-jqgrid .ui-jqgrid-toppager,
+.ui-jqgrid .ui-jqgrid-pager {
+    height: auto !important;
+}
+
+/* Make pager not so high */
+.ui-jqgrid input.ui-pg-input,
+.ui-jqgrid select.ui-pg-selbox {
+    height: auto;
+    min-height: 1.4em;
+    line-height: 1.4em;
+    display: inline-block;
+    min-width: 0;
+    width: auto;
+    overflow: hidden;
+}
