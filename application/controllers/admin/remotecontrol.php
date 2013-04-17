@@ -679,6 +679,34 @@ class remotecontrol_handle
 
 	}
 
+/**
+     * RPC Routine to export submission timeline.
+     * Returns an array of values (count and period)
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey
+     * @param string $sType (day|hour)
+     * @param string $dStart
+     * @param string $dEnd
+     * @return array On success: The timeline. On failure array with error information
+     * */
+    public function export_timeline($sSessionKey, $iSurveyID, $sType, $dStart, $dEnd)
+    {
+		if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+		if (!in_array($sType, array('day','hour'))) return array('status' => 'Invalid Period');
+		if (!hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
+		$oSurvey=Survey::model()->findByPk($iSurveyID);
+		if (is_null($oSurvey)) return array('status' => 'Error: Invalid survey ID');
+       	if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No available data');
+       		
+		$oResponses = Survey_dynamic::model($iSurveyID)->timeline($sType, $dStart, $dEnd);
+		if (empty($oResponses))  return array('status' => 'No valid Data');
+
+		return $oResponses;
+		
+	}
+	
     /**
      * RPC routine to get survey summary, regarding token usage and survey participation.
      * Returns the requested value as string.
@@ -2003,11 +2031,11 @@ class remotecontrol_handle
 	}
 
 
-
    /**
     * RPC Routine to return the ids and info  of token/participants of a survey.
     * if $bUnused is true, user will get the list of not completed tokens (token_return functionality).
     * Parameters iStart and ilimit are used to limit the number of results of this call.
+    * Parameter aAttributes is an optional array containing more attribute that may be requested
     *
     * @access public
     * @param string $sSessionKey Auth credentials
@@ -2015,9 +2043,10 @@ class remotecontrol_handle
     * @param int $iStart Start id of the token list
     * @param int  $iLimit Number of participants to return
     * @param bool $bUnused If you want unused tokensm, set true
+    * @param bool|array $aAttributes The extented attributes that we want
     * @return array The list of tokens
     */
-	public function list_participants($sSessionKey, $iSurveyID, $iStart=0, $iLimit=10, $bUnused=false)
+	public function list_participants($sSessionKey, $iSurveyID, $iStart=0, $iLimit=10, $bUnused=false,$aAttributes=false)
 	{
        if ($this->_checkSessionKey($sSessionKey))
        {
@@ -2038,9 +2067,16 @@ class remotecontrol_handle
 				if(count($oTokens)==0)
 					return array('status' => 'No Tokens found');
 
+				if($aAttributes) {
+					$aBasicDestinationFields=Tokens_dynamic::model()->tableSchema->columnNames;
+					$aTokenProperties=array_intersect($aAttributes,$aBasicDestinationFields);
+					$currentAttributes = array('tid','token','firstname','lastname','email');
+					$extendedAttributes = array_diff($aTokenProperties, $currentAttributes);
+				}
+
 				foreach ($oTokens as $token)
 					{
-						$aData[] = array(
+						$dataArray = array(
 									'tid'=>$token->primarykey,
 									'token'=>$token->attributes['token'],
 									'participant_info'=>array(
@@ -2048,6 +2084,11 @@ class remotecontrol_handle
 														'lastname'=>$token->attributes['lastname'],
 														'email'=>$token->attributes['email'],
 														    ));
+						
+						foreach($extendedAttributes as $sAttribute)
+							$dataArray[$sAttribute]=$token->attributes[$sAttribute];								
+								    
+						$aData[]= $dataArray;								    														    
 					}
 				return $aData;
 			}
@@ -2057,6 +2098,8 @@ class remotecontrol_handle
         else
             return array('status' => 'Invalid Session Key');
 	}
+
+
 
     /**
      * RPC routine to to initialise the survey's collection of tokens where new participant tokens may be later added.
