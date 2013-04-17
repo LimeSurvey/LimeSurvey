@@ -158,8 +158,8 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
 }
 
 /* Make pager not so high */
-.ui-jqgrid input.ui-pg-input,
-.ui-jqgrid select.ui-pg-selbox {
+.ui-jqgrid input,
+.ui-jqgrid select {
     height: auto;
     min-height: 1.4em;
     line-height: 1.4em;
