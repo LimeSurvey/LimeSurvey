@@ -449,7 +449,7 @@ class pdf extends TCPDF {
             $maxwidth = $this->getFullWidth($array);
 
             $this->SetFillColor(220, 220, 220);
-            for($a=0;$a<sizeof($array);$a++)
+            for($a=0;$a<sizeof($array)-2;$a++)
             {
                 if($modulo){
                     if($a%2 === 0){$fill=1;}
@@ -470,7 +470,7 @@ class pdf extends TCPDF {
                         $this->SetFont($this->FontFamily, 'B', $this->FontSizePt);
 
                         if ($maxwidth[$b] > 140) $maxwidth[$b]=130;
-                        if ($maxwidth[$b] < 20) $maxwidth[$b]=20;
+                        if ($maxwidth[$b] < 25) $maxwidth[$b]=25;
                         $this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),0,'L',1,$bEndOfCell);
 
                         $this->SetFont($this->FontFamily, $oldStyle, $this->FontSizePt);
@@ -479,20 +479,22 @@ class pdf extends TCPDF {
                     {
                         if ($a==1)
                         {
-                            $this->SetFillColor(250, 250, 250);
+                            $this->SetFillColor(240, 240, 240);
                         }
                         //echo $maxwidth[$b]." max $b.Spalte<br/>";
 
                         if ($maxwidth[$b] > 140) $maxwidth[$b]=130;
                         if ($b==0)
                         {
-                            $iLines=$this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),0,'L',$fill,$bEndOfCell);
+                            $iHeight=$this->getStringHeight($maxwidth[$b],$this->delete_html($array[$a][$b]));
+                            $this->MultiCell($maxwidth[$b],$iHeight,$this->delete_html($array[$a][$b]),0,'L',$fill,$bEndOfCell);
                         }
                         else
                         {
-                            $this->MultiCell($maxwidth[$b],$iLines,$this->delete_html($array[$a][$b]),0,'L',$fill,$bEndOfCell);
+                            $iLines=$this->getStringHeight($maxwidth[$b],$this->delete_html($array[$a][$b]));
+                            if ($iLines>$iHeight) $iHeight=$iLines;
+                            $this->MultiCell($maxwidth[$b],$iHeight,$this->delete_html($array[$a][$b]),0,'L',$fill,$bEndOfCell);
                         }
-
                     }
                 }
             }
@@ -604,7 +606,8 @@ class pdf extends TCPDF {
 
         function delete_html($text)
         {
-            $text = html_entity_decode($text);
+            $text = html_entity_decode($text,null,'UTF-8');
+            $text = str_replace("\t",' ',$text);
             return strip_tags($text);
         }
 }
