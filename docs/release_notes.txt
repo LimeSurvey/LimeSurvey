@@ -60,7 +60,31 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.00+ (build 130325) to 2.05beta1 (build 130325) Apr 3, 2013
+Changes from 2.05beta1 (build 130403) to 2.05beta2 (build 130419) Apr 19, 2013
+-New feature #6477: optionnal comment place with  "multi choice with comment" (Denis Chenu)
+-New feature #6880: Allow adaptation of 5 point slider (Denis Chenu)
+-New feature: Basic LDAP authentication plugin (Menno Dekker)
+-New feature: Can replace javascript file in template (Denis Chenu)
+-New feature: Remotecontrol Export_timeline (trougakoss)
+-New feature: Spanish (Argentinia) informal translation (Carsten Schmitz)
+-New feature: Spanish (Argentinia) translation (Carsten Schmitz)
+-Fixed issue #7751: Bounce processing dont work if port is set server (thanks to sandrocasali) (Denis Chenu)
+-Fixed issue #7743: Webserver authentication plugin does not work with Kerberos authentication (Menno Dekker)
+-Fixed issue #7755: Webserver Authentication losing domain from username (Menno Dekker)
+-Fixed issue #7131: Header response table difficult to read (Denis Chenu)
+-Fixed issue #7709: Javascript broken : select for question type (Sam Mousa)
+-Fixed issue #7740: Plugin Manager breaks compatibility PHP 5.2 (Sam Mousa)
+-Fixed issue #7750: Expression manager don't found default attribute (Denis Chenu)
+-Fixed issue #7770: Clicking radio button on dual scale does not trigger condition (Denis Chenu)
+-Fixed issue: Condition editor not working when condition present (Menno Dekker)
+-Fixed issue: Can select same answers in ranking question type (without js activated) (Denis Chenu)
+-Fixed issue: Extreme memory usage on database backup (Carsten Schmitz)
+-Fixed issue: Extreme memory usage when exporting results and having alot of tokens (Carsten Schmitz)
+-Fixed issue: Misspelling of the word 'separator' (Carsten Schmitz)
+-Fixed issue: Surveys not ordered by name (Carsten Schmitz)
+-Fixed issue: Unable to activate plugin due to incorrect link (Menno Dekker)
+
+Changes from 2.00+ (build 130325) to 2.05beta1 (build 130403) Apr 3, 2013
 New feature: Basic plugin system with example plugins (Sam Mousa, Menno Dekker)
 New feature: Ability to log changes to users and participants using the audit plugin (Carsten Schmitz)
 New feature: Detailed permissions for administration users (Carsten Schmitz)
