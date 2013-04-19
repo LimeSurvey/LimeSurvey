@@ -60,6 +60,9 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05beta2 (build 130419) to 2.05beta3 (build 130420) Apr 19, 2013
+-Fixed issue: Error on running survey
+
 Changes from 2.05beta1 (build 130403) to 2.05beta2 (build 130419) Apr 19, 2013
 -New feature #6477: optionnal comment place with  "multi choice with comment" (Denis Chenu)
 -New feature #6880: Allow adaptation of 5 point slider (Denis Chenu)
