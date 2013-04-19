@@ -729,7 +729,7 @@ $(document).ready(function() {
             }
             if(att_type=="DD") { //Dropdown
                 var att_p_values = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attpvalues');
-                $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'select',editoptions:{ value:":Select One;"+att_p_values}});
+                $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'select',editoptions:{ value:":;"+att_p_values}});
             }
             if(att_type=="TB") { //Textbox
                 $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'text'});
