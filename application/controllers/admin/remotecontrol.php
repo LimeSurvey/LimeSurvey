@@ -686,6 +686,34 @@ class remotecontrol_handle
 
 	}
 
+/**
+     * RPC Routine to export submission timeline.
+     * Returns an array of values (count and period)
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey
+     * @param string $sType (day|hour)
+     * @param string $dStart
+     * @param string $dEnd
+     * @return array On success: The timeline. On failure array with error information
+     * */
+    public function export_timeline($sSessionKey, $iSurveyID, $sType, $dStart, $dEnd)
+    {
+		if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+		if (!in_array($sType, array('day','hour'))) return array('status' => 'Invalid Period');
+		if (!hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
+		$oSurvey=Survey::model()->findByPk($iSurveyID);
+		if (is_null($oSurvey)) return array('status' => 'Error: Invalid survey ID');
+       	if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No available data');
+       		
+		$oResponses = SurveyDynamic::model($iSurveyID)->timeline($sType, $dStart, $dEnd);
+		if (empty($oResponses))  return array('status' => 'No valid Data');
+
+		return $oResponses;
+		
+	}
+	
     /**
      * RPC routine to get survey summary, regarding token usage and survey participation.
      * Returns the requested value as string.

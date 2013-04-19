@@ -327,5 +327,49 @@ class SurveyDynamic extends LSActiveRecord
         }
         return $previous;
     }
+    
+    /**
+     * Function that returns a timeline of the surveys submissions
+     *
+     * @param string sType
+     * @param string dStart
+     * @param string dEnd
+     *
+     * @access public
+     * @return array
+     */
+    public function timeline($sType, $dStart, $dEnd) 
+    {
+            
+        $sid = self::$sid;        
+        $oSurvey=Survey::model()->findByPk($sid);
+        if ($oSurvey['datestamp']!='Y') {
+               return false;
+        }
+        else
+        {    
+            $criteria=new CDbCriteria;
+            $criteria->select = 'submitdate';
+            $criteria->addCondition('submitdate >= :dstart');
+            $criteria->addCondition('submitdate <= :dend');    
+            $criteria->order="submitdate";
+            
+            $criteria->params[':dstart'] = $dStart;
+            $criteria->params[':dend'] = $dEnd; 
+            $oResult = $this->findAll($criteria);
+            
+            if($sType=="hour")
+                $dFormat = "Y-m-d_G";
+            else
+                $dFormat = "Y-m-d";
+            
+            foreach($oResult as $sResult)
+            {        
+                $aRes[] = date($dFormat,strtotime($sResult['submitdate']));        
+            }
+                
+            return array_count_values($aRes);
+        }
+    
 }
 ?>
