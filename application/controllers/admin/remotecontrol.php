@@ -1207,11 +1207,11 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $responses = SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken));
+            $responses = SurveyDynamic::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
             $result = array();
             foreach ($responses as $response)
             {
-                $result[] = $response->id;
+                $result[] = (int) $response->id;
             }
             return $result;
         }
