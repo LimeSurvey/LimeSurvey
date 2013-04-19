@@ -516,17 +516,16 @@ class SurveyRuntimeHelper {
                 }
                 $event->set('surveyId', $surveyid);
                 App()->getPluginManager()->dispatchEvent($event);
-                if ($event->get('blocks', null) != null)
+                $blocks = array();
+
+                foreach ($event->getAllContent() as $blockData)
                 {
-                    $blocks = array();
-                    foreach ($event->getAllContent() as $blockData)
-                    {
-                        /* @var $blockData PluginEventContent */
-                        $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
-                    }
-                    $redata['completed'] = implode("\n", $blocks) ."\n". $redata['completed'];
+                    /* @var $blockData PluginEventContent */
+                    $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
                 }
-                
+
+                $redata['completed'] = implode("\n", $blocks) ."\n". $redata['completed'];
+
                 
                 echo templatereplace(file_get_contents($sTemplatePath."completed.pstpl"), array('completed' => $completed), $redata);
                 echo "\n";

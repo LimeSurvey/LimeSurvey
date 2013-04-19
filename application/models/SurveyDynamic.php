@@ -12,7 +12,6 @@
  *
   * 	Files Purpose: lots of common functions
  */
-
 class SurveyDynamic extends LSActiveRecord
 {
     protected static $sid = 0;
@@ -370,6 +369,6 @@ class SurveyDynamic extends LSActiveRecord
                 
             return array_count_values($aRes);
         }
-    
+    }
 }
 ?>

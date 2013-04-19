@@ -17,10 +17,11 @@
     */
   if (!isset($argv[0])) die();
   define('BASEPATH','.');
-  
+
+  require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
   // Load configuration.
   $sCurrentDir=dirname(__FILE__);
-  $config=require (dirname($sCurrentDir).DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
+  $config=require (dirname($sCurrentDir).DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'internal.php');
   $core = dirname($sCurrentDir) . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR;
   unset ($config['defaultController']);
   unset ($config['config']);
@@ -32,7 +33,7 @@
 
     defined('YII_DEBUG') or define('YII_DEBUG',true);
 
-    require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
+    
 
     if(isset($config))
     {
