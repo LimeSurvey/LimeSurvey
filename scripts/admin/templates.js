@@ -3,6 +3,7 @@
 $(document).ready(function(){
 
     $('#changes').ace({
+        'mode' : editorfiletype,
         'toolbarCallback' : createToolbar
     });
     $('#iphone').click(function(){

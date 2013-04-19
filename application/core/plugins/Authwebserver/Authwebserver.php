@@ -6,6 +6,13 @@ class Authwebserver extends AuthPluginBase
     static protected $description = 'Core: Webserver authentication';
     static protected $name = 'Webserver';
     
+    protected $settings = array(
+        'strip_domain' => array(
+            'type' => 'checkbox',
+            'label' => 'Strip domain part (DOMAIN\\USER or USER@DOMAIN)'
+        )
+    );
+    
     public function __construct(PluginManager $manager, $id) {
         parent::__construct($manager, $id);
         
@@ -28,13 +35,17 @@ class Authwebserver extends AuthPluginBase
                 $sUser=$_SERVER['REMOTE_USER'];
             } else {
                 $sUser = $_SERVER['LOGON_USER'];
-            }            
-            if (strpos($sUser,"\\")!==false) {
-                // Get username for DOMAIN\USER
-                $sUser = substr($sUser, strrpos($sUser, "\\")+1);
-            } elseif (strpos($sUser,"@")!==false) {
-                // Get username for USER@DOMAIN
-                $sUser = substr($sUser, 0, strrpos($sUser, "@"));
+            }
+            
+            // Only strip domain part when desired
+            if ($this->get('strip_domain', null, null, false)) {
+                if (strpos($sUser,"\\")!==false) {
+                    // Get username for DOMAIN\USER
+                    $sUser = substr($sUser, strrpos($sUser, "\\")+1);
+                } elseif (strpos($sUser,"@")!==false) {
+                    // Get username for USER@DOMAIN
+                    $sUser = substr($sUser, 0, strrpos($sUser, "@"));
+                }
             }
             
             $aUserMappings=$this->api->getConfigKey('auth_webserver_user_map', array());

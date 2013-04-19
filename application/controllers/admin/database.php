@@ -492,12 +492,15 @@ class database extends Survey_Common_Action
                         }
                         if (returnGlobal('copyattributes') == "Y")
                         {
-                            $r1 = QuestionAttribute::model()->getQuestionAttributes(returnGlobal('oldqid'));
-                            while($qr1 = $r1->read())
+                            $oOldAttributes = QuestionAttribute::model()->findAll("qid=:qid",array("qid"=>returnGlobal('oldqid')));
+                            foreach($oOldAttributes as $oOldAttribute)
                             {
-                                $qr1['qid']=$qid;
-                                unset($qr1['qaid']);
-                                QuestionAttribute::model()->insertRecords($qr1);
+                                $attribute = new QuestionAttribute;
+                                $attribute->qid = $qid;
+                                $attribute->value = $oOldAttribute->value;
+                                $attribute->attribute = $oOldAttribute->attribute;
+                                $attribute->language = $oOldAttribute->language;
+                                $attribute->save();
                             }
                         }
                     } else {
@@ -510,7 +513,7 @@ class database extends Survey_Common_Action
                             if ($validAttribute['i18n'])
                             {
                                 foreach ($aLanguages as $sLanguage)
-                                {// TODO sanitise XSS
+                                {
                                     $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
                                     $result = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$qid, 'language'=>$sLanguage));
                                     if (count($result)>0)

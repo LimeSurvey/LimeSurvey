@@ -17,16 +17,16 @@
  *
  * @author Denis Chenu (Shnoulle)
  * @param {number} qId The qid of the question where apply.
+ * @version 205-01
  */
 function doDualScaleRadio(qID) {
   // We can do it before document ready, because function come after answers and we use delegate
   $("#question"+qID+" .jshide").hide();
 
   // Lauch EM with hidden input
-  $("#question"+qID+" table.question").delegate(".noanswer-item","click",function(){
-    $(this).closest("tr").find(".answer-item :radio").removeAttr("checked");
-    $(this).closest("tr").find(".noanswer-item :radio").attr("checked","checked");
-    name=$(this).find(":radio").attr("name");
+  $("#question"+qID+" table.question").delegate(".noanswer-item :radio","click",function(){
+    $(this).closest(".answers-list").find(":radio[value='']").prop("checked", true);
+    name=$(this).attr("name");
     name0=name.replace("#1","_0");
     name1=name.replace('#','_');
     $("#java"+name0).val("");
@@ -34,11 +34,11 @@ function doDualScaleRadio(qID) {
     ExprMgr_process_relevance_and_tailoring('change',name0,'hidden');
     ExprMgr_process_relevance_and_tailoring('change',name1,'hidden');
   });
-  $("#question"+qID+" table.question").delegate(".answer-item:not(.noanswer-item)","click",function(){// Don't attach to radio because prepareCellAdapters don't throw click ...
-    name=$(this).find(":radio").attr("name");
+  $("#question"+qID+" table.question").delegate(".answer-item:not(.noanswer-item)  :radio","click",function(){
+    $(this).closest(".answers-list").find(":radio[value='']").prop("checked", false);
+    name=$(this).attr("name");
     name=name.replace('#','_');
-    value=""+$(this).find(":radio").val();
-    $(this).closest("tr").find(".noanswer-item :radio").removeAttr("checked");
+    value=""+$(this).val();
     $("#java"+name).val(value);
     ExprMgr_process_relevance_and_tailoring('change',name,'radio');
   });

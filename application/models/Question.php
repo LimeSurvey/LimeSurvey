@@ -164,11 +164,22 @@
             {
                 $aLanguages = array($sLanguage);
             }
-            if ($iQuestionID != 0)
+
+            if ($iQuestionID)
             {
-                $aAttributeValues = getQuestionAttributeValues($iQuestionID, $sQuestionType);
+                $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid",array('qid'=>$iQuestionID));
+                $aAttributeValues=array();
+                foreach($oAttributeValues as $oAttributeValue)
+                {
+                    if($oAttributeValue->language){
+                        $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]=$oAttributeValue->value;
+                    }else{
+                        $aAttributeValues[$oAttributeValue->attribute]=$oAttributeValue->value;
+                    }
+                }
             }
             $aAttributeNames = questionAttributes();
+
             $aAttributeNames = $aAttributeNames[$sQuestionType];
             uasort($aAttributeNames, 'categorySort');
             foreach ($aAttributeNames as $iKey => $aAttribute)

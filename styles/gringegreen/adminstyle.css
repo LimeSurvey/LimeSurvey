@@ -126,8 +126,9 @@ div.menubar {
     background-color: #fefefe;
     clear:left;
     padding:0;
-    margin:0 auto 58px auto !important;
+    margin:0 auto !important;
     width: 99%;
+    display:inline-block;
 }
 
 div.menubar .ui-widget-header

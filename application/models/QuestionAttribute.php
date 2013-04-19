@@ -50,14 +50,106 @@ class QuestionAttribute extends CActiveRecord
 		return 'qaid';
 	}
 
-    public function getQuestionAttributes($qid)
+    /**
+    * Defines the relations for this model
+    *
+    * @access public
+    * @return array
+    */
+    public function relations()
     {
-		return Yii::app()->db->createCommand()
-			->select()
-			->from($this->tableName())
-			->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid, PDO::PARAM_STR)
-			->order('qaid asc')
-			->query();
+        return array(
+        'qid' => array(self::HAS_ONE, 'Questions', '',
+            'on' => 't.qid = questions.qid',
+            ),
+        );
+    }
+
+    /**
+    * Returns this model's validation rules
+    *
+    */
+    public function rules()
+    {
+        return array(
+            array('qid,attribute','required'),
+            array('value','LSYii_Validators'),
+        );
+    }
+
+    /**
+    * Returns Question attribute array name=>value
+    *
+    * @access public
+    * @param int $iQuestionID
+    * @return array
+    */
+    public function getQuestionAttributes($iQuestionID)
+    {
+        $iQuestionID=(int)$iQuestionID;
+        static $aQuestionAttributesStatic=array();// TODO : replace by Yii::app()->cache
+        if(isset($aQuestionAttributesStatic[$iQuestionID]))
+        {
+            return $aQuestionAttributesStatic[$iQuestionID];
+        }
+        $aQuestionAttributes=array();
+        $oQuestion = Question::model()->find("qid=:qid",array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
+        if ($oQuestion)
+        {
+            $aLanguages = array_merge(array(Survey::model()->findByPk($oQuestion->sid)->language), Survey::model()->findByPk($oQuestion->sid)->additionalLanguages);
+
+            // Get all atribute set for this question
+            $sType=$oQuestion->type;
+            $aAttributeNames = questionAttributes();
+            $aAttributeNames = $aAttributeNames[$sType];
+            $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid",array('qid'=>$iQuestionID));
+            $aAttributeValues=array();
+            foreach($oAttributeValues as $oAttributeValue)
+            {
+                if($oAttributeValue->language){
+                    $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]=$oAttributeValue->value;
+                }else{
+                    $aAttributeValues[$oAttributeValue->attribute]=$oAttributeValue->value;
+                }
+            }
+
+            // Fill with aQuestionAttributes with default attribute or with aAttributeValues
+            // Can not use array_replace due to i18n
+            foreach($aAttributeNames as $aAttribute)
+            {
+                if ($aAttribute['i18n'] == false)
+                {
+                    if(isset($aAttributeValues[$aAttribute['name']]))
+                    {
+                        $aQuestionAttributes[$aAttribute['name']]=$aAttributeValues[$aAttribute['name']];
+                    }
+                    else
+                    {
+                        $aQuestionAttributes[$aAttribute['name']]=$aAttribute['default'];
+                    }
+                }
+                else
+                {
+                    foreach ($aLanguages as $sLanguage)
+                    {
+                        if (isset($aAttributeValues[$aAttribute['name']][$sLanguage]))
+                        {
+                            $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeValues[$aAttribute['name']][$sLanguage];
+                        }
+                        else
+                        {
+                            $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttribute['default'];
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
+        }
+        $aQuestionAttributesStatic[$iQuestionID]=$aQuestionAttributes;
+        return $aQuestionAttributes;
     }
 
 	public static function insertRecords($data)

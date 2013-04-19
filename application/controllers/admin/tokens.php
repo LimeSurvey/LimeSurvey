@@ -143,6 +143,10 @@ class tokens extends Survey_Common_Action
                     }
                 }
             }
+            else
+            {
+                 $hostname = $hostname.":".$port;
+            }
 
             $flags = "";
             switch ($accounttype)

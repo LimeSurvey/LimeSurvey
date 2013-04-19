@@ -1336,12 +1336,12 @@ class dataentry extends Survey_Common_Action
             elseif ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid,'responses','update'))
             {
                 $aData['part'] = 'edit';
-                $aDataentryoutput .= $this->getController()->render('/admin/dataentry/edit', $aData, TRUE);
+                $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, TRUE);
             }
             elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid,'responses','update'))
             {
                 $aData['part'] = 'editsaved';
-                $aDataentryoutput .= $this->getController()->render('/admin/dataentry/edit', $aData, TRUE);
+                $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, TRUE);
             }
 
             $aDataentryoutput .= "</form>\n";
@@ -2302,7 +2302,7 @@ class dataentry extends Survey_Common_Action
                     }
 
                     $cdata['sDataEntryLanguage'] = $sDataEntryLanguage;
-                    $viewdata = $this->getController()->render("/admin/dataentry/content_view",$cdata,TRUE);
+                    $viewdata = $this->getController()->renderPartial("/admin/dataentry/content_view",$cdata,TRUE);
                     $viewdata_em = LimeExpressionManager::ProcessString($viewdata, $deqrow['qid'], NULL, false, 1, 1);
                     $aDataentryoutput .= $viewdata_em;
                 }

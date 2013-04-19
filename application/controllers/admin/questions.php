@@ -796,10 +796,12 @@ class questions extends Survey_Common_Action
 
             if ($activated != "Y")
             {
-                // Prepare selector Class for javascript function : TODO with or without picture
-                $selectormodeclass = 'full';
-                if (Yii::app()->session['questionselectormode'] == 'none')
-                    $selectormodeclass = 'none';
+                // Prepare selector Class for javascript function
+                if (Yii::app()->session['questionselectormode'] !== 'default') {
+                    $selectormodeclass = Yii::app()->session['questionselectormode'];
+                } else {
+                    $selectormodeclass = getGlobalSetting('defaultquestionselectormode', 'default');
+                }                
 
                 $aData['selectormodeclass'] = $selectormodeclass;
             }

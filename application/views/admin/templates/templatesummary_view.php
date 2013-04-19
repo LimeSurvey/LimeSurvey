@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div style='float:left;width:70%; padding:1.3em;' >
+    <div class="templateeditor">
         <?php echo CHtml::form(array('admin/templates/sa/templatesavechanges'), 'post', array('id'=>'editTemplate', 'name'=>'editTemplate')); ?>
         
             <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
@@ -32,7 +32,7 @@
             <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
             <input type='hidden' name='action' value='templatesavechanges' />
 
-            <textarea name='changes' id='changes' rows='20' cols='40' data-filetype="<?php echo $sEditorFileType; ?>"class='ace' style='width:100%'>
+            <textarea name='changes' id='changes' rows='20' cols='40' data-filetype="<?php echo $sEditorFileType; ?>" class='ace' style='width:100%'>
                 <?php if (isset($editfile)) {
                         echo textarea_encode(filetext($templatename,$editfile,$templates));
                 } ?>

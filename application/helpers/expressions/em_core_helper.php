@@ -3177,7 +3177,7 @@ EOD;
     function gT($string)
     {
         // ultimately should call i8n functiouns
-        global $clang;
+        $clang = App()->lang;
         if (isset($clang)) {
             return $clang->gT($string);
         }
@@ -3197,7 +3197,7 @@ EOD;
     function ngT($single, $plural, $number)
     {
         // ultimately should call i8n functiouns
-        global $clang;
+        $clang = App()->lang;
         if (isset($clang)) {
             return $clang->ngT($single, $plural, $number);
         }

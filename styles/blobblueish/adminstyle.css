@@ -988,7 +988,7 @@ div.messagebox {
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
     background-color: #F8F8FF;
     text-align: center;
-    padding:10px;
+    /* padding:10px; */
 }
 
 div.messagebox .header{
