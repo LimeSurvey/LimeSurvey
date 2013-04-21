@@ -27,7 +27,7 @@
                         { ?>
                         <option value='<?php echo $this->createUrl("admin/labels/sa/view/lid/".$lb[0]); ?>'
                             <?php if ($lb[0] == $lid) { ?> selected='selected' <?php } ?>
-                            ><?php echo $lb[0]; ?>: <?php echo $lb[1]; ?></option>
+                            ><?php echo $lb[1]; ?></option>
                         <?php }
                 } ?>
 

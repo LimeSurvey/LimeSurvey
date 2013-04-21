@@ -1,6 +1,6 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php $clang->eT("Label Set"); ?>:</strong> <?php echo $row['label_name']; ?>
+        <strong><?php printf($clang->gT("Label set:%s %s (ID:%s)"),'</strong>',$row['label_name'],$lid); ?>
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>

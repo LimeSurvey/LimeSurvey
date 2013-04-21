@@ -7286,6 +7286,7 @@ function getLabelSets($languages = null)
     }
 
     $criteria = new CDbCriteria;
+    $criteria->order = "label_name";    
     foreach ($languagesarray as $k => $item)
     {
         $criteria->params[':lang_like1_' . $k] = "% $item %";
