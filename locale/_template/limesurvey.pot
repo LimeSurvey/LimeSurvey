@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-04-12 22:05:39+00:00\n"
+"POT-Creation-Date: 2013-04-21 22:05:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -80,7 +80,7 @@ msgstr ""
 #: application/views/admin/survey/importSurvey_view.php:15
 #: application/views/admin/templates/importuploaded_view.php:25
 #: application/views/admin/templates/importuploaded_view.php:82
-#: application/views/admin/token/browse.php:43
+#: application/views/admin/token/browse.php:44
 #: application/views/admin/token/browse.php:194
 #: application/views/admin/token/browse.php:199
 #: application/views/admin/token/browse.php:204
@@ -361,7 +361,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:1735
 #: application/controllers/admin/conditionsaction.php:2095
 #: application/controllers/admin/conditionsaction.php:2098
-#: application/controllers/admin/responses.php:667
+#: application/controllers/admin/responses.php:677
 #: application/views/admin/export/statistics_view.php:1286
 #: application/views/admin/export/statistics_view.php:1289
 #: application/views/admin/survey/Question/questionbar_view.php:12
@@ -432,7 +432,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:156
 #: application/controllers/admin/responses.php:116
 #: application/controllers/admin/responses.php:117
-#: application/controllers/admin/responses.php:453
+#: application/controllers/admin/responses.php:463
 #: application/views/admin/quotas/viewquotas_view.php:17
 #: application/views/admin/token/exportdialog.php:5
 msgid "Completed"
@@ -569,8 +569,8 @@ msgstr ""
 #: application/views/admin/labels/editlabel_view.php:34
 #: application/views/admin/labels/labelview_view.php:161
 #: application/views/admin/participants/displayParticipants_view.php:64
-#: application/views/admin/survey/Question/answerOptions_view.php:165
-#: application/views/admin/survey/Question/answerOptions_view.php:177
+#: application/views/admin/survey/Question/answerOptions_view.php:173
+#: application/views/admin/survey/Question/answerOptions_view.php:185
 #: application/views/admin/survey/Question/subQuestion_view.php:163
 #: application/views/admin/survey/Question/subQuestion_view.php:176
 #: application/views/admin/survey/subview/tabGeneralEditSurvey_view.php:33
@@ -767,7 +767,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:86
 #: application/views/admin/participants/displayParticipants_view.php:83
 #: application/views/admin/participants/displayParticipants_view.php:206
-#: application/views/admin/token/browse.php:86
+#: application/views/admin/token/browse.php:87
 #: application/views/admin/token/browse.php:154
 msgid "Less than"
 msgstr ""
@@ -796,7 +796,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:91
 #: application/views/admin/participants/displayParticipants_view.php:82
 #: application/views/admin/participants/displayParticipants_view.php:205
-#: application/views/admin/token/browse.php:86
+#: application/views/admin/token/browse.php:87
 #: application/views/admin/token/browse.php:153
 msgid "Greater than"
 msgstr ""
@@ -966,9 +966,9 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:137
 #: application/views/admin/quotas/editquotafooter_view.php:6
 #: application/views/admin/survey/Question/answerOptions_view.php:36
-#: application/views/admin/survey/Question/answerOptions_view.php:166
-#: application/views/admin/survey/Question/answerOptions_view.php:178
+#: application/views/admin/survey/Question/answerOptions_view.php:174
 #: application/views/admin/survey/Question/answerOptions_view.php:186
+#: application/views/admin/survey/Question/answerOptions_view.php:194
 #: application/views/admin/survey/Question/subQuestion_view.php:23
 #: application/views/admin/survey/Question/subQuestion_view.php:164
 #: application/views/admin/survey/Question/subQuestion_view.php:177
@@ -976,7 +976,7 @@ msgstr ""
 #: application/views/admin/survey/deleteSurvey_view.php:36
 #: application/views/admin/survey/editSurvey_view.php:50
 #: application/views/admin/survey/listSurveys_view.php:33
-#: application/views/admin/token/browse.php:45
+#: application/views/admin/token/browse.php:46
 msgid "Cancel"
 msgstr ""
 
@@ -1010,7 +1010,7 @@ msgstr ""
 #: application/views/admin/survey/deactivateSurvey_view.php:6
 #: application/views/admin/survey/deleteSurvey_view.php:18
 #: application/views/admin/survey/subview/tabTokens_view.php:15
-#: application/views/admin/token/browse.php:38
+#: application/views/admin/token/browse.php:39
 #: application/views/admin/token/emailwarning.php:2
 #: application/views/admin/token/tokenwarning.php:5
 msgid "Warning"
@@ -1756,8 +1756,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1210
 #: application/helpers/common_helper.php:1280
 #: application/helpers/common_helper.php:3976
-#: application/helpers/common_helper.php:7575
-#: application/helpers/common_helper.php:7615
+#: application/helpers/common_helper.php:7576
+#: application/helpers/common_helper.php:7616
 #: application/views/admin/dataentry/content_view.php:156
 #: application/views/admin/token/bounce.php:14
 #: application/views/admin/token/bounce.php:56
@@ -1788,7 +1788,7 @@ msgstr ""
 #: application/views/admin/participants/blacklist_view.php:65
 #: application/views/admin/participants/userControl_view.php:35
 #: application/views/admin/participants/viewAttribute_view.php:197
-#: application/views/admin/survey/Question/answerOptions_view.php:185
+#: application/views/admin/survey/Question/answerOptions_view.php:193
 #: application/views/admin/survey/Question/editQuestion_view.php:38
 #: application/views/admin/survey/Question/editQuestion_view.php:268
 #: application/views/admin/survey/Question/editdefaultvalues_view.php:183
@@ -1844,10 +1844,10 @@ msgid "View This Record"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1502
-#: application/controllers/admin/responses.php:933
+#: application/controllers/admin/responses.php:943
 #: application/views/admin/dataentry/delete.php:5
 #: application/views/admin/dataentry/vvimport_upload.php:22
-#: application/views/admin/responses/browseallfiltered_view.php:3
+#: application/views/admin/responses/browseallfiltered_view.php:2
 msgid "Browse responses"
 msgstr ""
 
@@ -2212,7 +2212,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:279
 #: application/controllers/admin/responses.php:344
 #: application/controllers/admin/responses.php:369
-#: application/controllers/admin/responses.php:616
+#: application/controllers/admin/responses.php:626
 #: application/helpers/common_helper.php:6390
 msgid "Access denied!"
 msgstr ""
@@ -2220,7 +2220,7 @@ msgstr ""
 #: application/controllers/admin/expressions.php:30
 #: application/controllers/admin/printablesurvey.php:39
 #: application/controllers/admin/responses.php:280
-#: application/controllers/admin/responses.php:617
+#: application/controllers/admin/responses.php:627
 #: application/controllers/admin/tokens.php:40
 #: application/controllers/admin/tokens.php:266
 #: application/controllers/admin/tokens.php:641
@@ -2798,13 +2798,13 @@ msgid "This survey has not been activated. There are no results to browse."
 msgstr ""
 
 #: application/controllers/admin/responses.php:111
-#: application/controllers/admin/responses.php:446
+#: application/controllers/admin/responses.php:456
 #: application/views/admin/participants/displayParticipants_view.php:93
 msgid "Token ID"
 msgstr ""
 
 #: application/controllers/admin/responses.php:112
-#: application/controllers/admin/responses.php:447
+#: application/controllers/admin/responses.php:457
 #: application/helpers/common_helper.php:5437
 #: application/helpers/replacements_helper.php:638
 #: application/views/admin/export/exportresults_view.php:126
@@ -2812,7 +2812,7 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:171
 #: application/views/admin/participants/displayParticipants_view.php:190
 #: application/views/admin/participants/sharePanel_view.php:7
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/token/browse.php:135
 #: application/views/admin/token/dummytokenform.php:13
 #: application/views/admin/token/tokenform.php:30
@@ -2820,7 +2820,7 @@ msgid "First name"
 msgstr ""
 
 #: application/controllers/admin/responses.php:113
-#: application/controllers/admin/responses.php:448
+#: application/controllers/admin/responses.php:458
 #: application/helpers/common_helper.php:5442
 #: application/helpers/replacements_helper.php:645
 #: application/views/admin/export/exportresults_view.php:127
@@ -2828,7 +2828,7 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:171
 #: application/views/admin/participants/displayParticipants_view.php:191
 #: application/views/admin/participants/sharePanel_view.php:8
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/token/browse.php:136
 #: application/views/admin/token/dummytokenform.php:15
 #: application/views/admin/token/tokenform.php:35
@@ -2836,7 +2836,7 @@ msgid "Last name"
 msgstr ""
 
 #: application/controllers/admin/responses.php:114
-#: application/controllers/admin/responses.php:449
+#: application/controllers/admin/responses.php:459
 #: application/controllers/admin/useraction.php:146
 #: application/views/admin/authentication/forgotpassword.php:9
 #: application/views/admin/participants/displayParticipants_view.php:69
@@ -2871,12 +2871,12 @@ msgid_plural "%s responses were successfully deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/responses.php:663
+#: application/controllers/admin/responses.php:673
 #: application/helpers/common_helper.php:2890
 msgid "Total time"
 msgstr ""
 
-#: application/controllers/admin/responses.php:665
+#: application/controllers/admin/responses.php:675
 #: application/views/admin/assessments_view.php:74
 msgid "Group"
 msgstr ""
@@ -3097,7 +3097,7 @@ msgstr ""
 #: application/views/admin/quotas/viewquotas_view.php:19
 #: application/views/admin/survey/Question/subQuestion_view.php:81
 #: application/views/admin/survey/subview/tabPanelIntegration_view.php:8
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/user/editusers.php:5
 #: application/views/admin/usergroup/viewUserGroup_view.php:33
 msgid "Action"
@@ -3162,7 +3162,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:182
 #: application/controllers/admin/surveypermission.php:310
 #: application/controllers/admin/useraction.php:160
-#: application/views/admin/user/editusers.php:133
+#: application/views/admin/user/editusers.php:130
 #: application/views/admin/usergroup/viewUserGroup_view.php:85
 msgid "Add user"
 msgstr ""
@@ -3305,7 +3305,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:429
 #: application/views/admin/export/vv_view.php:10
 #: application/views/admin/participants/displayParticipants_view.php:138
-#: application/views/admin/token/browse.php:46
+#: application/views/admin/token/browse.php:47
 msgid "Export"
 msgstr ""
 
@@ -3357,8 +3357,8 @@ msgstr ""
 #: application/views/admin/participants/attributeMapCSV_view.php:11
 #: application/views/admin/participants/displayParticipants_view.php:139
 #: application/views/admin/participants/participantsPanel_view.php:5
-#: application/views/admin/token/browse.php:47
-#: application/views/admin/token/browse.php:59
+#: application/views/admin/token/browse.php:48
+#: application/views/admin/token/browse.php:60
 msgid "OK"
 msgstr ""
 
@@ -3845,8 +3845,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1279
 #: application/helpers/common_helper.php:7146
 #: application/helpers/common_helper.php:7183
-#: application/helpers/common_helper.php:7574
-#: application/helpers/common_helper.php:7614
+#: application/helpers/common_helper.php:7575
+#: application/helpers/common_helper.php:7615
 #: application/helpers/qanda_helper.php:1361
 #: application/helpers/qanda_helper.php:1541
 #: application/helpers/qanda_helper.php:2124
@@ -4769,7 +4769,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1168
 #: application/helpers/admin/statistics_helper.php:1835
 #: application/helpers/admin/statistics_helper.php:1870
-#: application/helpers/admin/statistics_helper.php:3402
+#: application/helpers/admin/statistics_helper.php:3403
 msgid "Browse"
 msgstr ""
 
@@ -4895,7 +4895,7 @@ msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:3236
 #: application/helpers/admin/statistics_helper.php:3354
-#: application/helpers/admin/statistics_helper.php:3476
+#: application/helpers/admin/statistics_helper.php:3477
 #: application/views/admin/participants/displayParticipants_view.php:298
 #: application/views/admin/survey/listSurveys_view.php:42
 #: application/views/admin/survey/surveybar_view.php:3
@@ -5265,7 +5265,7 @@ msgstr ""
 #: application/helpers/frontend_helper.php:1556
 #: application/views/admin/dataentry/caption_view.php:29
 #: application/views/admin/participants/attributeMap_view.php:96
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/token/browse.php:139
 #: application/views/admin/token/tokenform.php:56
 #: application/views/entertoken_view.php:15
@@ -6434,7 +6434,7 @@ msgstr ""
 #: application/helpers/replacements_helper.php:652
 #: application/views/admin/export/exportresults_view.php:128
 #: application/views/admin/saved/savedlist_view.php:10
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/token/browse.php:137
 msgid "Email address"
 msgstr ""
@@ -6456,7 +6456,7 @@ msgid "Total numbers of sent reminders"
 msgstr ""
 
 #: application/helpers/common_helper.php:5477
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/token/browse.php:145
 msgid "Uses left"
 msgstr ""
@@ -7318,7 +7318,7 @@ msgstr ""
 #: application/views/admin/quotas/newanswer_view.php:33
 #: application/views/admin/quotas/newanswertwo_view.php:45
 #: application/views/admin/templates/templateeditor_navigator_view.php:9
-#: application/views/admin/token/browse.php:42
+#: application/views/admin/token/browse.php:43
 #: application/views/installer/dbconfig_view.php:89
 #: application/views/installer/optconfig_view.php:97
 #: application/views/installer/precheck_view.php:154
@@ -8312,7 +8312,7 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:75
 #: application/views/admin/participants/displayParticipants_view.php:171
 #: application/views/admin/participants/displayParticipants_view.php:196
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/token/browse.php:140
 #: application/views/admin/token/dummytokenform.php:19
 #: application/views/admin/token/tokenform.php:66
@@ -9818,7 +9818,6 @@ msgstr ""
 
 #: application/views/admin/labels/editlabel_view.php:3
 #: application/views/admin/participants/displayParticipants_view.php:121
-#: application/views/admin/responses/browseallfiltered_view.php:12
 msgid "Close"
 msgstr ""
 
@@ -9966,7 +9965,7 @@ msgid "File"
 msgstr ""
 
 #: application/views/admin/labels/labelbar_view.php:3
-msgid "Label Set"
+msgid "Label set:%s %s (ID:%s)"
 msgstr ""
 
 #: application/views/admin/labels/labelbar_view.php:11
@@ -10038,16 +10037,16 @@ msgid "Delete this label"
 msgstr ""
 
 #: application/views/admin/labels/labelview_view.php:108
-#: application/views/admin/survey/Question/answerOptions_view.php:147
+#: application/views/admin/survey/Question/answerOptions_view.php:155
 #: application/views/admin/survey/Question/subQuestion_view.php:147
 msgid "Quick add..."
 msgstr ""
 
 #: application/views/admin/labels/labelview_view.php:109
-#: application/views/admin/survey/Question/answerOptions_view.php:201
+#: application/views/admin/survey/Question/answerOptions_view.php:209
 #: application/views/admin/survey/Question/subQuestion_view.php:199
 #: application/views/admin/templates/templatesummary_view.php:52
-#: application/views/admin/token/browse.php:58
+#: application/views/admin/token/browse.php:59
 msgid "Save changes"
 msgstr ""
 
@@ -10091,8 +10090,8 @@ msgid "Enter one label per line. You can provide a code by separating code and l
 msgstr ""
 
 #: application/views/admin/labels/labelview_view.php:160
-#: application/views/admin/survey/Question/answerOptions_view.php:164
-#: application/views/admin/survey/Question/answerOptions_view.php:176
+#: application/views/admin/survey/Question/answerOptions_view.php:172
+#: application/views/admin/survey/Question/answerOptions_view.php:184
 #: application/views/admin/survey/Question/subQuestion_view.php:162
 #: application/views/admin/survey/Question/subQuestion_view.php:175
 msgid "Replace"
@@ -10182,7 +10181,7 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:112
 #: application/views/admin/participants/sharePanel_view.php:23
 #: application/views/admin/survey/listSurveys_view.php:9
-#: application/views/admin/token/browse.php:40
+#: application/views/admin/token/browse.php:41
 msgid "Page {0} of {1}"
 msgstr ""
 
@@ -10190,7 +10189,7 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:113
 #: application/views/admin/participants/sharePanel_view.php:24
 #: application/views/admin/survey/listSurveys_view.php:8
-#: application/views/admin/token/browse.php:39
+#: application/views/admin/token/browse.php:40
 msgid "View {0} - {1} of {2}"
 msgstr ""
 
@@ -10210,7 +10209,7 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:117
 #: application/views/admin/participants/sharePanel_view.php:26
 #: application/views/admin/survey/listSurveys_view.php:29
-#: application/views/admin/token/browse.php:48
+#: application/views/admin/token/browse.php:49
 #: application/views/admin/usergroup/mailUserGroup_view.php:10
 msgid "Reset"
 msgstr ""
@@ -10555,21 +10554,21 @@ msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:78
 #: application/views/admin/participants/displayParticipants_view.php:200
-#: application/views/admin/token/browse.php:86
+#: application/views/admin/token/browse.php:87
 #: application/views/admin/token/browse.php:149
 msgid "Equals"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:79
 #: application/views/admin/participants/displayParticipants_view.php:201
-#: application/views/admin/token/browse.php:86
+#: application/views/admin/token/browse.php:87
 #: application/views/admin/token/browse.php:150
 msgid "Contains"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:80
 #: application/views/admin/participants/displayParticipants_view.php:203
-#: application/views/admin/token/browse.php:86
+#: application/views/admin/token/browse.php:87
 #: application/views/admin/token/browse.php:151
 msgid "Not equal"
 msgstr ""
@@ -10698,7 +10697,7 @@ msgid "Please choose either of the options"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:135
-#: application/views/admin/token/browse.php:44
+#: application/views/admin/token/browse.php:45
 msgid "Remove condition"
 msgstr ""
 
@@ -10711,7 +10710,7 @@ msgid "Select one of the three options"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:141
-#: application/views/admin/token/browse.php:49
+#: application/views/admin/token/browse.php:50
 msgid "You have no row selected"
 msgstr ""
 
@@ -10728,12 +10727,12 @@ msgid "Delete participant(s) from central panel, tokens tables and all associate
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:146
-#: application/views/admin/token/browse.php:50
+#: application/views/admin/token/browse.php:51
 msgid "Search"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:147
-#: application/views/admin/token/browse.php:51
+#: application/views/admin/token/browse.php:52
 msgid "You can see and edit settings for shared participants in share panel."
 msgstr ""
 
@@ -10921,7 +10920,7 @@ msgid "Un-share selected participants"
 msgstr ""
 
 #: application/views/admin/participants/sharePanel_view.php:20
-#: application/views/admin/token/browse.php:37
+#: application/views/admin/token/browse.php:38
 #: application/views/admin/token/browse.php:206
 msgid "Please select at least one participant."
 msgstr ""
@@ -11212,8 +11211,12 @@ msgstr ""
 msgid "RemoteControl is available using %s for transport and exposes the following functionality:"
 msgstr ""
 
-#: application/views/admin/responses/browseallfiltered_view.php:11
+#: application/views/admin/responses/browseallfiltered_view.php:5
 msgid "Showing Filtered Results"
+msgstr ""
+
+#: application/views/admin/responses/browseallfiltered_view.php:9
+msgid "Clear filter"
 msgstr ""
 
 #: application/views/admin/responses/browseallheader_view.php:2
@@ -11621,7 +11624,7 @@ msgid "There are no label sets which match the survey default language"
 msgstr ""
 
 #: application/views/admin/survey/Question/answerOptions_view.php:27
-#: application/views/admin/survey/Question/answerOptions_view.php:150
+#: application/views/admin/survey/Question/answerOptions_view.php:158
 #: application/views/admin/survey/Question/subQuestion_view.php:14
 #: application/views/admin/survey/Question/subQuestion_view.php:149
 msgid "Save as label set"
@@ -11654,47 +11657,47 @@ msgstr ""
 msgid "Answer:"
 msgstr ""
 
-#: application/views/admin/survey/Question/answerOptions_view.php:136
+#: application/views/admin/survey/Question/answerOptions_view.php:138
 msgid "Insert a new answer option after this one"
 msgstr ""
 
-#: application/views/admin/survey/Question/answerOptions_view.php:137
+#: application/views/admin/survey/Question/answerOptions_view.php:139
 msgid "Delete this answer option"
 msgstr ""
 
-#: application/views/admin/survey/Question/answerOptions_view.php:146
+#: application/views/admin/survey/Question/answerOptions_view.php:154
 #: application/views/admin/survey/Question/subQuestion_view.php:146
 msgid "Predefined label sets..."
 msgstr ""
 
-#: application/views/admin/survey/Question/answerOptions_view.php:161
+#: application/views/admin/survey/Question/answerOptions_view.php:169
 #: application/views/admin/survey/Question/subQuestion_view.php:159
 msgid "Available label sets:"
 msgstr ""
 
-#: application/views/admin/survey/Question/answerOptions_view.php:173
+#: application/views/admin/survey/Question/answerOptions_view.php:181
 msgid "Enter your answers:"
 msgstr ""
 
-#: application/views/admin/survey/Question/answerOptions_view.php:174
+#: application/views/admin/survey/Question/answerOptions_view.php:182
 msgid "Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab."
 msgstr ""
 
-#: application/views/admin/survey/Question/answerOptions_view.php:183
+#: application/views/admin/survey/Question/answerOptions_view.php:191
 #: application/views/admin/survey/Question/subQuestion_view.php:182
 msgid "New label set"
 msgstr ""
 
-#: application/views/admin/survey/Question/answerOptions_view.php:184
+#: application/views/admin/survey/Question/answerOptions_view.php:192
 #: application/views/admin/survey/Question/subQuestion_view.php:183
 msgid "Replace existing label set"
 msgstr ""
 
-#: application/views/admin/survey/Question/answerOptions_view.php:190
+#: application/views/admin/survey/Question/answerOptions_view.php:198
 msgid "You are about to replace a given label set with the current answer options. Continue?"
 msgstr ""
 
-#: application/views/admin/survey/Question/answerOptions_view.php:194
+#: application/views/admin/survey/Question/answerOptions_view.php:202
 #: application/views/admin/survey/Question/subQuestion_view.php:192
 msgid "Sorry, the name you entered for the label set is already in the database. Please select a different name."
 msgstr ""
@@ -12549,7 +12552,7 @@ msgid "Filter..."
 msgstr ""
 
 #: application/views/admin/survey/listSurveys_view.php:28
-#: application/views/admin/token/browse.php:70
+#: application/views/admin/token/browse.php:71
 msgid "Filter"
 msgstr ""
 
@@ -13505,7 +13508,7 @@ msgid "Please change the directory permissions of the folder %s in order to prev
 msgstr ""
 
 #: application/views/admin/token/actions.php:1
-#: application/views/admin/token/browse.php:60
+#: application/views/admin/token/browse.php:61
 msgid "Are you sure you want to delete the selected entries?"
 msgstr ""
 
@@ -13548,87 +13551,87 @@ msgstr ""
 msgid "Use global settings"
 msgstr ""
 
-#: application/views/admin/token/browse.php:36
+#: application/views/admin/token/browse.php:37
 msgid "Add participants to central database"
 msgstr ""
 
-#: application/views/admin/token/browse.php:65
+#: application/views/admin/token/browse.php:66
 msgid "Participant table is empty."
 msgstr ""
 
-#: application/views/admin/token/browse.php:66
+#: application/views/admin/token/browse.php:67
 msgid "Survey participants"
 msgstr ""
 
-#: application/views/admin/token/browse.php:67
+#: application/views/admin/token/browse.php:68
 msgid "Delete selected participant(s) from this survey"
 msgstr ""
 
-#: application/views/admin/token/browse.php:68
+#: application/views/admin/token/browse.php:69
 msgid "Reload participant list"
 msgstr ""
 
-#: application/views/admin/token/browse.php:69
+#: application/views/admin/token/browse.php:70
 msgid "No survey participants matching the search criteria"
 msgstr ""
 
-#: application/views/admin/token/browse.php:73
+#: application/views/admin/token/browse.php:74
 msgid "Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"
 msgstr ""
 
-#: application/views/admin/token/browse.php:74
+#: application/views/admin/token/browse.php:75
 msgid "Send reminder email to the selected entries (if they have already received the invitation email)"
 msgstr ""
 
-#: application/views/admin/token/browse.php:81
+#: application/views/admin/token/browse.php:82
 msgid "View participants of this survey in the central participant database panel"
 msgstr ""
 
-#: application/views/admin/token/browse.php:83
+#: application/views/admin/token/browse.php:84
 msgid "Start bounce processing"
 msgstr ""
 
-#: application/views/admin/token/browse.php:86
+#: application/views/admin/token/browse.php:87
 #: application/views/admin/token/browse.php:152
 msgid "Not contains"
 msgstr ""
 
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/token/browse.php:138
 msgid "Email status"
 msgstr ""
 
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/token/browse.php:141
 #: application/views/admin/token/tokenform.php:79
 msgid "Invitation sent?"
 msgstr ""
 
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/token/browse.php:142
 #: application/views/admin/token/tokenform.php:91
 msgid "Reminder sent?"
 msgstr ""
 
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/token/browse.php:143
 msgid "Reminder count"
 msgstr ""
 
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/token/browse.php:144
 #: application/views/admin/token/tokenform.php:109
 msgid "Completed?"
 msgstr ""
 
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/token/browse.php:146
 #: application/views/admin/token/dummytokenform.php:24
 #: application/views/admin/token/tokenform.php:133
 msgid "Valid from"
 msgstr ""
 
-#: application/views/admin/token/browse.php:87
+#: application/views/admin/token/browse.php:88
 #: application/views/admin/token/browse.php:147
 msgid "Valid until"
 msgstr ""
@@ -14320,7 +14323,7 @@ msgstr ""
 msgid "Delete this user"
 msgstr ""
 
-#: application/views/admin/user/editusers.php:129
+#: application/views/admin/user/editusers.php:126
 msgid "Add user:"
 msgstr ""
 
