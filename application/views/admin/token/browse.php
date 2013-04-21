@@ -33,6 +33,7 @@
     // Build the javasript variables to pass to the jqGrid
 ?>
 <script type="text/javascript">
+    <!--
     var sAddParticipantToCPDBText = '<?php $clang->eT("Add participants to central database",'js');?>';
     var sSelectRowMsg = "<?php $clang->eT("Please select at least one participant.", 'js') ?>";
     var sWarningMsg = "<?php $clang->eT("Warning", 'js') ?>";
@@ -102,7 +103,6 @@
     { "name":"validfrom", "index":"validfrom","align":"center", "sorttype":"int", "sortable": true,"width":160,"editable":true},
     { "name":"validuntil", "index":"validuntil","align":"center", "sorttype":"int", "sortable": true,"width":160,"editable":true}
     <?php if (count($uidNames)) echo ','.implode(",\n", $uidNames); ?>];
-    <!--
 
     function addHiddenElement(theform,thename,thevalue)
     {
