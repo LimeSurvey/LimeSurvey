@@ -133,8 +133,16 @@
 
 
                             </td><td>
-                                <img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' alt='<?php $clang->eT("Insert a new answer option after this one") ?>' />
-                                <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' alt='<?php $clang->eT("Delete this answer option") ?>' />
+                                <?php if ($first)
+                                    { ?>
+                                        <img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' alt='<?php $clang->eT("Insert a new answer option after this one") ?>' />
+                                        <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' alt='<?php $clang->eT("Delete this answer option") ?>' />
+                                    <?php }
+                                    else
+                                    { ?>
+                                    &nbsp;
+                                    <?php } ?>
+                            
                             </td></tr>
                         <?php $position++;
                     } ?>
