@@ -107,11 +107,8 @@
                 <?php } ?>
 
                 <?php $uquery = "SELECT users_name FROM {{users}} WHERE uid=".$usr['parent_id'];
-                    $uresult = dbExecuteAssoc($uquery); //Checked
-                    $userlist = array();
-                    $srow = $uresult->read();
-
-                    $usr['parent'] = $srow['users_name']; ?>
+                    $usr['parent']  = Yii::app()->db->createCommand($uquery)->queryScalar(); // Checked
+                ?>
 
                 <?php if (isset($usr['parent_id'])) { ?>
                     <td><?php echo htmlspecialchars($usr['parent']);?></td>
