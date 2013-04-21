@@ -295,7 +295,7 @@ class responses extends Survey_Common_Action
          * it containts
          *             $fnames[] = array(<dbfieldname>, <some strange title>, <questiontext>, <group_id>, <questiontype>);
          */
-        if (Yii::app()->request->getPost('sql'))
+        if (Yii::app()->session['response_filter_'.$iSurveyID])
         {
             $aViewUrls[] = 'browseallfiltered_view';
         }
@@ -434,7 +434,17 @@ class responses extends Survey_Common_Action
          */
         if(hasSurveyPermission($iSurveyID,'responses','read'))
         {
-            if (Yii::app()->request->getPost('sql'))
+            if (Yii::app()->request->getPost('clearsqlfilter'))
+            {
+                unset(Yii::app()->session['response_filterview_'.$iSurveyID]);    
+                unset(Yii::app()->session['response_filter_'.$iSurveyID]);    
+            }
+            if(Yii::app()->request->getPost('sqlfilter')  && isset(Yii::app()->session['response_filterview_'.$iSurveyID]))
+            {
+                Yii::app()->session['response_filter_'.$iSurveyID]=Yii::app()->session['response_filterview_'.$iSurveyID];    
+            }
+            
+            if (Yii::app()->session['response_filter_'.$iSurveyID])
             {
                 $aViewUrls[] = 'browseallfiltered_view';
             }
@@ -533,8 +543,8 @@ class responses extends Survey_Common_Action
                 $limit = $dtcount;
             }
             //NOW LETS SHOW THE DATA
-            if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
-                $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
+            if (isset(Yii::app()->session['response_filter_'.$iSurveyID]) && trim(Yii::app()->session['response_filter_'.$iSurveyID]) !== "")
+                $oCriteria->addCondition(Yii::app()->session['response_filter_'.$iSurveyID]);
             
             if (!is_null($tokenRequest)) {
                 $oCriteria->addCondition('t.token = ' . Yii::app()->db->quoteValue($tokenRequest));

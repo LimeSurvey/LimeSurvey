@@ -3389,7 +3389,8 @@ class statistics_helper {
 
         elseif (!empty($newsql)) {$sql = $newsql;}
 
-        if (!isset($sql) || !$sql) {$sql="NULL";}
+        if (!isset($sql) || !$sql) {$sql="";}
+        Yii::app()->session['response_filterview_'.$surveyid]=$sql;
 
         //only continue if we have something to output
         if ($results > 0)
@@ -3401,7 +3402,7 @@ class statistics_helper {
                 ."\t\t<p>"
                 ."\t\t\t<input type='submit' value='".$statlang->gT("Browse")."'  />\n"
                 ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-                ."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
+                ."\t\t\t<input type='hidden' name='sqlfilter' value='1' />\n"
                 ."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
                 ."\t\t</p>"
                 ."\t\t</form>\n";
