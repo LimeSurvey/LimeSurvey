@@ -897,25 +897,29 @@ class SurveyAdmin extends Survey_Common_Action
             elseif ($action == 'copysurvey')
             {
                 $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
-                $exclude = array();
+                $aExcludes = array();
 
                 $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
 
                 if (Yii::app()->request->getPost('copysurveyexcludequotas') == "on")
                 {
-                    $exclude['quotas'] = true;
+                    $aExcludes['quotas'] = true;
                 }
                 if (Yii::app()->request->getPost('copysurveyexcludepermissions') == "on")
                 {
-                    $exclude['permissions'] = true;
+                    $aExcludes['permissions'] = true;
                 }
                 if (Yii::app()->request->getPost('copysurveyexcludeanswers') == "on")
                 {
-                    $exclude['answers'] = true;
+                    $aExcludes['answers'] = true;
                 }
                 if (Yii::app()->request->getPost('copysurveyresetconditions') == "on")
                 {
-                    $exclude['conditions'] = true;
+                    $aExcludes['conditions'] = true;
+                }
+                if (Yii::app()->request->getPost('copysurveyresetstartenddate') == "on")
+                {
+                    $aExcludes['dates'] = true;
                 }
                 if (!$iSurveyID)
                 {
@@ -935,7 +939,7 @@ class SurveyAdmin extends Survey_Common_Action
                 else
                 {
                     Yii::app()->loadHelper('export');
-                    $copysurveydata = surveyGetXMLData($iSurveyID, $exclude);
+                    $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
                 }
             }
 
@@ -950,12 +954,12 @@ class SurveyAdmin extends Survey_Common_Action
             elseif ($action == 'copysurvey' && !$aData['bFailed'])
             {
                 $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName,NULL,(isset($_POST['translinksfields'])));
-                if (isset($exclude['conditions']))
+                if (isset($aExcludes['conditions']))
                 {
                     Question::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance'=>'1'),'sid='.$aImportResults['newsid']);
                 }
-                if (!isset($exclude['permissions']))
+                if (!isset($aExcludes['permissions']))
                 {
                     Permission::model()->copySurveyPermissions($iSurveyID,$aImportResults['newsid']);
                 }
