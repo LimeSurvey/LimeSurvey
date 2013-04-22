@@ -213,8 +213,14 @@ class database extends Survey_Common_Action
 
             if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
             if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
-
-            Yii::app()->session['flashmessage']= $clang->gT("Answer options were successfully saved.");
+            if (!Yii::app()->request->getPost('bFullPOST'))
+            {
+                Yii::app()->session['flashmessage'] = $clang->gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
+            }
+            else
+            {
+                Yii::app()->session['flashmessage']= $clang->gT("Answer options were successfully saved.");
+            }
             LimeExpressionManager::SetDirtyFlag();
             if ($databaseoutput != '')
             {
@@ -224,9 +230,6 @@ class database extends Survey_Common_Action
             {
                 $this->getController()->redirect($this->getController()->createUrl('/admin/question/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
-
-            //$action='editansweroptions';
-
         }
 
 
@@ -344,9 +347,14 @@ class database extends Survey_Common_Action
 
             LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
 
-            //include("surveytable_functions.php");
-            //surveyFixColumns($surveyid);
-            Yii::app()->session['flashmessage'] = $clang->gT("Subquestions were successfully saved.");
+            if (!Yii::app()->request->getPost('bFullPOST'))
+            {
+                Yii::app()->session['flashmessage'] = $clang->gT("Not all subquestions were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
+            }
+            else
+            {
+                Yii::app()->session['flashmessage'] = $clang->gT("Subquestions were successfully saved.");
+            }
 
             //$action='editsubquestions';
             LimeExpressionManager::SetDirtyFlag();

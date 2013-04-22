@@ -206,4 +206,5 @@
                 <?php } ?>
         </p>
     </div>
+    <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />
 </form>
