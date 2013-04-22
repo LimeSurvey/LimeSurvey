@@ -4569,7 +4569,7 @@ function flattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=fals
     }
     // ~\R~u : see "What \R matches" and "Newline sequences" in http://www.pcre.org/pcre.txt - only available since PCRE 7.0
     if ($bStripNewLines ){  // strip new lines
-        if (version_compare(substr(PCRE_VERSION,0,strpos(PCRE_VERSION,' ')),'7.0')>-1)
+        if (defined('PCRE_VERSION') && version_compare(substr(PCRE_VERSION,0,strpos(PCRE_VERSION,' ')),'7.0')>-1)
         {
             $sNicetext = preg_replace(array('~\R~u'),array(' '), $sNicetext);
         }
