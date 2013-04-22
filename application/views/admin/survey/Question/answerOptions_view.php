@@ -199,4 +199,6 @@
         </div>
 
         <p><input type='submit' id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php $clang->eT("Save changes"); ?>' />
-    </div></form>
+    </div>
+    <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />
+</form>
