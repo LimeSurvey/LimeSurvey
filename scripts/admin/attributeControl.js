@@ -65,9 +65,11 @@ $(document).ready(function() {
             deltitle: deleteCaption,
             edittitle: sEditAttributeMsg,
             searchtitle: searchMsg,
+            msg: {required: sRequired},
             refreshtitle: refreshMsg},
         {
-            edittitle: sEditAttributeMsg
+            edittitle: sEditAttributeMsg,
+            msg: {required: sRequired}
         }, //Default settings for edit
         { addCaption: addCaption,
             bCancel: sCancel,
