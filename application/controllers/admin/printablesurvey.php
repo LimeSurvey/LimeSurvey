@@ -206,6 +206,8 @@ class printablesurvey extends Survey_Common_Action
             $mapquestionsNumbers=Array();
             $answertext = '';   // otherwise can throw an error on line 1617
 
+            $fieldmap = createFieldMap($surveyid,'full',false,false,$surveyprintlang);
+            
             // =========================================================
             // START doin the business:
             foreach ($degresult->readAll() as $degrow)
@@ -526,23 +528,23 @@ class printablesurvey extends Survey_Common_Action
                                         $cqidattributes = getQuestionAttributeValues($conrow['cqid'], $conrow['type']);
                                         if ($labelIndex == 0)
                                         {
-                                            if (trim($cqidattributes['dualscale_headerA']) != '') {
-                                                $header = $clang->gT($cqidattributes['dualscale_headerA']);
+                                            if (trim($cqidattributes['dualscale_headerA'][$surveyprintlang]) != '') {
+                                                $header = $clang->gT($cqidattributes['dualscale_headerA'][$surveyprintlang]);
                                             } else {
                                                 $header = '1';
                                             }
                                         }
                                         elseif ($labelIndex == 1)
                                         {
-                                            if (trim($cqidattributes['dualscale_headerB']) != '') {
-                                                $header = $clang->gT($cqidattributes['dualscale_headerB']);
+                                            if (trim($cqidattributes['dualscale_headerB'][$surveyprintlang]) != '') {
+                                                $header = $clang->gT($cqidattributes['dualscale_headerB'][$surveyprintlang]);
                                             } else {
                                                 $header = '2';
                                             }
                                         }
-                                        foreach ($ansresult->readAll() as $ansrow)
+                                        foreach ($ansresult as $ansrow)
                                         {
-                                            $answer_section=" (".$ansrow['question']." ".sprintf($clang->gT("Label %s"),$header).")";
+                                            $answer_section=" (".$ansrow->question." ".sprintf($clang->gT("Label %s"),$header).")";
                                         }
                                         break;
                                     case ":":
@@ -558,7 +560,7 @@ class printablesurvey extends Survey_Common_Action
                                             foreach ($fresult as $frow)
                                             {
                                                 //$conditions[]=$frow['title'];
-                                                $answer_section=" (".$ansrow['question']."[".$frow['answer']."])";
+                                                $answer_section=" (".$ansrow->question."[".$frow['answer']."])";
                                             } // while
                                         }
                                         break;
