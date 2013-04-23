@@ -96,7 +96,7 @@
                 if (isset($datestamp) && $datestamp == "Y") {?>
                     <fieldset id='right'><legend><?php $clang->eT("Submission date"); ?></legend><ul><li>
                     <label for='datestampE'><?php $clang->eT("Equals:"); ?></label>
-                    <?php echo CHtml::textField('datestampeE',isset($_POST['datestampE'])?$_POST['datestampE']:'',array('id'=>'datestampE', 'class'=>'popupdate', 'size'=>'12'));?>
+                    <?php echo CHtml::textField('datestampE',isset($_POST['datestampE'])?$_POST['datestampE']:'',array('id'=>'datestampE', 'class'=>'popupdate', 'size'=>'12'));?>
                     </li><li><label for='datestampG'><?php $clang->eT("Later than:");?></label>
                     <?php echo CHtml::textField('datestampG',isset($_POST['datestampG'])?$_POST['datestampG']:'',array('id'=>'datestampG', 'class'=>'popupdate', 'size'=>'12'));?>
                     </li><li><label for='datestampL'><?php $clang->eT("Earlier than:");?></label>

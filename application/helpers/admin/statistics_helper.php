@@ -514,9 +514,9 @@ function buildSelects($allfields, $surveyid, $language) {
                     if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv]))
                     {
                         $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
-                        $_POST[$pv]=$datetimeobj->convert("Y-m-d");
+                        $sDateValue=$datetimeobj->convert("Y-m-d");
 
-                        $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= ".dbQuoteAll($_POST[$pv]." 00:00:00")." and ".Yii::app()->db->quoteColumnName('datestamp')." <= ".dbQuoteAll($_POST[$pv]." 23:59:59");
+                        $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= ".dbQuoteAll($sDateValue." 00:00:00")." and ".Yii::app()->db->quoteColumnName('datestamp')." <= ".dbQuoteAll($sDateValue." 23:59:59");
                     }
                     else
                     {
@@ -524,16 +524,16 @@ function buildSelects($allfields, $surveyid, $language) {
                         if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv]))
                         {
                             $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
-                            $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." < ".dbQuoteAll($_POST[$pv]);
+                            $sDateValue=$datetimeobj->convert("Y-m-d H:i:s");
+                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." < ".dbQuoteAll($sDateValue);
                         }
 
                         //timestamp greater than
                         if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv]))
                         {
                             $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
-                            $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." > ".dbQuoteAll($_POST[$pv]);
+                            $sDateValue=$datetimeobj->convert("Y-m-d H:i:s");
+                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." > ".dbQuoteAll($sDateValue);
                         }
                     }
                 }
@@ -1803,7 +1803,7 @@ class statistics_helper {
             elseif (incompleteAnsFilterState() == "complete") {$query .= " AND submitdate is not null";}
 
             //check for any "sql" that has been passed from another script
-            if ($sql != "NULL") {$query .= " AND $sql";}
+            if (!empty($sql)) {$query .= " AND $sql";}
 
             //get data
             $row=Yii::app()->db->createCommand($query)->queryScalar();
