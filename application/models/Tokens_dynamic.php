@@ -160,9 +160,6 @@ class Tokens_dynamic extends LSActiveRecord
 		$command->addCondition("(completed ='N') or (completed='')");
 		$command->addCondition("token <> ''");
 		$command->addCondition("email <> ''");
-        $command->addCondition("tid < 15000 ");
-        
-
 		if ($bEmail) { 
 			$command->addCondition("(sent = 'N') or (sent = '')");
 		} else {
@@ -197,9 +194,6 @@ class Tokens_dynamic extends LSActiveRecord
         $command->addCondition("(completed ='N') or (completed='')");
         $command->addCondition("token <> ''");
         $command->addCondition("email <> ''");
-        $command->addCondition("tid < 15000 ");
-        
-
         if ($bEmail) { 
             $command->addCondition("(sent = 'N') or (sent = '')");
         } else {
