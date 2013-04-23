@@ -60,6 +60,57 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130406) to 2.00+ (build 130423) Apr 23, 2013
+-Fixed issue: 5-point slider not working on all-in-one survey (Carsten Schmitz)
+-Fixed issue #7684: HTML entities visible in statistics graphs (Carsten Schmitz)
+-Fixed issue #7689: editing survey permissions gives errors (tpartner)
+-Fixed issue #7712: Some problems with statistics in pdf format (Carsten Schmitz)
+-Fixed issue #7726: Value for participant attribute could be "select one", or so it seems (Carsten Schmitz)
+-Fixed issue #7731: When "Showing filtered results" if you change number of records or any other data the filter is lost (Carsten Schmitz)
+-Fixed issue #7734: Quick statistics | Filter 'Submission date: Equals' does not work (Carsten Schmitz)
+-Fixed issue #7738: Security question cannot be answered correctly (Carsten Schmitz)
+-Fixed issue #7741: Order of label sets in label set picker (Carsten Schmitz)
+-Fixed issue #7742: Display "Manage survey administrators" page broken (Carsten Schmitz)
+-Fixed issue #7744: False confirmation of adding subquestions when running into database limit (Carsten Schmitz)
+-Fixed issue #7747: Inserting new answer option on a non-default language tab causes a JavaScript error (Carsten Schmitz)
+-Fixed issue #7748: Javascript comment hick-ups (Carsten Schmitz)
+-Fixed issue #7751: Bounce processing dont work if port is set server (thanks to sandrocasali) (Denis Chenu)
+-Fixed issue #7754: Retrieving list of participants with additional token information (trougakoss)
+-Fixed issue #7759: Sending email invitation takes lot of memory when having alot of tokens (Carsten Schmitz)
+-Fixed issue #7764: Missing translation (Carsten Schmitz)
+-Fixed issue #7764: Missing translation (Menno Dekker)
+-Fixed issue #7777: Printable Version showing blank page (Carsten Schmitz)
+-Fixed issue: Extreme memory usage on database backup (Carsten Schmitz)
+-Fixed issue: Extreme memory usage when exporting results and having alot of tokens (Carsten Schmitz)
+-Fixed issue: Notice in debug mode (Carsten Schmitz)
+-Fixed issue: Surveys not ordered by name (Carsten Schmitz)
+-New Feature : export_timeline function in remotecontrol (Spiros Trougakos)
+-New feature: Spanish (Argentinia) informal translation (Carsten Schmitz)
+-New feature: Spanish (Argentinia) translation (Carsten Schmitz)
+#Updated translation: Catalan by valdomir
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han, Nickko
+#Updated translation: Dutch (Informal) by Han, Nickko
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hebrew by tabakman
+#Updated translation: Hindi by ajparag
+#Updated translation: Korean by cnsla
+#Updated translation: Norwegian (Bokmal) by peterhol, pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by nostradumusfdx, algarvio, samarta, hmlc, jginga
+#Updated translation: Russian by vipgroup
+#Updated translation: Slovak by rundmg
+#Updated translation: Slovenian by doklb
+#Updated translation: Spanish (Argentina) by pomiagos
+#Updated translation: Spanish (Spain) by valdomir, jaimealvarezv
+#Updated translation: Swedish by Mazi
+#Updated translation: Turkish by kayazeren
+#Updated translation: Ukrainian by myksyd
+
 
 Changes from 2.00+ (build 130325) to 2.00+ (build 130406) Apr 06, 2013
 -Fixed issue #7694: When clicking on showing last 50 answers first 50 are shown (Denis Chenu)
