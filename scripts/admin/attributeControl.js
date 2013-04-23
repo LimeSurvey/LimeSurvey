@@ -7,6 +7,9 @@ $(document).ready(function() {
     ];
 
     $("#flashinfo").css("opacity", 0); //Make sure the flash message doesn't display in IE
+    
+    // Set some custom messages
+    $.jgrid.edit.msg.required = sRequired;
 
     jQuery("#attributeControl").jqGrid({
         loadtext : sLoadText,

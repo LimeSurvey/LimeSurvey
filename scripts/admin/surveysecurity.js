@@ -20,6 +20,8 @@ $(document).ready(function(){
                     8: { sorter: false}
                   }
     });
+	
+    $('.usersurveypermissions th.extended').wrapInner('<span />');
 
     $('.mixed').fadeTo(1, .4);
 
@@ -51,7 +53,13 @@ $(document).ready(function(){
 
     if ($.cookie('surveysecurityas')=='false')
     {
-        $('.usersurveypermissions .extended').hide();
+		$('.usersurveypermissions .extended input, .usersurveypermissions .extended span').css({
+			'visibility': 'hidden'
+		});
+		$('.usersurveypermissions .extended').css({
+			'background-color': $('div.wrapper').css('background-color')
+		});
+		updateExtendedButton(false);
     }
 
     $('.usersurveypermissions tr').each(function(){
@@ -72,24 +80,36 @@ $(document).ready(function(){
     })
 
     $('#btnToggleAdvanced').click(function(){
-        extendoptionsvisible=$('.usersurveypermissions .extended').is(':visible');
+        var extendoptionsvisible = true;
+		if($('.usersurveypermissions .extended input, .usersurveypermissions .extended span').css('visibility') == 'hidden') {
+			extendoptionsvisible = false;
+		}
         if (extendoptionsvisible==false)
         {
-            $('.usersurveypermissions .extended').fadeIn('slow');
+            $('.usersurveypermissions .extended input, .usersurveypermissions .extended span').css({
+				'visibility': 'visible'
+			});
+            $('.usersurveypermissions .extended').css({
+				'background-color':''
+			});
         }
         else
         {
-            $('.usersurveypermissions .extended').fadeOut();
+            $('.usersurveypermissions .extended input, .usersurveypermissions .extended span').css({
+				'visibility': 'hidden'
+			});
+            $('.usersurveypermissions .extended').css({
+				'background-color': $('div.wrapper').css('background-color')
+			});
         }
         updateExtendedButton(!extendoptionsvisible);
         $.cookie('surveysecurityas',!extendoptionsvisible);
-    })
-    updateExtendedButton(true);
+    });
 });
 
 function updateExtendedButton(bVisible)
 {
-    if (bVisible==true)
+	if (bVisible==true)
     {
         $('#btnToggleAdvanced').val('<<');
     }
