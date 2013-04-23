@@ -2173,7 +2173,7 @@ class remotecontrol_handle
 
 			$oTokens = Tokens_dynamic::model($iSurveyID);
 			$aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, true, $SQLemailstatuscondition);
-			$aAllTokens = $oTokens->findUninvited(false, 0, true, $SQLemailstatuscondition);
+			$aAllTokens = $oTokens->findUninvitedIDs(false, 0, true, $SQLemailstatuscondition);
 			if (empty($aResultTokens))
 				return array('status' => 'Error: No candidate tokens');
 
@@ -2237,7 +2237,7 @@ class remotecontrol_handle
 
 			$oTokens = Tokens_dynamic::model($iSurveyID);
 			$aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
-			$aAllTokens = $oTokens->findUninvited(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+			$aAllTokens = $oTokens->findUninvitedIDs(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
 
 			if (empty($aResultTokens))
 				return array('status' => 'Error: No candidate tokens');
