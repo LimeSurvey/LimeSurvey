@@ -1274,7 +1274,7 @@
         $thissurvey = getSurveyInfo($surveyid);
         if (empty($templang))
         {
-            $templang=$thissurvey['language'];
+            $templang=$clang->langcode;
         }
 
         $_SESSION['survey_'.$surveyid]['templatename']=validateTemplateDir($thissurvey['template']);
