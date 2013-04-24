@@ -244,22 +244,21 @@ class User extends CActiveRecord
     */
     public function getID($fullname)
     {
-        $this->db->select('uid');
-        $this->db->from('users');
-        $this->db->where(array("full_name"=>Yii::app()->db->quoteValue($fullname)));
-        $result = $this->db->get();
-        return $result->row();
+        return $this->db->createCommand()->select('uid')
+            ->from('users')
+            ->where(array("full_name"=>Yii::app()->db->quoteValue($fullname)))
+            ->queryScalar();
     }
 
     /**
-    * Updates user password
-    *
-    * @access public
-    * @return string
+    * Updates user password hash
+    * 
+    * @param int $uid The User ID
+    * @param string $sPassword The clear text password
     */
-    public function updatePassword($uid,$password)
+    public function updatePassword($uid, $sPassword)
     {
-        return $this->updateByPk($uid, array('password' => $password));
+        return $this->updateByPk($uid, array('password' => hash('sha256', $sPassword)));
     }
 
     /**
