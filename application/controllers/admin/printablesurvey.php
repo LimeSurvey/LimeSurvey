@@ -53,6 +53,8 @@ class printablesurvey extends Survey_Common_Action
             }
             $_POST['surveyprintlang']=$surveyprintlang;
 
+            $aSurveyInfo=getSurveyInfo($surveyid,$surveyprintlang);
+            
             // Setting the selected language for printout
             $clang = new limesurvey_lang($surveyprintlang);
 
@@ -652,6 +654,16 @@ class printablesurvey extends Survey_Common_Action
                         ,'QUESTIONHELP' => ''            // content of the question help field.
                         ,'ANSWER' => ''                // contains formatted HTML answer
                         );
+                        
+                        $showqnumcode = Yii::app()->getConfig('showqnumcode');
+                        if(($showqnumcode=='choose' && ($aSurveyInfo['showqnumcode']=='N' || $aSurveyInfo['showqnumcode']=='X')) || $showqnumcode=='number' || $showqnumcode=='none')
+                        {
+                           $question['QUESTION_CODE']=''; 
+                        }                        
+                        if(($showqnumcode=='choose' && ($aSurveyInfo['showqnumcode']=='C' || $aSurveyInfo['showqnumcode']=='X')) || $showqnumcode=='code' || $showqnumcode=='none')
+                        {
+                           $question['QUESTION_NUMBER']=''; 
+                        }                        
 
                         if($question['QUESTION_TYPE_HELP'] != "") {
                             $question['QUESTION_TYPE_HELP'] .= "<br />\n";
