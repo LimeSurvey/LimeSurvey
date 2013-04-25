@@ -1047,7 +1047,7 @@ class statistics_helper {
                 elseif (incompleteAnsFilterState() == "complete") {$query .= " AND submitdate is not null";}
 
                 //$sql was set somewhere before
-                if ($sql != "NULL") {$query .= " AND $sql";}
+                if (!empty($sql)) {$query .= " AND $sql";}
 
                 //execute query
                 $result=Yii::app()->db->createCommand($query)->queryAll();
@@ -3529,7 +3529,7 @@ class statistics_helper {
             }
 
             //if $sql values have been passed to the statistics script from another script, incorporate them
-            if ($sql != "NULL") {$query .= " AND $sql";}
+            if (!empty($sql)) {$query .= " AND $sql";}
         }
         
         if ($surveyid !== $sid) {
