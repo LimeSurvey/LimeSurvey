@@ -7608,7 +7608,7 @@ EOD;
                 if (!isset($qans[$row['qid']])) {
                     $qans[$row['qid']] = array();
                 }
-                $qans[$row['qid']][$row['scale_id'].'~'.$row['code']] = ($useAssessments ? $row['assessment_value'] : $row['code']) . '|' . $row['answer'];
+                $qans[$row['qid']][$row['scale_id'].'~'.$row['code']] = ($useAssessments ? $row['assessment_value'] : '0') . '|' . $row['answer'];
             }
 
             return $qans;
