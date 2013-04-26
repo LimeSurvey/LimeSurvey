@@ -826,9 +826,9 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
 /**
 * from export_structure_quexml.php
 */
-function QueXMLCleanup($string)
+function QueXMLCleanup($string,$allow = '<p><b><u><i><em>')
 {
-    return html_entity_decode(trim(strip_tags(str_ireplace("<br />","\n",$string),'<p><b><u><i><em>')),ENT_QUOTES,'UTF-8');
+    return html_entity_decode(trim(strip_tags(str_ireplace("<br />","\n",$string),$allow)),ENT_QUOTES,'UTF-8');
 }
 
 /**
@@ -865,9 +865,9 @@ function QueXMLFixedArray($array)
     {
         $category = $dom->createElement("category");
 
-        $label = $dom->createElement("label",QueXMLCleanup("$key"));
+        $label = $dom->createElement("label",QueXMLCleanup("$key",''));
 
-        $value= $dom->createElement("value",QueXMLCleanup("$v"));
+        $value= $dom->createElement("value",QueXMLCleanup("$v",''));
 
         $category->appendChild($label);
         $category->appendChild($value);
@@ -922,7 +922,7 @@ function QueXMLCreateFixed($qid,$rotate=false,$labels=true,$scale=0,$other=false
     {
         $category = $dom->createElement("category");
 
-        $label = $dom->createElement("label",QueXMLCleanup($Row['title']));
+        $label = $dom->createElement("label",QueXMLCleanup($Row['title'],''));
 
         $value= $dom->createElement("value",QueXMLCleanup($Row['code']));
 
@@ -1016,7 +1016,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
             $fixed = $dom->createElement("fixed");
             $category = $dom->createElement("category");
 
-            $label = $dom->createElement("label",QueXMLCleanup($Row['question']));
+            $label = $dom->createElement("label",QueXMLCleanup($Row['question'],''));
 
             $value= $dom->createElement("value",1);
             $nextcode = $Row['title'];
@@ -1103,7 +1103,7 @@ function quexml_create_subQuestions(&$question,$qid,$varname,$use_answers = fals
     foreach($QueryResult->readAll() as $Row)
     {
         $subQuestion = $dom->createElement("subQuestion");
-        $text = $dom->createElement("text",QueXMLCleanup($Row['question']));
+        $text = $dom->createElement("text",QueXMLCleanup($Row['question'],''));
         $subQuestion->appendChild($text);
         $subQuestion->setAttribute("varName",$varname . QueXMLCleanup($Row['title']));
         $question->appendChild($subQuestion);
