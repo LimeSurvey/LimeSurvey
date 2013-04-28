@@ -60,6 +60,29 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130423) to 2.00+ (build 130428) Apr 28, 2013
+-Fixed issue #7737: Login in survey-frontend does not regard language (Carsten Schmitz)
+-Fixed issue #7762: Incorrect graph for List(Radio) with Comment (Carsten Schmitz)
+-Fixed issue #7772: Useless icons appear on the IHM (tpartner)
+-Fixed issue #7784: Error on question import in csv-format (Carsten Schmitz)
+-Fixed issue #7787: Error "Cannot execute queries while other unbuffered queries are active" on function "Get statistics" (Carsten Schmitz)
+-Fixed issue #7793: Question numbers appear on printout even when survey settings are adjusted not to show them (Carsten Schmitz)
+-Fixed issue #7796: Statistics crash on numerical answers (Carsten Schmitz)
+-Fixed issue #7800: HTML-tags visible in queXML (PDF) (Adam Zammit)
+-Fixed issue: No way to reset a forgotten password (Carsten Schmitz)
+-Fixed issue: Unused icons in survey bar (when user doesn't have permissions) (tpartner)
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by bramr, Han
+#Updated translation: Greek by kiolalis
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by samarta, nostradumusfdx, algarvio
+#Updated translation: Russian by vipgroup, roomian
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Spanish (Spain) by valdomir, larjona
+
+
 Changes from 2.00+ (build 130406) to 2.00+ (build 130423) Apr 23, 2013
 -Fixed issue: 5-point slider not working on all-in-one survey (Carsten Schmitz)
 -Fixed issue #7684: HTML entities visible in statistics graphs (Carsten Schmitz)
