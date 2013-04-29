@@ -56,10 +56,12 @@ function doNumericSlider(qID,jsonOptions) {
 					$('#slider-callout-'+myfname).text(jsonOptions.slider_prefix + ui.value + jsonOptions.slider_suffix);
 				}
 			});
-			if(!havevalue && startvalue && slider_displaycallout){
-				$("#slider-callout-"+myfname).text(jsonOptions.slider_prefix + ui.value + jsonOptions.slider_suffix);
-				$(thisinput).val(ui.value);
-				$(thisinput).triggerHandler("keyup");
+			if(!havevalue && startvalue && jsonOptions.slider_displaycallout){
+				$("#slider-callout-"+myfname).text(jsonOptions.slider_prefix + startvalue + jsonOptions.slider_suffix);
+				$(thisinput).val(startvalue);
+				$(function() {
+					$(thisinput).triggerHandler("keyup");
+				});
 			}
 		});
 	}
