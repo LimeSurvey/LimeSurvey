@@ -1088,7 +1088,7 @@ class conditionsaction extends Survey_Common_Action {
         . "<!--\n"
         . "\tvar Fieldnames = new Array();\n"
         . "\tvar Codes = new Array();\n"
-        . "\tvar Answer = new Array();\n"
+        . "\tvar Answers = new Array();\n"
         . "\tvar QFieldnames = new Array();\n"
         . "\tvar Qcqids = new Array();\n"
         . "\tvar Qtypes = new Array();\n";
@@ -1101,7 +1101,7 @@ class conditionsaction extends Survey_Common_Action {
                 $an = ls_json_encode(flattenText($can[2]));
                 $javascriptpre .= "Fieldnames[$jn]='$can[0]';\n"
                 . "Codes[$jn]='$can[1]';\n"
-                . "Answer[$jn]={$an};\n";
+                . "Answers[$jn]={$an};\n";
                 $jn++;
             }
         }
