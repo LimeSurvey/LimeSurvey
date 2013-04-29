@@ -1757,6 +1757,9 @@
                     $max_answers='';
                 }
 
+                // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
+                if($type=="K" && isset($qattr['slider_min']) && ( !isset($qattr['min_num_value_n']) || trim($qattr['min_num_value_n'])==''))
+                    $qattr['min_num_value_n']=$qattr['slider_min'];
                 // min_num_value_n
                 // Validation:= N >= value (which could be an expression).
                 if (isset($qattr['min_num_value_n']) && trim($qattr['min_num_value_n']) != '')
@@ -1840,6 +1843,9 @@
                     $min_num_value_n='';
                 }
 
+                // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
+                if($type=="K" && isset($qattr['slider_max']) && ( !isset($qattr['max_num_value_n']) || trim($qattr['max_num_value_n'])==''))
+                    $qattr['max_num_value_n']=$qattr['slider_max'];
                 // max_num_value_n
                 // Validation:= N <= value (which could be an expression).
                 if (isset($qattr['max_num_value_n']) && trim($qattr['max_num_value_n']) != '')
@@ -6427,7 +6433,7 @@
                         $allJsVarsUsed = array_merge($allJsVarsUsed,$_sqValidVars);
                         $valJsVarsUsed = array_merge($valJsVarsUsed,$_sqValidVars);
                         $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
-                        if($_validationJS!='')
+                        if($validationJS!='')
                         {
                             $valParts[] = "\n  if(" . $validationJS . "){\n";
                             $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('error').addClass('good');;\n";

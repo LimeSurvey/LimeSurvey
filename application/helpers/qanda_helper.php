@@ -3009,55 +3009,6 @@ function do_multiplenumeric($ia)
         $maxlength= " maxlength='25' ";
     }
 
-    //    //EQUALS VALUE
-    //    if (trim($aQuestionAttributes['equals_num_value']) != ''){
-    //        $equals_num_value = $aQuestionAttributes['equals_num_value'];
-    //        $numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
-    //        $calculateValue[]=3;
-    //    }
-    //    elseif (trim($aQuestionAttributes['num_value_equals_sgqa']) != '' && isset($_SESSION[$aQuestionAttributes['num_value_equals_sgqa']]))
-    //    {
-    //        $equals_num_value = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$aQuestionAttributes['num_value_equals_sgqa']];
-    //        $numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
-    //        $calculateValue[]=3;
-    //    }
-    //    else
-    //    {
-    //        $equals_num_value=0;
-    //    }
-    //
-    //    //MIN VALUE
-    //    if (trim($aQuestionAttributes['min_num_value']) != ''){
-    //        $min_num_value = $aQuestionAttributes['min_num_value'];
-    //        $numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
-    //        $calculateValue[]=2;
-    //    }
-    //    elseif (trim($aQuestionAttributes['min_num_value_sgqa']) != '' && isset($_SESSION[$aQuestionAttributes['min_num_value_sgqa']])){
-    //        $min_num_value = $_SESSION[$aQuestionAttributes['min_num_value_sgqa']];
-    //        $numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
-    //        $calculateValue[]=2;
-    //    }
-    //    else
-    //    {
-    //        $min_num_value=0;
-    //    }
-    //
-    //    //MAX VALUE
-    //    if (trim($aQuestionAttributes['max_num_value']) != ''){
-    //        $max_num_value = $aQuestionAttributes['max_num_value'];
-    //        $numbersonlyonblur[]='calculateValue'.$ia[1].'(1)';
-    //        $calculateValue[]=1;
-    //    }
-    //    elseif (trim($aQuestionAttributes['max_num_value_sgqa']) != '' && isset($_SESSION[$aQuestionAttributes['max_num_value_sgqa']])){
-    //        $max_num_value = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$aQuestionAttributes['max_num_value_sgqa']];
-    //        $numbersonlyonblur[]='calculateValue'.$ia[1].'(1)';
-    //        $calculateValue[]=1;
-    //    }
-    //    else
-    //    {
-    //        $max_num_value = 0;
-    //    }
-
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .=" withprefix";
@@ -3087,16 +3038,7 @@ function do_multiplenumeric($ia)
         $kpclass = "";
     }
 
-    /*if(!empty($numbersonlyonblur))
-    {
-    $numbersonly .= ' onblur="'.implode(';', $numbersonlyonblur).'"';
-    $numbersonly_slider = implode(';', $numbersonlyonblur);
-    }
-    else
-    {
-    $numbersonly_slider = '';
-    }*/
-    $numbersonly_slider = '';
+    $numbersonly_slider = ''; // DEPRECATED
 
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
@@ -3107,9 +3049,10 @@ function do_multiplenumeric($ia)
     {
         $tiwidth=10;
     }
+    $prefixclass="numeric";
     if ($aQuestionAttributes['slider_layout']==1)
     {
-        header_includes( Yii::app()->getConfig("generalscripts").'jquery/lime-slider.js');
+        $prefixclass="slider";
         $slider_layout=true;
         $extraclass .=" withslider";
         if (trim($aQuestionAttributes['slider_accuracy'])!='')
@@ -3117,13 +3060,13 @@ function do_multiplenumeric($ia)
             //$slider_divisor = 1 / $slider_accuracy['value'];
             $decimnumber = strlen($aQuestionAttributes['slider_accuracy']) - strpos($aQuestionAttributes['slider_accuracy'],'.') -1;
             $slider_divisor = pow(10,$decimnumber);
-            $slider_stepping = $aQuestionAttributes['slider_accuracy'] * $slider_divisor;
-            //	error_log('acc='.$slider_accuracy['value']." div=$slider_divisor stepping=$slider_stepping");
+            $slider_step = $aQuestionAttributes['slider_accuracy'] * $slider_divisor;
+            //	error_log('acc='.$slider_accuracy['value']." div=$slider_divisor stepping=$slider_step");
         }
         else
         {
             $slider_divisor = 1;
-            $slider_stepping = 1;
+            $slider_step = 1;
         }
 
         if (trim($aQuestionAttributes['slider_min'])!='')
@@ -3177,10 +3120,10 @@ function do_multiplenumeric($ia)
         $slider_layout = false;
     }
     $hidetip=$aQuestionAttributes['hide_tip'];
-    if ($slider_layout === true) // auto hide tip when using sliders
-    {
-        $hidetip=1;
-    }
+#    if ($slider_layout === true) // auto hide tip when using sliders/ NO: slider only in javascript : then Hide it in js.
+#    {
+#        $hidetip=1;
+#    }
 
     if ($aQuestionAttributes['random_order']==1)
     {
@@ -3205,7 +3148,6 @@ function do_multiplenumeric($ia)
     }
     else
     {
-        $label_width = 0;
         foreach($aSubquestions as $ansrow)
         {
             $myfname = $ia[1].$ansrow['title'];
@@ -3218,20 +3160,10 @@ function do_multiplenumeric($ia)
             }
             else
             {
-                $answer_and_slider_array=explode($slider_separator,$ansrow['question']);
-                if (isset($answer_and_slider_array[0]))
-                    $theanswer=$answer_and_slider_array[0];
-                else
-                    $theanswer = '';
-                if (isset($answer_and_slider_array[1]))
-                    $sliderleft=$answer_and_slider_array[1];
-                else
-                    $sliderleft = '';
-                if (isset($answer_and_slider_array[2]))
-                    $sliderright=$answer_and_slider_array[2];
-                else
-                    $sliderright = '';
-
+                $aAnswer=explode($slider_separator,$ansrow['question']);
+                $theanswer=(isset($aAnswer[0]))?$aAnswer[0]:"";
+                $sliderleft=(isset($aAnswer[1]))?$aAnswer[1]:"";
+                $sliderright=(isset($aAnswer[2]))?$aAnswer[2]:"";
                 $sliderleft="<div class=\"slider_lefttext\">$sliderleft</div>";
                 $sliderright="<div class=\"slider_righttext\">$sliderright</div>";
             }
@@ -3245,96 +3177,48 @@ function do_multiplenumeric($ia)
 
             list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item numeric-item".$extraclass);
             $answer_main .= "\t$htmltbody2\n";
-            if ($slider_layout === false)
-            {
-                $answer_main .= "<label for=\"answer$myfname\">{$theanswer}</label>\n";
-            }
-            else
-            {
-                $answer_main .= "<label for=\"answer$myfname\" class=\"slider-label\">{$theanswer}</label>\n";
-            }
+            $answer_main .= "<label for=\"answer$myfname\" class=\"{$prefixclass}-label\">{$theanswer}</label>\n";
 
-            if($label_width < strlen(trim(strip_tags($ansrow['question']))))
-            {
-                $label_width = strlen(trim(strip_tags($ansrow['question'])));
-            }
-
-            if ($slider_layout === false)
-            {
                 $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
                 $sSeparator = $sSeparator['separator'];
 
-                $answer_main .= "<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+                $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
                     $dispVal = str_replace('.',$sSeparator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]);
                     $answer_main .= $dispVal;
                 }
 
-                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$maxlength} />\n\t".$suffix."\n</span>\n\t</li>\n";
-            }
-            else
-            {
-                if ($aQuestionAttributes['slider_showminmax']==1)
-                {
-                    //$slider_showmin=$slider_min;
-                    $slider_showmin= "\t<div id=\"slider-left-$myfname\" class=\"slider_showmin\">$slider_mintext</div>\n";
-                    $slider_showmax= "\t<div id=\"slider-right-$myfname\" class=\"slider_showmax\">$slider_maxtext</div>\n";
-                }
-                else
-                {
-                    $slider_showmin='';
-                    $slider_showmax='';
-                }
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
-                {
-                    $slider_startvalue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] * $slider_divisor;
-                    $displaycallout_atstart=1;
-                }
-                elseif ($slider_default != "")
-                {
-                    $slider_startvalue = $slider_default * $slider_divisor;
-                    $displaycallout_atstart=1;
-                }
-                elseif ($slider_middlestart != '')
-                {
-                    $slider_startvalue = $slider_middlestart;
-                    $displaycallout_atstart=0;
-                }
-                else
-                {
-                    $slider_startvalue = 'NULL';
-                    $displaycallout_atstart=0;
-                }
-                $answer_main .= "$sliderleft<div id='container-$myfname' class='multinum-slider'>\n"
-                . "\t<input type=\"text\" id=\"slider-modifiedstate-$myfname\" value=\"$displaycallout_atstart\" style=\"display: none;\" />\n"
-                . "\t<input type=\"text\" id=\"slider-param-min-$myfname\" value=\"$slider_min\" style=\"display: none;\" />\n"
-                . "\t<input type=\"text\" id=\"slider-param-max-$myfname\" value=\"$slider_max\" style=\"display: none;\" />\n"
-                . "\t<input type=\"text\" id=\"slider-param-stepping-$myfname\" value=\"$slider_stepping\" style=\"display: none;\" />\n"
-                . "\t<input type=\"text\" id=\"slider-param-divisor-$myfname\" value=\"$slider_divisor\" style=\"display: none;\" />\n"
-                . "\t<input type=\"text\" id=\"slider-param-startvalue-$myfname\" value='$slider_startvalue' style=\"display: none;\" />\n"
-                . "\t<input type=\"text\" id=\"slider-onchange-js-$myfname\" value=\"$numbersonly_slider\" style=\"display: none;\" />\n"
-                . "\t<input type=\"text\" id=\"slider-prefix-$myfname\" value=\"$prefix\" style=\"display: none;\" />\n"
-                . "\t<input type=\"text\" id=\"slider-suffix-$myfname\" value=\"$suffix\" style=\"display: none;\" />\n"
-                . "<div id=\"slider-$myfname\" class=\"ui-slider-1\">\n"
-                .  $slider_showmin
-                . "<div class=\"slider_callout\" id=\"slider-callout-$myfname\"></div>\n"
-                . "<div class=\"ui-slider-handle\" id=\"slider-handle-$myfname\"></div>\n"
-                . $slider_showmax
-                . "\t</div>"
-                . "</div>$sliderright\n"
-                . "<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
-                {
-                    $answer_main .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                }
-                elseif ($slider_default != "")
-                {
-                    $answer_main .= $slider_default;
-                }
-                $answer_main .= "\"/>\n"
-                . "\t</li>\n";
-            }
+                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$maxlength} />\n\t".$suffix."\n</span>{$sliderright}\n\t</li>\n";
+
+#                $answer_main .= "$sliderleft<div id='container-$myfname' class='multinum-slider'>\n"
+#                . "\t<input type=\"text\" id=\"slider-modifiedstate-$myfname\" value=\"$displaycallout_atstart\" style=\"display: none;\" />\n"
+#                . "\t<input type=\"text\" id=\"slider-param-min-$myfname\" value=\"$slider_min\" style=\"display: none;\" />\n"
+#                . "\t<input type=\"text\" id=\"slider-param-max-$myfname\" value=\"$slider_max\" style=\"display: none;\" />\n"
+#                . "\t<input type=\"text\" id=\"slider-param-stepping-$myfname\" value=\"$slider_stepping\" style=\"display: none;\" />\n"
+#                . "\t<input type=\"text\" id=\"slider-param-divisor-$myfname\" value=\"$slider_divisor\" style=\"display: none;\" />\n"
+#                . "\t<input type=\"text\" id=\"slider-param-startvalue-$myfname\" value='$slider_startvalue' style=\"display: none;\" />\n"
+#                . "\t<input type=\"text\" id=\"slider-onchange-js-$myfname\" value=\"$numbersonly_slider\" style=\"display: none;\" />\n"
+#                . "\t<input type=\"text\" id=\"slider-prefix-$myfname\" value=\"$prefix\" style=\"display: none;\" />\n"
+#                . "\t<input type=\"text\" id=\"slider-suffix-$myfname\" value=\"$suffix\" style=\"display: none;\" />\n"
+#                . "<div id=\"slider-$myfname\" class=\"ui-slider-1\">\n"
+#                .  $slider_showmin
+#                . "<div class=\"slider_callout\" id=\"slider-callout-$myfname\"></div>\n"
+#                . "<div class=\"ui-slider-handle\" id=\"slider-handle-$myfname\"></div>\n"
+#                . $slider_showmax
+#                . "\t</div>"
+#                . "</div>$sliderright\n"
+#                . "<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
+#                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
+#                {
+#                    $answer_main .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+#                }
+#                elseif ($slider_default != "")
+#                {
+#                    $answer_main .= $slider_default;
+#                }
+#                $answer_main .= "\"/>\n"
+#            }
 
             //			$answer .= "\t</tr>\n";
 
@@ -3342,41 +3226,14 @@ function do_multiplenumeric($ia)
             $inputnames[]=$myfname;
         }
         $question_tip = '';
-        if($hidetip == 0)
+        if(!$hidetip)
         {
             $question_tip .= '<p class="tip">'.$clang->gT('Only numbers may be entered in these fields')."</p>\n";
         }
-        //        if ($max_num_value)
-        //        {
-        //            $question_tip .= '<p id="max_num_value_'.$ia[1].'" class="tip">'.sprintf($clang->gT('Total of all entries must not exceed %d'), $max_num_value)."</p>\n";
-        //        }
-        //        if ($equals_num_value)
-        //        {
-        //            $question_tip .= '<p id="equals_num_value_'.$ia[1].'" class="tip">'.sprintf($clang->gT('Total of all entries must equal %d'),$equals_num_value)."</p>\n";
-        //        }
-        //        if ($min_num_value)
-        //        {
-        //            $question_tip .= '<p id="min_num_value_'.$ia[1].'" class="tip">'.sprintf($clang->gT('Total of all entries must be at least %s'),$min_num_value)."</p>\n";
-        //        }
-        //
-        //          // TMSW TODO
-        //        if ($max_num_value || $equals_num_value || $min_num_value)
-        //        {
-        //            $answer_computed = '';
-        //            if ($equals_num_value)
-        //            {
-        //                $answer_computed .= "\t<li class='multiplenumerichelp'>\n<label for=\"remainingvalue_{$ia[1]}\">\n\t".$clang->gT('Remaining: ')."\n</label>\n<span>\n\t$prefix\n\t<input size=10 type='text' id=\"remainingvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t$suffix\n</span>\n\t</li>\n";
-        //            }
-        //            $answer_computed .= "\t<li class='multiplenumerichelp'>\n<label for=\"totalvalue_{$ia[1]}\">\n\t".$clang->gT('Total: ')."\n</label>\n<span>\n\t$prefix\n\t<input size=10  type=\"text\" id=\"totalvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t$suffix\n</span>\n\t</li>\n";
-        //            $answer_main .= $answer_computed;
-        //        }
 
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
         || trim($aQuestionAttributes['max_num_value']) != ''
-        //        || trim($aQuestionAttributes['num_value_equals_sgqa']) != ''
-        //        || trim($aQuestionAttributes['min_num_value_sgqa']) != ''
-        //        || trim($aQuestionAttributes['max_num_value_sgqa']) != ''
         )
         {
             $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
@@ -3397,118 +3254,57 @@ function do_multiplenumeric($ia)
             . "$suffix</span>\n"
             . "\t</li>\n";
         }
-        $answer .= $question_tip."<ul class=\"subquestions-list questions-list text-list numeric-list\">\n".$answer_main."</ul>\n";
+        $answer .= $question_tip."<ul class=\"subquestions-list questions-list text-list {$prefixclass}-list\">\n".$answer_main."</ul>\n";
     }
-    //just added these here so its easy to change in one place
-    $errorClass = 'tip problem';
-    $goodClass = 'tip good';
-    /* ==================================
-    Style to be applied to all templates.
-    .numeric-multi p.tip.error
+
+    if($aQuestionAttributes['slider_layout']==1)
     {
-    color: #f00;
+        header_includes("numeric-slider.js");
+        header_includes("numeric-slider.css","css");
+#                // Take it at start of js
+#                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
+#                {
+#                    $slider_startvalue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] * $slider_divisor;
+#                    $slider_displaycallout=1;
+#                }
+#                elseif
+        if ($slider_default != "")
+        {
+            $slider_startvalue = $slider_default * $slider_divisor;
+            $slider_displaycallout=1;
+        }
+        elseif ($slider_middlestart != '')
+        {
+            $slider_startvalue = $slider_middlestart;
+            $slider_displaycallout=0;
+        }
+        else
+        {
+            $slider_startvalue = 'NULL';
+            $slider_displaycallout=0;
+        }
+        $slider_showminmax=($aQuestionAttributes['slider_showminmax']==1)?1:0;
+        //some var for slider
+        $aJsVar=array(
+            'slider_showminmax'=>$slider_showminmax,
+            'slider_min' => $slider_min,
+            'slider_mintext'=>$slider_mintext,
+            'slider_max' => $slider_max,
+            'slider_maxtext'=>$slider_maxtext,
+            'slider_step'=>$slider_step,
+            'slider_divisor'=>$slider_divisor,
+            'slider_startvalue'=>$slider_startvalue,
+            'slider_displaycallout'=>$slider_displaycallout,
+            'slider_prefix' => $prefix,
+            'slider_suffix' => $suffix,
+            );
+        $answer .= "<script type='text/javascript'><!--\n"
+                    . " doNumericSlider({$ia[0]},".ls_json_encode($aJsVar).");\n"
+                    . " //--></script>";
     }
-    .numeric-multi p.tip.good
-    {
-    color: #0f0;
-    }
-    */
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
-    //    if ($max_num_value || $equals_num_value || $min_num_value)
-    //    { //Do value validation
-    //        $answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1]."\" />\n";
-    //        $answer .= '<input type="hidden" name="qattribute_answer'.$ia[1]."\" />\n";
-    //
-    //        $answer .= "<script type='text/javascript'>\n";
-    //        $answer .= "    function calculateValue".$ia[1]."(method) {\n";
-    //        //Make all empty fields 0 (or else calculation won't work
-    //        foreach ($inputnames as $inputname)
-    //        {
-    //            $answer .= "       if(document.limesurvey.answer".$inputname.".value == '') { document.limesurvey.answer".$inputname.".value = 0; }\n";
-    //            $javainputnames[]="parseInt(parseFloat((document.limesurvey.answer".$inputname.".value).split(',').join('.'))*1000)";
-    //        }
-    //        $answer .= "       bob = eval('document.limesurvey.qattribute_answer".$ia[1]."');\n";
-    //        $answer .= "       totalvalue_".$ia[1]."=(";
-    //        $answer .= implode(" + ", $javainputnames);
-    //        $answer .= ")/1000;\n";
-    //        $answer .= "       $('#totalvalue_{$ia[1]}').val((parseFloat(totalvalue_{$ia[1]})+'').split('.').join('{$sSeparator}'));\n";
-    //        $answer .= "       var ua = navigator.appVersion.indexOf('MSIE');\n";
-    //        $answer .= "       var ieAtt = ua != -1 ? 'className' : 'class';\n";
-    //        $answer .= "       switch(method)\n";
-    //        $answer .= "       {\n";
-    //        $answer .= "       case 1:\n";
-    //        $answer .= "          if (totalvalue_".$ia[1]." > $max_num_value)\n";
-    //        $answer .= "             {\n";
-    //        $answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."';\n";
-    //        $answer .= "               document.getElementById('totalvalue_{$ia[1]}').setAttribute(ieAtt,'" . $errorClass . "');\n";
-    //        $answer .= "               document.getElementById('max_num_value_{$ia[1]}').setAttribute(ieAtt,'" . $errorClass . "');\n";
-    //        $answer .= "             }\n";
-    //        $answer .= "             else\n";
-    //        $answer .= "             {\n";
-    //        $answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."')\n";
-    //        $answer .= "               {\n";
-    //        $answer .= "                 bob.value = '';\n";
-    //        //		$answer .= "                 document.getElementById('totalvalue_{$ia[1]}').style.color='black';\n";
-    //        $answer .= "                 document.getElementById('totalvalue_{$ia[1]}').setAttribute(ieAtt,'" . $goodClass . "');\n";
-    //        $answer .= "               }\n";
-    //        //		$answer .= "               document.getElementById('max_num_value_{$ia[1]}').style.color='black';\n";
-    //        $answer .= "               document.getElementById('max_num_value_{$ia[1]}').setAttribute(ieAtt,'" . $goodClass . "');\n";
-    //        $answer .= "             }\n";
-    //        $answer .= "          break;\n";
-    //        $answer .= "       case 2:\n";
-    //        $answer .= "          if (totalvalue_".$ia[1]." < $min_num_value)\n";
-    //        $answer .= "             {\n";
-    //        $answer .= "               bob.value = '".sprintf($clang->gT("Answer is invalid. The total of all entries should add up to at least %s.",'js'),$min_num_value)."';\n";
-    //        //		$answer .= "               document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
-    //        //		$answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='red';\n";
-    //        $answer .= "               document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";
-    //        $answer .= "               document.getElementById('min_num_value_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";
-    //        $answer .= "             }\n";
-    //        $answer .= "             else\n";
-    //        $answer .= "             {\n";
-    //        $answer .= "               if (bob.value == '' || bob.value == '".sprintf($clang->gT("Answer is invalid. The total of all entries should add up to at least %s.",'js'),$min_num_value)."')\n";
-    //        $answer .= "               {\n";
-    //        $answer .= "                 bob.value = '';\n";
-    //        //		$answer .= "                 document.getElementById('totalvalue_".$ia[1]."').style.color='black';\n";
-    //        $answer .= "                 document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $goodClass . "');\n";
-    //        $answer .= "               }\n";
-    //        //		$answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='black';\n";
-    //        $answer .= "               document.getElementById('min_num_value_".$ia[1]."').setAttribute(ieAtt,'" . $goodClass . "');\n";
-    //        $answer .= "             }\n";
-    //        $answer .= "          break;\n";
-    //        $answer .= "       case 3:\n";
-    //        $answer .= "          remainingvalue = (parseInt(parseFloat($equals_num_value)*1000) - parseInt(parseFloat(totalvalue_".$ia[1].")*1000))/1000;\n";
-    //        $answer .= "          document.getElementById('remainingvalue_".$ia[1]."').value=remainingvalue;\n";
-    //        $answer .= "          if (totalvalue_".$ia[1]." == $equals_num_value)\n";
-    //        $answer .= "             {\n";
-    //        $answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."')\n";
-    //        $answer .= "               {\n";
-    //        $answer .= "                 bob.value = '';\n";
-    //        //		$answer .= "                 document.getElementById('totalvalue_".$ia[1]."').style.color='black';\n";
-    //        //		$answer .= "                 document.getElementById('equals_num_value_".$ia[1]."').style.color='black';\n";
-    //        $answer .= "                 document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $goodClass . "');\n";
-    //        $answer .= "                 document.getElementById('equals_num_value_".$ia[1]."').setAttribute(ieAtt,'" . $goodClass . "');\n";
-    //        $answer .= "               }\n";
-    //        $answer .= "             }\n";
-    //        $answer .= "             else\n";
-    //        $answer .= "             {\n";
-    //        $answer .= "             bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."';\n";
-    //        //		$answer .= "             document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
-    //        //		$answer .= "             document.getElementById('equals_num_value_".$ia[1]."').style.color='red';\n";
-    //        $answer .= "             document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";
-    //        $answer .= "             document.getElementById('equals_num_value_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";
-    //        $answer .= "             }\n";
-    //        $answer .= "             break;\n";
-    //        $answer .= "       }\n";
-    //        $answer .= "    }\n";
-    //        foreach($calculateValue as $cValue)
-    //        {
-    //            $answer .= "    calculateValue".$ia[1]."($cValue);\n";
-    //        }
-    //        $answer .= "</script>\n";
-    //
-    //    }
+
 
     return array($answer, $inputnames);
 }
