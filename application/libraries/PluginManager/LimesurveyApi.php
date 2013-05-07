@@ -58,12 +58,21 @@
         /**
          * Gets an activerecord object associated to the table.
          * @param iPlugin $plugin
-         * @param string $sTableName
+         * @param string $sTableName Name of the table.
+         * @param string $bPluginTable True if the table is plugin specific.
          * @return PluginDynamic
          */
-        public function getTable(iPlugin $plugin, $sTableName)
+        public function getTable(iPlugin $plugin, $sTableName, $bPluginTable = true)
         {
-            if (null !== $table = $this->getTableName($plugin, $sTableName))
+            if ($bPluginTable)
+            {
+                $table = $this->getTableName($plugin, $sTableName);
+            }
+            else
+            {
+                $table = $sTableName;
+            }
+            if (isset($table))
             {
                 return PluginDynamic::model($table);
             }
@@ -74,11 +83,20 @@
          * @param iPlugin $plugin
          * @param string $sTableNamem
          * @param string $scenario
+         * @param string $bPluginTable True if the table is plugin specific.
          * @return PluginDynamic
          */
-        public function newModel(iPlugin $plugin, $sTableName, $scenario = 'insert')
+        public function newModel(iPlugin $plugin, $sTableName, $scenario = 'insert', $bPluginTable = true)
         {
-            if (null !== $table = $this->getTableName($plugin, $sTableName))
+            if ($bPluginTable)
+            {
+                $table = $this->getTableName($plugin, $sTableName);
+            }
+            else
+            {
+                $table = $sTableName;
+            }
+            if (isset($table))
             {
                 return new PluginDynamic($table, $scenario);
             }
@@ -182,18 +200,30 @@
             }
             return false;
         }
+
         /**
-         * Gets an array of old response tables for a survey.
+         * Gets the table name for responses for the specified survey id.
          * @param int $surveyId
+         * @return string
+         */
+        public function getResponseTable($surveyId)
+        {
+            return App()->getDb()->tablePrefix . 'survey_' . $surveyId;
+        }
+
+        /**
+         * Gets an array of old response table names for a survey.
+         * @param int $surveyId
+         * @return string[]
          */
         public function getOldResponseTables($surveyId)
         {
             $tables = array();
-            $base = App()->getDb()->tablePrefix . 'survey_' . $surveyId;
+            $base = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId;
             foreach (App()->getDb()->getSchema()->getTableNames() as $table)
             {
                 if (strpos($table, $base) === 0)
-                $tables = $table;
+                $tables[] = $table;
             }
             return $tables;
         }
@@ -241,7 +271,19 @@
         */
         public function getParticipant($iParticipantID){
             return Participant::model()->findByPk($iParticipantID);
-        }         
+        }
+
+        /**
+         * Gets the metadata for a table.
+         * For details on the object check: http://www.yiiframework.com/doc/api/1.1/CDbTableSchema
+         * @param string $table Table name.
+         * @param boolean $forceRefresh False if cached information is acceptable; setting this to true could affect performance.
+         * @return CDbTableSchema Table schema object, NULL if the table does not exist.
+         */
+        public function getTableSchema($table, $forceRefresh = false)
+        {
+            return App()->getDb()->getSchema()->getTable($table);
+        }
         
     }
 

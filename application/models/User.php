@@ -240,13 +240,24 @@ class User extends LSActiveRecord
     * @access public
     * @return string
     */
-    public function getID($fullname)
+    public function getID($username)
     {
-        $this->db->select('uid');
-        $this->db->from('users');
-        $this->db->where(array("full_name"=>Yii::app()->db->quoteValue($fullname)));
-        $result = $this->db->get();
+        $user = User::model()->findByAttributes(array(
+            'users_name' => $username
+        ));
+        if ($user)
+        {
+            return $user->uid;
+        }
+        /*
+        $db = Yii::app()->getDb();
+        $db->select('uid');
+        $db->from('users');
+        $db->where(array("full_name"=>Yii::app()->db->quoteValue($fullname)));
+        $result = $db->get();
         return $result->row();
+         * 
+         */
     }
 
     /**

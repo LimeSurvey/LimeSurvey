@@ -19,12 +19,20 @@
         {
             if (!isset($sTableName))
             {
+                //Yii::trace('sTableName missing.');
                 throw new Exception('sTableName missing.');
             }
             $this->tableName = $sTableName;
             parent::__construct($scenario);
         }
 
+
+        protected function instantiate($attributes)
+        {
+            $class=get_class($this);
+            $model=new $class($this->tableName());
+            return $model;
+        }
         /**
          * We have a custom implementation here since the parents' implementation
          * does not create a new model for each table name.
