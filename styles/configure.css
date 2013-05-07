@@ -6,7 +6,7 @@ div.pluginsettings * {
 }
 
 div.pluginsettings {
-    width: 500px;
+    width: 550px;
     margin: auto;
     text-align: center;
     
@@ -15,11 +15,16 @@ div.pluginsettings ol {
     list-style: none;
 }
 
-div.pluginsettings label, div.pluginsettings input {
-    width: 250px;
+
+div.pluginsettings form input, div.pluginsettings div.select2-container{
+    width: 60%;
     display: inline-block;
 }
 
+div.pluginsettings form label {
+    width: 40%;
+    display: inline-block;
+}
 div.pluginsettings li {
     margin-top: 10px;
 }
@@ -28,4 +33,5 @@ div.pluginsettings input[type=submit], div.pluginsettings img {
     margin: auto;
     display: block;
     margin-top: 20px;
+    width: 150px;
 }

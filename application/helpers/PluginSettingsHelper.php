@@ -173,7 +173,16 @@
             {
                 $out .= CHtml::label($metaData['label'], $id);
             }
-            $out .= CHtml::dropDownList($name, $value, $metaData['options'], array('form' => $form));
+            $out .= App()->getController()->widget('ext.bootstrap.widgets.TbSelect2', array(
+                'data' => $metaData['options'],
+                'name' => $name,
+                'options' => array(
+                    //'width' => '100px',
+                    'minimumResultsForSearch' => 1000
+                ),
+
+            ), true);
+            //$out .= CHtml::dropDownList($name, $value, $metaData['options'], array('form' => $form));
             
             return $out;
         }

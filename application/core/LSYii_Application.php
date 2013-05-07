@@ -33,8 +33,12 @@ class LSYii_Application extends CWebApplication
      * @var PluginManager
      */
     protected $pluginManager;
-    
     /**
+     * @var LimesurveyApi
+     */
+    protected $api;
+    /**
+     *
     * Initiates the application
     *
     * @access public
@@ -154,7 +158,7 @@ class LSYii_Application extends CWebApplication
         Yii::import('application.libraries.PluginManager.*');
         Yii::import('application.libraries.PluginManager.Storage.*');
         Yii::import('application.libraries.PluginManager.Question.*');
-        $this->pluginManager = new PluginManager('LimesurveyApi');
+        $this->pluginManager = new PluginManager($this->getApi());
         
         // And load the active plugins
         $this->pluginManager->loadPlugins();
@@ -260,6 +264,17 @@ class LSYii_Application extends CWebApplication
     }
     
     /**
+     * Get the Api object.
+     */
+    public function getApi()
+    {
+        if (!isset($this->api))
+        {            
+            $this->api = new LimesurveyApi();
+        }
+        return $this->api;
+    }
+    /**
      * Get the pluginManager
      * 
      * @return PluginManager
@@ -268,5 +283,7 @@ class LSYii_Application extends CWebApplication
     {
         return $this->pluginManager;
     }
+
+
 }
 

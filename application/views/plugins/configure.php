@@ -1,6 +1,5 @@
 <?php
     App()->getClientScript()->registerCssFile('/styles/configure.css');
-
 ?>
 <div id="plugin-<?php echo isset($plugin['name']) ? $plugin['name'] : ''; ?>">
     

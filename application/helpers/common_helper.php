@@ -46,6 +46,11 @@ function gT($string, $escapemode = 'html')
     }
 }
 
+function eT($string, $escapemode = 'html')
+{
+    echo gT($string, $escapemode);
+}
+
 /**
 * getQuestionTypeList() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
 *    question type

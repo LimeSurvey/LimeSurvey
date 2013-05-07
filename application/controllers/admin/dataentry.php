@@ -337,121 +337,109 @@ class dataentry extends Survey_Common_Action
     /**
     * dataentry::import()
     * Function responsible to import responses from old survey table(s).
-    * @param mixed $surveyid
+    * @param int $iSurveyId
     * @return void
     */
-    function import($surveyid)
+    public function import($surveyid)
     {
-        $surveyid = sanitize_int($surveyid);
+        $iSurveyId = sanitize_int($surveyid);
 
-        $subaction = '';
-
-        $aData = array(
-        'clang' => Yii::app()->lang,
-        'surveyid' => $surveyid
-        );
-
-        if(Permission::model()->hasSurveyPermission($surveyid,'responses','create'))
+        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','create'))
         {
-            //if (!isset($surveyid)) $surveyid = $this->input->post('sid');
-            if (!isset($oldtable) && isset($_POST['oldtable']))
+            if (!App()->request->isPostRequest)
             {
-                $oldtable = Yii::app()->request->getPost('oldtable');
-
-                $subaction = Yii::app()->request->getPost('subaction');
-            }
-
-            $schema = Yii::app()->db->getSchema();
-
-            $clang = Yii::app()->lang;
-            Yii::app()->loadHelper('database');
-
-            if (!$subaction == "import")
-            {
-                // show UI for choosing old table
-
-                $aTables = dbGetTablesLike("old\_survey\_%");
-
-                $aOptionElements = array();
-                //$queryCheckColumnsActive = $schema->getTable($oldtable)->columnNames;
-                $resultActive = $schema->getTable("{{survey_{$surveyid}}}")->columnNames;
-                //$resultActive = dbExecuteAssoc($queryCheckColumnsActive) or show_error("Error:<br />$query<br />");
-                $countActive = count($resultActive);
-
-                foreach ($aTables as $sTable)
+                
+                // Schema that serves as the base for compatibility checks.
+                $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
+                $tables = App()->getApi()->getOldResponseTables($iSurveyId);
+                $compatible = array();
+                foreach ($tables as $table)
                 {
-                    //$resultOld = dbExecuteAssoc($queryCheckColumnsOld) or show_error("Error:<br />$query<br />");
-                    $resultOld = $schema->getTable($sTable)->columnNames;
-
-                    if($countActive == count($resultOld)) //num_fields()
+                    $schema = PluginDynamic::model($table)->getTableSchema();
+                    if ($this->isCompatible($baseSchema, $schema))
                     {
-                        $aOptionElements[$sTable] = $sTable;
+                        $compatible[] = $table;
                     }
                 }
-                $aHTMLOptions=array('empty'=>$clang->gT('Please select...'));
-                $aData['optionElements'] = CHtml::listOptions('', $aOptionElements, $aHTMLOptions);
+                
+                $aData = array();
+                $aData['surveyid'] = $iSurveyId;
+                $aData['settings']['table'] = array(
+                    'label' => gT('Source table'),
+                    'type' => 'select',
+                    'options' => $this->tableList($compatible)
+                );
+
+
+                $aData['settings']['timings'] = array(
+                    'type' => 'checkbox',
+                    'label' => gT('Import timings (if exist)')
+                );
 
                 //Get the menubar
-                $aData['display']['menu_bars']['browse'] = $clang->gT("Quick statistics");
+                $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
 
                 $this->_renderWrappedTemplate('dataentry', 'import', $aData);
             }
-            //elseif (isset($surveyid) && $surveyid && isset($oldtable))
             else
             {
-                /*
-                * TODO:
-                * - mysql fit machen
-                * -- quotes for mysql beachten --> `
-                * - warnmeldung mehrsprachig
-                * - testen
-                */
-                //    if($aDatabasetype=="postgres")
-                //    {
-                $activetable = "{{survey_$surveyid}}";
-
-                //Fields we don't want to import
-                $dontimportfields = array(
-                //,'otherfield'
-                );
-
-                //$aFieldsOldTable=array_values(Yii::app()->db->MetaColumnNames($oldtable, true));
-                //$aFieldsNewTable=array_values(Yii::app()->db->MetaColumnNames($activetable, true));
-
-                $aFieldsOldTable = array_values($schema->getTable($oldtable)->columnNames);
-                $aFieldsNewTable = array_values($schema->getTable($activetable)->columnNames);
-
-                // Only import fields where the fieldnames are matching
-                $aValidFields = array_intersect($aFieldsOldTable, $aFieldsNewTable);
-
-                // Only import fields not being in the $dontimportfields array
-                $aValidFields = array_diff($aValidFields, $dontimportfields);
-
-
-                $queryOldValues = "SELECT ".implode(", ",array_map("dbQuoteID", $aValidFields))." FROM {$oldtable} ";
-                $resultOldValues = dbExecuteAssoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
-                $iRecordCount = 0;
-                $aSRIDConversions=array();
-                foreach ($resultOldValues->readAll() as $sTable)
+                $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
+                $sourceTable = PluginDynamic::model($_POST['table']);
+                $sourceSchema = $sourceTable->getTableSchema();
+             
+                $fieldMap = array();
+                $pattern = '/([\d]+)X([\d]+)X([\d]+)/';
+                foreach ($sourceSchema->getColumnNames() as $name)
                 {
-                    $iOldID=$sTable['id'];
-                    unset($sTable['id']);
-                    // Remove NULL values
-                    $sTable=array_filter($sTable, 'strlen'); 
-                    //$sInsertSQL=Yii::app()->db->GetInsertSQL($activetable, $row);
-                    $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("dbQuoteID", array_keys($sTable))).") VALUES (".implode(",", array_map("dbQuoteAll",array_values($sTable))).")";
-                    $aTables = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
+                    // Skip id field.
+                    if ($name == 'id')
+                    {
+                        continue;
+                    }
 
-                    $aSRIDConversions[$iOldID] = getLastInsertID($activetable);
-                    $iRecordCount++;
+                    $sourceColumn = $sourceSchema->getColumn($name);
+                    $matches = array();
+                    // Exact match.
+                    if ($targetSchema->getColumn($name) && $targetSchema->getColumn($name)->dbType == $sourceColumn->dbType)
+                    {
+                        $fieldMap[$name] = $name;
+                    }
+                    elseif(preg_match($pattern, $name, $matches)) // Column name is SIDXGIDXQID
+                    {
+                        $qid = $matches[3];
+                        $targetColumn = $this->getQidColumn($targetSchema, $qid);
+                        if (isset($targetColumn))
+                        {
+                            $fieldMap[$name] = $targetColumn->name;
+                        }
+                    }
+                }
+                /**
+                 * @todo Apply some batching for large response sets.
+                 */
+                $imported = 0;
+                foreach ($sourceTable->findAll() as $sourceResponse)
+                {
+                    
+                    // Using plugindynamic model because I dont trust surveydynamic.
+                   $targetResponse = new PluginDynamic(SurveyDynamic::model($iSurveyId)->tableName());
+
+                   foreach($fieldMap as $sourceField => $targetField)
+                   {
+                       $targetResponse[$targetField] = $sourceResponse[$sourceField];
+                   }
+                   $imported++;
+                   $targetResponse->save();
+                   unset($targetResponse);
                 }
 
-                Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) were successfully imported."), $iRecordCount);
 
+                
+                Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
                 $sOldTimingsTable=substr($oldtable,0,strrpos($oldtable,'_')).'_timings'.substr($oldtable,strrpos($oldtable,'_'));
                 $sNewTimingsTable = "{{{$surveyid}_timings}}";
 
-                if (returnGlobal('importtimings')=='Y' && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
+                if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
                 {
                     // Import timings
                     $aFieldsOldTimingTable=array_values($schema->getTable($sOldTimingsTable)->columnNames);
@@ -475,13 +463,83 @@ class dataentry extends Survey_Common_Action
                         $aTables = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
                         $iRecordCountT++;
                     }
-                    Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
+                    Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."),$imported,$iRecordCountT);
                 }
                 $this->getController()->redirect(array("/admin/responses/sa/index/surveyid/{$surveyid}"));
             }
         }
     }
 
+
+    /**
+     * Takes a list of tablenames and creates a nice key value array.
+     * @param type $list
+     */
+    protected function tableList($tables)
+    {
+        $list = array();
+        if (empty($tables))
+        {
+            $list['none']  = gT('No old responses found.');
+        }
+
+        foreach ($tables as $table)
+        {
+            $count = PluginDynamic::model($table)->count();
+            $timestamp = date_format(new DateTime(substr($table, -14)), 'Y-m-d H:i:s');
+            $list[$table]  = "$timestamp ($count responses)";
+        }
+        return $list;
+    }
+    /**
+     * Takes a table schema and finds the field for some question id.
+     * @param CDbTableSchema $schema
+     * @param type $qid
+     * @return CDbColumnSchema
+     */
+    protected function getQidColumn(CDbTableSchema $schema, $qid)
+    {
+        foreach ($schema->columns as $name => $column)
+        {
+            $pattern = '/([\d]+)X([\d]+)X([\d]+)/';
+            $matches = array();
+            if (preg_match($pattern, $name, $matches))
+            {
+                if ($matches[3] == $qid)
+                {
+                    return $column;
+                }
+
+            }
+        }
+    }
+    /**
+     * Compares 2 table schema to see if they are compatible.
+     */
+    protected function isCompatible(CDbTableSchema $base, CDbTableSchema $old)
+    {
+        $pattern = '/([\d]+)X([\d]+)X([\d]+)/';
+        foreach($old->columns as $name => $column)
+        {
+            // The following columns are always compatible.
+            if (in_array($name, array('id', 'token', 'submitdate', 'lastpage', 'startlanguage')))
+            {
+                continue;
+            }
+            $matches = array();
+            if (preg_match($pattern, $name, $matches))
+            {
+                $qid = $matches[3];
+
+                $baseColumn = $this->getQidColumn($base, $qid);
+                if ($baseColumn && $baseColumn->dbType != $column->dbType)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     /**
     * dataentry::editdata()
     * Edit dataentry.
@@ -2456,7 +2514,7 @@ class dataentry extends Survey_Common_Action
     {
         if (!isset($aData['display']['menu_bars']['browse']))
         {
-            $aData['display']['menu_bars']['browse'] = $this->getController()->lang->gT("Data entry");
+            $aData['display']['menu_bars']['browse'] = gT("Data entry");
         }
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
