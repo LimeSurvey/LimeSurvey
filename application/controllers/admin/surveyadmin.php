@@ -346,29 +346,13 @@ class SurveyAdmin extends Survey_Common_Action
             $sOldSurveyTableName = Yii::app()->db->tablePrefix."survey_{$iSurveyID}";
             $sNewSurveyTableName = Yii::app()->db->tablePrefix."old_survey_{$iSurveyID}_{$date}";
             $aData['sNewSurveyTableName']=$sNewSurveyTableName;
-            //Update the auto_increment value from the table before renaming
+            //Update the autonumber_start in the survey properties
             $new_autonumber_start = 0;
-            $query = "SELECT id FROM ".Yii::app()->db->quoteTableName($sOldSurveyTableName)." ORDER BY id desc";
-            $result = Yii::app()->db->createCommand($query)->limit(1)->query();
-            foreach ($result->readAll() as $row)
-            {
-                if (strlen($row['id']) > 12) //Handle very large autonumbers (like those using IP prefixes)
-                {
-                    $part1 = substr($row['id'], 0, 12);
-                    $part2len = strlen($row['id']) - 12;
-                    $part2 = sprintf("%0{$part2len}d", substr($row['id'], 12, strlen($row['id']) - 12) + 1);
-                    $new_autonumber_start = "{$part1}{$part2}";
-                }
-                else
-                {
-                    $new_autonumber_start = $row['id'] + 1;
-                }
-            }
-
-            $condn = array('sid' => $iSurveyID);
+            $query = "SELECT id FROM ".Yii::app()->db->quoteTableName($sNewSurveyTableName)." ORDER BY id desc";
+            $sLastID = Yii::app()->db->createCommand($query)->limit(1)->queryScalar();
+            $new_autonumber_start = $sLastID + 1;
             $insertdata = array('autonumber_start' => $new_autonumber_start);
-
-            $survey = Survey::model()->findByAttributes($condn);
+            $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
             $survey->autonumber_start = $new_autonumber_start;
             $survey->save();
             if (Yii::app()->db->getDrivername() == 'postgre')
