@@ -445,7 +445,9 @@ class database extends Survey_Common_Action
                             'question_order' => $question_order,
                             'language' => $alang
                             );
+                            switchMSSQLIdentityInsert('questions',true);
                             $langqid=Questions::model()->insertRecords($data);
+                            switchMSSQLIdentityInsert('questions',false);
 
                             // Checked */
                             if (!$langqid)
