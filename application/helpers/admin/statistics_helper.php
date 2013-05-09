@@ -570,6 +570,7 @@ class statistics_helper {
      
      protected $xlsPercents;
      
+     protected $formatBold;
      /**
       * The current Excel workbook we are working on
       * 
@@ -848,27 +849,19 @@ class statistics_helper {
             switch($outputType)
             {
                 case 'xls':
-
-                    $headXLS = array();
-                    $tableXLS = array();
-                    $footXLS = array();
-
                     $xlsTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
                     $xlsDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
                     $this->xlsRow++;
                     $this->xlsRow++;
-
                     $this->xlsRow++;
                     $this->sheet->write($this->xlsRow, 0,$xlsTitle);
                     $this->xlsRow++;
                     $this->sheet->write($this->xlsRow, 0,$xlsDesc);
-
-                    $headXLS[] = array($statlang->gT("Calculation"),$statlang->gT("Result"));
                     $this->xlsRow++;
                     $this->sheet->write($this->xlsRow, 0,$statlang->gT("Calculation"));
                     $this->sheet->write($this->xlsRow, 1,$statlang->gT("Result"));
-
                     break;
+                    
                 case 'pdf':
                     $headPDF = array();
                     $tablePDF = array();
@@ -936,11 +929,6 @@ class statistics_helper {
                 switch($outputType)
                 {
                     case 'xls':
-
-                        $headXLS = array();
-                        $tableXLS = array();
-                        $footXLS = array();
-
                         $xlsTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
                         $xlsDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
                         $this->xlsRow++;
@@ -950,13 +938,11 @@ class statistics_helper {
                         $this->sheet->write($this->xlsRow,0,$xlsTitle);
                         $this->xlsRow++;
                         $this->sheet->write($this->xlsRow,0,$xlsDesc);
-
-                        $headXLS[] = array($statlang->gT("Calculation"),$statlang->gT("Result"));
                         $this->xlsRow++;
                         $this->sheet->write($this->xlsRow,0,$statlang->gT("Calculation"));
                         $this->sheet->write($this->xlsRow,1,$statlang->gT("Result"));
-
                         break;
+
                     case 'pdf':
 
                         $headPDF = array();
@@ -1097,9 +1083,6 @@ class statistics_helper {
                                 $this->sheet->write($this->xlsRow, 0,html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'));
                                 $this->sheet->write($this->xlsRow, 1,html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
 
-
-                                $tableXLS[] = array($shw[0],$shw[1]);
-
                                 break;
                             case 'pdf':
 
@@ -1181,27 +1164,19 @@ class statistics_helper {
                     switch($outputType)
                     {
                         case 'xls':
-
-                            $tableXLS = array();
-                            $tableXLS[] = array($statlang->gT("Not enough values for calculation"));
-
                             $this->xlsRow++;
                             $this->sheet->write($this->xlsRow, 0, $statlang->gT("Not enough values for calculation"));
-
-
-
                             break;
-                        case 'pdf':
 
+                        case 'pdf':
                             $tablePDF = array();
                             $tablePDF[] = array($statlang->gT("Not enough values for calculation"));
                             $this->pdf->AddPage('P','A4');
                             $this->pdf->Bookmark($this->pdf->delete_html($qquestion), 1, 0);
                             $this->pdf->titleintopdf($pdfTitle,$titleDesc);
-
                             $this->pdf->equalTable($tablePDF);
-
                             break;
+                            
                         case 'html':
 
                             //output
@@ -1640,8 +1615,6 @@ class statistics_helper {
                 $this->sheet->write($this->xlsRow, 0,$xlsTitle);
                 $this->xlsRow++;
                 $this->sheet->write($this->xlsRow, 0,$xlsDesc);
-
-                $tableXLS = array();
                 $footXLS = array();
 
                 break;
@@ -1838,6 +1811,20 @@ class statistics_helper {
                     {
                         $tablePDF2[]=array($row2['id'], $row2['value']);
                     }
+                }            
+                    
+                if ($browse===true && isset($_POST['showtextinline']) && $outputType=='xls') {
+                    $headXLS = array();
+                    $tableXLS = array();
+                    $headXLS[] = array($statlang->gT("ID"),$statlang->gT("Response"));
+
+                    $result2= $this->_listcolumn($surveyid,$sColumnName);
+
+                    foreach ($result2 as $row2)
+                    {
+                        $tableXLS[]=array($row2['id'],$row2['value']);
+                    }
+
                 }                
                     
                     
@@ -1899,17 +1886,13 @@ class statistics_helper {
                         switch($outputType)
                         {
                             case 'xls':
-
-                                $headXLS = array();
-                                $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"),$statlang->gT("Sum"));
-
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow,0,$statlang->gT("Answer"));
                                 $this->sheet->write($this->xlsRow,1,$statlang->gT("Count"));
                                 $this->sheet->write($this->xlsRow,2,$statlang->gT("Percentage"));
                                 $this->sheet->write($this->xlsRow,3,$statlang->gT("Sum"));
-
                                 break;
+
                             case 'pdf':
 
                                 $headPDF = array();
@@ -1940,14 +1923,10 @@ class statistics_helper {
                         switch($outputType)
                         {
                             case 'xls':
-                                $headXLS = array();
-                                $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
-
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow,0,$statlang->gT("Answer"));
                                 $this->sheet->write($this->xlsRow,1,$statlang->gT("Count"));
                                 $this->sheet->write($this->xlsRow,2,$statlang->gT("Percentage"));
-
                                 break;
 
                             case 'pdf':
@@ -2045,16 +2024,12 @@ class statistics_helper {
                     switch($outputType)
                     {
                         case 'xls':
-
-                            $headXLS = array();
-                            $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
-
                             $this->xlsRow++;
                             $this->sheet->write($this->xlsRow,0,$statlang->gT("Answer"));
                             $this->sheet->write($this->xlsRow,1,$statlang->gT("Count"));
                             $this->sheet->write($this->xlsRow,2,$statlang->gT("Percentage"));
-
                             break;
+
                         case 'pdf':
 
                             $headPDF = array();
@@ -2333,16 +2308,13 @@ class statistics_helper {
                 switch($outputType)
                 {
                     case 'xls':
-
                         $label[$i]=flattenText($label[$i]);
-                        $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%");
-
                         $this->xlsRow++;
                         $this->sheet->write($this->xlsRow,0,$label[$i]);
                         $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
                         $this->sheet->writeNumber($this->xlsRow,2,$gdata[$i]/100, $this->xlsPercents);
-
                         break;
+
                     case 'pdf':
 
                         $tablePDF[] = array(flattenText($label[$i]),$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%", "");
@@ -2433,16 +2405,13 @@ class statistics_helper {
                         switch($outputType)
                         {
                             case 'xls':
-
                                 $label[$i]=flattenText($label[$i]);
-                                $tableXLS[]= array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%");
-
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow,0,$label[$i]);
                                 $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
                                 $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
-
                                 break;
+                                
                             case 'pdf':
                                 $label[$i]=flattenText($label[$i]);
                                 $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%", "");
@@ -2495,17 +2464,14 @@ class statistics_helper {
                         switch($outputType)
                         {
                             case 'xls':
-
                                 $label[$i]=flattenText($label[$i]);
-                                $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
-
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow,0,$label[$i]);
                                 $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
                                 $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
                                 $this->sheet->writeNumber($this->xlsRow,3,$percentage/100, $this->xlsPercents);
-
                                 break;
+                                
                             case 'pdf':
                                 $label[$i]=flattenText($label[$i]);
                                 $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
@@ -2565,17 +2531,14 @@ class statistics_helper {
                         switch($outputType)
                         {
                             case 'xls':
-
                                 $label[$i]=flattenText($label[$i]);
-                                $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
-
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow,0,$label[$i]);
                                 $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
                                 $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
                                 $this->sheet->writeNumber($this->xlsRow,3,$aggregatedgdata/100, $this->xlsPercents);
-
                                 break;
+
                             case 'pdf':
                                 $label[$i]=flattenText($label[$i]);
                                 $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
@@ -2630,17 +2593,14 @@ class statistics_helper {
                         switch($outputType)
                         {
                             case 'xls':
-
                                 $label[$i]=flattenText($label[$i]);
-                                $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
-
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow,0,$label[$i]);
                                 $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
                                 $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
                                 $this->sheet->writeNumber($this->xlsRow,3,$aggregatedgdata/100, $this->xlsPercents);
-
                                 break;
+                                
                             case 'pdf':
                                 $label[$i]=flattenText($label[$i]);
                                 $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
@@ -2744,14 +2704,12 @@ class statistics_helper {
                     {
                         case 'xls':
                             $label[$i]=flattenText($label[$i]);
-                            $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i])."%", "");
-
                             $this->xlsRow++;
                             $this->sheet->write($this->xlsRow,0,$label[$i]);
                             $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
                             $this->sheet->writeNumber($this->xlsRow,2,$gdata[$i]/100, $this->xlsPercents);
-
                             break;
+                            
                         case 'pdf':
                             $label[$i]=flattenText($label[$i]);
                             $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i])."%", "");
@@ -2872,19 +2830,14 @@ class statistics_helper {
                 switch($outputType)
                 {
                     case 'xls':
-
-                        $tableXLS[] = array($statlang->gT("Arithmetic mean"),$am,'','');
-                        $tableXLS[] = array($statlang->gT("Standard deviation"),$stddev,'','');
-
                         $this->xlsRow++;
                         $this->sheet->write($this->xlsRow,0,$statlang->gT("Arithmetic mean"));
                         $this->sheet->writeNumber($this->xlsRow,1,$am);
-
                         $this->xlsRow++;
                         $this->sheet->write($this->xlsRow,0,$statlang->gT("Standard deviation"));
                         $this->sheet->writeNumber($this->xlsRow,1,$stddev);
-
                         break;
+
                     case 'pdf':
 
                         $tablePDF[] = array($statlang->gT("Arithmetic mean"),$am,'','');
@@ -2926,6 +2879,39 @@ class statistics_helper {
             }
         }
 
+        if($outputType=='xls' && (isset($headXLS) || issset($tableXLS))) 
+        {
+            if (isset($headXLS))
+            {
+                $this->xlsRow++;
+                $this->xlsRow++;
+                foreach($headXLS as $aRow)
+                {
+                    $this->xlsRow++;
+                    $iColumn=0;
+                    foreach ($aRow as $sValue)
+                    {
+                        $this->sheet->write($this->xlsRow,$iColumn,$sValue,$this->formatBold);
+                        $iColumn++;    
+                    }
+                }
+            }
+            if (isset($tableXLS))
+            {
+                foreach($tableXLS as $aRow)
+                {
+                    $this->xlsRow++;
+                    $iColumn=0;
+                    foreach ($aRow as $sValue)
+                    {
+                        $this->sheet->write($this->xlsRow,$iColumn,$sValue);
+                        $iColumn++;    
+                    }
+                }
+
+            }
+        }        
+        
         if ($outputType=='html') {
             $statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\" id='statzone_$rt'>";
         }
@@ -3263,6 +3249,7 @@ class statistics_helper {
             $this->sheet = $this->workbook->addWorksheet(utf8_decode('results-survey'.$surveyid));
             $this->xlsPercents = &$this->workbook->addFormat();
             $this->xlsPercents->setNumFormat('0.00%');
+            $this->formatBold = &$this->workbook->addFormat(array('Bold'=>1));
             $this->sheet->setInputEncoding('utf-8');
             $this->sheet->setColumn(0,20,20);
             $separator="~|";
