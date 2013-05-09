@@ -192,7 +192,7 @@ class questiongroup extends Survey_Common_Action
                     }
                     else
                     {
-                        //switchMSSQLIdentityInsert('groups',true);
+                        switchMSSQLIdentityInsert('groups',true);
                         $aData = array(
                             'gid' => $groupid,
                             'sid' => $surveyid,
@@ -207,6 +207,8 @@ class questiongroup extends Survey_Common_Action
                         foreach ($aData as $k => $v)
                             $group->$k = $v;
                         $group->save();
+                        switchMSSQLIdentityInsert('groups',false);
+                        
                     }
                 }
                 // This line sets the newly inserted group as the new group
