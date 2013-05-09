@@ -97,11 +97,19 @@
                 <a href='<?php echo $this->createUrl("admin/export/sa/vvexport/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>exportvv.png' title='' alt='<?php $clang->eT("Export a VV survey file"); ?>' /></a>
                 <?php }
-                if (hasSurveyPermission($surveyid, 'responses', 'delete') && $thissurvey['anonymized'] == 'N' && $thissurvey['tokenanswerspersistence'] == 'Y')
-                { ?>
-                <a href='<?php echo $this->createUrl("admin/dataentry/sa/iteratesurvey/surveyid/$surveyid"); ?>'>
-                    <img src='<?php echo $sImageURL; ?>iterate.png' title='' alt='<?php $clang->eT("Iterate survey"); ?>' /></a>
-                <?php } ?>
+                if (hasSurveyPermission($surveyid, 'responses', 'delete'))
+                {   ?>
+                    <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' /> <?php
+                    if ($thissurvey['anonymized'] == 'N' && $thissurvey['tokenanswerspersistence'] == 'Y')
+                    { ?>
+                    <a href='<?php echo $this->createUrl("admin/dataentry/sa/iteratesurvey/surveyid/$surveyid"); ?>'>
+                        <img src='<?php echo $sImageURL; ?>iterate.png' title='' alt='<?php $clang->eT("Iterate survey"); ?>' /></a>
+                    <?php } 
+                    else
+                    {
+                      ?>  <img src='<?php echo $sImageURL; ?>iterate_disabled.png' title='' alt='<?php $clang->eT("Iterate survey"); ?>' /> <?php
+                    }
+                } ?>
         </div>
     </div>
 </div>
