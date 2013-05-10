@@ -186,6 +186,46 @@ class TokenDynamic extends LSActiveRecord
 		$oResult = TokenDynamic::model()->findAll($command);
 		return $oResult;
     }
+    
+    public function findUninvitedIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
+    {
+        $command = new CDbCriteria;
+        $command->condition = '';    
+        $command->addCondition("(completed ='N') or (completed='')");
+        $command->addCondition("token <> ''");
+        $command->addCondition("email <> ''");
+        $command->addCondition("tid < 15000 ");
+        
+
+        if ($bEmail) { 
+            $command->addCondition("(sent = 'N') or (sent = '')");
+        } else {
+            $command->addCondition("(sent <> 'N') AND (sent <> '')");
+        }
+
+        if ($SQLemailstatuscondition)
+            $command->addCondition($SQLemailstatuscondition);
+            
+        if ($SQLremindercountcondition)
+            $command->addCondition($SQLremindercountcondition);
+            
+        if ($SQLreminderdelaycondition)
+            $command->addCondition($SQLreminderdelaycondition);
+            
+        if ($aTokenIds)     
+            $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')" );
+            
+        if ($iMaxEmails)
+            $command->limit = $iMaxEmails;
+            
+        $command->order = 'tid';    
+
+        $oResult=$this->getCommandBuilder()
+            ->createFindCommand($this->getTableSchema(), $command)
+            ->select('tid')
+            ->queryAll();
+        return $oResult;
+    }    
 
 	function insertParticipant($data)
 	{
