@@ -2879,7 +2879,7 @@ class statistics_helper {
             }
         }
 
-        if($outputType=='xls' && (isset($headXLS) || issset($tableXLS))) 
+        if($outputType=='xls' && (isset($headXLS) || isset($tableXLS))) 
         {
             if (isset($headXLS))
             {
