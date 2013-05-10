@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-05-09 22:05:41+00:00\n"
+"POT-Creation-Date: 2013-05-10 22:05:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4765,7 +4765,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1145
 #: application/helpers/admin/statistics_helper.php:1802
 #: application/helpers/admin/statistics_helper.php:1851
-#: application/helpers/admin/statistics_helper.php:3378
+#: application/helpers/admin/statistics_helper.php:3375
 msgid "Browse"
 msgstr ""
 
@@ -4887,8 +4887,8 @@ msgid "Survey %s"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:3216
-#: application/helpers/admin/statistics_helper.php:3329
-#: application/helpers/admin/statistics_helper.php:3452
+#: application/helpers/admin/statistics_helper.php:3328
+#: application/helpers/admin/statistics_helper.php:3449
 #: application/views/admin/participants/displayParticipants_view.php:298
 #: application/views/admin/survey/listSurveys_view.php:42
 #: application/views/admin/survey/surveybar_view.php:3
@@ -4896,26 +4896,26 @@ msgid "Survey"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:3301
-#: application/helpers/admin/statistics_helper.php:3320
-#: application/helpers/admin/statistics_helper.php:3339
+#: application/helpers/admin/statistics_helper.php:3319
+#: application/helpers/admin/statistics_helper.php:3336
 msgid "Number of records in this query:"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:3304
-#: application/helpers/admin/statistics_helper.php:3321
-#: application/helpers/admin/statistics_helper.php:3341
+#: application/helpers/admin/statistics_helper.php:3320
+#: application/helpers/admin/statistics_helper.php:3338
 msgid "Total records in survey:"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:3310
 #: application/helpers/admin/statistics_helper.php:3324
-#: application/helpers/admin/statistics_helper.php:3348
+#: application/helpers/admin/statistics_helper.php:3345
 msgid "Percentage of total:"
 msgstr ""
 
+#: application/helpers/admin/statistics_helper.php:3327
 #: application/helpers/admin/statistics_helper.php:3328
-#: application/helpers/admin/statistics_helper.php:3329
-#: application/helpers/admin/statistics_helper.php:3338
+#: application/helpers/admin/statistics_helper.php:3335
 msgid "Results"
 msgstr ""
 
