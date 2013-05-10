@@ -3312,26 +3312,23 @@ class statistics_helper {
                 }
 
                 break;
+
             case 'pdf':
-                
                 // add summary to pdf
-                $array = array();
-                //$array[] = array($statlang->gT("Results"),"");
-                $array[] = array($statlang->gT("Number of records in this query:",'unescaped'), $results);
-                $array[] = array($statlang->gT("Total records in survey:",'unescaped'), $total);
-
+                $array = array(
+                    array($statlang->gT("Number of records in this query:",'unescaped'), $results),
+                    array($statlang->gT("Total records in survey:",'unescaped'), $total)
+                );
                 if($total)
+                {
                     $array[] = array($statlang->gT("Percentage of total:",'unescaped'), $percent."%");
-
+                }
                 $this->pdf->AddPage('P', ' A4');
-
                 $this->pdf->Bookmark($statlang->gT("Results",'unescaped'), 0, 0);
                 $this->pdf->titleintopdf($statlang->gT("Results",'unescaped'),$statlang->gT("Survey",'unescaped')." ".$surveyid);
                 $this->pdf->tableintopdf($array);
-
-                $this->pdf->AddPage('P','A4');
-
                 break;
+                
             case 'html':
 
                 $statisticsoutput .= "<br />\n<table class='statisticssummary' >\n"
