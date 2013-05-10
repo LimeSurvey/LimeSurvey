@@ -171,7 +171,7 @@ class Authentication extends Survey_Common_Action
 
         if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce))
         {
-            User::model()->updatePassword($aFields[0]['uid'], hash('sha256', $sNewPass));
+            User::model()->updatePassword($aFields[0]['uid'], $sNewPass);
             $sMessage = $username . '<br />' . $email . '<br /><br />' . $clang->gT('An email with your login data was sent to you.');
         }
         else

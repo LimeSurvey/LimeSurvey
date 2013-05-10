@@ -240,35 +240,26 @@ class User extends LSActiveRecord
     * @access public
     * @return string
     */
-    public function getID($username)
+    public function getID($sUserName)
     {
-        $user = User::model()->findByAttributes(array(
-            'users_name' => $username
+        $oUser = User::model()->findByAttributes(array(
+            'users_name' => $sUserName
         ));
-        if ($user)
+        if ($oUser)
         {
-            return $user->uid;
+            return $oUser->uid;
         }
-        /*
-        $db = Yii::app()->getDb();
-        $db->select('uid');
-        $db->from('users');
-        $db->where(array("full_name"=>Yii::app()->db->quoteValue($fullname)));
-        $result = $db->get();
-        return $result->row();
-         * 
-         */
     }
 
     /**
-    * Updates user password
-    *
-    * @access public
-    * @return string
+    * Updates user password hash
+    * 
+    * @param int $iUserID The User ID
+    * @param string $sPassword The clear text password
     */
-    public function updatePassword($uid,$password)
+    public function updatePassword($iUserID, $sPassword)
     {
-        return $this->updateByPk($uid, array('password' => $password));
+        return $this->updateByPk($iUserID, array('password' => hash('sha256', $sPassword)));
     }
 
     /**
