@@ -376,7 +376,7 @@ class Survey_Common_Action extends CAction
         $aData['sqct'] = $sqct = count($sqrq);
 
         $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
-
+        if (is_null($qrrow)) return;
         $questionsummary = "<div class='menubar'>\n";
 
         // Check if other questions in the Survey are dependent upon this question
