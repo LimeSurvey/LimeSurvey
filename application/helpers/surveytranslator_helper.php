@@ -394,6 +394,13 @@
         $supportedLanguages['nn']['dateformat'] = 4;
         $supportedLanguages['nn']['radixpoint'] = 1;
 
+        // Occitan
+        $supportedLanguages['oc']['description'] = $clang->gT('Occitan');
+        $supportedLanguages['oc']['nativedescription'] = 'Lenga d\'òc';
+        $supportedLanguages['oc']['rtl'] = false;
+        $supportedLanguages['oc']['dateformat'] = 5;
+        $supportedLanguages['oc']['radixpoint'] = 1;
+
         // Persian
         $supportedLanguages['fa']['description'] = $clang->gT('Persian');
         $supportedLanguages['fa']['nativedescription'] = '&#1601;&#1575;&#1585;&#1587;&#1740;';
