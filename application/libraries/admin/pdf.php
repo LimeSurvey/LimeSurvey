@@ -448,7 +448,7 @@ class pdf extends TCPDF {
             $maxwidth = $this->getFullWidth($array);
 
             $this->SetFillColor(220, 220, 220);
-            for($a=0;$a<sizeof($array)-2;$a++)
+            for($a=0;$a<sizeof($array);$a++)
             {
                 if($modulo){
                     if($a%2 === 0){$fill=1;}
