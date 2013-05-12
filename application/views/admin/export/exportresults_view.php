@@ -71,6 +71,9 @@
                     <li><input type='radio' class='radiobtn' name='type' value='pdf' id='pdfdoc' onclick='document.getElementById("ansabbrev").disabled=false;' />
                         <label for='pdfdoc'><?php $clang->eT("PDF");?><br />
                         </label></li>
+                    <li><input type='radio' class='radiobtn' name='type' value='html' id='htmldoc' onclick='document.getElementById("ansabbrev").disabled=false;'/>
+                        <label for='htmldoc'><?php $clang->eT("HTML");?><br />
+                        </label></li>
                 </ul></fieldset>
         </div>
         <div class='right'>
