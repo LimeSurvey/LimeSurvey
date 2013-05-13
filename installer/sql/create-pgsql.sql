@@ -215,8 +215,8 @@ CREATE TABLE prefix_participants (
 --
 CREATE TABLE prefix_permissions (
     id serial NOT NULL,
-	entity varying(50) NOT NULL,
-	entity_id varying(100) NOT NULL,
+	entity character varying(50) NOT NULL,
+	entity_id character varying(100) NOT NULL,
 	uid integer NOT NULL,
 	permission character varying(100) NOT NULL,
 	create_p integer DEFAULT 0 NOT NULL,
