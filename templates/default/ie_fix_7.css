@@ -4,7 +4,7 @@
 
 .ui-button,
 input.ui-button { 
-	padding: 0.1em 0 0.1em 0; 
+	padding: 0.1em 0; 
 }
 
 .ui-button-icon-only .ui-icon,
@@ -14,21 +14,7 @@ input.ui-button {
 .ui-button-icons-only .ui-icon {
 	margin-top: -9px;
 }
-
-.ui-button-text-icon-primary .ui-button-text {
-	padding: 0 0 0 1.0em; 
-}
-
-.ui-button-text-icon-secondary .ui-button-text {
-	padding: 0 1.2em 0 0; 
-}
-
-.ui-button-text-icons .ui-button-text {
-	padding: 0 1.0em; 
-}
-
 /*** End jQuery UI Theme Styles ***/
-
 .save-all {
   padding-left: 5px;
 }
