@@ -922,7 +922,7 @@ class database extends Survey_Common_Action
                         $welcome=$purifier->purify(Yii::app()->request->getPost('welcome_'.$langname));
                         $endtext=$purifier->purify(Yii::app()->request->getPost('endtext_'.$langname));
                         $sURLDescription=$purifier->purify(Yii::app()->request->getPost('urldescrip_'.$langname));
-                        $sURL=$purifier->purify(Yii::app()->request->getPost('url_'.$langname));
+                        $sURL = html_entity_decode($purifier->purify(Yii::app()->request->getPost('url_'.$langname)),null,'UTF-8');
                     }
                     else
                     {
