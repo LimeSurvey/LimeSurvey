@@ -69,10 +69,12 @@ button.ui-button-icons-only {
 
 .ui-button-text-icon-primary .ui-button-text {
 	padding: 0 0.7em 0 1.7em; 
+	*padding: 0 20px; 
 }
 
 .ui-button-text-icon-secondary .ui-button-text {
 	padding: 0 1.7em 0 0.7em; 
+	*padding: 0 20px; 
 }
 
 .ui-button-text-icons .ui-button-text {
@@ -103,17 +105,20 @@ input.ui-button {
 .ui-button-text-icons .ui-button-icon-primary, 
 .ui-button-icons-only .ui-button-icon-primary {
 	left: .4em; 
+	*left: 2px;
 }
 
 .ui-button-text-icon-secondary .ui-button-icon-secondary, 
 .ui-button-text-icons .ui-button-icon-secondary, 
 .ui-button-icons-only .ui-button-icon-secondary {
 	right: .4em; 
+	*right: 2px;
 }
 
 .ui-button-text-icons .ui-button-icon-secondary, 
 .ui-button-icons-only .ui-button-icon-secondary {
 	right: .4em; 
+	*right: 2px;
 }
 
 /* Button sets*/
@@ -649,6 +654,7 @@ p.question {
 .list-radio .answer li label,
 .list-with-comment .answer li label {
   display: inline-block;
+  *display:inline;
   width: 85%;
 }
 .list-radio .answer li.other-item label,
@@ -757,6 +763,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 
 .multiple-opt .answer li label, .multiple-opt-comments .answer li .option label {
   display: inline-block;
+  *display:inline;
   width: 90%;
 }
 .multiple-opt .answer li.other-item label {
@@ -1183,6 +1190,7 @@ span.qnumcode {
   width: 3em;
   text-align: right;
   display: inline-block;
+  *display:inline;
   padding: 0 0.5em 0 0;
 }
 
