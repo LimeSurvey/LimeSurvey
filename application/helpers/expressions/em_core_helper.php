@@ -221,6 +221,7 @@ class ExpressionManager {
 'strrev' => array('strrev', 'strrev', $this->gT('Reverse a string'), 'string strrev(string)', 'http://www.php.net/manual/en/function.strrev.php', 1),
 'strstr' => array('strstr', 'strstr', $this->gT('Find first occurrence of a string'), 'string strstr(haystack, needle)', 'http://www.php.net/manual/en/function.strstr.php', 2),
 'strtolower' => array('strtolower', 'LEMstrtolower', $this->gT('Make a string lowercase'), 'string strtolower(string)', 'http://www.php.net/manual/en/function.strtolower.php', 1),
+'strtotime' => array('strtotime', 'strtotime', $this->gT('Convert a date/time string to unix timestamp'), 'int strtotime(string)', 'http://www.php.net/manual/de/function.strtotime.php', 1),
 'strtoupper' => array('strtoupper', 'LEMstrtoupper', $this->gT('Make a string uppercase'), 'string strtoupper(string)', 'http://www.php.net/manual/en/function.strtoupper.php', 1),
 'substr' => array('substr', 'substr', $this->gT('Return part of a string'), 'string substr(string, start [, length])', 'http://www.php.net/manual/en/function.substr.php', 2,3),
 'sum' => array('array_sum', 'LEMsum', $this->gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
@@ -2835,6 +2836,10 @@ FGHI~stristr('ABCDEFGHI','fg')
 FGHI~strstr('ABCDEFGHI','FG')
 hi there!~strtolower(c)
 HI THERE!~strtoupper(c)
+3600~strtotime("27 Mar 1976 8:20")-strtotime("1976/03/27 7:20")
+10~(strtotime("13 Apr 2013")-strtotime("2013-04-03"))/60/60/24
+1000000000~strtotime("9 Sep 2001 01:46:40 UTC")
+1000000060~strtotime("2001/9/9 02:47:40 CET")
 678~substr('1234567890',5,3)
 15~sum(1,2,3,4,5)
 15~sum(one,two,three,four,five)
