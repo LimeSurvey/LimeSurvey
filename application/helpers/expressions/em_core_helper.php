@@ -221,6 +221,7 @@ class ExpressionManager {
 'strrev' => array('strrev', 'strrev', $this->gT('Reverse a string'), 'string strrev(string)', 'http://www.php.net/manual/en/function.strrev.php', 1),
 'strstr' => array('strstr', 'strstr', $this->gT('Find first occurrence of a string'), 'string strstr(haystack, needle)', 'http://www.php.net/manual/en/function.strstr.php', 2),
 'strtolower' => array('strtolower', 'LEMstrtolower', $this->gT('Make a string lowercase'), 'string strtolower(string)', 'http://www.php.net/manual/en/function.strtolower.php', 1),
+'strtotime' => array('strtotime', 'LEMstrtotime', $this->gT('Convert a date/time string to unix timestamp'), 'int strtotime(string)', 'http://www.php.net/manual/de/function.strtotime.php', 1),
 'strtoupper' => array('strtoupper', 'LEMstrtoupper', $this->gT('Make a string uppercase'), 'string strtoupper(string)', 'http://www.php.net/manual/en/function.strtoupper.php', 1),
 'substr' => array('substr', 'substr', $this->gT('Return part of a string'), 'string substr(string, start [, length])', 'http://www.php.net/manual/en/function.substr.php', 2,3),
 'sum' => array('array_sum', 'LEMsum', $this->gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),

@@ -1797,7 +1797,7 @@ class remotecontrol_handle
 
 				foreach ($aQuestionList as $oQuestion)
 				{
-					$aData[]= array('id'=>$oQuestion->primaryKey,'title'=>$oQuestion->attributes['title'],'type'=>$oQuestion->attributes['type'], 'question'=>$oQuestion->attributes['question']);
+					$aData[]= array('id'=>$oQuestion->primaryKey,'type'=>$oQuestion->attributes['type'], 'question'=>$oQuestion->attributes['question']);
 				}
 				return $aData;
 			}
