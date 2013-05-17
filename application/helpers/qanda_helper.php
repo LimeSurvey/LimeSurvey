@@ -1233,7 +1233,7 @@ function do_date($ia)
                 case 'G':
                     $answer .= '<label for="hour'.$ia[1].'" class="hide">'.$clang->gT('Hour').'</label><select id="hour'.$ia[1].'" name="hour'.$ia[1].'" class="hour"><option value="">'.$clang->gT('Hour').'</option>';
                     for ($i=0; $i<24; $i++) {
-                        if ($i === $currenthour)
+                        if ($i === (int)$currenthour && is_numeric($currenthour))
                         {
                             $i_date_selected = SELECTED;
                         }
@@ -1258,7 +1258,7 @@ function do_date($ia)
                     <option value="">'.$clang->gT('Minute').'</option>';
 
                     for ($i=0; $i<60; $i+=$aQuestionAttributes['dropdown_dates_minute_step']) {
-                        if ($i === $currentminute)
+                        if ($i === (int)$currentminute && is_numeric($currentminute))
                         {
                             $i_date_selected = SELECTED;
                         }
