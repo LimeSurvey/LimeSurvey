@@ -47,9 +47,9 @@ class remotecontrol extends Survey_Common_Action
             }
             elseif($RPCType=='json')
             {
-                Yii::app()->loadLibrary('jsonRPCServer');
+                Yii::app()->loadLibrary('LSjsonRPCServer');
 
-                jsonRPCServer::handle($oHandler);
+                LSjsonRPCServer::handle($oHandler);
             }
             exit;
         } else {
