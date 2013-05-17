@@ -177,6 +177,52 @@ function LEMis_string(a)
     return isNaN(a);
 }
 
+/**
+ * Convert a value using a inputArray and a outputArray
+
+ * @author Johannes Weberhofer, 2013
+
+ * @param numeric inputValue
+ * @param numeric strict - 1 for exact matches only otherwise interpolation the 
+ * 		  closest value should be returned
+ * @param string inputTable - comma seperated list of values to translate from
+ * @param string outputTable - comma seperated list of values to translate to
+ * @return numeric
+ */
+function LEMconvertValue( inputValue, strict, inputTable, outputTable) 
+{
+	if ( isNaN(inputValue) || (strict==null) || (inputTable==null) || (outputTable==null) ) 
+	{
+		return null;
+	}
+	iValues = inputTable.split(",");
+	oValues = outputTable.split(",");
+	if ( (iValues.length > 0)  && (iValues.length == oValues.length) ) 
+	{
+		minimumDiff = null;
+		closestCounter = 0;
+		for ( i = 0; i < iValues.length; i++) {
+			if ( isNaN(iValues[i]) ) {
+				// break processing when non-numeric variables are about to be processed
+				return null;
+			}
+			diff = Math.abs(iValues[i] - inputValue);
+			if (diff === 0) {
+				return oValues[i];
+			} else if (i === 0) {
+				minimumDiff = diff;
+			} else if ( minimumDiff > diff ) {
+				minimumDiff = diff;
+				closestCounter = i;
+			}
+		}					
+		if ( strict !== 1 ) {
+			return oValues[closestCounter];
+		}
+	}
+	return null;
+}
+
 function LEMif(a,b,c)
 {
     // implements conditional logic.  Note double negation of a to ensure it is cast to Boolean

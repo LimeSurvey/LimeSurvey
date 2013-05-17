@@ -225,6 +225,7 @@ class ExpressionManager {
 'sum' => array('array_sum', 'LEMsum', $this->gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
 'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', $this->gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
 'tan' => array('tan', 'Math.tan', $this->gT('Tangent'), 'number tan(arg)', 'http://www.php.net/manual/en/function.tan.php', 1),
+'convertValue' => array('exprmgr_convertValue', 'LEMconvertValue', $this->gT('Convert a numerical value using a inputTable and outputTable of numerical values'), 'number convertValue(value, strict, inputTable, outputTable)', '', 4),
 'time' => array('time', 'time', $this->gT('Return current UNIX timestamp'), 'number time()', 'http://www.php.net/manual/en/function.time.php', 0),
 'trim' => array('trim', 'trim', $this->gT('Strip whitespace (or other characters) from the beginning and end of a string'), 'string trim(string [, charlist])', 'http://www.php.net/manual/en/function.trim.php', 1,2),
 'ucwords' => array('ucwords', 'ucwords', $this->gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://www.php.net/manual/en/function.ucwords.php', 1),
@@ -3027,6 +3028,18 @@ NULL~NUMBEROFQUESTIONS/=5
 NULL~NUMBEROFQUESTIONS-=6
 NULL~'Tom'='tired'
 NULL~max()
+NULL~convertValue( 10, 1, '0,5,10,15,20', '0,5,10,15') 
+100~convertValue( 10, 1, '0,5,10,15,20', '0,50,100,150,200')
+NULL~convertValue( 10, 0, '0,5,10,15,20', '0,50,100,150,200')
+100~convertValue( 8, 0, '0,5,10,15,20', '0,50,100,150,200')
+100~convertValue( 12, 0, '0,5,10,15,20', '0,50,100,150,200')
+0~convertValue( 0, 0, '0,5,10,15,20', '0,50,100,150,200')
+0~convertValue( -10000, 0, '0,5,10,15,20', '0,50,100,150,200')
+NULL~convertValue( -10000, 1, '0,5,10,15,20', '0,50,100,150,200')
+200~convertValue( 20, 0, '0,5,10,15,20', '0,50,100,150,200')
+200~convertValue( 20, 1, '0,5,10,15,20', '0,50,100,150,200')
+200~convertValue( 30, 0, '0,5,10,15,20', '0,50,100,150,200')
+NULL~convertValue( 30, 1, '0,5,10,15,20', '0,50,100,150,200')
 EOD;
 
         $atests = explode("\n",$tests);
@@ -3339,6 +3352,51 @@ function exprmgr_sumifop($args)
         }
     }
     return $result;
+}
+
+/**
+ * Convert a value using a inputArray and a outputArray
+ * 
+ * @author Johannes Weberhofer, 2013
+ *
+ * @param numeric $inputValue
+ * @param numeric $strict - 1 for exact matches only otherwise interpolation the 
+ * 		  closest value should be returned
+ * @param string $inputTable - comma seperated list of numeric values to translate from
+ * @param string $outputTable - comma seperated list of numeric values to translate to
+ * @return numeric
+ */
+function exprmgr_convertValue($inputValue, $strict, $inputTable, $outputTable) 
+{
+	if ( (!is_numeric($inputValue)) || ($strict==null) || ($inputTable==null) || ($outputTable==null) ) 
+	{
+		$iValues = explode( ',', $inputTable);
+		$oValues = explode( ',', $outputTable);
+		if ( (count($iValues) > 0)  && (count($iValues) == count($oValues)) )
+		{
+			$minimumDiff = null;
+			$closestCounter = 0;
+			for ( $i = 0; $i < count($iValues); $i++) {
+				if ( !is_numeric($iValues[$i])) {
+					// break processing when non-numeric variables are about to be processed
+					return null;
+				}
+				$diff = abs($iValues[$i] - $inputValue);
+				if ($diff === 0) {
+					return $oValues[$i];
+				} else if ($i === 0) {
+					$minimumDiff = $diff;
+				} else if ( $minimumDiff > $diff ) {
+					$minimumDiff = $diff;
+					$closestCounter = $i;
+				}
+			}					
+			if ( $strict !== 1 ) {
+				return $oValues[$closestCounter];
+			}
+		}
+	}
+	return null;
 }
 
 /**
