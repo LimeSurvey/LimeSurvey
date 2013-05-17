@@ -100,6 +100,9 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
       $('#sortable-rank-'+qID+'').sortable('refresh');
       updateDragDropRank(qID);
     });
+  $(function() { // Update height for IE7, maybe for other function too
+    fixChoiceListHeight(qID,samechoiceheight,samelistheight);
+  }); 
   }
 
 function updateDragDropRank(qID){
