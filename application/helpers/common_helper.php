@@ -4849,7 +4849,10 @@ function getArrayFilterExcludesForQuestion($qid)
 
 function CSVEscape($sString)
 {
-    $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $sString);
+    if (defined('PCRE_VERSION') && version_compare(substr(PCRE_VERSION,0,strpos(PCRE_VERSION,' ')),'7.0')>-1)
+    {
+         $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $sString);
+    }
     return '"' . str_replace('"','""', $sString) . '"';
 }
 
