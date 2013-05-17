@@ -4841,12 +4841,6 @@ function CSVEscape($sString)
     {
          $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $sString);
     }
-    else
-    {
-        // Poor man's replacement for line feeds
-        $sString = str_replace(array("\r\n","\n", "\r"), array(PHP_EOL,PHP_EOL,PHP_EOL), $sString);
-    }
-    
     return '"' . str_replace('"','""', $sString) . '"';
 }
 
