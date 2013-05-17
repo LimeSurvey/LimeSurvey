@@ -93,6 +93,16 @@ class LSYii_Application extends CWebApplication
             'enableCsrfValidation'=>false,    // Enable to activate CSRF protection
             'enableCookieValidation'=>false   // Enable to activate cookie protection
         ));
+        
+        if (!isset($config['components']['session']))
+        {
+            $config['components']['session']=array();
+        }        
+        $config['components']['session']=array_merge_recursive($config['components']['session'],array(
+            'cookieParams' => array(
+                'httponly' => true,
+            ),
+        ));        
 
         parent::__construct($config);
         // Load the default and environmental settings from different files into self.
