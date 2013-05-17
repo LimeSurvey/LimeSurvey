@@ -1280,7 +1280,8 @@ class conditionsaction extends Survey_Common_Action {
                     ->bindValue(":lang1", $sLanguage, PDO::PARAM_STR)
                     ->bindValue(":lang2", $sLanguage, PDO::PARAM_STR)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-                    
+                    $aConditionsResult1=$result->readAll(); // Read result into an array to be able to close the resultset to enable further queris
+
                     $querytoken = "SELECT count(*) as recordcount "
                     ."FROM {{conditions}} "
                     ."WHERE "
@@ -1320,7 +1321,7 @@ class conditionsaction extends Survey_Common_Action {
                         {
                             $aConditionsMerged[]=$arow;
                         }
-                        foreach ($result->readAll() as $arow)
+                        foreach ($aConditionsResult1 as $arow)
                         {
                             $aConditionsMerged[]=$arow;
                         }
