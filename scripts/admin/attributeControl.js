@@ -7,6 +7,9 @@ $(document).ready(function() {
     ];
 
     $("#flashinfo").css("opacity", 0); //Make sure the flash message doesn't display in IE
+    
+    // Set some custom messages
+    $.jgrid.edit.msg.required = sRequired;
 
     jQuery("#attributeControl").jqGrid({
         loadtext : sLoadText,
@@ -65,11 +68,9 @@ $(document).ready(function() {
             deltitle: deleteCaption,
             edittitle: sEditAttributeMsg,
             searchtitle: searchMsg,
-            msg: {required: sRequired},
             refreshtitle: refreshMsg},
         {
             edittitle: sEditAttributeMsg,
-            msg: {required: sRequired}
         }, //Default settings for edit
         { addCaption: addCaption,
             bCancel: sCancel,
