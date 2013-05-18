@@ -91,6 +91,10 @@ class ExportSurveyResultsService
             case "pdf":
                 $writer = new PdfWriter();
                 break;
+            case "html":
+                Yii::import('application.helpers.admin.export.HtmlWriter');
+                $writer = new HtmlWriter();
+                break;
             case "csv":
             default:
                 $writer = new CsvWriter();
