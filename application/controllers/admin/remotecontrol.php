@@ -1808,6 +1808,49 @@ class remotecontrol_handle
 			return array('status' => 'Invalid session key');
 	}
 
+    /**
+     * RPC routine to list the fields available for a survey
+     * Returns the fields in a structured array format
+     *
+     * Useful when using the export_responses RPC call, to match the response
+     * columns back to the survey structure.
+     *
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey
+     * @param string $sStyle 'short' (default) or 'full' - full creates extra information like default values
+     * @param string $sLanguageCode The language to be used
+     * @return array The survey's fieldmap
+     */
+    public function get_survey_fieldmap($sSessionKey, $iSurveyID, $sStyle='full', $sLanguageCode=null)
+    {
+        if (!$this->_checkSessionKey($sSessionKey))
+        {
+            return array('status' => 'Invalid session key');
+        }
+
+        if (!tableExists('{{survey_' . $iSurveyID . '}}'))
+        {
+            return array('status' => 'No Data');
+        }
+
+        if (!in_array($sStyle, array('short','full')))
+        {
+            return array('status' => 'Invalid Period');
+        }
+
+        if (!hasSurveyPermission($iSurveyID, 'responses', 'export'))
+        {
+            return array('status' => 'No permission');
+        }
+
+        if (is_null($sLanguageCode))
+        {
+            $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
+        }
+
+        return createFieldMap($iSurveyID, $sStyle, true, false, $sLanguageCode);
+    }
+
 	/* Participant-Token specific functions */
 
 
@@ -2339,7 +2382,7 @@ class remotecontrol_handle
      * @param string $sDocumentType pdf,csv,xls,doc
      * @param string $sLanguageCode The language to be used
      * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to 'all'
-     * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
+     * @param string $sHeadingType 'code','full','abbreviated' or 'sgqa' Optional defaults to 'code'
      * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
      * @param integer $iFromResponseID Optional
      * @param integer $iToResponseID Optional

@@ -1246,6 +1246,9 @@ abstract class Writer implements IWriter
                         case 'full':
                             $value = $this->getFullHeading($survey, $oOptions, $column);
                             break;
+                        case 'sgqa':
+                            $value = $column;
+                            break;
                         default:
                         case 'code':
                             $value = $this->getCodeHeading($survey, $oOptions, $column);
