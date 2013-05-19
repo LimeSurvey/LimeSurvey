@@ -2485,22 +2485,22 @@ class remotecontrol_handle
         }
         if (!hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
         if (empty($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
-        //return getBaseLanguageFromSurveyID($iSurveyID);
         
         if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
         if($sDocumentType=='xls'){
            // Cut down to the first 255 fields
            $aFields=array_slice($aFields,0,255);
         }
+        
         $oFomattingOptions=new FormattingOptions();
         
         $oFomattingOptions->selectedColumns=$aFields;
         $oFomattingOptions->headingFormat=$sHeadingType;
         $oFomattingOptions->answerFormat=$sResponseType;
-        //$oFomattingOptions->output='file';
+        $oFomattingOptions->output='file';
         $oExport=new ExportSurveyResultsService();
         
-        return $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions, $sFilter);
+        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions, $sFilter);
         $sFileData = file_get_contents($sTempFile);
         unlink($sTempFile);
 
