@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-05-17 22:05:47+00:00\n"
+"POT-Creation-Date: 2013-05-20 22:05:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -348,16 +348,16 @@ msgstr ""
 msgid "PDF export"
 msgstr ""
 
-#: application/controllers/PrintanswersController.php:125
+#: application/controllers/PrintanswersController.php:124
 #: application/views/admin/templates/templateeditor_printoutput_view.php:1
 msgid "Survey name (ID)"
 msgstr ""
 
-#: application/controllers/PrintanswersController.php:127
+#: application/controllers/PrintanswersController.php:133
 msgid "Survey name (ID):"
 msgstr ""
 
-#: application/controllers/PrintanswersController.php:146
+#: application/controllers/PrintanswersController.php:152
 #: application/controllers/admin/conditionsaction.php:1736
 #: application/controllers/admin/conditionsaction.php:2096
 #: application/controllers/admin/conditionsaction.php:2099
@@ -369,7 +369,7 @@ msgstr ""
 msgid "Question"
 msgstr ""
 
-#: application/controllers/PrintanswersController.php:146
+#: application/controllers/PrintanswersController.php:152
 #: application/views/admin/templates/templateeditor_printoutput_view.php:3
 msgid "Your answer"
 msgstr ""
@@ -1698,7 +1698,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:394
 #: application/controllers/admin/statistics.php:121
-#: application/helpers/admin/statistics_helper.php:3216
+#: application/helpers/admin/statistics_helper.php:3183
 msgid "Quick statistics"
 msgstr ""
 
@@ -4454,11 +4454,6 @@ msgstr ""
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr ""
 
-#: application/helpers/admin/exportresults_helper.php:1671
-#: application/helpers/admin/statistics_helper.php:3206
-msgid "page"
-msgstr ""
-
 #: application/helpers/admin/htmleditor_helper.php:179
 msgid "Start HTML editor in a popup window"
 msgstr ""
@@ -4765,7 +4760,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1145
 #: application/helpers/admin/statistics_helper.php:1802
 #: application/helpers/admin/statistics_helper.php:1851
-#: application/helpers/admin/statistics_helper.php:3375
+#: application/helpers/admin/statistics_helper.php:3342
 msgid "Browse"
 msgstr ""
 
@@ -4868,11 +4863,11 @@ msgstr ""
 msgid "Enable map display"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3189
+#: application/helpers/admin/statistics_helper.php:3170
 msgid "Statistics survey %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3191
+#: application/helpers/admin/statistics_helper.php:3172
 #: application/helpers/common_helper.php:3403
 #: application/helpers/common_helper.php:3414
 #: application/helpers/common_helper.php:3425
@@ -4882,40 +4877,40 @@ msgstr ""
 msgid "Statistics"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3191
+#: application/helpers/admin/statistics_helper.php:3172
 msgid "Survey %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3216
-#: application/helpers/admin/statistics_helper.php:3328
-#: application/helpers/admin/statistics_helper.php:3449
+#: application/helpers/admin/statistics_helper.php:3183
+#: application/helpers/admin/statistics_helper.php:3295
+#: application/helpers/admin/statistics_helper.php:3416
 #: application/views/admin/participants/displayParticipants_view.php:298
 #: application/views/admin/survey/listSurveys_view.php:42
 #: application/views/admin/survey/surveybar_view.php:3
 msgid "Survey"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3301
-#: application/helpers/admin/statistics_helper.php:3319
-#: application/helpers/admin/statistics_helper.php:3336
+#: application/helpers/admin/statistics_helper.php:3268
+#: application/helpers/admin/statistics_helper.php:3286
+#: application/helpers/admin/statistics_helper.php:3303
 msgid "Number of records in this query:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3304
-#: application/helpers/admin/statistics_helper.php:3320
-#: application/helpers/admin/statistics_helper.php:3338
+#: application/helpers/admin/statistics_helper.php:3271
+#: application/helpers/admin/statistics_helper.php:3287
+#: application/helpers/admin/statistics_helper.php:3305
 msgid "Total records in survey:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3310
-#: application/helpers/admin/statistics_helper.php:3324
-#: application/helpers/admin/statistics_helper.php:3345
+#: application/helpers/admin/statistics_helper.php:3277
+#: application/helpers/admin/statistics_helper.php:3291
+#: application/helpers/admin/statistics_helper.php:3312
 msgid "Percentage of total:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3327
-#: application/helpers/admin/statistics_helper.php:3328
-#: application/helpers/admin/statistics_helper.php:3335
+#: application/helpers/admin/statistics_helper.php:3294
+#: application/helpers/admin/statistics_helper.php:3295
+#: application/helpers/admin/statistics_helper.php:3302
 msgid "Results"
 msgstr ""
 
@@ -7316,6 +7311,10 @@ msgstr ""
 #: application/views/installer/optconfig_view.php:97
 #: application/views/installer/precheck_view.php:154
 msgid "Next"
+msgstr ""
+
+#: application/helpers/pdfHelper.php:65
+msgid "page"
 msgstr ""
 
 #: application/helpers/qanda_helper.php:132
