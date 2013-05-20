@@ -1616,8 +1616,6 @@ class PdfWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
-        $pdfdefaultfont=Yii::app()->getConfig('pdfdefaultfont');
-        $pdffontsize=Yii::app()->getConfig('pdffontsize');
         $pdforientation=Yii::app()->getConfig('pdforientation');
         $clang = new limesurvey_lang($sLanguageCode);
 
@@ -1628,7 +1626,8 @@ class PdfWriter extends Writer
             $this->pdfDestination = 'D';
         }
         Yii::import('application.libraries.admin.pdf', true);
-        $aPdfLanguageSettings=viewHelper::getPdfLanguageSettings($sLanguageCode);
+        Yii::import('application.helpers.pdfHelper');
+        $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings($sLanguageCode);
 
         $this->pdf = new pdf();
         $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);

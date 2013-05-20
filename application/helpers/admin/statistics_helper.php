@@ -3157,7 +3157,8 @@ class statistics_helper {
         {
             //require_once('classes/tcpdf/mypdf.php');
             Yii::import('application.libraries.admin.pdf', true);
-            $aPdfLanguageSettings=viewHelper::getPdfLanguageSettings($language);
+            Yii::import('application.helpers.pdfHelper');
+            $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings($language);
 
             $this->pdf = new pdf();
 
