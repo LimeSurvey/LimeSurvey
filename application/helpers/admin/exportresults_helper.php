@@ -1620,8 +1620,6 @@ class PdfWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
-        $pdfdefaultfont=Yii::app()->getConfig('pdfdefaultfont');
-        $pdffontsize=Yii::app()->getConfig('pdffontsize');
         $pdforientation=Yii::app()->getConfig('pdforientation');
         $clang = new limesurvey_lang($sLanguageCode);
 
@@ -1632,48 +1630,15 @@ class PdfWriter extends Writer
             $this->pdfDestination = 'D';
         }
         Yii::import('application.libraries.admin.pdf', true);
-        if($pdfdefaultfont=='auto')
-        {
-            $pdfdefaultfont=PDF_FONT_NAME_DATA;
-        }
-        // Array of PDF core fonts: are replaced by according fonts according to the alternatepdffontfile array.Maybe just courier,helvetica and times but if a user want symbol: why not ....
-        $pdfcorefont=array("courier","helvetica","symbol","times","zapfdingbats");
-        $pdffontsize=Yii::app()->getConfig('pdffontsize');
+        Yii::import('application.helpers.pdfHelper');
+        $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings($sLanguageCode);
 
         // create new PDF document
         $this->pdf = new pdf();
-        if (in_array($pdfdefaultfont,$pdfcorefont))
-        {
-            $alternatepdffontfile=Yii::app()->getConfig('alternatepdffontfile');
-            if(array_key_exists($sLanguageCode,$alternatepdffontfile))
-            {
-                $pdfdefaultfont = $alternatepdffontfile[$sLanguageCode];// Actually use only core font
-            }
-        }
-        if ($pdffontsize=='auto')
-        {
-            $pdffontsize=PDF_FONT_SIZE_MAIN;
-        }
-
-        $this->pdf = new pdf();
-        $this->pdf->SetFont($pdfdefaultfont, '', $pdffontsize);
+        $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
         $this->pdf->AddPage();
         $this->pdf->intopdf("PDF export ".date("Y.m.d-H:i", time()));
-        //Set some pdf metadata
-        Yii::app()->loadHelper('surveytranslator');
-        $lg=array();
-        $lg['a_meta_charset'] = 'UTF-8';
-        if (getLanguageRTL($sLanguageCode))
-        {
-            $lg['a_meta_dir'] = 'rtl';
-        }
-        else
-        {
-            $lg['a_meta_dir'] = 'ltr';
-        }
-        $lg['a_meta_language'] = $sLanguageCode;
-        $lg['w_page']=$clang->gT("page");
-        $this->pdf->setLanguageArray($lg);
+        $this->pdf->setLanguageArray($aPdfLanguageSettings['lg']);
 
         $this->separator="\t";
 
