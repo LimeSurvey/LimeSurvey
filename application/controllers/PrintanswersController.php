@@ -115,14 +115,20 @@ class PrintanswersController extends LSYii_Controller {
         ."<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
         if($printableexport == 'pdf')
         {
-            require (Yii::app()->getConfig('rootdir').'/application/config/tcpdf.php');
+            //require (Yii::app()->getConfig('rootdir').'/application/config/tcpdf.php');
             Yii::import('application.libraries.admin.pdf', true);
+            Yii::import('application.helpers.viewHelper');
+            $aPdfLanguageSettings=viewHelper::getPdfLanguageSettings($clang->langcode);
             $pdf = new pdf();
-            $pdf->setConfig($tcpdf);
-            //$pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
-            $pdf->AddPage();
-            //$pdf->titleintopdf($clang->gT("Survey name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
+            // set document information
             $pdf->SetTitle($clang->gT("Survey name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
+            $pdf->SetSubject($surveyname);
+            $pdf->SetDisplayMode('fullpage', 'two');
+            $pdf->setLanguageArray($aPdfLanguageSettings['lg']);
+            $pdf->setHeaderFont(Array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_MAIN));
+            $pdf->setFooterFont(Array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_DATA));
+            $pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
+            $pdf->AddPage();
         }
         $printoutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $surveyname ($surveyid)</div><p>&nbsp;\n";
 
