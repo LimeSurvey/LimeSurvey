@@ -899,13 +899,13 @@ END;
         }
 
         //Display the "validation" message on page if necessary
-        if (isset($showpopups) && $showpopups == 0 && !$stepInfo['valid'] && $okToShowErrors)
+        if (!$showpopups && !$stepInfo['valid'] && $okToShowErrors)
         {
             echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
         }
 
         //Display the "file validation" message on page if necessary
-        if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filenotvalidated == true && $okToShowErrors)
+        if (!$showpopups && isset($filenotvalidated) && $filenotvalidated == true && $okToShowErrors)
         {
             echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
         }

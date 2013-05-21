@@ -486,14 +486,14 @@ function mandatory_popup($ia, $notanswered=null)
 // TMSW Validation -> EM
 function validation_popup($ia, $notvalidated=null)
 {
-    global $showpopups;
+    $showpopups=Yii::app()->getConfig('showpopups');
 
     $clang = Yii::app()->lang;
     //This sets the validation popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notvalidated === null) {unset($notvalidated);}
     $qtitle="";
-    if (isset($notvalidated) && is_array($notvalidated) && isset($showpopups) && $showpopups == 1)  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
+    if (isset($notvalidated) && is_array($notvalidated) && $showpopups)  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
     {
         global $validationpopup, $vpopup;
         //POPUP WARNING
@@ -516,11 +516,11 @@ function validation_popup($ia, $notvalidated=null)
 // TMSW Validation -> EM
 function file_validation_popup($ia, $filenotvalidated = null)
 {
-    global $showpopups;
+    $showpopups=Yii::app()->getConfig('showpopups');
 
     $clang = Yii::app()->lang;
     if ($filenotvalidated === null) { unset($filenotvalidated); }
-    if (isset($filenotvalidated) && is_array($filenotvalidated) && isset($showpopups) && $showpopups == 1)
+    if (isset($filenotvalidated) && is_array($filenotvalidated) && $showpopups)
     {
         global $filevalidationpopup, $fpopup;
 
