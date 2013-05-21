@@ -3157,29 +3157,10 @@ class statistics_helper {
         {
             //require_once('classes/tcpdf/mypdf.php');
             Yii::import('application.libraries.admin.pdf', true);
-            $pdfdefaultfont=Yii::app()->getConfig('pdfdefaultfont');
-            if($pdfdefaultfont=='auto')
-            {
-                $pdfdefaultfont=PDF_FONT_NAME_DATA;
-            }
-            // Array of PDF core fonts: are replaced by according fonts according to the alternatepdffontfile array.Maybe just courier,helvetica and times but if a user want symbol: why not ....
-            $pdfcorefont=array("courier","helvetica","symbol","times","zapfdingbats");
-            $pdffontsize=Yii::app()->getConfig('pdffontsize');
+            Yii::import('application.helpers.pdfHelper');
+            $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings($language);
 
-            // create new PDF document
             $this->pdf = new pdf();
-            if (in_array($pdfdefaultfont,$pdfcorefont))
-            {
-                $alternatepdffontfile=Yii::app()->getConfig('alternatepdffontfile');
-                if(array_key_exists($statlangcode,$alternatepdffontfile))
-                {
-                    $pdfdefaultfont = $alternatepdffontfile[$statlangcode];// Actually use only core font
-                }
-            }
-            if ($pdffontsize=='auto')
-            {
-                $pdffontsize=PDF_FONT_SIZE_MAIN;
-            }
 
             $surveyInfo = getSurveyInfo($surveyid,$language);
 
@@ -3190,31 +3171,17 @@ class statistics_helper {
             $this->pdf->SetSubject($surveyInfo['surveyls_title']);
             $this->pdf->SetKeywords('LimeSurvey,'.$statlang->gT("Statistics").', '.sprintf($statlang->gT("Survey %s"),$surveyid));
             $this->pdf->SetDisplayMode('fullpage', 'two');
-
-            //Set some pdf metadata
-            $lg=array();
-            $lg['a_meta_charset'] = 'UTF-8';
-            if (getLanguageRTL($statlangcode))
-            {
-                $lg['a_meta_dir'] = 'rtl';
-            }
-            else
-            {
-                $lg['a_meta_dir'] = 'ltr';
-            }
-            $lg['a_meta_language'] = $statlangcode;
-            $lg['w_page']=$statlang->gT("page");
-            $this->pdf->setLanguageArray($lg);
+            $this->pdf->setLanguageArray($aPdfLanguageSettings['lg']);
 
             // set header and footer fonts
-            $this->pdf->setHeaderFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_MAIN));
-            $this->pdf->setFooterFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_DATA));
+            $this->pdf->setHeaderFont(Array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_MAIN));
+            $this->pdf->setFooterFont(Array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_DATA));
 
             // set default header data 
             // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
             $headerlogo = 'statistics.gif';
             $this->pdf->SetHeaderData($headerlogo, 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
-            $this->pdf->SetFont($pdfdefaultfont, '', $pdffontsize);
+            $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
             // set default monospaced font
             $this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
         }
