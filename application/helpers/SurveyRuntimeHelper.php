@@ -891,9 +891,9 @@ END;
         // -->
         </script>
 END;
-        
+        $showpopups=Yii::app()->getConfig('showpopups');
         //Display the "mandatory" message on page if necessary
-        if (isset($showpopups) && $showpopups == 0 && $stepInfo['mandViolation'] && $okToShowErrors)
+        if (!$showpopups && $stepInfo['mandViolation'] && $okToShowErrors)
         {
             echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
         }
