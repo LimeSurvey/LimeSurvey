@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-05-20 22:05:47+00:00\n"
+"POT-Creation-Date: 2013-05-21 22:05:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8239,7 +8239,7 @@ msgstr ""
 #: application/views/admin/assessments_view.php:9
 #: application/views/admin/participants/attributeControl_view.php:25
 #: application/views/admin/participants/displayParticipants_view.php:101
-#: application/views/admin/responses/browseallheader_view.php:73
+#: application/views/admin/responses/browseallheader_view.php:74
 #: application/views/admin/responses/browsetimeheader_view.php:51
 #: application/views/admin/saved/savedlist_view.php:6
 #: application/views/admin/survey/Question/answerOptions_view.php:77
@@ -11284,12 +11284,12 @@ msgstr ""
 msgid "Display:"
 msgstr ""
 
-#: application/views/admin/responses/browseallheader_view.php:105
+#: application/views/admin/responses/browseallheader_view.php:106
 #: application/views/admin/responses/browsetimeheader_view.php:83
 msgid "Delete marked responses"
 msgstr ""
 
-#: application/views/admin/responses/browseallheader_view.php:108
+#: application/views/admin/responses/browseallheader_view.php:109
 msgid "Download marked files"
 msgstr ""
 
