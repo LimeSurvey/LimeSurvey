@@ -622,7 +622,7 @@ function setlabel()
         case 'newlabel':
         if(!flag[0]){
             $('#lasets').remove();
-            $($(this).next().next()).after('<label for="laname">Label Set Name :</label> ' +
+            $($(this).next().next()).after('<label for="laname">'+sLabelSetName+':</label> ' +
             '<input type="text" name="laname" id="laname">');
             flag[0] = true;
             flag[1] = false;
