@@ -14,6 +14,7 @@
         var scalecount=<?php echo $scalecount; ?>;
         var assessmentvisible=<?php echo $assessmentvisible?'true':'false'; ?>;
         var newansweroption_text='<?php $clang->eT('New answer option','js'); ?>';
+        var sLabelSetName='<?php $clang->eT('Label set name','js'); ?>';
         var strcode='<?php $clang->eT('Code','js'); ?>';
         var strlabel='<?php $clang->eT('Label','js'); ?>';
         var strCantDeleteLastAnswer='<?php $clang->eT('You cannot delete the last answer option.','js'); ?>';
@@ -186,11 +187,11 @@
         <button id='btnlacancel' type='button'><?php $clang->eT('Cancel'); ?></button>
         </div>
 
-        <div id="dialog-confirm-replace" title="Replace Label Set?" style='display:none;'>
+        <div id="dialog-confirm-replace" title="<?php $clang->eT('Replace label set?'); ?>" style='display:none;'>
         <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php $clang->eT('You are about to replace a given label set with the current answer options. Continue?'); ?></p>
         </div>
 
-        <div id="dialog-duplicate" title="Duplicate Label Set Name" style='display:none;'>
+        <div id="dialog-duplicate" title="<?php $clang->eT('Duplicate label set name'); ?>" style='display:none;'>
         <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php $clang->eT('Sorry, the name you entered for the label set is already in the database. Please select a different name.'); ?></p>
         </div>
 
