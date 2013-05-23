@@ -15,6 +15,3 @@
 .slider-reset:active{
 	background-position:-40px 0;
 }
-.slider-reset{
-transition: all 100ms ease;
-}

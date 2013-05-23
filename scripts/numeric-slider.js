@@ -11,13 +11,14 @@
  * @param {number} qId The qid of the question where apply.
  */
 function doNumericSlider(qID,jsonOptions) {
-	//console.log(jsonDatas);
 	var slider_list=$("#question"+qID+" .slider-list");
 	var havevalue,startvalue;
 	if(slider_list)
 	{
+		// Remove not needed tips
 		$("#question"+qID+" .em_value_range").remove();
 		$("#question"+qID+" .tip.default").remove();
+		// Construction of HTML
 		var htmlSlider="<div id='container-myfname' class='multinum-slider'>\n"
 			+ "<div id='slider-myfname' class='ui-slider-1'>\n"
 			+ ((jsonOptions.slider_showminmax==1)? "<div id='slider-left-myfname' class='slider_showmin slider-showmin'>"+jsonOptions.slider_mintext+"</div>\n" : "")
@@ -27,6 +28,7 @@ function doNumericSlider(qID,jsonOptions) {
 			+ "</div>\n"
 			+ "</div>\n";
 		var htmlSliderResest=((jsonOptions.slider_reset==1)? "<a id='slider-reset-myfname' class='slider-reset' title='"+jsonOptions.lang.reset+"'>"+jsonOptions.lang.reset+"</a>\n" : "");
+		// Replace each input by the slider
 		$("#question"+qID+" .slider-list").children('.answer-item').each(function(){
 			var thisinput=$(this).children(".input").children('input.text');
 			var myfname=$(thisinput).attr('name');
@@ -45,6 +47,7 @@ function doNumericSlider(qID,jsonOptions) {
 			$(this).children(".input").hide();
 			$(htmlSlider.replace(/myfname/g,myfname)).insertAfter($(this).children(".input"));
 			$(htmlSliderResest.replace(/myfname/g,myfname)).appendTo($(this));
+			// Launch slider (http://api.jqueryui.com/slider/)
 			$("#container-"+myfname).slider({
 				value:startvalue,
 				min: jsonOptions.slider_min,
@@ -59,13 +62,15 @@ function doNumericSlider(qID,jsonOptions) {
 					$('#slider-callout-'+myfname).text(jsonOptions.slider_prefix + ui.value + jsonOptions.slider_suffix);
 				}
 			});
+			// Update the value of the input if Slider start is set
 			if(!havevalue && startvalue && jsonOptions.slider_displaycallout){
 				$("#slider-callout-"+myfname).text(jsonOptions.slider_prefix + startvalue + jsonOptions.slider_suffix);
 				$(thisinput).val(startvalue);
 				$(function() {
-					$(thisinput).triggerHandler("keyup");
+					$(thisinput).triggerHandler("keyup"); // Needed for EM
 				});
 			}
+			// Reset on click on .slider-reset
 			$(this).on("click",".slider-reset",function(){
 				if(jsonOptions.slider_startvalue=="NULL"){
 					$( "#container-"+myfname ).slider( "option", "value", "" );
@@ -79,7 +84,7 @@ function doNumericSlider(qID,jsonOptions) {
 					$('#slider-callout-'+myfname).text("");
 					$(thisinput).val("");
 				}
-				$(thisinput).triggerHandler("keyup");
+				$(thisinput).triggerHandler("keyup"); // Needed for EM
 			});
 		});
 	}
