@@ -3089,14 +3089,8 @@ function do_multiplenumeric($ia)
             $slider_maxtext = "100";
             $slider_max = 100 * $slider_divisor;
         }
-        if (trim($aQuestionAttributes['slider_default'])!='')
-        {
-            $slider_default = $aQuestionAttributes['slider_default'];
-        }
-        else
-        {
-            $slider_default = '';
-        }
+        $slider_default= (trim($aQuestionAttributes['slider_default'])!='')?$aQuestionAttributes['slider_default']:"";
+
         if ($slider_default == '' && $aQuestionAttributes['slider_middlestart']==1)
         {
             $slider_middlestart = intval(($slider_max + $slider_min)/2);
@@ -3106,14 +3100,8 @@ function do_multiplenumeric($ia)
             $slider_middlestart = '';
         }
 
-        if (trim($aQuestionAttributes['slider_separator'])!='')
-        {
-            $slider_separator = $aQuestionAttributes['slider_separator'];
-        }
-        else
-        {
-            $slider_separator = '';
-        }
+        $slider_separator= (trim($aQuestionAttributes['slider_separator'])!='')?$aQuestionAttributes['slider_separator']:"";
+        $slider_reset=($aQuestionAttributes['slider_reset'])?1:0;
     }
     else
     {
@@ -3228,7 +3216,7 @@ function do_multiplenumeric($ia)
         $question_tip = '';
         if(!$hidetip)
         {
-            $question_tip .= '<p class="tip">'.$clang->gT('Only numbers may be entered in these fields')."</p>\n";
+            $question_tip .= '<p class="tip default">'.$clang->gT('Only numbers may be entered in these fields')."</p>\n";
         }
 
         if (trim($aQuestionAttributes['equals_num_value']) != ''
@@ -3285,6 +3273,9 @@ function do_multiplenumeric($ia)
         }
         $slider_showminmax=($aQuestionAttributes['slider_showminmax']==1)?1:0;
         //some var for slider
+        $aJsLang=array(
+            'reset' => $clang->gT('Reset'),
+            );
         $aJsVar=array(
             'slider_showminmax'=>$slider_showminmax,
             'slider_min' => $slider_min,
@@ -3297,6 +3288,8 @@ function do_multiplenumeric($ia)
             'slider_displaycallout'=>$slider_displaycallout,
             'slider_prefix' => $prefix,
             'slider_suffix' => $suffix,
+            'slider_reset' => $slider_reset,
+            'lang'=> $aJsLang,
             );
         $answer .= "<script type='text/javascript'><!--\n"
                     . " doNumericSlider({$ia[0]},".ls_json_encode($aJsVar).");\n"
