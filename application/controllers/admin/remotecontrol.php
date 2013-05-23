@@ -705,7 +705,7 @@ class remotecontrol_handle
 
 		return $oResponses;
 		
-	}
+   }
 	
     /**
      * RPC routine to get survey summary, regarding token usage and survey participation.
@@ -2378,6 +2378,7 @@ class remotecontrol_handle
         $oFomattingOptions->answerFormat=$sResponseType;
         $oFomattingOptions->output='file';
         $oExport=new ExportSurveyResultsService();
+        
         $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions, '');
         $sFileData = file_get_contents($sTempFile);
         unlink($sTempFile);
@@ -2385,6 +2386,142 @@ class remotecontrol_handle
         return base64_encode($sFileData);
     }
 
+    /**
+     * RPC Routine to delete responses of particular token in a survey.
+     * Returns array
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the survey that participants belong
+     * @param string $sToken unique token id of specific participant
+     * @param string $sLanguageCode The language to be used
+     * @return array Result of the change action
+     */
+    public function delete_responses($sSessionKey, $iSurveyID, $sToken, $sLanguageCode=''){
+    	// check sessionKey is valid or not
+       
+        if ($this->_checkSessionKey($sSessionKey))
+    	{
+    		$oSurvey = Survey::model()->findByPk($iSurveyID);
+    		if (!isset($oSurvey))
+    			return array('status' => 'Error: Invalid survey ID');
+    		 
+                if(hasSurveyPermission($iSurveyID,'responses','delete'))
+                {
+                    // get response id from response table using token
+                    
+                    $oResult = Survey_dynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken));
+                    if($oResult){
+                        // get survey info using surveyId
+                        $thissurvey=getSurveyInfo($iSurveyID,$sLanguageCode);
+                            $iResponseID = (int) $oResult['id'];
+                            if($iResponseID){
+                                // delete the files 
+                                $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$iSurveyID}/files/";
+                                $fieldmap = createFieldMap($iSurveyID, 'full' ,false, false, $sLanguageCode);
+                                $fuqtquestions = array();
+                                // find all fuqt questions
+                                foreach ($fieldmap as $field)
+                                {
+                                    if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
+                                        $fuqtquestions[] = $field['fieldname'];
+                                }
+
+                                if (!empty($fuqtquestions))
+                                {
+                                    // find all responses (filenames) to the fuqt questions
+                                    $filearray = Survey_dynamic::model($iSurveyID)->findAllByAttributes(array('id' => $iResponseID));
+                                    $filecount = 0;
+                                    foreach ($filearray as $metadata)
+                                    {
+                                        foreach ($metadata as $aData)
+                                        {
+                                            $phparray = json_decode_ls($aData);
+                                            if (is_array($phparray))
+                                            {
+                                                foreach ($phparray as $file)
+                                                {
+                                                    @unlink($uploaddir . $file['filename']);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                               
+                                // delete the row
+                                Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
+                                // delete timings if savetimings is set
+                                if(isset( $thissurvey['savetimings'] ) && $thissurvey['savetimings'] == "Y"){
+                                    Survey_timings::model($iSurveyID)->deleteByPk($iResponseID);
+                                }
+                                
+                              return array('iSurveyID'=>$iSurveyID);
+                              
+                            }else{
+                             return array('status' => 'Response Id not found');   
+                            }
+                    }else{
+                        return array('status' => 'No responses for this token');
+                    }
+                }
+                else
+                {
+                    return array('status' => 'No permission');
+                }
+    	}
+    	else
+            return array('status' => 'Invalid Session Key');
+    }
+    
+    /**
+     * RPC Routine to export token response.
+     * Returns the requested file as base64 encoded string
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey
+     * @param string $sDocumentType pdf,csv,xls,doc
+     * @param string $sToken The token for which responses needed
+     * @param string $sLanguageCode The language to be used
+     * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
+     * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
+     * @param array $aFields Optional Selected fields
+     * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
+     * */
+    public function export_token_response($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode=null, $sHeadingType='full', $sResponseType='short', $aFields=null)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        
+        Yii::app()->loadHelper('admin/exportresults');
+        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data');
+        if(!$oResult = Survey_dynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) return array('status' => 'No Response found for Token');
+        if ($oResult['id'])
+        {
+            $sFilter="{{survey_{$iSurveyID}}}.id=".(int)$oResult['id'];
+        }
+        if (!hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
+        if (empty($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
+        
+        if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
+        if($sDocumentType=='xls'){
+           // Cut down to the first 255 fields
+           $aFields=array_slice($aFields,0,255);
+        }
+        
+        $oFomattingOptions=new FormattingOptions();
+        
+        $oFomattingOptions->selectedColumns=$aFields;
+        $oFomattingOptions->headingFormat=$sHeadingType;
+        $oFomattingOptions->answerFormat=$sResponseType;
+        $oFomattingOptions->output='file';
+        $oExport=new ExportSurveyResultsService();
+        
+        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions, $sFilter);
+        $sFileData = file_get_contents($sTempFile);
+        unlink($sTempFile);
+
+        return base64_encode($sFileData);
+    }
 
     /**
      * Tries to login with username and password
