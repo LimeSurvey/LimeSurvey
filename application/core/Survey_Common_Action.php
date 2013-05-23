@@ -361,8 +361,6 @@ class Survey_Common_Action extends CAction
     function _questionbar($iSurveyID, $gid, $qid, $action = null)
     {
         $clang = $this->getController()->lang;
-
-
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
 
         //Show Question Details

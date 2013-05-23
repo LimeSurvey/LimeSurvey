@@ -120,7 +120,8 @@ class AdminController extends LSYii_Controller
         if (empty(Yii::app()->session['adminlang']))
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
-        $this->lang = new Limesurvey_lang(Yii::app()->session['adminlang']);
+        global $clang; // Needed so EM can localize equation hints until a better solution is found
+        $this->lang = $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
         Yii::app()->setLang($this->lang);
 
         if (!empty($this->user_id))
