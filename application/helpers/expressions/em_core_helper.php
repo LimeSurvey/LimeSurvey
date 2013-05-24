@@ -3368,7 +3368,7 @@ function exprmgr_sumifop($args)
  */
 function exprmgr_convertValue($inputValue, $strict, $inputTable, $outputTable) 
 {
-	if ( (!is_numeric($inputValue)) || ($strict==null) || ($inputTable==null) || ($outputTable==null) ) 
+	if ( (is_numeric($inputValue)) && ($strict!=null) && ($inputTable!=null) && ($outputTable!=null) ) 
 	{
 		$iValues = explode( ',', $inputTable);
 		$oValues = explode( ',', $outputTable);
