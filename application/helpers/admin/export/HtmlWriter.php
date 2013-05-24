@@ -53,12 +53,14 @@
             $this->out('<!DOCTYPE html>');
             $this->openTag('html');
             $this->tag('head');
+            $this->tag('style', 'td { border: 1px solid black }');
             $this->openTag('body');
             // Title of the survey.
             $this->tag('h1',  array(
                 'data-sid' => $this->survey->info['sid']
             ), gT("Survey name (ID)") . ": {$this->survey->info['surveyls_title']} ({$this->survey->info['sid']})");
 
+            
             
         }
 
@@ -73,6 +75,7 @@
                 'class' => 'response',
                 'data-srid' => $values[0]
             ));
+            //echo '<pre>'; var_dump($this->groupMap); echo '</pre>';
                 foreach ($this->groupMap as $gid => $questions)
                 {
                     if ($gid != 0)
@@ -85,18 +88,16 @@
                     ));
                         foreach ($questions as $question)
                         {
-                            $this->openTag('tr', array(
-                                'data-qid'  => $question['qid'],
-                                'class' => 'question'
-                            ));
-                                $this->tag('td', $headers[$question['index']]);
-                                $this->tag('td', $values[$question['index']]);
-                            $this->closeTag();
+                            $this->renderQuestion($question, $values[$question['index']], $headers[$question['index']]);
+                            
                         }
                     $this->closeTag();
                 }
             $this->closeTag();
         }
+
+
+
         protected function out($content)
         {
             fwrite($this->handle, str_pad('', count($this->stack) * 4) . $content . "\n");
@@ -107,6 +108,25 @@
         {
             $this->out(CHtml::openTag($tag, $options));
             $this->stack[] = $tag;
+        }
+
+        /**
+         * Renders a question and recurses into subquestions.
+         * @param type $question
+         */
+        protected function renderQuestion($question, $value, $header)
+        {
+            if (isset($value) && strlen($value) > 0)
+            {
+                $this->openTag('tr', array(
+                    'data-qid'  => $question['qid'],
+                    'class' => 'question'
+                ));
+
+                   $this->tag('td', $header);
+                   $this->tag('td', $value);
+                $this->closeTag();
+            }
         }
 
         protected function tag($tag, $options = array(), $content = null)
