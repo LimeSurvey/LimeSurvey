@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-05-23 22:05:39+00:00\n"
+"POT-Creation-Date: 2013-05-24 22:05:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13673,7 +13673,7 @@ msgid "Failed to open the uploaded file!"
 msgstr ""
 
 #: application/views/admin/token/csvpost.php:7
-msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
+msgid "Error: Your uploaded file is missing one or more of the mandatory columns (%s)"
 msgstr ""
 
 #: application/views/admin/token/csvpost.php:10
