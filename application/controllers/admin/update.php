@@ -287,7 +287,7 @@ class update extends Survey_Common_Action
                 outputDatabase('',false,$sfilename);
 
                 $archive = new PclZip($dfilename);
-                $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir);
+                $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir,PCLZIP_OPT_ADD_TEMP_FILE_ON);
                 unlink($sfilename);
                 if ($v_list == 0) {
                     die("Error : ".$archive->errorInfo(true));
