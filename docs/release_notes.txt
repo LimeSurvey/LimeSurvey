@@ -60,6 +60,46 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130514) to 2.00+ (build 130526) May 26, 2013
+-Fixed issue #7803: IE7 Multiple choice with comments and button "precedent" (Denis Chenu)
+-Fixed issue #7827: Ampersands in end url are encoded for non-admins (Carsten Schmitz)
+-Fixed issue #7829: not able to print answers in pdf with Chinese character (Denis Chenu)
+-Fixed Issue #7830: Add question code to result of remote controls list_questions (trougakoss)
+-Fixed issue #7833: Error "Cannot execute queries while other unbuffered queries are active" when editing conditions (Carsten Schmitz)
+-Fixed issue #7840: Short Text responses not displaying properly in .csv export (Carsten Schmitz)
+-Fixed issue #7843: Date/time field (HH:MM) does not display value, when visited again (Carsten Schmitz)
+-Fixed issue #7844: PHPSESSID cookie is not httponly (Carsten Schmitz)
+-Fixed issue #7851: SQL injection in "user_name" form field (thanks fromanmu) (Denis Chenu)
+-Fixed issue #7860: Reflected XSS in delete user functionality (thanks to aesteban) (Denis Chenu)
+-Fixed issue #7864: RemoteControl2 function get_summary/completed_responses gives no valid return value (Carsten Schmitz)
+-Fixed issue: Don't translate mandatory column at token upload (Denis Chenu)
+-Fixed issue: Javascript popup or mandatory string not shown (Denis Chenu)
+-Fixed issue: Relevane equation hints not translated (Carsten Schmitz)
+-Fixed issue: Untranslated strings when creating label sets from answer options/subquestions (Carsten Schmitz)
+-Fixed issue: Various problems when reloading a saved entry on a survey using tokens and anonymized responses (Carsten Schmitz)
+#Updated translation: Arabic by ysaad
+#Updated translation: Basque by josegovia
+#Updated translation: Bulgarian by ataylder
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by shrike
+#Updated translation: French (France) by arnaud21, DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Japanese by nomoto
+#Updated translation: Mongolian by erka
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Occitan by Cedric31
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Slovak by sweetakasha
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by khan
+#Updated translation: Welsh by NortonT
+
+
 Changes from 2.00+ (build 130513) to 2.00+ (build 130514) May 14, 2013
 -Fixed issue #7807: Error when deactivating survey (Carsten Schmitz)
 -Fixed issue #7827: Ampersands in end url are encoded for non-admins (Carsten Schmitz)
