@@ -4,7 +4,7 @@
         <div class='warningheader'><?php $clang->eT("Failed to open the uploaded file!"); ?></div><br />
         <?php } ?>
     <?php if (!in_array('firstname', $firstline) || !in_array('lastname', $firstline) || !in_array('email', $firstline)) { ?>
-        <div class='warningheader'><?php $clang->eT("Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"); ?></div><br />
+        <div class='warningheader'><?php printf($clang->gT("Error: Your uploaded file is missing one or more of the mandatory columns (%s)"),"firstname, lastname, email"); ?></div><br />
         <?php } ?>
     <?php if ($xz != 0) { ?>
         <div class='successheader'><?php $clang->eT("Successfully created token entries"); ?></div><br />

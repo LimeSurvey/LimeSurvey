@@ -425,8 +425,9 @@ class index extends CAction {
             }
 
             // Load session before loading the values from the saved data
-            if (isset($_GET['loadall']))
+            if (isset($_POST['loadall']))
             {
+                LimeExpressionManager::SetDirtyFlag();  
                 buildsurveysession($surveyid);
             }
 
