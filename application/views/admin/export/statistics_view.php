@@ -137,7 +137,7 @@
         </div>
         <p>
             <input type='submit' value='<?php $clang->eT("View statistics"); ?>' />
-            <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/surveyid/$surveyid"); ?>', '_top')" />
+            <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
         </p>
     </div>
     <div style='clear: both'></div>
