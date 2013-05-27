@@ -490,12 +490,12 @@ class responses extends Survey_Common_Action
                     {
                         $filenum=sprintf($clang->gT("File %s"),$i + 1);
                         if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang('Title').")",'code'=>viewHelper::getFieldCode($fielddetails).'[title]', "type" => "|", "metadata" => "title", "index" => $i);
+                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('Title').")",'code'=>viewHelper::getFieldCode($fielddetails).'[title]', "type" => "|", "metadata" => "title", "index" => $i);
                         if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang('Comment').")",'code'=>viewHelper::getFieldCode($fielddetails).'[comment]', "type" => "|", "metadata" => "comment", "index" => $i);
+                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('Comment').")",'code'=>viewHelper::getFieldCode($fielddetails).'[comment]', "type" => "|", "metadata" => "comment", "index" => $i);
 
-                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang('File name').")",'code'=>viewHelper::getFieldCode($fielddetails).'[name]', "type" => "|", "metadata" => "name", "index" => $i);
-                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang('File size').")",'code'=>viewHelper::getFieldCode($fielddetails).'[size]', "type" => "|", "metadata" => "size", "index" => $i);
+                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('File name').")",'code'=>viewHelper::getFieldCode($fielddetails).'[name]', "type" => "|", "metadata" => "name", "index" => $i);
+                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('File size').")",'code'=>viewHelper::getFieldCode($fielddetails).'[size]', "type" => "|", "metadata" => "size", "index" => $i);
 
                         //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
                     }
