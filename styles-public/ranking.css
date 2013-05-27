@@ -22,6 +22,7 @@
     padding: 3px 0;
     padding-bottom:2em;
     list-style-type: none;
+    list-style-position:outside;
 	display: block; /* Force the li to full width */
 }
 
@@ -31,6 +32,7 @@
     margin-top:0;
     padding: 3px;
 	min-height: 1.3em;
+	*height:1.3em;
 	font-weight: normal;
 	cursor: move;
 	clear:both;

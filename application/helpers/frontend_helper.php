@@ -1274,7 +1274,7 @@
         $thissurvey = getSurveyInfo($surveyid);
         if (empty($templang))
         {
-            $templang=$thissurvey['language'];
+            $templang=$clang->langcode;
         }
 
         $_SESSION['survey_'.$surveyid]['templatename']=validateTemplateDir($thissurvey['template']);
@@ -1705,7 +1705,11 @@
     //An array containing information about used to insert the data into the db at the submit stage
     //4. SESSION VARIABLE - fieldarray
     //See rem at end..
-    $_SESSION['survey_'.$surveyid]['token'] = $clienttoken;
+    
+    if ($tokensexist == 1 && $clienttoken)
+    {
+        $_SESSION['survey_'.$surveyid]['token'] = $clienttoken;
+    }
 
     if ($thissurvey['anonymized'] == "N")
     {

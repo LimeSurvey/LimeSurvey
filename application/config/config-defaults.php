@@ -68,7 +68,7 @@ $config['defaultlang']        =   'en';             // The default language to u
 
 $config['timeadjust']         =   0;                // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
 $config['allowexportalldb']   =   1;                // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
-$config['maxdumpdbrecords']   =   1000;             // The maximum number of records that would be ouputted in a go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
+$config['maxdumpdbrecords']   =   500;              // The maximum number of records that would be ouputted in a go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
 $config['allowmandbackwards'] =   1;                // Allow moving backwards (ie: << prev) through survey if a mandatory question
 // has not been answered. 1=Allow, 0=Deny
 $config['deletenonvalues']    =   1;                // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
@@ -333,7 +333,7 @@ $config['pdfdefaultfont'] = 'auto';              //Default font for the pdf Expo
 *  Some langage are not tested : need translation for Yes,No and Gender : ckb, swh
 */
 $config['alternatepdffontfile']=array(
-    'ar'=>'freesans',// 'dejavusans' work too but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
+    'ar'=>'dejavusans',// 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
     'be'=>'dejavusans',
     'bg'=>'dejavusans',
     'zh-Hans'=>'chinese',

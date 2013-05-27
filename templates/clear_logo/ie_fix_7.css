@@ -15,18 +15,6 @@ input.ui-button {
 	margin-top: -9px;
 }
 
-.ui-button-text-icon-primary .ui-button-text {
-	padding: 0 0 0 1.0em; 
-}
-
-.ui-button-text-icon-secondary .ui-button-text {
-	padding: 0 1.2em 0 0; 
-}
-
-.ui-button-text-icons .ui-button-text {
-	padding: 0 1.0em; 
-}
-
 /*** End jQuery UI Theme Styles ***/
 
 .choice-5-pt-radio ul {

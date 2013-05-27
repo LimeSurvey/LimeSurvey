@@ -287,7 +287,7 @@ class update extends Survey_Common_Action
                 outputDatabase('',false,$sfilename);
 
                 $archive = new PclZip($dfilename);
-                $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir);
+                $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir,PCLZIP_OPT_ADD_TEMP_FILE_ON);
                 unlink($sfilename);
                 if ($v_list == 0) {
                     die("Error : ".$archive->errorInfo(true));
@@ -425,9 +425,7 @@ class update extends Survey_Common_Action
         setGlobalSetting('updateversion','');
         // We create this new language object here because the language files might have been overwritten earlier
         // and the pointers to the file from the application language are not valid anymore 
-        $aLanguage = new Limesurvey_lang(Yii::app()->session['adminlang']);
-        $aData['clang'] = $aLanguage;
-
+        Yii::app()->lang = $aData['clang'] = new Limesurvey_lang(Yii::app()->session['adminlang']);
         $this->_renderWrappedTemplate('update', 'step4', $aData);
     }
 

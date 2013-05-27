@@ -445,7 +445,9 @@ class database extends Survey_Common_Action
                             'question_order' => $question_order,
                             'language' => $alang
                             );
+                            switchMSSQLIdentityInsert('questions',true);
                             $langqid=Questions::model()->insertRecords($data);
+                            switchMSSQLIdentityInsert('questions',false);
 
                             // Checked */
                             if (!$langqid)
@@ -908,29 +910,12 @@ class database extends Survey_Common_Action
                     $url = Yii::app()->request->getPost('url_'.$langname);
                     if ($url == 'http://') {$url="";}
 
-                    // Clean XSS attacks
-                    if ($xssfilter)
-                    {
-                        $purifier = new CHtmlPurifier();
-                        $purifier->options = array(
-                        'HTML.Allowed' => 'p,a[href],b,i'
-                        );
-                        $short_title=$purifier->purify(Yii::app()->request->getPost('short_title_'.$langname));
-                        $description=$purifier->purify(Yii::app()->request->getPost('description_'.$langname));
-                        $welcome=$purifier->purify(Yii::app()->request->getPost('welcome_'.$langname));
-                        $endtext=$purifier->purify(Yii::app()->request->getPost('endtext_'.$langname));
-                        $sURLDescription=$purifier->purify(Yii::app()->request->getPost('urldescrip_'.$langname));
-                        $sURL=$purifier->purify(Yii::app()->request->getPost('url_'.$langname));
-                    }
-                    else
-                    {
-                        $short_title = html_entity_decode(Yii::app()->request->getPost('short_title_'.$langname), ENT_QUOTES, "UTF-8");
-                        $description = html_entity_decode(Yii::app()->request->getPost('description_'.$langname), ENT_QUOTES, "UTF-8");
-                        $welcome = html_entity_decode(Yii::app()->request->getPost('welcome_'.$langname), ENT_QUOTES, "UTF-8");
-                        $endtext = html_entity_decode(Yii::app()->request->getPost('endtext_'.$langname), ENT_QUOTES, "UTF-8");
-                        $sURLDescription = html_entity_decode(Yii::app()->request->getPost('urldescrip_'.$langname), ENT_QUOTES, "UTF-8");
-                        $sURL = html_entity_decode(Yii::app()->request->getPost('url_'.$langname), ENT_QUOTES, "UTF-8");
-                    }
+                    $short_title = html_entity_decode(Yii::app()->request->getPost('short_title_'.$langname), ENT_QUOTES, "UTF-8");
+                    $description = html_entity_decode(Yii::app()->request->getPost('description_'.$langname), ENT_QUOTES, "UTF-8");
+                    $welcome = html_entity_decode(Yii::app()->request->getPost('welcome_'.$langname), ENT_QUOTES, "UTF-8");
+                    $endtext = html_entity_decode(Yii::app()->request->getPost('endtext_'.$langname), ENT_QUOTES, "UTF-8");
+                    $sURLDescription = html_entity_decode(Yii::app()->request->getPost('urldescrip_'.$langname), ENT_QUOTES, "UTF-8");
+                    $sURL = html_entity_decode(Yii::app()->request->getPost('url_'.$langname), ENT_QUOTES, "UTF-8");
 
                     // Fix bug with FCKEditor saving strange BR types
                     $short_title = Yii::app()->request->getPost('short_title_'.$langname);

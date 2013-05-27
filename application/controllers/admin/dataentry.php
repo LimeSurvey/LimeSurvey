@@ -99,14 +99,11 @@ class dataentry extends Survey_Common_Action
         }
     }
 
-    function iteratesurvey()
+    function iteratesurvey($surveyid)
     {
         $aData = array();
 
-        $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
-        if (!empty($_REQUEST['sid'])) {
-            $surveyid = sanitize_int($_REQUEST['sid']);
-        }
+        $surveyid = sanitize_int($surveyid);
         $aData['surveyid'] = $surveyid;
         $aData['clang'] = $this->getController()->lang;
         $aData['success'] = false;

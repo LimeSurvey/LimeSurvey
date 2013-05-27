@@ -99,6 +99,10 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
       $('#sortable-rank-'+qID+'').sortable('refresh');
       updateDragDropRank(qID);
     });
+  $(function() { // Update height for IE7, maybe for other function too
+    if(samechoiceheight){fixChoiceHeight(qID);}
+    if(samelistheight){fixListHeight(qID);}
+  });
   }
 
 function updateDragDropRank(qID){
@@ -166,8 +170,9 @@ function fixChoiceHeight(qID){
 function fixListHeight(qID){
   totalHeight=0;
   $('.connectedSortable'+qID+' li').each(function(){
-    totalHeight=totalHeight+$(this).actual('outerHeight',{includeMargin:true});;
+    totalHeight=totalHeight+$(this).actual('outerHeight',{includeMargin:true});
   });
   $('.connectedSortable'+qID).height(totalHeight);
+
 }
 

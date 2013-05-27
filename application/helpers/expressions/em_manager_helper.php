@@ -4591,10 +4591,7 @@
                         }
 
                     }
-                    else if ($this->surveyOptions['allowsave'] && isset($_SESSION[$this->sessid]['scid']))
-                    {
-                        Saved_control::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$thisstep));
-                    }
+
                     // Check Quotas
                     $bQuotaMatched = false;
                     $aQuotas = checkQuota('return', $this->sid);
@@ -7418,7 +7415,7 @@ EOD;
                 if (!isset($qans[$row['qid']])) {
                     $qans[$row['qid']] = array();
                 }
-                $qans[$row['qid']][$row['scale_id'].'~'.$row['code']] = ($useAssessments ? $row['assessment_value'] : $row['code']) . '|' . $row['answer'];
+                $qans[$row['qid']][$row['scale_id'].'~'.$row['code']] = ($useAssessments ? $row['assessment_value'] : '0') . '|' . $row['answer'];
             }
 
             return $qans;
