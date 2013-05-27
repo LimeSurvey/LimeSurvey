@@ -147,13 +147,13 @@ class responses extends Survey_Common_Action
                     {
                         $filenum=sprintf($clang->gT("File %s"),$i + 1);
                         if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang('Title').")",'code'=>viewHelper::getFieldCode($field).'[title]', "type" => "|", "metadata" => "title", "index" => $i);
+                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('Title').")",'code'=>viewHelper::getFieldCode($field).'[title]', "type" => "|", "metadata" => "title", "index" => $i);
 
                         if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang('Comment').")",'code'=>viewHelper::getFieldCode($field).'[comment]', "type" => "|", "metadata" => "comment", "index" => $i);
+                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('Comment').")",'code'=>viewHelper::getFieldCode($field).'[comment]', "type" => "|", "metadata" => "comment", "index" => $i);
 
-                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang('File name').")",'code'=>viewHelper::getFieldCode($field).'[name]', "type" => "|", "metadata" => "name", "index" => $i);
-                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang('File size').")",'code'=>viewHelper::getFieldCode($field).'[size]', "type" => "|", "metadata" => "size", "index" => $i);
+                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('File name').")",'code'=>viewHelper::getFieldCode($field).'[name]', "type" => "|", "metadata" => "name", "index" => $i);
+                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('File size').")",'code'=>viewHelper::getFieldCode($field).'[size]', "type" => "|", "metadata" => "size", "index" => $i);
 
                         //$fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
                     }
