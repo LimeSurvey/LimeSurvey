@@ -787,6 +787,7 @@ class export extends Survey_Common_Action {
                         $str = "";
                         foreach ( $answers as $answer )
                         {
+                            $answer['value'] = str_replace("\"", "\\\"", $answer['value']); // Escape double quotes
                             $str .= ", \"{$answer['value']}\"";
                         }
 
