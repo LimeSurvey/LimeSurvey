@@ -139,7 +139,7 @@
         'token' => $clang->gT("Token"),
         'language' => $clang->gT("Language"),
         'sent' => $clang->gT("Invitation sent?"),
-        'sentreminder' => $clang->gT("Reminder sent?"),
+        'remindersent' => $clang->gT("Reminder sent?"),
         'remindercount' => $clang->gT("Reminder count"),
         'completed' => $clang->gT("Completed?"),
         'usesleft' => $clang->gT("Uses left"),
