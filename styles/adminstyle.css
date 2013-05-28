@@ -123,8 +123,8 @@ label, legend {
 
 /* fixing login form password/login height in IE */
 #loginform input { 
-    height: auto;
-    min-height: 0;
+    height: 26px;
+    
 }
 
 /* Make line spacing more compact for advanced question settings */
