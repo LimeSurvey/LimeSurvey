@@ -348,7 +348,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aData['sNewSurveyTableName']=$sNewSurveyTableName;
             //Update the autonumber_start in the survey properties
             $new_autonumber_start = 0;
-            $query = "SELECT id FROM ".Yii::app()->db->quoteTableName($sNewSurveyTableName)." ORDER BY id desc";
+            $query = "SELECT id FROM ".Yii::app()->db->quoteTableName($sOldSurveyTableName)." ORDER BY id desc";
             $sLastID = Yii::app()->db->createCommand($query)->limit(1)->queryScalar();
             $new_autonumber_start = $sLastID + 1;
             $insertdata = array('autonumber_start' => $new_autonumber_start);
