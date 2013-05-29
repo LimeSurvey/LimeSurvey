@@ -3057,22 +3057,17 @@ function do_multiplenumeric($ia)
         $extraclass .=" withslider";
         if (trim($aQuestionAttributes['slider_accuracy'])!='')
         {
-            //$slider_divisor = 1 / $slider_accuracy['value'];
-            $decimnumber = strlen($aQuestionAttributes['slider_accuracy']) - strpos($aQuestionAttributes['slider_accuracy'],'.') -1;
-            $slider_divisor = pow(10,$decimnumber);
-            $slider_step = $aQuestionAttributes['slider_accuracy'] * $slider_divisor;
-            //	error_log('acc='.$slider_accuracy['value']." div=$slider_divisor stepping=$slider_step");
+            $slider_step = $aQuestionAttributes['slider_accuracy'];
         }
         else
         {
-            $slider_divisor = 1;
             $slider_step = 1;
         }
 
         if (trim($aQuestionAttributes['slider_min'])!='')
         {
             $slider_mintext = $aQuestionAttributes['slider_min'];
-            $slider_min = $aQuestionAttributes['slider_min'] * $slider_divisor;
+            $slider_min = $aQuestionAttributes['slider_min'];
         }
         else
         {
@@ -3082,12 +3077,12 @@ function do_multiplenumeric($ia)
         if (trim($aQuestionAttributes['slider_max'])!='')
         {
             $slider_maxtext = $aQuestionAttributes['slider_max'];
-            $slider_max = $aQuestionAttributes['slider_max'] * $slider_divisor;
+            $slider_max = $aQuestionAttributes['slider_max'];
         }
         else
         {
             $slider_maxtext = "100";
-            $slider_max = 100 * $slider_divisor;
+            $slider_max = 100;
         }
         $slider_default= (trim($aQuestionAttributes['slider_default'])!='')?$aQuestionAttributes['slider_default']:"";
 
@@ -3108,10 +3103,6 @@ function do_multiplenumeric($ia)
         $slider_layout = false;
     }
     $hidetip=$aQuestionAttributes['hide_tip'];
-#    if ($slider_layout === true) // auto hide tip when using sliders/ NO: slider only in javascript : then Hide it in js.
-#    {
-#        $hidetip=1;
-#    }
 
     if ($aQuestionAttributes['random_order']==1)
     {
@@ -3179,37 +3170,6 @@ function do_multiplenumeric($ia)
 
                 $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$maxlength} />\n\t".$suffix."\n</span>{$sliderright}\n\t</li>\n";
 
-#                $answer_main .= "$sliderleft<div id='container-$myfname' class='multinum-slider'>\n"
-#                . "\t<input type=\"text\" id=\"slider-modifiedstate-$myfname\" value=\"$displaycallout_atstart\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-param-min-$myfname\" value=\"$slider_min\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-param-max-$myfname\" value=\"$slider_max\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-param-stepping-$myfname\" value=\"$slider_stepping\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-param-divisor-$myfname\" value=\"$slider_divisor\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-param-startvalue-$myfname\" value='$slider_startvalue' style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-onchange-js-$myfname\" value=\"$numbersonly_slider\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-prefix-$myfname\" value=\"$prefix\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-suffix-$myfname\" value=\"$suffix\" style=\"display: none;\" />\n"
-#                . "<div id=\"slider-$myfname\" class=\"ui-slider-1\">\n"
-#                .  $slider_showmin
-#                . "<div class=\"slider_callout\" id=\"slider-callout-$myfname\"></div>\n"
-#                . "<div class=\"ui-slider-handle\" id=\"slider-handle-$myfname\"></div>\n"
-#                . $slider_showmax
-#                . "\t</div>"
-#                . "</div>$sliderright\n"
-#                . "<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
-#                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
-#                {
-#                    $answer_main .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-#                }
-#                elseif ($slider_default != "")
-#                {
-#                    $answer_main .= $slider_default;
-#                }
-#                $answer_main .= "\"/>\n"
-#            }
-
-            //			$answer .= "\t</tr>\n";
-
             $fn++;
             $inputnames[]=$myfname;
         }
@@ -3249,16 +3209,9 @@ function do_multiplenumeric($ia)
     {
         header_includes("numeric-slider.js");
         header_includes("numeric-slider.css","css");
-#                // Take it at start of js
-#                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
-#                {
-#                    $slider_startvalue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] * $slider_divisor;
-#                    $slider_displaycallout=1;
-#                }
-#                elseif
         if ($slider_default != "")
         {
-            $slider_startvalue = $slider_default * $slider_divisor;
+            $slider_startvalue = $slider_default;
             $slider_displaycallout=1;
         }
         elseif ($slider_middlestart != '')
@@ -3283,7 +3236,6 @@ function do_multiplenumeric($ia)
             'slider_max' => $slider_max,
             'slider_maxtext'=>$slider_maxtext,
             'slider_step'=>$slider_step,
-            'slider_divisor'=>$slider_divisor,
             'slider_startvalue'=>$slider_startvalue,
             'slider_displaycallout'=>$slider_displaycallout,
             'slider_prefix' => $prefix,

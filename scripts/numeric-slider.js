@@ -41,7 +41,7 @@ function doNumericSlider(qID,jsonOptions) {
 				if(jsonOptions.slider_startvalue=="NULL"){
 					startvalue=false;
 				}else{
-					startvalue=jsonOptions.slider_startvalue;
+					startvalue=parseFloat(jsonOptions.slider_startvalue);
 				}
 			}
 			$(this).children(".input").hide();
@@ -50,9 +50,9 @@ function doNumericSlider(qID,jsonOptions) {
 			// Launch slider (http://api.jqueryui.com/slider/)
 			$("#container-"+myfname).slider({
 				value:startvalue,
-				min: jsonOptions.slider_min,
-				max: jsonOptions.slider_max,
-				step: jsonOptions.slider_step,
+				min: parseFloat(jsonOptions.slider_min),
+				max: parseFloat(jsonOptions.slider_max),
+				step: parseFloat(jsonOptions.slider_step),
 				create: function() {
 					$('#slider-callout-'+myfname).appendTo($('#container-'+myfname+' .ui-slider-handle').get(0));
 				},
