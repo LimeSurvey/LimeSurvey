@@ -2458,7 +2458,7 @@ class remotecontrol_handle
     }
     
     /**
-     * RPC Routine to export token response.
+     * RPC Routine to export token response in a survey.
      * Returns the requested file as base64 encoded string
      *
      * @access public
@@ -2467,12 +2467,13 @@ class remotecontrol_handle
      * @param string $sDocumentType pdf,csv,xls,doc
      * @param string $sToken The token for which responses needed
      * @param string $sLanguageCode The language to be used
+     * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to 'all'
      * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
      * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
      * @param array $aFields Optional Selected fields
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
-    public function export_token_response($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode=null, $sHeadingType='full', $sResponseType='short', $aFields=null)
+    public function export_token_response($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='full', $sResponseType='short', $aFields=null)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         
@@ -2495,6 +2496,7 @@ class remotecontrol_handle
         $oFomattingOptions=new FormattingOptions();
         
         $oFomattingOptions->selectedColumns=$aFields;
+        $oFomattingOptions->responseCompletionState=$sCompletionStatus;
         $oFomattingOptions->headingFormat=$sHeadingType;
         $oFomattingOptions->answerFormat=$sResponseType;
         $oFomattingOptions->output='file';
