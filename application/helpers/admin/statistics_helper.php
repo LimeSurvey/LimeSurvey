@@ -208,17 +208,23 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             // this block is to remove the items with value == 0
             // and an inelegant way to remove comments from List with Comments questions
             $i = 0;
+            $j = 0;
+            $labelTmp = array();
             while (isset ($gdata[$i]))
             {
                 $aHelperArray=array_keys($lbl);
                 if ($gdata[$i] == 0 || ($sQuestionType == "O" && substr($aHelperArray[$i],0,strlen($oLanguage->gT("Comments")))==$oLanguage->gT("Comments")))
                 {
                     array_splice ($gdata, $i, 1);
-                    array_splice ($lbl, $i, 1);
                 }
                 else
-                {$i++;}
+                {
+                    $i++;
+                    $labelTmp = $labelTmp + array_slice($lbl, $j, 1, true); // Preserve numeric keys for the labels!
+                }
+                $j++;
             }
+            $lbl = $labelTmp;
 
             if ($language=='ar')
             {
@@ -1957,63 +1963,6 @@ class statistics_helper {
                 //text for answer column is always needed
                 $fname="$al[1] ($al[0])";
 
-                //these question types get special treatment by Yii::app()->getConfig('showaggregateddata')
-                if($outputs['qtype'] == "5" || $outputs['qtype'] == "A")
-                {
-                    //put non-edited data in here because $row will be edited later
-                    $grawdata[]=$row;
-                    $showaggregated_indice=count($grawdata) - 1;
-                    $showaggregated_indice_table[$showaggregated_indice]="aggregated";
-                    $showaggregated_indice=-1;
-
-                    //keep in mind that we already added data (will be checked later)
-                    $justadded = true;
-
-                    //we need a counter because we want to sum up certain values
-                    //reset counter if 5 items have passed
-                    if(!isset($testcounter) || $testcounter >= 4)
-                    {
-                        $testcounter = 0;
-                    }
-                    else
-                    {
-                        $testcounter++;
-                    }
-
-                    //beside the known percentage value a new aggregated value should be shown
-                    //therefore this item is marked in a certain way
-
-                    if($testcounter == 0 )    //add 300 to original value
-                    {
-                        //store the original value!
-                        $tempcount = $row;
-                        //HACK: add three times the total number of results to the value
-                        //This way we get a 300 + X percentage which can be checked later
-                        $row += (3*$results);
-                    }
-
-                    //the third value should be shown twice later -> mark it
-                    if($testcounter == 2)    //add 400 to original value
-                    {
-                        //store the original value!
-                        $tempcount = $row;
-                        //HACK: add four times the total number of results to the value
-                        //This way there should be a 400 + X percentage which can be checked later
-                        $row += (4*$results);
-                    }
-
-                    //the last value aggregates the data of item 4 + item 5 later
-                    if($testcounter == 4 )    //add 200 to original value
-                    {
-                        //store the original value!
-                        $tempcount = $row;
-                        //HACK: add two times the total number of results to the value
-                        //This way there should be a 200 + X percentage which can be checked later
-                        $row += (2*$results);
-                    }
-
-                }    //end if -> question type = "5"/"A"
-
             }    //end if -> show aggregated data
 
             //handling what's left
@@ -2071,17 +2020,8 @@ class statistics_helper {
                 $gdata[] = "N/A";
             }
 
-            //only add this if we don't handle question type "5"/"A"
-            if(!isset($justadded))
-            {
-                //put absolute data into array
-                $grawdata[]=$row;
-            }
-            else
-            {
-                //unset to handle "no answer" data correctly
-                unset($justadded);
-            }
+            //put absolute data into array
+            $grawdata[]=$row;
 
             //put question title and code into array
             $label[]=$fname;
@@ -2261,9 +2201,6 @@ class statistics_helper {
         //we need to know which item we are editing
         $itemcounter = 1;
 
-        //array to store items 1 - 5 of question types "5" and "A"
-        $stddevarray = array();
-
         //loop through all available answers
         while (isset($gdata[$i]))
         {
@@ -2356,279 +2293,97 @@ class statistics_helper {
                 {
                     //mark that we have done soemthing special here
                     $aggregated = true;
-
-                    //just calculate everything once. the data is there in the array
-                    if($itemcounter == 1)
+                                                          
+                    if (($results-$grawdata[5])>0) {
+                        $percentage = $grawdata[$i] / ($results - $grawdata[5]) * 100;    // Only answered
+                    } else {
+                        $percentage = 0;
+                    }
+                    
+                    switch ($itemcounter)
                     {
-                        //there are always 5 answers
-                        for($x = 0; $x < 5; $x++)
-                        {
-                            //put 5 items into array for further calculations
-                            array_push($stddevarray, $grawdata[$x]);
-                        }
+                        case 1:
+                            if (($results-$grawdata[5])>0) {
+                                $aggregatedPercentage = ($grawdata[0] + $grawdata[1]) / ($results - $grawdata[5]) * 100;
+                            } else {
+                                $aggregatedPercentage = 0;
+                            }
+                            break;
+                        
+                        case 3:
+                            $aggregatedPercentage = $percentage;
+                            break;
+                        
+                        case 5:
+                            if (($results-$grawdata[5])>0) {
+                                $aggregatedPercentage = ($grawdata[3] + $grawdata[4]) / ($results - $grawdata[5]) * 100;
+                            } else {
+                                $aggregatedPercentage = 0;
+                            }
+                            break;
+                        
+                        case 6:
+                        case 7:
+                            if (($results-$grawdata[5])>0) {
+                                $percentage = $grawdata[$i] / $results * 100;                // All results
+                            } else {
+                                $percentage = 0;
+                            }
+
+                        default:
+                            $aggregatedPercentage = 'na';
+                            break;
                     }
 
-                    //"no answer" & items 2 / 4 - nothing special to do here, just adjust output
-                    if($gdata[$i] <= 100)
+                    
+                    switch($outputType)
                     {
-                        if($itemcounter == 2 && $label[$i+4] == $statlang->gT("No answer"))
-                        {
-                            //prevent division by zero
-                            if(($results - $grawdata[$i+4]) > 0)
-                            {
-                                //re-calculate percentage
-                                $percentage = ($grawdata[$i] / ($results - $grawdata[$i+4])) * 100;
-                            }
-                            else
-                            {
-                                $percentage = 0;
-                            }
-
-                        }
-                        elseif($itemcounter == 4 && $label[$i+2] == $statlang->gT("No answer"))
-                        {
-                            //prevent division by zero
-                            if(($results - $grawdata[$i+2]) > 0)
-                            {
-                                //re-calculate percentage
-                                $percentage = ($grawdata[$i] / ($results - $grawdata[$i+2])) * 100;
-                            }
-                            else
-                            {
-                                $percentage = 0;
-                            }
-                        }
-                        else
-                        {
-                            $percentage = $gdata[$i];
-                        }
-                        switch($outputType)
-                        {
-                            case 'xls':
-                                $label[$i]=flattenText($label[$i]);
-                                $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow,0,$label[$i]);
-                                $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
-                                $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
-                                break;
-                                
-                            case 'pdf':
-                                $label[$i]=flattenText($label[$i]);
-                                $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%", "");
-
-                                break;
-                            case 'html':
-                                //output
-                                $statisticsoutput .= "\t\t<td align='center'>";
-
-                                //output percentage
-                                $statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
-
-                                //adjust output
-                                $statisticsoutput .= "\t\t</td>";
-                                break;
-                            default:
-
-
-                                break;
-                        }
-
-                    }
-
-                    //item 3 - just show results twice
-                    //old: if($gdata[$i] >= 400)
-                    //trying to fix bug #2583:
-                    if($gdata[$i] >= 400 && $i != 0)
-                    {
-                        //remove "400" which was added before
-                        $gdata[$i] -= 400;
-
-                        if($itemcounter == 3 && $label[$i+3] == $statlang->gT("No answer"))
-                        {
-                            //prevent division by zero
-                            if(($results - $grawdata[$i+3]) > 0)
-                            {
-                                //re-calculate percentage
-                                $percentage = ($grawdata[$i] / ($results - $grawdata[$i+3])) * 100;
-                            }
-                            else
-                            {
-                                $percentage = 0;
-                            }
-                        }
-                        else
-                        {
-                            //get the original percentage
-                            $percentage = $gdata[$i];
-                        }
-                        switch($outputType)
-                        {
-                            case 'xls':
-                                $label[$i]=flattenText($label[$i]);
-                                $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow,0,$label[$i]);
-                                $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
-                                $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
+                        case 'xls':
+                            $label[$i]=flattenText($label[$i]);
+                            $this->xlsRow++;
+                            $this->sheet->write($this->xlsRow,0,$label[$i]);
+                            $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
+                            $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
+                            if ($aggregatedPercentage !== 'na') {
                                 $this->sheet->writeNumber($this->xlsRow,3,$percentage/100, $this->xlsPercents);
-                                break;
-                                
-                            case 'pdf':
-                                $label[$i]=flattenText($label[$i]);
-                                $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
+                            }
+                            break;
 
-                                break;
-                            case 'html':
-                                //output percentage
-                                $statisticsoutput .= "\t\t<td align='center' >";
-                                $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
+                        case 'pdf':
+                            $label[$i]=flattenText($label[$i]);
+                            if ($aggregatedPercentage !== 'na') {
+                                $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedPercentage)."%");
+                            } else {
+                                $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%","");
+                            }
+                            break;
+                            
+                        case 'html':
+                            //output percentage
+                            $statisticsoutput .= "\t\t<td align='center' >";
+                            $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
 
-                                //output again (no real aggregation here)
-                                $statisticsoutput .= "\t\t<td align='center' >";
-                                $statisticsoutput .= sprintf("%01.2f", $percentage)."%";
-                                $statisticsoutput .= "</td>\t\t";
-                                break;
-                            default:
-
-
-                                break;
-                        }
-
+                            $statisticsoutput .= "\t\t<td align='center' >";
+                            if ($aggregatedPercentage !== 'na') {
+                                $statisticsoutput .= sprintf("%01.2f", $aggregatedPercentage)."%";
+                            } else {
+                                $statisticsoutput .= '&nbsp;';
+                            }
+                            $statisticsoutput .= "</td>\t\t";
+                            break;
+                        
+                        default:
+                            break;
                     }
 
-                    //FIRST value -> add percentage of item 1 + item 2
-                    //old: if($gdata[$i] >= 300 && $gdata[$i] < 400)
-                    //trying to fix bug #2583:
-                    if(($gdata[$i] >= 300 && $gdata[$i] < 400) || ($i == 0 && $gdata[$i] <= 400))
-                    {
-                        //remove "300" which was added before
-                        $gdata[$i] -= 300;
-
-                        if($itemcounter == 1 && $label[$i+5] == $statlang->gT("No answer"))
-                        {
-                            //prevent division by zero
-                            if(($results - $grawdata[$i+5]) > 0)
-                            {
-                                //re-calculate percentage
-                                $percentage = ($grawdata[$i] / ($results - $grawdata[$i+5])) * 100;
-                                $percentage2 = ($grawdata[$i + 1] / ($results - $grawdata[$i+5])) * 100;
-                            }
-                            else
-                            {
-                                $percentage = 0;
-                                $percentage2 = 0;
-
-                            }
-                        }
-                        else
-                        {
-                            $percentage = $gdata[$i];
-                            $percentage2 = $gdata[$i+1];
-                        }
-                        //percentage of item 1 + item 2
-                        $aggregatedgdata = $percentage + $percentage2;
-
-
-                        switch($outputType)
-                        {
-                            case 'xls':
-                                $label[$i]=flattenText($label[$i]);
-                                $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow,0,$label[$i]);
-                                $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
-                                $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
-                                $this->sheet->writeNumber($this->xlsRow,3,$aggregatedgdata/100, $this->xlsPercents);
-                                break;
-
-                            case 'pdf':
-                                $label[$i]=flattenText($label[$i]);
-                                $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
-
-                                break;
-                            case 'html':
-                                //output percentage
-                                $statisticsoutput .= "\t\t<td align='center' >";
-                                $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
-
-                                //output aggregated data
-                                $statisticsoutput .= "\t\t<td align='center' >";
-                                $statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
-                                $statisticsoutput .= "</td>\t\t";
-                                break;
-                            default:
-
-
-                                break;
-                        }
-                    }
-
-                    //LAST value -> add item 4 + item 5
-                    if($gdata[$i] > 100 && $gdata[$i] < 300)
-                    {
-                        //remove "200" which was added before
-                        $gdata[$i] -= 200;
-
-                        if($itemcounter == 5 && $label[$i+1] == $statlang->gT("No answer"))
-                        {
-                            //prevent division by zero
-                            if(($results - $grawdata[$i+1]) > 0)
-                            {
-                                //re-calculate percentage
-                                $percentage = ($grawdata[$i] / ($results - $grawdata[$i+1])) * 100;
-                                $percentage2 = ($grawdata[$i - 1] / ($results - $grawdata[$i+1])) * 100;
-                            }
-                            else
-                            {
-                                $percentage = 0;
-                                $percentage2 = 0;
-                            }
-                        }
-                        else
-                        {
-                            $percentage = $gdata[$i];
-                            $percentage2 = $gdata[$i-1];
-                        }
-
-                        //item 4 + item 5
-                        $aggregatedgdata = $percentage + $percentage2;
-                        switch($outputType)
-                        {
-                            case 'xls':
-                                $label[$i]=flattenText($label[$i]);
-                                $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow,0,$label[$i]);
-                                $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
-                                $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
-                                $this->sheet->writeNumber($this->xlsRow,3,$aggregatedgdata/100, $this->xlsPercents);
-                                break;
-                                
-                            case 'pdf':
-                                $label[$i]=flattenText($label[$i]);
-                                $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
-
-                                break;
-                            case 'html':
-                                //output percentage
-                                $statisticsoutput .= "\t\t<td align='center' >";
-                                $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
-
-                                //output aggregated data
-                                $statisticsoutput .= "\t\t<td align='center' >";
-                                $statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
-                                $statisticsoutput .= "</td>\t\t";
-                                break;
-                            default:
-
-
-                                break;
-                        }
-
+                    if ($itemcounter == 5) {
                         // create new row "sum"
                         //calculate sum of items 1-5
-                        $sumitems = $grawdata[$i]
-                        + $grawdata[$i-1]
-                        + $grawdata[$i-2]
-                        + $grawdata[$i-3]
-                        + $grawdata[$i-4];
+                        $sumitems = $grawdata[0]
+                        + $grawdata[1]
+                        + $grawdata[2]
+                        + $grawdata[3]
+                        + $grawdata[4];
 
                         //special treatment for zero values
                         if($sumitems > 0)
@@ -2755,6 +2510,7 @@ class statistics_helper {
             if($outputs['qtype'] == "5" || $outputs['qtype'] == "A")
             {
                 $stddev = 0;
+                $stddevarray = array_slice($grawdata,0,5,true);
                 $am = 0;
 
                 //calculate arithmetic mean

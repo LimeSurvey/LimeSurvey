@@ -394,7 +394,8 @@ class surveypermission extends Survey_Common_Action {
         }
         else
         {
-            $this->getController()->error('Unknow action');
+            Yii::app()->request->redirect(Yii::app()->getController()->createUrl('admin/surveypermission/sa/view', array('surveyid'=>$surveyid)));
+            //$this->getController()->error('Unknow action');
         }
 
         if( hasSurveyPermission($surveyid, 'surveysecurity', 'update') )
