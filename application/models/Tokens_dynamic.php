@@ -78,7 +78,6 @@ class Tokens_dynamic extends LSActiveRecord
 		return 'tid';
 	}
 	
-	
 	/**
 	* Returns this model's validation rules
 	*
@@ -95,7 +94,6 @@ class Tokens_dynamic extends LSActiveRecord
 // Date rules currently don't work properly with MSSQL, deactivating for now
 		);  
 	}	
-
     
     /**
      * Returns summary information of this token table
@@ -220,10 +218,9 @@ class Tokens_dynamic extends LSActiveRecord
         $oResult=$this->getCommandBuilder()
             ->createFindCommand($this->getTableSchema(), $command)
             ->select('tid')
-            ->queryAll();
+            ->queryColumn();
         return $oResult;
     }
-    
     
 	function insertParticipant($data)
 	{
@@ -378,7 +375,6 @@ class Tokens_dynamic extends LSActiveRecord
 
         return array($newtokencount,count($tkresult));
     }
-    
     
      /**
      * This method is invoked before saving a record (after validation, if any).
