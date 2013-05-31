@@ -1,5 +1,5 @@
 <?php
-    App()->getClientScript()->registerCssFile('/styles/configure.css');
+    App()->getClientScript()->registerCssFile(Yii::app()->getBaseUrl() . '/styles/configure.css');
 ?>
 <div id="plugin-<?php echo isset($plugin['name']) ? $plugin['name'] : ''; ?>">
     
