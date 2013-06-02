@@ -129,6 +129,8 @@ else
     var addpartErrorMsg = "<?php $clang->eT("No surveys are available. Either you don't have permissions to any surveys or none of your surveys have a token table", 'js'); ?>";
     var mapButton = "<?php $clang->eT("Next", 'js') ?>";
     var error = "<?php $clang->eT("Error", 'js') ?>";
+    var sWarningMsg = "<?php $clang->eT("Warning", 'js') ?>";
+    var sSelectRowMsg = "<?php $clang->eT("Please select at least one participant.", 'js') ?>";
     var addsurvey = "<?php $clang->eT("Add participants to survey", 'js') ?>";
     var exportcsv = "<?php $clang->eT("Export CSV", 'js') ?>";
     var nooptionselected = "<?php $clang->eT("Please choose either of the options", 'js') ?>";
