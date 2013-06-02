@@ -127,6 +127,7 @@ $(document).ready(function() {
     });
     var lastSel,lastSel2;
     jQuery("#displaytokens").jqGrid({
+        loadtext : sLoadText,
         recordtext: sRecordText,
         emptyrecords: sEmptyRecords,
         pgtext: sPageText,
