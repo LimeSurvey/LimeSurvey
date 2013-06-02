@@ -25,7 +25,7 @@
 </form>
 
 <p><div class='messagebox ui-corner-all'><div class='header ui-widget-header'><?php $clang->eT("Instructions for the impatient");?></div>
-    <br/><ol style='margin:0 auto; font-size:8pt;'>
+    <br/><ol>
         <li><?php $clang->eT("Download the data and the syntax file.");?></li>
         <li><?php $clang->eT("Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)");?></li>
         <li><?php echo sprintf($clang->gT("digit:       source(\"%s\", encoding = \"UTF-8\")        on the R command window"), $filename);?></li>

@@ -450,13 +450,13 @@ function file_validation_message($ia)
 // TMSW Validation -> EM
 function mandatory_popup($ia, $notanswered=null)
 {
-    global $showpopups;
+    $showpopups=Yii::app()->getConfig('showpopups');
 
     $clang = Yii::app()->lang;
     //This sets the mandatory popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notanswered === null) {unset($notanswered);}
-    if (isset($notanswered) && is_array($notanswered) && isset($showpopups) && $showpopups == 1) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
+    if (isset($notanswered) && is_array($notanswered) && $showpopups) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
     {
         global $mandatorypopup, $popup;
         //POPUP WARNING
@@ -486,14 +486,14 @@ function mandatory_popup($ia, $notanswered=null)
 // TMSW Validation -> EM
 function validation_popup($ia, $notvalidated=null)
 {
-    global $showpopups;
+    $showpopups=Yii::app()->getConfig('showpopups');
 
     $clang = Yii::app()->lang;
     //This sets the validation popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notvalidated === null) {unset($notvalidated);}
     $qtitle="";
-    if (isset($notvalidated) && is_array($notvalidated) && isset($showpopups) && $showpopups == 1)  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
+    if (isset($notvalidated) && is_array($notvalidated) && $showpopups )  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
     {
         global $validationpopup, $vpopup;
         //POPUP WARNING
@@ -516,11 +516,11 @@ function validation_popup($ia, $notvalidated=null)
 // TMSW Validation -> EM
 function file_validation_popup($ia, $filenotvalidated = null)
 {
-    global $showpopups;
+    $showpopups=Yii::app()->getConfig('showpopups');
 
     $clang = Yii::app()->lang;
     if ($filenotvalidated === null) { unset($filenotvalidated); }
-    if (isset($filenotvalidated) && is_array($filenotvalidated) && isset($showpopups) && $showpopups == 1)
+    if (isset($filenotvalidated) && is_array($filenotvalidated) && $showpopups)
     {
         global $filevalidationpopup, $fpopup;
 
@@ -3057,22 +3057,17 @@ function do_multiplenumeric($ia)
         $extraclass .=" withslider";
         if (trim($aQuestionAttributes['slider_accuracy'])!='')
         {
-            //$slider_divisor = 1 / $slider_accuracy['value'];
-            $decimnumber = strlen($aQuestionAttributes['slider_accuracy']) - strpos($aQuestionAttributes['slider_accuracy'],'.') -1;
-            $slider_divisor = pow(10,$decimnumber);
-            $slider_step = $aQuestionAttributes['slider_accuracy'] * $slider_divisor;
-            //	error_log('acc='.$slider_accuracy['value']." div=$slider_divisor stepping=$slider_step");
+            $slider_step = $aQuestionAttributes['slider_accuracy'];
         }
         else
         {
-            $slider_divisor = 1;
             $slider_step = 1;
         }
 
         if (trim($aQuestionAttributes['slider_min'])!='')
         {
             $slider_mintext = $aQuestionAttributes['slider_min'];
-            $slider_min = $aQuestionAttributes['slider_min'] * $slider_divisor;
+            $slider_min = $aQuestionAttributes['slider_min'];
         }
         else
         {
@@ -3082,21 +3077,15 @@ function do_multiplenumeric($ia)
         if (trim($aQuestionAttributes['slider_max'])!='')
         {
             $slider_maxtext = $aQuestionAttributes['slider_max'];
-            $slider_max = $aQuestionAttributes['slider_max'] * $slider_divisor;
+            $slider_max = $aQuestionAttributes['slider_max'];
         }
         else
         {
             $slider_maxtext = "100";
-            $slider_max = 100 * $slider_divisor;
+            $slider_max = 100;
         }
-        if (trim($aQuestionAttributes['slider_default'])!='')
-        {
-            $slider_default = $aQuestionAttributes['slider_default'];
-        }
-        else
-        {
-            $slider_default = '';
-        }
+        $slider_default= (trim($aQuestionAttributes['slider_default'])!='')?$aQuestionAttributes['slider_default']:"";
+
         if ($slider_default == '' && $aQuestionAttributes['slider_middlestart']==1)
         {
             $slider_middlestart = intval(($slider_max + $slider_min)/2);
@@ -3106,24 +3095,14 @@ function do_multiplenumeric($ia)
             $slider_middlestart = '';
         }
 
-        if (trim($aQuestionAttributes['slider_separator'])!='')
-        {
-            $slider_separator = $aQuestionAttributes['slider_separator'];
-        }
-        else
-        {
-            $slider_separator = '';
-        }
+        $slider_separator= (trim($aQuestionAttributes['slider_separator'])!='')?$aQuestionAttributes['slider_separator']:"";
+        $slider_reset=($aQuestionAttributes['slider_reset'])?1:0;
     }
     else
     {
         $slider_layout = false;
     }
     $hidetip=$aQuestionAttributes['hide_tip'];
-#    if ($slider_layout === true) // auto hide tip when using sliders/ NO: slider only in javascript : then Hide it in js.
-#    {
-#        $hidetip=1;
-#    }
 
     if ($aQuestionAttributes['random_order']==1)
     {
@@ -3191,44 +3170,13 @@ function do_multiplenumeric($ia)
 
                 $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$maxlength} />\n\t".$suffix."\n</span>{$sliderright}\n\t</li>\n";
 
-#                $answer_main .= "$sliderleft<div id='container-$myfname' class='multinum-slider'>\n"
-#                . "\t<input type=\"text\" id=\"slider-modifiedstate-$myfname\" value=\"$displaycallout_atstart\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-param-min-$myfname\" value=\"$slider_min\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-param-max-$myfname\" value=\"$slider_max\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-param-stepping-$myfname\" value=\"$slider_stepping\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-param-divisor-$myfname\" value=\"$slider_divisor\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-param-startvalue-$myfname\" value='$slider_startvalue' style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-onchange-js-$myfname\" value=\"$numbersonly_slider\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-prefix-$myfname\" value=\"$prefix\" style=\"display: none;\" />\n"
-#                . "\t<input type=\"text\" id=\"slider-suffix-$myfname\" value=\"$suffix\" style=\"display: none;\" />\n"
-#                . "<div id=\"slider-$myfname\" class=\"ui-slider-1\">\n"
-#                .  $slider_showmin
-#                . "<div class=\"slider_callout\" id=\"slider-callout-$myfname\"></div>\n"
-#                . "<div class=\"ui-slider-handle\" id=\"slider-handle-$myfname\"></div>\n"
-#                . $slider_showmax
-#                . "\t</div>"
-#                . "</div>$sliderright\n"
-#                . "<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
-#                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
-#                {
-#                    $answer_main .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-#                }
-#                elseif ($slider_default != "")
-#                {
-#                    $answer_main .= $slider_default;
-#                }
-#                $answer_main .= "\"/>\n"
-#            }
-
-            //			$answer .= "\t</tr>\n";
-
             $fn++;
             $inputnames[]=$myfname;
         }
         $question_tip = '';
         if(!$hidetip)
         {
-            $question_tip .= '<p class="tip">'.$clang->gT('Only numbers may be entered in these fields')."</p>\n";
+            $question_tip .= '<p class="tip default">'.$clang->gT('Only numbers may be entered in these fields')."</p>\n";
         }
 
         if (trim($aQuestionAttributes['equals_num_value']) != ''
@@ -3261,16 +3209,9 @@ function do_multiplenumeric($ia)
     {
         header_includes("numeric-slider.js");
         header_includes("numeric-slider.css","css");
-#                // Take it at start of js
-#                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
-#                {
-#                    $slider_startvalue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] * $slider_divisor;
-#                    $slider_displaycallout=1;
-#                }
-#                elseif
         if ($slider_default != "")
         {
-            $slider_startvalue = $slider_default * $slider_divisor;
+            $slider_startvalue = $slider_default;
             $slider_displaycallout=1;
         }
         elseif ($slider_middlestart != '')
@@ -3285,6 +3226,9 @@ function do_multiplenumeric($ia)
         }
         $slider_showminmax=($aQuestionAttributes['slider_showminmax']==1)?1:0;
         //some var for slider
+        $aJsLang=array(
+            'reset' => $clang->gT('Reset'),
+            );
         $aJsVar=array(
             'slider_showminmax'=>$slider_showminmax,
             'slider_min' => $slider_min,
@@ -3292,11 +3236,12 @@ function do_multiplenumeric($ia)
             'slider_max' => $slider_max,
             'slider_maxtext'=>$slider_maxtext,
             'slider_step'=>$slider_step,
-            'slider_divisor'=>$slider_divisor,
             'slider_startvalue'=>$slider_startvalue,
             'slider_displaycallout'=>$slider_displaycallout,
             'slider_prefix' => $prefix,
             'slider_suffix' => $suffix,
+            'slider_reset' => $slider_reset,
+            'lang'=> $aJsLang,
             );
         $answer .= "<script type='text/javascript'><!--\n"
                     . " doNumericSlider({$ia[0]},".ls_json_encode($aJsVar).");\n"

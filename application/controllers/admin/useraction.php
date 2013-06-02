@@ -95,7 +95,7 @@ class UserAction extends Survey_Common_Action
         if (empty($new_user)) {
             $aViewUrls['message'] = array('title' => $clang->gT("Failed to add user"), 'message' => $clang->gT("A username was not supplied or the username is invalid."), 'class'=> 'warningheader');
         }
-        elseif (User::model()->find("users_name='$new_user'")) {
+        elseif (User::model()->find("users_name=:users_name",array(':users_name'=>$new_user))) {
             $aViewUrls['message'] = array('title' => $clang->gT("Failed to add user"), 'message' => $clang->gT("The username already exists."), 'class'=> 'warningheader');
         }
         elseif ($valid_email)
@@ -186,15 +186,15 @@ class UserAction extends Survey_Common_Action
         // Initial SuperAdmin has parent_id == 0
         $row = User::model()->findByAttributes(array('parent_id' => 0));
 
-        $postuserid = Yii::app()->request->getPost("uid");
-        $postuser = Yii::app()->request->getPost("user");
+        $postuserid = (int) Yii::app()->request->getPost("uid");
+        $postuser = flattenText(Yii::app()->request->getPost("user"));
         if ($row['uid'] == $postuserid) // it's the original superadmin !!!
         {
             $aViewUrls['message'] = array('title' => $clang->gT('Initial Superadmin cannot be deleted!'), 'class' => 'warningheader');
         }
         else
         {
-            if (isset($_POST['uid'])) {
+            if ($postuserid) {
                 $sresultcount = 0; // 1 if I am parent of $postuserid
                 if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
                     $sresult = User::model()->findAllByAttributes(array('parent_id' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
@@ -254,11 +254,11 @@ class UserAction extends Survey_Common_Action
     function deleteFinalUser($result, $transfer_surveys_to)
     {
         $clang = Yii::app()->lang;
-        $postuserid = Yii::app()->request->getPost("uid");
-        $postuser = Yii::app()->request->getPost("user");
+        $postuserid = (int) Yii::app()->request->getPost("uid");
+        $postuser = flattenText(Yii::app()->request->getPost("user"));
 
         if (isset($_POST['transfer_surveys_to'])) {
-            $transfer_surveys_to = sanitize_int($_POST['transfer_surveys_to']);
+            $transfer_surveys_to = sanitize_int(Yii::app()->request->getPost("transfer_surveys_to"));
         }
         if ($transfer_surveys_to > 0) {
             $iSurveysTransferred = Survey::model()->updateAll(array('owner_id' => $transfer_surveys_to), 'owner_id='.$postuserid);
@@ -300,7 +300,7 @@ class UserAction extends Survey_Common_Action
     function modifyuser()
     {
         if (isset($_POST['uid'])) {
-            $postuserid = sanitize_int($_POST['uid']);
+            $postuserid = (int) Yii::app()->request->getPost("uid");
             $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
             $sresultcount = count($sresult);
 
@@ -324,10 +324,10 @@ class UserAction extends Survey_Common_Action
     function moduser()
     {
         $clang = Yii::app()->lang;
-        $postuser = Yii::app()->request->getPost("user");
-        $postemail = Yii::app()->request->getPost("email");
-        $postuserid = Yii::app()->request->getPost("uid");
-        $postfull_name = Yii::app()->request->getPost("full_name");
+        $postuserid = (int) Yii::app()->request->getPost("uid");
+        $postuser = flattenText(Yii::app()->request->getPost("user"));
+        $postemail = flattenText(Yii::app()->request->getPost("email"));
+        $postfull_name = flattenText(Yii::app()->request->getPost("full_name"));
         $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
         $addsummary = '';
         $aViewUrls = array();
@@ -441,7 +441,7 @@ class UserAction extends Survey_Common_Action
     
     function setuserpermissions()
     {
-        $iUserID = Yii::app()->request->getPost('uid');
+        $iUserID = (int) Yii::app()->request->getPost('uid');
         if ($iUserID) {
             $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
         }
@@ -494,11 +494,11 @@ class UserAction extends Survey_Common_Action
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'users.js');
-        $aData['postuser']  = Yii::app()->request->getPost("user");
-        $aData['postemail'] = Yii::app()->request->getPost("email");
-        $postuserid = Yii::app()->request->getPost("uid");
+        $postuserid = (int) Yii::app()->request->getPost("uid");
+        $aData['postuser']  = flattenText(Yii::app()->request->getPost("user"));
+        $aData['postemail'] = flattenText(Yii::app()->request->getPost("email"));
         $aData['postuserid'] = $postuserid;
-        $aData['postfull_name'] = Yii::app()->request->getPost("full_name");
+        $aData['postfull_name'] = flattenText(Yii::app()->request->getPost("full_name"));
         $this->_refreshtemplates();
         $templaterights=array();
         foreach (getUserList() as $usr)
@@ -520,7 +520,7 @@ class UserAction extends Survey_Common_Action
     function usertemplates()
     {
         $clang = Yii::app()->lang;
-        $postuserid = Yii::app()->request->getPost('uid');
+        $postuserid = (int) Yii::app()->request->getPost('uid');
 
         // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
         if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','update')) {

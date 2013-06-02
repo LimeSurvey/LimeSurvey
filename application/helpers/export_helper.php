@@ -542,7 +542,7 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
             break;
         case 'complete':
             //Inclomplete answers only
-            $query->where('s.submitdate IS NOT');
+            $query->where('s.submitdate IS NOT NULL');
             break;
     }
     

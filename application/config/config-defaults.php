@@ -333,7 +333,7 @@ $config['pdfdefaultfont'] = 'auto';              //Default font for the pdf Expo
 *  Some langage are not tested : need translation for Yes,No and Gender : ckb, swh
 */
 $config['alternatepdffontfile']=array(
-    'ar'=>'freesans',// 'dejavusans' work too but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
+    'ar'=>'dejavusans',// 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
     'be'=>'dejavusans',
     'bg'=>'dejavusans',
     'zh-Hans'=>'chinese',

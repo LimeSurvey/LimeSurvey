@@ -94,6 +94,7 @@
                 'title' => 'Surveys:',
                 'type' => 'select',
                 'name' => 'surveylist',
+                'empty' => gT('No surveys available.'),
                 'values' => $surveyList,
                 'value' => $this->surveyId
             );
@@ -448,20 +449,27 @@
             {
                 $listData = $item['values'];
             }
-            $result .= $this->widget('ext.bootstrap.widgets.TbSelect2', array(
-                'name' => $item['name'],
-                'value' => $item['value'],
-                'data' => $listData,
-                'options' => array(
-                    'minimumResultsForSearch' => 20,
-                    'placeholder' => gT('Please choose...')
-                ),
-                'htmlOptions' => array(
-                    'class' => 'select',
-                    'id' => $item['name'],
-                    'prompt' => ''//gT('Please choose...')
-                )
-            ), true);
+            if (!empty($listData))
+            {
+                $result .= $this->widget('ext.bootstrap.widgets.TbSelect2', array(
+                    'name' => $item['name'],
+                    'value' => $item['value'],
+                    'data' => $listData,
+                    'options' => array(
+                        'minimumResultsForSearch' => 20,
+                        'placeholder' => gT('Please choose...')
+                    ),
+                    'htmlOptions' => array(
+                        'class' => 'select',
+                        'id' => $item['name'],
+                        'prompt' => ''//gT('Please choose...')
+                    )
+                ), true);
+            }
+            elseif (isset($item['empty']))
+            {
+                $result .= CHtml::tag('span', array(), ' '. $item['empty']);
+            }
             return $result;
         }
         

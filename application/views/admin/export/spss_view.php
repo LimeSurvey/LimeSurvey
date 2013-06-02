@@ -32,7 +32,7 @@
 </form>
 
 <p><div class='messagebox ui-corner-all'><div class='header ui-widget-header'><?php $clang->eT("Instructions for the impatient");?></div>
-    <br/><ol style='margin:0 auto; font-size:8pt;'>
+    <br/><ol>
         <li><?php $clang->eT("Download the data and the syntax file");?></li>
         <li><?php $clang->eT("Open the syntax file in SPSS in Unicode mode");?></li>
         <li><?php $clang->eT("Edit the 4th line and complete the filename with a full path to the downloaded data file");?></li>

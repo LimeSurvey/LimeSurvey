@@ -768,6 +768,7 @@ class questions extends Survey_Common_Action
                 $eqrow['relevance'] = 1;
                 $eqrow['group_name'] = '';
             }
+            $eqrow['conditions_number'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
 
             $aData['eqrow'] = $eqrow;
             $aData['surveyid'] = $surveyid;
