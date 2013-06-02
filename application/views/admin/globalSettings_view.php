@@ -57,7 +57,7 @@
                 ?>
 
                 <br /><br/></p><div class='header ui-widget-header'><?php echo $clang->eT("Updates"); ?></div><br/><ul>
-                <li><label for='updatecheckperiod'><?php echo $clang->eT("Check for updates:"); ?></label>
+                <li><label for='updatecheckperiod'><?php echo $clang->eT("Automatically check for updates:"); ?></label>
                     <select name='updatecheckperiod' id='updatecheckperiod'>
                         <option value='0'
                             <?php if ($thisupdatecheckperiod==0) { echo "selected='selected'";} ?>
@@ -74,13 +74,41 @@
                         <option value='30'
                             <?php if ($thisupdatecheckperiod==30) { echo "selected='selected'";} ?>
                             ><?php echo $clang->eT("Every month"); ?></option>
-                    </select>&nbsp;<input type='button' onclick="window.open('<?php echo $this->createUrl("admin/globalsettings/sa/updatecheck"); ?>', '_top')" value='<?php $clang->eT("Check now"); ?>' />&nbsp;<span id='lastupdatecheck'><?php echo sprintf($clang->gT("Last check: %s"),$updatelastcheck); ?></span></li></ul><p>
+                    </select>&nbsp;<input type='button' onclick="window.open('<?php echo $this->createUrl("admin/globalsettings/sa/updatecheck"); ?>', '_top')" value='<?php $clang->eT("Check now"); ?>' />&nbsp;<span id='lastupdatecheck'><?php echo sprintf($clang->gT("Last check: %s"),$updatelastcheck); ?></span>
+                </li>
+                <li><label for='updatenotification'><?php echo $clang->eT("Show update notifications:"); ?></label>
+                    <select name='updatenotification' id='updatenotification'>
+                        <option value='never'
+                            <?php if ($sUpdateNotification=='never') { echo "selected='selected'";} ?>
+                            ><?php echo $clang->eT("Never"); ?></option>
+                        <option value='stable'
+                            <?php if ($sUpdateNotification=='stable') { echo "selected='selected'";} ?>
+                            ><?php echo $clang->eT("For stable versions"); ?></option>
+                        <option value='both'
+                            <?php if ($sUpdateNotification=='both') { echo "selected='selected'";} ?>
+                            ><?php echo $clang->eT("For stable and unstable versions"); ?></option>
+                    </select></li>
 
                 <?php
-                    if (isset($updateavailable) && $updateavailable==1)
+                    if (isset($updateavailable) && $updateavailable==1 && is_array($aUpdateVersions))
                     { ?>
-                    <span style="font-weight: bold;"><?php echo sprintf($clang->gT('There is a LimeSurvey update available: Version %s'),$updateversion."($updatebuild)"); ?></span><br />
-                    <?php echo sprintf($clang->gT('You can update %smanually%s or use the %s'),"<a href='http://docs.limesurvey.org/tiki-index.php?page=Upgrading+from+a+previous+version'>","</a>","<a href='".$this->createUrl('admin/update')."'>".$clang->gT('3-Click ComfortUpdate').'</a>'); ?><br />
+                    <li><label><span style="font-weight: bold;"><?php echo $clang->gT('The following LimeSurvey updates are available:');?></span></label><table>
+                        <?php 
+                        foreach ($aUpdateVersions as $aUpdateVersion)
+                        {?>
+                           <tr><td>
+                            <?php echo $aUpdateVersion['versionnumber'];?> (<?php echo $aUpdateVersion['build'];?>) <?php if ($aUpdateVersion['branch']!='master') $clang->eT('(unstable)'); else $clang->eT('(stable)');?>
+                           </td>
+                           <td>
+                                <input type='button' onclick="window.open('<?php echo $this->createUrl("admin/update/sa/index",array('build'=>$aUpdateVersion['build'])); ?>', '_top')" value='<?php $clang->eT("Use ComfortUpdate"); ?>' />
+                                <?php if ($aUpdateVersion['branch']!='master') {?> <input type='button' onclick="window.open('http://www.limesurvey.org/en/unstable-release/viewcategory/26-unstable-releases', '_blank')" value='<?php $clang->eT("Download"); ?>' /> <?php } 
+                                else {?> <input type='button' onclick="window.open('http://www.limesurvey.org/en/stable-release', '_blank')" value='<?php $clang->eT("Download"); ?>' /> <?php }?>
+                           </td></tr>
+                        <?php    
+                        };?>
+                        </table>
+                    </ul>
+                    <p><?php echo sprintf($clang->gT('You can %s download and update manually %s or use the %s.'),"<a href='http://manual.limesurvey.org/wiki/Upgrading_from_a_previous_version'>","</a>","<a href='http://manual.limesurvey.org/wiki/ComfortUpdate'>".$clang->gT('3-Click ComfortUpdate').'</a>'); ?></p>
                     <?php }
                     elseif (isset($updateinfo['errorcode']))
                     { echo sprintf($clang->gT('There was an error on update check (%s)'),$updateinfo['errorcode']); ?><br />
@@ -97,6 +125,7 @@
                     }
 
                 ?>
+            </ul>
             </p></div>
 
         <div id='general'>

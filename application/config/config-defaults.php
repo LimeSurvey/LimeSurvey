@@ -426,11 +426,6 @@ $config['chartfontsize'] =10;
 */
 $config['updatecheckperiod']=7;
 
-/**
-* $updatekey - Sets the default update key for the ComfortUpdater
-*/
-$config['updatekey']='';
-
 
 /**
 * @var $showxquestions string allows you to control whether or not
@@ -557,6 +552,14 @@ $config['iSessionExpirationTime'] = 7200;
 * @var array
 */
 $config['InsertansUnsupportedtypes'] = array();
+
+/**
+* This parameter sets if and what update notifications are shown to the administrator. Valid values are 'never', 'stable', 'both' (for stable and unstable)
+* Default is 'stable'
+* @var string
+*/
+$config['updatenotification'] = 'stable';
+
 
 // === Advanced Setup
 // The following parameters need information from config.php
