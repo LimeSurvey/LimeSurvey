@@ -369,7 +369,7 @@ class Survey extends LSActiveRecord
             Assessment::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             QuestionGroup::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
-            Permission::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            Permission::model()->deleteAllByAttributes(array('entity_id' => $iSurveyID, 'entity'=>'survey'));
             SavedControl::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             //Remove any survey_links to the CPDB
