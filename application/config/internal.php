@@ -18,7 +18,7 @@ $internalConfig = array(
 	),
 	'components' => array(
         'bootstrap' => array(
-            'class' => 'ext.bootstrap.components.Bootstrap',
+            'class' => 'application.core.LSBootstrap',
             'responsiveCss' => false,
             'jqueryCss' => false
         ),
