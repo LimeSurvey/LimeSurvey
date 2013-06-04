@@ -235,8 +235,8 @@ class labels extends Survey_Common_Action
         $aData = array();
 
         // Includes some javascript files
-        App()->getClientScript->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
-        App()->getClientScript->registerPackage('jquery-json');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
+        App()->getClientScript()->registerPackage('jquery-json');
         // Checks if user have the sufficient rights to manage the labels
         if (Permission::model()->hasGlobalPermission('labelsets','read'))
         {

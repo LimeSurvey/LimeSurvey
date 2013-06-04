@@ -87,10 +87,10 @@ return array(
     'qTip2' => array(
         'baseUrl' => 'third_party/qTip2',
         'js' => array(
-            'dist/jquery.qtip.js'
+            'dist/jquery.qtip.min.js'
         ),
         'css' => array(
-            'dist/jquery.qtip.css'
+            'dist/jquery.qtip.min.css'
         ),
         'depends' => array(
             'jquery'

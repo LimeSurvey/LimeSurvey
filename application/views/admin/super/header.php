@@ -5,10 +5,7 @@
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-cookie');
         App()->getClientScript()->registerPackage('jquery-superfish');
-        App()->getClientScript()->registerPackage('jqgrid');
         App()->getClientScript()->registerPackage('qTip2');
-        //App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-qtip/jquery.qtip-1.0.0-rc3.min.js');
-        //App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "superfish.css" );
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
@@ -22,10 +19,6 @@
     
     <?php echo $datepickerlang;?>
     <title><?php echo $sitename;?></title>
-    <?php
-
-        
-            ?>
     <link rel="shortcut icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />
     <?php echo $firebug ?>

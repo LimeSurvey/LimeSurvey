@@ -271,11 +271,9 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyId);
         }
         // Javascript
+        App()->getClientScript()->registerPackage('jqgrid');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "tokens.js");
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "jquery/jquery.multiselect.min.js");
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "jquery/jquery-ui-timepicker-addon.js");
         // CSS
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/jquery.ui.datepicker.css");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "displayParticipants.css");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-timepicker.css");
 
