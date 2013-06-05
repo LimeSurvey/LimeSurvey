@@ -13,21 +13,26 @@ class SurveyDao
     * @param int $id
     * @return SurveyObj
     */
-    public function loadSurveyById($id)
+    public function loadSurveyById($id, $lang = null)
     {
         $survey = new SurveyObj();
         $clang = Yii::app()->lang;
         
         $intId = sanitize_int($id);
         $survey->id = $intId;
-        $survey->info = getSurveyInfo($survey->id);
-        $lang = Survey::model()->findByPk($intId)->language;
+        $survey->info = getSurveyInfo($survey->id);        
+        $availableLanguages = Survey::model()->findByPk($intId)->getAllLanguages();
+            
+        if (is_null($lang) || in_array($lang, $availableLanguages) === false) {
+            // use base language when requested language is not found or no specific language is requested
+            $lang = Survey::model()->findByPk($intId)->language;
+        }
+              
         $clang = new limesurvey_lang($lang);
-
-        $survey->fieldMap = createFieldMap($intId,'full',false,false,getBaseLanguageFromSurveyID($intId));
+        $survey->fieldMap = createFieldMap($intId,'full',true,false,$lang);
         // Check to see if timings are present and add to fieldmap if needed
         if ($survey->info['savetimings']=="Y") {
-            $survey->fieldMap = $survey->fieldMap + createTimingsFieldMap($intId,'full',false,false,getBaseLanguageFromSurveyID($intId));
+            $survey->fieldMap = $survey->fieldMap + createTimingsFieldMap($intId,'full',true,false,$lang);
         }
 
         if (empty($intId))
@@ -35,22 +40,21 @@ class SurveyDao
             //The id given to us is not an integer, croak.
             safeDie("An invalid survey ID was encountered: $sid");
         }
-
-
+        
         //Load groups
         $sQuery = 'SELECT g.* FROM {{groups}} AS g '.
-        'WHERE g.sid = '.$intId.' '.
+        'WHERE g.sid = '.$intId.' AND g.language = \'' . $lang . '\' ' .
         'ORDER BY g.group_order;';
         $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
         $survey->groups = $recordSet;
 
         //Load questions
         $sQuery = 'SELECT q.* FROM {{questions}} AS q '.
-        'JOIN {{groups}} AS g ON q.gid = g.gid '.
+        'JOIN {{groups}} AS g ON (q.gid = g.gid and q.language = g.language) '.
         'WHERE q.sid = '.$intId.' AND q.language = \''.$lang.'\' '.
         'ORDER BY g.group_order, q.question_order;';
         $survey->questions = Yii::app()->db->createCommand($sQuery)->query()->readAll();
-
+        
         //Load answers
         $sQuery = 'SELECT DISTINCT a.* FROM {{answers}} AS a '.
         'JOIN {{questions}} AS q ON a.qid = q.qid '.
@@ -64,10 +68,11 @@ class SurveyDao
 				$aAnswer['answer']=stripTagsFull($aAnswer['answer']);
              $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']]=$aAnswer;
         }
-        //Load language settings
-        $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.';';
-        $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
-        $survey->languageSettings = $recordSet;
+        //Load language settings for requested language
+        $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.' AND surveyls_language = \'' . $lang . '\';';
+        $recordSet = Yii::app()->db->createCommand($sQuery)->query();
+        $survey->languageSettings = $recordSet->read();
+        $recordSet->close();      
 
         return $survey;
     }
