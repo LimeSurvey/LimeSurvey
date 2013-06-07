@@ -385,7 +385,7 @@ class dataentry extends Survey_Common_Action
                 $sourceSchema = $sourceTable->getTableSchema();
              
                 $fieldMap = array();
-                $pattern = '/([\d]+)X([\d]+)X([\d]+)/';
+                $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
                 foreach ($sourceSchema->getColumnNames() as $name)
                 {
                     // Skip id field.
@@ -498,7 +498,7 @@ class dataentry extends Survey_Common_Action
     {
         foreach ($schema->columns as $name => $column)
         {
-            $pattern = '/([\d]+)X([\d]+)X([\d]+)/';
+            $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
             $matches = array();
             if (preg_match($pattern, $name, $matches))
             {
@@ -515,7 +515,7 @@ class dataentry extends Survey_Common_Action
      */
     protected function isCompatible(CDbTableSchema $base, CDbTableSchema $old)
     {
-        $pattern = '/([\d]+)X([\d]+)X([\d]+)/';
+        $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
         foreach($old->columns as $name => $column)
         {
             // The following columns are always compatible.
@@ -527,11 +527,13 @@ class dataentry extends Survey_Common_Action
             if (preg_match($pattern, $name, $matches))
             {
                 $qid = $matches[3];
-
                 $baseColumn = $this->getQidColumn($base, $qid);
-                if ($baseColumn && $baseColumn->dbType != $column->dbType)
+                if ($baseColumn)
                 {
-                    return false;
+                    if ($baseColumn && $baseColumn->dbType != $column->dbType)
+                    {
+                        return false;
+                    }
                 }
             }
         }
