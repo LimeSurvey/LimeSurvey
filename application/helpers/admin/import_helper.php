@@ -4192,9 +4192,9 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
 
     // Some specific header (with options)
     $iIdKey=array_search('id', $aCsvHeader); // the id is allways needed and used a lot
-    if(is_int($iIdKey)){unset($aKeyForFieldNames['id'];}
+    if(is_int($iIdKey)){unset($aKeyForFieldNames['id']);}
     $iSubmitdateKey=array_search('submitdate', $aCsvHeader); // submitdate can be forced to null
-    if(is_int($iSubmitdateKey)){unset($aKeyForFieldNames['submitdate'];}
+    if(is_int($iSubmitdateKey)){unset($aKeyForFieldNames['submitdate']);}
     $iIdReponsesKey=(is_int($iIdKey))?$iIdKey:0;// The key for reponses id: id column or first column if not exist
 
     // Import each responses line here
