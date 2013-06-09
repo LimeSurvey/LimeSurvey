@@ -4849,10 +4849,7 @@ function getArrayFilterExcludesForQuestion($qid)
 
 function CSVEscape($sString)
 {
-    if (defined('PCRE_VERSION') && version_compare(substr(PCRE_VERSION,0,strpos(PCRE_VERSION,' ')),'7.0')>-1)
-    {
-         $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $sString);
-    }
+    $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $sString);
     return '"' . str_replace('"','""', $sString) . '"';
 }
 
@@ -5659,7 +5656,7 @@ function getUpdateInfo()
     $http->timeout=0;
     $http->data_timeout=0;
     $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-    $http->GetRequestArguments("http://update.limesurvey.org?build=".Yii::app()->getConfig("buildnumber").'&id='.md5(getGlobalSetting('SessionName')).'&crosscheck=true',$arguments);
+    $http->GetRequestArguments("http://update.limesurvey.org?build=".Yii::app()->getConfig("buildnumber").'&id='.md5(getGlobalSetting('SessionName')),$arguments);
 
     $updateinfo=false;
     $error=$http->Open($arguments);
@@ -5698,19 +5695,11 @@ function getUpdateInfo()
 function updateCheck()
 {
     $updateinfo=getUpdateInfo();
-    if (count($updateinfo) && trim(Yii::app()->getConfig('buildnumber'))!='')
+    if (isset($updateinfo['Targetversion']['build']) && (int)$updateinfo['Targetversion']['build']>(int)Yii::app()->getConfig('buildnumber') && trim(Yii::app()->getConfig('buildnumber'))!='')
     {
-        setGlobalSetting('updateversions',json_encode($updateinfo));
-        if (isset($updateinfo['master'])){
-            $updateinfo=$updateinfo['master'];
-        }
-        else
-        {
-            $updateinfo=reset($updateinfo);
-        }
         setGlobalSetting('updateavailable',1);
-        setGlobalSetting('updatebuild',$updateinfo['build']);
-        setGlobalSetting('updateversion',$updateinfo['versionnumber']);
+        setGlobalSetting('updatebuild',$updateinfo['Targetversion']['build']);
+        setGlobalSetting('updateversion',$updateinfo['Targetversion']['versionnumber']);
     }
     else
     {
@@ -7709,6 +7698,56 @@ function json_decode_ls($jsonString)
     return $decoded;
 }
 
+/**
+ * Return accepted codingsArray for importing files
+ *
+ * Used in vvimport
+ * TODO : use in token and 
+ * @return array
+ */
+function aEncodingsArray()
+    {
+        $clang = Yii::app()->lang;
+        return array(
+        "armscii8" => $clang->gT("ARMSCII-8 Armenian"),
+        "ascii" => $clang->gT("US ASCII"),
+        "auto" => $clang->gT("Automatic"),
+        "big5" => $clang->gT("Big5 Traditional Chinese"),
+        "binary" => $clang->gT("Binary pseudo charset"),
+        "cp1250" => $clang->gT("Windows Central European (Windows-1250)"),
+        "cp1251" => $clang->gT("Windows Cyrillic (Windows-1251)"),
+        "cp1256" => $clang->gT("Windows Arabic (Windows-1256)"),
+        "cp1257" => $clang->gT("Windows Baltic (Windows-1257)"),
+        "cp850" => $clang->gT("DOS West European (cp850)"),
+        "cp852" => $clang->gT("DOS Central European (cp852)"),
+        "cp866" => $clang->gT("DOS Cyrillic (cp866)"),
+        "cp932" => $clang->gT("Windows-31J - SJIS for Windows Japanese (cp932)"),
+        "dec8" => $clang->gT("DEC West European"),
+        "eucjpms" => $clang->gT("UJIS for Windows Japanese"),
+        "euckr" => $clang->gT("EUC-KR Korean"),
+        "gb2312" => $clang->gT("GB2312 Simplified Chinese"),
+        "gbk" => $clang->gT("GBK Simplified Chinese"),
+        "geostd8" => $clang->gT("GEOSTD8 Georgian"),
+        "greek" => $clang->gT("ISO 8859-7 Greek"),
+        "hebrew" => $clang->gT("ISO 8859-8 Hebrew"),
+        "hp8" => $clang->gT("HP West European"),
+        "keybcs2" => $clang->gT("DOS Kamenicky Czech-Slovak (cp895)"),
+        "koi8r" => $clang->gT("KOI8-R Relcom Russian"),
+        "koi8u" => $clang->gT("KOI8-U Ukrainian"),
+        "latin1" => $clang->gT("ISO 8859-1 West European (latin1)"),
+        "latin2" => $clang->gT("ISO 8859-2 Central European (latin2)"),
+        "latin5" => $clang->gT("ISO 8859-9 Turkish (latin5)"),
+        "latin7" => $clang->gT("ISO 8859-13 Baltic (latin7)"),
+        "macce" => $clang->gT("Mac Central European"),
+        "macroman" => $clang->gT("Mac West European"),
+        "sjis" => $clang->gT("Shift-JIS Japanese"),
+        "swe7" => $clang->gT("7bit Swedish"),
+        "tis620" => $clang->gT("TIS620 Thai"),
+        "ucs2" => $clang->gT("UCS-2 Unicode"),
+        "ujis" => $clang->gT("EUC-JP Japanese"),
+        "utf8" => $clang->gT("UTF-8 Unicode"),
+        );
+    }
 /**
 * Swaps two positions in an array
 *

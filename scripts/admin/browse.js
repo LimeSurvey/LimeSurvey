@@ -16,7 +16,7 @@ $(document).ready(function(){
         speed:'fast'
     }); 
     $("#selectall").click(function(){
-        $('.cbResponseMarker').attr('checked',$(this).attr('checked'));
+        $('.cbResponseMarker').attr('checked',$(this).is(':checked'));
     });
     // Update the responses table if completionstate change
     $("#browseresults #completionstate").change(function(){
@@ -33,32 +33,38 @@ $(document).ready(function(){
     $('.browsetable th .questiontext').each(function(){
         if ($(this).text().trim().length > 30){
             $(this).addClass("content");
-            $(this).attr("title",$(this).text());
+            //$(this).attr("title",$(this).text());
         }
     });
 
-    $('.browsetable td span.content').qtip({
-        hide: {
-            fixed: true,
-            delay: 500
+    $('.browsetable th .content').qtip({
+        content: {
+            text: function(api) {
+                return $(this).html();
+            }
+        },
+        style: {
+            classes: "qtip-light qtip-rounded"
         },
         position: {
-            corner: {
-                target: 'leftMiddle',
-                tooltip: 'topRight'
-            }
+            viewport: $(window),
+            my: 'top right',
+            at: 'bottom right'
         }
     });
-    $('.browsetable th .content').qtip({
-        hide: {
-            fixed: true,
-            delay: 500
+    $('.browsetable td span.content').qtip({
+        content: {
+            text: function(api) {
+                return $(this).html();
+            }
+        },
+        style: {
+            classes: "qtip-light qtip-rounded"
         },
         position: {
-            corner: {
-                target: 'leftMiddle',
-                tooltip: 'topRight'
-            }
+            viewport: $(window),
+            my: 'top right',
+            at: 'bottom right'
         }
     });
     // Delete individual file

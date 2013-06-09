@@ -861,36 +861,33 @@ class export extends Survey_Common_Action {
 
         if ( $subaction != "export" )
         {
-            $selecthide = "";
-            $selectshow = "";
-            $selectinc = "";
-            if( incompleteAnsFilterState() == "incomplete" )
-            {
-                $selectinc = "selected='selected'";
-            }
-            elseif ( incompleteAnsFilterState() == "complete" )
-            {
-                $selecthide = "selected='selected'";
-            }
-            else
-            {
-                $selectshow = "selected='selected'";
-            }
-
-            $data['selectinc'] = $selectinc;
-            $data['selecthide'] = $selecthide;
-            $data['selectshow'] = $selectshow;
+            $data['selectincansstate']=incompleteAnsFilterState();
             $data['surveyid'] = $iSurveyID;
             $data['display']['menu_bars']['browse'] = $clang->gT("Export VV file");
-
+            $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+            //tracevar($fieldmap);
+            Survey::model()->findByPk($iSurveyID)->language;
+            $surveytable = "{{survey_$iSurveyID}}";
+            $fieldnames = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
+            //tracevar($fieldnames);
+            foreach ( $fieldnames as $field )
+            {
+                //tracevar($field);
+                $fielddata=arraySearchByKey($field, $fieldmap, "fieldname", 1);
+                //tracevar(array($field,viewHelper::getFieldCode($fielddata,array('separator'=>"_"))));
+            }
+            $LemVars=LimeExpressionManager::getLEMqcode2sgqa($iSurveyID);// Maybe some force refresh before update
+            tracevar($LemVars);
             $this->_renderWrappedTemplate('export', 'vv_view', $data);
         }
         elseif ( isset($iSurveyID) && $iSurveyID )
         {
             //Export is happening
             $extension = sanitize_paranoid_string(returnGlobal('extension'));
-
+            $vvVersion = (int) Yii::app()->request->getPost('vvversion');
+            $vvVersion = (in_array($vvVersion,array(1,2)))?$vvVersion:2;// Only 2 version actually, default to 2
             $fn = "vvexport_$iSurveyID." . $extension;
+
             $this->_addHeaders($fn, "text/comma-separated-values", 0, "cache");
 
             $s="\t";
@@ -918,7 +915,13 @@ class export extends Survey_Common_Action {
                     $firstline.=preg_replace('/\s+/', ' ', strip_tags($fielddata['question']));
                 }
                 $firstline .= $s;
-                $secondline .= $field.$s;
+                if($vvVersion==2){
+                    $fieldcode=viewHelper::getFieldCode($fielddata,array('separator'=>"_"));
+                    $fieldcode=($fieldcode)?$fieldcode:$field;// $fieldcode is empty for token if there are no token table
+                }else{
+                    $fieldcode=$field;
+                }
+                $secondline .= $fieldcode.$s;
             }
 
             $vvoutput = $firstline . "\n";

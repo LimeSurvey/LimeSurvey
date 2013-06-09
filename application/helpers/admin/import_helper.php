@@ -4124,6 +4124,203 @@ function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
     return $results;
 }
 
+/**
+* This function import CSV file to responses table
+*
+* @param string $sFullFilepath
+* @param integer $iSurveyId
+* @param array $aOptions
+* Return array $result ("errors","warnings","success")
+*/
+function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
+{
+    $clang = Yii::app()->lang;
+    // Default optional
+    if(!isset($aOptions['bDeleteFistLine'])){$aOptions['bDeleteFistLine']=true;} // By default delete first line (vvimport)
+    if(!isset($aOptions['sExistingId'])){$aOptions['sExistingId']="ignore";} // By default exclude existing id
+    if(!isset($aOptions['bNotFinalized'])){$aOptions['bNotFinalized']=false;} // By default don't change finalized part
+    if(!isset($aOptions['sCharset']) || !$aOptions['sCharset']){$aOptions['sCharset']="utf8";}
+    if(!isset($aOptions['sSeparator'])){$aOptions['sSeparator']="\t";}
+    if(!isset($aOptions['sQuoted'])){$aOptions['sQuoted']="\"";}
+    // Fix some part
+    if (!array_key_exists($aOptions['sCharset'], aEncodingsArray())) {
+        $aOptions['sCharset']="utf8";
+    }
+    $CSVImportResult=array();
+    $handle = fopen($sFullFilepath, "r"); // Need to be adapted for Mac ? in options ?
+    // Read the file
+    while (!feof($handle))
+    {
+        $buffer = fgets($handle); //To allow for very long lines . Another option is fgetcsv (0 to length), but need mb_convert_encoding
+        $aFileResponses[] = mb_convert_encoding($buffer, "UTF-8", $aOptions['sCharset']);
+    }
+    // Close the file
+    fclose($handle);
+    if($aOptions['bDeleteFistLine']){
+        array_shift($aFileResponses);
+    }
+
+    $aRealFieldNames = Yii::app()->db->getSchema()->getTable(SurveyDynamic::model($iSurveyId)->tableName())->getColumnNames();
+    //$aCsvHeader=array_map("trim",explode($aOptions['sSeparator'], trim(array_shift($aFileResponses))));
+    $aCsvHeader=str_getcsv(array_shift($aFileResponses),$aOptions['sSeparator'],$aOptions['sQuoted']);
+    $aLemFieldNames=LimeExpressionManager::getLEMqcode2sgqa($iSurveyId);
+    $aKeyForFieldNames=array();// An array assicated each fieldname with corresponding responses key
+    if(!$aCsvHeader){
+        $CSVImportResult['errors'][]=$clang->gT("File seems empty or have only one line");
+        return $CSVImportResult;
+    }
+    // Assign fieldname with $aFileResponses[] key
+    foreach($aRealFieldNames as $sFieldName){
+        if(in_array($sFieldName,$aCsvHeader)){ // First pass : simple associated
+            $aKeyForFieldNames[$sFieldName]=array_search($sFieldName,$aCsvHeader);
+        }elseif(in_array($sFieldName,$aLemFieldNames)){ // Second pass : LEM associated
+            $sLemFieldName=array_search($sFieldName,$aLemFieldNames);
+            if(in_array($sLemFieldName,$aCsvHeader)){
+                $aKeyForFieldNames[$sFieldName]=array_search($sLemFieldName,$aCsvHeader);
+            }
+        }
+    }
+
+    // Now it's time to import
+    // Some var to return
+    $iNbResponseLine=0;
+    $iNbResponseExisting=0;
+    $aResponsesInserted=array();
+    $aResponsesUpdated=array();
+    $aResponsesError=array();
+    $aExistingsId=array();
+
+    // Some specific header (with options)
+    $iIdKey=array_search('id', $aCsvHeader); // the id is allways needed and used a lot
+    if(is_int($iIdKey)){unset($aKeyForFieldNames['id'];}
+    $iSubmitdateKey=array_search('submitdate', $aCsvHeader); // submitdate can be forced to null
+    if(is_int($iSubmitdateKey)){unset($aKeyForFieldNames['submitdate'];}
+    $iIdReponsesKey=(is_int($iIdKey))?$iIdKey:0;// The key for reponses id: id column or first column if not exist
+
+    // Import each responses line here
+    while($sResponses=array_shift($aFileResponses)){
+        $iNbResponseLine++;
+        $bExistingsId=false;
+        $aResponses=str_getcsv($sResponses,$aOptions['sSeparator'],$aOptions['sQuoted']);
+        if($iIdKey!==false){
+            $oSurvey = SurveyDynamic::model($iSurveyId)->findByPk($aResponses[$iIdKey]);
+            if($oSurvey)
+            {
+                $bExistingsId=true;
+                $aExistingsId[]=$aResponses[$iIdKey];
+                // Do according to option
+                switch ($aOptions['sExistingId'])
+                {
+                    case 'replace':
+                        SurveyDynamic::model($iSurveyId)->deleteByPk($aResponses[$iIdKey]);
+                        SurveyDynamic::sid($iSurveyId);
+                        $oSurvey = new SurveyDynamic;
+                        break;
+                    case 'replaceanswers':
+                        break;
+                    case 'renumber':
+                        SurveyDynamic::sid($iSurveyId);
+                        $oSurvey = new SurveyDynamic;
+                        break;
+                    case 'skip':
+                    case 'ignore':
+                    default:
+                        $oSurvey=false; // Remove existing survey : don't import again
+                        break;
+                }
+            }
+            else
+            {
+                SurveyDynamic::sid($iSurveyId);
+                $oSurvey = new SurveyDynamic;
+            }
+        }else{
+            SurveyDynamic::sid($iSurveyId);
+            $oSurvey = new SurveyDynamic;
+        }
+        if($oSurvey){
+            // First rule for id and submitdate
+            if(is_int($iIdKey)) // Rule for id: only if id exists in vvimport file
+            {
+                if(!$bExistingsId) // If not exist : allways import it
+                {
+                    $oSurvey->id=$aResponses[$iIdKey];
+                }
+                elseif($aOptions['sExistingId']=='replace' || $aOptions['sExistingId']=='replaceanswers')// Set it depending with some options
+                {
+                    $oSurvey->id=$aResponses[$iIdKey];
+                }
+            }
+            if($aOptions['bNotFinalized'])
+            {
+                $oSurvey->submitdate=new CDbExpression('NULL');
+            }
+            elseif(is_int($iSubmitdateKey))
+            {
+                if( $aResponses[$iSubmitdateKey]=='{question_not_shown}' || $aResponses[$iSubmitdateKey]==''){
+                    // Maybe control valid date : see http://php.net/manual/en/function.checkdate.php#78362 for example
+                    $oSurvey->submitdate = new CDbExpression('NULL'); 
+                }else{
+                    $oSurvey->submitdate=$aResponses[$iSubmitdateKey];
+                }
+            }
+            foreach($aKeyForFieldNames as $sFieldName=>$iFieldKey)
+            {// Did we have to control validity (string|number|date|datetime) ? Have to test if Yii do it for us ! 
+                if( $aResponses[$iFieldKey]=='{question_not_shown}'){
+                    $oSurvey->$sFieldName = new CDbExpression('NULL'); 
+                }else{
+                    $oSurvey->$sFieldName = $aResponses[$iFieldKey];
+                }
+            }
+            if($oSurvey->save()){
+                if($bExistingsId && $aOptions['sExistingId']!='renumber')
+                {
+                    $aResponsesUpdated[]=$aResponses[$iIdReponsesKey];
+                }
+                else
+                {
+                    $aResponsesInserted[]=$aResponses[$iIdReponsesKey];
+                }
+            }else{
+                $aResponsesError[]=$aResponses[$iIdReponsesKey];
+            }
+        }
+    }
+
+    // End of import
+    // Construction of returned information
+    if($iNbResponseLine){
+        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses line in your file."),$iNbResponseLine);
+    }else{
+        $CSVImportResult['errors'][]=$clang->gT("No responses line in your file.");
+    }
+    if(count($aResponsesInserted)){
+        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses was inserted."),count($aResponsesInserted));
+        // Maybe add implode aResponsesInserted array
+    }
+    if(count($aResponsesUpdated)){
+        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses was updated."),count($aResponsesUpdated));
+    }
+    if(count($aResponsesError)){
+        $CSVImportResult['errors'][]=sprintf($clang->gT("%s responses can not be inserted or updated."),count($aResponsesError));
+    }
+    if(count($aExistingsId) && ($aOptions['sExistingId']=='skip' || $aOptions['sExistingId']=='ignore'))
+    {
+        $CSVImportResult['warnings'][]=sprintf($clang->gT("%s responses already exist."),count($aExistingsId));
+    }
+    $aTest=array($aOptions);
+    if(Yii::app()->getConfig('debug')>1){
+#        $CSVImportResult['success'][]="aResponsesInserted<pre>".var_export ($aResponsesInserted,true)."</pre>";
+#        $CSVImportResult['errors'][]="aResponsesError<pre>".var_export ($aResponsesError,true)."</pre>";
+#        $CSVImportResult['warnings'][]="aRealFieldNames<pre>".var_export ($aRealFieldNames,true)."</pre>";
+#        $CSVImportResult['warnings'][]="aCsvHeader<pre>".var_export ($aCsvHeader,true)."</pre>";
+#        $CSVImportResult['warnings'][]="aLemFieldNames<pre>".var_export ($aLemFieldNames,true)."</pre>";
+#        $CSVImportResult['warnings'][]="aKeyForFieldNames<pre>".var_export ($aKeyForFieldNames,true)."</pre>";
+#        $CSVImportResult['warnings'][]="aTest<pre>".var_export ($aTest,true)."</pre>";
+    }
+    return $CSVImportResult;
+}
+
 
 function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
 {
@@ -4637,4 +4834,3 @@ function TSVImportSurvey($sFullFilepath)
     
     return $results;
 }
-
