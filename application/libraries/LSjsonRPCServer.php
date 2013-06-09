@@ -24,7 +24,8 @@
 		$request = json_decode(file_get_contents('php://input'),true);
         // executes the task on local object
 		try {
-			if ($result = @call_user_func_array(array($object,$request['method']),$request['params'])) {
+            $result = @call_user_func_array(array($object,$request['method']),$request['params']);
+			if ($result!==false) {
 				$response = array (
 									'id' => $request['id'],
 									'result' => $result,
