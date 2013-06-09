@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.05beta1! 
+Welcome to LimeSurvey v2.05beta4! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -59,6 +59,72 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.05beta3 (build 130420) to 2.05beta4 (build 130609) Jun 9, 2013
+-New feature: ComfortUpdate now supports updates to/from unstable versions (Carsten Schmitz)
+-New feature: When copying a survey you can choose if you want to include/exclude start/end date/time (Carsten Schmitz)
+-New feature #7371: Allow to reset slider answer (Denis Chenu)
+-Fixed issue #7828: export_responses does not respect "lang" parameter (Menno Dekker)
+-Fixed issue #7859: In statistics, the types of question "Matrix (1-5)" is not good when all the answers are 5 (Menno Dekker)
+-Fixed issue #7894: Bar chart looses numeric indexes (Menno Dekker)
+-Fixed issue #7073: Rubbish text after upgrading in ComfortUpdate step 4 (Carsten Schmitz)
+-Fixed issue #7650: Copying a survey does not copy the start date time/Expiry date/time (Carsten Schmitz)
+-Fixed issue #7684: HTML entities visible in statistics graphs (Carsten Schmitz)
+-Fixed issue #7712: Some problems with statistics in pdf format (Carsten Schmitz)
+-Fixed issue #7714: multi numeric slider broken (Denis Chenu)
+-Fixed issue #7726: Value for participant attribute could be "select one", or so it seems (Carsten Schmitz)
+-Fixed Issue #7733: invite_participants method throws exception when some emails are registered (trougakoss)
+-Fixed issue #7734: Quick statistics | Filter 'Submission date: Equals' does not work (Carsten Schmitz)
+-Fixed issue #7737: Login in survey-frontend does not regard language (Carsten Schmitz)
+-Fixed issue #7744: False confirmation of adding subquestions when running into database limit (Carsten Schmitz)
+-Fixed issue #7746: Login screen is ugly in IE9 (Sam Mousa)
+-Fixed issue #7746: Now also working for php < 5.4 (Sam Mousa)
+-Fixed issue #7759: Sending email invitation takes lot of memory when having alot of tokens (Carsten Schmitz)
+-Fixed issue #7762: Incorrect graph for List(Radio) with Comment (Carsten Schmitz)
+-Fixed issue #7763: Better information display in condition editor gui (Denis Chenu)
+-Fixed issue #7764: Missing translation (Carsten Schmitz)
+-Fixed issue #7772: Useless icons appear on the IHM (tpartner)
+-Fixed issue #7777: Printable Version showing blank page (Carsten Schmitz)
+-Fixed issue #7784: Error on question import in csv-format (Carsten Schmitz)
+-Fixed issue #7787: Error "Cannot execute queries while other unbuffered queries are active" on function "Get statistics" (Carsten Schmitz)
+-Fixed issue #7793: Question numbers appear on printout even when survey settings are adjusted not to show them (Carsten Schmitz)
+-Fixed issue #7796: Statistics crash on numerical answers (Carsten Schmitz)
+-Fixed issue #7800: HTML-tags visible in queXML (PDF) (Adam Zammit)
+-Fixed issue #7803: IE7 Multiple choice with comments and button "precedent" (Denis Chenu)
+-Fixed issue #7807:  Error when deactivating survey (c_schmitz ) (Denis Chenu)
+-Fixed issue #7812: Iterate survey not working (Carsten Schmitz)
+-Fixed issue #7815: Textual answers not included in Excel export (Carsten Schmitz)
+-Fixed issue #7817: Error when creating question groups in more than one language and using MSSQL server (Carsten Schmitz)
+-Fixed issue #7820: When exporting statistics second page of PDF is always blank (Carsten Schmitz)
+-Fixed issue #7821: Broken image in admin interface (Carsten Schmitz)
+-Fixed issue #7825: Field summary in exported PDF only shows first 3 possible answers (Carsten Schmitz)
+-Fixed issue #7827: Ampersands in end url are encoded for non-admins (Carsten Schmitz)
+-Fixed issue #7829: not able to print answers in pdf with Chinese character (Denis Chenu)
+-Fixed Issue #7830: add question code to result of remote controls list_questions (trougakoss)
+-Fixed issue #7831: SQL error while installation and using Postgres (Carsten Schmitz)
+-Fixed issue #7833: Error "Cannot execute queries while other unbuffered queries are active" when editing conditions (Carsten Schmitz)
+-Fixed issue #7840: Short Text responses not displaying properly in .csv export (Carsten Schmitz)
+-Fixed issue #7843: Date/time field (HH:MM) does not display value, when visited again (Carsten Schmitz)
+-Fixed issue #7844: PHPSESSID cookie is not httponly (Carsten Schmitz)
+-Fixed issue #7851: SQL injection in "user_name" form field (Thanks fromanmu) (Denis Chenu)
+-Fixed issue #7860: Reflected XSS in delete user functionality (thanks to aesteban) (Denis Chenu)
+-Fixed issue #7864: RemoteControl2 function get_summary/completed_responses gives no valid return value (Carsten Schmitz)
+-Fixed issue #7865: Cannot filter tokens by reminder field (Carsten Schmitz)
+-Fixed issue #7866: The statistics page crashes when you click the "Clear" button (Carsten Schmitz)
+-Fixed issue #7876: When browsing responses time statistics no bubble help (tpartner)
+-Fixed issue #7877: Missing translation "Loading" when browsing tokens (Carsten Schmitz)
+-Fixed issue #7879: Missing translation (Carsten Schmitz)
+-Fixed issue #7898: Can't delete a survey (Carsten Schmitz)
+-Fixed issue: Don't translate mandatory column at token upload (Denis Chenu)
+-Fixed issue: Error when adding a token to a survey URL if there is no tokens available (Carsten Schmitz)
+-Fixed issue: Error when sending invitations/reminders and the token user has a UUID while not being present in the CPDB (Carsten Schmitz)
+-Fixed issue: Mandatory, invalid answers javascript alert or html string not shown (Denis Chenu)
+-Fixed issue: Memory issue for database backup during ComfortUpdate (Carsten Schmitz)
+-Fixed issue: No way to reset a forgotten password (Carsten Schmitz)
+-Fixed issue: Relevance equation seems to be editable even if not. (Denis Chenu)
+-Fixed issue: Relevane equation hints not translated (Carsten Schmitz)
+-Fixed issue: Untranslated strings when creating label sets from answer options/subquestions (Carsten Schmitz)
+-Fixed issue: Various problems when reloading a saved entry on a survey using tokens and anonymized responses (Carsten Schmitz)
 
 Changes from 2.05beta2 (build 130419) to 2.05beta3 (build 130420) Apr 19, 2013
 -Fixed issue: Error on running survey
