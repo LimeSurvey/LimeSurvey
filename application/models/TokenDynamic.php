@@ -220,7 +220,7 @@ class TokenDynamic extends LSActiveRecord
         $oResult=$this->getCommandBuilder()
             ->createFindCommand($this->getTableSchema(), $command)
             ->select('tid')
-            ->queryAll();
+            ->queryColumn();
         return $oResult;
     }
     
