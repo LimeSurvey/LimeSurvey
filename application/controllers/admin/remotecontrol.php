@@ -2190,6 +2190,8 @@ class remotecontrol_handle
 			$oTokens = TokenDynamic::model($iSurveyID);
 			$aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, true, $SQLemailstatuscondition);
 			$aAllTokens = $oTokens->findUninvitedIDs(false, 0, true, $SQLemailstatuscondition);
+            $iAllTokensCount=count($aAllTokens);
+            unset($aAllTokens);
 			if (empty($aResultTokens))
 				return array('status' => 'Error: No candidate tokens');
 
@@ -2205,12 +2207,8 @@ class remotecontrol_handle
 
 			if (empty($aResultTokens))
 				return array('status' => 'Error: No candidate tokens');
-
-
-
-
 			$aResult = emailTokens($iSurveyID,$aResultTokens,'invite');
-			$iLeft = count($aAllTokens) - count($aResultTokens);
+			$iLeft = $iAllTokensCount - count($aResultTokens);
 			$aResult['status'] =$iLeft. " left to send";
 
 			return $aResult;
@@ -2268,15 +2266,18 @@ class remotecontrol_handle
 				$SQLremindercountcondition = "remindercount < " . $iMaxReminders;
 
 			$oTokens = TokenDynamic::model($iSurveyID);
+            $aAllTokens = $oTokens->findUninvitedIDs(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $iAllTokensCount=count($aAllTokens);
+            unset($aAllTokens); // save some memory before the next query
+            
 			$aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
-			$aAllTokens = $oTokens->findUninvitedIDs(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
 
 			if (empty($aResultTokens))
 				return array('status' => 'Error: No candidate tokens');
 
 			$aResult = emailTokens($iSurveyID, $aResultTokens, 'remind');
 
-			$iLeft = count($aAllTokens) - count($aResultTokens);
+			$iLeft = $iAllTokensCount - count($aResultTokens);
 			$aResult['status'] =$iLeft. " left to send";
 			return $aResult;
 		}

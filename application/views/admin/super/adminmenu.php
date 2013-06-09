@@ -14,7 +14,7 @@
         <?php
             if($showupdate)
             { ?>
-            <div class='menubar-title-right'><a href='<?php echo $this->createUrl("admin/globalsettings");?>'><?php echo sprintf($clang->gT('Update available: %s'),$updateversion."($updatebuild)");?></a></div>
+            <div class='menubar-title-right'><a href='<?php echo $this->createUrl("admin/globalsettings");?>'><?php echo sprintf($clang->gT('Update available: %s'),$updateversion." ($updatebuild)");?></a></div>
             <?php } ?>
     </div>
     <div class='menubar-main'>

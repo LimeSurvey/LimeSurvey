@@ -5659,7 +5659,7 @@ function getUpdateInfo()
     $http->timeout=0;
     $http->data_timeout=0;
     $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-    $http->GetRequestArguments("http://update.limesurvey.org?build=".Yii::app()->getConfig("buildnumber").'&id='.md5(getGlobalSetting('SessionName')),$arguments);
+    $http->GetRequestArguments("http://update.limesurvey.org?build=".Yii::app()->getConfig("buildnumber").'&id='.md5(getGlobalSetting('SessionName')).'&crosscheck=true',$arguments);
 
     $updateinfo=false;
     $error=$http->Open($arguments);
@@ -5698,11 +5698,19 @@ function getUpdateInfo()
 function updateCheck()
 {
     $updateinfo=getUpdateInfo();
-    if (isset($updateinfo['Targetversion']['build']) && (int)$updateinfo['Targetversion']['build']>(int)Yii::app()->getConfig('buildnumber') && trim(Yii::app()->getConfig('buildnumber'))!='')
+    if (count($updateinfo) && trim(Yii::app()->getConfig('buildnumber'))!='')
     {
+        setGlobalSetting('updateversions',json_encode($updateinfo));
+        if (isset($updateinfo['master'])){
+            $updateinfo=$updateinfo['master'];
+        }
+        else
+        {
+            $updateinfo=reset($updateinfo);
+        }
         setGlobalSetting('updateavailable',1);
-        setGlobalSetting('updatebuild',$updateinfo['Targetversion']['build']);
-        setGlobalSetting('updateversion',$updateinfo['Targetversion']['versionnumber']);
+        setGlobalSetting('updatebuild',$updateinfo['build']);
+        setGlobalSetting('updateversion',$updateinfo['versionnumber']);
     }
     else
     {
