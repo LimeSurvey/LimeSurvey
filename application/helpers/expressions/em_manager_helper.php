@@ -4702,10 +4702,7 @@
                         }
 
                     }
-                    else if ($this->surveyOptions['allowsave'] && isset($_SESSION[$this->sessid]['scid']))
-                    {
-                        SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$thisstep));
-                    }
+
                     // Check Quotas
                     $bQuotaMatched = false;
                     $aQuotas = checkQuota('return', $this->sid);
