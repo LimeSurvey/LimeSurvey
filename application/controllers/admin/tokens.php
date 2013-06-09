@@ -1254,11 +1254,7 @@ class tokens extends Survey_Common_Action
         {
             if (empty($aData['tokenids']))
             {
-                $aTokens = Tokens_dynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
-                foreach($aTokens as $aToken)
-                {
-                    $aData['tokenids'][] = $aToken['tid'];
-                }
+                $aData['tokenids'] = Tokens_dynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
             }
             $this->_renderWrappedTemplate('token', array('tokenbar', $sSubAction), $aData);
         }
@@ -1292,6 +1288,7 @@ class tokens extends Survey_Common_Action
 
             $ctresult = Tokens_dynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
             $ctcount = count($ctresult);
+            unset($ctresult);
 
             $emresult = Tokens_dynamic::model($iSurveyId)->findUninvited($aTokenIds, $iMaxEmails, $bEmail, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
             $emcount = count($emresult);

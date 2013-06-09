@@ -8,14 +8,6 @@ if(!($error=="")) {
 if (isset($updateinfo['error']))
 {
     $clang->eT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
-
-    if ($updateinfo['error']==1)
-    {
-        setGlobalSetting('updatekey','');
-        $clang->eT('Your update key is invalid and was removed. ').'<br />';
-    }
-    else
-    $clang->eT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
 }
 
 if (!isset($updateinfo['files']))

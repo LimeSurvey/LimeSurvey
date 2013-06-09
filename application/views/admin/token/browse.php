@@ -35,6 +35,7 @@
 <script type="text/javascript">
     <!--
     var sAddParticipantToCPDBText = '<?php $clang->eT("Add participants to central database",'js');?>';
+    var sLoadText = '<?php $clang->eT("Loading...",'js');?>';
     var sSelectRowMsg = "<?php $clang->eT("Please select at least one participant.", 'js') ?>";
     var sWarningMsg = "<?php $clang->eT("Warning", 'js') ?>";
     var sRecordText = '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
@@ -139,7 +140,7 @@
         'token' => $clang->gT("Token"),
         'language' => $clang->gT("Language"),
         'sent' => $clang->gT("Invitation sent?"),
-        'sentreminder' => $clang->gT("Reminder sent?"),
+        'remindersent' => $clang->gT("Reminder sent?"),
         'remindercount' => $clang->gT("Reminder count"),
         'completed' => $clang->gT("Completed?"),
         'usesleft' => $clang->gT("Uses left"),

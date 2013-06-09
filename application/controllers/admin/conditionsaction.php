@@ -1040,7 +1040,7 @@ class conditionsaction extends Survey_Common_Action {
 
             $questionNavOptions .= CHtml::tag('option', array(
             'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$row['gid']}/qid/{$row['qid']}")),
-            $questionselecter
+            htmlspecialchars($row['title']).":".$questionselecter
             );
         }
         $questionNavOptions .= CHtml::closeTag('optgroup');
@@ -1057,9 +1057,9 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         $questionNavOptions .= CHtml::tag('option', array(
-        'value'=>$this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$gid/qid/$qid"),
-        'selected'=>'selected'),
-        $questiontitle .': '. $questiontextshort);
+            'value'=>$this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$gid/qid/$qid"),
+            'selected'=>'selected'),
+            $questiontitle .': '. $questiontextshort);
         $questionNavOptions .= CHtml::closeTag('optgroup');
         $questionNavOptions .= CHtml::openTag('optgroup', array('class'=> 'activesurveyselect', 'label'=>$clang->gT("After","js")));
 
@@ -1078,7 +1078,7 @@ class conditionsaction extends Survey_Common_Action {
             }
             $questionNavOptions .=  CHtml::tag('option', array(
             'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$row['gid']}/qid/{$row['qid']}")),
-            $row['title'].':'.$questionselecter
+            htmlspecialchars($row['title']).":".$questionselecter
             );
         }
         $questionNavOptions .= CHtml::closeTag('optgroup');
@@ -1284,7 +1284,8 @@ class conditionsaction extends Survey_Common_Action {
                     ->bindValue(":lang1", $sLanguage, PDO::PARAM_STR)
                     ->bindValue(":lang2", $sLanguage, PDO::PARAM_STR)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-                    
+                    $aConditionsResult1=$result->readAll(); // Read result into an array to be able to close the resultset to enable further queris
+
                     $querytoken = "SELECT count(*) as recordcount "
                     ."FROM {{conditions}} "
                     ."WHERE "
@@ -1324,7 +1325,7 @@ class conditionsaction extends Survey_Common_Action {
                         {
                             $aConditionsMerged[]=$arow;
                         }
-                        foreach ($result->readAll() as $arow)
+                        foreach ($aConditionsResult1 as $arow)
                         {
                             $aConditionsMerged[]=$arow;
                         }

@@ -85,6 +85,7 @@ class GlobalSettings extends Survey_Common_Action
             $data[$key] = $row;
         }
         $data['thisupdatecheckperiod'] = getGlobalSetting('updatecheckperiod');
+        $data['sUpdateNotification'] = getGlobalSetting('updatenotification');
         Yii::app()->loadLibrary('Date_Time_Converter');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         $datetimeobj = new date_time_converter(getGlobalSetting("updatelastcheck"), 'Y-m-d H:i:s'); 
@@ -95,6 +96,7 @@ class GlobalSettings extends Survey_Common_Action
         $data['updateinfo'] = getGlobalSetting("updateinfo");
         $data['updatebuild'] = getGlobalSetting("updatebuild");
         $data['updateversion'] = getGlobalSetting("updateversion");
+        $data['aUpdateVersions'] = json_decode(getGlobalSetting("updateversions"),true);
         $data['allLanguages'] = getLanguageData(false, Yii::app()->session['adminlang']);
         if (trim(Yii::app()->getConfig('restrictToLanguages')) == '') {
             $data['restrictToLanguages'] = array_keys($data['allLanguages']);
@@ -141,6 +143,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('restrictToLanguages', trim($aRestrictToLanguages));
         setGlobalSetting('sitename', strip_tags($_POST['sitename']));
         setGlobalSetting('updatecheckperiod', (int)($_POST['updatecheckperiod']));
+        setGlobalSetting('updatenotification', strip_tags($_POST['updatenotification']));
         setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string($_POST['defaulthtmleditormode']));
         setGlobalSetting('defaultquestionselectormode', sanitize_paranoid_string($_POST['defaultquestionselectormode']));
         setGlobalSetting('defaulttemplateeditormode', sanitize_paranoid_string($_POST['defaulttemplateeditormode']));

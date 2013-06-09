@@ -59,7 +59,8 @@
     </div>
 </div>
 
-<?php echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post', array('id'=>'resulttableform')); ?>
+<?php 
+echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post', array('id'=>'resulttableform')); ?>
 <!-- DATA TABLE -->
 <?php if ($fncount < 10) { ?>
     <table class='browsetable' style='width:100%'>
@@ -93,7 +94,7 @@
                 }
             ?>
             <th class='<?php echo $gbc; ?>'>
-                <strong><?php echo flattenText(stripJavaScript($fn[1]), true); ?></strong>
+                <strong><?php echo $fn[1]; ?></strong>
             </th>
             <?php } ?>
     </tr>
