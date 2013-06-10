@@ -178,46 +178,47 @@ function LEMis_string(a)
 }
 
 /**
- * Convert a value using a inputArray and a outputArray
-
+ * Find the closest matching numerical input values in a list an replace it by the
+ * corresponding value within another list 
+ *
  * @author Johannes Weberhofer, 2013
-
- * @param numeric inputValue
- * @param numeric strict - 1 for exact matches only otherwise interpolation the 
+ *
+ * @param numeric fValueToReplace
+ * @param numeric iStrict - 1 for exact matches only otherwise interpolation the 
  * 		  closest value should be returned
- * @param string inputTable - comma seperated list of values to translate from
- * @param string outputTable - comma seperated list of values to translate to
+ * @param string sTranslateFromList - comma seperated list of values to translate from
+ * @param string sTranslateToList - comma seperated list of values to translate to
  * @return numeric
  */
-function LEMconvertValue( inputValue, strict, inputTable, outputTable) 
+function LEMconvert_value( fValueToReplace, iStrict, sTranslateFromList, sTranslateToList) 
 {
-	if ( isNaN(inputValue) || (strict==null) || (inputTable==null) || (outputTable==null) ) 
+	if ( isNaN(fValueToReplace) || (iStrict==null) || (sTranslateFromList==null) || (sTranslateToList==null) ) 
 	{
 		return null;
 	}
-	iValues = inputTable.split(",");
-	oValues = outputTable.split(",");
-	if ( (iValues.length > 0)  && (iValues.length == oValues.length) ) 
+	aFromValues = sTranslateFromList.split(",");
+	aToValues = sTranslateToList.split(",");
+	if ( (aFromValues.length > 0)  && (aFromValues.length == aToValues.length) ) 
 	{
-		minimumDiff = null;
-		closestCounter = 0;
-		for ( i = 0; i < iValues.length; i++) {
-			if ( isNaN(iValues[i]) ) {
+		fMinimumDiff = null;
+		iNearestIndex = 0;
+		for ( i = 0; i < aFromValues.length; i++) {
+			if ( isNaN(aFromValues[i]) ) {
 				// break processing when non-numeric variables are about to be processed
 				return null;
 			}
-			diff = Math.abs(iValues[i] - inputValue);
-			if (diff === 0) {
-				return oValues[i];
+			fCurrentDiff = Math.abs(aFromValues[i] - fValueToReplace);
+			if (fCurrentDiff === 0) {
+				return aToValues[i];
 			} else if (i === 0) {
-				minimumDiff = diff;
-			} else if ( minimumDiff > diff ) {
-				minimumDiff = diff;
-				closestCounter = i;
+				fMinimumDiff = fCurrentDiff;
+			} else if ( fMinimumDiff > fCurrentDiff ) {
+				fMinimumDiff = fCurrentDiff;
+				iNearestIndex = i;
 			}
 		}					
-		if ( strict !== 1 ) {
-			return oValues[closestCounter];
+		if ( iStrict !== 1 ) {
+			return aToValues[iNearestIndex];
 		}
 	}
 	return null;
