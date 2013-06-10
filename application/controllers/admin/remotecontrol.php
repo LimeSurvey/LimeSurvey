@@ -2473,7 +2473,7 @@ class remotecontrol_handle
      * @param array $aFields Optional Selected fields
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
-    public function export_token_response($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='full', $sResponseType='short', $aFields=null)
+    public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='full', $sResponseType='short', $aFields=null)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         
