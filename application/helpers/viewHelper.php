@@ -114,7 +114,6 @@ class viewHelper
     {
         // Default options
         if(!isset($option['LEMcompat'])){$option['LEMcompat']=false;}
-        if(!isset($option['key'])){$option['key']=false;}
         if($option['LEMcompat']){$option['separator']="_";}
         if(!isset($option['separator'])){$option['separator']=array('[',']');}
 
@@ -125,18 +124,19 @@ class viewHelper
                 $questioncode=$field['title'];
                 if(isset($field['aid']) && $field['aid'])
                 {
-                    if(!$option['LEMcompat']){
-                        if(is_array($option['separator'])){ // Count ?
-                            $questioncode.=$option['separator'][0].$field['aid'].$option['separator'][1];
-                        }else{ // Test if is string ?
-                            $questioncode.=$option['separator'].$field['aid'];
-                        }
+                    if(is_array($option['separator'])){ // Count ?
+                        $questioncode.=$option['separator'][0].$field['aid'].$option['separator'][1];
+                    }else{ // Test if is string ?
+                        $questioncode.=$option['separator'].$field['aid'];
                     }
                 }
                 if(isset($field['scale']) && $field['scale'])
                 {
-                    $scalenum=intval($field['scale_id'])+1;
-                    $scalenum=intval($field['scale_id'])+1;
+                    if($option['LEMcompat']){
+                        $scalenum=intval($field['scale_id']);
+                    }else{
+                        $scalenum=intval($field['scale_id'])+1;
+                    }
                     if(is_array($option['separator'])){ // Count ?
                         $questioncode.=$option['separator'][0].$scalenum.$option['separator'][1];
                     }else{ // Test if is string ?
