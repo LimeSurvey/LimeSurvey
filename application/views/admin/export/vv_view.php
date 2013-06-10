@@ -3,8 +3,8 @@
     <div class='header ui-widget-header'><?php $clang->eT("Export a VV survey file");?></div>
     <ul>
         <li>
-            <label for='sid'><?php $clang->eT("Export survey");?>:</label>
-            <?php echo CHtml::textField('sid', $surveyid,array('size'=>10, 'readonly'=>'readonly')); ?>
+            <label for='surveyid'><?php $clang->eT("Export survey");?>:</label>
+            <?php echo CHtml::textField('surveyid', $surveyid,array('size'=>10, 'readonly'=>'readonly')); ?>
         </li>
         <li>
             <label for='completionstate'><?php $clang->eT("Export");?>:</label>
@@ -19,8 +19,8 @@
             <?php echo CHtml::textField('extension', 'csv',array('size'=>3)); ?>
         </li>
         <li>
-            <label for='vvversion' title='<?php $clang->eT("If you want to import survey on old installation or if your survey have problem: use old version");?>'><?php $clang->eT("VV export version");?>: </label>
-            <?php  echo CHtml::dropDownList('vvversion', "2", array(
+            <label for='vvversion' title='<?php $clang->eT("If you want to import survey on old installation or if your survey have problem: use old version (automatically selected if some code are duplicated).");?>'><?php $clang->eT("VV export version");?>: </label>
+            <?php  echo CHtml::dropDownList('vvversion', $vvversionseleted, array(
                 '2' => $clang->gT("Last VV version"), 
                 '1' => $clang->gT("Old VV version"),
                 ));; ?>

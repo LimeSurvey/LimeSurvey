@@ -1013,24 +1013,27 @@ class database extends Survey_Common_Action
 
             $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
             SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$surveyid));
-            foreach($aURLParams as $aURLParam)
+            if(isset($aURLParams))
             {
-                $aURLParam['parameter']=trim($aURLParam['parameter']);
-                if ($aURLParam['parameter']=='' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/',$aURLParam['parameter']) || $aURLParam['parameter']=='sid' || $aURLParam['parameter']=='newtest' || $aURLParam['parameter']=='token' || $aURLParam['parameter']=='lang')
+                foreach($aURLParams as $aURLParam)
                 {
-                    continue;  // this parameter name seems to be invalid - just ignore it
-                }
-                unset($aURLParam['act']);
-                unset($aURLParam['title']);
-                unset($aURLParam['id']);
-                if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=NULL;
-                if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
-                $aURLParam['sid']=$surveyid;
+                    $aURLParam['parameter']=trim($aURLParam['parameter']);
+                    if ($aURLParam['parameter']=='' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/',$aURLParam['parameter']) || $aURLParam['parameter']=='sid' || $aURLParam['parameter']=='newtest' || $aURLParam['parameter']=='token' || $aURLParam['parameter']=='lang')
+                    {
+                        continue;  // this parameter name seems to be invalid - just ignore it
+                    }
+                    unset($aURLParam['act']);
+                    unset($aURLParam['title']);
+                    unset($aURLParam['id']);
+                    if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=NULL;
+                    if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
+                    $aURLParam['sid']=$surveyid;
 
-                $param = new SurveyURLParameter;
-                foreach ($aURLParam as $k => $v)
-                    $param->$k = $v;
-                $param->save();
+                    $param = new SurveyURLParameter;
+                    foreach ($aURLParam as $k => $v)
+                        $param->$k = $v;
+                    $param->save();
+                }
             }
             $updatearray= array('admin'=> Yii::app()->request->getPost('admin'),
             'expires'=>$expires,

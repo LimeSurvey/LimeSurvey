@@ -4146,9 +4146,11 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
     if (!array_key_exists($aOptions['sCharset'], aEncodingsArray())) {
         $aOptions['sCharset']="utf8";
     }
+
+    // Prepare an array of sentence for result
     $CSVImportResult=array();
-    $handle = fopen($sFullFilepath, "r"); // Need to be adapted for Mac ? in options ?
     // Read the file
+    $handle = fopen($sFullFilepath, "r"); // Need to be adapted for Mac ? in options ?
     while (!feof($handle))
     {
         $buffer = fgets($handle); //To allow for very long lines . Another option is fgetcsv (0 to length), but need mb_convert_encoding
@@ -4257,19 +4259,21 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
             }
             elseif(is_int($iSubmitdateKey))
             {
-                if( $aResponses[$iSubmitdateKey]=='{question_not_shown}' || $aResponses[$iSubmitdateKey]==''){
-                    // Maybe control valid date : see http://php.net/manual/en/function.checkdate.php#78362 for example
+                if( $aResponses[$iSubmitdateKey]=='{question_not_shown}' || trim($aResponses[$iSubmitdateKey]=='')){
                     $oSurvey->submitdate = new CDbExpression('NULL'); 
                 }else{
+                    // Maybe control valid date : see http://php.net/manual/en/function.checkdate.php#78362 for example
                     $oSurvey->submitdate=$aResponses[$iSubmitdateKey];
                 }
             }
             foreach($aKeyForFieldNames as $sFieldName=>$iFieldKey)
-            {// Did we have to control validity (string|number|date|datetime) ? Have to test if Yii do it for us ! 
+            {
                 if( $aResponses[$iFieldKey]=='{question_not_shown}'){
                     $oSurvey->$sFieldName = new CDbExpression('NULL'); 
                 }else{
-                    $oSurvey->$sFieldName = $aResponses[$iFieldKey];
+                    // Did we have to control validity (string|number|date|datetime) ? Yii do it for us BUT invalid numeric is set to 0 and date set to 0000-00-00 00:00:00 (with mysql)
+                    $sResponse=str_replace(array("{quote}","{tab}","{cr}","{newline}","{lbrace}"),array("\"","\t","\r","\n","{"),$aResponses[$iFieldKey]);
+                    $oSurvey->$sFieldName = $sResponse;
                 }
             }
             if($oSurvey->save()){
@@ -4307,16 +4311,6 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
     if(count($aExistingsId) && ($aOptions['sExistingId']=='skip' || $aOptions['sExistingId']=='ignore'))
     {
         $CSVImportResult['warnings'][]=sprintf($clang->gT("%s responses already exist."),count($aExistingsId));
-    }
-    $aTest=array($aOptions);
-    if(Yii::app()->getConfig('debug')>1){
-#        $CSVImportResult['success'][]="aResponsesInserted<pre>".var_export ($aResponsesInserted,true)."</pre>";
-#        $CSVImportResult['errors'][]="aResponsesError<pre>".var_export ($aResponsesError,true)."</pre>";
-#        $CSVImportResult['warnings'][]="aRealFieldNames<pre>".var_export ($aRealFieldNames,true)."</pre>";
-#        $CSVImportResult['warnings'][]="aCsvHeader<pre>".var_export ($aCsvHeader,true)."</pre>";
-#        $CSVImportResult['warnings'][]="aLemFieldNames<pre>".var_export ($aLemFieldNames,true)."</pre>";
-#        $CSVImportResult['warnings'][]="aKeyForFieldNames<pre>".var_export ($aKeyForFieldNames,true)."</pre>";
-#        $CSVImportResult['warnings'][]="aTest<pre>".var_export ($aTest,true)."</pre>";
     }
     return $CSVImportResult;
 }

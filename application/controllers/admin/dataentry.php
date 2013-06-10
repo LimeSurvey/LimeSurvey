@@ -142,7 +142,7 @@ class dataentry extends Survey_Common_Action
         Yii::app()->loadHelper('admin/import');
         // Fill option 
         $aOptions=array();
-        $aOptions['bDeleteFistLine']=true;// Force, maybe function change ;)
+        $aOptions['bDeleteFistLine']=(Yii::app()->request->getPost('dontdeletefirstline') == "dontdeletefirstline")?false:true;// Force, maybe function change ;)
         if(Yii::app()->request->getPost('noid')==="noid"){
             $aOptions['sExistingId']='ignore';
         }else{
@@ -161,135 +161,6 @@ class dataentry extends Survey_Common_Action
         }
         $aData['aResult']['errors']=(isset($aResult['errors'])) ? $aResult['errors'] : false;
         $aData['aResult']['warnings']=(isset($aResult['warnings'])) ? $aResult['warnings'] : false;
-
-#        unset($aFileContents[0]); //delete the first line
-
-#        SurveyDynamic::sid($surveyid);
-#        $survey = new SurveyDynamic;
-
-#        list($aFieldnames, $nbOfFields) = $this->_getFieldInfo($aFileContents);
-
-#        $aRealFieldNames = Yii::app()->db->getSchema()->getTable($survey->tableName())->getColumnNames();
-
-#        if (Yii::app()->request->getPost('noid') == "noid") {
-#            unset($aRealFieldNames[0]);
-#        }
-#        if (Yii::app()->request->getPost('finalized') == "notfinalized") {
-#            unset($aRealFieldNames[1]);
-#        }
-
-#        unset($aFileContents[1]); //delete the second line
-
-#        //See if any fields in the import file don't exist in the active survey
-#        $missing = array_diff($aFieldnames, $aRealFieldNames);
-#        if (is_array($missing) && count($missing) > 0) {
-#            foreach ($missing as $key => $val)
-#            {
-#                $donotimport[] = $key;
-#                unset($aFieldnames[$key]);
-#            }
-#        }
-
-#        if (Yii::app()->request->getPost('finalized') == "notfinalized") {
-#            $donotimport[] = 1;
-#            unset($aFieldnames[1]);
-#        }
-
-#        $importcount = 0;
-#        $recordcount = 0;
-
-#        // Find out which fields are datefields, these have to be null if the imported string is empty
-#        $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
-
-#        $datefields = array();
-#        $numericfields = array();
-#        foreach ($fieldmap as $field)
-#        {
-#            if ($field['type'] == 'D') {
-#                $datefields[] = $field['fieldname'];
-#            }
-
-#            if ($field['type'] == 'N' || $field['type'] == 'K') {
-#                $numericfields[] = $field['fieldname'];
-#            }
-#        }
-
-#        foreach ($aFileContents as $row)
-#        {
-#            if (trim($row) != "") {
-#                $recordcount++;
-
-#                $fieldvalues = $this->_prepFieldValues($aFieldnames, $row, $nbOfFields, $donotimport);
-
-#                $fielddata = ($aFieldnames === array() && $fieldvalues === array() ? array()
-#                : array_combine($aFieldnames, $fieldvalues));
-#                foreach ($datefields as $datefield)
-#                {
-#                    if (is_null(@$fielddata[ $datefield ])) {
-#                        unset($fielddata[ $datefield ]);
-#                    }
-#                }
-
-#                foreach ($numericfields as $numericfield)
-#                {
-#                    if ($fielddata[ $numericfield ] == '') {
-#                        unset($fielddata[ $numericfield ]);
-#                    }
-#                }
-
-#                if (isset($fielddata['submitdate']) && $fielddata['submitdate'] == 'NULL') {
-#                    unset ($fielddata['submitdate']);
-#                }
-#                if ($fielddata['lastpage'] == '') $fielddata['lastpage'] = '0';
-
-#                $recordexists = false;
-#                if (isset($fielddata['id'])) {
-#                    $result = $survey->findAllByAttributes(array('id' => $fielddata['id']));
-#                    $recordexists = $result > 0;
-
-#                    // Check if record with same id exists
-#                    if ($recordexists) {
-#                        if (Yii::app()->request->getPost('insert') == "ignore") {
-#                            $aData['msgs'][] .= sprintf($clang->gT("Record ID %s was skipped because of duplicate ID."), $fielddata['id']);
-#                            continue;
-#                        }
-#                        if (Yii::app()->request->getPost('insert') == "replace") {
-#                            $result = $survey->deleteSomeRecords(array('id' => $fielddata['id']));
-#                            $recordexists = false;
-#                        }
-#                    }
-#                }
-
-#                if (Yii::app()->request->getPost('insert') == "renumber") {
-#                    unset($fielddata['`id`']);
-#                }
-
-#                if (isset($fielddata['`id`'])) {
-#                    switchMSSQLIdentityInsert("survey_$surveyid", true);
-#                }
-
-#                $result = $survey->insertRecords($fielddata);
-
-#                if (isset($fielddata['id'])) {
-#                    switchMSSQLIdentityInsert("survey_$surveyid", false);
-#                }
-
-#                if (!$result) {
-#                    $aData['error_msg'] = sprintf($clang->gT("Import failed on record %d"), $recordcount);
-#                    $this->_renderWrappedTemplate('dataentry', 'warning_header', $aData);
-#                    die();
-#                }
-#                else
-#                {
-#                    $importcount++;
-#                }
-
-#                $aData['importcount'] = $importcount;
-#            }
-#        }
-
-#        $aData['noid'] = Yii::app()->request->getPost('noid');
-#        $aData['insertstyle'] = Yii::app()->request->getPost('insertstyle');
 
         $this->_renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
     }
@@ -467,7 +338,7 @@ class dataentry extends Survey_Common_Action
 
                 
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
-                $sOldTimingsTable=substr($oldtable,0,strrpos($oldtable,'_')).'_timings'.substr($oldtable,strrpos($oldtable,'_'));
+                $sOldTimingsTable=substr($sourceTable,0,strrpos($sourceTable,'_')).'_timings'.substr($sourceTable,strrpos($sourceTable,'_'));
                 $sNewTimingsTable = "{{{$surveyid}_timings}}";
 
                 if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))

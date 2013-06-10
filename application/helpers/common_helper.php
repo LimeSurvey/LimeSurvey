@@ -1789,7 +1789,6 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 {
                     $this_answer=$row['answer'];
                 } // while
-                $this_answer=$row['answer'];
                 if ($sValue == "-oth-")
                 {
                     $this_answer=$oLanguage->gT("Other");

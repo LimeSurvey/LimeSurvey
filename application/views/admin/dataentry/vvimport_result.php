@@ -4,19 +4,19 @@
 	</div>
 	<dl>
 	<?php if(isset($aResult['success']) && is_array($aResult['success'])) {?>
-		<dt class='successheader'><?php $clang->eT("Success"); ?></dt>
+		<dt class='success'><?php $clang->eT("Success"); ?></dt>
 		<?php foreach($aResult['success'] as $sSucces) { ?>
 			<dd><?php echo $sSucces ?></dd>
 		<?php }?>
 	<?php } ?>
 	<?php if(isset($aResult['errors']) && is_array($aResult['errors'])) {?>
-		<dt class='errorheader'><?php $clang->eT("Error"); ?></dt>
+		<dt class='error'><?php $clang->eT("Error"); ?></dt>
 		<?php foreach($aResult['errors'] as $sError) { ?>
 			<dd><?php echo $sError ?></dd>
 		<?php }?>
 	<?php } ?>
 	<?php if(isset($aResult['warnings']) && is_array($aResult['warnings'])) {?>
-		<dt class='errorheader'><?php $clang->eT("Warning"); ?></dt>
+		<dt class='warning'><?php $clang->eT("Warning"); ?></dt>
 		<?php foreach($aResult['warnings'] as $sWarning) { ?>
 			<dd><?php echo $sWarning ?></dd>
 		<?php }?>

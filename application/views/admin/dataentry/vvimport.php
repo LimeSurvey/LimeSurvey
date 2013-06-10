@@ -29,7 +29,10 @@
             <li>
                 <label for='vvcharset'><?php $clang->eT("Character set of the file:"); ?></label>
                 <?php  echo CHtml::dropDownList('vvcharset',false,$aEncodings,array('empty' => $clang->gT('Automatic (UTF-8)'))); ?>
-
+            </li>
+            <li>
+                <label for='dontdeletefirstline' title='<?php $clang->eT("With real vv file : questions code are in second line"); ?>'><?php $clang->eT("First line contains the code of questions:"); ?></label>
+                <?php echo CHtml::checkBox('dontdeletefirstline',false,array('value'=>"dontdeletefirstline")); ?>
             </li>
         </ul>
         <p>
