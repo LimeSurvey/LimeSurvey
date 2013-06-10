@@ -120,7 +120,8 @@ class AdminController extends LSYii_Controller
         if (empty(Yii::app()->session['adminlang']))
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
-        $this->lang = new Limesurvey_lang(Yii::app()->session['adminlang']);
+        global $clang; // Needed so EM can localize equation hints until a better solution is found
+        $this->lang = $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
         Yii::app()->setLang($this->lang);
 
         if (!empty($this->user_id))
@@ -402,7 +403,7 @@ class AdminController extends LSYii_Controller
             Yii::app()->session['flashmessage'] = $clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
         }
 
-        $data['showupdate'] = (Permission::model()->hasGlobalPermission('superadmin','read') && getGlobalSetting("updatelastcheck")>0 && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );
+        $data['showupdate'] = (Permission::model()->hasGlobalPermission('superadmin','read') && getGlobalSetting("updatenotification")!='never' && getGlobalSetting("updatelastcheck")>0 && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );
         $data['updateversion'] = getGlobalSetting("updateversion");
         $data['updatebuild'] = getGlobalSetting("updatebuild");
         $data['surveyid'] = $surveyid;

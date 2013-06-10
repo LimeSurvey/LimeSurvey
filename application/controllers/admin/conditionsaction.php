@@ -1039,7 +1039,7 @@ class conditionsaction extends Survey_Common_Action {
 
             $questionNavOptions .= CHtml::tag('option', array(
             'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$row['gid']}/qid/{$row['qid']}")),
-            $questionselecter
+            strip_tags($row['title']).':'.$questionselecter
             );
         }
         $questionNavOptions .= CHtml::closeTag('optgroup');
@@ -1077,7 +1077,7 @@ class conditionsaction extends Survey_Common_Action {
             }
             $questionNavOptions .=  CHtml::tag('option', array(
             'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$row['gid']}/qid/{$row['qid']}")),
-            $row['title'].':'.$questionselecter
+            strip_tags($row['title']).':'.$questionselecter
             );
         }
         $questionNavOptions .= CHtml::closeTag('optgroup');

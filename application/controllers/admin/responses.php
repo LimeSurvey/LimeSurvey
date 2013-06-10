@@ -473,15 +473,13 @@ class responses extends Survey_Common_Action
                         continue;
                     if ($fielddetails['type'] == 'answer_time')
                         continue;
-
-#                    if (isset($fielddetails['subquestion']) && $fielddetails['subquestion'] != '')
-#                        $question .=' (' . $fielddetails['subquestion'] . ')';
-#                    if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
-#                        $question .=' (' . $fielddetails['subquestion1'] . ':' . $fielddetails['subquestion2'] . ')';
-#                    if (isset($fielddetails['scale_id']))
-#                        $question .='[' . $fielddetails['scale'] . ']';
-                    $question = viewHelper::getFieldText($fielddetails);
-                    $fnames[] = array($fielddetails['fieldname'], $question,'code'=>viewHelper::getFieldCode($fielddetails));
+                    if (isset($fielddetails['subquestion']) && $fielddetails['subquestion'] != '')
+                        $question .=' (' . $fielddetails['subquestion'] . ')';
+                    if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
+                        $question .=' (' . $fielddetails['subquestion1'] . ':' . $fielddetails['subquestion2'] . ')';
+                    if (isset($fielddetails['scale_id']))
+                        $question .='[' . $fielddetails['scale'] . ']';
+                    $fnames[] = array($fielddetails['fieldname'], flattenText(stripJavaScript($question), true));
                 }
                 elseif ($fielddetails['aid'] !== 'filecount')
                 {

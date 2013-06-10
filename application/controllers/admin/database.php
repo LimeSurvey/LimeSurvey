@@ -910,29 +910,12 @@ class database extends Survey_Common_Action
                     $url = Yii::app()->request->getPost('url_'.$langname);
                     if ($url == 'http://') {$url="";}
 
-                    // Clean XSS attacks
-                    if ($xssfilter)
-                    {
-                        $purifier = new CHtmlPurifier();
-                        $purifier->options = array(
-                        'HTML.Allowed' => 'p,a[href],b,i'
-                        );
-                        $short_title=$purifier->purify(Yii::app()->request->getPost('short_title_'.$langname));
-                        $description=$purifier->purify(Yii::app()->request->getPost('description_'.$langname));
-                        $welcome=$purifier->purify(Yii::app()->request->getPost('welcome_'.$langname));
-                        $endtext=$purifier->purify(Yii::app()->request->getPost('endtext_'.$langname));
-                        $sURLDescription=$purifier->purify(Yii::app()->request->getPost('urldescrip_'.$langname));
-                        $sURL=$purifier->purify(Yii::app()->request->getPost('url_'.$langname));
-                    }
-                    else
-                    {
-                        $short_title = html_entity_decode(Yii::app()->request->getPost('short_title_'.$langname), ENT_QUOTES, "UTF-8");
-                        $description = html_entity_decode(Yii::app()->request->getPost('description_'.$langname), ENT_QUOTES, "UTF-8");
-                        $welcome = html_entity_decode(Yii::app()->request->getPost('welcome_'.$langname), ENT_QUOTES, "UTF-8");
-                        $endtext = html_entity_decode(Yii::app()->request->getPost('endtext_'.$langname), ENT_QUOTES, "UTF-8");
-                        $sURLDescription = html_entity_decode(Yii::app()->request->getPost('urldescrip_'.$langname), ENT_QUOTES, "UTF-8");
-                        $sURL = html_entity_decode(Yii::app()->request->getPost('url_'.$langname), ENT_QUOTES, "UTF-8");
-                    }
+                    $short_title = html_entity_decode(Yii::app()->request->getPost('short_title_'.$langname), ENT_QUOTES, "UTF-8");
+                    $description = html_entity_decode(Yii::app()->request->getPost('description_'.$langname), ENT_QUOTES, "UTF-8");
+                    $welcome = html_entity_decode(Yii::app()->request->getPost('welcome_'.$langname), ENT_QUOTES, "UTF-8");
+                    $endtext = html_entity_decode(Yii::app()->request->getPost('endtext_'.$langname), ENT_QUOTES, "UTF-8");
+                    $sURLDescription = html_entity_decode(Yii::app()->request->getPost('urldescrip_'.$langname), ENT_QUOTES, "UTF-8");
+                    $sURL = html_entity_decode(Yii::app()->request->getPost('url_'.$langname), ENT_QUOTES, "UTF-8");
 
                     // Fix bug with FCKEditor saving strange BR types
                     $short_title = Yii::app()->request->getPost('short_title_'.$langname);
@@ -1030,24 +1013,27 @@ class database extends Survey_Common_Action
 
             $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
             SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$surveyid));
-            foreach($aURLParams as $aURLParam)
+            if(isset($aURLParams))
             {
-                $aURLParam['parameter']=trim($aURLParam['parameter']);
-                if ($aURLParam['parameter']=='' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/',$aURLParam['parameter']) || $aURLParam['parameter']=='sid' || $aURLParam['parameter']=='newtest' || $aURLParam['parameter']=='token' || $aURLParam['parameter']=='lang')
+                foreach($aURLParams as $aURLParam)
                 {
-                    continue;  // this parameter name seems to be invalid - just ignore it
-                }
-                unset($aURLParam['act']);
-                unset($aURLParam['title']);
-                unset($aURLParam['id']);
-                if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=NULL;
-                if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
-                $aURLParam['sid']=$surveyid;
+                    $aURLParam['parameter']=trim($aURLParam['parameter']);
+                    if ($aURLParam['parameter']=='' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/',$aURLParam['parameter']) || $aURLParam['parameter']=='sid' || $aURLParam['parameter']=='newtest' || $aURLParam['parameter']=='token' || $aURLParam['parameter']=='lang')
+                    {
+                        continue;  // this parameter name seems to be invalid - just ignore it
+                    }
+                    unset($aURLParam['act']);
+                    unset($aURLParam['title']);
+                    unset($aURLParam['id']);
+                    if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=NULL;
+                    if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
+                    $aURLParam['sid']=$surveyid;
 
-                $param = new SurveyURLParameter;
-                foreach ($aURLParam as $k => $v)
-                    $param->$k = $v;
-                $param->save();
+                    $param = new SurveyURLParameter;
+                    foreach ($aURLParam as $k => $v)
+                        $param->$k = $v;
+                    $param->save();
+                }
             }
             $updatearray= array('admin'=> Yii::app()->request->getPost('admin'),
             'expires'=>$expires,

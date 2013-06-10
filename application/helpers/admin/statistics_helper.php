@@ -2240,7 +2240,7 @@ class statistics_helper {
 
 
             //no data
-            if ($gdata[$i] == "N/A")
+            if ($gdata[$i] === "N/A")
             {
                 switch($outputType)
                 {

@@ -274,6 +274,8 @@ $(document).ready(function() {
         edit:false,
         refresh: true,
         search: false,
+            alertcap: sWarningMsg,
+            alerttext: sSelectRowMsg,
             addtitle: createParticipantTxt, 
             deltitle: deleteParticipantTxt, 
             refreshtitle: refreshListTxt},

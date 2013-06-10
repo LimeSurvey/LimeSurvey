@@ -50,7 +50,7 @@ class ExcelWriter extends Writer
             $this->workbook->send('results-survey'.$survey->id.'.xls');
   
         }
-        $worksheetName = $survey->languageSettings[0]['surveyls_title'];
+        $worksheetName = $survey->languageSettings['surveyls_title'];
         $worksheetName=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$worksheetName),0,31); // Remove invalid characters
 
         $this->workbook->setVersion(8);

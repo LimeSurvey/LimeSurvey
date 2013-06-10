@@ -792,6 +792,20 @@
             return count($releqns);
         }
 
+         /**
+        * Return array database name as key, LEM name as value
+        * @example (['gender'] => '38612X10X145')
+        * @param <integer> $surveyId
+        **/
+        public static function getLEMqcode2sgqa($iSurveyId){
+                $LEM =& LimeExpressionManager::singleton();
+
+                $LEM->SetEMLanguage(Survey::model()->findByPk($iSurveyId)->language);
+                $LEM->SetSurveyId($iSurveyId);
+                $LEM->StartProcessingPage(true,true);
+                return $LEM->qcode2sgqa;
+        }
+
         /**
         * If $qid is set, returns the relevance equation generated from conditions (or NULL if there are no conditions for that $qid)
         * If $qid is NULL, returns an array of relevance equations generated from Condition, keyed on the question ID
@@ -2936,7 +2950,6 @@
             $q2subqInfo = array();
 
             $this->multiflexiAnswers=array();
-
             foreach($fieldmap as $fielddata)
             {
                 if (!isset($fielddata['fieldname']) || !preg_match('#^\d+X\d+X\d+#',$fielddata['fieldname']))
@@ -3088,7 +3101,6 @@
                         }
                         break;
                 }
-
 
                 // Set $varName (question code / questions.title), $rowdivid, $csuffix, $sqsuffix, and $question
                 $rowdivid=NULL;   // so that blank for types not needing it.
@@ -3404,7 +3416,6 @@
 
                 $this->knownVars[$sgqa] = $varInfo_Code;
                 $this->qcode2sgqa[$varName]=$sgqa;
-
                 $this->jsVar2qid[$jsVarName] = $questionNum;
                 $this->qcode2sgq[$fielddata['title']] = $surveyid . 'X' . $groupNum . 'X' . $questionNum;
 

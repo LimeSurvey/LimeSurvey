@@ -65,8 +65,11 @@ div.htmleditor {
     max-width: 468px;
     width: 468px;
 }
-
-
+/* Some color for information block */
+/* Best is to replace in template   */
+.error{color:#B94A48}
+.success{color:#468847}
+.warning{color:#C09853}
 /******************************************************************************/
 /* Bootstrap overrides.                                                       */
 /******************************************************************************/

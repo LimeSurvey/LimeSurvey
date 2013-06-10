@@ -33,8 +33,8 @@ class PdfWriter extends Writer
         $this->separator="\t";
 
         $this->rowCounter = 0;        
-        $this->surveyName = $survey->languageSettings[0]['surveyls_title'];
-        $this->pdf->titleintopdf($this->surveyName, $survey->languageSettings[0]['surveyls_description']);
+        $this->surveyName = $survey->languageSettings['surveyls_title'];
+        $this->pdf->titleintopdf($this->surveyName, $survey->languageSettings['surveyls_description']);
     }
 
     public function outputRecord($headers, $values, FormattingOptions $oOptions)

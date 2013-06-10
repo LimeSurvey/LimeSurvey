@@ -64,7 +64,7 @@ class dataentry extends Survey_Common_Action
     }
 
     /**
-    * Function responsible for importing responses from file (.cvs)
+    * Function responsible for importing responses from file (.csv)
     *
     * @param mixed $surveyid
     * @return void
@@ -73,27 +73,37 @@ class dataentry extends Survey_Common_Action
     {
         $aData = array();
 
-        $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
-        if (!empty($_REQUEST['sid'])) {
-            $surveyid = sanitize_int($_REQUEST['sid']);
-        }
-        $aData['surveyid'] = $surveyid;
+        $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
         $aData['clang'] = $this->getController()->lang;
 
-        if( Permission::model()->hasSurveyPermission($surveyid,'responses','create') )
+        if( Permission::model()->hasSurveyPermission($iSurveyId,'responses','create') )
         {
-            // First load the database helper
-            Yii::app()->loadHelper('database');
-
-            $subAction = Yii::app()->request->getPost('subaction');
-            if ($subAction != "upload")
+            if(tableExists("{{survey_$iSurveyId}}"))
             {
-                $this->_showUploadForm($this->_getEncodingsArray(), $surveyid, $aData);
+                // First load the database helper
+                Yii::app()->loadHelper('database'); // Really needed ?
+
+                $subAction = Yii::app()->request->getPost('subaction');
+                if ($subAction != "upload")
+                {
+                    $this->_showUploadForm($this->_getEncodingsArray(), $iSurveyId, $aData);
+                }
+                else
+                {
+                    $this->_handleFileUpload($iSurveyId, $aData);
+                }
             }
             else
             {
-                $this->_handleFileUpload($surveyid, $aData);
+                Yii::app()->session['flashmessage'] = $clang->gT("This survey is not active. You must activate the survey before attempting to import a VVexport file.");
+                $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
             }
+        }
+        else
+        {
+            Yii::app()->session['flashmessage'] = $clang->gT("You do not have sufficient rights to access this page.");
+            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
     }
 
@@ -121,144 +131,38 @@ class dataentry extends Survey_Common_Action
         }
     }
 
-    private function _handleFileUpload($surveyid, $aData)
+    private function _handleFileUpload($iSurveyId, $aData)
     {
         $vvoutput = '';
         $donotimport = array();
         $clang = $this->getController()->lang;
         $filePath = $this->_moveUploadedFile($aData);
-        $aFileContents = $this->_readFile($filePath);
+        //$aFileContents = $this->_readFile($filePath);
+        
+        Yii::app()->loadHelper('admin/import');
+        // Fill option 
+        $aOptions=array();
+        $aOptions['bDeleteFistLine']=(Yii::app()->request->getPost('dontdeletefirstline') == "dontdeletefirstline")?false:true;// Force, maybe function change ;)
+        if(Yii::app()->request->getPost('noid')==="noid"){
+            $aOptions['sExistingId']='ignore';
+        }else{
+            $aOptions['sExistingId']=Yii::app()->request->getPost('insertmethod');
+        }
+        $aOptions['bNotFinalized']=(Yii::app()->request->getPost('notfinalized') == "notfinalized");
+        $aOptions['sCharset']=Yii::app()->request->getPost('vvcharset');
+        $aOptions['sSeparator']="\t";
+        $aResult=CSVImportResponses($filePath,$iSurveyId,$aOptions);
         unlink($filePath); //delete the uploaded file
-        unset($aFileContents[0]); //delete the first line
-
-        SurveyDynamic::sid($surveyid);
-        $survey = new SurveyDynamic;
-
-        list($aFieldnames, $nbOfFields) = $this->_getFieldInfo($aFileContents);
-
-        $aRealFieldNames = Yii::app()->db->getSchema()->getTable($survey->tableName())->getColumnNames();
-
-        if (Yii::app()->request->getPost('noid') == "noid") {
-            unset($aRealFieldNames[0]);
+        $aData['class']="";
+        $aData['title']=$clang->gT("Import a VV response data file");
+        $aData['aResult']['success'][]=$clang->gT("File upload succeeded.");
+        if(isset($aResult['success'])){ 
+            $aData['aResult']['success']=array_merge($aData['aResult']['success'],$aResult['success']);
         }
-        if (Yii::app()->request->getPost('finalized') == "notfinalized") {
-            unset($aRealFieldNames[1]);
-        }
+        $aData['aResult']['errors']=(isset($aResult['errors'])) ? $aResult['errors'] : false;
+        $aData['aResult']['warnings']=(isset($aResult['warnings'])) ? $aResult['warnings'] : false;
 
-        unset($aFileContents[1]); //delete the second line
-
-        //See if any fields in the import file don't exist in the active survey
-        $missing = array_diff($aFieldnames, $aRealFieldNames);
-        if (is_array($missing) && count($missing) > 0) {
-            foreach ($missing as $key => $val)
-            {
-                $donotimport[] = $key;
-                unset($aFieldnames[$key]);
-            }
-        }
-
-        if (Yii::app()->request->getPost('finalized') == "notfinalized") {
-            $donotimport[] = 1;
-            unset($aFieldnames[1]);
-        }
-
-        $importcount = 0;
-        $recordcount = 0;
-
-        // Find out which fields are datefields, these have to be null if the imported string is empty
-        $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
-
-        $datefields = array();
-        $numericfields = array();
-        foreach ($fieldmap as $field)
-        {
-            if ($field['type'] == 'D') {
-                $datefields[] = $field['fieldname'];
-            }
-
-            if ($field['type'] == 'N' || $field['type'] == 'K') {
-                $numericfields[] = $field['fieldname'];
-            }
-        }
-
-        foreach ($aFileContents as $row)
-        {
-            if (trim($row) != "") {
-                $recordcount++;
-
-                $fieldvalues = $this->_prepFieldValues($aFieldnames, $row, $nbOfFields, $donotimport);
-
-                $fielddata = ($aFieldnames === array() && $fieldvalues === array() ? array()
-                : array_combine($aFieldnames, $fieldvalues));
-                foreach ($datefields as $datefield)
-                {
-                    if (is_null(@$fielddata[ $datefield ])) {
-                        unset($fielddata[ $datefield ]);
-                    }
-                }
-
-                foreach ($numericfields as $numericfield)
-                {
-                    if ($fielddata[ $numericfield ] == '') {
-                        unset($fielddata[ $numericfield ]);
-                    }
-                }
-
-                if (isset($fielddata['submitdate']) && $fielddata['submitdate'] == 'NULL') {
-                    unset ($fielddata['submitdate']);
-                }
-                if ($fielddata['lastpage'] == '') $fielddata['lastpage'] = '0';
-
-                $recordexists = false;
-                if (isset($fielddata['id'])) {
-                    $result = $survey->findAllByAttributes(array('id' => $fielddata['id']));
-                    $recordexists = $result > 0;
-
-                    // Check if record with same id exists
-                    if ($recordexists) {
-                        if (Yii::app()->request->getPost('insert') == "ignore") {
-                            $aData['msgs'][] .= sprintf($clang->gT("Record ID %s was skipped because of duplicate ID."), $fielddata['id']);
-                            continue;
-                        }
-                        if (Yii::app()->request->getPost('insert') == "replace") {
-                            $result = $survey->deleteSomeRecords(array('id' => $fielddata['id']));
-                            $recordexists = false;
-                        }
-                    }
-                }
-
-                if (Yii::app()->request->getPost('insert') == "renumber") {
-                    unset($fielddata['`id`']);
-                }
-
-                if (isset($fielddata['`id`'])) {
-                    switchMSSQLIdentityInsert("survey_$surveyid", true);
-                }
-
-                $result = $survey->insertRecords($fielddata);
-
-                if (isset($fielddata['id'])) {
-                    switchMSSQLIdentityInsert("survey_$surveyid", false);
-                }
-
-                if (!$result) {
-                    $aData['error_msg'] = sprintf($clang->gT("Import failed on record %d"), $recordcount);
-                    $this->_renderWrappedTemplate('dataentry', 'warning_header', $aData);
-                    die();
-                }
-                else
-                {
-                    $importcount++;
-                }
-
-                $aData['importcount'] = $importcount;
-            }
-        }
-
-        $aData['noid'] = Yii::app()->request->getPost('noid');
-        $aData['insertstyle'] = Yii::app()->request->getPost('insertstyle');
-
-        $this->_renderWrappedTemplate('dataentry', 'vvimport_upload', $aData);
+        $this->_renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
     }
 
     private function _getFieldInfo($aFileContents)
@@ -291,44 +195,45 @@ class dataentry extends Survey_Common_Action
     private function _moveUploadedFile($aData)
     {
         $clang = $this->getController()->lang;
-        $the_full_file_path = Yii::app()->getConfig('tempdir') . "/" . randomChars(20);
-
-        $move_uploaded_file_result = @move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path);
-
-        if (!$move_uploaded_file_result) {
-            $aData['error_msg'] = sprintf(
-            $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),
-            Yii::app()->getConfig('tempdir')
-            );
-            $this->_renderWrappedTemplate('dataentry', 'warning_header', $aData);
-            die();
+        $sFullFilePath = Yii::app()->getConfig('tempdir') . "/" . randomChars(20);
+        $fileVV = CUploadedFile::getInstanceByName('csv_vv_file');
+        if($fileVV){
+            if(!$fileVV->SaveAs($sFullFilePath))
+            {
+                $aData['class']='error warningheader';
+                $aData['title']=$clang->gT("Error");
+                $aData['aResult']['errors'][] = sprintf(
+                    $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),
+                    Yii::app()->getConfig('tempdir')
+                );
+                $aData['aResult']['errors'][] = "<pre>".
+                $aData['aUrls'][] = array(
+                    'link'=>$this->getController()->createUrl('admin/dataentry/sa/vvimport/surveyid/'.$aData['surveyid']),
+                    'text'=>$aData['aUrlText'][] = $clang->gT("Back to Response Import"),
+                    );
+                $this->_renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
+                die;
+            }
+            else
+            {
+                return $sFullFilePath;
+            }
+        }else{
+            Yii::app()->session['flashmessage'] = gT("You have to select a file.");
+            $this->getController()->redirect($this->getController()->createUrl("admin/dataentry/sa/vvimport/surveyid/{$aData['surveyid']}"));
         }
-        return $the_full_file_path;
     }
 
     private function _showUploadForm($aEncodings, $surveyid, $aData)
     {
+        unset($aEncodings['auto']);
         asort($aEncodings);
-
-        // Create encodings list using the Yii's CHtml helper
-        $charsetsout = CHtml::listOptions('utf8', $aEncodings, $aEncodings);
-
+        $aData['aEncodings']=$aEncodings;
         $aData['tableExists'] = tableExists("{{survey_$surveyid}}");
-        $aData['charsetsout'] = $charsetsout;
+
         $aData['display']['menu_bars']['browse'] = $this->getController()->lang->gT("Import VV file");
 
         $this->_renderWrappedTemplate('dataentry', 'vvimport', $aData);
-    }
-
-    private function _getUploadCharset($encodingsarray)
-    {
-        // Sanitize charset - if encoding is not found sanitize to 'utf8' which is the default for vvexport
-        if (isset($_POST['vvcharset']) && $_POST['vvcharset']) {
-            if (array_key_exists($_POST['vvcharset'], $encodingsarray)) {
-                return $_POST['vvcharset'];
-            }
-        }
-        return 'utf8';
     }
 
     /**
@@ -433,7 +338,7 @@ class dataentry extends Survey_Common_Action
 
                 
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
-                $sOldTimingsTable=substr($oldtable,0,strrpos($oldtable,'_')).'_timings'.substr($oldtable,strrpos($oldtable,'_'));
+                $sOldTimingsTable=substr($sourceTable,0,strrpos($sourceTable,'_')).'_timings'.substr($sourceTable,strrpos($sourceTable,'_'));
                 $sNewTimingsTable = "{{{$surveyid}_timings}}";
 
                 if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
@@ -2392,44 +2297,7 @@ class dataentry extends Survey_Common_Action
 
     private function _getEncodingsArray()
     {
-        $clang = Yii::app()->lang;
-        return array("armscii8"=>$clang->gT("ARMSCII-8 Armenian"),
-        "ascii"=>$clang->gT("US ASCII").' (ascii)',
-        "auto"=>$clang->gT("Automatic").' (auto)',
-        "big5"=>$clang->gT("Big5 Traditional Chinese").' (big5)',
-        "binary"=>$clang->gT("Binary pseudo charset").' (binary)',
-        "cp1250"=>$clang->gT("Windows Central European").' (cp1250)',
-        "cp1251"=>$clang->gT("Windows Cyrillic").' (cp1251)',
-        "cp1256"=>$clang->gT("Windows Arabic").' (cp1256)',
-        "cp1257"=>$clang->gT("Windows Baltic").' (cp1257)',
-        "cp850"=>$clang->gT("DOS West European").' (cp850)',
-        "cp852"=>$clang->gT("DOS Central European").' (cp852)',
-        "cp866"=>$clang->gT("DOS Russian").' (cp866)',
-        "cp932"=>$clang->gT("SJIS for Windows Japanese").'(cp932)',
-        "dec8"=>$clang->gT("DEC West European").' (dec8)',
-        "eucjpms"=>$clang->gT("UJIS for Windows Japanese").' (eucjpms)',
-        "euckr"=>$clang->gT("EUC-KR Korean").' (euckr)',
-        "gb2312"=>$clang->gT("GB2312 Simplified Chinese").' (gb2312)',
-        "gbk"=>$clang->gT("GBK Simplified Chinese").' (gbk)',
-        "geostd8"=>$clang->gT("GEOSTD8 Georgian").' (geostd8)',
-        "greek"=>$clang->gT("ISO 8859-7 Greek").' (greek)',
-        "hebrew"=>$clang->gT("ISO 8859-8 Hebrew").' (hebrew)',
-        "hp8"=>$clang->gT("HP West European").' (hp8)',
-        "keybcs2"=>$clang->gT("DOS Kamenicky Czech-Slovak").' (keybcs2)',
-        "koi8r"=>$clang->gT("KOI8-R Relcom Russian").' (koi8r)',
-        "koi8u"=>$clang->gT("KOI8-U Ukrainian").' (koi8u)',
-        "latin1"=>$clang->gT("cp1252 West European").' (latin1)',
-        "latin2"=>$clang->gT("ISO 8859-2 Central European").' (latin2)',
-        "latin5"=>$clang->gT("ISO 8859-9 Turkish").' (latin5)',
-        "latin7"=>$clang->gT("ISO 8859-13 Baltic").' (latin7)',
-        "macce"=>$clang->gT("Mac Central European").' (macce)',
-        "macroman"=>$clang->gT("Mac West European").' (macroman)',
-        "sjis"=>$clang->gT("Shift-JIS Japanese").' (sjis)',
-        "swe7"=>$clang->gT("7bit Swedish").' (swe7)',
-        "tis620"=>$clang->gT("TIS620 Thai").' (tis620)',
-        "ucs2"=>$clang->gT("UCS-2 Unicode").' (ucs2)',
-        "ujis"=>$clang->gT("EUC-JP Japanese").' (ujis)',
-        "utf8"=>$clang->gT("UTF-8 Unicode"). ' (utf8)');
+        return aEncodingsArray();
     }
 
     private function _prepFieldValues($fieldnames, $field, $fieldcount, $donotimport)

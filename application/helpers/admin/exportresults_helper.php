@@ -100,7 +100,7 @@ class ExportSurveyResultsService
         }
 
         $surveyDao = new SurveyDao();
-        $survey = $surveyDao->loadSurveyById($iSurveyId);
+        $survey = $surveyDao->loadSurveyById($iSurveyId, $sLanguageCode);
         $writer->init($survey, $sLanguageCode, $oOptions);
 
         $iBatchSize=100; $iCurrentRecord=$oOptions->responseMinRecord-1;

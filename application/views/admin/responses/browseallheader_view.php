@@ -59,7 +59,8 @@
     </div>
 </div>
 
-<?php echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post', array('id'=>'resulttableform')); ?>
+<?php 
+echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post', array('id'=>'resulttableform')); ?>
 <!-- DATA TABLE -->
 <?php if ($fncount < 10) { ?>
     <table class='browsetable' style='width:100%'>
@@ -93,10 +94,7 @@
                 }
             ?>
             <th class='<?php echo $gbc; ?>'>
-                <?php if(isset($fn['code'])){ ?>
-                    <span class="qcode"><?php echo $fn['code']; ?></span>
-                <?php }?>
-                <span class="questiontext"><?php echo $fn[1]; ?></span> 
+                <strong><?php echo $fn[1]; ?></strong>
             </th>
             <?php } ?>
     </tr>
