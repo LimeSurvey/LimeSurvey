@@ -2839,8 +2839,45 @@ hi there!~strtolower(c)
 HI THERE!~strtoupper(c)
 3600~strtotime("27 Mar 1976 8:20")-strtotime("1976/03/27 7:20")
 10~(strtotime("13 Apr 2013")-strtotime("2013-04-03"))/60/60/24
-1000000000~strtotime("9 Sep 2001 01:46:40 UTC")
-1000000060~strtotime("2001/9/9 02:47:40 CET")
+1985-11-05 00:00:00~date("Y-m-d H:i:s",strtotime("05 Nov 1985"))
+HOURS PASSED SINCE 1970~round(strtotime("now")/60/60)
+~""
+1985-11-05 00:00:00~date("Y-m-d H:i:s",strtotime("11/5/85"))
+2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("8/9/10"))
+2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("8/9/2010"))
+2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("2010/8/9"))
+~""
+1985-11-05 00:00:00~date("Y-m-d H:i:s",strtotime("85-11-5"))
+2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("10-8-9"))
+2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("9-8-2010"))
+2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("2010-8-9"))
+~""
+1985-11-05 00:53:20~date("Y-m-d H:i:s",strtotime("85-11-5 0:53:20"))
+2010-08-09 00:53:20~date("Y-m-d H:i:s",strtotime("10-8-9 0:53:20"))
+2010-08-09 11:12:13~date("Y-m-d H:i:s",strtotime("9-8-2010 11:12:13"))
+2010-08-09 11:12:13~date("Y-m-d H:i:s",strtotime("2010-8-9 11:12:13"))
+~""
+Today 11:11:59~date("Y-m-d H:i:s",strtotime("11.11.59"))
+Today 9:08:10~date("Y-m-d H:i:s",strtotime("9.8.10"))
+2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("9.8.2010"))
+~""
+1985-11-05 00:53:20~date("Y-m-d H:i:s",strtotime("5.11.85 0:53:20"))
+2010-08-09 11:12:13~date("Y-m-d H:i:s",strtotime("9.8.2010 11:12:13"))
+~""
+1970-01-01 00:00:00~date("Y-m-d H:i:s",strtotime("70-01-01"))
+1999-01-01 00:00:00~date("Y-m-d H:i:s",strtotime("99-01-01"))
+2001-01-01 00:00:00~date("Y-m-d H:i:s",strtotime("01-01-01"))
+1902-01-01 00:00:00~date("Y-m-d H:i:s",strtotime("1902-01-01"))
+~""
+today 2:15:00~date("Y-m-d H:i:s",strtotime("2:15:00"))
+Some dates that are not (correctly) parsed:~"Some dates that are not (correctly) parsed:"
+1969-01-19 00:00:00~date("Y-m-d H:i:s",strtotime("69-01-19"))
+1985-11-05 00:00:00~date("Y-m-d H:i:s",strtotime("85/11/5"))
+1985-11-05 00:00:00~date("Y-m-d H:i:s",strtotime("5-11-85"))
+2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("2010.8.9"))
+1985-11-05 00:00:00~date("Y-m-d H:i:s",strtotime("85.11.5"))
+1985-11-05 00:53:20~date("Y-m-d H:i:s",strtotime("85.11.5 0:53:20"))
+2010-08-09 11:12:13~date("Y-m-d H:i:s",strtotime("9.8.10 11:12:13"))
 678~substr('1234567890',5,3)
 15~sum(1,2,3,4,5)
 15~sum(one,two,three,four,five)
