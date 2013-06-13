@@ -2388,6 +2388,59 @@ class remotecontrol_handle
         return base64_encode($sFileData);
     }
 
+    /**
+     * RPC Routine to export token response in a survey.
+     * Returns the requested file as base64 encoded string
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey
+     * @param string $sDocumentType pdf,csv,xls,doc
+     * @param string $sToken The token for which responses needed
+     * @param string $sLanguageCode The language to be used
+     * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to 'all'
+     * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
+     * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
+     * @param array $aFields Optional Selected fields
+     * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
+     * 
+     */
+    public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='full', $sResponseType='short', $aFields=null)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        
+        Yii::app()->loadHelper('admin/exportresults');
+        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data');
+        if(!$oResult = Survey_dynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) return array('status' => 'No Response found for Token');
+        if ($oResult['id'])
+        {
+            $sFilter="{{survey_{$iSurveyID}}}.id=".(int)$oResult['id'];
+        }
+        if (!hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
+        if (empty($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
+        
+        if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
+        if($sDocumentType=='xls'){
+           // Cut down to the first 255 fields
+           $aFields=array_slice($aFields,0,255);
+        }
+        
+        $oFomattingOptions=new FormattingOptions();
+        
+        $oFomattingOptions->selectedColumns=$aFields;
+        $oFomattingOptions->responseCompletionState=$sCompletionStatus;
+        $oFomattingOptions->headingFormat=$sHeadingType;
+        $oFomattingOptions->answerFormat=$sResponseType;
+        $oFomattingOptions->output='file';
+        $oExport=new ExportSurveyResultsService();
+        
+        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions, $sFilter);
+        $sFileData = file_get_contents($sTempFile);
+        unlink($sTempFile);
+
+        return base64_encode($sFileData);
+    }
+
 
     /**
      * Tries to login with username and password
