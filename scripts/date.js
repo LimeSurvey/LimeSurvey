@@ -16,6 +16,7 @@ $(document).ready(function(){
             defaultDate: +0,
             minDate:new Date(range[0],0,1),
             maxDate: new Date(range[1],11,31),
+            firstDay: "1",
             duration: 'fast'
             }, $.datepicker.regional[language]);
     });
