@@ -155,7 +155,7 @@ function retrieveAnswers($ia)
             $values=do_ranking($ia);
             if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
             {
-                $question_text['help'] = $clang->gT("Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item.");
+                $question_text['help'] = $clang->gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.");
             }
             break;
         case 'M': //Multiple choice checkbox
