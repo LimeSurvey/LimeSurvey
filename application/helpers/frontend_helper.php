@@ -1380,10 +1380,10 @@
                 echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
                 echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
                 <script type='text/javascript'>var focus_element='#token';</script>"
-                .CHtml::form(array("/survey/index/sid/{$surveyid}"), 'post', array('id'=>'tokenform'))."
+                .CHtml::form(array("/survey/index/sid/{$surveyid}"), 'post', array('id'=>'tokenform','autocomplete'=>'off'))."
                 <ul>
                 <li>";?>
-            <label for='token'><?php $clang->eT("Token:");?></label><input class='text <?php echo $kpclass?>' id='token' type='text' name='token' />
+            <label for='token'><?php $clang->eT("Token:");?></label><input class='text <?php echo $kpclass?>' id='token' type='password' name='token' value='' />
             <?php
             echo "<input type='hidden' name='sid' value='".$surveyid."' id='sid' />
             <input type='hidden' name='lang' value='".$templang."' id='lang' />";
@@ -1553,7 +1553,7 @@
                             <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
                         }
 
-                        echo '<label for="token">'.$clang->gT("Token")."</label><input class='text' type='text' id='token' name='token'></li>";
+                        echo '<label for="token">'.$clang->gT("Token")."</label><input class='text' type='password' id='token' name='token'></li>";
                 }
                 else
                 {
