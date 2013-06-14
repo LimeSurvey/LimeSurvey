@@ -61,7 +61,7 @@ class Expressions extends Survey_Common_Action {
                 App()->getClientScript()->registerScript("emscript", "ExprMgr_process_relevance_and_tailoring();", CClientScript::POS_LOAD);
                 break;
             case 'unit':
-                App()->getClientScript()->registerScript("emscript", "compute();", CClientScript::POS_LOAD);
+                App()->getClientScript()->registerScript("emscript", "recompute();", CClientScript::POS_LOAD);
                 break;
         }
     }
