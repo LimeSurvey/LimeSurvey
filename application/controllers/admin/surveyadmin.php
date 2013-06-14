@@ -314,6 +314,11 @@ class SurveyAdmin extends Survey_Common_Action
         $iSurveyID = Yii::app()->request->getPost('sid', $iSurveyID);
         $iSurveyID = sanitize_int($iSurveyID);
         $clang = $this->getController()->lang;
+        if (!tableExists('survey_'.$iSurveyID))
+        {
+            $_SESSION['flashmessage'] = $clang->gT("Error: Response table does not exist. Survey cannot be deactivated.");
+            $this->getController()->redirect($this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
+        }
         $date = date('YmdHis'); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
 
         if (empty($_POST['ok']))
