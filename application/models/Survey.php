@@ -342,10 +342,6 @@ class Survey extends CActiveRecord
     }
     
     public function findByPk($pk, $condition = '', $params = array()) {
-        if(!is_int($pk))
-        {
-            return false;
-        }
         if (empty($condition) && empty($params)) {
             if (array_key_exists($pk, $this->findByPkCache)) {
                 return $this->findByPkCache[$pk];
