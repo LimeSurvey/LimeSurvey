@@ -508,6 +508,7 @@ class SurveyRuntimeHelper {
                     echo $content;
                 }
                 $redata['completed'] = $completed;
+                $redata['thissurvey']['surveyls_url'] = $thissurvey['surveyls_url'];
                 echo templatereplace(file_get_contents($sTemplatePath."completed.pstpl"), array('completed' => $completed), $redata);
                 echo "\n";
                 if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING))
