@@ -42,7 +42,7 @@
         </li>
         <li>
             <label for='alloweditaftercompletion'><?php $clang->eT("Allow editing responses after completion?"); ?></label>
-            <select id='alloweditaftercompletion' name='alloweditaftercompletion' onchange="javascript: if (document.getElementById('private').value == 'Y') { alert('<?php $clang->eT("This option can't be set if Anonymous answers are used","js"); ?>'); this.value='N';}">
+            <select id='alloweditaftercompletion' name='alloweditaftercompletion' onchange="javascript: if (document.getElementById('anonymized').value == 'Y') { alert('<?php $clang->eT("This option can't be set if the option 'Anonymized Responses' is activated.","js"); ?>'); this.value='N';}">
                 <option value='Y'
                     <?php if ($esrow['alloweditaftercompletion'] == "Y") { ?>
                         selected='selected'
