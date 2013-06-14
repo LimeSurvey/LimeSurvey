@@ -1601,17 +1601,16 @@ function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 */
 function returnGlobal($stringname)
 {
-    if ($stringname=='sid') // don't read SID from a Cookie
+    $urlParam=Yii::app()->request->getParam($stringname); 
+    if(!$urlParam && $aCookies=Yii::app()->request->getCookies() && $stringname!='sid')
     {
-        if (isset($_GET[$stringname])) $urlParam = $_GET[$stringname];
-        if (isset($_POST[$stringname])) $urlParam = $_POST[$stringname];
-    }
-    elseif (isset($_REQUEST[$stringname]))
-    {
-        $urlParam = $_REQUEST[$stringname];
+        if(isset($aCookies[$stringname]))
+        {
+            $urlParam = $aCookies[$stringname];
+        } 
     }
 
-    if (isset($urlParam))
+    if ($urlParam && is_string($urlParam))
     {
         if ($stringname == 'sid' || $stringname == "gid" || $stringname == "oldqid" ||
         $stringname == "qid" || $stringname == "tid" ||
