@@ -968,12 +968,12 @@ function do_5pointchoice($ia)
 
     if ($ia[6] != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
     {
-        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"NoAnswer\" value=\"\"";
+        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1]."\" value=\"\"";
         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
         {
             $answer .= CHECKED;
         }
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer".$ia[1]."NANS\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
+        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer".$ia[1]."\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
 
     }
     $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
@@ -1868,8 +1868,8 @@ function do_list_radio($ia)
             $check_ans = '';
         }
 
-        $answer .= $wrapper['item-start-noanswer'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-        <label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
+        $answer .= $wrapper['item-start-noanswer'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+        <label for="answer'.$ia[1].'" class="answertext">'.$clang->gT('No answer').'</label>
         '.$wrapper['item-end'];
         // --> END NEW FEATURE - SAVE
 
