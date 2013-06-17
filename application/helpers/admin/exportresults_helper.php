@@ -626,20 +626,15 @@ class SurveyObj
                 }
                 else
                 {
-                    switch ($answerCode)
+                    if ($answerCode == 'Y') 
                     {
-                        case 'Y':
-                            $fullAnswer = $translator->translate('Yes', $sLanguageCode);
-                            break;
-
-                        case 'N':
-                        case '':
-                            $fullAnswer = $translator->translate('No', $sLanguageCode);
-                            break;
-
-                        default:
-                            //echo "\n -- Branch 2 --";
-                            $fullAnswer = $answerCode;
+                        $fullAnswer = $translator->translate('Yes', $sLanguageCode);
+                    } 
+                    elseif ($answerCode == 'N' || $answerCode === '')   // Strict check for empty string to find null values
+                    {
+                        $fullAnswer = $translator->translate('No', $sLanguageCode);
+                    } else {
+                        $fullAnswer = $translator->translate('N/A', $sLanguageCode);
                     }
                 }
                 break;
