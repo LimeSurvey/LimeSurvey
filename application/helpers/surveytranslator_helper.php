@@ -127,6 +127,13 @@
         $supportedLanguages['bg']['radixpoint'] = 0;
 
         // Catalan
+        $supportedLanguages['ca-valencia']['description'] = $clang->gT('Catalan (Valencian)');
+        $supportedLanguages['ca-valencia']['nativedescription'] = 'Catal&#224; (Valencià)';
+        $supportedLanguages['ca-valencia']['rtl'] = false;
+        $supportedLanguages['ca-valencia']['dateformat'] = 1;
+        $supportedLanguages['ca-valencia']['radixpoint'] = 1;
+
+        // Catalan
         $supportedLanguages['ca']['description'] = $clang->gT('Catalan');
         $supportedLanguages['ca']['nativedescription'] = 'Catal&#224;';
         $supportedLanguages['ca']['rtl'] = false;
