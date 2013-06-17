@@ -141,7 +141,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		$fieldsarray["{OPTINURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optin/tokens/langcode/" . trim($aTokenRow['language']) . "/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
 		$fieldsarray["{SURVEYURL}"] = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/token/{$aTokenRow['token']}/lang/" . trim($aTokenRow['language']) . "/");
 	
-		if($bEmail ==  true)
+		if($bHtml ==  true)
 		{
 			foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
 			{
