@@ -1717,14 +1717,14 @@ function tokensExport($iSurveyID)
             $tokenoutput .=" <".str_replace(","," ",$attrfielddescr[$attr_name]['description']).">";
     }
     $tokenoutput .="\n";
+    echo $tokenoutput;
+    $tokenoutput="";
 
+    // Export token line by line and fill $aExportedTokens with token exported
     Yii::import('application.libraries.Date_Time_Converter', true);
-
     $aExportedTokens = array();
-
     foreach($bresult as $brow)
     {
-
         if (trim($brow['validfrom']!=''))
         {
             $datetimeobj = new Date_Time_Converter($brow['validfrom'] , "Y-m-d H:i:s");
