@@ -1596,10 +1596,10 @@ function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 /**
 * This function returns POST/REQUEST vars, for some vars like SID and others they are also sanitized
 *
-* @param mixed $stringname
-* @param mixed $urlParam
+* @param string $stringname
+* @param boolean $bRestrictToString
 */
-function returnGlobal($stringname)
+function returnGlobal($stringname,$bRestrictToString=false)
 {
     $urlParam=Yii::app()->request->getParam($stringname); 
     if(!$urlParam && $aCookies=Yii::app()->request->getCookies() && $stringname!='sid')
@@ -1609,8 +1609,9 @@ function returnGlobal($stringname)
             $urlParam = $aCookies[$stringname];
         } 
     }
-
-    if ($urlParam)
+    $bUrlParamIsArray=is_array($urlParam);
+    tracevar($bRestrictToString);
+    if ($urlParam && (!$bUrlParamIsArray || !$bRestrictToString))
     {
         if ($stringname == 'sid' || $stringname == "gid" || $stringname == "oldqid" ||
         $stringname == "qid" || $stringname == "tid" ||
@@ -1620,18 +1621,18 @@ function returnGlobal($stringname)
         $stringname == "qaid" || $stringname == "scid" ||
         $stringname == "loadsecurity")
         {
-            if (is_string($urlParam)) {
+            if($bUrlParamIsArray){
+                return array_map("sanitize_int",$urlParam);
+            }else{
                 return sanitize_int($urlParam);
-            } else {
-                return null;
             }
         }
         elseif ($stringname =="lang" || $stringname =="adminlang")
         {
-            if (is_string($urlParam)) {
+            if($bUrlParamIsArray){
+                return array_map("sanitize_languagecode",$urlParam);
+            }else{
                 return sanitize_languagecode($urlParam);
-            } else {
-                return null;
             }
         }
         elseif ($stringname =="htmleditormode" ||
@@ -1640,18 +1641,18 @@ function returnGlobal($stringname)
         $stringname =="templateeditormode"
         )
         {
-            if (is_string($urlParam)) {
-               return sanitize_paranoid_string($urlParam);
-            } else {
-               return null;
+            if($bUrlParamIsArray){
+                return array_map("sanitize_paranoid_string",$urlParam);
+            }else{
+                return sanitize_paranoid_string($urlParam);
             }
         }
         elseif ( $stringname =="cquestions")
         {
-            if (is_string($urlParam)) {
+            if($bUrlParamIsArray){
+                return array_map("sanitize_cquestions",$urlParam);
+            }else{
                 return sanitize_cquestions($urlParam);
-            } else {
-                return null;
             }
         }
         return $urlParam;
@@ -1660,7 +1661,6 @@ function returnGlobal($stringname)
     {
         return NULL;
     }
-
 }
 
 

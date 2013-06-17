@@ -390,12 +390,9 @@ class index extends CAction {
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
         }
 
-        if (isset($_GET['loadall']) && $_GET['loadall'] == "reload")
+        if (returnGlobal('loadname',true)=="reload")
         {
-            if (returnGlobal('loadname') && returnGlobal('loadpass'))
-            {
-                $_POST['loadall']="reload";
-            }
+            $_POST['loadall']="reload";
         }
 
         //LOAD SAVED SURVEY
@@ -462,7 +459,7 @@ class index extends CAction {
         isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
             //check if tokens actually haven't been already used
-            $areTokensUsed = usedTokens(trim(strip_tags(returnGlobal('token'))),$surveyid);
+            $areTokensUsed = usedTokens(trim(strip_tags(returnGlobal('token',true))),$surveyid);
             // check if token actually does exist
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
@@ -673,38 +670,15 @@ class index extends CAction {
         if(count($args)%2 == 0) {
             for ($i = 0; $i < count($args); $i+=2) {
                 //Sanitize input from URL with returnGlobal
-                $param[$args[$i]] = returnGlobal($args[$i], $args[$i+1]);
+                $param[$args[$i]] = returnGlobal($args[$i],true);
             }
         }
 
-        if( !isset($param['lang']) )
-            $param['lang'] = returnGlobal('lang');
-        if( !isset($param['action']) )
-            $param['action'] = returnGlobal('action');
-        if( !isset($param['newtest']) )
-            $param['newtest'] = returnGlobal('newtest');
-        if( !isset($param['qid']) )
-            $param['qid'] = returnGlobal('qid');
-        if( !isset($param['gid']) )
-            $param['gid'] = returnGlobal('gid');
-        if ( !isset($param['sid']) )
-            $param['sid'] = (int) returnGlobal('sid');
-        if ( !isset($param['loadname']) )
-            $param['loadname'] = returnGlobal('loadname');
-        if ( !isset($param['loadpass']) )
-            $param['loadpass'] = returnGlobal('loadpass');
-        if ( !isset($param['scid']) )
-            $param['scid'] = returnGlobal('scid');
-        if ( !isset($param['thisstep']) )
-            $param['thisstep'] = returnGlobal('thisstep');
-        if ( !isset($param['move']) )
-            $param['move'] = returnGlobal('move');
-        if ( !isset($param['token']) )
-            $param['token'] = returnGlobal('token');
-
-        if ( !isset($param['thisstep']) )
-            $param['thisstep'] = '';
-
+        // Need some $param (else PHP notice)
+        foreach(array('lang','action','newtest','qid','gid','sid','loadname','loadpass','scid','thisstep','move','token') as $sNeededParam)
+        {
+            $param[$sNeededParam]=returnGlobal($sNeededParam,true);
+        }
         return $param;
     }
 
