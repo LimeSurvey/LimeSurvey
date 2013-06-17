@@ -688,7 +688,7 @@ class index extends CAction {
         if( !isset($param['gid']) )
             $param['gid'] = returnGlobal('gid');
         if ( !isset($param['sid']) )
-            $param['sid'] = returnGlobal('sid');
+            $param['sid'] = (int) returnGlobal('sid');
         if ( !isset($param['loadname']) )
             $param['loadname'] = returnGlobal('loadname');
         if ( !isset($param['loadpass']) )
@@ -718,9 +718,13 @@ class index extends CAction {
 
     function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
+        $baselang = Yii::app()->getConfig('defaultlang');
         if ( is_int($mvSurveyIdOrBaseLang))
         {
-            $baselang = Survey::model()->findByPk($surveyId)->language;
+            $survey = Survey::model()->findByPk($mvSurveyIdOrBaseLang);
+            if (!is_null($survey)) {
+                $baselang = $survey->language;
+            }
         }
         elseif (!empty($mvSurveyIdOrBaseLang))
         {
@@ -728,7 +732,7 @@ class index extends CAction {
         }
         else
         {
-            $baselang = Yii::app()->getConfig('defaultlang');
+            
         }
 
         Yii::import("application.libraries.Limesurvey_lang");
