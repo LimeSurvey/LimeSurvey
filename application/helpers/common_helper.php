@@ -5302,12 +5302,10 @@ function hasResources($id,$type='survey')
 function randomChars($length,$pattern="23456789abcdefghijkmnpqrstuvwxyz")
 {
     $patternlength = strlen($pattern)-1;
+    $key = '';
     for($i=0;$i<$length;$i++)
     {
-        if(isset($key))
-            $key .= $pattern{rand(0,$patternlength)};
-        else
-            $key = $pattern{rand(0,$patternlength)};
+        $key .= $pattern{mt_rand(0,$patternlength)};
     }
     return $key;
 }
