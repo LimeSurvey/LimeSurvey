@@ -1610,7 +1610,6 @@ function returnGlobal($stringname,$bRestrictToString=false)
         } 
     }
     $bUrlParamIsArray=is_array($urlParam);
-    tracevar($bRestrictToString);
     if ($urlParam && (!$bUrlParamIsArray || !$bRestrictToString))
     {
         if ($stringname == 'sid' || $stringname == "gid" || $stringname == "oldqid" ||
