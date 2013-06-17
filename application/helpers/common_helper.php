@@ -1610,7 +1610,7 @@ function returnGlobal($stringname)
         } 
     }
 
-    if ($urlParam && is_string($urlParam))
+    if ($urlParam)
     {
         if ($stringname == 'sid' || $stringname == "gid" || $stringname == "oldqid" ||
         $stringname == "qid" || $stringname == "tid" ||
@@ -1620,11 +1620,19 @@ function returnGlobal($stringname)
         $stringname == "qaid" || $stringname == "scid" ||
         $stringname == "loadsecurity")
         {
-            return sanitize_int($urlParam);
+            if (is_string($urlParam)) {
+                return sanitize_int($urlParam);
+            } else {
+                return null;
+            }
         }
         elseif ($stringname =="lang" || $stringname =="adminlang")
         {
-            return sanitize_languagecode($urlParam);
+            if (is_string($urlParam)) {
+                return sanitize_languagecode($urlParam);
+            } else {
+                return null;
+            }
         }
         elseif ($stringname =="htmleditormode" ||
         $stringname =="subaction" ||
@@ -1632,11 +1640,19 @@ function returnGlobal($stringname)
         $stringname =="templateeditormode"
         )
         {
-            return sanitize_paranoid_string($urlParam);
+            if (is_string($urlParam)) {
+               return sanitize_paranoid_string($urlParam);
+            } else {
+               return null;
+            }
         }
         elseif ( $stringname =="cquestions")
         {
-            return sanitize_cquestions($urlParam);
+            if (is_string($urlParam)) {
+                return sanitize_cquestions($urlParam);
+            } else {
+                return null;
+            }
         }
         return $urlParam;
     }
