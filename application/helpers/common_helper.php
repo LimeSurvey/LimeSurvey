@@ -567,7 +567,7 @@ function getGidPrevious($surveyid, $gid)
 {
     $clang = Yii::app()->lang;
 
-    if (!$surveyid) {$surveyid=returnGlobal('sid');}
+    if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
 
@@ -630,7 +630,7 @@ function getQidPrevious($surveyid, $gid, $qid)
 function getGidNext($surveyid, $gid)
 {
     $clang = Yii::app()->lang;
-    if (!$surveyid) {$surveyid=returnGlobal('sid');}
+    if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
     //$gquery = "SELECT gid FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
@@ -1144,7 +1144,7 @@ function getGroupList($gid,$surveyid)
     $groupselecter="";
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);
-    if (!$surveyid) {$surveyid=returnGlobal('sid');}
+    if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
     $gidquery = "SELECT gid, group_name FROM {{groups}} WHERE sid='{$surveyid}' AND  language='{$s_lang}' ORDER BY group_order";
@@ -1171,7 +1171,7 @@ function getGroupList3($gid,$surveyid)
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);
 
-    if (!$surveyid) {$surveyid=returnGlobal('sid');}
+    if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
     $groupselecter = "";
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
@@ -1204,7 +1204,7 @@ function getGroupListLang($gid, $language, $surveyid)
     $clang = Yii::app()->lang;
 
     $groupselecter="";
-    if (!$surveyid) {$surveyid=returnGlobal('sid');}
+    if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
 
     $gidresult = QuestionGroup::model()->findAll(array('condition'=>'sid=:surveyid AND language=:language',
     'order'=>'group_order',
@@ -1546,22 +1546,21 @@ function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 /**
 * This function returns POST/REQUEST vars, for some vars like SID and others they are also sanitized
 *
-* @param mixed $stringname
-* @param mixed $urlParam
+* @param string $stringname
+* @param boolean $bRestrictToString
 */
-function returnGlobal($stringname)
+function returnGlobal($stringname,$bRestrictToString=false)
 {
-    if ($stringname=='sid') // don't read SID from a Cookie
+    $urlParam=Yii::app()->request->getParam($stringname); 
+    if(!$urlParam && $aCookies=Yii::app()->request->getCookies() && $stringname!='sid')
     {
-        if (isset($_GET[$stringname])) $urlParam = $_GET[$stringname];
-        if (isset($_POST[$stringname])) $urlParam = $_POST[$stringname];
+        if(isset($aCookies[$stringname]))
+        {
+            $urlParam = $aCookies[$stringname];
+        } 
     }
-    elseif (isset($_REQUEST[$stringname]))
-    {
-        $urlParam = $_REQUEST[$stringname];
-    }
-
-    if (isset($urlParam))
+    $bUrlParamIsArray=is_array($urlParam);// Needed to array map or if $bRestrictToString
+    if ($urlParam && (!$bUrlParamIsArray || !$bRestrictToString))
     {
         if ($stringname == 'sid' || $stringname == "gid" || $stringname == "oldqid" ||
         $stringname == "qid" || $stringname == "tid" ||
@@ -1571,11 +1570,19 @@ function returnGlobal($stringname)
         $stringname == "qaid" || $stringname == "scid" ||
         $stringname == "loadsecurity")
         {
-            return sanitize_int($urlParam);
+            if($bUrlParamIsArray){
+                return array_map("sanitize_int",$urlParam);
+            }else{
+                return sanitize_int($urlParam);
+            }
         }
         elseif ($stringname =="lang" || $stringname =="adminlang")
         {
-            return sanitize_languagecode($urlParam);
+            if($bUrlParamIsArray){
+                return array_map("sanitize_languagecode",$urlParam);
+            }else{
+                return sanitize_languagecode($urlParam);
+            }
         }
         elseif ($stringname =="htmleditormode" ||
         $stringname =="subaction" ||
@@ -1583,11 +1590,19 @@ function returnGlobal($stringname)
         $stringname =="templateeditormode"
         )
         {
-            return sanitize_paranoid_string($urlParam);
+            if($bUrlParamIsArray){
+                return array_map("sanitize_paranoid_string",$urlParam);
+            }else{
+                return sanitize_paranoid_string($urlParam);
+            }
         }
         elseif ( $stringname =="cquestions")
         {
-            return sanitize_cquestions($urlParam);
+            if($bUrlParamIsArray){
+                return array_map("sanitize_cquestions",$urlParam);
+            }else{
+                return sanitize_cquestions($urlParam);
+            }
         }
         return $urlParam;
     }
@@ -1595,7 +1610,6 @@ function returnGlobal($stringname)
     {
         return NULL;
     }
-
 }
 
 
