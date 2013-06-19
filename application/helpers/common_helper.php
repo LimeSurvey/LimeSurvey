@@ -5702,20 +5702,36 @@ function updateCheck()
     if (count($updateinfo) && trim(Yii::app()->getConfig('buildnumber'))!='')
     {
         setGlobalSetting('updateversions',json_encode($updateinfo));
-        if (isset($updateinfo['master'])){
-            $updateinfo=$updateinfo['master'];
-        }
-        else
+        $sUpdateNotificationType = getGlobalSetting('updatenotification');
+        switch ($sUpdateNotificationType)
         {
-            $updateinfo=reset($updateinfo);
+            case 'stable':
+                // Only show update if in stable (master) branch
+                if (isset($updateinfo['master'])) {
+                    $updateinfo=$updateinfo['master'];
+                } else {
+                    unset ($updateinfo);
+                }                    
+                break;
+
+            case 'both':
+                // Show first available update
+                $updateinfo=reset($updateinfo);    
+                break;
+                
+            default:
+                // Never show a notification
+                unset($updateinfo);
+                break;
         }
+    }
+    if (isset($updateinfo)) {
         setGlobalSetting('updateavailable',1);
         setGlobalSetting('updatebuild',$updateinfo['build']);
         setGlobalSetting('updateversion',$updateinfo['versionnumber']);
-    }
-    else
-    {
-        setGlobalSetting('updateavailable',0);
+    } else {
+        setGlobalSetting('updateavailable',0);    
+        $updateinfo = array();
     }
     setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
     return $updateinfo;
