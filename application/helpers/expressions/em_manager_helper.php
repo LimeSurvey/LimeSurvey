@@ -6771,7 +6771,7 @@
                 {
                     // TODO - is different type needed for text?  Or process value to striphtml?
                     if ($jsVar == '') continue;
-                    $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . substr($jsVar,4) .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                    $jsParts[] = "<input type='hidden' disabled='disabled' id='" . $jsVar . "' name='" . substr($jsVar,4) .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
                 }
             }
             else
@@ -6799,7 +6799,7 @@
                 foreach ($undeclaredJsVars as $jsVar)
                 {
                     if ($jsVar == '') continue;
-                    $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                    $jsParts[] = "<input type='hidden' disabled='disabled' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
                 }
             }
             foreach ($qidList as $qid)
@@ -6810,6 +6810,7 @@
                 else {
                     $relStatus = 1;
                 }
+                // Don't set to disabled : else remove posted answers ....
                 $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid .  "' value='" . $relStatus . "'/>\n";
             }
 

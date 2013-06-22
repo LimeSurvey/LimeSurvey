@@ -13,7 +13,7 @@
             <label for="quota_action"><?php $clang->eT("Quota action");?>:</label>
             <select id="quota_action" name="quota_action">
                 <option value ="1"><?php $clang->eT("Terminate survey");?></option>
-                <option value ="2"><?php $clang->eT("Terminate survey with warning");?></option>
+                <option value ="2"><?php $clang->eT("Show message and allow user to modify answers");?></option>
             </select>
         </li>
         <li>

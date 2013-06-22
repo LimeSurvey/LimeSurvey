@@ -90,7 +90,7 @@ a:hover, a:focus, a:active {background-color: #E5F8A8;color: #5670A1;text-decora
 ul#surveylist li a{color:#5670A1;}
 ul#surveylist li a.surveytitle{color:#5670A1;}
 /* information block and message*/
-.note,#tokenmessage{border:#8195BA 1px solid;background:#EEF6FF;}
+.note,#tokenmessage,.quotamessage{border:#8195BA 1px solid;background:#EEF6FF;}
 p.url{font-size:1.2em;text-align:center;font-weight:bold}
 #privacy{font-style: italic;}
 #surveydescription{font-size:1.1em;color:#5670A1}
@@ -145,6 +145,7 @@ input[type="text"]:focus, input.text:focus,textarea:focus{
 }
 input.checkbox[disabled],input.radio[disabled]{opacity: 0.3;}
 /* survey tool decoration */
+#movenextbtn,#movesubmitbtn,#moveprevbtn,
 .tools select,.tools input,.tools a,input.submit,input#savebutton,input#loadbutton,input#registercontinue,.navigator input,.navigator button
   {
     border:1px solid #ABB8D1;background:#FEFEFE;color:#415479;
@@ -155,24 +156,31 @@ input.checkbox[disabled],input.radio[disabled]{opacity: 0.3;}
   }
 .tools select
   {padding:1px 2px;}
+#movenextbtn,#movesubmitbtn,#moveprevbtn,
 .tools input,.tools a,input.submit,input#savebutton,input#loadbutton,input#registercontinue,.navigator input,.navigator button
     {box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-ms-box-sizing: border-box;}/* same box sizing for link and button */
+#movenextbtn:hover,#movesubmitbtn:hover,#moveprevbtn:hover,
+#movenextbtn:focus,#movesubmitbtn:focus,#moveprevbtn:focus,
 .tools select:hover,.tools input:hover,.tools a:hover,.navigator input:hover,.navigator button:hover,input.submit:hover,input#savebutton:hover,input#loadbutton:hover,input#registercontinue:hover,
  .tools select:focus,.tools input:focus,.tools a:focus,.navigator input:focus,.navigator button:focus,input.submit:focus,input#savebutton:focus,input#loadbutton:focus,input#registercontinue:focus
   {
-    border-color:#ABB8D1;color:#415479;background:#f0f0f0;
+    border-color:#ABB8D1;color:#415479;background-color:#f0f0f0;
     -moz-box-shadow: 2px 2px 5px #415479;-webkit-box-shadow: 2px 2px 5px #415479;box-shadow: 2px 2px 5px #415479;
   }
 .tools select:hover option{background:#FEFEFE;}
 /* for disabled tools */
+#movenextbtn[disabled],#movesubmitbtn[disabled],#moveprevbtn[disabled],
 .tools input[disabled],.navigator input[disabled],.navigator button[disabled],input.submit[disabled],input#savebutton[disabled],input#loadbutton[disabled],input#registercontinue[disabled],.tools select[disabled]
   {
-    border:1px solid #dbdbdb;background:#FEFEFE;color:#dbdbdb;cursor:inherit;
+    border:1px solid #dbdbdb;background-color:#FEFEFE;color:#dbdbdb;cursor:inherit;
   }
+#movenextbtn,#movesubmitbtn,#moveprevbtn,
 .tools *,.navigator,.tools :active,.navigator :active,.tools :focus,.navigator :focus{ outline: 0 none; }
+#movenextbtn::-moz-focus-inner,#movesubmitbtn::-moz-focus-inner,#moveprevbtn::-moz-focus-inner,
 .tools ::-moz-focus-inner,.navigator ::-moz-focus-inner {border:0;}
 /* ie specific: maybe some lt ? */
-.ie .tools input,.ie .tools a,.ie .navigator input,.ie .navigator button,.ie input#savebutton,.ie input#loadbutton
+.ielt8 #movenextbtn,.ielt8 #movesubmitbtn,.ielt8 #moveprevbtn,
+.ielt8 .tools input,.ielt8 .tools a,.ielt8 .navigator input,.ielt8 .navigator button,.ielt8 input#savebutton,.ie input#loadbutton
   {height:2em}
 /* movenext, moveprev specific */
 #movenextbtn{background-image:url(go-east.png);background-repeat:no-repeat;background-position:right center;padding:3px 26px 3px 6px;}
@@ -336,7 +344,7 @@ ul.tools li{margin-right:1em;}
 .help-wrapper .mandatory strong br{display:none}
 .help-wrapper .mandatory{display:none;}
 .input-error .help-wrapper .mandatory{display:block;}
-.note,#tokenmessage{margin: 0.5em auto;padding: 1em;width: 80%;}
+.note,#tokenmessage,.quotamessage{margin: 0.5em auto;padding: 1em;width: 80%;}
 /* Inside question text*/
 .question-text img{max-width:100%;}
 #tokenform ul{list-style: none ;margin: 0.5em auto;padding: 0;text-align: center;}
