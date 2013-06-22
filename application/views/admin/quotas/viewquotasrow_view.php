@@ -17,7 +17,7 @@
         <?php if ($quotalisting['action'] == 1) {
                 $clang->eT("Terminate survey");
             } elseif ($quotalisting['action'] == 2) {
-                $clang->eT("Terminate survey with warning");
+                $clang->eT("Show message and allow user to modify answers");
         } ?>
     </td>
     <td <?php echo $highlight;?>><?php echo $completed;?></td>
