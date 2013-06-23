@@ -20,7 +20,7 @@ class SurveyRuntimeHelper {
 	{
 		echo "\n\n<!-- PRESENT THE INDEX -->\n";
 
-		echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
+		echo '<div id="index"><div class="container"><h2>' . gT("Question index") . '</h2>';
 
 		$stepIndex = LimeExpressionManager::GetStepIndexInfo();
 		$lastGseq=-1;
