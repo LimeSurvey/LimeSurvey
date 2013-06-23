@@ -248,19 +248,27 @@ class dataentry extends Survey_Common_Action
 
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','create'))
         {
-            if (!App()->request->isPostRequest)
+            if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none')
             {
                 
                 // Schema that serves as the base for compatibility checks.
                 $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
                 $tables = App()->getApi()->getOldResponseTables($iSurveyId);
                 $compatible = array();
+				$coercible = array();
                 foreach ($tables as $table)
                 {
                     $schema = PluginDynamic::model($table)->getTableSchema();
-                    if ($this->isCompatible($baseSchema, $schema))
+                    if (PluginDynamic::model($table)->count() > 0)
                     {
-                        $compatible[] = $table;
+						if ($this->isCompatible($baseSchema, $schema))
+						{
+							$compatible[] = $table;
+						}
+						elseif ($this->isCompatible($baseSchema, $schema, false))
+						{
+							$coercible[] = $table;
+						}
                     }
                 }
                 
@@ -269,7 +277,10 @@ class dataentry extends Survey_Common_Action
                 $aData['settings']['table'] = array(
                     'label' => gT('Source table'),
                     'type' => 'select',
-                    'options' => $this->tableList($compatible)
+                    'options' => array(
+						gT('Compatible') => $this->tableList($compatible),
+						gT('Compatible with type coercion') => $this->tableList($coercible)
+					)
                 );
 
 
@@ -302,7 +313,7 @@ class dataentry extends Survey_Common_Action
                     $sourceColumn = $sourceSchema->getColumn($name);
                     $matches = array();
                     // Exact match.
-                    if ($targetSchema->getColumn($name) && $targetSchema->getColumn($name)->dbType == $sourceColumn->dbType)
+                    if ($targetSchema->getColumn($name))
                     {
                         $fieldMap[$name] = $name;
                     }
@@ -316,15 +327,13 @@ class dataentry extends Survey_Common_Action
                         }
                     }
                 }
-                /**
-                 * @todo Apply some batching for large response sets.
-                 */
                 $imported = 0;
-                foreach ($sourceTable->findAll() as $sourceResponse)
+				$sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
+                foreach ($sourceResponses as $sourceResponse)
                 {
                     
                     // Using plugindynamic model because I dont trust surveydynamic.
-                   $targetResponse = new PluginDynamic(SurveyDynamic::model($iSurveyId)->tableName());
+                   $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
 
                    foreach($fieldMap as $sourceField => $targetField)
                    {
@@ -338,7 +347,7 @@ class dataentry extends Survey_Common_Action
 
                 
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
-                $sOldTimingsTable=substr($sourceTable,0,strrpos($sourceTable,'_')).'_timings'.substr($sourceTable,strrpos($sourceTable,'_'));
+                $sOldTimingsTable=substr($sourceTable->tableName(),0,strrpos($sourceTable->tableName(),'_')).'_timings'.substr($sourceTable->tableName(),strrpos($sourceTable->tableName(),'_'));
                 $sNewTimingsTable = "{{{$surveyid}_timings}}";
 
                 if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
@@ -367,7 +376,7 @@ class dataentry extends Survey_Common_Action
                     }
                     Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."),$imported,$iRecordCountT);
                 }
-                $this->getController()->redirect(array("/admin/responses/sa/index/surveyid/{$surveyid}"));
+                $this->getController()->redirect(array("/admin/responses/sa/index/", 'surveyid' => $surveyid));
             }
         }
     }
@@ -418,7 +427,7 @@ class dataentry extends Survey_Common_Action
     /**
      * Compares 2 table schema to see if they are compatible.
      */
-    protected function isCompatible(CDbTableSchema $base, CDbTableSchema $old)
+    protected function isCompatible(CDbTableSchema $base, CDbTableSchema $old, $checkColumnTypes = true)
     {
         $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
         foreach($old->columns as $name => $column)
@@ -435,7 +444,7 @@ class dataentry extends Survey_Common_Action
                 $baseColumn = $this->getQidColumn($base, $qid);
                 if ($baseColumn)
                 {
-                    if ($baseColumn && $baseColumn->dbType != $column->dbType)
+                    if ($baseColumn && $checkColumnTypes && ($baseColumn->dbType != $column->dbType))
                     {
                         return false;
                     }
