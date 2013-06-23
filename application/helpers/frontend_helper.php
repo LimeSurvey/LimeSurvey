@@ -18,7 +18,7 @@
         global $clienttoken;
         $clang = Yii::app()->lang;
 
-        $scid=returnGlobal('scid');
+        $scid=returnGlobal('scid',true);
         if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
         {
             $query = "SELECT * FROM {{saved_control}} INNER JOIN {$thissurvey['tablename']}
@@ -1330,7 +1330,7 @@
         $_SESSION['survey_'.$surveyid]['templatepath']=getTemplatePath($_SESSION['survey_'.$surveyid]['templatename']).DIRECTORY_SEPARATOR;
         $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
-        $loadsecurity = returnGlobal('loadsecurity');
+        $loadsecurity = returnGlobal('loadsecurity',true);
 
         // NO TOKEN REQUIRED BUT CAPTCHA ENABLED FOR SURVEY ACCESS
         if ($tokensexist == 0 && isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']) && !$preview)
@@ -1368,7 +1368,7 @@
                 {
                     echo "
                     <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-                    <input type='hidden' name='scid' value='".returnGlobal('scid')."' id='scid' />
+                    <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
                     <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
                     <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
                 }
@@ -1448,7 +1448,7 @@
             {
                 echo "
                 <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-                <input type='hidden' name='scid' value='".returnGlobal('scid')."' id='scid' />
+                <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
                 <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
                 <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
             }
@@ -1597,7 +1597,7 @@
                         && isset($_GET['loadname']) && isset($_GET['loadpass']))
                         {
                             echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-                            <input type='hidden' name='scid' value='".returnGlobal('scid')."' id='scid' />
+                            <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
                             <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
                             <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
                         }
@@ -1616,7 +1616,7 @@
                     && isset($_GET['loadname']) && isset($_GET['loadpass']))
                     {
                         echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-                        <input type='hidden' name='scid' value='".returnGlobal('scid')."' id='scid' />
+                        <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
                         <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
                         <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
                     }
@@ -1667,9 +1667,9 @@
             $tklanguage=$rw['language'];
         }
     }
-    if (returnGlobal('lang'))
+    if (returnGlobal('lang',true))
     {
-        $language_to_set=returnGlobal('lang');
+        $language_to_set=returnGlobal('lang',true);
     } elseif (isset($tklanguage))
     {
         $language_to_set=$tklanguage;
@@ -2581,7 +2581,7 @@ function checkQuota($checkaction,$surveyid)
                 <input type='hidden' name='move' value='movenext' id='movenext' />
                 <button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" id='moveprevbtn'>".$clang->gT("Previous")."</button>
                 <input type='hidden' name='thisstep' value='".($_SESSION['survey_'.$surveyid]['step'])."' id='thisstep' />
-                <input type='hidden' name='sid' value='".returnGlobal('sid')."' id='sid' />
+                <input type='hidden' name='sid' value='".returnGlobal('sid',true)."' id='sid' />
                 <input type='hidden' name='token' value='".$clienttoken."' id='token' />
                 </form>\n";
                 echo "\t</div>\n";
@@ -2712,7 +2712,7 @@ function display_first_page() {
         echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
     }
     echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname' />\n"; //This is to ensure consistency with mandatory checks, and new group test
-    $loadsecurity = returnGlobal('loadsecurity');
+    $loadsecurity = returnGlobal('loadsecurity',true);
     if (isset($loadsecurity)) {
         echo "\n<input type='hidden' name='loadsecurity' value='$loadsecurity' id='loadsecurity' />\n";
     }

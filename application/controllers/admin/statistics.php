@@ -530,7 +530,7 @@ class statistics extends Survey_Common_Action {
                 // Strip first char when not numeric (probably T or D)
                 $qsid=substr($qsid,1);
             }
-            $oQuestion=Questions::model()->findByAttributes(array('qid'=>$qqid,'language'=>$sStatisticsLanguage));
+            $oQuestion=Question::model()->findByAttributes(array('qid'=>$qqid,'language'=>$sStatisticsLanguage));
 	        $qtype = $oQuestion->type; 
             $aattr = getQuestionAttributeValues($qqid);
             $field = substr($_POST['id'], 1);
@@ -614,7 +614,7 @@ class statistics extends Survey_Common_Action {
 	    }
 
         //$this->_renderWrappedTemplate('export', 'statistics_graph_view', $aData);
-        $this->getController()->render('export/statistics_graph_view', $aData);
+        $this->getController()->renderPartial('export/statistics_graph_view', $aData);
 	}
 
     /**

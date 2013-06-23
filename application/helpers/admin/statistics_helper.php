@@ -3085,7 +3085,10 @@ class statistics_helper {
 
         elseif (!empty($newsql)) {$sql = $newsql;}
 
-        if (!isset($sql) || !$sql) {$sql="NULL";}
+        if (!isset($sql) || !$sql) 
+        {
+            $sql= null;            
+        }
 
         //only continue if we have something to output
         if ($results > 0)

@@ -20,7 +20,7 @@ $(document).ready(function(){
          }
 
      });
-     $(".sortorder").live("click", function(e) {
+     $(".sortorder").click( function(e) {
          var details=this.id.split('_');
          var order='sortby/'+details[2]+'/sortmethod/'+details[3]+'/sorttype/'+details[4];
          loadBrowse(details[1],order);
@@ -43,17 +43,17 @@ $(document).ready(function(){
         if ($('#grapherror').length>0)
         {
             $('#grapherror').show();
-            $('#usegraph').attr('checked',false);
+            $('#usegraph').prop('checked',false);
         }
      });
      $('#viewsummaryall').click( function(){
-        if ($('#viewsummaryall').attr('checked')==true)
+        if ($('#viewsummaryall').prop('checked')==true)
         {
-            $('#filterchoices input[type=checkbox]').attr('checked', true);
+            $('#filterchoices input[type=checkbox]').prop('checked', true);
         }
         else
         {
-            $('#filterchoices input[type=checkbox]').attr('checked', false);
+            $('#filterchoices input[type=checkbox]').prop('checked', false);
 
         }
      });

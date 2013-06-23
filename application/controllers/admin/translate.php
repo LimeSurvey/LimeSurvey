@@ -168,7 +168,7 @@ class translate extends Survey_Common_Action {
 			$aData['tolangdesc'] = $tolangdesc;
 			$aData['type'] = $type;
 			$aData['translateTabs'] = $this->displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type);
-			$aViewUrls['output'] .= $this->getController()->render("/admin/translate/translatetabs_view", $aData, true);
+			$aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatetabs_view", $aData, true);
 			foreach ( $resultbase as $rowfrom )
 			{
 				$textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
@@ -214,7 +214,7 @@ class translate extends Survey_Common_Action {
 											$amTypeOptions2, $baselangdesc, $tolangdesc, $textfrom2, $textto2, $i, $resultbase2[$i], $evenRow);
 				}
 
-				$aViewUrls['output'] .= $this->getController()->render("/admin/translate/translatefields_view", $aData, true);
+				$aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatefields_view", $aData, true);
 
 				$i++;
 			} // end while
@@ -222,10 +222,10 @@ class translate extends Survey_Common_Action {
 			$aData['all_fields_empty'] = $all_fields_empty;
 			$aData['translateFieldsFooter'] = $this->displayTranslateFieldsFooter();
             $aData['bReadOnly']=!Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update');
-			$aViewUrls['output'] .= $this->getController()->render("/admin/translate/translatefieldsfooter_view", $aData, true);
+			$aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatefieldsfooter_view", $aData, true);
 		} // end foreach
 
-		// Submit button
+		// Submit buttonrender
 		$aViewUrls['translatefooter_view'][] = $aData;
 
         return $aViewUrls;
