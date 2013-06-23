@@ -14,6 +14,94 @@
 
 class SurveyRuntimeHelper {
 
+
+
+	protected function createQuestionIndex($LEMsessid, $surveyMode)
+	{
+		echo "\n\n<!-- PRESENT THE INDEX -->\n";
+
+		echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
+
+		$stepIndex = LimeExpressionManager::GetStepIndexInfo();
+		$lastGseq=-1;
+		$gseq = -1;
+		$grel = true;
+		for($v = 0, $n = 0; $n != $_SESSION[$LEMsessid]['maxstep']; ++$n)
+		{
+			if (!isset($stepIndex[$n])) {
+				continue;   // this is an invalid group - skip it
+			}
+			$stepInfo = $stepIndex[$n];
+
+			if ($surveyMode == 'question')
+			{
+				if ($lastGseq != $stepInfo['gseq']) {
+					// show the group label
+					++$gseq;
+					$g = $_SESSION[$LEMsessid]['grouplist'][$gseq];
+					$grel = !LimeExpressionManager::GroupIsIrrelevantOrHidden($gseq);
+					if ($grel)
+					{
+						$gtitle = LimeExpressionManager::ProcessString($g['group_name']);
+						echo '<h3>' . flattenText($gtitle) . "</h3>";
+					}
+					$lastGseq = $stepInfo['gseq'];
+				}
+				if (!$grel || !$stepInfo['show'])
+				{
+					continue;
+				}
+				$q = $_SESSION[$LEMsessid]['fieldarray'][$n];
+			}
+			else
+			{
+				++$gseq;
+				if (!$stepInfo['show'])
+				{
+					continue;
+				}
+				$g = $_SESSION[$LEMsessid]['grouplist'][$gseq];
+			}
+
+			if ($surveyMode == 'group')
+			{
+				$indexlabel = LimeExpressionManager::ProcessString($g['group_name']);
+			}
+			else
+			{
+				$indexlabel = LimeExpressionManager::ProcessString($q[3]);
+			}
+
+			$sText = (($surveyMode == 'group') ? flattenText($indexlabel) : flattenText($indexlabel));
+			$bGAnsw = !$stepInfo['anyUnanswered'];
+
+			++$v;
+
+			$class = ($n == $_SESSION[$LEMsessid]['step'] - 1 ? 'current' : ($bGAnsw ? 'answer' : 'missing'));
+			if ($v % 2)
+				$class .= " odd";
+
+			$s = $n + 1;
+			echo "<div class=\"row $class\" onclick=\"javascript:document.limesurvey.move.value = '$s'; document.limesurvey.submit();\"><span class=\"hdr\">$v</span><span title=\"$sText\">$sText</span></div>";
+		}
+
+		if ($_SESSION[$LEMsessid]['maxstep'] == $_SESSION[$LEMsessid]['totalsteps'])
+		{
+			echo "<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
+			. $clang->gT("Submit") . " ' name='move2' />\n";
+		}
+
+		echo '</div></div>';
+		/* Can be replaced by php or in global js */
+		echo "<script type=\"text/javascript\">\n"
+		. "  $(\".outerframe\").addClass(\"withindex\");\n"
+		. "  var idx = $(\"#index\");\n"
+		. "  var row = $(\"#index .row.current\");\n"
+		. "  idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);\n"
+		. "</script>\n";
+		echo "\n";
+
+	}
     /**
     * Main function
     *
@@ -1047,88 +1135,7 @@ END;
 
             if ($surveyMode != 'survey' && $thissurvey['allowjumps'] == 'Y')
             {
-                echo "\n\n<!-- PRESENT THE INDEX -->\n";
-
-                echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
-
-                $stepIndex = LimeExpressionManager::GetStepIndexInfo();
-                $lastGseq=-1;
-                $gseq = -1;
-                $grel = true;
-                for($v = 0, $n = 0; $n != $_SESSION[$LEMsessid]['maxstep']; ++$n)
-                {
-                    if (!isset($stepIndex[$n])) {
-                        continue;   // this is an invalid group - skip it
-                    }
-                    $stepInfo = $stepIndex[$n];
-
-                    if ($surveyMode == 'question')
-                    {
-                        if ($lastGseq != $stepInfo['gseq']) {
-                            // show the group label
-                            ++$gseq;
-                            $g = $_SESSION[$LEMsessid]['grouplist'][$gseq];
-                            $grel = !LimeExpressionManager::GroupIsIrrelevantOrHidden($gseq);
-                            if ($grel)
-                            {
-                                $gtitle = LimeExpressionManager::ProcessString($g['group_name']);
-                                echo '<h3>' . flattenText($gtitle) . "</h3>";
-                            }
-                            $lastGseq = $stepInfo['gseq'];
-                        }
-                        if (!$grel || !$stepInfo['show'])
-                        {
-                            continue;
-                        }
-                        $q = $_SESSION[$LEMsessid]['fieldarray'][$n];
-                    }
-                    else
-                    {
-                        ++$gseq;
-                        if (!$stepInfo['show'])
-                        {
-                            continue;
-                        }
-                        $g = $_SESSION[$LEMsessid]['grouplist'][$gseq];
-                    }
-
-                    if ($surveyMode == 'group')
-                    {
-                        $indexlabel = LimeExpressionManager::ProcessString($g['group_name']);
-                    }
-                    else
-                    {
-                        $indexlabel = LimeExpressionManager::ProcessString($q[3]);
-                    }
-
-                    $sText = (($surveyMode == 'group') ? flattenText($indexlabel) : flattenText($indexlabel));
-                    $bGAnsw = !$stepInfo['anyUnanswered'];
-
-                    ++$v;
-
-                    $class = ($n == $_SESSION[$LEMsessid]['step'] - 1 ? 'current' : ($bGAnsw ? 'answer' : 'missing'));
-                    if ($v % 2)
-                        $class .= " odd";
-
-                    $s = $n + 1;
-                    echo "<div class=\"row $class\" onclick=\"javascript:document.limesurvey.move.value = '$s'; document.limesurvey.submit();\"><span class=\"hdr\">$v</span><span title=\"$sText\">$sText</span></div>";
-                }
-
-                if ($_SESSION[$LEMsessid]['maxstep'] == $_SESSION[$LEMsessid]['totalsteps'])
-                {
-                    echo "<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
-                    . $clang->gT("Submit") . " ' name='move2' />\n";
-                }
-
-                echo '</div></div>';
-                /* Can be replaced by php or in global js */
-                echo "<script type=\"text/javascript\">\n"
-                . "  $(\".outerframe\").addClass(\"withindex\");\n"
-                . "  var idx = $(\"#index\");\n"
-                . "  var row = $(\"#index .row.current\");\n"
-                . "  idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);\n"
-                . "</script>\n";
-                echo "\n";
+				$this->createQuestionIndex($LEMsessid, $surveyMode);
             }
 
             echo "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
