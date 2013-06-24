@@ -51,11 +51,16 @@ class LSYii_Validators extends CValidator {
     public function xssFilter($value)
     {
         $filter = new CHtmlPurifier();
-        $filter->options = array('URI.AllowedSchemes'=>array(
-        'http' => true,
-        'https' => true,
-        ),
-        'HTML.Allowed' => 'p,a[href],b,i');
+        $filter->options = array(
+            'URI.AllowedSchemes'=>array(
+                'http' => true,
+                'https' => true,
+                'mailto' => true,
+                'ftp' => true,
+                'nntp' => true,
+                'news' => true,
+                )
+        );
         return $filter->purify($value);
     }
 }
