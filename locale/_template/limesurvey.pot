@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-06-22 22:05:39+00:00\n"
+"POT-Creation-Date: 2013-06-24 22:05:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13069,11 +13069,11 @@ msgid "You can't use Anonymized responses when Token-based answers persistence i
 msgstr ""
 
 #: application/views/admin/survey/subview/tabTokens_view.php:44
-msgid "Allow editing responses after completion?"
+msgid "With not anonymous survey: user can update his answer after completion, else user can add new answers without restriction."
 msgstr ""
 
-#: application/views/admin/survey/subview/tabTokens_view.php:45
-msgid "This option can't be set if the option 'Anonymized Responses' is activated."
+#: application/views/admin/survey/subview/tabTokens_view.php:44
+msgid "Allow multiple responses or update responses with one token?"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabTokens_view.php:57
