@@ -24,7 +24,7 @@
                         $clang->eT("Responses to this survey are anonymized.");
                 } ?>
                 <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
-                <input type='hidden' name='anonymized' value="<?php echo $esrow['anonymized']; ?>" />
+                <input type='hidden' id='anonymized' name='anonymized' value="<?php echo $esrow['anonymized']; ?>" />
                 <?php } else { ?>
                 <select id='anonymized' name='anonymized' onchange='alertPrivacy();'>
                     <option value='Y'
@@ -41,8 +41,8 @@
                 <?php } ?>
         </li>
         <li>
-            <label for='alloweditaftercompletion'><?php $clang->eT("Allow editing responses after completion?"); ?></label>
-            <select id='alloweditaftercompletion' name='alloweditaftercompletion' onchange="javascript: if (document.getElementById('private').value == 'Y') { alert('<?php $clang->eT("This option can't be set if Anonymous answers are used","js"); ?>'); this.value='N';}">
+            <label for='alloweditaftercompletion' title='<?php $clang->eT("With not anonymous survey: user can update his answer after completion, else user can add new answers without restriction."); ?>'><?php $clang->eT("Allow multiple responses or update responses with one token?"); ?></label>
+            <select id='alloweditaftercompletion' name='alloweditaftercompletion'>
                 <option value='Y'
                     <?php if ($esrow['alloweditaftercompletion'] == "Y") { ?>
                         selected='selected'
