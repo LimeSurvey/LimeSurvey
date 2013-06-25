@@ -62,12 +62,13 @@
         */
         public function relations()
         {
+			$alias = $this->getTableAlias();
             return array(
             'groups' => array(self::HAS_ONE, 'QuestionGroup', '',
-            'on' => 't.gid = groups.gid AND t.language = groups.language'
+            'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"
             ),
             'parents' => array(self::HAS_ONE, 'Question', '',
-            'on' => 't.parent_qid = parents.qid',
+            'on' => "$alias.parent_qid = parents.qid",
             ),
             );
         }

@@ -307,7 +307,8 @@ class ParticipantAttributeName extends CActiveRecord
     	}
 
         $criteria = new CDbCriteria();
-        $criteria->addNotInCondition('t.attribute_id', $attributeid);
+		$alias = $this->getTableAlias();
+        $criteria->addNotInCondition("$alias.attribute_id", $attributeid);
         $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($criteria);
         foreach($records as $row) { //Iterate through each attribute
             $thisname="";

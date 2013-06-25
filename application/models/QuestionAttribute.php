@@ -58,9 +58,10 @@ class QuestionAttribute extends CActiveRecord
     */
     public function relations()
     {
+		$alias = $this->getTableAlias();
         return array(
         'qid' => array(self::HAS_ONE, 'Questions', '',
-            'on' => 't.qid = questions.qid',
+            'on' => "$alias.qid = questions.qid",
             ),
         );
     }

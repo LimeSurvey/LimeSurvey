@@ -61,9 +61,10 @@
         */
         public function relations()
         {
+			$alias = $this->getTableAlias();
             return array(
             'questions' => array(self::HAS_ONE, 'Question', '',
-            'on' => 't.cqid = questions.qid',
+            'on' => "$alias.cqid = questions.qid",
             ),
             );
         }

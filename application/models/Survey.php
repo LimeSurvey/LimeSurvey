@@ -93,9 +93,10 @@ class Survey extends LSActiveRecord
     */
     public function relations()
     {
+		$alias = $this->getTableAlias();
         return array(
-        'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id'),
-        'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 't.owner_id = owner.uid'),
+			'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id'),
+			'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
         );
     }
 

@@ -145,8 +145,9 @@ class SurveyDynamic extends LSActiveRecord
         {
             $criteria->select = 't.*';
         }
+		$alias = $this->getTableAlias();
 
-        $newCriteria->join = "LEFT JOIN {{survey_" . self::$sid . "_timings}} survey_timings ON t.id = survey_timings.id";
+        $newCriteria->join = "LEFT JOIN {{survey_" . self::$sid . "_timings}} survey_timings ON $alias.id = survey_timings.id";
         $newCriteria->select = 'survey_timings.*';  // Otherwise we don't get records from the token table
         $newCriteria->mergeWith($criteria);
 
@@ -167,17 +168,18 @@ class SurveyDynamic extends LSActiveRecord
         $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . self::$sid  . '}}')->getColumnNames();
         $aSelectFields=array_diff($aSelectFields, array('token'));
         $aSelect=array();
+		$alias = $this->getTableAlias();
         foreach($aSelectFields as $sField)
-            $aSelect[]='t.'.Yii::app()->db->schema->quoteColumnName($sField);
-        $aSelectFields=$aSelect;        
-        $aSelectFields[]='t.token';
+            $aSelect[]="$alias.".Yii::app()->db->schema->quoteColumnName($sField);
+        $aSelectFields=$aSelect;   
+		$aSelectFields[]='$alias.token';
 
         if ($criteria->select == '*')
         {
             $criteria->select = $aSelectFields;
         }
 
-        $newCriteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} tokens ON t.token = tokens.token";
+        $newCriteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} tokens ON $alias.token = tokens.token";
 
         $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . self::$sid . '}}')->getColumnNames();
         $aTokenFields=array_diff($aTokenFields, array('token'));

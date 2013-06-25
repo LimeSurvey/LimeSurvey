@@ -57,9 +57,10 @@ class Answer extends CActiveRecord
      */
     public function relations()
     {
+		$alias = $this->getTableAlias();
         return array(
             'questions' => array(self::HAS_ONE, 'Question', '',
-                'on' => 't.qid = questions.qid',
+                'on' => "$alias.qid = questions.qid",
             ),
             'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'through' => 'questions',
                 'on' => 'questions.gid = groups.gid'

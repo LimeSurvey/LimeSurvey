@@ -97,7 +97,7 @@ class SurveyTimingDynamic extends LSActiveRecord
     public function statistics()
     {
         $sid = self::$sid;
-        if(Yii::app()->db->schema->getTable($this->tableName())){
+		if(Yii::app()->db->schema->getTable($this->tableName())){
             $queryAvg=Yii::app()->db->createCommand()
                 ->select("AVG(interviewtime) AS avg, COUNT(*) as count")
                 ->from($this->tableName()." t")

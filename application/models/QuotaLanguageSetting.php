@@ -58,9 +58,10 @@ class QuotaLanguageSetting extends CActiveRecord
 	 */
 	public function relations()
 	{
+		$alias = $this->getTableAlias();
 		return array(
 			'quota' => array(self::BELONGS_TO, 'Quota', '',
-				'on' => 'quota.id = t.quotals_quota_id'),
+				'on' => "quota.id = $alias.quotals_quota_id"),
 		);
 	}
 

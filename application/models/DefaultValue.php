@@ -58,9 +58,10 @@ class DefaultValue extends CActiveRecord
 	 */
 	public function relations()
 	{
+		$alias = $this->getTableAlias();
 		return array(
 			'question' => array(self::HAS_ONE, 'Question', '',
-						'on' => 't.qid = question.qid',
+						'on' => "$alias.qid = question.qid",
 			),
 		);
 	}

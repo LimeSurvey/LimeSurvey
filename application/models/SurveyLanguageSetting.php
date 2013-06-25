@@ -56,8 +56,9 @@ class SurveyLanguageSetting extends CActiveRecord
 	 */
 	public function relations()
 	{
+		$alias = $this->getTableAlias();
 		return array(
-			'survey' => array(self::BELONGS_TO, 'Survey', '', 'on' => 't.surveyls_survey_id = survey.sid'),
+			'survey' => array(self::BELONGS_TO, 'Survey', '', 'on' => "$alias.surveyls_survey_id = survey.sid"),
             'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 'survey.owner_id = owner.uid'),
 		);
 	}

@@ -88,7 +88,7 @@ class SurveyRuntimeHelper {
 		if ($_SESSION[$LEMsessid]['maxstep'] == $_SESSION[$LEMsessid]['totalsteps'])
 		{
 			echo "<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
-			. $clang->gT("Submit") . " ' name='move2' />\n";
+			. gT("Submit") . " ' name='move2' />\n";
 		}
 
 		echo '</div></div>';
