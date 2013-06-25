@@ -34,7 +34,6 @@
  * used like an associative array. See {@link CMap} for more details.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConfiguration.php 3458 2011-11-21 02:13:03Z alexander.makarow $
  * @package system.collections
  * @since 1.0
  */

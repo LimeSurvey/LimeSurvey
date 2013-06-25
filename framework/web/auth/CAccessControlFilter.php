@@ -24,33 +24,52 @@
  * <pre>
  * array(
  *   'allow',  // or 'deny'
+ * 
  *   // optional, list of action IDs (case insensitive) that this rule applies to
  *   // if not specified, rule applies to all actions
  *   'actions'=>array('edit', 'delete'),
+ * 
  *   // optional, list of controller IDs (case insensitive) that this rule applies to
  *   'controllers'=>array('post', 'admin/user'),
+ * 
  *   // optional, list of usernames (case insensitive) that this rule applies to
  *   // Use * to represent all users, ? guest users, and @ authenticated users
  *   'users'=>array('thomas', 'kevin'),
+ * 
  *   // optional, list of roles (case sensitive!) that this rule applies to.
  *   'roles'=>array('admin', 'editor'),
+ * 
+ *   // since version 1.1.11 you can pass parameters for RBAC bizRules
+ *   'roles'=>array('updateTopic'=>array('topic'=>$topic))
+ * 
  *   // optional, list of IP address/patterns that this rule applies to
  *   // e.g. 127.0.0.1, 127.0.0.*
  *   'ips'=>array('127.0.0.1'),
+ * 
  *   // optional, list of request types (case insensitive) that this rule applies to
  *   'verbs'=>array('GET', 'POST'),
+ * 
  *   // optional, a PHP expression whose value indicates whether this rule applies
  *   'expression'=>'!$user->isGuest && $user->level==2',
+ * 
  *   // optional, the customized error message to be displayed
  *   // This option is available since version 1.1.1.
  *   'message'=>'Access Denied.',
- * )
+ * 
+ *   // optional, the denied method callback name, that will be called once the
+ *   // access is denied, instead of showing the customized error message. It can also be
+ *   // a valid PHP callback, including class method name (array(ClassName/Object, MethodName)),
+ *   // or anonymous function (PHP 5.3.0+). The function/method signature should be as follows:
+ *   // function foo($user, $rule) { ... }
+ *   // where $user is the current application user object and $rule is this access rule.
+ *   // This option is available since version 1.1.11.
+ *   'deniedCallback'=>'redirectToDeniedMethod',
+  * )
  * </pre>
  *
  * @property array $rules List of access rules.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAccessControlFilter.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.auth
  * @since 1.0
  */
@@ -87,7 +106,7 @@ class CAccessControlFilter extends CFilter
 				$r->allow=$rule[0]==='allow';
 				foreach(array_slice($rule,1) as $name=>$value)
 				{
-					if($name==='expression' || $name==='roles' || $name==='message')
+					if($name==='expression' || $name==='roles' || $name==='message' || $name==='deniedCallback')
 						$r->$name=$value;
 					else
 						$r->$name=array_map('strtolower',$value);
@@ -115,9 +134,12 @@ class CAccessControlFilter extends CFilter
 		{
 			if(($allow=$rule->isUserAllowed($user,$filterChain->controller,$filterChain->action,$ip,$verb))>0) // allowed
 				break;
-			else if($allow<0) // denied
+			elseif($allow<0) // denied
 			{
-				$this->accessDenied($user,$this->resolveErrorMessage($rule));
+				if(isset($rule->deniedCallback))
+					call_user_func($rule->deniedCallback, $rule);
+				else
+					$this->accessDenied($user,$this->resolveErrorMessage($rule));
 				return false;
 			}
 		}
@@ -137,7 +159,7 @@ class CAccessControlFilter extends CFilter
 	{
 		if($rule->message!==null)
 			return $rule->message;
-		else if($this->message!==null)
+		elseif($this->message!==null)
 			return $this->message;
 		else
 			return Yii::t('yii','You are not authorized to perform this action.');
@@ -163,7 +185,6 @@ class CAccessControlFilter extends CFilter
  * CAccessRule represents an access rule that is managed by {@link CAccessControlFilter}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAccessControlFilter.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.auth
  * @since 1.0
  */
@@ -222,6 +243,21 @@ class CAccessRule extends CComponent
 	 * @since 1.1.1
 	 */
 	public $message;
+	/**
+	 * @var mixed the denied method callback that will be called once the
+	 * access is denied. It replaces the behavior that shows an error message.
+	 * It can be a valid PHP callback including class method name (array(ClassName/Object, MethodName)),
+	 * or anonymous function (PHP 5.3.0+). For more information, on different options, check
+	 * @link http://www.php.net/manual/en/language.pseudo-types.php#language.types.callback
+	 * The function/method signature should be as follows:
+	 * <pre>
+	 * function foo($rule) { ... }
+	 * </pre>
+	 * where $rule is this access rule.
+	 *
+	 * @since 1.1.11
+	 */
+	public $deniedCallback;
 
 
 	/**
@@ -257,8 +293,8 @@ class CAccessRule extends CComponent
 	}
 
 	/**
-	 * @param CAction $controller the action
-	 * @return boolean whether the rule applies to the action
+	 * @param CController $controller the controller
+	 * @return boolean whether the rule applies to the controller
 	 */
 	protected function isControllerMatched($controller)
 	{
@@ -277,11 +313,11 @@ class CAccessRule extends CComponent
 		{
 			if($u==='*')
 				return true;
-			else if($u==='?' && $user->getIsGuest())
+			elseif($u==='?' && $user->getIsGuest())
 				return true;
-			else if($u==='@' && !$user->getIsGuest())
+			elseif($u==='@' && !$user->getIsGuest())
 				return true;
-			else if(!strcasecmp($u,$user->getName()))
+			elseif(!strcasecmp($u,$user->getName()))
 				return true;
 		}
 		return false;
@@ -295,10 +331,18 @@ class CAccessRule extends CComponent
 	{
 		if(empty($this->roles))
 			return true;
-		foreach($this->roles as $role)
+		foreach($this->roles as $key=>$role)
 		{
-			if($user->checkAccess($role))
-				return true;
+			if(is_numeric($key))
+			{
+				if($user->checkAccess($role))
+					return true;
+			}
+			else
+			{
+				if($user->checkAccess($key,$role))
+					return true;
+			}
 		}
 		return false;
 	}

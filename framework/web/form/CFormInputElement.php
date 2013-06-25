@@ -24,6 +24,11 @@
  * <li>dropdownlist: a drop-down list generated using {@link CHtml::activeDropDownList}</li>
  * <li>checkboxlist: a list of check boxes generated using {@link CHtml::activeCheckBoxList}</li>
  * <li>radiolist: a list of radio buttons generated using {@link CHtml::activeRadioButtonList}</li>
+ * <li>url: an HTML5 url input generated using {@link CHtml::activeUrlField}</li>
+ * <li>email: an HTML5 email input generated using {@link CHtml::activeEmailField}</li>
+ * <li>number: an HTML5 number input generated using {@link CHtml::activeNumberField}</li>
+ * <li>range: an HTML5 range input generated using {@link CHtml::activeRangeField}</li>
+ * <li>date: an HTML5 date input generated using {@link CHtml::activeDateField}</li>
  * </ul>
  * The {@link type} property can also be a class name or a path alias to the class. In this case,
  * the input is generated using a widget of the specified class. Note, the widget must
@@ -39,7 +44,6 @@
  * this method will call {@link CModel::getAttributeLabel} to determine the label.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFormInputElement.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.web.form
  * @since 1.1
  */
@@ -60,11 +64,16 @@ class CFormInputElement extends CFormElement
 		'dropdownlist'=>'activeDropDownList',
 		'checkboxlist'=>'activeCheckBoxList',
 		'radiolist'=>'activeRadioButtonList',
+		'url'=>'activeUrlField',
+		'email'=>'activeEmailField',
+		'number'=>'activeNumberField',
+		'range'=>'activeRangeField',
+		'date'=>'activeDateField'
 	);
 
 	/**
 	 * @var string the type of this input. This can be a widget class name, a path alias of a widget class name,
-	 * or a input type alias (text, hidden, password, textarea, file, radio, checkbox, listbox, dropdownlist, checkboxlist, or radiolist).
+	 * or an input type alias (text, hidden, password, textarea, file, radio, checkbox, listbox, dropdownlist, checkboxlist, or radiolist).
 	 * If a widget class, it must extend from {@link CInputWidget} or (@link CJuiInputWidget).
 	 */
 	public $type;

@@ -18,7 +18,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  *
  * To use this widget, you may insert the following code in a view:
  * <pre>
- * $this->widget('zii.widgets.jui.CJuiSelectable', array(
+ * $this->widget('zii.widgets.jui.CJuiSelectable',array(
  *     'items'=>array(
  *         'id1'=>'Item 1',
  *         'id2'=>'Item 2',
@@ -37,7 +37,6 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiSelectable.php 3207 2011-05-12 08:05:26Z mdomba $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -62,23 +61,20 @@ class CJuiSelectable extends CJuiWidget {
 	 * Run this widget.
 	 * This method registers necessary javascript and renders the needed HTML code.
 	 */
-	public function run(){
+	public function run()
+	{
 		$id=$this->getId();
-		if (isset($this->htmlOptions['id']))
-			$id = $this->htmlOptions['id'];
+		if(isset($this->htmlOptions['id']))
+			$id=$this->htmlOptions['id'];
 		else
 			$this->htmlOptions['id']=$id;
 
-		$options=empty($this->options) ? '' : CJavaScript::encode($this->options);
+		$options=CJavaScript::encode($this->options);
 		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$id,"jQuery('#{$id}').selectable({$options});");
 
 		echo CHtml::openTag($this->tagName,$this->htmlOptions)."\n";
 		foreach($this->items as $id=>$content)
-		{
 			echo strtr($this->itemTemplate,array('{id}'=>$id,'{content}'=>$content))."\n";
-		}
 		echo CHtml::closeTag($this->tagName);
 	}
 }
-
-

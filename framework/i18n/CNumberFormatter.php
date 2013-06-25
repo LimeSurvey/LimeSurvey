@@ -54,7 +54,6 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CNumberFormatter.php 2798 2011-01-01 19:29:03Z qiang.xue $
  * @package system.i18n
  * @since 1.0
  */
@@ -94,7 +93,7 @@ class CNumberFormatter extends CComponent
 		$result=$this->formatNumber($format,$value);
 		if($currency===null)
 			return $result;
-		else if(($symbol=$this->_locale->getCurrencySymbol($currency))===null)
+		elseif(($symbol=$this->_locale->getCurrencySymbol($currency))===null)
 			$symbol=$currency;
 		return str_replace('¤',$symbol,$result);
 	}
@@ -159,9 +158,9 @@ class CNumberFormatter extends CComponent
 		$negative=$value<0;
 		$value=abs($value*$format['multiplier']);
 		if($format['maxDecimalDigits']>=0)
-			$value=round($value,$format['maxDecimalDigits']);
+			$value=number_format($value,$format['maxDecimalDigits'],'.','');
 		$value="$value";
-		if(($pos=strpos($value,'.'))!==false)
+		if(false !== $pos=strpos($value,'.'))
 		{
 			$integer=substr($value,0,$pos);
 			$decimal=substr($value,$pos+1);
@@ -171,9 +170,16 @@ class CNumberFormatter extends CComponent
 			$integer=$value;
 			$decimal='';
 		}
-
 		if($format['decimalDigits']>strlen($decimal))
 			$decimal=str_pad($decimal,$format['decimalDigits'],'0');
+		elseif($format['decimalDigits']<strlen($decimal))
+		{
+			$decimal_temp='';
+			for($i=strlen($decimal)-1;$i>=0;$i--)
+				if($decimal[$i]!=='0' || strlen($decimal_temp)>0)
+					$decimal_temp=$decimal[$i].$decimal_temp;
+			$decimal=$decimal_temp;
+		}
 		if(strlen($decimal)>0)
 			$decimal=$this->_locale->getNumberSymbol('decimal').$decimal;
 
@@ -232,7 +238,7 @@ class CNumberFormatter extends CComponent
 		// find out multiplier
 		if(strpos($pat,'%')!==false)
 			$format['multiplier']=100;
-		else if(strpos($pat,'‰')!==false)
+		elseif(strpos($pat,'‰')!==false)
 			$format['multiplier']=1000;
 		else
 			$format['multiplier']=1;

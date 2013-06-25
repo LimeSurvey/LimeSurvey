@@ -72,7 +72,6 @@
  * normally without causing any error.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWidgetFactory.php 3421 2011-10-20 21:23:38Z alexander.makarow $
  * @package system.web
  * @since 1.1
  */

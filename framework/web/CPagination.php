@@ -22,14 +22,14 @@
  * Controller action:
  * <pre>
  * function actionIndex(){
- *     $criteria = new CDbCriteria();
+ *     $criteria=new CDbCriteria();
  *     $count=Article::model()->count($criteria);
  *     $pages=new CPagination($count);
  *
  *     // results per page
  *     $pages->pageSize=10;
  *     $pages->applyLimit($criteria);
- *     $models = Post::model()->findAll($criteria);
+ *     $models=Article::model()->findAll($criteria);
  *
  *     $this->render('index', array(
  *     'models' => $models,
@@ -61,7 +61,6 @@
  * This returns the same value as {@link pageSize}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPagination.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web
  * @since 1.0
  */

@@ -12,7 +12,6 @@
  * COciCommandBuilder provides basic methods to create query commands for tables.
  *
  * @author Ricardo Grana <rickgrana@yahoo.com.br>
- * @version $Id: COciCommandBuilder.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema.oci
  */
 class COciCommandBuilder extends CDbCommandBuilder
@@ -62,11 +61,11 @@ class COciCommandBuilder extends CDbCommandBuilder
 
 
 		$sql = <<<EOD
-				WITH USER_SQL AS ({$sql}),
-				   PAGINATION AS (SELECT USER_SQL.*, rownum as rowNumId FROM USER_SQL)
-				SELECT *
-				FROM PAGINATION
-				{$filter}
+WITH USER_SQL AS ({$sql}),
+	PAGINATION AS (SELECT USER_SQL.*, rownum as rowNumId FROM USER_SQL)
+SELECT *
+FROM PAGINATION
+{$filter}
 EOD;
 
 		return $sql;

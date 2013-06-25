@@ -34,24 +34,25 @@
  *
  * For example, the {@link tabs} property can be configured as follows,
  * <pre>
- * array(
- *     'tab1'=>array(
- *           'title'=>'tab 1 title',
- *           'view'=>'view1',
- *           'data'=>array('model'=>$model),
+ * $this->widget('CTabView', array(
+ *     'tabs'=>array(
+ *         'tab1'=>array(
+ *             'title'=>'tab 1 title',
+ *             'view'=>'view1',
+ *             'data'=>array('model'=>$model),
+ *         ),
+ *         'tab2'=>array(
+ *             'title'=>'tab 2 title',
+ *             'url'=>'http://www.yiiframework.com/',
+ *         ),
  *     ),
- *     'tab2'=>array(
- *           'title'=>'tab 2 title',
- *           'url'=>'http://www.yiiframework.com/',
- *     ),
- * )
+ * ))?>
  * </pre>
  *
  * By default, the first tab will be activated. To activate a different tab
  * when the page is initially loaded, set {@link activeTab} to be the ID of the desired tab.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTabView.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -97,6 +98,8 @@ class CTabView extends CWidget
 	 * <li>url: a URL that the user browser will be redirected to when clicking on this tab.</li>
 	 * <li>data: array (name=>value), this will be passed to the view when 'view' is specified.
 	 * This option is available since version 1.1.1.</li>
+	 * <li>visible: whether this tab is visible. Defaults to true.
+	 * this option is available since version 1.1.11.</li>
 	 * </ul>
 	 * <pre>
 	 * array(
@@ -118,6 +121,10 @@ class CTabView extends CWidget
 	 */
 	public function run()
 	{
+		foreach($this->tabs as $id=>$tab)
+			if(isset($tab['visible']) && $tab['visible']==false)
+				unset($this->tabs[$id]);
+
 		if(empty($this->tabs))
 			return;
 
@@ -193,7 +200,7 @@ class CTabView extends CWidget
 			echo "<div class=\"view\" id=\"{$id}\"{$inactive}>\n";
 			if(isset($tab['content']))
 				echo $tab['content'];
-			else if(isset($tab['view']))
+			elseif(isset($tab['view']))
 			{
 				if(isset($tab['data']))
 				{

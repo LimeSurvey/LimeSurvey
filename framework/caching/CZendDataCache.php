@@ -17,7 +17,6 @@
  * See {@link CCache} manual for common cache operations that are supported by CZendDataCache.
  *
  * @author Steffen Dietz <steffo.dietz[at]googlemail[dot]com>
- * @version $Id: CZendDataCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  */
 class CZendDataCache extends CCache

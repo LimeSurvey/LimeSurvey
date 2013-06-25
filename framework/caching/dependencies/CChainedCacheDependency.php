@@ -22,7 +22,6 @@
  * @property boolean $hasChanged Whether the dependency is changed or not.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CChainedCacheDependency.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching.dependencies
  * @since 1.0
  */

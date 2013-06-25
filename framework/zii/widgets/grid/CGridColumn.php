@@ -22,7 +22,6 @@
  * This is determined based on whether {@link footer} is set.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridColumn.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -30,7 +29,7 @@ abstract class CGridColumn extends CComponent
 {
 	/**
 	 * @var string the ID of this column. This value should be unique among all grid view columns.
-	 * If this is set, it will be assigned one automatically.
+	 * If this is not set, it will be assigned one automatically.
 	 */
 	public $id;
 	/**
@@ -60,6 +59,10 @@ abstract class CGridColumn extends CComponent
 	 * @var array the HTML options for the data cell tags.
 	 */
 	public $htmlOptions=array();
+	/**
+	 * @var array the HTML options for the filter cell tag.
+	 */
+	public $filterHtmlOptions=array();
 	/**
 	 * @var array the HTML options for the header cell tag.
 	 */
@@ -102,7 +105,7 @@ abstract class CGridColumn extends CComponent
 	 */
 	public function renderFilterCell()
 	{
-		echo "<td>";
+		echo CHtml::openTag('td',$this->filterHtmlOptions);
 		$this->renderFilterCellContent();
 		echo "</td>";
 	}
@@ -129,10 +132,13 @@ abstract class CGridColumn extends CComponent
 		if($this->cssClassExpression!==null)
 		{
 			$class=$this->evaluateExpression($this->cssClassExpression,array('row'=>$row,'data'=>$data));
-			if(isset($options['class']))
-				$options['class'].=' '.$class;
-			else
-				$options['class']=$class;
+			if(!empty($class))
+			{
+				if(isset($options['class']))
+					$options['class'].=' '.$class;
+				else
+					$options['class']=$class;
+			}
 		}
 		echo CHtml::openTag('td',$options);
 		$this->renderDataCellContent($row,$data);

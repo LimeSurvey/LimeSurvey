@@ -38,7 +38,6 @@
  * @property CDbConnection $dbConnection The DB connection used for the message source.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbMessageSource.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.i18n
  * @since 1.0
  */

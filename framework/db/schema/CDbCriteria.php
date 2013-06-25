@@ -11,8 +11,15 @@
 /**
  * CDbCriteria represents a query criteria, such as conditions, ordering by, limit/offset.
  *
+ * It can be used in AR query methods such as CActiveRecord::find and CActiveRecord::findAll.
+ *
+ * $criteria=new CDbCriteria();
+ * $criteria->compare('status',Post::STATUS_ACTIVE);
+ * $criteria->addInCondition('id',array(1,2,3,4,5,6));
+ *
+ * $posts = Post::model()->findAll($criteria);
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCriteria.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema
  * @since 1.0
  */
@@ -163,11 +170,30 @@ class CDbCriteria extends CComponent
 		$params=array();
 		foreach($this->params as $name=>$value)
 		{
-			$newName=self::PARAM_PREFIX.self::$paramCount++;
-			$map[$name]=$newName;
+			if(strpos($name,self::PARAM_PREFIX)===0)
+			{
+				$newName=self::PARAM_PREFIX.self::$paramCount++;
+				$map[$name]=$newName;
+			}
+			else
+			{
+				$newName=$name;
+			}
 			$params[$newName]=$value;
 		}
-		$this->condition=strtr($this->condition,$map);
+		if (!empty($map))
+		{
+			$sqlContentFieldNames = array(
+				'select',
+				'condition',
+				'order',
+				'group',
+				'join',
+				'having',
+			);
+			foreach($sqlContentFieldNames as $fieldName)
+				$this->$fieldName=strtr($this->$fieldName,$map);
+		}
 		$this->params=$params;
 	}
 
@@ -242,14 +268,17 @@ class CDbCriteria extends CComponent
 	public function addInCondition($column,$values,$operator='AND')
 	{
 		if(($n=count($values))<1)
-			return $this->addCondition('0=1',$operator); // 0=1 is used because in MSSQL value alone can't be used in WHERE
-		if($n===1)
+			$condition='0=1'; // 0=1 is used because in MSSQL value alone can't be used in WHERE
+		elseif($n===1)
 		{
 			$value=reset($values);
 			if($value===null)
-				return $this->addCondition($column.' IS NULL');
-			$condition=$column.'='.self::PARAM_PREFIX.self::$paramCount;
-			$this->params[self::PARAM_PREFIX.self::$paramCount++]=$value;
+				$condition=$column.' IS NULL';
+			else
+			{
+				$condition=$column.'='.self::PARAM_PREFIX.self::$paramCount;
+				$this->params[self::PARAM_PREFIX.self::$paramCount++]=$value;
+			}
 		}
 		else
 		{
@@ -285,9 +314,12 @@ class CDbCriteria extends CComponent
 		{
 			$value=reset($values);
 			if($value===null)
-				return $this->addCondition($column.' IS NOT NULL');
-			$condition=$column.'!='.self::PARAM_PREFIX.self::$paramCount;
-			$this->params[self::PARAM_PREFIX.self::$paramCount++]=$value;
+				$condition=$column.' IS NOT NULL';
+			else
+			{
+				$condition=$column.'!='.self::PARAM_PREFIX.self::$paramCount;
+				$this->params[self::PARAM_PREFIX.self::$paramCount++]=$value;
+			}
 		}
 		else
 		{
@@ -402,7 +434,7 @@ class CDbCriteria extends CComponent
 			if($op==='<>')
 				return $this->addSearchCondition($column,$value,$escape,$operator,'NOT LIKE');
 		}
-		else if($op==='')
+		elseif($op==='')
 			$op='=';
 
 		$this->addCondition($column.$op.self::PARAM_PREFIX.self::$paramCount,$operator);
@@ -438,11 +470,7 @@ class CDbCriteria extends CComponent
 		$this->params[$paramEnd]=$valueEnd;
 		$condition="$column BETWEEN $paramStart AND $paramEnd";
 
-		if($this->condition==='')
-			$this->condition=$condition;
-		else
-			$this->condition='('.$this->condition.') '.$operator.' ('.$condition.')';
-		return $this;
+		return $this->addCondition($condition,$operator);
 	}
 
 	/**
@@ -452,19 +480,22 @@ class CDbCriteria extends CComponent
 	 * Also, the criteria passed as the parameter takes precedence in case
 	 * two options cannot be merged (e.g. LIMIT, OFFSET).
 	 * @param mixed $criteria the criteria to be merged with. Either an array or CDbCriteria.
-	 * @param boolean $useAnd whether to use 'AND' to merge condition and having options.
-	 * If false, 'OR' will be used instead. Defaults to 'AND'.
+	 * @param string|boolean $operator the operator used to concatenate where and having conditions. Defaults to 'AND'.
+	 * For backwards compatibility a boolean value can be passed:
+	 * - 'false' for 'OR'
+	 * - 'true' for 'AND'
 	 */
-	public function mergeWith($criteria,$useAnd=true)
+	public function mergeWith($criteria,$operator='AND')
 	{
-		$and=$useAnd ? 'AND' : 'OR';
+		if(is_bool($operator))
+			$operator=$operator ? 'AND' : 'OR';
 		if(is_array($criteria))
 			$criteria=new self($criteria);
 		if($this->select!==$criteria->select)
 		{
 			if($this->select==='*')
 				$this->select=$criteria->select;
-			else if($criteria->select!=='*')
+			elseif($criteria->select!=='*')
 			{
 				$select1=is_string($this->select)?preg_split('/\s*,\s*/',trim($this->select),-1,PREG_SPLIT_NO_EMPTY):$this->select;
 				$select2=is_string($criteria->select)?preg_split('/\s*,\s*/',trim($criteria->select),-1,PREG_SPLIT_NO_EMPTY):$criteria->select;
@@ -476,8 +507,8 @@ class CDbCriteria extends CComponent
 		{
 			if($this->condition==='')
 				$this->condition=$criteria->condition;
-			else if($criteria->condition!=='')
-				$this->condition="({$this->condition}) $and ({$criteria->condition})";
+			elseif($criteria->condition!=='')
+				$this->condition="({$this->condition}) $operator ({$criteria->condition})";
 		}
 
 		if($this->params!==$criteria->params)
@@ -496,7 +527,7 @@ class CDbCriteria extends CComponent
 		{
 			if($this->order==='')
 				$this->order=$criteria->order;
-			else if($criteria->order!=='')
+			elseif($criteria->order!=='')
 				$this->order=$criteria->order.', '.$this->order;
 		}
 
@@ -504,7 +535,7 @@ class CDbCriteria extends CComponent
 		{
 			if($this->group==='')
 				$this->group=$criteria->group;
-			else if($criteria->group!=='')
+			elseif($criteria->group!=='')
 				$this->group.=', '.$criteria->group;
 		}
 
@@ -512,7 +543,7 @@ class CDbCriteria extends CComponent
 		{
 			if($this->join==='')
 				$this->join=$criteria->join;
-			else if($criteria->join!=='')
+			elseif($criteria->join!=='')
 				$this->join.=' '.$criteria->join;
 		}
 
@@ -520,8 +551,8 @@ class CDbCriteria extends CComponent
 		{
 			if($this->having==='')
 				$this->having=$criteria->having;
-			else if($criteria->having!=='')
-				$this->having="({$this->having}) $and ({$criteria->having})";
+			elseif($criteria->having!=='')
+				$this->having="({$this->having}) $operator ({$criteria->having})";
 		}
 
 		if($criteria->distinct>0)
@@ -535,7 +566,7 @@ class CDbCriteria extends CComponent
 
 		if(empty($this->scopes))
 			$this->scopes=$criteria->scopes;
-		else if(!empty($criteria->scopes))
+		elseif(!empty($criteria->scopes))
 		{
 			$scopes1=(array)$this->scopes;
 			$scopes2=(array)$criteria->scopes;
@@ -543,7 +574,7 @@ class CDbCriteria extends CComponent
 			{
 				if(is_integer($k))
 					$scopes[]=$v;
-				else if(isset($scopes2[$k]))
+				elseif(isset($scopes2[$k]))
 					$scopes[]=array($k=>$v);
 				else
 					$scopes[$k]=$v;
@@ -552,7 +583,7 @@ class CDbCriteria extends CComponent
 			{
 				if(is_integer($k))
 					$scopes[]=$v;
-				else if(isset($scopes1[$k]))
+				elseif(isset($scopes1[$k]))
 					$scopes[]=array($k=>$v);
 				else
 					$scopes[$k]=$v;
@@ -562,14 +593,14 @@ class CDbCriteria extends CComponent
 
 		if(empty($this->with))
 			$this->with=$criteria->with;
-		else if(!empty($criteria->with))
+		elseif(!empty($criteria->with))
 		{
 			$this->with=(array)$this->with;
 			foreach((array)$criteria->with as $k=>$v)
 			{
 				if(is_integer($k))
 					$this->with[]=$v;
-				else if(isset($this->with[$k]))
+				elseif(isset($this->with[$k]))
 				{
 					$excludes=array();
 					foreach(array('joinType','on') as $opt)
@@ -583,7 +614,7 @@ class CDbCriteria extends CComponent
 						unset($v[$opt]);
 					}
 					$this->with[$k]=new self($this->with[$k]);
-					$this->with[$k]->mergeWith($v,$useAnd);
+					$this->with[$k]->mergeWith($v,$operator);
 					$this->with[$k]=$this->with[$k]->toArray();
 					if (count($excludes)!==0)
 						$this->with[$k]=CMap::mergeArray($this->with[$k],$excludes);

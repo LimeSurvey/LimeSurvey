@@ -14,7 +14,6 @@
  * An event handler may retrieve the captured {@link output} for further processing.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: COutputEvent.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.web
  * @since 1.0
  */

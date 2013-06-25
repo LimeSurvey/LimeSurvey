@@ -13,7 +13,6 @@
  * CListPager displays a dropdown list that contains options leading to different pages of target.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CListPager.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.web.widgets.pagers
  * @since 1.0
  */

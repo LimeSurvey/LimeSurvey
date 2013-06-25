@@ -15,8 +15,6 @@
  * of the guide for details.
  *
  * NOTE, this file must be saved in UTF-8 encoding.
- *
- * @version $Id: $
  */
 return array (
   'Action class {class} must implement the "run" method.' => 'A classe Action {class} deve implementar o método "run".',
@@ -56,7 +54,7 @@ return array (
   'Active record "{class}" is trying to select an invalid column "{column}". Note, the column must exist in the table or be an expression with alias.' => 'O active record "{class}" está tentando selecionar uma coluna inválida "{column}". Note, a coluna deve existir na tabela ou ser uma expressão de alias (apelido)',
   'Active record class "{class}" does not have a scope named "{scope}".' => 'A classe de active record "{class}" não possui um escopo denominado "{scope}".',
   'Adding a foreign key constraint to an existing table is not supported by SQLite.' => 'Acrescentar uma chave estrangeira a uma tabela existente não é suportado pelo SQLite.',
-  'Alias "{alias}" is invalid. Make sure it points to an existing PHP file.' => 'O alias "{alias}" é inválido. Assegure-se de que ele aponta para um arquivo PHP existente.',
+  'Alias "{alias}" is invalid. Make sure it points to an existing PHP file and the file is readable.' => 'O alias "{alias}" é inválido. Assegure-se de que ele aponta para um arquivo PHP existente.',
   'Alias "{alias}" is invalid. Make sure it points to an existing directory or file.' => 'Alias "{alias}" é inválido. Tenha certeza de apontar para um diretório ou arquivo existente.',
   'Alias "{alias}" is invalid. Make sure it points to an existing directory.' => 'O alias "{alias}" é inválido. Assegure-se de que ele aponta para um diretório existente.',
   'Altering a DB column is not supported by SQLite.' => 'Alterar uma coluna de banco de dados não é suportado pelo SQLite.',
@@ -138,7 +136,7 @@ return array (
   'Invalid MO file: {file} (magic: {magic}).' => 'Arquivo MO inválido: {file} (magic: {magic}).',
   'Invalid enumerable value "{value}". Please make sure it is among ({enum}).' => 'Valor enumerável "{value}" inválido. Por favor, verifique se ele está entre ({enum}).',
   'Invalid operator "{operator}".' => 'Operador inválido: "{opeator}".',
-  'Last &gt;&gt;' => 'Último Last &gt;&gt;',
+  'Last &gt;&gt;' => 'Último &gt;&gt;',
   'List data must be an array or an object implementing Traversable.' => 'Dados da lista devem ser um array ou objetos que implemente a interface Trasversable.',
   'List index "{index}" is out of bound.' => 'Índice "{index}" da lista está fora dos limites.',
   'Login Required' => 'Login requerido',

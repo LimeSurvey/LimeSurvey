@@ -14,7 +14,6 @@
  * It allows CHttpSession to return a new iterator for traversing the session variables.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpSessionIterator.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.web
  * @since 1.0
  */

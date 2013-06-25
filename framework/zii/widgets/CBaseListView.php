@@ -14,7 +14,6 @@
  * CBaseListView implements the common features needed by a view wiget for rendering multiple models.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBaseListView.php 3101 2011-03-22 17:35:19Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -48,7 +47,10 @@ abstract class CBaseListView extends CWidget
 	 */
 	public $enablePagination=true;
 	/**
-	 * @var array the configuration for the pager. Defaults to <code>array('class'=>'CLinkPager')</code>.
+	 * @var array|string the configuration for the pager. Defaults to <code>array('class'=>'CLinkPager')</code>.
+	 * String value will be treated as the class name of the pager (<code>'ClassName'</code> value is similar
+	 * to the <code>array('class'=>'ClassName')</code> value). See {@link CBasePager} and {@link CLinkPager}
+	 * for more details about pager configuration array values.
 	 * @see enablePagination
 	 */
 	public $pager=array('class'=>'CLinkPager');
@@ -199,8 +201,6 @@ abstract class CBaseListView extends CWidget
 		echo '<div class="'.$this->summaryCssClass.'">';
 		if($this->enablePagination)
 		{
-			if(($summaryText=$this->summaryText)===null)
-				$summaryText=Yii::t('zii','Displaying {start}-{end} of {count} result(s).');
 			$pagination=$this->dataProvider->getPagination();
 			$total=$this->dataProvider->getTotalItemCount();
 			$start=$pagination->currentPage*$pagination->pageSize+1;
@@ -210,6 +210,8 @@ abstract class CBaseListView extends CWidget
 				$end=$total;
 				$start=$end-$count+1;
 			}
+			if(($summaryText=$this->summaryText)===null)
+				$summaryText=Yii::t('zii','Displaying {start}-{end} of 1 result.|Displaying {start}-{end} of {count} results.',$total);
 			echo strtr($summaryText,array(
 				'{start}'=>$start,
 				'{end}'=>$end,
@@ -221,7 +223,7 @@ abstract class CBaseListView extends CWidget
 		else
 		{
 			if(($summaryText=$this->summaryText)===null)
-				$summaryText=Yii::t('zii','Total {count} result(s).');
+				$summaryText=Yii::t('zii','Total 1 result.|Total {count} results.',$count);
 			echo strtr($summaryText,array(
 				'{count}'=>$count,
 				'{start}'=>1,
@@ -245,7 +247,7 @@ abstract class CBaseListView extends CWidget
 		$class='CLinkPager';
 		if(is_string($this->pager))
 			$class=$this->pager;
-		else if(is_array($this->pager))
+		elseif(is_array($this->pager))
 		{
 			$pager=$this->pager;
 			if(isset($pager['class']))

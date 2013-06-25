@@ -12,7 +12,6 @@
  * CErrorEvent represents the parameter for the {@link CApplication::onError onError} event.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorEvent.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.base
  * @since 1.0
  */

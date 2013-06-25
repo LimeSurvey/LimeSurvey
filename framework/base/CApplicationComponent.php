@@ -20,7 +20,6 @@
  * @property boolean $isInitialized Whether this application component has been initialized (ie, {@link init()} is invoked).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplicationComponent.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */

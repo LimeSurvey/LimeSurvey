@@ -17,7 +17,6 @@
  * set {@link stateName} to the name of the global state.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGlobalStateCacheDependency.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.caching.dependencies
  * @since 1.0
  */

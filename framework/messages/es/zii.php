@@ -11,14 +11,19 @@
  * Messages that no longer need translation will have their translations
  * enclosed between a pair of '@@' marks.
  *
- * NOTE, this file must be saved in UTF-8 encoding.
+ * Message string can be used with plural forms format. Check i18n section
+ * of the guide for details.
  *
- * @version $Id: zii.php 3414 2011-10-11 13:50:19Z sebathi $
+ * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Home' => 'Home',
+  'The button type "{type}" is not supported.' => 'El tipo de botón "{type}" no es soportado.',
+  'The property filterSelector should be defined.' => 'La propiedad filterSelector debería estar definida.',
+  'The property updateSelector should be defined.' => 'La propiedad updateSelector debería estar definida.',
   'Are you sure you want to delete this item?' => 'Seguro que desea borrar este elemento?',
   'Delete' => 'Borrar',
-  'Displaying {start}-{end} of {count} result(s).' => 'Desplegando {start}-{end} de {count} resultado(s).',
+  'Displaying {start}-{end} of 1 result.|Displaying {start}-{end} of {count} results.' => 'Desplegando {start}-{end} de 1 resultado.|Desplegando {start}-{end} de {count} resultados.',
   'Either "name" or "value" must be specified for CDataColumn.' => '"name" o "value" deben especificarse para CDataColumn.',
   'No results found.' => 'No se encontraron resultados.',
   'Not set' => 'No asignado',
@@ -29,7 +34,7 @@ return array (
   'The attribute must be specified in the format of "Name:Type:Label", where "Type" and "Label" are optional.' => 'El atributo debe especificarse en el formato "Nombre:Tipo:Etiqueta", donde "Tipo" y "Etiqueta" son opcionales.',
   'The column must be specified in the format of "Name:Type:Label", where "Type" and "Label" are optional.' => 'La columna debe especificarse en el formato "Nombre:Tipo:Etiqueta", donde "Tipo" y "Etiqueta" son opcionales.',
   'The property "itemView" cannot be empty.' => 'La propiedad "itemView" no puede estar vacia.',
-  'Total {count} result(s).' => 'Total de {count} resultado(s).',
+  'Total 1 result.|Total {count} results.' => 'Total de 1 resultado.|Total de {count} resultados.',
   'Update' => 'Actualiza',
   'View' => 'Mostrar',
   '{class} must specify "model" and "attribute" or "name" property values.' => '{class} debe especificar valor/es para "model" y "atributte" o para "name".',

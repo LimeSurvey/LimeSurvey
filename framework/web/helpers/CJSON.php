@@ -55,7 +55,6 @@
  * @author	 Michal Migurski <mike-json@teczno.com>
  * @author	 Matt Knapp <mdknapp[at]gmail[dot]com>
  * @author	 Brett Stimmerman <brettstimmerman[at]gmail[dot]com>
- * @version $Id: CJSON.php 3204 2011-05-05 21:36:32Z alexander.makarow $
  * @package	system.web.helpers
  * @since 1.0
  */
@@ -86,13 +85,13 @@ class CJSON
 	*/
 	const JSON_IN_CMT = 16;
 
-   /**
-	* Encodes an arbitrary variable into JSON format
-	*
-	* @param mixed $var any number, boolean, string, array, or object to be encoded.
-	* If var is a string, it will be converted to UTF-8 format first before being encoded.
-	* @return string JSON string representation of input var
-	*/
+	/**
+	 * Encodes an arbitrary variable into JSON format
+	 *
+	 * @param mixed $var any number, boolean, string, array, or object to be encoded.
+	 * If var is a string, it will be converted to UTF-8 format first before being encoded.
+	 * @return string JSON string representation of input var
+	 */
 	public static function encode($var)
 	{
 		switch (gettype($var)) {
@@ -271,28 +270,28 @@ class CJSON
 		}
 	}
 
-   /**
-	* array-walking function for use in generating JSON-formatted name-value pairs
-	*
-	* @param string $name  name of key to use
-	* @param mixed $value reference to an array element to be encoded
-	*
-	* @return   string  JSON-formatted name-value pair, like '"name":value'
-	* @access   private
-	*/
+	/**
+	 * array-walking function for use in generating JSON-formatted name-value pairs
+	 *
+	 * @param string $name  name of key to use
+	 * @param mixed $value reference to an array element to be encoded
+	 *
+	 * @return   string  JSON-formatted name-value pair, like '"name":value'
+	 * @access   private
+	 */
 	protected static function nameValue($name, $value)
 	{
 		return self::encode(strval($name)) . ':' . self::encode($value);
 	}
 
-   /**
-	* reduce a string by removing leading and trailing comments and whitespace
-	*
-	* @param string $str string value to strip of comments and whitespace
-	*
-	* @return string string value stripped of comments and whitespace
-	* @access   private
-	*/
+	/**
+	 * reduce a string by removing leading and trailing comments and whitespace
+	 *
+	 * @param string $str string value to strip of comments and whitespace
+	 *
+	 * @return string string value stripped of comments and whitespace
+	 * @access   private
+	 */
 	protected static function reduceString($str)
 	{
 		$str = preg_replace(array(
@@ -312,19 +311,27 @@ class CJSON
 		return trim($str);
 	}
 
-   /**
-	* decodes a JSON string into appropriate variable
-	*
-	* @param string $str  JSON-formatted string
-	* @param boolean $useArray  whether to use associative array to represent object data
-	* @return mixed   number, boolean, string, array, or object corresponding to given JSON input string.
-	*    Note that decode() always returns strings in ASCII or UTF-8 format!
-	* @access   public
-	*/
+	/**
+	 * decodes a JSON string into appropriate variable
+	 *
+	 * @param string $str  JSON-formatted string
+	 * @param boolean $useArray  whether to use associative array to represent object data
+	 * @return mixed   number, boolean, string, array, or object corresponding to given JSON input string.
+	 *    Note that decode() always returns strings in ASCII or UTF-8 format!
+	 * @access   public
+	 */
 	public static function decode($str, $useArray=true)
 	{
 		if(function_exists('json_decode'))
-			return json_decode($str,$useArray);
+		{
+			$json = json_decode($str,$useArray);
+
+			// based on investigation, native fails sometimes returning null.
+			// see: http://gggeek.altervista.org/sw/article_20070425.html
+			// As of PHP 5.3.6 it still fails on some valid JSON strings
+			if(!is_null($json))
+				return $json;
+		}
 
 		$str = self::reduceString($str);
 
@@ -464,9 +471,7 @@ class CJSON
 						}
 					}
 
-					array_push($stk, array('what'  => self::JSON_SLICE,
-										   'where' => 0,
-										   'delim' => false));
+					$stk[] = array('what' => self::JSON_SLICE, 'where' => 0, 'delim' => false);
 
 					$chrs = substr($str, 1, -1);
 					$chrs = self::reduceString($chrs);
@@ -494,12 +499,12 @@ class CJSON
 							// found a comma that is not inside a string, array, etc.,
 							// OR we've reached the end of the character list
 							$slice = substr($chrs, $top['where'], ($c - $top['where']));
-							array_push($stk, array('what' => self::JSON_SLICE, 'where' => ($c + 1), 'delim' => false));
+							$stk[] = array('what' => self::JSON_SLICE, 'where' => ($c + 1), 'delim' => false);
 							//print("Found split at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
 
 							if (reset($stk) == self::JSON_IN_ARR) {
 								// we are in an array, so just push an element onto the stack
-								array_push($arr, self::decode($slice,$useArray));
+								$arr[] = self::decode($slice,$useArray);
 
 							} elseif (reset($stk) == self::JSON_IN_OBJ) {
 								// we are in an object, so figure
@@ -532,7 +537,7 @@ class CJSON
 
 						} elseif ((($chrs{$c} == '"') || ($chrs{$c} == "'")) && ($top['what'] != self::JSON_IN_STR)) {
 							// found a quote, and we are not inside a string
-							array_push($stk, array('what' => self::JSON_IN_STR, 'where' => $c, 'delim' => $chrs{$c}));
+							$stk[] = array('what' => self::JSON_IN_STR, 'where' => $c, 'delim' => $chrs{$c});
 							//print("Found start of string at {$c}\n");
 
 						} elseif (($chrs{$c} == $top['delim']) &&
@@ -546,7 +551,7 @@ class CJSON
 						} elseif (($chrs{$c} == '[') &&
 								 in_array($top['what'], array(self::JSON_SLICE, self::JSON_IN_ARR, self::JSON_IN_OBJ))) {
 							// found a left-bracket, and we are in an array, object, or slice
-							array_push($stk, array('what' => self::JSON_IN_ARR, 'where' => $c, 'delim' => false));
+							$stk[] = array('what' => self::JSON_IN_ARR, 'where' => $c, 'delim' => false);
 							//print("Found start of array at {$c}\n");
 
 						} elseif (($chrs{$c} == ']') && ($top['what'] == self::JSON_IN_ARR)) {
@@ -557,7 +562,7 @@ class CJSON
 						} elseif (($chrs{$c} == '{') &&
 								 in_array($top['what'], array(self::JSON_SLICE, self::JSON_IN_ARR, self::JSON_IN_OBJ))) {
 							// found a left-brace, and we are in an array, object, or slice
-							array_push($stk, array('what' => self::JSON_IN_OBJ, 'where' => $c, 'delim' => false));
+							$stk[] = array('what' => self::JSON_IN_OBJ, 'where' => $c, 'delim' => false);
 							//print("Found start of object at {$c}\n");
 
 						} elseif (($chrs{$c} == '}') && ($top['what'] == self::JSON_IN_OBJ)) {
@@ -568,7 +573,7 @@ class CJSON
 						} elseif (($substr_chrs_c_2 == '/*') &&
 								 in_array($top['what'], array(self::JSON_SLICE, self::JSON_IN_ARR, self::JSON_IN_OBJ))) {
 							// found a comment start, and we are in an array, object, or slice
-							array_push($stk, array('what' => self::JSON_IN_CMT, 'where' => $c, 'delim' => false));
+							$stk[] = array('what' => self::JSON_IN_CMT, 'where' => $c, 'delim' => false);
 							$c++;
 							//print("Found start of comment at {$c}\n");
 
@@ -599,14 +604,14 @@ class CJSON
 	}
 
 	/**
-	* This function returns any UTF-8 encoded text as a list of
-	* Unicode values:
-	* @param string $str string to convert
-	* @return string
-	* @author Scott Michael Reynen <scott@randomchaos.com>
-	* @link   http://www.randomchaos.com/document.php?source=php_and_unicode
-	* @see	unicodeToUTF8()
-	*/
+	 * This function returns any UTF-8 encoded text as a list of
+	 * Unicode values:
+	 * @param string $str string to convert
+	 * @return string
+	 * @author Scott Michael Reynen <scott@randomchaos.com>
+	 * @link   http://www.randomchaos.com/document.php?source=php_and_unicode
+	 * @see	unicodeToUTF8()
+	 */
 	protected static function utf8ToUnicode( &$str )
 	{
 		$unicode = array();
@@ -638,13 +643,13 @@ class CJSON
 	}
 
 	/**
-	* This function converts a Unicode array back to its UTF-8 representation
-	* @param string $str string to convert
-	* @return string
-	* @author Scott Michael Reynen <scott@randomchaos.com>
-	* @link   http://www.randomchaos.com/document.php?source=php_and_unicode
-	* @see	utf8ToUnicode()
-	*/
+	 * This function converts a Unicode array back to its UTF-8 representation
+	 * @param string $str string to convert
+	 * @return string
+	 * @author Scott Michael Reynen <scott@randomchaos.com>
+	 * @link   http://www.randomchaos.com/document.php?source=php_and_unicode
+	 * @see	utf8ToUnicode()
+	 */
 	protected static function unicodeToUTF8( &$str )
 	{
 		$utf8 = '';
@@ -670,13 +675,13 @@ class CJSON
 	}
 
 	/**
-	* UTF-8 to UTF-16BE conversion.
-	*
-	* Maybe really UCS-2 without mb_string due to utf8ToUnicode limits
-	* @param string $str string to convert
-	* @param boolean $bom whether to output BOM header
-	* @return string
-	*/
+	 * UTF-8 to UTF-16BE conversion.
+	 *
+	 * Maybe really UCS-2 without mb_string due to utf8ToUnicode limits
+	 * @param string $str string to convert
+	 * @param boolean $bom whether to output BOM header
+	 * @return string
+	 */
 	protected static function utf8ToUTF16BE(&$str, $bom = false)
 	{
 		$out = $bom ? "\xFE\xFF" : '';

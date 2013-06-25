@@ -24,7 +24,6 @@
  *
  * @author Steve Heyns http://customgothic.com/
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CViewRenderer.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.renderers
  * @since 1.0
  */

@@ -18,7 +18,7 @@ Yii::import('zii.widgets.jui.CJuiInputWidget');
  *
  * To use this widget, you may insert the following code in a view:
  * <pre>
- * $this->widget('zii.widgets.jui.CJuiSliderInput', array(
+ * $this->widget('zii.widgets.jui.CJuiSliderInput',array(
  *     'name'=>'rate',
  *     'value'=>37,
  *     // additional javascript options for the slider plugin
@@ -27,7 +27,7 @@ Yii::import('zii.widgets.jui.CJuiInputWidget');
  *         'max'=>50,
  *     ),
  *     'htmlOptions'=>array(
- *         'style'=>'height:20px;'
+ *         'style'=>'height:20px;',
  *     ),
  * ));
  * </pre>
@@ -37,10 +37,10 @@ Yii::import('zii.widgets.jui.CJuiInputWidget');
  * names for the minimum and maximum range values, respectively. For example:
  *
  * <pre>
- * $this->widget('zii.widgets.jui.CJuiSliderInput', array(
+ * $this->widget('zii.widgets.jui.CJuiSliderInput',array(
  *     'model'=>$model,
  *     'attribute'=>'timeMin',
- *     'maxAttribute'=>'timeMax,
+ *     'maxAttribute'=>'timeMax',
  *     // additional javascript options for the slider plugin
  *     'options'=>array(
  *         'range'=>true,
@@ -48,6 +48,7 @@ Yii::import('zii.widgets.jui.CJuiInputWidget');
  *         'max'=>24,
  *     ),
  * ));
+ * </pre>
  *
  * If you need to use the slider event, please change the event value for 'stop' or 'change'.
  *
@@ -57,7 +58,6 @@ Yii::import('zii.widgets.jui.CJuiInputWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiSliderInput.php 2948 2011-02-09 13:27:05Z haertl.mike $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -66,18 +66,16 @@ class CJuiSliderInput extends CJuiInputWidget
 	/**
 	 * @var string the name of the container element that contains the slider. Defaults to 'div'.
 	 */
-	public $tagName = 'div';
+	public $tagName='div';
 	/**
 	 * @var integer determines the value of the slider, if there's only one handle. If there is more than one handle, determines the value of the first handle.
 	 */
 	public $value;
-
 	/**
 	 * @var string the name of the event where the input will be attached to the slider. It
 	 * can be 'slide', 'stop' or 'change'. If you want to use 'slide' event change $event property to 'change'
 	 */
-	public $event = 'slide';
-
+	public $event='slide';
 	/**
 	 * @var string name of attribute for max value if slider is used in range mode
 	 */
@@ -91,8 +89,6 @@ class CJuiSliderInput extends CJuiInputWidget
 	{
 		list($name,$id)=$this->resolveNameID();
 
-		$isRange=isset($this->options['range']) && $this->options['range'];
-
 		if(isset($this->htmlOptions['id']))
 			$id=$this->htmlOptions['id'];
 		else
@@ -100,10 +96,12 @@ class CJuiSliderInput extends CJuiInputWidget
 		if(isset($this->htmlOptions['name']))
 			$name=$this->htmlOptions['name'];
 
+		$isRange=isset($this->options['range']) && $this->options['range'];
+
 		if($this->hasModel())
 		{
 			$attribute=$this->attribute;
-			if ($isRange)
+			if($isRange)
 			{
 				$options=$this->htmlOptions;
 				echo CHtml::activeHiddenField($this->model,$this->attribute,$options);
@@ -124,25 +122,16 @@ class CJuiSliderInput extends CJuiInputWidget
 			if($this->value!==null)
 				$this->options['value']=$this->value;
 		}
-		
 
-		$idHidden = $this->htmlOptions['id'];
-		$nameHidden = $name;
-
+		$idHidden=$this->htmlOptions['id'];
 		$this->htmlOptions['id']=$idHidden.'_slider';
-		$this->htmlOptions['name']=$nameHidden.'_slider';
+		echo CHtml::tag($this->tagName,$this->htmlOptions,'');
 
-		echo CHtml::openTag($this->tagName,$this->htmlOptions);
-		echo CHtml::closeTag($this->tagName);
+		$this->options[$this->event]= $isRange
+			? new CJavaScriptExpression("function(e,ui){ v=ui.values; jQuery('#{$idHidden}').val(v[0]); jQuery('#{$idHidden}_end').val(v[1]); }")
+			: new CJavaScriptExpression("function(event, ui) { jQuery('#{$idHidden}').val(ui.value); }");
 
-		$this->options[$this->event]= $isRange ?
-			"js:function(e,ui){ v=ui.values; jQuery('#{$idHidden}').val(v[0]); jQuery('#{$idHidden}_end').val(v[1]); }":
-			'js:function(event, ui) { jQuery(\'#'. $idHidden .'\').val(ui.value); }';
-
-		$options=empty($this->options) ? '' : CJavaScript::encode($this->options);
-
-		$js = "jQuery('#{$id}_slider').slider($options);\n";
-		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$id, $js);
+		$options=CJavaScript::encode($this->options);
+		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$id,"jQuery('#{$id}_slider').slider($options);");
 	}
-
 }

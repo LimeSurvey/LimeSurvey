@@ -6,14 +6,12 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: FormCommand.php 2799 2011-01-01 19:31:13Z qiang.xue $
  */
 
 /**
  * FormCommand generates a form view based on a specified model.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: FormCommand.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.cli.commands.shell
  * @since 1.0
  */
@@ -61,6 +59,7 @@ EOD;
 	/**
 	 * Execute the action.
 	 * @param array command line parameters specific for this command
+	 * @return integer|null non zero application exit code for help or null on success
 	 */
 	public function run($args)
 	{
@@ -68,7 +67,7 @@ EOD;
 		{
 			echo "Error: both model class and view name are required.\n";
 			echo $this->getHelp();
-			return;
+			return 1;
 		}
 		$scenario=isset($args[2]) ? $args[2] : '';
 		$modelClass=Yii::import($args[0],true);

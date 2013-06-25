@@ -18,7 +18,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  *
  * To use this widget, you may insert the following code in a view:
  * <pre>
- * $this->beginWidget('zii.widgets.jui.CJuiResizable', array(
+ * $this->beginWidget('zii.widgets.jui.CJuiResizable',array(
  *     // additional javascript options for the resizable plugin
  *     'options'=>array(
  *         'minHeight'=>'150',
@@ -36,7 +36,6 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiResizable.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -54,14 +53,14 @@ class CJuiResizable extends CJuiWidget
 	public function init()
 	{
 		parent::init();
+
 		$id=$this->getId();
-		if (isset($this->htmlOptions['id']))
-			$id = $this->htmlOptions['id'];
+		if(isset($this->htmlOptions['id']))
+			$id=$this->htmlOptions['id'];
 		else
 			$this->htmlOptions['id']=$id;
-		
-		$options=empty($this->options) ? '' : CJavaScript::encode($this->options);
-		
+
+		$options=CJavaScript::encode($this->options);
 		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$id,"jQuery('#{$id}').resizable($options);");
 
 		echo CHtml::openTag($this->tagName,$this->htmlOptions)."\n";
@@ -70,10 +69,8 @@ class CJuiResizable extends CJuiWidget
 	/**
 	 * Renders the close tag of the resizable element.
 	 */
-	public function run(){
+	public function run()
+	{
 		echo CHtml::closeTag($this->tagName);
 	}
-
 }
-
-

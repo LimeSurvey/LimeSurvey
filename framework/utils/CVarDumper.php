@@ -20,7 +20,6 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CVarDumper.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.utils
  * @since 1.0
  */
@@ -98,7 +97,7 @@ class CVarDumper
 			case 'array':
 				if(self::$_depth<=$level)
 					self::$_output.='array(...)';
-				else if(empty($var))
+				elseif(empty($var))
 					self::$_output.='array()';
 				else
 				{
@@ -107,9 +106,10 @@ class CVarDumper
 					self::$_output.="array\n".$spaces.'(';
 					foreach($keys as $key)
 					{
-						$key2=str_replace("'","\\'",$key);
-						self::$_output.="\n".$spaces."    '$key2' => ";
-						self::$_output.=self::dumpInternal($var[$key],$level+1);
+						self::$_output.="\n".$spaces.'    ';
+						self::dumpInternal($key,0);
+						self::$_output.=' => ';
+						self::dumpInternal($var[$key],$level+1);
 					}
 					self::$_output.="\n".$spaces.')';
 				}
@@ -117,7 +117,7 @@ class CVarDumper
 			case 'object':
 				if(($id=array_search($var,self::$_objects,true))!==false)
 					self::$_output.=get_class($var).'#'.($id+1).'(...)';
-				else if(self::$_depth<=$level)
+				elseif(self::$_depth<=$level)
 					self::$_output.=get_class($var).'(...)';
 				else
 				{

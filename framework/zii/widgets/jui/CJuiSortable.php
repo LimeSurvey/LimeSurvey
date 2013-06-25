@@ -18,13 +18,13 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  *
  * To use this widget, you may insert the following code in a view:
  * <pre>
- * $this->widget('zii.widgets.jui.CJuiSortable', array(
+ * $this->widget('zii.widgets.jui.CJuiSortable',array(
  *     'items'=>array(
  *         'id1'=>'Item 1',
  *         'id2'=>'Item 2',
  *         'id3'=>'Item 3',
  *     ),
- *     // additional javascript options for the accordion plugin
+ *     // additional javascript options for the JUI Sortable plugin
  *     'options'=>array(
  *         'delay'=>'300',
  *     ),
@@ -36,11 +36,10 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * the {@link http://jqueryui.com/demos/sortable/ JUI Sortable} documentation
  * for possible options (name-value pairs).
  *
- * If you are using javascript code anywhere in the code, please add "js:" at the
- * start of the js code definition and Yii will use this string as js code.
+ * If you are using JavaScript expressions anywhere in the code, please wrap it
+ * with {@link CJavaScriptExpression} and Yii will use it as code.
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiSortable.php 3217 2011-05-12 23:59:50Z alexander.makarow $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -69,21 +68,17 @@ class CJuiSortable extends CJuiWidget
 	public function run()
 	{
 		$id=$this->getId();
-		if (isset($this->htmlOptions['id']))
-			$id = $this->htmlOptions['id'];
+		if(isset($this->htmlOptions['id']))
+			$id=$this->htmlOptions['id'];
 		else
 			$this->htmlOptions['id']=$id;
 
-		$options=empty($this->options) ? '' : CJavaScript::encode($this->options);
+		$options=CJavaScript::encode($this->options);
 		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$id,"jQuery('#{$id}').sortable({$options});");
 
 		echo CHtml::openTag($this->tagName,$this->htmlOptions)."\n";
 		foreach($this->items as $id=>$content)
-		{
 			echo strtr($this->itemTemplate,array('{id}'=>$id,'{content}'=>$content))."\n";
-		}
 		echo CHtml::closeTag($this->tagName);
 	}
 }
-
-

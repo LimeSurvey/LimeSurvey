@@ -31,7 +31,6 @@
  * @property string $stickyFile The file path that stores the sticky attribute values.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCodeModel.php 3547 2012-01-24 10:07:28Z mdomba $
  * @package system.gii
  * @since 1.1.2
  */
@@ -283,7 +282,7 @@ abstract class CCodeModel extends CFormModel
 		$templates=$this->getTemplates();
 		if(isset($templates[$this->template]))
 			return $templates[$this->template];
-		else if(empty($templates))
+		elseif(empty($templates))
 			throw new CHttpException(500,'No templates are available.');
 		else
 			throw new CHttpException(500,'Invalid template selection.');
@@ -331,9 +330,9 @@ abstract class CCodeModel extends CFormModel
 		{
 			if($file->error!==null)
 				$output.="<span class=\"error\">generating {$file->relativePath}<br/>           {$file->error}</span>\n";
-			else if($file->operation===CCodeFile::OP_NEW && $this->confirmed($file))
+			elseif($file->operation===CCodeFile::OP_NEW && $this->confirmed($file))
 				$output.=' generated '.$file->relativePath."\n";
-			else if($file->operation===CCodeFile::OP_OVERWRITE && $this->confirmed($file))
+			elseif($file->operation===CCodeFile::OP_OVERWRITE && $this->confirmed($file))
 				$output.=' overwrote '.$file->relativePath."\n";
 			else
 				$output.='   skipped '.$file->relativePath."\n";
@@ -405,13 +404,13 @@ abstract class CCodeModel extends CFormModel
 	public function pluralize($name)
 	{
 		$rules=array(
-			'/move$/i' => 'moves',
-			'/foot$/i' => 'feet',
-			'/child$/i' => 'children',
-			'/human$/i' => 'humans',
-			'/man$/i' => 'men',
-			'/tooth$/i' => 'teeth',
-			'/person$/i' => 'people',
+			'/(m)ove$/i' => '\1oves',
+			'/(f)oot$/i' => '\1eet',
+			'/(c)hild$/i' => '\1hildren',
+			'/(h)uman$/i' => '\1umans',
+			'/(m)an$/i' => '\1en',
+			'/(t)ooth$/i' => '\1eeth',
+			'/(p)erson$/i' => '\1eople',
 			'/([m|l])ouse$/i' => '\1ice',
 			'/(x|ch|ss|sh|us|as|is|os)$/i' => '\1es',
 			'/([^aeiouy]|qu)y$/i' => '\1ies',

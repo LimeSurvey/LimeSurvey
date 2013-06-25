@@ -18,7 +18,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  *
  * To use this widget, you may insert the following code in a view:
  * <pre>
- * $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+ * $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
  *     'id'=>'mydialog',
  *     // additional javascript options for the dialog plugin
  *     'options'=>array(
@@ -43,7 +43,6 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiDialog.php 2805 2011-01-03 16:33:46Z qiang.xue $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -63,13 +62,14 @@ class CJuiDialog extends CJuiWidget
 		parent::init();
 
 		$id=$this->getId();
-		if (isset($this->htmlOptions['id']))
-			$id = $this->htmlOptions['id'];
+		if(isset($this->htmlOptions['id']))
+			$id=$this->htmlOptions['id'];
 		else
 			$this->htmlOptions['id']=$id;
 
-		$options=empty($this->options) ? '' : CJavaScript::encode($this->options);
+		$options=CJavaScript::encode($this->options);
 		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$id,"jQuery('#{$id}').dialog($options);");
+
 		echo CHtml::openTag($this->tagName,$this->htmlOptions)."\n";
 	}
 

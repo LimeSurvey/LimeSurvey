@@ -30,7 +30,6 @@
  * will be returned.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CChoiceFormat.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.i18n
  */
 class CChoiceFormat
@@ -56,7 +55,7 @@ class CChoiceFormat
 				if($expression==$number)
 					return $message;
 			}
-			else if(self::evaluate(str_replace('n','$n',$expression),$number))
+			elseif(self::evaluate(str_replace('n','$n',$expression),$number))
 				return $message;
 		}
 		return $message; // return the last choice

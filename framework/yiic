@@ -9,7 +9,6 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: yiic 702 2009-02-18 19:29:48Z qiang.xue $
  */
 
 require_once(dirname(__FILE__).'/yiic.php');

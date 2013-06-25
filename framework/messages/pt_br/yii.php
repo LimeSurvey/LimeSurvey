@@ -15,8 +15,6 @@
  * of the guide for details.
  *
  * NOTE, this file must be saved in UTF-8 encoding.
- *
- * @version $Id: $
  */
 return array (
   'Action class {class} must implement the "run" method.' => 'A classe Action {class} deve implementar o método "run".',
@@ -56,7 +54,7 @@ return array (
   'Active record "{class}" is trying to select an invalid column "{column}". Note, the column must exist in the table or be an expression with alias.' => 'O active record "{class}" está tentando selecionar uma coluna inválida "{column}". Note, a coluna deve existir na tabela ou ser uma expressão de alias (apelido)',
   'Active record class "{class}" does not have a scope named "{scope}".' => 'A classe de active record "{class}" não possui um escopo denominado "{scope}".',
   'Adding a foreign key constraint to an existing table is not supported by SQLite.' => 'Acrescentar uma chave estrangeira a uma tabela existente não é suportado pelo SQLite.',
-  'Alias "{alias}" is invalid. Make sure it points to an existing PHP file.' => 'O alias "{alias}" é inválido. Assegure-se de que ele aponta para um arquivo PHP existente.',
+  'Alias "{alias}" is invalid. Make sure it points to an existing PHP file and the file is readable.' => 'O alias "{alias}" é inválido. Assegure-se de que ele aponta para um arquivo PHP existente.',
   'Alias "{alias}" is invalid. Make sure it points to an existing directory or file.' => 'Alias "{alias}" é inválido. Tenha certeza de apontar para um diretório ou arquivo existente.',
   'Alias "{alias}" is invalid. Make sure it points to an existing directory.' => 'O alias "{alias}" é inválido. Assegure-se de que ele aponta para um diretório existente.',
   'Altering a DB column is not supported by SQLite.' => 'Alterar uma coluna de banco de dados não é suportado pelo SQLite.',
@@ -77,14 +75,14 @@ return array (
   'CDbCommand failed to prepare the SQL statement: {error}' => 'CDbCommand falhou ao preparar o comando SQL: {error}',
   'CDbConnection does not support reading schema for {driver} database.' => 'CDbConnection não suporta leitura de schema para o {driver} do banco de dados.',
   'CDbConnection failed to open the DB connection.' => 'CDbConnection não conseguiu abrir uma conexão de banco de dados.',
-  'CDbConnection failed to open the DB connection: {error}' => 'CDbConnection falhou ao abrir uma conecção com o banco de dados: {error}',
+  'CDbConnection failed to open the DB connection: {error}' => 'CDbConnection falhou ao abrir uma conexão com o banco de dados: {error}',
   'CDbConnection.connectionString cannot be empty.' => 'CDbConnection.connectionString não pode estar vazio.',
   'CDbDataReader cannot rewind. It is a forward-only reader.' => 'CDbDataReader não pode voltar. É um leitor com sentido único para o próximo valor.',
   'CDbHttpSession.connectionID "{id}" is invalid. Please make sure it refers to the ID of a CDbConnection application component.' => 'CDbHttpSession.connectionID "{id}" é inválido. Por favor, tenha certeza que o valor refere-se ao ID de um componente CDbConnection da aplicação.',
   'CDbLogRoute.connectionID "{id}" does not point to a valid CDbConnection application component.' => 'CDbLogRoute.connectionID "{id}" não aponta a um componente CDbConnection válido da aplicação.',
   'CDbMessageSource.connectionID is invalid. Please make sure "{id}" refers to a valid database application component.' => 'CDbMessageSource.connectionID é inválido. Por favor, tenha certeza de que "{id}" refer-se a um componente válido de banco de dados.',
   'CDbTestFixture.connectionID "{id}" is invalid. Please make sure it refers to the ID of a CDbConnection application component.' => 'CDbTestFixture.connectionID "{id}" é invãlido. Por favor, assegure-se de que ele faz referência ao ID de um componente CDbConnection.',
-  'CDbTransaction is inactive and cannot perform commit or roll back operations.' => 'CDbTransaction está inativo e não pode realziar as operações commit ou roll back.',
+  'CDbTransaction is inactive and cannot perform commit or roll back operations.' => 'CDbTransaction está inativo e não pode realizar as operações commit ou roll back.',
   'CDirectoryCacheDependency.directory cannot be empty.' => 'CDirectoryCacheDependency.directory não pode estar vazio.',
   'CEAcceleratorCache requires PHP eAccelerator extension to be loaded, enabled or compiled with the "--with-eaccelerator-shared-memory" option.' => 'CEAcceleratorCache exige que a extensão PHP eAccelerator tenha sido carregada, habilitada ou compilada com a opção "--with-eaccelerator-shared-memory".',
   'CFileCacheDependency.fileName cannot be empty.' => 'CFileCacheDependency.fileName não pode estar vazio.',
@@ -167,7 +165,7 @@ return array (
   'The STAT relation "{name}" cannot have child relations.' => 'A relação STAT "{name}" não pode ter relações-filhas.',
   'The URL pattern "{pattern}" for route "{route}" is not a valid regular expression.' => 'O padrão de URL "{pattern}" para a rota "{route}" não é uma expressão regular válida.',
   'The active record cannot be deleted because it is new.' => 'O active record não pode ser deletado porque ele é novo.',
-  'The active record cannot be inserted to database because it is not new.' => 'O active record não pode ser inserido no banco de dados porque ele é novo.',
+  'The active record cannot be inserted to database because it is not new.' => 'O active record não pode ser inserido no banco de dados porque ele não é novo.',
   'The active record cannot be updated because it is new.' => 'O active record não pode ser atualizado porque ele é novo.',
   'The asset "{asset}" to be published does not exist.' => 'O recurso "{asset}", a ser publicado, não existe.',
   'The command path "{path}" is not a valid directory.' => 'O caminho "{path}" do "command" não é um diretório válido.',

@@ -20,7 +20,6 @@
  * the attributes.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFormModel.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web
  * @since 1.0
  */

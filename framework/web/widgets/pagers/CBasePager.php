@@ -20,7 +20,6 @@
  * @property integer $currentPage The zero-based index of the current page. Defaults to 0.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBasePager.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.web.widgets.pagers
  * @since 1.0
  */

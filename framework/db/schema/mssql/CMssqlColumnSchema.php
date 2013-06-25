@@ -14,13 +14,10 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
- * @version $Id: CMssqlColumnSchema.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema.mssql
  */
 class CMssqlColumnSchema extends CDbColumnSchema
 {
-
-
 
      /**
      * Initializes the column with its DB type and default value.
@@ -37,6 +34,7 @@ class CMssqlColumnSchema extends CDbColumnSchema
         parent::init($dbType, $defaultValue);
      }
 
+
 	/**
 	 * Extracts the PHP type from DB type.
 	 * @param string $dbType DB type
@@ -45,9 +43,9 @@ class CMssqlColumnSchema extends CDbColumnSchema
 	{
 		if(strpos($dbType,'float')!==false || strpos($dbType,'real')!==false)
 			$this->type='double';
-		else if(strpos($dbType,'bigint')===false && (strpos($dbType,'int')!==false || strpos($dbType,'smallint')!==false || strpos($dbType,'tinyint')))
+		elseif(strpos($dbType,'bigint')===false && (strpos($dbType,'int')!==false || strpos($dbType,'smallint')!==false || strpos($dbType,'tinyint')))
 			$this->type='integer';
-		else if(strpos($dbType,'bit')!==false)
+		elseif(strpos($dbType,'bit')!==false)
 			$this->type='boolean';
 		else
 			$this->type='string';
