@@ -163,12 +163,5 @@
              $this->properties[$property] = $value;
          }
          
-
-
-		 public function actionTest()
-		 {
-			$response = Response::model(66957)->findByPk(11);
-			$this->renderText('test');
-		 }
     }
 ?>
