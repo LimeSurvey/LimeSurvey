@@ -79,41 +79,62 @@ class ExportSurveyResultsService
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("Pragma: public");
         }
-
-        switch ( $sExportPlugin ) {
-            case "doc":
-                $writer = new DocWriter();
-                break;
-            case "xls":
-                $writer = new ExcelWriter();
-                break;
-            case "pdf":
-                $writer = new PdfWriter();
-                break;
-            case "html":
-                $writer = new HtmlWriter();
-                break;
-            case "csv":
-            default:
-                $writer = new CsvWriter();
-                break;
+        
+        $exports = array(
+            'doc' => '',
+            'xls' => '',
+            'pdf' => '',
+            'html' => '',
+            'csv' => ''
+        );
+        $event = new PluginEvent('listExportPlugins');
+        $oPluginManager = App()->getPluginManager();
+        $oPluginManager->dispatchEvent($event);
+       
+        $exports = $event->get('exportplugins', array());
+        
+        if (array_key_exists($sExportPlugin, $exports) && !empty($exports[$sExportPlugin])) {
+            // This must be a plugin, now use plugin to load the right class
+            $event = new PluginEvent('newExport');
+            $event->set('type', $sExportPlugin);
+            $oPluginManager->dispatchEvent($event, $exports[$sExportPlugin]);
+            $writer = $event->get('writer');
+        } else {
+            // fallback for core exports before ported to a plugin
+            switch ( $sExportPlugin ) {
+                case "doc":
+                    $writer = new DocWriter();
+                    break;
+                case "xls":
+                    $writer = new ExcelWriter();
+                    break;
+                case "pdf":
+                    $writer = new PdfWriter();
+                    break;
+                case "html":
+                    $writer = new HtmlWriter();
+                    break;
+                case "csv":
+                default:
+                    $writer = new CsvWriter();
+                    break;
+            }
+        }
+        
+        if (!($writer instanceof IWriter)) {
+            throw new Exception(sprintf('Writer for %s should implement IWriter', $sExportPlugin));
         }
 
         $surveyDao = new SurveyDao();
         $survey = $surveyDao->loadSurveyById($iSurveyId, $sLanguageCode);
         $writer->init($survey, $sLanguageCode, $oOptions);
 
-        $iBatchSize=100; $iCurrentRecord=$oOptions->responseMinRecord-1;
-        $bMoreRecords=true; $first=true;
-        while ($bMoreRecords)
-        {
-            $iExported= $surveyDao->loadSurveyResults($survey, $iBatchSize, $iCurrentRecord, $oOptions->responseMaxRecord, $sFilter);
-            $iCurrentRecord+=$iExported;
-            $writer->write($survey, $sLanguageCode, $oOptions,$first);
-            $first=false;
-            $bMoreRecords= ($iExported == $iBatchSize);
-        }
+        $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter);
+        
+        $writer->write($survey, $sLanguageCode, $oOptions,true);
         $result = $writer->close();
+        $surveyDao->close();
+        
         if ($oOptions->output=='file')
         {
             return $writer->filename;
