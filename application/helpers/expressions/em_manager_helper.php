@@ -3295,6 +3295,11 @@
                         }
                         break;
                 }
+                // Hidden question are never on same page (except for equation)
+                if($hidden && $type!="*"){
+                    $jsVarName_on = '';
+                }
+
                 if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || !is_null($preg)
                 || $type == 'S' || $type == 'T' || $type == 'U' || $type == '|') {
                     if (!isset($q2subqInfo[$questionNum])) {
