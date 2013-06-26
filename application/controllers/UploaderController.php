@@ -238,8 +238,11 @@ class UploaderController extends AdminController {
 		return;
 		}
 		$clang = Yii::app()->lang;
-		$meta ='<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'jquery/jquery.js"></script>';
-		$meta .= '<script type="text/javascript">
+		$meta = '';
+		App()->getClientScript()->registerPackage('jqueryui');
+		App()->getClientScript()->registerPackage('jquery-superfish');
+
+		$meta = '<script type="text/javascript">
 		    var uploadurl = "'.$this->createUrl('/uploader/index/mode/upload/').'";
             var imageurl = "'.Yii::app()->getConfig('imageurl').'/";
 		    var surveyid = "'.$surveyid.'";
@@ -262,9 +265,9 @@ class UploaderController extends AdminController {
 		            };
 		        showpopups=".Yii::app()->getConfig("showpopups").";
 		    </script>\n";
-		$meta .='<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/ajaxupload.js"></script>
-		<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/uploader.js"></script>
-		<link type="text/css" href="'.Yii::app()->getConfig("publicstyleurl").'uploader.css" rel="stylesheet" />';
+		App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'/ajaxupload.js');
+		App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'/uploader.js');
+		$meta.= '<link type="text/css" href="'.Yii::app()->getConfig("publicstyleurl").'uploader.css" rel="stylesheet" />';
 
 		$header = getHeader($meta);
 
@@ -302,6 +305,7 @@ class UploaderController extends AdminController {
 
 		    </body>
 		</html>';
+		App()->getClientScript()->render($body);
 		echo $body;
 
 
