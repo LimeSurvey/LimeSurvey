@@ -5535,15 +5535,10 @@ function do_array_multitext($ia)
             $addcheckcond = <<< EOD
 <script type="text/javascript">
 <!--
-$(document).ready(function()
-{
-    $('#question{$ia[0]} :input:visible:enabled').each(function(index){
-        $(this).bind('keyup',function(e) {
-            checkconditions($(this).attr('value'), $(this).attr('name'), $(this).attr('type'));
-            return true;
-        })
+    $('#question{$ia[0]} .question').delegate('input[type=text]:visible:enabled','blur keyup',function(event){
+        checkconditions($(this).attr('value'), $(this).attr('name'), $(this).attr('type'));
+        return true;
     })
-})
 // -->
 </script>
 EOD;
