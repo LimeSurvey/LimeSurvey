@@ -84,10 +84,10 @@ class SurveyDao
     * If none are then all responses are loaded.
     *
     * @param Survey $survey
-    * @param int $iOffset 
-    * @param int $iLimit 
+    * @param int $iMinimum 
+    * @param int $iMaximum 
     */
-    public function loadSurveyResults(SurveyObj $survey, $iLimit, $iOffset, $iMaximum, $sFilter='' )
+    public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter='' )
     {
 
         // Get info about the survey
@@ -112,14 +112,18 @@ class SurveyDao
 
         if ($sFilter!='')
             $oRecordSet->where($sFilter);
-            
-        if ($iOffset+$iLimit>$iMaximum)
-        {
-            $iLimit=$iMaximum-$iOffset;
+                      
+        $iOffset = $iMinimum - 1;
+        $survey->responses=$oRecordSet->select($aSelectFields)->order('{{survey_' . $survey->id . '}}.id')->limit($iMaximum - $iOffset, $iOffset)->query();
+    }
+    
+    /**
+     * Close the resultset
+     */
+    public function close()
+    {
+        if ($survey->responses instanceof CDbDataReader) {
+            $survey->responses->close();
         }
-            
-        $survey->responses=$oRecordSet->select($aSelectFields)->order('{{survey_' . $survey->id . '}}.id')->limit($iLimit, $iOffset)->query()->readAll();
-
-        return count($survey->responses);
     }
 }
