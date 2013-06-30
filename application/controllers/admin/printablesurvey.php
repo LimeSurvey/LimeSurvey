@@ -43,40 +43,24 @@ class printablesurvey extends Survey_Common_Action
         else
         {
             // PRESENT SURVEY DATAENTRY SCREEN
-            // Set the language of the survey, either from GET parameter of session var
-            if (isset($lang))
-            {
-                $lang = preg_replace("/[^a-zA-Z0-9-]/", "", $lang);
-                if ($lang) $surveyprintlang = $lang;
-            } else
-            {
-                $surveyprintlang=getBaseLanguageFromSurveyID((int) $surveyid);
-            }
-            $_POST['surveyprintlang']=$surveyprintlang;
-
-            $aSurveyInfo=getSurveyInfo($surveyid,$surveyprintlang);
-            
+            $aSurveyInfo=getSurveyInfo($surveyid,$lang);
+            if (!($aSurveyInfo))
+                $this->getController()->error('Invalid survey ID');
+            // Be sure to have a valid language
+            $surveyprintlang=$aSurveyInfo['surveyls_language'];
             // Setting the selected language for printout
             $clang = new limesurvey_lang($surveyprintlang);
 
-            $desrow = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=:language','params'=>array(':language'=>$surveyprintlang))))->findByAttributes(array('sid' => $surveyid));
-
-            if (is_null($desrow))
-                $this->getController()->error('Invalid survey ID');
-
-            $desrow = array_merge($desrow->attributes, $desrow->languagesettings[0]->attributes);
-
-            //echo '<pre>'.print_r($desrow,true).'</pre>';
-            $template = $desrow['template'];
-            $welcome = $desrow['surveyls_welcometext'];
-            $end = $desrow['surveyls_endtext'];
-            $surveyname = $desrow['surveyls_title'];
-            $surveydesc = $desrow['surveyls_description'];
-            $surveyactive = $desrow['active'];
-            $surveytable = "{{survey_".$desrow['sid']."}}";
-            $surveyexpirydate = $desrow['expires'];
-            $surveyfaxto = $desrow['faxto'];
-            $dateformattype = $desrow['surveyls_dateformat'];
+            $templatename = validateTemplateDir($aSurveyInfo['templatedir']);
+            $welcome = $aSurveyInfo['surveyls_welcometext'];
+            $end = $aSurveyInfo['surveyls_endtext'];
+            $surveyname = $aSurveyInfo['surveyls_title'];
+            $surveydesc = $aSurveyInfo['surveyls_description'];
+            $surveyactive = $aSurveyInfo['active'];
+            $surveytable = "{{survey_".$aSurveyInfo['sid']."}}";
+            $surveyexpirydate = $aSurveyInfo['expires'];
+            $surveyfaxto = $aSurveyInfo['faxto'];
+            $dateformattype = $aSurveyInfo['surveyls_dateformat'];
 
             Yii::app()->loadHelper('surveytranslator');
             
@@ -101,22 +85,23 @@ class printablesurvey extends Survey_Common_Action
             {
                 $surveyexpirydate='';
             }
-
-            if(is_file(Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$template.DIRECTORY_SEPARATOR.'print_survey.pstpl'))
+            //Fix $templatename : control if print_survey.pstpl exist
+            if(is_file(getTemplatePath($templatename).DIRECTORY_SEPARATOR.'print_survey.pstpl'))
             {
-                define('PRINT_TEMPLATE_DIR' , Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$template.DIRECTORY_SEPARATOR , true);
-                define('PRINT_TEMPLATE_URL' , Yii::app()->getConfig('usertemplaterooturl').'/'.$template.'/' , true);
+                $templatename = $templatename;// Change nothing
             }
-            elseif(is_file(Yii::app()->getConfig('usertemplaterootdir').'/'.$template.'/print_survey.pstpl'))
+            elseif(is_file(getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR.'print_survey.pstpl'))
             {
-                define('PRINT_TEMPLATE_DIR' , Yii::app()->getConfig('standardtemplaterootdir').DIRECTORY_SEPARATOR.$template.DIRECTORY_SEPARATOR , true);
-                define('PRINT_TEMPLATE_URL' , Yii::app()->getConfig('standardtemplaterooturl').'/'.$template.'/' , true);
+                $templatename=Yii::app()->getConfig("defaulttemplate");
             }
             else
             {
-                define('PRINT_TEMPLATE_DIR' , Yii::app()->getConfig('standardtemplaterootdir').DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR , true);
-                define('PRINT_TEMPLATE_URL' , Yii::app()->getConfig('standardtemplaterooturl').'/default/' , true);
+                $templatename="default";
             }
+            $sFullTemplatePath = getTemplatePath($templatename).DIRECTORY_SEPARATOR;
+            $sFullTemplateUrl = getTemplateURL($templatename)."/";
+            define('PRINT_TEMPLATE_DIR' , $sFullTemplatePath , true);
+            define('PRINT_TEMPLATE_URL' , $sFullTemplateUrl , true);
 
             LimeExpressionManager::StartSurvey($surveyid, 'survey',NULL,false,LEM_PRETTY_PRINT_ALL_SYNTAX);
             $moveResult = LimeExpressionManager::NavigateForwards();
@@ -165,44 +150,6 @@ class printablesurvey extends Survey_Common_Action
             {
                 $survey_output['FAX_TO'] = $clang->gT("Please fax your completed survey to:")." $surveyfaxto";
             }
-
-            /**
-             * Output arrays:
-             *    $survey_output  =       final vaiables for whole survey
-             *        $survey_output['SITENAME'] =
-             *        $survey_output['SURVEYNAME'] =
-             *        $survey_output['SURVEY_DESCRIPTION'] =
-             *        $survey_output['WELCOME'] =
-             *        $survey_output['THEREAREXQUESTIONS'] =
-             *        $survey_output['PDF_FORM'] =
-             *        $survey_output['HEADELEMENTS'] =
-             *        $survey_output['TEMPLATEURL'] =
-             *        $survey_output['SUBMIT_TEXT'] =
-             *        $survey_output['SUBMIT_BY'] =
-             *        $survey_output['THANKS'] =
-             *        $survey_output['FAX_TO'] =
-             *        $survey_output['SURVEY'] =     contains an array of all the group arrays
-             *
-             *    $groups[]       =       an array of all the groups output
-             *        $group['GROUPNAME'] =
-             *        $group['GROUPDESCRIPTION'] =
-             *        $group['QUESTIONS'] =     templated formatted content if $question is appended to this at the end of processing each question.
-             *        $group['ODD_EVEN'] =     class to differentiate alternate groups
-             *        $group['SCENARIO'] =
-             *
-             *    $questions[]    =       contains an array of all the questions within a group
-             *        $question['QUESTION_CODE'] =         content of the question code field
-             *        $question['QUESTION_TEXT'] =         content of the question field
-             *        $question['QUESTION_SCENARIO'] =         if there are conditions on a question, list the conditions.
-             *        $question['QUESTION_MANDATORY'] =     translated 'mandatory' identifier
-             *        $question['QUESTION_CLASS'] =         classes to be added to wrapping question div
-             *        $question['QUESTION_TYPE_HELP'] =         instructions on how to complete the question
-             *        $question['QUESTION_MAN_MESSAGE'] =     (not sure if this is used) mandatory error
-             *        $question['QUESTION_VALID_MESSAGE'] =     (not sure if this is used) validation error
-             *        $question['ANSWER'] =                contains formatted HTML answer
-             *        $question['QUESTIONHELP'] =         content of the question help field.
-             *
-             */
 
             $total_questions = 0;
             $mapquestionsNumbers=Array();
