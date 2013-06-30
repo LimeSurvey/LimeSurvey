@@ -15,8 +15,65 @@
 class SurveyRuntimeHelper {
 
 
+	protected function createFullQuestionIndex($LEMsessid, $surveyMode)
+	{
+		if ($surveyMode == 'group')
+		{
+			$this->createFullQuestionIndexByGroup($LEMsessid);
+		}
+		else
+		{
+			$this->createFullQuestionIndexByQuestion($LEMsessid);
+		}
+		
+	}
 
-	protected function createQuestionIndex($LEMsessid, $surveyMode)
+	protected function createFullQuestionIndexByGroup($LEMsessid)
+	{
+		$iSurveyId = explode('_', $LEMsessid, 2)[1];
+		echo "\n\n<!-- PRESENT THE INDEX -->\n";
+//		echo '<script>';
+//		echo 'var session = '. json_encode($_SESSION) . ';';
+//		echo 'console.log(session);';
+//		echo '</script>';
+		echo CHtml::openTag('div', array('id' => 'index'));
+			echo CHtml::openTag('div', array('class' => 'container'));
+				echo CHtml::tag('h2', array(), gT("Question index"));
+				echo CHtml::openTag('ol');
+					foreach ($_SESSION[$LEMsessid]['grouplist'] as $key => $group)
+					{
+						if (LimeExpressionManager::GroupIsRelevant($group['gid']))
+						{
+							$group['step'] = $key + 1;
+
+							$classes = implode(' ', array(
+								'row',
+								$_SESSION[$LEMsessid]['step'] == $group['step'] ? 'current' : ''
+							));
+							echo CHtml::tag('li', array(
+								'data-gid' => $group['gid'],
+								'title' => $group['description'],
+								'class' => $classes,
+								'onclick' => new CJavaScriptExpression("javascript:document.limesurvey.move.value = '{$group['step']}'; document.limesurvey.submit();")
+							), $group['group_name']);
+						}
+					}
+				echo CHtml::closeTag('ol');
+			echo CHtml::closeTag('div');
+		echo CHtml::closeTag('div');
+	}
+
+	protected function createFullQuestionIndexByQuestion($LEMsessid)
+	{
+		echo CHtml::openTag('div', array('id' => 'index'));
+			echo CHtml::openTag('div', array('class' => 'container'));
+				echo CHtml::tag('h2', array(), gT("Question index"));
+				echo 'Question by question not yet supported, use incremental index.';
+			echo CHtml::closeTag('div');
+		echo CHtml::closeTag('div');
+	}
+	
+	protected function createIncrementalQuestionIndex($LEMsessid, $surveyMode)
 	{
 		echo "\n\n<!-- PRESENT THE INDEX -->\n";
 
@@ -298,14 +355,19 @@ class SurveyRuntimeHelper {
                     // jump to current step using new language, processing POST values
                     $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);  // do process the POST data
                 }
-                if (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] > 0)
+                if (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 1)
                 {
-                    $move = (int) $move;
+					$move = (int) $move;
                     if ($move > 0 && (($move <= $_SESSION[$LEMsessid]['step']) || (isset($_SESSION[$LEMsessid]['maxstep']) && $move <= $_SESSION[$LEMsessid]['maxstep'])))
                     {
                         $moveResult = LimeExpressionManager::JumpTo($move, false);
                     }
                 }
+				elseif (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 2)
+				{
+					$move = (int) $move;
+					$moveResult = LimeExpressionManager::JumpTo($move, false, false, true);
+				}
                 if (!isset($moveResult) && !($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0))
                 {
                     // Just in case not set via any other means, but don't do this if it is the welcome page
@@ -1133,10 +1195,14 @@ END;
             }
 
 
-            if ($surveyMode != 'survey' && $thissurvey['questionindex'] > 0)
+            if ($surveyMode != 'survey' && $thissurvey['questionindex'] == 1)
             {
-				$this->createQuestionIndex($LEMsessid, $surveyMode);
+				$this->createIncrementalQuestionIndex($LEMsessid, $surveyMode);
             }
+			elseif ($surveyMode != 'survey' && $thissurvey['questionindex'] == 2)
+			{
+				$this->createFullQuestionIndex($LEMsessid, $surveyMode);
+			}
 
             echo "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
             echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
