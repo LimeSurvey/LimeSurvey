@@ -32,7 +32,8 @@ function db_upgrade_all($oldversion) {
     $sVarchar = Yii::app()->getConfig('varchar');
     $sAutoIncrement  = Yii::app()->getConfig('autoincrement');
 
-    $oTransaction=Yii::app()->db->beginTransaction();
+	$db = Yii::app()->getDb();
+    $oTransaction = $db->beginTransaction();
     try
     {
         if ($oldversion < 111)
@@ -52,13 +53,13 @@ function db_upgrade_all($oldversion) {
             {
                 alterLanguageCode($sOldLanguageCode,$sNewLanguageCode);
             }
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>111),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>111),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 112) {
             // New size of the username field (it was previously 20 chars wide)
-            Yii::app()->db->createCommand()->alterColumn('{{users}}','users_name',"{$sVarchar}(64) NOT NULL");
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>112),"stg_name='DBVersion'");
+            $db->createCommand()->alterColumn('{{users}}','users_name',"{$sVarchar}(64) NOT NULL");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>112),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 113) {
@@ -70,15 +71,15 @@ function db_upgrade_all($oldversion) {
                 fixMySQLCollations();
                 modifyDatabase("","ALTER DATABASE `$databasename` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");echo $modifyoutput; flush();@ob_flush();
             }
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>113),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>113),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 114) {
-            Yii::app()->db->createCommand()->alterColumn('{{saved_control}}','email',"{$sVarchar}(320) NOT NULL");
-            Yii::app()->db->createCommand()->alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320) NOT NULL");
-            Yii::app()->db->createCommand()->alterColumn('{{users}}','email',"{$sVarchar}(320) NOT NULL");
-            Yii::app()->db->createCommand()->insert('{{settings_global}}',array('stg_name'=>'SessionName','stg_value'=>randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"$%&/()=?`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789')));
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>114),"stg_name='DBVersion'");
+            $db->createCommand()->alterColumn('{{saved_control}}','email',"{$sVarchar}(320) NOT NULL");
+            $db->createCommand()->alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320) NOT NULL");
+            $db->createCommand()->alterColumn('{{users}}','email',"{$sVarchar}(320) NOT NULL");
+            $db->createCommand()->insert('{{settings_global}}',array('stg_name'=>'SessionName','stg_value'=>randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"$%&/()=?`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789')));
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>114),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 126) {
@@ -107,7 +108,7 @@ function db_upgrade_all($oldversion) {
             'quota_id' => 'integer',
             'code' => $sVarchar.'(5)'
             ));
-            Yii::app()->db->createCommand()->createIndex('sid','{{quota_members}}','sid,qid,quota_id,code',true);
+            $db->createCommand()->createIndex('sid','{{quota_members}}','sid,qid,quota_id,code',true);
 
 
             // Create templates_rights table
@@ -139,12 +140,12 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{conditions}}','value',"string",false,'');
             alterColumn('{{labels}}','title',"text");
 
-            Yii::app()->db->createCommand()->update('{{users}}',array('superadmin'=>1),"create_survey=1 AND create_user=1 AND move_user=1 AND delete_user=1 AND configurator=1");
-            Yii::app()->db->createCommand()->update('{{conditions}}',array('method'=>'=='),"(method is null) or method='' or method='0'");
+            $db->createCommand()->update('{{users}}',array('superadmin'=>1),"create_survey=1 AND create_user=1 AND move_user=1 AND delete_user=1 AND configurator=1");
+            $db->createCommand()->update('{{conditions}}',array('method'=>'=='),"(method is null) or method='' or method='0'");
 
             dropColumn('{{users}}','move_user');
 
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>126),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>126),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 127) {
@@ -161,37 +162,37 @@ function db_upgrade_all($oldversion) {
             modifyDatabase("","create index quota_idx2 on {{quota}} (sid)"); echo $modifyoutput;
             modifyDatabase("","create index saved_control_idx2 on {{saved_control}} (sid)"); echo $modifyoutput;
             modifyDatabase("","create index user_in_groups_idx1 on {{user_in_groups}} (ugid, uid)"); echo $modifyoutput;
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>127),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>127),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 128) {
             upgradeTokens128();
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>128),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>128),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 129) {
             addColumn('{{surveys}}','startdate',"datetime");
             addColumn('{{surveys}}','usestartdate',"{$sVarchar}(1) NOT NULL default 'N'");
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>129),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>129),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 130)
         {
             addColumn('{{conditions}}','scenario',"integer NOT NULL default '1'");
-            Yii::app()->db->createCommand()->update('{{conditions}}',array('scenario'=>'1'),"(scenario is null) or scenario=0");
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>130),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{conditions}}',array('scenario'=>'1'),"(scenario is null) or scenario=0");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>130),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 131)
         {
             addColumn('{{surveys}}','publicstatistics',"{$sVarchar}(1) NOT NULL default 'N'");
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>131),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>131),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 132)
         {
             addColumn('{{surveys}}','publicgraphs',"{$sVarchar}(1) NOT NULL default 'N'");
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>132),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>132),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 133)
@@ -205,35 +206,35 @@ function db_upgrade_all($oldversion) {
             // copy any valid codes from code field to assessment field
             switch ($sDBDriverName){
                 case 'mysql':
-                    Yii::app()->db->createCommand("UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
-                    Yii::app()->db->createCommand("UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
+                    $db->createCommand("UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
+                    $db->createCommand("UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
                     // copy assessment link to message since from now on we will have HTML assignment messages
-                    Yii::app()->db->createCommand("UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')")->execute();
+                    $db->createCommand("UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')")->execute();
                     break;
                 case 'mssql':
                     try{
-                    Yii::app()->db->createCommand("UPDATE {{answers}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
-                    Yii::app()->db->createCommand("UPDATE {{labels}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
+                    $db->createCommand("UPDATE {{answers}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
+                    $db->createCommand("UPDATE {{labels}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
                     } catch(Exception $e){};
                     // copy assessment link to message since from now on we will have HTML assignment messages
                     alterColumn('{{assessments}}','link',"varchar(max)",false);
                     alterColumn('{{assessments}}','message',"varchar(max)",false);
-                    Yii::app()->db->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')+'<br /><a href=\"'+link+'\">'+link+'</a>'")->execute();
+                    $db->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')+'<br /><a href=\"'+link+'\">'+link+'</a>'")->execute();
                     break;
                 case 'pgsql':
-                    Yii::app()->db->createCommand("UPDATE {{answers}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
-                    Yii::app()->db->createCommand("UPDATE {{labels}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
+                    $db->createCommand("UPDATE {{answers}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
+                    $db->createCommand("UPDATE {{labels}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
                     // copy assessment link to message since from now on we will have HTML assignment messages
-                    Yii::app()->db->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')||'<br /><a href=\"'||link||'\">'||link||'</a>'")->execute();
+                    $db->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')||'<br /><a href=\"'||link||'\">'||link||'</a>'")->execute();
                     break;
                 default: die('Unkown database type');
             }
             // activate assessment where assessment rules exist
-            Yii::app()->db->createCommand("UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)")->execute();
+            $db->createCommand("UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)")->execute();
             // add language field to assessment table
             addColumn('{{assessments}}','language',"{$sVarchar}(20) NOT NULL default 'en'");
             // update language field with default language of that particular survey
-            Yii::app()->db->createCommand("UPDATE {{assessments}} SET language=(select language from {{surveys}} where sid={{assessments}}.sid)")->execute();
+            $db->createCommand("UPDATE {{assessments}} SET language=(select language from {{surveys}} where sid={{assessments}}.sid)")->execute();
             // drop the old link field
             dropColumn('{{assessments}}','link');
 
@@ -241,10 +242,10 @@ function db_upgrade_all($oldversion) {
             addColumn('{{surveys_languagesettings}}','surveyls_url',"string");
             addColumn('{{surveys_languagesettings}}','surveyls_endtext','text');
             // copy old URL fields ot language specific entries
-            Yii::app()->db->createCommand("UPDATE {{surveys_languagesettings}} set surveyls_url=(select url from {{surveys}} where sid={{surveys_languagesettings}}.surveyls_survey_id)")->execute();
+            $db->createCommand("UPDATE {{surveys_languagesettings}} set surveyls_url=(select url from {{surveys}} where sid={{surveys_languagesettings}}.surveyls_survey_id)")->execute();
             // drop old URL field
             dropColumn('{{surveys}}','url');
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>133),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>133),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 134)
@@ -255,13 +256,13 @@ function db_upgrade_all($oldversion) {
             dropColumn('{{surveys}}','attribute1');
             dropColumn('{{surveys}}','attribute2');
             upgradeTokenTables134();
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>134),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>134),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 135)
         {
             alterColumn('{{question_attributes}}','value','text');
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>135),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>135),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 136) //New Quota Functions
@@ -278,52 +279,52 @@ function db_upgrade_all($oldversion) {
             'quotals_urldescrip' => 'string',
             );
             createTable('{{quota_languagesettings}}',$fields);
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>136),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>136),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 137) //New Quota Functions
         {
             addColumn('{{surveys_languagesettings}}','surveyls_dateformat',"integer NOT NULL default 1");
             addColumn('{{users}}','dateformat',"integer NOT NULL default 1");
-            Yii::app()->db->createCommand()->update('{{surveys}}',array('startdate'=>NULL),"usestartdate='N'");
-            Yii::app()->db->createCommand()->update('{{surveys}}',array('expires'=>NULL),"useexpiry='N'");
+            $db->createCommand()->update('{{surveys}}',array('startdate'=>NULL),"usestartdate='N'");
+            $db->createCommand()->update('{{surveys}}',array('expires'=>NULL),"useexpiry='N'");
             dropColumn('{{surveys}}','useexpiry');
             dropColumn('{{surveys}}','usestartdate');
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>137),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>137),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 138) //Modify quota field
         {
             alterColumn('{{quota_members}}','code',"{$sVarchar}(11)");
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>138),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>138),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 139) //Modify quota field
         {
             upgradeSurveyTables139();
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>139),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>139),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 140) //Modify surveys table
         {
             addColumn('{{surveys}}','emailresponseto','text');
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>140),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>140),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 141) //Modify surveys table
         {
             addColumn('{{surveys}}','tokenlength','integer NOT NULL default 15');
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>141),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>141),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 142) //Modify surveys table
         {
             upgradeQuestionAttributes142();
-            Yii::app()->db->createCommand()->alterColumn('{{surveys}}','expires',"datetime");
-            Yii::app()->db->createCommand()->alterColumn('{{surveys}}','startdate',"datetime");
-            Yii::app()->db->createCommand()->update('{{question_attributes}}',array('value'=>0),"value='false'");
-            Yii::app()->db->createCommand()->update('{{question_attributes}}',array('value'=>1),"value='true'");
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>142),"stg_name='DBVersion'");
+            $db->createCommand()->alterColumn('{{surveys}}','expires',"datetime");
+            $db->createCommand()->alterColumn('{{surveys}}','startdate',"datetime");
+            $db->createCommand()->update('{{question_attributes}}',array('value'=>0),"value='false'");
+            $db->createCommand()->update('{{question_attributes}}',array('value'=>1),"value='true'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>142),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 143)
@@ -366,8 +367,8 @@ function db_upgrade_all($oldversion) {
             );
             createTable('{{sessions}}',$fields);
             addPrimaryKey('sessions',array('sesskey'));
-            Yii::app()->db->createCommand()->createIndex('sess2_expiry','{{sessions}}','expiry');
-            Yii::app()->db->createCommand()->createIndex('sess2_expireref','{{sessions}}','expireref');
+            $db->createCommand()->createIndex('sess2_expiry','{{sessions}}','expiry');
+            $db->createCommand()->createIndex('sess2_expireref','{{sessions}}','expireref');
             // Move all user templates to the new user template directory
             echo sprintf($clang->gT("Moving user templates to new location at %s..."),$usertemplaterootdir)."<br />";
             $myDirectory = opendir($standardtemplaterootdir);
@@ -393,7 +394,7 @@ function db_upgrade_all($oldversion) {
             }
             // close directory
             closedir($myDirectory);
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>143),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>143),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 145)
@@ -435,7 +436,7 @@ function db_upgrade_all($oldversion) {
             upgradeSurveyPermissions145();
 
             // drop the old survey rights table
-            Yii::app()->db->createCommand()->dropTable('{{surveys_rights}}');
+            $db->createCommand()->dropTable('{{surveys_rights}}');
 
             // Add new fields for email templates
             addColumn('{{surveys_languagesettings}}','email_admin_notification_subj',"string");
@@ -444,7 +445,7 @@ function db_upgrade_all($oldversion) {
             addColumn('{{surveys_languagesettings}}','email_admin_responses',"text");
 
             //Add index to questions table to speed up subquestions
-            Yii::app()->db->createCommand()->createIndex('parent_qid_idx','{{questions}}','parent_qid');
+            $db->createCommand()->createIndex('parent_qid_idx','{{questions}}','parent_qid');
 
             addColumn('{{surveys}}','emailnotificationto',"text");
 
@@ -452,24 +453,24 @@ function db_upgrade_all($oldversion) {
             dropColumn('{{surveys}}','notification');
             alterColumn('{{conditions}}','method',"{$sVarchar}(5)",false,'');
 
-            Yii::app()->db->createCommand()->renameColumn('{{surveys}}','private','anonymized');
-            Yii::app()->db->createCommand()->update('{{surveys}}',array('anonymized'=>'N'),"anonymized is NULL");
+            $db->createCommand()->renameColumn('{{surveys}}','private','anonymized');
+            $db->createCommand()->update('{{surveys}}',array('anonymized'=>'N'),"anonymized is NULL");
             alterColumn('{{surveys}}','anonymized',"{$sVarchar}(1)",false,'N');
 
             //now we clean up things that were not properly set in previous DB upgrades
-            Yii::app()->db->createCommand()->update('{{answers}}',array('answer'=>''),"answer is NULL");
-            Yii::app()->db->createCommand()->update('{{assessments}}',array('scope'=>''),"scope is NULL");
-            Yii::app()->db->createCommand()->update('{{assessments}}',array('name'=>''),"name is NULL");
-            Yii::app()->db->createCommand()->update('{{assessments}}',array('message'=>''),"message is NULL");
-            Yii::app()->db->createCommand()->update('{{assessments}}',array('minimum'=>''),"minimum is NULL");
-            Yii::app()->db->createCommand()->update('{{assessments}}',array('maximum'=>''),"maximum is NULL");
-            Yii::app()->db->createCommand()->update('{{groups}}',array('group_name'=>''),"group_name is NULL");
-            Yii::app()->db->createCommand()->update('{{labels}}',array('code'=>''),"code is NULL");
-            Yii::app()->db->createCommand()->update('{{labelsets}}',array('label_name'=>''),"label_name is NULL");
-            Yii::app()->db->createCommand()->update('{{questions}}',array('type'=>'T'),"type is NULL");
-            Yii::app()->db->createCommand()->update('{{questions}}',array('title'=>''),"title is NULL");
-            Yii::app()->db->createCommand()->update('{{questions}}',array('question'=>''),"question is NULL");
-            Yii::app()->db->createCommand()->update('{{questions}}',array('other'=>'N'),"other is NULL");
+            $db->createCommand()->update('{{answers}}',array('answer'=>''),"answer is NULL");
+            $db->createCommand()->update('{{assessments}}',array('scope'=>''),"scope is NULL");
+            $db->createCommand()->update('{{assessments}}',array('name'=>''),"name is NULL");
+            $db->createCommand()->update('{{assessments}}',array('message'=>''),"message is NULL");
+            $db->createCommand()->update('{{assessments}}',array('minimum'=>''),"minimum is NULL");
+            $db->createCommand()->update('{{assessments}}',array('maximum'=>''),"maximum is NULL");
+            $db->createCommand()->update('{{groups}}',array('group_name'=>''),"group_name is NULL");
+            $db->createCommand()->update('{{labels}}',array('code'=>''),"code is NULL");
+            $db->createCommand()->update('{{labelsets}}',array('label_name'=>''),"label_name is NULL");
+            $db->createCommand()->update('{{questions}}',array('type'=>'T'),"type is NULL");
+            $db->createCommand()->update('{{questions}}',array('title'=>''),"title is NULL");
+            $db->createCommand()->update('{{questions}}',array('question'=>''),"question is NULL");
+            $db->createCommand()->update('{{questions}}',array('other'=>'N'),"other is NULL");
 
             alterColumn('{{answers}}','answer',"text",false);
             alterColumn('{{answers}}','assessment_value','integer',false , '0');
@@ -481,7 +482,7 @@ function db_upgrade_all($oldversion) {
             // change the primary index to include language
             if ($sDBDriverName=='mysql') // special treatment for mysql because this needs to be in one step since an AUTOINC field is involved
             {
-                Yii::app()->db->createCommand("ALTER TABLE {{assessments}} DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `language`)")->execute();
+                $db->createCommand("ALTER TABLE {{assessments}} DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `language`)")->execute();
             }
             else
             {
@@ -503,30 +504,30 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{questions}}','title',"{$sVarchar}(20)",false , '');
             alterColumn('{{questions}}','question',"text",false);
             alterColumn('{{questions}}','type',"{$sVarchar}(1)",false , 'T');
-            try{ Yii::app()->db->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e){};
+            try{ $db->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e){};
             alterColumn('{{questions}}','other',"{$sVarchar}(1)",false , 'N');
             alterColumn('{{questions}}','mandatory',"{$sVarchar}(1)");
             alterColumn('{{question_attributes}}','attribute',"{$sVarchar}(50)");
             alterColumn('{{quota}}','qlimit','integer');
 
-            Yii::app()->db->createCommand()->update('{{saved_control}}',array('identifier'=>''),"identifier is NULL");
+            $db->createCommand()->update('{{saved_control}}',array('identifier'=>''),"identifier is NULL");
             alterColumn('{{saved_control}}','identifier',"text",false);
-            Yii::app()->db->createCommand()->update('{{saved_control}}',array('access_code'=>''),"access_code is NULL");
+            $db->createCommand()->update('{{saved_control}}',array('access_code'=>''),"access_code is NULL");
             alterColumn('{{saved_control}}','access_code',"text",false);
             alterColumn('{{saved_control}}','email',"{$sVarchar}(320)");
-            Yii::app()->db->createCommand()->update('{{saved_control}}',array('ip'=>''),"ip is NULL");
+            $db->createCommand()->update('{{saved_control}}',array('ip'=>''),"ip is NULL");
             alterColumn('{{saved_control}}','ip',"text",false);
-            Yii::app()->db->createCommand()->update('{{saved_control}}',array('saved_thisstep'=>''),"saved_thisstep is NULL");
+            $db->createCommand()->update('{{saved_control}}',array('saved_thisstep'=>''),"saved_thisstep is NULL");
             alterColumn('{{saved_control}}','saved_thisstep',"text",false);
-            Yii::app()->db->createCommand()->update('{{saved_control}}',array('status'=>''),"status is NULL");
+            $db->createCommand()->update('{{saved_control}}',array('status'=>''),"status is NULL");
             alterColumn('{{saved_control}}','status',"{$sVarchar}(1)",false , '');
-            Yii::app()->db->createCommand()->update('{{saved_control}}',array('saved_date'=>'1980-01-01 00:00:00'),"saved_date is NULL");
+            $db->createCommand()->update('{{saved_control}}',array('saved_date'=>'1980-01-01 00:00:00'),"saved_date is NULL");
             alterColumn('{{saved_control}}','saved_date',"datetime",false);
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>''),"stg_value is NULL");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>''),"stg_value is NULL");
             alterColumn('{{settings_global}}','stg_value',"string",false , '');
 
             alterColumn('{{surveys}}','admin',"{$sVarchar}(50)");
-            Yii::app()->db->createCommand()->update('{{surveys}}',array('active'=>'N'),"active is NULL");
+            $db->createCommand()->update('{{surveys}}',array('active'=>'N'),"active is NULL");
 
             alterColumn('{{surveys}}','active',"{$sVarchar}(1)",false , 'N');
 
@@ -546,7 +547,7 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{surveys}}','bounce_email',"{$sVarchar}(320)");
             alterColumn('{{surveys}}','tokenlength','integer',true , 15);
 
-            Yii::app()->db->createCommand()->update('{{surveys_languagesettings}}',array('surveyls_title'=>''),"surveyls_title is NULL");
+            $db->createCommand()->update('{{surveys_languagesettings}}',array('surveyls_title'=>''),"surveyls_title is NULL");
             alterColumn('{{surveys_languagesettings}}','surveyls_title',"{$sVarchar}(200)",false);
             alterColumn('{{surveys_languagesettings}}','surveyls_endtext',"text");
             alterColumn('{{surveys_languagesettings}}','surveyls_url',"string");
@@ -557,8 +558,8 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{surveys_languagesettings}}','surveyls_email_confirm_subj',"string");
             alterColumn('{{surveys_languagesettings}}','surveyls_dateformat','integer',false , 1);
 
-            Yii::app()->db->createCommand()->update('{{users}}',array('users_name'=>''),"users_name is NULL");
-            Yii::app()->db->createCommand()->update('{{users}}',array('full_name'=>''),"full_name is NULL");
+            $db->createCommand()->update('{{users}}',array('users_name'=>''),"users_name is NULL");
+            $db->createCommand()->update('{{users}}',array('full_name'=>''),"full_name is NULL");
             alterColumn('{{users}}','users_name',"{$sVarchar}(64)",false , '');
             alterColumn('{{users}}','full_name',"{$sVarchar}(50)",false);
             alterColumn('{{users}}','lang',"{$sVarchar}(20)");
@@ -567,19 +568,19 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{users}}','htmleditormode',"{$sVarchar}(7)",true,'default');
             alterColumn('{{users}}','dateformat','integer',false , 1);
             try{
-                Yii::app()->db->createCommand()->dropIndex('email','{{users}}');
+                $db->createCommand()->dropIndex('email','{{users}}');
             }
             catch(Exception $e)
             {
                 // do nothing
             }
 
-            Yii::app()->db->createCommand()->update('{{user_groups}}',array('name'=>''),"name is NULL");
-            Yii::app()->db->createCommand()->update('{{user_groups}}',array('description'=>''),"description is NULL");
+            $db->createCommand()->update('{{user_groups}}',array('name'=>''),"name is NULL");
+            $db->createCommand()->update('{{user_groups}}',array('description'=>''),"description is NULL");
             alterColumn('{{user_groups}}','name',"{$sVarchar}(20)",false);
             alterColumn('{{user_groups}}','description',"text",false);
 
-            try { Yii::app()->db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}'); } catch(Exception $e) {}        
+            try { $db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}'); } catch(Exception $e) {}
             try { addPrimaryKey('user_in_groups', array('ugid','uid')); } catch(Exception $e) {}        
 
             addColumn('{{surveys_languagesettings}}','surveyls_numberformat',"integer NOT NULL DEFAULT 0");
@@ -591,22 +592,22 @@ function db_upgrade_all($oldversion) {
             'number_attempts' => "integer NOT NULL"
             ));
             upgradeTokens145();
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>145),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>145),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 146) //Modify surveys table
         {
             upgradeSurveyTimings146();
             // Fix permissions for new feature quick-translation
-            try { setTransactionBookmark(); Yii::app()->db->createCommand("INSERT into {{survey_permissions}} (sid,uid,permission,read_p,update_p) SELECT sid,owner_id,'translations','1','1' from {{surveys}}")->execute(); echo $modifyoutput; flush();@ob_flush();} catch(Exception $e) { rollBackToTransactionBookmark();}        
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>146),"stg_name='DBVersion'");
+            try { setTransactionBookmark(); $db->createCommand("INSERT into {{survey_permissions}} (sid,uid,permission,read_p,update_p) SELECT sid,owner_id,'translations','1','1' from {{surveys}}")->execute(); echo $modifyoutput; flush();@ob_flush();} catch(Exception $e) { rollBackToTransactionBookmark();}
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>146),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 147)
         {
             addColumn('{{users}}','templateeditormode',"{$sVarchar}(7) NOT NULL default 'default'");
             addColumn('{{users}}','questionselectormode',"{$sVarchar}(7) NOT NULL default 'default'");
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>147),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>147),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 148)
@@ -673,7 +674,7 @@ function db_upgrade_all($oldversion) {
             upgradeQuestionAttributes148();
             upgradeTokens148();
             fixSubquestions();
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>148),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>148),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 149)
@@ -686,25 +687,25 @@ function db_upgrade_all($oldversion) {
             'targetsqid' => 'integer'
             );
             createTable('{{survey_url_parameters}}',$fields);
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>149),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>149),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 150)
         {
             addColumn('{{questions}}','relevance','TEXT');
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>150),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>150),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 151)
         {
             addColumn('{{groups}}','randomization_group',"{$sVarchar}(20) NOT NULL default ''");
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>151),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>151),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 152)
         {
-            Yii::app()->db->createCommand()->createIndex('question_attributes_idx3','{{question_attributes}}','attribute');
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>152),"stg_name='DBVersion'");
+            $db->createCommand()->createIndex('question_attributes_idx3','{{question_attributes}}','attribute');
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>152),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 153)
@@ -721,21 +722,21 @@ function db_upgrade_all($oldversion) {
             'eqn' => 'text',
             'prettyprint' => 'text'
             ));
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>153),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>153),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 154)
         {
-            Yii::app()->db->createCommand()->addColumn('{{groups}}','grelevance',"text");
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>154),"stg_name='DBVersion'");
+            $db->createCommand()->addColumn('{{groups}}','grelevance',"text");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>154),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 155)
         {
             addColumn('{{surveys}}','googleanalyticsstyle',"{$sVarchar}(1)");
             addColumn('{{surveys}}','googleanalyticsapikey',"{$sVarchar}(25)");
-            try { setTransactionBookmark(); Yii::app()->db->createCommand()->renameColumn('{{surveys}}','showXquestions','showxquestions');} catch(Exception $e) { rollBackToTransactionBookmark();}        
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>155),"stg_name='DBVersion'");
+            try { setTransactionBookmark(); $db->createCommand()->renameColumn('{{surveys}}','showXquestions','showxquestions');} catch(Exception $e) { rollBackToTransactionBookmark();}
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>155),"stg_name='DBVersion'");
         }
 
 
@@ -743,7 +744,7 @@ function db_upgrade_all($oldversion) {
         {
             try
             {
-                Yii::app()->db->createCommand()->dropTable('{{survey_url_parameters}}');
+                $db->createCommand()->dropTable('{{survey_url_parameters}}');
             }
             catch(Exception $e)
             {
@@ -757,7 +758,7 @@ function db_upgrade_all($oldversion) {
             'targetsqid' => 'integer'
             ));
 
-            Yii::app()->db->createCommand()->dropTable('{{sessions}}');
+            $db->createCommand()->dropTable('{{sessions}}');
             if ($sDBDriverName=='mysql')
             {
                 createTable('{{sessions}}',array(
@@ -782,7 +783,7 @@ function db_upgrade_all($oldversion) {
             upgradeSurveys156();
 
             // If a survey has an deleted owner, re-own the survey to the superadmin
-            Yii::app()->db->schema->refresh();
+            $db->schema->refresh();
             Survey::model()->refreshMetaData();
             $surveys = Survey::model();
             $surveys = $surveys->with(array('owner'))->findAll();
@@ -793,15 +794,15 @@ function db_upgrade_all($oldversion) {
                     Survey::model()->updateByPk($row->sid,array('owner_id'=>1));
                 }
             }
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>156),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>156),"stg_name='DBVersion'");
             $oTransaction->commit();
-            $oTransaction=Yii::app()->db->beginTransaction();
+            $oTransaction=$db->beginTransaction();
         }
 
         if ($oldversion < 157)
         {
             // MySQL DB corrections
-            try { setTransactionBookmark(); Yii::app()->db->createCommand()->dropIndex('questions_idx4','{{questions}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}        
+            try { setTransactionBookmark(); $db->createCommand()->dropIndex('questions_idx4','{{questions}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
 
             alterColumn('{{answers}}','assessment_value','integer',false , '0');
             dropPrimaryKey('answers');
@@ -892,19 +893,19 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{user_in_groups}}','uid',"integer",false);
 
             // Additional corrections for Postgres
-            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->createIndex('questions_idx3','{{questions}}','gid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->createIndex('conditions_idx3','{{conditions}}','cqid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->dropIndex('{{user_name_key}}','{{users}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->createIndex('users_name','{{users}}','users_name',true);} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $db->createCommand()->createIndex('questions_idx3','{{questions}}','gid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $db->createCommand()->createIndex('conditions_idx3','{{conditions}}','cqid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $db->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $db->createCommand()->dropIndex('{{user_name_key}}','{{users}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $db->createCommand()->createIndex('users_name','{{users}}','users_name',true);} catch(Exception $e) { rollBackToTransactionBookmark(); };
             try{ setTransactionBookmark(); addPrimaryKey('user_in_groups', array('ugid','uid'));} catch(Exception $e) { rollBackToTransactionBookmark(); };
 
             alterColumn('{{participant_attribute}}','value',"{$sVarchar}(50)", false);
             try{ setTransactionBookmark(); alterColumn('{{participant_attribute_names}}','attribute_type',"{$sVarchar}(4)", false);} catch(Exception $e) { rollBackToTransactionBookmark(); };
             try{ setTransactionBookmark(); dropColumn('{{participant_attribute_names_lang}}','id');} catch(Exception $e) { rollBackToTransactionBookmark(); };
             try{ setTransactionBookmark(); addPrimaryKey('participant_attribute_names_lang',array('attribute_id','lang'));} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->renameColumn('{{participant_shares}}','shared_uid','share_uid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $db->createCommand()->renameColumn('{{participant_shares}}','shared_uid','share_uid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
             alterColumn('{{participant_shares}}','date_added',"datetime", false);
             alterColumn('{{participants}}','firstname',"{$sVarchar}(40)");
             alterColumn('{{participants}}','lastname',"{$sVarchar}(40)");
@@ -933,19 +934,19 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{surveys}}','bounce_email',"{$sVarchar}(320)");
             alterColumn('{{users}}','email',"{$sVarchar}(320)");
 
-            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->dropIndex('assessments_idx','{{assessments}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->createIndex('assessments_idx3','{{assessments}}','gid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $db->createCommand()->dropIndex('assessments_idx','{{assessments}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $db->createCommand()->createIndex('assessments_idx3','{{assessments}}','gid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
 
-            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->dropIndex('ixcode','{{labels}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->dropIndex('{{labels_ixcode_idx}}','{{labels}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); Yii::app()->db->createCommand()->createIndex('labels_code_idx','{{labels}}','code');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $db->createCommand()->dropIndex('ixcode','{{labels}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $db->createCommand()->dropIndex('{{labels_ixcode_idx}}','{{labels}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $db->createCommand()->createIndex('labels_code_idx','{{labels}}','code');} catch(Exception $e) { rollBackToTransactionBookmark(); };
 
 
 
             if ($sDBDriverName=='pgsql')
             {
-                try{ setTransactionBookmark(); Yii::app()->db->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;} catch(Exception $e) { rollBackToTransactionBookmark(); };
-                try{ setTransactionBookmark(); Yii::app()->db->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;} catch(Exception $e) { rollBackToTransactionBookmark(); };
+                try{ setTransactionBookmark(); $db->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;} catch(Exception $e) { rollBackToTransactionBookmark(); };
+                try{ setTransactionBookmark(); $db->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;} catch(Exception $e) { rollBackToTransactionBookmark(); };
             }
 
             // Additional corrections for MSSQL
@@ -996,33 +997,33 @@ function db_upgrade_all($oldversion) {
             addColumn('{{users}}','one_time_pw','binary');
 
 
-            Yii::app()->db->createCommand()->update('{{question_attributes}}',array('value'=>'1'),"attribute = 'random_order' and value = '2'");
+            $db->createCommand()->update('{{question_attributes}}',array('value'=>'1'),"attribute = 'random_order' and value = '2'");
 
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>157),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>157),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 158)
         {
             LimeExpressionManager::UpgradeConditionsToRelevance();
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>158),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>158),"stg_name='DBVersion'");
         }
         if ($oldversion < 159)
         {
             alterColumn('{{failed_login_attempts}}', 'ip', "{$sVarchar}(40)",false);
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>159),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>159),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 160)
         {
             alterLanguageCode('it','it-informal');
             alterLanguageCode('it-formal','it');
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>160),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>160),"stg_name='DBVersion'");
         }
         if ($oldversion < 161)
         {
             addColumn('{{survey_links}}','date_invited','datetime NULL default NULL');
             addColumn('{{survey_links}}','date_completed','datetime NULL default NULL');
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>161),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>161),"stg_name='DBVersion'");
         }
         if ($oldversion < 162)
         {
@@ -1030,14 +1031,14 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{participant_attribute}}', 'value', "text", false);
             alterColumn('{{participant_attribute_names_lang}}', 'attribute_name', "{$sVarchar}(255)", false);
             alterColumn('{{participant_attribute_values}}', 'value', "text", false);
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>162),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>162),"stg_name='DBVersion'");
         }
         if ($oldversion < 163)
         {
             //Replace  by <script type="text/javascript" src="{TEMPLATEURL}template.js"></script> by {TEMPLATEJS}
 
             $replacedTemplate=replaceTemplateJS();
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>163),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>163),"stg_name='DBVersion'");
 
         }
         
@@ -1045,19 +1046,19 @@ function db_upgrade_all($oldversion) {
         {
             // fix survey tables for missing or incorrect token field
             upgradeSurveyTables164();
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>164),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>164),"stg_name='DBVersion'");
             
             // Not updating settings table as upgrade process takes care of that step now
         }
         
         if ($oldversion < 165)
         {
-            Yii::app()->db->createCommand()->createTable('{{plugins}}', array(
+            $db->createCommand()->createTable('{{plugins}}', array(
                 'id' => 'pk',
                 'name' => 'string NOT NULL',
                 'active' => 'boolean'
             ));
-            Yii::app()->db->createCommand()->createTable('{{plugin_settings}}', array(
+            $db->createCommand()->createTable('{{plugin_settings}}', array(
                 'id' => 'pk',
                 'plugin_id' => 'integer NOT NULL',
                 'model' => 'string',
@@ -1066,20 +1067,20 @@ function db_upgrade_all($oldversion) {
                 'value' => 'text'
             ));
             alterColumn('{{surveys_languagesettings}}','surveyls_url',"text");
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>165),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>165),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 166)
         {
-            Yii::app()->db->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');
+            $db->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');
             alterColumn('{{permissions}}', 'permission', "{$sVarchar}(100)", false);
-            Yii::app()->db->createCommand()->renameColumn('{{permissions}}','sid','entity_id');
+            $db->createCommand()->renameColumn('{{permissions}}','sid','entity_id');
             alterColumn('{{permissions}}', 'entity_id', "{$sVarchar}(100)", false);
             addColumn('{{permissions}}','entity',"{$sVarchar}(50)");
-            Yii::app()->db->createCommand("update {{permissions}} set entity='survey'")->query();
+            $db->createCommand("update {{permissions}} set entity='survey'")->query();
             dropPrimaryKey('permissions');
             addColumn('{{permissions}}','id','pk');
-            Yii::app()->db->createCommand()->createIndex('idxPermissions','{{permissions}}','entity_id,entity,permission,uid',true);
+            $db->createCommand()->createIndex('idxPermissions','{{permissions}}','entity_id,entity,permission,uid',true);
             
             upgradePermissions166();
             dropColumn('{{users}}','create_survey');
@@ -1090,8 +1091,8 @@ function db_upgrade_all($oldversion) {
             dropColumn('{{users}}','manage_template');
             dropColumn('{{users}}','manage_label');      
             dropColumn('{{users}}','participant_panel');   
-            Yii::app()->db->createCommand()->dropTable('{{templates_rights}}');
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>166),"stg_name='DBVersion'");
+            $db->createCommand()->dropTable('{{templates_rights}}');
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>166),"stg_name='DBVersion'");
         }
         
         if ($oldversion < 167)
@@ -1099,7 +1100,7 @@ function db_upgrade_all($oldversion) {
             addColumn('{{surveys_languagesettings}}', 'attachments', 'text');
             addColumn('{{users}}', 'created', 'datetime');
             addColumn('{{users}}', 'modified', 'datetime');
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>167),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>167),"stg_name='DBVersion'");
         }
 
         if ($oldversion < 168)
@@ -1107,10 +1108,24 @@ function db_upgrade_all($oldversion) {
             addColumn('{{participants}}', 'created', 'datetime');
             addColumn('{{participants}}', 'modified', 'datetime');
             addColumn('{{participants}}', 'created_by', 'integer');
-            Yii::app()->db->createCommand('update {{participants}} set created_by=owner_uid')->query();
+            $db->createCommand('update {{participants}} set created_by=owner_uid')->query();
             alterColumn('{{participants}}', 'created_by', "integer", false);
-            Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>168),"stg_name='DBVersion'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>168),"stg_name='DBVersion'");
         }
+
+		if ($oldversion < 169)
+		{
+			// Add new column for question index options.
+			addColumn('{{surveys}}', 'questionindex', 'integer not null default "0"');
+			// Set values for existing surveys.
+			$db->createCommand('update {{surveys}} set `questionindex` = 0 where `allowjumps` = "Y"')->query();
+			$db->createCommand('update {{surveys}} set `questionindex` = 1 where `allowjumps` = "N"')->query();
+
+			// Remove old column.
+			Yii::app()->getDb()->createCommand()->dropColumn('{{surveys}}', 'allowjumps');
+			$db->createCommand()->update('{{settings_global}}',array('stg_value'=>169),"stg_name='DBVersion'");
+
+		}
 
         
         $oTransaction->commit();

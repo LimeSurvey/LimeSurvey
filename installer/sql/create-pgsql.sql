@@ -456,7 +456,7 @@ CREATE TABLE prefix_surveys (
     bounceaccountuser character varying(200),
     showwelcome character varying(1) DEFAULT 'Y',
     showprogress character varying(1) DEFAULT 'Y',
-    allowjumps character varying(1) DEFAULT 'N',
+    questionindex integer DEFAULT '0' NOT NULL,
     navigationdelay integer DEFAULT '0' NOT NULL,
     nokeyboard character varying(1) DEFAULT 'N',
     alloweditaftercompletion character varying(1) DEFAULT 'N',
@@ -585,4 +585,4 @@ create unique index permissions_idx2 ON lime_permissions (entity_id, entity_name
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '168');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '169');

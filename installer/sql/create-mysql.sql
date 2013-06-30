@@ -454,7 +454,7 @@ CREATE TABLE `prefix_surveys` (
   `bounceaccountuser` varchar(200),
   `showwelcome` varchar(1) default 'Y',
   `showprogress` varchar(1) default 'Y',
-  `allowjumps` varchar(1) default 'N',
+  `questionindex` int(11) default '0' NOT NULL,
   `navigationdelay` int(11) NOT NULL default '0',
   `nokeyboard` varchar(1) default 'N',
   `alloweditaftercompletion` varchar(1) default 'N',
@@ -581,4 +581,4 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '168');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '169');

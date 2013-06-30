@@ -1065,7 +1065,7 @@ class database extends Survey_Common_Action
             'shownoanswer'=> Yii::app()->request->getPost('shownoanswer'),
             'showwelcome'=> Yii::app()->request->getPost('showwelcome'),
             'allowprev'=> Yii::app()->request->getPost('allowprev'),
-            'allowjumps'=> Yii::app()->request->getPost('allowjumps'),
+            'questionindex'=> Yii::app()->request->getPost('questionindex'),
             'nokeyboard'=> Yii::app()->request->getPost('nokeyboard'),
             'showprogress'=> Yii::app()->request->getPost('showprogress'),
             'listpublic'=> Yii::app()->request->getPost('public'),

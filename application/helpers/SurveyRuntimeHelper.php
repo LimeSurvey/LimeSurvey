@@ -267,7 +267,7 @@ class SurveyRuntimeHelper {
             else if (!$LEMskipReprocessing)
                 {
                     //Move current step ###########################################################################
-                    if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev'] == 'Y' || $thissurvey['allowjumps'] == 'Y'))
+                    if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev'] == 'Y' || $thissurvey['questionindex'] > 0))
                     {
                         $moveResult = LimeExpressionManager::NavigateBackwards();
                         if ($moveResult['at_start'])
@@ -298,7 +298,7 @@ class SurveyRuntimeHelper {
                     // jump to current step using new language, processing POST values
                     $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);  // do process the POST data
                 }
-                if (isset($move) && isNumericInt($move) && $thissurvey['allowjumps'] == 'Y')
+                if (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] > 0)
                 {
                     $move = (int) $move;
                     if ($move > 0 && (($move <= $_SESSION[$LEMsessid]['step']) || (isset($_SESSION[$LEMsessid]['maxstep']) && $move <= $_SESSION[$LEMsessid]['maxstep'])))
@@ -1133,7 +1133,7 @@ END;
             }
 
 
-            if ($surveyMode != 'survey' && $thissurvey['allowjumps'] == 'Y')
+            if ($surveyMode != 'survey' && $thissurvey['questionindex'] > 0)
             {
 				$this->createQuestionIndex($LEMsessid, $surveyMode);
             }

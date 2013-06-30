@@ -447,7 +447,7 @@ CREATE TABLE [prefix_surveys] (
 [bounceaccountuser] varchar(200),
 [showwelcome] varchar(1) default 'Y',
 [showprogress] varchar(1) default 'Y',
-[allowjumps] varchar(1) default 'N',
+[questionindex] int default '0',
 [navigationdelay] int NOT NULL default '0',
 [nokeyboard] varchar(1) default 'N',
 [alloweditaftercompletion] varchar(1) default 'N',
@@ -575,4 +575,4 @@ create unique index [permissions_idx2] ON [lime_permissions] ([entity_id], [enti
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '168');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '169');

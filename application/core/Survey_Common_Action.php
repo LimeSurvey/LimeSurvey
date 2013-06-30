@@ -700,16 +700,20 @@ class Survey_Common_Action extends CAction
         {
             $surveysummary2 .= $clang->gT("It is presented on one single page.") . "<br />";
         }
-        if ($surveyinfo['allowjumps'] == "Y")
+        if ($surveyinfo['questionindex'] > 0)
         {
             if ($surveyinfo['format'] == 'A')
             {
                 $surveysummary2 .= $clang->gT("No question index will be shown with this format.") . "<br />";
             }
-            else
+            elseif ($surveyinfo['questionindex'] == 1)
             {
                 $surveysummary2 .= $clang->gT("A question index will be shown; participants will be able to jump between viewed questions.") . "<br />";
             }
+			elseif ($surveyinfo['questionindex'] == 2)
+			{
+				$surveysummary2 .= $clang->gT("A full question index will be shown; participants will be able to jump between relevant questions.") . "<br />";
+			}
         }
         if ($surveyinfo['datestamp'] == "Y")
         {

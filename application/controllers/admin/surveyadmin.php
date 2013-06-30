@@ -1076,7 +1076,7 @@ class SurveyAdmin extends Survey_Common_Action
         if ($action == 'newsurvey')
         {
             $esrow['active'] = 'N';
-            $esrow['allowjumps'] = 'N';
+            $esrow['questionindex'] = 0;
             $esrow['format'] = 'G'; //Group-by-group mode
             $esrow['template'] = Yii::app()->getConfig('defaulttemplate');
             $esrow['allowsave'] = 'Y';
@@ -1533,7 +1533,7 @@ class SurveyAdmin extends Survey_Common_Action
             'shownoanswer' => $_POST['shownoanswer'],
             'showwelcome' => $_POST['showwelcome'],
             'allowprev' => $_POST['allowprev'],
-            'allowjumps' => $_POST['allowjumps'],
+            'questionindex' => $_POST['questionindex'],
             'nokeyboard' => $_POST['nokeyboard'],
             'showprogress' => $_POST['showprogress'],
             'printanswers' => $_POST['printanswers'],

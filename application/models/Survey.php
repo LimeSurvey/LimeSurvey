@@ -150,7 +150,7 @@ class Survey extends LSActiveRecord
         array('shownoanswer', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('showwelcome', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('showprogress', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('allowjumps', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('questionindex', 'numerical','min' => 0, 'max' => 2, 'allowEmpty'=>false),
         array('nokeyboard', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('alloweditaftercompletion', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('bounceprocessing', 'in','range'=>array('L','N','G'), 'allowEmpty'=>true),
