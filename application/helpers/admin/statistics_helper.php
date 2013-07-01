@@ -598,6 +598,7 @@ class statistics_helper {
     * @param mixed $language The language to present output in
     * @param mixed $surveyid The survey id
     * @param string $outputType
+    * @param boolean $browse
     *
     * @output array $output An array containing "alist"=>A list of answers to the question in the form of an array ($alist array
     *                       contains an array for every field to be displayed - with the Actual Question Code/Title, The text (flattened)
@@ -606,7 +607,7 @@ class statistics_helper {
     *                       "qquestion"=>The description of the question,
     *                       "qtype"=>The question type code
     */
-    protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage) {
+    protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage,$browse=true) {
 
         //Set up required variables
         $alist=array();
@@ -1145,12 +1146,15 @@ class statistics_helper {
                             ."</font>\n"
                             ."\t\t</td>\n"
                             ."\t</tr>\n";
-                            $statisticsoutput .= "\t<tr>\n"
-                            ."\t\t<td align='center'  colspan='4'>
-                            <input type='button' class='statisticsbrowsebutton numericalbrowse' value='"
-                            .$statlang->gT("Browse")."' id='$fieldname' /></td>\n</tr>";
-                            $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
-                                <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
+                            if($browse)
+                            {
+                                $statisticsoutput .= "\t<tr>\n"
+                                ."\t\t<td align='center'  colspan='4'>
+                                <input type='button' class='statisticsbrowsebutton numericalbrowse' value='"
+                                .$statlang->gT("Browse")."' id='$fieldname' /></td>\n</tr>";
+                                $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
+                                    <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
+                            }
                             $statisticsoutput .= "</table>\n";
 
                             break;
@@ -1452,6 +1456,8 @@ class statistics_helper {
 
                 case "I": //Language
                     // Using previously defined $surveylanguagecodes array of language codes
+                    $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
+                    $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
                     foreach ($surveylanguagecodes as $availlang)
                     {
                         $alist[]=array($availlang, getLanguageNameFromCode($availlang,false));
@@ -3121,7 +3127,7 @@ class statistics_helper {
             {
 
                 //Step 1: Get information about this response field (SGQA) for the summary
-                $outputs=$this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $statlang);
+                $outputs=$this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $statlang,$browse);
                 $statisticsoutput .= $outputs['statisticsoutput'];
                 //2. Collect and Display results #######################################################################
                 if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
