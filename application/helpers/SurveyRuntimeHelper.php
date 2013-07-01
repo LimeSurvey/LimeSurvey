@@ -30,7 +30,6 @@ class SurveyRuntimeHelper {
 
 	protected function createFullQuestionIndexByGroup($LEMsessid)
 	{
-		$iSurveyId = explode('_', $LEMsessid, 2)[1];
 		echo "\n\n<!-- PRESENT THE INDEX -->\n";
 //		echo '<script>';
 //		echo 'var session = '. json_encode($_SESSION) . ';';
