@@ -361,7 +361,7 @@ class Statistics_userController extends LSYii_Controller {
         //SET THE TEMPLATE DIRECTORY
         if (!isset($thissurvey['templatedir']) || !$thissurvey['templatedir'])
         {
-            $data['sTemplatePath'] = validateTemplateDir("default");
+            $data['sTemplatePath'] = validateTemplateDir(Yii::app()->getConfig("defaulttemplate"));
         }
         else
         {
