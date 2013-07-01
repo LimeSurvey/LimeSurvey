@@ -60,6 +60,14 @@ class SurveyRuntimeHelper {
 				echo CHtml::closeTag('ol');
 			echo CHtml::closeTag('div');
 		echo CHtml::closeTag('div');
+		/* Can be replaced by php or in global js */
+		echo "<script type=\"text/javascript\">\n"
+		. "  $(\".outerframe\").addClass(\"withindex\");\n"
+		. "  var idx = $(\"#index\");\n"
+		. "  var row = $(\"#index .row.current\");\n"
+		. "  idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);\n"
+		. "</script>\n";
+		echo "\n";
 	}
 
 	protected function createFullQuestionIndexByQuestion($LEMsessid)
@@ -70,6 +78,14 @@ class SurveyRuntimeHelper {
 				echo 'Question by question not yet supported, use incremental index.';
 			echo CHtml::closeTag('div');
 		echo CHtml::closeTag('div');
+		/* Can be replaced by php or in global js */
+		echo "<script type=\"text/javascript\">\n"
+		. "  $(\".outerframe\").addClass(\"withindex\");\n"
+		. "  var idx = $(\"#index\");\n"
+		. "  var row = $(\"#index .row.current\");\n"
+		. "  idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);\n"
+		. "</script>\n";
+		echo "\n";
 	}
 	
 	protected function createIncrementalQuestionIndex($LEMsessid, $surveyMode)
