@@ -3469,6 +3469,15 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['wishSID']=$iOldSID;
         }
 
+		if ($iDBVersion < 169)
+		{
+			if (isset($insertdata['allowjumps']))
+			{
+				$insertdata['questionindex'] = $insertdata['allowjumps'] == 'Y' ? 1 : 0;
+				unset($insertdata['allowjumps']);
+			}
+		}
+		
         if ($iDBVersion<145)
         {
             if(isset($insertdata['private'])) $insertdata['anonymized']=$insertdata['private'];
