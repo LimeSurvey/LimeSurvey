@@ -314,8 +314,12 @@ class templates extends Survey_Common_Action
     * @param string $templatename
     * @return void
     */
-    public function index($editfile = 'startpage.pstpl', $screenname = 'welcome', $templatename = 'default')
+    public function index($editfile = 'startpage.pstpl', $screenname = 'welcome', $templatename = '')
     {
+        if(!$templatename)
+        {
+            $templatename = Yii::app()->getConfig("defaulttemplate");
+        }
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile);
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'templates.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.css');
@@ -343,8 +347,12 @@ class templates extends Survey_Common_Action
     * @param string $screenname
     * @return void
     */
-    public function screenredirect($editfile = 'startpage.pstpl', $templatename = 'default', $screenname = 'welcome')
+    public function screenredirect($editfile = 'startpage.pstpl', $templatename = '', $screenname = 'welcome')
     {
+        if(!$templatename)
+        {
+            $templatename = Yii::app()->getConfig("defaulttemplate");
+        }
         $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
 
@@ -357,8 +365,12 @@ class templates extends Survey_Common_Action
     * @param string $editfile
     * @return void
     */
-    public function fileredirect($templatename = 'default', $screenname = 'welcome', $editfile = 'startpage.pstpl')
+    public function fileredirect($templatename = '', $screenname = 'welcome', $editfile = 'startpage.pstpl')
     {
+        if(!$templatename)
+        {
+            $templatename = Yii::app()->getConfig("defaulttemplate");
+        }
         $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
 
