@@ -8,7 +8,7 @@ $(document).ready(function(){
     $('#translationtabs').show();
     $('#translationloading').hide();
 
-    $('input.auto-trans').live('click',function(ui)
+    $('input.auto-trans').click(function(ui)
     {
         var sTarget_id = $(ui.target).attr('id');
 
