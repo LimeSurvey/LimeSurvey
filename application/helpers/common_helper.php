@@ -5724,6 +5724,8 @@ function updateCheck()
                 unset($updateinfo);
                 break;
         }
+    } else {
+        unset($updateinfo);
     }
     if (isset($updateinfo)) {
         setGlobalSetting('updateavailable',1);
