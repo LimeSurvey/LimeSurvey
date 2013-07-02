@@ -59,12 +59,15 @@ class CsvWriter extends Writer
             $this->output .= $sRecord;
             fwrite($this->file, $this->output);
             $this->output='';
-        } 
+        }
     }
 
     public function close()
     {
+        // Output white line at the end, better for R import
+        echo "\n";
         if (!is_null($this->file)) {
+            fwrite($this->file, "\n");
             fclose($this->file);
         }
     }

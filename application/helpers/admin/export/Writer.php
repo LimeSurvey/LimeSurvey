@@ -17,12 +17,6 @@ abstract class Writer implements IWriter
         return $this->translator->translate($key, $sLanguageCode);
     }
 
-    protected function translateHeading($column, $sLanguageCode)
-    {
-        if (substr($column,0,10)=='attribute_') return $column;
-        return $this->translator->translateHeading($column, $sLanguageCode);
-    }
-
     /**
     * An initialization method that implementing classes can override to gain access
     * to any information about the survey, language, or formatting options they
@@ -405,29 +399,19 @@ abstract class Writer implements IWriter
             
             foreach ($oOptions->selectedColumns as $column)
             {
-                //Output the header.
-                $value = $this->translateHeading($column, $sLanguageCode);
-                if($value===false)
+                //Survey question field, $column value is a field name from the getFieldMap function.
+                switch ($oOptions->headingFormat)
                 {
-                    //This branch may be reached erroneously if columns are added to the LimeSurvey product
-                    //but are not updated in the Writer->headerTranslationKeys array.  We should trap for this
-                    //condition and do a safeDie.
-                    //FIXME fix the above condition
-
-                    //Survey question field, $column value is a field name from the getFieldMap function.
-                    switch ($oOptions->headingFormat)
-                    {
-                        case 'abbreviated':
-                            $value = $this->getAbbreviatedHeading($survey, $column);
-                            break;
-                        case 'full':
-                            $value = $this->getFullHeading($survey, $oOptions, $column);
-                            break;
-                        default:
-                        case 'code':
-                            $value = $this->getCodeHeading($survey, $oOptions, $column);
-                            break;
-                    }
+                    case 'abbreviated':
+                        $value = $this->getAbbreviatedHeading($survey, $column);
+                        break;
+                    case 'full':
+                        $value = $this->getFullHeading($survey, $oOptions, $column);
+                        break;
+                    default:
+                    case 'code':
+                        $value = viewHelper::getFieldCode($survey->fieldMap[$column]);
+                        break;
                 }
                 if ($oOptions->headerSpacesToUnderscores)
                 {

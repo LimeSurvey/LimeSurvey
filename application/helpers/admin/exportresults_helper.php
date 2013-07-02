@@ -133,7 +133,11 @@ class ExportSurveyResultsService
         
         $writer->write($survey, $sLanguageCode, $oOptions,true);
         $result = $writer->close();
-        $surveyDao->close();
+        
+        // Close resultset if needed
+        if ($survey->responses instanceof CDbDataReader) {
+            $survey->responses->close();
+        }
         
         if ($oOptions->output=='file')
         {

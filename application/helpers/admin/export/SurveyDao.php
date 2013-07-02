@@ -116,14 +116,4 @@ class SurveyDao
         $iOffset = $iMinimum - 1;
         $survey->responses=$oRecordSet->select($aSelectFields)->order('{{survey_' . $survey->id . '}}.id')->limit($iMaximum - $iOffset, $iOffset)->query();
     }
-    
-    /**
-     * Close the resultset
-     */
-    public function close()
-    {
-        if ($survey->responses instanceof CDbDataReader) {
-            $survey->responses->close();
-        }
-    }
 }

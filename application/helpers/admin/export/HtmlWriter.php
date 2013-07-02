@@ -90,8 +90,10 @@
                     ));
                         foreach ($questions as $question)
                         {
-                            $this->renderQuestion($question, $values[$question['index']], $headers[$question['index']]);
-                            
+                            if (isset($values[$question['index']]) && isset($headers[$question['index']]))
+                            {
+                                $this->renderQuestion($question, $values[$question['index']], $headers[$question['index']]);
+                            }                            
                         }
                     $this->closeTag();
                 }
