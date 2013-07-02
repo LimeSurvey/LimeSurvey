@@ -167,7 +167,7 @@ class labels extends Survey_Common_Action
         $lid = sanitize_int($lid);
         $aViewUrls = array();
 
-        if (hasGlobalPermission('labelsets','read'))
+        if (Permission::model()->hasGlobalPermission('labelsets','read'))
         {
             if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets','update'))
             {

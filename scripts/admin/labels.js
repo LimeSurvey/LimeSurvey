@@ -28,8 +28,8 @@ $(document).ready(function(){
         add_label(undefined);
 
 
-    $(".btnaddanswer").live('click',add_label);
-    $(".btndelanswer").live('click',del_label);
+    $(".btnaddanswer").click(add_label);
+    $(".btndelanswer").click(del_label);
 
     $('#neweditlblset0 .answertable tbody').sortable({
         update:sort_complete,
@@ -41,7 +41,7 @@ $(document).ready(function(){
         width:600,
         title: $("#quickadd").attr('name')});
 
-    $('.btnquickadd').live('click',function(){
+    $('.btnquickadd').click(function(){
         $('#quickadd').dialog('open');
     });
 
