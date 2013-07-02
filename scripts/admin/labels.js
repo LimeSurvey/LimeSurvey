@@ -27,9 +27,8 @@ $(document).ready(function(){
     if ($(".answertable tbody").children().length == 0)
         add_label(undefined);
 
-
-    $(".btnaddanswer").click(add_label);
-    $(".btndelanswer").click(del_label);
+    $(document).on('click', '.btnaddanswer', add_label);
+    $(document).on('click', '.btndelanswer', del_label);
 
     $('#neweditlblset0 .answertable tbody').sortable({
         update:sort_complete,
