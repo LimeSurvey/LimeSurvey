@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.05beta4! 
+Welcome to LimeSurvey v2.05beta5! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -59,6 +59,35 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.05beta4 (build 130609) to 2.05beta5 (build 130702) Jul 2, 2013
+-New feature #5740: Improve VV response import (Denis Chenu)
+-New feature #7811: implement strtotime() for EM (mfaber)
+-New feature: Allow to use first line for header in vvimport (Denis Chenu)
+-New feature: Export Response By Token routine added to RemoteControl (ravindrakhokharia)
+-New feature: R-syntax available in RemoteControl export_responses (use documenttype rsyntax) (Menno Dekker)
+-New feature #7797: Allow multiple answers with one token (Denis Chenu)
+-Fixed #7904: Quick translate is broken in 2.05 (Menno Dekker)
+-fixed #7922: "Export results" suggests that unanswered multiple choice questions as having been answered (Menno Dekker)
+-fixed #7929: On windows no more than 32768 tokens can be generated (Menno Dekker)
+-Fixed #7948: Unable to change email server settings (Menno Dekker)
+-Fixed #7954: Out of memory error on token export (Menno Dekker)
+-Fixed #7965: Javascript errors on editing labelsets (Menno Dekker)
+-Fixed issue: Better error handling for incorrect json in remote control (Menno Dekker)
+-Fixed issue: Error with setting permissions (Menno Dekker)
+-Fixed issue #7957: Wrong German translation in the quotation menu. (Sam Mousa)
+-Fixed issue #7862: Using default texts with apostrophes breaks Expression Manager javascript (Denis Chenu)
+-Fixed issue #7911: condition on a text-array with matrix filtered fails (Denis Chenu)
+-fixed issue #7912: EM test page broken in 2.05 (mfaber)
+-Fixed issue #7918: Public part broken with array params (Denis Chenu)
+-Fixed issue #7928: Export empty token table don't export header (Denis Chenu)
+-Fixed issue #7944: Pre-filling of hidden questions does not work (Denis Chenu)
+-Fixed issue #7949: non-admin users cannot save rich text in descriptions/questions. (Denis Chenu)
+-Fixed issue #7951: Print view don't allways take survey template (Denis Chenu)
+-Fixed issue: Browse button for user stats with numeric question type (Denis Chenu)
+-Fixed issue: Show actual default user template in default template view (Denis Chenu)
+-Fixed issue: File upload not working. (Sam Mousa)
+
 
 Changes from 2.05beta3 (build 130420) to 2.05beta4 (build 130609) Jun 9, 2013
 -New feature: ComfortUpdate now supports updates to/from unstable versions (Carsten Schmitz)
