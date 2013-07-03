@@ -5706,6 +5706,10 @@ function getUpdateInfo()
 function updateCheck()
 {
     $updateinfo=getUpdateInfo();
+    if (count($updateinfo) && trim(Yii::app()->getConfig('buildnumber'))!='')
+    {
+        setGlobalSetting('updateversions',json_encode($updateinfo));
+    }
     if (isset($updateinfo['Targetversion']['build']) && (int)$updateinfo['Targetversion']['build']>(int)Yii::app()->getConfig('buildnumber') && trim(Yii::app()->getConfig('buildnumber'))!='')
     {
         setGlobalSetting('updateavailable',1);
