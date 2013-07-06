@@ -31,23 +31,26 @@ class SurveyRuntimeHelper {
 	protected function createFullQuestionIndexByGroup($LEMsessid)
 	{
 		echo "\n\n<!-- PRESENT THE INDEX -->\n";
-//		echo '<script>';
-//		echo 'var session = '. json_encode($_SESSION) . ';';
-//		echo 'console.log(session);';
-//		echo '</script>';
 		echo CHtml::openTag('div', array('id' => 'index'));
 			echo CHtml::openTag('div', array('class' => 'container'));
 				echo CHtml::tag('h2', array(), gT("Question index"));
 				echo CHtml::openTag('ol');
 					foreach ($_SESSION[$LEMsessid]['grouplist'] as $key => $group)
 					{
+//						echo '<script>';
+//						echo 'var session = '. json_encode(LimeExpressionManager::singleton()->_ValidateGroup($key)) . ';';
+//						echo 'console.log(session);';
+//						echo '</script>';
+
 						if (LimeExpressionManager::GroupIsRelevant($group['gid']))
 						{
 							$group['step'] = $key + 1;
-
+							$stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($key);
 							$classes = implode(' ', array(
 								'row',
+								$stepInfo['anyUnanswered'] ? 'missing' : '',
 								$_SESSION[$LEMsessid]['step'] == $group['step'] ? 'current' : ''
+
 							));
 							echo CHtml::tag('li', array(
 								'data-gid' => $group['gid'],
