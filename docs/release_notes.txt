@@ -60,6 +60,65 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130611) to 2.00+ (build 130708) Jul 8, 2013
+-New translation: Valencian (Carsten Schmitz)
+-New feature: Added a function to the expression manager which allows numerical values (weberho)
+-New feature: add php-func strtotime() to EM (mfaber)
+-New feature Export Response By Token routine added to remote control (ravindrakhokharia)
+-New feature: Allow multiple answers with one token (Denis Chenu)
+-Updated feature #7882: Monday first day in calender (mfaber)
+-Fixed issue: Escape double quotes in R export (Johan Binard)
+-Fixed #7918: SQL injection (Menno Dekker)
+-fixed #7922: "Export results" suggests that unanswered multiple choice questions as having been answered (Menno Dekker)
+-fixed #7929: On windows no more than 32768 tokens can be generated (Menno Dekker)
+-Fixed #7936: stable version shows beta update while only stable requested (Menno Dekker)
+-Fixed #7954: Out of memory error on token export (Menno Dekker)
+-Fixed issue: Bug validating the input parameters (weberho)
+-Fixed issue: 5 point choice no answer id is not unique and don't have label (Denis Chenu)
+-Fixed issue #7797: User with token can answer twice or more without use left more than 1 (Carsten Schmitz)
+-Fixed issue #7826: Pass-through variables do not work when automatic end URL loading set to off (Carsten Schmitz)
+-Fixed issue #7843: Date/time field (HH:MM) does not display value, when visited again (Carsten Schmitz)
+-Fixed issue #7852: Cryptic error when survey is deactivated twice (Carsten Schmitz)
+-Fixed issue #7862: Using default texts with apostrophes breaks Expression Manager javascript (Denis Chenu)
+-Fixed issue #7895: Quota are not tested for hidden question (relevance to 1) (Denis Chenu)
+-Fixed issue #7908: When entering a protected survey password text field is readable (Carsten Schmitz)
+-Fixed issue #7911: condition on a text-array with matrix filtered fails (Denis Chenu)
+-Fixed issue #7915: Export to R -> Bug with answers containing double quotes (Johan Binard)
+-Fixed issue #7918: Potential SQL injection with array params (Denis Chenu)
+-Fixed issue #7928: Export empty token table don't export header (Denis Chenu)
+-Fixed issue #7944: Pre-filling of hidden questions does not work (Denis Chenu)
+-Fixed issue #7949: non-admin users cannot save rich text in descriptions/questions. (Denis Chenu)
+-Fixed issue #7951: Print view don't allways take survey template (Denis Chenu)
+-Fixed issue: browse button for user stats with numeric question type (Denis Chenu)
+-Fixed issue : Potential SQL security with array in param (Denis Chenu)
+-Fixed issue : Previous button in quota in citronade are not the same. (Denis Chenu)
+-Fixed issue : Show actual default user template in default template view (Denis Chenu)
+-Fixed issue: Wrong hint for Rank questions (Carsten Schmitz)
+#Updated translation: Arabic by fadimhanna, ysaad
+#Updated translation: Catalan by valdomir
+#Updated translation: Catalan (Valencian) by valdomir, vbraque
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by DenisChenu, ulysse68, BenoitBouvarel
+#Updated translation: German by actxcellence
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Greek by kiolalis
+#Updated translation: Hindi by ajparag
+#Updated translation: Italian by bobo, lfanfoni
+#Updated translation: Lithuanian by serzas, simasj, apklausos
+#Updated translation: Mongolian by erka
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by nostradumusfdx
+#Updated translation: Romanian by vundicind
+#Updated translation: Russian by vipgroup
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Slovenian by dusan
+#Updated translation: Spanish (Spain) by valdomir, jaimealvarezv, larjona
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.00+ (build 130526) to 2.00+ (build 130611) Jun 11, 2013
 -Fixed issue #7859: In statistics, the types of question "Matrix (1-5)" is not good when all the answers are 5 (Menno Dekker)
 -Fixed issue #7894: Bar chart looses numeric indexes (Menno Dekker)
