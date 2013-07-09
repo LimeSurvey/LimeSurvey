@@ -10,22 +10,18 @@
         {
             echo CHtml::tag('h1', array(), sprintf(gT("Settings for plugin %s"), $plugin['name']));
         }
+        $this->widget('ext.SettingsWidget.SettingsWidget', array(
 
-        Yii::import("application.helpers.PluginSettingsHelper");
-        $PluginSettings = new PluginSettingsHelper();
-        
-        echo CHtml::beginForm('', 'post', array('id' => "pluginsettings-{$plugin['name']}"));
-        echo CHtml::openTag('ol');
-        foreach ($settings as $name => $setting)
-        {
-            echo CHtml::tag('li', array(), $PluginSettings->renderSetting($name, $setting, "pluginsettings-{$plugin['name']}", true));
-            
-        }
-        echo CHtml::closeTag('ol');
-        echo CHtml::submitButton(gT('Save plugin settings'), array('name'=>'ok'));
-        echo CHtml::submitButton(gT('Cancel'), array('name'=>'cancel'));
-        echo CHtml::endForm();
-
+            'settings' => $settings,
+            'formHtmlOptions' => array(
+                'id' => "pluginsettings-{$plugin['name']}",
+            ),
+            'method' => 'post',
+            'buttons' => array(
+                gT('Save plugin settings'),
+                gT('Cancel')
+            )
+        ));
     ?>
 
     </div>

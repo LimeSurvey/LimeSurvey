@@ -3,16 +3,26 @@ class Example extends PluginBase {
 
     protected $storage = 'DbStorage';    
     static protected $description = 'Example plugin';
-    static protected $name = 'Example';
     
     protected $settings = array(
-        'logo' => array(
-                'type' => 'logo',
-                'path' => 'assets/logo.png'
-            ),
-        'message' => array(
+        'test' => array(
             'type' => 'string',
             'label' => 'Message'
+        ),
+        'messages' => array(
+            'type' => 'list',
+            'label' => 'messages',
+            'items' => array(
+                'number' => array(
+                    'type' => 'int',
+                    'label' => 'Index'
+                ),
+                'message' => array(
+                    'type' => 'string',
+                    'label' => 'Message'
+                ),
+                
+            )
         )
     );
     
@@ -24,6 +34,7 @@ class Example extends PluginBase {
          * Here you should handle subscribing to the events your plugin will handle
          */
         $this->subscribe('afterPluginLoad', 'helloWorld');
+        $this->subscribe('afterAdminMenuLoaded');
         $this->subscribe('beforeSurveySettings');
         $this->subscribe('newSurveySettings');
     }
@@ -32,34 +43,51 @@ class Example extends PluginBase {
     /*
      * Below are the actual methods that handle events
      */
-    public function helloWorld() 
+    
+    public function afterAdminMenuLoaded(PluginEvent $event)
     {
-        $this->pluginManager->getAPI()->setFlash($this->get('message', null, null, 'Example popup. Change this via plugin settings.'));
+        $menu = $event->get('menu', array());
+        $menu['left'][]=array(
+                'href' => "http://docs.limesurvey.org",
+                'alt' => gT('LimeSurvey online manual'),
+                'image' => 'showhelp.png'
+            );
+        
+        $event->set('menu', $menu);
     }
+
+    public function helloWorld(PluginEvent $event) 
+    {
+        $count = (int) $this->get('count');
+        if ($count === false) $count = 0;
+        $count++;
+        $this->pluginManager->getAPI()->setFlash($this->get('message') . $count);
+        $this->set('count', $count);
+    }
+    
     
     /**
      * This event is fired by the administration panel to gather extra settings
      * available for a survey.
      * The plugin should return setting meta data.
+     * @param PluginEvent $event
      */
-    public function beforeSurveySettings()
+    public function beforeSurveySettings(PluginEvent $event)
     {
-        $event = $this->getEvent();
         $event->set("surveysettings.{$this->id}", array(
             'name' => get_class($this),
             'settings' => array(
                 'message' => array(
                     'type' => 'string',
-                    'label' => 'Example survey specific setting (not used):',
+                    'label' => 'Message to show to users:',
                     'current' => $this->get('message', 'Survey', $event->get('survey'))
                 )
             )
          ));
     }
     
-    public function newSurveySettings()
+    public function newSurveySettings(PluginEvent $event)
     {
-        $event = $this->getEvent();
         foreach ($event->get('settings') as $name => $value)
         {
             
