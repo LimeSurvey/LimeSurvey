@@ -316,7 +316,9 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 
 .assessments-container {
 }
-
+.assessments td{
+	text-align: center;
+}
 .clearall-result {
 	font-size: small;
 	font-family:Arial, Helvetica, sans-serif;
