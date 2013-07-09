@@ -229,7 +229,9 @@ select.select {
 div.assessment-heading {
 	font-weight: bold;
 }
-
+.assessments td{
+	text-align: center;
+}
 .assessment-heading,
 .survey-completed {
   text-align: center;

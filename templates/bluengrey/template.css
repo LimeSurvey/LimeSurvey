@@ -535,6 +535,9 @@ td.answertext {
 .assessments-container {
 	background-color: #FFFFFF;
 }
+.assessments td{
+	text-align: center;
+}
 
 td.clearall-result {
 	text-align: center;

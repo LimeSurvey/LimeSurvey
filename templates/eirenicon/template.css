@@ -472,7 +472,9 @@ table.group {
 
 .assessments-container {
 }	
-
+.assessments td{
+	text-align: center;
+}
 .completed-table {
 	margin: 0 auto;
 	width: 75%;

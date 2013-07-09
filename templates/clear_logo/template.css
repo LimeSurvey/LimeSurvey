@@ -413,7 +413,9 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 
 .assessments-container {
 }
-
+.assessments td{
+	text-align: center;
+}
 .completed-table {
 	margin: 0 auto;
 	width: 75%;
