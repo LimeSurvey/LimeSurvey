@@ -1006,7 +1006,7 @@ function do_date($ia)
 {
     global $thissurvey;
 
-    header_includes(Yii::app()->getConfig("generalscripts").'date.js', 'js');
+    header_includes('date.js', 'js');
 
 
     $clang=Yii::app()->lang;
@@ -3518,6 +3518,7 @@ function do_shortfreetext($ia)
         class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
         <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
         </div>";
+        header_includes("map.js");
         if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
             header_includes("https://maps.googleapis.com/maps/api/js?sensor=false");
         else if ($aQuestionAttributes['location_mapservice']==1)
