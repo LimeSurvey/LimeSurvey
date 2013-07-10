@@ -36,33 +36,6 @@ abstract class Writer implements IWriter
         }
     }
 
-    
-    /**
-    * Returns true if, given the $oOptions, the response should be included in the
-    * output, and false if otherwise.
-    *
-    * @param mixed $response
-    * @param FormattingOptions $oOptions
-    * @return boolean
-    */
-    protected function shouldOutputResponse(array $response, FormattingOptions $oOptions)
-    {
-        switch ($oOptions->responseCompletionState)
-        {
-            default:
-            case 'all':
-                return true;
-                break;
-            case 'incomplete':
-                return !isset($response['submitdate']);
-                break;
-            case 'complete':
-                return isset($response['submitdate']);
-                break;
-
-        }
-    }
-
     /**
     * Returns an abbreviated heading for the survey's question that matches
     * the $fieldName parameter (or false if a match is not found).
@@ -428,12 +401,6 @@ abstract class Writer implements IWriter
         {
             $elementArray = array();
 
-            //If we shouldn't be outputting this response then we should skip the rest
-            //of the loop and continue onto the next value.
-            if (!$this->shouldOutputResponse($response, $oOptions))
-            {
-                continue;
-            }
             foreach ($oOptions->selectedColumns as $column)
             {
                 $value = $response[$column];

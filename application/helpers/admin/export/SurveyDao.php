@@ -17,17 +17,17 @@ class SurveyDao
     {
         $survey = new SurveyObj();
         $clang = Yii::app()->lang;
-        
+
         $intId = sanitize_int($id);
         $survey->id = $intId;
-        $survey->info = getSurveyInfo($survey->id);        
+        $survey->info = getSurveyInfo($survey->id);
         $availableLanguages = Survey::model()->findByPk($intId)->getAllLanguages();
-            
+
         if (is_null($lang) || in_array($lang, $availableLanguages) === false) {
             // use base language when requested language is not found or no specific language is requested
             $lang = Survey::model()->findByPk($intId)->language;
         }
-              
+
         $clang = new limesurvey_lang($lang);
         $survey->fieldMap = createFieldMap($intId,'full',true,false,$lang);
         // Check to see if timings are present and add to fieldmap if needed
@@ -40,7 +40,7 @@ class SurveyDao
             //The id given to us is not an integer, croak.
             safeDie("An invalid survey ID was encountered: $sid");
         }
-        
+
         //Load groups
         $sQuery = 'SELECT g.* FROM {{groups}} AS g '.
         'WHERE g.sid = '.$intId.' AND g.language = \'' . $lang . '\' ' .
@@ -54,7 +54,7 @@ class SurveyDao
         'WHERE q.sid = '.$intId.' AND q.language = \''.$lang.'\' '.
         'ORDER BY g.group_order, q.question_order;';
         $survey->questions = Yii::app()->db->createCommand($sQuery)->query()->readAll();
-        
+
         //Load answers
         $sQuery = 'SELECT DISTINCT a.* FROM {{answers}} AS a '.
         'JOIN {{questions}} AS q ON a.qid = q.qid '.
@@ -72,7 +72,7 @@ class SurveyDao
         $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.' AND surveyls_language = \'' . $lang . '\';';
         $recordSet = Yii::app()->db->createCommand($sQuery)->query();
         $survey->languageSettings = $recordSet->read();
-        $recordSet->close();      
+        $recordSet->close();
 
         return $survey;
     }
@@ -84,15 +84,17 @@ class SurveyDao
     * If none are then all responses are loaded.
     *
     * @param Survey $survey
-    * @param int $iMinimum 
-    * @param int $iMaximum 
+    * @param int $iMinimum
+    * @param int $iMaximum
+    * @param string $sFilter An optional filter for the results
+    * @param string $completionState all, complete or incomplete
     */
-    public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter='' )
+    public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter='', $completionState = 'all' )
     {
 
         // Get info about the survey
         $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . $survey->id . '}}')->getColumnNames();
-        
+
         $oRecordSet = Yii::app()->db->createCommand()->from('{{survey_' . $survey->id . '}}');
         if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id,'tokens','read'))
         {
@@ -110,13 +112,31 @@ class SurveyDao
             $aSelectFields[]='{{survey_' . $survey->id . '}}.id';
         }
 
-        if ($sFilter!='')
-            $oRecordSet->where($sFilter);
-                      
         $aParams = array(
             'min'=>$iMinimum,
-            'max'=>$iMaximum            
+            'max'=>$iMaximum
         );
-        $survey->responses=$oRecordSet->select($aSelectFields)->where('id >= :min AND id <= :max', $aParams)->query();
+        $selection = 'id >= :min AND id <= :max';
+        $oRecordSet->where($selection, $aParams);
+
+        if ($sFilter!='') {
+            $oRecordSet->andWhere($sFilter);
+        }
+
+        switch ($completionState)
+        {
+            case 'incomplete':
+                $oRecordSet->andWhere('submitdate IS NULL');
+                break;
+            case 'complete':
+                $oRecordSet->andWhere('submitdate IS NOT NULL');
+                break;
+            case 'all':
+            default:
+                // Do nothing, all responses
+                break;
+        }
+ 
+        $survey->responses=$oRecordSet->select($aSelectFields)->query();
     }
 }
