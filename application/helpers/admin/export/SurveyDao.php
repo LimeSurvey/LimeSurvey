@@ -113,7 +113,10 @@ class SurveyDao
         if ($sFilter!='')
             $oRecordSet->where($sFilter);
                       
-        $iOffset = $iMinimum - 1;
-        $survey->responses=$oRecordSet->select($aSelectFields)->order('{{survey_' . $survey->id . '}}.id')->limit($iMaximum - $iOffset, $iOffset)->query();
+        $aParams = array(
+            'min'=>$iMinimum,
+            'max'=>$iMaximum            
+        );
+        $survey->responses=$oRecordSet->select($aSelectFields)->where('id >= :min AND id <= :max', $aParams)->query();
     }
 }
