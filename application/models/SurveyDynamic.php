@@ -260,6 +260,28 @@ class SurveyDynamic extends LSActiveRecord
         }
         return $exist;
     }
+    
+    /**
+     * Return the max id (primary key)
+     * 
+     * This is used in export, when using the record id instead of the row number (count of records)
+     *  
+     * @staticvar null $maxId
+     * @return false|int
+     */
+    public function getMaxId()
+    {
+        static $maxId = null;
+        
+        if (is_null($maxId)) {
+            $maxId = $this->dbConnection->createCommand()
+                    ->select('MAX(' . $this->primaryKey() . ')')
+                    ->from($this->tableName())
+                    ->queryScalar();            
+        }
+        
+        return $maxId;
+    }
 
     /**
      * Return next id if next response exist in database

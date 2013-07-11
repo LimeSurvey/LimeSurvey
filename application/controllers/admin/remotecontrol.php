@@ -2368,7 +2368,7 @@ class remotecontrol_handle
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         Yii::app()->loadHelper('admin/exportresults');
         if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data');
-		if(!$count = SurveyDynamic::model($iSurveyID)->count()) return array('status' => 'No Data');
+		if(!$maxId = SurveyDynamic::model($iSurveyID)->getMaxId()) return array('status' => 'No Data');
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
         if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
@@ -2387,7 +2387,7 @@ class remotecontrol_handle
         if($iToResponseID !=null)   
             $oFomattingOptions->responseMaxRecord=$iToResponseID;
         else
-            $oFomattingOptions->responseMaxRecord = $count;
+            $oFomattingOptions->responseMaxRecord = $maxId;
 
         $oFomattingOptions->selectedColumns=$aFields;
         $oFomattingOptions->responseCompletionState=$sCompletionStatus;
