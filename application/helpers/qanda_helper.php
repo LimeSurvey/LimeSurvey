@@ -5211,7 +5211,6 @@ function do_array_multitext($ia)
     $defaultvaluescript = "";
     $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
-    
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
@@ -5354,13 +5353,13 @@ function do_array_multitext($ia)
 
     $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult = Yii::app()->db->createCommand($lquery)->query();
-    if (count($lresult)> 0)
+    foreach($lresult->readAll() as $lrow)
     {
-        foreach($lresult->readAll() as $lrow)
-        {
-            $labelans[]=$lrow['question'];
-            $labelcode[]=$lrow['title'];
-        }
+        $labelans[]=$lrow['question'];
+        $labelcode[]=$lrow['title'];
+    }
+    if (count($labelans)> 0)
+    {
         $numrows=count($labelans);
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
         if( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )
