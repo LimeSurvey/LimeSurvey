@@ -108,7 +108,7 @@
         public function getMaxId()
         {
             $maxId = $this->dbConnection->createCommand()
-                    ->select('MAX(' . $this->primaryKey() . ')')
+                    ->select('MAX(qid)')
                     ->from($this->tableName())
                     ->queryScalar();
             return $maxId;
