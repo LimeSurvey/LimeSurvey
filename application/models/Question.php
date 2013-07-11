@@ -96,6 +96,23 @@
             );
         }
 
+        /**
+         * Return the max id (primary key)
+         * 
+         * Actually used in activate_helper fixNumbering function
+         * Don't use static because can be call after adding a question
+         *
+         * @since 130711
+         * @return false|int
+         */
+        public function getMaxId()
+        {
+            $maxId = $this->dbConnection->createCommand()
+                    ->select('MAX(' . $this->primaryKey() . ')')
+                    ->from($this->tableName())
+                    ->queryScalar();
+            return $maxId;
+        }
 
         /**
         * Rewrites sort order for questions in a group
