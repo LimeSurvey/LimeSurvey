@@ -144,7 +144,7 @@
         global $thissurvey;
 
         $clang = Yii::app()->lang;
-        Yii::app()->getClientScript()->registerCssFile('lime-progress.css');
+        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'lime-progress.css');
         $size = intval(($currentstep-1)/$total*100);
 
         $graph = '<script type="text/javascript">
