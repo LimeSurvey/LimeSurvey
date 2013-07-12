@@ -36,6 +36,11 @@ class Statistics_userController extends LSYii_Controller {
 
 	function actionAction($surveyid,$language)
 	{
+		ob_start(function($buffer, $phase) {
+			App()->getClientScript()->render($buffer);
+			return $buffer;
+		});
+		ob_implicit_flush(false);
 		$iSurveyID=(int)$surveyid;
         //$postlang = returnglobal('lang');
 		Yii::import('application.libraries.admin.progressbar',true);
@@ -452,7 +457,7 @@ class Statistics_userController extends LSYii_Controller {
         $redata = compact(array_keys(get_defined_vars()));
         $data['redata'] = $redata;
 		Yii::app()->getClientScript()->registerScriptFile('statistics_user.js');
-        $this->render('/statistics_user_view',$data);
+        $this->renderPartial('/statistics_user_view',$data);
 
 		//output footer
 		echo getFooter();
