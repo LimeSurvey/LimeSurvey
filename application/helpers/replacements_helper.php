@@ -134,69 +134,29 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_templatecss="";$_templatejs="";
     if(stripos ($line,"{TEMPLATECSS}"))
     {
-        $css_header_includes=Yii::app()->getConfig("css_header_includes");
         if (file_exists($templatedir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
         {
-            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}jquery-ui-custom.css' />\n";
+			Yii::app()->getClientScript()->registerCssFile("{$templateurl}jquery-ui-custom.css");
         }
         elseif(file_exists($templatedir.DIRECTORY_SEPARATOR.'jquery-ui.css'))
         {
-            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}jquery-ui.css' />\n";
+			Yii::app()->getClientScript()->registerCssFile("{$templateurl}jquery-ui.css");
         }
         else
         {
-            $_templatecss .="<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('publicstyleurl')."jquery-ui.css' />\n"; // Remove it after corrected slider
-            $template_jqueryui_css="";
+			Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."jquery-ui.css");
         }
-        if($css_header_includes){
-                        foreach ($css_header_includes as $cssinclude)
-            {
-                if (substr($cssinclude,0,4) == 'http' || substr($cssinclude,0,strlen(Yii::app()->getConfig('publicurl'))) == Yii::app()->getConfig('publicurl'))
-                {
-                    $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".$cssinclude."' />\n";
-                }
-                else
-                {
-                    if(file_exists($templatedir.DIRECTORY_SEPARATOR.$cssinclude))
-                    {
-                        $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}{$cssinclude}' />\n";
-                    }
-                    else
-                    {
-                        $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('publicstyleurl').$cssinclude."' />\n";
-                    }
-                }
-            }
-        }
-        $_templatecss.= $template_jqueryui_css; // Template jquery ui after default css
-        $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}template.css' />\n";
-        if (getLanguageRTL($clang->langcode))
+
+		Yii::app()->getClientScript()->registerCssFile("{$templateurl}template.css");
+		if (getLanguageRTL($clang->langcode))
         {
-            $_templatecss.="<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}template-rtl.css' />\n";
+            Yii::app()->getClientScript()->registerCssFile("{$templateurl}template-rtl.css");
         }
     }
     if(stripos ($line,"{TEMPLATEJS}"))
     {
 
-        $js_header_includes =header_includes(false,'js');
         App()->getClientScript()->registerPackage('jqueryui');
-        if($js_header_includes){
-            foreach ($js_header_includes as $jsinclude)
-            {
-                if (substr($jsinclude,0,4) == 'http' || substr($jsinclude,0,strlen(Yii::app()->getConfig('publicurl'))) == Yii::app()->getConfig('publicurl'))
-                {
-                    App()->getClientScript()->registerScriptFile($jsinclude);
-                }
-                else
-                {
-                    if(file_exists($templatedir.DIRECTORY_SEPARATOR.$jsinclude)){
-                        App()->getClientScript()->registerScriptFile($templateurl.$jsinclude);
-                    }else{
-                        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts').$jsinclude);
-                    }
-                }
-            }
-        }
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
         App()->getClientScript()->registerScriptFile($templateurl . 'template.js',CClientScript::POS_END);
         useFirebug();

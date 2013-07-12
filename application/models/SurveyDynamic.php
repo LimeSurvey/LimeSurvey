@@ -172,7 +172,7 @@ class SurveyDynamic extends LSActiveRecord
         foreach($aSelectFields as $sField)
             $aSelect[]="$alias.".Yii::app()->db->schema->quoteColumnName($sField);
         $aSelectFields=$aSelect;   
-		$aSelectFields[]='$alias.token';
+		$aSelectFields[]="$alias.token";
 
         if ($criteria->select == '*')
         {

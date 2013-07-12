@@ -542,7 +542,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     global $thissurvey;
 
     $clang = Yii::app()->lang;
-    header_includes(Yii::app()->getConfig("generalscripts").'coookies.js', 'js');
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js');
 
     /* The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
     This just stops error messages occuring */
@@ -980,8 +980,8 @@ function do_5pointchoice($ia)
     $inputnames[]=$ia[1];
 
     if($aQuestionAttributes['slider_rating']==1){
-        header_includes('star-rating.css','css');
-        header_includes('star-rating.js','js');
+        Yii::app()->getClientScript()->registerCssFile('star-rating.css');
+        Yii::app()->getClientScript()->registerScriptFile('star-rating.js');
         $answer .= "<script type='text/javascript'>\n"
         . "  <!--\n"
         ." doRatingStar({$ia[0]});\n"
@@ -990,8 +990,8 @@ function do_5pointchoice($ia)
     }
 
     if($aQuestionAttributes['slider_rating']==2){
-        header_includes('slider-rating.css','css');
-        header_includes('slider-rating.js','js');
+        Yii::app()->getClientScript()->registerCssFile('slider-rating.css');
+        Yii::app()->getClientScript()->registerScriptFile('slider-rating.js');
         $answer .= "<script type='text/javascript'>\n"
         . " <!--\n"
         ." doRatingSlider({$ia[0]});\n"
@@ -1006,7 +1006,7 @@ function do_date($ia)
 {
     global $thissurvey;
 
-    header_includes(Yii::app()->getConfig("generalscripts").'date.js', 'js');
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
 
 
     $clang=Yii::app()->lang;
@@ -2077,9 +2077,9 @@ function do_ranking($ia)
         $answer.="<div id=\"htmlblock-{$ia['0']}-{$ansrow['code']}\">{$ansrow['answer']}</div>";
     }
     $answer .="</div>";
-    header_includes("/third_party/jquery.actual/jquery.actual.min.js"); // Needed to with jq1.9 ?
-    header_includes("ranking.js");
-    header_includes("ranking.css","css");
+    Yii::app()->getClientScript()->registerScriptFile("/third_party/jquery.actual/jquery.actual.min.js"); // Needed to with jq1.9 ?
+    Yii::app()->getClientScript()->registerScriptFile("ranking.js");
+    Yii::app()->getClientScript()->registerCssFile("ranking.css");
 
     if(trim($aQuestionAttributes['choice_title'][$clang->langcode]) != '')
     {
@@ -2639,7 +2639,7 @@ function do_multiplechoice_withcomments($ia)
     $answer .= "<ul class=\"subquestions-list questions-list checkbox-text-list\">\n".$answer_main."</ul>\n";
     if($aQuestionAttributes['commented_checkbox']!="allways" && $aQuestionAttributes['commented_checkbox_auto'])
     {
-        header_includes("multiplechoice_withcomments.js");
+        Yii::app()->getClientScript()->registerScriptFile("multiplechoice_withcomments.js");
 #        $script= " doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');\n";
 #        App()->getClientScript()->registerScript("doMultipleChoiceWithComments",$script,CClientScript::POS_HEAD);// Deactivate now: need to be after question, and just after
         $answer .= "<script type='text/javascript'>\n"
@@ -2709,7 +2709,7 @@ function do_file_upload($ia)
         var imageurl =  '".Yii::app()->getConfig('imageurl')."';
         var uploadurl =  '".$scriptloc."';
     </script>\n";
-    header_includes(Yii::app()->getConfig('generalscripts')."modaldialog.js");
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."modaldialog.js");
 
     // Modal dialog
     $answer .= $uploadbutton;
@@ -3207,8 +3207,8 @@ function do_multiplenumeric($ia)
 
     if($aQuestionAttributes['slider_layout']==1)
     {
-        header_includes("numeric-slider.js");
-        header_includes("numeric-slider.css","css");
+        Yii::app()->getClientScript()->registerScriptFile("numeric-slider.js");
+        Yii::app()->getClientScript()->registerCssFile("numeric-slider.css");
         if ($slider_default != "")
         {
             $slider_startvalue = $slider_default;
@@ -3519,11 +3519,11 @@ function do_shortfreetext($ia)
         <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
         </div>";
         if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
-            header_includes("https://maps.googleapis.com/maps/api/js?sensor=false");
+            Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false");
         else if ($aQuestionAttributes['location_mapservice']==1)
-            header_includes("http://maps.googleapis.com/maps/api/js?sensor=false");
+            Yii::app()->getClientScript()->registerScriptFile("http://maps.googleapis.com/maps/api/js?sensor=false");
         elseif ($aQuestionAttributes['location_mapservice']==2)
-            header_includes("http://www.openlayers.org/api/OpenLayers.js");
+            Yii::app()->getClientScript()->registerScriptFile("http://www.openlayers.org/api/OpenLayers.js");
 
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
         {
@@ -6260,7 +6260,7 @@ function do_array_dual($ia)
         $answer = "<p class='error'>".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames="";
     }
-    header_includes("dualscale.js");
+    Yii::app()->getClientScript()->registerScriptFile("dualscale.js");
     $answer .= "<script type='text/javascript'>\n"
     . "  <!--\n"
     ." {$doDualScaleFunction}({$ia[0]});\n"

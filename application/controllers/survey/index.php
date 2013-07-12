@@ -15,13 +15,19 @@ class index extends CAction {
 
     public function run()
     {
-        ob_start();
+		/*
+		 * Instead of manually rendering scripts after this function returns we
+		 * use the callback. This ensures that scripts are always rendered, even
+		 * if we call exit at some point in the code. (Which we shouldn't, but
+		 * it happens.)
+		 */
+        ob_start(function($buffer, $phase) {
+			App()->getClientScript()->render($buffer);
+			return $buffer;
+		});
         ob_implicit_flush(false);
         $this->action();
-        $out = ob_get_clean();
-        App()->getClientScript()->render($out);
-        echo $out;
-
+        ob_flush();
     }
 
     function action()
@@ -323,7 +329,7 @@ class index extends CAction {
 
             $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/endpage.pstpl", $data, __LINE__);
             doFooter();
-            exit;
+            return;
         }
 
         // Get token
@@ -770,8 +776,7 @@ class index extends CAction {
         $this->_printTemplateContent($sTemplateDir.'/endpage.pstpl', $redata, $iDebugLine);
 
         doFooter();
-
-        exit;
+		exit;
     }
 
     function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = array())
