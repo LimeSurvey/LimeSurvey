@@ -119,7 +119,7 @@ class LSActiveRecord extends CActiveRecord
         static $maxIds = array();
         
         if (is_null($field)) {
-            $primaryKey = $this->getPrimaryKey();
+            $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
             if (is_string($primaryKey)) {
                 $field = $primaryKey;
             } else {
