@@ -384,9 +384,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         {
             $aURLParams['token'] = trim(sanitize_token(strip_tags(returnGlobal('token'))));
         }
-        $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and clear survey") . "' class='clearall' "
-        . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",$aURLParams,'&amp;');
-        $_clearall .= "', '_self')}\" />";
+        // Use a real link for accessibility : this need to be accessible without javascript
+        $_clearall="<a href='".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",$aURLParams,'&amp;')."' class='clearall button confirm-needed' title='".$clang->gT("Are you sure you want to clear all your responses?", 'js')."'>".$clang->gT("Exit and clear survey")."</a>";
     }
     else
     {
@@ -408,19 +407,19 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         {
             if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
             {
-                $_saveall = "\t\t\t<input type='button' name='loadall' value='" . $clang->gT("Load unfinished survey") . "' class='saveall' onclick=\"javascript:addHiddenField(document.getElementById('limesurvey'),'loadall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>"
-                . "\n\t\t\t<input type='button' name='saveallbtn' value='" . $clang->gT("Resume later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
+                $_saveall = "\t\t\t<input type='button' name='loadall' value='" . $clang->gT("Load unfinished survey") . "' class='saveall button' onclick=\"javascript:addHiddenField(document.getElementById('limesurvey'),'loadall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>"
+                . "\n\t\t\t<input type='button' name='saveallbtn' value='" . $clang->gT("Resume later") . "' class='saveall button' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
             }
             else
             {
-                $_saveall = "\t\t\t<input type='button' name='saveallbtn' value='" . $clang->gT("Resume later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
+                $_saveall = "\t\t\t<input type='button' name='saveallbtn' value='" . $clang->gT("Resume later") . "' class='saveall button' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
             };
         }
         elseif (isset($surveyid) && (!isset($_SESSION['survey_'.$surveyid]['step']) || !$_SESSION['survey_'.$surveyid]['step']))
         {  //First page, show LOAD
             if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
             {
-                $_saveall = "\t\t\t<input type='button' name='loadall' value='" . $clang->gT("Load unfinished survey") . "' class='saveall' onclick=\"javascript:addHiddenField(document.getElementById('limesurvey'),'loadall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";
+                $_saveall = "\t\t\t<input type='button' name='loadall' value='" . $clang->gT("Load unfinished survey") . "' class='saveall button' onclick=\"javascript:addHiddenField(document.getElementById('limesurvey'),'loadall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";
             }
             else
             {

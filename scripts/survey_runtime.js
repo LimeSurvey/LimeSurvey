@@ -11,10 +11,12 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
- 
+
+
+buttonSubmitHandler();
+needConfirmHandler();
 $(document).ready(function()
 {
-	// Jquery-ui navigation buttons
     navbuttonsJqueryUi();
     addClassEmpty();
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
@@ -73,6 +75,27 @@ $(document).ready(function()
     }
 });
 
+// Deactivate all other button on submit
+function buttonSubmitHandler(){
+    $("#limesurvey").on('click',"button[name='move']", function(event){
+        $("button[name='move']").not($(this)).prop('disabled',true);
+        $("button[name='move']").not($(this)).button( "option", "disabled", true );
+        if(typeof document.body.style.maxHeight === "undefined") {// A way to detect IE6 ?
+            $(this).text($(this).attr('value'));
+        }
+        return true;
+    });
+}
+// Ask confirmation on click on .needconfirm
+function needConfirmHandler(){
+    $("body").on('click',".confirm-needed", function(event){
+        text=$(this).attr('title');
+        if (confirm(text)) {
+            return true;
+        }
+        return false;
+    });
+}
 
 // Set jquery-ui to LS Button
 function navbuttonsJqueryUi(){
@@ -96,7 +119,7 @@ function navbuttonsJqueryUi(){
         primary: 'ui-icon-triangle-1-w'
     }
     });
-    $('#movesubmitbtn, input.saveall, input.clearall').button();
+    $("button[name='move'], .button").button();
 }
 
 /**
@@ -287,59 +310,12 @@ function show_hide_group(group_id)
 		}
 }
 
-function navigator_countdown_btn()
-{
-	return $('#movenextbtn, #moveprevbtn, #movesubmitbtn');
-}
-
-function navigator_countdown_end()
-{
-	navigator_countdown_btn().each(function(i, e)
-	{
-		e.value = $(e).data('text');
-        $(e).button("option", "disabled", false);
-        $(e).attr('aria-disabled','false');
-	});
-	$(window).data('countdown', null);
-}
-
-function navigator_countdown_int()
-{
-	var n = $(window).data('countdown');
-	if(n)
-	{
-		navigator_countdown_btn().each(function(i, e)
-		{
-			e.value = $(e).data('text');
-            $(e).find('.ui-button-text').html( $(e).data('text'));
-            // just count-down for delays longer than 1 second
-            if(n > 1) $(e).find('.ui-button-text').html( $(e).data('text')+ " (" + n + ")");
-		});
-
-		$(window).data('countdown', --n);
-	}
-	window.setTimeout((n > 0? navigator_countdown_int: navigator_countdown_end), 1000);
-}
-
-function navigator_countdown(n)
-{
-	$(document).ready(function()
-	{
-		$(window).data('countdown', n);
-
-		navigator_countdown_btn().each(function(i, e)
-		{
-			$(e).data('text', e.value);
-		});
-
-		navigator_countdown_int();
-	});
-}
-
 function std_onsubmit_handler()
 {
     // disable double-posts in all forms
-    $('#moveprevbtn, #movenextbtn, #movesubmitbtn').attr('disabled', 'disabled');
+    if($("button[name='move']:not([disabled])").length>1){
+        $("button[name='move']:not(.default)").attr('disabled','disabled');
+    }
     return true;
 }
 

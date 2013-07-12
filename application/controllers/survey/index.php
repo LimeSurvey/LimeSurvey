@@ -23,6 +23,7 @@ class index extends CAction {
 		 */
         ob_start(function($buffer, $phase) {
 			App()->getClientScript()->render($buffer);
+			App()->getClientScript()->reset();
 			return $buffer;
 		});
         ob_implicit_flush(false);

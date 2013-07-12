@@ -981,7 +981,7 @@ function do_5pointchoice($ia)
 
     if($aQuestionAttributes['slider_rating']==1){
         Yii::app()->getClientScript()->registerCssFile('star-rating.css');
-        Yii::app()->getClientScript()->registerScriptFile('star-rating.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."star-rating.js");
         $answer .= "<script type='text/javascript'>\n"
         . "  <!--\n"
         ." doRatingStar({$ia[0]});\n"
@@ -991,7 +991,7 @@ function do_5pointchoice($ia)
 
     if($aQuestionAttributes['slider_rating']==2){
         Yii::app()->getClientScript()->registerCssFile('slider-rating.css');
-        Yii::app()->getClientScript()->registerScriptFile('slider-rating.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."slider-rating.js");
         $answer .= "<script type='text/javascript'>\n"
         . " <!--\n"
         ." doRatingSlider({$ia[0]});\n"
@@ -2077,8 +2077,8 @@ function do_ranking($ia)
         $answer.="<div id=\"htmlblock-{$ia['0']}-{$ansrow['code']}\">{$ansrow['answer']}</div>";
     }
     $answer .="</div>";
-    Yii::app()->getClientScript()->registerScriptFile("/third_party/jquery.actual/jquery.actual.min.js"); // Needed to with jq1.9 ?
-    Yii::app()->getClientScript()->registerScriptFile("ranking.js");
+    Yii::app()->getClientScript()->registerScriptFile(App()->baseUrl."/third_party/jquery.actual/jquery.actual.min.js"); // Needed to with jq1.9 ?
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."ranking.js");
     Yii::app()->getClientScript()->registerCssFile("ranking.css");
 
     if(trim($aQuestionAttributes['choice_title'][$clang->langcode]) != '')
@@ -2639,7 +2639,7 @@ function do_multiplechoice_withcomments($ia)
     $answer .= "<ul class=\"subquestions-list questions-list checkbox-text-list\">\n".$answer_main."</ul>\n";
     if($aQuestionAttributes['commented_checkbox']!="allways" && $aQuestionAttributes['commented_checkbox_auto'])
     {
-        Yii::app()->getClientScript()->registerScriptFile("multiplechoice_withcomments.js");
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."multiplechoice_withcomments.js");
 #        $script= " doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');\n";
 #        App()->getClientScript()->registerScript("doMultipleChoiceWithComments",$script,CClientScript::POS_HEAD);// Deactivate now: need to be after question, and just after
         $answer .= "<script type='text/javascript'>\n"
@@ -3207,7 +3207,7 @@ function do_multiplenumeric($ia)
 
     if($aQuestionAttributes['slider_layout']==1)
     {
-        Yii::app()->getClientScript()->registerScriptFile("numeric-slider.js");
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."numeric-slider.js");
         Yii::app()->getClientScript()->registerCssFile("numeric-slider.css");
         if ($slider_default != "")
         {
@@ -3518,7 +3518,7 @@ function do_shortfreetext($ia)
         class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
         <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
         </div>";
-        header_includes("map.js");
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
         if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
             Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false");
         else if ($aQuestionAttributes['location_mapservice']==1)
@@ -5152,6 +5152,7 @@ function do_array_multitext($ia)
             else {
                 $radix = 'X';   // to indicate that should not try to change entered values
             }
+            Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-total.js");
             $answer .= "\n<script type=\"text/javascript\">new multi_set('$q_table_id','$radix');</script>\n";
         }
         else
@@ -6267,7 +6268,7 @@ function do_array_dual($ia)
         $answer = "<p class='error'>".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames="";
     }
-    Yii::app()->getClientScript()->registerScriptFile("dualscale.js");
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."dualscale.js");
     $answer .= "<script type='text/javascript'>\n"
     . "  <!--\n"
     ." {$doDualScaleFunction}({$ia[0]});\n"

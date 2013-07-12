@@ -2089,72 +2089,70 @@ function surveymover()
     //a user presses enter.
     //
     //Attribute accesskey added for keyboard navigation.
-    global $thissurvey, $clang;
-    global $surveyid, $presentinggroupdescription;
-
+    $surveyid=Yii::app()->getConfig('surveyID');
+    $thissurvey=getSurveyInfo($surveyid);
     $clang = Yii::app()->lang;
-    $LEMsessid = Yii::app()->getConfig('surveyID');
 
-    $surveymover = "";
+    $sMoveNext="movenext";
+    $sMovePrev="";
+    $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step']))?$_SESSION['survey_'.$surveyid]['step']:false;
+    $iSessionMaxStep=(isset($_SESSION['survey_'.$surveyid]['maxstep']))?$_SESSION['survey_'.$surveyid]['maxstep']:false;
+    $iSessionTotalSteps=(isset($_SESSION['survey_'.$surveyid]['totalsteps']))?$_SESSION['survey_'.$surveyid]['totalsteps']:false;
+    $sExtraCss="";
+    $sSurveyMover = "";
 
-    if ($thissurvey['navigationdelay'] > 0 && (
-    isset($_SESSION['survey_'.$surveyid]['maxstep']) && $_SESSION['survey_'.$surveyid]['maxstep'] > 0 && $_SESSION['survey_'.$surveyid]['maxstep'] == $_SESSION['survey_'.$surveyid]['step']))
+    // Count down
+    if ($thissurvey['navigationdelay'] > 0 && ($iSessionMaxStep!==false && $iSessionMaxStep == $iSessionStep))
+     {
+        $sExtraCss=" disabled";
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."/navigator-countdown.js");
+        App()->getClientScript()->registerScript('navigator_countdown',"navigator_countdown(" . $thissurvey['navigationdelay'] . ");\n",CClientScript::POS_BEGIN);
+     }
+
+    // Previous ?
+    if ($thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N")
+        && $iSessionStep
+        && !($iSessionStep == 1 && $thissurvey['showwelcome'] == 'N')
+    )
     {
-        $disabled = "disabled=\"disabled\"";
-        $surveymover .= "<script type=\"text/javascript\">\n"
-        . "  navigator_countdown(" . $thissurvey['navigationdelay'] . ");\n"
-        . "</script>\n";
-    }
-    else
+        $sMovePrev="moveprev";
+     }
+
+    // Submit ?
+    if ($iSessionStep && ($iSessionStep == $iSessionTotalSteps)
+        || $thissurvey['format'] == 'A' 
+        )
     {
-        $disabled = "";
+        $sMoveNext="movesubmit";
     }
 
-    if (isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step'] && ($_SESSION['survey_'.$surveyid]['step'] == $_SESSION['survey_'.$surveyid]['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
+    // todo Remove Next if needed (exemple quota show previous only: maybe other, but actually don't use surveymover)
+    if(false)
     {
-        $surveymover .= "<input type=\"hidden\" name=\"move\" value=\"movesubmit\" id=\"movesubmit\" />";
-    }
-    else
-    {
-        $surveymover .= "<input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" />";
+        $sMoveNext="";
     }
 
-    if (isset($_SESSION['survey_'.$surveyid]['step']) && $thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N" || $thissurvey['questionindex'] > 0) &&
-    ($_SESSION['survey_'.$surveyid]['step'] > 0 || (!$_SESSION['survey_'.$surveyid]['step'] && $presentinggroupdescription && $thissurvey['showwelcome'] == 'Y')))
-    {
-        //To prevent too much complication in the if statement above I put it here...
-        if ($thissurvey['showwelcome'] == 'N' && $_SESSION['survey_'.$surveyid]['step'] == 1) {
-            //first step and we do not want to go back to the welcome screen since we don't show that...
-            //so skip the prev button
-        } else {
-            $surveymover .= "<button class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; $('#limesurvey').submit();\" value='"
-            . $clang->gT("Previous")."' name='move2' id='moveprevbtn' $disabled>". $clang->gT("Previous")."</button>\n";
+    // Construction of mover
+    if($sMovePrev){
+        $sLangMoveprev=$clang->gT("Previous");
+        $sSurveyMover .= "<button name='move' id='{$sMovePrev}btn' class='submit {$sExtraCss}' accesskey='p' type='submit' value='{$sMovePrev}'>{$sLangMoveprev}</button>";
+    }
+    if($sMovePrev && $sMoveNext){
+        $sSurveyMover .= " ";
+    }
+
+    if($sMoveNext){
+        if($sMoveNext=="movesubmit"){
+            $sLangMovenext=$clang->gT("Submit");
+            $sAccessKeyNext='l';
+        }else{
+            $sLangMovenext=$clang->gT("Next");
+            $sAccessKeyNext='n';
         }
-    }
+        $sSurveyMover .= "<button name='move' id='{$sMoveNext}btn' class='submit default {$sExtraCss}' accesskey='{$sAccessKeyNext}' type='submit' value='{$sMoveNext}'>{$sLangMovenext}</button>";
+     }
 
-    if (isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step'] && (!$_SESSION['survey_'.$surveyid]['totalsteps'] || ($_SESSION['survey_'.$surveyid]['step'] < $_SESSION['survey_'.$surveyid]['totalsteps'])))
-    {
-        $surveymover .=  "\t<button class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\"
-        value='".$clang->gT("Next")."' name='move2' id='movenextbtn' $disabled>".$clang->gT("Next")."</button>\n";
-    }
-    // here, in some lace, is where I must modify to turn the next button conditionable
-    if (!isset($_SESSION['survey_'.$surveyid]['step']) || !$_SESSION['survey_'.$surveyid]['step'])
-    {
-        $surveymover .=  "\t<button class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\"
-        value='".$clang->gT("Next")."' name='move2' id='movenextbtn' $disabled>".$clang->gT("Next")."</button>\n";
-    }
-    if (isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step'] && ($_SESSION['survey_'.$surveyid]['step'] == $_SESSION['survey_'.$surveyid]['totalsteps']) && $presentinggroupdescription == "yes")
-    {
-        $surveymover .=  "\t<button class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\"
-        value='".$clang->gT("Next")."' name='move2' id=\"movenextbtn\" $disabled>".$clang->gT("Next")."</button>\n";
-    }
-    if (isset($_SESSION['survey_'.$surveyid]['step']) && ($_SESSION['survey_'.$surveyid]['step'] && ($_SESSION['survey_'.$surveyid]['step'] == $_SESSION['survey_'.$surveyid]['totalsteps']) && !$presentinggroupdescription) || $thissurvey['format'] == 'A')
-    {
-        $surveymover .= "\t<button class=\"submit\" type=\"submit\" accesskey=\"l\" onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\"
-        value=\"".$clang->gT("Submit")."\" name=\"move2\" id=\"movesubmitbtn\" $disabled>".$clang->gT("Submit")."</button>\n";
-    }
-
-    return $surveymover;
+    return $sSurveyMover;
 }
 
 /**
