@@ -244,7 +244,7 @@ class templates extends Survey_Common_Action
             {
                 $uploadresult = $clang->gT("This filename is not allowed to be uploaded.");
             }
-            elseif(!in_array(substr(strrchr($filename, '.'),1),explode ( "," , $allowedtemplateuploads )))
+            elseif(!in_array(strtolower(substr(strrchr($filename, '.'),1)),explode ( "," , $allowedtemplateuploads )))
             {
 
                 $uploadresult = $clang->gT("This file type is not allowed to be uploaded.");
