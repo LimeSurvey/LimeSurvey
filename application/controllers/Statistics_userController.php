@@ -456,7 +456,7 @@ class Statistics_userController extends LSYii_Controller {
 
         $redata = compact(array_keys(get_defined_vars()));
         $data['redata'] = $redata;
-		Yii::app()->getClientScript()->registerScriptFile('statistics_user.js');
+		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'statistics_user.js');
         $this->renderPartial('/statistics_user_view',$data);
 
 		//output footer
