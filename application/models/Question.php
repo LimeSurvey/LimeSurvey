@@ -51,7 +51,7 @@
         */
         public function primaryKey()
         {
-            return 'qid,language';
+            return array('qid', 'language');
         }
 
         /**

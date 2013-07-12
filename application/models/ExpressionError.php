@@ -47,7 +47,7 @@ class ExpressionError extends CActiveRecord
 	 */
 	public function primaryKey()
 	{
-		return array('scid');
+		return 'scid';
 	}
 
 	function getAllRecords($condition=FALSE)
