@@ -4877,17 +4877,17 @@ function do_array($ia)
     }
 
     $lresult= Answers::model()->findAll(array('order'=>'sortorder, code', 'condition'=>'qid=:qid AND language=:language AND scale_id=0', 'params'=>array(':qid'=>$ia[0],':language'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'])));
-    if ($useDropdownLayout === false && count($lresult) > 0)
+    $labelans=array();
+    $labelcode=array();
+    foreach ($lresult as $lrow)
     {
-        foreach ($lresult as $lrow)
-        {
-            $labelans[]=$lrow->answer;
-            $labelcode[]=$lrow->code;
-        }
-
+        $labelans[]=$lrow->answer;
+        $labelcode[]=$lrow->code;
+    }
+    if ($useDropdownLayout === false && count($labelans))
+    {
         $sQuery = "SELECT count(qid) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
-        
         if ($iCount>0) {
             $right_exists=true;
             $answerwidth=$answerwidth/2;
@@ -5353,14 +5353,15 @@ function do_array_multitext($ia)
 
     $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult = Yii::app()->db->createCommand($lquery)->query();
+    $labelans=array();
+    $labelcode=array();
     foreach($lresult->readAll() as $lrow)
     {
         $labelans[]=$lrow['question'];
         $labelcode[]=$lrow['title'];
     }
-    if (count($labelans)> 0)
+    if ($numrows=count($labelans))
     {
-        $numrows=count($labelans);
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
         if( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )
         {
@@ -5674,14 +5675,15 @@ function do_array_multiflexi($ia)
     $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult = dbExecuteAssoc($lquery);
     $aQuestions=$lresult->readAll();
-    if (count($aQuestions) > 0)
+    $labelans=array();
+    $labelcode=array();
+    foreach ($aQuestions as $lrow)
     {
-        foreach ($aQuestions as $lrow)
-        {
-            $labelans[]=$lrow['question'];
-            $labelcode[]=$lrow['title'];
-        }
-        $numrows=count($labelans);
+        $labelans[]=$lrow['question'];
+        $labelcode[]=$lrow['title'];
+    }
+    if ($numrows=count($labelans))
+    {
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
         $cellwidth=$columnswidth/$numrows;
 
@@ -5924,18 +5926,22 @@ function do_arraycolumns($ia)
     $lquery = "SELECT * FROM {{answers}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
     $oAnswers = dbExecuteAssoc($lquery);
     $aAnswers = $oAnswers->readAll(); 
-    if (count($aAnswers) > 0)
+
+    $labelans=array();
+    $labelcode=array();
+    $labels=array();// double use
+    foreach ($aAnswers as $lrow)
     {
-        foreach ($aAnswers as $lrow)
-        {
-            $labelans[]=$lrow['answer'];
-            $labelcode[]=$lrow['code'];
-            $labels[]=array("answer"=>$lrow['answer'], "code"=>$lrow['code']);
-        }
+        $labelans[]=$lrow['answer'];
+        $labelcode[]=$lrow['code'];
+        $labels[]=array("answer"=>$lrow['answer'], "code"=>$lrow['code']);
+    }
+    if (count($labelans))
+    {
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
-            $labelcode[]='';
             $labelans[]=$clang->gT('No answer');
+            $labelcode[]='';
             $labels[]=array('answer'=>$clang->gT('No answer'), 'code'=>'');
         }
         if ($aQuestionAttributes['random_order']==1) {
