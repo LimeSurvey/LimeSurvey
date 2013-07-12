@@ -186,7 +186,7 @@ class export extends Survey_Common_Action {
             $data['excesscols'] = $aFieldMap;
 
             //get max number of datasets
-            $iMaximum = Yii::app()->db->createCommand("SELECT count(id) FROM {{survey_".intval($iSurveyID)."}}")->queryScalar();
+            $iMaximum = SurveyDynamic::model($iSurveyID)->getMaxId();
 
             $data['max_datasets'] = $iMaximum;
             $data['surveyid'] = $iSurveyID;

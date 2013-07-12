@@ -47,7 +47,7 @@
         */
         public function primaryKey()
         {
-            return 'gid,language';
+            return array('gid', 'language');
         }
 
 

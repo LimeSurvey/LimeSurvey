@@ -3518,6 +3518,7 @@ function do_shortfreetext($ia)
         class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
         <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
         </div>";
+        header_includes("map.js");
         if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
             Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false");
         else if ($aQuestionAttributes['location_mapservice']==1)
@@ -4490,14 +4491,15 @@ function do_array($ia)
     }
 
     $lresult= Answer::model()->findAll(array('order'=>'sortorder, code', 'condition'=>'qid=:qid AND language=:language AND scale_id=0', 'params'=>array(':qid'=>$ia[0],':language'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'])));
+    $labelans=array();
+    $labelcode=array();
+    foreach ($lresult as $lrow)
+    {
+        $labelans[]=$lrow->answer;
+        $labelcode[]=$lrow->code;
+    }
     if ($useDropdownLayout === false && count($lresult) > 0)
     {
-        foreach ($lresult as $lrow)
-        {
-            $labelans[]=$lrow->answer;
-            $labelcode[]=$lrow->code;
-        }
-
         $sQuery = "SELECT count(qid) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
         
@@ -4973,14 +4975,15 @@ function do_array_multitext($ia)
 
     $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult = Yii::app()->db->createCommand($lquery)->query();
-    if (count($lresult)> 0)
+    $labelans=array();
+    $labelcode=array();
+    foreach($lresult->readAll() as $lrow)
     {
-        foreach($lresult->readAll() as $lrow)
-        {
-            $labelans[]=$lrow['question'];
-            $labelcode[]=$lrow['title'];
-        }
-        $numrows=count($labelans);
+        $labelans[]=$lrow['question'];
+        $labelcode[]=$lrow['title'];
+    }
+    if ($numrows=count($labelans))
+    {
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
         if( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )
         {
@@ -5299,14 +5302,15 @@ function do_array_multiflexi($ia)
     $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult = dbExecuteAssoc($lquery);
     $aQuestions=$lresult->readAll();
-    if (count($aQuestions) > 0)
+    $labelans=array();
+    $labelcode=array();
+    foreach ($aQuestions as $lrow)
     {
-        foreach ($aQuestions as $lrow)
-        {
-            $labelans[]=$lrow['question'];
-            $labelcode[]=$lrow['title'];
-        }
-        $numrows=count($labelans);
+        $labelans[]=$lrow['question'];
+        $labelcode[]=$lrow['title'];
+    }
+    if ($numrows=count($labelans))
+    {
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
         $cellwidth=$columnswidth/$numrows;
 
@@ -5557,14 +5561,17 @@ function do_arraycolumns($ia)
     $lquery = "SELECT * FROM {{answers}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
     $oAnswers = dbExecuteAssoc($lquery);
     $aAnswers = $oAnswers->readAll(); 
-    if (count($aAnswers) > 0)
+    $labelans=array();
+    $labelcode=array();
+    $labels=array();
+    foreach ($aAnswers as $lrow)
     {
-        foreach ($aAnswers as $lrow)
-        {
-            $labelans[]=$lrow['answer'];
-            $labelcode[]=$lrow['code'];
-            $labels[]=array("answer"=>$lrow['answer'], "code"=>$lrow['code']);
-        }
+        $labelans[]=$lrow['answer'];
+        $labelcode[]=$lrow['code'];
+        $labels[]=array("answer"=>$lrow['answer'], "code"=>$lrow['code']);
+    }
+    if (count($labelans) > 0)
+    {
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $labelcode[]='';

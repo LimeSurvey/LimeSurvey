@@ -14,7 +14,9 @@
 
 /**
 * fixes the numbering of questions
-* @param <type> $fixnumbering
+* This can happen if question 1 have subquestion code 1 and have question 11 in same survey and group (then same SGQA)
+* @param int $fixnumbering
+* @todo can call this function (no $_GET, but getParam) AND do it with Yii
 */
 function fixNumbering($fixnumbering, $iSurveyID)
 {
@@ -23,11 +25,11 @@ function fixNumbering($fixnumbering, $iSurveyID)
 
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
     //Fix a question id - requires renumbering a question
-    $oldqid = $fixnumbering;
-    $query = "SELECT qid FROM {{questions}} ORDER BY qid DESC";
-    $result = dbSelectLimitAssoc($query, 1);
-    foreach ($result->readAll() as $row) {$lastqid=$row['qid'];}
+    $oldqid = (int) $fixnumbering;
+    $lastqid=Questions::model()->getMaxId('qid', true); // Always refresh as we insert new qid's
     $newqid=$lastqid+1;
+
+    // Not sure we can do this in MSSQL ?
     $query = "UPDATE {{questions}} SET qid=$newqid WHERE qid=$oldqid";
     $result = db_execute_assosc($query);
     // Update subquestions
@@ -181,7 +183,8 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     $conquery= "SELECT {{conditions}}.qid, cqid, {{questions}}.question, "
     . "{{questions}}.gid "
     . "FROM {{conditions}}, {{questions}}, {{groups}} "
-    . "WHERE {{conditions}}.qid={{questions}}.qid "
+    . "WHERE {{questions}}.sid={$iSurveyID} "
+    . "AND {{conditions}}.qid={{questions}}.qid "
     . "AND {{questions}}.gid={{groups}}.gid ORDER BY {{conditions}}.qid";
     $conresult=Yii::app()->db->createCommand($conquery)->query()->readAll();
     //2: Check each conditions cqid that it occurs later than the cqid

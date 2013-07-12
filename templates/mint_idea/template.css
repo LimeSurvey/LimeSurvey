@@ -356,7 +356,9 @@ div.clear-all {
 div.assessment-heading {
 	font-weight: bold;
 }
-
+.assessments td{
+	text-align: center;
+}
 /* paragraphs -------------------------------------------------------------------- */
 p {
   margin: 15px 0;

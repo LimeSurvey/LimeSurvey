@@ -646,7 +646,9 @@ table.question tr.array2:hover {
 .survey-assessment {
   font-weight: bold;
 }
-
+.assessments td{
+	text-align: center;
+}
 A:link,A:visited,A:active {
   text-decoration: none;
   color: #00677d;

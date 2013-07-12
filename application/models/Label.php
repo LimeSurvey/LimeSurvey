@@ -40,7 +40,7 @@ class Label extends CActiveRecord
 	 */
 	public function primaryKey()
 	{
-		return 'lid,language';
+		return array('lid', 'language');
 	}
     /**
     * Returns the static model of Settings table

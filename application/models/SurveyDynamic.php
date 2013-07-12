@@ -260,7 +260,7 @@ class SurveyDynamic extends LSActiveRecord
         }
         return $exist;
     }
-
+    
     /**
      * Return next id if next response exist in database
      *

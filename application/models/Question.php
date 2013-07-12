@@ -51,7 +51,7 @@
         */
         public function primaryKey()
         {
-            return 'qid,language';
+            return array('qid', 'language');
         }
 
         /**
@@ -95,7 +95,6 @@
                 array('same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             );
         }
-
 
         /**
         * Rewrites sort order for questions in a group
