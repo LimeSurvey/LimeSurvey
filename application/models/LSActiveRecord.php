@@ -103,6 +103,42 @@ class LSActiveRecord extends CActiveRecord
     {
         $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('before'.get_class($this).'Delete', $this));
         return parent::beforeDelete();
-    }    
+    }
+    
+    /**
+     * Return the max value for a field
+     * 
+     * This is a convenience method, that uses the primary key of the model to 
+     * retrieve the highest value.
+     * 
+     * @param string  $field        The field that contains the Id, when null primary key is used if it is a single field
+     * @param boolean $forceRefresh Don't use value from static cache but always requery the database 
+     * @return false|int
+     */
+    public function getMaxId($field = null, $forceRefresh = false) {
+        static $maxIds = array();
+        
+        if (is_null($field)) {
+            $primaryKey = $this->primaryKey();
+            if (is_string($primaryKey)) {
+                $field = $primaryKey;
+            } else {
+                // Composite key, throw a warning to the programmer
+                throw new Exception(sprintf('Table %s has a composite primary key, please explicitly state what field you need the max value for.', $this->tableName()));
+            }
+        }
+        
+        if ($forceRefresh || !array_key_exists($field, $maxIds)) {
+            $maxId = $this->dbConnection->createCommand()
+                    ->select('MAX(' .  $this->dbConnection->quoteColumnName($field) . ')')
+                    ->from($this->tableName())
+                    ->queryScalar();
+            
+            // Save so we can reuse in the same request
+            $maxIds[$field] = $maxId;
+        }
+        
+        return $maxIds[$field];
+    }
 
 }
