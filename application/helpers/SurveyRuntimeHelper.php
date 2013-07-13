@@ -156,7 +156,7 @@ class SurveyRuntimeHelper {
 
 		if ($_SESSION[$LEMsessid]['maxstep'] == $_SESSION[$LEMsessid]['totalsteps'])
 		{
-            echo CHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'submit button'));
+            echo CHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>'movesubmit','name'=>'move','class'=>'submit button'));
 		}
 
 		echo '</div></div>';
