@@ -3240,16 +3240,16 @@ function questionAttributes($returnByName=false)
         'category'=>$clang->gT('Display'),
         'sortorder'=>110,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Minimum year value in calendar'),
-        "caption"=>$clang->gT('Minimum year'));
+        "help"=>$clang->gT('Minimum date selectable in calendar (YYYY-MM-DD)'),
+        "caption"=>$clang->gT('Minimum date'));
 
         $qattributes["dropdown_dates_year_max"]=array(
         "types"=>"D",
         'category'=>$clang->gT('Display'),
         'sortorder'=>111,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Maximum year value for calendar'),
-        "caption"=>$clang->gT('Maximum year'));
+        "help"=>$clang->gT('Maximum date selectable in calendar (YYYY-MM-DD)'),
+        "caption"=>$clang->gT('Maximum date'));
 
         $qattributes["dropdown_prepostfix"]=array(
         "types"=>"1",

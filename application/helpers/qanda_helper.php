@@ -1094,15 +1094,13 @@ function do_date($ia)
                     <option value="">'.$clang->gT('Year').'</option>';
 
                     /*
-                    *  New question attributes used only if question attribute
-                    * "dropdown_dates" is used (see IF(...) above).
-                    *
                     * yearmin = Minimum year value for dropdown list, if not set default is 1900
-                    * yearmax = Maximum year value for dropdown list, if not set default is 2020
+                    * yearmax = Maximum year value for dropdown list, if not set default is 2037
+                    * if full dates (format: YYYY-MM-DD) are given, only the year is used
                     */
                     if (trim($aQuestionAttributes['dropdown_dates_year_min'])!='')
                     {
-                        $yearmin = (int)LimeExpressionManager::ProcessString($aQuestionAttributes['dropdown_dates_year_min']);
+                        $yearmin = (int)substr(LimeExpressionManager::ProcessString($aQuestionAttributes['dropdown_dates_year_min']),0,4);
                     }
                     else
                     {
@@ -1111,17 +1109,17 @@ function do_date($ia)
 
                     if (trim($aQuestionAttributes['dropdown_dates_year_max'])!='')
                     {
-                        $yearmax = (int)LimeExpressionManager::ProcessString($aQuestionAttributes['dropdown_dates_year_max']);
+                        $yearmax = (int)substr(LimeExpressionManager::ProcessString($aQuestionAttributes['dropdown_dates_year_max']), 0, 4);
                     }
                     else
                     {
-                        $yearmax = 2020;
+                        $yearmax = 2037;
                     }
 
                     if ($yearmin > $yearmax)
                     {
                         $yearmin = 1900;
-                        $yearmax = 2020;
+                        $yearmax = 2037;
                     }
 
                     if ($aQuestionAttributes['reverse']==1)
@@ -1223,6 +1221,12 @@ function do_date($ia)
         $answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1].'" />
         <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" />
         <input type="hidden" id="dateformat'.$ia[1].'" value="'.$dateformatdetails['jsdate'].'"/>';
+
+        // MayDo:
+        // add js code to
+        //        - fill dropdown boxes according to min/max
+        //        - if one datefield box is changed update all others
+        //        - would need a LOT of JS
     }
     else
     {
@@ -1241,35 +1245,88 @@ function do_date($ia)
         {
             $dateoutput='';
         }
-
+        $dropdown_dates_year_min_dynvars=false;
+        $dropdown_dates_year_max_dynvars=false;
+            
         if (trim($aQuestionAttributes['dropdown_dates_year_min'])!='') {
             $minyear=$aQuestionAttributes['dropdown_dates_year_min'];
+            $dropdown_dates_year_min=str_replace(array( '}', '{' ), '', $aQuestionAttributes['dropdown_dates_year_min']);
+            if ($minyear!=$dropdown_dates_year_min) $dropdown_dates_year_min_dynvars=true;
+            // backward compatibility: if only a year is given, add month and day 
+            if ((strlen($minyear)==4) && ($minyear>=1900) && ($minyear<=2037)) {
+                $minyear.='-01-01'; 
+            }
         }
         else
         {
-            $minyear='1900';
+            $minyear='1900-01-01';
         }
 
         if (trim($aQuestionAttributes['dropdown_dates_year_max'])!='') {
             $maxyear=$aQuestionAttributes['dropdown_dates_year_max'];
+            $dropdown_dates_year_max=str_replace(array( '}', '{' ), '', $aQuestionAttributes['dropdown_dates_year_max']);
+            if ($maxyear!=$dropdown_dates_year_max) $dropdown_dates_year_max_dynvars=true;
+            // backward compatibility: if only a year is given, add month and day 
+            if ((strlen($maxyear)==4) && ($maxyear>=1900) && ($maxyear<=2037)) {
+                $maxyear.='-12-31'; 
+            }
         }
         else
         {
-            $maxyear='2020';
+            $maxyear='2037-12-31';
         }
 
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
         $goodchars = "0123456789".substr($goodchars,0,1);
         $iLength=strlen($dateformatdetails['dateformat']);
 
+        // HTML for date question using datepicker
         $answer ="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Date picker')}</label>
         <input class='popupdate' type=\"text\" size=\"{$iLength}\" name=\"{$ia[1]}\" title='".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."' id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"{$iLength}\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
-        <input  type='hidden' name='dateyearrange{$ia[1]}' id='dateyearrange{$ia[1]}' value='{$minyear}:{$maxyear}'  />
+        <input  type='hidden' name='datemin{$ia[1]}' id='datemin{$ia[1]}' value=\"{$minyear}\"    />
+        <input  type='hidden' name='datemax{$ia[1]}' id='datemax{$ia[1]}' value=\"{$maxyear}\"   />
 
         </p>";
-        if (trim($aQuestionAttributes['hide_tip'])==1) {
+             
+            // following JS is for setting datepicker limits on-the-fly according to variables given in dropdown_date_year_min/max attributes
+            // works with full dates (format: YYYY-MM-DD, js not needed), only a year, for backward compatibility (YYYY, js not needed),
+            // or variable names which refer to another date question (in curly brackets)
+            // The term $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate($((LEMalias2varName['$dropdown_dates_year_min']).replace(/java/g, '#dateformat')).attr('value')
+            // gets the date format from the source variable (in extended attributes min/max field) and converts the date to the yy-mm-dd format
+             
+            // only write JS code if there are variables used.... everything else can be dealt with in PHP
+            if ($dropdown_dates_year_min_dynvars==true || $dropdown_dates_year_max_dynvars==true) {
+            $answer.="<script> 
+                $(document).ready(function() {
+                        $('.popupdate').change(function() {
+                            if (typeof LEMalias2varName !== 'undefined') {
+                            ";
+                            
+            if ($dropdown_dates_year_min_dynvars==true) {
+              // if (step($dropdown_dates_year_min)==step(aktuell)) {
+                $answer.="	if ('$dropdown_dates_year_min' in LEMalias2varName) {
+                                    $('#datemin{$ia[1]}').attr('value', $.datepicker.formatDate('yy-mm-dd', 
+                                    $.datepicker.parseDate($((LEMalias2varName['$dropdown_dates_year_min']).replace(/java/g, '#dateformat'))
+                                    .attr('value'), LEMval('$dropdown_dates_year_min'))));
+                                }
+                            ";
+            }
+            if ($dropdown_dates_year_max_dynvars==true) {
+                $answer.="	if ('$dropdown_dates_year_max' in LEMalias2varName) {
+                                    $('#datemax{$ia[1]}').attr('value', $.datepicker.formatDate('yy-mm-dd', 
+                                    $.datepicker.parseDate($((LEMalias2varName['$dropdown_dates_year_max']).replace(/java/g, '#dateformat'))
+                                    .attr('value'), LEMval('$dropdown_dates_year_max'))));
+                                }
+                            ";
+            }
+            $answer.="}
+                        });
+                    });
+                </script>";
+            }
+                if (trim($aQuestionAttributes['hide_tip'])==1) {
             $answer.="<p class=\"tip\">".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."</p>";
         }
     }
