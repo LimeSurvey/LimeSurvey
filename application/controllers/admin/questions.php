@@ -255,8 +255,8 @@ class questions extends Survey_Common_Action
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'answers.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
+        //App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
+        App()->getClientScript()->registerPackage('jquery-selectboxes');
         
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
@@ -314,7 +314,7 @@ class questions extends Survey_Common_Action
                 $oAnswer= new Answer;
                 $oAnswer->qid = $qid;
                 $oAnswer->code = 'A1';
-                $oAnswer->answer = $clang->gT('Some example answer option');
+                $oAnswer->answer = "";
                 $oAnswer->language = $baselang;
                 $oAnswer->sortorder = 0;
                 $oAnswer->scale_id = $i;
