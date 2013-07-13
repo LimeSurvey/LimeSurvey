@@ -7405,7 +7405,6 @@ function getPrintableHeader()
 function getFooter()
 {
     global $embedded;
-
     if ( !$embedded )
     {
         return "\n\n\t</body>\n</html>\n";
@@ -7657,17 +7656,11 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
 *
 * This code in injected in the three questionnaire modes right after the <form> element,
 * before the individual questions emit their own onsubmit replacement code.
+* @deprecated 13-07-12
 */
 function sDefaultSubmitHandler()
 {
-    return <<<EOS
-    <script type='text/javascript'>
-    <!--
-        // register the standard (last) onsubmit handler *first*
-        document.limesurvey.onsubmit = std_onsubmit_handler;
-    -->
-    </script>
-EOS;
+    tracevar("call deprecated sDefaultSubmitHandler");
 }
 
 /**

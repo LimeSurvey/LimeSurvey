@@ -13,7 +13,6 @@
 
 function navigator_countdown(n)
 {
-	$("#limesurvey").on("click",".disabled",function(){return false;});
 	$(document).ready(function()
 	{
 		$('button.disabled').prop("disabled", true);// Double check : already in navbuttonsJqueryUi

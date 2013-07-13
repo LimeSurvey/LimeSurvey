@@ -41,7 +41,7 @@ class SurveyRuntimeHelper {
 //						echo 'var session = '. json_encode(LimeExpressionManager::singleton()->_ValidateGroup($key)) . ';';
 //						echo 'console.log(session);';
 //						echo '</script>';
-
+// Better to use tracevar / 
 						if (LimeExpressionManager::GroupIsRelevant($group['gid']))
 						{
 							$group['step'] = $key + 1;
@@ -52,25 +52,19 @@ class SurveyRuntimeHelper {
 								$_SESSION[$LEMsessid]['step'] == $group['step'] ? 'current' : ''
 
 							));
+							$sButtonSubmit=CHtml::htmlButton(gT('Go to this group'),array('type'=>'submit','value'=>$group['step'],'name'=>'move','class'=>'hide'));
 							echo CHtml::tag('li', array(
 								'data-gid' => $group['gid'],
 								'title' => $group['description'],
 								'class' => $classes,
-								'onclick' => new CJavaScriptExpression("javascript:document.limesurvey.move.value = '{$group['step']}'; document.limesurvey.submit();")
-							), $group['group_name']);
+							), $group['group_name'].$sButtonSubmit);
 						}
 					}
 				echo CHtml::closeTag('ol');
 			echo CHtml::closeTag('div');
 		echo CHtml::closeTag('div');
-		/* Can be replaced by php or in global js */
-		echo "<script type=\"text/javascript\">\n"
-		. "  $(\".outerframe\").addClass(\"withindex\");\n"
-		. "  var idx = $(\"#index\");\n"
-		. "  var row = $(\"#index .row.current\");\n"
-		. "  idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);\n"
-		. "</script>\n";
-		echo "\n";
+
+        App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
 	}
 
 	protected function createFullQuestionIndexByQuestion($LEMsessid)
@@ -81,14 +75,8 @@ class SurveyRuntimeHelper {
 				echo 'Question by question not yet supported, use incremental index.';
 			echo CHtml::closeTag('div');
 		echo CHtml::closeTag('div');
-		/* Can be replaced by php or in global js */
-		echo "<script type=\"text/javascript\">\n"
-		. "  $(\".outerframe\").addClass(\"withindex\");\n"
-		. "  var idx = $(\"#index\");\n"
-		. "  var row = $(\"#index .row.current\");\n"
-		. "  idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);\n"
-		. "</script>\n";
-		echo "\n";
+
+        App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
 	}
 	
 	protected function createIncrementalQuestionIndex($LEMsessid, $surveyMode)
@@ -141,10 +129,12 @@ class SurveyRuntimeHelper {
 			if ($surveyMode == 'group')
 			{
 				$indexlabel = LimeExpressionManager::ProcessString($g['group_name']);
+				$sButtonText=gT('Go to this group');
 			}
 			else
 			{
 				$indexlabel = LimeExpressionManager::ProcessString($q[3]);
+				$sButtonText=gT('Go to this question');
 			}
 
 			$sText = (($surveyMode == 'group') ? flattenText($indexlabel) : flattenText($indexlabel));
@@ -157,24 +147,20 @@ class SurveyRuntimeHelper {
 				$class .= " odd";
 
 			$s = $n + 1;
-			echo "<div class=\"row $class\" onclick=\"javascript:document.limesurvey.move.value = '$s'; document.limesurvey.submit();\"><span class=\"hdr\">$v</span><span title=\"$sText\">$sText</span></div>";
+			echo "<div class=\"row $class\"\">";
+			echo "<span class=\"hdr\">$v</span>";
+			echo "<span title=\"$sText\">$sText</span>";
+            echo CHtml::htmlButton($sButtonText,array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'hide'));
+			echo "</div>";
 		}
 
 		if ($_SESSION[$LEMsessid]['maxstep'] == $_SESSION[$LEMsessid]['totalsteps'])
 		{
-			echo "<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
-			. gT("Submit") . " ' name='move2' />\n";
+            echo CHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'submit button'));
 		}
 
 		echo '</div></div>';
-		/* Can be replaced by php or in global js */
-		echo "<script type=\"text/javascript\">\n"
-		. "  $(\".outerframe\").addClass(\"withindex\");\n"
-		. "  var idx = $(\"#index\");\n"
-		. "  var row = $(\"#index .row.current\");\n"
-		. "  idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);\n"
-		. "</script>\n";
-		echo "\n";
+        App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
 
 	}
     /**

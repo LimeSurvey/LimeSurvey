@@ -12,9 +12,9 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-
-buttonSubmitHandler();
+limesurveySubmitHandler();
 needConfirmHandler();
+
 $(document).ready(function()
 {
     navbuttonsJqueryUi();
@@ -67,25 +67,36 @@ $(document).ready(function()
     // Maxlength for textareas TODO limit to not CSS3 compatible browser
     maxlengthtextarea();
 
-	// #index
-    if ($("#index").size() && $("#index .row.current").size()){
-        var idx = $("#index");
-        var row = $("#index .row.current");
-        idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
-    }
 });
 
 // Deactivate all other button on submit
-function buttonSubmitHandler(){
-    $("#limesurvey").on('click',"button[name='move']", function(event){
+function limesurveySubmitHandler(){
+    $("#limesurvey").on("click",".disabled",function(){return false;});
+    $(document).on('click',"button[name='move'],a.button", function(event){
         $("button[name='move']").not($(this)).prop('disabled',true);
-        $("button[name='move']").not($(this)).button( "option", "disabled", true );
-        if(typeof document.body.style.maxHeight === "undefined") {// A way to detect IE6 ?
-            $(this).text($(this).attr('value'));
-        }
-        return true;
+        $("a.button").not($(this)).addClass('disabled');
     });
+// Deactivate submit on text validation : don't work with index actually
+//    $(document).on('submit',"#limesurvey", function(event){
+//        if (event.originalEvent.explicitOriginalTarget.name != "move") {
+//            console.log(event.originalEvent);
+//            event.preventDefault();
+//        }
+//    });
+
+    /* 130712 IE6+IE7 need this */
+    if('v'=='\v'){ // Quick hack for IE6/7 surely 8 and more
+        $(function() {
+        $("button[name='move']").click(function(e){
+                $("button[name='move']").prop('disabled',true);
+                $('<input>').attr({type: 'hidden',name: 'move',value: $(this).val()}).appendTo('#limesurvey');
+                $("#limesurvey").submit();
+            });
+        });
+    }
 }
+
+
 // Ask confirmation on click on .needconfirm
 function needConfirmHandler(){
     $("body").on('click',".confirm-needed", function(event){
@@ -94,6 +105,16 @@ function needConfirmHandler(){
             return true;
         }
         return false;
+    });
+    /* 130712 IE7 need this */
+    $(function() {
+    $("a.confirm-needed").click(function(e){
+        text=$(this).attr('title');
+        if (confirm(text)) {
+            return true;
+        }
+        return false;
+        });
     });
 }
 
@@ -119,14 +140,29 @@ function navbuttonsJqueryUi(){
         primary: 'ui-icon-triangle-1-w'
     }
     });
-    $("button[name='move'], .button").button();
+    $(".button").button();
+    // TODO trigger handler activate/deactivate to update ui-button class
 }
-
+/**
+ * Manage the index
+ */
+function manageIndex(){
+    $("#index").on('click','li,.row',function(e){ 
+        if(!$(e.target).is('button')){
+            $(this).children("[name='move']").click();
+        }
+    });
+    $(function() {
+        $(".outerframe").addClass("withindex");
+        var idx = $("#index");
+        var row = $("#index .row.current");
+        idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
+    });
+}
 /**
  * Put a empty class on empty answer text item (limit to answers part)
  * @author Denis Chenu / Shnoulle
  */
-// 
 function addClassEmpty()
 {
 	$('.answer-item input.text[value=""]').addClass('empty');
@@ -308,15 +344,6 @@ function show_hide_group(group_id)
 		{
 			$("#group-" + group_id).hide();
 		}
-}
-
-function std_onsubmit_handler()
-{
-    // disable double-posts in all forms
-    if($("button[name='move']:not([disabled])").length>1){
-        $("button[name='move']:not(.default)").attr('disabled','disabled');
-    }
-    return true;
 }
 
 // round function from phpjs.org

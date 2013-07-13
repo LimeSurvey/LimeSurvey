@@ -2098,13 +2098,13 @@ function surveymover()
     $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step']))?$_SESSION['survey_'.$surveyid]['step']:false;
     $iSessionMaxStep=(isset($_SESSION['survey_'.$surveyid]['maxstep']))?$_SESSION['survey_'.$surveyid]['maxstep']:false;
     $iSessionTotalSteps=(isset($_SESSION['survey_'.$surveyid]['totalsteps']))?$_SESSION['survey_'.$surveyid]['totalsteps']:false;
-    $sExtraCss="";
+    $sClass="submit button ";
     $sSurveyMover = "";
 
     // Count down
     if ($thissurvey['navigationdelay'] > 0 && ($iSessionMaxStep!==false && $iSessionMaxStep == $iSessionStep))
      {
-        $sExtraCss=" disabled";
+        $sClass=" disabled";
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."/navigator-countdown.js");
         App()->getClientScript()->registerScript('navigator_countdown',"navigator_countdown(" . $thissurvey['navigationdelay'] . ");\n",CClientScript::POS_BEGIN);
      }
@@ -2135,7 +2135,7 @@ function surveymover()
     // Construction of mover
     if($sMovePrev){
         $sLangMoveprev=$clang->gT("Previous");
-        $sSurveyMover .= "<button name='move' id='{$sMovePrev}btn' class='submit {$sExtraCss}' accesskey='p' type='submit' value='{$sMovePrev}'>{$sLangMoveprev}</button>";
+        $sSurveyMover.= CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>'move','accesskey'=>'p','class'=>$sClass));
     }
     if($sMovePrev && $sMoveNext){
         $sSurveyMover .= " ";
@@ -2144,14 +2144,15 @@ function surveymover()
     if($sMoveNext){
         if($sMoveNext=="movesubmit"){
             $sLangMovenext=$clang->gT("Submit");
-            $sAccessKeyNext='l';
+            $sAccessKeyNext='l';// Why l ?
         }else{
             $sLangMovenext=$clang->gT("Next");
             $sAccessKeyNext='n';
         }
-        $sSurveyMover .= "<button name='move' id='{$sMoveNext}btn' class='submit default {$sExtraCss}' accesskey='{$sAccessKeyNext}' type='submit' value='{$sMoveNext}'>{$sLangMovenext}</button>";
+        $sSurveyMover.= CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>'move','accesskey'=>$sAccessKeyNext,'class'=>$sClass));
      }
-
+     // Add a default submit button : first button is one clicked (carriage return on text input)
+    $sSurveyMover=CHtml::button($sMoveNext,array('type'=>'submit','id'=>'move','name'=>'move','style'=>'display:none')).$sSurveyMover;
     return $sSurveyMover;
 }
 
