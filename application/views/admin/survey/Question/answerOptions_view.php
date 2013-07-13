@@ -52,7 +52,7 @@
 
             <?php for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
                 {
-                    $position=0;
+                    $position=1;
                     if ($scalecount>1)
                     { ?>
                     <div class='header ui-widget-header' style='margin-top:5px;'><?php echo sprintf($clang->gT("Answer scale %s"),$scale_id+1); ?></div>
@@ -91,7 +91,6 @@
                             $row['answer']=htmlspecialchars($row['answer']);
                         ?>
                         <tr class='row_<?php echo $position; ?><?php if ($alternate==true){ ?> highlight<?php } ?><?php $alternate=!$alternate; ?>'><td>
-
                                 <?php if ($first)
                                     { ?>
                                     <img class='handle' src='<?php echo $sImageURL; ?>handle.png' alt=''/></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" /><input type='text' class='code' id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" maxlength='5' size='5'

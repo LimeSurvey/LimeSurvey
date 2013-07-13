@@ -60,7 +60,7 @@ function deleteinput()
 
     // 1.) Check if there is at least one answe
 
-    countanswers=$(this).parent().parent().parent().children().length;
+    countanswers=$(this).closest("tbody").children("tr").length;//Maybe use class is better
     if (countanswers>1)
         {
         // 2.) Remove the table row
@@ -219,7 +219,7 @@ function updaterowproperties()
         var rownumber=1;
         $(this).children('tr').each(function(){
 
-            $(this).removeClass();
+            $(this).attr('class','');//see http://bugs.jqueryui.com/ticket/9015
             if (highlight){
                 $(this).addClass('highlight');
             }
