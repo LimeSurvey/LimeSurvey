@@ -14,10 +14,10 @@
 
 
 //Compatibility with classic modrewrite
-$route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/tk-<_token:\w+>'] = "survey/index/sid/<_sid>/lang/<_lang>/token/<_token>"; //This one must be first
-$route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>'] = "survey/index/sid/<_sid>/lang/<_lang>";
-$route['<_sid:\d+>/tk-<_token:\w+>'] = "survey/index/sid/<_sid>/token/<_token>";
-$route['<_sid:\d+>'] = "survey/index/sid/<_sid>";
+$route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/tk-<_token:\w+>/*'] = "survey/index/sid/<_sid>/lang/<_lang>/token/<_token>"; //This one must be first
+$route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/*'] = "survey/index/sid/<_sid>/lang/<_lang>";
+$route['<_sid:\d+>/tk-<_token:\w+>/*'] = "survey/index/sid/<_sid>/token/<_token>";
+$route['<_sid:\d+>/*'] = "survey/index/sid/<_sid>";
 
 //Admin Routes
 $route['admin/index'] = "admin";
