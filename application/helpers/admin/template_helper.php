@@ -155,7 +155,7 @@ function templateExtractFilter($p_event, &$p_header)
 {
     $aAllowExtensions=explode(',',Yii::app()->getConfig('allowedresourcesuploads'));    
     $info = pathinfo($p_header['filename']);
-    if ($p_header['folder'] || in_array($info['extension'],$aAllowExtensions)) {
+    if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'],$aAllowExtensions)) {
         return 1;
     }
     else {
