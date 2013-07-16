@@ -3235,20 +3235,20 @@ function questionAttributes($returnByName=false)
         "help"=>$clang->gT('Use accessible dropdown boxes instead of calendar popup'),
         "caption"=>$clang->gT('Display dropdown boxes'));
 
-        $qattributes["dropdown_dates_year_min"]=array(
+        $qattributes["date_min"]=array(
         "types"=>"D",
         'category'=>$clang->gT('Display'),
         'sortorder'=>110,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Minimum date selectable in calendar (YYYY-MM-DD)'),
+        "help"=>$clang->gT('Minimum date selectable in calendar (YYYY-MM-DD). Only the year is used if dropdown boxes are selected.'),
         "caption"=>$clang->gT('Minimum date'));
 
-        $qattributes["dropdown_dates_year_max"]=array(
+        $qattributes["date_max"]=array(
         "types"=>"D",
         'category'=>$clang->gT('Display'),
         'sortorder'=>111,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Maximum date selectable in calendar (YYYY-MM-DD)'),
+        "help"=>$clang->gT('Maximum date selectable in calendar (YYYY-MM-DD). Only the year is used if dropdown boxes are selected.'),
         "caption"=>$clang->gT('Maximum date'));
 
         $qattributes["dropdown_prepostfix"]=array(

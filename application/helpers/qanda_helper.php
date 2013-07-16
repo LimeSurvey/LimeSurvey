@@ -1098,18 +1098,18 @@ function do_date($ia)
                     * yearmax = Maximum year value for dropdown list, if not set default is 2037
                     * if full dates (format: YYYY-MM-DD) are given, only the year is used
                     */
-                    if (trim($aQuestionAttributes['dropdown_dates_year_min'])!='')
+                    if (trim($aQuestionAttributes['date_min'])!='')
                     {
-                        $yearmin = (int)substr(LimeExpressionManager::ProcessString($aQuestionAttributes['dropdown_dates_year_min']),0,4);
+                        $yearmin = (int)substr(LimeExpressionManager::ProcessString($aQuestionAttributes['date_min']),0,4);
                     }
                     else
                     {
                         $yearmin = 1900;
                     }
 
-                    if (trim($aQuestionAttributes['dropdown_dates_year_max'])!='')
+                    if (trim($aQuestionAttributes['date_max'])!='')
                     {
-                        $yearmax = (int)substr(LimeExpressionManager::ProcessString($aQuestionAttributes['dropdown_dates_year_max']), 0, 4);
+                        $yearmax = (int)substr(LimeExpressionManager::ProcessString($aQuestionAttributes['date_max']), 0, 4);
                     }
                     else
                     {
@@ -1245,35 +1245,35 @@ function do_date($ia)
         {
             $dateoutput='';
         }
-        $dropdown_dates_year_min_dynvars=false;
-        $dropdown_dates_year_max_dynvars=false;
+        $date_min_dynvars=false;
+        $date_max_dynvars=false;
             
-        if (trim($aQuestionAttributes['dropdown_dates_year_min'])!='') {
-            $minyear=$aQuestionAttributes['dropdown_dates_year_min'];
-            $dropdown_dates_year_min=str_replace(array( '}', '{' ), '', $aQuestionAttributes['dropdown_dates_year_min']);
-            if ($minyear!=$dropdown_dates_year_min) $dropdown_dates_year_min_dynvars=true;
+        if (trim($aQuestionAttributes['date_min'])!='') {
+            $mindate=$aQuestionAttributes['date_min'];
+            $date_min=str_replace(array( '}', '{' ), '', $aQuestionAttributes['date_min']);
+            if ($mindate!=$date_min) $date_min_dynvars=true;
             // backward compatibility: if only a year is given, add month and day 
-            if ((strlen($minyear)==4) && ($minyear>=1900) && ($minyear<=2037)) {
-                $minyear.='-01-01'; 
+            if ((strlen($mindate)==4) && ($mindate>=1900) && ($mindate<=2037)) {
+                $mindate.='-01-01'; 
             }
         }
         else
         {
-            $minyear='1900-01-01';
+            $mindate='1900-01-01';
         }
 
-        if (trim($aQuestionAttributes['dropdown_dates_year_max'])!='') {
-            $maxyear=$aQuestionAttributes['dropdown_dates_year_max'];
-            $dropdown_dates_year_max=str_replace(array( '}', '{' ), '', $aQuestionAttributes['dropdown_dates_year_max']);
-            if ($maxyear!=$dropdown_dates_year_max) $dropdown_dates_year_max_dynvars=true;
+        if (trim($aQuestionAttributes['date_max'])!='') {
+            $maxdate=$aQuestionAttributes['date_max'];
+            $date_max=str_replace(array( '}', '{' ), '', $aQuestionAttributes['date_max']);
+            if ($maxdate!=$date_max) $date_max_dynvars=true;
             // backward compatibility: if only a year is given, add month and day 
-            if ((strlen($maxyear)==4) && ($maxyear>=1900) && ($maxyear<=2037)) {
-                $maxyear.='-12-31'; 
+            if ((strlen($maxdate)==4) && ($maxdate>=1900) && ($maxdate<=2037)) {
+                $maxdate.='-12-31'; 
             }
         }
         else
         {
-            $maxyear='2037-12-31';
+            $maxdate='2037-12-31';
         }
 
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
@@ -1285,39 +1285,38 @@ function do_date($ia)
         <input class='popupdate' type=\"text\" size=\"{$iLength}\" name=\"{$ia[1]}\" title='".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."' id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"{$iLength}\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
-        <input  type='hidden' name='datemin{$ia[1]}' id='datemin{$ia[1]}' value=\"{$minyear}\"    />
-        <input  type='hidden' name='datemax{$ia[1]}' id='datemax{$ia[1]}' value=\"{$maxyear}\"   />
+        <input  type='hidden' name='datemin{$ia[1]}' id='datemin{$ia[1]}' value=\"{$mindate}\"    />
+        <input  type='hidden' name='datemax{$ia[1]}' id='datemax{$ia[1]}' value=\"{$maxdate}\"   />
 
         </p>";
              
             // following JS is for setting datepicker limits on-the-fly according to variables given in dropdown_date_year_min/max attributes
             // works with full dates (format: YYYY-MM-DD, js not needed), only a year, for backward compatibility (YYYY, js not needed),
             // or variable names which refer to another date question (in curly brackets)
-            // The term $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate($((LEMalias2varName['$dropdown_dates_year_min']).replace(/java/g, '#dateformat')).attr('value')
+            // The term $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate($((LEMalias2varName['$date_min']).replace(/java/g, '#dateformat')).attr('value')
             // gets the date format from the source variable (in extended attributes min/max field) and converts the date to the yy-mm-dd format
              
             // only write JS code if there are variables used.... everything else can be dealt with in PHP
-            if ($dropdown_dates_year_min_dynvars==true || $dropdown_dates_year_max_dynvars==true) {
+            if ($date_min_dynvars==true || $date_max_dynvars==true) {
             $answer.="<script> 
                 $(document).ready(function() {
                         $('.popupdate').change(function() {
                             if (typeof LEMalias2varName !== 'undefined') {
                             ";
                             
-            if ($dropdown_dates_year_min_dynvars==true) {
-              // if (step($dropdown_dates_year_min)==step(aktuell)) {
-                $answer.="	if ('$dropdown_dates_year_min' in LEMalias2varName) {
+            if ($date_min_dynvars==true) {
+                $answer.="	if ('$date_min' in LEMalias2varName) {
                                     $('#datemin{$ia[1]}').attr('value', $.datepicker.formatDate('yy-mm-dd', 
-                                    $.datepicker.parseDate($((LEMalias2varName['$dropdown_dates_year_min']).replace(/java/g, '#dateformat'))
-                                    .attr('value'), LEMval('$dropdown_dates_year_min'))));
+                                    $.datepicker.parseDate($((LEMalias2varName['$date_min']).replace(/java/g, '#dateformat'))
+                                    .attr('value'), LEMval('$date_min'))));
                                 }
                             ";
             }
-            if ($dropdown_dates_year_max_dynvars==true) {
-                $answer.="	if ('$dropdown_dates_year_max' in LEMalias2varName) {
+            if ($date_max_dynvars==true) {
+                $answer.="	if ('$date_max' in LEMalias2varName) {
                                     $('#datemax{$ia[1]}').attr('value', $.datepicker.formatDate('yy-mm-dd', 
-                                    $.datepicker.parseDate($((LEMalias2varName['$dropdown_dates_year_max']).replace(/java/g, '#dateformat'))
-                                    .attr('value'), LEMval('$dropdown_dates_year_max'))));
+                                    $.datepicker.parseDate($((LEMalias2varName['$date_max']).replace(/java/g, '#dateformat'))
+                                    .attr('value'), LEMval('$date_max'))));
                                 }
                             ";
             }
