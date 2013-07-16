@@ -3713,8 +3713,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import questionattributes -------------------------------------------------
     if(isset($xml->question_attributes))
     {
-
-
         $aAllAttributes=questionAttributes(true);
         foreach ($xml->question_attributes->rows->row as $row)
         {
@@ -3722,6 +3720,22 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
+            }
+            
+            // take care of renaming of date min/max adv. attributes fields
+            if ($iDBVersion < 170)
+            {
+                if (isset($insertdata['attribute']))
+                {
+                    if ($insertdata['attribute']=='dropdown_dates_year_max') 
+                    {
+                        $insertdata['attribute']='date_max'; 
+                    }
+                    if ($insertdata['attribute']=='dropdown_dates_year_min') 
+                    {
+                        $insertdata['attribute']='date_min';
+                    }
+                }
             }
             unset($insertdata['qaid']);
             if (!isset($aQIDReplacements[(int)$insertdata['qid']])) continue;
