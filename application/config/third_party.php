@@ -8,7 +8,7 @@ return array(
     'jquery' => array(
         'baseUrl' => 'third_party/jquery/',
         'js' => array(
-            'jquery-1.9.1.min.js'
+            'jquery-1.10.2.min.js'
         )
     ),
     'jqgrid' => array(
