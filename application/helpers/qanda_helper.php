@@ -1102,8 +1102,8 @@ function do_date($ia)
                     {
                         $yearmin = (int)substr(LimeExpressionManager::ProcessString($aQuestionAttributes['date_min']),0,4);
                     }
-                    else
-                    {
+                    if (!isset($yearmin) || $yearmin==0)
+					{
                         $yearmin = 1900;
                     }
 
@@ -1111,7 +1111,7 @@ function do_date($ia)
                     {
                         $yearmax = (int)substr(LimeExpressionManager::ProcessString($aQuestionAttributes['date_max']), 0, 4);
                     }
-                    else
+                    if (!isset($yearmax) || $yearmax==0)
                     {
                         $yearmax = 2037;
                     }
