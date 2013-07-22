@@ -197,18 +197,18 @@ class templates extends Survey_Common_Action
                 if(strpos($content, "{TEMPLATEJS}")===false)
                 {
                     $templateFixes['success']=false;
-                    $templateFixes['details']['templatejs']="Unable to adding {TEMPLATEJS} placeholder, please control your startpage.pstpl.";
+                    $templateFixes['details']['templatejs']=$clang->gT("Unable to add {TEMPLATEJS} placeholder, please check your startpage.pstpl.");
                 }
                 else
                 {
-                    $templateFixes['details']['templatejs']="Placeholder {TEMPLATEJS} added to your startpage.pstpl.";
+                    $templateFixes['details']['templatejs']=$clang->gT("Placeholder {TEMPLATEJS} added to your startpage.pstpl.");
                 }
             }
         }
         else
         {
             $templateFixes['success']=false;
-            $templateFixes['details']['templatejs']="Unable to find startpage.pstpl to add {TEMPLATEJS} placeholder, please control your template.";
+            $templateFixes['details']['templatejs']=$clang->gT("Unable to find startpage.pstpl to add {TEMPLATEJS} placeholder, please check your template.");
         }
         return $templateFixes;
     }

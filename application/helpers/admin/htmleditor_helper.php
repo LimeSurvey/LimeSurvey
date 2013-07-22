@@ -133,6 +133,8 @@
 
         if ( ($fieldtype == 'email-inv' ||
         $fieldtype == 'email-reg' ||
+        $fieldtype == 'email-admin-notification' ||
+        $fieldtype == 'email-admin-resp' ||
         $fieldtype == 'email-conf' ||
         $fieldtype == 'email-rem' ) &&
         getEmailFormat($surveyID) != 'html')

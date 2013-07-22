@@ -109,7 +109,7 @@ class LSYii_Application extends CWebApplication
                 'getSurveys_json',
                 'remotecontrol'
             ),
-            'enableCsrfValidation'=>false,    // Enable to activate CSRF protection
+            'enableCsrfValidation'=>true,    // CSRF protection
             'enableCookieValidation'=>false   // Enable to activate cookie protection
         ));
         

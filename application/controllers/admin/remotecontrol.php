@@ -99,6 +99,8 @@ class remotecontrol extends Survey_Common_Action
             Yii::app()->loadLibrary('jsonRPCClient');
             $client = new jsonRPCClient($serverUrl);
         }
+        else die('RPC interface not activated in global settings');
+        
 
         $sSessionKey= $client->call('get_session_key', array('admin','password'));
         if (is_array($sSessionKey)) {echo $sSessionKey['status']; die();}
