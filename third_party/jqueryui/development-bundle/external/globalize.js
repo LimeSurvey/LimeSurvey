@@ -1474,7 +1474,7 @@ Globalize.parseFloat = function( value, radix, cultureSelector ) {
 	if ( value.indexOf(culture.numberFormat.currency.symbol) > -1 ) {
 		// remove currency symbol
 		value = value.replace( culture.numberFormat.currency.symbol, "" );
-		// replace decimal separator
+		// replace decimal seperator
 		value = value.replace( culture.numberFormat.currency["."], culture.numberFormat["."] );
 	}
 

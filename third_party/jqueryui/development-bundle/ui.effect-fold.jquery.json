@@ -9,10 +9,10 @@
 		"show",
 		"hide"
 	],
-	"version": "1.10.0",
+	"version": "1.10.3",
 	"author": {
 		"name": "jQuery Foundation and other contributors",
-		"url": "https://github.com/jquery/jquery-ui/blob/1.10.0/AUTHORS.txt"
+		"url": "https://github.com/jquery/jquery-ui/blob/1.10.3/AUTHORS.txt"
 	},
 	"maintainers": [
 		{
@@ -49,17 +49,17 @@
 	"licenses": [
 		{
 			"type": "MIT",
-			"url": "https://github.com/jquery/jquery-ui/blob/1.10.0/MIT-LICENSE.txt"
+			"url": "https://github.com/jquery/jquery-ui/blob/1.10.3/MIT-LICENSE.txt"
 		}
 	],
 	"bugs": "http://bugs.jqueryui.com/",
-	"homepage": "http://jqueryui.com/fold-effect/",
-	"demo": "http://jqueryui.com/fold-effect/",
+	"homepage": "http://jqueryui.com/effect/",
+	"demo": "http://jqueryui.com/effect/",
 	"docs": "http://api.jqueryui.com/fold-effect/",
 	"download": "http://jqueryui.com/download/",
 	"dependencies": {
 		"jquery": ">=1.6",
-		"ui.effect": "1.10.0"
+		"ui.effect": "1.10.3"
 	},
 	"category": "effect"
 }

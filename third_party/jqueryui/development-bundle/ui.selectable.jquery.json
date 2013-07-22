@@ -7,10 +7,10 @@
 		"selectable",
 		"selection"
 	],
-	"version": "1.10.0",
+	"version": "1.10.3",
 	"author": {
 		"name": "jQuery Foundation and other contributors",
-		"url": "https://github.com/jquery/jquery-ui/blob/1.10.0/AUTHORS.txt"
+		"url": "https://github.com/jquery/jquery-ui/blob/1.10.3/AUTHORS.txt"
 	},
 	"maintainers": [
 		{
@@ -47,7 +47,7 @@
 	"licenses": [
 		{
 			"type": "MIT",
-			"url": "https://github.com/jquery/jquery-ui/blob/1.10.0/MIT-LICENSE.txt"
+			"url": "https://github.com/jquery/jquery-ui/blob/1.10.3/MIT-LICENSE.txt"
 		}
 	],
 	"bugs": "http://bugs.jqueryui.com/",
@@ -57,9 +57,9 @@
 	"download": "http://jqueryui.com/download/",
 	"dependencies": {
 		"jquery": ">=1.6",
-		"ui.core": "1.10.0",
-		"ui.widget": "1.10.0",
-		"ui.mouse": "1.10.0"
+		"ui.core": "1.10.3",
+		"ui.widget": "1.10.3",
+		"ui.mouse": "1.10.3"
 	},
 	"category": "interaction"
 }

@@ -1,5 +1,5 @@
 /*!
- * jQuery UI Droppable 1.10.0
+ * jQuery UI Droppable 1.10.3
  * http://jqueryui.com
  *
  * Copyright 2013 jQuery Foundation and other contributors
@@ -21,7 +21,7 @@ function isOverAxis( x, reference, size ) {
 }
 
 $.widget("ui.droppable", {
-	version: "1.10.0",
+	version: "1.10.3",
 	widgetEventPrefix: "drop",
 	options: {
 		accept: "*",
@@ -278,7 +278,8 @@ $.ui.ddmanager = {
 	drop: function(draggable, event) {
 
 		var dropped = false;
-		$.each($.ui.ddmanager.droppables[draggable.options.scope] || [], function() {
+		// Create a copy of the droppables in case the list changes during the drop (#9116)
+		$.each(($.ui.ddmanager.droppables[draggable.options.scope] || []).slice(), function() {
 
 			if(!this.options) {
 				return;

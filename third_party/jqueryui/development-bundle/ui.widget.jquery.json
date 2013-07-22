@@ -9,10 +9,10 @@
 		"state",
 		"factory"
 	],
-	"version": "1.10.0",
+	"version": "1.10.3",
 	"author": {
 		"name": "jQuery Foundation and other contributors",
-		"url": "https://github.com/jquery/jquery-ui/blob/1.10.0/AUTHORS.txt"
+		"url": "https://github.com/jquery/jquery-ui/blob/1.10.3/AUTHORS.txt"
 	},
 	"maintainers": [
 		{
@@ -49,7 +49,7 @@
 	"licenses": [
 		{
 			"type": "MIT",
-			"url": "https://github.com/jquery/jquery-ui/blob/1.10.0/MIT-LICENSE.txt"
+			"url": "https://github.com/jquery/jquery-ui/blob/1.10.3/MIT-LICENSE.txt"
 		}
 	],
 	"bugs": "http://bugs.jqueryui.com/",

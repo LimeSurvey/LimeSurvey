@@ -42,7 +42,7 @@ return array(
     'jqueryui' => array(
         'baseUrl' => 'third_party/jqueryui/',
         'js' => array(
-            'js/jquery-ui-1.10.0.custom.min.js'
+            'js/jquery-ui-1.10.3.custom.min.js'
         ),
         'css' => array(
             //'css/smoothness/jquery-ui-1.10.0.custom.min.css'
