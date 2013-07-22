@@ -83,7 +83,12 @@ return array(
             'jquery'
         )
     ),
-    
+    'jquery-blockUI' => array(
+        'baseUrl' => 'third_party/jquery-blockui',
+        'js' => array(
+            'jquery.blockUI.js'
+        )
+    ),
     'qTip2' => array(
         'baseUrl' => 'third_party/qTip2',
         'js' => array(
