@@ -679,7 +679,7 @@ class SurveyRuntimeHelper {
                 }
 
                 $redata['completed'] = implode("\n", $blocks) ."\n". $redata['completed'];
-
+                $redata['thissurvey']['surveyls_url'] = $thissurvey['surveyls_url'];
                 
                 echo templatereplace(file_get_contents($sTemplatePath."completed.pstpl"), array('completed' => $completed), $redata);
                 echo "\n";
