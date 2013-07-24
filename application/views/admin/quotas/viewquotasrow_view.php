@@ -31,7 +31,8 @@
                 <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />
                 <input type="hidden" name="subaction" value="quota_editquota" />
             </form>
-            <?php } if (hasSurveyPermission($iSurveyId, 'quotas','delete')) { ?>
+        <?php } ?>
+        <?php if (hasSurveyPermission($iSurveyId, 'quotas','delete')) { ?>
             <?php echo CHtml::form(array("admin/quotas/sa/delquota/surveyid/{$iSurveyId}"), 'post'); ?>
                 <input name="submit" type="submit" class="submit" value="<?php $clang->eT("Remove");?>" />
                 <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
@@ -39,7 +40,7 @@
                 <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />
                 <input type="hidden" name="subaction" value="quota_delquota" />
             </form>
-            <?php } ?>
+        <?php } ?>
     </td></tr>
 
 <tr class="evenrow">
