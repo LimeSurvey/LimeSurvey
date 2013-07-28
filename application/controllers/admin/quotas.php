@@ -62,7 +62,7 @@ class quotas extends Survey_Common_Action
     private function _checkPermissions($iSurveyId, $sPermission)
     {
         $clang=$this->getController()->lang;
-        if (!empty($sPermission) && !hasSurveyPermission($iSurveyId, 'quotas', $sPermission)) {
+        if (!empty($sPermission) && !(Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', $sPermission))) {
             Yii::app()->session['flashmessage'] = $clang->gT('Access denied!');
             $this->_redirectToIndex($iSurveyId);
         }
