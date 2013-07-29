@@ -43,6 +43,31 @@
             $this->pluginDirs[] = 'webroot.plugins';           // User plugins
             $this->pluginDirs[] = 'webroot.application.core.plugins';  // Core plugins
         }
+        
+        /**
+         * Return a list of installed plugins, but only if the files are still there
+         * 
+         * This prevents errors when a plugin was installed but the files were removed
+         * from the server.
+         * 
+         * @return array
+         */
+        public function getInstalledPlugins()
+        {
+            $pluginModel = Plugin::model();    
+            $records = $pluginModel->findAll();
+            
+            $plugins = array();
+
+            foreach ($records as $record) {
+                // Only add plugins we can find
+                if ($this->loadPlugin($record->name) !== false) {
+                    $plugins[$record->id] = $record;
+                }
+            }
+            return $plugins;
+        }
+        
         /**
          * Returns the storage instance of type $storageClass.
          * If needed initializes the storage object.
@@ -179,7 +204,7 @@
                     }
                 }
             }
-            
+
             return $result;
         }
 
@@ -193,22 +218,32 @@
         {
             $result = array();
             $class = "{$pluginClass}";
+            
             if (!class_exists($class, false)) {
+                $found = false;
                 if (!is_null($pluginDir)) {
-                    Yii::import($pluginDir . ".$pluginClass.*");
-                  } else {
-                    foreach ($this->pluginDirs as $pluginDir) {
-                        $file = Yii::getPathOfAlias($pluginDir . ".$pluginClass.{$pluginClass}") . ".php";
-                        if (file_exists($file)) {
-                            Yii::import($pluginDir . ".$pluginClass.*");
-                            break;
-                        }
+                    $dirs = array($pluginDir);
+                } else {
+                    $dirs = $this->pluginDirs;
+                }
+                
+                foreach ($this->pluginDirs as $pluginDir) {
+                    $file = Yii::getPathOfAlias($pluginDir . ".$pluginClass.{$pluginClass}") . ".php";
+                    if (file_exists($file)) {
+                        Yii::import($pluginDir . ".$pluginClass.*");
+                        $found = true;
+                        break;
                     }
                 }
+                
+                if (!$found) {
+                    return false;
+                }
             }
+            
             $result['description'] = call_user_func(array($class, 'getDescription'));
             $result['pluginName'] = call_user_func(array($class, 'getName'));
-            $result['pluginClass'] = $class;
+            $result['pluginClass'] = $class;            
             return $result;
         }
         
@@ -237,8 +272,11 @@
             { 
                 if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName))
                 {
-                    $this->getPluginInfo($pluginName);
-                    $this->plugins[$id] = new $pluginName($this, $id);
+                    if ($this->getPluginInfo($pluginName) !== false) {
+                        $this->plugins[$id] = new $pluginName($this, $id);
+                    } else {
+                        $this->plugins[$id] = null;
+                    }
                 }
                 return $this->plugins[$id];
             }

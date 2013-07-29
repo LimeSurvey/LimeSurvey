@@ -25,13 +25,14 @@
         }
         public function actionIndex()
         {
+            $pluginManager = App()->getPluginManager();
+            
             // Scan the plugins folder.
-            $discoveredPlugins = App()->getPluginManager()->scanPlugins();
+            $discoveredPlugins = $pluginManager->scanPlugins();
             
-            $installedPlugins = Plugin::model()->findAll();
-            
+            $installedPlugins = $pluginManager->getInstalledPlugins();
             $installedNames = array_map(function ($installedPlugin) { return $installedPlugin->name; }, $installedPlugins);
-            
+
             // Install newly discovered plugins.
             foreach ($discoveredPlugins as $discoveredPlugin)
             {
@@ -48,13 +49,27 @@
             $data = array();
             foreach ($plugins as $plugin)
             {
-                $data[] = array(
-                    'id' => $plugin->id,
-                    'name' => $discoveredPlugins[$plugin->name]['pluginName'],
-                    'description' => $discoveredPlugins[$plugin->name]['description'],
-                    'active' => $plugin->active,
-                    'new' => !in_array($plugin->name, $installedNames)
-                );
+                if (array_key_exists($plugin->name, $discoveredPlugins)) {
+                    $data[] = array(
+                        'id' => $plugin->id,
+                        'name' => $discoveredPlugins[$plugin->name]['pluginName'],
+                        'description' => $discoveredPlugins[$plugin->name]['description'],
+                        'active' => $plugin->active,
+                        'new' => !in_array($plugin->name, $installedNames)
+                    );
+                } else {
+                    // This plugin is missing, maybe the files were deleted but the record was not removed from the database
+                    // Disable the plugin
+                    $plugin->active = 0;
+                    $plugin->save();
+                    $data[] = array(
+                        'id' => $plugin->id,
+                        'name' => $plugin->name,
+                        'description' => gT('** Plugin missing **'),
+                        'active' => $plugin->active,
+                        'new' => false
+                    );
+                }
             }
             echo $this->render('/plugins/index', compact('data'));
         }
