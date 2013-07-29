@@ -79,7 +79,7 @@ abstract class AuthPluginBase extends PluginBase {
     {
         $event = $this->getEvent();
         $identity = $this->getEvent()->get('identity');
-        $identity->plugin = $this;
+        $identity->plugin = get_class($this);
         $this->getEvent()->stop();
         
         return $this;
