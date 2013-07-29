@@ -322,7 +322,7 @@ abstract class Writer implements IWriter
     * @param FormattingOptions $oOptions
     * @return string
     */
-    private function transformResponseValue($value, $fieldType, FormattingOptions $oOptions)
+    protected function transformResponseValue($value, $fieldType, FormattingOptions $oOptions)
     {
         //The following if block handles transforms of Ys and Ns.
         if (($oOptions->convertN || $oOptions->convertY) &&

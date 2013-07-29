@@ -45,7 +45,7 @@ class ExportR extends PluginBase {
             
             case 'rdata':
             default:
-                $writer = new CSVWriter();
+                $writer = new RDataWriter();
                 break;
         }
         

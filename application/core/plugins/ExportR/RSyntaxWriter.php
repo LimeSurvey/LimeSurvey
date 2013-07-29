@@ -141,7 +141,7 @@ class RSyntaxWriter extends Writer
                     }
 
                     $str = mb_substr($str, 0, -1);
-                    echo $str . '),labels=c(';
+                    $str .= '),labels=c(';
 
                     foreach ($answers as $answer) {
                         $str .= "\"{$answer['value']}\", ";
