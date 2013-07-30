@@ -65,8 +65,12 @@
             } ?>
             <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir))
                 {?>
+                <?php if (function_exists("zip_open") && false) {?>
                 <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/sa/upload'); ?>", "_top")'>
                     <img src='<?php echo $sImageURL; ?>import.png' alt='<?php $clang->eT("Import template"); ?>' title='' /></a>
+                <?php }else{ ?>
+                    <img src='<?php echo $sImageURL; ?>import_disabled.png' alt='<?php $clang->eT("zip library not supported by PHP, Import ZIP Disabled"); ?>' /></a>
+                <?php } ?>
                 <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename) ?>", "_top")'>
                     <img src='<?php echo $sImageURL; ?>export.png' alt='<?php $clang->eT("Export Template"); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
