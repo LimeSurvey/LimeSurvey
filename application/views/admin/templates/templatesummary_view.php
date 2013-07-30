@@ -63,7 +63,7 @@
         </form>
     </div>
 
-    <div style="float:left;">
+    <div style="float:left;width:12%">
         <div>
             <?php $clang->eT("Other files:"); ?>
             <?php echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post'); ?>
@@ -78,8 +78,8 @@
             </form>
         </div>
         <div style='margin-top:1em;'>
-            <?php echo CHtml::form(array('admin/templates/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
-                <?php $clang->eT("Upload a file:"); ?><br><input style='width:50px;' size=10 name='upload_file' id="upload_file" type="file" /><br />
+            <?php echo CHtml::form(array('admin/templates/sa/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
+                <?php $clang->eT("Upload a file:"); ?><br><input size=10 name='upload_file' id="upload_file" type="file" /><br />
                 <input type='submit' value='<?php $clang->eT("Upload"); ?>'
                     <?php if (!is_template_editable($templatename))  { ?>
                         disabled='disabled'
