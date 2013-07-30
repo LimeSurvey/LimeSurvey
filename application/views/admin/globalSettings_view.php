@@ -51,12 +51,12 @@
                 if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
                 {
                 ?>
-                <p><input type="button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/globalsettings/showphpinfo"); ?>')" value="<?php $clang->eT("Show PHPInfo"); ?>" />
-                    <?php
-                    }
+                    <p><a href="<?php echo $this->createUrl('admin/globalsettings',array('sa'=>'showphpinfo')) ?>" target="blank" class="button"><?php $clang->eT("Show PHPInfo"); ?></p>
+                <?php
+                }
                 ?>
 
-                <br /><br/></p><div class='header ui-widget-header'><?php echo $clang->eT("Updates"); ?></div><br/><ul>
+                <div class='header ui-widget-header'><?php echo $clang->eT("Updates"); ?></div><br/><ul>
                 <li><label for='updatecheckperiod'><?php echo $clang->eT("Automatically check for updates:"); ?></label>
                     <select name='updatecheckperiod' id='updatecheckperiod'>
                         <option value='0'

@@ -21,8 +21,8 @@ $(document).ready(function(){
         }, $.datepicker.regional[userlanguage]);
     }
 
-    $('button,input[type=submit],input[type=button],input[type=reset]').addClass("limebutton ui-state-default ui-corner-all");
-    $('button,input[type=submit],input[type=button],input[type=reset]').hover(
+    $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton ui-state-default ui-corner-all");
+    $('button,input[type=submit],input[type=button],input[type=reset],.button').hover(
     function(){
         $(this).addClass("ui-state-hover");
     },
