@@ -65,7 +65,7 @@
             } ?>
             <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir))
                 {?>
-                <?php if (function_exists("zip_open") && false) {?>
+                <?php if (function_exists("zip_open")) {?>
                 <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/sa/upload'); ?>", "_top")'>
                     <img src='<?php echo $sImageURL; ?>import.png' alt='<?php $clang->eT("Import template"); ?>' title='' /></a>
                 <?php }else{ ?>
