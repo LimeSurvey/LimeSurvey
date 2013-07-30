@@ -9,14 +9,14 @@
     <div class='header'>
         <?php echo sprintf($clang->gT("Editing template '%s' - File '%s'"),$templatename,$editfile); ?>
     </div>
-    <div id='templateleft' style="float:left;padding-left:1em;width:12%;">
-        <div >
+    <div id='templateleft' style="float:left;width:12%;">
+        <div style="padding-left:1em;">
             <?php $clang->eT("Standard files:"); ?><br>
             <select size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                 <?php echo makeoptions($files, "name", "name", $editfile); ?>
             </select>
         </div>
-        <div style='margin-top:1em;'>
+        <div style='margin-top:1em;padding-left:1em;'>
             <?php $clang->eT("CSS & Javascript files:"); ?>
             <br/><select size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                 <?php echo makeoptions($cssfiles, "name", "name", $editfile); ?>
@@ -53,7 +53,7 @@
         </form>
     </div>
 
-    <div style="float:left;">
+    <div style="float:left;width:12%;">
         <div>
             <?php $clang->eT("Other files:"); ?>
             <?php echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post'); ?>
@@ -68,8 +68,8 @@
             </form>
         </div>
         <div style='margin-top:1em;'>
-            <?php echo CHtml::form(array('admin/templates/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
-                <?php $clang->eT("Upload a file:"); ?><br><input style='width:50px;' size=10 name='upload_file' id="upload_file" type="file" /><br />
+            <?php echo CHtml::form(array('admin/templates/sa/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
+                <?php $clang->eT("Upload a file:"); ?><br><input name='upload_file' id="upload_file" type="file" required="required"/><br />
                 <input type='submit' value='<?php $clang->eT("Upload"); ?>'
                     <?php if (!is_template_editable($templatename))  { ?>
                         disabled='disabled'
