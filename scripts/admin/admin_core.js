@@ -37,8 +37,8 @@ $(document).ready(function(){
     }
     $(".sf-menu").superfish({speed: 'fast'});
     doToolTip();
-    $('button,input[type=submit],input[type=button],input[type=reset]').button();
-    $('button,input[type=submit],input[type=button],input[type=reset]').addClass("limebutton");
+    $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
+    $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
 
     $(".progressbar").each(function(){
         var pValue = parseInt($(this).attr('name'));
