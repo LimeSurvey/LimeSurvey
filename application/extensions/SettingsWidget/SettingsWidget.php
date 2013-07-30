@@ -155,6 +155,20 @@
 
             return $out;
         }
+        
+        public function renderCheckbox($name, array $metaData, $form = null)
+        {
+            $out = '';
+            $id = $name;
+            $value = isset($metaData['current']) ? (bool) $metaData['current'] : false;
+            if (isset($metaData['label']))
+            {
+                $out .= CHtml::label($metaData['label'], $id);
+            }
+            $out .= CHtml::checkBox($id, $value, array('id' => $id, 'form' => $form, 'container'=>'div', 'separator' => ''));
+            
+            return $out;
+        }
 
         public function renderFloat($name, array $metaData, $form = null)
         {
@@ -277,7 +291,7 @@
 
         public function renderList($name, array $metaData, $form = null)
         {
-
+            $id = $name;
             if (isset($metaData['label']))
             {
                 $label = CHtml::label($metaData['label'], $id, $metaData['labelOptions']);

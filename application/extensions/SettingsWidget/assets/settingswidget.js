@@ -18,7 +18,11 @@ $(document).ready(function() {
 
         // Check if the first element contains a number value and, if so, increase it by one.
         var parts = baseRow.find('input:first').val().match(/([\d]+|[^\d]+)/g);
-        for (var i = parts.length - 1; i > 0; --i)
+        if (parts == null)
+        {
+            parts = [0];
+        }
+        for (var i = parts.length - 1; i >= 0; --i)
         {
             var num = parseInt(parts[i]);
             var length = parts[i].length;
