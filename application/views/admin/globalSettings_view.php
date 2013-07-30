@@ -51,7 +51,7 @@
                 if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
                 {
                 ?>
-                    <p><a href="<?php echo $this->createUrl('admin/globalsettings',array('sa'=>'showphpinfo')) ?>" target="blank" class="button"><?php $clang->eT("Show PHPInfo"); ?></p>
+                    <p><a href="<?php echo $this->createUrl('admin/globalsettings',array('sa'=>'showphpinfo')) ?>" target="blank" class="button"><?php $clang->eT("Show PHPInfo"); ?></a></p>
                 <?php
                 }
                 ?>
