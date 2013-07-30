@@ -60,12 +60,8 @@
                 'alt' => gT('Manage survey administrators'),
                 'image' => 'security.png',
             );
-            $menu['items']['left'][] = array(
-                'href' => array('admin/usergroups/sa/index'),
-                'alt' => gT('Create/edit user groups'),
-                'image' => 'usergroup.png'
-            );
 
+            $menu['items']['left'][] = $this->userGroups();
             $menu['items']['left'][] = $this->globalSettings();
             $menu['items']['left'][] = 'separator';
             $menu['items']['left'][] = $this->checkIntegrity();
@@ -75,11 +71,7 @@
             $menu['items']['left'][] = $this->editTemplates();
             $menu['items']['left'][] = 'separator';
             $menu['items']['left'][] = $this->participantDatabase();
-            $menu['items']['left'][] = array(
-                'href' => array('/plugins'),
-                'alt' => gT('Plugin manager'),
-                'image' => 'plugin.png'
-            );
+            $menu['items']['left'][] = $this->pluginManager();
 
             $surveys = getSurveyList(true);
             $surveyList = array();
@@ -582,6 +574,18 @@
                 );
             }
         }
+        
+        protected function userGroups()
+        {
+            if(Permission::model()->hasGlobalPermission('usergroups','read'))
+            {
+                return array(
+                    'href' => array('admin/usergroups/sa/index'),
+                    'alt' => gT('Create/edit user groups'),
+                    'image' => 'usergroup.png'
+                );
+            }
+        }
 
         protected function participantDatabase()
         {
@@ -592,6 +596,18 @@
                     'href' => array('admin/participants'),
                     'image' => 'cpdb.png'
                  );
+            }
+        }
+        
+        protected function pluginManager()
+        {
+            if (Permission::model()->hasGlobalPermission('superadmin','read'))
+            {
+                return array(
+                    'href' => array('/plugins'),
+                    'alt' => gT('Plugin manager'),
+                    'image' => 'plugin.png'
+                );
             }
         }
 
