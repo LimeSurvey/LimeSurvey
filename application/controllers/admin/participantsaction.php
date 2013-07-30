@@ -1089,7 +1089,9 @@ class participantsaction extends Survey_Common_Action
 
     function attributeMapCSV()
     {
-
+        /* Adjust system settings to read file with MAC line endings */
+        @ini_set('auto_detect_line_endings', true);
+        
         $clang = $this->getController()->lang;
         $sRandomFileName=randomChars(20);
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
