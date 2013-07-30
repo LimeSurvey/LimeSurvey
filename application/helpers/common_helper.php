@@ -6013,7 +6013,7 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 * @param mixed $sLanguageCode
 * @param boolean $bHonorConditions Apply conditions
 */
-function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions=false)
+function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions=true)
 {
     $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
     $oLanguage = new Limesurvey_lang($sLanguageCode);
@@ -6026,7 +6026,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
 
     foreach ($aFieldMap as $sKey=>$fname)
     {
-        if (LimeExpressionManager::QuestionIsRelevant($fname['qid']))
+        if (LimeExpressionManager::QuestionIsRelevant($fname['qid']) || $bHonorConditions==false)
         {
             $aRelevantFields[$sKey]=$fname;
         }
@@ -6052,7 +6052,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
             if ($oldgid !== $fname['gid'])
             {
                 $oldgid = $fname['gid'];
-                if (LimeExpressionManager::GroupIsRelevant($fname['gid'])) {
+                if (LimeExpressionManager::GroupIsRelevant($fname['gid']) || $bHonorConditions==false) {
                     $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
                 }
             }

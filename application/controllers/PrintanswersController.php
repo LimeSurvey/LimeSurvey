@@ -136,7 +136,8 @@ class PrintanswersController extends LSYii_Controller {
         // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
         LimeExpressionManager::StartProcessingGroup(1,($thissurvey['anonymized']!="N"),$surveyid);
 
-        $aFullResponseTable = getFullResponseTable($surveyid,$id,$language,true);
+        $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
+        $aFullResponseTable = getFullResponseTable($surveyid,$id,$language,$printanswershonorsconditions);
 
         //Get the fieldmap @TODO: do we need to filter out some fields?
         unset ($aFullResponseTable['id']);
