@@ -65,9 +65,13 @@
             } ?>
             <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir))
                 {?>
-                <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/sa/upload'); ?>", "_top")'>
+                <?php if (function_exists("zip_open")) {?>
+                <a href='<?php echo $this->createUrl('admin/templates/sa/upload'); ?>'>
                     <img src='<?php echo $sImageURL; ?>import.png' alt='<?php $clang->eT("Import template"); ?>' title='' /></a>
-                <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename) ?>", "_top")'>
+                <?php }else{ ?>
+                    <img src='<?php echo $sImageURL; ?>import_disabled.png' alt='<?php $clang->eT("zip library not supported by PHP, Import ZIP Disabled"); ?>' /></a>
+                <?php } ?>
+                <a href='<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename) ?>'>
                     <img src='<?php echo $sImageURL; ?>export.png' alt='<?php $clang->eT("Export Template"); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                 <a href='#' onclick="javascript: copyprompt('<?php $clang->eT("Please enter the name for the copied template:"); ?>', '<?php echo $clang->gT("copy_of_")."$templatename"; ?>',            '<?php echo $templatename; ?>', 'copy')">
