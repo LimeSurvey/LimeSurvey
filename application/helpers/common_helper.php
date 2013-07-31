@@ -633,18 +633,15 @@ function getGidNext($surveyid, $gid)
     if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
-    //$gquery = "SELECT gid FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
-
     $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
 
     $GidNext="";
     $i = 0;
-    $iNext = 1;
+    $iNext = 0;
 
     foreach ($qresult as $qrow)
     {
         $qrow = $qrow->attributes;
-
         if ($gid == $qrow['gid']) {$iNext = $i + 1;}
         $i += 1;
     }
@@ -667,19 +664,17 @@ function getQidNext($surveyid, $gid, $qid)
 {
     $clang = Yii::app()->lang;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
+
     $qrows = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid' => 0), array('order'=>'question_order'));
-
-
     $i = 0;
-    $iNext = 1;
-    if (count($qrows) > 0)
+    $iNext = 0;
+
+    foreach ($qrows as $qrow)
     {
-        foreach ($qrows as $qrow)
-        {
-            if ($qid == $qrow->qid) {$iNext = $i + 1;}
-            $i += 1;
-        }
+        if ($qid == $qrow->qid && $qid) {$iNext = $i + 1;}
+        $i += 1;
     }
+
     if ($iNext < count($qrows)) {$QidNext = $qrows[$iNext]->qid;}
     else {$QidNext = "";}
     return $QidNext;
