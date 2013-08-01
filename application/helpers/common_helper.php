@@ -1596,7 +1596,7 @@ function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 function returnGlobal($stringname,$bRestrictToString=false)
 {
     $urlParam=Yii::app()->request->getParam($stringname); 
-    if(!$urlParam && $urlParam!='0' && $aCookies=Yii::app()->request->getCookies() && $stringname!='sid')
+    if(!isset($urlParam) && $aCookies=Yii::app()->request->getCookies() && $stringname!='sid')
     {
         if(isset($aCookies[$stringname]))
         {
@@ -1605,7 +1605,7 @@ function returnGlobal($stringname,$bRestrictToString=false)
     }
 
     $bUrlParamIsArray=is_array($urlParam);// Needed to array map or if $bRestrictToString
-    if (($urlParam || $urlParam=='0') && (!$bUrlParamIsArray || !$bRestrictToString))
+    if (isset($urlParam) && $stringname!='' && (!$bUrlParamIsArray || !$bRestrictToString))
     {
         if ($stringname == 'sid' || $stringname == "gid" || $stringname == "oldqid" ||
         $stringname == "qid" || $stringname == "tid" ||
