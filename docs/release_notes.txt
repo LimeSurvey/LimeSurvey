@@ -60,6 +60,43 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130708) to 2.00+ (build 130802) Aug 2, 2013
+-Fixed issue #7992: Assessments are centered in HTML (Denis Chenu)
+-Fixed issue #7842: Import global partipants CSV from Excel Mac 2011 fails because headers are not correctly identified (Carsten Schmitz)
+-Fixed issue #7923: INSERTANS SPAN problem in end URL when using then all-in-one page presentation setting (Carsten Schmitz)
+-Fixed issue #7938: Can't display Array (texts) answer with some SQL server (Denis Chenu)
+-Fixed issue #7989: Unable to upload PNG files in template editor (Denis Chenu)
+-Fixed issue #7994: Admin without update quota right view delete button (Denis Chenu)
+-Fixed issue #7995: Memory issue in Survey Activation (Denis Chenu)
+-Fixed issue #8013: 'printanswershonorsconditions' does not work (mfaber)
+-Fixed issue #8038 : with  urlFormat to "get" : Can't upload file in template editor (Denis Chenu)
+-Fixed issue: Access to quotas doesn't test read permission (Denis Chenu)
+-Fixed issue: JavaScript broken in import template if php-zip is disabled (Denis Chenu)
+-Fixed issue: Next button in question menu goes to second question of the group if no question ar selected (Denis Chenu)
+-Fixed issue: Unable to show phpinfo with 'urlFormat' => 'get' (Denis Chenu)
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Chinese (Taiwan) (Traditional) by katy50306
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by tigger
+#Updated translation: German by actxcellence
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Hindi by ajparag
+#Updated translation: Hungarian by jgege
+#Updated translation: Japanese by nomoto
+#Updated translation: Kurdish (Sorani) by nabaz, rahand
+#Updated translation: Lithuanian by apklausos, simasj
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by hugomusetti, mauriciofurtado, andreass
+#Updated translation: Russian by vipgroup
+#Updated translation: Slovak by sweetakasha
+#Updated translation: Spanish (Argentina) (Informal) by gap1981
+#Updated translation: Spanish (Spain) by valdomir, larjona, aesteban, jaimealvarezv
+#Updated translation: Vietnamese by cuongestih
+
 Changes from 2.00+ (build 130611) to 2.00+ (build 130708) Jul 8, 2013
 -New translation: Valencian (Carsten Schmitz)
 -New feature: Added a function to the expression manager which allows numerical values (weberho)
