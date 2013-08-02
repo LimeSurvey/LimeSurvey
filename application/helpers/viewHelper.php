@@ -122,7 +122,7 @@ class viewHelper
             if(isset($field['title']) && $field['title'])
             {
                 $questioncode=$field['title'];
-                if(isset($field['aid']) && $field['aid'])
+                if(isset($field['aid']) && $field['aid']!="")
                 {
                     if(is_array($option['separator'])){ // Count ?
                         $questioncode.=$option['separator'][0].$field['aid'].$option['separator'][1];
