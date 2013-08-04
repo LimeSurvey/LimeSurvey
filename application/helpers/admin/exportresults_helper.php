@@ -85,7 +85,8 @@ class ExportSurveyResultsService
             'xls' => '',
             'pdf' => '',
             'html' => '',
-            'csv' => ''
+            'csv' => '',
+            'json' => ''
         );
         $event = new PluginEvent('listExportPlugins');
         $oPluginManager = App()->getPluginManager();
@@ -113,6 +114,9 @@ class ExportSurveyResultsService
                     break;
                 case "html":
                     $writer = new HtmlWriter();
+                    break;
+                case "json":
+                    $writer = new JsonWriter();
                     break;
                 case "csv":
                 default:
