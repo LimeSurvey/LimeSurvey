@@ -34,36 +34,36 @@ return array(
         'application.modules.*',
     ),
 
-	'components' => array(
-		'db' => array(
-			'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey',
-			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
-			'charset' => 'utf8',
-			'tablePrefix' => 'lime_',
-		),
+    'components' => array(
+        'db' => array(
+            'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey',
+            'emulatePrepare' => true,
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+            'tablePrefix' => 'lime_',
+        ),
 /*
-		'session' => array (
-			'class' => 'system.web.CDbHttpSession',
-			'connectionID' => 'db',
-			'sessionTableName' => '{{sessions}}',
-		),
-        */
+        'session' => array (
+            'class' => 'system.web.CDbHttpSession',
+            'connectionID' => 'db',
+            'sessionTableName' => '{{sessions}}',
+        ),
+*/
         'urlManager' => array(
             'urlFormat' => 'get',
             'rules' => require('routes.php'),
             'showScriptName' => true,
         ),
-        // Use the following config variable to set modified optional settings copied from config-defaults.php
-        'config'=>array(
-            // debug: Set this to 1 if you are looking for errors. If you still get no errors after enabling this
-            // then please check your error-logs - either in your hosting provider admin panel or in some /logs directory
-            // on your webspace.
-            // LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates
-            'debug'=>0,
-            'debugsql'=>0 // Set this to 1 to enanble sql logging, only active when debug = 2
-        )
+    ),
+    // Use the following config variable to set modified optional settings copied from config-defaults.php
+    'config'=>array(
+        // debug: Set this to 1 if you are looking for errors. If you still get no errors after enabling this
+        // then please check your error-logs - either in your hosting provider admin panel or in some /logs directory
+        // on your webspace.
+        // LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates
+        'debug'=>0,
+        'debugsql'=>0 // Set this to 1 to enanble sql logging, only active when debug = 2
     )
 );
 /* End of file config.php */
