@@ -1,0 +1,44 @@
+#addlang
+{
+  width: 400px;
+  margin-left: auto ;
+  margin-right: auto ;
+}
+.commonsettings {
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.nudgeleft {
+    margin-left: -20px;
+}
+td.actions {
+    width: 40px;
+    text-align: right;
+}
+td.data {
+    text-align: center;
+}
+#dd{
+  margin-left: auto ;
+  margin-right: auto ;
+}
+#plus{
+  width: 20%;
+  margin-left: auto ;
+  margin-right: auto ;
+}
+#editbox {
+    border: 1px solid black;
+}
+.languagesetting {
+    border: 1px solid gray;
+    cursor: pointer;
+}
+.edit {
+    cursor: pointer;
+    float: left;
+}
+input {
+    background-color: white;
+}
