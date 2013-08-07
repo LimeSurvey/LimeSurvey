@@ -2085,9 +2085,9 @@ function do_ranking($ia)
         $answer.="<div id=\"htmlblock-{$ia['0']}-{$ansrow['code']}\">{$ansrow['answer']}</div>";
     }
     $answer .="</div>";
-    Yii::app()->getClientScript()->registerScriptFile(App()->baseUrl."/third_party/jquery.actual/jquery.actual.min.js"); // Needed to with jq1.9 ?
+    App()->getClientScript()->registerPackage('jquery-actual'); // Needed to with jq1.9 ?
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."ranking.js");
-    Yii::app()->getClientScript()->registerCssFile("ranking.css");
+    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "ranking.css");
 
     if(trim($aQuestionAttributes['choice_title'][$clang->langcode]) != '')
     {

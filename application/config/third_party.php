@@ -161,4 +161,13 @@ return array(
             'jquery'
         )
     ),
+	'jquery-actual' => array(
+        'baseUrl' => 'third_party/jquery-actual/',
+        'js' => array(
+            'jquery.actual.min.js'
+        ),
+        'depends' => array(
+            'jquery'
+        )
+    ),
 );

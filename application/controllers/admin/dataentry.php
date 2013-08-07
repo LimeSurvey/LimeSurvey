@@ -881,7 +881,7 @@ class dataentry extends Survey_Common_Action
                             }
                             $aDataentryoutput .="</div>";
                             $aDataentryoutput .= '</div>';
-                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.actual/jquery.actual.min.js');
+                            App()->getClientScript()->registerPackage('jquery-actual');
                             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             $aDataentryoutput .= "<script type='text/javascript'>\n"
@@ -2134,7 +2134,7 @@ class dataentry extends Survey_Common_Action
                                     $answers[] = $ansrow;
                                 }
                             $cdata['answers']=$answers;
-                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.actual/jquery.actual.min.js');
+                            App()->getClientScript()->registerPackage('jquery-actual');
                             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             unset($answers);
