@@ -34,6 +34,18 @@ $internalConfig = array(
         'assetManager' => array(
             'baseUrl' => '/tmp/assets'
         ),
+		'request' => array(
+            'class'=>'LSHttpRequest',
+            'noCsrfValidationRoutes'=>array(
+//              '^services/wsdl.*$'   // Set here additional regex rules for routes not to be validate
+                'getTokens_json',
+                'getSurveys_json',
+                'remotecontrol'
+            ),
+            'enableCsrfValidation'=>true,    // CSRF protection
+            'enableCookieValidation'=>false   // Enable to activate cookie protection
+        ),
+
         'user' => array(
             'class' => 'LSWebUser',
         ),
