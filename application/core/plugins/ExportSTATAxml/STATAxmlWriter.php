@@ -174,19 +174,21 @@ class STATAxmlWriter extends Writer
             $aQuestion['varname'] = $this->STATAvarname($aQuestion['varname']);
             
             // create variable labels
-            $aFieldmap['questions'][$sSGQAkey]['varlabel'] = $aQuestion['question'];
+            $aQuestion['varlabel'] = $aQuestion['question'];
             if (isset($aQuestion['scale']))
-                $aFieldmap['questions'][$sSGQAkey]['varlabel'] = "[{$aQuestion['scale']}] " . $aQuestion['varlabel'];
+                $aQuestion['varlabel'] = "[{$aQuestion['scale']}] " . $aQuestion['varlabel'];
             if (isset($aQuestion['subquestion']))
-                $aFieldmap['questions'][$sSGQAkey]['varlabel'] = "[{$aQuestion['subquestion']}] " . $aQuestion['varlabel'];
+                $aQuestion['varlabel'] = "[{$aQuestion['subquestion']}] " . $aQuestion['varlabel'];
             if (isset($aQuestion['subquestion2']))
-                $aFieldmap['questions'][$sSGQAkey]['varlabel'] = "[{$aQuestion['subquestion2']}] " . $aQuestion['varlabel'];
+                $aQuestion['varlabel'] = "[{$aQuestion['subquestion2']}] " . $aQuestion['varlabel'];
             if (isset($aQuestion['subquestion1']))
-                $aFieldmap['questions'][$sSGQAkey]['varlabel'] = "[{$aQuestion['subquestion1']}] " . $aQuestion['varlabel'];
+                $aQuestion['varlabel'] = "[{$aQuestion['subquestion1']}] " . $aQuestion['varlabel'];
             
+            //write varlabel back to fieldmap
+            $aFieldmap['questions'][$sSGQAkey]['varlabel'] = $aQuestion['varlabel'];
             
             //create value labels for question types with "fixed" answers (YES/NO etc.)
-            if ($aQuestion['other'] == 'Y' || substr($aQuestion['fieldname'], -7) == 'comment')
+            if ((isset($aQuestion['other']) && $aQuestion['other'] == 'Y') || substr($aQuestion['fieldname'], -7) == 'comment')
             {
                 $aFieldmap['questions'][$sSGQAkey]['commentother'] = true; //comment/other fields: create flag, so value labels are not attached (in close())
             }
@@ -268,7 +270,7 @@ class STATAxmlWriter extends Writer
                         'code' => 3,
                         'answer' => $clang->gT('Decrease')
                     );
-                }
+                } 
             } // close: no-other/comment variable
         $aFieldmap['questions'][$sSGQAkey]['varname']=$aQuestion['varname'];     //write changes back to array
         } // close foreach question
@@ -365,7 +367,10 @@ class STATAxmlWriter extends Writer
                         $iScaleID = $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['scale_id'];
                     }
                     $iQID                                       = $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['qid'];
-                    $response = $this->customFieldmap['answers'][$iQID][$iScaleID][$response]['answer']; // get answertext instead of answercode
+                    if (isset($this->customFieldmap['answers'][$iQID][$iScaleID][$response]['answer']))
+                    {
+                        $response = trim($this->customFieldmap['answers'][$iQID][$iScaleID][$response]['answer']); // get answertext instead of answercode
+                    }
                 }
                 
                 if ($response == '')
@@ -477,29 +482,33 @@ class STATAxmlWriter extends Writer
             elseif (in_array('float', $responses, true))
             {
                 $typelist[$variable]['type'] = 'float';
+                $typelist[$variable]['format'] = '%10.0g';
             }
             elseif (in_array('long', $responses, true))
             {
                 $typelist[$variable]['type'] = 'long';
+                $typelist[$variable]['format'] = '%10.0g';
             }
             elseif (in_array('integer', $responses, true))
             {
                 $typelist[$variable]['type'] = 'integer';
+                $typelist[$variable]['format'] = '%10.0g';
             }
             elseif (in_array('byte', $responses, true))
             {
                 $typelist[$variable]['type'] = 'byte';
+                $typelist[$variable]['format'] = '%10.0g';
             }
             elseif (in_array('emptystr', $responses, true))
             {
                 $typelist[$variable]['type'] = 'str1'; //variables that only contain '' as responses will be a short string...
+                $typelist[$variable]['format'] = '%1s';
             }
             $this->customFieldmap['questions'][$variable]['statatype']   = $typelist[$variable]['type'];
             $this->customFieldmap['questions'][$variable]['stataformat'] = $typelist[$variable]['format'];
             
             
         }
-        
     }
     
     /* Utilizes customFieldmap[], customResponsemap[], headers[] and xmlwriter() 
@@ -641,7 +650,7 @@ class STATAxmlWriter extends Writer
         $xml->endElement(); // close dta
         $xml->endDocument();
         
-        $this->out(var_export($xml->outputMemory(), 1));
+        $this->out($xml->outputMemory(), 1);
         
         fclose($this->handle);
     }

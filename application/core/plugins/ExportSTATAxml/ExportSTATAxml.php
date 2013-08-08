@@ -1,7 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', True);
-
 class ExportSTATAxml extends PluginBase {
     
     protected $storage = 'DbStorage';
