@@ -46,10 +46,10 @@
                         <label for='ansabbrev'><?php $clang->eT("Answer codes");?></label></li>
 
                     <li><input type='checkbox' value='Y' name='convertyto1' id='convertyto1' style='margin-left: 25px' />
-                        <label for='convertyto1'><?php $clang->eT("Convert Y to");?></label> <input type='text' name='convertyto' size='3' value='1' maxlength='1' style='width:10px'  />
+                        <label for='convertyto1'><?php $clang->eT("Convert Y to");?></label> <input type='text' name='convertyto' id='convertyto' size='3' value='1' maxlength='1' style='width:10px'  />
                     </li>
                     <li><input type='checkbox' value='Y' name='convertnto2' id='convertnto2' style='margin-left: 25px' />
-                        <label for='convertnto2'><?php $clang->eT("Convert N to");?></label> <input type='text' name='convertnto' size='3' value='2' maxlength='1' style='width:10px' />
+                        <label for='convertnto2'><?php $clang->eT("Convert N to");?></label> <input type='text' name='convertnto' id='convertnto' size='3' value='2' maxlength='1' style='width:10px' />
                     </li><li>
                         <input type='radio' class='radiobtn' checked name='answers' value='long' id='ansfull' />
                         <label for='ansfull'>
@@ -74,7 +74,13 @@
                     <li><input type='radio' class='radiobtn' name='type' value='html' id='htmldoc' onclick='document.getElementById("ansabbrev").disabled=false;'/>
                         <label for='htmldoc'><?php $clang->eT("HTML");?><br />
                         </label></li>
-                </ul></fieldset>
+                    <li><input type='radio' class='radiobtn' name='type' value='stataxml' id='stataxml' onclick='document.getElementById("ansabbrev").checked=true;
+                        document.getElementById("ansfull").disabled=true;document.getElementById("convertyto1").checked=true;document.getElementById("convertnto2").checked=true;
+                        document.getElementById("convertnto").value=0;document.getElementById("convertyto").value=1;
+                        document.getElementById("headcodes").disabled=true;document.getElementById("headabbreviated").disabled=true;document.getElementById("headfull").checked=true;'/>
+                            <label for='stataxml'><?php $clang->eT("STATA (.xml)");?><br />
+                            </label></li>
+            </ul></fieldset>
         </div>
         <div class='right'>
             <fieldset>
