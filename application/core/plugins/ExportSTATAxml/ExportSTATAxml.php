@@ -16,8 +16,28 @@ class ExportSTATAxml extends PluginBase {
          * Here you should handle subscribing to the events your plugin will handle
          */
         $this->subscribe('listExportPlugins');
+        $this->subscribe('listExportOptions');
         $this->subscribe('newExport');
     }
+    
+    public function listExportOptions()
+    {
+        $event = $this->getEvent();
+        $type = $event->get('type');
+        
+        switch ($type) {
+            case 'stataxml':
+                $event->set('label', gT("STATA (.xml)"));
+                $event->set('onclick', 'document.getElementById("ansabbrev").checked=true;
+                        document.getElementById("ansfull").disabled=true;document.getElementById("convertyto1").checked=true;document.getElementById("convertnto2").checked=true;
+                        document.getElementById("convertnto").value=0;document.getElementById("convertyto").value=1;
+                        document.getElementById("headcodes").disabled=true;document.getElementById("headabbreviated").disabled=true;document.getElementById("headfull").checked=true;');
+                break;
+
+            default:
+                break;
+        }
+    }   
     
     /**
      * Registers this export type

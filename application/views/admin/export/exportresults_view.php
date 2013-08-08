@@ -74,12 +74,27 @@
                     <li><input type='radio' class='radiobtn' name='type' value='html' id='htmldoc' onclick='document.getElementById("ansabbrev").disabled=false;'/>
                         <label for='htmldoc'><?php $clang->eT("HTML");?><br />
                         </label></li>
-                    <li><input type='radio' class='radiobtn' name='type' value='stataxml' id='stataxml' onclick='document.getElementById("ansabbrev").checked=true;
-                        document.getElementById("ansfull").disabled=true;document.getElementById("convertyto1").checked=true;document.getElementById("convertnto2").checked=true;
-                        document.getElementById("convertnto").value=0;document.getElementById("convertyto").value=1;
-                        document.getElementById("headcodes").disabled=true;document.getElementById("headabbreviated").disabled=true;document.getElementById("headfull").checked=true;'/>
-                            <label for='stataxml'><?php $clang->eT("STATA (.xml)");?><br />
-                            </label></li>
+<?php
+    foreach ($exports as $key => $info)
+    {
+        // Only output when a label was set
+        if (!empty($info['label'])) {
+            $htmlOptions = array(
+                'id'=>$key,
+                'value'=>$key,
+                'class'=>'radiobtn'
+                );
+            if (!empty($info['onclick'])) {
+                $htmlOptions['onclick'] = $info['onclick'];
+            }
+            echo CHtml::openTag('li');
+            echo CHtml::radioButton('type', false, $htmlOptions);
+            echo " "; // Needed to get space between radio element and label
+            echo CHtml::label($info['label'] . CHtml::tag('br'), $key);
+            echo CHtml::closeTag('li');
+        }
+    }
+?>
             </ul></fieldset>
         </div>
         <div class='right'>
