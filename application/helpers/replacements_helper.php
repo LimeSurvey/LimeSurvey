@@ -871,14 +871,16 @@ EOD;
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
 
-    if (!is_null($replacements) && is_array($replacements))
+    $customReplacements = array();
+    if (function_exists('doCustomReplacements'))
     {
-        $doTheseReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values
+    	$customReplacements=doCustomReplacements($line, $clang);
     }
-    else
+    if (is_null($replacements) || !is_array($replacements))
     {
-        $doTheseReplacements = $coreReplacements;
+        $replacements = array();
     }
+    $doTheseReplacements = array_merge($coreReplacements, $customReplacements, $replacements);   // so $replacements overrides core values
 
     // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default
     $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 3, 1, false, true, $bStaticReplacement);
