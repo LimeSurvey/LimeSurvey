@@ -4,7 +4,7 @@
      */
     class UnActivatable extends PluginBase
     {
-        static protected $description = 'Demo: This plugin can not be deactivated';
+        static protected $description = 'Demo: This plugin can not be activated';
         static protected $name = 'Unactivatable';
 
         public function __construct(PluginManager $manager, $id) {
