@@ -253,7 +253,7 @@
          * @param string $pluginName
          * @param int $id Identifier used for identifying a specific plugin instance. 
          * If ommitted will return the first instantiated plugin with the given name.
-         * @return iPlugin
+         * @return iPlugin|null The plugin or null when missing
          */
         public function loadPlugin($pluginName, $id = null)
         {
@@ -291,23 +291,17 @@
          */
         public function loadPlugins()
         {
-            
-            $plugins = array();
             try {
                 $pluginModel = Plugin::model();    
                 $records = $pluginModel->findAllByAttributes(array('active'=>1));
             
                 foreach ($records as $record) {
-                    $plugins[$record->id] = $record->name;
+                    $this->loadPlugin($record->name, $record->id);
                 }
             } catch (Exception $exc) {
                 // Something went wrong, maybe no database was present so we load no plugins
             }
             
-            foreach ($plugins as $id => $pluginName)
-            {
-                $this->loadPlugin($pluginName, $id);
-            }
             $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this));    // Alow plugins to do stuff after all plugins are loaded
         }
         
