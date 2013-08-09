@@ -175,3 +175,14 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
     width: auto;
     overflow: hidden;
 }
+
+
+/* export tooltips */
+.tooltip-export {
+    display: inline;
+}
+.tooltip-export .exporttip {
+    display: none;
+}
+.popover-content p .exporttip { text-align: left;}
+.exporttip li { overflow: visible;}
