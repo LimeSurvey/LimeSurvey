@@ -1,13 +1,15 @@
-/* Drag-n-drop ranking default styles */
-
+/**
+ * Drag-n-drop ranking default styles
+ * @license This file is part of LimeSurvey under GNU/GPL License v2 or later, see LICENSE.php
+ */
+.ranking-answers{width:100%;}
+.dragDropTable {width: 100%;}
 .dragDropTable .SortableTitle{display:block}
-.dragDropTable .columns2{width:50%;float:left;margin:0;padding:0;}
+.dragDropTable .columns2{width:50%;float:left;margin:0;padding:0;
+*width:49%;/* IE7 round up, all other round down */
+}
 :dir(ltr) .dragDropTable .columns2{float:right}
 .dragDropTable .clear{clear:both}
-
-.dragDropTable {
-    width: 100%;
-}
 
 
 .dragDropTable .dragDropChoices,
