@@ -96,29 +96,6 @@ class ExportSurveyResultsService
             $oPluginManager = App()->getPluginManager();
             $oPluginManager->dispatchEvent($event, $exports[$sExportPlugin]);
             $writer = $event->get('writer');
-        } else {
-            // fallback for core exports before ported to a plugin
-            switch ( $sExportPlugin ) {
-                case "doc":
-                    $writer = new DocWriter();
-                    break;
-                case "xls":
-                    $writer = new ExcelWriter();
-                    break;
-                case "pdf":
-                    $writer = new PdfWriter();
-                    break;
-                case "html":
-                    $writer = new HtmlWriter();
-                    break;
-                case "json":
-                    $writer = new JsonWriter();
-                    break;
-                case "csv":
-                default:
-                    $writer = new CsvWriter();
-                    break;
-            }
         }
         
         if (!($writer instanceof IWriter)) {
@@ -155,15 +132,6 @@ class ExportSurveyResultsService
     public function getExports()
     {
         if (is_null($this->_exports)) {
-            // Add the core exports before they are plugins
-            $exports = array(
-                'doc' => '',
-                'xls' => '',
-                'pdf' => '',
-                'html' => '',
-                'csv' => '',
-                'json' => ''
-            );
             $event = new PluginEvent('listExportPlugins');
             $oPluginManager = App()->getPluginManager();
             $oPluginManager->dispatchEvent($event);

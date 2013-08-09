@@ -208,7 +208,8 @@ class export extends Survey_Common_Action {
                 $oPluginManager->dispatchEvent($event, $plugin);
                 $exportData[$key] = array(
                     'onclick' => $event->get('onclick'),
-                    'label'   => $event->get('label')
+                    'label'   => $event->get('label'),
+                    'checked' => $event->get('default', false)
                     );
             }
             

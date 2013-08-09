@@ -56,24 +56,7 @@
                         <?php $clang->eT("Full answers");?></label></li>
                 </ul></fieldset>
             <fieldset><legend><?php $clang->eT("Format");?></legend>
-                <ul>
-                    <li><input type='radio' class='radiobtn' name='type' value='csv' id='csvdoc' <?php if (!function_exists('iconv'))
-                            { echo 'checked="checked" ';} ?> onclick='document.getElementById("ansabbrev").disabled=false;' />
-                        <label for='csvdoc'><?php $clang->eT("CSV File (All charsets)");?></label></li>
-                    <li><input type='radio' class='radiobtn' name='type' value='xls' checked id='exceldoc' <?php if (!function_exists('iconv')) echo ' disabled="disabled" ';?> onclick='document.getElementById("ansabbrev").disabled=false;' />
-                        <label for='exceldoc'><?php $clang->eT("Microsoft Excel (All charsets)");?><?php if (!function_exists('iconv'))
-                            { echo '<font class="warningtitle">'.$clang->gT("(Iconv Library not installed)").'</font>'; } ?>
-                        </label></li>
-                    <li>
-                        <input type='radio' class='radiobtn' name='type' value='doc' id='worddoc' onclick='document.getElementById("ansfull").checked=true;document.getElementById("ansabbrev").disabled=true;' />
-                        <label for='worddoc'>
-                        <?php $clang->eT("Microsoft Word (Latin charset)");?></label></li>
-                    <li><input type='radio' class='radiobtn' name='type' value='pdf' id='pdfdoc' onclick='document.getElementById("ansabbrev").disabled=false;' />
-                        <label for='pdfdoc'><?php $clang->eT("PDF");?><br />
-                        </label></li>
-                    <li><input type='radio' class='radiobtn' name='type' value='html' id='htmldoc' onclick='document.getElementById("ansabbrev").disabled=false;'/>
-                        <label for='htmldoc'><?php $clang->eT("HTML");?><br />
-                        </label></li>
+                <ul>  
 <?php
     foreach ($exports as $key => $info)
     {
@@ -88,7 +71,7 @@
                 $htmlOptions['onclick'] = $info['onclick'];
             }
             echo CHtml::openTag('li');
-            echo CHtml::radioButton('type', false, $htmlOptions);
+            echo CHtml::radioButton('type', $info['checked'], $htmlOptions);
             echo " "; // Needed to get space between radio element and label
             echo CHtml::label($info['label'] . CHtml::tag('br'), $key);
             echo CHtml::closeTag('li');

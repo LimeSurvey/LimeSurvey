@@ -5,7 +5,7 @@ class Authdb extends AuthPluginBase
     
     protected $_onepass = null;
     
-    static protected $description = 'Core: Database authentication';
+    static protected $description = 'Core: Database authentication + exports';
     static protected $name = 'LimeSurvey internal database';
     
     public function __construct(PluginManager $manager, $id) {
@@ -19,6 +19,12 @@ class Authdb extends AuthPluginBase
         $this->subscribe('afterLoginFormSubmit');
         $this->subscribe('newUserSession');
         $this->subscribe('beforeDeactivate');
+        
+        // Now register for the core exports
+        $this->subscribe('listExportPlugins');
+        $this->subscribe('listExportOptions');
+        $this->subscribe('newExport');
+        
     }
 
     public function beforeDeactivate()
@@ -125,5 +131,106 @@ class Authdb extends AuthPluginBase
         $this->_onepass = $onepass;
         
         return $this;
+    }
+    
+    
+    // Now the export part:
+    public function listExportOptions()
+    {
+        $event = $this->getEvent();
+        $type = $event->get('type');
+        
+        switch ($type) {
+            case 'csv':
+                $event->set('label', gT("CSV File (All charsets)"));
+                $event->set('onclick', 'document.getElementById("ansabbrev").disabled=false;');
+                if (!function_exists('iconv')) {
+                    $event->set('default', true);
+                }
+                break;
+                
+            case 'xls':
+                $label = gT("Microsoft Excel (All charsets)");
+                if (function_exists('iconv')) {
+                    $event->set('default', true);
+                } else {
+                    $label .= '<font class="warningtitle">'.$clang->gT("(Iconv Library not installed)").'</font>';
+                }
+                $event->set('label', $label);
+                $event->set('onclick', 'document.getElementById("ansabbrev").disabled=false;');
+                break;
+                
+            case 'doc':
+                $event->set('label', gT("Microsoft Word (Latin charset)"));
+                $event->set('onclick', 'document.getElementById("ansfull").checked=true;document.getElementById("ansabbrev").disabled=true;');
+                break;
+            
+            case 'pdf':
+                $event->set('label', gT("PDF"));
+                $event->set('onclick', 'document.getElementById("ansabbrev").disabled=false;');
+                break;
+            
+            case 'html':
+                $event->set('label', gT("HTML"));
+                $event->set('onclick', 'document.getElementById("ansabbrev").disabled=false;');
+                break;
+            
+            case 'json':    // Not in the interface, only for RPC
+            default:
+                break;
+        }
+    }
+    
+    /**
+     * Registers this export type
+     */
+    public function listExportPlugins()
+    {
+        $event = $this->getEvent();
+        $exports = $event->get('exportplugins');
+        
+        // Yes we overwrite existing classes if available
+        $className = get_class();
+        $exports['doc'] = $className;
+        $exports['xls'] = $className;
+        $exports['pdf'] = $className;
+        $exports['html'] = $className;
+        $exports['json'] = $className;
+        $exports['csv'] = $className;
+        
+        $event->set('exportplugins', $exports);
+    }
+    
+    /**
+     * Returns the required IWriter
+     */
+    public function newExport()
+    {
+        $event = $this->getEvent();
+        $type = $event->get('type');
+                
+        switch ($type) {
+            case "doc":
+                $writer = new DocWriter();
+                break;
+            case "xls":
+                $writer = new ExcelWriter();
+                break;
+            case "pdf":
+                $writer = new PdfWriter();
+                break;
+            case "html":
+                $writer = new HtmlWriter();
+                break;
+            case "json":
+                $writer = new JsonWriter();
+                break;
+            case "csv":
+            default:
+                $writer = new CsvWriter();
+                break;
+        }
+        
+        $event->set('writer', $writer);
     }
 }
