@@ -176,6 +176,7 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
     overflow: hidden;
 }
 
+legend { line-height: normal; }
 
 /* export tooltips */
 .tooltip-export {
@@ -186,3 +187,5 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
 }
 .popover-content p .exporttip { text-align: left;}
 .exporttip li { overflow: visible;}
+li input+label { display: inline;}
+#resultexport ol, #resultexport ul { margin: 0 0 10px 10px;}
