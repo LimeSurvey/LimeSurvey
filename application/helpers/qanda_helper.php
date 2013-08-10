@@ -3890,8 +3890,7 @@ function do_array_5point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
-    $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\">\n"
-    . "<caption class=\"hide read\">{$caption}</caption>\n" 
+    $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
     $odd_even = '';
@@ -4048,8 +4047,7 @@ function do_array_10point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
-    $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\" >\n"
-    . "<caption class=\"hide read\">{$caption}</caption>\n" 
+    $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 
@@ -4178,8 +4176,7 @@ function do_array_yesnouncertain($ia)
     $aSubquestions = $ansresult->readAll();
     $anscount = count($aSubquestions);
     $fn = 1;
-    $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\">\n"
-    . "<caption class=\"hide read\">{$caption}</caption>\n" 
+    $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\n\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
     $odd_even = '';
@@ -4340,8 +4337,7 @@ function do_array_increasesamedecrease($ia)
 
     $fn = 1;
 
-    $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\">\n"
-    . "<caption class=\"hide read\">{$caption}</caption>\n" 
+    $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 
@@ -4545,8 +4541,7 @@ function do_array($ia)
         }
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-        $answer_start = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" >\n"
-        . "<caption class=\"hide read\">{$caption}</caption>\n";
+        $answer_start = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
         $answer_head_line= "\t<td>&nbsp;</td>\n";
             foreach ($labelans as $ld)
             {
@@ -5056,8 +5051,7 @@ function do_array_multitext($ia)
         . $answer_head_line
         . "</tr>\n\t</thead>\n";
 
-        $answer = "\n<table$q_table_id_HTML class=\"question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\" >\n"
-        . "<caption class=\"hide read\">{$caption}</caption>\n" 
+        $answer = "\n<table$q_table_id_HTML class=\"question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\"  summary=\"{$caption}\">\n"
         . $answer_cols 
         . $answer_head;
         $answer .= "<tbody>";
@@ -5386,8 +5380,7 @@ function do_array_multiflexi($ia)
         $mycols .= "\t</colgroup>\n";
 
         $trbc = '';
-        $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\">\n"
-        . "<caption class=\"hide read\">{$caption}</caption>\n" 
+        $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"{$caption}\">\n"
         . $mycols 
         . $answer_head . "\n";
         $answer .= "<tbody>";
@@ -5602,8 +5595,7 @@ function do_arraycolumns($ia)
             $fn=1;
             $cellwidth=$anscount;
             $cellwidth=round(( 50 / $cellwidth ) , 1);
-            $answer = "\n<table class=\"question subquestions-list questions-list\">\n"
-            . "<caption class=\"hide read\">{$caption}</caption>\n" 
+            $answer = "\n<table class=\"question subquestions-list questions-list\" summary=\"{$caption}\">\n"
             . "\t<colgroup class=\"col-responses\">\n"
             . "\t<col class=\"col-answers\" width=\"50%\" />\n";
             $odd_even = '';
@@ -5902,8 +5894,7 @@ function do_array_dual($ia)
             {
                 $answer_head1 = "";
             }
-            $answer .= "\n<table class=\"question subquestions-list questions-list\">\n"
-            . "<caption class=\"hide read\">{$caption}</caption>\n"
+            $answer .= "\n<table class=\"question subquestions-list questions-list\" summary=\"{$caption}\">\n"
             . $mycolumns
             . "\n\t<thead>\n"
             . $answer_head1
@@ -6097,8 +6088,7 @@ function do_array_dual($ia)
             $colspan_1 = '';
             $colspan_2 = '';
             $suffix_cell = '';
-            $answer .= "\n<table class=\"question subquestion-list questions-list dropdown-list\">\n"
-            . "<caption class=\"hide read\">{$caption}</caption>\n"
+            $answer .= "\n<table class=\"question subquestion-list questions-list dropdown-list\" summary=\"{$caption}\">\n"
             . "\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
 
             if($ddprefix != '' || $ddsuffix != '')
