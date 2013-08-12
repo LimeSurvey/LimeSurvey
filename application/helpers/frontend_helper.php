@@ -1538,12 +1538,22 @@ function buildsurveysession($surveyid,$preview=false)
     $startingValues=array();
     if (isset($_GET))
     {
-        foreach ($_GET as $k=>$v)
+		foreach ($_GET as $k=>$v)
         {
-            if (!in_array($k,$reservedGetValues) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k]))
+			if (!in_array($k,$reservedGetValues) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k]))
             {
                 $startingValues[$k] = $v;
             }
+			else
+			{   // Search question codes to use those for prefilling.
+				foreach($_SESSION['survey_'.$surveyid]['fieldmap'] as $sgqa => $details)
+				{
+					if ($details['title'] == $k)
+					{
+						$startingValues[$sgqa] = $v;
+					}
+				}
+			}
         }
     }
     $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
