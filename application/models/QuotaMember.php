@@ -13,7 +13,7 @@
      *	Files Purpose: lots of common functions
 */
 
-class QuotaMember extends CActiveRecord
+class QuotaMember extends LSActiveRecord
 {
     /**
      * Returns the static model of Settings table

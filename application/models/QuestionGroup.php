@@ -13,7 +13,7 @@
        *	Files Purpose: lots of common functions
     */
 
-    class QuestionGroup extends CActiveRecord
+    class QuestionGroup extends LSActiveRecord
     {
         /**
         * Returns the static model of Settings table
