@@ -119,29 +119,21 @@
              
              if ($plugin === null)
              {
-                 /**
-                  * @todo Add flash message "Plugin not found".
-                  */
+                 Yii::app()->user->setFlash('pluginmanager', 'Plugin not found');
                  $this->redirect(array('plugins/'));
              }
              // If post handle data.
              if (App()->request->isPostRequest)
              {
-                 if (!is_null(App()->request->getPost('ok'))) {
-                    $settings =  $pluginObject->getPluginSettings(false);
-                    $save = array();
-                    foreach ($settings as $name => $setting)
-                    {
-                        $save[$name] = App()->request->getPost($name, null);
+				$settings =  $pluginObject->getPluginSettings(false);
+				$save = array();
+				foreach ($settings as $name => $setting)
+				{
+					$save[$name] = App()->request->getPost($name, null);
 
-                    }
-                    $pluginObject->saveSettings($save);
-                    Yii::app()->user->setFlash('pluginmanager', 'Settings saved');   
-                    
-                 } else {
-                    // Ok buttons was not pressed, assume cancel
-                 }
-                 $this->forward('plugins/index', true);
+				}
+				$pluginObject->saveSettings($save);
+				Yii::app()->user->setFlash('pluginmanager', 'Settings saved');
              }                
              
              $settings =  $pluginObject->getPluginSettings();
