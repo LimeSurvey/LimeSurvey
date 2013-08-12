@@ -19,7 +19,10 @@
             'method' => 'post',
             'buttons' => array(
                 gT('Save plugin settings'),
-                gT('Cancel')
+                gT('Cancel') => array(
+					'type' => 'link',
+					'href' => App()->createUrl('plugins/index')
+				)
             )
         ));
     ?>
