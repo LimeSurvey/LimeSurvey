@@ -16,7 +16,7 @@
     *     Files Purpose: lots of common functions
     */
 
-    class Condition extends CActiveRecord
+    class Condition extends LSActiveRecord
     {
         /**
         * Returns the static model of Settings table

@@ -13,7 +13,7 @@
      *	Files Purpose: lots of common functions
 */
 
-class SettingGlobal extends CActiveRecord
+class SettingGlobal extends LSActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table

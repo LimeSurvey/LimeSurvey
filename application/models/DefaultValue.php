@@ -13,7 +13,7 @@
      *	Files Purpose: lots of common functions
 */
 
-class DefaultValue extends CActiveRecord
+class DefaultValue extends LSActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table
