@@ -11,6 +11,7 @@ $(document).ready(function(){
         placeholder: 'placeholder',
         revert: 250,
         tabSize: 25,
+        rootID: 'root',
         stop: function(event, ui) {
             if (ui.item[0].sourceLevel!=ui.placeholder.destinationLevel)
                $('ol.organizer').nestedSortable('cancel');
