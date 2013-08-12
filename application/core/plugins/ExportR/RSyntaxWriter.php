@@ -45,6 +45,9 @@ class RSyntaxWriter extends Writer
         foreach ($tmpFieldmap as $field => $values)
         {
             $fieldmap[$values['title']] = $values;
+            if (array_key_exists('sql_name', $values)) {
+                $fieldmap[$values['sql_name']] = $values;
+            }
         }
         $this->customFieldmap = $fieldmap;
     }
@@ -56,8 +59,8 @@ class RSyntaxWriter extends Writer
     
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
-        $this->headers = $headers;
-        foreach ($headers as $id => $title)
+        $this->headers = $oOptions->selectedColumns;
+        foreach ($oOptions->selectedColumns as $id => $title)
         {
             $field = $this->customFieldmap[$title];
             
@@ -176,7 +179,7 @@ class RSyntaxWriter extends Writer
                         $errors .= "# Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
                     }
 
-                    $this->out("names(data)[" . $id . "] <- "
+                    $this->out("names(data)[" . $i . "] <- "
                     . "\"" . $ftitle . "\"");  // <AdV> added \n
                 } else {
                     $this->out("#sql_name not set");

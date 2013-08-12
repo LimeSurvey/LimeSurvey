@@ -219,8 +219,8 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
 * @param $field array field from SPSSFieldMap
 * @return array or false
 */
-function SPSSGetValues ($field = array(), $qidattributes = null ) {
-    global $iSurveyID, $language, $length_vallabel;
+function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
+    $length_vallabel = 120;
     $clang = Yii::app()->lang;
 
     if (!isset($field['LStype']) || empty($field['LStype'])) return false;
@@ -329,7 +329,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null ) {
 * @return array
 */
 function SPSSFieldMap($iSurveyID, $prefix = 'V') {
-    global $clang, $surveyprivate, $tokensexist, $language;
+    global $clang, $surveyprivate, $tokensexist;
     
     $typeMap = array(
 '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
@@ -490,7 +490,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
         'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
         //Now check if we have to retrieve value labels
-        $answers = SPSSGetValues($tempArray, $aQuestionAttribs);
+        $answers = SPSSGetValues($tempArray, $aQuestionAttribs, $language);
         if (is_array($answers)) {
             //Ok we have answers
             if (isset($answers['size'])) {
