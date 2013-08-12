@@ -86,6 +86,7 @@ class RSyntaxWriter extends Writer
 
     public function close()
     {
+        $errors = '';
          foreach ($this->headers as $id => $title) {
             $field = $this->customFieldmap[$title];
             $i = $id + 1;
@@ -185,6 +186,9 @@ class RSyntaxWriter extends Writer
                     $this->out("#sql_name not set");
                 }
         }  // end foreach
+        if (!empty($errors)) {
+            $this->out($errors);
+        }
         
         fclose($this->handle);
     }
