@@ -3469,15 +3469,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['wishSID']=$iOldSID;
         }
 
-		if ($iDBVersion < 169)
-		{
-			if (isset($insertdata['allowjumps']))
-			{
-				$insertdata['questionindex'] = $insertdata['allowjumps'] == 'Y' ? 1 : 0;
-				unset($insertdata['allowjumps']);
-			}
-		}
-		
         if ($iDBVersion<145)
         {
             if(isset($insertdata['private'])) $insertdata['anonymized']=$insertdata['private'];
@@ -4811,7 +4802,7 @@ function TSVImportSurvey($sFullFilepath)
                 $insertdata['answer'] = (isset($row['text']) ? $row['text'] : '');
                 $insertdata['scale_id'] = (isset($row['type/scale']) ? $row['type/scale'] : 0);
                 $insertdata['language']= (isset($row['language']) ? $row['language'] : $baselang);
-                $insertdata['assessment_value'] = (isset($row['relevance']) ? $row['relevance'] : '');
+                $insertdata['assessment_value'] = (int) (isset($row['relevance']) ? $row['relevance'] : '');
                 $insertdata['sortorder'] = ++$aseq;
                 $result = Answer::model()->insertRecords($insertdata); // or safeDie("Error: Failed to insert answer<br />");
                 if(!$result){
