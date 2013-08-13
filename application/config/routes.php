@@ -21,19 +21,13 @@ $route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/*'] = "survey/index/sid/<_sid>/lang/<_
 $route['<_sid:\d+>/tk-<_token:\w+>/*'] = "survey/index/sid/<_sid>/token/<_token>";
 $route['<_sid:\d+>/*'] = "survey/index/sid/<_sid>";
 
-//Admin Routes
-//$route['admin/index'] = "admin";
-//$route['admin/<action:\w+>/sa/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>'; 
-$route['admin/<action:\w+>/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>';
 
 //question
-$route['admin/labels/<_action:\w+>'] = "admin/labels/index/<_action>";
-$route['admin/labels/<_action:\w+>/<_lid:\d+>'] = "admin/labels/index/<_action>/<_lid>";
+$route['admin/labels/'] = "admin/labels/sa/view";
+$route['admin/labels/sa/<_action:\w+>/<_lid:\d+>'] = "admin/labels/sa/<_action>/lid/<_lid>";
 
-//$route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
-
-//Expression Manager tests
-//$route['admin/expressions'] = "admin/expressions/index";
+//Admin Routes
+$route['admin/<action:\w+>/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>';
 
 //optout
 $route['optout/<_sid:\d+>/(:any)/(:any)'] = "optout/index/<_sid>/$2/$3";
