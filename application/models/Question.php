@@ -16,7 +16,7 @@
         * 	Files Purpose: lots of common functions
     */
 
-    class Question extends CActiveRecord
+    class Question extends LSActiveRecord
     {
 
         /**

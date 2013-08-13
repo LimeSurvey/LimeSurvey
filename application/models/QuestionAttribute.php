@@ -13,7 +13,7 @@
      *	Files Purpose: lots of common functions
 */
 
-class QuestionAttribute extends CActiveRecord
+class QuestionAttribute extends LSActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table
