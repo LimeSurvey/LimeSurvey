@@ -158,7 +158,7 @@
                     {
                         $code = $fieldmap[$key]['title'];
                         // Add subquestion code if needed
-                        if (array_key_exists('aid', $fieldmap[$key]) && !empty($fieldmap[$key]['aid'])) {
+                        if (array_key_exists('aid', $fieldmap[$key]) && isset($fieldmap[$key]['aid']) && $fieldmap[$key]['aid']!='') {
                             $code .= '_' . $fieldmap[$key]['aid'];
                         }
                         // Only add if the code does not exist yet and is not empty
