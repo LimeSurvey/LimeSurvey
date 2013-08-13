@@ -698,6 +698,8 @@ function convertGETtoPOST($url)
         $arrayParam[] = "'".$paramname."'";
         $arrayVal[] = substr($value, 0, 9) != "document." ? "'".$value."'" : $value;
     }
+    $arrayParam[]	= "'YII_CSRF_TOKEN'"; 
+    $arrayVal[] 	= "'".Yii::app()->request->csrfToken."'";
     //    $Paramlist = "[" . implode(",",$arrayParam) . "]";
     //    $Valuelist = "[" . implode(",",$arrayVal) . "]";
     $Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
