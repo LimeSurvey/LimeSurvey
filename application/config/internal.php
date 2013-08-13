@@ -38,8 +38,7 @@ $internalConfig = array(
             'class'=>'LSHttpRequest',
             'noCsrfValidationRoutes'=>array(
 //              '^services/wsdl.*$'   // Set here additional regex rules for routes not to be validate
-                'getTokens_json',
-                'getSurveys_json',
+                '^.*_json$',
                 'remotecontrol'
             ),
             'enableCsrfValidation'=>true,    // CSRF protection
