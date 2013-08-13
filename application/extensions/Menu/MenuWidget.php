@@ -556,7 +556,7 @@
             if (Permission::model()->hasGlobalPermission('labelsets','read'))
             {
                 return array(
-                    'href' => array('admin/labels'),
+                    'href' => array('admin/labels/sa/view'),
                     'image' => 'labels.png',
                     'alt' => gT('Edit label sets')
                 );
