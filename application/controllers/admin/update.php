@@ -485,7 +485,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $oHTTPRequest->data_timeout=0;
         $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $oHTTPRequest->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/{$this->updaterversion}",$arguments);
+        $oHTTPRequest->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/{$buildnumber}",$arguments);
 
         $oHTTPRequesterror=$oHTTPRequest->Open($arguments);
         $oHTTPRequesterror=$oHTTPRequest->SendRequest($arguments);

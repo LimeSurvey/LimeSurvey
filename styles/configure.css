@@ -29,9 +29,8 @@ div.pluginsettings li {
     margin-top: 10px;
 }
 
-div.pluginsettings input[type=submit], div.pluginsettings img {
-    margin: auto;
-    display: block;
-    margin-top: 20px;
+div.pluginsettings input[type=submit], div.pluginsettings img, div.pluginsettings .limebutton {
+    display: inline-block;
+    margin: 1em;
     width: 150px;
 }

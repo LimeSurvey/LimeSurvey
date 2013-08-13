@@ -43,6 +43,13 @@ Yii::import('application.helpers.admin.export.*');
 class ExportSurveyResultsService
 {
     /**
+     * Hold the available export types
+     * 
+     * @var array
+     */
+    protected $_exports;
+    
+    /**
     * Root function for any export results action
     *
     * @param mixed $iSurveyId
@@ -80,49 +87,15 @@ class ExportSurveyResultsService
             header("Pragma: public");
         }
         
-        $exports = array(
-            'doc' => '',
-            'xls' => '',
-            'pdf' => '',
-            'html' => '',
-            'csv' => '',
-            'json' => ''
-        );
-        $event = new PluginEvent('listExportPlugins');
-        $oPluginManager = App()->getPluginManager();
-        $oPluginManager->dispatchEvent($event);
-       
-        $exports = $event->get('exportplugins', array());
+        $exports = $this->getExports();
         
         if (array_key_exists($sExportPlugin, $exports) && !empty($exports[$sExportPlugin])) {
             // This must be a plugin, now use plugin to load the right class
             $event = new PluginEvent('newExport');
             $event->set('type', $sExportPlugin);
+            $oPluginManager = App()->getPluginManager();
             $oPluginManager->dispatchEvent($event, $exports[$sExportPlugin]);
             $writer = $event->get('writer');
-        } else {
-            // fallback for core exports before ported to a plugin
-            switch ( $sExportPlugin ) {
-                case "doc":
-                    $writer = new DocWriter();
-                    break;
-                case "xls":
-                    $writer = new ExcelWriter();
-                    break;
-                case "pdf":
-                    $writer = new PdfWriter();
-                    break;
-                case "html":
-                    $writer = new HtmlWriter();
-                    break;
-                case "json":
-                    $writer = new JsonWriter();
-                    break;
-                case "csv":
-                default:
-                    $writer = new CsvWriter();
-                    break;
-            }
         }
         
         if (!($writer instanceof IWriter)) {
@@ -149,5 +122,25 @@ class ExportSurveyResultsService
         } else {
             return $result;
         }
+    }
+    
+    /**
+     * Get an array of available export types
+     * 
+     * @return array
+     */
+    public function getExports()
+    {
+        if (is_null($this->_exports)) {
+            $event = new PluginEvent('listExportPlugins');
+            $oPluginManager = App()->getPluginManager();
+            $oPluginManager->dispatchEvent($event);
+
+            $exports = $event->get('exportplugins', array());
+            
+            $this->_exports = $exports;
+        }
+        
+        return $this->_exports;
     }
 }

@@ -49,6 +49,7 @@
             $data = array();
             foreach ($plugins as $plugin)
             {
+                /* @var $plugin Plugin */
                 if (array_key_exists($plugin->name, $discoveredPlugins)) {
                     $data[] = array(
                         'id' => $plugin->id,
@@ -59,16 +60,9 @@
                     );
                 } else {
                     // This plugin is missing, maybe the files were deleted but the record was not removed from the database
-                    // Disable the plugin
-                    $plugin->active = 0;
-                    $plugin->save();
-                    $data[] = array(
-                        'id' => $plugin->id,
-                        'name' => $plugin->name,
-                        'description' => gT('** Plugin missing **'),
-                        'active' => $plugin->active,
-                        'new' => false
-                    );
+                    // Now delete this record. Depending on the plugin the settings will be preserved
+                    App()->user->setFlash('pluginDelete'.$plugin->id,sprintf(gT("Plugin '%s' was missing and is removed from the database."), $plugin->name));
+                    $plugin->delete();
                 }
             }
             echo $this->render('/plugins/index', compact('data'));
@@ -125,29 +119,21 @@
              
              if ($plugin === null)
              {
-                 /**
-                  * @todo Add flash message "Plugin not found".
-                  */
+                 Yii::app()->user->setFlash('pluginmanager', 'Plugin not found');
                  $this->redirect(array('plugins/'));
              }
              // If post handle data.
              if (App()->request->isPostRequest)
              {
-                 if (!is_null(App()->request->getPost('ok'))) {
-                    $settings =  $pluginObject->getPluginSettings(false);
-                    $save = array();
-                    foreach ($settings as $name => $setting)
-                    {
-                        $save[$name] = App()->request->getPost($name, null);
+				$settings =  $pluginObject->getPluginSettings(false);
+				$save = array();
+				foreach ($settings as $name => $setting)
+				{
+					$save[$name] = App()->request->getPost($name, null);
 
-                    }
-                    $pluginObject->saveSettings($save);
-                    Yii::app()->user->setFlash('pluginmanager', 'Settings saved');   
-                    
-                 } else {
-                    // Ok buttons was not pressed, assume cancel
-                 }
-                 $this->forward('plugins/index', true);
+				}
+				$pluginObject->saveSettings($save);
+				Yii::app()->user->setFlash('pluginmanager', 'Settings saved');
              }                
              
              $settings =  $pluginObject->getPluginSettings();

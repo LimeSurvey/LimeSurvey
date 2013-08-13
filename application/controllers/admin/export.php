@@ -151,6 +151,10 @@ class export extends Survey_Common_Action {
 
         // Get info about the survey
         $thissurvey = getSurveyInfo($iSurveyID);
+        
+        // Load ExportSurveyResultsService so we know what exports are available
+        $resultsService = new ExportSurveyResultsService();
+        $exports = $resultsService->getExports();
 
         if ( ! $exportstyle )
         {
@@ -193,6 +197,24 @@ class export extends Survey_Common_Action {
             $data['imageurl'] = Yii::app()->getConfig('imageurl');
             $data['thissurvey'] = $thissurvey;
             $data['display']['menu_bars']['browse'] = $clang->gT("Export results");
+            
+            // Export plugins, leave out all entries that are not plugin
+            $exports = array_filter($exports);
+            $exportData = array();
+            foreach ($exports as $key => $plugin) {
+                $event = new PluginEvent('listExportOptions');
+                $event->set('type', $key);
+                $oPluginManager = App()->getPluginManager();
+                $oPluginManager->dispatchEvent($event, $plugin);
+                $exportData[$key] = array(
+                    'onclick' => $event->get('onclick'),
+                    'label'   => $event->get('label'),
+                    'checked' => $event->get('default', false),
+                    'tooltip' => $event->get('tooltip', null)
+                    );
+            }
+            
+            $data['exports'] = $exportData;    // Pass available exports
 
             $this->_renderWrappedTemplate('export', 'exportresults_view', $data);
 
@@ -265,7 +287,7 @@ class export extends Survey_Common_Action {
         {
             $sFilter='';
         }
-        $resultsService = new ExportSurveyResultsService();
+        
         $resultsService->exportSurvey($iSurveyID, $explang, $type, $options, $sFilter);
 
         exit;

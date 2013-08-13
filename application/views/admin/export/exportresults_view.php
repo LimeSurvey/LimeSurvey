@@ -46,35 +46,65 @@
                         <label for='ansabbrev'><?php $clang->eT("Answer codes");?></label></li>
 
                     <li><input type='checkbox' value='Y' name='convertyto1' id='convertyto1' style='margin-left: 25px' />
-                        <label for='convertyto1'><?php $clang->eT("Convert Y to");?></label> <input type='text' name='convertyto' size='3' value='1' maxlength='1' style='width:10px'  />
+                        <label for='convertyto1'><?php $clang->eT("Convert Y to");?></label> <input type='text' name='convertyto' id='convertyto' size='3' value='1' maxlength='1' style='width:10px'  />
                     </li>
                     <li><input type='checkbox' value='Y' name='convertnto2' id='convertnto2' style='margin-left: 25px' />
-                        <label for='convertnto2'><?php $clang->eT("Convert N to");?></label> <input type='text' name='convertnto' size='3' value='2' maxlength='1' style='width:10px' />
+                        <label for='convertnto2'><?php $clang->eT("Convert N to");?></label> <input type='text' name='convertnto' id='convertnto' size='3' value='2' maxlength='1' style='width:10px' />
                     </li><li>
                         <input type='radio' class='radiobtn' checked name='answers' value='long' id='ansfull' />
                         <label for='ansfull'>
                         <?php $clang->eT("Full answers");?></label></li>
                 </ul></fieldset>
             <fieldset><legend><?php $clang->eT("Format");?></legend>
-                <ul>
-                    <li><input type='radio' class='radiobtn' name='type' value='csv' id='csvdoc' <?php if (!function_exists('iconv'))
-                            { echo 'checked="checked" ';} ?> onclick='document.getElementById("ansabbrev").disabled=false;' />
-                        <label for='csvdoc'><?php $clang->eT("CSV File (All charsets)");?></label></li>
-                    <li><input type='radio' class='radiobtn' name='type' value='xls' checked id='exceldoc' <?php if (!function_exists('iconv')) echo ' disabled="disabled" ';?> onclick='document.getElementById("ansabbrev").disabled=false;' />
-                        <label for='exceldoc'><?php $clang->eT("Microsoft Excel (All charsets)");?><?php if (!function_exists('iconv'))
-                            { echo '<font class="warningtitle">'.$clang->gT("(Iconv Library not installed)").'</font>'; } ?>
-                        </label></li>
-                    <li>
-                        <input type='radio' class='radiobtn' name='type' value='doc' id='worddoc' onclick='document.getElementById("ansfull").checked=true;document.getElementById("ansabbrev").disabled=true;' />
-                        <label for='worddoc'>
-                        <?php $clang->eT("Microsoft Word (Latin charset)");?></label></li>
-                    <li><input type='radio' class='radiobtn' name='type' value='pdf' id='pdfdoc' onclick='document.getElementById("ansabbrev").disabled=false;' />
-                        <label for='pdfdoc'><?php $clang->eT("PDF");?><br />
-                        </label></li>
-                    <li><input type='radio' class='radiobtn' name='type' value='html' id='htmldoc' onclick='document.getElementById("ansabbrev").disabled=false;'/>
-                        <label for='htmldoc'><?php $clang->eT("HTML");?><br />
-                        </label></li>
-                </ul></fieldset>
+                <ul>  
+<?php
+    $hasTips = false;
+    foreach ($exports as $key => $info)
+    {
+        // Only output when a label was set
+        if (!empty($info['label'])) {
+            $htmlOptions = array(
+                'id'=>$key,
+                'value'=>$key,
+                'class'=>'radiobtn'
+                );
+            if (!empty($info['onclick'])) {
+                $htmlOptions['onclick'] = $info['onclick'];
+            }
+            if (!empty($info['tooltip'])) {
+                $hasTips = true;
+                $tooltip = CHtml::openTag('div', array('class'=>'tooltip-export'));
+                $tooltip .= CHtml::image($imageurl. '/help.gif');
+                $tooltip .= ChTml::tag('div', array('class'=>'exporttip'), $info['tooltip']);
+                $tooltip .= CHtml::closeTag('div');
+            } else {
+                $tooltip = '';
+            }
+            echo CHtml::openTag('li');
+            echo CHtml::radioButton('type', $info['checked'], $htmlOptions);
+            echo " "; // Needed to get space between radio element and label
+            echo CHtml::label($info['label'], $key);
+            echo $tooltip;
+            echo CHtml::closeTag('li');
+        }
+    }
+    if ($hasTips) {
+        // We have tooltips, now register javascript
+        App()->clientScript->registerScript('tooltip-export', 
+                "jQuery('div.tooltip-export').popover({
+                    html: true,
+                    content: function() {
+                        return $(this).find('div.exporttip').clone();
+                    },
+                    title: function() { 
+                        return $(this).parent().find('label').text();
+                    },
+                    trigger: 'hover'
+                });
+                ");
+    }
+?>
+            </ul></fieldset>
         </div>
         <div class='right'>
             <fieldset>

@@ -6,16 +6,14 @@ $(document).ready(function(){
         format=format.replace(/H/gi,"0"); 
         format=format.replace(/N/gi,"0"); 
         language=$('#datelanguage'+basename).val();
-        yearrange=$('#dateyearrange'+basename).val();
-        range=yearrange.split(':');
+        datemin=$('#datemin'+basename).val();
+        datemax=$('#datemax'+basename).val();
         $(e).datepicker({ dateFormat: format,
             showOn: 'both',
             changeYear: true,
             changeMonth: true,
-            yearRange: yearrange,
             defaultDate: +0,
-            minDate:new Date(range[0],0,1),
-            maxDate: new Date(range[1],11,31),
+            beforeShow: customRange,
             duration: 'fast'
             }, $.datepicker.regional[language]);
     });
@@ -28,6 +26,19 @@ $(document).ready(function(){
     $('.year').change(dateUpdater);
     $('.year').change();
 });
+
+function customRange(input)
+{
+    var basename = input.id.substr(6);
+    datemin=$('#datemin'+basename).val();
+    datemax=$('#datemax'+basename).val();
+    //alert('date.js: '+datemin+' '+ datemax);
+    //FF is picky....have to remove the time with substr
+    return {
+            minDate: new Date(Date.parse(datemin.substr(0,10))),
+            maxDate: new Date(Date.parse(datemax.substr(0,10))),
+    };
+}
 
 
 function dateUpdater() {

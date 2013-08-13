@@ -1,4 +1,5 @@
-<div style="width: 50%; margin: auto;">
+<div class="header ui-widget-header"><?php eT('Plugins'); ?></div>
+<div style="width: 75%; margin: auto;">
 <?php
     /* @var $this ConfigController */
     /* @var $dataProvider CActiveDataProvider */
@@ -52,6 +53,7 @@
         'dataProvider'=>$dataProvider,
         'columns'=>$gridColumns,
         'rowCssClassExpression'=> function ($data, $row) { return ($row % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },
+        'itemsCssClass' => 'items table-condensed table-bordered'
     ));
 ?>
 </div>

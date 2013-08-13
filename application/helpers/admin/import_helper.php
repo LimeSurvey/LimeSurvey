@@ -3469,15 +3469,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['wishSID']=$iOldSID;
         }
 
-		if ($iDBVersion < 169)
-		{
-			if (isset($insertdata['allowjumps']))
-			{
-				$insertdata['questionindex'] = $insertdata['allowjumps'] == 'Y' ? 1 : 0;
-				unset($insertdata['allowjumps']);
-			}
-		}
-		
         if ($iDBVersion<145)
         {
             if(isset($insertdata['private'])) $insertdata['anonymized']=$insertdata['private'];
@@ -3713,8 +3704,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import questionattributes -------------------------------------------------
     if(isset($xml->question_attributes))
     {
-
-
         $aAllAttributes=questionAttributes(true);
         foreach ($xml->question_attributes->rows->row as $row)
         {
@@ -3722,6 +3711,22 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
+            }
+            
+            // take care of renaming of date min/max adv. attributes fields
+            if ($iDBVersion < 170)
+            {
+                if (isset($insertdata['attribute']))
+                {
+                    if ($insertdata['attribute']=='dropdown_dates_year_max') 
+                    {
+                        $insertdata['attribute']='date_max'; 
+                    }
+                    if ($insertdata['attribute']=='dropdown_dates_year_min') 
+                    {
+                        $insertdata['attribute']='date_min';
+                    }
+                }
             }
             unset($insertdata['qaid']);
             if (!isset($aQIDReplacements[(int)$insertdata['qid']])) continue;
@@ -4811,7 +4816,7 @@ function TSVImportSurvey($sFullFilepath)
                 $insertdata['answer'] = (isset($row['text']) ? $row['text'] : '');
                 $insertdata['scale_id'] = (isset($row['type/scale']) ? $row['type/scale'] : 0);
                 $insertdata['language']= (isset($row['language']) ? $row['language'] : $baselang);
-                $insertdata['assessment_value'] = (isset($row['relevance']) ? $row['relevance'] : '');
+                $insertdata['assessment_value'] = (int) (isset($row['relevance']) ? $row['relevance'] : '');
                 $insertdata['sortorder'] = ++$aseq;
                 $result = Answer::model()->insertRecords($insertdata); // or safeDie("Error: Failed to insert answer<br />");
                 if(!$result){

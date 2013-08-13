@@ -402,4 +402,18 @@ class Survey extends LSActiveRecord
     public function resetCache() {
         $this->findByPkCache = array();
     }
+    
+    /**
+     * Attribute renamed to questionindex in dbversion 169
+     * Y maps to 1 otherwise 0;
+     * @param type $value
+     */
+    public function setAllowjumps($value)
+    {
+        if ($value === 'Y') {
+            $this->questionindex = 1;
+        } else {
+            $this->questionindex = 0;
+        }
+    }
 }

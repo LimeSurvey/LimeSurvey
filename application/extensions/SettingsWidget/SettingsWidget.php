@@ -49,7 +49,15 @@
                 $label = $htmlOptions;
                 $htmlOptions = array();
             }
-            echo CHtml::submitButton($label, $htmlOptions);
+			if (isset($htmlOptions['type']) && $htmlOptions['type'] == 'link')
+			{
+				$htmlOptions['class'] = 'limebutton';
+				echo CHtml::linkButton($label, $htmlOptions);
+			}
+			else
+			{
+				echo CHtml::submitButton($label, $htmlOptions);
+			}
         }
 
         protected function renderButtons()

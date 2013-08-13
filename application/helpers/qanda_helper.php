@@ -1094,34 +1094,32 @@ function do_date($ia)
                     <option value="">'.$clang->gT('Year').'</option>';
 
                     /*
-                    *  New question attributes used only if question attribute
-                    * "dropdown_dates" is used (see IF(...) above).
-                    *
                     * yearmin = Minimum year value for dropdown list, if not set default is 1900
-                    * yearmax = Maximum year value for dropdown list, if not set default is 2020
+                    * yearmax = Maximum year value for dropdown list, if not set default is 2037
+                    * if full dates (format: YYYY-MM-DD) are given, only the year is used
                     */
-                    if (trim($aQuestionAttributes['dropdown_dates_year_min'])!='')
+                    if (trim($aQuestionAttributes['date_min'])!='')
                     {
-                        $yearmin = (int)LimeExpressionManager::ProcessString($aQuestionAttributes['dropdown_dates_year_min']);
+                        $yearmin = (int)substr(LimeExpressionManager::ProcessString($aQuestionAttributes['date_min']),0,4);
                     }
-                    else
-                    {
+                    if (!isset($yearmin) || $yearmin==0)
+					{
                         $yearmin = 1900;
                     }
 
-                    if (trim($aQuestionAttributes['dropdown_dates_year_max'])!='')
+                    if (trim($aQuestionAttributes['date_max'])!='')
                     {
-                        $yearmax = (int)LimeExpressionManager::ProcessString($aQuestionAttributes['dropdown_dates_year_max']);
+                        $yearmax = (int)substr(LimeExpressionManager::ProcessString($aQuestionAttributes['date_max']), 0, 4);
                     }
-                    else
+                    if (!isset($yearmax) || $yearmax==0)
                     {
-                        $yearmax = 2020;
+                        $yearmax = 2037;
                     }
 
                     if ($yearmin > $yearmax)
                     {
                         $yearmin = 1900;
-                        $yearmax = 2020;
+                        $yearmax = 2037;
                     }
 
                     if ($aQuestionAttributes['reverse']==1)
@@ -1223,6 +1221,12 @@ function do_date($ia)
         $answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1].'" />
         <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" />
         <input type="hidden" id="dateformat'.$ia[1].'" value="'.$dateformatdetails['jsdate'].'"/>';
+
+        // MayDo:
+        // add js code to
+        //        - fill dropdown boxes according to min/max
+        //        - if one datefield box is changed update all others
+        //        - would need a LOT of JS
     }
     else
     {
@@ -1241,35 +1245,87 @@ function do_date($ia)
         {
             $dateoutput='';
         }
-
-        if (trim($aQuestionAttributes['dropdown_dates_year_min'])!='') {
-            $minyear=$aQuestionAttributes['dropdown_dates_year_min'];
+        $date_min_dynvars=false;
+        $date_max_dynvars=false;
+            
+        if (trim($aQuestionAttributes['date_min'])!='') {
+            $mindate=$aQuestionAttributes['date_min'];
+            $date_min=str_replace(array( '}', '{' ), '', $aQuestionAttributes['date_min']);
+            if ($mindate!=$date_min) $date_min_dynvars=true;
+            // backward compatibility: if only a year is given, add month and day 
+            if ((strlen($mindate)==4) && ($mindate>=1900) && ($mindate<=2037)) {
+                $mindate.='-01-01'; 
+            }
         }
         else
         {
-            $minyear='1900';
+            $mindate='1900-01-01';
         }
 
-        if (trim($aQuestionAttributes['dropdown_dates_year_max'])!='') {
-            $maxyear=$aQuestionAttributes['dropdown_dates_year_max'];
+        if (trim($aQuestionAttributes['date_max'])!='') {
+            $maxdate=$aQuestionAttributes['date_max'];
+            $date_max=str_replace(array( '}', '{' ), '', $aQuestionAttributes['date_max']);
+            if ($maxdate!=$date_max) $date_max_dynvars=true;
+            // backward compatibility: if only a year is given, add month and day 
+            if ((strlen($maxdate)==4) && ($maxdate>=1900) && ($maxdate<=2037)) {
+                $maxdate.='-12-31'; 
+            }
         }
         else
         {
-            $maxyear='2020';
+            $maxdate='2037-12-31';
         }
 
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
         $goodchars = "0123456789".substr($goodchars,0,1);
         $iLength=strlen($dateformatdetails['dateformat']);
 
+        // HTML for date question using datepicker
         $answer ="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Date picker')}</label>
         <input class='popupdate' type=\"text\" size=\"{$iLength}\" name=\"{$ia[1]}\" title='".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."' id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"{$iLength}\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
-        <input  type='hidden' name='dateyearrange{$ia[1]}' id='dateyearrange{$ia[1]}' value='{$minyear}:{$maxyear}'  />
+        <input  type='hidden' name='datemin{$ia[1]}' id='datemin{$ia[1]}' value=\"{$mindate}\"    />
+        <input  type='hidden' name='datemax{$ia[1]}' id='datemax{$ia[1]}' value=\"{$maxdate}\"   />
 
         </p>";
-        if (trim($aQuestionAttributes['hide_tip'])==1) {
+             
+            // following JS is for setting datepicker limits on-the-fly according to variables given in dropdown_date_year_min/max attributes
+            // works with full dates (format: YYYY-MM-DD, js not needed), only a year, for backward compatibility (YYYY, js not needed),
+            // or variable names which refer to another date question (in curly brackets)
+            // The term $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate($((LEMalias2varName['$date_min']).replace(/java/g, '#dateformat')).attr('value')
+            // gets the date format from the source variable (in extended attributes min/max field) and converts the date to the yy-mm-dd format
+             
+            // only write JS code if there are variables used.... everything else can be dealt with in PHP
+            if ($date_min_dynvars==true || $date_max_dynvars==true) {
+            $answer.="<script> 
+                $(document).ready(function() {
+                        $('.popupdate').change(function() {
+                            if (typeof LEMalias2varName !== 'undefined') {
+                            ";
+                            
+            if ($date_min_dynvars==true) {
+                $answer.="	if ('$date_min' in LEMalias2varName) {
+                                    $('#datemin{$ia[1]}').attr('value', $.datepicker.formatDate('yy-mm-dd', 
+                                    $.datepicker.parseDate($((LEMalias2varName['$date_min']).replace(/java/g, '#dateformat'))
+                                    .attr('value'), LEMval('$date_min'))));
+                                }
+                            ";
+            }
+            if ($date_max_dynvars==true) {
+                $answer.="	if ('$date_max' in LEMalias2varName) {
+                                    $('#datemax{$ia[1]}').attr('value', $.datepicker.formatDate('yy-mm-dd', 
+                                    $.datepicker.parseDate($((LEMalias2varName['$date_max']).replace(/java/g, '#dateformat'))
+                                    .attr('value'), LEMval('$date_max'))));
+                                }
+                            ";
+            }
+            $answer.="}
+                        });
+                    });
+                </script>";
+            }
+                if (trim($aQuestionAttributes['hide_tip'])==1) {
             $answer.="<p class=\"tip\">".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."</p>";
         }
     }
@@ -3890,8 +3946,7 @@ function do_array_5point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
-    $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\">\n"
-    . "<caption class=\"hide read\">{$caption}</caption>\n" 
+    $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
     $odd_even = '';
@@ -4048,8 +4103,7 @@ function do_array_10point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
-    $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\" >\n"
-    . "<caption class=\"hide read\">{$caption}</caption>\n" 
+    $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 
@@ -4178,8 +4232,7 @@ function do_array_yesnouncertain($ia)
     $aSubquestions = $ansresult->readAll();
     $anscount = count($aSubquestions);
     $fn = 1;
-    $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\">\n"
-    . "<caption class=\"hide read\">{$caption}</caption>\n" 
+    $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\n\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
     $odd_even = '';
@@ -4340,8 +4393,7 @@ function do_array_increasesamedecrease($ia)
 
     $fn = 1;
 
-    $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\">\n"
-    . "<caption class=\"hide read\">{$caption}</caption>\n" 
+    $answer = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 
@@ -4545,8 +4597,7 @@ function do_array($ia)
         }
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-        $answer_start = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" >\n"
-        . "<caption class=\"hide read\">{$caption}</caption>\n";
+        $answer_start = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
         $answer_head_line= "\t<td>&nbsp;</td>\n";
             foreach ($labelans as $ld)
             {
@@ -5056,8 +5107,7 @@ function do_array_multitext($ia)
         . $answer_head_line
         . "</tr>\n\t</thead>\n";
 
-        $answer = "\n<table$q_table_id_HTML class=\"question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\" >\n"
-        . "<caption class=\"hide read\">{$caption}</caption>\n" 
+        $answer = "\n<table$q_table_id_HTML class=\"question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\"  summary=\"{$caption}\">\n"
         . $answer_cols 
         . $answer_head;
         $answer .= "<tbody>";
@@ -5386,8 +5436,7 @@ function do_array_multiflexi($ia)
         $mycols .= "\t</colgroup>\n";
 
         $trbc = '';
-        $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\">\n"
-        . "<caption class=\"hide read\">{$caption}</caption>\n" 
+        $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"{$caption}\">\n"
         . $mycols 
         . $answer_head . "\n";
         $answer .= "<tbody>";
@@ -5602,8 +5651,7 @@ function do_arraycolumns($ia)
             $fn=1;
             $cellwidth=$anscount;
             $cellwidth=round(( 50 / $cellwidth ) , 1);
-            $answer = "\n<table class=\"question subquestions-list questions-list\">\n"
-            . "<caption class=\"hide read\">{$caption}</caption>\n" 
+            $answer = "\n<table class=\"question subquestions-list questions-list\" summary=\"{$caption}\">\n"
             . "\t<colgroup class=\"col-responses\">\n"
             . "\t<col class=\"col-answers\" width=\"50%\" />\n";
             $odd_even = '';
@@ -5902,8 +5950,7 @@ function do_array_dual($ia)
             {
                 $answer_head1 = "";
             }
-            $answer .= "\n<table class=\"question subquestions-list questions-list\">\n"
-            . "<caption class=\"hide read\">{$caption}</caption>\n"
+            $answer .= "\n<table class=\"question subquestions-list questions-list\" summary=\"{$caption}\">\n"
             . $mycolumns
             . "\n\t<thead>\n"
             . $answer_head1
@@ -6097,8 +6144,7 @@ function do_array_dual($ia)
             $colspan_1 = '';
             $colspan_2 = '';
             $suffix_cell = '';
-            $answer .= "\n<table class=\"question subquestion-list questions-list dropdown-list\">\n"
-            . "<caption class=\"hide read\">{$caption}</caption>\n"
+            $answer .= "\n<table class=\"question subquestion-list questions-list dropdown-list\" summary=\"{$caption}\">\n"
             . "\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
 
             if($ddprefix != '' || $ddsuffix != '')
