@@ -1,3 +1,4 @@
+<div class="header ui-widget-header"><?php eT('Plugins'); ?></div>
 <div style="width: 75%; margin: auto;">
 <?php
     /* @var $this ConfigController */

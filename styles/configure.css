@@ -30,8 +30,7 @@ div.pluginsettings li {
 }
 
 div.pluginsettings input[type=submit], div.pluginsettings img, div.pluginsettings .limebutton {
-    margin: auto;
-    display: block;
-    margin-top: 20px;
+    display: inline-block;
+    margin: 1em;
     width: 150px;
 }
