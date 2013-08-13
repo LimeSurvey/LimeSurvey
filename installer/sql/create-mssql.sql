@@ -575,4 +575,4 @@ create unique index [permissions_idx2] ON [lime_permissions] ([entity_id], [enti
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '169');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '170');
