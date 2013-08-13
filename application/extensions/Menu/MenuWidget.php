@@ -44,7 +44,7 @@
             {
                 $title .= ' -- ' . gT("Logged in as:");
                 $text = ' ' . Yii::app()->session['user'] . ' ' . CHtml::image(Yii::app()->getConfig('adminimageurl'). 'profile_edit.png', gT("Edit your personal preferences"));
-                $title .=  CHtml::tag('strong', array(), CHtml::link($text, array("/admin/user/sa/personalsettings")));
+                $title .=  CHtml::tag('strong', array(), CHtml::link($text, array('admin/user', 'sa' => 'personalsettings')));
             }
             $menu['title'] = CHtml::tag('div', array('class'=>'menubar-title-left'), $title);
             $menu['role'] = 'main';
@@ -91,7 +91,7 @@
                 'value' => $this->surveyId
             );
             $menu['items']['right'][] = array(
-                'href' => array('/admin/survey/sa/index'),
+                'href' => array('admin/survey', 'sa' => 'index'),
                 'alt' => gT('Detailed list of surveys'),
                 'image' => 'surveylist.png'
             );
@@ -101,7 +101,7 @@
 
             
             $menu['items']['right'][] = array(
-                'href' => array('admin/authentication/sa/logout'),
+                'href' => array('admin/authentication', 'sa' => 'logout'),
                 'alt' => gT('Logout'),
                 'image' => 'logout.png'
             );
@@ -320,7 +320,6 @@
                 
             );
             
-            //http://ls20.befound.nl/index.php?r=admin/questiongroups/sa/add/surveyid/597865
             return $menu;
         }
         
@@ -522,7 +521,7 @@
             if (Permission::model()->hasGlobalPermission('surveys','create'))
             {
                 return array(
-                    'href' => array("admin/survey/sa/newsurvey"),
+                    'href' => array('admin/survey', 'sa' => 'newsurvey'),
                     'image' => 'add.png',
                     'alt' => gT('Create, import, or copy a survey')
                 );
@@ -556,7 +555,7 @@
             if (Permission::model()->hasGlobalPermission('labelsets','read'))
             {
                 return array(
-                    'href' => array('admin/labels/sa/view'),
+                    'href' => array('admin/labels', 'sa' => 'view'),
                     'image' => 'labels.png',
                     'alt' => gT('Edit label sets')
                 );
@@ -580,7 +579,7 @@
             if(Permission::model()->hasGlobalPermission('usergroups','read'))
             {
                 return array(
-                    'href' => array('admin/usergroups/sa/index'),
+                    'href' => array('admin/usergroups', 'sa' => 'index'),
                     'alt' => gT('Create/edit user groups'),
                     'image' => 'usergroup.png'
                 );
