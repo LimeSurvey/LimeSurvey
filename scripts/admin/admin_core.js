@@ -191,7 +191,8 @@ function updatequestionattributes()
     if (selected_value==undefined) selected_value = $("#question_type").val();
     $('#advancedquestionsettings').load(attr_url,{qid:$('#qid').val(),
         question_type:selected_value,
-        sid:$('#sid').val()
+        sid:$('#sid').val(),
+        'YII_CSRF_TOKEN':yii_csrf
     }, function(){
         // Loads the tooltips for the toolbars
 

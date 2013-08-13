@@ -13,3 +13,5 @@
 /tmp/assets/*
 .svn
 /third_party/jqgrid/src
+.settings/org.eclipse.php.core.prefs
+.buildpath
