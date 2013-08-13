@@ -1,0 +1,4 @@
+-- IMAGE INFORMATION --
+
+These images were created for LimeSurvey by Mitchell Butler & Carsten Schmitz,
+partially based on images from the public domain library at openclipart.org.

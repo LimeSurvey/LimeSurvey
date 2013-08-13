@@ -1,0 +1,15 @@
+th {
+	padding: 0 1em;
+	text-align: left;
+    background-color: #EDEDFB;
+    height: 25px;
+    width: 270px;
+    color: black;
+    font-size:100%;
+}
+
+.popupgroup {
+	padding: 10px;
+	margin: 5px;
+	border: 1px solid #eee;
+}
