@@ -1124,10 +1124,15 @@ function db_upgrade_all($oldversion) {
 			// Remove old column.
 			Yii::app()->getDb()->createCommand()->dropColumn('{{surveys}}', 'allowjumps');
 			$db->createCommand()->update('{{settings_global}}',array('stg_value'=>169),"stg_name='DBVersion'");
-
 		}
-
         
+        if ($oldversion < 170)
+        {
+            // renamed advanced attributes fields dropdown_dates_year_min/max
+            $db->createCommand()->update('{{question_attributes}}',array('attribute'=>'date_min'),"attribute='dropdown_dates_year_min'");
+            $db->createCommand()->update('{{question_attributes}}',array('attribute'=>'date_max'),"attribute='dropdown_dates_year_max'");
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>170),"stg_name='DBVersion'");
+        }
         $oTransaction->commit();
     }
     catch(Exception $e)
