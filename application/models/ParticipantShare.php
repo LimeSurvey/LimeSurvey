@@ -20,7 +20,7 @@
  * @property string $date_added
  * @property string $can_edit
  */
-class ParticipantShare extends CActiveRecord
+class ParticipantShare extends LSActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table

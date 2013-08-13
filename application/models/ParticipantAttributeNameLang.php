@@ -19,7 +19,7 @@
  * @property string $attribute_type
  * @property string $visible
  */
-class ParticipantAttributeNameLang extends CActiveRecord
+class ParticipantAttributeNameLang extends LSActiveRecord
 {
 	/**
 	 * Returns the static model of Participant Attribute Names Lang table

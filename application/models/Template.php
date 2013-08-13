@@ -15,7 +15,7 @@ if (!defined('BASEPATH'))
  *
   */
 
-class Template extends CActiveRecord
+class Template extends LSActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table

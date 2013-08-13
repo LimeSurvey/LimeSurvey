@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class SurveyLanguageSetting extends CActiveRecord
+class SurveyLanguageSetting extends LSActiveRecord
 {
 	/**
 	 * Returns the table's name

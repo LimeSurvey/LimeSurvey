@@ -14,7 +14,7 @@
  * 	Files Purpose: lots of common functions
  */
 
-class ParticipantAttribute extends CActiveRecord
+class ParticipantAttribute extends LSActiveRecord
 {
 
 	/**

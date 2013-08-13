@@ -19,7 +19,7 @@
  * @property string $attribute_type
  * @property string $visible
  */
-class ParticipantAttributeName extends CActiveRecord
+class ParticipantAttributeName extends LSActiveRecord
 {
     /**
      * Returns the primary key of this table
