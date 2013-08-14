@@ -1,5 +1,5 @@
 <script type='text/javascript'>
-    var attr_url = "<?php echo $this->createUrl('/admin/questions/ajaxquestionattributes'); ?>";
+    var attr_url = "<?php echo $this->createUrl('admin/questions', array('sa' => 'ajaxquestionattributes')); ?>";
     var imgurl = '<?php echo Yii::app()->getConfig('imageurl'); ?>';
     var yii_csrf = "<?php echo Yii::app()->request->csrfToken; ?>";
     
