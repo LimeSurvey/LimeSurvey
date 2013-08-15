@@ -142,8 +142,8 @@ class LSActiveRecord extends CActiveRecord
     }
 
 	/**
-	 * Deletes records which match the specified attribute values.
-	 * this method overrides the parent implementation in order to ensure that the beforeDelete event is fired for each record.
+	 * this method overrides the parent implementation in order to raise a 
+	 * before<classname>DeleteMany PluginEvent before calling the overriden method.
 	 * 
 	 * See {@link find()} for detailed explanation about $condition and $params.
 	 * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
@@ -154,11 +154,10 @@ class LSActiveRecord extends CActiveRecord
 	 */
 	public function deleteAllByAttributes($attributes,$condition='',$params=array())
 	{
-		$iNumberOfAffectedRows=0;
-		$aData = $this->findAllByAttributes($attributes,$condition,$params);
-		foreach ($aData AS $oModel) {
-			$iNumberOfAffectedRows+=$oModel->delete();
-		}
-		return $iNumberOfAffectedRows;
+		$sEventName = 'before'.get_class($this).'DeleteMany';
+		$oPluginEvent = new PluginEvent($sEventName, $this);
+		$oPluginEvent->set($sEventName, array('attributes' => $attributes, 'condition' => $condition, 'params' => $params));
+		$result = App()->getPluginManager()->dispatchEvent($oPluginEvent);
+		return parent::deleteAllByAttributes($attributes, $condition, $params);
 	}
 }
