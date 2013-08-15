@@ -141,4 +141,24 @@ class LSActiveRecord extends CActiveRecord
         return $maxIds[$field];
     }
 
+	/**
+	 * Deletes records which match the specified attribute values.
+	 * this method overrides the parent implementation in order to ensure that the beforeDelete event is fired for each record.
+	 * 
+	 * See {@link find()} for detailed explanation about $condition and $params.
+	 * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
+	 * An attribute value can be an array which will be used to generate an IN condition.
+	 * @param mixed $condition query condition or criteria.
+	 * @param array $params parameters to be bound to an SQL statement.
+	 * @return integer number of rows affected by the execution.
+	 */
+	public function deleteAllByAttributes($attributes,$condition='',$params=array())
+	{
+		$iNumberOfAffectedRows=0;
+		$aData = $this->findAllByAttributes($attributes,$condition,$params);
+		foreach ($aData AS $oModel) {
+			$iNumberOfAffectedRows+=$oModel->delete();
+		}
+		return $iNumberOfAffectedRows;
+	}
 }
