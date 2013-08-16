@@ -141,4 +141,23 @@ class LSActiveRecord extends CActiveRecord
         return $maxIds[$field];
     }
 
+	/**
+	 * this method overrides the parent implementation in order to raise a 
+	 * before<classname>DeleteMany PluginEvent before calling the overriden method.
+	 * 
+	 * See {@link find()} for detailed explanation about $condition and $params.
+	 * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
+	 * An attribute value can be an array which will be used to generate an IN condition.
+	 * @param mixed $condition query condition or criteria.
+	 * @param array $params parameters to be bound to an SQL statement.
+	 * @return integer number of rows affected by the execution.
+	 */
+	public function deleteAllByAttributes($attributes,$condition='',$params=array())
+	{
+		$sEventName = 'before'.get_class($this).'DeleteMany';
+		$oPluginEvent = new PluginEvent($sEventName, $this);
+		$oPluginEvent->set($sEventName, array('attributes' => $attributes, 'condition' => $condition, 'params' => $params));
+		$result = App()->getPluginManager()->dispatchEvent($oPluginEvent);
+		return parent::deleteAllByAttributes($attributes, $condition, $params);
+	}
 }
