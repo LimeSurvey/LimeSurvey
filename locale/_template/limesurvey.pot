@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-08-11 22:06:03+00:00\n"
+"POT-Creation-Date: 2013-08-16 22:06:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -37,31 +37,31 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:2600
 #: application/helpers/admin/import_helper.php:2847
 #: application/helpers/admin/import_helper.php:2927
-#: application/helpers/admin/import_helper.php:2955
-#: application/helpers/admin/import_helper.php:2970
-#: application/helpers/admin/import_helper.php:2988
-#: application/helpers/admin/import_helper.php:3497
-#: application/helpers/admin/import_helper.php:3536
-#: application/helpers/admin/import_helper.php:3569
-#: application/helpers/admin/import_helper.php:3618
-#: application/helpers/admin/import_helper.php:3699
-#: application/helpers/admin/import_helper.php:3727
-#: application/helpers/admin/import_helper.php:3732
-#: application/helpers/admin/import_helper.php:3756
-#: application/helpers/admin/import_helper.php:3833
-#: application/helpers/admin/import_helper.php:3859
-#: application/helpers/admin/import_helper.php:3880
-#: application/helpers/admin/import_helper.php:3902
-#: application/helpers/admin/import_helper.php:3920
-#: application/helpers/admin/import_helper.php:3946
-#: application/helpers/admin/import_helper.php:4057
-#: application/helpers/admin/import_helper.php:4114
-#: application/helpers/admin/import_helper.php:4170
-#: application/helpers/admin/import_helper.php:4363
-#: application/helpers/admin/import_helper.php:4407
-#: application/helpers/admin/import_helper.php:4455
-#: application/helpers/admin/import_helper.php:4578
-#: application/helpers/admin/import_helper.php:4618
+#: application/helpers/admin/import_helper.php:2954
+#: application/helpers/admin/import_helper.php:2969
+#: application/helpers/admin/import_helper.php:2987
+#: application/helpers/admin/import_helper.php:3496
+#: application/helpers/admin/import_helper.php:3535
+#: application/helpers/admin/import_helper.php:3568
+#: application/helpers/admin/import_helper.php:3617
+#: application/helpers/admin/import_helper.php:3698
+#: application/helpers/admin/import_helper.php:3726
+#: application/helpers/admin/import_helper.php:3731
+#: application/helpers/admin/import_helper.php:3755
+#: application/helpers/admin/import_helper.php:3832
+#: application/helpers/admin/import_helper.php:3858
+#: application/helpers/admin/import_helper.php:3879
+#: application/helpers/admin/import_helper.php:3901
+#: application/helpers/admin/import_helper.php:3919
+#: application/helpers/admin/import_helper.php:3945
+#: application/helpers/admin/import_helper.php:4056
+#: application/helpers/admin/import_helper.php:4113
+#: application/helpers/admin/import_helper.php:4169
+#: application/helpers/admin/import_helper.php:4362
+#: application/helpers/admin/import_helper.php:4406
+#: application/helpers/admin/import_helper.php:4454
+#: application/helpers/admin/import_helper.php:4577
+#: application/helpers/admin/import_helper.php:4617
 #: application/views/admin/dataentry/active_html_view.php:93
 #: application/views/admin/dataentry/warning_header.php:1
 #: application/views/admin/error_view.php:3
@@ -995,10 +995,10 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:160
 #: application/controllers/admin/tokens.php:1439
 #: application/controllers/admin/useraction.php:157
-#: application/helpers/admin/import_helper.php:4496
-#: application/helpers/admin/import_helper.php:4514
-#: application/helpers/admin/import_helper.php:4540
-#: application/helpers/admin/import_helper.php:4600
+#: application/helpers/admin/import_helper.php:4495
+#: application/helpers/admin/import_helper.php:4513
+#: application/helpers/admin/import_helper.php:4539
+#: application/helpers/admin/import_helper.php:4599
 #: application/views/admin/dataentry/import.php:31
 #: application/views/admin/participants/attributeControl_view.php:8
 #: application/views/admin/participants/displayParticipants_view.php:132
@@ -4497,7 +4497,7 @@ msgstr ""
 
 #: application/helpers/admin/import_helper.php:589
 #: application/helpers/admin/import_helper.php:1571
-#: application/helpers/admin/import_helper.php:3013
+#: application/helpers/admin/import_helper.php:3012
 msgid "Faulty line in import - fields and data don't match"
 msgstr ""
 
@@ -4547,65 +4547,65 @@ msgstr ""
 msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3249
+#: application/helpers/admin/import_helper.php:3248
 #: application/views/admin/quotas/newquota_view.php:37
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3422
+#: application/helpers/admin/import_helper.php:3421
 msgid "This is not a valid LimeSurvey survey structure XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4004
+#: application/helpers/admin/import_helper.php:4003
 msgid "This is not a valid token data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4083
+#: application/helpers/admin/import_helper.php:4082
 msgid "This is not a valid response data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4138
+#: application/helpers/admin/import_helper.php:4137
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4363
+#: application/helpers/admin/import_helper.php:4362
 msgid "Failed to insert survey language"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4407
+#: application/helpers/admin/import_helper.php:4406
 msgid "Failed to insert group"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4407
-#: application/helpers/admin/import_helper.php:4455
-#: application/helpers/admin/import_helper.php:4496
-#: application/helpers/admin/import_helper.php:4514
-#: application/helpers/admin/import_helper.php:4540
-#: application/helpers/admin/import_helper.php:4578
-#: application/helpers/admin/import_helper.php:4600
-#: application/helpers/admin/import_helper.php:4618
+#: application/helpers/admin/import_helper.php:4406
+#: application/helpers/admin/import_helper.php:4454
+#: application/helpers/admin/import_helper.php:4495
+#: application/helpers/admin/import_helper.php:4513
+#: application/helpers/admin/import_helper.php:4539
+#: application/helpers/admin/import_helper.php:4577
+#: application/helpers/admin/import_helper.php:4599
+#: application/helpers/admin/import_helper.php:4617
 msgid "Text file row number "
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4455
+#: application/helpers/admin/import_helper.php:4454
 msgid "Could not insert question"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4496
+#: application/helpers/admin/import_helper.php:4495
 msgid "Failed to insert question attribute"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4514
-#: application/helpers/admin/import_helper.php:4540
-#: application/helpers/admin/import_helper.php:4600
+#: application/helpers/admin/import_helper.php:4513
+#: application/helpers/admin/import_helper.php:4539
+#: application/helpers/admin/import_helper.php:4599
 msgid "Failed to insert default value"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4578
+#: application/helpers/admin/import_helper.php:4577
 msgid "Could not insert sub question"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4618
+#: application/helpers/admin/import_helper.php:4617
 msgid "Could not insert answer"
 msgstr ""
 
