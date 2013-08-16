@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.05beta5! 
+Welcome to LimeSurvey v2.05beta6! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -59,6 +59,50 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.05beta5 (build 130702) to 2.05beta6 (build 130816) Aug 16, 2013
+-New feature #7687: RemoteControl2 export_responses should also have an Array / JSON with responses (Denis Chenu)
+-New feature #7810: Implement max/min date for date question (mfaber)
+-New feature #8040: STATA export functionality (mfaber)
+-New feature: Darkblue admin theme for color-impaired with screenshots (Alain Bearez)
+-New translation: Catalan (Valencia) (Carsten Schmitz)
+-Changed feature: Moved R-export to plugin and to normal export responses dialog (Menno Dekker)
+-Fixed issue #8055: Error when accessing quota menu (mfaber)
+-Fixed issue #7885: Multiple issues with excel/tsv export and subsequent import (Menno Dekker)
+-Fixed issue #7979: Question Group order not saved (Menno Dekker)
+-Fixed issue #8093: Error on R-export (syntax) while running as a plugin (Menno Dekker)
+-Fixed issue #7826: Pass-through variables do not work when automatic end URL loading set to off (Carsten Schmitz)
+-Fixed issue #7843: Date/time field (HH:MM) does not display value, when visited again (Carsten Schmitz)
+-Fixed issue #7852: Cryptic error when survey is deactivated twice (Carsten Schmitz)
+-Fixed issue #7908: When entering a protected survey password text field is readable (Carsten Schmitz)
+-Fixed issue #7938: Can't display Array (texts) answer with some SQL server (Denis Chenu)
+-Fixed issue #7950: queXML export produces unusable PDF, "/**/" on every line, 2.00+ seems ok (Adam Zammit)
+-Fixed issue #7967: Accessibility of button without javascript : index (Denis Chenu)
+-Fixed issue #7967: Accessibility of button without javascript : previous and clear (Denis Chenu)
+-Fixed issue #7973: Add "missing" class on incomplete group in index. (Sam Mousa)
+-Fixed issue #7981: Back and forth button in JS calendar does not work. (Sam Mousa)
+-Fixed issue #7981: Calendar not working. (Sam Mousa)
+-Fixed issue #7989: Unable to upload PNG files in template editor (Denis Chenu)
+-Fixed issue #7992: Assessments are centered in HTML (Denis Chenu)
+-Fixed issue #7994: Admin without update quota right view delete button (Denis Chenu)
+-Fixed issue #7995: Memory issue in Survey Activation (Denis Chenu)
+-Fixed issue #8002: Click on delete one answer delete 2 answers (Denis Chenu)
+-Fixed issue #8033: since enable CSRF protection: Cannot access advanced question attributes (kfegert)
+-Fixed issue #8038 : with  urlFormat to "get" : Can't upload file in template editor (Denis Chenu)
+-Fixed issue #8039: Problems with subquestion code '0' (mfaber)
+-Fixed issue #8013: 'printanswershonorsconditions' does not work (mfaber)
+-Fixed issue: Access to quota don't test read right (Denis Chenu)
+-Fixed issue: Caption is visible with IE7 (Denis Chenu)
+-Fixed issue: Error when importing old .CSV survey file with quotes in answers/subquestions (Carsten Schmitz)
+-Fixed issue: HTML editor for admin notifications used even if text is set. (Carsten Schmitz)
+-Fixed issue: javascript broken in import template if php-zip is disabled (Denis Chenu)
+-Fixed issue: Next button in question menu goes to second question of the group if no question ar selected (Denis Chenu)
+-Fixed issue: Ranking question are not side by side in IE7 (Denis Chenu)
+-Fixed issue: unable to show phpinfo with 'urlFormat' => 'get' (Denis Chenu)
+-Fixed issue: Wrong hint for Rank questions (Carsten Schmitz)
+-Fixed issue: STATA export: No output when debug!=0 (mfaber)
+-Fixed issue: Support for prefilling using questioncodes. (Sam Mousa)
+-Fixed issue: year=0 in dropdown-boxes (mfaber)
 
 Changes from 2.05beta4 (build 130609) to 2.05beta5 (build 130702) Jul 2, 2013
 -New feature #5740: Improve VV response import (Denis Chenu)
