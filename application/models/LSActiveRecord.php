@@ -88,7 +88,8 @@ class LSActiveRecord extends CActiveRecord
      */
     public function beforeSave()
     {
-        $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('before'.get_class($this).'Save', $this));
+        $this->dispatchPluginModelEvent('before'.get_class($this).'Save');
+        $this->dispatchPluginModelEvent('beforeModelSave');
         return parent::beforeSave();
     }    
 
@@ -101,9 +102,23 @@ class LSActiveRecord extends CActiveRecord
      */    
     public function beforeDelete()
     {
-        $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('before'.get_class($this).'Delete', $this));
+    	$this->dispatchPluginModelEvent('before'.get_class($this).'Delete');
+    	$this->dispatchPluginModelEvent('beforeModelDelete');
         return parent::beforeDelete();
     }
+    
+    /**
+     * This method is invoked after saving a record.
+     * The default implementation raises the {@link onAfterSave} event.
+     * You may override this method to do any work that needs to be done after saving a record.
+     * Make sure you call the parent implementation so that the event is raised properly.
+     */    
+    public function afterSave()
+    {
+    	$this->dispatchPluginModelEvent('after'.get_class($this).'Save');
+    	$this->dispatchPluginModelEvent('afterModelSave');
+        parent::afterSave();
+    }    
     
     /**
      * Return the max value for a field
@@ -142,8 +157,10 @@ class LSActiveRecord extends CActiveRecord
     }
 
 	/**
-	 * this method overrides the parent implementation in order to raise a 
-	 * before<classname>DeleteMany PluginEvent before calling the overriden method.
+	 * this method overrides the parent implementation in order to raise PluginEvents 
+	 * before calling the overriden method. The Following Events will be raised:
+	 * a before<classname>DeleteMany PluginEvent is raised fo single Model Event Handling
+	 * a beforeModelDeleteMany PluginEvent is raised global Model Event Handling
 	 * 
 	 * See {@link find()} for detailed explanation about $condition and $params.
 	 * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
@@ -154,10 +171,24 @@ class LSActiveRecord extends CActiveRecord
 	 */
 	public function deleteAllByAttributes($attributes,$condition='',$params=array())
 	{
-		$sEventName = 'before'.get_class($this).'DeleteMany';
-		$oPluginEvent = new PluginEvent($sEventName, $this);
-		$oPluginEvent->set($sEventName, array('attributes' => $attributes, 'condition' => $condition, 'params' => $params));
-		$result = App()->getPluginManager()->dispatchEvent($oPluginEvent);
+		$aCriteria=array('attributes' => $attributes, 'condition' => $condition, 'params' => $params);
+		$this->dispatchPluginModelEvent('before'.get_class($this).'DeleteMany', $aCriteria);
+		$this->dispatchPluginModelEvent('beforeModelDeleteMany', $aCriteria);
 		return parent::deleteAllByAttributes($attributes, $condition, $params);
+	}
+	
+	/**
+	 * method for dispatching plugin events
+	 * 
+	 * See {@link find()} for detailed explanation about $condition and $params.
+	 * @param string $sEventName event name to dispatch
+	 * @param array	$criteria array containing attributes, conditions and params for the filter query
+	 * @return PluginEvent the dispatched event
+	 */
+	private function dispatchPluginModelEvent($sEventName, $criteria=false) {
+		$oPluginEvent = new PluginEvent($sEventName, $this);
+		$oPluginEvent->model=$this;
+		$oPluginEvent->criteria=$criteria;
+		return App()->getPluginManager()->dispatchEvent($oPluginEvent);
 	}
 }

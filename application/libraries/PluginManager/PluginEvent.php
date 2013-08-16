@@ -38,6 +38,21 @@ class PluginEvent
     protected $_parameters = array();
     
     /**
+     * Instance of the affected Model if the event was Triggered by changes on a Models (save,delete), else false.
+     * 
+     * @var LSActiveRecord|FALSE 
+     */
+    public $model = false;
+    
+    /**
+     * On Model Bulk operations this will contain an array of criterias which where used to filter the Model records for
+     * the subjects of the bulk operation.
+     * 
+     * @var array|FALSE 
+     */
+    public $criteria = false;
+    
+    /**
      * Constructor for the PluginEvent
      * 
      * @param string $event    Name of the event fired 
