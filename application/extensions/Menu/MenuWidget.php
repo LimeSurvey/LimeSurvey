@@ -66,6 +66,7 @@
             $menu['items']['left'][] = 'separator';
             $menu['items']['left'][] = $this->checkIntegrity();
             $menu['items']['left'][] = $this->dumpDatabase();
+            $menu['items']['left'][] = 'separator';
             $menu['items']['left'][] = $this->editLabels();
             $menu['items']['left'][] = 'separator';
             $menu['items']['left'][] = $this->editTemplates();
@@ -75,11 +76,24 @@
 
             $surveys = getSurveyList(true);
             $surveyList = array();
+            $timeadjust = getGlobalSetting('timeadjust');
             foreach ($surveys as $survey)
             {
+                if($survey['active']!='Y')
+                {
+                    $group = gT("Inactive");
+                } elseif($sv['expires']!='' && $sv['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust))
+                {
+                    $group = gT("Expired");
+                } else
+                {
+                    $group = gt("Active");
+                }        
+        
                 $surveyList[] = array(
                     'id' => $survey['sid'],
-                    'title' => $survey['surveyls_title']
+                    'title' => $survey['surveyls_title'],
+                    'group' => $group
                 );
             }
             $menu['items']['right'][] = array(
@@ -434,7 +448,7 @@
             $result = CHtml::label($item['title'],  $item['name']);
             if (is_array(current($item['values'])))
             {
-                $listData = CHtml::listData($item['values'], 'id', 'title');
+                $listData = CHtml::listData($item['values'], 'id', 'title', 'group');
             }
             else
             {
