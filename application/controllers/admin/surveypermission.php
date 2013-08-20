@@ -524,7 +524,7 @@ class surveypermission extends Survey_Common_Action {
             {
                 if (isset($postuserid))
                 {
-                    $dbresult = Permission::model()->deleteAll('uid = :uid AND sid = :sid',array(':uid' => $postuserid, ':sid' => $surveyid));
+                    $dbresult = Permission::model()->deleteAll('uid = :uid AND entity_id = :sid AND entity = :entity',array(':uid' => $postuserid, ':sid' => $surveyid, ':entity' => 'survey'));
                     $addsummary .= "<br />".$clang->gT("Username").": ".sanitize_xss_string($_POST['user'])."<br /><br />\n";
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
                 }
