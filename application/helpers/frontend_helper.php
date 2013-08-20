@@ -820,15 +820,13 @@ function buildsurveysession($surveyid,$preview=false)
     global $secerror, $clienttoken;
     global $tokensexist;
     //global $surveyid;
-    global $templang, $move, $rooturl;
+    global $move, $rooturl;
 
     $clang = Yii::app()->lang;
+    $sLangCode=$clang->langcode;
+    $languagechanger=makeLanguageChangerSurvey($sLangCode);
 
-    $thissurvey = getSurveyInfo($surveyid);
-    if (empty($templang))
-    {
-        $templang=$clang->langcode;
-    }
+    $thissurvey = getSurveyInfo($surveyid,$sLangCode);
 
     $_SESSION['survey_'.$surveyid]['templatename']=validateTemplateDir($thissurvey['template']);
     $_SESSION['survey_'.$surveyid]['templatepath']=getTemplatePath($_SESSION['survey_'.$surveyid]['templatename']).DIRECTORY_SEPARATOR;
@@ -865,7 +863,7 @@ function buildsurveysession($surveyid,$preview=false)
             <tr>
             <td align='right' valign='middle'>
             <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-            <input type='hidden' name='lang' value='".$templang."' id='lang' />";
+            <input type='hidden' name='lang' value='".$sLangCode."' id='lang' />";
             // In case we this is a direct Reload previous answers URL, then add hidden fields
             if (isset($_GET['loadall']) && isset($_GET['scid'])
             && isset($_GET['loadname']) && isset($_GET['loadpass']))
@@ -939,7 +937,7 @@ function buildsurveysession($surveyid,$preview=false)
             <label for='token'><?php $clang->eT("Token:");?></label><input class='text <?php echo $kpclass?>' id='token' type='password' name='token' value='' />
             <?php
             echo "<input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-            <input type='hidden' name='lang' value='".$templang."' id='lang' />";
+            <input type='hidden' name='lang' value='".$sLangCode."' id='lang' />";
             if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
             {
                 echo "  <input type='hidden' name='newtest' value='Y' id='newtest' />";
@@ -1096,7 +1094,7 @@ function buildsurveysession($surveyid,$preview=false)
                         <ul>
                         <li>
                         <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-                        <input type='hidden' name='lang' value='".$templang."' id='lang' />";
+                        <input type='hidden' name='lang' value='".$sLangCode."' id='lang' />";
                         if (isset($_GET['loadall']) && isset($_GET['scid'])
                         && isset($_GET['loadname']) && isset($_GET['loadpass']))
                         {
@@ -1115,7 +1113,7 @@ function buildsurveysession($surveyid,$preview=false)
                     <ul>
                     <li>
                     <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-                    <input type='hidden' name='lang' value='".$templang."' id='lang' />";
+                    <input type='hidden' name='lang' value='".$sLangCode."' id='lang' />";
                     if (isset($_GET['loadall']) && isset($_GET['scid'])
                     && isset($_GET['loadname']) && isset($_GET['loadpass']))
                     {
