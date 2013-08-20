@@ -86,11 +86,9 @@
 
     function PrepareEditorScript($load=false, $controller = null)
     {
-        $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
         $clang = Yii::app()->lang;
         $data['clang'] = $clang;
-        $js_admin_includes[]=Yii::app()->getConfig('sCKEditorURL').'/ckeditor.js';
-        Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
+        App()->getClientScript()->registerCoreScript('ckeditor');
         if ($controller == null)
         {
             $controller = Yii::app()->getController();

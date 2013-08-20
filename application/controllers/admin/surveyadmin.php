@@ -113,6 +113,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     function newsurvey()
     {
+        App()->getClientScript()->registerPackage('jqgrid');
         if (!Permission::model()->hasGlobalPermission('surveys','create'))
             $this->getController()->error('No permission');
 

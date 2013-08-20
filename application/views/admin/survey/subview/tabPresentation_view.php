@@ -29,7 +29,7 @@
             <select id='template' name='template'>
                 <?php foreach (array_keys(getTemplateList()) as $tname) {
 
-                        if (Permission::model()->hasGlobalPermission('superadmin','read') || hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1) { ?>
+                        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1) { ?>
                         <option value='<?php echo $tname; ?>'
                             <?php if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) { ?>
                                 selected='selected'
