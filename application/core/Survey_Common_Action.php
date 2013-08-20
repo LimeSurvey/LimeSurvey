@@ -70,7 +70,7 @@ class Survey_Common_Action extends CAction
             {
                 $this->getController()->error('Invalid survey id');
             }
-            elseif (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'surveycontent', 'read'))
+            elseif (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read'))
             {
                 $this->getController()->error('No permission');
             }
