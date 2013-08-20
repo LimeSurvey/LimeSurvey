@@ -133,30 +133,25 @@ class index extends CAction {
         );
         $this->_niceExit($redata, __LINE__, null, $asMessage);
         };*/
-
         // Set the language of the survey, either from POST, GET parameter of session var
-        if ( !empty($_REQUEST['lang']) )
+        if (!is_null($param['lang']) )
         {
-            $sTempLanguage = sanitize_languagecode($_REQUEST['lang']);
-        }
-        elseif ( !empty($param['lang']) )
-        {
-            $sTempLanguage = sanitize_languagecode($param['lang']);
+            $sDisplayLanguage = $param['lang'];// $param take lang from returnGlobal and returnGlobal sanitize langagecode
         }
         elseif (isset($_SESSION['survey_'.$surveyid]['s_lang']))
         {
-            $sTempLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
+            $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
         }
         else
         {
-            $sTempLanguage='';
+            $sDisplayLanguage=Yii::app()->getConfig('defaultlang');
         }
 
         //CHECK FOR REQUIRED INFORMATION (sid)
         if ($surveyid && $surveyExists)
         {
             LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
-            $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
+            $clang = SetSurveyLanguage( $surveyid, $sDisplayLanguage);
             if($previewmode) LimeExpressionManager::SetPreviewMode($previewmode);
             UpdateGroupList($surveyid, $clang->langcode);  // to refresh the language strings in the group list session variable
             UpdateFieldArray();        // to refresh question titles and question text
@@ -164,13 +159,6 @@ class index extends CAction {
         }
         else
         {
-            if (!is_null($param['lang']))
-            {
-                $sDisplayLanguage=$param['lang'];
-            }
-            else{
-                $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
-            }
             $clang = $this->_loadLimesurveyLang($sDisplayLanguage);
 
             $languagechanger = makeLanguageChanger($sDisplayLanguage);
