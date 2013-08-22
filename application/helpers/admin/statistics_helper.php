@@ -3222,7 +3222,6 @@ class statistics_helper {
         static $recordCount = 0;
         static $field = null;
         static $allRows = null;
-        
         if ($surveyid !== $sid || $fieldname !== $field) {
             //get data
             $query =" FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT null";
@@ -3249,14 +3248,12 @@ class statistics_helper {
             $sid = $surveyid;
             $recordCount = 0;
             $field = null;      // Reset cache
-
-            //we just put the total number of records at the beginning of this array
-            $recordCount = Yii::app()->db->createCommand("SELECT COUNT(".Yii::app()->db->quoteColumnName($fieldname).")" .$query)->queryScalar();
         }
         
         if ($fieldname !== $field) {
             $field = $fieldname;
             $allRows = Yii::app()->db->createCommand("SELECT ".Yii::app()->db->quoteColumnName($fieldname) . $query . ' ORDER BY ' . Yii::app()->db->quoteColumnName($fieldname))->queryAll();
+            $recordCount = Yii::app()->db->createCommand("SELECT COUNT(".Yii::app()->db->quoteColumnName($fieldname).")" .$query)->queryScalar(); // Record count for THIS $fieldname
         }
         
         // Qx = (x/4) * (n+1) if not integer, interpolate
@@ -3271,15 +3268,13 @@ class statistics_helper {
                 // Need at least 2 records
                 if ($recordCount<2) return;
                 break;
-                
             case 0:
                 return $recordCount;
-                
             default:
                 return;
                 break;
         }        
-        
+
         $q1 = $quartile/4 * ($recordCount+1);
         $row = $q1-1; // -1 since we start counting at 0
         if ($q1 === (int) $q1) {
@@ -3287,10 +3282,9 @@ class statistics_helper {
         } else {
             $diff = ($q1 - (int) $q1);
             return $allRows[$row][$fieldname] + $diff * ($allRows[$row+1][$fieldname]-$allRows[$row][$fieldname]);
-        }        
+        }
     }
-                  
-    
+
     /**
     *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
     */
