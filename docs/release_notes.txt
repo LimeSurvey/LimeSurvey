@@ -15,11 +15,10 @@ HOW TO INSTALL
 This release does have the following requirements:
 
 *MySQL 4.1.0 or later OR Microsoft SQL Server 2005 or later OR Postgres 8.1 or later
-*PHP 5.1.6 or later with the following modules/libraries enabled:
+*PHP 5.3.0 or later with the following modules/libraries enabled:
     *mbstring (Multibyte String Functions) extension library (see also Installation FAQ(external link))
     *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv)
-    *For PHP versions <5.2 you will need to have the PECL JSON library( see http://pecl.php.net/package/json(external link)) installed 
-
+    
 If you are doing a complete new installation please refer to the manual at
 http://docs.limesurvey.org/Installation
 
