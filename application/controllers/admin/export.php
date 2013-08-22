@@ -1274,6 +1274,16 @@ class export extends Survey_Common_Action {
             echo surveyGetXMLData($iSurveyID);
             exit;
         }
+        elseif ($action == "exportstructurejson")
+        {
+            $fn = "limesurvey_survey_{$iSurveyID}.json";
+            $this->_addHeaders($fn, "application/json", "Mon, 26 Jul 1997 05:00:00 GMT");
+            $surveyInXmlFormat = surveyGetXMLData($iSurveyID);
+            // now convert this xml into json format and then return
+            echo _xmlToJson($surveyInXmlFormat);
+            exit;
+        } 
+
         elseif ( $action == "exportstructurequexml" )
         {
             if ( isset($surveyprintlang) && ! empty($surveyprintlang) )
@@ -1340,6 +1350,14 @@ class export extends Survey_Common_Action {
         header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Pragma: {$pragma}");                          // HTTP/1.0
+    }
+    
+    private function _xmlToJson($fileContents) {
+        $fileContents = str_replace(array("\n", "\r", "\t"), '', $fileContents);
+        $fileContents = trim(str_replace('"', "'", $fileContents));
+        $simpleXml = simplexml_load_string($fileContents,'SimpleXMLElement', LIBXML_NOCDATA);
+        $json = json_encode($simpleXml);
+        return $json;
     }
 
     /**
