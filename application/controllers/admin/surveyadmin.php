@@ -1482,7 +1482,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             // Check if template may be used
             $sTemplate = $_POST['template'];
-            if (!$sTemplate || (!Permission::model()->hasGlobalPermission('superadmin','read') && !hasGlobalPermission('templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $_POST['template'])))
+            if (!$sTemplate || (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $_POST['template'])))
             {
                 $sTemplate = "default";
             }

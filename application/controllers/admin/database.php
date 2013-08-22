@@ -1009,7 +1009,7 @@ class database extends Survey_Common_Action
             fixLanguageConsistency($surveyid,Yii::app()->request->getPost('languageids'));
             $template = Yii::app()->request->getPost('template');
 
-            if(!Permission::model()->hasGlobalPermission('superadmin','read') && !hasGlobalPermission('templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $template)) $template = "default";
+            if(!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $template)) $template = "default";
 
             $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
             SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$surveyid));

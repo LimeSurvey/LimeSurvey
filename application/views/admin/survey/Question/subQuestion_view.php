@@ -146,7 +146,7 @@
                     } ?>
                     <button class='btnlsbrowser' id='btnlsbrowser_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Predefined label sets...'); ?></button>
                     <button class='btnquickadd' id='btnquickadd_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Quick add...'); ?></button>
-                    <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || hasGlobalPermission('labelsets','create')){ ?>
+                    <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create')){ ?>
                         <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php $clang->eT('Save as label set'); ?></button>
                         <?php } ?>
 
