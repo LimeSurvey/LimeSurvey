@@ -48,7 +48,7 @@ return array(
             //'css/smoothness/jquery-ui-1.10.0.custom.min.css'
         ),
         'depends' => array(
-            'jquery'
+            'jquery',
         )
     ),
     'jquery-cookie' => array(
@@ -170,4 +170,13 @@ return array(
             'jquery'
         )
     ),
+	'jquery-touch-punch' => array(
+		'baseUrl' => 'third_party/jquery-touch-punch/',
+		'js' => array(
+			'jquery.ui.touch-punch.min.js'
+		),
+		'depends' => array(
+			'jqueryui'
+		)
+	)
 );

@@ -157,6 +157,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
 
         App()->getClientScript()->registerPackage('jqueryui');
+		App()->getClientScript()->registerPackage('jquery-touch-punch');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
         App()->getClientScript()->registerScriptFile($templateurl . 'template.js',CClientScript::POS_END);
         useFirebug();
