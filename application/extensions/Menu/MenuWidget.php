@@ -82,7 +82,7 @@
                 if($survey['active']!='Y')
                 {
                     $group = gT("Inactive");
-                } elseif($sv['expires']!='' && $sv['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust))
+                } elseif($survey['expires']!='' && $survey['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust))
                 {
                     $group = gT("Expired");
                 } else
