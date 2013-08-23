@@ -3250,14 +3250,12 @@ class statistics_helper {
             $sid = $surveyid;
             $recordCount = 0;
             $field = null;      // Reset cache
-
-            //we just put the total number of records at the beginning of this array
-            $recordCount = Yii::app()->db->createCommand("SELECT COUNT(".Yii::app()->db->quoteColumnName($fieldname).")" .$query)->queryScalar();
         }
         
         if ($fieldname !== $field) {
             $field = $fieldname;
             $allRows = Yii::app()->db->createCommand("SELECT ".Yii::app()->db->quoteColumnName($fieldname) . $query . ' ORDER BY ' . Yii::app()->db->quoteColumnName($fieldname))->queryAll();
+            $recordCount = Yii::app()->db->createCommand("SELECT COUNT(".Yii::app()->db->quoteColumnName($fieldname).")" .$query)->queryScalar(); // Record count for THIS $fieldname
         }
         
         // Qx = (x/4) * (n+1) if not integer, interpolate
@@ -3288,10 +3286,9 @@ class statistics_helper {
         } else {
             $diff = ($q1 - (int) $q1);
             return $allRows[$row][$fieldname] + $diff * ($allRows[$row+1][$fieldname]-$allRows[$row][$fieldname]);
-        }        
+        }
     }
-                  
-    
+
     /**
     *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
     */
