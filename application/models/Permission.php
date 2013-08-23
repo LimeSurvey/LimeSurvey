@@ -282,7 +282,9 @@ class Permission extends LSActiveRecord
         $aRows=self::model()->findAll("entity_id=:sid AND entity='survey'", array(':sid'=>$iSurveyIDSource));
         foreach ($aRows as $aRow)
         {
-            $aRow['sid']=$iSurveyIDTarget;
+            $aRow = $aRow->getAttributes();
+            $aRow['entity_id']=$iSurveyIDTarget;    // Set the new survey ID
+            unset($aRow['id']);                     // To insert, we reset the id
             try  {
                 $this->insertSomeRecords($aRow);
             }
