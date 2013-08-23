@@ -32,8 +32,8 @@ class Survey extends LSActiveRecord
      */
     public function expire($surveyId = null)
     {
-        $dateTime = new DateTime('-1 day');
-        $dateTime->add(Yii::app()->getConfig('timeadjust'));
+        $dateTime = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+        $dateTime = dateShift($dateTime, "Y-m-d H:i:s", '-1 day');
         
         if (!isset($surveyId))
         {
