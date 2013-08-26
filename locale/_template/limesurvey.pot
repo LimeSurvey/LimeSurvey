@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-08-20 22:06:03+00:00\n"
+"POT-Creation-Date: 2013-08-26 22:05:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -349,15 +349,16 @@ msgid "PDF export"
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:124
+#: application/controllers/PrintanswersController.php:132
 #: application/views/admin/templates/templateeditor_printoutput_view.php:1
 msgid "Survey name (ID)"
 msgstr ""
 
-#: application/controllers/PrintanswersController.php:133
+#: application/controllers/PrintanswersController.php:134
 msgid "Survey name (ID):"
 msgstr ""
 
-#: application/controllers/PrintanswersController.php:153
+#: application/controllers/PrintanswersController.php:158
 #: application/controllers/admin/conditionsaction.php:1736
 #: application/controllers/admin/conditionsaction.php:2096
 #: application/controllers/admin/conditionsaction.php:2099
@@ -369,7 +370,7 @@ msgstr ""
 msgid "Question"
 msgstr ""
 
-#: application/controllers/PrintanswersController.php:153
+#: application/controllers/PrintanswersController.php:158
 #: application/views/admin/templates/templateeditor_printoutput_view.php:3
 msgid "Your answer"
 msgstr ""
