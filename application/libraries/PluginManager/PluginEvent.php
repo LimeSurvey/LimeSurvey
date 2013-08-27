@@ -1,4 +1,11 @@
 <?php
+/**
+ * 
+ * 
+ * @property	$model						Model instance if the event was Triggered by changes on a Model (save,delete)
+ * @property 	$filterCriteria				On Model Bulk operations this will contain CDBCriteria which was used to filter the Model records for the subjects of the bulk operation.
+ */
+
 class PluginEvent
 {
     /**
@@ -36,21 +43,6 @@ class PluginEvent
      * @var array 
      */
     protected $_parameters = array();
-    
-    /**
-     * Instance of the affected Model if the event was Triggered by changes on a Models (save,delete), else false.
-     * 
-     * @var LSActiveRecord|FALSE 
-     */
-    public $model = false;
-    
-    /**
-     * On Model Bulk operations this will contain an array of criterias which where used to filter the Model records for
-     * the subjects of the bulk operation.
-     * 
-     * @var array|FALSE 
-     */
-    public $criteria = false;
     
     /**
      * Constructor for the PluginEvent

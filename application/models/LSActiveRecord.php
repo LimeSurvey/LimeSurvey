@@ -157,10 +157,11 @@ class LSActiveRecord extends CActiveRecord
     }
 
 	/**
-	 * this method overrides the parent implementation in order to raise PluginEvents 
-	 * before calling the overriden method. The Following Events will be raised:
-	 * a before<classname>DeleteMany PluginEvent is raised fo single Model Event Handling
-	 * a beforeModelDeleteMany PluginEvent is raised global Model Event Handling
+	 * This method overrides the parent in order to raise PluginEvents for Bulk delete operations.
+	 * 
+	 * Filter Criteria are wrapped into a CDBCriteria instance so we have a single instance responsible for holding the filter criteria
+	 * to be passed to the PluginEvent, 
+	 * this also enables us to pass the fully configured CDBCriteria instead of the original Parameters.
 	 * 
 	 * See {@link find()} for detailed explanation about $condition and $params.
 	 * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
@@ -171,10 +172,13 @@ class LSActiveRecord extends CActiveRecord
 	 */
 	public function deleteAllByAttributes($attributes,$condition='',$params=array())
 	{
-		$aCriteria=array('attributes' => $attributes, 'condition' => $condition, 'params' => $params);
-		$this->dispatchPluginModelEvent('before'.get_class($this).'DeleteMany', $aCriteria);
-		$this->dispatchPluginModelEvent('beforeModelDeleteMany', $aCriteria);
-		return parent::deleteAllByAttributes($attributes, $condition, $params);
+		$builder=$this->getCommandBuilder();
+		$table=$this->getTableSchema();
+		$criteria=$builder->createColumnCriteria($table,$attributes,$condition,$params);
+		
+		$this->dispatchPluginModelEvent('before'.get_class($this).'DeleteMany', $criteria);
+		$this->dispatchPluginModelEvent('beforeModelDeleteMany',				$criteria);
+		return parent::deleteAllByAttributes(array(), $criteria, array());
 	}
 	
 	/**
@@ -187,8 +191,10 @@ class LSActiveRecord extends CActiveRecord
 	 */
 	private function dispatchPluginModelEvent($sEventName, $criteria=false) {
 		$oPluginEvent = new PluginEvent($sEventName, $this);
-		$oPluginEvent->model=$this;
-		$oPluginEvent->criteria=$criteria;
+		$oPluginEvent->set('model', $this);
+		if ($criteria !== false) {
+			$oPluginEvent->set('filterCriteria', $criteria);
+		}
 		return App()->getPluginManager()->dispatchEvent($oPluginEvent);
 	}
 }
