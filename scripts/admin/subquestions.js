@@ -709,7 +709,7 @@ function ajaxcheckdup()
 
 function ajaxreqsave() {
     var lid = $('#lasets').val() ? $('#lasets').val() : 0;
-
+    var csrfToken=$("input[name='YII_CSRF_TOKEN']:first").val();
     // get code for the current scale
     var code = new Array();
     if($('.code').length > 0) { // Deactivated survey
@@ -738,7 +738,7 @@ function ajaxreqsave() {
     }
 
 
-    $.post(lasaveurl, { laname: $('#laname').val(), lid: lid, code: code, answers: answers }, function(data) {
+    $.post(lasaveurl, { laname: $('#laname').val(), lid: lid, code: code, answers: answers,YII_CSRF_TOKEN: csrfToken }, function(data) {
         $("#saveaslabel").dialog('close');
         if(jQuery.parseJSON(data) == "ok")
             {
