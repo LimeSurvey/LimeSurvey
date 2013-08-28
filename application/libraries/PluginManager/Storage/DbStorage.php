@@ -56,12 +56,12 @@ class DbStorage implements iPluginStorage {
         {
             foreach ($records as $record)
             {
-                $result[] = json_decode($record->value);
+                $result[] = json_decode($record->value, true);
             }
         }
         elseif (count($records) == 1)
         {
-            $result = json_decode($records[0]->value);
+            $result = json_decode($records[0]->value, true);
         }
         else 
         {
@@ -119,7 +119,7 @@ class DbStorage implements iPluginStorage {
                 {
                     if ($record->serialized)
                     {
-                        $value = json_decode($record->value);
+                        $value = json_decode($record->value, true);
                     }
                     else
                     {
