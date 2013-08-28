@@ -1,11 +1,4 @@
 <?php
-/**
- * 
- * 
- * @property	$model						Model instance if the event was Triggered by changes on a Model (save,delete)
- * @property 	$filterCriteria				On Model Bulk operations this will contain CDBCriteria which was used to filter the Model records for the subjects of the bulk operation.
- */
-
 class PluginEvent
 {
     /**
