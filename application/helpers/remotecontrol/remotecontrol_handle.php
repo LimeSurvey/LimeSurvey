@@ -2184,6 +2184,83 @@ class remotecontrol_handle
             return array('status' => 'No permission');
 
     }
+    
+    /**
+     * RPC Routine to update a response in a given survey.
+     * Routine supports only single response updates.
+     * Response to update will be identified either by the response id, or the token if response id is missing.
+     * Routine is only applicable for active surveys with alloweditaftercompletion = Y.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey to update response
+     * @param struct $aResponseData The actual response
+     * @return mixed TRUE(bool) on success. errormessage on error
+     */
+    public function update_response($sSessionKey, $iSurveyID, $aResponseData)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) return 'Invalid session key';
+        $oSurvey=Survey::model()->findByPk($iSurveyID);
+        if (is_null($oSurvey))
+        {
+            return 'Error: Invalid survey ID';
+        }
+        if ($oSurvey->getAttribute('active') !== 'Y') {
+        	return 'Error: Survey is not active.';
+        }
+        
+        if ($oSurvey->getAttribute('alloweditaftercompletion') !== 'Y') {
+        	return 'Error: Survey does not allow edit after completion.';
+        }
+
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'update'))
+        {
+            if (!Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '}}'))
+                return 'Error: No survey response table';
+
+            if (
+            	!isset($aResponseData['id'])
+            	&& ! isset($aResponseData['token'])
+            ) {
+            	return 'Error: Missing response identifier (id|token).';
+            }
+            
+            SurveyDynamic::sid($iSurveyID);
+            $oSurveyDynamic = new SurveyDynamic;
+            
+            if (isset($aResponseData['id'])) {
+            	$aResponses = $oSurveyDynamic->findAllByPk($aResponseData['id']);
+            } else {
+            	$aResponses = $oSurveyDynamic->findAllByAttributes(array('token' => $aResponseData['token']));
+            }
+            
+            if(empty($aResponses)) 
+            	return 'Error: No matching Response.';
+            if(count($aResponses) > 1) 
+            	return 'Error: More then one matching response, updateing multiple responses at once is not supported.';
+            
+            $aBasicDestinationFields=$oSurveyDynamic->tableSchema->columnNames;
+            $aInvalidFields= array_diff_key($aResponseData, array_flip($aBasicDestinationFields));
+            if(count($aInvalidFields) > 0) 
+            	return 'Error: Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields));
+
+            unset($aResponseData['token']);
+            
+            foreach ($aResponseData as $sAtributeName => $value) {
+            	$aResponses[0]->setAttribute($sAtributeName, $value);
+            }
+
+            $bResult = $aResponses[0]->save(true);
+
+            if ($bResult) {
+                return $bResult;
+            } else {
+                return 'Unable to edit response';
+            }
+        } else {
+            return 'No permission';
+        }
+    }    
 
     /**
      * RPC Routine to export responses.
