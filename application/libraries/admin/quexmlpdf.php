@@ -242,7 +242,7 @@ class quexmlpdf extends pdf {
 				span.sectionTitle {font-size:18pt; font-weight:bold;} 
 				span.sectionDescription {font-size:14pt; font-weight:bold;} 
 				div.sectionInfo {font-style:normal; font-size:10pt; text-align:left; font-weight:normal;}
-				td.questionnaireInfo {font-size:16pt; text-align:center; font-weight:bold;}
+				td.questionnaireInfo {font-size:14pt; text-align:center; font-weight:bold;}
 			</style>";
 
 	/**
@@ -648,7 +648,7 @@ class quexmlpdf extends pdf {
 	 * @var mixed  Defaults to 5. 
 	 * @since 2010-10-29
 	 */
-	protected $questionnaireInfoMargin = 20;
+	protected $questionnaireInfoMargin = 5;
 
 	/**
 	 * Height of a response label
@@ -2302,92 +2302,89 @@ class quexmlpdf extends pdf {
 		$total = count($categories);
 		$currentY = $this->GetY();
 
-		if ($total > $this->singleResponseHorizontalMax) //change if too many cats
+		if ($total > $this->singleResponseHorizontalMax) //change if too many categories
 			$rwidth = $this->singleResponseVerticalAreaWidthSmall;
 		else		
 			$rwidth = $this->singleResponseVerticalAreaWidth;
 
 		$textwidth = ($this->getColumnWidth() - $this->skipColumnWidth) - ($rwidth * $total);
 
-		//draw the header
-		$this->drawSingleChoiceHorizontalHead($categories);
-
-		$currentY += $this->responseLabelHeight;
-
 		if ($this->allowSplittingSingleChoiceHorizontal) $this->startTransaction(); //start a transaction
-		for ($i = 0; $i < count($subquestions); $i++)
-		{
-			$s = $subquestions[$i];
-
-			if ($this->allowSplittingSingleChoiceHorizontal && $this->pageBreakOccured)
-			{
-                                $this->pageBreakOccured = false;
-                                $this->rollBackTransaction(true);
-                                $this->SetAutoPageBreak(false); //Temporarily set so we don't trigger a page break
-                                $this->fillPageBackground();
-                                $this->newPage();
-				$this->drawSingleChoiceHorizontalHead($categories);
-				
-				//reset currentY
-				$currentY = $this->GetY() + $this->responseLabelHeight;
-				
-				$i = $i - 2; //go back and draw subquestions on the new page
-			}
-			else
-			{
-				if ($this->allowSplittingSingleChoiceHorizontal)
-				{
-					$this->commitTransaction();
-					$this->startTransaction(); //start a transaction to allow for splitting over pages if necessary
-				}
- 
-				//Add box group to current layout
-				if ($parenttext == false)
-					$this->addBoxGroup(1,$s['varname'],$s['text']);
-				else				
-					$this->addBoxGroup(1,$s['varname'],$parenttext . $this->subQuestionTextSeparator . $s['text']);
-	
-				//$html = "<table><tr><td width=\"{$textwidth}mm\" class=\"responseText\">" . $s['text'] . "</td><td></td></tr></table>";
-				//$this->writeHTMLCell($this->getMainPageWidth(), $this->singleResponseAreaHeight, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,true);
-	
-				//Draw background
-				$html = "<div></div>";
-				$this->setBackground('question');
-				$this->writeHTMLCell($this->getColumnWidth(), $this->singleResponseHorizontalHeight, $this->getColumnX(), $currentY, $this->style . $html,0,1,true,true);	
-				$this->setDefaultFont($this->responseTextFontSize);			
-	
-				$this->MultiCell($textwidth,$this->singleResponseHorizontalHeight,$s['text'],0,'R',false,0,$this->getColumnX(),$currentY,true,0,false,true,$this->singleResponseHorizontalHeight,'M',true);
-	
-
-				//Draw the categories horizontally
-				$rnum = 1;
-				foreach ($categories as $r)
-				{
-					if ($total == 1) $num = 'only';
-					else if ($rnum == 1) $num = 'first';
-					else if ($rnum < $total) $num = 'middle';
-					else if ($rnum == $total) $num = 'last';
-
-					$bfilled = false;
-					if (isset($s['defaultvalue']) && $s['defaultvalue'] !== false && $s['defaultvalue'] == $r['value'])
-						$bfilled = true;
-	
-					$position = $this->drawHorizontalResponseBox(($this->getColumnX() + $textwidth + (($rnum - 1) * $rwidth)),$currentY, $num,false,false,($total > $this->singleResponseHorizontalMax),$bfilled);
 		
-					//Add box to the current layout
-					$this->addBox($position[0],$position[1],$position[2],$position[3],$r['value'],$r['text']);
-	
-					$rnum++;
-				}
-	
-				if (($this->GetY() - $currentY) > $this->singleResponseHorizontalHeight)
-					$currentY = $this->GetY();
-				else
-					$currentY = $currentY + $this->singleResponseHorizontalHeight;
-	
-				$this->SetY($currentY,false);
-					
-			}
+        //draw the header
+		$this->drawSingleChoiceHorizontalHead($categories);
+		$currentY += $this->responseLabelHeight;
+        
+        for ($i = 0; $i < count($subquestions); $i++)
+		{
+            $s = $subquestions[$i];
+
+             //Add box group to current layout
+            if ($parenttext == false)
+                $this->addBoxGroup(1,$s['varname'],$s['text']);
+            else
+                $this->addBoxGroup(1,$s['varname'],$parenttext . $this->subQuestionTextSeparator . $s['text']);
+
+            //$html = "<table><tr><td width=\"{$textwidth}mm\" class=\"responseText\">" . $s['text'] . "</td><td></td></tr></table>";
+            //$this->writeHTMLCell($this->getMainPageWidth(), $this->singleResponseAreaHeight, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,true);
+
+            //Draw background
+            $html = "<div></div>";
+            $this->setBackground('question');
+            $this->writeHTMLCell($this->getColumnWidth(), $this->singleResponseHorizontalHeight, $this->getColumnX(), $currentY, $this->style . $html,0,1,true,true);	
+            $this->setDefaultFont($this->responseTextFontSize);			
+
+            $this->MultiCell($textwidth,$this->singleResponseHorizontalHeight,$s['text'],0,'R',false,0,$this->getColumnX(),$currentY,true,0,false,true,$this->singleResponseHorizontalHeight,'M',true);
+
+            //Draw the categories horizontally
+            $rnum = 1;
+            foreach ($categories as $r)
+            {
+                if ($total == 1) $num = 'only';
+                else if ($rnum == 1) $num = 'first';
+                else if ($rnum < $total) $num = 'middle';
+                else if ($rnum == $total) $num = 'last';
+
+                $bfilled = false;
+                if (isset($s['defaultvalue']) && $s['defaultvalue'] !== false && $s['defaultvalue'] == $r['value'])
+                    $bfilled = true;
+
+                $position = $this->drawHorizontalResponseBox(($this->getColumnX() + $textwidth + (($rnum - 1) * $rwidth)),$currentY, $num,false,false,($total > $this->singleResponseHorizontalMax),$bfilled);
+    
+                //Add box to the current layout
+                $this->addBox($position[0],$position[1],$position[2],$position[3],$r['value'],$r['text']);
+
+                $rnum++;
+            }
+            if (($this->GetY() - $currentY) > $this->singleResponseHorizontalHeight)
+                $currentY = $this->GetY();
+            else
+                $currentY = $currentY + $this->singleResponseHorizontalHeight;
+
+            $this->SetY($currentY,false);
+
+            if ($this->allowSplittingSingleChoiceHorizontal && $this->pageBreakOccured)
+            {
+                $this->pageBreakOccured = false;
+                $this->rollBackTransaction(true);
+                $this->SetAutoPageBreak(false); //Temporarily set so we don't trigger a page break
+                $this->fillPageBackground();
+                $this->newPage();
+                $this->drawSingleChoiceHorizontalHead($categories);
+                
+                //reset currentY
+                $currentY = $this->GetY() + $this->responseLabelHeight;
+                
+                $i = $i - 1; //go back and draw subquestions on the new page
+            }
+            else
+            {
+                if ($this->allowSplittingSingleChoiceHorizontal)
+                {
+                    $this->commitTransaction();
+                    $this->startTransaction(); //start a transaction to allow for splitting over pages if necessary
+                }
+            }
 		}
 	}
 
@@ -2727,12 +2724,16 @@ class quexmlpdf extends pdf {
 			$this->setBackground('empty');
 
 			$this->columnCP = 0; //reset column pointer
-		}
+		
+        }
 		else // move to a new column
 		{
 			$this->SetXY($this->getColumnX(),($this->cornerBorder + $this->cornerWidth));
 		}
 		$this->SetAutoPageBreak(true,$this->getMainPageX());
+        
+        //after a new page was begun....page should not have already ended
+        $this->pageBreakOccured = false;
 	}
 
 	/**
