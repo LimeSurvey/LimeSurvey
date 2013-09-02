@@ -70,18 +70,18 @@ class OptoutController extends LSYii_Controller {
         }
         else
         {
-            $row = TokenDynamic::model($iSurveyID)->getEmailStatus($sToken);
+            $tokenInstance = Token::model(null, $iSurveyID)->findByAttributes($sToken);
 
-            if ($row == false)
+            if (!isset($tokenInstance))
             {
                 $html = $clang->gT('You are not a participant in this survey.');
             }
             else
             {
-                $usresult = $row['emailstatus'];
-                if ($usresult == 'OK')
+                if ($tokenInstance->emailstatus == 'OK')
                 {
-                    $usresult = TokenDynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OptOut');
+					$tokenInstance->emailstatus = 'OptOut';
+					$tokenInstance->save();
                     $html = $clang->gT('You have been successfully removed from this survey.');
                 }
                 else
@@ -153,29 +153,27 @@ class OptoutController extends LSYii_Controller {
         }
         else
         {
-            $row = TokenDynamic::model($iSurveyID)->getEmailStatus($sToken);
-            $datas = TokenDynamic::model($iSurveyID)->find('token = :token', array(":token"=>$sToken));
-
-            if ($row == false)
+            $tokenInstance = Token::model(null, $iSurveyID)->findByAttributes(array('token' => $sToken));
+            if (!isset($tokenInstance))
             {
                 $html = $clang->gT('You are not a participant in this survey.');
             }
             else
             {
-                $usresult = $row['emailstatus'];
-                if ($usresult == 'OK')
+                if ($tokenInstance->emailstatus == 'OK')
                 {
-                    $usresult = TokenDynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OptOut');
+					$tokenInstance->emailstatus = 'OptOut';
+					$tokenInstance->save();
                     $html = $clang->gT('You have been successfully removed from this survey.');
                 }
                 else
                 {
                     $html = $clang->gT('You have been already removed from this survey.');
                 }
-                if(!empty($datas->participant_id) && $datas->participant_id != "")
+                if(!empty($tokenInstance->participant_id))
                 {
                     //Participant also exists in central db
-                    $cpdb = Participant::model()->find('participant_id = :participant_id', array(":participant_id"=>$datas->participant_id));
+                    $cpdb = Participant::model()->findByPk($tokenInstance->participant_id);
                     if($cpdb->blacklisted=="Y")
                     {
                         $html .= "<br />";

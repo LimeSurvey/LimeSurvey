@@ -5544,8 +5544,7 @@ function getAttributeValue($surveyid,$attrName,$token)
     }
     $surveyid=sanitize_int($surveyid);
 
-    TokenDynamic::sid($surveyid);
-    $query=TokenDynamic::model()->find(array("token"=>$token));
+    $query= Token::model(null, $surveyid)->findByAttributes(array("token"=>$token));
 
     $count=$query->count(); // OK  - AR count
     if ($count != 1)
@@ -5746,14 +5745,8 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
 */
 function getTokenData($surveyid, $token) 
 {
-    $thistoken = TokenDynamic::model($surveyid)->find('token = :token',array(':token' => $token));
-    $thistokenarray=array(); // so has default value
-    if($thistoken)
-    {
-        $thistokenarray =$thistoken->attributes;
-    }// Did we fill with empty string if not exist ?
-
-    return $thistokenarray;
+    $token = Token::model(null, $surveyid)->findByAttributes(array('token' => $token));
+	return isset($token) ? $token->attributes : array();
 }
 
 /**
@@ -5882,13 +5875,9 @@ function getXMLWriter() {
 */
 function usedTokens($token, $surveyid)
 {
-    $utresult = true;
-    $query=TokenDynamic::model($surveyid)->findAllByAttributes(array("token"=>$token));
-    if (count($query) > 0) {
-        $row = $query[0];
-        if ($row->usesleft > 0) $utresult = false;
-    }
-    return $utresult;
+    return Token::model(null, $surveyid)->usable()->countByAttributes(array(
+		'token' => $token
+	)) > 0;
 }
 
 /**

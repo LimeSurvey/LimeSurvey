@@ -52,12 +52,14 @@ class tokens extends Survey_Common_Action
         else
         {
             //Check that the tokens table has the required fields
+			/**
+			 * @todo is this still needed? What versions of token tables require this??
+			 */
             TokenDynamic::model($iSurveyId)->checkColumns();
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
-            $aData['queries'] = TokenDynamic::model($iSurveyId)->summary();
-
-            $this->_renderWrappedTemplate('token', array('tokenbar', 'tokensummary'), $aData);
+            $aData['queries'] = Token::model(null, $iSurveyId)->summary();
+			$this->_renderWrappedTemplate('token', array('tokenbar', 'tokensummary'), $aData);
         }
     }
 
@@ -200,7 +202,7 @@ class tokens extends Survey_Common_Action
                                     );
                                     $condn = array('token' => $tokenBounce[1]);
 
-                                    $record = TokenDynamic::model($iSurveyId)->findByAttributes($condn);
+                                    $record = Token::model(null,$iSurveyId)->findByAttributes($condn);
                                     foreach ($aData as $k => $v)
                                         $record->$k = $v;
                                     $record->save();
@@ -283,7 +285,8 @@ class tokens extends Survey_Common_Action
 
         $limit = (int) $limit;
         $start = (int) $start;
-        $tkcount = TokenDynamic::model($iSurveyId)->count();
+
+        $tkcount = Token::model(null, $iSurveyId)->count();
         $next = $start + $limit;
         $last = $start - $limit;
         $end = $tkcount - $limit;
@@ -329,7 +332,7 @@ class tokens extends Survey_Common_Action
             $iquery = '(' . implode(' OR ', $iquery) . ')';
         }
 
-        $tokens = TokenDynamic::model($iSurveyId)->findAll(array('condition' => $iquery, 'limit' => $limit, 'offset' => $start, 'order' => $order));
+        $tokens = Token::model(null, $iSurveyId)->findAll(array('condition' => $iquery, 'limit' => $limit, 'offset' => $start, 'order' => $order));
         $aData['bresult'] = array();
         foreach ($tokens as $token)
         {
@@ -388,11 +391,11 @@ class tokens extends Survey_Common_Action
         $condition->order = $sidx. " ". $sord;
         $condition->offset = ($page - 1) * $limit;
         $condition->limit = $limit;
-        $tokens = TokenDynamic::model($iSurveyId)->findAll($condition);
+        $tokens = Token::model(null, $iSurveyId)->findAll($condition);
         
         $condition->offset=0;
         $condition->limit=0;        
-        $aData->records = TokenDynamic::model($iSurveyId)->count($condition);
+        $aData->records = Token::model(null, $iSurveyId)->count($condition);
         
         if ($limit>$aData->records)
         {
@@ -544,9 +547,7 @@ class tokens extends Survey_Common_Action
             //            {
             //                $sLang = Yii::app()->request->getPost('language');
             //            }
-            TokenDynamic::model($iSurveyId);
             
-
             echo $from . ',' . $until;
             $aData = array(
             'firstname' => Yii::app()->request->getPost('firstname'),
@@ -570,7 +571,7 @@ class tokens extends Survey_Common_Action
                     $this->getController()->error(sprintf($this->controller->lang->gT('%s cannot be left empty'), $desc['description']));
                 $aData[$attr_name] = Yii::app()->request->getPost($attr_name);
             }
-            $token = TokenDynamic::model()->find('tid=' . Yii::app()->getRequest()->getPost('id'));
+            $token = Token::model(null, $iSurveyId)->find('tid=' . Yii::app()->getRequest()->getPost('id'));
 
             foreach ($aData as $k => $v)
                 $token->$k = $v;
@@ -602,9 +603,8 @@ class tokens extends Survey_Common_Action
                 $aData[$attr_name] = Yii::app()->request->getPost($attr_name);
             }
             echo ls_json_encode(var_export($aData));
-            $token = new TokenDynamic;
-            foreach ($aData as $k => $v)
-                $token->$k = $v;
+            $token = new Token('insert', $iSurveyId);
+			$token->setAttributes($aData);
             echo $token->save();
         }
         elseif ($sOperation == 'del' && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
@@ -716,13 +716,12 @@ class tokens extends Survey_Common_Action
                 $aData[$attr_name] = Yii::app()->getRequest()->getPost($attr_name);
             }
 
-            $udresult = TokenDynamic::model($iSurveyId)->findAll("token <> '' and token = '$sanitizedtoken'");
+            $udresult = Token::model(null, $iSurveyId)->findAll("token <> '' and token = '$sanitizedtoken'");
             if (count($udresult) == 0)
             {
                 // AutoExecute
-                $token = new TokenDynamic;
-                foreach ($aData as $k => $v)
-                    $token->$k = $v;
+                $token = new Token('insert', $iSurveyId);
+				$token->setAttributes($aData);
                 $inresult = $token->save();
                 $aData['success'] = true;
             }
@@ -806,7 +805,7 @@ class tokens extends Survey_Common_Action
             $aTokenData['remindersent'] = Yii::app()->request->getPost('remindersent');
             $aTokenData['remindercount'] = intval(Yii::app()->request->getPost('remindercount'));
 
-            $udresult = TokenDynamic::model($iSurveyId)->findAll("tid <> '$iTokenId' and token <> '' and token = '$santitizedtoken'");
+            $udresult = Token::model(null, $iSurveyId)->findAll("tid <> '$iTokenId' and token <> '' and token = '$santitizedtoken'");
 
             if (count($udresult) == 0)
             {
@@ -821,7 +820,7 @@ class tokens extends Survey_Common_Action
                     $aTokenData[$attr_name] = Yii::app()->request->getPost($attr_name);
                 }
 
-                $token = TokenDynamic::model($iSurveyId)->findByPk($iTokenId);
+                $token = Token::model(null, $iSurveyId)->findByPk($iTokenId);
                 foreach ($aTokenData as $k => $v)
                     $token->$k = $v;
                 $token->save();
@@ -876,7 +875,7 @@ class tokens extends Survey_Common_Action
             SurveyLink::model()->deleteTokenLink($aTokenIds, $iSurveyID);
 
             //Then delete the tokens
-            TokenDynamic::model($iSurveyID)->deleteRecords($aTokenIds);
+			Token::model(null, $iSurveyID)->deleteByPk($aTokenIds);
         }
     }
 
@@ -954,9 +953,9 @@ class tokens extends Survey_Common_Action
             $tokenlength = sanitize_int(Yii::app()->request->getPost('tokenlen'));
 
             // Fill an array with all existing tokens
-            $criteria = TokenDynamic::model($iSurveyId)->getDbCriteria();
+            $criteria = Token::model(null, $iSurveyId)->getDbCriteria();
             $criteria->select = 'token';
-            $ntresult = TokenDynamic::model($iSurveyId)->findAllAsArray($criteria);   //Use AsArray to skip active record creation
+            $ntresult = Token::model(null, $iSurveyId)->findAll($criteria);
             $existingtokens=array();
             foreach ($ntresult as $tkrow)
             {
@@ -964,36 +963,30 @@ class tokens extends Survey_Common_Action
             }
             $invalidtokencount=0;
             $newDummyToken=0;
-            while ($newDummyToken<$amount && $invalidtokencount<50)
+            while ($newDummyToken < $amount && $invalidtokencount < 50)
             {
-                $aDataToInsert = $aData;
-                $aDataToInsert['firstname'] = str_replace('{TOKEN_COUNTER}', $newDummyToken, $aDataToInsert['firstname']);
-                $aDataToInsert['lastname'] = str_replace('{TOKEN_COUNTER}', $newDummyToken, $aDataToInsert['lastname']);
-                $aDataToInsert['email'] = str_replace('{TOKEN_COUNTER}', $newDummyToken, $aDataToInsert['email']);
+				$token = new Token('insert', $iSurveyId);
+				$token->setAttributes($aData);
+                
+                $token->firstname = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->firstname);
+                $token->lastname = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->lastname);
+                $token->email = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->email);
 
-                $isvalidtoken = false;
-                while ($isvalidtoken == false && $invalidtokencount<50)
-                {
-                    $newtoken = randomChars($tokenlength);
-                    if (!isset($existingtokens[$newtoken]))
-                    {
-                        $isvalidtoken = true;
-                        $existingtokens[$newtoken] = true;
-                        $invalidtokencount=0;
-                    }
-                    else
-                    {
-                        $invalidtokencount ++;
-                    }
-                }
-                if($isvalidtoken)
-                {
-                    $aDataToInsert['token'] = $newtoken;
-                    TokenDynamic::model()->insertToken($iSurveyId, $aDataToInsert);
-                    $newDummyToken ++;
-                }
+				$attempts = 0;
+                do {
+					$token->token = randomChars($tokenlength);
+					$attempts++;
+				} while (isset($existingtokens[$token->token]) && $attempts < 50);
 
-            }
+				if ($attempts == 50)
+				{
+					throw new Exception('Something is wrong with your random generator.');
+				}
+
+                $existingtokens[$token->token] = true;
+				var_dump($token->save());
+				$newDummyToken++;
+			}
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
             if(!$invalidtokencount)
@@ -1020,7 +1013,7 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            $tkcount = TokenDynamic::model($iSurveyId)->count();
+            $tkcount = Token::model(null, $iSurveyId)->count();
             $tokenlength = Yii::app()->db->createCommand()->select('tokenlength')->from('{{surveys}}')->where('sid=:sid')->bindParam(":sid", $iSurveyId, PDO::PARAM_INT)->query()->readColumn(0);
 
             if (empty($tokenlength))
@@ -1472,19 +1465,19 @@ class tokens extends Survey_Common_Action
                         if (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyId), $aRelevantAttachments, $customheaders))
                         {
                             // Put date into sent
-                            $udequery = TokenDynamic::model($iSurveyId)->findByPk($emrow['tid']);
+							$token = Token::model(null, $iSurveyId)->findByPk($emrow['tid']);
                             if ($bEmail)
                             {
                                 $tokenoutput .= $clang->gT("Invitation sent to:");
-                                $udequery->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                                $token->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
                             }
                             else
                             {
                                 $tokenoutput .= $clang->gT("Reminder sent to:");
-                                $udequery->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-                                $udequery->remindercount = $udequery->remindercount + 1;
+                                $token->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                                $token->remindercount++;
                             }
-                            $udequery->save();
+                            $token->save();
                             //Update central participant survey_links
                             if(!empty($emrow['participant_id']))
                             {

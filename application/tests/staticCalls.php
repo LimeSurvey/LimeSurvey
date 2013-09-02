@@ -67,7 +67,6 @@ function checkStatic($line)
 'ParticipantAttribute::',
 'Tokens::',
 'UserGroup::',
-'TokenDynamic::',
 'Condition::',
 'Survey_Common_Action::',
 'Quota::',

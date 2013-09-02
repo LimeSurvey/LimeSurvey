@@ -1810,9 +1810,7 @@ class dataentry extends Survey_Common_Action
                                 (".implode(',',$columns).")
                                 VALUES
                                 (".implode(',',$values).")";
-                                //$this->TokenDynamic_model->insertToken($surveyid,$tokendata);
                                 dbExecuteAssoc($SQL);
-                                //Yii::app()->db->AutoExecute(db_table_name("tokens_".$surveyid), $tokendata,'INSERT');
                                 $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("A token entry for the saved survey has been created too."));
                                 //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
                             }

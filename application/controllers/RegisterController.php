@@ -159,8 +159,7 @@ class RegisterController extends LSYii_Controller {
         $postattribute2=sanitize_xss_string(strip_tags(returnGlobal('register_attribute2')));   */
 
         // Insert new entry into tokens db
-        TokenDynamic::sid($thissurvey['sid']);
-        $token = new TokenDynamic;
+        $token = new Token('insert', $thissurvey['sid']);
         $token->firstname = $postfirstname;
         $token->lastname = $postlastname;
         $token->email = Yii::app()->request->getPost('register_email');
@@ -171,8 +170,7 @@ class RegisterController extends LSYii_Controller {
             $token->validfrom = $starttime;
             $token->validuntil = $endtime;
         }
-        foreach ($attributeinsertdata as $k => $v)
-            $token->$k = $v;
+		$token->setAttributes($attributeinsertdata);
         $result = $token->save();
 
         /**
@@ -186,8 +184,6 @@ class RegisterController extends LSYii_Controller {
         ) or safeDie ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
         */
         $tid = getLastInsertID($token->tableName());;
-        $token=$token->token;
-
         $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
         $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
         $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];

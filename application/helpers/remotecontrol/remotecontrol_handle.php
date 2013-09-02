@@ -588,7 +588,7 @@ class remotecontrol_handle
 				if(in_array($sStatName, $aPermittedTokenStats))
 				{
 					if (tableExists('{{tokens_' . $iSurveyID . '}}'))
-						$summary = TokenDynamic::model($iSurveyID)->summary();
+						$summary = Token::model(null, $iSurveyID)->summary();
 					else
 						return array('status' => 'No available data');
 				}
@@ -604,23 +604,23 @@ class remotecontrol_handle
 				{
 					case 'token_count':
 						if (isset($summary))
-							return $summary['tkcount'];
+							return $summary['count'];
 						break;
 					case 'token_invalid':
 						if (isset($summary))
-							return $summary['tkinvalid'];
+							return $summary['invalid'];
 						break;
 					case 'token_sent':
 						if (isset($summary))
-							return $summary['tksent'];
+							return $summary['sent'];
 						break;
 					case 'token_opted_out':
 						if (isset($summary))
-							return $summary['tkoptout'];
+							return $summary['optout'];
 						break;
 					case 'token_completed';
 						if (isset($summary))
-							return $summary['tkcompleted'];
+							return $summary['completed'];
 						break;
 					case 'completed_responses':
 						return SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
@@ -1707,30 +1707,22 @@ class remotecontrol_handle
             if (!Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}'))
                 return array('status' => 'No token table');
 
-            $aDestinationFields = Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}')->getColumnNames();
-            $aDestinationFields = array_flip($aDestinationFields);
-
-            foreach ($aParticipantData as &$aParticipant)
+            $aDestinationFields = array_flip(Token::model(null, $iSurveyID)->getMetaData()->tableSchema->columnNames);
+			foreach ($aParticipantData as &$aParticipant)
             {
-                $aParticipant=array_intersect_key($aParticipant,$aDestinationFields);
-                TokenDynamic::sid($iSurveyID);
-                $token = new TokenDynamic;
-
-                if ($new_token_id=$token->insertParticipant($aParticipant))
-                {
-                     if ($bCreateToken)
-                        $token_string = TokenDynamic::model()->createToken($new_token_id);
-                    else
-                        $token_string = '';
-
-                    $aParticipant = array_merge($aParticipant, array(
-                    'tid' => $new_token_id,
-                    'token' => $token_string,
-                    ));
-                }
-                else
-                {
-					$aParticipant=false;
+                $token = new Token('insert', $iSurveyID);
+                $token->setAttributes(array_intersect_key($aParticipant,$aDestinationFields));
+				if  ($bCreateToken)
+				{
+					$token->generateToken();
+				}
+				if ($token->save())
+				{
+					$aParticipant = $token->getAttributes();
+				}
+				else
+				{
+					$aParticipant = false;
 				}
             }
             return $aParticipantData;
@@ -1767,13 +1759,13 @@ class remotecontrol_handle
 				$aResult=array();
 				foreach($aTokenIDs as $iTokenID)
 				{
-					$tokenidExists = TokenDynamic::model($iSurveyID)->findByPk($iTokenID);
-					if (!isset($tokenidExists))
+					$token = Token::model(null, $iSurveyID)->findByPk($iTokenID);
+					if (!isset($token))
 						$aResult[$iTokenID]='Invalid token ID';
 					else
 					{
 					SurveyLink::deleteTokenLink(array($iTokenID), $iSurveyID);
-					if(TokenDynamic::model($iSurveyID)->deleteRecords(array($iTokenID)))
+					if($token->delete())
 						$aResult[$iTokenID]='Deleted';
 					else
 						$aResult[$iTokenID]='Deletion went wrong';
@@ -1860,7 +1852,7 @@ class remotecontrol_handle
 				if(!tableExists("{{tokens_$iSurveyID}}"))
 					return array('status' => 'Error: No token table');
 
-				$oToken = TokenDynamic::model($iSurveyID)->findByPk($iTokenID);
+				$oToken = Token::model(null, $iSurveyID)->findByPk($iTokenID);
 				if (!isset($oToken))
 					return array('status' => 'Error: Invalid tokenid');
 
@@ -1868,30 +1860,17 @@ class remotecontrol_handle
 				// Remove fields that may not be modified
 				unset($aTokenData['tid']);
 
-				$aBasicDestinationFields=array_flip(TokenDynamic::model()->tableSchema->columnNames);
-				$aTokenData=array_intersect_key($aTokenData,$aBasicDestinationFields);
-				$aTokenAttributes = $oToken->getAttributes();
+				$aBasicDestinationFields = array_flip($oToken->getTableSchema()->columnNames);
+				$aTokenData = array_intersect_key($aTokenData,$aBasicDestinationFields);
 
 				if (empty($aTokenData))
 					return array('status' => 'No valid Data');
 
-               foreach($aTokenData as $sFieldName=>$sValue)
-               {
-					$oToken->$sFieldName=$sValue;
-				   try
-				   {
-						$bSaveResult=$oToken->save();
-						$aResult[$sFieldName]=$bSaveResult;
-						//unset fields that failed
-						if (!$bSaveResult)
-							$oToken->$sFieldName=$aTokenAttributes[$sFieldName];
-				   }
-				   catch(Exception $e)
-				   {
-						$oToken->$sFieldName=$aTokenAttributes[$sFieldName];
-				   }
-			   }
-			   	return $aResult;
+				$oToken->setAttributes($aTokenData);
+				if ($oToken->save())
+				{
+					return $oToken->attributes;
+				}
 			}
 			else
 				return array('status' => 'No permission');
@@ -1929,9 +1908,9 @@ class remotecontrol_handle
 					return array('status' => 'Error: No token table');
 
 				if($bUnused)
-					$oTokens = TokenDynamic::model($iSurveyID)->findAll(array('condition'=>"completed = 'N'", 'limit' => $iLimit, 'offset' => $iStart));
+					$oTokens = Token::model(null, $iSurveyID)->incomplete()->findAll(array('limit' => $iLimit, 'offset' => $iStart));
 				else
-					$oTokens = TokenDynamic::model($iSurveyID)->findAll(array('limit' => $iLimit, 'offset' => $iStart));
+					$oTokens = Token::model(null, $iSurveyID)->findAll(array('limit' => $iLimit, 'offset' => $iStart));
 
 				if(count($oTokens)==0)
 					return array('status' => 'No Tokens found');

@@ -8,7 +8,7 @@
             <?php $clang->eT("Total records in this token table"); ?>
         </th>
         <td>
-            <?php echo $queries['tkcount']; ?>
+            <?php echo $queries['count']; ?>
         </td>
     </tr>
     <tr>
@@ -16,7 +16,7 @@
             <?php $clang->eT("Total with no unique Token"); ?>
         </th>
         <td>
-            <?php echo $queries['tkinvalid']; ?>
+            <?php echo $queries['invalid']; ?>
         </td>
     </tr>
     <tr>
@@ -24,7 +24,7 @@
             <?php $clang->eT("Total invitations sent"); ?>
         </th>
         <td>
-            <?php echo $queries['tksent']; ?>
+            <?php echo $queries['sent']; ?>
         </td>
     </tr>
     <tr>
@@ -32,7 +32,7 @@
             <?php $clang->eT("Total opted out"); ?>
         </th>
         <td>
-            <?php echo $queries['tkoptout']; ?>
+            <?php echo $queries['optout']; ?>
         </td>
     </tr>
     <tr>
@@ -40,7 +40,7 @@
             <?php $clang->eT("Total surveys completed"); ?>
         </th>
         <td>
-            <?php echo $queries['tkcompleted']; ?>
+            <?php echo $queries['completed']; ?>
         </td>
     </tr>
 </table>

@@ -64,21 +64,21 @@ class OptinController extends LSYii_Controller {
         }
         else
         {
-            $row = TokenDynamic::model($iSurveyID)->getEmailStatus($sToken);
+            $tokenInstance = Token::model(null, $iSurveyID)->findByAttributes(array('token' => $token));
 
-            if ($row == false)
+            if (!isset($tokenInstance))
             {
                 $html = $clang->gT('You are not a participant in this survey.');
             }
             else
             {
-                $usresult = $row['emailstatus'];
-                if ($usresult=='OptOut')
+                if ($tokenInstance->emailstatus =='OptOut')
                 {
-                    $usresult = TokenDynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OK');
+					$tokenInstance->emailstatus = 'OK';
+					$tokenInstance->save();
                     $html = $clang->gT('You have been successfully added back to this survey.');
                 }
-                else if ($usresult=='OK')
+                elseif ($tokenInstance->emailstatus == 'OK')
                 {
                     $html = $clang->gT('You are already a part of this survey.');
                 }
