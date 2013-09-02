@@ -1299,9 +1299,17 @@ function quexml_export($surveyi, $quexmllan)
                     $question->appendChild($response);
                     break;
                 case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    quexml_create_subQuestions($question,$qid,$sgq);
+                    $response = $dom->createElement("response");
+                    $response->setAttribute("varName",QueXMLCleanup($sgq));
                     $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
+                    
+                    $response2 = $dom->createElement("response");
+                    $response2->setAttribute("varName",QueXMLCleanup($sgq) . "_comment");
+                    $response2->appendChild(QueXMLCreateFree("longtext","40",""));
+                    
                     $question->appendChild($response);
-                    //no comment - this should be a separate question
+                    $question->appendChild($response2);
                     break;
                 case "R": //RANKING STYLE
                     quexml_create_subQuestions($question,$qid,$sgq,true);
