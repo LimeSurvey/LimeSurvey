@@ -1865,17 +1865,15 @@ function UpdateGroupList($surveyid, $language)
 */
 function UpdateFieldArray()
 {
-    global $surveyid;
-
-    $clang = Yii::app()->lang;
+	global $surveyid;
+	$clang = Yii::app()->lang;
 
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray']))
     {
-        reset($_SESSION['survey_'.$surveyid]['fieldarray']);
-        while ( list($key) = each($_SESSION['survey_'.$surveyid]['fieldarray']) )
+		foreach ($_SESSION['survey_'.$surveyid]['fieldarray'] as $key => $value)
         {
-            $questionarray =& $_SESSION['survey_'.$surveyid]['fieldarray'][$key];
-
+            $questionarray = &$_SESSION['survey_'.$surveyid]['fieldarray'][$key];
+			Yii::log("test" . print_r($questionarray, true), CLogger::LEVEL_TRACE, 'system.db.CDbCommand');
             $query = "SELECT title, question FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
             $usrow = Yii::app()->db->createCommand($query)->queryRow();
             if ($usrow) 

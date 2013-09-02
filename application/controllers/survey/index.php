@@ -168,6 +168,7 @@ class index extends CAction {
             $clang = SetSurveyLanguage( $surveyid, $sDisplayLanguage);
             if($previewmode) LimeExpressionManager::SetPreviewMode($previewmode);
             UpdateGroupList($surveyid, $clang->langcode);  // to refresh the language strings in the group list session variable
+			if (!isset($_SESSION['survey_'.$surveyid]['s_lang']) && $sDisplayLanguage != $_SESSION['survey_'.$surveyid]['s_lang'])
             UpdateFieldArray();        // to refresh question titles and question text
 
         }

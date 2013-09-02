@@ -513,7 +513,7 @@ function getAdminThemeList()
 */
 function getQuestions($surveyid,$gid,$selectedqid)
 {
-    $clang = Yii::app()->lang;
+   $clang = Yii::app()->lang;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qrows = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang, 'parent_qid' => 0),array('order'=>'question_order'));
 
@@ -6091,6 +6091,7 @@ function includeKeypad()
 */
 function getQuotaInformation($surveyid,$language,$iQuotaID='all')
 {
+	Yii::log('getQuotaInformation');
     global $clienttoken;
     $baselang = Survey::model()->findByPk($surveyid)->language;
     $aAttributes=array('sid' => $surveyid);
@@ -7624,17 +7625,7 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
     }
 }
 
-/*
-* Emit the standard (last) onsubmit handler for the survey.
-*
-* This code in injected in the three questionnaire modes right after the <form> element,
-* before the individual questions emit their own onsubmit replacement code.
-* @deprecated 13-07-12
-*/
-function sDefaultSubmitHandler()
-{
-    tracevar("call deprecated sDefaultSubmitHandler");
-}
+
 
 /**
 * This function fixes the group ID and type on all subquestions

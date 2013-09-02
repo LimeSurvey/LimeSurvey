@@ -48,16 +48,6 @@ $internalConfig = array(
         'user' => array(
             'class' => 'LSWebUser',
         ),
-		'log' =>  array(
-			'class'=>'CLogRouter',
-            'routes'=>array(
-				array(
-					'class' => 'CWebLogRoute',
-                    //'enabled' => ,
-                    'categories' => 'system.db.*',
-				),
-			)
-		)
 	)
 );
 

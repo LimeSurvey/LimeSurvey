@@ -604,7 +604,7 @@ class tokens extends Survey_Common_Action
             }
             echo ls_json_encode(var_export($aData));
             $token = new Token('insert', $iSurveyId);
-			$token->setAttributes($aData);
+			$token->setAttributes($aData, false);
             echo $token->save();
         }
         elseif ($sOperation == 'del' && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
@@ -721,7 +721,7 @@ class tokens extends Survey_Common_Action
             {
                 // AutoExecute
                 $token = new Token('insert', $iSurveyId);
-				$token->setAttributes($aData);
+				$token->setAttributes($aData, false);
                 $inresult = $token->save();
                 $aData['success'] = true;
             }
@@ -966,7 +966,7 @@ class tokens extends Survey_Common_Action
             while ($newDummyToken < $amount && $invalidtokencount < 50)
             {
 				$token = new Token('insert', $iSurveyId);
-				$token->setAttributes($aData);
+				$token->setAttributes($aData, false);
                 
                 $token->firstname = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->firstname);
                 $token->lastname = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->lastname);
@@ -984,7 +984,7 @@ class tokens extends Survey_Common_Action
 				}
 
                 $existingtokens[$token->token] = true;
-				var_dump($token->save());
+				$token->save();
 				$newDummyToken++;
 			}
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);

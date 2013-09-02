@@ -1711,7 +1711,7 @@ class remotecontrol_handle
 			foreach ($aParticipantData as &$aParticipant)
             {
                 $token = new Token('insert', $iSurveyID);
-                $token->setAttributes(array_intersect_key($aParticipant,$aDestinationFields));
+                $token->setAttributes(array_intersect_key($aParticipant,$aDestinationFields), false);
 				if  ($bCreateToken)
 				{
 					$token->generateToken();
@@ -1866,7 +1866,7 @@ class remotecontrol_handle
 				if (empty($aTokenData))
 					return array('status' => 'No valid Data');
 
-				$oToken->setAttributes($aTokenData);
+				$oToken->setAttributes($aTokenData, false);
 				if ($oToken->save())
 				{
 					return $oToken->attributes;

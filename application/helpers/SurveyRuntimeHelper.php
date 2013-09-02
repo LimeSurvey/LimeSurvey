@@ -296,7 +296,7 @@ class SurveyRuntimeHelper {
                 else
                 {
                     // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
-                    $LEMskipReprocessing=true;
+					$LEMskipReprocessing=true;
                     $move = "movenext"; // so will re-display the survey
                     $invalidLastPage=true;
                     $vpopup="<script type=\"text/javascript\">\n
@@ -940,8 +940,6 @@ class SurveyRuntimeHelper {
             echo CHtml::form(array("survey/index"), 'post',array('id'=>'limesurvey', 'name'=>'limesurvey', 'autocomplete'=>'off'))."\n
             <!-- INPUT NAMES -->
             <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
-        echo sDefaultSubmitHandler();
-
         // <-- END FEATURE - SAVE
 
         if ($surveyMode == 'survey')

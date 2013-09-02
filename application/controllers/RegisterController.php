@@ -170,7 +170,7 @@ class RegisterController extends LSYii_Controller {
             $token->validfrom = $starttime;
             $token->validuntil = $endtime;
         }
-		$token->setAttributes($attributeinsertdata);
+		$token->setAttributes($attributeinsertdata, false);
         $result = $token->save();
 
         /**

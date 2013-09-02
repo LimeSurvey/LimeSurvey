@@ -4068,7 +4068,7 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
         }
 
 		$token = new Token('insert', $iSurveyID);
-		$token->setAttributes($insertdata);
+		$token->setAttributes($insertdata, false);
         $result = $token->save() or safeDie($clang->gT("Error").": Failed to insert data[15]<br />");
 
         $results['tokens']++;
