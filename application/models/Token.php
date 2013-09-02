@@ -12,7 +12,7 @@
 			{
 				throw new Exception('SurveyID must be numeric.');
 			}
-			$result = parent::model(get_class(), $surveyId);
+			return parent::model(get_class(), $surveyId);
 		}
 
 		public function scopes()
