@@ -975,17 +975,14 @@ function buildsurveysession($surveyid,$preview=false)
     !isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']))
     {
 
-        //check if tokens actually haven't been already used
-        $areTokensUsed = usedTokens(trim(strip_tags($clienttoken)),$surveyid);
         //check if token actually does exist
         // check also if it is allowed to change survey after completion
         if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-            $oTokenEntry = Token::model(null, $surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
+            $oTokenEntry = Token::model(null, $surveyid)->findByAttributes(array('token'=>trim(strip_tags($clienttoken))));
         } else {
-            $oTokenEntry = Token::model(null, $surveyid)->find("token=:token AND (completed = 'N' or completed='')", array(':token'=>trim(strip_tags($clienttoken))));
+            $oTokenEntry = Token::model(null, $surveyid)->usable()->incomplete()->findByAttributes(array('token' => $clienttoken));
         }
-
-        if (is_null($oTokenEntry) ||  ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
+		if (!isset($oTokenEntry))
         {
             //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
@@ -1006,7 +1003,7 @@ function buildsurveysession($surveyid,$preview=false)
             doFooter();
             exit;
         }
-    }
+   }
     // TOKENS REQUIRED, A TOKEN PROVIDED
     // SURVEY CAPTCHA REQUIRED
     elseif ($tokensexist == 1 && $clienttoken && isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']))
@@ -1017,20 +1014,17 @@ function buildsurveysession($surveyid,$preview=false)
         isset($_SESSION['survey_'.$surveyid]['secanswer']) &&
         $loadsecurity == $_SESSION['survey_'.$surveyid]['secanswer'])
         {
-            //check if tokens actually haven't been already used
-            $areTokensUsed = usedTokens(trim(strip_tags($clienttoken)),$surveyid);
-            //check if token actually does exist
-            $oTokenEntry = Token::model(null, $surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
-
             if ($thissurvey['alloweditaftercompletion'] == 'Y' )
             {
-                $oTokenEntry = Token::model(null, $surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
+                $oTokenEntry = Token::model(null, $surveyid)->findByAttributes(array('token'=> $clienttoken));
             }
             else
             {
-                $oTokenEntry = Token::model(null, $surveyid)->find("token=:token  AND (completed = 'N' or completed='')", array(':token'=>trim(strip_tags($clienttoken))));
+                $oTokenEntry = Token::model(null, $surveyid)->incomplete()->findByAttributes(array(
+					'token' => $clienttoken
+				));
            }
-            if (is_null($oTokenEntry) || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
+            if (!isset($oTokenEntry))
             {
                 sendCacheHeaders();
                 doHeader();

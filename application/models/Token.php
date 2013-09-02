@@ -8,7 +8,11 @@
 		}
 		public static function model($className = null, $surveyId = null)
 		{
-			return parent::model(get_class(), $surveyId);
+			if (!is_numeric($surveyId))
+			{
+				throw new Exception('SurveyID must be numeric.');
+			}
+			$result = parent::model(get_class(), $surveyId);
 		}
 
 		public function scopes()
@@ -18,7 +22,7 @@
 					'condition' => 'completed = "N"'
 				),
 				'usable' => array(
-					'condition' => 'usesleft > 0'
+					'condition' => 'usesleft > 0 AND COALESCE(validfrom, NOW()) >= NOW() AND COALESCE(validfrom, NOW()) <= NOW()'
 				)
 			);
 		}

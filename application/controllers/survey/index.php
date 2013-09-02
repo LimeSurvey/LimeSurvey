@@ -460,19 +460,14 @@ class index extends CAction {
         if ($tokensexist == 1 && isset($token) && $token &&
         isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
-            //check if tokens actually haven't been already used
-            $areTokensUsed = usedTokens(trim(strip_tags(returnGlobal('token',true))),$surveyid);
-            // check if token actually does exist
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-                $sQuery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."'";
+				$tokenInstance = Token::model(null, $surveyid)->findByAttributes(array('token' => $token));
             } else {
-                $sQuery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."' AND (completed = 'N' or completed='')";
+				$tokenInstance = Token::model(null, $surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
             }
-            
-            $aRow = Yii::app()->db->createCommand($sQuery)->queryRow();
-            $tokendata = $aRow; 
-            if (!$aRow || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') && !$previewmode)
+
+			if (!isset($tokenInstance) && !$previewmode)
             {
                 sendCacheHeaders();
                 doHeader();
@@ -490,19 +485,16 @@ class index extends CAction {
                 $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
             }
         }
-        if ($tokensexist == 1 && isset($token) && $token && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) //check if token is in a valid time frame
+        if ($tokensexist == 1 && isset($token) && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) //check if token is in a valid time frame
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."'";
+				$tokenInstance = Token::model(null, $surveyid)->usable()->findByAttributes(array('token' => $token));
             } else {
-                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."' AND (completed = 'N' or completed='')";
+				$tokenInstance = Token::model(null, $surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
+
             }
-            $tkresult = dbExecuteAssoc($tkquery); //Checked
-            $tokendata = $tkresult->read();
-            $tkresult->close(); //Close the result in case there are more result rows, we are only interested in one and don't want unbuffered query errors
-            if (isset($tokendata['validfrom']) && (trim($tokendata['validfrom'])!='' && $tokendata['validfrom']>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) ||
-            isset($tokendata['validuntil']) && (trim($tokendata['validuntil'])!='' && $tokendata['validuntil']<dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)))
+            if (!isset($tokenInstance))
             {
                 sendCacheHeaders();
                 doHeader();

@@ -5867,19 +5867,6 @@ function getXMLWriter() {
     return $xmlwriter;
 }
 
-
-/**
-* Returns true when a token can not be used (either doesn't exist, has less then one usage left )
-*
-* @param mixed $tid Token
-*/
-function usedTokens($token, $surveyid)
-{
-    return Token::model(null, $surveyid)->usable()->countByAttributes(array(
-		'token' => $token
-	)) > 0;
-}
-
 /**
 * SSLRedirect() generates a redirect URL for the appropriate SSL mode then applies it.
 * (Was redirect() before CodeIgniter port.)
