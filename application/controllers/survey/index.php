@@ -451,12 +451,12 @@ class index extends CAction {
             // check if token actually does exist
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-                $sQuery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."'";
+                $sQuery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token=:token";
             } else {
-                $sQuery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."' AND (completed = 'N' or completed='')";
+                $sQuery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token=:token AND (completed = 'N' or completed='')";
             }
             
-            $aRow = Yii::app()->db->createCommand($sQuery)->queryRow();
+            $aRow = Yii::app()->db->createCommand($sQuery)->bindValues(array(':token' => $token))->queryRow();
             $tokendata = $aRow; 
             if (!$aRow || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') && !$previewmode)
             {
@@ -480,11 +480,11 @@ class index extends CAction {
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."'";
+                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token=:token";
             } else {
-                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."' AND (completed = 'N' or completed='')";
+                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token=:token AND (completed = 'N' or completed='')";
             }
-            $tkresult = dbExecuteAssoc($tkquery); //Checked
+            $tkresult = dbExecuteAssoc($tkquery, array(':token' => $token)); //Checked
             $tokendata = $tkresult->read();
             $tkresult->close(); //Close the result in case there are more result rows, we are only interested in one and don't want unbuffered query errors
             if (isset($tokendata['validfrom']) && (trim($tokendata['validfrom'])!='' && $tokendata['validfrom']>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) ||
