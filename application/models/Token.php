@@ -1,11 +1,26 @@
 <?php
-
+/**
+ * 
+ * For code completion we add the available scenario's here
+ * 
+ * @method incomplete() incomplete() Select only uncompleted tokens
+ * @method Token usable() usable() Select usable tokens: valid daterange and userleft > 0
+ */
 	class Token extends Dynamic
 	{
 		public function __construct($scenario = 'insert', $surveyId = null)
 		{
 			parent::__construct($scenario, $surveyId);
 		}
+        
+        /**
+         * Get the token model
+         * 
+         * @param string $className Normally you specify null here
+         * @param int $surveyId 
+         * @return Token
+         * @throws Exception
+         */
 		public static function model($className = null, $surveyId = null)
 		{
 			if (!is_numeric($surveyId))
