@@ -96,7 +96,8 @@ class LSActiveRecord extends CActiveRecord
      */
     public function beforeSave()
     {
-        $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('before'.get_class($this).'Save', $this));
+        $this->dispatchPluginModelEvent('before'.get_class($this).'Save');
+        $this->dispatchPluginModelEvent('beforeModelSave');
         return parent::beforeSave();
     }    
 
@@ -109,9 +110,23 @@ class LSActiveRecord extends CActiveRecord
      */    
     public function beforeDelete()
     {
-        $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('before'.get_class($this).'Delete', $this));
+    	$this->dispatchPluginModelEvent('before'.get_class($this).'Delete');
+    	$this->dispatchPluginModelEvent('beforeModelDelete');
         return parent::beforeDelete();
     }
+    
+    /**
+     * This method is invoked after saving a record.
+     * The default implementation raises the {@link onAfterSave} event.
+     * You may override this method to do any work that needs to be done after saving a record.
+     * Make sure you call the parent implementation so that the event is raised properly.
+     */    
+    public function afterSave()
+    {
+    	$this->dispatchPluginModelEvent('after'.get_class($this).'Save');
+    	$this->dispatchPluginModelEvent('afterModelSave');
+        parent::afterSave();
+    }    
     
     /**
      * Return the max value for a field
@@ -149,4 +164,45 @@ class LSActiveRecord extends CActiveRecord
         return $maxIds[$field];
     }
 
+	/**
+	 * This method overrides the parent in order to raise PluginEvents for Bulk delete operations.
+	 * 
+	 * Filter Criteria are wrapped into a CDBCriteria instance so we have a single instance responsible for holding the filter criteria
+	 * to be passed to the PluginEvent, 
+	 * this also enables us to pass the fully configured CDBCriteria instead of the original Parameters.
+	 * 
+	 * See {@link find()} for detailed explanation about $condition and $params.
+	 * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
+	 * An attribute value can be an array which will be used to generate an IN condition.
+	 * @param mixed $condition query condition or criteria.
+	 * @param array $params parameters to be bound to an SQL statement.
+	 * @return integer number of rows affected by the execution.
+	 */
+	public function deleteAllByAttributes($attributes,$condition='',$params=array())
+	{
+		$builder=$this->getCommandBuilder();
+		$table=$this->getTableSchema();
+		$criteria=$builder->createColumnCriteria($table,$attributes,$condition,$params);
+		
+		$this->dispatchPluginModelEvent('before'.get_class($this).'DeleteMany', $criteria);
+		$this->dispatchPluginModelEvent('beforeModelDeleteMany',				$criteria);
+		return parent::deleteAllByAttributes(array(), $criteria, array());
+	}
+	
+	/**
+	 * method for dispatching plugin events
+	 * 
+	 * See {@link find()} for detailed explanation about $condition and $params.
+	 * @param string $sEventName event name to dispatch
+	 * @param array	$criteria array containing attributes, conditions and params for the filter query
+	 * @return PluginEvent the dispatched event
+	 */
+	private function dispatchPluginModelEvent($sEventName, $criteria=false) {
+		$oPluginEvent = new PluginEvent($sEventName, $this);
+		$oPluginEvent->set('model', $this);
+		if ($criteria !== false) {
+			$oPluginEvent->set('filterCriteria', $criteria);
+		}
+		return App()->getPluginManager()->dispatchEvent($oPluginEvent);
+	}
 }
