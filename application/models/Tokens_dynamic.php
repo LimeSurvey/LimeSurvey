@@ -44,6 +44,22 @@ class Tokens_dynamic extends LSActiveRecord
     }
     
     /**
+     * Initialize database helper and setVarchar only once
+     * 
+     * @staticvar boolean $done
+     */
+    protected function _initDb()
+    {
+        static $done = false;
+        
+        if (!$done) {
+            Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+            setVarchar(); //Set the appropriate varchar settings according to the database
+            $done = true;
+        }
+    }
+    
+    /**
 	 * Sets the survey ID for the next model
 	 *
 	 * @static
@@ -130,23 +146,35 @@ class Tokens_dynamic extends LSActiveRecord
     */
     public function checkColumns() {
         $sid = self::$sid;
-        $surveytable='{{tokens_'.$sid.'}}';
-        $columncheck=array("tid", "participant_id", "firstname", "lastname", "email", "emailstatus","token","language","blacklisted","sent","remindersent","completed","usesleft","validfrom","validuntil");
-        $columns = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
+        $surveytable = '{{tokens_'.$sid.'}}';
+        $columncheck = array("tid", "participant_id", "firstname", "lastname", "email", "emailstatus","token","language","blacklisted","sent","remindersent","completed","usesleft","validfrom","validuntil");
+        $tableSchema = Yii::app()->db->schema->getTable($surveytable);
+        $columns = $tableSchema->getColumnNames();
         $missingcolumns=array_diff($columncheck,$columns);
         if(count($missingcolumns)>0) //Some columns are missing - we need to create them
         {
-            Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
-            setVarchar(); //Set the appropriate varchar settings according to the database
-            $sVarchar=Yii::app()->getConfig('varchar'); //Retrieve the db specific varchar setting
+            $this->_initDb();
+            $sVarchar = Yii::app()->getConfig('varchar'); //Retrieve the db specific varchar setting
             $columninfo=array('validfrom'=>'datetime',
                               'validuntil'=>'datetime',
-                              'blacklisted'=>$sVarchar.'(17) NOT NULL',
-                              'participant_id'=>$sVarchar.'(50) NOT NULL',
+                              'blacklisted'=>$sVarchar.'(17)',
+                              'participant_id'=>$sVarchar.'(50)',
                               'remindercount'=>"integer DEFAULT '0'",
                               'usesleft'=>'integer NOT NULL default 1'); //Not sure if any other fields would ever turn up here - please add if you can think of any others
             foreach($missingcolumns as $columnname) {
                 addColumn($surveytable,$columnname,$columninfo[$columnname]);
+            }
+        } else {
+            // On some installs we have created not null for participant_id and blacklisted fix this
+            $columns = array('blacklisted', 'participant_id');
+            
+            foreach ($columns as $columnname)
+            {
+                $definition = $tableSchema->getColumn($columnname);
+                if ($definition->allowNull != true) {
+                    $this->_initDb();
+                    Yii::app()->db->createCommand()->alterColumn($surveytable, $columnname, sprintf('%s(%s)', Yii::app()->getConfig('varchar'), $definition->size));
+                }
             }
         }
     }
