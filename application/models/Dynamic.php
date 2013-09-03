@@ -9,7 +9,7 @@
 
         private $_md;								// meta data
 
-        protected $tableName;
+        private $tableName;
 
         /**
          * @param string $scenario

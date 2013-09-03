@@ -6,6 +6,15 @@
 		{
 			parent::__construct($scenario, $surveyId);
 		}
+
+		/**
+		 * The model factory. Standard argument $className is not used but I kept
+		 * it to keep it compatible with the normal signature.
+		 * @param type $className
+		 * @param int $surveyId SurveyId must be passed otherwise an exception will be thrown.
+		 * @return type
+		 * @throws Exception
+		 */
 		public static function model($className = null, $surveyId = null)
 		{
 			if (!is_numeric($surveyId))
@@ -41,7 +50,8 @@
 		}
 
 		public function tableName() {
-			return "{{tokens_{$this->tableName}}}";
+			$tableName = parent::tableName();
+			return "{{tokens_{$tableName}}}";
 		}
 
 	}
