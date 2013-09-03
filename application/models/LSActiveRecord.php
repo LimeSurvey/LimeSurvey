@@ -20,13 +20,16 @@ class LSActiveRecord extends CActiveRecord
      * 
      * Below is a list of all behaviors we register:
      * @see CTimestampBehavior
-     * 
+     * @see PluginEventBehavior
      * @return array
      */
     public function behaviors(){
-        $sCreateFieldName=($this->hasAttribute('created')?'created':null);
+		$sCreateFieldName=($this->hasAttribute('created')?'created':null);
         $sUpdateFieldName=($this->hasAttribute('modified')?'modified':null);
         return array(
+			'PluginEventBehavior' => array(
+				'class' => 'application.models.behaviors.PluginEventBehavior'
+			),
             'CTimestampBehavior' => array(
                 'class' => 'zii.behaviors.CTimestampBehavior',
                 'createAttribute' => $sCreateFieldName,
@@ -85,49 +88,6 @@ class LSActiveRecord extends CActiveRecord
     }
     
     
-     /**
-     * This method is invoked before saving a record (after validation, if any).
-     * The default implementation raises the {@link onBeforeSave} event.
-     * You may override this method to do any preparation work for record saving.
-     * Use {@link isNewRecord} to determine whether the saving is
-     * for inserting or updating record.
-     * Make sure you call the parent implementation so that the event is raised properly.
-     * @return boolean whether the saving should be executed. Defaults to true.
-     */
-    public function beforeSave()
-    {
-        $this->dispatchPluginModelEvent('before'.get_class($this).'Save');
-        $this->dispatchPluginModelEvent('beforeModelSave');
-        return parent::beforeSave();
-    }    
-
-    /**
-     * This method is invoked before deleting a record.
-     * The default implementation raises the {@link onBeforeDelete} event.
-     * You may override this method to do any preparation work for record deletion.
-     * Make sure you call the parent implementation so that the event is raised properly.
-     * @return boolean whether the record should be deleted. Defaults to true.
-     */    
-    public function beforeDelete()
-    {
-    	$this->dispatchPluginModelEvent('before'.get_class($this).'Delete');
-    	$this->dispatchPluginModelEvent('beforeModelDelete');
-        return parent::beforeDelete();
-    }
-    
-    /**
-     * This method is invoked after saving a record.
-     * The default implementation raises the {@link onAfterSave} event.
-     * You may override this method to do any work that needs to be done after saving a record.
-     * Make sure you call the parent implementation so that the event is raised properly.
-     */    
-    public function afterSave()
-    {
-    	$this->dispatchPluginModelEvent('after'.get_class($this).'Save');
-    	$this->dispatchPluginModelEvent('afterModelSave');
-        parent::afterSave();
-    }    
-    
     /**
      * Return the max value for a field
      * 
@@ -165,6 +125,7 @@ class LSActiveRecord extends CActiveRecord
     }
 
 	/**
+	 * @todo This should also be moved to the behavior at some point.
 	 * This method overrides the parent in order to raise PluginEvents for Bulk delete operations.
 	 * 
 	 * Filter Criteria are wrapped into a CDBCriteria instance so we have a single instance responsible for holding the filter criteria
@@ -183,26 +144,8 @@ class LSActiveRecord extends CActiveRecord
 		$builder=$this->getCommandBuilder();
 		$table=$this->getTableSchema();
 		$criteria=$builder->createColumnCriteria($table,$attributes,$condition,$params);
-		
 		$this->dispatchPluginModelEvent('before'.get_class($this).'DeleteMany', $criteria);
 		$this->dispatchPluginModelEvent('beforeModelDeleteMany',				$criteria);
 		return parent::deleteAllByAttributes(array(), $criteria, array());
-	}
-	
-	/**
-	 * method for dispatching plugin events
-	 * 
-	 * See {@link find()} for detailed explanation about $condition and $params.
-	 * @param string $sEventName event name to dispatch
-	 * @param array	$criteria array containing attributes, conditions and params for the filter query
-	 * @return PluginEvent the dispatched event
-	 */
-	private function dispatchPluginModelEvent($sEventName, $criteria=false) {
-		$oPluginEvent = new PluginEvent($sEventName, $this);
-		$oPluginEvent->set('model', $this);
-		if ($criteria !== false) {
-			$oPluginEvent->set('filterCriteria', $criteria);
-		}
-		return App()->getPluginManager()->dispatchEvent($oPluginEvent);
 	}
 }
