@@ -15,6 +15,14 @@
 class LSActiveRecord extends CActiveRecord
 {
     
+    /**
+     * Lists the behaviors of this model 
+     * 
+     * Below is a list of all behaviors we register:
+     * @see CTimestampBehavior
+     * 
+     * @return array
+     */
     public function behaviors(){
         $sCreateFieldName=($this->hasAttribute('created')?'created':null);
         $sUpdateFieldName=($this->hasAttribute('modified')?'modified':null);

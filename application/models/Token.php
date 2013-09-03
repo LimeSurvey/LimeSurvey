@@ -12,15 +12,15 @@
 		{
 			parent::__construct($scenario, $surveyId);
 		}
-        
-        /**
-         * Get the token model
-         * 
-         * @param string $className Normally you specify null here
-         * @param int $surveyId 
-         * @return Token
-         * @throws Exception
-         */
+
+		/**
+		 * The model factory. Standard argument $className is not used but I kept
+		 * it to keep it compatible with the normal signature.
+		 * @param type $className
+		 * @param int $surveyId SurveyId must be passed otherwise an exception will be thrown.
+		 * @return Token
+		 * @throws Exception
+		 */
 		public static function model($className = null, $surveyId = null)
 		{
 			if (!is_numeric($surveyId))
@@ -56,7 +56,8 @@
 		}
 
 		public function tableName() {
-			return "{{tokens_{$this->tableName}}}";
+			$tableName = parent::tableName();
+			return "{{tokens_{$tableName}}}";
 		}
 
 	}
