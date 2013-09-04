@@ -4,28 +4,38 @@
 		public function events()
 		{
 			return array_merge(parent::events(), array(
-				'onBeforeSave' => 'beforeSave',
+				'onAfterDelete' => 'afterDelete',
 				'onAfterSave' => 'afterSave',
 				'onBeforeDelete' => 'beforeDelete',
+				'onBeforeSave' => 'beforeSave',
+				
+				
 			));
 		}
 
-		public function afterSave(CModelEvent $event)
+		public function afterDelete(CEvent $event)
+		{
+			$this->dispatchPluginModelEvent('after'.get_class($this->owner).'Delete');
+			$this->dispatchPluginModelEvent('afterModelDelete');
+		}
+		public function afterSave(CEvent $event)
 		{
 			$this->dispatchPluginModelEvent('after'.get_class($this->owner).'Save');
 			$this->dispatchPluginModelEvent('afterModelSave');
 		}
+		public function beforeDelete(CModelEvent $event)
+		{
+			$this->dispatchPluginModelEvent('before'.get_class($this->owner).'Delete');
+			$this->dispatchPluginModelEvent('beforeModelDelete');
+		}
+
 		public function beforeSave(CModelEvent $event)
 		{
 			$this->dispatchPluginModelEvent('before'.get_class($this->owner).'Save');
 			$this->dispatchPluginModelEvent('beforeModelSave');
 		}
 
-		public function beforeDelete(CModelEvent $event)
-		{
-			$this->dispatchPluginModelEvent('before'.get_class($this->owner).'Delete');
-			$this->dispatchPluginModelEvent('beforeModelDelete');
-		}
+		
 
 		/**
 		 * method for dispatching plugin events
@@ -35,7 +45,7 @@
 		 * @param array	$criteria array containing attributes, conditions and params for the filter query
 		 * @return PluginEvent the dispatched event
 		 */
-	    private function dispatchPluginModelEvent($sEventName, $criteria = null)
+	    public function dispatchPluginModelEvent($sEventName, $criteria = null)
 		{
 			$oPluginEvent = new PluginEvent($sEventName, $this);
 			$oPluginEvent->set('model', $this->owner);
