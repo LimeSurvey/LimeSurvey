@@ -16,7 +16,7 @@ class AuthSAML extends AuthPluginBase
 
     protected $ssp = null;
     
-    static protected $description = 'Core: SAML authentication';
+    static protected $description = 'SAML authentication plugin';
     static protected $name = 'SAML';
     
     protected $settings = array(
