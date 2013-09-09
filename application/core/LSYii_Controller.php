@@ -154,8 +154,14 @@ abstract class LSYii_Controller extends CController
         $aPublicUrl=parse_url($sPublicUrl);
         if(isset($aPublicUrl['scheme']) && isset($aPublicUrl['host']))
         {
+            $sActualBaseUrl=Yii::app()->getComponent('urlManager')->getBaseUrl();// Keep actual url to reset after
             Yii::app()->getComponent('urlManager')->setBaseUrl($sPublicUrl);
         }
-        return parent::createAbsoluteUrl($route,$params,$schema,$ampersand);
+        $sAbsoluteUrl=parent::createAbsoluteUrl($route,$params,$schema,$ampersand);
+        if(isset($sActualBaseUrl))
+        {
+            Yii::app()->getComponent('urlManager')->setBaseUrl($sActualBaseUrl);
+        }
+        return $sAbsoluteUrl;
     }
 }
