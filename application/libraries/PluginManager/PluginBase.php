@@ -102,7 +102,7 @@
             {
                 if ($getValues)
                 {
-                    $setting['current'] = $this->get($name);
+                    $setting['current'] = $this->get($name, null, null, isset($setting['default']) ? $setting['default'] : null );
                 }
                 if ($setting['type'] == 'logo')
                 {
