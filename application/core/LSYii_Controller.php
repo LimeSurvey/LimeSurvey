@@ -143,4 +143,25 @@ abstract class LSYii_Controller extends CController
         Yii::app()->setConfig('adminimageurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/images/');
         Yii::app()->setConfig('adminstyleurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/');
 	}
+
+    /**
+     * Creates an absolute URL based on the given controller and action information.
+     * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
+     * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.
+     * @param string $schema schema to use (e.g. http, https). If empty, the schema used for the current request will be used.
+     * @param string $ampersand the token separating name-value pairs in the URL.
+     * @return string the constructed URL
+     */
+    public function createAbsoluteUrl($route,$params=array(),$schema='',$ampersand='&')
+    {
+        $sPublicUrl=Yii::app()->getConfig("publicurl");
+        // Control if public url are really public : need scheme and host
+        // If yes: update baseUrl to config without restrictions
+        $aPublicUrl=parse_url($sPublicUrl);
+        if(isset($aPublicUrl['scheme']) && isset($aPublicUrl['host']))
+        {
+            Yii::app()->getComponent('urlManager')->setBaseUrl($sPublicUrl);
+        }
+        return parent::createAbsoluteUrl($route,$params,$schema,$ampersand);
+    }
 }
