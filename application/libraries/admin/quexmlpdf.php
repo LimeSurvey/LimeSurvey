@@ -255,7 +255,7 @@ class quexmlpdf extends pdf {
 	 * @var string  Defaults to 10.5. 
 	 * @since 2011-12-20
 	 */
-	protected $singleResponseHorizontalHeight = 11;
+	protected $singleResponseHorizontalHeight = 10.5;
 
 	/**
 	 * Height of the are of each single response (includes guiding lines)
@@ -1698,7 +1698,52 @@ class quexmlpdf extends pdf {
 						if (isset($response['rotate']))
 							$this->drawSingleChoiceVertical($categories,$subquestions,$text);
 						else
-							$this->drawSingleChoiceHorizontal($categories,$subquestions,$text);
+						{
+                            /** if SingleChoice (array) questions can be split, we need to apply the pagination logic within the question
+                            **/
+                            
+                            // make sure there's also room for the response label and the first response
+                            if ($this->getPageHeight() - $this->cornerBorder < $this->GetY() + $this->responseLabelHeight+$this->singleResponseHorizontalHeight
+									&& $this->allowSplittingSingleChoiceHorizontal)
+                            {
+                                $this->pageBreakOccured=true;
+                            }
+
+                            if ($this->pageBreakOccured && $this->allowSplittingSingleChoiceHorizontal)
+							{
+								$this->pageBreakOccured = false;
+								$this->rollBackTransaction(true);
+								$this->SetAutoPageBreak(false); //Temporarily set so we don't trigger a page break
+								//now draw a background to the bottom of the page
+								$this->fillPageBackground();
+								$this->newPage();
+
+								/** START: redo question title/text/help	**/	
+								//If there is some help text for before the question
+								if (isset($question['helptextbefore']))
+								{
+									//Leave a border at the top of the Help Before text
+									if ($this->helpBeforeBorderTop > 0) //question border
+										$this->SetY($this->GetY() + $this->helpBeforeBorderTop,false); //new line
+							
+									$this->setBackground('question');
+									$html = "<table><tr><td width=\"" . $this->getColumnWidth() . "mm\" class=\"questionHelpBefore\">{$question['helptextbefore']}</td><td></td></tr></table>";
+									$this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+
+									//Leave a border at the bottom of the Help Before text
+									if ($this->helpBeforeBorderBottom > 0) //question border
+										$this->SetY($this->GetY() + $this->helpBeforeBorderBottom,false); //new line
+								}
+								//Question header
+								$this->drawQuestionHead($question['title'], $question['text'],$help,$specifier);
+							}
+							elseif ($this->allowSplittingSingleChoiceHorizontal)
+							{
+								$this->commitTransaction();
+							}
+						}
+                        /** End redo question title/text/help **/
+						$this->drawSingleChoiceHorizontal($categories,$subquestions,$text);
 						
 						break;
 					case 'number':
@@ -2336,6 +2381,7 @@ class quexmlpdf extends pdf {
 
             $this->MultiCell($textwidth,$this->singleResponseHorizontalHeight,$s['text'],0,'R',false,0,$this->getColumnX(),$currentY,true,0,false,true,$this->singleResponseHorizontalHeight,'M',true);
 
+        
             //Draw the categories horizontally
             $rnum = 1;
             foreach ($categories as $r)
