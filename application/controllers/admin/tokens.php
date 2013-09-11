@@ -1311,7 +1311,7 @@ class tokens extends Survey_Common_Action
                 $aTokens = TokenDynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
                 foreach($aTokens as $aToken)
                 {
-                    $aData['tokenids'][] = $aToken['tid'];
+					$aData['tokenids'][] = $aToken;
                 }
             }
             $this->_renderWrappedTemplate('token', array('tokenbar', $sSubAction), $aData);
