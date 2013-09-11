@@ -14,6 +14,7 @@ $(document).ready(function(){
             changeMonth: true,
             defaultDate: +0,
             beforeShow: customRange,
+            firstDay: "1",
             duration: 'fast'
             }, $.datepicker.regional[language]);
     });
