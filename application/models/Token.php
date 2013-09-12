@@ -3,8 +3,9 @@
  * 
  * For code completion we add the available scenario's here
  * 
- * @method incomplete() incomplete() Select only uncompleted tokens
+ * @method Tokenincomplete() incomplete() Select only uncompleted tokens
  * @method Token usable() usable() Select usable tokens: valid daterange and userleft > 0
+ * @property Survey $survey The survey this token belongs to.
  */
 	class Token extends Dynamic
 	{
@@ -13,6 +14,36 @@
 			parent::__construct($scenario, $surveyId);
 		}
 
+		public function generateToken()
+		{
+			$length = $this->survey->tokenlength;
+
+			$this->token = randomChars($length);
+			$counter = 0;
+			while (!$this->validate('token'))
+			{
+				$this->token = randomChars($length);
+				$counter++;
+				// This is extremely unlikely.
+				if ($counter > 10)
+				{
+					throw new CHttpException(500, 'Failed to create unique token in 10 attempts.');
+				}
+			}
+		}
+
+		public function getSurvey()
+		{
+			$survey = Survey::model()->findByPk(parent::tableName());
+			if (isset($survey))
+			{
+				return $survey;
+			}
+			else
+			{
+				throw new CHttpException(500, 'Could not find survey ' . parent::tableName());
+			}
+		}
 		/**
 		 * The model factory. Standard argument $className is not used but I kept
 		 * it to keep it compatible with the normal signature.
@@ -28,6 +59,13 @@
 				throw new Exception('SurveyID must be numeric.');
 			}
 			return parent::model(get_class(), $surveyId);
+		}
+
+		public function rules()
+		{
+			return array(
+				array('token', 'unique', 'allowEmpty' => true)
+			);
 		}
 
 		public function scopes()
