@@ -54,12 +54,12 @@ $(document).ready(function(){
 
     // Fix the heigh of the cell
     $('.browsetable td').each(function(){
-        if ($(this).text().trim().length > 30){
+        if ($.trim($(this).text()).length > 30){
             $(this).html("<span class=\"content\" title=\""+htmlspecialchars(htmlspecialchars($(this).text(),'ENT_HTML_QUOTE_DOUBLE'),'ENT_QUOTES')+"\">"+$(this).html()+"</span>");
         }
     });
     $('.browsetable th strong').each(function(){
-        if ($(this).text().trim().length > 30){
+        if ($.trim($(this).text()).length > 30){
             $(this).addClass("content");
             $(this).attr("title",$(this).text());
         }
