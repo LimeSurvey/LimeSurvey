@@ -201,7 +201,7 @@ class Save {
                 $message .= $clang->gT("Name").": ".$_POST['savename']."\n";
                 $message .= $clang->gT("Password").": ".$_POST['savepass']."\n\n";
                 $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$scid}/loadname/".urlencode($_POST['savename'])."/loadpass/".urlencode($_POST['savepass'])."/lang/".urlencode($clang->langcode));
+                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$scid}/loadname/".rawurlencode ($_POST['savename'])."/loadpass/".rawurlencode ($_POST['savepass'])."/lang/".rawurlencode ($clang->langcode));
                 if ($clienttoken) $message .= "/token/{$clienttoken}";
 
                 $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
