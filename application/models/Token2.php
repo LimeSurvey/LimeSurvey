@@ -9,6 +9,19 @@
 	 */
 	abstract class Token2 extends Dynamic2
 	{
+
+		public function beforeDelete() {
+			$result = parent::beforeDelete();
+			if ($result && isset($this->surveylink))
+			{
+				if (!$this->surveylink->delete())
+				{
+					throw new CException('Could not delete survey link. Token was not deleted.');
+				}
+				return true;
+			}
+			return $result;
+		}
 		public function generateToken()
 		{
 			$length = $this->survey->tokenlength;
@@ -31,7 +44,8 @@
 		{
 			$result = array(
 				'responses' => array(self::HAS_MANY, 'Response_' . $this->id, array('token' => 'token')),
-				'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->id}" )
+				'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->id}"),
+				'surveylink' => array(self::HAS_ONE, 'SurveyLink', 'token_id', 'on' => "survey_id = {$this->id}")
 			);
 			return $result;
 		}

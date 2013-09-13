@@ -528,7 +528,10 @@ class remotecontrol_handle
 				if(in_array($sStatName, $aPermittedTokenStats))
 				{
 					if (tableExists('{{tokens_' . $iSurveyID . '}}'))
-						$summary = Token::model(null, $iSurveyID)->summary();
+					{
+						$tokenClass = "Token_$iSurveyID";
+						$summary = $tokenClass::model()->summary();
+					}
 					else
 						return array('status' => 'No available data');
 				}
@@ -1605,19 +1608,16 @@ class remotecontrol_handle
 					return array('status' => 'Error: No token table');
 
 				$aResult=array();
+				$tokenClass = "Token_$iSurveyID";
 				foreach($aTokenIDs as $iTokenID)
 				{
-					$token = Token::model(null, $iSurveyID)->findByPk($iTokenID);
+					$token = $tokenClass::model()->findByPk($iTokenID);
 					if (!isset($token))
 						$aResult[$iTokenID]='Invalid token ID';
-					else
-					{
-					SurveyLink::deleteTokenLink(array($iTokenID), $iSurveyID);
-					if($token->delete())
+					elseif($token->delete())
 						$aResult[$iTokenID]='Deleted';
 					else
 						$aResult[$iTokenID]='Deletion went wrong';
-					}
 				}
 				return $aResult;
             }
