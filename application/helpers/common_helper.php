@@ -5538,23 +5538,14 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
 function getAttributeValue($surveyid,$attrName,$token)
 {
     $attrName=strtolower($attrName);
-    if (!tableExists('tokens_'.$surveyid) || !in_array($attrName,getTokenConditionsFieldNames($surveyid)))
+    if (!tableExists('tokens_'.$surveyid))
     {
         return null;
     }
-    $surveyid=sanitize_int($surveyid);
 
-    $query= Token::model(null, $surveyid)->findByAttributes(array("token"=>$token));
-
-    $count=$query->count(); // OK  - AR count
-    if ($count != 1)
-    {
-        return null;
-    }
-    else
-    {
-        return $row->$attrName;//[0]
-    }
+	$tokenClass = "Token_$surveyid";
+    $token = $tokenClass::model()->findByAttributes(array("token"=>$token));
+	return isset($token->$attrName) ? $token->$attrName : null;
 }
 
 /**
@@ -5732,21 +5723,6 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
     if ($integer === false) $goodchars .= ".";    //Todo, add localisation
     if ($negative === true) $goodchars .= "-";    //Todo, check databases
     return $goodchars;
-}
-
-
-/**
-* Return array with token attribute.
-*
-* @param $surveyid     int    the surveyid
-* @param $token    string    token code
-*
-* @return Array of token data
-*/
-function getTokenData($surveyid, $token) 
-{
-    $token = Token::model(null, $surveyid)->findByAttributes(array('token' => $token));
-	return isset($token) ? $token->attributes : array();
 }
 
 /**

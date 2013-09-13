@@ -308,7 +308,8 @@ class responses extends Survey_Common_Action
             if (tableExists('{{tokens_' . $iSurveyID . '}}') && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
             {
                 $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}');
-                $aData['tokeninfo'] = Token::model(null, $iSurveyID)->summary();
+				$tokenClass = "Token_$iSurveyID";
+                $aData['tokeninfo'] = $tokenClass::model()->summary();
             }
 
             $aViewUrls[] = 'browseindex_view';

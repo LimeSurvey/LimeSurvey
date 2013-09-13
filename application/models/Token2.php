@@ -22,6 +22,14 @@
 			}
 			return $result;
 		}
+
+		public function findByToken($token)
+		{
+			return $this->findByAttributes(array(
+				'token' => $token
+			));
+		}
+		
 		public function generateToken()
 		{
 			$length = $this->survey->tokenlength;
@@ -45,7 +53,7 @@
 			$result = array(
 				'responses' => array(self::HAS_MANY, 'Response_' . $this->id, array('token' => 'token')),
 				'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->id}"),
-				'surveylink' => array(self::HAS_ONE, 'SurveyLink', 'token_id', 'on' => "survey_id = {$this->id}")
+				'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->id}")
 			);
 			return $result;
 		}

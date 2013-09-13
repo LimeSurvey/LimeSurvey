@@ -435,7 +435,8 @@ function submittokens($quotaexit=false)
     $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
     // check how many uses the token has left
-    $token = Token::model(null, $surveyid)->findByAttributes(array('token' => $clienttoken));
+	$tokenClass = "Token_$surveyid";
+    $token = $tokenClass::model()->findByAttributes(array('token' => $clienttoken));
 
 	if ($quotaexit==true)
     {
@@ -631,7 +632,7 @@ function sendSubmitNotifications($surveyid)
         if (isset($_SESSION['survey_'.$surveyid]['token']) && $_SESSION['survey_'.$surveyid]['token'] != '' && tableExists('{{tokens_'.$surveyid.'}}'))
         {
             //Gather token data for tokenised surveys
-            $_SESSION['survey_'.$surveyid]['thistoken']=getTokenData($surveyid, $_SESSION['survey_'.$surveyid]['token']);
+			$_SESSION['survey_'.$surveyid]['thistoken'] = $tokenClass::model()->findByToken($_SESSION['survey_'.$surveyid]['token'])->attributes;
         }
         // there was no token used so lets remove the token field from insertarray
         elseif ($_SESSION['survey_'.$surveyid]['insertarray'][0]=='token')
@@ -822,6 +823,7 @@ function buildsurveysession($surveyid,$preview=false)
     $sLangCode=$clang->langcode;
     $languagechanger=makeLanguageChangerSurvey($sLangCode);
 
+	$tokenClass = "Token_$surveyid";
     $thissurvey = getSurveyInfo($surveyid,$sLangCode);
 
     $_SESSION['survey_'.$surveyid]['templatename']=validateTemplateDir($thissurvey['template']);
@@ -977,10 +979,10 @@ function buildsurveysession($surveyid,$preview=false)
 
         //check if token actually does exist
         // check also if it is allowed to change survey after completion
-        if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-            $oTokenEntry = Token::model(null, $surveyid)->findByAttributes(array('token'=>trim(strip_tags($clienttoken))));
+		if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
+            $oTokenEntry = $tokenClass::model()->findByAttributes(array('token'=>trim(strip_tags($clienttoken))));
         } else {
-            $oTokenEntry = Token::model(null, $surveyid)->usable()->incomplete()->findByAttributes(array('token' => $clienttoken));
+            $oTokenEntry = $tokenClass::model()->usable()->incomplete()->findByAttributes(array('token' => $clienttoken));
         }
 		if (!isset($oTokenEntry))
         {
@@ -1014,13 +1016,14 @@ function buildsurveysession($surveyid,$preview=false)
         isset($_SESSION['survey_'.$surveyid]['secanswer']) &&
         $loadsecurity == $_SESSION['survey_'.$surveyid]['secanswer'])
         {
+			$tokenClass = "Token_$surveyid";
             if ($thissurvey['alloweditaftercompletion'] == 'Y' )
             {
-                $oTokenEntry = Token::model(null, $surveyid)->findByAttributes(array('token'=> $clienttoken));
+                $oTokenEntry = $tokenClass::model()->findByAttributes(array('token'=> $clienttoken));
             }
             else
             {
-                $oTokenEntry = Token::model(null, $surveyid)->incomplete()->findByAttributes(array(
+                $oTokenEntry = $tokenClass::model()->incomplete()->findByAttributes(array(
 					'token' => $clienttoken
 				));
            }
@@ -1260,7 +1263,7 @@ function buildsurveysession($surveyid,$preview=false)
     if ($tokensexist == 1 && $thissurvey['anonymized'] == "N"  && tableExists('{{tokens_'.$surveyid.'}}'))
     {
         //Gather survey data for "non anonymous" surveys, for use in presenting questions
-        $_SESSION['survey_'.$surveyid]['thistoken']=getTokenData($surveyid, $clienttoken);
+		$_SESSION['survey_'.$surveyid]['thistoken'] = $tokenClass::model()->findByToken($clienttoken);
     }
     $qtypes=getQuestionTypeList('','array');
     $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);

@@ -78,7 +78,8 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 	
 	$attributes = array_keys(getTokenFieldsAndNames($iSurveyID));	
 	$oSurveyLocale=SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
-	$oTokens = Token::model(null, $iSurveyID);
+	$tokenClass = "Token_$iSurveyID";
+	$oTokens = $tokenClass::model();
 	$aSurveyLangs = $oSurvey->additionalLanguages;
 	array_unshift($aSurveyLangs, $oSurvey->language);
 			

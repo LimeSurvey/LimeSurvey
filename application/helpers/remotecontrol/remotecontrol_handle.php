@@ -1652,22 +1652,22 @@ class remotecontrol_handle
 				if(!tableExists("{{tokens_$iSurveyID}}"))
 					return array('status' => 'Error: No token table');
 
-				$oToken = TokenDynamic::model($iSurveyID)->findByPk($iTokenID);
-				if (!isset($oToken))
+				$tokenClass = "Token_$iSurveyID";
+				$token = $tokenClass::model()->findByPk($iTokenID);
+				if (!isset($token))
 					return array('status' => 'Error: Invalid tokenid');
 
-                $aResult=array();
-                $aBasicDestinationFields=TokenDynamic::model()->tableSchema->columnNames;
-                $aTokenProperties=array_intersect($aTokenProperties,$aBasicDestinationFields);
-
-				if (empty($aTokenProperties))
+				$result = array_intersect_key(array_flip($aTokenProperties), $token->attributes);
+                if (empty($result))
+				{
 					return array('status' => 'No valid Data');
-
-                foreach($aTokenProperties as $sPropertyName )
-                {
-					$aResult[$sPropertyName]=$oToken->$sPropertyName;
 				}
-				return $aResult;
+				else
+				{
+					return $result;
+				}
+
+                
 			}
 			else
 				return array('status' => 'No permission');
@@ -1700,7 +1700,8 @@ class remotecontrol_handle
 				if(!tableExists("{{tokens_$iSurveyID}}"))
 					return array('status' => 'Error: No token table');
 
-				$oToken = Token::model(null, $iSurveyID)->findByPk($iTokenID);
+				$tokenClass = "Token_$iSurveyID";
+				$oToken = $tokenClass::model()->findByPk($iTokenID);
 				if (!isset($oToken))
 					return array('status' => 'Error: Invalid tokenid');
 
@@ -1790,10 +1791,11 @@ class remotecontrol_handle
 				if(!tableExists("{{tokens_$iSurveyID}}"))
 					return array('status' => 'Error: No token table');
 
+				$tokenClass = "Token_$iSurveyID";
 				if($bUnused)
-					$oTokens = Token::model(null, $iSurveyID)->incomplete()->findAll(array('limit' => $iLimit, 'offset' => $iStart));
+					$oTokens = $tokenClass::model()->incomplete()->findAll(array('limit' => $iLimit, 'offset' => $iStart));
 				else
-					$oTokens = Token::model(null, $iSurveyID)->findAll(array('limit' => $iLimit, 'offset' => $iStart));
+					$oTokens = $tokenClass::model()->findAll(array('limit' => $iLimit, 'offset' => $iStart));
 
 				if(count($oTokens)==0)
 					return array('status' => 'No Tokens found');
