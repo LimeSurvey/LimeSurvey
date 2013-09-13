@@ -1554,11 +1554,11 @@ class remotecontrol_handle
         {
             if (!Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}'))
                 return array('status' => 'No token table');
-
-            $aDestinationFields = array_flip(Token::model(null, $iSurveyID)->getMetaData()->tableSchema->columnNames);
+			$tokenClass = "Token_$iSurveyID";
+			$aDestinationFields = array_flip($tokenClass::model()->getMetaData()->tableSchema->columnNames);
 			foreach ($aParticipantData as &$aParticipant)
             {
-                $token = new Token('insert', $iSurveyID);
+                $token = new $tokenClass('insert');
                 $token->setAttributes(array_intersect_key($aParticipant,$aDestinationFields));
 				if  ($bCreateToken)
 				{
@@ -1570,7 +1570,7 @@ class remotecontrol_handle
 				}
 				else
 				{
-					$aParticipant = false;
+					$aParticipant["errors"] = $token->errors;
 				}
             }
             return $aParticipantData;

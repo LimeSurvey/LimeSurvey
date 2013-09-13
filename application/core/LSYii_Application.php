@@ -145,7 +145,14 @@ class LSYii_Application extends CWebApplication
         $this->initPluginManager(); 
         
     }
-    
+
+
+	public function init() {
+		parent::init();
+		Yii::import('application.helpers.ClassFactory');
+		ClassFactory::registerClass('Token_', 'Token2');
+		ClassFactory::registerClass('Response_', 'Response2');
+	}
     /**
      * This method handles initialization of the plugin manager
      * 
