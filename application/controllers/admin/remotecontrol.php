@@ -59,6 +59,11 @@ class remotecontrol extends Survey_Common_Action
                 }
                 LSjsonRPCServer::handle($oHandler);
             }
+			foreach (App()->log->routes as $route)
+			{
+				$route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
+			}
+
             exit;
         } else {
             // Disabled output of API methods for now

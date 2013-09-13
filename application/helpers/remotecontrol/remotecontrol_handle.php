@@ -1934,6 +1934,36 @@ class remotecontrol_handle
 			return array('status' => 'Invalid session key');
 	}
 
+	/**
+     * RPC Routine to list the ids and info of users.
+     * Returns array of ids and info.
+     * @param string $sSessionKey Auth credentials
+     * @return array The list of users
+     */
+
+	public function list_users($sSessionKey = null)
+	{
+	   if (true || $this->_checkSessionKey($sSessionKey))
+       {
+		   if( Permission::model()->hasGlobalPermission('superadmin','read') )
+		   {
+			   $users = User::model()->findAll();
+
+				if(count($users)==0)
+					return array('status' => 'No surveys found');
+
+				foreach ($users as $user)
+				{
+					$attributes = $user->attributes;
+					unset($attributes['password']);
+					$data[] = $attributes;
+				}
+				return $data;
+        }
+        else
+			return array('status' => 'Invalid session key');
+	}
+	}
     /**
      * RPC routine to to initialise the survey's collection of tokens where new participant tokens may be later added.
      *
