@@ -338,67 +338,7 @@ class remotecontrol_handle
 			return array('status' => 'Invalid Session key');
     }
 
-    /**
-     * RPC Routine to list the ids and info of surveys belonging to a user.
-     * Returns array of ids and info.
-     * If user is admin he can get surveys of every user (parameter sUser) or all surveys (sUser=null)
-     * Else only the syrveys belonging to the user requesting will be shown.
-     *
-     * @access public
-     * @param string $sSessionKey Auth credentials
-     * @param string $sUser Optional username to get list of surveys
-     * @return array The list of surveys
-     */
-	public function list_surveys($sSessionKey, $sUser=NULL)
-	{
-       if ($this->_checkSessionKey($sSessionKey))
-       {
-		   $sCurrentUser =  Yii::app()->session['user'];
-
-		   if( Permission::model()->hasGlobalPermission('superadmin','read') )
-		   {
-				if ($sUser == null)
-					$aUserSurveys = Survey::model()->findAll(); //list all surveys
-				else
-				{
-				   $aUserData = User::model()->findByAttributes(array('users_name' => $sUser));
-				   if (!isset($aUserData))
-						return array('status' => 'Invalid user');
-					else
-						$aUserSurveys = Survey::model()->findAllByAttributes(array("owner_id"=>$aUserData->attributes['uid']));
-				}
-			}
-			else
-			{
-				if (($sCurrentUser == $sUser) || ($sUser == null) )
-				{
-					$sUid =  User::model()->findByAttributes(array('users_name' => $sCurrentUser))->uid;
-					$aUserSurveys = Survey::model()->findAllByAttributes(array("owner_id"=>$sUid));
-				}
-				else
-					return array('status' => 'No permission');
-			}
-
-		   if(count($aUserSurveys)==0)
-				return array('status' => 'No surveys found');
-
-			foreach ($aUserSurveys as $oSurvey)
-				{
-				$oSurveyLanguageSettings = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $oSurvey->primaryKey, 'surveyls_language' => $oSurvey->language));
-				if (!isset($oSurveyLanguageSettings))
-					$aSurveyTitle = '';
-				else
-					$aSurveyTitle = $oSurveyLanguageSettings->attributes['surveyls_title'];
-				$aData[]= array('sid'=>$oSurvey->primaryKey,'surveyls_title'=>$aSurveyTitle,'startdate'=>$oSurvey->attributes['startdate'],'expires'=>$oSurvey->attributes['expires'],'active'=>$oSurvey->attributes['active']);
-				}
-			return $aData;
-        }
-        else
-			return array('status' => 'Invalid session key');
-	}
-
-
-
+    
     /**
      * RPC Routine that launches a newly created survey.
      *
@@ -1199,44 +1139,7 @@ class remotecontrol_handle
 			return array('status' => 'Invalid Session key');
     }
 
-    /**
-      * RPC Routine to return the ids and info of groups belonging to survey .
-      * Returns array of ids and info.
-      *
-      * @access public
-      * @param string $sSessionKey Auth credentials
-      * @param int $iSurveyID Id of the Survey containing the groups
-      * @return array The list of groups
-      */
-	public function list_groups($sSessionKey, $iSurveyID)
-	{
-       if ($this->_checkSessionKey($sSessionKey))
-       {
-			$oSurvey = Survey::model()->findByPk($iSurveyID);
-			if (!isset($oSurvey))
-				return array('status' => 'Error: Invalid survey ID');
-
-			if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read'))
-			{
-				$oGroupList = QuestionGroup::model()->findAllByAttributes(array("sid"=>$iSurveyID));
-				if(count($oGroupList)==0)
-					return array('status' => 'No groups found');
-
-				foreach ($oGroupList as $oGroup)
-				{
-					$aData[]= array('id'=>$oGroup->primaryKey,'group_name'=>$oGroup->attributes['group_name']);
-				}
-				return $aData;
-			}
-			else
-				return array('status' => 'No permission');
-        }
-        else
-            return array('status' => 'Invalid Session Key');
-	}
-
-
-	/* Question specific functions */
+    /* Question specific functions */
 
 
     /**
@@ -1621,62 +1524,7 @@ class remotecontrol_handle
     }
 
 
-    /**
-     * RPC Routine to return the ids and info of questions of a survey/group.
-     * Returns array of ids and info.
-     *
-     * @access public
-     * @param string $sSessionKey Auth credentials
-     * @param int $iSurveyID Id of the survey to list questions
-     * @param int $iGroupID Optional id of the group to list questions
-     * @param string $sLanguage Optional parameter language for multilingual questions
-     * @return array The list of questions
-     */
-	public function list_questions($sSessionKey, $iSurveyID, $iGroupID=NULL, $sLanguage=NULL)
-	{
-       if ($this->_checkSessionKey($sSessionKey))
-       {
-			Yii::app()->loadHelper("surveytranslator");
-			$oSurvey = Survey::model()->findByPk($iSurveyID);
-			if (!isset($oSurvey))
-				return array('status' => 'Error: Invalid survey ID');
-
-			if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read'))
-			{
-				if (is_null($sLanguage))
-					$sLanguage=$oSurvey->language;
-
-				if (!array_key_exists($sLanguage,getLanguageDataRestricted()))
-					return array('status' => 'Error: Invalid language');
-
-				if($iGroupID!=NULL)
-				{
-					$oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
-					$sGroupSurveyID = $oGroup['sid'];
-
-					if($sGroupSurveyID != $iSurveyID)
-						return array('status' => 'Error: IMissmatch in surveyid and groupid');
-					else
-						$aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$iGroupID,"parent_qid"=>"0","language"=>$sLanguage));
-				}
-				else
-					$aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID,"parent_qid"=>"0", "language"=>$sLanguage));
-
-				if(count($aQuestionList)==0)
-					return array('status' => 'No questions found');
-
-				foreach ($aQuestionList as $oQuestion)
-				{
-					$aData[]= array('id'=>$oQuestion->primaryKey,'title'=>$oQuestion->attributes['title'],'type'=>$oQuestion->attributes['type'], 'question'=>$oQuestion->attributes['question']);
-				}
-				return $aData;
-			}
-			else
-				return array('status' => 'No permission');
-        }
-        else
-			return array('status' => 'Invalid session key');
-	}
+    
 
 	/* Participant-Token specific functions */
 
@@ -1711,7 +1559,7 @@ class remotecontrol_handle
 			foreach ($aParticipantData as &$aParticipant)
             {
                 $token = new Token('insert', $iSurveyID);
-                $token->setAttributes(array_intersect_key($aParticipant,$aDestinationFields), false);
+                $token->setAttributes(array_intersect_key($aParticipant,$aDestinationFields));
 				if  ($bCreateToken)
 				{
 					$token->generateToken();
@@ -1880,6 +1728,41 @@ class remotecontrol_handle
 	}
 
 
+	/**
+      * RPC Routine to return the ids and info of groups belonging to survey .
+      * Returns array of ids and info.
+      *
+      * @access public
+      * @param string $sSessionKey Auth credentials
+      * @param int $iSurveyID Id of the Survey containing the groups
+      * @return array The list of groups
+      */
+	public function list_groups($sSessionKey, $iSurveyID)
+	{
+       if ($this->_checkSessionKey($sSessionKey))
+       {
+			$oSurvey = Survey::model()->findByPk($iSurveyID);
+			if (!isset($oSurvey))
+				return array('status' => 'Error: Invalid survey ID');
+
+			if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read'))
+			{
+				$oGroupList = QuestionGroup::model()->findAllByAttributes(array("sid"=>$iSurveyID));
+				if(count($oGroupList)==0)
+					return array('status' => 'No groups found');
+
+				foreach ($oGroupList as $oGroup)
+				{
+					$aData[]= array('id'=>$oGroup->primaryKey,'group_name'=>$oGroup->attributes['group_name']);
+				}
+				return $aData;
+			}
+			else
+				return array('status' => 'No permission');
+        }
+        else
+            return array('status' => 'Invalid Session Key');
+	}
 
    /**
     * RPC Routine to return the ids and info  of token/participants of a survey.
@@ -1933,6 +1816,122 @@ class remotecontrol_handle
         }
         else
             return array('status' => 'Invalid Session Key');
+	}
+
+	/**
+     * RPC Routine to return the ids and info of questions of a survey/group.
+     * Returns array of ids and info.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the survey to list questions
+     * @param int $iGroupID Optional id of the group to list questions
+     * @param string $sLanguage Optional parameter language for multilingual questions
+     * @return array The list of questions
+     */
+	public function list_questions($sSessionKey, $iSurveyID, $iGroupID=NULL, $sLanguage=NULL)
+	{
+       if ($this->_checkSessionKey($sSessionKey))
+       {
+			Yii::app()->loadHelper("surveytranslator");
+			$oSurvey = Survey::model()->findByPk($iSurveyID);
+			if (!isset($oSurvey))
+				return array('status' => 'Error: Invalid survey ID');
+
+			if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read'))
+			{
+				if (is_null($sLanguage))
+					$sLanguage=$oSurvey->language;
+
+				if (!array_key_exists($sLanguage,getLanguageDataRestricted()))
+					return array('status' => 'Error: Invalid language');
+
+				if($iGroupID!=NULL)
+				{
+					$oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+					$sGroupSurveyID = $oGroup['sid'];
+
+					if($sGroupSurveyID != $iSurveyID)
+						return array('status' => 'Error: IMissmatch in surveyid and groupid');
+					else
+						$aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$iGroupID,"parent_qid"=>"0","language"=>$sLanguage));
+				}
+				else
+					$aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID,"parent_qid"=>"0", "language"=>$sLanguage));
+
+				if(count($aQuestionList)==0)
+					return array('status' => 'No questions found');
+
+				foreach ($aQuestionList as $oQuestion)
+				{
+					$aData[]= array('id'=>$oQuestion->primaryKey,'title'=>$oQuestion->attributes['title'],'type'=>$oQuestion->attributes['type'], 'question'=>$oQuestion->attributes['question']);
+				}
+				return $aData;
+			}
+			else
+				return array('status' => 'No permission');
+        }
+        else
+			return array('status' => 'Invalid session key');
+	}
+
+	/**
+     * RPC Routine to list the ids and info of surveys belonging to a user.
+     * Returns array of ids and info.
+     * If user is admin he can get surveys of every user (parameter sUser) or all surveys (sUser=null)
+     * Else only the syrveys belonging to the user requesting will be shown.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param string $sUser Optional username to get list of surveys
+     * @return array The list of surveys
+     */
+	public function list_surveys($sSessionKey, $sUser=NULL)
+	{
+       if ($this->_checkSessionKey($sSessionKey))
+       {
+		   $sCurrentUser =  Yii::app()->session['user'];
+
+		   if( Permission::model()->hasGlobalPermission('superadmin','read') )
+		   {
+				if ($sUser == null)
+					$aUserSurveys = Survey::model()->findAll(); //list all surveys
+				else
+				{
+				   $aUserData = User::model()->findByAttributes(array('users_name' => $sUser));
+				   if (!isset($aUserData))
+						return array('status' => 'Invalid user');
+					else
+						$aUserSurveys = Survey::model()->findAllByAttributes(array("owner_id"=>$aUserData->attributes['uid']));
+				}
+			}
+			else
+			{
+				if (($sCurrentUser == $sUser) || ($sUser == null) )
+				{
+					$sUid =  User::model()->findByAttributes(array('users_name' => $sCurrentUser))->uid;
+					$aUserSurveys = Survey::model()->findAllByAttributes(array("owner_id"=>$sUid));
+				}
+				else
+					return array('status' => 'No permission');
+			}
+
+		   if(count($aUserSurveys)==0)
+				return array('status' => 'No surveys found');
+
+			foreach ($aUserSurveys as $oSurvey)
+				{
+				$oSurveyLanguageSettings = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $oSurvey->primaryKey, 'surveyls_language' => $oSurvey->language));
+				if (!isset($oSurveyLanguageSettings))
+					$aSurveyTitle = '';
+				else
+					$aSurveyTitle = $oSurveyLanguageSettings->attributes['surveyls_title'];
+				$aData[]= array('sid'=>$oSurvey->primaryKey,'surveyls_title'=>$aSurveyTitle,'startdate'=>$oSurvey->attributes['startdate'],'expires'=>$oSurvey->attributes['expires'],'active'=>$oSurvey->attributes['active']);
+				}
+			return $aData;
+        }
+        else
+			return array('status' => 'Invalid session key');
 	}
 
     /**
