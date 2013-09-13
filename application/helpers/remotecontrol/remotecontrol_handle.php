@@ -1943,7 +1943,7 @@ class remotecontrol_handle
 
 	public function list_users($sSessionKey = null)
 	{
-	   if (true || $this->_checkSessionKey($sSessionKey))
+	   if ($this->_checkSessionKey($sSessionKey))
        {
 		   if( Permission::model()->hasGlobalPermission('superadmin','read') )
 		   {
