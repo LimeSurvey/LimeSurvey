@@ -44,10 +44,12 @@ $internalConfig = array(
             'enableCsrfValidation'=>true,    // CSRF protection
             'enableCookieValidation'=>false   // Enable to activate cookie protection
         ),
-
         'user' => array(
             'class' => 'LSWebUser',
         ),
+		'log' => array(
+			'class' => 'CLogRouter'
+		)
 	)
 );
 
