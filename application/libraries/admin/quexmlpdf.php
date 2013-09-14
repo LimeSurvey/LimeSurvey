@@ -239,6 +239,7 @@ class quexmlpdf extends pdf {
 				td.questionHelpAfter {text-align:center; font-weight:bold; font-size:10pt;}
 				td.questionHelpBefore {text-align:center; font-weight:bold; font-size:12pt;}
 				td.responseAboveText {font-weight:normal; font-style:normal; text-align:left; font-size:12pt;} 
+				td.matrixResponseGroupLabel {font-weight:normal; font-style:normal; text-align:left; font-size:12pt;}
 				span.sectionTitle {font-size:18pt; font-weight:bold;} 
 				span.sectionDescription {font-size:14pt; font-weight:bold;} 
 				div.sectionInfo {font-style:normal; font-size:10pt; text-align:left; font-weight:normal;}
@@ -1751,9 +1752,9 @@ class quexmlpdf extends pdf {
 					case 'currency':
 					case 'text':
 						if (isset($response['rotate']))
-							$this->drawMatrixTextHorizontal($subquestions,$response['width'],$text,$bgtype);
+							$this->drawMatrixTextHorizontal($subquestions,$response['width'],$text,$bgtype,$response['text']);
 						else
-							$this->drawMatrixTextVertical($subquestions,$response['width'],$text,$bgtype);
+							$this->drawMatrixTextVertical($subquestions,$response['width'],$text,$bgtype,$response['text']);
 						break;
 					case 'vas':
 						$this->drawMatrixVas($subquestions,$text,$response['labelleft'],$response['labelright']);
@@ -1846,9 +1847,18 @@ class quexmlpdf extends pdf {
 	 * @author Adam Zammit <adam.zammit@acspri.org.au>
 	 * @since  2010-09-02
 	 */
-	protected function drawMatrixTextVertical($subquestions,$width,$parenttext = false,$bgtype = 3)
+	protected function drawMatrixTextVertical($subquestions,$width,$parenttext = false,$bgtype = 3, $responsegrouplabel = false)
 	{
 		$c = count($subquestions);
+		
+		//draw second axis label
+		if ($responsegrouplabel)
+		{
+			$this->setBackground('question');
+			$html = "<table><tr><td width=\"{$this->questionTitleWidth}mm\"></td><td width=\"" . ($this->getColumnWidth() -  $this->skipColumnWidth - $this->questionTitleWidth) . "mm\" class=\"matrixResponseGroupLabel\">$responsegrouplabel:</td><td></td></tr></table>";
+			$this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+		}
+		
 		for($i = 0; $i < $c; $i++)
 		{
 			$s = $subquestions[$i];
@@ -2229,7 +2239,7 @@ class quexmlpdf extends pdf {
 	 * @author Adam Zammit <adam.zammit@acspri.org.au>
 	 * @since  2010-09-08
 	 */
-	protected function drawMatrixTextHorizontal($subquestions,$width,$parenttext = false,$bgtype = 3)
+	protected function drawMatrixTextHorizontal($subquestions,$width,$parenttext = false,$bgtype = 3, $responsegrouplabel = false)
 	{
 		$total = count($subquestions);
 		$currentY = $this->GetY();
@@ -2247,7 +2257,8 @@ class quexmlpdf extends pdf {
 		$this->writeHTMLCell($this->getColumnWidth(), $this->singleResponseAreaHeight, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
 		$currentY = $this->GetY();
 
-		$html = "<table><tr><td width=\"{$textwidth}mm\" class=\"responseText\"></td><td></td></tr></table>";
+		//label "vertical axis"
+		$html = "<table><tr><td width=\"{$textwidth}mm\" class=\"matrixResponseGroupLabel\">$responsegrouplabel</td><td></td></tr></table>";
 		$this->writeHTMLCell($this->getColumnWidth(), $this->singleResponseAreaHeight, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
 
 		$ncurrentY = $this->GetY();
