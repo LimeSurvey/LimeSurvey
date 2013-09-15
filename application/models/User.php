@@ -285,4 +285,12 @@ class User extends LSActiveRecord
         $query2 = "SELECT b.uid FROM (SELECT uid FROM {{permissions}} WHERE sid = :surveyid) AS c RIGHT JOIN {{user_in_groups}} AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = :postugid";
         return Yii::app()->db->createCommand($query2)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->bindParam(":postugid", $postusergroupid, PDO::PARAM_INT)->query(); //Checked
     }
+
+
+	public function relations()
+	{
+		return array(
+			'permissions' => array(self::HAS_MANY, 'Permission', 'uid')
+		);
+	}
 }

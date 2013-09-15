@@ -1957,6 +1957,11 @@ class remotecontrol_handle
 				foreach ($users as $user)
 				{
 					$attributes = $user->attributes;
+
+					foreach ($user->permissions as $permission)
+					{
+						$attributes['permissions'][] = $permission->attributes;
+					}
 					unset($attributes['password']);
 					$data[] = $attributes;
 				}
