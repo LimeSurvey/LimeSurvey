@@ -61,6 +61,7 @@ class Participant extends LSActiveRecord
             array('owner_uid', 'numerical', 'integerOnly' => true),
             array('participant_id', 'length', 'max' => 50),
             array('firstname, lastname, language', 'length', 'max' => 40),
+            array('firstname, lastname, language', 'LSYii_Validators'),
             array('email', 'length', 'max' => 80),
             array('blacklisted', 'length', 'max' => 1),
             // The following rule is used by search().
@@ -133,13 +134,24 @@ class Participant extends LSActiveRecord
     /*
      * This function is responsible for adding the participant to the database
      * Parameters : participant data
-     * Return Data : none
+     * Return Data : true on success, false on failure
      */
-
-    function insertParticipant($data)
-    {
-        Yii::app()->db->createCommand()->insert('{{participants}}', $data);
-    }
+     function insertParticipant($aData)
+     {
+         $oParticipant = new self;
+         foreach ($aData as $sField => $sValue){
+             $oParticipant->$sField = $sValue;
+         }
+         try
+         {
+             $oParticipant->save();
+             return true;
+         }
+         catch(Exception $e)
+         {
+             return false;
+         }
+     }
     
     /**
      * Returns the primary key of this table
