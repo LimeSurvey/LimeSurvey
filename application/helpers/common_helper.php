@@ -2994,24 +2994,24 @@ function getQuestionAttributeValues($iQID)
 #        $type = $oQuestion->type;
 #        $surveyid = $oQuestion->type;
 #        $row = $oQuestion->getAttributes();
-    }
-    $type = $row['type'];
-    $surveyid = $row['sid'];
+#    }
+#    $type = $row['type'];
+#    $surveyid = $row['sid'];
 
 #    $aLanguages = array_merge((array)Survey::model()->findByPk($surveyid)->language, Survey::model()->findByPk($surveyid)->additionalLanguages);
 
     //Now read available attributes, make sure we do this only once per request to save
     //processing cycles and memory
-    if (is_null($availableattributesarr)) $availableattributesarr = questionAttributes();
-    if (isset($availableattributesarr[$type]))
-    {
-        $aAvailableAttributes = $availableattributesarr[$type];
-    }
-    else
-    {
-        $cache[$iQID] = array();
-        return array();
-    }
+#    if (is_null($availableattributesarr)) $availableattributesarr = questionAttributes();
+#    if (isset($availableattributesarr[$type]))
+#    {
+#        $aAvailableAttributes = $availableattributesarr[$type];
+#    }
+#    else
+#    {
+#        $cache[$iQID] = array();
+#        return array();
+#    }
 
 #    $aResultAttributes = array();
 #    foreach($aAvailableAttributes as $attribute){
