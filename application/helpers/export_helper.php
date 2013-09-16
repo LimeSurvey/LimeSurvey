@@ -1344,7 +1344,8 @@ function quexml_export($surveyi, $quexmllan)
                     $question->appendChild($response);
                     break;
                 case "S": //SHORT FREE TEXT
-                    $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","240"),""));
+                    // default is fieldlength of 25 characters.
+                    $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","25"),""));
                     $question->appendChild($response);
                     break;
                 case "T": //LONG FREE TEXT
@@ -1414,15 +1415,15 @@ function quexml_export($surveyi, $quexmllan)
                         quexml_create_multi($question,$qid,$sgq,1);
                     else
                     {
-                        //get multiflexible_max - if set then make boxes of max this width
-                        $mcm = strlen(quexml_get_lengthth($qid,'multiflexible_max',1));
+                        //get multiflexible_max and maximum_chars - if set then make boxes of max of these widths
+                        $mcm = max(quexml_get_lengthth($qid,'maximum_chars',1), strlen(quexml_get_lengthth($qid,'multiflexible_max',1)));
                         quexml_create_multi($question,$qid,$sgq,1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
                     }
                     break;
                 case ";": //multi-flexi array text
                     quexml_create_subQuestions($question,$qid,$sgq);
                     //foreach question where scale_id = 1 this is a textbox
-                    quexml_create_multi($question,$qid,$sgq,1,array('f' => 'text', 'len' => 10, 'lab' => ''));
+                    quexml_create_multi($question,$qid,$sgq,1,array('f' => 'text', 'len' => quexml_get_lengthth($qid,'maximum_chars',10), 'lab' => ''));
                     break;
                 case "^": //SLIDER CONTROL - not supported
                     $response->appendChild(QueXMLFixedArray(array("NOT SUPPORTED:$type" => 1)));
