@@ -13,7 +13,8 @@
 
 		public function __construct($scenario = 'insert') {
 			parent::__construct($scenario);
-			$this->id = explode('_', get_class($this))[1];
+			$aTemp=explode('_', get_class($this));
+			$this->id = $aTemp[1];
 		}
 
 		public static function model($className = null) {
