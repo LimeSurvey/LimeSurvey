@@ -2995,11 +2995,13 @@ function getQuestionAttributeValues($iQID)
 #        $surveyid = $oQuestion->type;
 #        $row = $oQuestion->getAttributes();
 #    }
+#    $type = $row['type'];
+#    $surveyid = $row['sid'];
 
 #    $aLanguages = array_merge((array)Survey::model()->findByPk($surveyid)->language, Survey::model()->findByPk($surveyid)->additionalLanguages);
 
-#    //Now read available attributes, make sure we do this only once per request to save
-#    //processing cycles and memory
+    //Now read available attributes, make sure we do this only once per request to save
+    //processing cycles and memory
 #    if (is_null($availableattributesarr)) $availableattributesarr = questionAttributes();
 #    if (isset($availableattributesarr[$type]))
 #    {
@@ -5691,23 +5693,46 @@ function getUpdateInfo()
 */
 function updateCheck()
 {
-    $updateinfo=getUpdateInfo();
-    if (count($updateinfo) && trim(Yii::app()->getConfig('buildnumber'))!='')
+    $aUpdateVersions=getUpdateInfo();
+    if (count($aUpdateVersions) && trim(Yii::app()->getConfig('buildnumber'))!='')
     {
-        setGlobalSetting('updateversions',json_encode($updateinfo));
+        $sUpdateNotificationType = getGlobalSetting('updatenotification');
+        switch ($sUpdateNotificationType)
+        {
+            case 'stable':
+                // Only show update if in stable (master) branch
+                if (isset($aUpdateVersions['master'])) {
+                    $aUpdateVersion=$aUpdateVersions['master'];
+                    $aUpdateVersions=array_intersect_key($aUpdateVersions,array('master'=>'1'));
+                }
+                break;
+
+            case 'both':
+                // Show first available update
+                $aUpdateVersion=reset($aUpdateVersions);    
+                break;
+                
+            default:
+                // Never show a notification
+                $aUpdateVersions=array();
+                break;
+        }
     }
-    if (isset($updateinfo['Targetversion']['build']) && (int)$updateinfo['Targetversion']['build']>(int)Yii::app()->getConfig('buildnumber') && trim(Yii::app()->getConfig('buildnumber'))!='')
-    {
+    
+    setGlobalSetting('updateversions',json_encode($aUpdateVersions));
+    
+    
+    if (isset($aUpdateVersion)) {
         setGlobalSetting('updateavailable',1);
-        setGlobalSetting('updatebuild',$updateinfo['Targetversion']['build']);
-        setGlobalSetting('updateversion',$updateinfo['Targetversion']['versionnumber']);
+        setGlobalSetting('updatebuild',$aUpdateVersion['build']);
+        setGlobalSetting('updateversion',$aUpdateVersion['versionnumber']);
+    } else {
+        setGlobalSetting('updateavailable',0);    
+        $aUpdateVersions = array();
     }
-    else
-    {
-        setGlobalSetting('updateavailable',0);
-    }
+    
     setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
-    return $updateinfo;
+    return $aUpdateVersions;
 }
 
 /**
