@@ -407,7 +407,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $val_size = 1;
         $hide = 0;
         $export_scale = '';
-        $code='';
+        $code='';           
         $scale_id = null;
         $aQuestionAttribs=array();
 
@@ -1586,7 +1586,6 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     questionGetXMLStructure($xml,$gid,$qid);
     $xml->endElement(); // close columns
     $xml->endDocument();
-    exit;
 }
 
 function questionGetXMLStructure($xml,$gid,$qid)
