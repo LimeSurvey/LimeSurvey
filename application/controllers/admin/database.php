@@ -248,7 +248,7 @@ class database extends Survey_Common_Action
             $deletedqids=explode(' ', trim(Yii::app()->request->getPost('deletedqids')));
 
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
-
+            $deletedqids=array_unique($deletedqids,SORT_NUMERIC);
             foreach ($deletedqids as $deletedqid)
             {
                 $deletedqid=(int)$deletedqid;
@@ -876,6 +876,7 @@ class database extends Survey_Common_Action
                 {
                     Yii::app()->setFlashMessage($clang->gT("Question could not be updated"),'error');
                 }
+                                    Yii::app()->setFlashMessage($clang->gT("Question could not be updated"),'error');
             }
             LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
 
