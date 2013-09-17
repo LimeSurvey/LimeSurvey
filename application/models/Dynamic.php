@@ -10,7 +10,8 @@
 
 		public function __construct($scenario = 'insert') {
 			parent::__construct($scenario);
-			$this->id = explode('_', get_class($this))[1];
+			list(,$this->id)=explode('_', get_class($this));
+			//$this->id = explode('_', get_class($this))[1];
 		}
 
 		/**

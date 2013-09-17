@@ -195,7 +195,7 @@ class database extends Survey_Common_Action
                         'scale_id'=>$scale_id));
                         if (!$result) // Checked
                         {
-                            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")."\")\n //-->\n</script>\n";
+                            Yii::app()->setFlashMessage($clang->gT("Failed to update answers"),'error');
                         }
                     } // foreach ($alllanguages as $language)
 
@@ -208,11 +208,11 @@ class database extends Survey_Common_Action
 
             LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
 
-            if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer with a code of 0 (zero) or blank code are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
-            if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
+            if ($invalidCode == 1) Yii::app()->setFlashMessage($clang->gT("Answer with a code of 0 (zero) or blank code are not allowed, and will not be saved"),'error');
+            if ($duplicateCode == 1) Yii::app()->setFlashMessage($clang->gT("Duplicate codes found, these entries won't be updated"),'error');
             if (!Yii::app()->request->getPost('bFullPOST'))
             {
-                Yii::app()->session['flashmessage'] = $clang->gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
+                Yii::app()->setFlashMessage($clang->gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."));
             }
             else
             {
@@ -257,7 +257,7 @@ class database extends Survey_Common_Action
                     $result = Question::model()->deleteAllByAttributes(array('qid'=>$deletedqid));
                     if (!$result)
                     {
-                        $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." \")\n //-->\n</script>\n";
+                        Yii::app()->setFlashMessage($clang->gT("Failed to delete answer"),'error');
                     }
                 }
             }
@@ -370,9 +370,7 @@ class database extends Survey_Common_Action
             $baselang = Survey::model()->findByPk($surveyid)->language;
             if (strlen(Yii::app()->request->getPost('title')) < 1)
             {
-                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n "
-                ."alert(\"".$clang->gT("The question could not be added. You must enter at least a question code.","js")."\")\n "
-                ."//-->\n</script>\n";
+                Yii::app()->setFlashMessage($clang->gT("The question could not be added. You must enter at least a question code."),'error');
             }
             else
             {
@@ -449,7 +447,7 @@ class database extends Survey_Common_Action
                             // Checked */
                             if (!$langqid)
                             {
-                                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".sprintf($clang->gT("Question in language %s could not be created.","js"),$alang)."\\n\")\n //-->\n</script>\n";
+                                Yii::app()->setFlashMessage($clang->gT("Question in language %s could not be created."),'error');
                             }
                         }
                     }
@@ -458,7 +456,7 @@ class database extends Survey_Common_Action
 
                 if (!$qid)
                 {
-                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n\")\n //-->\n</script>\n";
+                    Yii::app()->setFlashMessage($clang->gT("Question could not be created."),'error');
 
                 } else {
                     if ($action == 'copyquestion') {
@@ -729,7 +727,7 @@ class database extends Survey_Common_Action
             }
             if (isset($cccount) && $cccount)
             {
-                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.","js")." ($qidlist)\")\n //-->\n</script>\n";
+                Yii::app()->setFlashMessage($clang->gT("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions  before you can change the type of this question."),'error');
             }
             else
             {
@@ -812,7 +810,7 @@ class database extends Survey_Common_Action
                             $uqresult = $question->save();//($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
                             if (!$uqresult)
                             {
-                                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n\")\n //-->\n</script>\n";
+                                Yii::app()->setFlashMessage($clang->gT("Question could not be updated."),'error');
                             }
                         }
                     }
@@ -876,7 +874,7 @@ class database extends Survey_Common_Action
                 }
                 else
                 {
-                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\")\n //-->\n</script>\n";
+                    Yii::app()->setFlashMessage($clang->gT("Question could not be updated"),'error');
                 }
             }
             LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
