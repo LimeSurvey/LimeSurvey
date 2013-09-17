@@ -542,7 +542,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     global $thissurvey;
 
     $clang = Yii::app()->lang;
-    header_includes(Yii::app()->getConfig("generalscripts").'coookies.js', 'js');
+    header_includes('coookies.js', 'js');
 
     /* The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
     This just stops error messages occuring */
@@ -1081,7 +1081,7 @@ function do_date($ia)
 {
     global $thissurvey;
 
-    header_includes(Yii::app()->getConfig("generalscripts").'date.js', 'js');
+    header_includes('date.js', 'js');
 
 
     $clang=Yii::app()->lang;
@@ -1303,7 +1303,7 @@ function do_date($ia)
     {
         if ($clang->langcode !== 'en')
         {
-            header_includes(Yii::app()->getConfig("generalscripts").'jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js');
+            header_includes('jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js');
         }
 
         // Format the date  for output
@@ -2849,7 +2849,7 @@ function do_file_upload($ia)
         var imageurl =  '".Yii::app()->getConfig('imageurl')."';
         var uploadurl =  '".$scriptloc."';
     </script>\n";
-    header_includes(Yii::app()->getConfig('generalscripts')."modaldialog.js");
+    header_includes("modaldialog.js");
 
     // Modal dialog
     $answer .= $uploadbutton;
@@ -3249,7 +3249,7 @@ function do_multiplenumeric($ia)
     }
     if ($aQuestionAttributes['slider_layout']==1)
     {
-        header_includes( Yii::app()->getConfig("generalscripts").'jquery/lime-slider.js');
+        header_includes( 'jquery/lime-slider.js');
         $slider_layout=true;
         $extraclass .=" withslider";
         if (trim($aQuestionAttributes['slider_accuracy'])!='')

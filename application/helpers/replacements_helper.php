@@ -151,9 +151,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $template_jqueryui_css="";
         }
         if($css_header_includes){
-                        foreach ($css_header_includes as $cssinclude)
+            foreach ($css_header_includes as $cssinclude)
             {
-                if (substr($cssinclude,0,4) == 'http' || substr($cssinclude,0,strlen(Yii::app()->getConfig('publicurl'))) == Yii::app()->getConfig('publicurl'))
+                if (substr($cssinclude,0,4) == 'http' || substr($cssinclude,0,1) == '/' || substr($cssinclude,0,strlen(Yii::app()->getConfig('publicurl'))) == Yii::app()->getConfig('publicurl'))
                 {
                     $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".$cssinclude."' />\n";
                 }
@@ -187,7 +187,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         if($js_header_includes){
             foreach ($js_header_includes as $jsinclude)
             {
-                if (substr($jsinclude,0,4) == 'http' || substr($jsinclude,0,strlen(Yii::app()->getConfig('publicurl'))) == Yii::app()->getConfig('publicurl'))
+                if (substr($jsinclude,0,4) == 'http' || substr($jsinclude,0,2) == '/' || substr($jsinclude,0,strlen(Yii::app()->getConfig('publicurl'))) == Yii::app()->getConfig('publicurl'))
                 {
                     $_templatejs .= "<script type='text/javascript' src='{$jsinclude}'></script>\n";
                 }
