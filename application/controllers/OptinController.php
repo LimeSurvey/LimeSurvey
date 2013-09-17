@@ -64,8 +64,7 @@ class OptinController extends LSYii_Controller {
         }
         else
         {
-			$tokenClass = "Token_$iSurveyID";
-            $tokenInstance = $tokenClass::model()->findByAttributes(array('token' => $token));
+			$tokenInstance = Token::model($iSurveyID)->findByAttributes(array('token' => $token));
 
             if (!isset($tokenInstance))
             {

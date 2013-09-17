@@ -5543,8 +5543,7 @@ function getAttributeValue($surveyid,$attrName,$token)
         return null;
     }
 
-	$tokenClass = "Token_$surveyid";
-    $token = $tokenClass::model()->findByAttributes(array("token"=>$token));
+	$token = Token::model($surveyid)->findByAttributes(array("token"=>$token));
 	return isset($token->$attrName) ? $token->$attrName : null;
 }
 

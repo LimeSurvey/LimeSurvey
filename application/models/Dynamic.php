@@ -1,81 +1,42 @@
 <?php
+	/**
+	 * This class implements the basis for dynamic models.
+	 * In this implementation class definitions are generated dynamically.
+	 * This class and its descendants should be declared abstract!
+	 */
+	abstract class Dynamic extends LSActiveRecord
+	{
+		protected $id;
 
-    /**
-     * Dynamic model usable for multiple tables.
-     */
-    class Dynamic extends CActiveRecord
-    {
-        private static $_models = array();
+		public function __construct($scenario = 'insert') {
+			parent::__construct($scenario);
+			$this->id = explode('_', get_class($this))[1];
+		}
 
-        private $_md;								// meta data
+		/**
+		 *
+		 * @param type $className
+		 * @return Dynamic2
+		 */
 
-        private $tableName;
-
-        /**
-         * @param string $scenario
-         * @param string $tableName
-         */
-        public function __construct($scenario = 'insert', $tableName = null)
-        {
-            if (!isset($tableName))
-            {
-                //Yii::trace('sTableName missing.');
-                throw new Exception('$tableName missing.');
-            }
-            $this->tableName = $tableName;
-            parent::__construct($scenario);
-        }
-
-
-        protected function instantiate($attributes)
-        {
-			$class = get_class($this);
-			$model = new $class(null, $this->tableName);
-            return $model;
-        }
-        /**
-         * We have a custom implementation here since the parents' implementation
-         * does not create a new model for each table name.
-         * @param type $className
-         * @return Plugin
-         */
-        public static function model($className = __CLASS__, $tableName = null)
-        {
-            if (isset($tableName))
-            {
-                if (!isset(self::$_models[$tableName]))
-                {
-                    $model = self::$_models[$tableName] = new $className(null, $tableName);
-                    $model->_md = new CActiveRecordMetaData($model);
-                    $model->attachBehaviors($model->behaviors());
-                }
-                return self::$_models[$tableName];
-            }
-			else
+		public static function model($className = null) {
+			if (!isset($className))
 			{
-				throw new Exception('$tableName missing.');
+				$className =  get_called_class();
 			}
-        }
+			elseif (is_numeric($className))
+			{
+				$className = get_called_class() . '_' . $className;
+			}
+			return parent::model($className);
+		}
 
-        /**
-         * Gets the tablename for the current model.
-         */
-        public function tableName() {
-            return $this->tableName;
-        }
+		public static function create($id, $scenario = 'insert')
+		{
+			$className = get_called_class() . '_' . $id;
+			return new $className($scenario);
+		}
 
-        /**
-         * Override
-         * @return CActiveRecordMetaData the meta for this AR class.
-         */
-        public function getMetaData()
-        {
-            if($this->_md!==null)
-                return $this->_md;
-            else
-                return $this->_md = self::model(get_class($this), $this->tableName)->_md;
-        }
-
-    }
+	}
 
 ?>

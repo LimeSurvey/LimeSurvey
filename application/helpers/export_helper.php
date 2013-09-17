@@ -1779,8 +1779,7 @@ function tokensExport($iSurveyID)
 
     if (Yii::app()->request->getPost('tokendeleteexported') && !empty($aExportedTokens))
     {
-		$tokenClass = "Token_$iSurveyID";
-        $tokenClass::model()->deleteByPk($aExportedTokens);
+		Token::model($iSurveyID)->deleteByPk($aExportedTokens);
     }
 }
 

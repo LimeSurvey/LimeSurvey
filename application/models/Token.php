@@ -1,19 +1,56 @@
 <?php
-/**
- * 
- * For code completion we add the available scenario's here
- * 
- * @method Tokenincomplete() incomplete() Select only uncompleted tokens
- * @method Token usable() usable() Select usable tokens: valid daterange and userleft > 0
- * @property Survey $survey The survey this token belongs to.
- */
-	class Token extends Dynamic
+	/**
+	 *
+	 * For code completion we add the available scenario's here
+	 * Attributes
+	 * @property int      $tid
+	 * @property string   $firstname
+	 * @property string   $lastname
+	 * @property string   $email
+	 * @property string   $emailstatus
+	 * @property string   $token
+	 * @property string   $language
+	 * @property string   $blacklisted
+	 * @property string   $sent
+	 * @property string   $remindersent
+	 * @property int      $remindercount
+	 * @property string   $completed
+	 * @property int      $usesleft
+	 * @property DateTime $validfrom
+	 * @property DateTime $validuntil
+	 * @property int      $mpid
+	 *
+	 * Relations
+	 * @property Survey $survey The survey this token belongs to.
+	 *
+	 * Scopes
+	 * @method Token incomplete() incomplete() Select only uncompleted tokens
+	 * @method Token usable() usable() Select usable tokens: valid daterange and userleft > 0
+	 *
+	 */
+	abstract class Token extends Dynamic
 	{
-		public function __construct($scenario = 'insert', $surveyId = null)
-		{
-			parent::__construct($scenario, $surveyId);
+
+		public function beforeDelete() {
+			$result = parent::beforeDelete();
+			if ($result && isset($this->surveylink))
+			{
+				if (!$this->surveylink->delete())
+				{
+					throw new CException('Could not delete survey link. Token was not deleted.');
+				}
+				return true;
+			}
+			return $result;
 		}
 
+		public function findByToken($token)
+		{
+			return $this->findByAttributes(array(
+				'token' => $token
+			));
+		}
+		
 		public function generateToken()
 		{
 			$length = $this->survey->tokenlength;
@@ -32,39 +69,40 @@
 			}
 		}
 
-		public function getSurvey()
-		{
-			$survey = Survey::model()->findByPk(parent::tableName());
-			if (isset($survey))
-			{
-				return $survey;
-			}
-			else
-			{
-				throw new CHttpException(500, 'Could not find survey ' . parent::tableName());
-			}
-		}
 		/**
-		 * The model factory. Standard argument $className is not used but I kept
-		 * it to keep it compatible with the normal signature.
-		 * @param type $className
-		 * @param int $surveyId SurveyId must be passed otherwise an exception will be thrown.
+		 *
+		 * @param mixed $className Either the classname or the survey id.
 		 * @return Token
-		 * @throws Exception
 		 */
-		public static function model($className = null, $surveyId = null)
+		public static function model($className = null) {
+			return parent::model($className);
+		}
+
+		/**
+		 * 
+		 * @param int $surveyId
+		 * @param string $scenario
+		 * @return Token Description
+		 */
+		public static function create($surveyId, $scenario = 'insert') {
+			return parent::create($surveyId, $scenario);
+		}
+		public function relations()
 		{
-			if (!is_numeric($surveyId))
-			{
-				throw new Exception('SurveyID must be numeric.');
-			}
-			return parent::model(get_class(), $surveyId);
+			$result = array(
+				'responses' => array(self::HAS_MANY, 'Response_' . $this->id, array('token' => 'token')),
+				'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->id}"),
+				'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->id}")
+			);
+			return $result;
 		}
 
 		public function rules()
 		{
+			
 			return array(
-				array('token', 'unique', 'allowEmpty' => true)
+				array('token', 'unique', 'allowEmpty' => true),
+				array(implode(',', $this->tableSchema->columnNames), 'safe')
 			);
 		}
 
@@ -93,9 +131,9 @@
 			return $command->queryRow();
 		}
 
-		public function tableName() {
-			$tableName = parent::tableName();
-			return "{{tokens_{$tableName}}}";
+		public function tableName()
+		{
+			return '{{tokens_' . $this->id . '}}';
 		}
 
 	}

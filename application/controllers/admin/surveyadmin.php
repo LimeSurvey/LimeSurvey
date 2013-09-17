@@ -676,8 +676,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']);
                 if (tableExists('tokens_' . $rows['sid'] ))
                 {
-					$tokenClass = "Token_{$rows['sid']}";
-					$summary = $tokenClass::model()->summary();
+					$summary = Token::model($rows['sid'])->summary();
                     $tokens = $summary['count'];
                     $tokenscompleted = $summary['completed'];
 

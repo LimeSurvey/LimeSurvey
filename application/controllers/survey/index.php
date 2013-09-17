@@ -458,15 +458,14 @@ class index extends CAction {
         // bypass only this check at first page (Step=0) because
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
-		$tokenClass = "Token_$surveyid";
-        if ($tokensexist == 1 && isset($token) && $token &&
+		if ($tokensexist == 1 && isset($token) && $token &&
         isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
             // check also if it is allowed to change survey after completion
 			if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-				$tokenInstance = $tokenClass::model()->findByAttributes(array('token' => $token));
+				$tokenInstance = Token::model($surveyid)->findByAttributes(array('token' => $token));
             } else {
-				$tokenInstance = $tokenClass::model()->usable()->incomplete()->findByAttributes(array('token' => $token));
+				$tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
             }
 
 			if (!isset($tokenInstance) && !$previewmode)
@@ -491,9 +490,9 @@ class index extends CAction {
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-				$tokenInstance = $tokenClass::model()->usable()->findByAttributes(array('token' => $token));
+				$tokenInstance = Token::model($surveyid)->usable()->findByAttributes(array('token' => $token));
             } else {
-				$tokenInstance = $tokenClass::model()->usable()->incomplete()->findByAttributes(array('token' => $token));
+				$tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
 
             }
             if (!isset($tokenInstance))

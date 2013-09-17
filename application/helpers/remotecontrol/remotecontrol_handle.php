@@ -529,8 +529,7 @@ class remotecontrol_handle
 				{
 					if (tableExists('{{tokens_' . $iSurveyID . '}}'))
 					{
-						$tokenClass = "Token_$iSurveyID";
-						$summary = $tokenClass::model()->summary();
+						$summary = Token::model($iSurveyID)->summary();
 					}
 					else
 						return array('status' => 'No available data');
@@ -1557,11 +1556,10 @@ class remotecontrol_handle
         {
             if (!Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}'))
                 return array('status' => 'No token table');
-			$tokenClass = "Token_$iSurveyID";
-			$aDestinationFields = array_flip($tokenClass::model()->getMetaData()->tableSchema->columnNames);
+			$aDestinationFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
 			foreach ($aParticipantData as &$aParticipant)
             {
-                $token = new $tokenClass('insert');
+                $token = Token::create($iSurveyID);
                 $token->setAttributes(array_intersect_key($aParticipant,$aDestinationFields));
 				if  ($bCreateToken)
 				{
@@ -1608,10 +1606,9 @@ class remotecontrol_handle
 					return array('status' => 'Error: No token table');
 
 				$aResult=array();
-				$tokenClass = "Token_$iSurveyID";
 				foreach($aTokenIDs as $iTokenID)
 				{
-					$token = $tokenClass::model()->findByPk($iTokenID);
+					$token = Token::model($iSurveyID)->findByPk($iTokenID);
 					if (!isset($token))
 						$aResult[$iTokenID]='Invalid token ID';
 					elseif($token->delete())
@@ -1652,8 +1649,7 @@ class remotecontrol_handle
 				if(!tableExists("{{tokens_$iSurveyID}}"))
 					return array('status' => 'Error: No token table');
 
-				$tokenClass = "Token_$iSurveyID";
-				$token = $tokenClass::model()->findByPk($iTokenID);
+				$token = Token::model($iSurveyID)->findByPk($iTokenID);
 				if (!isset($token))
 					return array('status' => 'Error: Invalid tokenid');
 
@@ -1700,8 +1696,7 @@ class remotecontrol_handle
 				if(!tableExists("{{tokens_$iSurveyID}}"))
 					return array('status' => 'Error: No token table');
 
-				$tokenClass = "Token_$iSurveyID";
-				$oToken = $tokenClass::model()->findByPk($iTokenID);
+				$oToken = Token::model($iSurveyID)->findByPk($iTokenID);
 				if (!isset($oToken))
 					return array('status' => 'Error: Invalid tokenid');
 
@@ -1791,11 +1786,10 @@ class remotecontrol_handle
 				if(!tableExists("{{tokens_$iSurveyID}}"))
 					return array('status' => 'Error: No token table');
 
-				$tokenClass = "Token_$iSurveyID";
 				if($bUnused)
-					$oTokens = $tokenClass::model()->incomplete()->findAll(array('limit' => $iLimit, 'offset' => $iStart));
+					$oTokens = Token::model($iSurveyID)->incomplete()->findAll(array('limit' => $iLimit, 'offset' => $iStart));
 				else
-					$oTokens = $tokenClass::model()->findAll(array('limit' => $iLimit, 'offset' => $iStart));
+					$oTokens = Token::model($iSurveyID)->findAll(array('limit' => $iLimit, 'offset' => $iStart));
 
 				if(count($oTokens)==0)
 					return array('status' => 'No Tokens found');

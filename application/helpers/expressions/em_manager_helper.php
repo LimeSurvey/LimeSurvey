@@ -3460,8 +3460,7 @@
             if (isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
             {
                 //Gather survey data for tokenised surveys, for use in presenting questions
-				$tokenClass = "Token_$surveyid";
-                $_SESSION[$this->sessid]['thistoken'] = $tokenClass::model()->findByToken($_SESSION[$this->sessid]['token']);
+				$_SESSION[$this->sessid]['thistoken'] = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
                 $this->knownVars['TOKEN:TOKEN'] = array(
                     'code'=>$_SESSION[$this->sessid]['token'],
                     'jsName_on'=>'',

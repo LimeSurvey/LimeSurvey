@@ -4058,8 +4058,7 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
     }
 
     switchMSSQLIdentityInsert('tokens_'.$iSurveyID,true);
-	$tokenClass = "Token_$iSurveyID";
-    foreach ($xml->tokens->rows->row as $row)
+	foreach ($xml->tokens->rows->row as $row)
     {
         $insertdata=array();
 
@@ -4068,7 +4067,7 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
             $insertdata[(string)$key]=(string)$value;
         }
 
-		$token = new $tokenClass();
+		$token = Token::create($iSurveyID);
 		$token->setAttributes($insertdata, false);
         $result = $token->save() or safeDie($clang->gT("Error").": " . print_r($token->errors, true));
 
