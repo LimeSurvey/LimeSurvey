@@ -846,43 +846,6 @@ EOD;
 
 }
 
-/**
-* insertAnsReplace() takes a string and looks for any {INSERTANS:xxxx} variables
-*  which it then, one by one, substitutes the SGQA code with the relevant answer
-*  from the session array containing responses
-*
-*  The operations of this function were previously in the templatereplace function
-*  but have been moved to a function of their own to make it available
-*  to other areas of the script.
-*
-* @param mixed $line   string - the string to iterate, and then return
-*
-* @return string This string is returned containing the substituted responses
-*
-*/
-function insertansReplace($line)
-{
-    return $line;
-}
-
-/**
-* tokenReplace() takes a string and looks for any {TOKEN:xxxx} variables
-*  which it then, one by one, substitutes the TOKEN code with the relevant token
-*  from the session array containing token information
-*
-*  The operations of this function were previously in the templatereplace function
-*  but have been moved to a function of their own to make it available
-*  to other areas of the script.
-*
-* @param mixed $line   string - the string to iterate, and then return
-*
-* @return string This string is returned containing the substituted responses
-*
-*/
-function tokenReplace($line)
-{
-    return $line;
-}
 
 // This function replaces field names in a text with the related values
 // (e.g. for email and template functions)
@@ -940,12 +903,6 @@ function PassthruReplace($line, $thissurvey)
     }
 
     return $line;
-}
-
-function dTexts__run($text,$questionNum=NULL)
-{
-    //    return LimeExpressionManager::ProcessString($text,$questionNum,NULL,true);
-    return $text;
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
