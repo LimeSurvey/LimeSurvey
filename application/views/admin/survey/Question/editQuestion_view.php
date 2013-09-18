@@ -227,11 +227,10 @@
                 </li>
                 <li>
                     <label for='relevance'><?php $clang->eT("Relevance equation:"); ?></label>
-                    <textarea cols='50' rows='1' id='relevance' name='relevance' 
-                    <?php if($eqrow['conditions_number']){ ?> 
-                    readonly='readonly' title='<?php $clang->eT("This question has one or more conditions. Delete them before edit the equation relevance."); ?>' 
-                    <?php } ?>
-                    ><?php echo $eqrow['relevance']; ?></textarea>
+                    <textarea cols='50' rows='1' id='relevance' name='relevance' <?php if ($eqrow['conditions_number']) {?> readonly='readonly'<?php } ?>><?php echo $eqrow['relevance']; ?></textarea>
+                     <?php if ($eqrow['conditions_number']) {?>
+                        <span class='annotation'> <?php $clang->eT("Note: You can't edit the relevance equation because there are currently conditions set for this question."); ?></span>
+                     <?php } ?>
                 </li>
 
                 <li id='Validation'>
