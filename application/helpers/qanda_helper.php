@@ -4317,7 +4317,7 @@ function do_array_5point($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
 
-        $answertext = dTexts__run($ansrow['question']);
+        $answertext = $ansrow['question'];
         if (strpos($answertext,'|')) {$answertext=substr($answertext,0,strpos($answertext,'|'));}
 
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
@@ -4352,7 +4352,7 @@ function do_array_5point($ia)
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
         }
 
-        $answertext2 = dTexts__run($ansrow['question']);
+        $answertext2 = $ansrow['question'];
         if (strpos($answertext2,'|'))
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
@@ -4466,7 +4466,7 @@ function do_array_10point($ia)
     foreach ($aSubquestions as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
-        $answertext = dTexts__run($ansrow['question']);
+        $answertext = $ansrow['question'];
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
         containing a list of unanswered questions, the current question must be in the array,
         and there must be no answer available for the item in this session. */
@@ -4597,7 +4597,7 @@ function do_array_yesnouncertain($ia)
         foreach($aSubquestions as $ansrow)
         {
             $myfname = $ia[1].$ansrow['title'];
-            $answertext = dTexts__run($ansrow['question']);
+            $answertext = $ansrow['question'];
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
             containing a list of unanswered questions, the current question must be in the array,
             and there must be no answer available for the item in this session. */
@@ -4749,7 +4749,7 @@ function do_array_increasesamedecrease($ia)
     foreach($aSubquestions as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
-        $answertext = dTexts__run($ansrow['question']);
+        $answertext = $ansrow['question'];
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
         containing a list of unanswered questions, the current question must be in the array,
         and there must be no answer available for the item in this session. */
@@ -4948,7 +4948,7 @@ function do_array($ia)
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
-            $answertext = dTexts__run($ansrow['question']);
+            $answertext = $ansrow['question'];
             $answertextsave=$answertext;
             if (strpos($answertext,'|'))
             {
@@ -5441,7 +5441,7 @@ function do_array_multitext($ia)
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
-            $answertext = dTexts__run($ansrow['question']);
+            $answertext = $ansrow['question'];
             $answertextsave=$answertext;
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
             containing a list of unanswered questions, the current question must be in the array,
@@ -5759,7 +5759,7 @@ function do_array_multiflexi($ia)
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
-            $answertext = dTexts__run($ansrow['question']);
+            $answertext = $ansrow['question'];
             $answertextsave=$answertext;
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
             containing a list of unanswered questions, the current question must be in the array,
@@ -5976,7 +5976,7 @@ function do_arraycolumns($ia)
             foreach ($aQuestions as $ansrow)
             {
                 $anscode[]=$ansrow['title'];
-                $answers[]=dTexts__run($ansrow['question']);
+                $answers[]=$ansrow['question'];
             }
             $trbc = '';
             $odd_even = '';
