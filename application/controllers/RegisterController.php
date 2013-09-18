@@ -191,7 +191,12 @@ class RegisterController extends LSYii_Controller {
         $fieldsarray["{FIRSTNAME}"]=$postfirstname;
         $fieldsarray["{LASTNAME}"]=$postlastname;
         $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+        $fieldsarray["{TOKEN}"]=$token->token;
+        $fieldsarray["{EMAIL}"]=$token->email;
 
+        $token=$token->token;
+        
+        
         $message=$thissurvey['email_register'];
         $subject=$thissurvey['email_register_subj'];
 

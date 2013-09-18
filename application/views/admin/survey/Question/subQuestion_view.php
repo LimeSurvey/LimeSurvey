@@ -1,7 +1,7 @@
 <script type='text/javascript'>
     var sLabelSetName='<?php $clang->eT('Label set name','js'); ?>';
     var languagecount=<?php echo count($anslangs); ?>;
-    var newansweroption_text='<?php $clang->eT('New answer option','js'); ?>';
+    var newansweroption_text='<?php $clang->eT('New subquestion','js'); ?>';
     var strcode='<?php $clang->eT('Code','js'); ?>';
     var strlabel='<?php $clang->eT('Label','js'); ?>';
     var strCantDeleteLastAnswer='<?php $clang->eT('You cannot delete the last subquestion.','js'); ?>';
@@ -122,7 +122,7 @@
                                             <?php } ?>
 
                                     </td><td>
-                                        <input type='text' size='100' class='answer' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+                                        <input type='text' size='100' class='answer' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' placeholder='<?php $clang->eT("Some example subquestion","js") ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
                                         <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".$clang->gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
                                     </td>
                                     <td>

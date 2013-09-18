@@ -478,7 +478,7 @@ class questions extends Survey_Common_Action
                 'gid' => $gid,
                 'parent_qid' => $qid,
                 'title' => 'SQ001',
-                'question' => $clang->gT('Some example subquestion'),
+                'question' => '',
                 'question_order' => 1,
                 'language' => $baselang,
                 'scale_id' => $iScale,
