@@ -787,6 +787,8 @@ class question extends Survey_Common_Action
                 $criteria->addCondition('language != :lang');
                 $aqresult = Questions::model()->findAll($criteria);
                 $aData['aqresult'] = $aqresult;
+                
+                $aData['bRelevanceReadOnly']= Questions::model()->hasConditions($aData['qid'])>0;
             }
 
             $aData['clang'] = $clang;
@@ -809,11 +811,6 @@ class question extends Survey_Common_Action
 
                 $aData['selectormodeclass'] = $selectormodeclass;
             }
-
-            if (!$adding)
-                $qattributes = questionAttributes();
-            else
-                $qattributes = array();
 
             if ($adding)
             {

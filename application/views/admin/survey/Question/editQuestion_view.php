@@ -191,7 +191,10 @@
                 </li>
                 <li>
                     <label for='relevance'><?php $clang->eT("Relevance equation:"); ?></label>
-                    <textarea cols='50' rows='1' id='relevance' name='relevance'><?php echo $eqrow['relevance']; ?></textarea>
+                    <textarea cols='50' rows='1' id='relevance' name='relevance' <?php if (isset($bRelevanceReadOnly) && $bRelevanceReadOnly) {?> readonly='readonly'<?php } ?>><?php echo $eqrow['relevance']; ?></textarea>
+                     <?php if (isset($bRelevanceReadOnly) && $bRelevanceReadOnly) {?>
+                        <span class='annotation'> <?php $clang->eT("Note: You can't edit the relevance equation because there are currently conditions set for this question."); ?></span>
+                     <?php } ?>
                 </li>
 
                 <li id='Validation'>

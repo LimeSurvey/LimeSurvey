@@ -394,6 +394,7 @@ textarea {
 .annotation {
     font-size: 10px;
     color: #FF9D00;
+    vertical-align: top;    
 }
 
 .errortitle {

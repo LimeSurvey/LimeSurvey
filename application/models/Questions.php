@@ -331,6 +331,11 @@
                                                         ->bindParam(":language2", $language, PDO::PARAM_STR)
                                                         ->bindParam(":sid", $surveyid, PDO::PARAM_INT)->queryAll();
         }
+        
+        public function hasConditions($iQuestionID)
+        {
+            return self::model()->count('qid = '.$iQuestionID);  
+        }
 
     }
 
