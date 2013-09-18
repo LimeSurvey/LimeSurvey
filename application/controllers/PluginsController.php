@@ -29,7 +29,6 @@
             
             // Scan the plugins folder.
             $discoveredPlugins = $pluginManager->scanPlugins();
-            
             $installedPlugins = $pluginManager->getInstalledPlugins();
             $installedNames = array_map(function ($installedPlugin) { return $installedPlugin->name; }, $installedPlugins);
 
@@ -51,11 +50,13 @@
             {
                 /* @var $plugin Plugin */
                 if (array_key_exists($plugin->name, $discoveredPlugins)) {
+                    $pluginSettings = App()->getPluginManager()->loadPlugin($plugin->name, $plugin->id)->getPluginSettings(false);
                     $data[] = array(
                         'id' => $plugin->id,
                         'name' => $discoveredPlugins[$plugin->name]['pluginName'],
                         'description' => $discoveredPlugins[$plugin->name]['description'],
                         'active' => $plugin->active,
+                        'settings'=>$pluginSettings,
                         'new' => !in_array($plugin->name, $installedNames)
                     );
                 } else {
@@ -134,7 +135,7 @@
 				}
 				$pluginObject->saveSettings($save);
 				Yii::app()->user->setFlash('pluginmanager', 'Settings saved');
-             }                
+             }
              
              $settings =  $pluginObject->getPluginSettings();
              if (empty($settings)) {
