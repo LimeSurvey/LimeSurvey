@@ -6,6 +6,9 @@
 	 */
 	abstract class Dynamic extends LSActiveRecord
 	{
+		/**
+		 * @var int The dynamic part of the class name.
+		 */
 		protected $id;
 
 		public function __construct($scenario = 'insert') {

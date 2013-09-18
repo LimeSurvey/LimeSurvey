@@ -15,6 +15,7 @@
         {
             $rules = array(
                 array('allow', 'roles' => array('administrator')),
+				array('allow', 'actions' => array('direct')),
                 array('deny')
             );
 
@@ -112,6 +113,28 @@
             $this->redirect(array('plugins/'));
         }
 
+		public function actionDirect($plugin, $function)
+		{
+			$event = new PluginEvent('newDirectRequest');
+			// The intended target of the call.
+			$event->set('target', $plugin);
+			// The name of the function.
+			$event->set('function', $function);
+			$event->set('request', App()->request);
+
+			App()->getPluginManager()->dispatchEvent($event);
+			
+			$out = '';
+			foreach($event->getAllContent() as $content)
+			{
+				$out .= $content->getContent();
+			}
+
+			if (!empty($out))
+			{
+				$this->renderText($out);
+			}
+		}
          public function actionConfigure($id)
          {
              $plugin = Plugin::model()->findByPk($id)->attributes;

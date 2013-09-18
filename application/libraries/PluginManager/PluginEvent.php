@@ -105,7 +105,7 @@ class PluginEvent
     /**
      * Return an array of pluginname / PluginEventContent but only when it has content
      * 
-     * @return array PluginEventContent
+     * @return PluginEventContent[]
      */
     public function getAllContent()
     {
