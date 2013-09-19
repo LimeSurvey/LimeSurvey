@@ -481,8 +481,10 @@ class database extends Survey_Common_Action
                                     unset($qr1['qid']);
                                 }
                                 $qr1['gid'] = $postgid;
+                                if (isset($qr1['qid'])) switchMSSQLIdentityInsert('questions',true);
                                 $iInsertID = Questions::model()->insertRecords($qr1);
-                                if (!isset($qr1['qid']))
+                                if (isset($qr1['qid'])) switchMSSQLIdentityInsert('questions',false);
+                                else
                                 {
                                     $aSQIDMappings[$oldqid] = $iInsertID;
                                 }
