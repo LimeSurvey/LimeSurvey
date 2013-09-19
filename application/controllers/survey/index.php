@@ -606,7 +606,7 @@ class index extends CAction {
             $aRow = Yii::app()->db->createCommand($sQuery)->bindValues(array(':token' => $token))->queryRow();
             if ( $aRow )
             {
-                if(($aRow['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($aRow['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
+                if(($aRow['submitdate']==''|| $thissurvey['alloweditaftercompletion'] == 'Y') && $thissurvey['tokenanswerspersistence'] == 'Y')
                 {
                     $_SESSION['survey_'.$surveyid]['srid'] = $aRow['id'];
                     if (!is_null($aRow['lastpage']) && $aRow['submitdate']=='')
