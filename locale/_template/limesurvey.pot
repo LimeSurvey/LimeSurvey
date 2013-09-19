@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-09-18 22:05:38+00:00\n"
+"POT-Creation-Date: 2013-09-19 22:05:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1628,40 +1628,40 @@ msgstr ""
 msgid "Question could not be created."
 msgstr ""
 
-#: application/controllers/admin/database.php:585
+#: application/controllers/admin/database.php:587
 msgid "Question was successfully added."
 msgstr ""
 
-#: application/controllers/admin/database.php:732
+#: application/controllers/admin/database.php:734
 #: application/views/admin/database/database_view.php:52
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr ""
 
-#: application/controllers/admin/database.php:815
-#: application/controllers/admin/database.php:879
+#: application/controllers/admin/database.php:817
+#: application/controllers/admin/database.php:881
 #: application/views/admin/database/database_view.php:4
 #: application/views/admin/database/database_view.php:58
 #: application/views/admin/database/database_view.php:71
 msgid "Question could not be updated"
 msgstr ""
 
-#: application/controllers/admin/database.php:842
+#: application/controllers/admin/database.php:844
 msgid "Question was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:947
+#: application/controllers/admin/database.php:949
 msgid "Survey text elements successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:1118
+#: application/controllers/admin/database.php:1120
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:1122
+#: application/controllers/admin/database.php:1124
 msgid "Error:"
 msgstr ""
 
-#: application/controllers/admin/database.php:1122
+#: application/controllers/admin/database.php:1124
 msgid "Survey could not be updated."
 msgstr ""
 
