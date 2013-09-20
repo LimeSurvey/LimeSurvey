@@ -153,84 +153,84 @@ class ExpressionManager {
         // If the value is -1, the function must have a least one argument but can have an unlimited number of them
         // -2 means that at least one argument is required.  -3 means at least two arguments are required, etc.
         $this->RDP_ValidFunctions = array(
-'abs' => array('abs', 'Math.abs', $this->gT('Absolute value'), 'number abs(number)', 'http://www.php.net/manual/en/function.checkdate.php', 1),
-'acos' => array('acos', 'Math.acos', $this->gT('Arc cosine'), 'number acos(number)', 'http://www.php.net/manual/en/function.acos.php', 1),
-'addslashes' => array('addslashes', $this->gT('addslashes'), 'Quote string with slashes', 'string addslashes(string)', 'http://www.php.net/manual/en/function.addslashes.php', 1),
-'asin' => array('asin', 'Math.asin', $this->gT('Arc sine'), 'number asin(number)', 'http://www.php.net/manual/en/function.asin.php', 1),
-'atan' => array('atan', 'Math.atan', $this->gT('Arc tangent'), 'number atan(number)', 'http://www.php.net/manual/en/function.atan.php', 1),
-'atan2' => array('atan2', 'Math.atan2', $this->gT('Arc tangent of two variables'), 'number atan2(number, number)', 'http://www.php.net/manual/en/function.atan2.php', 2),
-'ceil' => array('ceil', 'Math.ceil', $this->gT('Round fractions up'), 'number ceil(number)', 'http://www.php.net/manual/en/function.ceil.php', 1),
-'checkdate' => array('checkdate', 'checkdate', $this->gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://www.php.net/manual/en/function.checkdate.php', 3),
-'cos' => array('cos', 'Math.cos', $this->gT('Cosine'), 'number cos(number)', 'http://www.php.net/manual/en/function.cos.php', 1),
-'count' => array('exprmgr_count', 'LEMcount', $this->gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
-'countif' => array('exprmgr_countif', 'LEMcountif', $this->gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
-'countifop' => array('exprmgr_countifop', 'LEMcountifop', $this->gT('Count the number of answered questions in the list which pass the critiera (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
-'date' => array('date', 'date', $this->gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.date.php', 1,2),
-'exp' => array('exp', 'Math.exp', $this->gT('Calculates the exponent of e'), 'number exp(number)', 'http://www.php.net/manual/en/function.exp.php', 1),
-'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', $this->gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
-'floor' => array('floor', 'Math.floor', $this->gT('Round fractions down'), 'number floor(number)', 'http://www.php.net/manual/en/function.floor.php', 1),
-'gmdate' => array('gmdate', 'gmdate', $this->gT('Format a GMT date/time'), 'string gmdate(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.gmdate.php', 1,2),
-'html_entity_decode' => array('html_entity_decode', 'html_entity_decode', $this->gT('Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)'), 'string html_entity_decode(string)', 'http://www.php.net/manual/en/function.html-entity-decode.php', 1),
-'htmlentities' => array('htmlentities', 'htmlentities', $this->gT('Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlentities(string)', 'http://www.php.net/manual/en/function.htmlentities.php', 1),
-'htmlspecialchars' => array('expr_mgr_htmlspecialchars', 'htmlspecialchars', $this->gT('Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars(string)', 'http://www.php.net/manual/en/function.htmlspecialchars.php', 1),
-'htmlspecialchars_decode' => array('expr_mgr_htmlspecialchars_decode', 'htmlspecialchars_decode', $this->gT('Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars_decode(string)', 'http://www.php.net/manual/en/function.htmlspecialchars-decode.php', 1),
-'idate' => array('idate', 'idate', $this->gT('Format a local time/date as integer'), 'string idate(string [, timestamp=time()])', 'http://www.php.net/manual/en/function.idate.php', 1,2),
-'if' => array('exprmgr_if', 'LEMif', $this->gT('Conditional processing'), 'if(test,result_if_true,result_if_false)', '', 3),
-'implode' => array('exprmgr_implode', 'LEMimplode', $this->gT('Join array elements with a string'), 'string implode(glue,arg1,arg2,...,argN)', 'http://www.php.net/manual/en/function.implode.php', -2),
-'intval' => array('intval', 'LEMintval', $this->gT('Get the integer value of a variable'), 'int intval(number [, base=10])', 'http://www.php.net/manual/en/function.intval.php', 1,2),
-'is_empty' => array('exprmgr_empty', 'LEMempty', $this->gT('Determine whether a variable is considered to be empty'), 'bool is_empty(var)', 'http://www.php.net/manual/en/function.empty.php', 1),
-'is_float' => array('is_float', 'LEMis_float', $this->gT('Finds whether the type of a variable is float'), 'bool is_float(var)', 'http://www.php.net/manual/en/function.is-float.php', 1),
-'is_int' => array('exprmgr_int', 'LEMis_int', $this->gT('Find whether the type of a variable is integer'), 'bool is_int(var)', 'http://www.php.net/manual/en/function.is-int.php', 1),
-'is_nan' => array('is_nan', 'isNaN', $this->gT('Finds whether a value is not a number'), 'bool is_nan(var)', 'http://www.php.net/manual/en/function.is-nan.php', 1),
-'is_null' => array('is_null', 'LEMis_null', $this->gT('Finds whether a variable is NULL'), 'bool is_null(var)', 'http://www.php.net/manual/en/function.is-null.php', 1),
-'is_numeric' => array('is_numeric', 'LEMis_numeric', $this->gT('Finds whether a variable is a number or a numeric string'), 'bool is_numeric(var)', 'http://www.php.net/manual/en/function.is-numeric.php', 1),
-'is_string' => array('is_string', 'LEMis_string', $this->gT('Find whether the type of a variable is string'), 'bool is_string(var)', 'http://www.php.net/manual/en/function.is-string.php', 1),
-'join' => array('exprmgr_join', 'LEMjoin', $this->gT('Join strings, return joined string.This function is an alias of implode("",argN)'), 'string join(arg1,arg2,...,argN)', '', -1),
-'list' => array('exprmgr_list', 'LEMlist', $this->gT('Return comma-separated list of values'), 'string list(arg1, arg2, ... argN)', '', -2),
-'log' => array('exprmgr_log', 'LEMlog', $this->gT('The logarithm of number to base, if given, or the natural logarithm. '), 'number log(number,base=e)', 'http://www.php.net/manual/en/function.log.php', -2),
-'ltrim' => array('ltrim', 'ltrim', $this->gT('Strip whitespace (or other characters) from the beginning of a string'), 'string ltrim(string [, charlist])', 'http://www.php.net/manual/en/function.ltrim.php', 1,2),
-'max' => array('max', 'Math.max', $this->gT('Find highest value'), 'number max(arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.max.php', -2),
-'min' => array('min', 'Math.min', $this->gT('Find lowest value'), 'number min(arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.min.php', -2),
-'mktime' => array('mktime', 'mktime', $this->gT('Get UNIX timestamp for a date (each of the 6 arguments are optional)'), 'number mktime([hour [, minute [, second [, month [, day [, year ]]]]]])', 'http://www.php.net/manual/en/function.mktime.php', 0,1,2,3,4,5,6),
-'nl2br' => array('nl2br', 'nl2br', $this->gT('Inserts HTML line breaks before all newlines in a string'), 'string nl2br(string)', 'http://www.php.net/manual/en/function.nl2br.php', 1,1),
-'number_format' => array('number_format', 'number_format', $this->gT('Format a number with grouped thousands'), 'string number_format(number)', 'http://www.php.net/manual/en/function.number-format.php', 1),
-'pi' => array('pi', 'LEMpi', $this->gT('Get value of pi'), 'number pi()', '', 0),
-'pow' => array('pow', 'Math.pow', $this->gT('Exponential expression'), 'number pow(base, exp)', 'http://www.php.net/manual/en/function.pow.php', 2),
-'quoted_printable_decode' => array('quoted_printable_decode', 'quoted_printable_decode', $this->gT('Convert a quoted-printable string to an 8 bit string'), 'string quoted_printable_decode(string)', 'http://www.php.net/manual/en/function.quoted-printable-decode.php', 1),
-'quoted_printable_encode' => array('quoted_printable_encode', 'quoted_printable_encode', $this->gT('Convert a 8 bit string to a quoted-printable string'), 'string quoted_printable_encode(string)', 'http://www.php.net/manual/en/function.quoted-printable-encode.php', 1),
-'quotemeta' => array('quotemeta', 'quotemeta', $this->gT('Quote meta characters'), 'string quotemeta(string)', 'http://www.php.net/manual/en/function.quotemeta.php', 1),
-'rand' => array('rand', 'rand', $this->gT('Generate a random integer'), 'int rand() OR int rand(min, max)', 'http://www.php.net/manual/en/function.rand.php', 0,2),
-'regexMatch' => array('exprmgr_regexMatch', 'LEMregexMatch', $this->gT('Compare a string to a regular expression pattern'), 'bool regexMatch(pattern,input)', '', 2),
-'round' => array('round', 'round', $this->gT('Rounds a number to an optional precision'), 'number round(val [, precision])', 'http://www.php.net/manual/en/function.round.php', 1,2),
-'rtrim' => array('rtrim', 'rtrim', $this->gT('Strip whitespace (or other characters) from the end of a string'), 'string rtrim(string [, charlist])', 'http://www.php.net/manual/en/function.rtrim.php', 1,2),
-'sin' => array('sin', 'Math.sin', $this->gT('Sine'), 'number sin(arg)', 'http://www.php.net/manual/en/function.sin.php', 1),
-'sprintf' => array('sprintf', 'sprintf', $this->gT('Return a formatted string'), 'string sprintf(format, arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.sprintf.php', -2),
-'sqrt' => array('sqrt', 'Math.sqrt', $this->gT('Square root'), 'number sqrt(arg)', 'http://www.php.net/manual/en/function.sqrt.php', 1),
-'stddev' => array('exprmgr_stddev', 'LEMstddev', $this->gT('Calculate the Sample Standard Deviation for the list of numbers'), 'number stddev(arg1, arg2, ... argN)', '', -2),
-'str_pad' => array('str_pad', 'str_pad', $this->gT('Pad a string to a certain length with another string'), 'string str_pad(input, pad_length [, pad_string])', 'http://www.php.net/manual/en/function.str-pad.php', 2,3),
-'str_repeat' => array('str_repeat', 'str_repeat', $this->gT('Repeat a string'), 'string str_repeat(input, multiplier)', 'http://www.php.net/manual/en/function.str-repeat.php', 2),
-'str_replace' => array('str_replace', 'LEMstr_replace', $this->gT('Replace all occurrences of the search string with the replacement string'), 'string str_replace(search,  replace, subject)', 'http://www.php.net/manual/en/function.str-replace.php', 3),
-'strcasecmp' => array('strcasecmp', 'strcasecmp', $this->gT('Binary safe case-insensitive string comparison'), 'int strcasecmp(str1, str2)', 'http://www.php.net/manual/en/function.strcasecmp.php', 2),
-'strcmp' => array('strcmp', 'strcmp', $this->gT('Binary safe string comparison'), 'int strcmp(str1, str2)', 'http://www.php.net/manual/en/function.strcmp.php', 2),
-'strip_tags' => array('strip_tags', 'strip_tags', $this->gT('Strip HTML and PHP tags from a string'), 'string strip_tags(str, allowable_tags)', 'http://www.php.net/manual/en/function.strip-tags.php', 1,2),
-'stripos' => array('stripos', 'stripos', $this->gT('Find position of first occurrence of a case-insensitive string'), 'int stripos(haystack, needle [, offset=0])', 'http://www.php.net/manual/en/function.stripos.php', 2,3),
-'stripslashes' => array('stripslashes', 'stripslashes', $this->gT('Un-quotes a quoted string'), 'string stripslashes(string)', 'http://www.php.net/manual/en/function.stripslashes.php', 1),
-'stristr' => array('stristr', 'stristr', $this->gT('Case-insensitive strstr'), 'string stristr(haystack, needle [, before_needle=false])', 'http://www.php.net/manual/en/function.stristr.php', 2,3),
-'strlen' => array('strlen', 'LEMstrlen', $this->gT('Get string length'), 'int strlen(string)', 'http://www.php.net/manual/en/function.strlen.php', 1),
-'strpos' => array('strpos', 'LEMstrpos', $this->gT('Find position of first occurrence of a string'), 'int strpos(haystack, needle [ offset=0])', 'http://www.php.net/manual/en/function.strpos.php', 2,3),
-'strrev' => array('strrev', 'strrev', $this->gT('Reverse a string'), 'string strrev(string)', 'http://www.php.net/manual/en/function.strrev.php', 1),
-'strstr' => array('strstr', 'strstr', $this->gT('Find first occurrence of a string'), 'string strstr(haystack, needle)', 'http://www.php.net/manual/en/function.strstr.php', 2),
-'strtolower' => array('strtolower', 'LEMstrtolower', $this->gT('Make a string lowercase'), 'string strtolower(string)', 'http://www.php.net/manual/en/function.strtolower.php', 1),
-'strtotime' => array('strtotime', 'strtotime', $this->gT('Convert a date/time string to unix timestamp'), 'int strtotime(string)', 'http://www.php.net/manual/de/function.strtotime.php', 1),
-'strtoupper' => array('strtoupper', 'LEMstrtoupper', $this->gT('Make a string uppercase'), 'string strtoupper(string)', 'http://www.php.net/manual/en/function.strtoupper.php', 1),
-'substr' => array('substr', 'substr', $this->gT('Return part of a string'), 'string substr(string, start [, length])', 'http://www.php.net/manual/en/function.substr.php', 2,3),
-'sum' => array('array_sum', 'LEMsum', $this->gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
-'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', $this->gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
-'tan' => array('tan', 'Math.tan', $this->gT('Tangent'), 'number tan(arg)', 'http://www.php.net/manual/en/function.tan.php', 1),
-'time' => array('time', 'time', $this->gT('Return current UNIX timestamp'), 'number time()', 'http://www.php.net/manual/en/function.time.php', 0),
-'trim' => array('trim', 'trim', $this->gT('Strip whitespace (or other characters) from the beginning and end of a string'), 'string trim(string [, charlist])', 'http://www.php.net/manual/en/function.trim.php', 1,2),
-'ucwords' => array('ucwords', 'ucwords', $this->gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://www.php.net/manual/en/function.ucwords.php', 1),
-'unique' => array('exprmgr_unique', 'LEMunique', $this->gT('Returns true if all non-empty responses are unique'), 'boolean unique(arg1, ..., argN)', '', -1),
+'abs' => array('abs', 'Math.abs', gT('Absolute value'), 'number abs(number)', 'http://www.php.net/manual/en/function.checkdate.php', 1),
+'acos' => array('acos', 'Math.acos', gT('Arc cosine'), 'number acos(number)', 'http://www.php.net/manual/en/function.acos.php', 1),
+'addslashes' => array('addslashes', gT('addslashes'), 'Quote string with slashes', 'string addslashes(string)', 'http://www.php.net/manual/en/function.addslashes.php', 1),
+'asin' => array('asin', 'Math.asin', gT('Arc sine'), 'number asin(number)', 'http://www.php.net/manual/en/function.asin.php', 1),
+'atan' => array('atan', 'Math.atan', gT('Arc tangent'), 'number atan(number)', 'http://www.php.net/manual/en/function.atan.php', 1),
+'atan2' => array('atan2', 'Math.atan2', gT('Arc tangent of two variables'), 'number atan2(number, number)', 'http://www.php.net/manual/en/function.atan2.php', 2),
+'ceil' => array('ceil', 'Math.ceil', gT('Round fractions up'), 'number ceil(number)', 'http://www.php.net/manual/en/function.ceil.php', 1),
+'checkdate' => array('checkdate', 'checkdate', gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://www.php.net/manual/en/function.checkdate.php', 3),
+'cos' => array('cos', 'Math.cos', gT('Cosine'), 'number cos(number)', 'http://www.php.net/manual/en/function.cos.php', 1),
+'count' => array('exprmgr_count', 'LEMcount', gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
+'countif' => array('exprmgr_countif', 'LEMcountif', gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
+'countifop' => array('exprmgr_countifop', 'LEMcountifop', gT('Count the number of answered questions in the list which pass the critiera (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
+'date' => array('date', 'date', gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.date.php', 1,2),
+'exp' => array('exp', 'Math.exp', gT('Calculates the exponent of e'), 'number exp(number)', 'http://www.php.net/manual/en/function.exp.php', 1),
+'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
+'floor' => array('floor', 'Math.floor', gT('Round fractions down'), 'number floor(number)', 'http://www.php.net/manual/en/function.floor.php', 1),
+'gmdate' => array('gmdate', 'gmdate', gT('Format a GMT date/time'), 'string gmdate(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.gmdate.php', 1,2),
+'html_entity_decode' => array('html_entity_decode', 'html_entity_decode', gT('Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)'), 'string html_entity_decode(string)', 'http://www.php.net/manual/en/function.html-entity-decode.php', 1),
+'htmlentities' => array('htmlentities', 'htmlentities', gT('Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlentities(string)', 'http://www.php.net/manual/en/function.htmlentities.php', 1),
+'htmlspecialchars' => array('expr_mgr_htmlspecialchars', 'htmlspecialchars', gT('Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars(string)', 'http://www.php.net/manual/en/function.htmlspecialchars.php', 1),
+'htmlspecialchars_decode' => array('expr_mgr_htmlspecialchars_decode', 'htmlspecialchars_decode', gT('Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars_decode(string)', 'http://www.php.net/manual/en/function.htmlspecialchars-decode.php', 1),
+'idate' => array('idate', 'idate', gT('Format a local time/date as integer'), 'string idate(string [, timestamp=time()])', 'http://www.php.net/manual/en/function.idate.php', 1,2),
+'if' => array('exprmgr_if', 'LEMif', gT('Conditional processing'), 'if(test,result_if_true,result_if_false)', '', 3),
+'implode' => array('exprmgr_implode', 'LEMimplode', gT('Join array elements with a string'), 'string implode(glue,arg1,arg2,...,argN)', 'http://www.php.net/manual/en/function.implode.php', -2),
+'intval' => array('intval', 'LEMintval', gT('Get the integer value of a variable'), 'int intval(number [, base=10])', 'http://www.php.net/manual/en/function.intval.php', 1,2),
+'is_empty' => array('exprmgr_empty', 'LEMempty', gT('Determine whether a variable is considered to be empty'), 'bool is_empty(var)', 'http://www.php.net/manual/en/function.empty.php', 1),
+'is_float' => array('is_float', 'LEMis_float', gT('Finds whether the type of a variable is float'), 'bool is_float(var)', 'http://www.php.net/manual/en/function.is-float.php', 1),
+'is_int' => array('exprmgr_int', 'LEMis_int', gT('Find whether the type of a variable is integer'), 'bool is_int(var)', 'http://www.php.net/manual/en/function.is-int.php', 1),
+'is_nan' => array('is_nan', 'isNaN', gT('Finds whether a value is not a number'), 'bool is_nan(var)', 'http://www.php.net/manual/en/function.is-nan.php', 1),
+'is_null' => array('is_null', 'LEMis_null', gT('Finds whether a variable is NULL'), 'bool is_null(var)', 'http://www.php.net/manual/en/function.is-null.php', 1),
+'is_numeric' => array('is_numeric', 'LEMis_numeric', gT('Finds whether a variable is a number or a numeric string'), 'bool is_numeric(var)', 'http://www.php.net/manual/en/function.is-numeric.php', 1),
+'is_string' => array('is_string', 'LEMis_string', gT('Find whether the type of a variable is string'), 'bool is_string(var)', 'http://www.php.net/manual/en/function.is-string.php', 1),
+'join' => array('exprmgr_join', 'LEMjoin', gT('Join strings, return joined string.This function is an alias of implode("",argN)'), 'string join(arg1,arg2,...,argN)', '', -1),
+'list' => array('exprmgr_list', 'LEMlist', gT('Return comma-separated list of values'), 'string list(arg1, arg2, ... argN)', '', -2),
+'log' => array('exprmgr_log', 'LEMlog', gT('The logarithm of number to base, if given, or the natural logarithm. '), 'number log(number,base=e)', 'http://www.php.net/manual/en/function.log.php', -2),
+'ltrim' => array('ltrim', 'ltrim', gT('Strip whitespace (or other characters) from the beginning of a string'), 'string ltrim(string [, charlist])', 'http://www.php.net/manual/en/function.ltrim.php', 1,2),
+'max' => array('max', 'Math.max', gT('Find highest value'), 'number max(arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.max.php', -2),
+'min' => array('min', 'Math.min', gT('Find lowest value'), 'number min(arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.min.php', -2),
+'mktime' => array('mktime', 'mktime', gT('Get UNIX timestamp for a date (each of the 6 arguments are optional)'), 'number mktime([hour [, minute [, second [, month [, day [, year ]]]]]])', 'http://www.php.net/manual/en/function.mktime.php', 0,1,2,3,4,5,6),
+'nl2br' => array('nl2br', 'nl2br', gT('Inserts HTML line breaks before all newlines in a string'), 'string nl2br(string)', 'http://www.php.net/manual/en/function.nl2br.php', 1,1),
+'number_format' => array('number_format', 'number_format', gT('Format a number with grouped thousands'), 'string number_format(number)', 'http://www.php.net/manual/en/function.number-format.php', 1),
+'pi' => array('pi', 'LEMpi', gT('Get value of pi'), 'number pi()', '', 0),
+'pow' => array('pow', 'Math.pow', gT('Exponential expression'), 'number pow(base, exp)', 'http://www.php.net/manual/en/function.pow.php', 2),
+'quoted_printable_decode' => array('quoted_printable_decode', 'quoted_printable_decode', gT('Convert a quoted-printable string to an 8 bit string'), 'string quoted_printable_decode(string)', 'http://www.php.net/manual/en/function.quoted-printable-decode.php', 1),
+'quoted_printable_encode' => array('quoted_printable_encode', 'quoted_printable_encode', gT('Convert a 8 bit string to a quoted-printable string'), 'string quoted_printable_encode(string)', 'http://www.php.net/manual/en/function.quoted-printable-encode.php', 1),
+'quotemeta' => array('quotemeta', 'quotemeta', gT('Quote meta characters'), 'string quotemeta(string)', 'http://www.php.net/manual/en/function.quotemeta.php', 1),
+'rand' => array('rand', 'rand', gT('Generate a random integer'), 'int rand() OR int rand(min, max)', 'http://www.php.net/manual/en/function.rand.php', 0,2),
+'regexMatch' => array('exprmgr_regexMatch', 'LEMregexMatch', gT('Compare a string to a regular expression pattern'), 'bool regexMatch(pattern,input)', '', 2),
+'round' => array('round', 'round', gT('Rounds a number to an optional precision'), 'number round(val [, precision])', 'http://www.php.net/manual/en/function.round.php', 1,2),
+'rtrim' => array('rtrim', 'rtrim', gT('Strip whitespace (or other characters) from the end of a string'), 'string rtrim(string [, charlist])', 'http://www.php.net/manual/en/function.rtrim.php', 1,2),
+'sin' => array('sin', 'Math.sin', gT('Sine'), 'number sin(arg)', 'http://www.php.net/manual/en/function.sin.php', 1),
+'sprintf' => array('sprintf', 'sprintf', gT('Return a formatted string'), 'string sprintf(format, arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.sprintf.php', -2),
+'sqrt' => array('sqrt', 'Math.sqrt', gT('Square root'), 'number sqrt(arg)', 'http://www.php.net/manual/en/function.sqrt.php', 1),
+'stddev' => array('exprmgr_stddev', 'LEMstddev', gT('Calculate the Sample Standard Deviation for the list of numbers'), 'number stddev(arg1, arg2, ... argN)', '', -2),
+'str_pad' => array('str_pad', 'str_pad', gT('Pad a string to a certain length with another string'), 'string str_pad(input, pad_length [, pad_string])', 'http://www.php.net/manual/en/function.str-pad.php', 2,3),
+'str_repeat' => array('str_repeat', 'str_repeat', gT('Repeat a string'), 'string str_repeat(input, multiplier)', 'http://www.php.net/manual/en/function.str-repeat.php', 2),
+'str_replace' => array('str_replace', 'LEMstr_replace', gT('Replace all occurrences of the search string with the replacement string'), 'string str_replace(search,  replace, subject)', 'http://www.php.net/manual/en/function.str-replace.php', 3),
+'strcasecmp' => array('strcasecmp', 'strcasecmp', gT('Binary safe case-insensitive string comparison'), 'int strcasecmp(str1, str2)', 'http://www.php.net/manual/en/function.strcasecmp.php', 2),
+'strcmp' => array('strcmp', 'strcmp', gT('Binary safe string comparison'), 'int strcmp(str1, str2)', 'http://www.php.net/manual/en/function.strcmp.php', 2),
+'strip_tags' => array('strip_tags', 'strip_tags', gT('Strip HTML and PHP tags from a string'), 'string strip_tags(str, allowable_tags)', 'http://www.php.net/manual/en/function.strip-tags.php', 1,2),
+'stripos' => array('stripos', 'stripos', gT('Find position of first occurrence of a case-insensitive string'), 'int stripos(haystack, needle [, offset=0])', 'http://www.php.net/manual/en/function.stripos.php', 2,3),
+'stripslashes' => array('stripslashes', 'stripslashes', gT('Un-quotes a quoted string'), 'string stripslashes(string)', 'http://www.php.net/manual/en/function.stripslashes.php', 1),
+'stristr' => array('stristr', 'stristr', gT('Case-insensitive strstr'), 'string stristr(haystack, needle [, before_needle=false])', 'http://www.php.net/manual/en/function.stristr.php', 2,3),
+'strlen' => array('strlen', 'LEMstrlen', gT('Get string length'), 'int strlen(string)', 'http://www.php.net/manual/en/function.strlen.php', 1),
+'strpos' => array('strpos', 'LEMstrpos', gT('Find position of first occurrence of a string'), 'int strpos(haystack, needle [ offset=0])', 'http://www.php.net/manual/en/function.strpos.php', 2,3),
+'strrev' => array('strrev', 'strrev', gT('Reverse a string'), 'string strrev(string)', 'http://www.php.net/manual/en/function.strrev.php', 1),
+'strstr' => array('strstr', 'strstr', gT('Find first occurrence of a string'), 'string strstr(haystack, needle)', 'http://www.php.net/manual/en/function.strstr.php', 2),
+'strtolower' => array('strtolower', 'LEMstrtolower', gT('Make a string lowercase'), 'string strtolower(string)', 'http://www.php.net/manual/en/function.strtolower.php', 1),
+'strtotime' => array('strtotime', 'strtotime', gT('Convert a date/time string to unix timestamp'), 'int strtotime(string)', 'http://www.php.net/manual/de/function.strtotime.php', 1),
+'strtoupper' => array('strtoupper', 'LEMstrtoupper', gT('Make a string uppercase'), 'string strtoupper(string)', 'http://www.php.net/manual/en/function.strtoupper.php', 1),
+'substr' => array('substr', 'substr', gT('Return part of a string'), 'string substr(string, start [, length])', 'http://www.php.net/manual/en/function.substr.php', 2,3),
+'sum' => array('array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
+'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
+'tan' => array('tan', 'Math.tan', gT('Tangent'), 'number tan(arg)', 'http://www.php.net/manual/en/function.tan.php', 1),
+'time' => array('time', 'time', gT('Return current UNIX timestamp'), 'number time()', 'http://www.php.net/manual/en/function.time.php', 0),
+'trim' => array('trim', 'trim', gT('Strip whitespace (or other characters) from the beginning and end of a string'), 'string trim(string [, charlist])', 'http://www.php.net/manual/en/function.trim.php', 1,2),
+'ucwords' => array('ucwords', 'ucwords', gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://www.php.net/manual/en/function.ucwords.php', 1),
+'unique' => array('exprmgr_unique', 'LEMunique', gT('Returns true if all non-empty responses are unique'), 'boolean unique(arg1, ..., argN)', '', -1),
         );
 
     }
@@ -258,14 +258,14 @@ class ExpressionManager {
     {
         if (count($this->RDP_stack) < 2)
         {
-            $this->RDP_AddError($this->gT("Unable to evaluate binary operator - fewer than 2 entries on stack"), $token);
+            $this->RDP_AddError(gT("Unable to evaluate binary operator - fewer than 2 entries on stack"), $token);
             return false;
         }
         $arg2 = $this->RDP_StackPop();
         $arg1 = $this->RDP_StackPop();
         if (is_null($arg1) or is_null($arg2))
         {
-            $this->RDP_AddError($this->gT("Invalid value(s) on the stack"), $token);
+            $this->RDP_AddError(gT("Invalid value(s) on the stack"), $token);
             return false;
         }
         // TODO:  try to determine datatype?
@@ -395,13 +395,13 @@ class ExpressionManager {
     {
         if (count($this->RDP_stack) < 1)
         {
-            $this->RDP_AddError($this->gT("Unable to evaluate unary operator - no entries on stack"), $token);
+            $this->RDP_AddError(gT("Unable to evaluate unary operator - no entries on stack"), $token);
             return false;
         }
         $arg1 = $this->RDP_StackPop();
         if (is_null($arg1))
         {
-            $this->RDP_AddError($this->gT("Invalid value(s) on the stack"), $token);
+            $this->RDP_AddError(gT("Invalid value(s) on the stack"), $token);
             return false;
         }
         // TODO:  try to determine datatype?
@@ -450,7 +450,7 @@ class ExpressionManager {
         {
             if ($this->RDP_pos < $this->RDP_count)
             {
-                $this->RDP_AddError($this->gT("Extra tokens found"), $this->RDP_tokens[$this->RDP_pos]);
+                $this->RDP_AddError(gT("Extra tokens found"), $this->RDP_tokens[$this->RDP_pos]);
                 return false;
             }
             $this->RDP_result = $this->RDP_StackPop();
@@ -465,13 +465,13 @@ class ExpressionManager {
             }
             else
             {
-                $this-RDP_AddError($this->gT("Unbalanced equation - values left on stack"),NULL);
+                $this-RDP_AddError(gT("Unbalanced equation - values left on stack"),NULL);
                 return false;
             }
         }
         else
         {
-            $this->RDP_AddError($this->gT("Not a valid expression"),NULL);
+            $this->RDP_AddError(gT("Not a valid expression"),NULL);
             return false;
         }
     }
@@ -532,7 +532,7 @@ class ExpressionManager {
     {
         if ($this->RDP_pos + 1 >= $this->RDP_count)
         {
-             $this->RDP_AddError($this->gT("Poorly terminated expression - expected a constant or variable"), NULL);
+             $this->RDP_AddError(gT("Poorly terminated expression - expected a constant or variable"), NULL);
              return false;
         }
         $token = $this->RDP_tokens[++$this->RDP_pos];
@@ -577,21 +577,21 @@ class ExpressionManager {
                         $groupSeq = $this->GetVarAttribute($token[0],'gseq',-1);
                         if (($groupSeq != -1 && $this->groupSeq != -1) && ($groupSeq > $this->groupSeq))
                         {
-                            $this->RDP_AddError($this->gT("Variable not declared until a later page"),$token);
+                            $this->RDP_AddError(gT("Variable not declared until a later page"),$token);
                             return false;
                         }
                         return true;
                     }
                     else
                     {
-                        $this->RDP_AddError($this->gT("Undefined variable"), $token);
+                        $this->RDP_AddError(gT("Undefined variable"), $token);
                         return false;
                     }
                 }
                 break;
             case 'COMMA':
                 --$this->RDP_pos;
-                $this->RDP_AddError($this->gT("Should never  get to this line?"),$token);
+                $this->RDP_AddError(gT("Should never  get to this line?"),$token);
                 return false;
             default:
                 return false;
@@ -677,13 +677,13 @@ class ExpressionManager {
                     }
                     else
                     {
-                        $this->RDP_AddError($this->gT('The value of this variable can not be changed'), $token1);
+                        $this->RDP_AddError(gT('The value of this variable can not be changed'), $token1);
                         return false;
                     }
                 }
                 else
                 {
-                    $this->RDP_AddError($this->gT('Only variables can be assigned values'), $token1);
+                    $this->RDP_AddError(gT('Only variables can be assigned values'), $token1);
                     return false;
                 }
             }
@@ -739,7 +739,7 @@ class ExpressionManager {
             }
             else
             {
-                $this->RDP_AddError($this->gT("Expected expressions separated by commas"),$token);
+                $this->RDP_AddError(gT("Expected expressions separated by commas"),$token);
                 $evalStatus = false;
                 break;
             }
@@ -747,7 +747,7 @@ class ExpressionManager {
         while (++$this->RDP_pos < $this->RDP_count)
         {
             $token = $this->RDP_tokens[$this->RDP_pos];
-            $this->RDP_AddError($this->gT("Extra token found after expressions"),$token);
+            $this->RDP_AddError(gT("Extra token found after expressions"),$token);
             $evalStatus = false;
         }
         return $evalStatus;
@@ -763,13 +763,13 @@ class ExpressionManager {
         $funcName = $funcNameToken[0];
         if (!$this->RDP_isValidFunction($funcName))
         {
-            $this->RDP_AddError($this->gT("Undefined function"), $funcNameToken);
+            $this->RDP_AddError(gT("Undefined function"), $funcNameToken);
             return false;
         }
         $token2 = $this->RDP_tokens[++$this->RDP_pos];
         if ($token2[2] != 'LP')
         {
-            $this->RDP_AddError($this->gT("Expected left parentheses after function name"), $funcNameToken);
+            $this->RDP_AddError(gT("Expected left parentheses after function name"), $funcNameToken);
         }
         $params = array();  // will just store array of values, not tokens
         while ($this->RDP_pos + 1 < $this->RDP_count)
@@ -793,7 +793,7 @@ class ExpressionManager {
                     }
                     else
                     {
-                        $this->RDP_AddError($this->gT("Extra comma found in function"), $token3);
+                        $this->RDP_AddError(gT("Extra comma found in function"), $token3);
                         return false;
                     }
                 }
@@ -960,7 +960,7 @@ class ExpressionManager {
     private function RDP_EvaluatePrimaryExpression()
     {
         if (($this->RDP_pos + 1) >= $this->RDP_count) {
-            $this->RDP_AddError($this->gT("Poorly terminated expression - expected a constant or variable"), NULL);
+            $this->RDP_AddError(gT("Poorly terminated expression - expected a constant or variable"), NULL);
             return false;
         }
         $token = $this->RDP_tokens[++$this->RDP_pos];
@@ -977,7 +977,7 @@ class ExpressionManager {
             }
             else
             {
-                $this->RDP_AddError($this->gT("Expected right parentheses"), $token);
+                $this->RDP_AddError(gT("Expected right parentheses"), $token);
                 return false;
             }
         }
@@ -1041,7 +1041,7 @@ class ExpressionManager {
     private function RDP_EvaluateUnaryExpression()
     {
         if (($this->RDP_pos + 1) >= $this->RDP_count) {
-            $this->RDP_AddError($this->gT("Poorly terminated expression - expected a constant or variable"), NULL);
+            $this->RDP_AddError(gT("Poorly terminated expression - expected a constant or variable"), NULL);
             return false;
         }
         $token = $this->RDP_tokens[++$this->RDP_pos];
@@ -1681,7 +1681,7 @@ class ExpressionManager {
                     --$nesting;
                     if ($nesting < 0)
                     {
-                        $this->RDP_AddError($this->gT("Extra right parentheses detected"), $token);
+                        $this->RDP_AddError(gT("Extra right parentheses detected"), $token);
                     }
                     break;
                 case 'WORD':
@@ -1690,19 +1690,19 @@ class ExpressionManager {
                     {
                         if (!$this->RDP_isValidFunction($token[0]))
                         {
-                            $this->RDP_AddError($this->gT("Undefined function"), $token);
+                            $this->RDP_AddError(gT("Undefined function"), $token);
                         }
                     }
                     else
                     {
                         if (!($this->RDP_isValidVariable($token[0])))
                         {
-                            $this->RDP_AddError($this->gT("Undefined variable"), $token);
+                            $this->RDP_AddError(gT("Undefined variable"), $token);
                         }
                     }
                     break;
                 case 'OTHER':
-                    $this->RDP_AddError($this->gT("Unsupported syntax"), $token);
+                    $this->RDP_AddError(gT("Unsupported syntax"), $token);
                     break;
                 default:
                     break;
@@ -1710,7 +1710,7 @@ class ExpressionManager {
         }
         if ($nesting != 0)
         {
-            $this->RDP_AddError(sprintf($this->gT("Missing %s closing right parentheses"),$nesting),NULL);
+            $this->RDP_AddError(sprintf(gT("Missing %s closing right parentheses"),$nesting),NULL);
         }
         return (count($this->RDP_errs) > 0);
     }
@@ -1994,7 +1994,7 @@ class ExpressionManager {
                     $minArgs = abs($numArgsAllowed[0] + 1); // so if value is -2, means that requires at least one argument
                     if ($argsPassed < $minArgs)
                     {
-                        $this->RDP_AddError(sprintf($this->ngT("Function must have at least %s argument","Function must have at least %s arguments",$minArgs), $minArgs), $funcNameToken);
+                        $this->RDP_AddError(sprintf(ngT("Function must have at least %s argument","Function must have at least %s arguments",$minArgs), $minArgs), $funcNameToken);
                         return false;
                     }
                     if (!$this->RDP_onlyparse) {
@@ -2083,13 +2083,13 @@ class ExpressionManager {
                         }
                         break;
                     default:
-                        $this->RDP_AddError(sprintf($this->gT("Unsupported number of arguments: %s", $argsPassed)), $funcNameToken);
+                        $this->RDP_AddError(sprintf(gT("Unsupported number of arguments: %s", $argsPassed)), $funcNameToken);
                         return false;
                     }
 
                 } else {
-                    $this->RDP_AddError(sprintf($this->gT("Function does not support %s arguments"), $argsPassed).' '
-                            . sprintf($this->gT("Function supports this many arguments, where -1=unlimited: %s"), implode(',', $numArgsAllowed)), $funcNameToken);
+                    $this->RDP_AddError(sprintf(gT("Function does not support %s arguments"), $argsPassed).' '
+                            . sprintf(gT("Function supports this many arguments, where -1=unlimited: %s"), implode(',', $numArgsAllowed)), $funcNameToken);
                     return false;
                 }
             }
@@ -2326,7 +2326,7 @@ class ExpressionManager {
         }
         else
         {
-            $this->RDP_AddError($this->gT("Tried to pop value off of empty stack"), NULL);
+            $this->RDP_AddError(gT("Tried to pop value off of empty stack"), NULL);
             return NULL;
         }
     }
@@ -2399,89 +2399,6 @@ class ExpressionManager {
         return $tokens;
     }
 
-    /**
-     * Unit test the asSplitStringOnExpressions() function to ensure that accurately parses out all expressions
-     * surrounded by curly braces, allowing for strings and escaped curly braces.
-     */
-
-    static function UnitTestStringSplitter()
-    {
-       $tests = <<<EOD
-This string does not contain an expression
-"This is only a string"
-"this is a string that contains {something in curly brace}"
-How about nested curly braces, like {INSERTANS:{SGQ}}?
-This example has escaped curly braces like \{this is not an equation\}
-Should the parser check for unmatched { opening curly braces?
-What about for unmatched } closing curly braces?
-What if there is a { space after the opening brace?}
-What about a {space before the closing brace }?
-What about an { expression nested {within a string} that has white space after the opening brace}?
-This {expression has {a nested curly brace { plus ones with whitespace around them} - they should be properly captured} into an expression  with sub-expressions.
-This {is a string {since it does not close } all of its curly} braces.
-Can {expressions contain 'single' or "double" quoted strings}?
-Can an expression contain a perl regular expression like this {'/^\d{3}-\d{2}-\d{4}$/'}?
-[img src="images/mine_{Q1}.png"/]
-[img src="images/mine_" + {Q1} + ".png"/]
-[img src={implode('','"images/mine_',Q1,'.png"')}/]
-[img src="images/mine_{if(Q1=="Y",'yes','no')}.png"/]
-[img src="images/mine_{if(Q1=="Y",'sq with {nested braces}',"dq with {nested braces}")}.png"/]
-{name}, you said that you are {age} years old, and that you have {numKids} {if((numKids==1),'child','children')} and {numPets} {if((numPets==1),'pet','pets')} running around the house. So, you have {numKids + numPets} wild {if((numKids + numPets ==1),'beast','beasts')} to chase around every day.
-Since you have more {if((INSERT61764X1X3 > INSERT61764X1X4),'children','pets')} than you do {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')}, do you feel that the {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')} are at a disadvantage?
-Here is a String that failed to parse prior to fixing the preg_split() command to avoid recursive search of sub-strings: [{((617167X9X3241 == "Y" or 617167X9X3242 == "Y" or 617167X9X3243 == "Y" or 617167X9X3244 == "Y" or 617167X9X3245 == "Y" or 617167X9X3246 == "Y" or 617167X9X3247 == "Y" or 617167X9X3248 == "Y" or 617167X9X3249 == "Y") and (617167X9X3301 == "Y" or 617167X9X3302 == "Y" or 617167X9X3303 == "Y" or 617167X9X3304 == "Y" or 617167X9X3305 == "Y" or 617167X9X3306 == "Y" or 617167X9X3307 == "Y" or 617167X9X3308 == "Y" or 617167X9X3309 == "Y"))}] Here is the question.
-EOD;
-// Here is a String that failed to parse prior to fixing the preg_split() command to avoid recursive search of sub-strings: [{((617167X9X3241 == "Y" or 617167X9X3242 == "Y" or 617167X9X3243 == "Y" or 617167X9X3244 == "Y" or 617167X9X3245 == "Y" or 617167X9X3246 == "Y" or 617167X9X3247 == "Y" or 617167X9X3248 == "Y" or 617167X9X3249 == "Y") and (617167X9X3301 == "Y" or 617167X9X3302 == "Y" or 617167X9X3303 == "Y" or 617167X9X3304 == "Y" or 617167X9X3305 == "Y" or 617167X9X3306 == "Y" or 617167X9X3307 == "Y" or 617167X9X3308 == "Y" or 617167X9X3309 == "Y"))}] Here is the question.
-
-        $em = new ExpressionManager();
-
-        $atests = explode("\n",$tests);
-        array_push($atests,'"hi\nthere\nhow\nare\nyou?\n"');
-
-        foreach($atests as $test)
-        {
-            $tokens = $em->asSplitStringOnExpressions($test);
-            print '<b>' . $test . '</b><hr/>';
-            print '<code>';
-            print implode("<br/>\n",explode("\n",print_r($tokens,TRUE)));
-            print '</code><hr/>';
-        }
-    }
-
-    /**
-     * Unit test the Tokenizer - Tokenize and generate a HTML-compatible print-out of a comprehensive set of test cases
-     */
-
-    static function UnitTestTokenizer()
-    {
-        // Comprehensive test cases for tokenizing
-        $tests = <<<EOD
-        String:  "what about regular expressions, like for SSN (^\d{3}-\d{2}-\d{4}) or US phone# ((?:\(\d{3}\)\s*\d{3}-\d{4})"
-        String:  "Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"
-        String:  "can single quoted strings" . 'contain nested \'quoted sections\'?';
-        Parens:  upcase('hello');
-        Numbers:  42 72.35 -15 +37 42A .5 0.7
-        And_Or: (this and that or the other);  Sandles, sorting; (a && b || c)
-        Words:  hi there, my name is C3PO!
-        UnaryOps: ++a, --b !b
-        BinaryOps:  (a + b * c / d)
-        Comparators:  > >= < <= == != gt ge lt le eq ne (target large gents built agile less equal)
-        Assign:  = += -= *= /=
-        SGQA:  1X6X12 1X6X12ber1 1X6X12ber1_lab1 3583X84X249 12X3X5lab1_ber#1 1X6X12.NAOK 1X6X12ber1.NAOK 1X6X12ber1_lab1.NAOK 3583X84X249.NAOK 12X3X5lab1_ber#1.NAOK
-        Errors: Apt # 10C; (2 > 0) ? 'hi' : 'there'; array[30]; >>> <<< /* this is not a comment */ // neither is this
-        Words:  q5pointChoice q5pointChoice.bogus q5pointChoice.code q5pointChoice.mandatory q5pointChoice.NAOK q5pointChoice.qid q5pointChoice.question q5pointChoice.relevance q5pointChoice.shown q5pointChoice.type
-EOD;
-
-        $em = new ExpressionManager();
-
-        foreach(explode("\n",$tests) as $test)
-        {
-            $tokens = $em->RDP_Tokenize($test);
-            print '<b>' . $test . '</b><hr/>';
-            print '<code>';
-            print implode("<br/>\n",explode("\n",print_r($tokens,TRUE)));
-            print '</code><hr/>';
-        }
-    }
 
     /**
      * Show a table of allowable Expression Manager functions
@@ -2499,759 +2416,6 @@ EOD;
         $output .= "</table>\n";
         return $output;
     }
-
-    /**
-     * Unit test the Evaluator, allowing for passing in of extra functions, variables, and tests
-     */
-
-    static function UnitTestEvaluator()
-    {
-        // Some test cases for Evaluator
-        $vars = array(
-'one' => array('sgqa'=>'one', 'code'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
-'two' => array('sgqa'=>'two', 'code'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
-'three' => array('sgqa'=>'three', 'code'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
-'four' => array('sgqa'=>'four', 'code'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
-'five' => array('sgqa'=>'five', 'code'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
-'six' => array('sgqa'=>'six', 'code'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
-'seven' => array('sgqa'=>'seven', 'code'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
-'eight' => array('sgqa'=>'eight', 'code'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
-'nine' => array('sgqa'=>'nine', 'code'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
-'ten' => array('sgqa'=>'ten', 'code'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-'half' => array('sgqa'=>'half', 'code'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-'hi' => array('sgqa'=>'hi', 'code'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-'hello' => array('sgqa'=>'hello', 'code'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-'a' => array('sgqa'=>'a', 'code'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
-'b' => array('sgqa'=>'b', 'code'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
-'c' => array('sgqa'=>'c', 'code'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
-'d' => array('sgqa'=>'d', 'code'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
-'eleven' => array('sgqa'=>'eleven', 'code'=>11, 'jsName'=>'java_eleven', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-'twelve' => array('sgqa'=>'twelve', 'code'=>12, 'jsName'=>'java_twelve', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-// Constants
-'ASSESSMENT_HEADING' => array('sgqa'=>'ASSESSMENT_HEADING', 'code'=>'"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"', 'jsName'=>'', 'readWrite'=>'N'),
-'QID' => array('sgqa'=>'QID', 'code'=>'value for {QID}', 'jsName'=>'', 'readWrite'=>'N'),
-'QUESTIONHELP' => array('sgqa'=>'QUESTIONHELP', 'code'=>'"can single quoted strings" . \'contain nested \'quoted sections\'?', 'jsName'=>'', 'readWrite'=>'N'),
-'QUESTION_HELP' => array('sgqa'=>'QUESTION_HELP', 'code'=>'Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?', 'jsName'=>'', 'readWrite'=>'N'),
-'NUMBEROFQUESTIONS' => array('sgqa'=>'NUMBEROFQUESTIONS', 'code'=>'value for {NUMBEROFQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
-'THEREAREXQUESTIONS' => array('sgqa'=>'THEREAREXQUESTIONS', 'code'=>'value for {THEREAREXQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
-'TOKEN:FIRSTNAME' => array('sgqa'=>'TOKEN:FIRSTNAME', 'code' => 'value for {TOKEN:FIRSTNAME}', 'jsName' => '', 'readWrite' => 'N'),
-'WELCOME' => array('sgqa'=>'WELCOME', 'code'=>'value for {WELCOME}', 'jsName'=>'', 'readWrite'=>'N'),
-// also include SGQA values and read-only variable attributes
-'12X34X56' => array('sgqa'=>'12X34X56', 'code'=>5, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
-'12X3X5lab1_ber' => array('sgqa'=>'12X3X5lab1_ber', 'code'=>10, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
-'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'code'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','shown'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>14,'gseq'=>2,'qseq'=>14),
-'qArrayNumbers_ls1_min' => array('sgqa'=>'qArrayNumbers_ls1_min', 'code'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','shown'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'gseq'=>2,'qseq'=>6),
-'12X3X5lab1_ber#1' => array('sgqa'=>'12X3X5lab1_ber#1', 'code'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
-'zero' => array('sgqa'=>'zero', 'code'=>0, 'jsName'=>'java_zero', 'gseq'=>0,'qseq'=>0),
-'empty' => array('sgqa'=>'empty', 'code'=>'', 'jsName'=>'java_empty', 'gseq'=>0,'qseq'=>0),
-'BREAKS' => array('sgqa'=>'BREAKS', 'code'=>"1\n2\n3", 'jsName'=>'', 'readWrite'=>'N'),
-        );
-
-        // Syntax for $tests is
-        // expectedResult~expression
-        // if the expected result is an error, use NULL for the expected result
-        $tests  = <<<EOD
-<B>Empty Vs. Empty</B>~"<B>Empty Vs. Empty</B>"
-1~'' == ''
-0~'' != ''
-0~'' > ''
-1~'' >= ''
-0~'' < ''
-1~'' <= ''
-1~!''
-~('' and '')
-~('' or '')
-<B>Empty Vs. Zero</B>~"<B>Empty Vs. Zero</B>"
-0~'' == 0
-1~'' != 0
-0~'' > 0
-0~'' >= 0
-0~'' < 0
-0~'' <= 0
-1~!''
-1~!0
-0~('' and 0)
-0~('' or 0)
-<B>Empty Vs. Constant</B>~"<B>Empty Vs. Constant</B>"
-0~'' == 3
-1~'' != 3
-0~'' > 3
-0~'' >= 3
-0~'' < 3
-0~'' <= 3
-1~!''
-0~!3
-0~('' and 3)
-1~('' or 3)
-<B>Empty Vs. Empty_Var</B>~"<B>Empty Vs. Empty_Var</B>"
-1~'' == empty
-0~'' != empty
-0~'' > empty
-1~'' >= empty
-0~'' < empty
-1~'' <= empty
-1~!''
-1~!empty
-~('' and empty)
-~('' or empty)
-<B>Empty_Var Vs. Zero</B>~"<B>Empty_Var Vs. Zero</B>"
-0~empty == 0
-1~empty != 0
-0~empty > 0
-0~empty >= 0
-0~empty < 0
-0~empty <= 0
-1~!empty
-1~!0
-0~(empty and 0)
-0~(empty or 0)
-<B>Empty_Var Vs. Zero</B>~"<B>Empty_Var Vs. Zero</B>"
-0~empty == zero
-1~empty != zero
-0~empty > zero
-0~empty >= zero
-0~empty < zero
-0~empty <= zero
-1~!empty
-1~!zero
-0~(empty and zero)
-0~(empty or zero)
-<B>Empty_Var Vs. Constant</B>~"<B>Empty_Var Vs. Constant</B>"
-0~empty == 3
-1~empty != 3
-0~empty > 3
-0~empty >= 3
-0~empty < 3
-0~empty <= 3
-1~!empty
-0~!3
-0~(empty and 3)
-1~(empty or 3)
-<B>Solution: Empty_Var Vs. Zero</B>~"<B>Solution: Empty_Var Vs. Zero</B>"
-0~!is_empty(empty) && (empty == 0)
-0~!is_empty(five) && (five == 0)
-1~!is_empty(zero) && (zero == 0)
-0~!is_empty(empty) && (empty > 0)
-0~!is_empty(empty) && (empty >= 0)
-0~!is_empty(empty) && (empty < 0)
-0~!is_empty(empty) && (empty <= 0)
-0~!is_empty(empty) && ((empty and 0))
-0~!is_empty(empty) && ((empty or 0))
-<B>Solution: Empty_Var Vs. Zero</B>~"<B>Solution: Empty_Var Vs. Zero</B>"
-0~!is_empty(empty) && (empty == zero)
-0~!is_empty(five) && (five == zero)
-1~!is_empty(zero) && (zero == zero)
-0~!is_empty(empty) && (empty > zero)
-0~!is_empty(empty) && (empty >= zero)
-0~!is_empty(empty) && (empty < zero)
-0~!is_empty(empty) && (empty <= zero)
-0~!is_empty(empty) && ((empty and zero))
-0~!is_empty(empty) && ((empty or zero))
-<B>Solution: Empty_Var Vs. Constant</B>~"<B>Solution: Empty_Var Vs. Constant</B>"
-0~!is_empty(empty) && (empty < 3)
-0~!is_empty(empty) && (empty <= 3)
-<B>Solution: Empty_Var Vs. Variable</B>~"<B>Solution: Empty_Var Vs. Variable</B>"
-0~!is_empty(empty) && (empty < five)
-0~!is_empty(empty) && (empty <= five)
-<B>Solution: The Hard One is Empty_Var != 0</B>~"<B>Solution: The Hard One is Empty_Var != 0</B>"
-1~(empty != 0)
-1~!is_empty(empty) && (empty != 0)
-1~is_empty(empty) || (empty != 0)
-1~is_empty(empty) || (empty != zero)
-0~is_empty(zero) || (zero != 0)
-1~is_empty(five) || (five != 0)
-<b>SETUP</b>~'<b>SETUP</b>'
-&quot;Can strings contain embedded \&quot;quoted passages\&quot; (and parentheses + other characters?)?&quot;~a=htmlspecialchars(ASSESSMENT_HEADING)
-&quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~b=htmlspecialchars(QUESTIONHELP)
-Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and  &amp;lt?~c=htmlspecialchars(QUESTION_HELP)
-<span id="d" style="border-style: solid; border-width: 2px; border-color: green">Hi there!</span>~d='<span id="d" style="border-style: solid; border-width: 2px; border-color: green">Hi there!</span>'
-<b>FUNCTIONS</b>~'<b>FUNCTIONS</b>'
-5~abs(five)
-5~abs(-five)
-0.2~acos(cos(0.2))
-0~acos(cos(pi()))-pi()
-&quot;Can strings contain embedded \\&quot;quoted passages\\&quot; (and parentheses + other characters?)?&quot;~addslashes(a)
-&quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~addslashes(b)
-Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and  &amp;lt?~addslashes(c)
-0.2~asin(sin(0.2))
-0.2~atan(tan(0.2))
-0~atan2(0,1)
-1~ceil(0.3)
-1~ceil(0.7)
-0~ceil(-0.3)
-0~ceil(-0.7)
-10~ceil(9.1)
-1~checkdate(1,29,1967)
-0~checkdate(2,29,1967)
-0.2~cos(acos(0.2))
-5~count(1,2,3,4,5)
-0~count()
-5~count(one,two,three,four,five)
-2~count(a,'',c)
-NULL~date('F j, Y, g:i a',time())
-April 5, 2006, 1:02 am~date('F j, Y, g:i a',mktime(1,2,3,4,5,6))
-20~floor(exp(3))
-0~floor(asin(sin(pi())))
-9~floor(9.9)
-3~floor(pi())
-January 12, 2012, 5:27 pm~date('F j, Y, g:i a',1326410867)
-January 12, 2012, 11:27 pm~gmdate('F j, Y, g:i a',1326410867)
-"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~html_entity_decode(a)
-"can single quoted strings" . &#039;contain nested &#039;quoted sections&#039;?~html_entity_decode(b)
-Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?~html_entity_decode(c)
-&quot;Can strings contain embedded \&quot;quoted passages\&quot; (and parentheses + other characters?)?&quot;~htmlentities(a)
-&quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~htmlentities(b)
-Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and &amp;lt?~htmlentities(c)
-1~c==htmlspecialchars(htmlspecialchars_decode(c))
-1~b==htmlspecialchars(htmlspecialchars_decode(b))
-1~a==htmlspecialchars(htmlspecialchars_decode(a))
-"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~htmlspecialchars_decode(a)
-"can single quoted strings" . 'contain nested 'quoted sections'?~htmlspecialchars_decode(b)
-Can strings have embedded like , or even unbalanced "quotes or entities without terminal semicolons like & and <?~htmlspecialchars_decode(c)
-"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~htmlspecialchars(a)
-"can single quoted strings" . 'contain nested 'quoted sections'?~htmlspecialchars(b)
-Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and &lt?~htmlspecialchars(c)
-9~idate('B',1326410867)
-0~if('0',1,0)
-0~if(0,1,0)
-1~if(!0,1,0)
-0~if(!(!0),1,0)
-1~if('true',1,0)
-1~if('false',1,0)
-1~if('00',1,0)
-0~if('',1,0)
-1~if('A',1,0)
-0~if(empty,1,0)
-4~if(5 > 7,2,4)
-1~if(' ',1,0)
-there~if((one > two),'hi','there')
-64~if((one < two),pow(2,6),pow(6,2))
-H e l l o~implode(' ','H','e','l','l','o')
-1|2|3|4|5~implode('|',one,two,three,four,five)
-123~join(1,2,3)
-123 5~join(one,2,three," ",five)
-4~intval('4')
-4~intval('100',2)
-5~intval(5.7)
-0~is_empty(four)
-1~is_empty(empty)
-1~is_empty('')
-0~is_empty(0)
-0~is_empty('0')
-0~is_empty('false')
-0~is_empty('NULL')
-0~is_empty(1)
-1~is_empty(one==two)
-0~!is_empty(one==two)
-1~is_float(half)
-0~is_float(one)
-1~is_float(pi())
-0~is_float(5)
-0~is_int(half)
-1~is_int(one)
-0~is_nan(half)
-1~is_nan(WELCOME)
-1~is_null(sdfjskdfj)
-0~is_null(four)
-0~is_numeric(empty)
-1~is_numeric('1')
-1~is_numeric(four)
-0~is_numeric('hi')
-1~is_numeric(five)
-0~is_numeric(hi)
-0~is_string(four)
-1~is_string('hi')
-1~is_string(hi)
-1, 2, 3, 4, 5~list(one,two,three,min(four,five,six),max(three,four,five))
-11, 12~list(eleven,twelve)
-0, 1, 3, 5~list(0,one,'',three,'',five)
-1~log(exp(1))
-2~log(exp(2))
-I was trimmed   ~ltrim('     I was trimmed   ')
-10~max(5,6,10,-20)
-6~max(five,(one + (two * four)- three))
-6~max((one + (two * four)- three))
-212~5 + max(1,(2+3),(4 + (5 + 6)),((7 + 8) + 9),((10 + 11), 12),(13 + (14 * 15) - 16))
-29~five + max(one, (two + three), (four + (five + six)),((seven + eight) + nine),((ten + eleven), twelve),(one + (two * three) - four))
-1024~max(one,(two*three),pow(four,five),six)
-2~max(one,two)
-5~max(one,two,three,four,five)
--5~min(-5,10,15,12,-3)
-1~min(five,four,one,two,three)
-1344765967~mktime(5,6,7,8)
-1144191723~mktime(1,2,3,4,5,6)
-1,000~number_format(1000)
-1,000.23~number_format(1000.23)
-1,234,567~number_format(1234567)
-315~ceil(100*pi())
-1~pi() == pi() * 2 - pi()
-4~pow(2,2)
-27~pow(3,3)
-=~quoted_printable_decode(quoted_printable_encode('='))
-\\$~quotemeta('$')
-IGNORE THIS ERROR~rand(3,5)
-0~(a=rand())-a
-1~regexMatch('/embedded/',c)
-1~regexMatch('/^.*embedded.*$/',c)
-0~regexMatch('/joe/',c)
-1~regexMatch('/(?:dog|cat)food/','catfood stinks')
-1~regexMatch('/(?:dog|cat)food/','catfood stinks')
-1~regexMatch('/[0-9]{3}-[0-9]{2}-[0-9]{4}/','123-45-6789')
-1~regexMatch('/\d{3}-\d{2}-\d{4}/','123-45-6789')
-1~regexMatch('/(?:\(\d{3}\))\s*\d{3}-\d{4}/','(212) 555-1212')
-0~round(0.2)
-1~round(.8)
-0.07~0.01 + 0.06
-0.07~round(0.01 + 0.06,10)
-     I was trimmed~rtrim('     I was trimmed   ')
-0.2~sin(asin(0.2))
-1~sin(pi()/2)
-1~sin(pi()/2) == sin(.5 * pi())
-1~sin(0.5 * pi())
-hello,5~sprintf('%s,%d','hello',5)
-2~sqrt(4)
-158~round(stddev(4,5,6,7,8)*100)
-hello-----~str_pad('hello',10,'-')
-hello     ~str_pad('hello',10)
-hello~str_pad('hello',3)
-testtesttest~str_repeat('test',3)
-I am awesome~str_replace('You are','I am','You are awesome')
-I love LimeSurvey~str_replace('like','love','I like LimeSurvey')
-1~0==strcasecmp('Hello','hello')
-0~0==strcasecmp('Hello','hi')
-1~0==strcmp('Hello','Hello')
-0~0==strcmp('Hello','hi')
-Hi there!~c=strip_tags(d)
-hello~strip_tags('<b>hello</b>')
-5~stripos('ABCDEFGHI','f')
-hi~stripslashes('\\h\\i')
-FGHI~stristr('ABCDEFGHI','fg')
-5~strlen('12345')
-5~strlen(hi)
-0~strpos('ABCDEFGHI','f')
-5~strpos('ABCDEFGHI','F')
-2~strpos('I like LimeSurvey','like')
-54321~strrev('12345')
-0~strstr('ABCDEFGHI','fg')
-FGHI~strstr('ABCDEFGHI','FG')
-hi there!~strtolower(c)
-HI THERE!~strtoupper(c)
-3600~strtotime("27 Mar 1976 8:20")-strtotime("1976/03/27 7:20")
-10~(strtotime("13 Apr 2013")-strtotime("2013-04-03"))/60/60/24
-1985-11-05 00:00:00~date("Y-m-d H:i:s",strtotime("05 Nov 1985"))
-HOURS PASSED SINCE 1970~round(strtotime("now")/60/60)
-~""
-1985-11-05 00:00:00~date("Y-m-d H:i:s",strtotime("11/5/85"))
-2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("8/9/10"))
-2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("8/9/2010"))
-2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("2010/8/9"))
-~""
-1985-11-05 00:00:00~date("Y-m-d H:i:s",strtotime("85-11-5"))
-2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("10-8-9"))
-2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("9-8-2010"))
-2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("2010-8-9"))
-~""
-1985-11-05 00:53:20~date("Y-m-d H:i:s",strtotime("85-11-5 0:53:20"))
-2010-08-09 00:53:20~date("Y-m-d H:i:s",strtotime("10-8-9 0:53:20"))
-2010-08-09 11:12:13~date("Y-m-d H:i:s",strtotime("9-8-2010 11:12:13"))
-2010-08-09 11:12:13~date("Y-m-d H:i:s",strtotime("2010-8-9 11:12:13"))
-~""
-Today 11:11:59~date("Y-m-d H:i:s",strtotime("11.11.59"))
-Today 9:08:10~date("Y-m-d H:i:s",strtotime("9.8.10"))
-2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("9.8.2010"))
-~""
-1985-11-05 00:53:20~date("Y-m-d H:i:s",strtotime("5.11.85 0:53:20"))
-2010-08-09 11:12:13~date("Y-m-d H:i:s",strtotime("9.8.2010 11:12:13"))
-~""
-1970-01-01 00:00:00~date("Y-m-d H:i:s",strtotime("70-01-01"))
-1999-01-01 00:00:00~date("Y-m-d H:i:s",strtotime("99-01-01"))
-2001-01-01 00:00:00~date("Y-m-d H:i:s",strtotime("01-01-01"))
-1902-01-01 00:00:00~date("Y-m-d H:i:s",strtotime("1902-01-01"))
-~""
-today 2:15:00~date("Y-m-d H:i:s",strtotime("2:15:00"))
-Some dates that are not (correctly) parsed:~"Some dates that are not (correctly) parsed:"
-1969-01-19 00:00:00~date("Y-m-d H:i:s",strtotime("69-01-19"))
-1985-11-05 00:00:00~date("Y-m-d H:i:s",strtotime("85/11/5"))
-1985-11-05 00:00:00~date("Y-m-d H:i:s",strtotime("5-11-85"))
-2010-08-09 00:00:00~date("Y-m-d H:i:s",strtotime("2010.8.9"))
-1985-11-05 00:00:00~date("Y-m-d H:i:s",strtotime("85.11.5"))
-1985-11-05 00:53:20~date("Y-m-d H:i:s",strtotime("85.11.5 0:53:20"))
-2010-08-09 11:12:13~date("Y-m-d H:i:s",strtotime("9.8.10 11:12:13"))
-678~substr('1234567890',5,3)
-15~sum(1,2,3,4,5)
-15~sum(one,two,three,four,five)
-0.2~tan(atan(0.2))
-IGNORE THIS ERROR~time()
-I was trimmed~trim('     I was trimmed   ')
-Hi There You~ucwords('hi there you')
-<b>EXPRESSIONS</b>~'<b>EXPRESSIONS</b>'
-1~!'0'
-1~0 eq '0'
-0~0 ne '0'
-0~0 eq empty
-1~0 ne empty
-0~0 eq ''
-1~0 ne ''
-0~'' < 10
-0~0 < empty
-1~0 <= empty
-0~0 > empty
-1~0 >= empty
-0~'0' eq empty
-1~'0' ne empty
-0~'0' < empty
-1~'0' <= empty
-0~'0' > empty
-1~'0' >= empty
-1~empty eq empty
-0~empty ne empty
-0~'' > 0
-0~' ' > 0
-1~!0
-0~!' '
-0~!'A'
-0~!1
-0~!'1'
-1~!''
-1~!empty
-1~'0'==0
-0~'A'>0
-0~'A'<0
-0~'A'==0
-0~'A'>=0
-0~'A'<=0
-0~0>'A'
-0~0>='B'
-0~0=='C'
-0~0<'D'
-0~0<='E'
-1~0!='F'
-1~'A' or 'B'
-1~'A' and 'B'
-0~'A' eq 'B'
-1~'A' ne 'B'
-1~'A' < 'B'
-1~'A' <= 'B'
-0~'A' > 'B'
-0~'A' >= 'B'
-AB~'A' + 'B'
-NAN~'A' - 'B'
-NAN~'A' * 'B'
-NAN~'A' / 'B'
-1~'A' or empty
-0~'A' and empty
-0~'A' eq empty
-1~'A' ne empty
-0~'A' < empty
-0~'A' <= empty
-1~'A' > empty
-1~'A' >= empty
-A~'A' + empty
-NAN~'A' - empty
-NAN~'A' * empty
-NAN~'A' / empty
-0~0 or empty
-0~0 and empty
-0~0 + empty
-0~0 - empty
-0~0 * empty
-NAN~0 / empty
-0~(-1 > 0)
-0~zero
-~empty
-1~five > zero
-1~five > empty
-1~empty < 16
-1~zero == empty
-3~q5pointChoice.code
-5~q5pointChoice.type
-(question for q5pointChoice)~q5pointChoice.question
-1~q5pointChoice.relevance
-4~q5pointChoice.NAOK + 1
-NULL~q5pointChoice.bogus
-14~q5pointChoice.qid
-7~qArrayNumbers_ls1_min.code
-1~(one * (two + (three - four) + five) / six)
-2.4~(one  * two) + (three * four) / (five * six)
-50~12X34X56 * 12X3X5lab1_ber
-1~c == 'Hi there!'
-1~c == "Hi there!"
-3~a=three
-3~c=a
-12~c*=four
-15~c+=a
-5~c/=a
--1~c-=six
-24~one * two * three * four
--4~five - four - three - two
-0~two * three - two - two - two
-4~two * three - two
-105~5 + 1, 7 * 15
-7~7
-15~10 + 5
-24~12 * 2
-10~13 - 3
-3.5~14 / 4
-5~3 + 1 * 2
-1~one
-there~hi
-6.25~one * two - three / four + five
-1~one + hi
-1~two > one
-1~two gt one
-1~three >= two
-1~three ge  two
-0~four < three
-0~four lt three
-0~four <= three
-0~four le three
-0~four == three
-0~four eq three
-1~four != three
-0~four ne four
-NAN~one * hi
-0~a='hello',b='',c=0
-hello~a
-0~c
-0~one && 0
-0~two and 0
-1~five && 6
-1~seven && eight
-1~one or 0
-1~one || 0
-1~(one and 0) || (two and three)
-value for {QID}~QID
-"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~ASSESSMENT_HEADING
-"can single quoted strings" . 'contain nested 'quoted sections'?~QUESTIONHELP
-Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?~QUESTION_HELP
-value for {TOKEN:FIRSTNAME}~TOKEN:FIRSTNAME
-value for {THEREAREXQUESTIONS}~THEREAREXQUESTIONS
-15~12X3X5lab1_ber#1
-1~three == three
-1~three == 3
-11~eleven
-144~twelve * twelve
-0~!three
-8~five + + three
-2~five + - three
-<b>SYNTAX ERRORS</b>~'<b>SYNTAX ERRORS</b>'
-NULL~*
-NULL~three +
-NULL~four * / seven
-NULL~(five - three
-NULL~five + three)
-NULL~seven + = four
-NULL~>
-NULL~five > > three
-NULL~seven > = four
-NULL~seven >=
-NULL~three &&
-NULL~three ||
-NULL~three +
-NULL~three >=
-NULL~three +=
-NULL~three !
-NULL~three *
-NULL~five ! three
-NULL~(5 + 7) = 8
-NULL~&& four
-NULL~min(
-NULL~max three, four, five)
-NULL~three four
-NULL~max(three,four,five) six
-NULL~WELCOME='Good morning'
-NULL~TOKEN:FIRSTNAME='Tom'
-NULL~NUMBEROFQUESTIONS+=3
-NULL~NUMBEROFQUESTIONS*=4
-NULL~NUMBEROFQUESTIONS/=5
-NULL~NUMBEROFQUESTIONS-=6
-NULL~'Tom'='tired'
-NULL~max()
-EOD;
-
-        $atests = explode("\n",$tests);
-        $atests[] = "1\n2\n3~BREAKS";
-        $atests[] = "1<br />\n2<br />\n3~nl2br(BREAKS)";
-        $atests[] = "hi<br />\nthere<br />\nhow<br />\nare<br />\nyou?~nl2br('hi\\nthere\\nhow\\nare\\nyou?')";
-        $atests[] = "hi<br />\nthere,<br />\nuser!~nl2br(implode('\\n','hi','there,','user!'))";
-
-        $LEM =& LimeExpressionManager::singleton();
-        $em = new ExpressionManager();
-        $LEM->setTempVars($vars);
-
-        $LEMsessid = 'survey_' . Yii::app()->getConfig('surveyID');
-
-        // manually set relevance status
-        $_SESSION[$LEMsessid]['relevanceStatus'] = array();
-        foreach ($vars as $var) {
-            if (isset($var['qseq'])) {
-                $_SESSION[$LEMsessid]['relevanceStatus'][$var['qseq']] = 1;
-            }
-        }
-
-        $allJsVarnamesUsed = array();
-        $body = '';
-        $body .= '<table border="1"><tr><th>Expression</th><th>PHP Result</th><th>Expected</th><th>JavaScript Result</th><th>VarNames</th><th>JavaScript Eqn</th></tr>';
-        $i=0;
-        $javaScript = array();
-        foreach($atests as $test)
-        {
-            ++$i;
-            $values = explode("~",$test);
-            $expectedResult = array_shift($values);
-            $expr = implode("~",$values);
-            $resultStatus = 'ok';
-            $em->groupSeq=2;
-            $em->questionSeq=3;
-            $status = $em->RDP_Evaluate($expr);
-            if ($status)
-            {
-                $allJsVarnamesUsed = array_merge($allJsVarnamesUsed,$em->GetJsVarsUsed());
-            }
-            $result = $em->GetResult();
-            $valToShow = $result;   // htmlspecialchars($result,ENT_QUOTES,'UTF-8',false);
-            $expectedToShow = $expectedResult; // htmlspecialchars($expectedResult,ENT_QUOTES,'UTF-8',false);
-            $body .= "<tr>";
-            $body .= "<td>" . $em->GetPrettyPrintString() . "</td>\n";
-            if (is_null($result)) {
-                $valToShow = "NULL";
-            }
-            if ($valToShow != $expectedToShow)
-            {
-                $resultStatus = 'error';
-            }
-            $body .= "<td class='" . $resultStatus . "'>" . $valToShow . "</td>\n";
-            $body .= '<td>' . $expectedToShow . "</td>\n";
-            $javaScript[] = $em->GetJavascriptTestforExpression($expectedToShow, $i);
-            $body .= "<td id='test_" . $i . "'>&nbsp;</td>\n";
-            $varsUsed = $em->GetVarsUsed();
-            if (is_array($varsUsed) and count($varsUsed) > 0) {
-                $varDesc = array();
-                foreach ($varsUsed as $v) {
-                    $varDesc[] = $v;
-                }
-                $body .= '<td>' . implode(',<br/>', $varDesc) . "</td>\n";
-            }
-            else {
-                $body .= "<td>&nbsp;</td>\n";
-            }
-            $jsEqn = $em->GetJavaScriptEquivalentOfExpression();
-            if ($jsEqn == '')
-            {
-                $body .= "<td>&nbsp;</td>\n";
-            }
-            else
-            {
-                $body .= '<td>' . $jsEqn . "</td>\n";
-            }
-            $body .= '</tr>';
-        }
-        $body .= '</table>';
-        $body .= "<script type='text/javascript'>\n";
-        $body .= "<!--\n";
-        $body .= "var LEMgseq=2;\n";
-        $body .= "var LEMmode='group';\n";
-        $body .= "function recompute() {\n";
-        $body .= implode("\n",$javaScript);
-        $body .= "}\n//-->\n</script>\n";
-
-        $allJsVarnamesUsed = array_unique($allJsVarnamesUsed);
-        asort($allJsVarnamesUsed);
-        $pre = '';
-        $pre .= "<h3>Change some Relevance values to 0 to see how it affects computations</h3>\n";
-        $pre .= '<table border="1"><tr><th>#</th><th>JsVarname</th><th>Starting Value</th><th>Relevance</th></tr>';
-        $i=0;
-        $LEMvarNameAttr=array();
-        $LEMalias2varName=array();
-        foreach ($allJsVarnamesUsed as $jsVarName)
-        {
-            ++$i;
-            $pre .= "<tr><td>" .  $i . "</td><td>" . $jsVarName;
-            foreach($vars as $k => $v) {
-                if ($v['jsName'] == $jsVarName)
-                {
-                    $value = $v['code'];
-                }
-            }
-            $pre .= "</td><td>" . $value . "</td><td><input type='text' id='relevance" . $i . "' value='1' onchange='recompute()'/>\n";
-            $pre .= "<input type='hidden' id='" . $jsVarName . "' name='" . $jsVarName . "' value='" . $value . "'/>\n";
-            $pre .= "</td></tr>\n";
-            $LEMalias2varName[] = "'" . substr($jsVarName,5) . "':'" . $jsVarName . "'";
-            $LEMalias2varName[] = "'" . $jsVarName . "':'" . $jsVarName . "'";
-            $attrInfo = "'" . $jsVarName .  "': {'jsName':'" . $jsVarName . "'";
-
-            $varInfo = $vars[substr($jsVarName,5)];
-            foreach ($varInfo as $k=>$v) {
-                if ($k == 'code') {
-                    continue;   // will access it from hidden node
-                }
-               if ($k == 'shown') {
-                    $k = 'shown';
-                    $v = htmlspecialchars(preg_replace("/[[:space:]]/",' ',$v),ENT_QUOTES);
-                }
-                if ($k == 'jsName') {
-                    continue;   // since already set
-                }
-                $attrInfo .= ", '" . $k . "':'" . $v . "'";
-
-            }
-            $attrInfo .= ",'qid':" . $i . "}";
-            $LEMvarNameAttr[] = $attrInfo;
-        }
-        $pre .= "</table>\n";
-
-        $pre .= "<script type='text/javascript'>\n";
-        $pre .= "<!--\n";
-        $pre .= "var LEMalias2varName= {". implode(",\n", $LEMalias2varName) ."};\n";
-        $pre .= "var LEMvarNameAttr= {" . implode(",\n", $LEMvarNameAttr) . "};\n";
-        $pre .= "var LEMradix = '.';\n";
-        $pre .= "//-->\n</script>\n";
-
-        print $pre;
-        print $body;
-    }
-
-    /**
-     * Stub to access LimeSurvey's functions for internationalizing strings
-     * @param <type> $string
-     * @return <type>
-     */
-    function gT($string)
-    {
-        // ultimately should call i8n functiouns
-        $clang = App()->lang;
-        if (isset($clang)) {
-            return $clang->gT($string);
-        }
-        else {
-            return $string;
-        }
-    }
-
-
-    /**
-    * Stub to access LimeSurvey's functions for internationalizing strings
-    *
-    * @param string $single
-    * @param string $plural
-    * @param integer $number
-    */
-    function ngT($single, $plural, $number)
-    {
-        // ultimately should call i8n functiouns
-        $clang = App()->lang;
-        if (isset($clang)) {
-            return $clang->ngT($single, $plural, $number);
-        }
-        else {
-            if ($number = 1) {
-                return $single;
-            } else {
-                return $plural;
-            }
-        }
-    }
-
 }
 
 /**
@@ -3558,7 +2722,7 @@ function exprmgr_regexMatch($pattern, $input)
     } catch (Exception $e) {
         $result = false;
         // How should errors be logged?
-        echo sprintf($this->gT('Invalid PERL Regular Expression: %s'), htmlspecialchars($pattern));
+        echo sprintf(gT('Invalid PERL Regular Expression: %s'), htmlspecialchars($pattern));
     }
     return $result;
 }

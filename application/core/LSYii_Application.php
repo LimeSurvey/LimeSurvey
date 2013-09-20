@@ -50,7 +50,7 @@ class LSYii_Application extends CWebApplication
     {
         if (is_string($config) && !file_exists($config))
         {
-            $config = APPPATH . 'config/config-sample-mysql' . EXT;
+            $config = __DIR__ . '/../config/config-sample-mysql' . EXT;
         } 
         if(is_string($config)) {
             $config = require($config);
@@ -123,14 +123,14 @@ class LSYii_Application extends CWebApplication
         parent::__construct($config);
         Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
         // Load the default and environmental settings from different files into self.
-        $ls_config = require(APPPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config-defaults.php');
-        $email_config = require(APPPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'email.php');
-        $version_config = require(APPPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'version.php');
+        $ls_config = require(__DIR__ . '/../config/config-defaults.php');
+        $email_config = require(__DIR__ . '/../config/email.php');
+        $version_config = require(__DIR__ . '/../config/version.php');
         $settings = array_merge($ls_config, $version_config, $email_config);
         
-        if(file_exists(APPPATH . DIRECTORY_SEPARATOR. 'config' . DIRECTORY_SEPARATOR . 'config.php'))
+        if(file_exists(__DIR__ . '/../config/config.php'))
         {
-            $ls_config = require(APPPATH . DIRECTORY_SEPARATOR. 'config' . DIRECTORY_SEPARATOR . 'config.php');
+            $ls_config = require(__DIR__ . '/../config/config.php');
             if(is_array($ls_config['config']))
             {
                 $settings = array_merge($settings, $ls_config['config']);
