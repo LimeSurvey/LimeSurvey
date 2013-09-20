@@ -473,7 +473,7 @@
                     'value' => $item['value'],
                     'data' => $listData,
                     'options' => array(
-                        'minimumResultsForSearch' => 20,
+                        'minimumResultsForSearch' => 10,
                         'placeholder' => gT('Please choose...')
                     ),
                     'htmlOptions' => array(
