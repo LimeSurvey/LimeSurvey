@@ -1260,7 +1260,7 @@ function buildsurveysession($surveyid,$preview=false)
     if ($tokensexist == 1 && $thissurvey['anonymized'] == "N"  && tableExists('{{tokens_'.$surveyid.'}}'))
     {
         //Gather survey data for "non anonymous" surveys, for use in presenting questions
-		$_SESSION['survey_'.$surveyid]['thistoken'] = Token::model($surveyid)->findByToken($clienttoken);
+		$_SESSION['survey_'.$surveyid]['thistoken'] = Token::model($surveyid)->findByToken($clienttoken)->attributes;
     }
     $qtypes=getQuestionTypeList('','array');
     $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
