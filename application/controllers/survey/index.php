@@ -490,10 +490,9 @@ class index extends CAction {
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-				$tokenInstance = Token::model($surveyid)->usable()->findByAttributes(array('token' => $token));
+                $tokenInstance = Token::model($surveyid)->usable()->findByAttributes(array('token' => $token));
             } else {
-				$tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
-
+                $tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
             }
             if (!isset($tokenInstance))
             {
@@ -609,17 +608,17 @@ class index extends CAction {
         if (!isset($_SESSION['survey_'.$surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
         {
             // load previous answers if any (dataentry with nosubmit)
-            $sQuery="SELECT id,submitdate,lastpage FROM {$thissurvey['tablename']} WHERE {$thissurvey['tablename']}.token='{$token}' order by id desc";
-            $aRow = Yii::app()->db->createCommand($sQuery)->queryRow();
-            if ( $aRow )
+            //$oSurveyTokenInstance=SurveyDynamic::model($surveyid)->find(array('select'=>'id,submitdate,lastpage', 'condition'=>'token=:token', 'order'=>'id DESC','params'=>array('token' => $token)));
+            $oSurveyTokenInstance=SurveyDynamic::model($surveyid)->find(array('condition'=>'token=:token', 'order'=>'id DESC','params'=>array('token' => $token)));
+            if ( $oSurveyTokenInstance )
             {
-                if(($aRow['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($aRow['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
+                if((empty($oSurveyTokenInstance->submitdate) || $thissurvey['alloweditaftercompletion'] == 'Y' ) && $thissurvey['tokenanswerspersistence'] == 'Y')
                 {
-                    $_SESSION['survey_'.$surveyid]['srid'] = $aRow['id'];
-                    if (!is_null($aRow['lastpage']) && $aRow['submitdate']=='')
+                    $_SESSION['survey_'.$surveyid]['srid'] = $oSurveyTokenInstance->id;
+                    if (!empty($oSurveyTokenInstance->lastpage) && empty($oSurveyTokenInstance->submitdate))
                     {
                         $_SESSION['survey_'.$surveyid]['LEMtokenResume'] = true;
-                        $_SESSION['survey_'.$surveyid]['step'] = $aRow['lastpage'];
+                        $_SESSION['survey_'.$surveyid]['step'] = $oSurveyTokenInstance->lastpage;
                     }
                 }
                 buildsurveysession($surveyid);
