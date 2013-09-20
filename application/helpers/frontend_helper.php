@@ -426,9 +426,8 @@ function submittokens($quotaexit=false)
     {
         $thissurvey=getSurveyInfo($surveyid);
     }
-    $clienttoken=$_SESSION['survey_'.$surveyid]['thistoken']['token'];
+    $clienttoken = $_SESSION['survey_'.$surveyid]['token'];
 
-    $clang = Yii::app()->lang;
     $sitename = Yii::app()->getConfig("sitename");
     $emailcharset = Yii::app()->getConfig("emailcharset");
     // Shift the date due to global timeadjust setting
@@ -488,9 +487,9 @@ function submittokens($quotaexit=false)
                 //Fill with token info, because user can have his information with anonimity control
                 $aReplacementVars["FIRSTNAME"]=$token->firstname;
                 $aReplacementVars["LASTNAME"]=$token->lastname;
-                $aReplacementVars["TOKEN"]=$clienttoken;
+                $aReplacementVars["TOKEN"]=$token->token;
                 // added survey url in replacement vars
-                $surveylink = Yii::app()->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'],'token'=>$clienttoken));
+                $surveylink = Yii::app()->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'],'token'=>$token->token));
                 $aReplacementVars['SURVEYURL'] = $surveylink;
                 
                 $attrfieldnames=getAttributeFieldNames($surveyid);
@@ -628,13 +627,8 @@ function sendSubmitNotifications($surveyid)
 
     if (!empty($thissurvey['emailresponseto']))
     {
-        if (isset($_SESSION['survey_'.$surveyid]['token']) && $_SESSION['survey_'.$surveyid]['token'] != '' && tableExists('{{tokens_'.$surveyid.'}}'))
-        {
-            //Gather token data for tokenised surveys
-			$_SESSION['survey_'.$surveyid]['thistoken'] = Token::model($surveyid)->findByToken($_SESSION['survey_'.$surveyid]['token'])->attributes;
-        }
         // there was no token used so lets remove the token field from insertarray
-        elseif ($_SESSION['survey_'.$surveyid]['insertarray'][0]=='token')
+        if (!isset($_SESSION['survey_'.$surveyid]['token']) && $_SESSION['survey_'.$surveyid]['insertarray'][0]=='token')
         {
             unset($_SESSION['survey_'.$surveyid]['insertarray'][0]);
         }
@@ -1139,7 +1133,6 @@ function buildsurveysession($surveyid,$preview=false)
     unset($_SESSION['survey_'.$surveyid]['grouplist']);
     unset($_SESSION['survey_'.$surveyid]['fieldarray']);
     unset($_SESSION['survey_'.$surveyid]['insertarray']);
-    unset($_SESSION['survey_'.$surveyid]['thistoken']);
     unset($_SESSION['survey_'.$surveyid]['fieldnamesInfo']);
     unset($_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']);
     unset($_SESSION['survey_'.$surveyid]['groupReMap']);
@@ -1257,11 +1250,6 @@ function buildsurveysession($surveyid,$preview=false)
         $_SESSION['survey_'.$surveyid]['insertarray'][]= "token";
     }
 
-    if ($tokensexist == 1 && $thissurvey['anonymized'] == "N"  && tableExists('{{tokens_'.$surveyid.'}}'))
-    {
-        //Gather survey data for "non anonymous" surveys, for use in presenting questions
-		$_SESSION['survey_'.$surveyid]['thistoken'] = Token::model($surveyid)->findByToken($clienttoken)->attributes;
-    }
     $qtypes=getQuestionTypeList('','array');
     $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 

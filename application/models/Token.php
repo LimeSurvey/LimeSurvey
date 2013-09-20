@@ -18,7 +18,6 @@
 	 * @property int      $usesleft
 	 * @property DateTime $validfrom
 	 * @property DateTime $validuntil
-	 * @property int      $mpid
 	 *
 	 * Relations
 	 * @property Survey $survey The survey this token belongs to.
@@ -31,6 +30,36 @@
 	abstract class Token extends Dynamic
 	{
 
+
+		public function attributeLabels() {
+			$labels = array(
+				'tid' => gT('Token ID'),
+				'partcipant' => gt('Participant ID'),
+				'firstname' => gT('First name'),
+				'lastname' => gT('Last name'),
+				'email' => gT('Email address'),
+				'emailstatus' => gT('Email status'),
+				'token' => gT('Token'),
+				'language' => gT('Language code'),
+				'blacklisted' => gT('Blacklisted'),
+				'sent' => gT('Invitation sent date'),
+				'remindersent' => gT('Last reminder sent date'),
+				'remindercount' =>gT('Total numbers of sent reminders'),
+				'completed' => gT('Completed'),
+				'usesleft' => gT('Uses left'),
+				'validfrom' => gT('Valid from'),
+				'validuntil' => gT('Valid until'),
+			);
+			// Check if we have custom attributes.
+			if ($this->hasAttribute('attribute_1'))
+			{
+				foreach (unserialize($this->survey->attributedescriptions) as $key => $info)
+				{
+					$labels[$key] = $info['description'];
+				}
+			}
+			return $labels;
+		}
 		public function beforeDelete() {
 			$result = parent::beforeDelete();
 			if ($result && isset($this->surveylink))

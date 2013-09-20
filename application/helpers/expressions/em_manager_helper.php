@@ -3460,32 +3460,21 @@
             if (isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
             {
                 //Gather survey data for tokenised surveys, for use in presenting questions
-				$_SESSION[$this->sessid]['thistoken'] = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token'])->attributes;
-                $this->knownVars['TOKEN:TOKEN'] = array(
+				$this->knownVars['TOKEN:TOKEN'] = array(
                     'code'=>$_SESSION[$this->sessid]['token'],
                     'jsName_on'=>'',
                     'jsName'=>'',
                     'readWrite'=>'N',
                 );
-            }
-            if (isset($_SESSION[$this->sessid]['thistoken']))
-            {
-                foreach (array_keys($_SESSION[$this->sessid]['thistoken']) as $tokenkey)
+				
+				$token = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
+                foreach ($token as $key => $val)
                 {
-                    if ($anonymized)
-                    {
-                        $val = "";
-                    }
-                    else
-                    {
-                        $val = $_SESSION[$this->sessid]['thistoken'][$tokenkey];
-                    }
-                    $key = "TOKEN:" . strtoupper($tokenkey);
-                    $this->knownVars[$key] = array(
-                    'code'=>$val,
-                    'jsName_on'=>'',
-                    'jsName'=>'',
-                    'readWrite'=>'N',
+                    $this->knownVars["TOKEN:" . strtoupper($key)] = array(
+						'code' => $anonymized ? '' : $val,
+						'jsName_on' => '',
+						'jsName' => '',
+						'readWrite' => 'N',
                     );
                 }
             }
