@@ -105,13 +105,19 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
     min-width: 6em;
     width:auto;
-    min-height: 26px;
     margin-bottom: 0px;
-    padding: 2px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     font-size: 1em;
+    line-height: 1.5;
+    height: 2em;
+}
+textarea{
+    height: auto;
+}
+.ui-jqgrid select,.ui-jqgrid textarea,.ui-jqgrid input[type="text"]{
+    padding: 2px;
 }
 label, legend {
     width:auto;

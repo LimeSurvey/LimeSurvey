@@ -4,6 +4,7 @@
 }
 html, body {
     height: 100%;
+    font-size: 62.5%;
 }
 
 body {
@@ -11,7 +12,7 @@ body {
     text-align: left;
     background-color: #5670A1;
     margin: 0;
-    font-size: 9pt;
+    font-size: 13px;font-size: 1.3rem;
 }
 
 div, form {
@@ -22,7 +23,6 @@ div, form {
 
 ul,ol {
     text-align: left;
-    font-size: 10pt;
     color: #000;
 }
 
@@ -74,7 +74,7 @@ a:hover {
 }
 
 th, p, div {
-    font-size: 10pt;
+
 }
 
 fieldset {
@@ -91,7 +91,7 @@ legend {
 }
 
 .maintitle {
-    font-size: 14pt;
+    font-size: 14px;font-size: 1.4rem;
     font-weight: 700;
     color: #328639;
     text-align: center;
@@ -273,30 +273,27 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 }
 
 .outlinetable td {
-    font-size: 10pt;
     border: 1px solid #483D8B;
     background: #EEF6FF;
 }
 
 .outlinetable th {
-    font-size: 10pt;
     color: #1D2D45;
     background: #CCE6FF;
 }
 
 td {
-    font-size: 10pt;
     color: #1D2D45;
 }
 
 .btstyle {
-    font-size: 11px;
+    font-size: 11px;font-size: 1.1rem;
 }
 
 .disabledbtn {
     height:20px;
     color:#999;
-    font-size:11px;
+    font-size: 11px;font-size: 1.1rem;
 }
 
 .disabledUpDnBtn {
@@ -461,7 +458,6 @@ tr.odd,.oddrow {
 
 .choicelist {
     width: 200px;
-    font-size: 10pt;
 }
 
 .ranklist {
@@ -523,7 +519,7 @@ img.handle {
     width:100%;
 }
 
-a:link, a:visited {
+a {
     color: #819D26;
     text-decoration: none;
 }
@@ -718,14 +714,14 @@ ul.assessmentscope li label:first-child {
 
 .browsetable th {
     background-color: #D2E0F2;
-    font-size:9pt;
+    font-size:0.9em;font-size:0.9rem;
     padding:2px;
     text-align: center;
     min-width:80px;
 }
 
 .browsetable td {
-    font-size:8pt;
+    font-size:0.8em;font-size:0.8rem;
     padding:1px 2px;
     text-align: center;
 }
@@ -760,7 +756,7 @@ ul.assessmentscope li label:first-child {
 
 .answertable th {
     font-weight:bold;
-    font-size: 8pt;
+    font-size: 0.8em;font-size: 0.8rem;
     padding:3px;
 }
 
@@ -789,7 +785,7 @@ ul.assessmentscope li label:first-child {
     overflow-y: auto;
     text-align: left;
     margin-bottom: 0px;
-    font-size: 8pt
+    font-size: 0.8em;font-size: 0.8rem;
 }
 
 .browsetokens
@@ -1102,7 +1098,7 @@ div.messagebox .warningheader {
 /* Data entry interface */
 
 .data-entry-small-text {
-    font-size: 8pt;
+    font-size: 0.8em;font-size: 0.8rem;
 }
 
 .data-entry-tbl {
@@ -1442,10 +1438,7 @@ div.right {
 {
   display: inline-block;
   *display: inline;
-  padding: 4px 14px;
-  font-size: 14px;
-  line-height: 20px;
-  *line-height: 20px;
+  padding: 0.3em 1em;;padding: 0.3rem 1rem;
   text-align: center;
   vertical-align: middle;
 /*  font-weight:bold;*/
@@ -1472,7 +1465,6 @@ div.right {
   background-image: linear-gradient(to bottom, #dfeffc, #c8e4fa);
   background-image: -moz-linear-gradient(top, #dfeffc, #c8e4fa);
   background-repeat: repeat-x;
-
   border-color: #79B7E7 #79B7E7 #5f8eb3;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffdfeffc', endColorstr='#ffc8e4fa', GradientType=0);
@@ -1490,7 +1482,7 @@ div.right {
 
 table.limetable thead th{
     background-color: #D2E0F2;
-    font-size:8pt;
+    font-size: 8em;font-size: 0.8rem;
     padding:2px 14px 2px 10px;
 }
 
@@ -1719,7 +1711,7 @@ table#logicfiletable, #logicfiletable td, #logicfiletable th {
 }
 
 table#logicfiletable th {
-	font-size: 12pt;
+    font-size: 1.2em;font-size: 1.2rem;
 	font-type: bold;
 }
 
@@ -1738,7 +1730,7 @@ table#logicfileattributetable {
 
 table#logicfileattributetable th {
 	background-color: #D3D3D3;
-	font-size: 10pt;
+    font-size: 1em;font-size: 1rem;
 	font-type: bold;
 }
 table#logicfileattributetable td {
@@ -1778,7 +1770,7 @@ tr.LEMsubq td {
 	text-align: left;
 	margin:20px 50px 0px 50px;
 	color: red;
-	font-size: 12pt;
+    font-size: 1.2em;font-size: 1.2rem;
 }
 
 td.LEMerror  {
