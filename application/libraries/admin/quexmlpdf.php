@@ -1679,8 +1679,12 @@ class quexmlpdf extends pdf {
 		if (isset($question['text'])) $text = $question['text'];
 
 		//Loop over response groups and produce questions of various types
-		if (isset($question['responses'])) { foreach($question['responses'] as $r)
-		{
+		if (isset($question['responses']))
+        {
+            //the number of response scales is needed later on to decide on labelling scales in fixed response questions
+            $iCountResponseScales=count($question['responses']);
+            foreach($question['responses'] as $r)
+            {
 			$varname = $r['varname'];	
 
 			if (isset($r['subquestions']))
@@ -1742,10 +1746,10 @@ class quexmlpdf extends pdf {
 							{
 								$this->commitTransaction();
 							}
+							/** End redo question title/text/help **/
+                            // if there is more than one response scale, add a label to scales in the pdf 
+							$this->drawSingleChoiceHorizontal($categories,$subquestions,$text,$iCountResponseScales >1? $varname : false);
 						}
-                        /** End redo question title/text/help **/
-						$this->drawSingleChoiceHorizontal($categories,$subquestions,$text);
-						
 						break;
 					case 'number':
 						$bgtype = 4;
@@ -2302,7 +2306,7 @@ class quexmlpdf extends pdf {
 	 * @author Adam Zammit <adam.zammit@acspri.org.au>
 	 * @since  2012-06-05
 	 */
-	protected function drawSingleChoiceHorizontalHead($categories)
+	protected function drawSingleChoiceHorizontalHead($categories, $responsegrouplabel=false)
 	{
 		$total = count($categories);
 		$currentY = $this->GetY();
@@ -2313,6 +2317,14 @@ class quexmlpdf extends pdf {
 			$rwidth = $this->singleResponseVerticalAreaWidth;
 
 		$textwidth = ($this->getColumnWidth() - $this->skipColumnWidth) - ($rwidth * $total);
+        
+        //Draw a label for a group of Questions/Responses (e.g. useful for dual scale matrix questions)
+        if ($responsegrouplabel!=false)
+        {
+            $this->setBackground('question');
+            $this->setDefaultFont();
+            $this->MultiCell($textwidth,$this->responseLabelHeight,$responsegrouplabel.':',0,'L',false,0,$this->getColumnX()+$this->questionTitleWidth,$this->GetY(),true,0,false,true,$this->responseLabelHeight,'B',true);
+        }
 
 
 		//First draw a background of height $this->responseLabelHeight
@@ -2353,7 +2365,7 @@ class quexmlpdf extends pdf {
 	 * @author Adam Zammit <adam.zammit@acspri.org.au>
 	 * @since  2010-09-08
 	 */
-	protected function drawSingleChoiceHorizontal($categories, $subquestions = array(array('text' => '')),$parenttext = false)
+	protected function drawSingleChoiceHorizontal($categories, $subquestions = array(array('text' => '')),$parenttext = false, $responsegrouplabel=false)
 	{
 		$total = count($categories);
 		$currentY = $this->GetY();
@@ -2368,7 +2380,7 @@ class quexmlpdf extends pdf {
 		if ($this->allowSplittingSingleChoiceHorizontal) $this->startTransaction(); //start a transaction
 		
         //draw the header
-		$this->drawSingleChoiceHorizontalHead($categories);
+		$this->drawSingleChoiceHorizontalHead($categories, $responsegrouplabel);
 		$currentY += $this->responseLabelHeight;
         
         for ($i = 0; $i < count($subquestions); $i++)
@@ -2427,7 +2439,7 @@ class quexmlpdf extends pdf {
                 $this->SetAutoPageBreak(false); //Temporarily set so we don't trigger a page break
                 $this->fillPageBackground();
                 $this->newPage();
-                $this->drawSingleChoiceHorizontalHead($categories);
+                $this->drawSingleChoiceHorizontalHead($categories, $responsegrouplabel);
                 
                 //reset currentY
                 $currentY = $this->GetY() + $this->responseLabelHeight;
