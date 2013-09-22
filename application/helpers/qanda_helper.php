@@ -980,7 +980,7 @@ function do_5pointchoice($ia)
     $inputnames[]=$ia[1];
 
     if($aQuestionAttributes['slider_rating']==1){
-        Yii::app()->getClientScript()->registerCssFile('star-rating.css');
+        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'star-rating.css');
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."star-rating.js");
         $answer .= "<script type='text/javascript'>\n"
         . "  <!--\n"
@@ -990,7 +990,7 @@ function do_5pointchoice($ia)
     }
 
     if($aQuestionAttributes['slider_rating']==2){
-        Yii::app()->getClientScript()->registerCssFile('slider-rating.css');
+        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'slider-rating.css');
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."slider-rating.js");
         $answer .= "<script type='text/javascript'>\n"
         . " <!--\n"
@@ -3272,7 +3272,7 @@ function do_multiplenumeric($ia)
     if($aQuestionAttributes['slider_layout']==1)
     {
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."numeric-slider.js");
-        Yii::app()->getClientScript()->registerCssFile("numeric-slider.css");
+        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "numeric-slider.css");
         if ($slider_default != "")
         {
             $slider_startvalue = $slider_default;
