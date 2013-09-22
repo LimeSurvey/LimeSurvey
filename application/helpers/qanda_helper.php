@@ -1022,14 +1022,14 @@ function do_5pointchoice($ia)
         $answer.="
         <script type=\"text/javascript\">
         document.write('";
-        $answer.="<div style=\"float:left;\">'+
-        '<div style=\"text-align:center; margin-bottom:6px; width:370px;\"><div style=\"width:2%; float:left;\">1</div><div style=\"width:46%;float:left;\">2</div><div style=\"width:4%;float:left;\">3</div><div style=\"width:46%;float:left;\">4</div><div style=\"width:2%;float:left;\">5</div></div><br/>'+
-        '<div id=\"{$id}sliderBg\" style=\"background-image:url(\'{$imageurl}/sliderBg.png\'); text-align:center; background-repeat:no-repeat; height:22px; width:396px;\">'+
+        $answer.="<div style=\"float:left;\" class=\"slider-wrapper slider-5\">'+
+        '<div style=\"text-align:center; margin-bottom:6px; width:370px;\" class=\"slider-labels\"><div style=\"width:2%; float:left;\" class=\"slider-label-1\">1</div><div style=\"width:46%;float:left;\" class=\"slider-label-2\">2</div><div style=\"width:4%;float:left;\" class=\"slider-label-3\">3</div><div style=\"width:46%;float:left;\" class=\"slider-label-4\">4</div><div style=\"width:2%;float:left;\" class=\"slider-label-5\">5</div></div><br/>'+
+        '<div id=\"{$id}sliderBg\" style=\"background-image:url(\'{$imageurl}/sliderBg.png\'); text-align:center; background-repeat:no-repeat; height:22px; width:396px;\" class=\"slider-background\">'+
         '<center>'+
-        '<div id=\"{$id}slider\" style=\"width:365px;\"></div>'+
+        '<div id=\"{$id}slider\" style=\"width:365px;\" class=\"slider slider-rating\"></div>'+
         '</center>'+
         '</div></div>'+
-        '<div id=\"{$id}emoticon\" style=\"text-align:left; margin:10px; padding-left:10px;\"><img id=\"{$id}img1\" style=\"margin-left:10px;\" src=\"{$imageurl}/emoticons/{$value}.png\"/><img id=\"{$id}img2\" style=\"margin-left:-31px;margin-top:-31px;\" src=\"{$imageurl}/emoticons/{$value}.png\" />'+
+        '<div id=\"{$id}emoticon\" style=\"text-align:left; margin:10px; padding-left:10px;\" class=\"slider-emoticon-wrapper\"><img id=\"{$id}img1\" style=\"margin-left:10px;\" src=\"{$imageurl}/emoticons/{$value}.png\" class=\"slider-emoticon-1\" /><img id=\"{$id}img2\" style=\"margin-left:-31px;margin-top:-31px;\" src=\"{$imageurl}/emoticons/{$value}.png\" class=\"emoticon-2\" />'+
         '</div>";
         $answer.="');
         </script>
