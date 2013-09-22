@@ -1399,10 +1399,22 @@ function quexml_export($surveyi, $quexmllan)
                 case "1": //Dualscale multi-flexi array
                     //select subQuestions from answers table where QID
                     quexml_create_subQuestions($question,$qid,$sgq);
+                    //get the header of the first scale of the dual scale question
+                    $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='dualscale_headerA'";
+                    $QRE = Yii::app()->db->createCommand($Query)->query();
+                    $QROW = $QRE->read();
                     $response = $dom->createElement("response");
+                    if ($QROW['value'])
+                        $response->setAttribute("varName",QueXMLCleanup($QROW['value']));
                     $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
+                    
+                    //get the header of the second scale of the dual scale question
+                    $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='dualscale_headerB'";
+                    $QRE = Yii::app()->db->createCommand($Query)->query();
+                    $QROW = $QRE->read();
                     $response2 = $dom->createElement("response");
-                    $response2->setAttribute("varName",QueXMLCleanup($sgq) . "_2");
+                    if ($QROW['value'])
+                        $response2->setAttribute("varName",QueXMLCleanup($QROW['value']));
                     $response2->appendChild(QueXMLCreateFixed($qid,false,false,1,$other,$sgq));
                     $question->appendChild($response);
                     $question->appendChild($response2);
