@@ -59,6 +59,33 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05beta6 (build 130702) to 2.05RC1 (build 130924) Aug 23, 2013
+-New feature #8124: quexf: comment field for LIST WITH COMMENT question type (mfaber)
+-New feature #8168: limesurvey button style for gringegreen and darkblue template (Denis Chenu)
+-New feature: Update_response function for LSRC2 (kfegert)
+-Fixed issue #8121: Missing classes for "resume later" button cause template elements to look different (Denis Chenu)
+-Fixed issue #8089: Faulty token table definition (Menno Dekker)
+-Fixed issue #8110: Error: Property "Permission.sid" is not defined. (when copying a survey) (Menno Dekker)
+-Fixed issue #7882: Monday is now first day in calender (partial fix) (mfaber)
+-Fixed issue #7931: ComfortUpdate offers stable version 2.0 as an update though it is not really possible to update (Carsten Schmitz)
+-Fixed issue #7934: Shows availability of update to 2.05 when set to show only stable versions (Carsten Schmitz)
+-Fixed issue #7966: XSS vulnerability when adding a user in the CPDB (Carsten Schmitz)
+-Fixed issue #7967: Without javascript there are still present button that don't work in the survey : back, clear the survey, send it incomplete. (tpartner)
+-Fixed issue #8014: Incorrect language survey settings when access a restricted survey without token (Denis Chenu)
+-Fixed issue #8056: "Other" text entry does not trigger filter (Denis Chenu)
+-Fixed issue #8065: Answer code conversion to '0' (mfaber)
+-Fixed issue #8085: PHP notice at public statistics and miscalculation on quartile (Denis Chenu)
+-Fixed issue #8095: No saveid in printaswers and no title in PDF (Denis Chenu)
+-Fixed issue #8099: Cannot save label sets (Denis Chenu)
+-Fixed issue #8120: Users with IE 8 cannot delete a survey response (Carsten Schmitz)
+-Fixed issue #8141: Unable to set publicurl (Denis Chenu)
+-Fixed issue #8154: Invalid URL in email to resume survey later when name contains a space (Carsten Schmitz)
+-Fixed issue #8159: (quexml-pdf) labels missing in text/number matrix questions (mfaber)
+-Fixed issue #8161: (quexml-pdf) field lengths (mfaber)
+-Fixed issue #8166: Placeholders for token and email are not available in registration emails (Carsten Schmitz)
+-Fixed issue #8182: (quexf-pdf) labels for dual matrix question (mfaber)
+-Fixed issue: Only load answer with token if tokenanswerspersistence is Yes (Denis Chenu)
+
 Changes from 2.05beta5 (build 130702) to 2.05beta6 (build 130816) Aug 16, 2013
 -New feature #7687: RemoteControl2 export_responses should also have an Array / JSON with responses (Denis Chenu)
 -New feature #7810: Implement max/min date for date question (mfaber)
