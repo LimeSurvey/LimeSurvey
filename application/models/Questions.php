@@ -332,9 +332,15 @@
                                                         ->bindParam(":sid", $surveyid, PDO::PARAM_INT)->queryAll();
         }
         
+        /**
+        * Checks if a certain question has conditions set in the condition table
+        * Returns the number of conditions set
+        * 
+        * @param mixed $iQuestionID  The question ID
+        */
         public function hasConditions($iQuestionID)
         {
-            return self::model()->count('qid = '.$iQuestionID);  
+            return Conditions::model()->count('qid = '.$iQuestionID);  
         }
 
     }
