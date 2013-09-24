@@ -76,6 +76,12 @@ function limesurveySubmitHandler(){
         $("button[type='submit']").not($(this)).prop('disabled',true);
         $("a.button").not($(this)).addClass('disabled');
     });
+    if('v'=='\v'){ // Quick hack for IE6/7/ Alternative ? http://tanalin.com/en/articles/ie-version-js/ ?
+        $(function() { 
+            $("#defaultbtn").css('display','inline').css('width','0').css('height','0').css('padding','0').css('margin','0').css('overflow','hidden');
+            $("#limesurvey [type='submit']").not("#defaultbtn").first().before($("#defaultbtn"));
+        });
+    }
 }
 
 
