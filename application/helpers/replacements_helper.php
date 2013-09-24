@@ -882,36 +882,42 @@ function doHtmlSaveAll($move="")
     $surveyid=Yii::app()->getConfig('surveyID');
     $thissurvey=getsurveyinfo($surveyid);
     $clang = Yii::app()->lang;
-    $disabled=($thissurvey['active'] != "Y")? array("disabled"=>"disabled"):NULL;
+    $aHtmlOptionsLoadall=array('type'=>'submit','id'=>'loadallbtn','value'=>'loadall','name'=>'loadall','class'=>"saveall submit button");
+    $aHtmlOptionsSaveall=array('type'=>'submit','id'=>'saveallbtn','value'=>'saveall','name'=>'saveall','class'=>"saveall submit button");
+    if($thissurvey['active'] != "Y"){
+        $aHtmlOptionsLoadall['disabled']='disabled';
+        $aHtmlOptionsSaveall['disabled']='disabled';
+    }
     $_saveall="";
     // Find out if the user has any saved data
     if ($thissurvey['format'] == 'A')
     {
         if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
         {
-            $_saveall .= CHtml::htmlButton($clang->gT("Load unfinished survey"),array('type'=>'submit','id'=>"loadallbtn",'value'=>'loadall','name'=>'loadall','class'=>"saveall submit button",$disabled));
+            $_saveall .= CHtml::htmlButton($clang->gT("Load unfinished survey"),$aHtmlOptionsLoadall);
         }
-        $_saveall .= CHtml::htmlButton($clang->gT("Resume later"),array('type'=>'submit','id'=>"saveallbtn",'value'=>'saveall','name'=>'saveall','class'=>"saveall submit button",$disabled));
+        $_saveall .= CHtml::htmlButton($clang->gT("Resume later"),$aHtmlOptionsSaveall);
     }
     elseif ($surveyid && (!isset($_SESSION['survey_'.$surveyid]['step']) || !$_SESSION['survey_'.$surveyid]['step']))//First page, show LOAD (but not save)
     {  
         if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
         {
-            $_saveall .= CHtml::htmlButton($clang->gT("Load unfinished survey"),array('type'=>'submit','id'=>"loadallbtn",'value'=>'loadall','name'=>'loadall','class'=>"saveall submit button",$disabled));
+            $_saveall .= CHtml::htmlButton($clang->gT("Load unfinished survey"),$aHtmlOptionsLoadall);
         }
     }
     elseif ($surveyid && (isset($_SESSION['survey_'.$surveyid]['maxstep']) && $_SESSION['survey_'.$surveyid]['maxstep']==1) && $thissurvey['showwelcome']=="N")//First page, show LOAD and SAVE
     {  //First page, show LOAD
         if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
         {
-            $_saveall .= CHtml::htmlButton($clang->gT("Load unfinished survey"),array('type'=>'submit','id'=>"loadallbtn",'value'=>'loadall','name'=>'loadall','class'=>"saveall submit button",$disabled));
+            $_saveall .= CHtml::htmlButton($clang->gT("Load unfinished survey"),$aHtmlOptionsLoadall);
         }
-        $_saveall .= CHtml::htmlButton($clang->gT("Resume later"),array('type'=>'submit','id'=>"saveallbtn",'value'=>'saveall','name'=>'saveall','class'=>"saveall submit button",$disabled));
+        $_saveall .= CHtml::htmlButton($clang->gT("Resume later"),$aHtmlOptionsSaveall);
     }
     elseif (!isset($_SESSION['survey_'.$surveyid]['scid']) || $move == "movelast") // Not on last page or submited survey
     {
-        $_saveall .= CHtml::htmlButton($clang->gT("Resume later"),array('type'=>'submit','id'=>"saveallbtn",'value'=>'saveall','name'=>'saveall','class'=>"saveall submit button",$disabled));
+        $_saveall .= CHtml::htmlButton($clang->gT("Resume later"),$aHtmlOptionsSaveall);
     }
+    $_saveall="";
     return $_saveall;
 }
 
