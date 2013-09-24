@@ -52,7 +52,7 @@ class SurveyRuntimeHelper {
 								$_SESSION[$LEMsessid]['step'] == $group['step'] ? 'current' : ''
 
 							));
-							$sButtonSubmit=CHtml::htmlButton(gT('Go to this group'),array('type'=>'submit','value'=>$group['step'],'name'=>'move','class'=>'hide'));
+							$sButtonSubmit=CHtml::htmlButton(gT('Go to this group'),array('type'=>'submit','value'=>$group['step'],'name'=>'move','class'=>'jshide'));
 							echo CHtml::tag('li', array(
 								'data-gid' => $group['gid'],
 								'title' => $group['description'],
@@ -150,7 +150,7 @@ class SurveyRuntimeHelper {
 			echo "<div class=\"row $class\"\">";
 			echo "<span class=\"hdr\">$v</span>";
 			echo "<span title=\"$sText\">$sText</span>";
-            echo CHtml::htmlButton($sButtonText,array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'hide'));
+            echo CHtml::htmlButton($sButtonText,array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'jshide'));
 			echo "</div>";
 		}
 
@@ -942,6 +942,8 @@ class SurveyRuntimeHelper {
             <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         // <-- END FEATURE - SAVE
 
+        // The default submit button
+        echo CHtml::htmlButton("default",array('type'=>'submit','id'=>"defaultbtn",'value'=>"default",'name'=>'move','class'=>"submit noview",'style'=>'display:none'));
         if ($surveyMode == 'survey')
         {
             if (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')

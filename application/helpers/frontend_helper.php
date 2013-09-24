@@ -1623,7 +1623,7 @@ function surveymover()
     // Construction of mover
     if($sMovePrev){
         $sLangMoveprev=$clang->gT("Previous");
-        $sSurveyMover.= CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>'move','accesskey'=>'p','class'=>$sClass));
+        $sSurveyMover.= CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass));
     }
     if($sMovePrev && $sMoveNext){
         $sSurveyMover .= " ";
@@ -1637,10 +1637,10 @@ function surveymover()
             $sLangMovenext=$clang->gT("Next");
             $sAccessKeyNext='n';
         }
-        $sSurveyMover.= CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>'move','accesskey'=>$sAccessKeyNext,'class'=>$sClass));
+        $sSurveyMover.= CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass));
      }
      // Add a default submit button : first button is one clicked (carriage return on text input)
-    $sSurveyMover=CHtml::button($sMoveNext,array('type'=>'submit','id'=>'move','name'=>'move','style'=>'display:none')).$sSurveyMover;
+    //$sSurveyMover=CHtml::button($sMoveNext,array('type'=>'submit','id'=>'move','name'=>'move','style'=>'display:none')).$sSurveyMover;
     return $sSurveyMover;
 }
 
@@ -2287,3 +2287,37 @@ function SetSurveyLanguage($surveyid, $language)
     $oApplication->lang=$clang;
     return $clang;
 }
+
+/**
+* getMove get move button clicked
+**/
+function getMove()
+{
+#    $clang = Yii::app()->lang;
+    $aAcceptedMove=array('movenext','movesubmit','moveprev','saveall','loadall','clearall');
+    // We can control is save and load are OK : todo fix according to survey settings
+    // Maybe allow $aAcceptedMove in Plugin
+    $move=Yii::app()->request->getParam('move');
+    foreach($aAcceptedMove as $sAccepteMove)
+    {
+        if(Yii::app()->request->getParam($sAccepteMove))
+            $move=$sAccepteMove;
+    }
+    if($move=='default')
+    {
+        $surveyid=Yii::app()->getConfig('surveyID');
+        $thissurvey=getsurveyinfo($surveyid);
+        $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step']))?$_SESSION['survey_'.$surveyid]['step']:false;
+        $iSessionTotalSteps=(isset($_SESSION['survey_'.$surveyid]['totalsteps']))?$_SESSION['survey_'.$surveyid]['totalsteps']:false;
+        if ($iSessionStep && ($iSessionStep == $iSessionTotalSteps)|| $thissurvey['format'] == 'A')
+        {
+            $move="movesubmit";
+        }
+        else
+        {
+            $move="movenext";
+        }
+    }
+    return $move;
+}
+

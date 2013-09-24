@@ -72,28 +72,10 @@ $(document).ready(function()
 // Deactivate all other button on submit
 function limesurveySubmitHandler(){
     $("#limesurvey").on("click",".disabled",function(){return false;});
-    $(document).on('click',"button[name='move'],a.button", function(event){
-        $("button[name='move']").not($(this)).prop('disabled',true);
+    $(document).on('click',"button[type='submit'],a.button", function(event){
+        $("button[type='submit']").not($(this)).prop('disabled',true);
         $("a.button").not($(this)).addClass('disabled');
     });
-// Deactivate submit on text validation : don't work with index actually
-//    $(document).on('submit',"#limesurvey", function(event){
-//        if (event.originalEvent.explicitOriginalTarget.name != "move") {
-//            console.log(event.originalEvent);
-//            event.preventDefault();
-//        }
-//    });
-
-    /* 130712 IE6+IE7 need this */
-    if('v'=='\v'){ // Quick hack for IE6/7 surely 8 and more
-        $(function() {
-        $("button[name='move']").click(function(e){
-                $("button[name='move']").prop('disabled',true);
-                $('<input>').attr({type: 'hidden',name: 'move',value: $(this).val()}).appendTo('#limesurvey');
-                $("#limesurvey").submit();
-            });
-        });
-    }
 }
 
 
@@ -147,6 +129,7 @@ function navbuttonsJqueryUi(){
  * Manage the index
  */
 function manageIndex(){
+    $("#index .jshide").hide();
     $("#index").on('click','li,.row',function(e){ 
         if(!$(e.target).is('button')){
             $(this).children("[name='move']").click();
