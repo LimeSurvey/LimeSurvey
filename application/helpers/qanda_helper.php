@@ -2080,6 +2080,12 @@ function do_ranking($ia)
     } else {
         $max_answers=$anscount;
     }
+    // Get the max number of line needed
+    if(ctype_digit($max_answers) && intval($max_answers)<$anscount){
+        $iMaxLine=$max_answers;
+    }else{
+        $iMaxLine=$anscount;
+    }
     if (trim($aQuestionAttributes["min_answers"])!='')
     {
         $min_answers=trim($aQuestionAttributes["min_answers"]);
@@ -2104,7 +2110,7 @@ function do_ranking($ia)
         if($i==1){
             $answer .=$clang->gT('First choice');
         }else{
-            $answer .=$clang->gT('Next choice');
+            $answer .=sprintf($clang->gT('Choice of rank %s'),$i);
         }
         $answer .= "</label>";
         $answer .= "<select name=\"{$myfname}\" id=\"answer{$myfname}\">\n";
