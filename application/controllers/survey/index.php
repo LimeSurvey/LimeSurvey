@@ -681,7 +681,7 @@ class index extends CAction {
     function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
         $baselang = Yii::app()->getConfig('defaultlang');
-        if ( is_int($mvSurveyIdOrBaseLang))
+        if ( is_numeric($mvSurveyIdOrBaseLang))
         {
             $survey = Survey::model()->findByPk($mvSurveyIdOrBaseLang);
             if (!is_null($survey)) {
