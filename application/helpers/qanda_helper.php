@@ -2099,6 +2099,12 @@ function do_ranking($ia)
     } else {
         $max_answers=$anscount;
     }
+    // Get the max number of line needed
+    if(ctype_digit($max_answers) && intval($max_answers)<$anscount){
+        $iMaxLine=$max_answers;
+    }else{
+        $iMaxLine=$anscount;
+    }
     if (trim($aQuestionAttributes["min_answers"])!='')
     {
         $min_answers=trim($aQuestionAttributes["min_answers"]);
@@ -2115,7 +2121,7 @@ function do_ranking($ia)
         }
     $answer .= '<div class="ranking-answers">
     <ul class="answers-list select-list">';
-    for ($i=1; $i<=$anscount; $i++)
+    for ($i=1; $i<=$iMaxLine; $i++)
     {
         $myfname=$ia[1].$i;
         $answer .= "\n<li class=\"select-item\">";
