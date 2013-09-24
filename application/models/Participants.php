@@ -166,7 +166,7 @@ class Participants extends CActiveRecord
 
     /**
      * This function updates the data edited in the jqgrid
-     * 
+     *
      * @param aray $data
      */
     function updateRow($data)
@@ -195,14 +195,14 @@ class Participants extends CActiveRecord
             ->leftJoin('{{participant_shares}}', ' {{participants}}.participant_id={{participant_shares}}.participant_id')
             ->where('owner_uid = :userid1 OR share_uid = :userid2')
             ->group('{{participants}}.participant_id,{{participant_shares}}.can_edit');
-        
+
         $command = Yii::app()->db->createCommand()
                 ->select('p.*, ps.can_edit')
                 ->from('{{participants}} p')
                 ->join('(' . $subquery->getText() . ') ps', 'ps.participant_id = p.participant_id')
                 ->bindParam(":userid1", $userid, PDO::PARAM_INT)
                 ->bindParam(":userid2", $userid, PDO::PARAM_INT);
-        
+
         return $command->queryAll();
     }
 
@@ -220,14 +220,14 @@ class Participants extends CActiveRecord
 
     /**
      * Get the number of participants, no restrictions
-     * 
+     *
      * @return int
      */
     function getParticipantsCountWithoutLimit()
     {
-        return Participants::model()->count();    
+        return Participants::model()->count();
     }
-    
+
     function getParticipantsWithoutLimit()
     {
         return Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
@@ -237,10 +237,10 @@ class Participants extends CActiveRecord
      * This function combines the shared participant and the central participant
      * table and searches for any reference of owner id in the combined record
      * of the two tables
-     * 
+     *
      * @param  int $userid The id of the owner
      * @return int The number of participants owned by $userid who are shared
-     */  
+     */
     function getParticipantsSharedCount($userid)
     {
         $count = Yii::app()->db->createCommand()->select('count(*)')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
@@ -250,37 +250,37 @@ class Participants extends CActiveRecord
     function getParticipants($page, $limit,$attid, $order = null, $search = null, $userid = null)
     {
         $data = $this->getParticipantsSelectCommand(false, $attid, $search, $userid, $page, $limit, $order);
-        
+
         $allData = $data->queryAll();
 
         return $allData;
     }
-    
+
     /**
      * Duplicated from getparticipants, only to have a count
-     * 
+     *
      * @param type $attid
      * @param type $order
      * @param CDbCriteria $search
      * @param type $userid
      * @return type
-     */    
+     */
     function getParticipantsCount($attid, $search = null, $userid = null) {
         $data = $this->getParticipantsSelectCommand(true, $attid, $search, $userid);
-        
+
         return $data->queryScalar();
     }
-    
+
     private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
     {
         $selectValue = array();
         $joinValue = array();
-        
+
         $selectValue[] = "p.*";
         $selectValue[] = "luser.full_name as ownername";
         $selectValue[] = "luser.users_name as username";
-        
-        
+
+
         // Add survey count subquery
         $subQuery = Yii::app()->db->createCommand()
                 ->select('count(*) survey')
@@ -292,7 +292,7 @@ class Participants extends CActiveRecord
         {
             $attid = $attid['attribute_id'];
             $databasetype = Yii::app()->db->getDriverName();
-            if ($databasetype=='mssql' || $databasetype=="sqlsrv")
+            if ($databasetype=='mssql' || $databasetype=="sqlsrv" || $sDatabaseType == 'dblib')
             {
                 $selectValue[]= "cast(attribute".$attid.".value as varchar(max)) as a".$attid;
             } else {
@@ -300,7 +300,7 @@ class Participants extends CActiveRecord
             }
             array_push($joinValue,"LEFT JOIN {{participant_attribute}} attribute".$attid." ON attribute".$attid.".participant_id=p.participant_id AND attribute".$attid.".attribute_id=".$attid);
         }
-        
+
         $aConditions = array(); // this wil hold all conditions
         $aParams = array();
         if (!is_null($userid)) {
@@ -309,16 +309,16 @@ class Participants extends CActiveRecord
             $joinValue[]   = 'LEFT JOIN {{participant_shares}} ON p.participant_id={{participant_shares}}.participant_id';
             $aConditions[] = 'p.owner_uid = :userid1 OR {{participant_shares}}.share_uid = :userid2';
         }
-              
+
         if ($count) {
             $selectValue = 'count(*) as cnt';
         }
-        
+
         $data = Yii::app()->db->createCommand()
                 ->select($selectValue)
                 ->from('{{participants}} p');
         $data->setJoin($joinValue);
-        
+
         if (!empty($search)) {
             /* @var $search CDbCriteria */
              $aSearch = $search->toArray();
@@ -327,16 +327,16 @@ class Participants extends CActiveRecord
         }
         $condition = ''; // This will be the final condition
         foreach ($aConditions as $idx => $newCondition) {
-            if ($idx>0) { 
+            if ($idx>0) {
                 $condition .= ' AND ';
             }
             $condition .= '(' . $newCondition . ')';
         }
-                
+
         if (!empty($condition)) {
             $data->setWhere($condition);
         }
-        
+
         if (!$count) {
             // Apply order and limits
             if (!empty($order)) {
@@ -349,14 +349,14 @@ class Participants extends CActiveRecord
                      ->limit($limit);
             }
         }
-        
+
         $data->bindValues($aParams);
-        
+
         if (!is_null($userid)) {
             $data->bindParam(":userid1", $userid, PDO::PARAM_INT)
                  ->bindParam(":userid2", $userid, PDO::PARAM_INT);
         }
-        
+
         return $data;
     }
 
@@ -367,7 +367,7 @@ class Participants extends CActiveRecord
     }
 
     /**
-     * This function deletes the participant from the participants table,           
+     * This function deletes the participant from the participants table,
      * references in the survey_links table (but not in matching tokens tables)
      * and then all the participants attributes.
      * @param $rows Participants ID separated by comma
@@ -376,7 +376,7 @@ class Participants extends CActiveRecord
     function deleteParticipants($rows, $bFilter=true)
     {
         // Converting the comma separated IDs to an array and assign chunks of 100 entries to have a reasonable query size
-        $aParticipantsIDChunks = array_chunk(explode(",", $rows),100); 
+        $aParticipantsIDChunks = array_chunk(explode(",", $rows),100);
         foreach ($aParticipantsIDChunks as $aParticipantsIDs)
         {
 
@@ -386,7 +386,7 @@ class Participants extends CActiveRecord
             }
 
             Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
-            
+
             // Delete survey links
             Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
             // Delete participant attributes
@@ -394,10 +394,10 @@ class Participants extends CActiveRecord
         }
     }
 
-    
+
     /**
     * Filter an array of participants IDs according to permissions of the person being logged in
-    * 
+    *
     * @param mixed $aParticipantsIDs
     */
     function filterParticipantIDs($aParticipantIDs)
@@ -407,13 +407,13 @@ class Participants extends CActiveRecord
                 $aCondition=array('and','owner_uid=:owner_uid',array('in', 'participant_id', $aParticipantIDs));
                 $aParameter=array(':owner_uid'=>Yii::app()->session['loginID']);
                 $aParticipantIDs=Yii::app()->db->createCommand()->select('participant_id')->from(Participants::model()->tableName())->where($aCondition, $aParameter)->queryColumn();
-            }           
+            }
             return $aParticipantIDs;
     }
-    
+
     /**
     * Deletes CPDB participants identified by their participant ID from token tables
-    * 
+    *
     * @param mixed $sParticipantsIDs
     */
     function deleteParticipantToken($sParticipantsIDs)
@@ -421,7 +421,7 @@ class Participants extends CActiveRecord
         /* This function deletes the participant from the participants table,
            the participant from any tokens table they're in (using the survey_links table to find them)
            and then all the participants attributes. */
-        $aParticipantsIDChunks = array_chunk(explode(",", $sParticipantsIDs),100); 
+        $aParticipantsIDChunks = array_chunk(explode(",", $sParticipantsIDs),100);
         foreach ($aParticipantsIDChunks as $aParticipantsIDs)
         {
             $aParticipantsIDs=$this->filterParticipantIDs($aParticipantsIDs);
@@ -446,14 +446,14 @@ class Participants extends CActiveRecord
     * the participant from any tokens table they're in (using the survey_links table to find them),
     * all responses in surveys they've been linked to,
     * and then all the participants attributes.
-    * 
+    *
     * @param mixed $sParticipantsIDs
     */
     function deleteParticipantTokenAnswer($sParticipantsIDs)
     {
         $aParticipantsIDs = explode(",", $sParticipantsIDs);
         $aParticipantsIDs=$this->filterParticipantIDs($aParticipantsIDs);
-        
+
         foreach ($aParticipantsIDs as $row)
         {
             $tokens = Yii::app()->db->createCommand()
@@ -494,7 +494,7 @@ class Participants extends CActiveRecord
                     }
                     if (hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
                     {
-                        
+
                         Yii::app()->db->createCommand()
                                       ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = :pid' , array(':pid'=>$value['participant_id'])); // Deletes matching token table entries
                     }
@@ -692,7 +692,7 @@ class Participants extends CActiveRecord
                 $i = $i + 4;
             }
         }
-        
+
         if ($page == 0 && $limit == 0)
         {
             $arr = Participants::model()->findAll($command);
@@ -716,8 +716,8 @@ class Participants extends CActiveRecord
 
         return $data;
     }
-    
-    /** 
+
+    /**
      * Function builds a select query for searches through participants using the $condition field passed
      * which is in the format "firstfield||sqloperator||value||booleanoperator||secondfield||sqloperator||value||booleanoperator||etc||etc||etc"
      * for example: "firstname||equal||Jason||and||lastname||equal||Cleeland" will produce SQL along the lines of "WHERE firstname = 'Jason' AND lastname=='Cleeland'"
@@ -749,11 +749,11 @@ class Participants extends CActiveRecord
             $param = ':condition_'.$i;
             switch ($sOperator)
             {
-                case 'equal': 
+                case 'equal':
                     $operator = '=';
                     $aParams[$param] = $sValue;
                     break;
-                case 'contains': 
+                case 'contains':
                     $operator = 'LIKE';
                     $aParams[$param] = '%'.$sValue.'%';
                     break;
@@ -761,19 +761,19 @@ class Participants extends CActiveRecord
                     $operator = 'LIKE';
                     $aParams[$param] = $sValue.'%';
                     break;
-                case 'notequal': 
+                case 'notequal':
                     $operator = '!=';
                     $aParams[$param] = $sValue;
                     break;
-                case 'notcontains': 
+                case 'notcontains':
                     $operator = 'NOT LIKE';
                     $aParams[$param] = '%'.$sValue.'%';
                     break;
-                case 'greaterthan': 
+                case 'greaterthan':
                     $operator = '>';
                     $aParams[$param] = $sValue;
                     break;
-                case 'lessthan': 
+                case 'lessthan':
                     $operator = '<';
                     $aParams[$param] = $sValue;
                     break;
@@ -786,11 +786,11 @@ class Participants extends CActiveRecord
             {
                 $booloperator='AND';
             }
-            
+
             if($sFieldname=="email")
             {
                 $command->addCondition('p.email ' . $operator . ' '.$param, $booloperator);
-            } 
+            }
             elseif($sFieldname=="survey")
             {
                 $subQuery = Yii::app()->db->createCommand()
@@ -799,7 +799,7 @@ class Participants extends CActiveRecord
                 ->join('{{surveys_languagesettings}} sls', 'sl.survey_id = sls.surveyls_survey_id')
                 ->where('sls.surveyls_title '. $operator.' '.$param)
                 ->group('sl.participant_id');
-                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);             
+                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);
             }
             elseif($sFieldname=="surveyid")
             {
@@ -808,7 +808,7 @@ class Participants extends CActiveRecord
                 ->from('{{survey_links}} sl')
                 ->where('sl.survey_id '. $operator.' '.$param)
                 ->group('sl.participant_id');
-                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);             
+                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);
             }
             elseif($sFieldname=="surveys") //Search by quantity of linked surveys
             {
@@ -835,15 +835,15 @@ class Participants extends CActiveRecord
             {
                 $command->addCondition($sFieldname . ' '.$operator.' '.$param, $booloperator);
             }
-                       
+
             $i++;
         }
-        
+
         if (count($aParams)>0)
         {
             $command->params = $aParams;
         }
-                
+
         return $command;
     }
 

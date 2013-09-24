@@ -3458,10 +3458,10 @@
             $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);   // group-level relevance based upon grelevance equation
             return ($grel && $qrel);
         }
-        
+
         /**
          * Returns true if the group is relevant and should be shown
-         * 
+         *
          * @param int $gid
          * @return boolean
          */
@@ -4471,8 +4471,8 @@
                 $sdata = array_filter($sdata);
                 Survey_dynamic::sid($this->sid);
                 $oSurvey = new Survey_dynamic;
-                
-                $iNewID = $oSurvey->insertRecords($sdata); 
+
+                $iNewID = $oSurvey->insertRecords($sdata);
                 if ($iNewID)    // Checked
                 {
                     $srid = $iNewID;
@@ -4486,13 +4486,13 @@
                 if ($this->surveyOptions['savetimings']) {
                     Survey_timings::sid($this->sid);
                     $oSurveyTimings = new Survey_timings;
-                    
+
                     $tdata = array(
                     'id'=>$srid,
                     'interviewtime'=>0
                     );
                     switchMSSQLIdentityInsert("survey_{$this->sid}_timings", true);
-                    $iNewID = $oSurveyTimings->insertRecords($tdata); 
+                    $iNewID = $oSurveyTimings->insertRecords($tdata);
                     switchMSSQLIdentityInsert("survey_{$this->sid}_timings", false);
                 }
             }
@@ -4569,7 +4569,7 @@
                     $query .= $_SESSION[$this->sessid]['srid'];
 
                     if (!dbExecuteAssoc($query))
-                    {                 
+                    {
                         echo submitfailed('');  // TODO - report SQL error?
 
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
@@ -7251,7 +7251,7 @@ EOD;
             ." c.cqid = 0 and c.qid = q.qid";
 
             $databasetype = Yii::app()->db->getDriverName();
-            if ($databasetype=='mssql')
+            if ($databasetype=='mssql' || $databasetype=='dblib')
             {
                 $query .= " order by sid, c.qid, scenario, cqid, cfieldname, value";
             }
@@ -7343,7 +7343,7 @@ EOD;
             }
 
             $databasetype = Yii::app()->db->getDriverName();
-            if ($databasetype=='mssql' || $databasetype=="sqlsrv")
+            if ($databasetype=='mssql' || $databasetype=="sqlsrv" || $databasetype == 'dblib')
             {
                 $query = "select distinct a.qid, a.attribute, CAST(a.value as varchar(max)) as value";
             }
@@ -7457,7 +7457,7 @@ EOD;
                     'grelevance' => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $d['grelevance']:1,
                  );
                 $qinfo[$_order] = $gid[$d['gid']];
-                ++$_order;                    
+                ++$_order;
             }
             if (isset($_SESSION['survey_'.$surveyid]) && isset($_SESSION['survey_'.$surveyid]['grouplist'])) {
                 $_order=0;
@@ -8026,7 +8026,7 @@ EOD;
             // End Message
 
             $LEM =& LimeExpressionManager::singleton();
-            
+
             $aSurveyInfo=getSurveyInfo($sid);
 
             $allErrors = array();
@@ -8970,15 +8970,15 @@ EOD;
             }
             return $out;
         }
-        
-        /** 
+
+        /**
         * Returns the survey ID of the EM singleton
         */
         public static function getLEMsurveyId() {
                 $LEM =& LimeExpressionManager::singleton();
                 return $LEM->sid;
-        }  
-        
+        }
+
     }
 
     /**
@@ -9003,6 +9003,6 @@ EOD;
         }
         return ($a['qseq'] < $b['qseq']) ? -1 : 1;
     }
-  
-  
+
+
 ?>

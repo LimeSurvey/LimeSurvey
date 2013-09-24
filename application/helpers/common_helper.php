@@ -384,7 +384,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
             }
         } // End Foreach
     }
-    
+
     //Only show each activesurvey group if there are some
     if ($activesurveys!='')
     {
@@ -1292,7 +1292,7 @@ function getUserList($outputformat='fullinfoarray')
         if (isset($myuid))
         {
             $sDatabaseType = Yii::app()->db->getDriverName();
-            if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv")
+            if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv" || $sDatabaseType=="dblib")
             {
                 $sSelectFields = 'users_name,uid,email,full_name,parent_id,create_survey,participant_panel,configurator,create_user,delete_user,superadmin,manage_template,manage_label,CAST(password as varchar) as password';
             }
@@ -1313,13 +1313,13 @@ function getUserList($outputformat='fullinfoarray')
             SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}
             UNION
             SELECT {$sSelectFields} from {{users}} v where uid={$myuid}";
-            
+
         }
         else
         {
             return array(); // Or die maybe
         }
-                                                        
+
     }
     else
     {
@@ -1430,10 +1430,10 @@ function getSurveyInfo($surveyid, $languagecode='')
             if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=Yii::app()->getConfig('siteadminemail');}
             if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=Yii::app()->getConfig('siteadminname');}
             if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
-        
+
             $staticSurveyInfo[$surveyid][$languagecode]=$thissurvey;
         }
-        
+
     }
 
     return $thissurvey;
@@ -2205,7 +2205,7 @@ function validateTemplateDir($sTemplateName)
                 case ";":  //ARRAY (Multi Flex) (Text)
                 case ":":  //ARRAY (Multi Flex) (Numbers)
                     $result = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 0", 'question_order');
-                   
+
                     foreach($result as $row)
                     {
                         $fresult = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 1", 'question_order');
@@ -2888,7 +2888,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
     $sLanguage = sanitize_languagecode($sQuestionLanguage);
     $surveyid = sanitize_int($surveyid);
     $clang = new Limesurvey_lang($sLanguage);
-    
+
     //checks to see if fieldmap has already been built for this page.
     if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
         return $timingsFieldMap[$surveyid][$style][$clang->langcode];
@@ -3773,8 +3773,8 @@ function questionAttributes($returnByName=false)
     'i18n'=>true,
     'default'=>"",
     "help"=>$clang->gT('In the printable version replace the relevance equation with this explanation text.'),
-    "caption"=>$clang->gT("Relevance help for printable survey"));    
-    
+    "caption"=>$clang->gT("Relevance help for printable survey"));
+
     $qattributes["public_statistics"]=array(
     "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
     'category'=>$clang->gT('Statistics'),
@@ -4410,7 +4410,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
         $subject=mb_convert_encoding($subject,$emailcharset,'utf-8');
         $sitename=mb_convert_encoding($sitename,$emailcharset,'utf-8');
     }
-    
+
     if (!is_array($to)){
         $to=array($to);
     }
@@ -5402,7 +5402,7 @@ function GetAttributeFieldNames($iSurveyID)
 /**
 * Returns the full list of attribute token fields including the properties for each field
 * Use this instead of plain Survey::model()->findByPk($iSurveyID)->tokenAttributes calls because Survey::model()->findByPk($iSurveyID)->tokenAttributes may contain old descriptions where the fields does not physically exist
-* 
+*
 * @param integer $iSurveyID The Survey ID
 */
 function GetParticipantAttributes($iSurveyID)
@@ -5452,50 +5452,50 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
             'description'=>$clang->gT('Last name'),
             'mandatory'=>'N',
             'showregister'=>'Y'
-        ),                                                
+        ),
         'email'=>array(
             'description'=>$clang->gT('Email address'),
             'mandatory'=>'N',
             'showregister'=>'Y'
-        ),                                                
+        ),
         'token'=>array(
             'description'=>$clang->gT('Token'),
             'mandatory'=>'N',
             'showregister'=>'Y'
-        ),                                                
+        ),
         'language'=>array(
             'description'=>$clang->gT('Language code'),
             'mandatory'=>'N',
             'showregister'=>'Y'
-        ),                                                
+        ),
         'sent'=>array(
             'description'=>$clang->gT('Invitation sent date'),
             'mandatory'=>'N',
             'showregister'=>'Y'
-        ),                                                
+        ),
         'remindersent'=>array(
             'description'=>$clang->gT('Last reminder sent date'),
             'mandatory'=>'N',
             'showregister'=>'Y'
-        ),                                                
+        ),
         'remindercount'=>array(
             'description'=>$clang->gT('Total numbers of sent reminders'),
             'mandatory'=>'N',
             'showregister'=>'Y'
-        ),                                                
+        ),
         'usesleft'=>array(
             'description'=>$clang->gT('Uses left'),
             'mandatory'=>'N',
             'showregister'=>'Y'
-        ),                                                
+        ),
     );
 
-    $aExtraTokenFields=getAttributeFieldNames($surveyid);  
+    $aExtraTokenFields=getAttributeFieldNames($surveyid);
     $aSavedExtraTokenFields = Survey::model()->findByPk($surveyid)->tokenAttributes;
 
     // Drop all fields that are in the saved field description but not in the table definition
     $aSavedExtraTokenFields=array_intersect_key($aSavedExtraTokenFields,array_flip($aExtraTokenFields));
-    
+
     // Now add all fields that are in the table but not in the field description
     foreach ($aExtraTokenFields as $sField)
     {
@@ -5758,7 +5758,7 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
 *
 * @return Array of token data
 */
-function getTokenData($surveyid, $token) 
+function getTokenData($surveyid, $token)
 {
     $thistoken = Tokens_dynamic::model($surveyid)->find('token = :token',array(':token' => $token));
     $thistokenarray=array(); // so has default value
@@ -6135,7 +6135,7 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
     {
         $aAttributes['id'] = $iQuotaID;
     }
-    
+
     $result = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes($aAttributes);
     $quota_info = array();
     $x=0;
@@ -6793,24 +6793,24 @@ function fixLanguageConsistency($sid, $availlangs='')
 */
 function switchMSSQLIdentityInsert($table,$state)
 {
-    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
+    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
     {
         if ($state == true)
         {
             // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
-            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' ON');  
+            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' ON');
         }
         else
         {
             // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
-            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' OFF'); 
+            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' OFF');
         }
     }
 }
 
 /**
 * Retrieves the last Insert ID realiable for cross-DB applications
-* 
+*
 * @param string $sTableName Needed for Postgres and MSSQL
 */
 function getLastInsertID($sTableName)
@@ -7323,7 +7323,7 @@ function getLabelSets($languages = null)
     }
 
     $criteria = new CDbCriteria;
-    $criteria->order = "label_name";    
+    $criteria->order = "label_name";
     foreach ($languagesarray as $k => $item)
     {
         $criteria->params[':lang_like1_' . $k] = "% $item %";
@@ -7491,7 +7491,7 @@ function getDBTableUsage($surveyid){
         $hard_limit = 1600;
         $size_limit = 0;
     }
-    elseif ($arrCols['dbtype'] == 'mssql'){
+    elseif ($arrCols['dbtype'] == 'mssql' || $arrCols['dbtype'] == 'dblib'){ 
         $hard_limit = 1024;
         $size_limit = 0;
     }
@@ -7591,7 +7591,7 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
     $sSurveyIDQuery.= 'ORDER BY a.users_name';
     $oSurveyIDResult = Yii::app()->db->createCommand($sSurveyIDQuery)->query();  //Checked
     $aSurveyIDResult = $oSurveyIDResult->readAll();
-    
+
     $surveyselecter = "";
 
     if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)

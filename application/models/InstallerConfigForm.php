@@ -30,8 +30,7 @@ class InstallerConfigForm extends CFormModel
 		'mysqli' => 'MySQL (newer driver)',
         'sqlsrv' => 'Microsoft SQL Server (sqlsrv)',
 		'mssql' => 'Microsoft SQL Server (mssql)',
-//		'dblib' => 'Microsoft SQL Server (dblib)',
-//		'sybase' => 'Microsoft SQL Server (sybase)',
+		'dblib' => 'Microsoft SQL Server (dblib)', 
 		'pgsql' => 'PostgreSQL',
 	);
 

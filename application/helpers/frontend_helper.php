@@ -31,7 +31,7 @@
             }
             $query .="AND {{saved_control}}.identifier = '".autoEscape($_SESSION['survey_'.$surveyid]['holdname'])."' ";
 
-            if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
+            if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
             {
                 $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(autoUnescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
             }
@@ -250,7 +250,7 @@
             return false;
         }
 
-    }                                                                   
+    }
 
     /**
     * This function creates the language selector for the public survey index page
@@ -960,7 +960,7 @@
                 if(!empty($participant_id))
                 {
                     $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$oTokenInformation->tid));
-                    
+
                     if (isTokenCompletedDatestamped($thissurvey))
                     {
                         $slquery->date_completed = $today;
@@ -995,7 +995,7 @@
                     // added survey url in replacement vars
                     $surveylink = Yii::app()->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'],'token'=>$clienttoken));
                     $aReplacementVars['SURVEYURL'] = $surveylink;
-                    
+
                     $attrfieldnames=getAttributeFieldNames($surveyid);
                     foreach ($attrfieldnames as $attr_name)
                     {
@@ -1051,12 +1051,12 @@
     {
         // @todo: Remove globals
         global $thissurvey, $maildebug, $tokensexist;
-        
+
         if (trim($thissurvey['adminemail'])=='')
         {
             return;
         }
-        
+
         $homeurl=Yii::app()->createAbsoluteUrl('/admin');
         $clang = Yii::app()->lang;
         $sitename = Yii::app()->getConfig("sitename");
@@ -1177,8 +1177,8 @@
         }
 
         $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
-    
-        
+
+
         $redata=compact(array_keys(get_defined_vars()));
         if (count($aEmailNotificationTo)>0)
         {
@@ -1655,7 +1655,7 @@
     ." AND parent_qid=0")->read();
 
     $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
-	
+
     //2. SESSION VARIABLE: totalsteps
     //The number of "pages" that will be presented in this survey
     //The number of pages to be presented will differ depending on the survey format
@@ -1704,7 +1704,7 @@
     //An array containing information about used to insert the data into the db at the submit stage
     //4. SESSION VARIABLE - fieldarray
     //See rem at end..
-    
+
     if ($tokensexist == 1 && $clienttoken)
     {
         $_SESSION['survey_'.$surveyid]['token'] = $clienttoken;
@@ -1761,7 +1761,7 @@
             if (isset($aField['gid']))
             {
                 $GroupFieldMap[$aField['gid']][]=$aField;
-            } 
+            }
             else{
                 $GroupFieldMap['other'][]=$aField;
             }
@@ -1795,7 +1795,7 @@
 
     // Find all defined randomization groups through question attribute values
     $randomGroups=array();
-    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
+    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
     {
         $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) as value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
     }
@@ -1908,7 +1908,7 @@
         $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
         $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
     }
-    
+
     // TMSW Conditions->Relevance:  don't need hasconditions, or usedinconditions
 
     $_SESSION['survey_'.$surveyid]['fieldmap']=$fieldmap;
@@ -2283,20 +2283,20 @@ function UpdateGroupList($surveyid, $language)
     foreach ($result->readAll() as $row)
     {
         $group = array(
-            'gid'         => $row['gid'], 
+            'gid'         => $row['gid'],
             'group_name'  => $row['group_name'],
             'description' =>  $row['description']);
         $groupList[] = $group;
         $gidList[$row['gid']] = $group;
     }
-    
+
     if (isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap'])>0)
     {
         // Now adjust the grouplist
         $groupRemap = $_SESSION['survey_'.$surveyid]['groupReMap'];
         $groupListCopy = $groupList;
         foreach ($groupList as $gseq => $info) {
-            $gid = $info['gid']; 
+            $gid = $info['gid'];
             if (isset($groupRemap[$gid])) {
                 $gid = $groupRemap[$gid];
             }
@@ -2304,7 +2304,7 @@ function UpdateGroupList($surveyid, $language)
         }
         $groupList = $groupListCopy;
      }
-     
+
      $_SESSION['survey_'.$surveyid]['grouplist'] = $groupList;
 }
 
@@ -2328,7 +2328,7 @@ function UpdateFieldArray()
 
             $query = "SELECT title, question FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
             $usrow = Yii::app()->db->createCommand($query)->queryRow();
-            if ($usrow) 
+            if ($usrow)
             {
                 $questionarray[2]=$usrow['title'];
                 $questionarray[3]=$usrow['question'];
@@ -2688,7 +2688,7 @@ function killSurveySession($iSurveyID)
     // Unset the session
     unset($_SESSION['survey_'.$iSurveyID]);
     // Force EM to refresh
-    LimeExpressionManager::SetDirtyFlag();    
+    LimeExpressionManager::SetDirtyFlag();
 }
 
 

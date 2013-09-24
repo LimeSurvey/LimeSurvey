@@ -15,7 +15,7 @@ if ( !defined('BASEPATH')) exit('No direct script access allowed');
 */
 
 /**
- * 
+ *
  * @param type $sql
  * @param type $inputarr
  * @param type $silent
@@ -103,6 +103,7 @@ function dbQuoteID($id)
         case "mysql" :
             return "`".$id."`";
             break;
+        case "dblib":
         case "mssql" :
         case "sqlsrv" :
             return "[".$id."]";
@@ -131,6 +132,7 @@ function dbRandom()
 
     switch ($driver)
     {
+        case 'dblib':
         case 'mssql':
         case 'sqlsrv':
             $srandom='NEWID()';
@@ -168,6 +170,7 @@ function dbSelectTablesLike($table)
         case 'mysqli':
         case 'mysql' :
             return "SHOW TABLES LIKE '$table'";
+        case 'dblib' :
         case 'mssql' :
         case 'sqlsrv' :
             return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table' ESCAPE '\'";
@@ -199,7 +202,7 @@ function createTable($sTableName, $aColumns, $sOptions=null)
 {
     $sDBDriverName=Yii::app()->db->getDriverName();
 
-    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql')
+    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql' || $sDBDriverName=='dblib')
     {
         foreach ($aColumns as $sName=>&$sType)
         {
@@ -218,6 +221,6 @@ function createTable($sTableName, $aColumns, $sOptions=null)
     {
         if (is_null($sOptions))
         $sOptions='ENGINE=MyISAM';
-    }    
+    }
     Yii::app()->db->createCommand()->createTable($sTableName,$aColumns,$sOptions);
 }

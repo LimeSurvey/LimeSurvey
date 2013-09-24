@@ -55,11 +55,11 @@ function isNumericExtended($value)  {
 * @return string
 */
 function strSplitUnicode($str, $l = 0) {
-    if ($l > 0) 
+    if ($l > 0)
     {
         $ret = array();
         $len = mb_strlen($str, "UTF-8");
-        for ($i = 0; $i < $len; $i += $l) 
+        for ($i = 0; $i < $len; $i += $l)
         {
             $ret[] = mb_substr($str, $i, $l, "UTF-8");
         }
@@ -75,7 +75,7 @@ function strSplitUnicode($str, $l = 0) {
 * @param mixed $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
 * @param mixed $na Value for N/A data
 * @param sep Quote separator. Use '\'' for SPSS, '"' for R
-* @param logical $header If TRUE, adds SQGA code as column headings (used by export to R) 
+* @param logical $header If TRUE, adds SQGA code as column headings (used by export to R)
 */
 function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE) {
 
@@ -106,7 +106,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
                     $i++;
                 }
                 echo("\n");
-            }            
+            }
         }
         $row = array_change_key_case($row,CASE_UPPER);
         //$row = $result->GetRowAssoc(true);    //Get assoc array, use uppercase
@@ -326,7 +326,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null ) {
 */
 function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     global $clang, $surveyprivate, $tokensexist, $language;
-    
+
     $typeMap = array(
 '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
 'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
@@ -683,7 +683,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
     //Question attributes
     $sBaseLanguage=Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
-    if ($platform == 'mssql' || $platform =='sqlsrv')
+    if ($platform == 'mssql' || $platform =='sqlsrv' || $platform =='dblib')
     {
         $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
@@ -1466,7 +1466,7 @@ function group_export($action, $iSurveyID, $gid)
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: cache");                // HTTP/1.0
 
-    $xml->openUri('php://output');    
+    $xml->openUri('php://output');
     $xml->setIndent(true);
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
@@ -1526,7 +1526,7 @@ function groupGetXMLStructure($xml,$gid)
     $iSurveyID=$iSurveyID['sid'];
     $sBaseLanguage=Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
-    if ($platform == 'mssql' || $platform =='sqlsrv')
+    if ($platform == 'mssql' || $platform =='sqlsrv' || $platform =='dblib') 
     {
         $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
@@ -1617,7 +1617,7 @@ function questionGetXMLStructure($xml,$gid,$qid)
     $iSurveyID=$iSurveyID['sid'];
     $sBaseLanguage=Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
-    if ($platform == 'mssql' || $platform =='sqlsrv')
+    if ($platform == 'mssql' || $platform =='sqlsrv'|| $platform =='dblib')
     {
         $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.qid={$qid}
@@ -1645,7 +1645,7 @@ function tokensExport($iSurveyID)
     $databasetype = Yii::app()->db->getDriverName();
     if (trim($_POST['filteremail'])!='')
     {
-        if (in_array($databasetype, array('mssql', 'sqlsrv')))
+        if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib')))
         {
             $bquery .= ' and CAST(email as varchar) like '.dbQuoteAll('%'.$_POST['filteremail'].'%', true);
         }
