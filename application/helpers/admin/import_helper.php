@@ -4423,6 +4423,7 @@ function TSVImportSurvey($sFullFilepath)
     $handle = fopen($sFullFilepath, 'r');
     $bom = fread($handle, 2);
     rewind($handle);
+    $aAttributeList = questionAttributes();
 
     // Excel tends to save CSV as UTF-16, which PHP does not properly detect
     if($bom === chr(0xff).chr(0xfe)  || $bom === chr(0xfe).chr(0xff)){
@@ -4694,7 +4695,15 @@ function TSVImportSurvey($sFullFilepath)
                             {
                                 $insertdata = array();
                                 $insertdata['qid'] = $qid;
-                                $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
+                                // check if attribute is a i18n attribute. If yes, set language, else set language to null in attribute table
+                                if ($aAttributeList[$qtype][$key]['i18n']==1)
+                                {
+                                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
+                                }
+                                else 
+                                {
+                                    $insertdata['language'] = NULL;
+                                }
                                 $insertdata['attribute'] = $key;
                                 $insertdata['value'] = $val;
                                 $result=QuestionAttribute::model()->insertRecords($insertdata);//
