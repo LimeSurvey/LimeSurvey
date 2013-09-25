@@ -274,8 +274,8 @@ class InstallerController extends CController {
                         $bDBConnectionWorks = true;
                     } else {
                         $model->addError('dblocation', $clang->gT('Connection with database failed. Please check database location, user name and password and try again.'));
-                        $model->addError('dbpwd');
-                        $model->addError('dbuser');
+                        $model->addError('dbpwd','');
+                        $model->addError('dbuser','');
                     }
                 }
 
