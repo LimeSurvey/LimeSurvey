@@ -1,4 +1,8 @@
 $(document).ready(function(){
+    doFileUpload();
+});
+
+function doFileUpload(){
     var fieldname = $('#ia').val();
 
     /* Load the previously uploaded files */
@@ -58,7 +62,8 @@ $(document).ready(function(){
             max_filesize : $('#'+fieldname+'_maxfilesize').val(),
             preview : $('#preview').val(),
             surveyid : surveyid,
-            fieldname : fieldname
+            fieldname : fieldname,
+            YII_CSRF_TOKEN : csrfToken
         },
         onSubmit : function(file, ext){
 
@@ -183,7 +188,7 @@ $(document).ready(function(){
 
     // if it has been jst opened, the upload button should be automatically clicked !
     // TODO: auto open using click() not working at all ! :(
-});
+}
 
 function isValueInArray(arr, val) {
     inArray = false;

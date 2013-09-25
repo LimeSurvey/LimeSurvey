@@ -25,9 +25,12 @@ class UploaderController extends AdminController {
         {
             $sLanguage='';
         }
+
         $clang = SetSurveyLanguage( $surveyid, $sLanguage);
 		$uploaddir = Yii::app()->getConfig("uploaddir");
 		$tempdir = Yii::app()->getConfig("tempdir");
+		$aSurveyInfo=getSurveyInfo($surveyid,$sLanguage);
+		$sTemplateUrl = getTemplateURL($aSurveyInfo['templatedir'])."/";
 
 		Yii::app()->loadHelper("database");
         $param = $_REQUEST;
@@ -241,15 +244,16 @@ class UploaderController extends AdminController {
 		$meta = '';
 		App()->getClientScript()->registerPackage('jqueryui');
 		App()->getClientScript()->registerPackage('jquery-superfish');
-
-		$meta = '<script type="text/javascript">
+		$sNeededScriptVar='
 		    var uploadurl = "'.$this->createUrl('/uploader/index/mode/upload/').'";
             var imageurl = "'.Yii::app()->getConfig('imageurl').'/";
 		    var surveyid = "'.$surveyid.'";
 		    var fieldname = "'.$param['fieldname'].'";
 		    var questgrppreview  = '.$param['preview'].';
-		</script>';
-		$meta .= "<script type='text/javascript'>
+		    csrfToken = "'.Yii::app()->request->csrfToken.'";
+		    showpopups="'.Yii::app()->getConfig("showpopups").'";
+		';
+		$sLangScriptVar="
 		        translt = {
 		             titleFld: '" . $clang->gT('Title','js') . "',
 		             commentFld: '" . $clang->gT('Comment','js') . "',
@@ -263,12 +267,14 @@ class UploaderController extends AdminController {
 		             errorTooMuch: '" . $clang->gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
 		             errorNeedMoreConfirm: '" . $clang->gT("You need to upload %s more files for this question.\nAre you sure you want to exit?",'js') . "'
 		            };
-		        showpopups=".Yii::app()->getConfig("showpopups").";
-		    </script>\n";
-		App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'/ajaxupload.js');
-		App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'/uploader.js');
-		$meta.= '<link type="text/css" href="'.Yii::app()->getConfig("publicstyleurl").'uploader.css" rel="stylesheet" />';
-
+		";
+		App()->clientScript->registerScript('sNeededScriptVar',$sNeededScriptVar,CClientScript::POS_HEAD);
+		App()->clientScript->registerScript('sLangScriptVar',$sLangScriptVar,CClientScript::POS_HEAD);
+		App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js');
+		App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js');
+		App()->getClientScript()->registerScriptFile("{$sTemplateUrl}template.js");
+		App()->clientScript->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
+		App()->clientScript->registerCssFile("{$sTemplateUrl}template.css");
 		$header = getHeader($meta);
 
 		echo $header;
@@ -279,7 +285,7 @@ class UploaderController extends AdminController {
         $maxfiles = sanitize_int($param['maxfiles']);
 		$qidattributes=getQuestionAttributeValues($qid);
 
-		$body = '
+		$body = '</head><body>
 		        <div id="notice"></div>
 		        <input type="hidden" id="ia"                value="'.$fn.'" />
                 <input type="hidden" id="'.$fn.'_minfiles"          value="'.$minfiles.'" />
