@@ -1,4 +1,8 @@
 $(document).ready(function(){
+    doFileUpload();
+});
+
+function doFileUpload(){
     var fieldname = $('#ia').val();
 
     /* Load the previously uploaded files */
@@ -183,7 +187,7 @@ $(document).ready(function(){
 
     // if it has been jst opened, the upload button should be automatically clicked !
     // TODO: auto open using click() not working at all ! :(
-});
+}
 
 function isValueInArray(arr, val) {
     inArray = false;
