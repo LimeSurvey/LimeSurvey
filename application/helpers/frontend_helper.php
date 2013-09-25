@@ -31,7 +31,7 @@ function loadanswers()
         }
         $query .="AND {{saved_control}}.identifier = '".autoEscape($_SESSION['survey_'.$surveyid]['holdname'])."' ";
 
-        if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
+            if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
         {
             $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(autoUnescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
         }
@@ -464,7 +464,7 @@ function submittokens($quotaexit=false)
                     $slquery->date_completed = $slquery->date_created;
                 }
                 $slquery->save();
-            }
+                }
         }
         $token->usesleft--;
     }
@@ -1190,7 +1190,7 @@ function buildsurveysession($surveyid,$preview=false)
     ." AND parent_qid=0")->read();
 
     $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
-	
+
     //2. SESSION VARIABLE: totalsteps
     //The number of "pages" that will be presented in this survey
     //The number of pages to be presented will differ depending on the survey format
@@ -1239,7 +1239,7 @@ function buildsurveysession($surveyid,$preview=false)
     //An array containing information about used to insert the data into the db at the submit stage
     //4. SESSION VARIABLE - fieldarray
     //See rem at end..
-    
+
     if ($tokensexist == 1 && $clienttoken)
     {
         $_SESSION['survey_'.$surveyid]['token'] = $clienttoken;
@@ -1291,7 +1291,7 @@ function buildsurveysession($surveyid,$preview=false)
             if (isset($aField['gid']))
             {
                 $GroupFieldMap[$aField['gid']][]=$aField;
-            } 
+            }
             else{
                 $GroupFieldMap['other'][]=$aField;
             }
@@ -1325,7 +1325,7 @@ function buildsurveysession($surveyid,$preview=false)
 
     // Find all defined randomization groups through question attribute values
     $randomGroups=array();
-    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
+    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
     {
         $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) as value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
     }
@@ -1821,20 +1821,20 @@ function UpdateGroupList($surveyid, $language)
     foreach ($result->readAll() as $row)
     {
         $group = array(
-            'gid'         => $row['gid'], 
+            'gid'         => $row['gid'],
             'group_name'  => $row['group_name'],
             'description' =>  $row['description']);
         $groupList[] = $group;
         $gidList[$row['gid']] = $group;
     }
-    
+
     if (isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap'])>0)
     {
         // Now adjust the grouplist
         $groupRemap = $_SESSION['survey_'.$surveyid]['groupReMap'];
         $groupListCopy = $groupList;
         foreach ($groupList as $gseq => $info) {
-            $gid = $info['gid']; 
+            $gid = $info['gid'];
             if (isset($groupRemap[$gid])) {
                 $gid = $groupRemap[$gid];
             }
@@ -1842,7 +1842,7 @@ function UpdateGroupList($surveyid, $language)
         }
         $groupList = $groupListCopy;
      }
-     
+
      $_SESSION['survey_'.$surveyid]['grouplist'] = $groupList;
 }
 
@@ -1864,7 +1864,7 @@ function UpdateFieldArray()
 			Yii::log("test" . print_r($questionarray, true), CLogger::LEVEL_TRACE, 'system.db.CDbCommand');
             $query = "SELECT title, question FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
             $usrow = Yii::app()->db->createCommand($query)->queryRow();
-            if ($usrow) 
+            if ($usrow)
             {
                 $questionarray[2]=$usrow['title'];
                 $questionarray[3]=$usrow['question'];
@@ -2226,7 +2226,7 @@ function killSurveySession($iSurveyID)
     // Unset the session
     unset($_SESSION['survey_'.$iSurveyID]);
     // Force EM to refresh
-    LimeExpressionManager::SetDirtyFlag();    
+    LimeExpressionManager::SetDirtyFlag();
 }
 
 /**

@@ -60,6 +60,8 @@
                         $createDb=false;
                     }
                     break;
+
+                    case 'dblib':
                     case 'mssql':
                     case 'odbc':
                     try
@@ -90,7 +92,7 @@
                     {
                         $createDb=false;
                     }
-                    break;        
+                    break;
                 }
                 if (!$createDb)
                 {
@@ -117,13 +119,14 @@
                     }
                     $sql_file = 'pgsql';
                     break;
+                case 'dblib': 
                 case 'mssql':
                     $sql_file = 'mssql';
                     break;
                 default:
                     throw new Exception(sprintf('Unkown database type "%s".', $sDatabaseType));
             }
-            $this->_executeSQLFile(dirname(Yii::app()->basePath).'/installer/sql/create-'.$sql_file.'.sql', $aConfig['db']['tablePrefix']);        
+            $this->_executeSQLFile(dirname(Yii::app()->basePath).'/installer/sql/create-'.$sql_file.'.sql', $aConfig['db']['tablePrefix']);
             $this->connection->createCommand()->insert($aConfig['db']['tablePrefix'].'users', array(
             'users_name'=>$sArgument[0],
             'password'=>hash('sha256',$sArgument[1]),

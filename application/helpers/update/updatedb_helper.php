@@ -581,7 +581,7 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{user_groups}}','description',"text",false);
 
             try { $db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}'); } catch(Exception $e) {}
-            try { addPrimaryKey('user_in_groups', array('ugid','uid')); } catch(Exception $e) {}        
+            try { addPrimaryKey('user_in_groups', array('ugid','uid')); } catch(Exception $e) {}
 
             addColumn('{{surveys_languagesettings}}','surveyls_numberformat',"integer NOT NULL DEFAULT 0");
 
@@ -823,7 +823,7 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{quota}}','active','integer',false , '1');
             alterColumn('{{quota}}','autoload_url','integer',false , '0');
             alterColumn('{{saved_control}}','status',"{$sVarchar}(1)",false , '');
-            try { setTransactionBookmark(); alterColumn('{{sessions}}','id',"{$sVarchar}(32)",false); } catch(Exception $e) { rollBackToTransactionBookmark();}        
+            try { setTransactionBookmark(); alterColumn('{{sessions}}','id',"{$sVarchar}(32)",false); } catch(Exception $e) { rollBackToTransactionBookmark();}
             alterColumn('{{surveys}}','active',"{$sVarchar}(1)",false , 'N');
             alterColumn('{{surveys}}','anonymized',"{$sVarchar}(1)",false,'N');
             alterColumn('{{surveys}}','format',"{$sVarchar}(1)");
@@ -862,8 +862,8 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{surveys}}','googleanalyticsstyle',"{$sVarchar}(1)");
 
             alterColumn('{{surveys_languagesettings}}','surveyls_dateformat','integer',false , 1);
-            try { setTransactionBookmark(); alterColumn('{{survey_permissions}}','sid',"integer",false); } catch(Exception $e) { rollBackToTransactionBookmark();}        
-            try { setTransactionBookmark(); alterColumn('{{survey_permissions}}','uid',"integer",false); } catch(Exception $e) { rollBackToTransactionBookmark();}        
+            try { setTransactionBookmark(); alterColumn('{{survey_permissions}}','sid',"integer",false); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            try { setTransactionBookmark(); alterColumn('{{survey_permissions}}','uid',"integer",false); } catch(Exception $e) { rollBackToTransactionBookmark();}
             alterColumn('{{survey_permissions}}','create_p', 'integer',false , '0');
             alterColumn('{{survey_permissions}}','read_p', 'integer',false , '0');
             alterColumn('{{survey_permissions}}','update_p','integer',false , '0');
@@ -887,7 +887,7 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{users}}','dateformat','integer',false, 1);
             alterColumn('{{users}}','participant_panel','integer',false , '0');
             alterColumn('{{users}}','parent_id','integer',false);
-            try { setTransactionBookmark(); alterColumn('{{surveys_languagesettings}}','surveyls_survey_id',"integer",false); } catch(Exception $e) { rollBackToTransactionBookmark(); }        
+            try { setTransactionBookmark(); alterColumn('{{surveys_languagesettings}}','surveyls_survey_id',"integer",false); } catch(Exception $e) { rollBackToTransactionBookmark(); }
             alterColumn('{{user_groups}}','owner_id',"integer",false);
             alterColumn('{{user_in_groups}}','ugid',"integer",false);
             alterColumn('{{user_in_groups}}','uid',"integer",false);
@@ -915,7 +915,7 @@ function db_upgrade_all($oldversion) {
             try{ setTransactionBookmark(); alterColumn('{{survey_permissions}}','sid','integer',false); } catch(Exception $e) { rollBackToTransactionBookmark(); };
             try{ setTransactionBookmark(); alterColumn('{{survey_permissions}}','uid','integer',false); } catch(Exception $e) { rollBackToTransactionBookmark(); };
             alterColumn('{{users}}','htmleditormode',"{$sVarchar}(7)",true,'default');
-            
+
             // Sometimes the survey_links table was deleted before this step, if so
             // we recreate it (copied from line 663)
             if (!tableExists('{survey_links}')) {
@@ -1041,7 +1041,7 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>163),"stg_name='DBVersion'");
 
         }
-        
+
         if ($oldversion < 164)
         {
             // fix survey tables for missing or incorrect token field
@@ -1140,7 +1140,7 @@ function db_upgrade_all($oldversion) {
        $oTransaction->rollback();
        echo '<br /><br />'.$clang->gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
        return false;
-    }        
+    }
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
@@ -1778,7 +1778,7 @@ function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
         $aLanguages=explode(' ',$datarow['languages']);
         foreach ($aLanguages as &$sLanguage)
         {
-            if ($sLanguage==$sOldLanguageCode) $sLanguage=$sNewLanguageCode; 
+            if ($sLanguage==$sOldLanguageCode) $sLanguage=$sNewLanguageCode;
         }
         $toreplace=implode(' ',$aLanguages);
         Yii::app()->db->createCommand()->update('{{labelsets}}',array('languages'=>$toreplace),'lid=:lid',array(':lid'=>$datarow['lid']));
@@ -1789,7 +1789,7 @@ function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
         $aLanguages=explode(' ',$datarow['additional_languages']);
         foreach ($aLanguages as &$sLanguage)
         {
-            if ($sLanguage==$sOldLanguageCode) $sLanguage=$sNewLanguageCode; 
+            if ($sLanguage==$sOldLanguageCode) $sLanguage=$sNewLanguageCode;
         }
         $toreplace=implode(' ',$aLanguages);
         Yii::app()->db->createCommand()->update('{{surveys}}',array('additional_languages'=>$toreplace),'sid=:sid',array(':sid'=>$datarow['sid']));
@@ -1806,7 +1806,7 @@ function dropPrimaryKey($sTablename)
 {
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
+    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql'; 
 
     global $modifyoutput;
     switch ($sDBDriverName){
@@ -1847,10 +1847,9 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
 {
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
+    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql'; 
     switch ($sDBDriverName){
         case 'mysql':
-
             $sType=$sFieldType;
             if ($bAllowNull!=true)
             {
@@ -1911,7 +1910,8 @@ function dropColumn($sTableName, $sColumnName)
 {
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
+    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
+
     if ($sDBDriverName=='mssql')
     {
         dropDefaultValueMSSQL($sColumnName,$sTableName);
@@ -1927,7 +1927,7 @@ function addColumn($sTableName, $sColumn, $sType)
 {
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
+    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
     if ($sDBDriverName=='mssql')
     {
         $sType=str_replace('text','varchar(max)',$sType);
@@ -1981,7 +1981,7 @@ function dropDefaultValueMSSQL($fieldname, $tablename)
 function setsDBDriverName() {
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
+    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
     return $sDBDriverName;
 }
 
@@ -2077,12 +2077,12 @@ function replaceTemplateJS(){
 
 /**
  *  Make sure all active tables have the right sized token field
- * 
+ *
  *  During a small period in the 2.0 cycle some survey tables got no
  *  token field or a token field that was too small. This patch makes
  *  sure all surveys that are not anonymous have a token field with the
  *  right size
- * 
+ *
  * @return void
  */
 function upgradeSurveyTables164()

@@ -80,10 +80,10 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet));
             unset($graph);
         }
-        
+
         return  $cachefilename;
     }
-        
+
     if (array_sum($gdata ) > 0) //Make sure that the percentages add up to more than 0
     {
         $graph = "";
@@ -161,11 +161,11 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
 
             $counter=0;
             foreach ($lblout as $sLabelName)
-            {                                  
+            {
                 $DataSet->SetSerieName(html_entity_decode($sLabelName,null,'UTF-8'), "Serie$counter");
                 $counter++;
             }
-            
+
             if ($cache->IsInCache("graph".$language.$iSurveyID,$DataSet->GetData()) && Yii::app()->getConfig('debug')<2) {
                 $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
             }
@@ -566,31 +566,31 @@ class statistics_helper {
      * @var pdf
      */
      protected $pdf;
-     
+
      /**
       * The Excel worksheet we are working on
-      *  
+      *
       * @var Spreadsheet_Excel_Writer_Worksheet
       */
      protected $sheet;
-     
+
      protected $xlsPercents;
-     
+
      protected $formatBold;
      /**
       * The current Excel workbook we are working on
-      * 
-      * @var Xlswriter 
+      *
+      * @var Xlswriter
       */
      protected $workbook;
-     
+
      /**
       * Keeps track of the current row in Excel sheet
-      * 
+      *
       * @var int
       */
      protected $xlsRow = 0;
-     
+
     /**
     * Builds an array containing information about this particular question/answer combination
     *
@@ -620,7 +620,7 @@ class statistics_helper {
         $sDatabaseType = Yii::app()->db->getDriverName();
         $statisticsoutput="";
         $qqid = "";
-        
+
         /* Some variable depend on output type, actually : only line feed */
         switch($outputType)
         {
@@ -868,7 +868,7 @@ class statistics_helper {
                     $this->sheet->write($this->xlsRow, 0,$statlang->gT("Calculation"));
                     $this->sheet->write($this->xlsRow, 1,$statlang->gT("Result"));
                     break;
-                    
+
                 case 'pdf':
                     $headPDF = array();
                     $tablePDF = array();
@@ -920,7 +920,7 @@ class statistics_helper {
                 $showem = array();
                 $fld = substr($rt, 1, strlen($rt));
                 $fielddata=$fieldmap[$fld];
-                
+
                 $qtitle = flattenText($fielddata['title']);
                 $qtype = $fielddata['type'];
                 $qquestion = $fielddata['question'];
@@ -985,7 +985,7 @@ class statistics_helper {
                 $fieldname=substr($rt, 1, strlen($rt));
 
                 //special treatment for MS SQL databases
-                if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv')
+                if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib')
                 {
                     //standard deviation
                     $query = "SELECT STDEVP(".Yii::app()->db->quoteColumnName($fieldname)."*1) as stdev";
@@ -1012,7 +1012,7 @@ class statistics_helper {
                 //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
 
                 //special treatment for MS SQL databases
-                if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv')
+                if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib')
                 {
                     //no NULL/empty values please
                     $query .= " FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT NULL";
@@ -1066,7 +1066,7 @@ class statistics_helper {
                 $quartiles[1] = $this->getQuartile(1, $fieldname, $surveyid, $sql, $excludezeros);
                 $quartiles[2] = $this->getQuartile(2, $fieldname, $surveyid, $sql, $excludezeros);
                 $quartiles[3] = $this->getQuartile(3, $fieldname, $surveyid, $sql, $excludezeros);
-                
+
                 //we just put the total number of records at the beginning of this array
                 array_unshift($showem, array($statlang->gT("Count"), $medcount));
 
@@ -1186,7 +1186,7 @@ class statistics_helper {
                             $this->pdf->titleintopdf($pdfTitle,$titleDesc);
                             $this->pdf->equalTable($tablePDF);
                             break;
-                            
+
                         case 'html':
 
                             //output
@@ -1578,7 +1578,7 @@ class statistics_helper {
 
         return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput, "parentqid"=>$qqid);
     }
-    
+
     /**
     * displayResults builds html output to display the actual results from a survey
     *
@@ -1680,7 +1680,7 @@ class statistics_helper {
                     }
                     else
                     {
-                        //get data - select a count of responses where no answer is provided 
+                        //get data - select a count of responses where no answer is provided
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
                         $query .= ($sDatabaseType == "mysql")?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
                     }
@@ -1739,7 +1739,7 @@ class statistics_helper {
                 {
                     //get more data
                     $sDatabaseType = Yii::app()->db->getDriverName();
-                    if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv')
+                    if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib')
                     {
                         // mssql cannot compare text blobs so we have to cast here
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($rt)." as varchar)= '$al[0]'";
@@ -1756,7 +1756,7 @@ class statistics_helper {
                     //  ==> value is ''
                     // * NoAnswer due to conditions, or a page not displayed
                     //  ==> value is NULL
-                    if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv')
+                    if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib')
                     {
                         // mssql cannot compare text blobs so we have to cast here
                         //$query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
@@ -1821,8 +1821,8 @@ class statistics_helper {
                     {
                         $tablePDF2[]=array($row2['id'], $row2['value']);
                     }
-                }            
-                    
+                }
+
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='xls') {
                     $headXLS = array();
                     $tableXLS = array();
@@ -1835,9 +1835,9 @@ class statistics_helper {
                         $tableXLS[]=array($row2['id'],$row2['value']);
                     }
 
-                }                
-                    
-                    
+                }
+
+
             }
 
             /*
@@ -1871,7 +1871,7 @@ class statistics_helper {
                 ."\t\t<th width='25%' align='center' >"
                 ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
                 ."\t</tr></thead>\n";
-                
+
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array($statlang->gT("ID"),$statlang->gT("Response"));
@@ -1882,7 +1882,7 @@ class statistics_helper {
                     {
                         $tablePDF2[]=array($row2['id'], $row2['value']);
                     }
-                }                
+                }
             }
 
 
@@ -2297,13 +2297,13 @@ class statistics_helper {
                 {
                     //mark that we have done soemthing special here
                     $aggregated = true;
-                                                          
+
                     if (($results-$grawdata[5])>0) {
                         $percentage = $grawdata[$i] / ($results - $grawdata[5]) * 100;    // Only answered
                     } else {
                         $percentage = 0;
                     }
-                    
+
                     switch ($itemcounter)
                     {
                         case 1:
@@ -2313,11 +2313,11 @@ class statistics_helper {
                                 $aggregatedPercentage = 0;
                             }
                             break;
-                        
+
                         case 3:
                             $aggregatedPercentage = $percentage;
                             break;
-                        
+
                         case 5:
                             if (($results-$grawdata[5])>0) {
                                 $aggregatedPercentage = ($grawdata[3] + $grawdata[4]) / ($results - $grawdata[5]) * 100;
@@ -2325,7 +2325,7 @@ class statistics_helper {
                                 $aggregatedPercentage = 0;
                             }
                             break;
-                        
+
                         case 6:
                         case 7:
                             if (($results-$grawdata[5])>0) {
@@ -2339,7 +2339,7 @@ class statistics_helper {
                             break;
                     }
 
-                    
+
                     switch($outputType)
                     {
                         case 'xls':
@@ -2361,7 +2361,7 @@ class statistics_helper {
                                 $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%","");
                             }
                             break;
-                            
+
                         case 'html':
                             //output percentage
                             $statisticsoutput .= "\t\t<td align='center' >";
@@ -2375,7 +2375,7 @@ class statistics_helper {
                             }
                             $statisticsoutput .= "</td>\t\t";
                             break;
-                        
+
                         default:
                             break;
                     }
@@ -2468,7 +2468,7 @@ class statistics_helper {
                             $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
                             $this->sheet->writeNumber($this->xlsRow,2,$gdata[$i]/100, $this->xlsPercents);
                             break;
-                            
+
                         case 'pdf':
                             $label[$i]=flattenText($label[$i]);
                             $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i])."%", "");
@@ -2639,7 +2639,7 @@ class statistics_helper {
             }
         }
 
-        if($outputType=='xls' && (isset($headXLS) || isset($tableXLS))) 
+        if($outputType=='xls' && (isset($headXLS) || isset($tableXLS)))
         {
             if (isset($headXLS))
             {
@@ -2652,7 +2652,7 @@ class statistics_helper {
                     foreach ($aRow as $sValue)
                     {
                         $this->sheet->write($this->xlsRow,$iColumn,$sValue,$this->formatBold);
-                        $iColumn++;    
+                        $iColumn++;
                     }
                 }
             }
@@ -2665,13 +2665,13 @@ class statistics_helper {
                     foreach ($aRow as $sValue)
                     {
                         $this->sheet->write($this->xlsRow,$iColumn,$sValue);
-                        $iColumn++;    
+                        $iColumn++;
                     }
                 }
 
             }
-        }        
-        
+        }
+
         if ($outputType=='html') {
             $statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\" id='statzone_$rt'>";
         }
@@ -2780,7 +2780,7 @@ class statistics_helper {
         return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$this->pdf, "astatdata"=>$astatdata);
 
     }
-    
+
     /**
     * Generates statistics
     *
@@ -2938,7 +2938,7 @@ class statistics_helper {
             $this->pdf->setHeaderFont(Array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_MAIN));
             $this->pdf->setFooterFont(Array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_DATA));
 
-            // set default header data 
+            // set default header data
             // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
             $headerlogo = 'statistics.gif';
             $this->pdf->SetHeaderData($headerlogo, 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
@@ -3056,7 +3056,7 @@ class statistics_helper {
                 $this->pdf->titleintopdf($statlang->gT("Results",'unescaped'),$statlang->gT("Survey",'unescaped')." ".$surveyid);
                 $this->pdf->tableintopdf($array);
                 break;
-                
+
             case 'html':
 
                 $statisticsoutput .= "<br />\n<table class='statisticssummary' >\n"
@@ -3192,10 +3192,10 @@ class statistics_helper {
         }
 
     }
-    
+
     /**
      * Get the quartile using minitab method
-     * 
+     *
      * L=(1/4)(n+1), U=(3/4)(n+1)
      * Minitab linear interpolation between the two
      * closest data points. Minitab would let L = 2.5 and find the value half way between the
@@ -3206,7 +3206,7 @@ class statistics_helper {
      * between the 2nd and 3rd data points and if L were 2.75, Minitab
      * would find the value three fourths of the way between the 2nd and
      * 3rd data points.
-     * 
+     *
      * @staticvar null $sid
      * @staticvar int $recordCount
      * @staticvar null $field
@@ -3245,19 +3245,19 @@ class statistics_helper {
             //if $sql values have been passed to the statistics script from another script, incorporate them
             if (!empty($sql)) {$query .= " AND $sql";}
         }
-        
+
         if ($surveyid !== $sid) {
             $sid = $surveyid;
             $recordCount = 0;
             $field = null;      // Reset cache
         }
-        
+
         if ($fieldname !== $field) {
             $field = $fieldname;
             $allRows = Yii::app()->db->createCommand("SELECT ".Yii::app()->db->quoteColumnName($fieldname) . $query . ' ORDER BY ' . Yii::app()->db->quoteColumnName($fieldname))->queryAll();
             $recordCount = Yii::app()->db->createCommand("SELECT COUNT(".Yii::app()->db->quoteColumnName($fieldname).")" .$query)->queryScalar(); // Record count for THIS $fieldname
         }
-        
+
         // Qx = (x/4) * (n+1) if not integer, interpolate
         switch ($quartile)
         {
@@ -3296,11 +3296,11 @@ class statistics_helper {
     {
         $search['condition']=Yii::app()->db->quoteColumnName($column)." != ''";
         $sDBDriverName=Yii::app()->db->getDriverName();
-        if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql')
+        if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
         {
             $search['condition']="CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
         }
-        
+
         //Look for any selects/filters set in the original statistics query, and apply them to the column listing
         if (isset(Yii::app()->session['statistics_selects_'.$surveyid]) && is_array(Yii::app()->session['statistics_selects_'.$surveyid]))
         {
@@ -3308,16 +3308,16 @@ class statistics_helper {
                  $search['condition'] .= " AND $sql";
             }
         }
-        
-        if ($sortby!='') 
+
+        if ($sortby!='')
         {
-            if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql')
+            if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
             {
                 $sortby="CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
             }
             else
-            {            
-                $sortby=Yii::app()->db->quoteColumnName($sortby);    
+            {
+                $sortby=Yii::app()->db->quoteColumnName($sortby);
             }
 
             if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting

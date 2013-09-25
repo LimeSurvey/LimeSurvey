@@ -289,7 +289,6 @@ class InstallerController extends CController {
                     Yii::app()->session['dblocation'] = $sDatabaseLocation;
 
                     //check if table exists or not
-                    $sTestTablename = 'surveys';
                     $bTablesDoNotExist = false;
 
                     // Check if the surveys table exists or not
@@ -337,7 +336,7 @@ class InstallerController extends CController {
                     }
 
                     // Setting dateformat for mssql driver. It seems if you don't do that the in- and output format could be different
-                    if (in_array($model->dbtype, array('mssql', 'sqlsrv'))) {
+                    if (in_array($model->dbtype, array('mssql', 'sqlsrv', 'dblib'))) {
                         @$this->connection->createCommand('SET DATEFORMAT ymd;')->execute();     //Checked
                         @$this->connection->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();     //Checked
                     }
@@ -449,6 +448,7 @@ class InstallerController extends CController {
                 $bCreateDB=false;
             }
             break;
+            case 'dblib':
             case 'mssql':
             case 'odbc':
             try
@@ -546,6 +546,7 @@ class InstallerController extends CController {
             case 'mysql':
                 $sql_file = 'mysql';
                 break;
+            case 'dblib': 
             case 'sqlsrv':
             case 'mssql':
                 $sql_file = 'mssql';
@@ -844,7 +845,7 @@ class InstallerController extends CController {
         // JSON library check
         if (!check_PHPFunction('json_encode', $data['bJSONPresent']))
             $bProceed = false;
-            
+
         // ** file and directory permissions checking **
 
         // config directory
@@ -858,13 +859,13 @@ class InstallerController extends CController {
         //upload directory check
         if (!check_DirectoryWriteable(Yii::app()->getConfig('uploaddir').'/', $data, 'uploaddir', 'uerror',true) )
             $bProceed = false;
-        
+
         // Session writable check
         $session = Yii::app()->session; /* @var $session CHttpSession */
         $sessionWritable = ($session->get('saveCheck', null)==='save');
         $data['sessionWritable'] = $sessionWritable;
         $data['sessionWritableImg'] = check_HTML_image($sessionWritable);
-        if (!$sessionWritable){  
+        if (!$sessionWritable){
             // For recheck, try to set the value again
             $session['saveCheck'] = 'save';
             $bProceed = false;
@@ -886,7 +887,7 @@ class InstallerController extends CController {
 
         // zlib php library check
         check_PHPFunction('zlib_get_coding_type', $data['zlibPresent']);
-        
+
         // imap php library check
         check_PHPFunction('imap_open', $data['bIMAPPresent']);
 
@@ -991,7 +992,7 @@ class InstallerController extends CController {
             {
                 $sURLFormat='get'; // Fall back to get if an Apache server cannot be determined reliably
             }
-            
+
             $dbdata = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
             ."/*"."\n"
             ."| -------------------------------------------------------------------"."\n"
@@ -1034,7 +1035,7 @@ class InstallerController extends CController {
             ."\t"     . "'components' => array("                    . "\n"
             ."\t\t"   . "'db' => array("                            . "\n"
             ."\t\t\t" . "'connectionString' => '$sDsn',"            . "\n";
-            if ($sDatabaseType!='sqlsrv')
+            if ($sDatabaseType!='sqlsrv' && $sDatabaseType!='dblib' )
             {
                 $dbdata .="\t\t\t" . "'emulatePrepare' => true,"    . "\n";
 
@@ -1044,7 +1045,7 @@ class InstallerController extends CController {
             ."\t\t\t" . "'charset' => 'utf8',"                      . "\n"
             ."\t\t\t" . "'tablePrefix' => '$sDatabasePrefix',"      . "\n";
 
-            if (in_array($sDatabaseType, array('mssql', 'sqlsrv'))) {
+            if (in_array($sDatabaseType, array('mssql', 'sqlsrv', 'dblib'))) {
                 $dbdata .="\t\t\t" ."'initSQLs'=>array('SET DATEFORMAT ymd;','SET QUOTED_IDENTIFIER ON;'),"    . "\n";
             }
 
@@ -1104,7 +1105,7 @@ class InstallerController extends CController {
     }
 
     /**
-    * Create a random ASCII string 
+    * Create a random ASCII string
     *
     * @return string
     */
@@ -1151,6 +1152,9 @@ class InstallerController extends CController {
                 }
                 break;
 
+            case 'dblib' : 
+            	$dsn = $sDatabaseType.":host={$sDatabaseLocation};dbname={$sDatabaseName}";
+                break;
             case 'mssql' :
             case 'sqlsrv':
                 if ($sDatabasePort!=''){$sDatabaseLocation=$sDatabaseLocation.','.$sDatabasePort;}
@@ -1182,6 +1186,7 @@ class InstallerController extends CController {
             case 'pgsql':
                 $sDatabasePort = '5432';
                 break;
+            case 'dblib' :
             case 'mssql' :
             case 'sqlsrv':
             default:
@@ -1223,7 +1228,7 @@ class InstallerController extends CController {
 
         try {
             $this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
-            if($sDatabaseType!='sqlsrv'){
+            if($sDatabaseType!='sqlsrv' && $sDatabaseType!='dblib'){
                 $this->connection->emulatePrepare = true;
             }
 

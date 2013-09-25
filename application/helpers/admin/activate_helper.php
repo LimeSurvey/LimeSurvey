@@ -404,7 +404,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         {
             if ($row['autonumber_start'] > 0)
             {
-                if (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv') {
+                if (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib') {
                     mssql_drop_primary_index('survey_'.$iSurveyID);
                     mssql_drop_constraint('id','survey_'.$iSurveyID);
                     $autonumberquery = "alter table {{survey_{$iSurveyID}}} drop column id ";
