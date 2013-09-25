@@ -91,7 +91,7 @@ legend {
 }
 
 .maintitle {
-    font-size: 14px;font-size: 1.4rem;
+    font-size: 1.8em;font-size: 1.8rem;
     font-weight: 700;
     color: #328639;
     text-align: center;
@@ -341,13 +341,11 @@ input[disabled], textarea[disabled], select[disabled], button[disabled] {
 
 
 .subtitle {
-    font-size: 10px;
+    font-size: 1em;font-size: 1rem;
     color: #FFF;
 }
 
 .listboxtemplates {
-    margin-top: 10px;
-    height: 20px;
     color: #333;
     width: 180px;
 }
@@ -369,7 +367,7 @@ input[disabled], textarea[disabled], select[disabled], button[disabled] {
 }
 
 .statusentryhighlight {
-    font-size: 10px;
+    font-size: 1em;font-size: 1rem;
     color: #E00;
 }
 
@@ -379,11 +377,11 @@ input[disabled], textarea[disabled], select[disabled], button[disabled] {
 }
 
 .hint {
-    font-size: 10px;
+    font-size: 1em;font-size: 1rem;
 }
 
 .annotation {
-    font-size: 10px;
+    font-size: 1em;font-size: 1rem;
     color: #E00;
     vertical-align: top;
 }
@@ -407,7 +405,7 @@ input[disabled], textarea[disabled], select[disabled], button[disabled] {
     float: left;
     width: 660px;
     padding-left: 5px;
-    font-size: 13px;
+    font-size: 1.3em;font-size: 1.3rem;
     text-align: left;
     clear: right;
     margin-bottom: 10px;
@@ -715,7 +713,6 @@ ul.assessmentscope li label:first-child {
 
 .browsetable th {
     background-color: #D2E0F2;
-    font-size:0.9em;font-size:0.9rem;
     padding:2px;
     text-align: center;
     min-width:80px;
@@ -883,7 +880,17 @@ table.templatecontrol select
     font-size:0.8em;
     width:95%;
 }
-
+/* Some global table settings : TODO : have a global class for all table */
+ .browsetable th
+,.ui-jqgrid .ui-jqgrid-view th
+{
+    font-size: 1.2em;font-size: 1.2rem;
+}
+ .browsetable td
+,.ui-jqgrid .ui-jqgrid-view td
+{
+    font-size: 1.05em;font-size: 1.05rem;
+}
 /* Added by evan to help usability on the user template rights form in useradmin/userrighthandling.php */
 table#user-template-permissions
 {
@@ -1641,7 +1648,6 @@ ol.organizer {
 #gview_displaysurveys th div{
     white-space:normal;
     height:auto;
-    font-size: 0.8em;
 }
 .labelsets-update label{
     display:block
