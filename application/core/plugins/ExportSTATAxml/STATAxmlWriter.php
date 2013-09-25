@@ -489,9 +489,9 @@ class STATAxmlWriter extends Writer
                 $typelist[$variable]['type'] = 'long';
                 $typelist[$variable]['format'] = '%10.0g';
             }
-            elseif (in_array('integer', $responses, true))
+            elseif (in_array('int', $responses, true))
             {
-                $typelist[$variable]['type'] = 'integer';
+                $typelist[$variable]['type'] = 'int';
                 $typelist[$variable]['format'] = '%10.0g';
             }
             elseif (in_array('byte', $responses, true))
