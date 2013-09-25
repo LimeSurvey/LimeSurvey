@@ -2413,6 +2413,7 @@
                                 case 'S': //SHORT FREE TEXT
                                 case 'T': //LONG FREE TEXT
                                 case 'U': //HUGE FREE TEXT
+                                case 'D': //DATE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_q) . ')';
@@ -3301,7 +3302,7 @@
                 }
 
                 if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || !is_null($preg)
-                || $type == 'S' || $type == 'T' || $type == 'U' || $type == '|') {
+                || $type == 'S' || $type == 'D' || $type == 'T' || $type == 'U' || $type == '|') {
                     if (!isset($q2subqInfo[$questionNum])) {
                         $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
@@ -3338,7 +3339,7 @@
                         }
                     }
                     else if ($type == 'N'
-                        || $type == 'S' || $type == 'T' || $type == 'U')    // for $preg
+                        || $type == 'S' || $type == 'D' || $type == 'T' || $type == 'U')    // for $preg
                         {
                             $q2subqInfo[$questionNum]['subqs'][] = array(
                             'varName' => $varName,
@@ -6518,6 +6519,7 @@
                         {
                             case 'N':
                             case 'S':
+                            case 'D':
                             case 'T':
                             case 'U':
                                 $valParts[] = "\n  if(isValidOther" . $arg['qid'] . "){\n";
