@@ -689,7 +689,7 @@ class index extends CAction {
     {
         if ( is_numeric($mvSurveyIdOrBaseLang))
         {
-            $baselang = Survey::model()->findByPk($surveyId)->language;
+            $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
         }
         elseif (!empty($mvSurveyIdOrBaseLang))
         {
