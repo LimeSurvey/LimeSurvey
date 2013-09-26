@@ -1431,9 +1431,9 @@
         //check if token actually does exist
         // check also if it is allowed to change survey after completion
         if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-            $oTokenEntry = Tokens_dynamic::model($surveyid)->find('token=:token', array(':token'=>trim(strip_tags($clienttoken))));
+            $oTokenEntry = Tokens_dynamic::model($surveyid)->find('token=:token', array(':token'=>$clienttoken));
         } else {
-            $oTokenEntry = Tokens_dynamic::model($surveyid)->find("token=:token AND (completed = 'N' or completed='')", array(':token'=>trim(strip_tags($clienttoken))));
+            $oTokenEntry = Tokens_dynamic::model($surveyid)->find("token=:token AND (completed = 'N' or completed='')", array(':token'=>$clienttoken));
         }
 
         if (is_null($oTokenEntry) ||  ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )

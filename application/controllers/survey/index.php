@@ -447,7 +447,7 @@ class index extends CAction {
         isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
             //check if tokens actually haven't been already used
-            $areTokensUsed = usedTokens(trim(strip_tags(returnGlobal('token',true))),$surveyid);
+            $areTokensUsed = usedTokens(returnGlobal('token',true),$surveyid);
             // check if token actually does exist
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
