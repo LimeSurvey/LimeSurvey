@@ -309,7 +309,7 @@ class InstallerController extends CController {
                     // If database is up to date, redirect to administration screen.
                     if ($bDBExists && !$bTablesDoNotExist)
                     {
-                        Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', $clang->gT('The database you specified is up to date.'));
+                        Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', $clang->gT('The database you specified does already exist.'));
                         Yii::app()->session['step3'] = true;
 
                         //wrte config file! as we no longer redirect to optional view
@@ -317,7 +317,7 @@ class InstallerController extends CController {
 
                         //$this->redirect(array("installer/loadOptView"));
                         header("refresh:5;url=".$this->createUrl("/admin"));
-                        echo sprintf( $clang->gT('The database you specified is up to date. You\'ll be redirected in 5 seconds. If not, click <a href="%s">here</a>.', 'unescaped'), $this->createUrl("/admin"));
+                        echo sprintf( $clang->gT('The database does exists and contains LimeSurvey tables. You\'ll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click <a href="%s">here</a>.', 'unescaped'), $this->createUrl("/admin"));
                         exit();
                     }
 
