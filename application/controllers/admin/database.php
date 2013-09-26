@@ -393,20 +393,9 @@ class database extends Survey_Common_Action
                 $_POST['question_'.$baselang] = html_entity_decode(Yii::app()->request->getPost('question_'.$baselang), ENT_QUOTES, "UTF-8");
                 $_POST['help_'.$baselang] = html_entity_decode(Yii::app()->request->getPost('help_'.$baselang), ENT_QUOTES, "UTF-8");
 
-
-                // Fix bug with FCKEditor saving strange BR types
-                if ($xssfilter)
-                {
-                    $_POST['title']=$filter->purify($_POST['title']);
-                    $_POST['question_'.$baselang]=$filter->purify($_POST['question_'.$baselang]);
-                    $_POST['help_'.$baselang]=$filter->purify($_POST['help_'.$baselang]);
-                }
-                else
-                {
-                    $_POST['title']=fixCKeditorText(Yii::app()->request->getPost('title'));
-                    $_POST['question_'.$baselang]=fixCKeditorText(Yii::app()->request->getPost('question_'.$baselang));
-                    $_POST['help_'.$baselang]=fixCKeditorText(Yii::app()->request->getPost('help_'.$baselang));
-                }
+                $_POST['title']=fixCKeditorText(Yii::app()->request->getPost('title'));
+                $_POST['question_'.$baselang]=fixCKeditorText(Yii::app()->request->getPost('question_'.$baselang));
+                $_POST['help_'.$baselang]=fixCKeditorText(Yii::app()->request->getPost('help_'.$baselang));
 
                 $data = array(
                 'sid' => $surveyid,
