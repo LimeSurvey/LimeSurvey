@@ -4100,6 +4100,7 @@
                     while (true)
                     {
                         $LEM->currentQset = array();    // reset active list of questions
+                        if (is_null($LEM->currentGroupSeq)) {$LEM->currentGroupSeq=0;} // If moving backwards in preview mode and a question was removed then $LEM->currentGroupSeq is NULL and an endless loop occurs.
                         if (--$LEM->currentGroupSeq < 0)
                         {
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
