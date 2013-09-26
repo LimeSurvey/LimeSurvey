@@ -5148,19 +5148,19 @@ function getEmailFormat($surveyid)
 
 // Check if user has manage rights for a template
 function hasTemplateManageRights($userid, $templatefolder) {
-    $userid=sanitize_int($userid);
-    $templatefolder=sanitize_paranoid_string($templatefolder);
-    $criteria = new CDbCriteria;
-    $criteria->addColumnCondition(array('uid' => $userid));
-    $criteria->addSearchCondition('folder', $templatefolder);
-    $query=Permission::model()->find($criteria);
-    //if ($result->RecordCount() == 0)  return false;
-    if (is_null($query))  return false;
+	$userid=sanitize_int($userid);
+	$templatefolder=sanitize_paranoid_string($templatefolder);
+	$criteria = new CDbCriteria;
+	$criteria->addColumnCondition(array('uid' => $userid));
+	$criteria->addSearchCondition('permission', $templatefolder);
+	$query=Permission::model()->find($criteria);
+	//if ($result->RecordCount() == 0)  return false;
+	if (is_null($query))  return false;
 
-    $row = $query;
-    //$row = $result->FetchRow();
+	$row = $query;
+	//$row = $result->FetchRow();
 
-    return $row["use"];
+	return $row["read_p"];
 }
 
 /**
