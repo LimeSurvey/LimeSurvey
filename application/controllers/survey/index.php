@@ -687,9 +687,9 @@ class index extends CAction {
 
     function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
-        if ( is_numeric($mvSurveyIdOrBaseLang))
+        if ( is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->find($mvSurveyIdOrBaseLang))
         {
-            $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
+            $baselang = Survey::model()->find($mvSurveyIdOrBaseLang)->language;
         }
         elseif (!empty($mvSurveyIdOrBaseLang))
         {
