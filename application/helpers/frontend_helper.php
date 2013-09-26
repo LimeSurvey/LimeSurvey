@@ -972,7 +972,7 @@ function buildsurveysession($surveyid,$preview=false)
         //check if token actually does exist
         // check also if it is allowed to change survey after completion
 		if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-            $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>trim(strip_tags($clienttoken))));
+            $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken));
         } else {
             $oTokenEntry = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $clienttoken));
         }
