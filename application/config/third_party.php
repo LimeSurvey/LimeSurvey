@@ -178,5 +178,14 @@ return array(
 		'depends' => array(
 			'jqueryui'
 		)
-	)
+	),
+	'jqueryui-timepicker' => array(
+        'baseUrl' => 'third_party/jquery-ui-timepicker-addon/',
+        'js' => array(
+            'jquery-ui-timepicker-addon.js'
+        ),
+        'depends' => array(
+            'jqueryui'
+        )
+    )
 );

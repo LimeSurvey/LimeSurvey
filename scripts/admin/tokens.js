@@ -174,7 +174,6 @@ $(document).ready(function() {
                 jQuery('#displaytokens').editRow(row.attr('id'), true, null, null, null, null, func);
                 row.find('.inputbuttons').hide();
                 window.editing = true;
-
                 var validfrom = row.find('[aria-describedby="displaytokens_validfrom"]');
                 validfrom.find('input').css('width', '119px').datetimepicker({
                     showOn: 'button',
@@ -193,7 +192,7 @@ $(document).ready(function() {
                 .appendTo(jQuery(this).parent().parent())
                 .click(function()
                 {
-                    jQuery('#displaytokens').saveRow(row.attr('id'));
+                    jQuery('#displaytokens').saveRow(row.attr('id'),{extraparam : {YII_CSRF_TOKEN:csrfToken}});
                     func();
                 });
             });
