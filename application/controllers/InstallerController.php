@@ -1013,8 +1013,8 @@ class InstallerController extends CController {
                 $dbdata .="\t\t\t" . "'emulatePrepare' => true,"    . "\n";
 
             }
-            $dbdata .="\t\t\t" . "'username' => '$sDatabaseUser',"  . "\n"
-            ."\t\t\t" . "'password' => '$sDatabasePwd',"            . "\n"
+            $dbdata .="\t\t\t" . "'username' => '".addslashes($sDatabaseUser)."',"  . "\n"
+            ."\t\t\t" . "'password' => '".addslashes($sDatabasePwd)."',"            . "\n"
             ."\t\t\t" . "'charset' => 'utf8',"                      . "\n"
             ."\t\t\t" . "'tablePrefix' => '$sDatabasePrefix',"      . "\n";
 
