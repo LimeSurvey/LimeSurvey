@@ -92,7 +92,7 @@ abstract class LSYii_Controller extends CController
 			$dieoutput .= 'This script can only be run on PHP version 5.1.6 or later! Your version: '.PHP_VERSION.'<br />';
 
 		if (!function_exists('mb_convert_encoding'))
-			$dieoutput .= "This script needs the PHP Multibyte String Functions library installed: See <a href='http://docs.limesurvey.org/tiki-index.php?page=Installation+FAQ'>FAQ</a> and <a href='http://de.php.net/manual/en/ref.mbstring.php'>PHP documentation</a><br />";
+			$dieoutput .= "This script needs the PHP Multibyte String Functions library installed: See <a href='http://manual.limesurvey.org/wiki/Installation_FAQ'>FAQ</a> and <a href='http://de.php.net/manual/en/ref.mbstring.php'>PHP documentation</a><br />";
 
 		if ($dieoutput != '')
 			throw new CException($dieoutput);

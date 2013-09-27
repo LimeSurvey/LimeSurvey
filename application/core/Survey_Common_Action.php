@@ -343,7 +343,7 @@ class Survey_Common_Action extends CAction
             Yii::app()->getController()->_loadEndScripts();
 
         if(!isset($aData['display']['footer']) || $aData['display']['footer'] !== false)
-            Yii::app()->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+            Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', $clang->gT('LimeSurvey online manual'));
         
         $out = ob_get_contents();
         ob_clean();
