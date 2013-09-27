@@ -92,7 +92,7 @@ class AdminController extends LSYii_Controller
         $output .= '</div>'."\n";
         echo $output;
 
-        $this->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+        $this->_getAdminFooter('http://manual.limesurvey.org', $clang->gT('LimeSurvey online manual'));
 
         die;
     }

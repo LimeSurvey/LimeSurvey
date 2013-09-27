@@ -23,7 +23,6 @@
  * to determine whether the results of a certain question should be shown to the user
  * after he/she has submitted the survey.
  *
- * See http://docs.limesurvey.org/tiki-index.php?page=Question+attributes#public_statistics
  */
 
 class Statistics_userController extends LSYii_Controller {

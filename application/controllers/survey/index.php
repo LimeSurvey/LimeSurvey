@@ -174,7 +174,7 @@ class index extends CAction {
             AND ((expires >= '".date("Y-m-d H:i")."') OR (expires is null))
             AND ((startdate <= '".date("Y-m-d H:i")."') OR (startdate is null))
             ORDER BY surveyls_title";
-            $result = dbExecuteAssoc($query,false,true) or safeDie("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
+            $result = dbExecuteAssoc($query,false,true) or safeDie("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://manual.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
             $list=array();
 
             foreach($result->readAll() as $rows)

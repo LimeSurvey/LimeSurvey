@@ -1911,7 +1911,7 @@ class conditionsaction extends Survey_Common_Action {
             // Regexp Tab
             $aViewUrls['output'] .= "\t<div id='REGEXP' style='display:block;'>\n"
             ."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' rows='5' cols='113'>$EDITConditionRegexp</textarea>\n"
-            ."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://docs.limesurvey.org/tiki-index.php?page=Using+Regular+Expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a></div>\n"
+            ."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://manual.limesurvey.org/wiki/Using_regular_expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a></div>\n"
             ."\t</div>\n";
 
             $aViewUrls['output'] .= "</div>\n"; // end conditiontarget div

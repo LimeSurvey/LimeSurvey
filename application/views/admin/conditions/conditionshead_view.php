@@ -21,7 +21,7 @@
             <label for='questionNav'><?php $clang->eT("Questions");?>:</label>
             <select id='questionNav' onchange="window.open(this.options[this.selectedIndex].value,'_top')"><?php echo $quesitonNavOptions;?></select>
             <img alt="" src="<?php echo $sImageURL;?>separator.gif"/>
-            <a href="http://docs.limesurvey.org" target='_blank'>
+            <a href="http://manual.limesurvey.org" target='_blank'>
                 <img src='<?php echo $sImageURL;?>showhelp.png' title='' alt='<?php $clang->eT("LimeSurvey online manual");?>' /></a>
         </div></div></div>
 <p>
