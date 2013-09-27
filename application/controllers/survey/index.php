@@ -378,7 +378,7 @@ class index extends CAction {
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
         }
 
-        if (returnGlobal('loadname',true)=="reload")
+        if (returnGlobal('loadall',true)=="reload") // Used if reload is done by URL (GET)
         {
             $_POST['loadall']="reload";
         }
