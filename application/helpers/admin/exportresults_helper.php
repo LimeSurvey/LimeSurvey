@@ -994,7 +994,7 @@ abstract class Writer implements IWriter
                 }
                 break;
 
-            case ':':
+            case ':':           
             case ';':
                 list($scaleZeroTitle, $scaleOneTitle) = explode('_', $answerCode);
                 $subHeading .= ' ['.$scaleZeroTitle.']['.$scaleOneTitle.']';
@@ -1095,28 +1095,8 @@ abstract class Writer implements IWriter
 
             case ':':
             case ';':
-                //The headers created by this section of code are significantly different from
-                //the old code.  I believe that they are more accurate. - elameno
-                list($scaleZeroTitle, $scaleOneTitle) = explode('_', $answerCode);
-                $sqs = $survey->getSubQuestionArrays($questionId);
-
-                $scaleZeroText = '';
-                $scaleOneText = '';
-                foreach ($sqs as $sq)
-                {
-                    if ($sq['title'] == $scaleZeroTitle && $sq['scale_id'] == 0)
-                    {
-                        $scaleZeroText = $sq['question'];
-                    }
-                    elseif ($sq['title'] == $scaleOneTitle && $sq['scale_id'] == 1)
-                    {
-                        $scaleOneText = $sq['question'];
-                    }
-                }
-
-                $subHeading .= ' ['.$this->stripTagsFull($scaleZeroText).']['.$this->stripTagsFull($scaleOneText).']';
+                $subHeading .= ' ['.$this->stripTagsFull($field['subquestion1']).']['.$this->stripTagsFull($field['subquestion2']).']';
                 break;
-
             case '1':
                 $answerScale = substr($fieldName, -1) + 1;
                 $subQuestions = $survey->getSubQuestionArrays($questionId);
