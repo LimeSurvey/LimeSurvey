@@ -1939,31 +1939,37 @@ class remotecontrol_handle
 
 	public function list_users($sSessionKey = null)
 	{
-	   if ($this->_checkSessionKey($sSessionKey))
-       {
-		   if( Permission::model()->hasGlobalPermission('superadmin','read') )
-		   {
-			   $users = User::model()->findAll();
+		if ($this->_checkSessionKey($sSessionKey))
+		{
+			if( Permission::model()->hasGlobalPermission('superadmin','read') )
+			{
+				$users = User::model()->findAll();
 
-				if(count($users)==0)
-					return array('status' => 'No surveys found');
+				 if(count($users)==0)
+					 return array('status' => 'No surveys found');
 
-				foreach ($users as $user)
-				{
-					$attributes = $user->attributes;
+				 foreach ($users as $user)
+				 {
+					 $attributes = $user->attributes;
 
-					foreach ($user->permissions as $permission)
-					{
-						$attributes['permissions'][] = $permission->attributes;
-					}
-					unset($attributes['password']);
-					$data[] = $attributes;
-				}
-				return $data;
-        }
-        else
+					 foreach ($user->permissions as $permission)
+					 {
+						 $attributes['permissions'][] = $permission->attributes;
+					 }
+					 unset($attributes['password']);
+					 $data[] = $attributes;
+				 }
+				 return $data;
+			}
+			else
+			{
+				return array('status' => 'Permission denied.');
+			}
+		}
+		else
+		{
 			return array('status' => 'Invalid session key');
-	}
+		}
 	}
     /**
      * RPC routine to to initialise the survey's collection of tokens where new participant tokens may be later added.
