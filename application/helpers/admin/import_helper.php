@@ -4775,7 +4775,7 @@ function TSVImportSurvey($sFullFilepath)
                     $insertdata['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
                     $insertdata['scale_id'] = $scale_id;
                     // For multi nueric language, qid is needed, why not gid. name is not unique.
-                    $fullsqname = "G{$gid}Q{$qid}_{$sqname}";
+                    $fullsqname = "G{$gid}Q{$qid}_{$scale_id}_{$sqname}";
                     if (isset($sqinfo[$fullsqname]))
                     {
                         $qseq = $sqinfo[$fullsqname]['question_order'];
