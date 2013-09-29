@@ -59,6 +59,35 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.00+ (build 130923) to 2.00+ (build 130929) Sept 29, 2013
+-Fixed issue #8129: RemoteControl import_survey disallows using txt type (TSV) (trougakoss)
+-Fixed issue #7610: Missing MSSQL support under Linux (pdo_dblib support) (Carsten Schmitz)
+-Fixed issue #7945: Error message "token mismatch" not being translated (Carsten Schmitz)
+-Fixed issue #7974: Single quote in DB user password breaks installation (Carsten Schmitz)
+-Fixed issue #7993: Loading a saved survey using the the resume link shows  an empty survey (Carsten Schmitz)
+-Fixed issue #7998: Underscore character in subqestion code breaks export of Array (numerical) questions - patch by lucass (Carsten Schmitz)
+-Fixed issue #8130 RemoteControl import_survey erroneously reports failure (trougakoss)
+-Fixed issue #8132: Invalid password shown in registration email for webserver authentication (Carsten Schmitz)
+-Fixed issue #8143: Survey crashes when changes are made (Carsten Schmitz)
+-Fixed issue #8145: Attempting to graph a survey with 0 results returns an error. (Carsten Schmitz)
+-Fixed issue #8157: Pasting tokens with leading whitespace-caracters leads to various problems (Carsten Schmitz)
+-Fixed issue #8181: printable_help missing in tsv export (mfaber)
+-Fixed issue #8185: Large ranking question prevents following questions/submit button showing (Denis Chenu)
+-Fixed issue #8194: Mailto: URLs in questions are removed by XSS filter (Carsten Schmitz)
+-New feature #8028: File upload system can be replaced (Denis Chenu)
+#Updated translation: Czech by slansky
+#Updated translation: French (France) by arnaud21, jfp
+#Updated translation: German by actxcellence, c_schmitz
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Italian by lfanfoni, cubeAtWork
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Macedonian by vaskacobanova
+#Updated translation: Norwegian (BokmÃ¥l) by peterhol
+#Updated translation: Romanian by filipguttman, ionicat
+#Updated translation: Thai by adzpire
+#Updated translation: Welsh by NortonT
+
 Changes from 2.00+ (build 130913) to 2.00+ (build 130923) Sept 23, 2013
 -Fixed issue #7867: 5 point scale question type is missing CSS classes for slider or star rating layout (tpartner)
 -Fixed issue #7934: Shows availability of update to 2.05 when set to show only stable versions (Carsten Schmitz)
