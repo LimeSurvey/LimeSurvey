@@ -9144,7 +9144,7 @@ EOD;
                             }
                             $row['type/scale'] = $_scale;
                             $row['name'] = $ansInfo[1];
-                            $row['relevance'] = $valInfo[0];    // TODO - true? - what if it isn't an assessment value?
+                            $row['relevance'] = $assessments==true ? $valInfo[0] : '';
                             $row['text'] = $valInfo[1];
                             $row['language'] = $lang;
                             $rows[] = $row;
