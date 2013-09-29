@@ -5150,17 +5150,7 @@ function getEmailFormat($surveyid)
 function hasTemplateManageRights($userid, $templatefolder) {
     $userid=sanitize_int($userid);
     $templatefolder=sanitize_paranoid_string($templatefolder);
-    $criteria = new CDbCriteria;
-    $criteria->addColumnCondition(array('uid' => $userid));
-    $criteria->addSearchCondition('folder', $templatefolder);
-    $query=Permission::model()->find($criteria);
-    //if ($result->RecordCount() == 0)  return false;
-    if (is_null($query))  return false;
-
-    $row = $query;
-    //$row = $result->FetchRow();
-
-    return $row["use"];
+    return Permission::model()->hasTemplatePermission($templatefolder, 'read', $userid);
 }
 
 /**

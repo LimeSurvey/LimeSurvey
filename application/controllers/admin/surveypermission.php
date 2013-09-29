@@ -239,7 +239,7 @@ class surveypermission extends Survey_Common_Action {
                         foreach ($result2 as $row2 )
                         {
                             $uid_arr[] = $row2['uid'];
-                            $isrresult = Permission::model()->insertSomeRecords(array('sid' => $surveyid,'uid' => $row2['uid'], 'permission' => 'survey', 'read_p' => 1));
+                            $isrresult = Permission::model()->insertSomeRecords(array('entity_id' => $surveyid, 'entity'=>'survey', 'uid' => $row2['uid'], 'permission' => 'survey', 'read_p' => 1));
                             if (!$isrresult) break;
                         }
 
