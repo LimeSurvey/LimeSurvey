@@ -8625,6 +8625,7 @@ EOD;
             'other_replace_text',
             'page_break',
             'prefix',
+            'printable_help',
             'public_statistics',
             'random_group',
             'random_order',
