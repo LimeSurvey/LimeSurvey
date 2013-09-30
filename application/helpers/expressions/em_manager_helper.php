@@ -8760,6 +8760,8 @@ EOD;
 
                         $row = array();
                         $row['class'] = 'G';
+                        //create a group code to allow proper importing of multi-lang survey TSVs
+                        $row['type/scale']='G'.$gseq;
                         $row['name'] = $ginfo['group_name'];
                         $row['relevance'] = $grelevance;
                         $row['text'] = $gtext;
