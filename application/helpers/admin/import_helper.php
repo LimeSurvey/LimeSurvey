@@ -4195,6 +4195,36 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
             if(in_array($sLemFieldName,$aCsvHeader)){
                 $aKeyForFieldNames[$sFieldName]=array_search($sLemFieldName,$aCsvHeader);
             }
+            // as fallback just map questions in order of apperance
+            else
+            {
+                // find out where the answer data columns start in CSV
+                if( ! isset($csv_ans_start_index))
+                {
+                    foreach($aCsvHeader as $i=>$name)
+                    {
+                        if(preg_match('/^\d+X\d+X\d+/', $name))
+                        {
+                            $ans_start_index = $i;
+                            break;
+                        }
+                    }
+                }
+                // find out where the answer data columns start in destination table
+                if( ! isset($table_ans_start_index))
+                {
+                    foreach($aRealFieldNames as $i=>$name)
+                    {
+                        if(preg_match('/^\d+X\d+X\d+/', $name))
+                        {
+                            $table_start_index = $i;
+                            break;
+                        }
+                    }
+                }
+                // map answers in order
+                $aKeyForFieldNames[$sFieldName] = (array_search($sFieldName,$aRealFieldNames)-$table_ans_start_index) + $csv_ans_start_index;
+            }
         }
     }
 
