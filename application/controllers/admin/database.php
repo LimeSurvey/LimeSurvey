@@ -1024,9 +1024,7 @@ class database extends Survey_Common_Action
             }
             $updatearray= array('admin'=> Yii::app()->request->getPost('admin'),
             'expires'=>$expires,
-            'adminemail'=> Yii::app()->request->getPost('adminemail'),
             'startdate'=>$startdate,
-            'bounce_email'=> Yii::app()->request->getPost('bounce_email'),
             'anonymized'=> Yii::app()->request->getPost('anonymized'),
             'faxto'=> Yii::app()->request->getPost('faxto'),
             'format'=> Yii::app()->request->getPost('format'),
@@ -1067,6 +1065,24 @@ class database extends Survey_Common_Action
             'googleanalyticsstyle'=>trim(Yii::app()->request->getPost('googleanalyticsstyle')),
             'tokenlength'=>$tokenlength
             );
+        
+
+            $warning = '';
+            // make sure we only update admin email if it is valid
+            if (empty(Yii::app()->request->getPost('adminemail'))
+                || validateEmailAddress(Yii::app()->request->getPost('adminemail'))) {
+                $updatearray['adminemail'] = Yii::app()->request->getPost('adminemail');
+            } else {
+                $warning .= $clang->gT("Warning! Notification email was not updated because it was not valid.").'<br/>'; 
+            }
+            // make sure we only update bounce email if it is valid
+            if (empty(Yii::app()->request->getPost('bounce_email'))
+                || validateEmailAddress(Yii::app()->request->getPost('bounce_email'))) {
+                $updatearray['bounce_email'] = Yii::app()->request->getPost('bounce_email');
+            } else {
+                $warning .= $clang->gT("Warning! Bounce email was not updated because it was not valid.").'<br/>'; 
+            }
+
             // use model
             $Survey=Survey::model()->findByPk($surveyid);
             foreach ($updatearray as $k => $v)
@@ -1114,7 +1130,7 @@ class database extends Survey_Common_Action
 
             if ($usresult)
             {
-                Yii::app()->session['flashmessage'] = $clang->gT("Survey settings were successfully saved.");
+                Yii::app()->session['flashmessage'] = $warning.$clang->gT("Survey settings were successfully saved.");
             }
             else
             {
