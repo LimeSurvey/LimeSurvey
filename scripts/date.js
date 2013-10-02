@@ -91,7 +91,7 @@ function dateUpdater() {
             {
                 iMonth=$('#month'+thisid).val(); 
             }
-            if ($('#month'+thisid).size()==0)
+            if ($('#day'+thisid).size()==0)
             {
                 iDay='01';
             }
