@@ -736,6 +736,8 @@ function tableCellAdapters()
  * @param {} checkcode : deprecated
  * @param {array} arrayparam
  * @param {array} arrayval
+ *
+ * TODO : use $.post 
  */
 function sendPost(myaction,checkcode,arrayparam,arrayval)
 {
@@ -746,10 +748,6 @@ function sendPost(myaction,checkcode,arrayparam,arrayval)
     for (i=0;i<arrayparam.length;i++)
     {
         addHiddenElement(myform,arrayparam[i],arrayval[i])
-    }
-    if(typeof csrfToken =="undefined")
-    {
-        csrfToken=$("input[name='YII_CSRF_TOKEN']:first").val();
     }
     if(typeof csrfToken =="string")
     {
