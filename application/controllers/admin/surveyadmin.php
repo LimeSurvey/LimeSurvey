@@ -1546,8 +1546,6 @@ class SurveyAdmin extends Survey_Common_Action
             'owner_id' => Yii::app()->session['loginID'],
             'admin' => $_POST['admin'],
             'active' => 'N',
-            'adminemail' => $_POST['adminemail'],
-            'bounce_email' => $_POST['bounce_email'],
             'anonymized' => $_POST['anonymized'],
             'faxto' => $_POST['faxto'],
             'format' => $_POST['format'],
@@ -1585,6 +1583,20 @@ class SurveyAdmin extends Survey_Common_Action
             'tokenlength' => $_POST['tokenlength']
             );
 
+            $warning = '';
+            // make sure we only update emails if they are valid
+            if (validateEmailAddress($_POST['adminemail']) || empty($_POST['adminemail'])) {
+                $aInsertData['adminemail'] = $_POST['adminemail'];
+            } else {
+                $aInsertData['adminemail'] = '';
+                $warning .= $this->getController()->lang->gT("Warning! Notification email was not updated because it was not valid.").'<br/>'; 
+            }
+            if (validateEmailAddress($_POST['bounce_email']) || empty($_POST['bounce_email'])) {
+                $aInsertData['bounce_email'] = $_POST['bounce_email'];
+            } else {
+                $aInsertData['bounce_email'] = '';
+                $warning .= $this->getController()->lang->gT("Warning! Bounce email was not updated because it was not valid.").'<br/>'; 
+            }
 
             if (!is_null($iSurveyID))
             {
@@ -1636,7 +1648,7 @@ class SurveyAdmin extends Survey_Common_Action
             $langsettings = new Surveys_languagesettings;
             $langsettings->insertNewSurvey($aInsertData);
 
-            Yii::app()->session['flashmessage'] = $this->getController()->lang->gT("Survey was successfully added.");
+            Yii::app()->session['flashmessage'] = $warning.$this->getController()->lang->gT("Survey was successfully added.");
 
             // Update survey permissions
             Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
