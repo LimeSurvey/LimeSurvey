@@ -4592,21 +4592,32 @@ function TSVImportSurvey($sFullFilepath)
                 // insert group
                 $insertdata = array();
                 $insertdata['sid'] = $iNewSID;
-                $gname = ((isset($row['name']) ? $row['name'] : 'G' . $gseq));
+                $gname = ((!empty($row['name']) ? $row['name'] : 'G' . $gseq));
+                $glang = (!empty($row['language']) ? $row['language'] : $baselang);
+                // when a multi-lang tsv-file without information on the group id/number (old style) is imported,
+                // we make up this information by giving a number 0..[numberofgroups-1] per language.
+                // the number and order of groups per language should be the same, so we can also import these files 
+                if ($lastglang!=$glang)    //reset couner on language change
+                {
+                    $iGroupcounter=0;
+                }
+                $lastglang=$glang;
+                //use group id/number from file. if missing, use an increasing number (s.a.)
+                $sGroupseq=(!empty($row['type/scale']) ? $row['type/scale'] : 'G'.$iGroupcounter++);
                 $insertdata['group_name'] = $gname;
                 $insertdata['grelevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
                 $insertdata['description'] = (isset($row['text']) ? $row['text'] : '');
-                $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-                // For multi numeric survey : same title
-                if (isset($ginfo[$gname]))
+                $insertdata['language'] = $glang;
+
+                // For multi language survey: same gid/sort order across all languages
+                if (isset($ginfo[$sGroupseq]))
                 {
-                    $gseq = $ginfo[$gname]['group_order'];
-                    $gid = $ginfo[$gname]['gid'];
+                    $gid = $ginfo[$sGroupseq]['gid'];
                     $insertdata['gid'] = $gid;
-                    $insertdata['group_order'] = $gseq;
+                    $insertdata['group_order'] = $ginfo[$sGroupseq]['group_order'];
                 }
                 else
-                {
+                { 
                     $insertdata['group_order'] = $gseq;
                 }
                 $newgid = QuestionGroup::model()->insertRecords($insertdata);
@@ -4614,12 +4625,12 @@ function TSVImportSurvey($sFullFilepath)
                     $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Failed to insert group").". ".$clang->gT("Text file row number ").$rownumber." (".$gname.")";
                     break;
                 }
-                if (!isset($ginfo[$gname]))
+                if (!isset($ginfo[$sGroupseq]))
                 {
                     $results['groups']++;
-                    $gid=$newgid; // save this for later
-                    $ginfo[$gname]['gid'] = $gid;
-                    $ginfo[$gname]['group_order'] = $gseq++;
+                    $gid=$newgid;
+                    $ginfo[$sGroupseq]['gid']=$gid;
+                    $ginfo[$sGroupseq]['group_order']=$gseq++;
                 }
                 $qseq=0;    // reset the question_order
                 break;
