@@ -1860,46 +1860,7 @@ class tokens extends Survey_Common_Action
         }
 
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'tokens.js');
-
-#        $aEncodings = array(
-#        "armscii8" => $clang->gT("ARMSCII-8 Armenian")
-#        , "ascii" => $clang->gT("US ASCII")
-#        , "auto" => $clang->gT("Automatic")
-#        , "big5" => $clang->gT("Big5 Traditional Chinese")
-#        , "binary" => $clang->gT("Binary pseudo charset")
-#        , "cp1250" => $clang->gT("Windows Central European")
-#        , "cp1251" => $clang->gT("Windows Cyrillic")
-#        , "cp1256" => $clang->gT("Windows Arabic")
-#        , "cp1257" => $clang->gT("Windows Baltic")
-#        , "cp850" => $clang->gT("DOS West European")
-#        , "cp852" => $clang->gT("DOS Central European")
-#        , "cp866" => $clang->gT("DOS Russian")
-#        , "cp932" => $clang->gT("SJIS for Windows Japanese")
-#        , "dec8" => $clang->gT("DEC West European")
-#        , "eucjpms" => $clang->gT("UJIS for Windows Japanese")
-#        , "euckr" => $clang->gT("EUC-KR Korean")
-#        , "gb2312" => $clang->gT("GB2312 Simplified Chinese")
-#        , "gbk" => $clang->gT("GBK Simplified Chinese")
-#        , "geostd8" => $clang->gT("GEOSTD8 Georgian")
-#        , "greek" => $clang->gT("ISO 8859-7 Greek")
-#        , "hebrew" => $clang->gT("ISO 8859-8 Hebrew")
-#        , "hp8" => $clang->gT("HP West European")
-#        , "keybcs2" => $clang->gT("DOS Kamenicky Czech-Slovak")
-#        , "koi8r" => $clang->gT("KOI8-R Relcom Russian")
-#        , "koi8u" => $clang->gT("KOI8-U Ukrainian")
-#        , "latin1" => $clang->gT("cp1252 West European")
-#        , "latin2" => $clang->gT("ISO 8859-2 Central European")
-#        , "latin5" => $clang->gT("ISO 8859-9 Turkish")
-#        , "latin7" => $clang->gT("ISO 8859-13 Baltic")
-#        , "macce" => $clang->gT("Mac Central European")
-#        , "macroman" => $clang->gT("Mac West European")
-#        , "sjis" => $clang->gT("Shift-JIS Japanese")
-#        , "swe7" => $clang->gT("7bit Swedish")
-#        , "tis620" => $clang->gT("TIS620 Thai")
-#        , "ucs2" => $clang->gT("UCS-2 Unicode")
-#        , "ujis" => $clang->gT("EUC-JP Japanese")
-#        , "utf8" => $clang->gT("UTF-8 Unicode"));
-        $encodingsarray =aEncodingsArray();
+        $aEncodings =aEncodingsArray();
         if (Yii::app()->request->getPost('submit'))
         {
             if (Yii::app()->request->getPost('csvcharset') && Yii::app()->request->getPost('csvcharset'))  //sanitize charset - if encoding is not found sanitize to 'auto'

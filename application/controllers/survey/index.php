@@ -494,7 +494,7 @@ class index extends CAction {
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-                $tokenInstance = Token::model($surveyid)->usable()->findByAttributes(array('token' => $token));
+                $tokenInstance = Token::model($surveyid)->editable()->findByAttributes(array('token' => $token));
             } else {
                 $tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
             }

@@ -430,14 +430,14 @@ class templates extends Survey_Common_Action
     public function templatecopy()
     {
         $clang = $this->getController()->lang;
-
-        if (returnGlobal('action') == "templatecopy" && returnGlobal('newname') && returnGlobal('copydir')) {
+        $newname=sanitize_paranoid_string(Yii::app()->request->getPost("newname"));
+        $copydir=sanitize_paranoid_string(Yii::app()->request->getPost("copydir"));
+        $action=Yii::app()->request->getPost("action");
+        if ($newname && $copydir) {
             // Copies all the files from one template directory to a new one
-            // This is a security issue because it is allowing copying from get variables...
             Yii::app()->loadHelper('admin/template');
-            $newname= sanitize_paranoid_string(returnGlobal('newname'));
             $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
-            $copydirname = getTemplatePath(returnGlobal('copydir'));
+            $copydirname = getTemplatePath($copydir);
             
             $oFileHelper=new CFileHelper;
             
@@ -447,13 +447,25 @@ class templates extends Survey_Common_Action
             if ($mkdirresult == 1) {
                 $oFileHelper->copyDirectory($copydirname,$newdirname);
                 $templatename = $newname;
-                $this->index("startpage.pstpl", "welcome", $templatename);
+                $this->getController()->redirect(array(App()->getController()->createUrl("admin/templates/sa/view",array('templatename'=>$newname))));
             }
             elseif ($mkdirresult == 2)
-                $this->getController()->error(sprintf($clang->gT("Directory with the name `%s` already exists - choose another name", "js"), $newname));
+            {
+                Yii::app()->setFlashMessage(sprintf($clang->gT("Directory with the name `%s` already exists - choose another name"), $newname),'error');
+                $this->getController()->redirect(array(App()->getController()->createUrl("admin/templates/sa/view",array('templatename'=>$copydir))));
+                //$this->index("startpage.pstpl", "welcome", $copydirname);
+            }
             else
-                $this->getController()->error(sprintf($clang->gT("Unable to create directory `%s`.", "js"), $newname) . " " . $clang->gT("Please check the directory permissions.", "js"));
-            ;
+            {
+                Yii::app()->setFlashMessage(sprintf($clang->gT("Unable to create directory `%s`."), $newname),'error');
+                Yii::app()->setFlashMessage($clang->gT("Please check the directory permissions."));
+                $this->getController()->redirect(array("admin/templates/sa/view"));
+                //$this->index("startpage.pstpl", "welcome", $copydirname);
+            }
+        }
+        else
+        {
+            $this->getController()->redirect(array("admin/templates/sa/view"));
         }
     }
 
@@ -481,10 +493,10 @@ class templates extends Survey_Common_Action
                 Template::model()->deleteAllByAttributes(array('folder' => $templatename));
                 Permission::model()->deleteAllByAttributes(array('permission' => $templatename,'entity' => 'template'));
 
-                Yii::app()->session['flashmessage'] = sprintf($clang->gT("Template '%s' was successfully deleted."), $templatename);
+                Yii::app()->setFlashMessage(sprintf($clang->gT("Template '%s' was successfully deleted."), $templatename));
             }
             else
-                Yii::app()->session['flashmessage'] = sprintf($clang->gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename);
+                Yii::app()->setFlashMessage(sprintf($clang->gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename),'error');
         }
 
         // Redirect with default templatename, editfile and screenname

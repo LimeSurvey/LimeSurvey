@@ -527,14 +527,12 @@ class SurveyAdmin extends Survey_Common_Action
     * @param int $iSurveyID
     * @return void
     */
-    public function ajaxowneredit($newowner, $iSurveyID)
+    public function ajaxowneredit()
     {
         header('Content-type: application/json');
-
-        $intNewOwner = sanitize_int($newowner);
-        $intSurveyId = sanitize_int($iSurveyID);
+        $intNewOwner = sanitize_int(Yii::app()->request->getPost("newowner"));
+        $intSurveyId = sanitize_int(Yii::app()->request->getPost("surveyid"));
         $owner_id = Yii::app()->session['loginID'];
-
         $query_condition = 'sid=:sid';
         $params[':sid']=$intSurveyId;
         if (!Permission::model()->hasGlobalPermission('superadmin','create'))

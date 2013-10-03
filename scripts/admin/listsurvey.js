@@ -9,20 +9,24 @@ $(document).ready(function(){
         var survey_id = ownername_edit_id.slice(15);
         var translate_to = $(this).attr('translate_to');
         var initial_text = $(this).html();
-        $.getJSON(getuserurl,'',function(oData)
-        {
-            old_owner =  $($(oldThis).parent()).html();
-
-            old_owner = (old_owner.split("("))[0];
-            $($(oldThis).parent()).html('<select class="ownername_select" id="ownername_select_'+survey_id+'"></select>\n'
-            + '<input class="ownername_button" id="ownername_button_'+survey_id+'" type="button" initial_text="'+initial_text+'" value="'+delBtnCaption+'">');
-            $(oData).each(function(key,value){
-                $('#ownername_select_'+survey_id).
-                append($("<option id='opt_"+value[1]+"'></option>").
-                attr("value",value[0]).
-                text(value[1]));
-            });
-            $("#ownername_select_"+survey_id+ " option[id=opt_"+old_owner+"]").attr("selected","selected");
+        $.post( getuserurl,function( oData ) {
+            if(typeof oData=="object")
+            {
+                old_owner =  $($(oldThis).parent()).html();
+                old_owner = (old_owner.split("("))[0];
+                $($(oldThis).parent()).html('<select class="ownername_select" id="ownername_select_'+survey_id+'"></select>\n'
+                + '<input class="ownername_button" id="ownername_button_'+survey_id+'" type="button" initial_text="'+initial_text+'" value="'+delBtnCaption+'">');
+                $(oData).each(function(key,value){
+                    $('#ownername_select_'+survey_id).
+                    append($("<option id='opt_"+value[1]+"'></option>").
+                    attr("value",value[0]).
+                    text(value[1]));
+                });
+                $("#ownername_select_"+survey_id+ " option[id=opt_"+old_owner+"]").attr("selected","selected");
+            }
+            //else
+        }).fail(function() {
+            //$notifycontainer.notify("create", 'error-notify', { message:"An error was occured"});// To set in language or in extension (something like lsalert(text, type="default");
         });
     });
 
@@ -33,17 +37,18 @@ $(document).ready(function(){
         var survey_id = ownername_select_id.slice(17);
         var newowner = $("#ownername_select_"+survey_id).val();
         var translate_to = $(this).attr('value');
-
-        $.getJSON(ownerediturl+'/newowner/' + newowner + '/surveyid/' + survey_id,'', function (data){
-
-            var objToUpdate = $($(oldThis).parent());
-
-            if (data.record_count>0)
-                $(objToUpdate).html(data.newowner);
-            else
-                $(objToUpdate).html(old_owner);
-
-            $(objToUpdate).html($(objToUpdate).html() + ' (<a id="ownername_edit_69173" translate_to='+translate_to+' class="ownername_edit" href="#">'+initial_text+'</a>)' );
+        $.post( ownerediturl,{"newowner":newowner,"surveyid":survey_id},function( oData ) {
+            if(typeof oData=="object")// To test json
+            {
+                var objToUpdate = $($(oldThis).parent());
+                if (oData.record_count>0)
+                    $(objToUpdate).html(oData.newowner);
+                else
+                    $(objToUpdate).html(old_owner);
+                $(objToUpdate).html($(objToUpdate).html() + ' (<a id="ownername_edit_69173" translate_to='+translate_to+' class="ownername_edit" href="#">'+initial_text+'</a>)' );
+            }
+        }).fail(function() {
+            //$notifycontainer.notify("create", 'error-notify', { message:"An error was occured"});// To set in language
         });
     });
 

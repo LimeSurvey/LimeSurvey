@@ -736,27 +736,17 @@ function tableCellAdapters()
  * @param {} checkcode : deprecated
  * @param {array} arrayparam
  * @param {array} arrayval
+ *
  */
 function sendPost(myaction,checkcode,arrayparam,arrayval)
 {
-    var myform = document.createElement('form');
-    document.body.appendChild(myform);
-    myform.action =myaction;
-    myform.method = 'POST';
-    for (i=0;i<arrayparam.length;i++)
-    {
-        addHiddenElement(myform,arrayparam[i],arrayval[i])
-    }
-    if(typeof csrfToken =="undefined")
-    {
-        csrfToken=$("input[name='YII_CSRF_TOKEN']:first").val();
-    }
+    var $form = $("<form method='POST'>").attr("action", myaction);
+    for (var i = 0; i < arrayparam.length; i++)
+        $("<input type='hidden'>").attr("name", arrayparam[i]).attr("value", arrayval[i]).appendTo($form);
     if(typeof csrfToken =="string")
-    {
-        addHiddenElement(myform,'YII_CSRF_TOKEN',csrfToken);
-    }
-    // Maybe submit only if csrfToken is string
-    myform.submit();
+        $("<input type='hidden'>").attr("name", 'YII_CSRF_TOKEN').attr("value", csrfToken).appendTo($form);
+    $form.appendTo("body");
+    $form.submit();
 }
 function addHiddenElement(theform,thename,thevalue)
 {
@@ -767,5 +757,3 @@ function addHiddenElement(theform,thename,thevalue)
     myel.value = thevalue;
     return myel;
 }
-
-        
