@@ -3493,6 +3493,33 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['showxquestions']=$insertdata['showXquestions'];
             unset($insertdata['showXquestions']);
         }
+        if (isset($insertdata['googleAnalyticsStyle']))
+        {
+            $insertdata['googleanalyticsstyle']=$insertdata['googleAnalyticsStyle'];
+            unset($insertdata['googleAnalyticsStyle']);
+        }
+        if (isset($insertdata['googleAnalyticsAPIKey']))
+        {
+            $insertdata['googleanalyticsapikey']=$insertdata['googleAnalyticsAPIKey'];
+            unset($insertdata['googleAnalyticsAPIKey']);
+        }
+        if (isset($insertdata['allowjumps'])) 
+        {
+            if( $insertdata['allowjumps']=="Y")
+                $insertdata['questionindex 	']=1; // 0 is default then need only Y
+            unset($insertdata['allowjumps']);
+        }
+        /* Remove unknow column */
+        $aSurveyModelsColumns=Survey::model()->attributes;
+        $aSurveyModelsColumns['wishSID']=null;// To force a sid surely
+        $aBadData=array_diff_key($insertdata, $aSurveyModelsColumns);
+        $insertdata=array_intersect_key ($insertdata,$aSurveyModelsColumns);
+        // Fill a optionnal array of error
+        foreach($aBadData as $key=>$value)
+        {
+            $results['importwarnings'][]=sprintf($clang->gT("This survey setting has not been imported: %s => %s"),$key,$value);
+        }
+        
         $iNewSID = $results['newsid'] = Survey::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [1]<br />");
 
         $results['surveys']++;
