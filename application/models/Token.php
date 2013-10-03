@@ -142,8 +142,11 @@
 					'condition' => 'completed = "N"'
 				),
 				'usable' => array(
-					'condition' => 'usesleft > 0 AND COALESCE(validfrom, NOW()) >= NOW() AND COALESCE(validfrom, NOW()) <= NOW()'
-				)
+					'condition' => 'usesleft > 0 AND COALESCE(validuntil, NOW()) >= NOW() AND COALESCE(validfrom, NOW()) <= NOW()'
+				),
+                'editable' => array(
+                    'condition' => 'COALESCE(validuntil, NOW()) >= NOW() AND COALESCE(validfrom, NOW()) <= NOW()'
+                )
 			);
 		}
 		public function summary()
