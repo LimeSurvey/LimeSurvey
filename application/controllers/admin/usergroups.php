@@ -289,6 +289,13 @@ class Usergroups extends Survey_Common_Action
                 $row = 1;
                 $userloop = array();
                 $bgcc = "oddrow";
+                $displayActions = Permission::model()->hasGlobalPermission('superadmin','read');
+                if (isset($row2[0]['ugid'])) {
+                    $displayActions = $displayActions || Permission::model()->hasGlobalPermission('usergroups','update');
+                    $aData["useradddialog"] = $displayActions;
+                    $aData["useraddusers"] = getGroupUserList($ugid, 'optionlist');
+                    $aData["useraddurl"] = "";
+                }
                 foreach ($aUserInGroupsResult as $egurow)
                 {
                     if ($bgcc == "evenrow") {
@@ -296,27 +303,18 @@ class Usergroups extends Survey_Common_Action
                     } else {
                         $bgcc = "evenrow";
                     }
-                    $userloop[$row]["userid"] = $egurow['uid'];
 
                     //	output users
                     $userloop[$row]["rowclass"] = $bgcc;
-                    if (Permission::model()->hasGlobalPermission('superadmin','update')) {
-                        $userloop[$row]["displayactions"] = true;
-                    } else {
-                        $userloop[$row]["displayactions"] = false;
-                    }
+                    $userloop[$row]["displayactions"] = $displayActions;
 
+                    $userloop[$row]["userid"] = $egurow['uid'];
                     $userloop[$row]["username"] = $egurow['users_name'];
                     $userloop[$row]["email"] = $egurow['email'];
                  
                     $row++;
                 }
                 $aData["userloop"] = $userloop;
-                if (isset($row2[0]['ugid'])) {
-                    $aData["useradddialog"] = true;
-                    $aData["useraddusers"] = getGroupUserList($ugid, 'optionlist');
-                    $aData["useraddurl"] = "";
-                }
             }
 
             $aViewUrls[] = 'viewUserGroup_view';
@@ -334,7 +332,7 @@ class Usergroups extends Survey_Common_Action
 
     function user($ugid, $action = 'add')
     {
-        if (!Permission::model()->hasGlobalPermission('usergroups','read') || !in_array($action, array('add', 'remove')))
+        if (!Permission::model()->hasGlobalPermission('usergroups','update') || !in_array($action, array('add', 'remove')))
         {
             die('access denied');
         }

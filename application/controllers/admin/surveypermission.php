@@ -232,7 +232,7 @@ class surveypermission extends Survey_Common_Action {
                 )
             {
                 if($postusergroupid > 0){
-                    $result2 = User::model()->getCommonUID($surveyid, $postusergroupid); //Checked
+                    $result2 = User::model()->getCommonUID($surveyid, $postusergroupid); //Double Checked
                     $result2 = $result2->readAll();
                     if(count($result2) > 0)
                     {
@@ -270,7 +270,7 @@ class surveypermission extends Survey_Common_Action {
                 }
                 else
                 {
-                    $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n"
+                    $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user group.")."</div>\n"
                     . "<br />" . $clang->gT("No Username selected.")."<br />\n";
                     $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
                 }
@@ -310,7 +310,7 @@ class surveypermission extends Survey_Common_Action {
             $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Add user")."</div>\n";
             $addsummary .= "<div class=\"messagebox ui-corner-all\">\n";
 
-            $result = Survey::model()->findAll('sid = :sid AND owner_id = :owner_id AND owner_id != :postuserid',array(':sid' => $surveyid, ':owner_id' => Yii::app()->session['loginID'], ':postuserid' => $postuserid));
+            $result = Survey::model()->findAll('sid = :surveyid AND owner_id = :owner_id AND owner_id != :postuserid',array(':surveyid' => $surveyid, ':owner_id' => Yii::app()->session['loginID'], ':postuserid' => $postuserid));
             if( Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create') 
                 &&  in_array($postuserid,getUserList('onlyuidarray'))
                 )
@@ -387,7 +387,9 @@ class surveypermission extends Survey_Common_Action {
         }
         elseif( $action == "setusergroupsurveysecurity" )
         {
-            if ( !Permission::model()->hasGlobalPermission('superadmin','read') && !in_array($postusergroupid,getUserList('onlyuidarray')) ) // User can not change own security (except for superadmin ?)
+            if ( (!Permission::model()->hasGlobalPermission('superadmin','read') && !in_array($postusergroupid,getUserGroupList(null, 'simplegidarray'))) // Cannot change usergroup security if not member of the usergroup
+                || in_array($postusergroupid,getSurveyUserGroupList('simpleugidarray',$surveyid)) // Cannot change usergroup security if some users of the usergroup have no permission to the survey
+               )
             {
                 $this->getController()->error('Access denied');
             }
@@ -585,8 +587,8 @@ class surveypermission extends Survey_Common_Action {
                 }
             }
             else{
-                $where .= "sid = :sid";
-                $resrow = Survey::model()->find($where,array(':sid' => $surveyid));
+                $where .= "sid = :surveyid";
+                $resrow = Survey::model()->find($where,array(':surveyid' => $surveyid));
                 $iOwnerID=$resrow['owner_id'];
             }
 
