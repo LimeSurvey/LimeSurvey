@@ -8,6 +8,7 @@ $(document).ready(function(){
         language=$('#datelanguage'+basename).val();
         datemin=$('#datemin'+basename).val();
         datemax=$('#datemax'+basename).val();
+        
         $(e).datepicker({ dateFormat: format,
             showOn: 'both',
             changeYear: true,
@@ -15,8 +16,28 @@ $(document).ready(function(){
             defaultDate: +0,
             beforeShow: customRange,
             firstDay: "1",
-            duration: 'fast'
-            }, $.datepicker.regional[language]);
+            duration: 'fast',
+            // Validate input. Necessary because datepicker also allows keyboard entry.
+            onClose: function() {
+                format=$('#dateformat'+basename).val();
+                answer=$('#answer'+basename).val();
+                //only validate if the format mask says it's a complete date and only a date
+                var str_regexp = /^[mydMYD]{1,4}[-.\s\/][mydMYD]{1,4}[-.\/\s][mydMYD]{1,4}$/; 
+                var pattern = new RegExp(str_regexp); 
+                if (format.match(pattern)!=null)
+                {
+                    try
+                    {
+                        newvalue=jQuery.datepicker.parseDate(format, answer);
+                    }
+                    catch(error)
+                    {
+                        alert('Date entered is invalid!');
+                        $('#answer'+basename).val("");
+                    }
+                }
+            },
+        }, $.datepicker.regional[language]);
     });
 
     // dropdown dates
@@ -40,7 +61,6 @@ function customRange(input)
             maxDate: new Date(Date.parse(datemax.substr(0,10))),
     };
 }
-
 
 function dateUpdater() {
 
