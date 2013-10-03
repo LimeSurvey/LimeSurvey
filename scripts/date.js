@@ -17,8 +17,28 @@ $(document).ready(function(){
             minDate:new Date(range[0],0,1),
             maxDate: new Date(range[1],11,31),
             firstDay: "1",
-            duration: 'fast'
-            }, $.datepicker.regional[language]);
+            duration: 'fast',
+            // Validate input. Necessary because datepicker also allows keyboard entry.
+            onClose: function() {
+                format=$('#dateformat'+basename).val();
+                answer=$('#answer'+basename).val();
+                //only validate if the format mask says it's a complete date and only a date
+                var str_regexp = /^[mydMYD]{1,4}[-.\s\/][mydMYD]{1,4}[-.\/\s][mydMYD]{1,4}$/; 
+                var pattern = new RegExp(str_regexp); 
+                if (format.match(pattern)!=null)
+                {
+                    try
+                    {
+                        newvalue=jQuery.datepicker.parseDate(format, answer);
+                    }
+                    catch(error)
+                    {
+                        alert('Date entered is invalid!');
+                        $('#answer'+basename).val("");
+                    }
+                }
+            },
+        }, $.datepicker.regional[language]);
     });
 
     // dropdown dates
