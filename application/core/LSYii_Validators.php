@@ -24,6 +24,16 @@ class LSYii_Validators extends CValidator {
     * @var boolean
     */
     public $isUrl=false;
+    /**
+    * Filter attribute for isLanguage
+    * @var boolean
+    */
+    public $isLanguage=false;
+    /**
+    * Filter attribute for isLanguageMulti (multi language string)
+    * @var boolean
+    */
+    public $isLanguageMulti=false;
 
     public function __construct()
     {
@@ -40,6 +50,14 @@ class LSYii_Validators extends CValidator {
         {
             if ($object->$attribute== 'http://' || $object->$attribute=='https://') {$object->$attribute="";}
             $object->$attribute=html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8");
+        }
+        if($this->isLanguage)
+        {
+            $object->$attribute=$this->languageFilter($object->$attribute);
+        }
+        if($this->isLanguageMulti)
+        {
+            $object->$attribute=$this->multiLanguageFilter($object->$attribute);
         }
     }
     
@@ -62,5 +80,26 @@ class LSYii_Validators extends CValidator {
                 )
         );
         return $filter->purify($value);
+    }
+    /**
+    * Defines the customs validation rule for language string
+    * 
+    * @param mixed $value
+    */
+    public function languageFilter($value)
+    {
+        // Maybe use the array of language ?
+        return preg_replace('/[^a-z0-9-]/i', '', $value);
+    }
+    /**
+    * Defines the customs validation rule for multi language string
+    * 
+    * @param mixed $value
+    */
+    public function multiLanguageFilter($value)
+    {
+        $aValue=explode(" ",trim($value));
+        $aValue=array_map("sanitize_languagecode",$aValue);
+        return implode(" ",$aValue);
     }
 }

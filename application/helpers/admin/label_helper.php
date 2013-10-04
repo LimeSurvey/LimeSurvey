@@ -20,12 +20,8 @@ function updateset($lid)
     $clang = Yii::app()->lang;
 
     // Get added and deleted languagesid arrays
-    if ($_POST['languageids'])
-        $postlanguageids = sanitize_languagecodeS($_POST['languageids']);
-
-    if ($_POST['label_name'])
-        $postlabel_name = sanitize_labelname($_POST['label_name']);
-
+    $postlanguageids=Yii::app()->getRequest()->getPost('languageids');
+    $postlabel_name=Yii::app()->getRequest()->getPost('label_name');
     $newlanidarray = explode(" ",trim($postlanguageids));
 
     $oldlangidsarray = array();
@@ -96,16 +92,8 @@ function insertlabelset()
     //	$labelsoutput.= $_POST['languageids'];  For debug purposes
     $clang = Yii::app()->lang;
 
-
-    if (!empty($_POST['languageids']))
-    {
-        $postlanguageids=sanitize_languagecodeS($_POST['languageids']);
-    }
-
-    if (!empty($_POST['label_name']))
-    {
-        $postlabel_name=sanitize_labelname($_POST['label_name']);
-    }
+    $postlanguageids=Yii::app()->getRequest()->getPost('languageids');
+    $postlabel_name=Yii::app()->getRequest()->getPost('label_name');
 
     //postlabel_name = dbQuoteAll($postlabel_name,true);
     //$postlanguageids = dbQuoteAll($postlanguageids,true);
@@ -118,7 +106,7 @@ function insertlabelset()
     $result=LabelSet::model()->insertRecords($data);
     if (!$result)
     {
-        safeDie("Inserting the label set failed:<br />".$query."<br />");
+        Yii::app()->session['flashmessage'] = $clang->gT("Inserting the label set failed.");
     }
     else
     {
@@ -207,17 +195,10 @@ function modlabelsetanswers($lid)
     }
     else
     {
-        $labelsoutput= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Can't update labels because you are using duplicated codes","js")."\")\n //-->\n</script>\n";
+        Yii::app()->setFlashMessage($clang->gT("Can't update labels because you are using duplicated codes"),'error');
     }
 
     if ($ajax){ die(); }
-
-    if (isset($labelsoutput))
-    {
-        echo $labelsoutput;
-        exit();
-    }
-
 }
 
 /**

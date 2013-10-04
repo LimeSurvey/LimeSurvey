@@ -392,8 +392,8 @@ class labels extends Survey_Common_Action
         if ($lid == 0)
         {
             $lset = new LabelSet;
-            $lset->label_name = sanitize_xss_string(Yii::app()->getRequest()->getPost('laname'));
-            $lset->languages = sanitize_xss_string($language);
+            $lset->label_name = Yii::app()->getRequest()->getPost('laname');
+            $lset->languages = $language;
             $lset->save();
 
             $lid = getLastInsertID($lset->tableName());

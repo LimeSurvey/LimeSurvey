@@ -49,6 +49,20 @@ class LabelSet extends LSActiveRecord
 	{
 		return parent::model($class);
 	}
+    /**
+    * Returns this model's validation rules
+    *
+    */
+    public function rules()
+    {
+        return array(
+            array('label_name','required'),
+            array('label_name','length', 'min' => 1, 'max'=>100),
+            array('label_name','LSYii_Validators'),
+            array('languages','required'),
+            array('languages','LSYii_Validators','isLanguageMulti'=>true),
+        );
+    }
 
 	function getAllRecords($condition=FALSE)
 	{
