@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-10-01 22:05:40+00:00\n"
+"POT-Creation-Date: 2013-10-04 22:05:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -455,37 +455,37 @@ msgstr ""
 msgid "Oops, There was an error deleting the file"
 msgstr ""
 
-#: application/controllers/UploaderController.php:135
+#: application/controllers/UploaderController.php:134
 msgid "Sorry, this file extension (%s) is not allowed!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:148
-#: application/controllers/UploaderController.php:229
+#: application/controllers/UploaderController.php:147
+#: application/controllers/UploaderController.php:228
 msgid "Sorry, this file is too large. Only files upto %s KB are allowed."
 msgstr ""
 
-#: application/controllers/UploaderController.php:164
-#: application/controllers/UploaderController.php:204
+#: application/controllers/UploaderController.php:163
+#: application/controllers/UploaderController.php:203
 msgid "The file has been successfuly uploaded."
 msgstr ""
 
-#: application/controllers/UploaderController.php:180
+#: application/controllers/UploaderController.php:179
 msgid "Sorry, this file is too large. Only files up to %s KB are allowed."
 msgstr ""
 
-#: application/controllers/UploaderController.php:189
+#: application/controllers/UploaderController.php:188
 msgid "We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator."
 msgstr ""
 
-#: application/controllers/UploaderController.php:218
+#: application/controllers/UploaderController.php:217
 msgid "Sorry, there was an error uploading your file"
 msgstr ""
 
-#: application/controllers/UploaderController.php:239
+#: application/controllers/UploaderController.php:238
 msgid "Unknown error"
 msgstr ""
 
-#: application/controllers/UploaderController.php:259
+#: application/controllers/UploaderController.php:258
 #: application/helpers/qanda_helper.php:2851
 #: application/views/admin/assessments_view.php:13
 #: application/views/admin/labels/labelview_view.php:40
@@ -496,7 +496,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: application/controllers/UploaderController.php:260
+#: application/controllers/UploaderController.php:259
 #: application/helpers/common_helper.php:2552
 #: application/helpers/common_helper.php:2765
 #: application/helpers/qanda_helper.php:2852
@@ -504,43 +504,43 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: application/controllers/UploaderController.php:261
+#: application/controllers/UploaderController.php:260
 msgid "Sorry, no more files can be uploaded!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:262
+#: application/controllers/UploaderController.php:261
 msgid "Sorry, only %s files can be uploaded for this question!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:263
+#: application/controllers/UploaderController.php:262
 msgid "Uploading"
 msgstr ""
 
-#: application/controllers/UploaderController.php:264
-#: application/controllers/UploaderController.php:303
+#: application/controllers/UploaderController.php:263
+#: application/controllers/UploaderController.php:302
 msgid "Select file"
 msgstr ""
 
-#: application/controllers/UploaderController.php:265
+#: application/controllers/UploaderController.php:264
 msgid "Please upload %s more file(s)."
 msgstr ""
 
-#: application/controllers/UploaderController.php:266
+#: application/controllers/UploaderController.php:265
 msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
 msgstr ""
 
+#: application/controllers/UploaderController.php:266
 #: application/controllers/UploaderController.php:267
-#: application/controllers/UploaderController.php:268
 msgid "The maximum number of files has been uploaded. You may return back to survey."
 msgstr ""
 
-#: application/controllers/UploaderController.php:269
+#: application/controllers/UploaderController.php:268
 msgid ""
 "You need to upload %s more files for this question.\n"
 "Are you sure you want to exit?"
 msgstr ""
 
-#: application/controllers/UploaderController.php:306
+#: application/controllers/UploaderController.php:305
 msgid "You can upload %s under %s KB each."
 msgstr ""
 
@@ -1782,7 +1782,7 @@ msgid "Your Ranking"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1333
-#: application/helpers/admin/label_helper.php:144
+#: application/helpers/admin/label_helper.php:134
 #: application/views/admin/assessments_view.php:126
 #: application/views/admin/dataentry/includes/editdata/edit.php:1
 #: application/views/admin/emailtemplates/emailtemplates_view.php:147
@@ -4611,15 +4611,19 @@ msgstr ""
 msgid "Could not insert answer"
 msgstr ""
 
-#: application/helpers/admin/label_helper.php:202
+#: application/helpers/admin/label_helper.php:112
+msgid "Inserting the label set failed."
+msgstr ""
+
+#: application/helpers/admin/label_helper.php:192
 msgid "Labels updated but with some error"
 msgstr ""
 
-#: application/helpers/admin/label_helper.php:206
+#: application/helpers/admin/label_helper.php:196
 msgid "Labels sucessfully updated"
 msgstr ""
 
-#: application/helpers/admin/label_helper.php:211
+#: application/helpers/admin/label_helper.php:201
 msgid "Can't update labels because you are using duplicated codes"
 msgstr ""
 
