@@ -97,19 +97,9 @@ function insertlabelset()
     //	$labelsoutput.= $_POST['languageids'];  For debug purposes
     $clang = Yii::app()->lang;
 
+    $postlanguageids=sanitize_languagecodeS(Yii::app()->getRequest()->getPost('languageids'));
+    $postlabel_name=Yii::app()->getRequest()->getPost('label_name');
 
-    if (!empty($_POST['languageids']))
-    {
-        $postlanguageids=sanitize_languagecodeS($_POST['languageids']);
-    }
-
-    if (!empty($_POST['label_name']))
-    {
-        $postlabel_name=sanitize_labelname($_POST['label_name']);
-    }
-
-    //postlabel_name = dbQuoteAll($postlabel_name,true);
-    //$postlanguageids = dbQuoteAll($postlanguageids,true);
     $data = array(
     'label_name' => $postlabel_name,
     'languages' => $postlanguageids
@@ -119,7 +109,7 @@ function insertlabelset()
     $result=Labelsets::model()->insertRecords($data);
     if (!$result)
     {
-        safeDie("Inserting the label set failed:<br />".$query."<br />");
+        Yii::app()->session['flashmessage'] = $clang->gT("Inserting the label set failed.");
     }
     else
     {

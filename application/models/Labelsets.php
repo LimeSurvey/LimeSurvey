@@ -64,7 +64,18 @@ class Labelsets extends CActiveRecord
 
         return $data;
 	}
-
+    /**
+    * Returns this model's validation rules
+    *
+    */
+    public function rules()
+    {
+        return array(
+            array('label_name','required'),
+            array('label_name','length', 'min' => 1, 'max'=>100),
+            array('label_name','LSYii_Validators'),
+        );
+    }
     function getLID()
     {
 		return Yii::app()->db->createCommand()->select('lid')->order('lid asc')->from('{{labelsets}}')->query()->readAll();
