@@ -9,12 +9,23 @@ $(document).ready(function(){
         datemin=$('#datemin'+basename).val();
         datemax=$('#datemax'+basename).val();
         
-        $(e).datepicker({ dateFormat: format,
+        $(e).datetimepicker({ dateFormat: format,
             showOn: 'both',
             changeYear: true,
             changeMonth: true,
             defaultDate: +0,
             beforeShow: customRange,
+            closeText: "OK",
+            // TODO: set the following options according to what components of the picker are needed
+            // date vs. date/time vs. time
+                showTimepicker: false,
+                timeOnly: false,
+                showButtonPanel: false,
+                //need this to close datetimepicker on selection of a date (mimics date picker)
+                onSelect: function () { 
+                    $('#answer'+basename).datetimepicker("hide");
+                },
+            
             firstDay: "1",
             duration: 'fast',
             // Validate input. Necessary because datepicker also allows keyboard entry.

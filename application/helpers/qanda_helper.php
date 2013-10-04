@@ -1235,6 +1235,10 @@ function do_date($ia)
             Yii::app()->getClientScript()->registerScriptFile(App()->baseUrl . "/third_party/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-{$clang->langcode}.js");
         }
 
+        //register timepicker extension
+        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . '/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.css');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party')."/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js");
+        
         // Format the date  for output
         if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])!='')
         {
@@ -1281,7 +1285,7 @@ function do_date($ia)
         $iLength=strlen($dateformatdetails['dateformat']);
 
         // HTML for date question using datepicker
-        $answer ="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Date picker')}</label>
+        $answer="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Date picker')}</label>
         <input class='popupdate' type=\"text\" size=\"{$iLength}\" name=\"{$ia[1]}\" title='".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."' id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"{$iLength}\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
