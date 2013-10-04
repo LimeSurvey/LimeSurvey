@@ -111,13 +111,12 @@ class UploaderController extends AdminController {
 		    $filename = $_FILES['uploadfile']['name'];
 		    $size = 0.001 * $_FILES['uploadfile']['size'];
 		    $valid_extensions = strtolower($_POST['valid_extensions']);
-		    $maxfilesize = (int) $_POST['max_filesize'];
 		    $preview = $_POST['preview'];
 		    $fieldname = $_POST['fieldname'];
             $aFieldMap = createFieldMap($surveyid,'short',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 		    if (!isset($aFieldMap[$fieldname])) die();
 		    $aAttributes=getQuestionAttributeValues($aFieldMap[$fieldname]['qid'],$aFieldMap[$fieldname]['type']);
-
+		    $maxfilesize = (int) $aAttributes['max_filesize'];
 		    $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
 		    $valid_extensions_array = array_map('trim',$valid_extensions_array);
 
