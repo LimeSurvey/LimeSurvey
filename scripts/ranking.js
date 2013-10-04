@@ -54,6 +54,12 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     }
   });
   loadDragDropRank(qID);
+  
+  var sortableDelay = 200;
+  if (!$.support.leadingWhitespace) {
+    // IE 7 and 8 (bug 08019)
+	sortableDelay = 0;
+  }
 
   // Set up the connected sortable			
   $('#sortable-choice-'+qID+', #sortable-rank-'+qID+'').sortable({
@@ -62,7 +68,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     forcePlaceholderSize: true,
     placeholder: 'ui-sortable-placeholder',
     helper: 'clone',
-    delay: 200,
+    delay: sortableDelay,
     revert: 50,
     receive: function(event, ui) {
       if($(this).attr("id")=='sortable-rank-'+qID && $(maxanswers>0 && '#sortable-rank-'+qID+' li').length > maxanswers) {
