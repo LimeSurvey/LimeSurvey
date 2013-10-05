@@ -43,7 +43,21 @@
                     $_SESSION['KCFINDER']['disabled'] = false;
                     if (preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
                     {
-                        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getRequest()->getHostInfo().Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
+                        // Uploadurl use public url or getBaseUrl(true);
+                        // Maybe need external function
+                        $sBaseAbsoluteUrl=Yii::app()->getBaseUrl(true);
+                        $sPublicUrl=Yii::app()->getConfig("publicurl");
+                        $aPublicUrl=parse_url($sPublicUrl);
+                        if(isset($aPublicUrl['scheme']) && isset($aPublicUrl['host']))
+                        {
+                            $sBaseAbsoluteUrl=$sPublicUrl;
+                        }
+                        $sBaseUrl=Yii::app()->getBaseUrl();
+                        $sUploadUrl=Yii::app()->getConfig('uploadurl');
+                        if (substr($sUploadUrl, 0, strlen($sBaseUrl)) == $sBaseUrl) {
+                            $sUploadUrl = substr($sUploadUrl, strlen($sBaseUrl));
+                        }
+                        $_SESSION['KCFINDER']['uploadURL'] = trim($sBaseAbsoluteUrl,"/").$sUploadUrl."/surveys/{$surveyid}/";
                     }
                     else
                     {
