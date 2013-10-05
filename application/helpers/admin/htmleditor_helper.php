@@ -16,8 +16,7 @@
     //Security Checked: POST/GET/SESSION/DB/returnGlobal
     function initKcfinder()
     {
-     Yii::app()->session['KCFINDER'] = array();
-
+        Yii::app()->session['KCFINDER'] = array();
         $sAllowedExtensions = implode(' ', array_map('trim', explode(',', Yii::app()->getConfig('allowedresourcesuploads'))));
         $_SESSION['KCFINDER']['types'] = array(
             'files' => $sAllowedExtensions,
@@ -44,7 +43,21 @@
                     $_SESSION['KCFINDER']['disabled'] = false;
                     if (preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
                     {
-                        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getRequest()->getHostInfo().Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
+                        // Validate uploadurl for link in email 
+                        // Maybe need external function
+                        $sBaseAbsoluteUrl=Yii::app()->getBaseUrl(true);
+                        $sPublicUrl=Yii::app()->getConfig("publicurl");
+                        $aPublicUrl=parse_url($sPublicUrl);
+                        if(isset($aPublicUrl['scheme']) && isset($aPublicUrl['host']))
+                        {
+                            $sBaseAbsoluteUrl=$sPublicUrl;
+                        }
+                        $sBaseUrl=Yii::app()->getBaseUrl();
+                        $sUploadUrl=Yii::app()->getConfig('uploadurl');
+                        if (substr($sUploadUrl, 0, strlen($sBaseUrl)) == $sBaseUrl) {
+                            $sUploadUrl = substr($sUploadUrl, strlen($sBaseUrl));
+                        }
+                        $_SESSION['KCFINDER']['uploadURL'] = trim($sBaseAbsoluteUrl,"/").$sUploadUrl."/surveys/{$surveyid}/";
                     }
                     else
                     {

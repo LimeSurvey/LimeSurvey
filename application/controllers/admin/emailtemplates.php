@@ -38,6 +38,7 @@ class emailtemplates extends Survey_Common_Action {
         Yii::app()->loadHelper('surveytranslator');
 
         Yii::app()->session['FileManagerContext'] = "edit:emailsettings:{$iSurveyId}";
+        initKcfinder();
 
         if(isset($iSurveyId) && getEmailFormat($iSurveyId) == 'html')
         {
