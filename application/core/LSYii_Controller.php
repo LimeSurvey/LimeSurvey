@@ -150,11 +150,16 @@ abstract class LSYii_Controller extends CController
     {
         $sPublicUrl=Yii::app()->getConfig("publicurl");
         // Control if public url are really public : need scheme and host
-        // If yes: use it directly (createUrl add index.php)
+        // If yes: replace actual baseurl for publicurl
         $aPublicUrl=parse_url($sPublicUrl);
         if(isset($aPublicUrl['scheme']) && isset($aPublicUrl['host']))
         {
-            return $sPublicUrl.parent::createUrl($route,$params,$ampersand);
+            $url=parent::createAbsoluteUrl($route,$params,$schema,$ampersand);
+            $sActualBaseUrl=Yii::app()->getBaseUrl(true);
+            if (substr($url, 0, strlen($sActualBaseUrl)) == $sActualBaseUrl) {
+                $url = substr($url, strlen($sActualBaseUrl));
+            }
+            return trim($sPublicUrl,"/").$url;
         }
         else 
             return parent::createAbsoluteUrl($route,$params,$schema,$ampersand);
