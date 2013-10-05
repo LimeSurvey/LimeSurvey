@@ -154,20 +154,15 @@ abstract class LSYii_Controller extends CController
      */
     public function createAbsoluteUrl($route,$params=array(),$schema='',$ampersand='&')
     {
-        // Control if public url are really public : need scheme and host
-        // If yes: update baseUrl to config without restrictions
         $sPublicUrl=Yii::app()->getConfig("publicurl");
+        // Control if public url are really public : need scheme and host
+        // If yes: use it directly (createUrl add index.php)
         $aPublicUrl=parse_url($sPublicUrl);
         if(isset($aPublicUrl['scheme']) && isset($aPublicUrl['host']))
         {
-            $sActualBaseUrl=Yii::app()->getComponent('urlManager')->getBaseUrl();// Keep actual url to reset after
-            Yii::app()->getComponent('urlManager')->setBaseUrl($sPublicUrl);
+            return $sPublicUrl.parent::createUrl($route,$params,$ampersand);
         }
-        $sAbsoluteUrl=parent::createAbsoluteUrl($route,$params,$schema,$ampersand);
-        if(isset($sActualBaseUrl))
-        {
-            Yii::app()->getComponent('urlManager')->setBaseUrl($sActualBaseUrl);
-        }
-        return $sAbsoluteUrl;
+        else 
+            return parent::createAbsoluteUrl($route,$params,$schema,$ampersand);
     }
 }
