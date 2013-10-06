@@ -677,7 +677,7 @@
     function getJSDateFromDateFormat($sDateformat)
     {
         // The only difference from dateformat is that Jsdate does not support truncated years
-        return str_replace(array('yyyy','MM','M'), array('yy','NN','NN'), $sDateformat);
+        return str_replace(array('yyyy', 'yy', 'MM','M'), array('yy','y','NN','NN'), $sDateformat);
     }
 
 
