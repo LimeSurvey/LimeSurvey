@@ -3796,8 +3796,8 @@ function questionAttributes($returnByName=false)
     //,2=>$clang->gT('Randomize once on survey start')  //Mdekker: commented out as code to handle this was removed in refactoring
     ),
     'default'=>0,
-    "help"=>$clang->gT('Present answers in random order'),
-    "caption"=>$clang->gT('Random answer order'));
+    "help"=>$clang->gT('Present subquestions/answer options in random order'),
+    "caption"=>$clang->gT('Random order'));
 
     /*
     $qattributes['relevance']=array(
