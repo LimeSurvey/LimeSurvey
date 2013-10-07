@@ -291,8 +291,8 @@ class Participants extends CActiveRecord
         foreach($attid as $key=>$attid)
         {
             $attid = $attid['attribute_id'];
-            $databasetype = Yii::app()->db->getDriverName();
-            if ($databasetype=='mssql' || $databasetype=="sqlsrv" || $sDatabaseType == 'dblib')
+            $sDatabaseType = Yii::app()->db->getDriverName();
+            if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv" || $sDatabaseType == 'dblib')
             {
                 $selectValue[]= "cast(attribute".$attid.".value as varchar(max)) as a".$attid;
             } else {

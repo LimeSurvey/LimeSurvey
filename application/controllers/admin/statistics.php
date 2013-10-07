@@ -117,6 +117,7 @@ class statistics extends Survey_Common_Action {
 
 		//Call the javascript file
 		$this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'statistics.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'json-js/json2.min.js');
 
 		$aData['display']['menu_bars']['browse'] = $clang->gT("Quick statistics");
 
