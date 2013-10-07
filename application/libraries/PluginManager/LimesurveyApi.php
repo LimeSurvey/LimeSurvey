@@ -102,6 +102,10 @@
             }
         }
 
+        public function removeResponse($surveyId, $responseId)
+        {
+            return Response::model($surveyId)->deleteByPk($responseId);
+        }
         /**
         * Check if a table does exist in the database
         * @param mixed $plugin
@@ -175,6 +179,8 @@
             // possible answers, maybe even combined with relevance info so a plugin can handle display of the response
             return $output;
         }
+
+
 
         /**
         * Gets a key value list using the group name as value and the group id
