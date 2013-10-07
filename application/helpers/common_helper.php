@@ -7153,7 +7153,7 @@ function getGroupUserList($ugid)
     $clang = Yii::app()->lang;
 
     $ugid=sanitize_int($ugid);
-    $surveyidquery = "SELECT a.uid, a.users_name FROM {{users}} AS a LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
+    $surveyidquery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
 
     $surveyidresult = dbExecuteAssoc($surveyidquery);  //Checked
     if (!$surveyidresult) {return "Database Error";}
@@ -7168,7 +7168,7 @@ function getGroupUserList($ugid)
         foreach($surveynames as $sv)
         {
             $surveyselecter .= "<option";
-            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']}</option>\n";
+            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
         }
     }
     $surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;
