@@ -4221,8 +4221,57 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
             $sLemFieldName=array_search($sFieldName,$aLemFieldNames);
             if(in_array($sLemFieldName,$aCsvHeader)){
                 $aKeyForFieldNames[$sFieldName]=array_search($sLemFieldName,$aCsvHeader);
+            }elseif($aOptions['bForceImport']){
+                // as fallback just map questions in order of apperance
+
+                // find out where the answer data columns start in CSV
+                if( ! isset($csv_ans_start_index)){
+                    foreach($aCsvHeader as $i=>$name){
+                        if(preg_match('/^\d+X\d+X\d+/', $name)){
+                            $csv_ans_start_index = $i;
+                            break;
+                        }
+                    }
+                }
+                // find out where the answer data columns start in destination table
+                if( ! isset($table_ans_start_index)){
+                    foreach($aRealFieldNames as $i=>$name){
+                        if(preg_match('/^\d+X\d+X\d+/', $name)){
+                            $table_ans_start_index = $i;
+                            break;
+                        }
+                    }
+                }
+
+                // map answers in order
+                if(isset($table_ans_start_index,$csv_ans_start_index)){
+                    $csv_index = (array_search($sFieldName,$aRealFieldNames)-$table_ans_start_index) + $csv_ans_start_index;
+                    if($csv_index < sizeof($aCsvHeader)){
+                        $aKeyForFieldNames[$sFieldName] = $csv_index;
+                    }else{
+                        $force_import_failed = true;
+                        break;
+                    }
+                }
             }
         }
+    }
+    // check if forced error failed
+    if(isset($force_import_failed)){
+        $CSVImportResult['errors'][]=$clang->gT("Import failed: forced import was requested but the input file doesn't contain enough columns to fill the survey.");
+        return $CSVImportResult;
+    }
+
+    // make sure at least one answer was imported before commiting
+    foreach($aKeyForFieldNames as $field=>$index){
+        if(preg_match('/^\d+X\d+X\d+/', $field)){
+            $import_ok = true;
+            break;
+        }
+    }
+    if( ! isset($import_ok)){
+        $CSVImportResult['errors'][]=$clang->gT("Import failed: no answers could be mapped.");
+        return $CSVImportResult;
     }
 
     // Now it's time to import

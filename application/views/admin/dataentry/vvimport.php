@@ -34,6 +34,10 @@
                 <label for='dontdeletefirstline' title='<?php $clang->eT("With real vv file : questions code are in second line"); ?>'><?php $clang->eT("First line contains the code of questions:"); ?></label>
                 <?php echo CHtml::checkBox('dontdeletefirstline',false,array('value'=>"dontdeletefirstline")); ?>
             </li>
+            <li>
+                <label for='forceimport' title='<?php $clang->eT("Try to import even if question codes don't match"); ?>'><?php $clang->eT("Force import:"); ?></label>
+                <?php echo CHtml::checkBox('forceimport',false,array('value'=>"forceimport")); ?>
+            </li>
         </ul>
         <p>
             <input type='submit' value='<?php $clang->eT("Import"); ?>' />
