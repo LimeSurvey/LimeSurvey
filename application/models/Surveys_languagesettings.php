@@ -118,9 +118,10 @@ class Surveys_languagesettings extends CActiveRecord
     */
     public function lsdefault($attribute,$params)
     {
-
         $oLanguageTranslator = new Limesurvey_lang($this->surveyls_language);
-        $aDefaultTexts=templateDefaultTexts($oLanguageTranslator,'unescaped');
+        $oSurvey=Survey::model()->findByPk($this->surveyls_survey_id);
+        $sEmailFormat=$oSurvey->htmlemail=='Y'?'html':'';
+        $aDefaultTexts=templateDefaultTexts($oLanguageTranslator,'unescaped', $sEmailFormat);
 
          $aDefaultTextData=array('surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
                         'surveyls_email_invite' => $aDefaultTexts['invitation'],
@@ -134,7 +135,7 @@ class Surveys_languagesettings extends CActiveRecord
                         'email_admin_notification' => $aDefaultTexts['admin_notification'],
                         'email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
                         'email_admin_responses' => $aDefaultTexts['admin_detailed_notification']);
-        if (getEmailFormat($this->surveyls_survey_id) == "html")
+        if ($sEmailFormat == "html")
         {
             $aDefaultTextData['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].$aDefaultTexts['admin_detailed_notification'];
         }
