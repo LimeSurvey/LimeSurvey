@@ -55,6 +55,11 @@
             return false;
         }
 
+        public function createUrl($route, array $params)
+        {
+            return App()->createAbsoluteUrl($route, $params);
+        }
+
         /**
          * Gets an activerecord object associated to the table.
          * @param iPlugin $plugin

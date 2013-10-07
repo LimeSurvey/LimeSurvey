@@ -228,7 +228,7 @@
                 $label = $metaData['link'];
             }
 
-            return CHtml::label('', $name) . CHtml::linkButton($label, array('href' => $metaData['link'], 'class' => 'limebutton'));
+            return CHtml::label('', $name) . CHtml::link($label, $metaData['link'], array('class' => 'limebutton'));
         }
         public function renderList($name, array $metaData, $form = null)
         {
