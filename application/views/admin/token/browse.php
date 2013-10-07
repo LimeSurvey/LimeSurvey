@@ -74,6 +74,10 @@
     var invitemsg = "<?php echo $clang->eT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"); ?>"
     var remindmsg = "<?php echo $clang->eT("Send reminder email to the selected entries (if they have already received the invitation email)"); ?>"
     var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/email/action/invite/surveyid/{$surveyid}/tokenids/|"); ?>";
+    var showDelButton = <?php echo $showDelButton?>;
+    var showBounceButton = <?php echo $showBounceButton?>;
+    var showInviteButton = <?php echo $showInviteButton?>;
+    var showRemindButton = <?php echo $showRemindButton?>;
     <?php if (!Permission::model()->hasGlobalPermission('participantpanel','read')){?>
     var bParticipantPanelPermission=false;
     <?php 
