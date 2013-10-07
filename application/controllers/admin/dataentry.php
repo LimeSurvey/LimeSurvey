@@ -149,6 +149,7 @@ class dataentry extends Survey_Common_Action
             $aOptions['sExistingId']=Yii::app()->request->getPost('insertmethod');
         }
         $aOptions['bNotFinalized']=(Yii::app()->request->getPost('notfinalized') == "notfinalized");
+        $aOptions['bForceImport']=(Yii::app()->request->getPost('forceimport') == "forceimport");
         $aOptions['sCharset']=Yii::app()->request->getPost('vvcharset');
         $aOptions['sSeparator']="\t";
         $aResult=CSVImportResponses($filePath,$iSurveyId,$aOptions);
