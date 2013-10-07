@@ -216,6 +216,20 @@
             return $out;
         }
 
+        public function renderLink($name, array $metaData, $form = null)
+        {
+
+            if (isset($metaData['label']))
+            {
+                $label = $metaData['label'];
+            }
+            else
+            {
+                $label = $metaData['link'];
+            }
+
+            return CHtml::label('', $name) . CHtml::linkButton($label, array('href' => $metaData['link'], 'class' => 'limebutton'));
+        }
         public function renderList($name, array $metaData, $form = null)
         {
             
