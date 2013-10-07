@@ -79,6 +79,17 @@
         }
 
         /**
+         * @see http://www.yiiframework.com/doc/api/1.1/CWebUser#checkAccess-detail
+         * @param string $operation
+         * @param array $params
+         * @param boolean $allowCaching
+         * @return boolean
+         */
+        public function checkAccess($operation, $params = array(), $allowCaching = true)
+        {
+            return App()->user->checkAccess($operation, $params, $allowCaching);
+        }
+        /**
          * Creates a new active record object instance.
          * @param iPlugin $plugin
          * @param string $sTableNamem
@@ -200,9 +211,9 @@
         * @return User
         */
         public function getCurrentUser(){
-            if (Yii::app()->session['loginID'])
+            if (Yii::app()->user->id)
             {
-                return User::model()->findByPk(Yii::app()->session['loginID']);
+                return User::model()->findByPk(Yii::app()->user->id);
             }
             return false;
         }
