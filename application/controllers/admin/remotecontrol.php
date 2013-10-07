@@ -511,30 +511,48 @@ class remotecontrol_handle
        {
 		   $sCurrentUser =  Yii::app()->session['user'];
 
+		   $aUserSurveys = array();
+		   
 		   if( Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
 		   {
 				if ($sUser == null)
+				{
 					$aUserSurveys = Survey::model()->findAll(); //list all surveys
+				}
 				else
 				{
 				   $aUserData = User::model()->findByAttributes(array('users_name' => $sUser));
 				   if (!isset($aUserData))
 						return array('status' => 'Invalid user');
 					else
-						$aUserSurveys = Survey::model()->findAllByAttributes(array("owner_id"=>$aUserData->attributes['uid']));
+					{
+						$sUid = $aUserData->attributes['uid'];
+					}
 				}
 			}
 			else
 			{
 				if (($sCurrentUser == $sUser) || ($sUser == null) )
 				{
-					$sUid =  User::model()->findByAttributes(array('users_name' => $sCurrentUser))->uid;
-					$aUserSurveys = Survey::model()->findAllByAttributes(array("owner_id"=>$sUid));
+					$sUid =  User::model()->findByAttributes(array('users_name' => $sCurrentUser))->uid;					
 				}
 				else
 					return array('status' => 'No permission');
 			}
 
+
+			if($sUid!=null){
+			//we request user and not admin surveys
+			
+					$surveyPermissions = Survey_permissions::model()->findAllByAttributes(array("uid"=>$sUid));
+					foreach($surveyPermissions as $row)
+					   $ids[] = $row['sid'];
+
+					$ids = array_unique($ids);
+					$aUserSurveys = Survey::model()->findAllByAttributes(array("sid"=>$ids));
+			}
+	
+	
 		   if(count($aUserSurveys)==0)
 				return array('status' => 'No surveys found');
 
