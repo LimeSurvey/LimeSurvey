@@ -1585,14 +1585,14 @@ class SurveyAdmin extends Survey_Common_Action
 
             $warning = '';
             // make sure we only update emails if they are valid
-            if (empty(Yii::app()->request->getPost('adminemail'))
+            if (Yii::app()->request->getPost('adminemail', '') == ''
                 || validateEmailAddress(Yii::app()->request->getPost('adminemail'))) {
                 $aInsertData['adminemail'] = Yii::app()->request->getPost('adminemail');
             } else {
                 $aInsertData['adminemail'] = '';
                 $warning .= $this->getController()->lang->gT("Warning! Notification email was not updated because it was not valid.").'<br/>'; 
             }
-            if (empty(Yii::app()->request->getPost('bounce_email'))
+            if (Yii::app()->request->getPost('bounce_email', '') == ''
                 || validateEmailAddress(Yii::app()->request->getPost('bounce_email'))) {
                 $aInsertData['bounce_email'] = Yii::app()->request->getPost('bounce_email');
             } else {
