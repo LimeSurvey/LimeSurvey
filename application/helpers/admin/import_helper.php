@@ -4227,6 +4227,20 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
             }
         }
     }
+    // make sure at least one answer was imported before commiting
+    $import_ok = false;
+    foreach($aKeyForFieldNames as $field=>$index)
+    {
+        if(preg_match('/^\d+X\d+X\d+/', $field))
+        {
+            $import_ok = true;
+            break;
+        }
+    }
+    if( ! $import_ok){
+        $CSVImportResult['errors'][]=$clang->gT("Import failed: no answers could be mapped.");
+        return $CSVImportResult;
+    }
 
     // Now it's time to import
     // Some var to return
