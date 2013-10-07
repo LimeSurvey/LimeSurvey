@@ -4196,7 +4196,7 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
                 $aKeyForFieldNames[$sFieldName]=array_search($sLemFieldName,$aCsvHeader);
             }
             // as fallback just map questions in order of apperance
-            else
+            elseif($aOptions['bForceImport'])
             {
                 // find out where the answer data columns start in CSV
                 if( ! isset($csv_ans_start_index))
@@ -4205,7 +4205,7 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
                     {
                         if(preg_match('/^\d+X\d+X\d+/', $name))
                         {
-                            $ans_start_index = $i;
+                            $csv_ans_start_index = $i;
                             break;
                         }
                     }
@@ -4217,7 +4217,7 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
                     {
                         if(preg_match('/^\d+X\d+X\d+/', $name))
                         {
-                            $table_start_index = $i;
+                            $table_ans_start_index = $i;
                             break;
                         }
                     }
