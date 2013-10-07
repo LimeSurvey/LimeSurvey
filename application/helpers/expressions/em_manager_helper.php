@@ -8224,7 +8224,7 @@ EOD;
 
             $LEM =& LimeExpressionManager::singleton();
 
-            $aSurveyInfo=getSurveyInfo($sid);
+            $aSurveyInfo=getSurveyInfo($sid, $_SESSION['LEMlang']);
 
             $allErrors = array();
             $warnings = 0;
