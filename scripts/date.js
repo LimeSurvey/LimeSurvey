@@ -9,7 +9,7 @@ $(document).ready(function(){
             changeYear: true,
             changeMonth: true,
             defaultDate: +0,
-            closeText: "OK",
+            // TODO: add support for minute interval, different month identifiers and times without minutes
             firstDay: "1",
             duration: 'fast',
             // set more options at "runtime"
