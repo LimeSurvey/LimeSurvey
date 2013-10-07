@@ -1061,15 +1061,15 @@ class database extends Survey_Common_Action
 
             $warning = '';
             // make sure we only update admin email if it is valid
-            if (validateEmailAddress(Yii::app()->request->getPost('adminemail'))
-                || empty(Yii::app()->request->getPost('adminemail'))) {
+            if (empty(Yii::app()->request->getPost('adminemail'))
+                || validateEmailAddress(Yii::app()->request->getPost('adminemail'))) {
                 $updatearray['adminemail'] = Yii::app()->request->getPost('adminemail');
             } else {
                 $warning .= $clang->gT("Warning! Notification email was not updated because it was not valid.").'<br/>'; 
             }
             // make sure we only update bounce email if it is valid
-            if (validateEmailAddress(Yii::app()->request->getPost('bounce_email'))
-                || empty(Yii::app()->request->getPost('bounce_email'))) {
+            if (empty(Yii::app()->request->getPost('bounce_email'))
+                || validateEmailAddress(Yii::app()->request->getPost('bounce_email'))) {
                 $updatearray['bounce_email'] = Yii::app()->request->getPost('bounce_email');
             } else {
                 $warning .= $clang->gT("Warning! Bounce email was not updated because it was not valid.").'<br/>'; 

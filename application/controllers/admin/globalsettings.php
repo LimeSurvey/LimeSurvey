@@ -168,13 +168,15 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('filterxsshtml', strip_tags($_POST['filterxsshtml']));
         $warning = '';
         // make sure emails are valid before saving them
-        if (validateEmailAddress($_POST['siteadminbounce']) || empty($_POST['siteadminbounce'])) {
-        setGlobalSetting('siteadminbounce', strip_tags($_POST['siteadminbounce']));
+        if (empty(Yii::app()->request->getPost('siteadminbounce'))
+            || validateEmailAddress(Yii::app()->request->getPost('siteadminbounce'))) {
+            setGlobalSetting('siteadminbounce', strip_tags(Yii::app()->request->getPost('siteadminbounce')));
         } else {
             $warning .= $clang->gT("Warning! Admin bounce email was not saved because it was not valid.").'<br/>';
         }
-        if (validateEmailAddress($_POST['siteadminemail']) || empty($_POST['siteadminemail'])) {
-        setGlobalSetting('siteadminemail', strip_tags($_POST['siteadminemail']));
+	if (empty(Yii::app()->request->getPost('siteadminemail'))
+            || validateEmailAddress(Yii::app()->request->getPost('siteadminemail'))) {
+            setGlobalSetting('siteadminemail', strip_tags(Yii::app()->request->getPost('siteadminemail')));
         } else {
             $warning .= $clang->gT("Warning! Admin email was not saved because it was not valid.").'<br/>';
         }
