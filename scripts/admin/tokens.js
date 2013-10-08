@@ -212,7 +212,7 @@ $(document).ready(function() {
         deltitle: sDelTitle,
         refreshtitle: sRefreshTitle,
         add:false,
-        del:true,
+        del:showDelButton,
         edit:false,
         refresh: true,
         search: false
@@ -331,39 +331,45 @@ $(document).ready(function() {
             });
         }
     });
-    $("#displaytokens").navButtonAdd('#pager',{
-        caption:"",
-        title:invitemsg,
-        buttonicon:'ui-icon-mail-closed',
-        onClickButton:function(){
-            window.open(inviteurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
-        }
-    });
-    $("#displaytokens").navButtonAdd('#pager',{
-        caption:"",
-        title:remindmsg,
-        buttonicon:'ui-icon-mail-open',
-        onClickButton:function(){
-            window.open(remindurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
-        }
-    });                 
-    $("#displaytokens").navButtonAdd('#pager', {
-        caption:"",
-        title:sBounceProcessing,
-        buttonicon:'ui-bounceprocessing',
-        onClickButton:function(){
-            $("#dialog-modal").dialog({
-                title: "Summary",
-                modal: true,
-                autoOpen: false,
-                height: 200,
-                width: 400,
-                show: 'blind',
-                hide: 'blind'
-            });
-            checkbounces();
-        }
-    });
+    if(showInviteButton) {
+        $("#displaytokens").navButtonAdd('#pager',{
+            caption:"",
+            title:invitemsg,
+            buttonicon:'ui-icon-mail-closed',
+            onClickButton:function(){
+                window.open(inviteurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
+            }
+        });
+    }
+    if(showRemindButton) {
+        $("#displaytokens").navButtonAdd('#pager',{
+            caption:"",
+            title:remindmsg,
+            buttonicon:'ui-icon-mail-open',
+            onClickButton:function(){
+                window.open(remindurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
+            }
+        });
+    }
+    if(showBounceButton) {
+        $("#displaytokens").navButtonAdd('#pager', {
+            caption:"",
+            title:sBounceProcessing,
+            buttonicon:'ui-bounceprocessing',
+            onClickButton:function(){
+                $("#dialog-modal").dialog({
+                    title: "Summary",
+                    modal: true,
+                    autoOpen: false,
+                    height: 200,
+                    width: 400,
+                    show: 'blind',
+                    hide: 'blind'
+                });
+                checkbounces();
+            }
+        });
+    }
     if (bParticipantPanelPermission==true)
     {
         $("#displaytokens").navSeparatorAdd("#pager",{});        

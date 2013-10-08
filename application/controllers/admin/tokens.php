@@ -272,6 +272,13 @@ class tokens extends Survey_Common_Action
         {
             self::_newtokentable($iSurveyId);
         }
+
+	/* build JS variable to hide buttons forbidden for the current user */
+	$aData['showDelButton'] = hasSurveyPermission($iSurveyId, 'tokens', 'delete')?'true':'false';
+	$aData['showInviteButton'] = hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
+	$aData['showBounceButton'] = hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
+	$aData['showRemindButton'] = hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
+
         // Javascript
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "tokens.js");
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jquery.multiselect.min.js");
