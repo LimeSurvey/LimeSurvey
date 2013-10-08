@@ -3,51 +3,19 @@ $(document).ready(function(){
     $(".popupdate").each(function(i,e) {
         var basename = e.id.substr(6);
         format=$('#dateformat'+basename).val();
-        format=format.replace(/H/gi,"0"); 
-        format=format.replace(/N/gi,"0"); 
         language=$('#datelanguage'+basename).val();
-        datemin=$('#datemin'+basename).val();
-        datemax=$('#datemax'+basename).val();
-        
-        $(e).datetimepicker({ dateFormat: format,
+        $(e).datetimepicker({ 
             showOn: 'both',
             changeYear: true,
             changeMonth: true,
             defaultDate: +0,
-            beforeShow: customRange,
-            closeText: "OK",
-            // TODO: set the following options according to what components of the picker are needed
-            // date vs. date/time vs. time
-                showTimepicker: false,
-                timeOnly: false,
-                showButtonPanel: false,
-                //need this to close datetimepicker on selection of a date (mimics date picker)
-                onSelect: function () { 
-                    $('#answer'+basename).datetimepicker("hide");
-                },
-            
+            // TODO: add support for minute interval, different month identifiers and times without minutes
             firstDay: "1",
             duration: 'fast',
+            // set more options at "runtime"
+            beforeShow: setPickerOptions,
             // Validate input. Necessary because datepicker also allows keyboard entry.
-            onClose: function() {
-                format=$('#dateformat'+basename).val();
-                answer=$('#answer'+basename).val();
-                //only validate if the format mask says it's a complete date and only a date
-                var str_regexp = /^[mydMYD]{1,4}[-.\s\/][mydMYD]{1,4}[-.\/\s][mydMYD]{1,4}$/; 
-                var pattern = new RegExp(str_regexp); 
-                if (format.match(pattern)!=null)
-                {
-                    try
-                    {
-                        newvalue=jQuery.datepicker.parseDate(format, answer);
-                    }
-                    catch(error)
-                    {
-                        alert('Date entered is invalid!');
-                        $('#answer'+basename).val("");
-                    }
-                }
-            },
+            onClose: validateInput,
         }, $.datepicker.regional[language]);
     });
 
@@ -60,18 +28,122 @@ $(document).ready(function(){
     $('.year').change();
 });
 
-function customRange(input)
+/* This function is called each time shortly before the picker pops up.
+ *  Here we set all the picker options that can be different from question to question.
+ */
+function setPickerOptions(input)
 {
     var basename = input.id.substr(6);
+    var format=$('#dateformat'+basename).val();
+
+    //split format into a date part and a time part
+    var datepattern=new RegExp(/[mydYD][mydYD.:\/-]*[mydYD]/);
+    var timepattern=new RegExp(/[HMN][HMN.:\/-]*[HMN]/);
+    var sdateFormat=datepattern.exec(format);
+    if (sdateFormat!=null)
+        sdateFormat=sdateFormat.toString();
+    var stimeFormat=timepattern.exec(format);
+    if (stimeFormat!=null)
+        stimeFormat=stimeFormat.toString().replace(/N/gi,"M");
+    // alert(format+'  '+sdateFormat+'  '+stimeFormat);
+    
+    var btimeOnly=false;
+    var bshowButtonPanel=true;
+    var bshowTimepicker=true;
+    var sonSelect = '';
+    var sonClose = '';
+    var balwaysSetTime = true;
+          
+    //Configure the layout of the picker according to the format of the field
+    if (stimeFormat==null) // no time component in mask: switch off timepicker
+    {
+        stimeFormat="HH:MM";
+        bshowButtonPanel=false;
+        bshowTimepicker=false;
+        balwaysSetTime=false;
+        
+        //need this to close datetimepicker on selection of a date (mimics date picker)
+        sonSelect = function () {$('#answer'+basename).datetimepicker('hide');};
+        
+        if (!(sdateFormat.match('d'))) // no day: switch off "calender"
+        {
+            bshowButtonPanel=true;
+        
+            sonClose = function(dateText, inst) {
+                        var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                        $(this).val($.datepicker.formatDate(sdateFormat, new Date(year, month, 1)));
+                    }
+
+            $(this).click(function () {
+                $(".ui-datepicker-calendar").hide();
+                $("#ui-datepicker-div").position({
+                    my: "center top",
+                    at: "right top",
+                    of: $(this)
+                });
+            });
+  
+            $(this).focus(function () {
+                $(".ui-datepicker-calendar").hide();
+                $("#ui-datepicker-div").position({
+                    my: "center top",
+                    at: "right top",
+                    of: $(this)
+                });
+            });
+        }
+    }
+    else if (sdateFormat==null)
+    {
+        var sdateFormat="";
+        btimeOnly=true;
+    }
+ 
+    // set minimum and maximum dates for calender
     datemin=$('#datemin'+basename).val();
     datemax=$('#datemax'+basename).val();
-    //alert('date.js: '+datemin+' '+ datemax);
-    //FF is picky....have to remove the time with substr
+
     return {
-            minDate: new Date(Date.parse(datemin.substr(0,10))),
-            maxDate: new Date(Date.parse(datemax.substr(0,10))),
-    };
+        // set minimum and maximum date
+        // remove the time component for Firefox
+        minDate: new Date(Date.parse(datemin.substr(0,10))),
+        maxDate: new Date(Date.parse(datemax.substr(0,10))),
+        //set the other options so datetimepicker is either a datepicker or a timepicker or both
+        showTimepicker: bshowTimepicker,
+        timeOnly: btimeOnly,
+        showButtonPanel: bshowButtonPanel,
+        alwaysSetTime: balwaysSetTime,
+        onSelect: sonSelect,
+        dateFormat: sdateFormat,
+        timeFormat: stimeFormat,
+        onClose: sonClose,
+   };
 }
+
+function validateInput(input) 
+{
+    var basename = this.id.substr(6);
+    format=$('#dateformat'+basename).val();
+    answer=$('#answer'+basename).val();
+    //only validate if the format mask says it's a complete date and only a date
+    var str_regexp = /^[mydMYD]{1,4}[-.\s\/][mydMYD]{1,4}[-.\/\s][mydMYD]{1,4}$/; 
+    var pattern = new RegExp(str_regexp); 
+    if (format.match(pattern)!=null)
+    {
+        try
+        {
+            newvalue=jQuery.datepicker.parseDate(format, answer);
+        }
+        catch(error)
+        {
+            alert('Date entered is invalid!');
+            $('#answer'+basename).val("");
+        }
+    }
+}
+
+
 
 function dateUpdater() {
 
