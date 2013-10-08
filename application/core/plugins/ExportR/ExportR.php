@@ -33,13 +33,11 @@ class ExportR extends PluginBase {
                 $tooltip .= gT("Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)\$variable.labels\"), like for foreign:read.spss.");
                 $event->set('tooltip',$tooltip);
                 $event->set('label', gT("R (syntax file)"));
-                $event->set('onclick', 'document.getElementById("ansabbrev").disabled=false;');
                 break;
             
             case 'rdata':
                 default:
                 $event->set('label', gT("R (data file)"));
-                $event->set('onclick', 'document.getElementById("ansabbrev").disabled=false;');
                 break;
         }
     }

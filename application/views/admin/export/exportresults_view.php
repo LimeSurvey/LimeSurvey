@@ -7,8 +7,55 @@
 <div class='wrap2columns'>
     <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/'.$surveyid), 'post', array('id'=>'resultexport'));?>
         <div class='left'>
-
-            
+<fieldset><legend><?php $clang->eT("Format");?></legend>
+                <ul>  
+<?php
+    $hasTips = false;
+    foreach ($exports as $key => $info)
+    {
+        // Only output when a label was set
+        if (!empty($info['label'])) {
+            $htmlOptions = array(
+                'id'=>$key,
+                'value'=>$key,
+                'class'=>'radiobtn'
+                );
+            // For onclick, always start to re-enable all disabled elements
+            $htmlOptions['onclick'] = "$('form#resultexport input:disabled').attr('disabled', false);" . $info['onclick'];
+            if (!empty($info['tooltip'])) {
+                $hasTips = true;
+                $tooltip = CHtml::openTag('div', array('class'=>'tooltip-export'));
+                $tooltip .= CHtml::image($imageurl. '/help.gif');
+                $tooltip .= ChTml::tag('div', array('class'=>'exporttip'), $info['tooltip']);
+                $tooltip .= CHtml::closeTag('div');
+            } else {
+                $tooltip = '';
+            }
+            echo CHtml::openTag('li');
+            echo CHtml::radioButton('type', $info['checked'], $htmlOptions);
+            echo " "; // Needed to get space between radio element and label
+            echo CHtml::label($info['label'], $key);
+            echo $tooltip;
+            echo CHtml::closeTag('li');
+        }
+    }
+    if ($hasTips) {
+        // We have tooltips, now register javascript
+        App()->clientScript->registerScript('tooltip-export', 
+                "jQuery('div.tooltip-export').popover({
+                    html: true,
+                    content: function() {
+                        return $(this).find('div.exporttip').clone();
+                    },
+                    title: function() { 
+                        return $(this).parent().find('label').text();
+                    },
+                    trigger: 'hover'
+                });
+                ");
+    }
+?>
+            </ul></fieldset>            
             <fieldset <?php  if ($SingleResponse) {?>
                 style='display:none';
             <?php } ?>
@@ -55,56 +102,6 @@
                         <label for='ansfull'>
                         <?php $clang->eT("Full answers");?></label></li>
                 </ul></fieldset>
-            <fieldset><legend><?php $clang->eT("Format");?></legend>
-                <ul>  
-<?php
-    $hasTips = false;
-    foreach ($exports as $key => $info)
-    {
-        // Only output when a label was set
-        if (!empty($info['label'])) {
-            $htmlOptions = array(
-                'id'=>$key,
-                'value'=>$key,
-                'class'=>'radiobtn'
-                );
-            if (!empty($info['onclick'])) {
-                $htmlOptions['onclick'] = $info['onclick'];
-            }
-            if (!empty($info['tooltip'])) {
-                $hasTips = true;
-                $tooltip = CHtml::openTag('div', array('class'=>'tooltip-export'));
-                $tooltip .= CHtml::image($imageurl. '/help.gif');
-                $tooltip .= ChTml::tag('div', array('class'=>'exporttip'), $info['tooltip']);
-                $tooltip .= CHtml::closeTag('div');
-            } else {
-                $tooltip = '';
-            }
-            echo CHtml::openTag('li');
-            echo CHtml::radioButton('type', $info['checked'], $htmlOptions);
-            echo " "; // Needed to get space between radio element and label
-            echo CHtml::label($info['label'], $key);
-            echo $tooltip;
-            echo CHtml::closeTag('li');
-        }
-    }
-    if ($hasTips) {
-        // We have tooltips, now register javascript
-        App()->clientScript->registerScript('tooltip-export', 
-                "jQuery('div.tooltip-export').popover({
-                    html: true,
-                    content: function() {
-                        return $(this).find('div.exporttip').clone();
-                    },
-                    title: function() { 
-                        return $(this).parent().find('label').text();
-                    },
-                    trigger: 'hover'
-                });
-                ");
-    }
-?>
-            </ul></fieldset>
         </div>
         <div class='right'>
             <fieldset>

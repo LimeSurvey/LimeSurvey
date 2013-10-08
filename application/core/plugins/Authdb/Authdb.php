@@ -143,7 +143,6 @@ class Authdb extends AuthPluginBase
         switch ($type) {
             case 'csv':
                 $event->set('label', gT("CSV File (All charsets)"));
-                $event->set('onclick', 'document.getElementById("ansabbrev").disabled=false;');
                 if (!function_exists('iconv')) {
                     $event->set('default', true);
                 }
@@ -157,7 +156,6 @@ class Authdb extends AuthPluginBase
                     $label .= '<font class="warningtitle">'.$clang->gT("(Iconv Library not installed)").'</font>';
                 }
                 $event->set('label', $label);
-                $event->set('onclick', 'document.getElementById("ansabbrev").disabled=false;');
                 break;
                 
             case 'doc':
@@ -167,12 +165,10 @@ class Authdb extends AuthPluginBase
             
             case 'pdf':
                 $event->set('label', gT("PDF"));
-                $event->set('onclick', 'document.getElementById("ansabbrev").disabled=false;');
                 break;
             
             case 'html':
                 $event->set('label', gT("HTML"));
-                $event->set('onclick', 'document.getElementById("ansabbrev").disabled=false;');
                 break;
             
             case 'json':    // Not in the interface, only for RPC
