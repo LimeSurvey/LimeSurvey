@@ -184,7 +184,7 @@ class surveypermission extends Survey_Common_Action {
                 . "</li></ul></form>\n";
                 
                 $surveysecurity .=  CHtml::form(array("admin/surveypermission/sa/addusergroup/surveyid/{$surveyid}"), 'post', array('class'=>"form44"))."<ul><li>\n"
-                . "<label for='ugidselect'>".$clang->gT("Groups").": </label><select id='ugidselect' name='ugid'>\n"
+                . "<label for='ugidselect'>".$clang->gT("User group").": </label><select id='ugidselect' name='ugid'>\n"
                 . getSurveyUserGroupList('htmloptions',$surveyid)
                 . "</select>\n"
                 . "<input style='width: 15em;' type='submit' value='".$clang->gT("Add user group")."' onclick=\"if (document.getElementById('ugidselect').value == -1) { alert('".$clang->gT("Please select a user group first","js")."'); return false;}\" />"
