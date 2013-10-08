@@ -10,7 +10,12 @@ class Authwebserver extends AuthPluginBase
         'strip_domain' => array(
             'type' => 'checkbox',
             'label' => 'Strip domain part (DOMAIN\\USER or USER@DOMAIN)'
-        )
+        ),
+        'serverkey' => array(
+            'type' => 'string',
+            'label' => 'Key to use for username e.g. PHP_AUTH_USER, LOGON_USER, REMOTE_USER. See phpinfo in global settings.',
+            'default' => 'REMOTE_USER'
+        ),
     );
     
     public function __construct(PluginManager $manager, $id) {
@@ -26,16 +31,10 @@ class Authwebserver extends AuthPluginBase
     public function beforeLogin()
     {       
         // normal login through webserver authentication    
-        if (isset($_SERVER['PHP_AUTH_USER'])||isset($_SERVER['LOGON_USER']) ||isset($_SERVER['REMOTE_USER']))    
+        $serverKey = $this->get('serverkey');
+        if (!empty($serverKey) && isset($_SERVER[$serverKey]))
         {
-            if (isset($_SERVER['PHP_AUTH_USER'])) {
-                $sUser=$_SERVER['PHP_AUTH_USER'];
-            }
-            elseif (isset($_SERVER['REMOTE_USER'])) {
-                $sUser=$_SERVER['REMOTE_USER'];
-            } else {
-                $sUser = $_SERVER['LOGON_USER'];
-            }
+            $sUser=$_SERVER[$serverKey];
             
             // Only strip domain part when desired
             if ($this->get('strip_domain', null, null, false)) {
@@ -121,7 +120,7 @@ class Authwebserver extends AuthPluginBase
 
         }
         
-    }
+    }  
     
     
 }
