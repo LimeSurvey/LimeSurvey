@@ -3094,6 +3094,8 @@ function questionAttributes($returnByName=false)
         // help - a short explanation
 
         // If you insert a new attribute please do it in correct alphabetical order!
+        // Please also list the new attribute in the function &TSVSurveyExport($sid) in em_manager_helper.php,
+        // so your new attribute will not be "forgotten" when the survey is exported to Excel/CSV-format!
 
         $qattributes["alphasort"]=array(
         "types"=>"!LOWZ",
