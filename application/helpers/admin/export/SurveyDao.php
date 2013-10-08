@@ -116,7 +116,7 @@ class SurveyDao
             'min'=>$iMinimum,
             'max'=>$iMaximum
         );
-        $selection = 'id >= :min AND id <= :max';
+        $selection = '{{survey_' . $survey->id . '}}.id >= :min AND {{survey_' . $survey->id . '}}.id <= :max';
         $oRecordSet->where($selection, $aParams);
 
         if ($sFilter!='') {
