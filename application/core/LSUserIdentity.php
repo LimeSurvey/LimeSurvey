@@ -11,6 +11,13 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+
+/**
+ * For 2.06 most of the functionality in this class will be moved to the LSWebUser class.
+ * To not delay release of 2.05 this class was kept the way it is now.
+ * 
+ * @@TODO Move to LSWebUser and change documentation / workflow for authentication plugins
+ */
 class LSUserIdentity extends CUserIdentity {
 
     const ERROR_IP_LOCKED_OUT = 98;

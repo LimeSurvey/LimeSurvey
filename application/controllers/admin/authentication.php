@@ -79,8 +79,8 @@ class Authentication extends Survey_Common_Action
             // Now authenticate
             if ($identity->authenticate()) 
             {
-                FailedLoginAttempt::model()->deleteAttempts();
-
+                 FailedLoginAttempt::model()->deleteAttempts();
+                App()->user->setState('plugin', $authMethod);
                 $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
                 Yii::app()->session['just_logged_in'] = true;
                 Yii::app()->session['loginsummary'] = $this->_getSummary();
@@ -105,8 +105,20 @@ class Authentication extends Survey_Common_Action
     */
     public function logout()
     {
+        // Fetch the current user
+        $plugin = App()->user->getState('plugin', null);    // Save for afterLogout, current user will be destroyed by then
+                 
+        /* Adding beforeLogout event */
+        $beforeLogout = new PluginEvent('beforeLogout');
+        App()->getPluginManager()->dispatchEvent($beforeLogout, array($plugin));
+
         App()->user->logout();
         App()->user->setFlash('loginmessage', gT('Logout successful.'));
+
+        /* Adding afterLogout event */
+        $event = new PluginEvent('afterLogout');
+        App()->getPluginManager()->dispatchEvent($event, array($plugin));
+        
         $this->getController()->redirect(array('/admin/authentication/sa/login'));
     }
 
