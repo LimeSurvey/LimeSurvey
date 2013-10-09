@@ -1569,3 +1569,9 @@ span.hide-tip div.error {
     color: red;
     display: block;
 }
+
+/* Various classes currently used to center content */
+.nosurvey, .thankyou, .pdfexport, .sessionexpired
+{
+  text-align: center;
+}

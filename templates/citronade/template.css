@@ -599,3 +599,9 @@ table.printouttable{width:99%}
 .em_regex_validation{display: none;}
 .em_regex_validation.error {display: block;}
 .em_sum_range{margin:0.5em 0;}
+
+/* Various classes currently used to center content */
+.nosurvey, .thankyou, .pdfexport, .sessionexpired
+{
+  text-align: center;
+}
