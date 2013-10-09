@@ -60,6 +60,45 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 130929) to 2.00+ (build 131009) Oct 9, 2013
+-Fixed issue #6502: Unable to import multi-lang surveys (.txt) (mfaber)
+-Fixed issue #7881: Only survey owner has access to the survey (Spiros Trougakos)
+-Fixed issue #7919: Uploading duplicate participants erases data (Carsten Schmitz)
+-Fixed issue #7956: No randomisation in Matrix questions with only two answer options (Carsten Schmitz)
+-Fixed issue #7966: XSS vulnerability when adding a user group (Carsten Schmitz)
+-Fixed issue #7976: Date question: keyboard entries not validated (mfaber)
+-Fixed issue #8018: Description and welcome sections of Show Logic File not translated (Carsten Schmitz)
+-Fixed issue #8019: Ranking selection difficult/buggy using IE8 (tpartner)
+-Fixed issue #8088: Error: JSON undefined on IE while click on change chart type button on statistics (Carsten Schmitz)
+-Fixed issue #8118: Participant can upload file without size limit with question type fileupload. (Denis Chenu)
+-Fixed issue #8190: Trying to view one or all participants from a certain token table in CPDB gives back HTTP 500 Error (Carsten Schmitz)
+-Fixed issue #8201: TSV-import - subquestions missing (mfaber)
+-Fixed issue #8202: TSV-Export: relevance=name in x-scale of text/number matrix questions (mfaber)
+-Fixed issue #8206: Add answers to the set of labels is not possible in language code for "-" eg: pt-BR. (Denis Chenu)
+-Fixed issue #8223: Default email texts are not well formatted (Carsten Schmitz)
+-Fixed issue #8226: Error when using mask mm/yy in date question (mfaber)
+-Fixed issue #8235:  Import of old .csv survey file format in Postgresql fails (Carsten Schmitz)
+-Fixed issue #8238: Image url in email editor don't take publicurl configuration (Denis Chenu)
+-Fixed issue #8242: Wrong two digit year recorded (mfaber)
+-Fixed issue #8249: Adv Q-attribs missing in TSV-Export (mfaber)
+-Fixed issue: Error when viewing participants in CPDB (Carsten Schmitz)
+#Updated translation: Catalan by valdomir
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21, DenisChenu
+#Updated translation: German by actxcellence, rado
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by lukacs, cxi
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Slovenian by tejac
+#Updated translation: Thai by adzpire
+
 Changes from 2.00+ (build 130923) to 2.00+ (build 130929) Sept 29, 2013
 -Fixed issue #8129: RemoteControl import_survey disallows using txt type (TSV) (trougakoss)
 -Fixed issue #7610: Missing MSSQL support under Linux (pdo_dblib support) (Carsten Schmitz)
