@@ -21,7 +21,7 @@ if(isset($groupfound))
 <table width='100%' border='0'>
 	<tr><td align='justify' colspan='2' height='4'>
  	<font size='2' ><strong><?php $clang->eT("Description: ");?></strong>
-    <?php echo $usergroupdescription;?></font></td></tr>
+    <?php echo htmlspecialchars($usergroupdescription);?></font></td></tr>
 </table>
 <?php
 }
