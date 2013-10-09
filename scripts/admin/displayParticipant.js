@@ -99,7 +99,11 @@ $(document).ready(function() {
         $('#searchtable tr:last').after(html);
     });
 
-    var searchconditions = {};
+    
+    if(typeof searchconditions === "undefined") {
+            searchconditions = {};
+        }
+
     var field;
     $('#searchbutton').click(function(){
     });
@@ -115,6 +119,7 @@ $(document).ready(function() {
         editurl: editUrl,
         datatype: "json",
         mtype: "post",
+        postData: {searchcondition:searchconditions},
         colNames : jQuery.parseJSON(colNames),
         colModel: jQuery.parseJSON(colModels),
         height: "100%",
