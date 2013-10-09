@@ -65,14 +65,23 @@ class Quota extends CActiveRecord
 		);
 	}
 
-	function insertRecords($data)
+    function insertRecords($data)
     {
         $quota = new self;
-		foreach ($data as $k => $v)
-			$quota->$k = $v;
-		return $quota->save();
+        foreach ($data as $k => $v){
+            $quota->$k = $v;
+            }
+        try
+        {
+            $quota->save();
+            return $quota->id;
+        }
+        catch(Exception $e)
+        {
+            return false;
+        }
     }
-
+    
     function deleteQuota($condition = false, $recursive = true)
     {
         if ($recursive == true)
