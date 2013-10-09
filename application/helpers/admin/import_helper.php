@@ -2720,12 +2720,9 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             unset($labelsetrowdata['lid']);
 
             $lblsets=LabelSet::model();
-            $lsiresult = $lblsets->insertRecords($labelsetrowdata);
-
-            $results['labelsets']++;
             // Get the new insert id for the labels inside this labelset
-            $newlid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-            $newlid=$newlid['LAST_INSERT_ID()'];
+            $newlid = $lblsets->insertRecords($labelsetrowdata);
+            $results['labelsets']++;
 
             if ($labelsarray) {
                 $count=0;
@@ -2844,13 +2841,12 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             if (isset($grouprowdata['gid'])) switchMSSQLIdentityInsert('groups',true);
 
 
-            $gres = QuestionGroup::model()->insertRecords($grouprowdata) or safeDie($clang->gT('Error').": Failed to insert group<br />\<br />\n");
+            $sInsertID = QuestionGroup::model()->insertRecords($grouprowdata) or safeDie($clang->gT('Error').": Failed to insert group<br />\<br />\n");
 
             if (isset($grouprowdata['gid'])) switchMSSQLIdentityInsert('groups',false);
             if (!isset($grouprowdata['gid']))
             {
-                $aGIDReplacements[$oldgid]=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-                $aGIDReplacements[$oldgid]=$aGIDReplacements[$oldgid]['LAST_INSERT_ID()'];
+                $aGIDReplacements[$oldgid]=$sInsertID;
             }
         }
         // Fix sortorder of the groups  - if users removed groups manually from the csv file there would be gaps
@@ -2924,7 +2920,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             }
 
 
-            $qres = Question::model()->insertRecords($questionrowdata) or safeDie ($clang->gT("Error").": Failed to insert question<br />");
+            $sInsertID = Question::model()->insertRecords($questionrowdata) or safeDie ($clang->gT("Error").": Failed to insert question<br />");
 
             if (isset($questionrowdata['qid'])) {
                 switchMSSQLIdentityInsert('questions',false);
@@ -2932,9 +2928,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             }
             else
             {
-                $aQIDReplacements[$oldqid]=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-                $aQIDReplacements[$oldqid]=$aQIDReplacements[$oldqid]['LAST_INSERT_ID()'];
-                $saveqid=$aQIDReplacements[$oldqid];
+                $saveqid=$aQIDReplacements[$oldqid]=$sInsertID;
             }
 
             // Now we will fix up old label sets where they are used as answers
@@ -3069,12 +3063,11 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                 if (isset($questionrowdata['qid'])) switchMSSQLIdentityInsert('questions',true);
                 if ($questionrowdata)
                     XSSFilterArray($questionrowdata);
-                $qres= Question::model()->insertRecords($questionrowdata) or safeDie("Error: Failed to insert subquestion <br />");
+                $sInsertID= Question::model()->insertRecords($questionrowdata) or safeDie("Error: Failed to insert subquestion <br />");
 
                 if (!isset($questionrowdata['qid']))
                 {
-                    $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-                    $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]['LAST_INSERT_ID()'];
+                    $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$sInsertID;
                 }
                 else
                 {
@@ -3176,9 +3169,8 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             $oldid = $asrowdata["id"];
             unset($asrowdata["id"]);
             $quotadata[]=$asrowdata; //For use later if needed
-            $result=Quota::model()->insertRecords($asrowdata) or safeDie ("Couldn't insert quota<br />");
-            $aQuotaReplacements[$oldid]=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-            $aQuotaReplacements[$oldid]=$aQuotaReplacements[$oldid]['LAST_INSERT_ID()'];
+            $sInsertID=Quota::model()->insertRecords($asrowdata) or safeDie ("Couldn't insert quota<br />");
+            $aQuotaReplacements[$oldid]=$sInsertID;
         }
     }
 
