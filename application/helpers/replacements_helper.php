@@ -136,31 +136,50 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         if (file_exists($templatedir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
         {
-			Yii::app()->getClientScript()->registerCssFile("{$templateurl}jquery-ui-custom.css");
+            Yii::app()->getClientScript()->registerCssFile("{$templateurl}jquery-ui-custom.css");
         }
         elseif(file_exists($templatedir.DIRECTORY_SEPARATOR.'jquery-ui.css'))
         {
-			Yii::app()->getClientScript()->registerCssFile("{$templateurl}jquery-ui.css");
+            Yii::app()->getClientScript()->registerCssFile("{$templateurl}jquery-ui.css");
         }
         else
         {
-			Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."jquery-ui.css");
+            Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."jquery-ui.css");
         }
-
-		Yii::app()->getClientScript()->registerCssFile("{$templateurl}template.css");
-		if (getLanguageRTL($clang->langcode))
+        Yii::app()->getClientScript()->registerCssFile("{$templateurl}template.css");
+        if (getLanguageRTL($clang->langcode))
         {
             Yii::app()->getClientScript()->registerCssFile("{$templateurl}template-rtl.css");
+        }
+
+        $_survey_assets_dir = Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."surveys".DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR."files";
+        $_survey_assets = scandir($_survey_assets_dir);
+        if (FALSE !== $_survey_assets) {
+            $_survey_assets_url = Yii::app()->getConfig('uploadurl')."/surveys/".$surveyid."/files/";
+            foreach ($_survey_assets as $_asset) {
+                if (is_file($_survey_assets_dir.DIRECTORY_SEPARATOR.$_asset) and ereg(".css$",$_asset)) {
+                    Yii::app()->getClientScript()->registerCssFile($_survey_assets_url.$_asset);
+                }
+            }
         }
     }
     if(stripos ($line,"{TEMPLATEJS}"))
     {
-
         App()->getClientScript()->registerPackage('jqueryui');
-		App()->getClientScript()->registerPackage('jquery-touch-punch');
+        App()->getClientScript()->registerPackage('jquery-touch-punch');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
-        App()->getClientScript()->registerScriptFile($templateurl . 'template.js',CClientScript::POS_END);
         useFirebug();
+        App()->getClientScript()->registerScriptFile($templateurl . 'template.js',CClientScript::POS_END);
+        $_survey_assets_dir = Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."surveys".DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR."files";
+        $_survey_assets = scandir($_survey_assets_dir);
+        if (FALSE !== $_survey_assets) {
+            $_survey_assets_url = Yii::app()->getConfig('uploadurl')."/surveys/".$surveyid."/files/";
+            foreach ($_survey_assets as $_asset) {
+                if (is_file($_survey_assets_dir.DIRECTORY_SEPARATOR.$_asset) and ereg(".js$",$_asset)) {
+                    Yii::app()->getClientScript()->registerScriptFile($_survey_assets_url.$_asset,CClientScript::POS_END);
+                }
+            }
+        }
     }
 
     // surveyformat
@@ -800,15 +819,17 @@ EOD;
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
 
-    if (!is_null($replacements) && is_array($replacements))
+    $customReplacements = array();
+    if (function_exists('doCustomReplacements'))
     {
-        $doTheseReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values
+    	$customReplacements=doCustomReplacements($line, $clang);
     }
-    else
+    if (is_null($replacements) || !is_array($replacements))
     {
-        $doTheseReplacements = $coreReplacements;
+    	$replacements = array();
     }
-
+    $doTheseReplacements = array_merge($coreReplacements, $customReplacements, $replacements);   // so $replacements overrides core values
+    
     // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default
     $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 3, 1);
     return $line;
