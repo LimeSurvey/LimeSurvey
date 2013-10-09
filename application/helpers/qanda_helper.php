@@ -450,29 +450,21 @@ function file_validation_message($ia)
 // TMSW Validation -> EM
 function mandatory_popup($ia, $notanswered=null)
 {
-    $showpopups=Yii::app()->getConfig('showpopups');
-
     $clang = Yii::app()->lang;
     //This sets the mandatory popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notanswered === null) {unset($notanswered);}
-    if (isset($notanswered) && is_array($notanswered) && $showpopups) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
+    if (isset($notanswered) && is_array($notanswered)) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
     {
         global $mandatorypopup, $popup;
         //POPUP WARNING
         if (!isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U'))
         {
-            $popup="<script type=\"text/javascript\">\n
-            <!--\n $(document).ready(function(){
-            alert(\"".$clang->gT("You cannot proceed until you enter some text for one or more questions.", "js")."\");});\n //-->\n
-            </script>\n";
+            $popup=$clang->gT("You cannot proceed until you enter some text for one or more questions.");
             $mandatorypopup="Y";
         }else
         {
-            $popup="<script type=\"text/javascript\">\n
-            <!--\n $(document).ready(function(){
-            alert(\"".$clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.", "js")."\");});\n //-->\n
-            </script>\n";
+            $popup=$clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
             $mandatorypopup="Y";
         }
         return array($mandatorypopup, $popup);
@@ -486,23 +478,18 @@ function mandatory_popup($ia, $notanswered=null)
 // TMSW Validation -> EM
 function validation_popup($ia, $notvalidated=null)
 {
-    $showpopups=Yii::app()->getConfig('showpopups');
-
     $clang = Yii::app()->lang;
     //This sets the validation popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notvalidated === null) {unset($notvalidated);}
     $qtitle="";
-    if (isset($notvalidated) && is_array($notvalidated) && $showpopups )  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
+    if (isset($notvalidated) && is_array($notvalidated) )  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
     {
         global $validationpopup, $vpopup;
         //POPUP WARNING
         if (!isset($validationpopup))
         {
-            $vpopup="<script type=\"text/javascript\">\n
-            <!--\n $(document).ready(function(){
-            alert(\"".$clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.", "js")."\");});\n //-->\n
-            </script>\n";
+            $vpopup=$clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.");
             $validationpopup="Y";
         }
         return array($validationpopup, $vpopup);
@@ -516,20 +503,15 @@ function validation_popup($ia, $notvalidated=null)
 // TMSW Validation -> EM
 function file_validation_popup($ia, $filenotvalidated = null)
 {
-    $showpopups=Yii::app()->getConfig('showpopups');
-
     $clang = Yii::app()->lang;
     if ($filenotvalidated === null) { unset($filenotvalidated); }
-    if (isset($filenotvalidated) && is_array($filenotvalidated) && $showpopups)
+    if (isset($filenotvalidated) && is_array($filenotvalidated))
     {
         global $filevalidationpopup, $fpopup;
 
         if (!isset($filevalidationpopup))
         {
-            $fpopup="<script type=\"text/javascript\">\n
-            <!--\n $(document).ready(function(){
-            alert(\"".$clang->gT("One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed", "js")."\");});\n //-->\n
-            </script>\n";
+            $fpopup=$clang->gT("One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed");
             $filevalidationpopup = "Y";
         }
         return array($filevalidationpopup, $fpopup);

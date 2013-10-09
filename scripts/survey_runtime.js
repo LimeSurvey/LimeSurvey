@@ -18,6 +18,7 @@ needConfirmHandler();
 $(document).ready(function()
 {
     navbuttonsJqueryUi();
+    showStartPopups();
     addClassEmpty();
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
@@ -130,6 +131,18 @@ function navbuttonsJqueryUi(){
     });
     $(".button").button();
     // TODO trigger handler activate/deactivate to update ui-button class
+}
+/**
+ * showStartPopups : Take all message in startPopups json array and launch an alert with text
+ */
+function showStartPopups(){
+    if(typeof showpopup=="undefined"){showpopup=1;}
+    if(typeof startPopups=="undefined"){startPopups=[];}
+    if(showpopup){
+        $.each(startPopups,function(key, text){
+            alert($("<div/>").html(text).text());// Parse HTML because of &#039;
+        });
+    }
 }
 /**
  * Manage the index

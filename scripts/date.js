@@ -123,6 +123,7 @@ function setPickerOptions(input)
 
 function validateInput(input) 
 {
+    if(typeof showpopup=="undefined"){showpopup=1;}
     var basename = this.id.substr(6);
     format=$('#dateformat'+basename).val();
     answer=$('#answer'+basename).val();
@@ -137,7 +138,10 @@ function validateInput(input)
         }
         catch(error)
         {
-            alert('Date entered is invalid!');
+            if(showpopup)
+            {
+                alert('Date entered is invalid!');
+            }
             $('#answer'+basename).val("");
         }
     }

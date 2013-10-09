@@ -299,10 +299,7 @@ class SurveyRuntimeHelper {
 					$LEMskipReprocessing=true;
                     $move = "movenext"; // so will re-display the survey
                     $invalidLastPage=true;
-                    $vpopup="<script type=\"text/javascript\">\n
-                    <!--\n $(document).ready(function(){
-                    alert(\"".$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.", "js")."\");});\n //-->\n
-                    </script>\n";
+                    $backpopup=$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
                 }
             }
 
@@ -901,19 +898,29 @@ class SurveyRuntimeHelper {
         $redata = compact(array_keys(get_defined_vars()));
         echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
         //popup need jquery
-        if (isset($popup))
+        $aPopup=array();
+        if (isset($backpopup))
         {
-            echo $popup;
+            $aPopup[]=$backpopup;
         }
-        if (isset($vpopup))
+        else
         {
-            echo $vpopup;
+            if (isset($popup))
+            {
+                $aPopup[]=$popup;
+            }
+            if (isset($vpopup))
+            {
+                $aPopup[]=$vpopup;
+            }
+            if (isset($fpopup))
+            {
+                $aPopup[]=$fpopup;
+            }
         }
-        if (isset($fpopup))
-        {
-            echo $fpopup;
-        }
-
+        Yii::app()->clientScript->registerScript("showpopup","showpopup=".(int)Yii::app()->getConfig('showpopups').";",CClientScript::POS_HEAD);
+        //if(count($aPopup))
+            Yii::app()->clientScript->registerScript('startPopup',"startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
         //ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
         if ($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] != $_SESSION[$LEMsessid]['prevstep'] ||
         (isset($_SESSION[$LEMsessid]['stepno']) && $_SESSION[$LEMsessid]['stepno'] % 2))
