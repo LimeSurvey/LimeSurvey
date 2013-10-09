@@ -1951,7 +1951,7 @@ class remotecontrol_handle
 				 foreach ($users as $user)
 				 {
 					 $attributes = $user->attributes;
-
+                     $attributes['permissions'] = array();
 					 foreach ($user->permissions as $permission)
 					 {
 						 $attributes['permissions'][] = $permission->attributes;
