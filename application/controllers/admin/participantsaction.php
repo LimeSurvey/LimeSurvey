@@ -210,8 +210,8 @@ class participantsaction extends Survey_Common_Action
         $lang = Yii::app()->session['adminlang'];
         // loads the survey names to be shown in add to survey
         // if user is superadmin, all survey names
-        $urlSearch=Yii::app()->request->getQuery('searchurl');
-        $urlSearch=!empty($urlSearch) ? "getParticipantsResults_json/search/$urlSearch" : "getParticipants_json";
+        $sSearchCondition=Yii::app()->request->getPost('searchcondition','');
+        $urlSearch=!empty($sSearchCondition) ? "getParticipantsResults_json" : "getParticipants_json";
 
         //Get list of surveys.
         //Should be all surveys owned by user (or all surveys for super admin)
@@ -241,7 +241,8 @@ class participantsaction extends Survey_Common_Action
             'attributeValues' => ParticipantAttributeName::model()->getAllAttributesValues(),
             'surveynames' => $aSurveyNames,
             'tokensurveynames' => $tSurveyNames,
-            'urlsearch' => $urlSearch
+            'urlsearch' => $urlSearch,
+            'sSearchCondition' => $sSearchCondition
         );
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jqgrid');

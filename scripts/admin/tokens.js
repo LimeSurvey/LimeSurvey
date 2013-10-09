@@ -376,9 +376,7 @@ $(document).ready(function() {
             caption:"",
             title:viewParticipantsLink,
             buttonicon:'ui-participant-link',
-            onClickButton:function(){
-                window.open(participantlinkUrl, "_top");
-            }
+            onClickButton:function(){sendPost(participantlinkUrl,'',['searchcondition'],["surveyid||equal||" + survey_id]);}
         });
         $("#displaytokens").navButtonAdd('#pager', {
             caption:"",
