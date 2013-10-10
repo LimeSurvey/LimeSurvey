@@ -1304,33 +1304,6 @@
                 // Default validation for question type
                 switch ($type)
                 {
-                    case 'N': //NUMERICAL QUESTION TYPE
-                        // TODO : same for multinumeric
-                        if ($hasSubqs) {
-                            $subqs = $qinfo['subqs'];
-                            $sq_equs=array();
-                            foreach($subqs as $sq)
-                            {
-                                $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                if(($qinfo['mandatory']=='Y')){
-                                    $sq_equs[] = '(fixnum('.$sq_name.')== '.$sq_name.')';
-                                }else{
-                                    $sq_equs[] = '(fixnum('.$sq_name.')== '.$sq_name.' || is_empty('.$sq_name.') )';
-                                }
-                            }
-                            if (!isset($validationEqn[$questionNum]))
-                            {
-                                $validationEqn[$questionNum] = array();
-                            }
-                            $validationEqn[$questionNum][] = array(
-                            'qtype' => $type,
-                            'type' => 'default',
-                            'class' => 'default',
-                            'eqn' =>  implode(' and ',$sq_equs),
-                            'qid' => $questionNum,
-                            );
-                        }
-                        break;
                     case 'R':
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
@@ -1952,72 +1925,6 @@
                 else
                 {
                     $max_num_value_n='';
-                }
-
-                // num_value_int_only
-                // Validation fixnum(sqN)==int(fixnum(sqN)) : fixnum or not fix num ..... 10.00 == 10
-                if (isset($qattr['num_value_int_only']) && trim($qattr['num_value_int_only']) == "1")
-                {
-                    $num_value_int_only="1";
-                    if ($hasSubqs) {
-                        $subqs = $qinfo['subqs'];
-                        $sq_names = array();
-                        $subqValidEqns = array();
-                        foreach ($subqs as $sq) {
-                            $sq_name = NULL;
-                            switch ($type)
-                            {
-                                case 'N': //NUMERICAL QUESTION TYPE
-                                    if(($qinfo['mandatory']=='Y')){
-                                        if ($this->sgqaNaming)
-                                        {
-                                            $sq_name = '(intval(fixnum('.$sq['rowdivid'].'.NAOK))== fixnum('.$sq['rowdivid'].'.NAOK))';
-                                        }
-                                        else
-                                        {
-                                            $sq_name = '(intval(fixnum('.$sq['varName'].'.NAOK))== fixnum('.$sq['varName'].'.NAOK))';
-                                        }
-                                    }else{
-                                        if ($this->sgqaNaming)
-                                        {
-                                            $sq_name = '(intval(fixnum('.$sq['rowdivid'].'.NAOK))== fixnum('.$sq['rowdivid'].'.NAOK) || is_empty('.$sq['rowdivid'].'.NAOK))';
-                                        }
-                                        else
-                                        {
-                                            $sq_name = '(intval(fixnum('.$sq['varName'].'.NAOK))== fixnum('.$sq['varName'].'.NAOK) || is_empty('.$sq['varName'].'.NAOK))';
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
-                            if (!is_null($sq_name)) {
-                                $sq_names[] = $sq_name;
-                                $subqValidEqns[$subqValidSelector] = array(
-                                'subqValidEqn' => $sq_name,
-                                'subqValidSelector' => $subqValidSelector,
-                                );
-                            }
-                        }
-                        if (count($sq_names) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
-                            {
-                                $validationEqn[$questionNum] = array();
-                            }
-                            $validationEqn[$questionNum][] = array(
-                            'qtype' => $type,
-                            'type' => 'num_value_int_only',
-                            'class' => 'value_integer',
-                            'eqn' => implode(' && ', $sq_names),
-                            'qid' => $questionNum,
-                            'subqValidEqns' => $subqValidEqns,
-                            );
-                        }
-                    }
-                }
-                else
-                {
-                    $num_value_int_only='';
                 }
 
                 // min_num_value
@@ -2650,9 +2557,6 @@
                 // Default validation qtip without attribute
                 switch ($type)
                 {
-                    case 'N':
-                        $qtips['default']=$this->gT("Only numbers may be entered in this field.");
-                        break;
                     case 'R':
                         $qtips['default']=$this->gT("All your answers must be different.");
                         break;
@@ -2701,12 +2605,6 @@
                         "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('".$this->gT("Each answer must be at most %s")."',fixnum($_maxV)), '')}" .
                         "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('".$this->gT("Each answer must be %s")."', fixnum($_minV)), '')}" .
                         "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('".$this->gT("Each answer must be between %s and %s")."', fixnum($_minV), fixnum($_maxV)), '')}";
-                }
-
-                // integer for numeric
-                if ($num_value_int_only!='')
-                {
-                    $qtips['value_integer']=$this->gT("Only integer value");
                 }
 
                 // min/max value for each numeric entry - for multi-flexible question type
@@ -7835,17 +7733,17 @@ EOD;
                                     }
                                     $aDateFormatData=getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
                                     $oDateTimeConverter = new Date_Time_Converter($value, $aDateFormatData['phpdate']);
-                                    $value=$oDateTimeConverter->convert("Y-m-d H:i"); // TODO : control if inverse function original value
+                                    $value=$oDateTimeConverter->convert("Y-m-d H:i");
                                 }
                                 break;
-#                            case 'N': //NUMERICAL QUESTION TYPE
-#                            case 'K': //MULTIPLE NUMERICAL QUESTION
-#                                if (trim($value)=="") {
-#                                    $value = "";
-#                                }
-#                                else {
-#                                    $value = sanitize_float($value);
-#                                }
+                            case 'N': //NUMERICAL QUESTION TYPE
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                if (trim($value)=="") {
+                                    $value = "";
+                                }
+                                else {
+                                    $value = sanitize_float($value);
+                                }
                                 break;
                             case '|': //File Upload
                                 if (!preg_match('/_filecount$/', $sq))

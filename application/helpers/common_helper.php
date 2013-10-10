@@ -1726,10 +1726,10 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                         $sValue=rtrim(rtrim($sValue,"0"),".");
                     }
                     $qidattributes = getQuestionAttributeValues($fields['qid']);
-#                    if($qidattributes['num_value_int_only'])
-#                    {
-#                        $sValue=number_format($sValue, 0, '', '');
-#                    }
+                    if($qidattributes['num_value_int_only'])
+                    {
+                        $sValue=number_format($sValue, 0, '', '');
+                    }
                 }
                 break;
             case "L":
