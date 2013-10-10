@@ -619,13 +619,17 @@ class index extends CAction {
                 if((empty($oSurveyTokenInstance->submitdate) || $thissurvey['alloweditaftercompletion'] == 'Y' ) && $thissurvey['tokenanswerspersistence'] == 'Y')
                 {
                     $_SESSION['survey_'.$surveyid]['srid'] = $oSurveyTokenInstance->id;
-                    if (!empty($oSurveyTokenInstance->lastpage) && empty($oSurveyTokenInstance->submitdate))
+                    if (!empty($oSurveyTokenInstance->lastpage))
                     {
                         $_SESSION['survey_'.$surveyid]['LEMtokenResume'] = true;
                         $_SESSION['survey_'.$surveyid]['step'] = $oSurveyTokenInstance->lastpage;
                     }
                 }
                 buildsurveysession($surveyid);
+                if(!empty($oSurveyTokenInstance->submitdate)) // alloweditaftercompletion
+                {
+                    $_SESSION['survey_'.$surveyid]['maxstep'] = $_SESSION['survey_'.$surveyid]['totalsteps'];
+                }
                 loadanswers();
             }
         }
