@@ -1898,7 +1898,7 @@ class remotecontrol_handle
 				   if (!isset($aUserData))
 						return array('status' => 'Invalid user');
 					else
-						$aUserSurveys = Survey::model()->findAllByAttributes(array("owner_id"=>$aUserData->attributes['uid']));
+						$sUid = $aUserData->attributes['uid'];
 				}
 			}
 			else
@@ -1906,11 +1906,23 @@ class remotecontrol_handle
 				if (($sCurrentUser == $sUser) || ($sUser == null) )
 				{
 					$sUid =  User::model()->findByAttributes(array('users_name' => $sCurrentUser))->uid;
-					$aUserSurveys = Survey::model()->findAllByAttributes(array("owner_id"=>$sUid));
 				}
 				else
 					return array('status' => 'No permission');
 			}
+
+			if($sUid!=null){
+			//we request user and not admin surveys
+				$surveyPermissions = Permission::model()->findAllByAttributes(array('entity'=>'survey','uid'=>$sUid));
+							foreach($surveyPermissions as $row)
+							   $ids[] = $row['entity_id'];
+
+							$ids = array_unique($ids);
+							$aUserSurveys = Survey::model()->findAllByAttributes(array("sid"=>$ids));
+			}
+
+
+
 
 		   if(count($aUserSurveys)==0)
 				return array('status' => 'No surveys found');
