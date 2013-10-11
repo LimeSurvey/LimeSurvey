@@ -118,8 +118,8 @@ class translate extends Survey_Common_Action {
 					{
 						$id1 = Yii::app()->getRequest()->getPost("{$type}_id1_{$i}");
 						$id2 = Yii::app()->getRequest()->getPost("{$type}_id2_{$i}");
-
-						$this->query($type, 'queryupdate', $iSurveyID, $tolang, $baselang, $id1, $id2, $new);
+                        $iScaleID = Yii::app()->getRequest()->getPost("{$type}_scaleid_{$i}");
+						$this->query($type, 'queryupdate', $iSurveyID, $tolang, $baselang, $id1, $id2, $iScaleID, $new);
 					}
 				}
 				$i++;
@@ -578,6 +578,7 @@ class translate extends Survey_Common_Action {
 					'dbColumn' => 'answer',
 					'id1' => 'qid',
 					'id2' => 'code',
+                    'scaleid' => 'scale_id',
 					'gid' => FALSE,
 					'qid' => TRUE,
 					'description' => $clang->gT("Answer options"),
@@ -740,7 +741,7 @@ class translate extends Survey_Common_Action {
         return $aData;
     }
 
-	private function query($type, $action, $iSurveyID, $tolang, $baselang, $id1 = "", $id2 = "", $new = "")
+	private function query($type, $action, $iSurveyID, $tolang, $baselang, $id1 = "", $id2 = "", $iScaleID="", $new = "")
 	{
 		$amTypeOptions = array();
         switch ($action)
@@ -818,8 +819,7 @@ class translate extends Survey_Common_Action {
                     case 'subquestion':
                         return Question::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang),array('question' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
                     case 'answer':
-                        return Answer::model()->updateByPk(array('qid'=>$id1, 'code'=>$id2, 'language'=>$tolang, 'scale_id'=>0),array('answer' => $new));
-                        // @todo: FIXME for dual scale answer options
+                        return Answer::model()->updateByPk(array('qid'=>$id1, 'code'=>$id2, 'language'=>$tolang, 'scale_id'=>$iScaleID),array('answer' => $new));
                 }
 
         }
@@ -878,6 +878,7 @@ class translate extends Survey_Common_Action {
 
         $value1 = ( ! empty($amTypeOptions["id1"]) ) ? $rowfrom[$amTypeOptions["id1"]] : "";
         $value2 = ( ! empty($amTypeOptions["id2"]) ) ? $rowfrom[$amTypeOptions["id2"]] : "";
+        $iScaleID = ( ! empty($amTypeOptions["scaleid"]) ) ? $rowfrom[$amTypeOptions["scaleid"]] : "";
 
         // Display text in original language
         // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
@@ -908,6 +909,7 @@ class translate extends Survey_Common_Action {
         $translateoutput .= CHtml::openTag('td');
 		$translateoutput .= CHtml::hiddenField("{$type}_id1_{$i}", $value1);
 		$translateoutput .= CHtml::hiddenField("{$type}_id2_{$i}", $value2);
+        if ($iScaleID!='') $translateoutput .= CHtml::hiddenField("{$type}_scaleid_{$i}", $iScaleID);
 
         $nrows = max($this->calc_nrows($textfrom), $this->calc_nrows($textto));
 
