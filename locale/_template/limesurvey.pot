@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-10-10 22:05:38+00:00\n"
+"POT-Creation-Date: 2013-10-11 22:05:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -856,7 +856,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:946
 #: application/controllers/admin/printablesurvey.php:1051
 #: application/controllers/admin/printablesurvey.php:1067
-#: application/controllers/admin/quotas.php:518
+#: application/controllers/admin/quotas.php:521
 #: application/controllers/admin/surveyadmin.php:664
 #: application/controllers/admin/tokens.php:2107
 #: application/core/Survey_Common_Action.php:823
@@ -973,7 +973,7 @@ msgstr ""
 #: application/views/admin/participants/attributeMapCSV_view.php:67
 #: application/views/admin/participants/displayParticipants_view.php:66
 #: application/views/admin/participants/displayParticipants_view.php:139
-#: application/views/admin/quotas/editquotafooter_view.php:6
+#: application/views/admin/quotas/editquota_view.php:32
 #: application/views/admin/survey/Question/answerOptions_view.php:37
 #: application/views/admin/survey/Question/answerOptions_view.php:175
 #: application/views/admin/survey/Question/answerOptions_view.php:187
@@ -1082,7 +1082,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:947
 #: application/controllers/admin/printablesurvey.php:1053
 #: application/controllers/admin/printablesurvey.php:1069
-#: application/controllers/admin/quotas.php:519
+#: application/controllers/admin/quotas.php:522
 #: application/controllers/admin/surveyadmin.php:668
 #: application/controllers/admin/tokens.php:2109
 #: application/core/Survey_Common_Action.php:819
@@ -1305,7 +1305,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:745
 #: application/controllers/admin/printablesurvey.php:356
 #: application/controllers/admin/printablesurvey.php:669
-#: application/controllers/admin/quotas.php:476
+#: application/controllers/admin/quotas.php:479
 #: application/helpers/admin/statistics_helper.php:1462
 #: application/helpers/common_helper.php:1819
 #: application/helpers/export_helper.php:287
@@ -1321,7 +1321,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:746
 #: application/controllers/admin/printablesurvey.php:355
 #: application/controllers/admin/printablesurvey.php:670
-#: application/controllers/admin/quotas.php:475
+#: application/controllers/admin/quotas.php:478
 #: application/helpers/admin/statistics_helper.php:1463
 #: application/helpers/common_helper.php:1818
 #: application/helpers/export_helper.php:288
@@ -2775,11 +2775,11 @@ msgid "Group could not be deleted"
 msgstr ""
 
 #: application/controllers/admin/questiongroup.php:326
-#: application/controllers/admin/quotas.php:361
+#: application/controllers/admin/quotas.php:363
 #: application/controllers/admin/surveyadmin.php:801
 #: application/views/admin/assessments_view.php:103
 #: application/views/admin/emailtemplates/emailtemplates_view.php:16
-#: application/views/admin/quotas/newquota_view.php:27
+#: application/views/admin/quotas/newquota_view.php:28
 #: application/views/admin/survey/Question/answerOptions_view.php:44
 #: application/views/admin/survey/Question/editQuestion_view.php:25
 #: application/views/admin/survey/Question/subQuestion_view.php:43
@@ -4413,30 +4413,30 @@ msgstr ""
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:899
+#: application/helpers/SurveyRuntimeHelper.php:903
 #: application/helpers/qanda_helper.php:474
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:905
+#: application/helpers/SurveyRuntimeHelper.php:909
 #: application/helpers/qanda_helper.php:504
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:911
+#: application/helpers/SurveyRuntimeHelper.php:915
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1069
+#: application/helpers/SurveyRuntimeHelper.php:1073
 #: application/helpers/frontend_helper.php:2663
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1077
+#: application/helpers/SurveyRuntimeHelper.php:1081
 msgid "Question index"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1145
+#: application/helpers/SurveyRuntimeHelper.php:1149
 #: application/helpers/frontend_helper.php:2104
 #: application/helpers/replacements_helper.php:394
 #: application/views/admin/dataentry/active_html_view.php:67
@@ -9569,7 +9569,7 @@ msgid "Server time:"
 msgstr ""
 
 #: application/views/admin/globalSettings_view.php:210
-msgid "Corrected time :"
+msgid "Corrected time:"
 msgstr ""
 
 #: application/views/admin/globalSettings_view.php:213
@@ -11171,14 +11171,18 @@ msgstr ""
 msgid "Autoload URL:"
 msgstr ""
 
-#: application/views/admin/quotas/editquotafooter_view.php:1
+#: application/views/admin/quotas/editquota_view.php:27
 msgid "Save quota"
 msgstr ""
 
 #: application/views/admin/quotas/editquotalang_view.php:3
-#: application/views/admin/quotas/editquotalang_view.php:4
 #: application/views/admin/quotas/newquota_view.php:36
 msgid "Quota message"
+msgstr ""
+
+#: application/views/admin/quotas/editquotalang_view.php:4
+#: application/views/admin/quotas/newquota_view.php:40
+msgid "URL"
 msgstr ""
 
 #: application/views/admin/quotas/editquotalang_view.php:5
@@ -11241,11 +11245,7 @@ msgstr ""
 msgid "Autoload URL"
 msgstr ""
 
-#: application/views/admin/quotas/newquota_view.php:40
-msgid "URL"
-msgstr ""
-
-#: application/views/admin/quotas/newquota_view.php:54
+#: application/views/admin/quotas/newquota_view.php:52
 #: application/views/admin/quotas/viewquotasfooter_view.php:10
 msgid "Add New Quota"
 msgstr ""
