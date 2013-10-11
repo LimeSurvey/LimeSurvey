@@ -1,4 +1,4 @@
-<div class="header ui-tabs ui-widget"><?php $clang->eT("Edit quota");?></div>
+<div class="header ui-widget-header"><?php $clang->eT("Edit quota");?></div>
     <?php echo CHtml::form(array("admin/quotas/sa/modifyquota/surveyid/{$iSurveyId}"), 'post', array('id'=>'editquota','class'=>'form44')); ?>
     <ul>
         <li><label for='quota_name'><?php $clang->eT("Quota name:");?></label> <input id="quota_name" name="quota_name" type="text" size="30" maxlength="255" value="<?php echo $quotainfo['name'];?>" /></li>
@@ -12,14 +12,14 @@
         <div id="tabs">
         <?php
             echo CHtml::openTag('ul');
-            foreach ($aTabTitles as $i => $sTabTitle)
+            foreach ($aTabTitles as $sLang => $sTabTitle)
             {
-                echo CHtml::tag('li', array('style' => 'clear:none;'), CHtml::link($sTabTitle, "#edittxtele{$i}"));
+                echo CHtml::tag('li',array(), CHtml::link($sTabTitle, "#edittxtele{$sLang}"));
             }
             echo CHtml::closeTag('ul');
-            foreach ($aTabContents as $i => $sTabContent)
+            foreach ($aTabContents as $sLang => $sTabContent)
             {
-                echo CHtml::tag('div', array('id' => 'edittxtele' . $i), $sTabContent);
+                echo CHtml::tag('div', array('id' => "edittxtele{$sLang}"), $sTabContent);
             }
         ?>
         </div>

@@ -816,8 +816,12 @@ class SurveyRuntimeHelper {
                 else {
                     newval = newval.replace(numRegex,'');
                 }
-                if (LEMradix === ',') {
-                    newval = newval.split(',').join('.');
+                aNewval = newval.split(LEMradix);
+                if(aNewval.length>0){
+                    newval=aNewval[0];
+                }
+                if(aNewval.length>1){
+                    newval=newval+'.'+aNewval[1];
                 }
                 if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {
                     newval = '';
