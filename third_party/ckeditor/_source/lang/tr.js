@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -697,7 +697,7 @@ CKEDITOR.lang['tr'] =
 		ignoreAll		: 'Tümünü Yoksay',
 		addWord			: 'Kelime Ekle',
 		emptyDic		: 'Sözlük adı boş olamaz.',
-
+		noSuggestions	: 'Öneri Yok',
 		optionsTab		: 'Seçenekler',
 		allCaps			: 'Tüm büyük küçük kelimeleri yoksay',
 		ignoreDomainNames : 'Domain adlarını yoksay',

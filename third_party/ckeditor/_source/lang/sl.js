@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -698,7 +698,7 @@ CKEDITOR.lang['sl'] =
 		ignoreAll		: 'Prezri vse',
 		addWord			: 'Dodaj besedo',
 		emptyDic		: 'Ime slovarja ne more biti prazno.',
-
+		noSuggestions	: 'Ni predlogov',
 		optionsTab		: 'Možnosti',
 		allCaps			: 'Ignore All-Caps Words', // MISSING
 		ignoreDomainNames : 'Ignore Domain Names', // MISSING

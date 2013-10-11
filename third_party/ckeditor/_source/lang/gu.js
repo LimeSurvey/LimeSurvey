@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -698,7 +698,7 @@ CKEDITOR.lang['gu'] =
 		ignoreAll		: 'બધા ઇગ્નોર ',
 		addWord			: 'શબ્દ ઉમેરવો',
 		emptyDic		: 'ડિક્સનરીનું નામ ખાલી ના હોય.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'વિકલ્પો',
 		allCaps			: 'ઓલ-કેપ્સ વર્ડ છોડી દો.',
 		ignoreDomainNames : 'ડોમેન નામ છોડી દો.',

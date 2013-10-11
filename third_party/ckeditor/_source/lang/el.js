@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -450,25 +450,25 @@ CKEDITOR.lang['el'] =
 		scaleNoBorder	: 'Χωρίς Περίγραμμα',
 		scaleFit		: 'Ακριβές Μέγεθος',
 		access			: 'Script Access', // MISSING
-		accessAlways	: 'Always', // MISSING
+		accessAlways	: 'Πάντα',
 		accessSameDomain: 'Same domain', // MISSING
-		accessNever		: 'Never', // MISSING
+		accessNever		: 'Ποτέ',
 		alignAbsBottom	: 'Απόλυτα Κάτω',
 		alignAbsMiddle	: 'Απόλυτα στη Μέση',
 		alignBaseline	: 'Γραμμή Βάσης',
 		alignTextTop	: 'Κορυφή Κειμένου',
-		quality			: 'Quality', // MISSING
-		qualityBest		: 'Best', // MISSING
-		qualityHigh		: 'High', // MISSING
-		qualityAutoHigh	: 'Auto High', // MISSING
-		qualityMedium	: 'Medium', // MISSING
-		qualityAutoLow	: 'Auto Low', // MISSING
-		qualityLow		: 'Low', // MISSING
-		windowModeWindow: 'Window', // MISSING
-		windowModeOpaque: 'Opaque', // MISSING
-		windowModeTransparent : 'Transparent', // MISSING
+		quality			: 'Ποιότητα',
+		qualityBest		: 'Καλύτερη',
+		qualityHigh		: 'Υψηλή',
+		qualityAutoHigh	: 'Αυτόματη Υψηλή',
+		qualityMedium	: 'Μεσαία',
+		qualityAutoLow	: 'Αυτόματη Χαμηλή',
+		qualityLow		: 'Χαμηλή',
+		windowModeWindow: 'Παράθυρο',
+		windowModeOpaque: 'Συμπαγές',
+		windowModeTransparent : 'Διάφανο',
 		windowMode		: 'Window mode', // MISSING
-		flashvars		: 'Variables for Flash', // MISSING
+		flashvars		: 'Μεταβλητές για Flash',
 		bgcolor			: 'Χρώμα Υποβάθρου',
 		hSpace			: 'Οριζόντιο Διάστημα',
 		vSpace			: 'Κάθετο Διάστημα',
@@ -481,8 +481,8 @@ CKEDITOR.lang['el'] =
 	spellCheck :
 	{
 		toolbar			: 'Ορθογραφικός Έλεγχος',
-		title			: 'Spell Check', // MISSING
-		notAvailable	: 'Sorry, but service is unavailable now.', // MISSING
+		title			: 'Ορθογραφικός Έλεγχος',
+		notAvailable	: 'Η υπηρεσία δεν είναι διαθέσιμη αυτήν την στιγμή.',
 		errorLoading	: 'Error loading application service host: %s.', // MISSING
 		notInDic		: 'Δεν υπάρχει στο λεξικό',
 		changeTo		: 'Αλλαγή σε',
@@ -504,13 +504,13 @@ CKEDITOR.lang['el'] =
 	{
 		toolbar	: 'Smiley',
 		title	: 'Επιλέξτε ένα Smiley',
-		options : 'Smiley Options' // MISSING
+		options : 'Επιλογές Smiley'
 	},
 
 	elementsPath :
 	{
 		eleLabel : 'Elements path', // MISSING
-		eleTitle : '%1 element' // MISSING
+		eleTitle : '%1 στοιχείο'
 	},
 
 	numberedlist	: 'Εισαγωγή/Απομάκρυνση Αριθμημένης Λίστας',
@@ -612,21 +612,21 @@ CKEDITOR.lang['el'] =
 		title		: 'IFrame Properties', // MISSING
 		toolbar		: 'IFrame', // MISSING
 		noUrl		: 'Please type the iframe URL', // MISSING
-		scrolling	: 'Enable scrollbars', // MISSING
+		scrolling	: 'Ενεργοποίηση μπαρών κύλισης',
 		border		: 'Show frame border' // MISSING
 	},
 
 	font :
 	{
 		label		: 'Γραμματοσειρά',
-		voiceLabel	: 'Font', // MISSING
+		voiceLabel	: 'Γραμματοσειρά',
 		panelTitle	: 'Όνομα Γραμματοσειράς'
 	},
 
 	fontSize :
 	{
 		label		: 'Μέγεθος',
-		voiceLabel	: 'Font Size', // MISSING
+		voiceLabel	: 'Μέγεθος γραμματοσειράς',
 		panelTitle	: 'Μέγεθος Γραμματοσειράς'
 	},
 
@@ -634,14 +634,14 @@ CKEDITOR.lang['el'] =
 	{
 		textColorTitle	: 'Χρώμα Κειμένου',
 		bgColorTitle	: 'Χρώμα Φόντου',
-		panelTitle		: 'Colors', // MISSING
+		panelTitle		: 'Χρώματα',
 		auto			: 'Αυτόματα',
 		more			: 'Περισσότερα χρώματα...'
 	},
 
 	colors :
 	{
-		'000' : 'Black', // MISSING
+		'000' : 'Μαύρο',
 		'800000' : 'Maroon', // MISSING
 		'8B4513' : 'Saddle Brown', // MISSING
 		'2F4F4F' : 'Dark Slate Gray', // MISSING
@@ -655,8 +655,8 @@ CKEDITOR.lang['el'] =
 		'006400' : 'Dark Green', // MISSING
 		'40E0D0' : 'Turquoise', // MISSING
 		'0000CD' : 'Medium Blue', // MISSING
-		'800080' : 'Purple', // MISSING
-		'808080' : 'Gray', // MISSING
+		'800080' : 'Μώβ',
+		'808080' : 'Γκρί',
 		'F00' : 'Red', // MISSING
 		'FF8C00' : 'Dark Orange', // MISSING
 		'FFD700' : 'Gold', // MISSING
@@ -691,37 +691,37 @@ CKEDITOR.lang['el'] =
 		disable			: 'Disable SCAYT', // MISSING
 		about			: 'About SCAYT', // MISSING
 		toggle			: 'Toggle SCAYT', // MISSING
-		options			: 'Options', // MISSING
-		langs			: 'Languages', // MISSING
-		moreSuggestions	: 'More suggestions', // MISSING
-		ignore			: 'Ignore', // MISSING
-		ignoreAll		: 'Ignore All', // MISSING
-		addWord			: 'Add Word', // MISSING
-		emptyDic		: 'Dictionary name should not be empty.', // MISSING
-
-		optionsTab		: 'Options', // MISSING
-		allCaps			: 'Ignore All-Caps Words', // MISSING
+		options			: 'Επιλογές',
+		langs			: 'Γλώσσες',
+		moreSuggestions	: 'Περισσότερες προτάσεις',
+		ignore			: 'Αγνόησε το',
+		ignoreAll		: 'Να αγνοηθούν όλα',
+		addWord			: 'Προσθήκη στο λεξικό',
+		emptyDic		: 'Το όνομα του λεξικού δεν πρέπει να είναι κενό.',
+		noSuggestions	: 'No suggestions', // MISSING
+		optionsTab		: 'Επιλογές',
+		allCaps			: 'Να αγνοούνται όλες οι λέξεις σε κεφαλαία',
 		ignoreDomainNames : 'Ignore Domain Names', // MISSING
 		mixedCase		: 'Ignore Words with Mixed Case', // MISSING
 		mixedWithDigits	: 'Ignore Words with Numbers', // MISSING
 
-		languagesTab	: 'Languages', // MISSING
+		languagesTab	: 'Γλώσσες',
 
-		dictionariesTab	: 'Dictionaries', // MISSING
-		dic_field_name	: 'Dictionary name', // MISSING
-		dic_create		: 'Create', // MISSING
-		dic_restore		: 'Restore', // MISSING
-		dic_delete		: 'Delete', // MISSING
-		dic_rename		: 'Rename', // MISSING
+		dictionariesTab	: 'Λεξικά',
+		dic_field_name	: 'Όνομα λεξικού',
+		dic_create		: 'Δημιουργία',
+		dic_restore		: 'Ανάκτηση',
+		dic_delete		: 'Διαγραφή',
+		dic_rename		: 'Μετονομασία',
 		dic_info		: 'Initially the User Dictionary is stored in a Cookie. However, Cookies are limited in size. When the User Dictionary grows to a point where it cannot be stored in a Cookie, then the dictionary may be stored on our server. To store your personal dictionary on our server you should specify a name for your dictionary. If you already have a stored dictionary, please type its name and click the Restore button.', // MISSING
 
-		aboutTab		: 'About' // MISSING
+		aboutTab		: 'Περί'
 	},
 
 	about :
 	{
-		title		: 'About CKEditor', // MISSING
-		dlgTitle	: 'About CKEditor', // MISSING
+		title		: 'Περί του CKEditor',
+		dlgTitle	: 'Περί του CKEditor',
 		help	: 'Check $1 for help.', // MISSING
 		userGuide : 'CKEditor User\'s Guide', // MISSING
 		moreInfo	: 'For licensing information please visit our web site:', // MISSING
@@ -737,18 +737,18 @@ CKEDITOR.lang['el'] =
 		flash		: 'Flash Animation', // MISSING
 		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
-		unknown		: 'Unknown Object' // MISSING
+		unknown		: 'Άγνωστο Αντικείμενο'
 	},
 
 	resize : 'Σύρσιμο για αλλαγή μεγέθους',
 
 	colordialog :
 	{
-		title		: 'Select color', // MISSING
-		options	:	'Color Options', // MISSING
+		title		: 'Επιλογή Χρώματος',
+		options	:	'Επιλογές Χρωμάτων',
 		highlight	: 'Highlight', // MISSING
-		selected	: 'Selected Color', // MISSING
-		clear		: 'Clear' // MISSING
+		selected	: 'Επιλεγμένο Χρώμα',
+		clear		: 'Καθαρισμός'
 	},
 
 	toolbarCollapse	: 'Σύμπτηξη Εργαλειοθήκης',
@@ -756,17 +756,17 @@ CKEDITOR.lang['el'] =
 
 	toolbarGroups :
 	{
-		document : 'Document', // MISSING
+		document : 'Έγγραφο',
 		clipboard : 'Clipboard/Undo', // MISSING
-		editing : 'Editing', // MISSING
-		forms : 'Forms', // MISSING
-		basicstyles : 'Basic Styles', // MISSING
-		paragraph : 'Paragraph', // MISSING
-		links : 'Links', // MISSING
-		insert : 'Insert', // MISSING
-		styles : 'Styles', // MISSING
-		colors : 'Colors', // MISSING
-		tools : 'Tools' // MISSING
+		editing : 'Σε επεξεργασία',
+		forms : 'Φόρμες',
+		basicstyles : 'Βασικά στυλ',
+		paragraph : 'Παράγραφος',
+		links : 'Συνδέσμοι',
+		insert : 'Εισαγωγή',
+		styles : 'Στυλ',
+		colors : 'Χρώματα',
+		tools : 'Εργαλεία'
 	},
 
 	bidi :

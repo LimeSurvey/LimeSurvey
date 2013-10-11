@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -104,6 +104,9 @@ CKEDITOR.dom.element.clearMarkers = function( database, element, removeFromDatab
 		delete database[id];
 	}
 };
+
+( function()
+{
 
 CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 	/** @lends CKEDITOR.dom.element.prototype */
@@ -504,7 +507,10 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			:
 				function( propertyName )
 				{
-					return this.getWindow().$.getComputedStyle( this.$, '' ).getPropertyValue( propertyName );
+					var style = this.getWindow().$.getComputedStyle( this.$, null );
+
+					// Firefox may return null if we call the above on a hidden iframe. (#9117)
+					return style ? style.getPropertyValue( propertyName ) : '';
 				},
 
 		/**
@@ -1186,6 +1192,16 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		{
 			// Removes the specified property from the current style object.
 			var $ = this.$.style;
+
+			// "removeProperty" need to be specific on the following styles.
+			if ( !$.removeProperty && ( name == 'border' || name == 'margin' || name == 'padding' ) )
+			{
+				var names = expandedRules( name );
+				for ( var i = 0 ; i < names.length ; i++ )
+					this.removeStyle( names[ i ] );
+				return;
+			}
+
 			$.removeProperty ? $.removeProperty( name ) : $.removeAttribute( CKEDITOR.tools.cssStyleToDomStyle( name ) );
 
 			if ( !this.$.style.cssText )
@@ -1752,12 +1768,34 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		}
 	});
 
-( function()
-{
 	var sides = {
 		width : [ "border-left-width", "border-right-width","padding-left", "padding-right" ],
 		height : [ "border-top-width", "border-bottom-width", "padding-top",  "padding-bottom" ]
 	};
+
+	// Generate list of specific style rules, applicable to margin/padding/border.
+	function expandedRules( style )
+	{
+		var sides = [ 'top', 'left', 'right', 'bottom' ], components;
+
+		if ( style == 'border' )
+				components = [ 'color', 'style', 'width' ];
+
+		var styles = [];
+		for ( var i = 0 ; i < sides.length ; i++ )
+		{
+
+			if ( components )
+			{
+				for ( var j = 0 ; j < components.length ; j++ )
+					styles.push( [ style, sides[ i ], components[j] ].join( '-' ) );
+			}
+			else
+				styles.push( [ style, sides[ i ] ].join( '-' ) );
+		}
+
+		return styles;
+	}
 
 	function marginAndPaddingSize( type )
 	{

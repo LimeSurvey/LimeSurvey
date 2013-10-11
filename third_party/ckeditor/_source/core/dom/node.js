@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -106,7 +106,8 @@ CKEDITOR.tools.extend( CKEDITOR.dom.node.prototype,
 
 				if ( !cloneId )
 					node.removeAttribute( 'id', false );
-				node.removeAttribute( 'data-cke-expando', false );
+
+				node[ 'data-cke-expando' ] = undefined;
 
 				if ( includeChildren )
 				{

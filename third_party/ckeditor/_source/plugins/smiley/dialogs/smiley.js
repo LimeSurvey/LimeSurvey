@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -88,8 +88,6 @@ CKEDITOR.dialog.add( 'smiley', function( editor )
 
 			// RIGHT-ARROW
 			case rtl ? 37 : 39 :
-			// TAB
-			case 9 :
 				// relative is TD
 				if ( ( relative = element.getParent().getNext() ) )
 				{
@@ -109,8 +107,6 @@ CKEDITOR.dialog.add( 'smiley', function( editor )
 
 			// LEFT-ARROW
 			case rtl ? 39 : 37 :
-			// SHIFT + TAB
-			case CKEDITOR.SHIFT + 9 :
 				// relative is TD
 				if ( ( relative = element.getParent().getPrevious() ) )
 				{
@@ -147,11 +143,11 @@ CKEDITOR.dialog.add( 'smiley', function( editor )
 	for ( i = 0 ; i < size ; i++ )
 	{
 		if ( i % columns === 0 )
-			html.push( '<tr>' );
+			html.push( '<tr role="presentation">' );
 
 		var smileyLabelId = 'cke_smile_label_' + i + '_' + CKEDITOR.tools.getNextNumber();
 		html.push(
-			'<td class="cke_dark_background cke_centered" style="vertical-align: middle;">' +
+			'<td class="cke_dark_background cke_centered" style="vertical-align: middle;" role="presentation">' +
 				'<a href="javascript:void(0)" role="option"',
 					' aria-posinset="' + ( i +1 ) + '"',
 					' aria-setsize="' + size + '"',

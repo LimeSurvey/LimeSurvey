@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -117,6 +117,26 @@ CKEDITOR.dom.event.prototype =
 	{
 		var rawNode = this.$.target || this.$.srcElement;
 		return rawNode ? new CKEDITOR.dom.node( rawNode ) : null;
+	},
+
+	/**
+	 * Retrieves the coordinates of the mouse pointer relative to the top-left
+	 * corner of the document, in mouse related event.
+	 * @returns {Object} The object contains the position.
+	 * @example
+	 * element.on( 'mousemouse', function( ev )
+	 *     {
+	 *         var pageOffset = ev.data.getPageOffset();
+	 *         alert( pageOffset.x ); // page offset X
+	 *         alert( pageOffset.y ); // page offset Y
+	 *     });
+	 */
+	getPageOffset : function()
+	{
+		var doc = this.getTarget().getDocument().$;
+		var pageX = this.$.pageX || this.$.clientX + ( doc.documentElement.scrollLeft || doc.body.scrollLeft );
+		var pageY = this.$.pageY || this.$.clientY + ( doc.documentElement.scrollTop || doc.body.scrollTop );
+		return { x : pageX, y : pageY };
 	}
 };
 

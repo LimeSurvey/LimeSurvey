@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -36,7 +36,7 @@ CKEDITOR.plugins.setLang( 'specialchar', 'fa',
 	cedil: 'Cedilla', // MISSING
 	sup1: 'Superscript one', // MISSING
 	ordm: 'Masculine ordinal indicator', // MISSING
-	raquo: 'نشان زاویهدار دوتایی نقل قول راست چین',
+	raquo: 'نشان زاویه‌دار دوتایی نقل قول راست چین',
 	frac14: 'Vulgar fraction one quarter', // MISSING
 	frac12: 'Vulgar fraction one half', // MISSING
 	frac34: 'Vulgar fraction three quarters', // MISSING
@@ -120,7 +120,7 @@ CKEDITOR.plugins.setLang( 'specialchar', 'fa',
 	bull: 'Bullet', // MISSING
 	rarr: 'Rightwards arrow', // MISSING
 	rArr: 'Rightwards double arrow', // MISSING
-	hArr: 'جهتنمای دوتایی چپ به راست',
+	hArr: 'جهت‌نمای دوتایی چپ به راست',
 	diams: 'Black diamond suit', // MISSING
 	asymp: 'تقریبا برابر با'
 });

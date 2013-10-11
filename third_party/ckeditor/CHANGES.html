@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -34,6 +34,28 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	<h1>
 		CKEditor Changelog
 	</h1>
+	<h3>
+			CKEditor 3.6.6.1</h3>
+	<p>
+			Fixed issues:</p>
+	<ul>
+		<li>Security update: Added protection against XSS attack and possible path disclosure in PHP sample.</li>
+	</ul>
+	<h3>
+			CKEditor 3.6.6</h3>
+	<p>
+			Fixed issues:</p>
+	<ul>
+		<li><a href="http://dev.ckeditor.com/ticket/9866">#9866</a> : [IE10] The full toolbar is displayed in two lines in RTL environment.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/9483">#9483</a> : [IE10] Fixed script error on float panel opening.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6410">#6410</a> : SCAYT will show no suggestions when appropriate, instead of not appearing.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/7533">#7533</a>, <a href="http://dev.ckeditor.com/ticket/9439">#9439</a> : Fixed SCAYT issues with setData().</li>
+		<li><a href="http://dev.ckeditor.com/ticket/9167">#9167</a> : Improper HTML transformations happening on specific cases.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/9553">#9553</a> : Properly handle dash values in the style field of dialogs.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/9787">#9787</a> : [IE9] onChange wasn't fired for checkboxes in dialogs.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/8888">#8888</a> : It was not possible to scroll dialogs on very small viewports.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/9594">#9594</a> : The TAB key was having no effect on focused read-only editor.</li>
+	</ul>
 	<h3>
 			CKEditor 3.6.5</h3>
 	<p>
@@ -1568,7 +1590,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			CKEditor - The text editor for Internet - <a href="http://ckeditor.com/">http://ckeditor.com</a>
 		</p>
 		<p id="copy">
-			Copyright &copy; 2003-2012, <a href="http://cksource.com/">CKSource</a> - Frederico
+			Copyright &copy; 2003-2013, <a href="http://cksource.com/">CKSource</a> - Frederico
 			Knabben. All rights reserved.
 		</p>
 	</div>

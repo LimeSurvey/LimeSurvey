@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -698,7 +698,7 @@ CKEDITOR.lang['lt'] =
 		ignoreAll		: 'Ignoruoti viską',
 		addWord			: 'Pridėti žodį',
 		emptyDic		: 'Žodyno vardas neturėtų būti tuščias.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'Parametrai',
 		allCaps			: 'Ignoruoti visas didžiąsias raides',
 		ignoreDomainNames : 'Ignoruoti domenų vardus',

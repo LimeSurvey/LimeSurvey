@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -698,7 +698,7 @@ CKEDITOR.lang['hu'] =
 		ignoreAll		: 'Összes kihagyása',
 		addWord			: 'Szó hozzáadása',
 		emptyDic		: 'A szótár nevét meg kell adni.',
-
+		noSuggestions	: 'Nincs javaslat',
 		optionsTab		: 'Beállítások',
 		allCaps			: 'Nagybetűs szavak kihagyása',
 		ignoreDomainNames : 'Domain nevek kihagyása',

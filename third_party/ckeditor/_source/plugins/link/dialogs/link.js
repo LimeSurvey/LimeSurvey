@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -502,6 +502,11 @@ CKEDITOR.dialog.add( 'link', function( editor )
 											if ( dialog.getContentElement( 'info', 'linkType' ) &&
 													dialog.getValueOf( 'info', 'linkType' ) != 'url' )
 												return true;
+
+											if ( (/javascript\:/).test( this.getValue() ) ) {
+												alert( commonLang.invalidValue );
+												return false;
+											}
 
 											if ( this.getDialog().fakeObj )	// Edit Anchor.
 												return true;
