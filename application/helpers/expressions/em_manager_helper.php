@@ -1313,9 +1313,9 @@
                             {
                                 $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
                                 if(($qinfo['mandatory']=='Y')){
-                                    $sq_equs[] = '(fixnum('.$sq_name.')== '.$sq_name.')';
+                                    $sq_equs[] = 'is_numeric('.$sq_name.')';
                                 }else{
-                                    $sq_equs[] = '(fixnum('.$sq_name.')== '.$sq_name.' || is_empty('.$sq_name.') )';
+                                    $sq_equs[] = '(is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
                                 }
                             }
                             if (!isset($validationEqn[$questionNum]))
@@ -1971,20 +1971,20 @@
                                     if(($qinfo['mandatory']=='Y')){
                                         if ($this->sgqaNaming)
                                         {
-                                            $sq_name = '(intval(fixnum('.$sq['rowdivid'].'.NAOK))== fixnum('.$sq['rowdivid'].'.NAOK))';
+                                            $sq_name = '(intval('.$sq['rowdivid'].'.NAOK)== '.$sq['rowdivid'].'.NAOK)';
                                         }
                                         else
                                         {
-                                            $sq_name = '(intval(fixnum('.$sq['varName'].'.NAOK))== fixnum('.$sq['varName'].'.NAOK))';
+                                            $sq_name = '(intval('.$sq['varName'].'.NAOK))== '.$sq['varName'].'.NAOK)';
                                         }
                                     }else{
                                         if ($this->sgqaNaming)
                                         {
-                                            $sq_name = '(intval(fixnum('.$sq['rowdivid'].'.NAOK))== fixnum('.$sq['rowdivid'].'.NAOK) || is_empty('.$sq['rowdivid'].'.NAOK))';
+                                            $sq_name = '(intval('.$sq['rowdivid'].'.NAOK)=='.$sq['rowdivid'].'.NAOK) || is_empty('.$sq['rowdivid'].'.NAOK))';
                                         }
                                         else
                                         {
-                                            $sq_name = '(intval(fixnum('.$sq['varName'].'.NAOK))== fixnum('.$sq['varName'].'.NAOK) || is_empty('.$sq['varName'].'.NAOK))';
+                                            $sq_name = '(intval('.$sq['varName'].'.NAOK)== '.$sq['varName'].'.NAOK || is_empty('.$sq['varName'].'.NAOK))';
                                         }
                                     }
                                     break;

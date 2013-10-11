@@ -570,14 +570,26 @@ function LEMval(alias)
                         break;
                 }
             }
-
             if (typeof attr.onlynum !== 'undefined' && attr.onlynum==1) {
-                newval = value;
+                if(value=="")
+                {
+                    return "";
+                }
+                if (LEMradix === ',') {
+                    var regValidateNum = /^-?\d*\,?\d*$/;
+                }else{
+                    var regValidateNum = /^-?\d*\.?\d*$/;
+                }
+                if(!regValidateNum.test(value))
+                {
+                   return '&shy;';// return a non empty value: using {QCODE.NAOK} in text show nothing, but is_empty is false
+                }
+                newval=value;
                 if (LEMradix === ',') {
                     newval = value.split(',').join('.');
                 }
                 if (newval != parseFloat(newval)) {
-                    newval = '';
+                   return '&shy;';
                 }
                 return +newval;
             }
@@ -614,7 +626,9 @@ function LEMfixnum(value)
     }
     if (LEMradix===',') {
         newval = newval.split('.').join(',');
-        return newval;
+        if (parseFloat(newval) != value) {
+            return value;   // unchanged
+        }
     }
     return value;
 }

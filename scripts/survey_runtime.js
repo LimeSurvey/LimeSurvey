@@ -142,16 +142,22 @@ function checkconditions(value, name, type, evt_type)
  */
 function fixnum_checkconditions(value, name, type, evt_type, intonly)
 {
-//    newval = new String(value);
+    newval = new String(value);
+    /* Commented to see js without replacing value */
 //    if (typeof intonly !=='undefined' && intonly==1) {
 //        newval = newval.replace(intRegex,'');
 //    }
 //    else {
 //        newval = newval.replace(numRegex,'');
 //    }
-//    if (LEMradix === ',') {
-//        newval = newval.split(',').join('.');
+//    aNewval = newval.split(LEMradix);
+//    if(aNewval.length>0){
+//        newval=aNewval[0];
 //    }
+//    if(aNewval.length>1){
+//        newval=newval+"."+aNewval[1];
+//    }
+
 //    if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {
 //        newval = '';
 //    }
@@ -164,10 +170,10 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
 //    }
 //    $('#answer'+name).val(displayVal);
 
-//    if (typeof evt_type === 'undefined')
-//    {
-//        evt_type = 'onchange';
-//    }
+    if (typeof evt_type === 'undefined')
+    {
+        evt_type = 'onchange';
+    }
     checkconditions(value, name, type, evt_type);
 }
 
