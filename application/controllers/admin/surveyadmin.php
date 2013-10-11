@@ -767,7 +767,6 @@ class SurveyAdmin extends Survey_Common_Action
             {
                 Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
             }
-            $editsurvey = '';
             $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
             $baselang = Survey::model()->findByPk($iSurveyID)->language;
             array_unshift($grplangs, $baselang);
@@ -776,48 +775,33 @@ class SurveyAdmin extends Survey_Common_Action
 
             $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 
-            $i = 0;
-            foreach ($grplangs as $grouplang)
+            foreach ($grplangs as $sLang)
             {
                 // this one is created to get the right default texts fo each language
                 Yii::app()->loadHelper('database');
                 Yii::app()->loadHelper('surveytranslator');
                 $bplang = $this->getController()->lang; //new lang($grouplang);
 
-                $esrow = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $grouplang))->getAttributes();
+                $esrow = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();
 
-                $tab_title[$i] = getLanguageNameFromCode($esrow['surveyls_language'], false);
+                $aTabTitles[$sLang] = getLanguageNameFromCode($esrow['surveyls_language'], false);
 
                 if ($esrow['surveyls_language'] == Survey::model()->findByPk($iSurveyID)->language)
-                    $tab_title[$i] .= '(' . $clang->gT("Base language") . ')';
+                    $aTabTitles[$sLang] .= '(' . $clang->gT("Base language") . ')';
 
                 $esrow = array_map('htmlspecialchars', $esrow);
                 $aData['esrow'] = $esrow;
                 $aData['action'] = "editsurveylocalesettings";
                 $aData['clang'] = $clang;
 
-                $tab_content[$i] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aData, true);
-
-                $i++;
+                $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aData, true);
             }
 
-            $editsurvey .= CHtml::openTag('ul');
-            foreach ($tab_title as $i => $eachtitle)
-            {
-                $a_link = CHtml::link($eachtitle, "#edittxtele$i");
-                $editsurvey .= CHtml::tag('li', array('style' => 'clear:none;'), $a_link);
-            }
-            $editsurvey .= CHtml::closeTag('ul');
-
-            foreach ($tab_content as $i => $eachcontent)
-            {
-                $editsurvey .= CHtml::tag('div', array('id' => 'edittxtele' . $i), $eachcontent);
-            }
-            $editsurvey .= CHtml::closeTag('div');
 
             $aData['has_permissions'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update');
             $aData['surveyls_language'] = $esrow["surveyls_language"];
-            $aData['additional_content'] = $editsurvey;
+            $aData['aTabContents'] = $aTabContents;
+            $aData['aTabTitles'] = $aTabTitles;
 
             $aViewUrls[] = 'editLocalSettings_main_view';
         }
@@ -1554,14 +1538,14 @@ class SurveyAdmin extends Survey_Common_Action
 
             $warning = '';
             // make sure we only update emails if they are valid
-            if (empty(Yii::app()->request->getPost('adminemail'))
+            if (Yii::app()->request->getPost('adminemail', '') == ''
                 || validateEmailAddress(Yii::app()->request->getPost('adminemail'))) {
                 $aInsertData['adminemail'] = Yii::app()->request->getPost('adminemail');
             } else {
                 $aInsertData['adminemail'] = '';
                 $warning .= $this->getController()->lang->gT("Warning! Notification email was not updated because it was not valid.").'<br/>'; 
             }
-            if (empty(Yii::app()->request->getPost('bounce_email'))
+            if (Yii::app()->request->getPost('bounce_email', '') == ''
                 || validateEmailAddress(Yii::app()->request->getPost('bounce_email'))) {
                 $aInsertData['bounce_email'] = Yii::app()->request->getPost('bounce_email');
             } else {

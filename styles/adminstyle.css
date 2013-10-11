@@ -170,6 +170,11 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
     height: auto !important;
 }
 
+/* some li in form have clear */
+.ui-tabs .ui-tabs-nav li{
+clear: none !important;
+}
+
 /* Make pager not so high */
 .ui-jqgrid input,
 .ui-jqgrid select {
