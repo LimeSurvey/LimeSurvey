@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.05beta6! 
+Welcome to LimeSurvey v2.05RC2! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -59,7 +59,56 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.05beta6 (build 130702) to 2.05RC1 (build 130924) Aug 23, 2013
+Changes from 2.05RC1 (build 130924) to 2.05RC2 (build 131011) Oct 11, 2013
+-Fixed issue #8184: Deactivated export options are not re-activated (Menno Dekker)
+-Fixed issue #8216: Unable to get results when timing is on (ambiguous column id) (Menno Dekker)
+-Fixed issue #6502: Unable to import multi-lang surveys (.txt) (mfaber)
+-Fixed issue #6918: Make Group Members user list work in same way as (Alain Bearez)
+-Fixed issue #7610: Missing MSSQL support under Linux (pdo_dblib support) (Carsten Schmitz)
+-Fixed issue #7853: Token mismatch when accessing multiple closed surveys (Denis Chenu)
+-Fixed issue #7919: Uploading duplicate participants erases data (Carsten Schmitz)
+-Fixed issue #7945: Error message "token mismatch" not being translated (Carsten Schmitz)
+-Fixed issue #7956: No randomisation in Matrix questions with only two answer options (Carsten Schmitz)
+-Fixed issue #7966: XSS vulnerability when adding a user group (Carsten Schmitz)
+-Fixed issue #7967: Without javascript there are still present button that don't work in the survey (Denis Chenu)
+-Fixed issue #7974: Single quote in DB user password breaks installation (Carsten Schmitz)
+-Fixed issue #7976: Date question: keyboard entries not validated (mfaber)
+-Fixed issue #7993: Loading a saved survey using the the resume link shows  an empty survey (Carsten Schmitz)
+-Fixed issue #7998: Underscore character in subqestion code breaks export of Array (numerical) questions (Carsten Schmitz)
+-Fixed issue #8018: Description and welcome sections of Show Logic File not translated (Carsten Schmitz)
+-Fixed issue #8028: File upload dialogue window can't be styled (partial) (Denis Chenu)
+-Fixed issue #8036: Unable to import 2.0 lss survey (Denis Chenu)
+-Fixed issue #8060: CRSF issue when trying to copy or rename a template (Denis Chenu)
+-Fixed issue #8088: Error: JSON undefined on IE while click on change chart type button on statistics (Carsten Schmitz)
+-Fixed issue #8118: Participant can upload file without size limit with question type fileupload. (Denis Chenu)
+-Fixed issue #8119: (tsv-import) adv Q-attributes broken (mfaber)
+-Fixed issue #8132: Invalid password shown in registration email for webserver authentication (Carsten Schmitz)
+-Fixed issue #8143: Survey crashes when changes are made (Carsten Schmitz)
+-Fixed issue #8145: Attempting to graph a survey with 0 results returns an error. (Carsten Schmitz)
+-Fixed issue #8157: Pasting tokens with leading whitespace-caracters leads to various problems (Carsten Schmitz)
+-Fixed issue #8175: In administration preferences e-mail addresses are never validated before saving them (alex)
+-Fixed issue #8178: Upload file is broken in 2.05 (Denis Chenu)
+-Fixed issue #8181: Printable_help missing in tsv export (mfaber)
+-Fixed issue #8183: (STATA) Wrong data type name (mfaber)
+-Fixed issue #8185: Large ranking question prevents following questions/submit button showing (Denis Chenu)
+-Fixed issue #8190: Trying to view one or all participants from a certain token table in CPDB gives back HTTP 500 Error (Carsten Schmitz)
+-Fixed issue #8194: Mailto: URLs in questions are removed by XSS filter (Carsten Schmitz)
+-Fixed issue #8196: CRSF issue with deletion of token (Denis Chenu)
+-Fixed issue #8198: Change admin of survey is not protected from CRSF (Denis Chenu)
+-Fixed issue #8201: TSV-import - subquestions missing (mfaber)
+-Fixed issue #8202: TSV-Export: relevance=name in x-scale of text/number matrix questions (mfaber)
+-Fixed issue #8206: Add answers to the set of labels is not possible in language code for "-" eg: pt-BR. (Denis Chenu)
+-Fixed issue #8223: Default email texts are not well formatted (Carsten Schmitz)
+-Fixed issue #8226: Error when using mask mm/yy in date question (mfaber)
+-Fixed issue #8235: Import of old .csv survey file format in Postgresql fails (Carsten Schmitz)
+-Fixed issue #8238: Image url in email editor don't take publicurl configuration (Denis Chenu)
+-Fixed issue #8242: Wrong two digit year recorded (mfaber)
+-Fixed issue #8249: Adv Q-attribs missing in TSV-Export (mfaber)
+-Fixed issue: Can not update token in token table (Denis Chenu)
+-Fixed issue: Error when viewing participants in CPDB (Carsten Schmitz)
+-Fixed issue: Survey with 'alloweditaftercompletion' allways start at first step (Denis Chenu)
+
+Changes from 2.05beta6 (build 130702) to 2.05RC1 (build 130924) Sept 24, 2013
 -New feature #8124: quexf: comment field for LIST WITH COMMENT question type (mfaber)
 -New feature #8168: limesurvey button style for gringegreen and darkblue template (Denis Chenu)
 -New feature: Update_response function for LSRC2 (kfegert)

@@ -118,6 +118,7 @@ CREATE TABLE [prefix_labels] (
 [assessment_value] int NOT NULL default '0',
 PRIMARY KEY  ([lid],[sortorder],[language]),
 );
+create index [labels_code_idx] on [prefix_labels] ([code]);
 
 
 --
@@ -220,16 +221,17 @@ CREATE TABLE [prefix_permissions] (
 [import_p] int NOT NULL default '0',
 [export_p] int NOT NULL default '0'
 );
+create unique index [permissions_idx2] ON [lime_permissions] ([entity_id],[entity],[permission],[uid]);
 
 
 --
 -- Table structure for table plugins
 --
 CREATE TABLE [prefix_plugins] (
-[id] int(11) NOT NULL identity(1,1),
+[id] int NOT NULL identity(1,1),
 [name] varchar(50) NOT NULL,
-[active] int(1) NOT NULL default '0',
-PRIMARY KEY  (`id`)
+[active] int NOT NULL default '0',
+PRIMARY KEY  (id)
 );
 
 
@@ -237,13 +239,13 @@ PRIMARY KEY  (`id`)
 -- Table structure for table plugin_settings
 --
 CREATE TABLE [prefix_plugin_settings] (
-[id] int(11) NOT NULL IDENTITY(1,1),
-[plugin_id] int(11) NOT NULL,
+[id] int NOT NULL IDENTITY(1,1),
+[plugin_id] int NOT NULL,
 [model] varchar(50) NULL,
-[model_id] int(11) NULL,
+[model_id] int NULL,
 [key] varchar(50) NOT NULL,
-[value] text NULL,
-PRIMARY KEY  (`id`),
+[value] varchar(max) NULL,
+PRIMARY KEY  (id),
 );
 
 
@@ -375,7 +377,7 @@ CREATE TABLE [prefix_survey_links] (
 [survey_id] int NOT NULL,
 [date_created] datetime  NULL,
 [date_invited] datetime NULL,
-[date_completed] datetime NULL
+[date_completed] datetime NULL,
 PRIMARY KEY  ([participant_id],[token_id],[survey_id])
 );
 
@@ -526,7 +528,7 @@ CREATE TABLE [prefix_users] (
 [templateeditormode] varchar(7) NOT NULL default 'default',
 [questionselectormode] varchar(7)  NOT NULL default 'default',
 [one_time_pw] text NULL,
-[dateformat] int NOT NULL DEFAULT 1
+[dateformat] int NOT NULL DEFAULT 1,
 [created] datetime,
 [modified] datetime
 );
@@ -570,8 +572,6 @@ create index [questions_idx4] on [prefix_questions] ([type]);
 create index [quota_idx2] on [prefix_quota] ([sid]);
 create index [saved_control_idx2] on [prefix_saved_control] ([sid]);
 create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
-create index [labels_code_idx] on [prefix_labels] ([code]);
-create unique index [permissions_idx2] ON [lime_permissions] ([entity_id], [entity_name], [uid], [permission]);
 
 --
 -- Version Info

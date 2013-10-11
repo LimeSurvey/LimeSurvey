@@ -26,6 +26,15 @@ class LSActiveRecord extends CActiveRecord
     public function behaviors(){
 		$sCreateFieldName=($this->hasAttribute('created')?'created':null);
         $sUpdateFieldName=($this->hasAttribute('modified')?'modified':null);
+        $sDriverName = Yii::app()->db->getDriverName(); 
+        if ($sDriverName=='sqlsrv' || $sDriverName=='dblib')
+        {
+            $sTimestampExpression=new CDbExpression('GETDATE()');
+        }
+        else
+        {
+            $sTimestampExpression=new CDbExpression('NOW()');
+        }
         return array(
 			'PluginEventBehavior' => array(
 				'class' => 'application.models.behaviors.PluginEventBehavior'
@@ -33,7 +42,8 @@ class LSActiveRecord extends CActiveRecord
             'CTimestampBehavior' => array(
                 'class' => 'zii.behaviors.CTimestampBehavior',
                 'createAttribute' => $sCreateFieldName,
-                'updateAttribute' => $sUpdateFieldName
+                'updateAttribute' => $sUpdateFieldName,
+                'timestampExpression' =>  $sTimestampExpression
             )
         );
     }

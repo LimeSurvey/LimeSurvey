@@ -71,7 +71,7 @@ class quotas extends Survey_Common_Action
     function _redirectToIndex($iSurveyId)
     {
         $clang=$this->getController()->lang;
-        if(hasSurveyPermission($iSurveyId, 'quotas','read'))
+        if(Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','read'))
         {
             $this->getController()->redirect($this->getController()->createUrl("/admin/quotas/sa/index/surveyid/$iSurveyId"));
         }
@@ -348,7 +348,7 @@ class quotas extends Survey_Common_Action
         $aQuotaInfo = Quota::model()->findByPk(Yii::app()->request->getPost('quota_id'));
         $aData['quotainfo'] = $aQuotaInfo;
 
-        $aViewUrls[] = 'editquota_view';
+
         
 
         $first=true;
@@ -362,11 +362,12 @@ class quotas extends Survey_Common_Action
             }
             $aData['langquotainfo'] = QuotaLanguageSetting::model()->findByAttributes(array('quotals_quota_id' => Yii::app()->request->getPost('quota_id'), 'quotals_language' => $sLanguage));
             $aData['lang'] = $sLanguage;
-            $aViewUrls['editquotalang_view'][] = $aData;
+            $aTabContents[$sLanguage] = $this->getController()->renderPartial('/admin/quotas/editquotalang_view', $aData, true);
         }
         $aData['aTabTitles']=$aTabTitles;
+        $aData['aTabContents']=$aTabContents;
 
-        $aViewUrls[] = 'editquotafooter_view';
+        $aViewUrls[] = 'editquota_view';
 
         $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
@@ -557,7 +558,7 @@ class quotas extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'quotas', $aViewUrls = array(), $aData = array())
     {
         App()->getClientScript()->registerPackage('jquery-superfish');
-        App()->getClientScript()->registerPackage('jquery-tablesorter');
+#        App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . '/quotas.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }

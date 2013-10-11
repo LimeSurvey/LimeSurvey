@@ -1,8 +1,19 @@
 <div class="header ui-widget-header"><?php $clang->eT("Edit survey text elements"); ?></div>
     <?php echo CHtml::form(array("admin/database/index/updatesurveylocalesettings"), 'post', array('id'=>'addnewsurvey','name'=>'addnewsurvey','class'=>'form30')); ?>
         <div id="tabs">
-            	<?php echo $additional_content; ?>
-            
+            <ul>
+            <?php foreach ($aTabTitles as $sLang => $sTabTitle)
+            {
+                echo CHtml::tag('li', array(), CHtml::link($sTabTitle, "#edittxtele-{$sLang}"));
+            } ?>
+            </ul>
+            <?php foreach ($aTabContents as $sLang => $sTabContent)
+            {
+                echo CHtml::tag('div', array('id' => "edittxtele-{$sLang}"), $sTabContent);
+            } ?>
+        ?>
+        </div>
+
             <?php if($has_permissions): ?>
 	            <p>
 	            	<input type="submit" class="standardbtn" value="<?php $clang->eT("Save"); ?>" />
