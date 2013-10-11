@@ -46,3 +46,7 @@ div.htmleditor {
     margin-left: 1px;
     margin-right: 1px;
 }
+/* some old form li have clear */
+.ui-tabs .ui-tabs-nav li{
+clear: none !important;
+}

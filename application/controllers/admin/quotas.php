@@ -229,6 +229,7 @@ class quotas extends Survey_Common_Action
         self::_redirectToIndex($iSurveyId);
     }
 
+    /* seems deprecated */
     function modifyquota($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -349,7 +350,8 @@ class quotas extends Survey_Common_Action
         $aQuotaInfo = Quota::model()->findByPk(Yii::app()->request->getPost('quota_id'));
         $aData['quotainfo'] = $aQuotaInfo;
 
-        $aViewUrls[] = 'editquota_view';
+
+        //$aViewUrls[] = 'editquota_view';
         
 
         $first=true;
@@ -363,12 +365,13 @@ class quotas extends Survey_Common_Action
             }
             $aData['langquotainfo'] = Quota_languagesettings::model()->findByAttributes(array('quotals_quota_id' => Yii::app()->request->getPost('quota_id'), 'quotals_language' => $sLanguage));
             $aData['lang'] = $sLanguage;
-            $aViewUrls['editquotalang_view'][] = $aData;
+            //$aViewUrls['editquotalang_view'][] = $aData;
+            $aTabContents[$sLanguage] = $this->getController()->render('/admin/quotas/editquotalang_view', $aData, true);
         }
         $aData['aTabTitles']=$aTabTitles;
-
-        $aViewUrls[] = 'editquotafooter_view';
-
+        $aData['aTabContents']=$aTabContents;
+        //$aViewUrls[] = 'editquotafooter_view';
+        $aViewUrls[] = 'editquota_view';
         $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
 
