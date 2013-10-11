@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -698,7 +698,7 @@ CKEDITOR.lang['da'] =
 		ignoreAll		: 'Ignorér alle',
 		addWord			: 'Tilføj ord',
 		emptyDic		: 'Ordbogsnavn må ikke være tom.',
-
+		noSuggestions	: 'Ingen forslag',
 		optionsTab		: 'Indstillinger',
 		allCaps			: 'Ignorer alle store bogstaver',
 		ignoreDomainNames : 'Ignorér domænenavne',

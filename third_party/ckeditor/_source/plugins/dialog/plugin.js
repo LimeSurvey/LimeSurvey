@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -457,7 +457,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			{
 				// Don't do that for a target that handles ENTER.
 				var target = evt.data.getTarget();
-				if ( !target.is( 'a', 'button', 'select' ) && ( !target.is( 'input' ) || target.$.type != 'button' ) )
+				if ( !target.is( 'a', 'button', 'select', 'textarea' ) && ( !target.is( 'input' ) || target.$.type != 'button' ) )
 				{
 					button = this.getButton( 'ok' );
 					button && CKEDITOR.tools.setTimeout( button.click, 0, button );
@@ -665,6 +665,15 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			} );
 	}
 
+	// Re-layout the dialog on window resize.
+	function resizeWithWindow( dialog )
+	{
+		var win = CKEDITOR.document.getWindow();
+		function resizeHandler() { dialog.layout(); }
+		win.on( 'resize', resizeHandler );
+		dialog.on( 'hide', function() { win.removeListener( 'resize', resizeHandler ); } );
+	}
+
 	CKEDITOR.dialog.prototype =
 	{
 		destroy : function()
@@ -733,49 +742,54 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		 * @example
 		 * dialogObj.move( 10, 40 );
 		 */
-		move : (function()
+		move : function( x, y, save )
 		{
-			var isFixed;
-			return function( x, y, save )
+			// The dialog may be fixed positioned or absolute positioned. Ask the
+			// browser what is the current situation first.
+			var element = this._.element.getFirst(),
+				rtl = this._.editor.lang.dir == 'rtl';
+
+			var isFixed = element.getComputedStyle( 'position' ) == 'fixed';
+
+			// (#8888) In some cases of a very small viewport, dialog is incorrectly
+			// positioned in IE7. It also happens that it remains sticky and user cannot
+			// scroll down/up to reveal dialog's content below/above the viewport; this is
+			// cumbersome.
+			// The only way to fix this is to move mouse out of the browser and
+			// go back to see that dialog position is automagically fixed. No events,
+			// no style change - pure magic. This is a IE7 rendering issue, which can be
+			// fixed with dummy style redraw on each move.
+			element.setStyle( 'zoom', '100%' );
+
+			if ( isFixed && this._.position && this._.position.x == x && this._.position.y == y )
+				return;
+
+			// Save the current position.
+			this._.position = { x : x, y : y };
+
+			// If not fixed positioned, add scroll position to the coordinates.
+			if ( !isFixed )
 			{
-				// The dialog may be fixed positioned or absolute positioned. Ask the
-				// browser what is the current situation first.
-				var element = this._.element.getFirst(),
-					rtl = this._.editor.lang.dir == 'rtl';
+				var scrollPosition = CKEDITOR.document.getWindow().getScrollPosition();
+				x += scrollPosition.x;
+				y += scrollPosition.y;
+			}
 
-				if ( isFixed === undefined )
-					isFixed = element.getComputedStyle( 'position' ) == 'fixed';
+			// Translate coordinate for RTL.
+			if ( rtl )
+			{
+				var dialogSize = this.getSize(),
+					viewPaneSize = CKEDITOR.document.getWindow().getViewPaneSize();
+				x = viewPaneSize.width - dialogSize.width - x;
+			}
 
-				if ( isFixed && this._.position && this._.position.x == x && this._.position.y == y )
-					return;
+			var styles = { 'top'	: ( y > 0 ? y : 0 ) + 'px' };
+			styles[ rtl ? 'right' : 'left' ] = ( x > 0 ? x : 0 ) + 'px';
 
-				// Save the current position.
-				this._.position = { x : x, y : y };
+			element.setStyles( styles );
 
-				// If not fixed positioned, add scroll position to the coordinates.
-				if ( !isFixed )
-				{
-					var scrollPosition = CKEDITOR.document.getWindow().getScrollPosition();
-					x += scrollPosition.x;
-					y += scrollPosition.y;
-				}
-
-				// Translate coordinate for RTL.
-				if ( rtl )
-				{
-					var dialogSize = this.getSize(),
-						viewPaneSize = CKEDITOR.document.getWindow().getViewPaneSize();
-					x = viewPaneSize.width - dialogSize.width - x;
-				}
-
-				var styles = { 'top'	: ( y > 0 ? y : 0 ) + 'px' };
-				styles[ rtl ? 'right' : 'left' ] = ( x > 0 ? x : 0 ) + 'px';
-
-				element.setStyles( styles );
-
-				save && ( this._.moved = 1 );
-			};
-		})(),
+			save && ( this._.moved = 1 );
+		},
 
 		/**
 		 * Gets the dialog's position in the window.
@@ -852,6 +866,8 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			CKEDITOR.tools.setTimeout( function()
 				{
 					this.layout();
+					resizeWithWindow( this );
+
 					this.parts.dialog.setStyle( 'visibility', '' );
 
 					// Execute onLoad for the first show.
@@ -874,11 +890,26 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		 */
 		layout : function()
 		{
-			var viewSize = CKEDITOR.document.getWindow().getViewPaneSize(),
-					dialogSize = this.getSize();
+			var el = this.parts.dialog;
+			var dialogSize = this.getSize();
+			var win = CKEDITOR.document.getWindow(),
+					viewSize = win.getViewPaneSize();
 
-			this.move( this._.moved ? this._.position.x : ( viewSize.width - dialogSize.width ) / 2,
-					this._.moved ? this._.position.y : ( viewSize.height - dialogSize.height ) / 2 );
+			var posX = ( viewSize.width - dialogSize.width ) / 2,
+				posY = ( viewSize.height - dialogSize.height ) / 2;
+
+			// Switch to absolute position when viewport is smaller than dialog size.
+			if ( !CKEDITOR.env.ie6Compat )
+			{
+				if ( dialogSize.height + ( posY > 0 ? posY : 0 ) > viewSize.height ||
+						 dialogSize.width + ( posX > 0 ? posX : 0 ) > viewSize.width )
+					el.setStyle( 'position', 'absolute' );
+				else
+					el.setStyle( 'position', 'fixed' );
+			}
+
+			this.move( this._.moved ? this._.position.x : posX,
+					this._.moved ? this._.position.y : posY );
 		},
 
 		/**

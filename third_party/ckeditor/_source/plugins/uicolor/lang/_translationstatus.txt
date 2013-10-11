@@ -1,4 +1,4 @@
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 
 bg.js      Found: 4 Missing: 0
@@ -15,12 +15,15 @@ fr.js      Found: 4 Missing: 0
 he.js      Found: 4 Missing: 0
 hr.js      Found: 4 Missing: 0
 it.js      Found: 4 Missing: 0
+ku.js      Found: 4 Missing: 0
+lv.js      Found: 4 Missing: 0
 mk.js      Found: 4 Missing: 0
 nb.js      Found: 4 Missing: 0
 nl.js      Found: 4 Missing: 0
 no.js      Found: 4 Missing: 0
 pl.js      Found: 4 Missing: 0
 pt-br.js   Found: 4 Missing: 0
+sk.js      Found: 4 Missing: 0
 tr.js      Found: 4 Missing: 0
 ug.js      Found: 4 Missing: 0
 uk.js      Found: 4 Missing: 0

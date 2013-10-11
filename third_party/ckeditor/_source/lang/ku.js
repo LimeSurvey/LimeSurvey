@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -697,7 +697,7 @@ CKEDITOR.lang['ku'] =
 		ignoreAll		: 'پشتگوێخستنی هه‌مووی',
 		addWord			: 'زیادکردنی ووشه',
 		emptyDic		: 'ناوی فه‌رهه‌نگ نابێت خاڵی بێت.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'هه‌ڵبژارده',
 		allCaps			: 'پشتگوێخستنی وشانه‌ی پێکهاتووه له‌پیتی گه‌وره‌',
 		ignoreDomainNames : 'پشتگوێخستنی دۆمه‌ین',

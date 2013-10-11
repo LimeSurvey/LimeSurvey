@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -698,7 +698,7 @@ CKEDITOR.lang['nl'] =
 		ignoreAll		: 'Alles negeren',
 		addWord			: 'Woord toevoegen',
 		emptyDic		: 'De naam van het woordenboek mag niet leeg zijn.',
-
+		noSuggestions	: 'Geen suggesties',
 		optionsTab		: 'Opties',
 		allCaps			: 'Negeer woorden helemaal in hoofdletters',
 		ignoreDomainNames : 'Negeer domeinnamen',

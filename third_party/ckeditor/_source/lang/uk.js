@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -698,7 +698,7 @@ CKEDITOR.lang['uk'] =
 		ignoreAll		: 'Пропустити всі',
 		addWord			: 'Додати слово',
 		emptyDic		: 'Назва словника повинна бути вказана.',
-
+		noSuggestions	: 'Немає варіантів',
 		optionsTab		: 'Опції',
 		allCaps			: 'Пропустити прописні слова',
 		ignoreDomainNames : 'Пропустити доменні назви',

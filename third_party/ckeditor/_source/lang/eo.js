@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -120,7 +120,7 @@ CKEDITOR.lang['eo'] =
 		alignTop		: 'Supre',
 		alignMiddle		: 'Centre',
 		alignBottom		: 'Malsupre',
-		invalidValue	: 'Invalid value.', // MISSING
+		invalidValue	: 'Nevalida Valoro',
 		invalidHeight	: 'Alto devas esti nombro.',
 		invalidWidth	: 'Larĝo devas esti nombro.',
 		invalidCssLength	: 'La valoro indikita por la "%1" kampo devas esti pozitiva nombro kun aŭ sen valida CSSmezurunuo (px, %, in, cm, mm, em, ex, pt, or pc).',
@@ -698,7 +698,7 @@ CKEDITOR.lang['eo'] =
 		ignoreAll		: 'Ignori ĉion',
 		addWord			: 'Almeti la vorton',
 		emptyDic		: 'La vortaronomo ne devus esti malplena.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'Opcioj',
 		allCaps			: 'Ignori la vortojn skribitajn nur per ĉefliteroj',
 		ignoreDomainNames : 'Ignori domajnajn nomojn',
