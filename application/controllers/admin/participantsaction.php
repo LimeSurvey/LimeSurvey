@@ -1309,7 +1309,7 @@ class participantsaction extends Survey_Common_Action
                                 if (!empty($attname)) {
                                     $bData = array('participant_id' => $aData,
                                                        'attribute_id' => $attid,
-                                                       'value' => $writearray[strtolower($attname]));
+                                                       'value' => $writearray[strtolower($attname)]);
                                          ParticipantAttribute::model()->updateParticipantAttributeValue($bData);
                                 } else {
                                     //If the value is empty, don't write the value
