@@ -1039,7 +1039,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
         else
             $response->appendChild(QueXMLCreateFree($free['f'],$free['len'],$Row['question']));
 
-        $response->setAttribute("varName",$varname . QueXMLCleanup($Row['title']));
+        $response->setAttribute("varName",QueXMLCleanup($Row['title']));
 
         $question->appendChild($response);
     }
@@ -1105,7 +1105,7 @@ function quexml_create_subQuestions(&$question,$qid,$varname,$use_answers = fals
         $subQuestion = $dom->createElement("subQuestion");
         $text = $dom->createElement("text",QueXMLCleanup($Row['question'],''));
         $subQuestion->appendChild($text);
-        $subQuestion->setAttribute("varName",$varname . QueXMLCleanup($Row['title']));
+        $subQuestion->setAttribute("varName",$varname .'_'. QueXMLCleanup($Row['title']));
         $question->appendChild($subQuestion);
     }
 

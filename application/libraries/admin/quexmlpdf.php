@@ -1695,6 +1695,15 @@ class quexmlpdf extends pdf {
 
 				$bgtype = 3; //box group type temp set to 3 (text)
 
+            // question with > 1 responses and >1 subquestions --> matrix question --> need to come up with unique variable names
+            if (count($question['responses'])>1)
+            {
+                foreach ($subquestions as $index=>$sv)
+                {
+                    $subquestions[$index]['varname']=$subquestions[$index]['varname'].'_'.$varname;
+                }
+            }
+			
 				switch ($type)
 				{
 					case 'fixed':
