@@ -1345,7 +1345,7 @@ function quexml_export($surveyi, $quexmllan)
                     break;
                 case "S": //SHORT FREE TEXT
                     // default is fieldlength of 24 characters.
-                    $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","24),""));
+                    $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","24"),""));
                     $question->appendChild($response);
                     break;
                 case "T": //LONG FREE TEXT
