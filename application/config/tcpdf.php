@@ -127,7 +127,7 @@
     * of a two-element array containing the width and the height.
     ************************************************************/
 
-    $tcpdf['page_format'] = 'LETTER';
+    $tcpdf['page_format'] = 'A4';
 
 
     /************************************************************
