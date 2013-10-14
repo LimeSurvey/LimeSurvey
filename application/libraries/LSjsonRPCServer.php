@@ -8,7 +8,7 @@
 	 * @param object $object
 	 * @return boolean
 	 */
-	public static function handle($object) {
+	public static function handle($object) { 
         // checks if a JSON-RCP request has been received
 		if (
 			$_SERVER['REQUEST_METHOD'] != 'POST' ||
@@ -18,7 +18,10 @@
 			// This is not a JSON-RPC request
 			return false;
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> branch 'master' of https://github.com/VincentBiragnet/LimeSurvey.git
 		// reads the input data
 		$request = json_decode(file_get_contents('php://input'),true);
 		
@@ -36,7 +39,7 @@
 				$response = array (
 									'id' => $id,
 									'result' => $result,
-									'error' => NULL
+									'error' => NULL,
 									);
 			} else {
 				$response = array (
