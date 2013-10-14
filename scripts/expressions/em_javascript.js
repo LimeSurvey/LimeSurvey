@@ -356,6 +356,7 @@ function LEMval(alias)
     var str = new String(alias);
     var varName = alias;
     var suffix = 'code';    // the default
+    if(typeof bNumRealValue == 'undefined'){bNumRealValue=false;} // Allow to update {QCODE} even with text
 
     /* If passed a number, return that number */
     if (str == '') return '';
@@ -582,15 +583,23 @@ function LEMval(alias)
                 }
                 if(!regValidateNum.test(value))
                 {
-                   return '&shy;';// return a non empty value: using {QCODE.NAOK} in text show nothing, but is_empty is false
+                    if(bNumRealValue)
+                    {
+                        return value;
+                    }
+                    else
+                    {
+                        return '';
+                    }
                 }
                 newval=value;
                 if (LEMradix === ',') {
                     newval = value.split(',').join('.');
                 }
-                if (newval != parseFloat(newval)) {
-                   return '&shy;';
-                }
+//                Already sone with regValidateNum.test(value)
+//                if (newval != parseFloat(newval)) {
+//                   return '';
+//                }
                 return +newval;
             }
             else if (isNaN(value)) {
