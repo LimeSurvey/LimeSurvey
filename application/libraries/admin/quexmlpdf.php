@@ -1336,7 +1336,7 @@ class quexmlpdf extends pdf {
 	 */
 	public function createqueXML($quexml)
 	{
-		$clang = new limesurvey_lang($this->languauge);
+		$clang = new limesurvey_lang($this->language);
 
 		$xml = new SimpleXMLElement($quexml);
 	
