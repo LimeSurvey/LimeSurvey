@@ -1305,7 +1305,7 @@
                 switch ($type)
                 {
                     case 'N': //NUMERICAL QUESTION TYPE
-                        // TODO : same for multinumeric
+                    case 'K': //NUMERICAL QUESTION TYPE
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_equs=array();
@@ -1315,7 +1315,7 @@
                                 if(($qinfo['mandatory']=='Y')){
                                     $sq_equs[] = 'is_numeric('.$sq_name.')';
                                 }else{
-                                    $sq_equs[] = '(is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                    $sq_equs[] = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
                                 }
                             }
                             if (!isset($validationEqn[$questionNum]))
@@ -1961,45 +1961,33 @@
                     $num_value_int_only="1";
                     if ($hasSubqs) {
                         $subqs = $qinfo['subqs'];
-                        $sq_names = array();
+                        $sq_eqns = array();
                         $subqValidEqns = array();
                         foreach ($subqs as $sq) {
-                            $sq_name = NULL;
+                            $sq_eqn=null;
                             switch ($type)
                             {
-                                case 'N': //NUMERICAL QUESTION TYPE
+                                case 'N': //NUMERICAL QUESTION TYPE 
+                                case 'K': //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
+                                    $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
                                     if(($qinfo['mandatory']=='Y')){
-                                        if ($this->sgqaNaming)
-                                        {
-                                            $sq_name = '(intval('.$sq['rowdivid'].'.NAOK)== '.$sq['rowdivid'].'.NAOK)';
-                                        }
-                                        else
-                                        {
-                                            $sq_name = '(intval('.$sq['varName'].'.NAOK))== '.$sq['varName'].'.NAOK)';
-                                        }
+                                            $sq_eqn = 'is_int('.$sq_name.')';
                                     }else{
-                                        if ($this->sgqaNaming)
-                                        {
-                                            $sq_name = '(intval('.$sq['rowdivid'].'.NAOK)=='.$sq['rowdivid'].'.NAOK) || is_empty('.$sq['rowdivid'].'.NAOK))';
-                                        }
-                                        else
-                                        {
-                                            $sq_name = '(intval('.$sq['varName'].'.NAOK)== '.$sq['varName'].'.NAOK || is_empty('.$sq['varName'].'.NAOK))';
-                                        }
+                                            $sq_eqn = 'is_int('.$sq_name.') || is_empty('.$sq_name.')';
                                     }
                                     break;
                                 default:
                                     break;
                             }
-                            if (!is_null($sq_name)) {
-                                $sq_names[] = $sq_name;
+                            if (!is_null($sq_eqn)) {
+                                $sq_eqns[] = $sq_eqn;
                                 $subqValidEqns[$subqValidSelector] = array(
-                                'subqValidEqn' => $sq_name,
+                                'subqValidEqn' => $sq_eqn,
                                 'subqValidSelector' => $subqValidSelector,
                                 );
                             }
                         }
-                        if (count($sq_names) > 0) {
+                        if (count($sq_eqns) > 0) {
                             if (!isset($validationEqn[$questionNum]))
                             {
                                 $validationEqn[$questionNum] = array();
@@ -2008,7 +1996,7 @@
                             'qtype' => $type,
                             'type' => 'num_value_int_only',
                             'class' => 'value_integer',
-                            'eqn' => implode(' && ', $sq_names),
+                            'eqn' => implode(' and ', $sq_eqns),
                             'qid' => $questionNum,
                             'subqValidEqns' => $subqValidEqns,
                             );
@@ -2652,6 +2640,9 @@
                 {
                     case 'N':
                         $qtips['default']=$this->gT("Only numbers may be entered in this field.");
+                        break;
+                    case 'K':
+                        $qtips['default']=$this->gT("Only numbers may be entered in these fields.");
                         break;
                     case 'R':
                         $qtips['default']=$this->gT("All your answers must be different.");

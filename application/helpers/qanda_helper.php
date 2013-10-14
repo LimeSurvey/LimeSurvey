@@ -3233,10 +3233,6 @@ function do_multiplenumeric($ia)
             $inputnames[]=$myfname;
         }
         $question_tip = '';
-        if(!$hidetip)
-        {
-            $question_tip .= '<p class="tip default">'.$clang->gT('Only numbers may be entered in these fields')."</p>\n";
-        }
 
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
