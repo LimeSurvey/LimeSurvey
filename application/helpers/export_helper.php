@@ -1039,7 +1039,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
         else
             $response->appendChild(QueXMLCreateFree($free['f'],$free['len'],$Row['question']));
 
-        $response->setAttribute("varName",$varname . QueXMLCleanup($Row['title']));
+        $response->setAttribute("varName",QueXMLCleanup($Row['title']));
 
         $question->appendChild($response);
     }
@@ -1105,7 +1105,7 @@ function quexml_create_subQuestions(&$question,$qid,$varname,$use_answers = fals
         $subQuestion = $dom->createElement("subQuestion");
         $text = $dom->createElement("text",QueXMLCleanup($Row['question'],''));
         $subQuestion->appendChild($text);
-        $subQuestion->setAttribute("varName",$varname . QueXMLCleanup($Row['title']));
+        $subQuestion->setAttribute("varName",$varname .'_'. QueXMLCleanup($Row['title']));
         $question->appendChild($subQuestion);
     }
 
@@ -1344,8 +1344,8 @@ function quexml_export($surveyi, $quexmllan)
                     $question->appendChild($response);
                     break;
                 case "S": //SHORT FREE TEXT
-                    // default is fieldlength of 25 characters.
-                    $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","25"),""));
+                    // default is fieldlength of 24 characters.
+                    $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","24"),""));
                     $question->appendChild($response);
                     break;
                 case "T": //LONG FREE TEXT

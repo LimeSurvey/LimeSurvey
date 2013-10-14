@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -35,6 +35,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		var createInstance = function()	// Create new instance every time Document is created.
 		{
+			if( plugin.instances[ editor.name ] )
+				plugin.instances[ editor.name ].destroy();
+
 			var config = editor.config;
 			// Initialise Scayt instance.
 			var oParams = {};
@@ -78,7 +81,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				oParams.id = plugin.getControlId( editor );
 
 			var scayt_control = new window.scayt( oParams );
-
 			scayt_control.afterMarkupRemove.push( function( node )
 			{
 				( new CKEDITOR.dom.element( node, scayt_control.document ) ).mergeSiblings();
@@ -102,7 +104,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.fire( 'showScaytState' );
 		};
 
-		editor.on( 'contentDom', createInstance );
+		editor.on( 'contentDom', function(ev)
+			{
+				createInstance();
+			});
 		editor.on( 'contentDomUnload', function()
 			{
 				// Remove scripts.
@@ -123,20 +128,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		editor.on( 'beforeCommandExec', function( ev )		// Disable SCAYT before Source command execution.
 			{
-				if ( ( ev.data.name == 'source' || ev.data.name == 'newpage' ) && editor.mode == 'wysiwyg' )
-				{
-					var scayt_instance = plugin.getScayt( editor );
-					if ( scayt_instance )
-					{
-						plugin.setPaused( editor, !scayt_instance.disabled );
-						// store a control id for restore a specific scayt control settings
-						plugin.setControlId( editor, scayt_instance.id );
-						scayt_instance.destroy( true );
-						delete plugin.instances[ editor.name ];
-					}
-				}
-				// Catch on source mode switch off (#5720)
-				else if ( ev.data.name == 'source'  && editor.mode == 'source' )
+				if ( ev.data.name == 'source'  && editor.mode == 'source' )
 					plugin.markControlRestore( editor );
 			});
 
@@ -148,7 +140,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				if ( editor.mode == 'wysiwyg' && ( ev.data.name == 'undo' || ev.data.name == 'redo' ) )
 					window.setTimeout( function() { plugin.getScayt( editor ).refresh(); }, 10 );
 			});
-
 		editor.on( 'destroy', function( ev )
 			{
 				var editor = ev.editor,
@@ -163,17 +154,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				plugin.setControlId( editor, scayt_instance.id );
 				scayt_instance.destroy( true );
 			});
-
-		// Listen to data manipulation to reflect scayt markup.
-		editor.on( 'afterSetData', function()
+		//#9439 after SetData method fires contentDom event and SCAYT create additional instanse
+		// This way we should destroy SCAYT on setData event when contenteditable Iframe was re-created
+		editor.on( 'setData', function( ev )
 			{
-				if ( plugin.isScaytEnabled( editor ) ) {
-					window.setTimeout( function()
-						{
-							var instance = plugin.getScayt( editor );
-							instance && instance.refresh();
-						}, 10 );
-				}
+				var scayt_instance = plugin.getScayt( editor );
+					if ( scayt_instance )
+					{
+						plugin.setPaused( editor, !scayt_instance.disabled );
+						// store a control id for restore a specific scayt control settings
+						plugin.setControlId( editor, scayt_instance.id );
+						scayt_instance.destroy( true );
+						delete plugin.instances[ editor.name ];
+					}
 			});
 
 		// Reload spell-checking for current word after insertion completed.
@@ -374,9 +367,14 @@ CKEDITOR.plugins.scayt =
 				return editor.fire( 'showScaytState' );
 
 			if ( this.engineLoaded === true )
-				return onEngineLoad.apply( editor );	// Add new instance.
-			else if ( this.engineLoaded == -1 )			// We are waiting.
+			{
+				return onEngineLoad.apply( editor );
+			}
+				// Add new instance.
+			else if ( this.engineLoaded == -1 )
+			{	// We are waiting.
 				return CKEDITOR.on( 'scaytReady', function(){ onEngineLoad.apply( editor ); } );	// Use function(){} to avoid rejection as duplicate.
+			}
 
 			CKEDITOR.on( 'scaytReady', onEngineLoad, editor );
 			CKEDITOR.on( 'scaytReady', function()
@@ -427,7 +425,9 @@ CKEDITOR.plugins.scayt =
 				);
 			}
 			else
+			{
 				CKEDITOR.fireOnce( 'scaytReady' );
+			}
 
 			return null;
 		},
@@ -658,10 +658,7 @@ CKEDITOR.plugins.scayt =
 							return null;
 
 						var sLang = scayt_control.getLang(),
-							_r = {},
 							items_suggestion = window.scayt.getSuggestion( word, sLang );
-						if ( !items_suggestion || !items_suggestion.length )
-							return null;
 						// Remove unused commands and menuitems
 						for ( var m in moreSuggestions )
 						{
@@ -686,49 +683,60 @@ CKEDITOR.plugins.scayt =
 						var contextCommands = editor.config.scayt_contextCommands || 'all';
 						contextCommands = contextCommands.split( '|' );
 
-						for ( var i = 0, l = items_suggestion.length; i < l; i += 1 )
-						{
-							var commandName = 'scayt_suggestion_' + items_suggestion[i].replace( ' ', '_' );
-							var exec = ( function( el, s )
-								{
-									return {
-										exec: function()
-										{
-											scayt_control.replace( el, s );
-										}
-									};
-								})( node, items_suggestion[i] );
+						if ( items_suggestion && items_suggestion.length ) {
+							for ( var i = 0, l = items_suggestion.length; i < l; i += 1 )
+							{
+								var commandName = 'scayt_suggestion_' + items_suggestion[i].replace( ' ', '_' );
+								var exec = ( function( el, s )
+									{
+										return {
+											exec: function()
+											{
+												scayt_control.replace(el, s);
+											}
+										};
+									})( node, items_suggestion[i] );
 
-							if ( i < maxSuggestions )
-							{
-								addButtonCommand( editor, 'button_' + commandName, items_suggestion[i],
-									commandName, exec, 'scayt_suggest', i + 1 );
-								_r[ commandName ] = CKEDITOR.TRISTATE_OFF;
-								mainSuggestions[ commandName ] = CKEDITOR.TRISTATE_OFF;
+								if ( i < maxSuggestions )
+								{
+									addButtonCommand( editor, 'button_' + commandName, items_suggestion[i],
+										commandName, exec, 'scayt_suggest', i + 1 );
+									mainSuggestions[ commandName ] = CKEDITOR.TRISTATE_OFF;
+								}
+								else if ( moreSuggestionsUnable == 'on' )
+								{
+									addButtonCommand( editor, 'button_' + commandName, items_suggestion[i],
+										commandName, exec, 'scayt_moresuggest', i + 1 );
+									moreSuggestions[ commandName ] = CKEDITOR.TRISTATE_OFF;
+									moreSuggestionsUnableAdded = true;
+								}
 							}
-							else if ( moreSuggestionsUnable == 'on' )
+
+							if ( moreSuggestionsUnableAdded )
 							{
-								addButtonCommand( editor, 'button_' + commandName, items_suggestion[i],
-									commandName, exec, 'scayt_moresuggest', i + 1 );
-								moreSuggestions[ commandName ] = CKEDITOR.TRISTATE_OFF;
-								moreSuggestionsUnableAdded = true;
+								// Register the More suggestions group;
+								editor.addMenuItem( 'scayt_moresuggest',
+								{
+									label : editor.lang.scayt.moreSuggestions,
+									group : 'scayt_moresuggest',
+									order : 10,
+									getItems : function()
+									{
+										return moreSuggestions;
+									}
+								});
+								mainSuggestions[ 'scayt_moresuggest' ] = CKEDITOR.TRISTATE_OFF;
 							}
 						}
-
-						if ( moreSuggestionsUnableAdded )
-						{
-							// Register the More suggestions group;
-							editor.addMenuItem( 'scayt_moresuggest',
+						else {
+							// "No suggestions" feature
+							editor.addMenuItem( 'scayt_nosuggest',
 							{
-								label : lang.moreSuggestions,
-								group : 'scayt_moresuggest',
-								order : 10,
-								getItems : function()
-								{
-									return moreSuggestions;
-								}
+								label : editor.lang.scayt.noSuggestions ? editor.lang.scayt.noSuggestions : (editor.lang.spellCheck.noSuggestions ? editor.lang.spellCheck.noSuggestions : 'No suggestions'),
+								group : 'scayt_suggest',
+								order : 1
 							});
-							mainSuggestions[ 'scayt_moresuggest' ] = CKEDITOR.TRISTATE_OFF;
+							mainSuggestions[ 'scayt_nosuggest' ] = CKEDITOR.TRISTATE_OFF;
 						}
 
 						if ( in_array( 'all', contextCommands )  || in_array( 'ignore', contextCommands)  )

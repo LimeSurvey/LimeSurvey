@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -698,7 +698,7 @@ CKEDITOR.lang['cy'] =
 		ignoreAll		: 'Anwybyddu pob',
 		addWord			: 'Ychwanegu Gair',
 		emptyDic		: 'Ni ddylai enw\'r geiriadur fod yn wag.',
-
+		noSuggestions	: 'Dim awgrymiadau',
 		optionsTab		: 'Opsiynau',
 		allCaps			: 'Anwybyddu Geiriau Nodau Uwch i Gyd',
 		ignoreDomainNames : 'Anwybyddu Enwau Parth',

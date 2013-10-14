@@ -695,9 +695,9 @@ class index extends CAction {
 
     function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
-        if ( is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->find($mvSurveyIdOrBaseLang))
+        if ( is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->findByPk($mvSurveyIdOrBaseLang))
         {
-            $baselang = Survey::model()->find($mvSurveyIdOrBaseLang)->language;
+            $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
         }
         elseif (!empty($mvSurveyIdOrBaseLang))
         {
@@ -707,7 +707,6 @@ class index extends CAction {
         {
             $baselang = Yii::app()->getConfig('defaultlang');
         }
-
         Yii::import("application.libraries.Limesurvey_lang");
 
         return new Limesurvey_lang($baselang);

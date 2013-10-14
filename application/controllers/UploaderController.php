@@ -13,7 +13,7 @@
  *	$Id$
  */
 
-class UploaderController extends AdminController {
+class UploaderController extends SurveyController {
 	function run($actionID)
 	{
         $surveyid= $_SESSION['LEMsid'];

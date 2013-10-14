@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -698,7 +698,7 @@ CKEDITOR.lang['he'] =
 		ignoreAll		: 'התעלמות מהכל',
 		addWord			: 'הוספת מילה',
 		emptyDic		: 'יש לבחור מילון.',
-
+		noSuggestions	: 'אין הצעות',
 		optionsTab		: 'אפשרויות',
 		allCaps			: 'התעלם ממילים שכל אותיותיהן גדולות',
 		ignoreDomainNames : 'התעלם משמות מתחם',

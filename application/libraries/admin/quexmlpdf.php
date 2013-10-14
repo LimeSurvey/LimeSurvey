@@ -41,6 +41,11 @@ class quexmlpdf extends pdf {
 	const INCH_IN_MM = 25.4;
 
 	/**
+	 * Language for translation
+	 */
+	protected $language = "en";
+
+	/**
 	 * Pixels per inch of exported document
 	 * 
 	 * @var int Defaults to 300.
@@ -715,6 +720,12 @@ class quexmlpdf extends pdf {
 	 */
 	protected $sectionHeight = 18;
 
+	public function setLanguage($language)
+	{
+		if (!empty($language))
+			$this->language = $language;
+	}
+
 	/**
 	 * Return the length of the longest word
 	 * 
@@ -1325,6 +1336,8 @@ class quexmlpdf extends pdf {
 	 */
 	public function createqueXML($quexml)
 	{
+		$clang = new limesurvey_lang($this->language);
+
 		$xml = new SimpleXMLElement($quexml);
 	
 		$q = array();
@@ -1356,7 +1369,7 @@ class quexmlpdf extends pdf {
 		{
 			$stmp = array();
 			$sl = $this->numberToLetter($scount);
-			$stmp['title'] = "Section " . $sl;
+			$stmp['title'] = $clang->gT("Section") . " " . $sl;
 			$stmp['info'] = "";
 			$stmp['text'] = "";
 	
@@ -1695,6 +1708,15 @@ class quexmlpdf extends pdf {
 
 				$bgtype = 3; //box group type temp set to 3 (text)
 
+            // question with > 1 responses and >1 subquestions --> matrix question --> need to come up with unique variable names
+            if (count($question['responses'])>1)
+            {
+                foreach ($subquestions as $index=>$sv)
+                {
+                    $subquestions[$index]['varname']=$subquestions[$index]['varname'].'_'.$varname;
+                }
+            }
+			
 				switch ($type)
 				{
 					case 'fixed':

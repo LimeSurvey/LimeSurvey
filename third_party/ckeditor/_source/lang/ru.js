@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -698,7 +698,7 @@ CKEDITOR.lang['ru'] =
 		ignoreAll		: 'Пропустить всё',
 		addWord			: 'Добавить слово',
 		emptyDic		: 'Вы должны указать название словаря.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'Параметры',
 		allCaps			: 'Игнорировать слова из заглавных букв',
 		ignoreDomainNames : 'Игнорировать доменные имена',

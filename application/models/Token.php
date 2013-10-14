@@ -137,17 +137,19 @@
 
 		public function scopes()
 		{
-			return array(
-				'incomplete' => array(
-					'condition' => 'completed = "N"'
-				),
-				'usable' => array(
-					'condition' => 'usesleft > 0 AND COALESCE(validuntil, NOW()) >= NOW() AND COALESCE(validfrom, NOW()) <= NOW()'
-				),
-                'editable' => array(
-                    'condition' => 'COALESCE(validuntil, NOW()) >= NOW() AND COALESCE(validfrom, NOW()) <= NOW()'
+            $now = date('Y-m-d H:i:s');
+
+            return array(
+                'incomplete' => array(
+                    'condition' => 'completed = "N"'
+                ),
+                array(
+                    'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"
+                ),
+                array(
+                    'condition' => "usesleft > 0 AND COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"
                 )
-			);
+            );
 		}
 		public function summary()
 		{
@@ -167,7 +169,6 @@
 		{
 			return '{{tokens_' . $this->id . '}}';
 		}
-
 	}
 
 ?>

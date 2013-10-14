@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -698,7 +698,7 @@ CKEDITOR.lang['cs'] =
 		ignoreAll		: 'Přeskočit vše',
 		addWord			: 'Přidat slovo',
 		emptyDic		: 'Název slovníku nesmí být prázdný.',
-
+		noSuggestions	: 'Zádné návrhy',
 		optionsTab		: 'Nastavení',
 		allCaps			: 'Ignorovat slova tvořená velkými písmeny',
 		ignoreDomainNames : 'Ignorovat doménová jména',

@@ -11,7 +11,7 @@
   side and write it to a file or a database.
 
 
-  Copyright 2003-2012, CKSource - Frederico Knabben.
+  Copyright 2003-2013, CKSource - Frederico Knabben.
   All rights reserved.
 -------------------------------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -698,7 +698,7 @@ CKEDITOR.lang['de'] =
 		ignoreAll		: 'Alle ignorieren',
 		addWord			: 'Wort hinzufügen',
 		emptyDic		: 'Wörterbuchname sollte leer sein.',
-
+		noSuggestions	: 'keine Vorschläge',
 		optionsTab		: 'Optionen',
 		allCaps			: 'Groß geschriebenen Wörter ignorieren',
 		ignoreDomainNames : 'Domain-Namen ignorieren',

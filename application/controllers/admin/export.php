@@ -1040,6 +1040,8 @@ class export extends Survey_Common_Action {
         Yii::import("application.libraries.admin.quexmlpdf", TRUE);
         $quexmlpdf = new quexmlpdf($this->getController());
 
+	$quexmlpdf->setLanguage($surveyprintlang);
+
         set_time_limit(120);
 
         $noheader = TRUE;

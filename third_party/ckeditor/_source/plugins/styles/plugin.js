@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -90,6 +90,16 @@ CKEDITOR.STYLE_OBJECT = 3;
 
 	CKEDITOR.style = function( styleDefinition, variablesValues )
 	{
+		// Inline style text as attribute should be converted
+		// to styles object.
+		var attrs = styleDefinition.attributes;
+		if ( attrs && attrs.style )
+		{
+			styleDefinition.styles = CKEDITOR.tools.extend( {},
+				styleDefinition.styles, parseStyleText( attrs.style ) );
+			delete attrs.style;
+		}
+
 		if ( variablesValues )
 		{
 			styleDefinition = CKEDITOR.tools.clone( styleDefinition );

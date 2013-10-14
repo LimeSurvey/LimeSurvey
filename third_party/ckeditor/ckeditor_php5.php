@@ -1,6 +1,6 @@
 <?php
 /*
-* Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+* Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 * For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -20,11 +20,11 @@ class CKEditor
 	/**
 	 * The version of %CKEditor.
 	 */
-	const version = '3.6.5';
+	const version = '3.6.6';
 	/**
 	 * A constant string unique for each release of %CKEditor.
 	 */
-	const timestamp = 'C9A85WF';
+	const timestamp = 'D03G5XL';
 
 	/**
 	 * URL to the %CKEditor installation directory (absolute or relative to document root).
@@ -78,7 +78,7 @@ class CKEditor
 	 * A string indicating the creation date of %CKEditor.
 	 * Do not change it unless you want to force browsers to not use previously cached version of %CKEditor.
 	 */
-	public $timestamp = "C9A85WF";
+	public $timestamp = "D03G5XL";
 	/**
 	 * An array that holds event listeners.
 	 */

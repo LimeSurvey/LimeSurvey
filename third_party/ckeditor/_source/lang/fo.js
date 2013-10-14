@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -698,7 +698,7 @@ CKEDITOR.lang['fo'] =
 		ignoreAll		: 'Ignorera alt',
 		addWord			: 'Legg orð afturat',
 		emptyDic		: 'Heiti á orðabók eigur ikki at vera tómt.',
-
+		noSuggestions	: 'Einki uppskot',
 		optionsTab		: 'Uppseting',
 		allCaps			: 'Loyp orð við bert stórum stavum um',
 		ignoreDomainNames : 'loyp økisnøvn um',

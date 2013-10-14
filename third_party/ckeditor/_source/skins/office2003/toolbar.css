@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -211,9 +211,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 }
 
 /*#7181*/
-.cke_skin_office2003 .cke_browser_ie9 .cke_rtl .cke_separator,
-.cke_skin_office2003 .cke_browser_ie9 .cke_rtl .cke_toolbar_start,
-.cke_skin_office2003 .cke_browser_ie9 .cke_rtl .cke_toolbar_end
+.cke_skin_office2003 .cke_browser_ie9plus .cke_rtl .cke_separator,
+.cke_skin_office2003 .cke_browser_ie9plus .cke_rtl .cke_toolbar_start,
+.cke_skin_office2003 .cke_browser_ie9plus .cke_rtl .cke_toolbar_end
 {
 	vertical-align:middle;
 }
@@ -469,7 +469,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 }
 
 .cke_skin_office2003 .cke_browser_gecko18 .cke_rtl .cke_button .cke_label,
-.cke_skin_office2003 .cke_browser_gecko18 .cke_rtl .cke_break
+.cke_skin_office2003 .cke_browser_gecko18 .cke_rtl .cke_break,
+.cke_skin_office2003 .cke_browser_ie8 .cke_rtl .cke_break,
+.cke_skin_office2003 .cke_browser_ie9plus .cke_rtl .cke_break
 {
 	float: right;
 }
