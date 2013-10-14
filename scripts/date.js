@@ -37,7 +37,7 @@ $(document).ready(function(){
                         $('#answer'+basename).val("");
                     }
                 }
-            },
+            }
         }, $.datepicker.regional[language]);
     });
 
