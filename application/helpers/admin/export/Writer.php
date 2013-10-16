@@ -46,9 +46,9 @@ abstract class Writer implements IWriter
     */
     public function getAbbreviatedHeading(SurveyObj $survey, $fieldName)
     {
-        $question = $survey->fieldMap[$fieldName];
-        if ($question)
-        {
+        if (isset($survey->fieldMap[$fieldName])) {
+            $question = $survey->fieldMap[$fieldName];
+
             $heading = $question['question'];
             $heading = $this->stripTagsFull($heading);
             $heading = mb_substr($heading, 0, 15).'.. ';
@@ -58,8 +58,13 @@ abstract class Writer implements IWriter
                 $heading .= '['.$this->stripTagsFull($aid).']';
             }
             return $heading;
+        } else {
+            // Token field
+            if (isset($survey->tokenFields[$fieldName])) {
+                return $survey->tokenFields[$fieldName]['description'];
+            }
+            return $fieldName;
         }
-        return false;
     }
 
     /**
@@ -72,13 +77,21 @@ abstract class Writer implements IWriter
     * @return string (or false)
     */
     public function getFullHeading(SurveyObj $survey, FormattingOptions $oOptions, $fieldName)
-    {                                                  
-        $question = $survey->fieldMap[$fieldName];
-        
-        $heading = $question['question'];
-        $heading = $this->stripTagsFull($heading);
-        $heading.=$this->getFullFieldSubHeading($survey, $oOptions, $fieldName);
-        return $heading;
+    {                                
+        if (isset($survey->fieldMap[$fieldName])) {
+            $question = $survey->fieldMap[$fieldName];
+
+            $heading = $question['question'];
+            $heading = $this->stripTagsFull($heading);
+            $heading.=$this->getFullFieldSubHeading($survey, $oOptions, $fieldName);
+            return $heading;
+        } else {
+            // Token field
+            if (isset($survey->tokenFields[$fieldName])) {
+                return $survey->tokenFields[$fieldName]['description'];
+            }
+            return $fieldName;
+        }        
     }
 
     public function getCodeHeading(SurveyObj $survey, FormattingOptions $oOptions, $fieldName)
@@ -362,7 +375,12 @@ abstract class Writer implements IWriter
                         break;
                     default:
                     case 'code':
-                        $value = viewHelper::getFieldCode($survey->fieldMap[$column]);
+                        if (isset($survey->fieldMap[$column])) {
+                            $value = viewHelper::getFieldCode($survey->fieldMap[$column]);
+                        } else {
+                            // Token field
+                            $value = $column;
+                        }
                         break;
                 }
                 if ($oOptions->headerSpacesToUnderscores)

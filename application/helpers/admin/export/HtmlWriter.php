@@ -39,13 +39,17 @@
             }
             $this->groupMap = array();
             $index = 0;
-            foreach ($survey->fieldMap as $column => $question)
-            {
+            foreach ($oOptions->selectedColumns as $column) {
+                if (isset($survey->fieldMap[$column])) {
+                    $question = $survey->fieldMap[$column];
+                } else {
+                    // Token field
+                    $question = array('gid'=>0, 'qid'=>'');
+                }
                 $question['index'] = $index;
                 $this->groupMap[intval($question['gid'])][] = $question;
                 $index++;
-            }
-            
+            }            
         }
 
         protected function writeHeader()

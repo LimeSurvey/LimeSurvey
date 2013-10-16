@@ -73,6 +73,13 @@ class SurveyDao
         $recordSet = Yii::app()->db->createCommand($sQuery)->query();
         $survey->languageSettings = $recordSet->read();
         $recordSet->close();
+        
+        if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id,'tokens','read'))
+        {
+            // Now add the tokenFields
+            $survey->tokenFields = getTokenFieldsAndNames($survey->id);
+            unset($survey->tokenFields['token']);
+        }
 
         return $survey;
     }
