@@ -97,6 +97,13 @@
         $supportedLanguages['ar']['dateformat'] = 2;
         $supportedLanguages['ar']['radixpoint'] = 0;
 
+        // Armenian
+        $supportedLanguages['hy']['description'] = $clang->gT('Armenian');
+        $supportedLanguages['hy']['nativedescription'] = '&#1392;&#1377;&#1397;&#1381;&#1408;&#1381;&#1398;';
+        $supportedLanguages['hy']['rtl'] = false;
+        $supportedLanguages['hy']['dateformat'] = 1;
+        $supportedLanguages['hy']['radixpoint'] = 1;
+
         // Basque
         $supportedLanguages['eu']['description'] = $clang->gT('Basque');
         $supportedLanguages['eu']['nativedescription'] = 'Euskara';
@@ -196,6 +203,13 @@
         $supportedLanguages['da']['dateformat'] =  2;
         $supportedLanguages['da']['radixpoint'] = 1;
 
+        // Dari
+        $supportedLanguages['prs']['description'] = $clang->gT('Dari');
+        $supportedLanguages['prs']['nativedescription'] = '&#1583;&#1585;&#1740;';
+        $supportedLanguages['prs']['rtl'] = true;
+        $supportedLanguages['prs']['dateformat'] = 6;
+        $supportedLanguages['prs']['radixpoint'] = 0;
+
         // Dutch
         $supportedLanguages['nl']['description'] = $clang->gT('Dutch');
         $supportedLanguages['nl']['nativedescription'] = 'Nederlands';
@@ -237,6 +251,13 @@
         $supportedLanguages['fr']['rtl'] = false;
         $supportedLanguages['fr']['dateformat'] = 5;
         $supportedLanguages['fr']['radixpoint'] = 1;
+
+        // Fula
+        $supportedLanguages['ful']['description'] = $clang->gT('Fula');
+        $supportedLanguages['ful']['nativedescription'] = 'Fulfulde';
+        $supportedLanguages['ful']['rtl'] = false;
+        $supportedLanguages['ful']['dateformat'] = 5;
+        $supportedLanguages['ful']['radixpoint'] = 1;
 
         // Galician
         $supportedLanguages['gl']['description'] = $clang->gT('Galician');
@@ -329,6 +350,13 @@
         $supportedLanguages['ja']['dateformat'] = 6;
         $supportedLanguages['ja']['radixpoint'] = 0;
 
+        // Kinyarwanda 
+        $supportedLanguages['rw']['description'] = $clang->gT('Kinyarwanda');
+        $supportedLanguages['rw']['nativedescription'] = 'Kinyarwanda';
+        $supportedLanguages['rw']['rtl'] = false;
+        $supportedLanguages['rw']['dateformat'] = 5;
+        $supportedLanguages['rw']['radixpoint'] = 1;
+
         // Korean
         $supportedLanguages['ko']['description'] = $clang->gT('Korean');
         $supportedLanguages['ko']['nativedescription'] = '&#54620;&#44397;&#50612;';
@@ -406,6 +434,13 @@
         $supportedLanguages['oc']['rtl'] = false;
         $supportedLanguages['oc']['dateformat'] = 5;
         $supportedLanguages['oc']['radixpoint'] = 1;
+
+        // Pashto
+        $supportedLanguages['ps']['description'] = $clang->gT('Pashto');
+        $supportedLanguages['ps']['nativedescription'] = '&#1662;&#1690;&#1578;&#1608;';
+        $supportedLanguages['ps']['rtl'] = true;
+        $supportedLanguages['ps']['dateformat'] = 6;
+        $supportedLanguages['ps']['radixpoint'] = 0;
 
         // Persian
         $supportedLanguages['fa']['description'] = $clang->gT('Persian');
