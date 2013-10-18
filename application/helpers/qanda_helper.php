@@ -3233,10 +3233,6 @@ function do_multiplenumeric($ia)
             $inputnames[]=$myfname;
         }
         $question_tip = '';
-        if(!$hidetip)
-        {
-            $question_tip .= '<p class="tip default">'.$clang->gT('Only numbers may be entered in these fields')."</p>\n";
-        }
 
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
@@ -3376,7 +3372,7 @@ function do_numerical($ia)
         $answertypeclass .= " integeronly";
         if(is_numeric($fValue))
         {
-            $fValue=number_format($fValue, 0, '', '');
+            //$fValue=number_format($fValue, 0, '', '');
         }
         $integeronly=1;
     }
@@ -3389,6 +3385,7 @@ function do_numerical($ia)
 
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
+    $fValue = rtrim(trim($fValue,"0"),".");
     $fValue = str_replace('.',$sSeparator,$fValue);
 
     if ($thissurvey['nokeyboard']=='Y')
@@ -3407,10 +3404,6 @@ function do_numerical($ia)
     . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\"  title=\"".$clang->gT('Only numbers may be entered in this field.')."\" "
     . "id=\"answer{$ia[1]}\" value=\"{$fValue}\" onkeyup=\"{$checkconditionFunction}(this.value, this.name, this.type,'onchange',{$integeronly})\" "
     . " {$maxlength} />\t{$suffix}\n</p>\n";
-    if ($aQuestionAttributes['hide_tip']==0)
-    {
-        $answer .= "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field.')."</p>\n";
-    }
     // --> END NEW FEATURE - SAVE
 
     $inputnames[]=$ia[1];

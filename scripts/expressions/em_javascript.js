@@ -356,6 +356,7 @@ function LEMval(alias)
     var str = new String(alias);
     var varName = alias;
     var suffix = 'code';    // the default
+    if(typeof bNumRealValue == 'undefined'){bNumRealValue=false;} // Allow to update {QCODE} even with text
 
     /* If passed a number, return that number */
     if (str == '') return '';
@@ -570,15 +571,35 @@ function LEMval(alias)
                         break;
                 }
             }
-
             if (typeof attr.onlynum !== 'undefined' && attr.onlynum==1) {
-                newval = value;
+                if(value=="")
+                {
+                    return "";
+                }
+                if (LEMradix === ',') {
+                    var regValidateNum = /^-?\d*\,?\d*$/;
+                }else{
+                    var regValidateNum = /^-?\d*\.?\d*$/;
+                }
+                if(!regValidateNum.test(value))
+                {
+                    if(bNumRealValue)
+                    {
+                        return value;
+                    }
+                    else
+                    {
+                        return '';
+                    }
+                }
+                newval=value;
                 if (LEMradix === ',') {
                     newval = value.split(',').join('.');
                 }
-                if (newval != parseFloat(newval)) {
-                    newval = '';
-                }
+//                Already sone with regValidateNum.test(value)
+//                if (newval != parseFloat(newval)) {
+//                   return '';
+//                }
                 return +newval;
             }
             else if (isNaN(value)) {
@@ -614,7 +635,9 @@ function LEMfixnum(value)
     }
     if (LEMradix===',') {
         newval = newval.split('.').join(',');
-        return newval;
+        if (parseFloat(newval) != value) {
+            return value;   // unchanged
+        }
     }
     return value;
 }

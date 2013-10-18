@@ -975,78 +975,14 @@ class SurveyRuntimeHelper {
 
         // the runonce element has been changed from a hidden to a text/display:none one
         // in order to workaround an not-reproduced issue #4453 (lemeur)
-        echo "<input type='text' id='runonce' value='0' style='display: none;'/>
-        <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
-        <script type='text/javascript'>
-        <!--\n";
+        echo "<input type='text' id='runonce' value='0' style='display: none;'/>";
+        
+        // lemradix and var for LemRadix
+        $sLemRadixVarScript=" LEMradix='" . $radix . "';\n"
+                        ." numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');\n"
+                        ." intRegex = new RegExp('[^-0-9]','g');\n";
+        Yii::app()->clientScript->registerScript('LemRadixVarScript',$sLemRadixVarScript,CClientScript::POS_HEAD);
 
-        echo "var LEMradix='" . $radix . "';\n";
-        echo "var numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');\n";
-        echo "var intRegex = new RegExp('[^-0-9]','g');\n";
-
-        print <<<END
-            function fixnum_checkconditions(value, name, type, evt_type, intonly)
-            {
-                newval = new String(value);
-                if (typeof intonly !=='undefined' && intonly==1) {
-                    newval = newval.replace(intRegex,'');
-                }
-                else {
-                    newval = newval.replace(numRegex,'');
-                }
-                if (LEMradix === ',') {
-                    newval = newval.split(',').join('.');
-                }
-                if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {
-                    newval = '';
-                }
-                displayVal = newval;
-                if (LEMradix === ',') {
-                    displayVal = displayVal.split('.').join(',');
-                }
-                if (name.match(/other$/)) {
-                    $('#answer'+name+'text').val(displayVal);
-                }
-                $('#answer'+name).val(displayVal);
-
-                if (typeof evt_type === 'undefined')
-                {
-                    evt_type = 'onchange';
-                }
-                checkconditions(newval, name, type, evt_type);
-            }
-
-            function checkconditions(value, name, type, evt_type)
-            {
-                if (typeof evt_type === 'undefined')
-                {
-                    evt_type = 'onchange';
-                }
-                if (type == 'radio' || type == 'select-one')
-                {
-                    $('#java'+name).val(value);
-                }
-                else if (type == 'checkbox')
-                {
-                    if ($('#answer'+name).is(':checked'))
-                    {
-                        $('#java'+name).val('Y');
-                    } else
-                    {
-                        $('#java'+name).val('');
-                    }
-                }
-                else if (type == 'text' && name.match(/other$/))
-                {
-                    $('#java'+name).val(value);
-                }
-                ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
-END;
-        print <<<END
-            }
-        // -->
-        </script>
-END;
         $showpopups=Yii::app()->getConfig('showpopups');
         //Display the "mandatory" message on page if necessary
         if (!$showpopups && $stepInfo['mandViolation'] && $okToShowErrors)
