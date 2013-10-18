@@ -8209,6 +8209,9 @@ EOD;
                     $qrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$qid] : 0);
                     $sqrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
                     return ($grel && $qrel && $sqrel);
+                case 'onlynum':
+                    return (isset($var[$attr])) ? $var[$attr] : $default;
+                    break;
                 default:
                     print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br />\n";
                     return $default;
@@ -8317,7 +8320,7 @@ EOD;
 
             $LEM =& LimeExpressionManager::singleton();
 
-            $aSurveyInfo=getSurveyInfo($sid);
+            $aSurveyInfo=getSurveyInfo($sid,$_SESSION['LEMlang']);
 
             $allErrors = array();
             $warnings = 0;

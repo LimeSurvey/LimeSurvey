@@ -612,7 +612,7 @@ function LEMval(alias)
                 if (value.length > 0 && value[0]==0) {
                     return value;   // so keep 0 prefixes on numbers
                 }
-                return +value;  // convert it to numeric return type
+                return ''+value;  // convert it to string return type: because we need string compare
             }
         }
         case 'rowdivid':
