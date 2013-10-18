@@ -55,6 +55,13 @@ class SurveyObj
     * @var array[int][string]mixed
     */
     public $tokens;
+    
+    /**
+     * When relevant holds the available fields from the token table
+     * 
+     * @var array[fieldname][localised description]
+     */
+    public $tokenFields = array();
 
     /**
     * Stores the responses to the survey in a two dimensional array form.

@@ -143,10 +143,10 @@
                 'incomplete' => array(
                     'condition' => 'completed = "N"'
                 ),
-                array(
+                'usable' => array(
                     'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"
                 ),
-                array(
+                'editable' => array(
                     'condition' => "usesleft > 0 AND COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"
                 )
             );
