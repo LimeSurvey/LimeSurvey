@@ -267,6 +267,13 @@
         $supportedLanguages['gl']['dateformat'] = 5;
         $supportedLanguages['gl']['radixpoint'] = 1;
 
+        // Georgian
+        $supportedLanguages['ka']['description'] = $clang->gT('Georgian');
+        $supportedLanguages['ka']['nativedescription'] = '&#4325;&#4304;&#4320;&#4311;&#4323;&#4314;&#4312; &#4308;&#4316;&#4304;';
+        $supportedLanguages['ka']['rtl'] = false;
+        $supportedLanguages['ka']['dateformat'] = 1;
+        $supportedLanguages['ka']['radixpoint'] = 1;
+
         // German
         $supportedLanguages['de']['description'] = $clang->gT('German');
         $supportedLanguages['de']['nativedescription'] = 'Deutsch';
