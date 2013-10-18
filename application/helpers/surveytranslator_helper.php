@@ -280,6 +280,13 @@
         $supportedLanguages['de-informal']['rtl'] = false;
         $supportedLanguages['de-informal']['dateformat'] = 1;
         $supportedLanguages['de-informal']['radixpoint'] = 1;
+        
+        // Gujarati
+        $supportedLanguages['gu']['description'] = $clang->gT('Gujarati');
+        $supportedLanguages['gu']['nativedescription'] = '&#2711;&#2753;&#2716;&#2736;&#2750;&#2724;&#2752;';
+        $supportedLanguages['gu']['rtl'] = false;
+        $supportedLanguages['gu']['dateformat'] = 2;
+        $supportedLanguages['gu']['radixpoint'] = 0;
 
         // Greek
         $supportedLanguages['el']['description'] = $clang->gT('Greek');
@@ -415,6 +422,13 @@
         $supportedLanguages['mt']['dateformat'] = 1;
         $supportedLanguages['mt']['radixpoint'] = 0;
 
+        // Marathi
+        $supportedLanguages['mr']['description'] = $clang->gT('Marathi');
+        $supportedLanguages['mr']['nativedescription'] = '&#2350;&#2352;&#2366;&#2336;&#2368;';
+        $supportedLanguages['mr']['rtl'] = false;
+        $supportedLanguages['mr']['dateformat'] = 2;
+        $supportedLanguages['mr']['radixpoint'] = 0;
+        
         // Norwegian Bokmal
         $supportedLanguages['nb']['description'] = $clang->gT('Norwegian (Bokmal)');
         $supportedLanguages['nb']['nativedescription'] = 'Norsk Bokm&#229;l';
