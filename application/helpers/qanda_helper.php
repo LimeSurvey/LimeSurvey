@@ -1000,6 +1000,58 @@ function do_date($ia)
     $dateformatdetails = getDateFormatDataForQID($aQuestionAttributes,$thissurvey);
     $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
 
+
+    $date_min_dynvars=false;
+    $date_max_dynvars=false;
+    
+    // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
+    if (trim($aQuestionAttributes['date_min'])!='') 
+    {
+        $date_min=$aQuestionAttributes['date_min'];
+        if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$date_min))
+        {
+            $mindate=$date_min;
+        }
+        elseif ((strlen($date_min)==4) && ($date_min>=1900) && ($date_min<=2037))
+        {
+            // backward compatibility: if only a year is given, add month and day 
+            $mindate=$date_min.'-01-01'; 
+        }
+        else
+        {
+            $date_min_dynvars=true;
+            $mindate='{'.$aQuestionAttributes['date_min'].'}';
+        }
+    }
+    else
+    {
+        $mindate='1900-01-01';
+    }
+
+    // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
+    if (trim($aQuestionAttributes['date_max'])!='') 
+    {
+        $date_max=$aQuestionAttributes['date_max'];
+        if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$date_max))
+        {
+            $maxdate=$date_max;
+        }
+        elseif ((strlen($date_max)==4) && ($date_max>=1900) && ($date_max<=2037))
+        {
+            // backward compatibility: if only a year is given, add month and day 
+            $maxdate=$date_max.'-12-31'; 
+        }
+        else
+        {
+            $date_max_dynvars=true;
+            $maxdate='{'.$aQuestionAttributes['date_max'].'}';
+        }
+    }
+    else
+    {
+        $maxdate='2037-12-31';
+    }
+
     if (trim($aQuestionAttributes['dropdown_dates'])==1) {
         if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
         {
@@ -1072,6 +1124,7 @@ function do_date($ia)
                     $answer .= '</select>';
                     break;
                     // Show year select box
+                case 'y':
                 case 'Y':   $answer .= '<label for="year'.$ia[1].'" class="hide">'.$clang->gT('Year').'</label><select id="year'.$ia[1].'" name="year'.$ia[1].'" class="year">
                     <option value="">'.$clang->gT('Year').'</option>';
 
@@ -1080,19 +1133,13 @@ function do_date($ia)
                     * yearmax = Maximum year value for dropdown list, if not set default is 2037
                     * if full dates (format: YYYY-MM-DD) are given, only the year is used
                     */
-                    if (trim($aQuestionAttributes['date_min'])!='')
-                    {
-                        $yearmin = (int)substr(LimeExpressionManager::ProcessString($aQuestionAttributes['date_min']),0,4);
-                    }
+                    $yearmin = (int)substr(LimeExpressionManager::ProcessString($mindate),0,4);
                     if (!isset($yearmin) || $yearmin==0)
-					{
+                    {
                         $yearmin = 1900;
                     }
 
-                    if (trim($aQuestionAttributes['date_max'])!='')
-                    {
-                        $yearmax = (int)substr(LimeExpressionManager::ProcessString($aQuestionAttributes['date_max']), 0, 4);
-                    }
+                    $yearmax = (int)substr(LimeExpressionManager::ProcessString($maxdate), 0, 4);
                     if (!isset($yearmax) || $yearmax==0)
                     {
                         $yearmax = 2037;
@@ -1234,36 +1281,7 @@ function do_date($ia)
         {
             $dateoutput='';
         }
-        $date_min_dynvars=false;
-        $date_max_dynvars=false;
-            
-        if (trim($aQuestionAttributes['date_min'])!='') {
-            $mindate=$aQuestionAttributes['date_min'];
-            $date_min=str_replace(array( '}', '{' ), '', $aQuestionAttributes['date_min']);
-            if ($mindate!=$date_min) $date_min_dynvars=true;
-            // backward compatibility: if only a year is given, add month and day 
-            if ((strlen($mindate)==4) && ($mindate>=1900) && ($mindate<=2037)) {
-                $mindate.='-01-01'; 
-            }
-        }
-        else
-        {
-            $mindate='1900-01-01';
-        }
 
-        if (trim($aQuestionAttributes['date_max'])!='') {
-            $maxdate=$aQuestionAttributes['date_max'];
-            $date_max=str_replace(array( '}', '{' ), '', $aQuestionAttributes['date_max']);
-            if ($maxdate!=$date_max) $date_max_dynvars=true;
-            // backward compatibility: if only a year is given, add month and day 
-            if ((strlen($maxdate)==4) && ($maxdate>=1900) && ($maxdate<=2037)) {
-                $maxdate.='-12-31'; 
-            }
-        }
-        else
-        {
-            $maxdate='2037-12-31';
-        }
 
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
         $goodchars = "0123456789".substr($goodchars,0,1);
@@ -1279,13 +1297,13 @@ function do_date($ia)
 
         </p>";
              
-            // following JS is for setting datepicker limits on-the-fly according to variables given in dropdown_date_year_min/max attributes
+            // following JS is for setting datepicker limits on-the-fly according to variables given in date_min/max attributes
             // works with full dates (format: YYYY-MM-DD, js not needed), only a year, for backward compatibility (YYYY, js not needed),
             // or variable names which refer to another date question (in curly brackets)
             // The term $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate($((LEMalias2varName['$date_min']).replace(/java/g, '#dateformat')).attr('value')
             // gets the date format from the source variable (in extended attributes min/max field) and converts the date to the yy-mm-dd format
              
-            // only write JS code if there are variables used.... everything else can be dealt with in PHP
+            // only write JS code if there are variables/expressions used.... everything else can be dealt with in PHP
             if ($date_min_dynvars==true || $date_max_dynvars==true) {
             $answer.="<script> 
                 $(document).ready(function() {
