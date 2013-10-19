@@ -438,8 +438,13 @@ class index extends CAction {
             $_SESSION['survey_'.$surveyid]['holdname'] = $param['loadname']; //Session variable used to load answers every page.
             $_SESSION['survey_'.$surveyid]['holdpass'] = $param['loadpass']; //Session variable used to load answers every page.
 
-            if ($errormsg == "") loadanswers();
-            $move = "movenext";
+            if ($errormsg == "") {
+                if (loadanswers()){
+                    $move = "movenext";
+                } else {
+                    $errormsg .= $clang->gT("There is no matching saved survey");
+                }
+            }
 
             if ($errormsg)
             {
