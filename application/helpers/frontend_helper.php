@@ -52,7 +52,6 @@
         $aRow = Yii::app()->db->createCommand($query)->queryRow();
         if (!$aRow)
         {
-            safeDie($clang->gT("There is no matching saved survey")."<br />\n");
             return false;
         }
         else
