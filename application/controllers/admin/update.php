@@ -21,6 +21,17 @@
 */
 class update extends Survey_Common_Action
 {
+    function __construct($controller, $id)
+    {
+        parent::__construct($controller, $id);
+
+        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] != 1) {
+            $clang = $this->getController()->lang;
+            Yii::app()->session['flashmessage'] = $clang->gT("You do not have sufficient rights to access this page.");
+            $this->getController()->redirect($this->getController()->createUrl("/admin/"));
+        }
+    }
+    
     /**
     * Default Controller Action
     */
@@ -236,7 +247,6 @@ class update extends Survey_Common_Action
         }
 
         $aData['updateinfo'] = $updateinfo;
-
         // okay, updateinfo now contains all necessary updateinformation
         // Create DB and file backups now
 
@@ -259,10 +269,12 @@ class update extends Survey_Common_Action
         $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
 
         if ($v_list == 0) {
-            die("Error : ".$archive->errorInfo(true));
+            $aFileBackup= array('class'=>'error','text'=>sprintf($clang->gt("Error on file backup: %s"),$archive->errorInfo(true)));
         }
-        $aData['sFilesArchive']=$tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip';
-
+        else{
+            $aFileBackup= array('class'=>'success','text'=>sprintf($clang->gt("File backup created: %s"),$tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'));
+        }
+        $aData['aFileBackup']=$aFileBackup;
         $aData['databasetype'] = $aDatabasetype;
 
         //TODO: Yii provides no function to backup the database. To be done after dumpdb is ported
@@ -274,17 +286,38 @@ class update extends Survey_Common_Action
                 $dfilename = $tempdir.DIRECTORY_SEPARATOR."LimeSurvey_database_backup_".$basefilename.".sql.gz";
 
                 outputDatabase('',false,$sfilename);
-
-                $archive = new PclZip($dfilename);
-                $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir,PCLZIP_OPT_ADD_TEMP_FILE_ON);
-                unlink($sfilename);
-                if ($v_list == 0) {
-                    die("Error : ".$archive->errorInfo(true));
+                // Before try to zip: test size of file
+                if( is_file($sfilename) && filesize($sfilename))
+                {
+                    $archive = new PclZip($dfilename);
+                    $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir,PCLZIP_OPT_ADD_TEMP_FILE_ON);
+                    unlink($sfilename);
+                    if ($v_list == 0) {
+                        $aSQLBackup=array('class'=>'warning','text'=>$clang->gt("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
+                    }
+                    else
+                    {
+                        $aSQLBackup=array('class'=>'success','text'=>sprintf($clang->gT('DB backup created: %s'),htmlspecialchars($dfilename)));
+                    }
                 }
-                $aData['sSQLArchive']=$dfilename;
+                else
+                {
+                    $aSQLBackup=array('class'=>'warning','text'=>$clang->gt("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
+                }
             }
         }
-
+        else
+        {
+            $aSQLBackup=array('class'=>'warning','text'=>$clang->gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!'));
+        }
+        $aData['aSQLBackup']=$aSQLBackup;
+        if($aFileBackup['class']=="success" && $aSQLBackup['class']=="success") {
+            $aData['result']="success";
+        }elseif($aFileBackup['class']=="error" || $aSQLBackup['class']=="error") {
+            $aData['result']="error";
+        }else{
+            $aData['result']="warning";
+        }
         $this->_renderWrappedTemplate('update', 'step3', $aData);
     }
 
