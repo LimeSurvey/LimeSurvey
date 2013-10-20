@@ -27,7 +27,9 @@ class CheckIntegrity extends Survey_Common_Action
         parent::__construct($controller, $id);
 
         if (!Permission::model()->hasGlobalPermission('settings','read')){
-            die();
+            $clang = $this->getController()->lang;
+            Yii::app()->session['flashmessage'] = $clang->gT("You do not have sufficient rights to access this page.");
+            $this->getController()->redirect($this->getController()->createUrl("/admin/"));
         }
 
         Yii::app()->loadHelper('database');
