@@ -135,7 +135,7 @@
 
         // Catalan
         $supportedLanguages['ca-valencia']['description'] = $clang->gT('Catalan (Valencian)');
-        $supportedLanguages['ca-valencia']['nativedescription'] = 'Catal&#224; (Valencià)';
+        $supportedLanguages['ca-valencia']['nativedescription'] = 'Catal&#224; (Valenci&#224;)';
         $supportedLanguages['ca-valencia']['rtl'] = false;
         $supportedLanguages['ca-valencia']['dateformat'] = 1;
         $supportedLanguages['ca-valencia']['radixpoint'] = 1;
@@ -452,7 +452,7 @@
 
         // Occitan
         $supportedLanguages['oc']['description'] = $clang->gT('Occitan');
-        $supportedLanguages['oc']['nativedescription'] = 'Lenga d\'òc';
+        $supportedLanguages['oc']['nativedescription'] = 'Lenga d&#39;&#242;c';
         $supportedLanguages['oc']['rtl'] = false;
         $supportedLanguages['oc']['dateformat'] = 5;
         $supportedLanguages['oc']['radixpoint'] = 1;
