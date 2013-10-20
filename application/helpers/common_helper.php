@@ -6072,10 +6072,10 @@ function includeKeypad()
 {
     $clang = Yii::app()->lang;
 
-	Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts').'jquery/jquery.keypad.min.js');
+	Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
     if ($clang->langcode != 'en')
     {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts').'jquery/locale/jquery.ui.keypad-'.$clang->langcode.'.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/i18n/jquery.ui.keypad-'.$clang->langcode.'.js');
     }
     Yii::app()->getClientScript()->registerCssFile('jquery.keypad.alt.css');
 }
