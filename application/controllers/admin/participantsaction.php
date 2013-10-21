@@ -254,6 +254,8 @@ class participantsaction extends Survey_Common_Action
 
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/i18n/grid.locale-en.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/jquery.jqGrid.min.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts")  . 'jquery/jquery.multiselect.min.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts")  . 'jquery/jquery.multiselect.filter.min.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')  . 'displayParticipants.css');
@@ -635,10 +637,11 @@ class participantsaction extends Survey_Common_Action
      */
     function exporttocsvcount()
     {
-        $searchconditionurl = Yii::app()->request->getPost('searchcondition');
-        $searchcondition = basename($searchconditionurl);
+        $searchconditionurl = Yii::app()->request->getPost('searchURL');
+        $searchcondition  = Yii::app()->request->getPost('searchcondition');
+        $searchconditionurl = basename($searchconditionurl);
         
-        if ($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
+        if ($searchconditionurl != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("||", $searchcondition);
             $search = Participants::model()->getParticipantsSearchMultipleCondition($condition);
@@ -759,17 +762,17 @@ class participantsaction extends Survey_Common_Action
      */
     function exporttocsv()
     {
-        $searchconditionurl = Yii::app()->request->getPost('searchcondition');
-        $searchcondition = basename($searchconditionurl);
+        $searchconditionurl = Yii::app()->request->getPost('searchURL');
+        $searchcondition  = Yii::app()->request->getPost('searchcondition');
+        $searchconditionurl = basename($searchconditionurl);
         
-        if ($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
+        if ($searchconditionurl != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("||", $searchcondition);
             $search = Participants::model()->getParticipantsSearchMultipleCondition($condition);
         } else {
             $search = null;
         }
-        
         $this->csvExport($search);
     }
 
