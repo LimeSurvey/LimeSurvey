@@ -1669,7 +1669,7 @@
                     switch($type)
                     {
                         case ':': //Array Numbers
-                            if ($hasSubqs && isset($qattr['input_boxes']) && $qattr['input_boxes'] == 1) {
+                            if ($hasSubqs) {
                                 $subqs = $qinfo['subqs'];
                                 $sq_equs=array();
                                 foreach($subqs as $sq)
@@ -1695,8 +1695,8 @@
                                 }
                                 $validationEqn[$questionNum][] = array(
                                 'qtype' => $type,
-                                'type' => 'default',
-                                'class' => 'default',
+                                'type' => 'input_boxes',
+                                'class' => 'input_boxes',
                                 'eqn' =>  implode(' and ',$sq_equs),
                                 'qid' => $questionNum,
                                 'subqValidEqns' => $subqValidEqns,
@@ -2038,62 +2038,6 @@
                     $max_num_value_n='';
                 }
 
-                // num_value_int_only
-                // Validation fixnum(sqN)==int(fixnum(sqN)) : fixnum or not fix num ..... 10.00 == 10
-                if (isset($qattr['num_value_int_only']) && trim($qattr['num_value_int_only']) == "1")
-                {
-                    $num_value_int_only="1";
-                    if ($hasSubqs) {
-                        $subqs = $qinfo['subqs'];
-                        $sq_eqns = array();
-                        $subqValidEqns = array();
-                        foreach ($subqs as $sq) {
-                            $sq_eqn=null;
-                            $subqValidSelector = '';
-                            switch ($type)
-                            {
-                                case 'K': //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
-                                    $subqValidSelector = $sq['jsVarName_on'];
-                                case 'N': //NUMERICAL QUESTION TYPE 
-                                    $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                    if(($qinfo['mandatory']=='Y')){
-                                            $sq_eqn = 'is_int('.$sq_name.')';
-                                    }else{
-                                            $sq_eqn = 'is_int('.$sq_name.') || is_empty('.$sq_name.')';
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
-                            if (!is_null($sq_eqn)) {
-                                $sq_eqns[] = $sq_eqn;
-                                $subqValidEqns[$subqValidSelector] = array(
-                                'subqValidEqn' => $sq_eqn,
-                                'subqValidSelector' => $subqValidSelector,
-                                );
-                            }
-                        }
-                        if (count($sq_eqns) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
-                            {
-                                $validationEqn[$questionNum] = array();
-                            }
-                            $validationEqn[$questionNum][] = array(
-                            'qtype' => $type,
-                            'type' => 'num_value_int_only',
-                            'class' => 'value_integer',
-                            'eqn' => implode(' and ', $sq_eqns),
-                            'qid' => $questionNum,
-                            'subqValidEqns' => $subqValidEqns,
-                            );
-                        }
-                    }
-                }
-                else
-                {
-                    $num_value_int_only='';
-                }
-
                 // min_num_value
                 // Validation:= sum(sq1,...,sqN) >= value (which could be an expression).
                 if (isset($qattr['min_num_value']) && trim($qattr['min_num_value']) != '')
@@ -2406,6 +2350,178 @@
                     $max_num_of_files = '';
                 }
 
+                // num_value_int_only
+                // Validation fixnum(sqN)==int(fixnum(sqN)) : fixnum or not fix num ..... 10.00 == 10
+                if (isset($qattr['num_value_int_only']) && trim($qattr['num_value_int_only']) == "1")
+                {
+                    $num_value_int_only="1";
+                    if ($hasSubqs) {
+                        $subqs = $qinfo['subqs'];
+                        $sq_eqns = array();
+                        $subqValidEqns = array();
+                        foreach ($subqs as $sq) {
+                            $sq_eqn=null;
+                            $subqValidSelector = '';
+                            switch ($type)
+                            {
+                                case 'K': //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
+                                    $subqValidSelector = $sq['jsVarName_on'];
+                                case 'N': //NUMERICAL QUESTION TYPE 
+                                    $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                    if(($qinfo['mandatory']=='Y')){
+                                            $sq_eqn = 'is_int('.$sq_name.')';
+                                    }else{
+                                            $sq_eqn = 'is_int('.$sq_name.') || is_empty('.$sq_name.')';
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (!is_null($sq_eqn)) {
+                                $sq_eqns[] = $sq_eqn;
+                                $subqValidEqns[$subqValidSelector] = array(
+                                'subqValidEqn' => $sq_eqn,
+                                'subqValidSelector' => $subqValidSelector,
+                                );
+                            }
+                        }
+                        if (count($sq_eqns) > 0) {
+                            if (!isset($validationEqn[$questionNum]))
+                            {
+                                $validationEqn[$questionNum] = array();
+                            }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'num_value_int_only',
+                            'class' => 'value_integer',
+                            'eqn' => implode(' and ', $sq_eqns),
+                            'qid' => $questionNum,
+                            'subqValidEqns' => $subqValidEqns,
+                            );
+                        }
+                    }
+                }
+                else
+                {
+                    $num_value_int_only='';
+                }
+
+                // num_value_int_only
+                // Validation is_numeric(sqN)
+                if (isset($qattr['numbers_only']) && trim($qattr['numbers_only']) == "1")
+                {
+                    $numbers_only=1;
+                    switch ($type)
+                    {
+                        case 'S': // Short text
+                            if ($hasSubqs) {
+                                $subqs = $qinfo['subqs'];
+                                $sq_equs=array();
+                                foreach($subqs as $sq)
+                                {
+                                    $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                    if(($qinfo['mandatory']=='Y')){
+                                        $sq_equs[] = 'is_numeric('.$sq_name.')';
+                                    }else{
+                                        $sq_equs[] = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                    }
+                                    if($type=="K")
+                                        $subqValidSelector = $sq['jsVarName_on'];
+                                    else
+                                        $subqValidSelector = "";
+                                }
+                                if (!isset($validationEqn[$questionNum]))
+                                {
+                                    $validationEqn[$questionNum] = array();
+                                }
+                                $validationEqn[$questionNum][] = array(
+                                'qtype' => $type,
+                                'type' => 'numbers_only',
+                                'class' => 'numbers_only',
+                                'eqn' =>  implode(' and ',$sq_equs),
+                                'qid' => $questionNum,
+                                );
+                            }
+                            break;
+                        case 'Q': // multi text
+                            if ($hasSubqs) {
+                                $subqs = $qinfo['subqs'];
+                                $sq_equs=array();
+                                foreach($subqs as $sq)
+                                {
+                                    $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                    if(($qinfo['mandatory']=='Y')){
+                                        $sq_equ = 'is_numeric('.$sq_name.')';
+                                    }else{
+                                        $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                    }
+                                    $subqValidSelector = $sq['jsVarName_on'];
+                                    if (!is_null($sq_name)) {
+                                        $sq_equs[] = $sq_equ;
+                                        $subqValidEqns[$subqValidSelector] = array(
+                                        'subqValidEqn' => $sq_equ,
+                                        'subqValidSelector' => $subqValidSelector,
+                                        );
+                                    }
+                                }
+                                if (!isset($validationEqn[$questionNum]))
+                                {
+                                    $validationEqn[$questionNum] = array();
+                                }
+                                $validationEqn[$questionNum][] = array(
+                                'qtype' => $type,
+                                'type' => 'default',
+                                'class' => 'default',
+                                'eqn' =>  implode(' and ',$sq_equs),
+                                'qid' => $questionNum,
+                                'subqValidEqns' => $subqValidEqns,
+                                );
+                            }
+                            break;
+                        case ';': // Array of text
+                            if ($hasSubqs) {
+                                $subqs = $qinfo['subqs'];
+                                $sq_equs=array();
+                                foreach($subqs as $sq)
+                                {
+                                    $sq_name = ($this->sgqaNaming)?substr($sq['jsVarName'],4).".NAOK":$sq['varName'].".NAOK";
+                                    if(($qinfo['mandatory']=='Y')){
+                                        $sq_equ = 'is_numeric('.$sq_name.')';
+                                    }else{
+                                        $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                    }
+                                    $subqValidSelector = $sq['jsVarName_on'];
+                                    if (!is_null($sq_name)) {
+                                        $sq_equs[] = $sq_equ;
+                                        $subqValidEqns[$subqValidSelector] = array(
+                                        'subqValidEqn' => $sq_equ,
+                                        'subqValidSelector' => $subqValidSelector,
+                                        );
+                                    }
+                                }
+                                if (!isset($validationEqn[$questionNum]))
+                                {
+                                    $validationEqn[$questionNum] = array();
+                                }
+                                $validationEqn[$questionNum][] = array(
+                                'qtype' => $type,
+                                'type' => 'default',
+                                'class' => 'default',
+                                'eqn' =>  implode(' and ',$sq_equs),
+                                'qid' => $questionNum,
+                                'subqValidEqns' => $subqValidEqns,
+                                );
+                            }
+                            break;
+                        case '*': // Don't think we need equation ?
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    $numbers_only="";
+                }
                 // other_comment_mandatory
                 // Validation:= sqN <= value (which could be an expression).
                 if (isset($qattr['other_comment_mandatory']) && trim($qattr['other_comment_mandatory']) == '1')
@@ -2737,16 +2853,7 @@
                         break;
                 }
 
-                if($input_boxes)
-                {
-                    switch ($type)
-                    {
-                        case ':':
-                            $qtips['default']=$this->gT("Only numbers may be entered in these fields.");
-                            break;
-                    }
-                }
-                if($commented_checkbox && $commented_checkbox!='allways')
+                if($commented_checkbox)
                 {
                     switch ($commented_checkbox)
                     {
@@ -2762,6 +2869,25 @@
                             break;
                     }
                 }
+
+                // equals_num_value
+                if ($equals_num_value!='')
+                {
+                    $qtips['sum_range']=sprintf($this->gT("The sum must equal %s."),'{fixnum('.$equals_num_value.')}');
+                }
+
+                if($input_boxes)
+                {
+                    switch ($type)
+                    {
+                        case ':':
+                            $qtips['input_boxes']=$this->gT("Only numbers may be entered in these fields.");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
                 // min/max answers
                 if ($min_answers!='' || $max_answers!='')
                 {
@@ -2787,24 +2913,6 @@
                         "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('".$this->gT("Each answer must be at most %s")."',fixnum($_maxV)), '')}" .
                         "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('".$this->gT("Each answer must be %s")."', fixnum($_minV)), '')}" .
                         "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('".$this->gT("Each answer must be between %s and %s")."', fixnum($_minV), fixnum($_maxV)), '')}";
-                }
-
-                // integer for numeric
-                if ($num_value_int_only!='')
-                {
-                    switch ($type)
-                    {
-                        case 'N':
-                            $qtips['default']='';
-                            $qtips['value_integer']=$this->gT("Only integer value may be entered in this field.");
-                            break;
-                        case 'K':
-                            $qtips['default']='';
-                            $qtips['value_integer']=$this->gT("Only integer value may be entered in this fields.");
-                            break;
-                        default:
-                            break;
-                    }
                 }
 
                 // min/max value for each numeric entry - for multi-flexible question type
@@ -2847,10 +2955,40 @@
                         "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) != ($_maxA),sprintf('".$this->gT("Please upload between %s and %s files")."',fixnum($_minA),fixnum($_maxA)),'')}";
                 }
 
-                // equals_num_value
-                if ($equals_num_value!='')
+
+                // integer for numeric
+                if ($num_value_int_only!='')
                 {
-                    $qtips['sum_range']=sprintf($this->gT("The sum must equal %s."),'{fixnum('.$equals_num_value.')}');
+                    switch ($type)
+                    {
+                        case 'N':
+                            $qtips['default']='';
+                            $qtips['value_integer']=$this->gT("Only integer value may be entered in this field.");
+                            break;
+                        case 'K':
+                            $qtips['default']='';
+                            $qtips['value_integer']=$this->gT("Only integer value may be entered in this fields.");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                // numbers only
+                if($numbers_only)
+                {
+                    switch ($type)
+                    {
+                        case 'S':
+                            $qtips['numbers_only']=$this->gT("Only numbers may be entered in this field.");
+                            break;
+                        case 'Q':
+                        case ';':
+                            $qtips['numbers_only']=$this->gT("Only numbers may be entered in these fields.");
+                            break;
+                        default:
+                            break;
+                    }
                 }
 
                 // other comment mandatory
