@@ -1663,7 +1663,50 @@
                         }
                     }
                 }
-
+                // input_boxes
+                if (isset($qattr['input_boxes']) && $qattr['input_boxes'] == 1) {
+                    $input_boxes=1;
+                    case ':': //Array Numbers
+                        if ($hasSubqs && isset($qattr['input_boxes']) && $qattr['input_boxes'] == 1) {
+                            $subqs = $qinfo['subqs'];
+                            $sq_equs=array();
+                            foreach($subqs as $sq)
+                            {
+                                $sq_name = ($this->sgqaNaming)?substr($sq['jsVarName'],4).".NAOK":$sq['varName'].".NAOK";
+                                if(($qinfo['mandatory']=='Y')){
+                                    $sq_equ = 'is_numeric('.$sq_name.')';
+                                }else{
+                                    $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                }
+                                $subqValidSelector = $sq['jsVarName_on'];
+                                if (!is_null($sq_name)) {
+                                    $sq_equs[] = $sq_equ;
+                                    $subqValidEqns[$subqValidSelector] = array(
+                                    'subqValidEqn' => $sq_equ,
+                                    'subqValidSelector' => $subqValidSelector,
+                                    );
+                                }
+                            }
+                            if (!isset($validationEqn[$questionNum]))
+                            {
+                                $validationEqn[$questionNum] = array();
+                            }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'default',
+                            'class' => 'default',
+                            'eqn' =>  implode(' and ',$sq_equs),
+                            'qid' => $questionNum,
+                            'subqValidEqns' => $subqValidEqns,
+                            );
+                        }
+                        break;
+                    default:
+                        break;
+                }else{
+                    $input_boxes="";
+                }
+                
                 // min_answers
                 // Validation:= count(sq1,...,sqN) >= value (which could be an expression).
                 if (isset($qattr['min_answers']) && trim($qattr['min_answers']) != '' && trim($qattr['min_answers']) != '0')
@@ -2691,6 +2734,15 @@
                         break;
                 }
 
+                if($input_boxes)
+                {
+                    switch ($type)
+                    {
+                        case ':':
+                            $qtips['default']=$this->gT("Only numbers may be entered in these fields.");
+                            break;
+                    }
+                }
                 if($commented_checkbox && $commented_checkbox!='allways')
                 {
                     switch ($commented_checkbox)
