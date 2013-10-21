@@ -293,7 +293,7 @@
             {
                 $out .= CHtml::label($metaData['label'], $id);
             }
-            $out .= Chtml::tag('div', array('class' => implode(' ', $metaData['class'])), CHtml::textArea($id, $value, array('id' => $id, 'form' => $form, 'readonly' => $readOnly)));
+            $out .= CHtml::textArea($id, $value, array('id' => $id, 'form' => $form, 'readonly' => $readOnly));
             return $out;
         }
 
