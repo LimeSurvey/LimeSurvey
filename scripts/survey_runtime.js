@@ -106,6 +106,88 @@ function needConfirmHandler(){
         });
     });
 }
+/**
+ * checkconditions : javascript function attach to some element 
+ * Launch ExprMgr_process_relevance_and_tailoring with good value
+ */
+function checkconditions(value, name, type, evt_type)
+{
+    if (typeof evt_type === 'undefined')
+    {
+        evt_type = 'onchange';
+    }
+    if (type == 'radio' || type == 'select-one')
+    {
+        $('#java'+name).val(value);
+    }
+    else if (type == 'checkbox')
+    {
+        if ($('#answer'+name).is(':checked'))
+        {
+            $('#java'+name).val('Y');
+        } else
+        {
+            $('#java'+name).val('');
+        }
+    }
+    else if (type == 'text' && name.match(/other$/))
+    {
+        $('#java'+name).val(value);
+    }
+    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ))
+        ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
+}
+/**
+ * fixnum_checkconditions : javascript function attach to some element 
+ * Update the answer of the user to be numeric and launch checkconditions
+ */
+function fixnum_checkconditions(value, name, type, evt_type, intonly)
+{
+    if(typeof bFixNumAuto == 'undefined'){bFixNumAuto=true;} // Allow deactivate fixnum in template or in Plugin
+    if(typeof bNumRealValue == 'undefined'){bNumRealValue=false;} // Allow to update {QCODE} even with text
+
+    newval = new String(value);
+    if (typeof intonly !=='undefined' && intonly==1) {
+        newval = newval.replace(intRegex,'');
+    }
+    else {
+        newval = newval.replace(numRegex,'');
+    }
+    aNewval = newval.split(LEMradix);
+    if(aNewval.length>0){
+        newval=aNewval[0];
+    }
+    if(aNewval.length>1){
+        newval=newval+"."+aNewval[1];
+    }
+    if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {// Todo : do it in reg
+        newval = '';
+    }
+    if(bFixNumAuto)
+    {
+        displayVal = newval;
+        if (LEMradix === ',') {
+            displayVal = displayVal.split('.').join(',');
+        }
+        if (name.match(/other$/)) {
+            $('#answer'+name+'text').val(displayVal);
+        }
+        $('#answer'+name).val(displayVal);
+    }
+    if (typeof evt_type === 'undefined')
+    {
+        evt_type = 'onchange';
+    }
+    console.log(newval);
+    if(bNumRealValue)
+    {
+        checkconditions(value, name, type, evt_type);
+    }
+    else
+    {
+        checkconditions(newval, name, type, evt_type);
+    }
+}
 
 // Set jquery-ui to LS Button
 function navbuttonsJqueryUi(){

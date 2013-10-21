@@ -1304,6 +1304,33 @@
                 // Default validation for question type
                 switch ($type)
                 {
+                    case 'N': //NUMERICAL QUESTION TYPE
+                    case 'K': //NUMERICAL QUESTION TYPE
+                        if ($hasSubqs) {
+                            $subqs = $qinfo['subqs'];
+                            $sq_equs=array();
+                            foreach($subqs as $sq)
+                            {
+                                $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                if(($qinfo['mandatory']=='Y')){
+                                    $sq_equs[] = 'is_numeric('.$sq_name.')';
+                                }else{
+                                    $sq_equs[] = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                }
+                            }
+                            if (!isset($validationEqn[$questionNum]))
+                            {
+                                $validationEqn[$questionNum] = array();
+                            }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'default',
+                            'class' => 'default',
+                            'eqn' =>  implode(' and ',$sq_equs),
+                            'qid' => $questionNum,
+                            );
+                        }
+                        break;
                     case 'R':
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
@@ -1925,6 +1952,60 @@
                 else
                 {
                     $max_num_value_n='';
+                }
+
+                // num_value_int_only
+                // Validation fixnum(sqN)==int(fixnum(sqN)) : fixnum or not fix num ..... 10.00 == 10
+                if (isset($qattr['num_value_int_only']) && trim($qattr['num_value_int_only']) == "1")
+                {
+                    $num_value_int_only="1";
+                    if ($hasSubqs) {
+                        $subqs = $qinfo['subqs'];
+                        $sq_eqns = array();
+                        $subqValidEqns = array();
+                        foreach ($subqs as $sq) {
+                            $sq_eqn=null;
+                            switch ($type)
+                            {
+                                case 'N': //NUMERICAL QUESTION TYPE 
+                                case 'K': //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
+                                    $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                    if(($qinfo['mandatory']=='Y')){
+                                            $sq_eqn = 'is_int('.$sq_name.')';
+                                    }else{
+                                            $sq_eqn = 'is_int('.$sq_name.') || is_empty('.$sq_name.')';
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (!is_null($sq_eqn)) {
+                                $sq_eqns[] = $sq_eqn;
+                                $subqValidEqns[$subqValidSelector] = array(
+                                'subqValidEqn' => $sq_eqn,
+                                'subqValidSelector' => $subqValidSelector,
+                                );
+                            }
+                        }
+                        if (count($sq_eqns) > 0) {
+                            if (!isset($validationEqn[$questionNum]))
+                            {
+                                $validationEqn[$questionNum] = array();
+                            }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'num_value_int_only',
+                            'class' => 'value_integer',
+                            'eqn' => implode(' and ', $sq_eqns),
+                            'qid' => $questionNum,
+                            'subqValidEqns' => $subqValidEqns,
+                            );
+                        }
+                    }
+                }
+                else
+                {
+                    $num_value_int_only='';
                 }
 
                 // min_num_value
@@ -2557,6 +2638,12 @@
                 // Default validation qtip without attribute
                 switch ($type)
                 {
+                    case 'N':
+                        $qtips['default']=$this->gT("Only numbers may be entered in this field.");
+                        break;
+                    case 'K':
+                        $qtips['default']=$this->gT("Only numbers may be entered in these fields.");
+                        break;
                     case 'R':
                         $qtips['default']=$this->gT("All your answers must be different.");
                         break;
@@ -2605,6 +2692,12 @@
                         "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('".$this->gT("Each answer must be at most %s")."',fixnum($_maxV)), '')}" .
                         "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('".$this->gT("Each answer must be %s")."', fixnum($_minV)), '')}" .
                         "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('".$this->gT("Each answer must be between %s and %s")."', fixnum($_minV), fixnum($_maxV)), '')}";
+                }
+
+                // integer for numeric
+                if ($num_value_int_only!='')
+                {
+                    $qtips['value_integer']=$this->gT("Only integer value");
                 }
 
                 // min/max value for each numeric entry - for multi-flexible question type
@@ -7733,17 +7826,17 @@ EOD;
                                     }
                                     $aDateFormatData=getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
                                     $oDateTimeConverter = new Date_Time_Converter($value, $aDateFormatData['phpdate']);
-                                    $value=$oDateTimeConverter->convert("Y-m-d H:i");
+                                    $value=$oDateTimeConverter->convert("Y-m-d H:i"); // TODO : control if inverse function original value
                                 }
                                 break;
-                            case 'N': //NUMERICAL QUESTION TYPE
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                                if (trim($value)=="") {
-                                    $value = "";
-                                }
-                                else {
-                                    $value = sanitize_float($value);
-                                }
+#                            case 'N': //NUMERICAL QUESTION TYPE
+#                            case 'K': //MULTIPLE NUMERICAL QUESTION
+#                                if (trim($value)=="") {
+#                                    $value = "";
+#                                }
+#                                else {
+#                                    $value = sanitize_float($value);
+#                                }
                                 break;
                             case '|': //File Upload
                                 if (!preg_match('/_filecount$/', $sq))
@@ -8116,6 +8209,9 @@ EOD;
                     $qrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$qid] : 0);
                     $sqrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
                     return ($grel && $qrel && $sqrel);
+                case 'onlynum':
+                    return (isset($var[$attr])) ? $var[$attr] : $default;
+                    break;
                 default:
                     print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br />\n";
                     return $default;
@@ -8224,7 +8320,7 @@ EOD;
 
             $LEM =& LimeExpressionManager::singleton();
 
-            $aSurveyInfo=getSurveyInfo($sid, $_SESSION['LEMlang']);
+            $aSurveyInfo=getSurveyInfo($sid,$_SESSION['LEMlang']);
 
             $allErrors = array();
             $warnings = 0;
