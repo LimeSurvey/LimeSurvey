@@ -489,7 +489,7 @@ class tokens extends Survey_Common_Action
             }
             if(Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
                 $action .= viewHelper::getImageLink('edit_16.png', null, $clang->gT("Edit token entry"), null, 'imagelink token_edit');
-            if(!empty($token['participant_id']) && $token['participant_id'] != "" && hasGlobalPermission('USER_RIGHT_PARTICIPANT_PANEL')) {
+            if(!empty($token['participant_id']) && $token['participant_id'] != "" && Permission::model()->hasGlobalPermission('participantpanel','read')) {
                 $action .= viewHelper::getImageLink('cpdb_16.png', null, $clang->gT("View this person in the central participants database"), null, 'imagelink cpdb',array('onclick'=>"sendPost('".$this->getController()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$token['participant_id']}']);"));
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
@@ -2369,6 +2369,7 @@ class tokens extends Survey_Common_Action
         if (Yii::app()->request->getQuery('createtable') == "Y")
         {
             createTokenTable($iSurveyId);
+            LimeExpressionManager::SetDirtyFlag();  // LimeExpressionManager needs to know about the new token table
             $this->_renderWrappedTemplate('token', array('message' =>array(
             'title' => $clang->gT("Token control"),
             'message' => $clang->gT("A token table has been created for this survey.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId\")<br /><br />\n"

@@ -367,4 +367,3 @@ function multi_set(ids,_radix)
 		_collection.push(new multi_total(ids[ii]));
 	}
 }
-

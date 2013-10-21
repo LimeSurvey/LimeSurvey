@@ -626,10 +626,11 @@ class participantsaction extends Survey_Common_Action
      */
     function exporttocsvcount()
     {
-        $searchconditionurl = Yii::app()->request->getPost('searchcondition');
-        $searchcondition = basename($searchconditionurl);
+        $searchconditionurl = Yii::app()->request->getPost('searchURL');
+        $searchcondition  = Yii::app()->request->getPost('searchcondition');
+        $searchconditionurl = basename($searchconditionurl);
         
-        if ($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
+        if ($searchconditionurl != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("||", $searchcondition);
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
@@ -750,17 +751,17 @@ class participantsaction extends Survey_Common_Action
      */
     function exporttocsv()
     {
-        $searchconditionurl = Yii::app()->request->getPost('searchcondition');
-        $searchcondition = basename($searchconditionurl);
+        $searchconditionurl = Yii::app()->request->getPost('searchURL');
+        $searchcondition  = Yii::app()->request->getPost('searchcondition');
+        $searchconditionurl = basename($searchconditionurl);
         
-        if ($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
+        if ($searchconditionurl != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("||", $searchcondition);
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
         } else {
             $search = null;
         }
-        
         $this->csvExport($search);
     }
 

@@ -1304,6 +1304,71 @@
                 // Default validation for question type
                 switch ($type)
                 {
+                    case 'N': //NUMERICAL QUESTION TYPE
+                        if ($hasSubqs) {
+                            $subqs = $qinfo['subqs'];
+                            $sq_equs=array();
+                            foreach($subqs as $sq)
+                            {
+                                $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                if(($qinfo['mandatory']=='Y')){
+                                    $sq_equs[] = 'is_numeric('.$sq_name.')';
+                                }else{
+                                    $sq_equs[] = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                }
+                                if($type=="K")
+                                    $subqValidSelector = $sq['jsVarName_on'];
+                                else
+                                    $subqValidSelector = "";
+                            }
+                            if (!isset($validationEqn[$questionNum]))
+                            {
+                                $validationEqn[$questionNum] = array();
+                            }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'default',
+                            'class' => 'default',
+                            'eqn' =>  implode(' and ',$sq_equs),
+                            'qid' => $questionNum,
+                            );
+                        }
+                        break;
+                    case 'K': //MULTI NUMERICAL QUESTION TYPE
+                        if ($hasSubqs) {
+                            $subqs = $qinfo['subqs'];
+                            $sq_equs=array();
+                            foreach($subqs as $sq)
+                            {
+                                $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                if(($qinfo['mandatory']=='Y')){
+                                    $sq_equ = 'is_numeric('.$sq_name.')';
+                                }else{
+                                    $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                }
+                                $subqValidSelector = $sq['jsVarName_on'];
+                                if (!is_null($sq_name)) {
+                                    $sq_equs[] = $sq_equ;
+                                    $subqValidEqns[$subqValidSelector] = array(
+                                    'subqValidEqn' => $sq_equ,
+                                    'subqValidSelector' => $subqValidSelector,
+                                    );
+                                }
+                            }
+                            if (!isset($validationEqn[$questionNum]))
+                            {
+                                $validationEqn[$questionNum] = array();
+                            }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'default',
+                            'class' => 'default',
+                            'eqn' =>  implode(' and ',$sq_equs),
+                            'qid' => $questionNum,
+                            'subqValidEqns' => $subqValidEqns,
+                            );
+                        }
+                        break;
                     case 'R':
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
@@ -1598,7 +1663,53 @@
                         }
                     }
                 }
-
+                // input_boxes
+                if (isset($qattr['input_boxes']) && $qattr['input_boxes'] == 1) {
+                    $input_boxes=1;
+                    switch($type)
+                    {
+                        case ':': //Array Numbers
+                            if ($hasSubqs) {
+                                $subqs = $qinfo['subqs'];
+                                $sq_equs=array();
+                                foreach($subqs as $sq)
+                                {
+                                    $sq_name = ($this->sgqaNaming)?substr($sq['jsVarName'],4).".NAOK":$sq['varName'].".NAOK";
+                                    if(($qinfo['mandatory']=='Y')){
+                                        $sq_equ = 'is_numeric('.$sq_name.')';
+                                    }else{
+                                        $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                    }
+                                    $subqValidSelector = $sq['jsVarName_on'];
+                                    if (!is_null($sq_name)) {
+                                        $sq_equs[] = $sq_equ;
+                                        $subqValidEqns[$subqValidSelector] = array(
+                                        'subqValidEqn' => $sq_equ,
+                                        'subqValidSelector' => $subqValidSelector,
+                                        );
+                                    }
+                                }
+                                if (!isset($validationEqn[$questionNum]))
+                                {
+                                    $validationEqn[$questionNum] = array();
+                                }
+                                $validationEqn[$questionNum][] = array(
+                                'qtype' => $type,
+                                'type' => 'input_boxes',
+                                'class' => 'input_boxes',
+                                'eqn' =>  implode(' and ',$sq_equs),
+                                'qid' => $questionNum,
+                                'subqValidEqns' => $subqValidEqns,
+                                );
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }else{
+                    $input_boxes="";
+                }
+                
                 // min_answers
                 // Validation:= count(sq1,...,sqN) >= value (which could be an expression).
                 if (isset($qattr['min_answers']) && trim($qattr['min_answers']) != '' && trim($qattr['min_answers']) != '0')
@@ -2239,6 +2350,179 @@
                     $max_num_of_files = '';
                 }
 
+                // num_value_int_only
+                // Validation fixnum(sqN)==int(fixnum(sqN)) : fixnum or not fix num ..... 10.00 == 10
+                if (isset($qattr['num_value_int_only']) && trim($qattr['num_value_int_only']) == "1")
+                {
+                    $num_value_int_only="1";
+                    if ($hasSubqs) {
+                        $subqs = $qinfo['subqs'];
+                        $sq_eqns = array();
+                        $subqValidEqns = array();
+                        foreach ($subqs as $sq) {
+                            $sq_eqn=null;
+                            $subqValidSelector = '';
+                            switch ($type)
+                            {
+                                case 'K': //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
+                                    $subqValidSelector = $sq['jsVarName_on'];
+                                case 'N': //NUMERICAL QUESTION TYPE 
+                                    $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                    if(($qinfo['mandatory']=='Y')){
+                                            $sq_eqn = 'is_int('.$sq_name.')';
+                                    }else{
+                                            $sq_eqn = 'is_int('.$sq_name.') || is_empty('.$sq_name.')';
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (!is_null($sq_eqn)) {
+                                $sq_eqns[] = $sq_eqn;
+                                $subqValidEqns[$subqValidSelector] = array(
+                                'subqValidEqn' => $sq_eqn,
+                                'subqValidSelector' => $subqValidSelector,
+                                );
+                            }
+                        }
+                        if (count($sq_eqns) > 0) {
+                            if (!isset($validationEqn[$questionNum]))
+                            {
+                                $validationEqn[$questionNum] = array();
+                            }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'num_value_int_only',
+                            'class' => 'value_integer',
+                            'eqn' => implode(' and ', $sq_eqns),
+                            'qid' => $questionNum,
+                            'subqValidEqns' => $subqValidEqns,
+                            );
+                        }
+                    }
+                }
+                else
+                {
+                    $num_value_int_only='';
+                }
+
+                // num_value_int_only
+                // Validation is_numeric(sqN)
+                if (isset($qattr['numbers_only']) && trim($qattr['numbers_only']) == "1")
+                {
+                    $numbers_only=1;
+                    switch ($type)
+                    {
+                        case 'S': // Short text
+                            if ($hasSubqs) {
+                                $subqs = $qinfo['subqs'];
+                                $sq_equs=array();
+                                foreach($subqs as $sq)
+                                {
+                                    $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                    if(($qinfo['mandatory']=='Y')){
+                                        $sq_equs[] = 'is_numeric('.$sq_name.')';
+                                    }else{
+                                        $sq_equs[] = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                    }
+                                    if($type=="K")
+                                        $subqValidSelector = $sq['jsVarName_on'];
+                                    else
+                                        $subqValidSelector = "";
+                                }
+                                if (!isset($validationEqn[$questionNum]))
+                                {
+                                    $validationEqn[$questionNum] = array();
+                                }
+                                $validationEqn[$questionNum][] = array(
+                                'qtype' => $type,
+                                'type' => 'numbers_only',
+                                'class' => 'numbers_only',
+                                'eqn' =>  implode(' and ',$sq_equs),
+                                'qid' => $questionNum,
+                                );
+                            }
+                            break;
+                        case 'Q': // multi text
+                            if ($hasSubqs) {
+                                $subqs = $qinfo['subqs'];
+                                $sq_equs=array();
+                                foreach($subqs as $sq)
+                                {
+                                    $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                    if(($qinfo['mandatory']=='Y')){
+                                        $sq_equ = 'is_numeric('.$sq_name.')';
+                                    }else{
+                                        $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                    }
+                                    $subqValidSelector = $sq['jsVarName_on'];
+                                    if (!is_null($sq_name)) {
+                                        $sq_equs[] = $sq_equ;
+                                        $subqValidEqns[$subqValidSelector] = array(
+                                        'subqValidEqn' => $sq_equ,
+                                        'subqValidSelector' => $subqValidSelector,
+                                        );
+                                    }
+                                }
+                                if (!isset($validationEqn[$questionNum]))
+                                {
+                                    $validationEqn[$questionNum] = array();
+                                }
+                                $validationEqn[$questionNum][] = array(
+                                'qtype' => $type,
+                                'type' => 'default',
+                                'class' => 'default',
+                                'eqn' =>  implode(' and ',$sq_equs),
+                                'qid' => $questionNum,
+                                'subqValidEqns' => $subqValidEqns,
+                                );
+                            }
+                            break;
+                        case ';': // Array of text
+                            if ($hasSubqs) {
+                                $subqs = $qinfo['subqs'];
+                                $sq_equs=array();
+                                foreach($subqs as $sq)
+                                {
+                                    $sq_name = ($this->sgqaNaming)?substr($sq['jsVarName'],4).".NAOK":$sq['varName'].".NAOK";
+                                    if(($qinfo['mandatory']=='Y')){
+                                        $sq_equ = 'is_numeric('.$sq_name.')';
+                                    }else{
+                                        $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                    }
+                                    $subqValidSelector = $sq['jsVarName_on'];
+                                    if (!is_null($sq_name)) {
+                                        $sq_equs[] = $sq_equ;
+                                        $subqValidEqns[$subqValidSelector] = array(
+                                        'subqValidEqn' => $sq_equ,
+                                        'subqValidSelector' => $subqValidSelector,
+                                        );
+                                    }
+                                }
+                                if (!isset($validationEqn[$questionNum]))
+                                {
+                                    $validationEqn[$questionNum] = array();
+                                }
+                                $validationEqn[$questionNum][] = array(
+                                'qtype' => $type,
+                                'type' => 'default',
+                                'class' => 'default',
+                                'eqn' =>  implode(' and ',$sq_equs),
+                                'qid' => $questionNum,
+                                'subqValidEqns' => $subqValidEqns,
+                                );
+                            }
+                            break;
+                        case '*': // Don't think we need equation ?
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    $numbers_only="";
+                }
+
                 // other_comment_mandatory
                 // Validation:= sqN <= value (which could be an expression).
                 if (isset($qattr['other_comment_mandatory']) && trim($qattr['other_comment_mandatory']) == '1')
@@ -2254,7 +2538,7 @@
                             case 'L': //LIST drop-down/radio-button list
                                 $eqn = "(" . $sgqa . ".NAOK!='-oth-' || (" . $sgqa . ".NAOK=='-oth-' && !is_empty(trim(" . $sgqa . "other.NAOK))))";
                                 break;
-                            case 'P': //Multiple choice with comments checkbox + text
+                            case 'P': //Multiple choice with comments
                                 $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) || (!is_empty(trim(" . $sgqa . "other.NAOK)) && !is_empty(trim(" . $sgqa . "othercomment.NAOK))))";
                                 break;
                             default:
@@ -2281,6 +2565,46 @@
                     $other_comment_mandatory = '';
                 }
 
+                // other_numbers_only
+                // Validation:= is_numeric(sqN).
+                if (isset($qattr['other_numbers_only']) && trim($qattr['other_numbers_only']) == '1')
+                {
+                    $other_numbers_only = 1;
+                    $eqn='';
+                    if ($this->questionSeq2relevance[$qinfo['qseq']]['other'] == 'Y')
+                    {
+                        $sgqa = $qinfo['sgqa'];
+                        switch ($type)
+                        {
+                            //case '!': //List - dropdown
+                            case 'L': //LIST drop-down/radio-button list
+                            case 'M': //Multiple choice
+                            case 'P': //Multiple choice with
+                                $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) ||is_numeric(" . $sgqa . "other.NAOK))";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    if ($eqn != '')
+                    {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                        'qtype' => $type,
+                        'type' => 'other_numbers_only',
+                        'class' => 'other_numbers_only',
+                        'eqn' => $eqn,
+                        'qid' => $questionNum,
+                        );
+                    }
+                }
+                else
+                {
+                    $other_numbers_only = '';
+                }
 
 
                 // show_totals
@@ -2557,6 +2881,12 @@
                 // Default validation qtip without attribute
                 switch ($type)
                 {
+                    case 'N':
+                        $qtips['default']=$this->gT("Only numbers may be entered in this field.");
+                        break;
+                    case 'K':
+                        $qtips['default']=$this->gT("Only numbers may be entered in these fields.");
+                        break;
                     case 'R':
                         $qtips['default']=$this->gT("All your answers must be different.");
                         break;
@@ -2564,7 +2894,7 @@
                         break;
                 }
 
-                if($commented_checkbox && $commented_checkbox!='allways')
+                if($commented_checkbox)
                 {
                     switch ($commented_checkbox)
                     {
@@ -2580,6 +2910,25 @@
                             break;
                     }
                 }
+
+                // equals_num_value
+                if ($equals_num_value!='')
+                {
+                    $qtips['sum_range']=sprintf($this->gT("The sum must equal %s."),'{fixnum('.$equals_num_value.')}');
+                }
+
+                if($input_boxes)
+                {
+                    switch ($type)
+                    {
+                        case ':':
+                            $qtips['input_boxes']=$this->gT("Only numbers may be entered in these fields.");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
                 // min/max answers
                 if ($min_answers!='' || $max_answers!='')
                 {
@@ -2647,10 +2996,40 @@
                         "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) != ($_maxA),sprintf('".$this->gT("Please upload between %s and %s files")."',fixnum($_minA),fixnum($_maxA)),'')}";
                 }
 
-                // equals_num_value
-                if ($equals_num_value!='')
+
+                // integer for numeric
+                if ($num_value_int_only!='')
                 {
-                    $qtips['sum_range']=sprintf($this->gT("The sum must equal %s."),'{fixnum('.$equals_num_value.')}');
+                    switch ($type)
+                    {
+                        case 'N':
+                            $qtips['default']='';
+                            $qtips['value_integer']=$this->gT("Only integer value may be entered in this field.");
+                            break;
+                        case 'K':
+                            $qtips['default']='';
+                            $qtips['value_integer']=$this->gT("Only integer value may be entered in this fields.");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                // numbers only
+                if($numbers_only)
+                {
+                    switch ($type)
+                    {
+                        case 'S':
+                            $qtips['numbers_only']=$this->gT("Only numbers may be entered in this field.");
+                            break;
+                        case 'Q':
+                        case ';':
+                            $qtips['numbers_only']=$this->gT("Only numbers may be entered in these fields.");
+                            break;
+                        default:
+                            break;
+                    }
                 }
 
                 // other comment mandatory
@@ -2663,6 +3042,18 @@
                         $othertext = $this->gT('Other:');
                     }
                     $qtips['other_comment_mandatory']=sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
+                }
+
+                // other comment mandatory
+                if ($other_numbers_only!='')
+                {
+                    if (isset($qattr['other_replace_text']) && trim($qattr['other_replace_text']) != '') {
+                        $othertext = trim($qattr['other_replace_text']);
+                    }
+                    else {
+                        $othertext = $this->gT('Other:');
+                    }
+                    $qtips['other_numbers_only']=sprintf($this->gT("Only numbers may be entered in '%s' accompanying text field."),$othertext);
                 }
 
                 // regular expression validation
@@ -7733,17 +8124,17 @@ EOD;
                                     }
                                     $aDateFormatData=getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
                                     $oDateTimeConverter = new Date_Time_Converter($value, $aDateFormatData['phpdate']);
-                                    $value=$oDateTimeConverter->convert("Y-m-d H:i");
+                                    $value=$oDateTimeConverter->convert("Y-m-d H:i"); // TODO : control if inverse function original value
                                 }
                                 break;
-                            case 'N': //NUMERICAL QUESTION TYPE
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                                if (trim($value)=="") {
-                                    $value = "";
-                                }
-                                else {
-                                    $value = sanitize_float($value);
-                                }
+#                            case 'N': //NUMERICAL QUESTION TYPE
+#                            case 'K': //MULTIPLE NUMERICAL QUESTION
+#                                if (trim($value)=="") {
+#                                    $value = "";
+#                                }
+#                                else {
+#                                    $value = sanitize_float($value);
+#                                }
                                 break;
                             case '|': //File Upload
                                 if (!preg_match('/_filecount$/', $sq))
@@ -8116,6 +8507,9 @@ EOD;
                     $qrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$qid] : 0);
                     $sqrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
                     return ($grel && $qrel && $sqrel);
+                case 'onlynum':
+                    return (isset($var[$attr])) ? $var[$attr] : $default;
+                    break;
                 default:
                     print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br />\n";
                     return $default;
@@ -8224,7 +8618,7 @@ EOD;
 
             $LEM =& LimeExpressionManager::singleton();
 
-            $aSurveyInfo=getSurveyInfo($sid, $_SESSION['LEMlang']);
+            $aSurveyInfo=getSurveyInfo($sid,$_SESSION['LEMlang']);
 
             $allErrors = array();
             $warnings = 0;

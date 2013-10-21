@@ -3251,10 +3251,6 @@ function do_multiplenumeric($ia)
             $inputnames[]=$myfname;
         }
         $question_tip = '';
-        if(!$hidetip)
-        {
-            $question_tip .= '<p class="tip default">'.$clang->gT('Only numbers may be entered in these fields')."</p>\n";
-        }
 
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
@@ -3394,7 +3390,7 @@ function do_numerical($ia)
         $answertypeclass .= " integeronly";
         if(is_numeric($fValue))
         {
-            $fValue=number_format($fValue, 0, '', '');
+            //$fValue=number_format($fValue, 0, '', '');
         }
         $integeronly=1;
     }
@@ -3407,6 +3403,7 @@ function do_numerical($ia)
 
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
+    $fValue = rtrim(trim($fValue,"0"),".");
     $fValue = str_replace('.',$sSeparator,$fValue);
 
     if ($thissurvey['nokeyboard']=='Y')
@@ -3425,10 +3422,6 @@ function do_numerical($ia)
     . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\"  title=\"".$clang->gT('Only numbers may be entered in this field.')."\" "
     . "id=\"answer{$ia[1]}\" value=\"{$fValue}\" onkeyup=\"{$checkconditionFunction}(this.value, this.name, this.type,'onchange',{$integeronly})\" "
     . " {$maxlength} />\t{$suffix}\n</p>\n";
-    if ($aQuestionAttributes['hide_tip']==0)
-    {
-        $answer .= "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field.')."</p>\n";
-    }
     // --> END NEW FEATURE - SAVE
 
     $inputnames[]=$ia[1];
@@ -4936,8 +4929,11 @@ function do_array_multitext($ia)
     if ($aQuestionAttributes['numbers_only']==1)
     {
         $checkconditionFunction = "fixnum_checkconditions";
-        $q_table_id = 'totals_'.$ia[0];
-        $q_table_id_HTML = ' id="'.$q_table_id.'"';
+        if(in_array($aQuestionAttributes['show_totals'],array("R","C","B")))
+        {
+            $q_table_id = 'totals_'.$ia[0];
+            $q_table_id_HTML = ' id="'.$q_table_id.'"';
+        }
         $num_class = ' numbers-only';
         $extraclass.=" numberonly";
         $caption.=$clang->gT("Each answers are number. "); 
@@ -5172,7 +5168,9 @@ function do_array_multitext($ia)
             . "\t\t\t\t".$hiddenfield
             . "$answertext\n"
             . "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];}
+            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {
+                $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            }
             $answer .= "\" />\n\t\t\t</th>\n";
             $thiskey=0;
             foreach ($labelcode as $ld)
@@ -5180,6 +5178,10 @@ function do_array_multitext($ia)
 
                 $myfname2=$myfname."_$ld";
                 $myfname2value = isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] : "";
+                if ($aQuestionAttributes['numbers_only']==1)
+                {
+                    $myfname2value = str_replace('.',$sSeparator,$myfname2value);
+                }
                 $answer .= "\t<td class=\"answer_cell_00$ld answer-item text-item\">\n"
                 . "\t\t\t\t<label class=\"hide read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n"
                 . "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
@@ -5223,7 +5225,7 @@ function do_array_multitext($ia)
             else {
                 $radix = 'X';   // to indicate that should not try to change entered values
             }
-            Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-total.js");
+            Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-totalsum.js");
             $answer .= "\n<script type=\"text/javascript\">new multi_set('$q_table_id','$radix');</script>\n";
         }
         else
@@ -5232,7 +5234,7 @@ function do_array_multitext($ia)
 <script type="text/javascript">
 <!--
     $('#question{$ia[0]} .question').delegate('input[type=text]:visible:enabled','blur keyup',function(event){
-        checkconditions($(this).attr('value'), $(this).attr('name'), $(this).attr('type'));
+        {$checkconditionFunction}($(this).attr('value'), $(this).attr('name'), $(this).attr('type'));
         return true;
     })
 // -->

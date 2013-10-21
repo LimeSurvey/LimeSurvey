@@ -268,14 +268,22 @@ class ExpressionManager {
             $this->RDP_AddError(gT("Invalid value(s) on the stack"), $token);
             return false;
         }
-        // TODO:  try to determine datatype?
-        $bNumericArg1 = is_numeric($arg1[0]) || $arg1[0] == '';
-        $bNumericArg2 = is_numeric($arg2[0]) || $arg2[0] == '';
+        // Set bothnumeric only if set to numeric
+        // Not sure if needed to test if [2] is set. : TODO review
+        $bNumericArg1 = ((is_numeric($arg1[0]) || $arg1[0] == '') && (!isset($arg1[2]) || $arg1[2]=='NUMBER'));
+        $bNumericArg2 = ((is_numeric($arg2[0]) || $arg2[0] == '') && (!isset($arg2[2]) || $arg2[2]=='NUMBER'));
         $bStringArg1 = !$bNumericArg1 || $arg1[0] == '';
         $bStringArg2 = !$bNumericArg2 || $arg2[0] == '';
         $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
         $bBothString = ($bStringArg1 && $bStringArg2);
-        $bMismatchType = (!$bBothNumeric && !$bBothString);
+        $bMismatchType=(!$bBothNumeric && !$bBothString);
+        if($bMismatchType){// Try same than JS: if can be numeric: convert to numeric else false
+            if((is_numeric($arg1[0]) || $arg1[0] == '') && (is_numeric($arg2[0]) || $arg2[0] == ''))
+            {
+                $bBothNumeric=true;
+                $bMismatchType=false;
+            }
+        }
         switch(strtolower($token[0]))
         {
             case 'or':
@@ -296,7 +304,7 @@ class ExpressionManager {
                 break;
             case '<':
             case 'lt':
-                if ($bMismatchType) {
+                if ($bMismatchType && false) {
                     $result = array(false,$token[1],'NUMBER');
                 }
                 else {
@@ -335,7 +343,7 @@ class ExpressionManager {
                 break;
             case '>=';
             case 'ge':
-                if ($bMismatchType) {
+                if ($bMismatchType && false) {
                     $result = array(false,$token[1],'NUMBER');
                 }
                 else {
@@ -565,7 +573,8 @@ class ExpressionManager {
                         }
                         if ($relStatus==1)
                         {
-                            $result = array($this->GetVarAttribute($token[0],NULL,''),$token[1],'NUMBER');
+                            $argtype=($this->GetVarAttribute($token[0],'onlynum',0))?"NUMBER":"WORD";
+                            $result = array($this->GetVarAttribute($token[0],NULL,''),$token[1],$argtype);
                         }
                         else
                         {
