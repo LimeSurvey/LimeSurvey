@@ -522,7 +522,12 @@ class tokens extends Survey_Common_Action
         return $this->getTokens_json($iSurveyId, $condition);
     }
 
-    function editToken($iSurveyId) // Used ? 2013-01-29
+    /**
+    * Called by jqGrid if a token is saved after editing
+    * 
+    * @param mixed $iSurveyId The Survey ID
+    */
+    function editToken($iSurveyId) 
     {
         $clang = $this->getController()->lang;
         if (!hasSurveyPermission($iSurveyId, 'tokens', 'update') && !hasSurveyPermission($iSurveyId, 'tokens', 'create'))
