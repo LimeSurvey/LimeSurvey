@@ -5417,10 +5417,7 @@ function GetParticipantAttributes($iSurveyID)
 {
     if (!tableExists("{{tokens_{$iSurveyID}}}") || !$table = Yii::app()->db->schema->getTable('{{tokens_'.$iSurveyID.'}}'))
         return Array();
-    $aFields= array_filter(array_keys($table->columns), 'filterForAttributes');
-    $aTokenAttributes=Survey::model()->findByPk($iSurveyID)->tokenAttributes;
-    if (count($aFields)==0) return  array();
-    return array_intersect_key($aTokenAttributes,array_flip($aFields));
+    return getTokenFieldsAndNames($iSurveyID,true);
 }
 
 
