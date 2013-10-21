@@ -295,7 +295,8 @@ class InstallerController extends CController {
                     // Check if the surveys table exists or not
                     if ($bDBExists == true) {
                         try {
-                            $this->connection->createCommand()->select()->from('{{surveys}}')->queryAll();
+                            if ($dataReader=$this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount==0)  // DBLIB does not throw an exception on a missing table
+                            $bTablesDoNotExist = true;
                         } catch(Exception $e) {
                             $bTablesDoNotExist = true;
                         }
