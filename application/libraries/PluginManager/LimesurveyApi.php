@@ -295,6 +295,12 @@
             return Participant::model()->findByPk($iParticipantID);
         }
 
+        public function getQuestions($surveyId, $language = 'en', $conditions = array())
+        {
+            $conditions['sid'] = $surveyId;
+            $conditions['language'] = $language;
+            return Question::model()->with('subquestions')->findAllByAttributes($conditions);
+        }
         /**
          * Gets the metadata for a table.
          * For details on the object check: http://www.yiiframework.com/doc/api/1.1/CDbTableSchema
