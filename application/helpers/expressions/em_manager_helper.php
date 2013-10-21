@@ -2522,6 +2522,7 @@
                 {
                     $numbers_only="";
                 }
+
                 // other_comment_mandatory
                 // Validation:= sqN <= value (which could be an expression).
                 if (isset($qattr['other_comment_mandatory']) && trim($qattr['other_comment_mandatory']) == '1')
@@ -2537,7 +2538,7 @@
                             case 'L': //LIST drop-down/radio-button list
                                 $eqn = "(" . $sgqa . ".NAOK!='-oth-' || (" . $sgqa . ".NAOK=='-oth-' && !is_empty(trim(" . $sgqa . "other.NAOK))))";
                                 break;
-                            case 'P': //Multiple choice with comments checkbox + text
+                            case 'P': //Multiple choice with comments
                                 $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) || (!is_empty(trim(" . $sgqa . "other.NAOK)) && !is_empty(trim(" . $sgqa . "othercomment.NAOK))))";
                                 break;
                             default:
@@ -2564,6 +2565,46 @@
                     $other_comment_mandatory = '';
                 }
 
+                // other_numbers_only
+                // Validation:= is_numeric(sqN).
+                if (isset($qattr['other_numbers_only']) && trim($qattr['other_numbers_only']) == '1')
+                {
+                    $other_numbers_only = 1;
+                    $eqn='';
+                    if ($this->questionSeq2relevance[$qinfo['qseq']]['other'] == 'Y')
+                    {
+                        $sgqa = $qinfo['sgqa'];
+                        switch ($type)
+                        {
+                            //case '!': //List - dropdown
+                            case 'L': //LIST drop-down/radio-button list
+                            case 'M': //Multiple choice
+                            case 'P': //Multiple choice with
+                                $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) ||is_numeric(" . $sgqa . "other.NAOK))";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    if ($eqn != '')
+                    {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                        'qtype' => $type,
+                        'type' => 'other_numbers_only',
+                        'class' => 'other_numbers_only',
+                        'eqn' => $eqn,
+                        'qid' => $questionNum,
+                        );
+                    }
+                }
+                else
+                {
+                    $other_numbers_only = '';
+                }
 
 
                 // show_totals
@@ -3001,6 +3042,18 @@
                         $othertext = $this->gT('Other:');
                     }
                     $qtips['other_comment_mandatory']=sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
+                }
+
+                // other comment mandatory
+                if ($other_numbers_only!='')
+                {
+                    if (isset($qattr['other_replace_text']) && trim($qattr['other_replace_text']) != '') {
+                        $othertext = trim($qattr['other_replace_text']);
+                    }
+                    else {
+                        $othertext = $this->gT('Other:');
+                    }
+                    $qtips['other_numbers_only']=sprintf($this->gT("Only numbers may be entered in '%s' accompanying text field."),$othertext);
                 }
 
                 // regular expression validation
