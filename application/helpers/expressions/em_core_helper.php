@@ -573,7 +573,7 @@ class ExpressionManager {
                         }
                         if ($relStatus==1)
                         {
-                            $argtype=($this->GetVarAttribute($token[0],'onlynum'))?"NUMBER":"WORD";
+                            $argtype=($this->GetVarAttribute($token[0],'onlynum',0))?"NUMBER":"WORD";
                             $result = array($this->GetVarAttribute($token[0],NULL,''),$token[1],$argtype);
                         }
                         else
