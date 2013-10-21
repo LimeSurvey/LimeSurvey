@@ -329,7 +329,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 * @return array
 */
 function SPSSFieldMap($iSurveyID, $prefix = 'V') {
-    global $clang, $surveyprivate, $tokensexist;
+    global $clang, $surveyprivate;
     
     $typeMap = array(
 '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
@@ -368,7 +368,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
 
     #See if tokens are being used
-    $tokensexist = Yii::app()->db->schema->getTable('{{tokens_'.$iSurveyID . '}}');
+    $bTokenTableExists = tableExists('tokens_'.$iSurveyID);
 
     #Lookup the names of the attributes
     $query="SELECT sid, anonymized, language FROM {{surveys}} WHERE sid=$iSurveyID";
@@ -379,7 +379,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $fieldno=0;
 
     $fields=array();
-    if (isset($tokensexist) && $tokensexist == true && $surveyprivate == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
+    if ($bTokenTableExists && $surveyprivate == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
