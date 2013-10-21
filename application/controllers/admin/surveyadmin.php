@@ -632,7 +632,7 @@ class SurveyAdmin extends Survey_Common_Action
             '<a href="' . $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']) . '">' . $rows['sid'] . '</a>';
 
             //Set Title
-            $aSurveyEntry[] = '<!--' . $rows['surveyls_title'] . '--><a href="' . $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']) . '" title="' . $rows['surveyls_title'] . '">' . $rows['surveyls_title'] . '</a>';
+            $aSurveyEntry[] = '<!--' . flattenText($rows['surveyls_title']) . '--><a href="' . $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']) . '" title="' . flattenText($rows['surveyls_title'])  . '">' . flattenText($rows['surveyls_title'])  . '&nbsp;&nbsp;&nbsp;</a>';
 
             //Set Date
             Yii::import('application.libraries.Date_Time_Converter', true);
