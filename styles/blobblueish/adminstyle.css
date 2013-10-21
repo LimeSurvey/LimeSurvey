@@ -34,10 +34,12 @@ p {
 
 /* Wrapper */
 .wrapper {
+    /*
     min-height: 100%;
     height: auto !important;
     height: 100%;
     margin: 0 auto -40px;
+    */
     background-color:#f8f8ff;
     width:100%;
 }
@@ -46,7 +48,6 @@ p {
 .footer {
     text-align: center;
     color: #9C0;
-    height: 30px;
     background: #121a28;
     margin: 0 auto;
     padding: 5px;

@@ -16,7 +16,7 @@ div.pluginsettings ol {
 }
 
 
-div.pluginsettings form input, div.pluginsettings div.select2-container{
+div.pluginsettings form input, div.pluginsettings form textarea, div.pluginsettings div.select2-container{
     width: 60%;
     display: inline-block;
 }

@@ -39,10 +39,12 @@ hr{
 
 /* Wrapper */
 .wrapper {
+    /*
     min-height: 100%;
     height: auto !important;
     height: 100%;
     margin: 0 auto -40px;
+    */
     background-color:#fefefe;
     width:100%;
 }
@@ -50,7 +52,6 @@ hr{
 /* Administration footer box */
 .footer {
     text-align: center;
-    height: 30px;
     margin: 0 auto;
     padding-top:0.4em;
     border-top: 1px solid #eee;
