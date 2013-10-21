@@ -2369,6 +2369,7 @@ class tokens extends Survey_Common_Action
         if (Yii::app()->request->getQuery('createtable') == "Y")
         {
             createTokenTable($iSurveyId);
+            LimeExpressionManager::SetDirtyFlag();  // LimeExpressionManager needs to know about the new token table
             $this->_renderWrappedTemplate('token', array('message' =>array(
             'title' => $clang->gT("Token control"),
             'message' => $clang->gT("A token table has been created for this survey.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId\")<br /><br />\n"
