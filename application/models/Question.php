@@ -64,12 +64,10 @@
         {
 			$alias = $this->getTableAlias();
             return array(
-            'groups' => array(self::HAS_ONE, 'QuestionGroup', '',
-            'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"
-            ),
-            'parents' => array(self::HAS_ONE, 'Question', '',
-            'on' => "$alias.parent_qid = parents.qid",
-            ),
+                'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
+                'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
+                'subquestions' => array(self::HAS_MANY, 'Question', 'parent_qid', 'on' => "$alias.language = subquestions.language")
+
             );
         }
 
@@ -89,14 +87,14 @@
                 array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
                 array('title,question,help','LSYii_Validators'),
                 array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                        'condition' => 'language=:language AND sid=:sid',
+                        'condition' => 'language=:language AND sid=:sid AND parent_qid IS NULL',
                         'params' => array(
                             ':language' => $this->language,
                             ':sid' => $this->sid
                         )
                     ),
                     'message' => 'Question codes must be unique.'),
-                array('title', 'match', 'pattern' => '/[a-z,A-Z][[:alnum:]]+/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.'),
+                //array('title', 'match', 'pattern' => '/[a-z,A-Z][[:alnum:]]+/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.'),
                 array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
                 array('mandatory', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
                 array('question_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
