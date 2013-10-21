@@ -88,6 +88,15 @@
                         'message'=>'{attribute} "{value}" is already in use.'),
                 array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
                 array('title,question,help','LSYii_Validators'),
+                array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+                        'condition' => 'language=:language AND sid=:sid',
+                        'params' => array(
+                            ':language' => $this->language,
+                            ':sid' => $this->sid
+                        )
+                    ),
+                    'message' => 'Question codes must be unique.'),
+                array('title', 'match', 'pattern' => '/[a-z,A-Z][[:alnum:]]+/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.'),
                 array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
                 array('mandatory', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
                 array('question_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),

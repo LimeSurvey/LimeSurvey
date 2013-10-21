@@ -3679,7 +3679,40 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($insertdata)
                 XSSFilterArray($insertdata);
-            $newsqid =Question::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [5]<br />");
+            $question = new Question();
+            $question->setAttributes($insertdata, false);
+            $attempts = 0;
+            while (!$question->validate(array('title')))
+            {
+                if (is_numeric($question->title))
+                {
+                    $question->title = 'q' . $question->title;
+                }
+                else
+                {
+                    if (!isset($index))
+                    {
+                        $index = 0;
+                        $rand = mt_rand(0, 1024);
+                    }
+                    else
+                    {
+                        $index++;
+                    }
+                    $question->title = 'r' . $rand  . 'q' . $index;
+                }
+                $attempts++;
+                if ($attempts > 10)
+                {
+                    safeDie($clang->gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                }
+            }
+            if (!$question->save())
+            {
+                safeDie($clang->gT("Error while saving: "). print_r($question->errors, true));
+            }
+            $newsqid = $question->qid;
+            //$newsqid =Question::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [5]<br />");
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array
