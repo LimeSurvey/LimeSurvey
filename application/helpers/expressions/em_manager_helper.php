@@ -2697,7 +2697,19 @@
                 // integer for numeric
                 if ($num_value_int_only!='')
                 {
-                    $qtips['value_integer']=$this->gT("Only integer value");
+                    switch ($type)
+                    {
+                        case 'N':
+                            $qtips['default']='';
+                            $qtips['value_integer']=$this->gT("Only integer value may be entered in this field.");
+                            break;
+                        case 'K':
+                            $qtips['default']='';
+                            $qtips['value_integer']=$this->gT("Only integer value may be entered in this fields.");
+                            break;
+                        default:
+                            break;
+                    }
                 }
 
                 // min/max value for each numeric entry - for multi-flexible question type
