@@ -119,7 +119,7 @@ class Authentication extends Survey_Common_Action
     private function _sendPasswordEmail($sEmailAddr, $aFields)
     {
         $clang = $this->getController()->lang;
-        $sFrom = Yii::app()->getConfig('siteadminemail');
+        $sFrom = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
         $sTo = $sEmailAddr;
         $sSubject = $clang->gT('User data');
         $sNewPass = createPassword();
