@@ -1305,7 +1305,6 @@
                 switch ($type)
                 {
                     case 'N': //NUMERICAL QUESTION TYPE
-                    case 'K': //NUMERICAL QUESTION TYPE
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_equs=array();
@@ -1316,6 +1315,44 @@
                                     $sq_equs[] = 'is_numeric('.$sq_name.')';
                                 }else{
                                     $sq_equs[] = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                }
+                                if($type=="K")
+                                    $subqValidSelector = $sq['jsVarName_on'];
+                                else
+                                    $subqValidSelector = "";
+                            }
+                            if (!isset($validationEqn[$questionNum]))
+                            {
+                                $validationEqn[$questionNum] = array();
+                            }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'default',
+                            'class' => 'default',
+                            'eqn' =>  implode(' and ',$sq_equs),
+                            'qid' => $questionNum,
+                            );
+                        }
+                        break;
+                    case 'K': //MULTI NUMERICAL QUESTION TYPE
+                        if ($hasSubqs) {
+                            $subqs = $qinfo['subqs'];
+                            $sq_equs=array();
+                            foreach($subqs as $sq)
+                            {
+                                $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                if(($qinfo['mandatory']=='Y')){
+                                    $sq_equ = 'is_numeric('.$sq_name.')';
+                                }else{
+                                    $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                }
+                                $subqValidSelector = $sq['jsVarName_on'];
+                                if (!is_null($sq_name)) {
+                                    $sq_equs[] = $sq_equ;
+                                    $subqValidEqns[$subqValidSelector] = array(
+                                    'subqValidEqn' => $sq_equ,
+                                    'subqValidSelector' => $subqValidSelector,
+                                    );
                                 }
                             }
                             if (!isset($validationEqn[$questionNum]))
@@ -1328,6 +1365,7 @@
                             'class' => 'default',
                             'eqn' =>  implode(' and ',$sq_equs),
                             'qid' => $questionNum,
+                            'subqValidEqns' => $subqValidEqns,
                             );
                         }
                         break;
@@ -1965,10 +2003,12 @@
                         $subqValidEqns = array();
                         foreach ($subqs as $sq) {
                             $sq_eqn=null;
+                            $subqValidSelector = '';
                             switch ($type)
                             {
-                                case 'N': //NUMERICAL QUESTION TYPE 
                                 case 'K': //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
+                                    $subqValidSelector = $sq['jsVarName_on'];
+                                case 'N': //NUMERICAL QUESTION TYPE 
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
                                     if(($qinfo['mandatory']=='Y')){
                                             $sq_eqn = 'is_int('.$sq_name.')';
