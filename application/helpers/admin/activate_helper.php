@@ -251,8 +251,6 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
 function activateSurvey($iSurveyID, $simulate = false)
 {
-
-
     $createsurvey='';
     $activateoutput='';
     $createsurveytimings='';
@@ -463,7 +461,6 @@ function activateSurvey($iSurveyID, $simulate = false)
     }
     $acquery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$iSurveyID;
     $acresult = Yii::app()->db->createCommand($acquery)->query();
-
     return $aResult;
 }
 
