@@ -735,6 +735,7 @@ class templates extends Survey_Common_Action
     */
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
+        App()->getClientScript()->reset();
         $clang = $this->getController()->lang;
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
