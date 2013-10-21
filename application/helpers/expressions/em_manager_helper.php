@@ -1666,43 +1666,46 @@
                 // input_boxes
                 if (isset($qattr['input_boxes']) && $qattr['input_boxes'] == 1) {
                     $input_boxes=1;
-                    case ':': //Array Numbers
-                        if ($hasSubqs && isset($qattr['input_boxes']) && $qattr['input_boxes'] == 1) {
-                            $subqs = $qinfo['subqs'];
-                            $sq_equs=array();
-                            foreach($subqs as $sq)
-                            {
-                                $sq_name = ($this->sgqaNaming)?substr($sq['jsVarName'],4).".NAOK":$sq['varName'].".NAOK";
-                                if(($qinfo['mandatory']=='Y')){
-                                    $sq_equ = 'is_numeric('.$sq_name.')';
-                                }else{
-                                    $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                    switch($type)
+                    {
+                        case ':': //Array Numbers
+                            if ($hasSubqs && isset($qattr['input_boxes']) && $qattr['input_boxes'] == 1) {
+                                $subqs = $qinfo['subqs'];
+                                $sq_equs=array();
+                                foreach($subqs as $sq)
+                                {
+                                    $sq_name = ($this->sgqaNaming)?substr($sq['jsVarName'],4).".NAOK":$sq['varName'].".NAOK";
+                                    if(($qinfo['mandatory']=='Y')){
+                                        $sq_equ = 'is_numeric('.$sq_name.')';
+                                    }else{
+                                        $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
+                                    }
+                                    $subqValidSelector = $sq['jsVarName_on'];
+                                    if (!is_null($sq_name)) {
+                                        $sq_equs[] = $sq_equ;
+                                        $subqValidEqns[$subqValidSelector] = array(
+                                        'subqValidEqn' => $sq_equ,
+                                        'subqValidSelector' => $subqValidSelector,
+                                        );
+                                    }
                                 }
-                                $subqValidSelector = $sq['jsVarName_on'];
-                                if (!is_null($sq_name)) {
-                                    $sq_equs[] = $sq_equ;
-                                    $subqValidEqns[$subqValidSelector] = array(
-                                    'subqValidEqn' => $sq_equ,
-                                    'subqValidSelector' => $subqValidSelector,
-                                    );
+                                if (!isset($validationEqn[$questionNum]))
+                                {
+                                    $validationEqn[$questionNum] = array();
                                 }
+                                $validationEqn[$questionNum][] = array(
+                                'qtype' => $type,
+                                'type' => 'default',
+                                'class' => 'default',
+                                'eqn' =>  implode(' and ',$sq_equs),
+                                'qid' => $questionNum,
+                                'subqValidEqns' => $subqValidEqns,
+                                );
                             }
-                            if (!isset($validationEqn[$questionNum]))
-                            {
-                                $validationEqn[$questionNum] = array();
-                            }
-                            $validationEqn[$questionNum][] = array(
-                            'qtype' => $type,
-                            'type' => 'default',
-                            'class' => 'default',
-                            'eqn' =>  implode(' and ',$sq_equs),
-                            'qid' => $questionNum,
-                            'subqValidEqns' => $subqValidEqns,
-                            );
-                        }
-                        break;
-                    default:
-                        break;
+                            break;
+                        default:
+                            break;
+                    }
                 }else{
                     $input_boxes="";
                 }
