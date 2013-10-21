@@ -4684,6 +4684,7 @@ function TSVImportSurvey($sFullFilepath)
     }
 
     $rownumber = 1;
+    $lastglang='';
     foreach ($adata as $row)
     {
         $rownumber += 1;
@@ -4698,7 +4699,7 @@ function TSVImportSurvey($sFullFilepath)
                 // when a multi-lang tsv-file without information on the group id/number (old style) is imported,
                 // we make up this information by giving a number 0..[numberofgroups-1] per language.
                 // the number and order of groups per language should be the same, so we can also import these files 
-                if ($lastglang!=$glang)    //reset couner on language change
+                if ($lastglang!=$glang)    //reset counter on language change
                 {
                     $iGroupcounter=0;
                 }
