@@ -612,5 +612,11 @@ $config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'sty
 // Use alias notation, we should move to this format everywhere.
 $config['plugindir']               = 'webroot.plugins';
 
+// (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric caracters; 0 : leave all caracters
+$config['bFixNumAuto']             = 1;
+// (javascript) Send real value entered when using Numeric question type in Expression Manager : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
+$config['bNumRealValue']             = 0;
+
+
 return $config;
 //settings deleted

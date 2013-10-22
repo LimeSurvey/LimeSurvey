@@ -10,18 +10,18 @@
     {TEMPLATEJS}
     {GOOGLE_ANALYTICS_JAVASCRIPT}
 </head>
-<!--[if lt IE 7 ]> <body class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie6 ielt7 ielt8 ielt9 no-js"> <![endif]-->
-<!--[if IE 7 ]> <body class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie7 ielt8 ielt9 no-js"> <![endif]-->
-<!--[if IE 8 ]> <body class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie8ielt9  no-js"> <![endif]-->
-<!--[if IE 9 ]> <body class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie9 no-js"> <![endif]-->
-<!--[if gt IE 9]><!--><body id="body" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} no-js"><!--<![endif]-->
-<script type='text/javascript'>/*<![CDATA[*/(function(H){ H.className=H.className.replace(/\bno-js\b/,'js') })(document.getElementsByTagName('body')[0]);/*]]>*/</script>
-<div id="container">
+<body>
+<!--[if lt IE 7 ]> <div id="container" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie6 ielt7 ielt8 ielt9 no-js"> <![endif]-->
+<!--[if IE 7 ]> <div id="container" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie7 ielt8 ielt9 no-js"> <![endif]-->
+<!--[if IE 8 ]> <div id="container" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie8ielt9  no-js"> <![endif]-->
+<!--[if IE 9 ]> <div id="container" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie9 no-js"> <![endif]-->
+<!--[if gt IE 9]><!--><div id="container" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} no-js"><!--<![endif]-->
+<script type='text/javascript'>/*<![CDATA[*/(function(H){ H.className=H.className.replace(/\bno-js\b/,'js') })(document.getElementById('container'));/*]]>*/</script>
 	<div id="head">
 		<div class="wrapper">
 			<!--<a href="#" title="Made with LimeSurvey" id="link-logo"><img src="{TEMPLATEURL}logo.png" alt=" " id="logo"/></a>-->
 			<div class="tools">{LANGUAGECHANGER}</div><h1 id="sitename">{SITENAME}</h1>
 		</div>
 	</div>
-<div id="title"><h2 id="surveytitle" class="wrapper">{SURVEYNAME}</h2></div>
+	<div id="title"><h2 id="surveytitle" class="wrapper">{SURVEYNAME}</h2></div>
 	<div id="content" class="outerframe">

@@ -977,11 +977,11 @@ class SurveyRuntimeHelper {
         // in order to workaround an not-reproduced issue #4453 (lemeur)
         echo "<input type='text' id='runonce' value='0' style='display: none;'/>";
         
-        // lemradix and var for LemRadix
-        $sLemRadixVarScript=" LEMradix='" . $radix . "';\n"
-                        ." numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');\n"
-                        ." intRegex = new RegExp('[^-0-9]','g');\n";
-        Yii::app()->clientScript->registerScript('LemRadixVarScript',$sLemRadixVarScript,CClientScript::POS_HEAD);
+#        // lemradix and var for LemRadix
+#        $sLemRadixVarScript=" LEMradix='" . $radix . "';\n"
+#                        ." numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');\n"
+#                        ." intRegex = new RegExp('[^-0-9]','g');\n";
+#        Yii::app()->clientScript->registerScript('LemRadixVarScript',$sLemRadixVarScript,CClientScript::POS_HEAD);
 
         $showpopups=Yii::app()->getConfig('showpopups');
         //Display the "mandatory" message on page if necessary

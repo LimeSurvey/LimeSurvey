@@ -71,6 +71,23 @@ $(document).ready(function()
 
 });
 
+/**
+ * setJsVar : Get all global used var
+ */
+function setJsVar(){
+    if (typeof LSvar!="undefined" && LSvar instanceof Object == false) {
+      bFixNumAuto=1;
+      bNumRealValue=0;
+      LEMradix=".";
+    }
+    else {
+      bFixNumAuto=LSvar.bFixNumAuto;
+      bNumRealValue=LSvar.bNumRealValue;
+      LEMradix=LSvar.LEMradix;
+    }
+    numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
+    intRegex = new RegExp('[^-0-9]','g');
+}
 // Deactivate all other button on submit
 function limesurveySubmitHandler(){
     $(document).on("click",".disabled",function(){return false;});
@@ -144,25 +161,25 @@ function checkconditions(value, name, type, evt_type)
  */
 function fixnum_checkconditions(value, name, type, evt_type, intonly)
 {
-    if(typeof bFixNumAuto == 'undefined'){bFixNumAuto=true;} // Allow deactivate fixnum in template or in Plugin
-    if(typeof bNumRealValue == 'undefined'){bNumRealValue=false;} // Allow to update {QCODE} even with text
-
     newval = new String(value);
-    if (typeof intonly !=='undefined' && intonly==1) {
-        newval = newval.replace(intRegex,'');
-    }
-    else {
-        newval = newval.replace(numRegex,'');
-    }
-    aNewval = newval.split(LEMradix);
-    if(aNewval.length>0){
-        newval=aNewval[0];
-    }
-    if(aNewval.length>1){
-        newval=newval+"."+aNewval[1];
-    }
-    if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {// Todo : do it in reg
-        newval = '';
+    if(!bNumRealValue)
+    {
+        if (typeof intonly !=='undefined' && intonly==1) {
+            newval = newval.replace(intRegex,'');
+        }
+        else {
+            newval = newval.replace(numRegex,'');
+        }
+        aNewval = newval.split(LEMradix);
+        if(aNewval.length>0){
+            newval=aNewval[0];
+        }
+        if(aNewval.length>1){
+            newval=newval+"."+aNewval[1];
+        }
+        if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {// Todo : do it in reg
+            newval = '';
+        }
     }
     if(bFixNumAuto)
     {
@@ -179,14 +196,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     {
         evt_type = 'onchange';
     }
-    if(bNumRealValue)
-    {
-        checkconditions(value, name, type, evt_type);
-    }
-    else
-    {
-        checkconditions(newval, name, type, evt_type);
-    }
+    checkconditions(newval, name, type, evt_type);
 }
 
 // Set jquery-ui to LS Button

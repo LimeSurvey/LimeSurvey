@@ -2425,10 +2425,6 @@
                                     }else{
                                         $sq_equs[] = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
                                     }
-                                    if($type=="K")
-                                        $subqValidSelector = $sq['jsVarName_on'];
-                                    else
-                                        $subqValidSelector = "";
                                 }
                                 if (!isset($validationEqn[$questionNum]))
                                 {
