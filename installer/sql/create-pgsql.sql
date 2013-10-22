@@ -359,7 +359,7 @@ CREATE TABLE prefix_saved_control (
 CREATE TABLE prefix_sessions(
       id character varying(32) NOT NULL,
       expire integer DEFAULT NULL,
-      data text,
+      data bytea,
       CONSTRAINT prefix_sessions_pkey PRIMARY KEY ( id )
 );
 
@@ -585,4 +585,4 @@ create unique index permissions_idx2 ON lime_permissions (entity_id, entity_name
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '170');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '171');

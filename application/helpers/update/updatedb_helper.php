@@ -16,7 +16,7 @@
 // where based on the current database version the database is upgraded
 // For this there will be a settings table which holds the last time the database was upgraded
 
-function db_upgrade_all($oldversion) {
+function db_upgrade_all($iOldDBVersion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
     global $modifyoutput, $usertemplaterootdir, $standardtemplaterootdir;
@@ -32,11 +32,11 @@ function db_upgrade_all($oldversion) {
     $sVarchar = Yii::app()->getConfig('varchar');
     $sAutoIncrement  = Yii::app()->getConfig('autoincrement');
 
-	$db = Yii::app()->getDb();
+    $db = Yii::app()->getDb();
     $oTransaction = $db->beginTransaction();
     try
     {
-        if ($oldversion < 111)
+        if ($iOldDBVersion < 111)
         {
             // Language upgrades from version 110 to 111 because the language names did change
 
@@ -56,13 +56,13 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>111),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 112) {
+        if ($iOldDBVersion < 112) {
             // New size of the username field (it was previously 20 chars wide)
             $db->createCommand()->alterColumn('{{users}}','users_name',"{$sVarchar}(64) NOT NULL");
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>112),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 113) {
+        if ($iOldDBVersion < 113) {
             //Fixes the collation for the complete DB, tables and columns
 
             if ($sDBDriverName=='mysql')
@@ -74,7 +74,7 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>113),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 114) {
+        if ($iOldDBVersion < 114) {
             $db->createCommand()->alterColumn('{{saved_control}}','email',"{$sVarchar}(320) NOT NULL");
             $db->createCommand()->alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320) NOT NULL");
             $db->createCommand()->alterColumn('{{users}}','email',"{$sVarchar}(320) NOT NULL");
@@ -82,7 +82,7 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>114),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 126) {
+        if ($iOldDBVersion < 126) {
 
             addColumn('{{surveys}}','printanswers',"{$sVarchar}(1) default 'N'");
             addColumn('{{surveys}}','listpublic',"{$sVarchar}(1) default 'N'");
@@ -148,7 +148,7 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>126),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 127) {
+        if ($iOldDBVersion < 127) {
             modifyDatabase("","create index answers_idx2 on {{answers}} (sortorder)"); echo $modifyoutput;
             modifyDatabase("","create index assessments_idx2 on {{assessments}} (sid)"); echo $modifyoutput;
             modifyDatabase("","create index assessments_idx3 on {{assessments}} (gid)"); echo $modifyoutput;
@@ -165,37 +165,37 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>127),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 128) {
+        if ($iOldDBVersion < 128) {
             upgradeTokens128();
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>128),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 129) {
+        if ($iOldDBVersion < 129) {
             addColumn('{{surveys}}','startdate',"datetime");
             addColumn('{{surveys}}','usestartdate',"{$sVarchar}(1) NOT NULL default 'N'");
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>129),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 130)
+        if ($iOldDBVersion < 130)
         {
             addColumn('{{conditions}}','scenario',"integer NOT NULL default '1'");
             $db->createCommand()->update('{{conditions}}',array('scenario'=>'1'),"(scenario is null) or scenario=0");
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>130),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 131)
+        if ($iOldDBVersion < 131)
         {
             addColumn('{{surveys}}','publicstatistics',"{$sVarchar}(1) NOT NULL default 'N'");
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>131),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 132)
+        if ($iOldDBVersion < 132)
         {
             addColumn('{{surveys}}','publicgraphs',"{$sVarchar}(1) NOT NULL default 'N'");
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>132),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 133)
+        if ($iOldDBVersion < 133)
         {
             addColumn('{{users}}','one_time_pw','binary');
             // Add new assessment setting
@@ -206,11 +206,14 @@ function db_upgrade_all($oldversion) {
             // copy any valid codes from code field to assessment field
             switch ($sDBDriverName){
                 case 'mysql':
+                case 'mysqli':
                     $db->createCommand("UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
                     $db->createCommand("UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
                     // copy assessment link to message since from now on we will have HTML assignment messages
                     $db->createCommand("UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')")->execute();
                     break;
+                case 'sqlsrv':
+                case 'dblib':
                 case 'mssql':
                     try{
                     $db->createCommand("UPDATE {{answers}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
@@ -248,7 +251,7 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>133),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 134)
+        if ($iOldDBVersion < 134)
         {
             // Add new tokens setting
             addColumn('{{surveys}}','usetokens',"{$sVarchar}(1) NOT NULL default 'N'");
@@ -259,13 +262,13 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>134),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 135)
+        if ($iOldDBVersion < 135)
         {
             alterColumn('{{question_attributes}}','value','text');
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>135),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 136) //New Quota Functions
+        if ($iOldDBVersion < 136) //New Quota Functions
         {
             addColumn('{{quota}}','autoload_url',"integer NOT NULL default 0");
             // Create quota table
@@ -282,7 +285,7 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>136),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 137) //New Quota Functions
+        if ($iOldDBVersion < 137) //New Quota Functions
         {
             addColumn('{{surveys_languagesettings}}','surveyls_dateformat',"integer NOT NULL default 1");
             addColumn('{{users}}','dateformat',"integer NOT NULL default 1");
@@ -293,31 +296,31 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>137),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 138) //Modify quota field
+        if ($iOldDBVersion < 138) //Modify quota field
         {
             alterColumn('{{quota_members}}','code',"{$sVarchar}(11)");
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>138),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 139) //Modify quota field
+        if ($iOldDBVersion < 139) //Modify quota field
         {
             upgradeSurveyTables139();
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>139),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 140) //Modify surveys table
+        if ($iOldDBVersion < 140) //Modify surveys table
         {
             addColumn('{{surveys}}','emailresponseto','text');
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>140),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 141) //Modify surveys table
+        if ($iOldDBVersion < 141) //Modify surveys table
         {
             addColumn('{{surveys}}','tokenlength','integer NOT NULL default 15');
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>141),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 142) //Modify surveys table
+        if ($iOldDBVersion < 142) //Modify surveys table
         {
             upgradeQuestionAttributes142();
             $db->createCommand()->alterColumn('{{surveys}}','expires',"datetime");
@@ -327,7 +330,7 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>142),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 143)
+        if ($iOldDBVersion < 143)
         {
             addColumn('{{questions}}','parent_qid','integer NOT NULL default 0');
             addColumn('{{answers}}','scale_id','integer NOT NULL default 0');
@@ -397,7 +400,7 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>143),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 145)
+        if ($iOldDBVersion < 145)
         {
             addColumn('{{surveys}}','savetimings',"{$sVarchar}(1) NULL default 'N'");
             addColumn('{{surveys}}','showXquestions',"{$sVarchar}(1) NULL default 'Y'");
@@ -595,7 +598,7 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>145),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 146) //Modify surveys table
+        if ($iOldDBVersion < 146) //Modify surveys table
         {
             upgradeSurveyTimings146();
             // Fix permissions for new feature quick-translation
@@ -603,14 +606,14 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>146),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 147)
+        if ($iOldDBVersion < 147)
         {
             addColumn('{{users}}','templateeditormode',"{$sVarchar}(7) NOT NULL default 'default'");
             addColumn('{{users}}','questionselectormode',"{$sVarchar}(7) NOT NULL default 'default'");
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>147),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 148)
+        if ($iOldDBVersion < 148)
         {
             addColumn('{{users}}','participant_panel',"integer NOT NULL default 0");
 
@@ -677,7 +680,7 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>148),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 149)
+        if ($iOldDBVersion < 149)
         {
             $fields = array(
             'id' => 'integer',
@@ -690,25 +693,25 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>149),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 150)
+        if ($iOldDBVersion < 150)
         {
             addColumn('{{questions}}','relevance','TEXT');
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>150),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 151)
+        if ($iOldDBVersion < 151)
         {
             addColumn('{{groups}}','randomization_group',"{$sVarchar}(20) NOT NULL default ''");
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>151),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 152)
+        if ($iOldDBVersion < 152)
         {
             $db->createCommand()->createIndex('question_attributes_idx3','{{question_attributes}}','attribute');
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>152),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 153)
+        if ($iOldDBVersion < 153)
         {
             createTable('{{expression_errors}}',array(
             'id' => 'pk',
@@ -725,13 +728,13 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>153),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 154)
+        if ($iOldDBVersion < 154)
         {
             $db->createCommand()->addColumn('{{groups}}','grelevance',"text");
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>154),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 155)
+        if ($iOldDBVersion < 155)
         {
             addColumn('{{surveys}}','googleanalyticsstyle',"{$sVarchar}(1)");
             addColumn('{{surveys}}','googleanalyticsapikey',"{$sVarchar}(25)");
@@ -740,7 +743,7 @@ function db_upgrade_all($oldversion) {
         }
 
 
-        if ($oldversion < 156)
+        if ($iOldDBVersion < 156)
         {
             try
             {
@@ -799,7 +802,7 @@ function db_upgrade_all($oldversion) {
             $oTransaction=$db->beginTransaction();
         }
 
-        if ($oldversion < 157)
+        if ($iOldDBVersion < 157)
         {
             // MySQL DB corrections
             try { setTransactionBookmark(); $db->createCommand()->dropIndex('questions_idx4','{{questions}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
@@ -1002,30 +1005,30 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>157),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 158)
+        if ($iOldDBVersion < 158)
         {
             LimeExpressionManager::UpgradeConditionsToRelevance();
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>158),"stg_name='DBVersion'");
         }
-        if ($oldversion < 159)
+        if ($iOldDBVersion < 159)
         {
             alterColumn('{{failed_login_attempts}}', 'ip', "{$sVarchar}(40)",false);
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>159),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 160)
+        if ($iOldDBVersion < 160)
         {
             alterLanguageCode('it','it-informal');
             alterLanguageCode('it-formal','it');
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>160),"stg_name='DBVersion'");
         }
-        if ($oldversion < 161)
+        if ($iOldDBVersion < 161)
         {
             addColumn('{{survey_links}}','date_invited','datetime NULL default NULL');
             addColumn('{{survey_links}}','date_completed','datetime NULL default NULL');
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>161),"stg_name='DBVersion'");
         }
-        if ($oldversion < 162)
+        if ($iOldDBVersion < 162)
         {
             /* Fix participant db types */
             alterColumn('{{participant_attribute}}', 'value', "text", false);
@@ -1033,7 +1036,7 @@ function db_upgrade_all($oldversion) {
             alterColumn('{{participant_attribute_values}}', 'value', "text", false);
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>162),"stg_name='DBVersion'");
         }
-        if ($oldversion < 163)
+        if ($iOldDBVersion < 163)
         {
             //Replace  by <script type="text/javascript" src="{TEMPLATEURL}template.js"></script> by {TEMPLATEJS}
 
@@ -1042,7 +1045,7 @@ function db_upgrade_all($oldversion) {
 
         }
 
-        if ($oldversion < 164)
+        if ($iOldDBVersion < 164)
         {
             // fix survey tables for missing or incorrect token field
             upgradeSurveyTables164();
@@ -1051,7 +1054,7 @@ function db_upgrade_all($oldversion) {
             // Not updating settings table as upgrade process takes care of that step now
         }
         
-        if ($oldversion < 165)
+        if ($iOldDBVersion < 165)
         {
             $db->createCommand()->createTable('{{plugins}}', array(
                 'id' => 'pk',
@@ -1070,7 +1073,7 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>165),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 166)
+        if ($iOldDBVersion < 166)
         {
             $db->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');
             alterColumn('{{permissions}}', 'permission', "{$sVarchar}(100)", false);
@@ -1095,7 +1098,7 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>166),"stg_name='DBVersion'");
         }
         
-        if ($oldversion < 167)
+        if ($iOldDBVersion < 167)
         {
             addColumn('{{surveys_languagesettings}}', 'attachments', 'text');
             addColumn('{{users}}', 'created', 'datetime');
@@ -1103,7 +1106,7 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>167),"stg_name='DBVersion'");
         }
 
-        if ($oldversion < 168)
+        if ($iOldDBVersion < 168)
         {
             addColumn('{{participants}}', 'created', 'datetime');
             addColumn('{{participants}}', 'modified', 'datetime');
@@ -1113,25 +1116,46 @@ function db_upgrade_all($oldversion) {
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>168),"stg_name='DBVersion'");
         }
 
-		if ($oldversion < 169)
-		{
-			// Add new column for question index options.
-			addColumn('{{surveys}}', 'questionindex', 'integer not null default "0"');
-			// Set values for existing surveys.
-			$db->createCommand('update {{surveys}} set `questionindex` = 0 where `allowjumps` = "Y"')->query();
-			$db->createCommand('update {{surveys}} set `questionindex` = 1 where `allowjumps` = "N"')->query();
+        if ($iOldDBVersion < 169)
+        {
+            // Add new column for question index options.
+            addColumn('{{surveys}}', 'questionindex', 'integer not null default "0"');
+            // Set values for existing surveys.
+            $db->createCommand('update {{surveys}} set `questionindex` = 0 where `allowjumps` = "Y"')->query();
+            $db->createCommand('update {{surveys}} set `questionindex` = 1 where `allowjumps` = "N"')->query();
 
-			// Remove old column.
-			Yii::app()->getDb()->createCommand()->dropColumn('{{surveys}}', 'allowjumps');
-			$db->createCommand()->update('{{settings_global}}',array('stg_value'=>169),"stg_name='DBVersion'");
-		}
+            // Remove old column.
+            Yii::app()->getDb()->createCommand()->dropColumn('{{surveys}}', 'allowjumps');
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>169),"stg_name='DBVersion'");
+        }
         
-        if ($oldversion < 170)
+        if ($iOldDBVersion < 170)
         {
             // renamed advanced attributes fields dropdown_dates_year_min/max
             $db->createCommand()->update('{{question_attributes}}',array('attribute'=>'date_min'),"attribute='dropdown_dates_year_min'");
             $db->createCommand()->update('{{question_attributes}}',array('attribute'=>'date_max'),"attribute='dropdown_dates_year_max'");
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>170),"stg_name='DBVersion'");
+        }
+
+        if ($iOldDBVersion < 171)
+        {
+            dropColumn('{{sessions}}','data');
+            switch ($sDBDriverName){
+                case 'mysql':
+                case 'mysqli':
+                    addColumn('{{sessions}}', 'data', 'LONGBLOB');
+                    break;
+                case 'sqlsrv':
+                case 'dblib':
+                case 'mssql':
+                    addColumn('{{sessions}}', 'data', 'VARBINARY(MAX)');
+                    break;
+                case 'pgsql':
+                    addColumn('{{sessions}}', 'data', 'BYTEA');
+                    break;
+                default: die('Unkown database type');
+            }
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>171),"stg_name='DBVersion'");
         }
         $oTransaction->commit();
     }

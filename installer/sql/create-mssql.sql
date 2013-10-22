@@ -353,7 +353,7 @@ PRIMARY KEY  ([scid])
 CREATE TABLE [prefix_sessions] (
 [id] varchar(32) NOT NULL,
 [expire] int NULL,
-[data] text NULL,
+[data] VARBINARY(MAX),
 PRIMARY KEY ( [id] )
 );
 
@@ -576,4 +576,4 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '170');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '171');

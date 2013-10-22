@@ -356,7 +356,7 @@ CREATE TABLE `prefix_saved_control` (
 CREATE TABLE `prefix_sessions`(
       `id` varchar(32) NOT NULL,
       `expire` int(11) DEFAULT NULL,
-      `data` longtext,
+      `data` longblob,
       PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -581,4 +581,4 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '170');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '171');
