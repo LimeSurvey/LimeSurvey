@@ -12,8 +12,10 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
+// Some function can be launch before document ready (and seems intersting)
 limesurveySubmitHandler();
 needConfirmHandler();
+tableCellAdapters();
 
 $(document).ready(function()
 {
@@ -23,7 +25,6 @@ $(document).ready(function()
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
-	tableCellAdapters();
     if (typeof(focus_element) != 'undefined')
     {
         $(focus_element).focus();
@@ -72,7 +73,7 @@ $(document).ready(function()
 
 // Deactivate all other button on submit
 function limesurveySubmitHandler(){
-    $("#limesurvey").on("click",".disabled",function(){return false;});
+    $(document).on("click",".disabled",function(){return false;});
     $(document).on('click',"button[type='submit'],a.button", function(event){
         $("button[type='submit']").not($(this)).prop('disabled',true);
         $("a.button").not($(this)).addClass('disabled');
@@ -88,7 +89,7 @@ function limesurveySubmitHandler(){
 
 // Ask confirmation on click on .needconfirm
 function needConfirmHandler(){
-    $("body").on('click',".confirm-needed", function(event){
+    $(document).on('click',".confirm-needed", function(event){
         text=$(this).attr('title');
         if (confirm(text)) {
             return true;
@@ -266,21 +267,22 @@ function addClassEmpty()
 
 /**
  * Adapt cell to have a click on cell do a click on input:radio or input:checkbox (if unique)
- * Using delegate the can be outside document.ready
+ * Using delegate the can be outside document.ready (using .on is possible but on $(document) then : less readbale
  * @author Denis Chenu / Shnoulle
  */
 function tableCellAdapters()
 {
-	$('table.question').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label',"click", function(e) {
-		e.stopPropagation();
-	});
-	$('table.question').delegate('tbody td',"click", function() {
-		if($(this).find("input:radio,input:checkbox").length==1)
+//	$('table.question').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label',"click", function(e) {
+//		e.stopPropagation();
+//	});
+	$('table.question').delegate('tbody td',"click",function(event) {
+		var eventTarget=$(event.target).prop("tagName");
+		var eventActivate=$(this).find("input:radio,input:checkbox");
+		if(eventActivate.length==1 && (eventTarget!='INPUT' && eventTarget!='LABEL' ) )
 		{
-			$(this).find("input:radio").click();
-			$(this).find("input:radio").triggerHandler("click");
-			$(this).find("input:checkbox").click();
-			$(this).find("input:checkbox").triggerHandler("click");
+			$(eventActivate).click();
+			$(eventActivate).triggerHandler("click");
+			// Why not use trigger('click'); only ?
 		}
 	});
 }
