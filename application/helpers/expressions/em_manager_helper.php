@@ -2466,8 +2466,8 @@
                                 }
                                 $validationEqn[$questionNum][] = array(
                                 'qtype' => $type,
-                                'type' => 'default',
-                                'class' => 'default',
+                                'type' => 'numbers_only',
+                                'class' => 'numbers_only',
                                 'eqn' =>  implode(' and ',$sq_equs),
                                 'qid' => $questionNum,
                                 'subqValidEqns' => $subqValidEqns,
@@ -2501,8 +2501,8 @@
                                 }
                                 $validationEqn[$questionNum][] = array(
                                 'qtype' => $type,
-                                'type' => 'default',
-                                'class' => 'default',
+                                'type' => 'numbers_only',
+                                'class' => 'numbers_only',
                                 'eqn' =>  implode(' and ',$sq_equs),
                                 'qid' => $questionNum,
                                 'subqValidEqns' => $subqValidEqns,
