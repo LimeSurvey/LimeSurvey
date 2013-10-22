@@ -716,24 +716,14 @@ class statistics_helper {
         elseif ($firstletter == "Q")
         {
             //Build an array of legitimate qid's for testing later
-            $qidquery = Question::model()->findAll("sid=:surveyid AND parent_qid=0", array(":surveyid"=>$surveyid));
-            foreach ($qidquery as $row) { $legitqids[] = $row['qid']; }
-            //get SGQ data
-            list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
-            //separating another ID
-            $tmpqid=substr($qqid, 0, strlen($qqid)-1);
-
-            //check if we have a QID that actually exists. if not create them by substringing. Note that
-            //all of this is due to the fact that when we create a field for an subquestion, we don't separate
-            //the question id from the subquestion id - and this is a weird, backwards way of doing that.
-            while (!in_array ($tmpqid,$legitqids)) $tmpqid=substr($tmpqid, 0, strlen($tmpqid)-1);
-            //length of QID
-            $iQuestionIDlength=strlen($tmpqid);
-            //we somehow get the answer code (see SQL later) from the $qqid
-            $qaid=substr($qqid, $iQuestionIDlength, strlen($qqid)-$iQuestionIDlength);
+            $aQuestionInfo=$fieldmap[substr($rt, 1)];
+            $qsid=$aQuestionInfo['sid'];
+            $qgid=$aQuestionInfo['gid'];
+            $qqid=$aQuestionInfo['qid'];
+            $qaid=$aQuestionInfo['aid'];
 
             //get question data
-            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>substr($qqid, 0, $iQuestionIDlength)));
+            $nresult = Questions::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$qqid));
             $qtitle=$nresult->title;
             $qtype=$nresult->type;
             $qquestion=flattenText($nresult->question);
@@ -744,7 +734,7 @@ class statistics_helper {
             //get answers / subquestion text
             $nresult = Question::model()->find(array('order'=>'question_order',
                                                       'condition'=>'language=:language AND parent_qid=:parent_qid AND title=:title',
-                                                      'params'=>array(':language'=>$language, ':parent_qid'=>substr($qqid, 0, $iQuestionIDlength), ':title'=>$qaid)
+                                                      'params'=>array(':language'=>$language, ':parent_qid'=>$qqid, ':title'=>$qaid)
                                                       ));
             $atext=flattenText($nresult->question);
             //add this to the question title
