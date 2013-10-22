@@ -13,10 +13,6 @@
         <td>Demonstrates that Expression Manager properly detects and categorizes tokens (e.g. variables, string, functions, operators)</td>
     </tr>
     <tr>
-        <td><a href="<?php echo $this->createUrl('admin/expressions/sa/unit'); ?>">Unit Tests of Isolated Expressions</a></td>
-        <td>Unit tests of each of Expression Manager's features (e.g. all operators and functions).  Color coding shows whether any tests fail.  Syntax highlighting shows cases where Expression Manager properly detects bad syntax.</td>
-    </tr>
-    <tr>
         <td><a href="<?php echo $this->createUrl('admin/expressions/sa/strings_with_expressions'); ?>">Unit Tests of Expressions Within Strings</a></td>
         <td>Test how Expression Manager can process strings containing one or more variable, token, or expression replacements surrounded by curly braces.</td>
     </tr>
