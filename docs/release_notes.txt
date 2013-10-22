@@ -60,6 +60,54 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 131009) to 2.00+ (build 131022) Oct 22, 2013
+-New translation: Armenian 
+-New translation: Dari 
+-New translation: Fula 
+-New translation: Georgian 
+-New translation: Gujarati by Parag Agarwal
+-New translation: Kinyarwanda 
+-New translation: Marathi by Parag Agarwal 
+-New translation: Pashto
+-Fixed issue #7610: Failing check for existing database with DBLIB driver (Carsten Schmitz)
+-Fixed issue #8107: Poor error message when user loads previously saved survey (Carsten Schmitz)
+-Fixed issue #8227: Time difference not being applied on update check time (Carsten Schmitz)
+-Fixed issue #8231: Anonymous survery  with tokens allow multiple responses directly after token table creation (Carsten Schmitz)
+-Fixed issue #8261: Quota Tabs in multi lingual survey not displaying properly. (Denis Chenu)
+-Fixed issue #8262: Some buttons in the HTML Editor do not work in Internet Explorer 10 (Carsten Schmitz)
+-Fixed issue #8263: Admin whith ability to update can not update (Denis Chenu)
+-Fixed issue #8264: SQL error when try export to csv an participants with added attributes (Carsten Schmitz)
+-Fixed issue #8265: Entering double dot in a numeric question empty value (Denis Chenu)
+-Fixed issue #8279: JavaScript-Error in date.js (mfaber)
+-Fixed issue #8292: Minor XSS vulnerability in adminstration survey list (Carsten Schmitz)
+-Fixed issue #8295: Data for additional token attributes is not saved (Carsten Schmitz)
+-Fixed issue: Strange characters in language selector (Denis Chenu)
+-Fixed issue: Survey with 'alloweditaftercompletion' allways start at first step (Denis Chenu)
+#Updated translation: Afrikaans by claudiog
+#Updated translation: Bulgarian by DCLXVI
+#Updated translation: Catalan by valdomir
+#Updated translation: Czech by slansky
+#Updated translation: French (France) by DenisChenu
+#Updated translation: French (France) by DenisChenu, arnaud21
+#Updated translation: Georgian by giorgi, c_schmitz
+#Updated translation: German by actxcellence, ResearchOnBlogs
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by hendrikots, c_schmitz
+#Updated translation: Malay by apisznasdin, kayrooldeen
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Occitan by Cedric31
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by tpazos
+#Updated translation: Portuguese (Portugal) by nery, samarta
+#Updated translation: Serbian (Latin script) by OnSpot
+#Updated translation: Slovenian by dusan
+#Updated translation: Spanish (Spain) by valdomir, fercavero
+#Updated translation: Thai by adzpire
+#Updated translation: Turkish by kayazeren
+#Updated translation: Vietnamese by bdthuy, vouhieuso1, votsdb, thanhthao
+
 Changes from 2.00+ (build 130929) to 2.00+ (build 131009) Oct 9, 2013
 -Fixed issue #6502: Unable to import multi-lang surveys (.txt) (mfaber)
 -Fixed issue #7881: Only survey owner has access to the survey (Spiros Trougakos)
