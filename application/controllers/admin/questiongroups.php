@@ -72,6 +72,7 @@ class questiongroups extends Survey_Common_Action
                 $aImportResults = XMLImportGroup($sFullFilepath, $surveyid);
             else
                 $this->getController()->error('Unknown file extension');
+            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
             fixLanguageConsistency($surveyid);
 
             if (isset($aImportResults['fatalerror']))
