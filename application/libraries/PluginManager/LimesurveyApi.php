@@ -196,8 +196,16 @@
             return $output;
         }
 
+        public function getResponses($surveyId, $attributes = array(), $condition = '', $params = array())
+        {
+            return Response::model($surveyId)->findAllByAttributes($attributes, $condition, $params);
+        }
 
 
+        public function getToken($surveyId, $token)
+        {
+            return Token::model($surveyId)->findByAttributes(array('token' => $token));
+        }
         /**
         * Gets a key value list using the group name as value and the group id
         * as key.

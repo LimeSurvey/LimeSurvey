@@ -198,9 +198,7 @@
 
         public function renderHtml($name, array $metaData, $form = null)
         {
-            // Register CKEditor library for inclusion.
-            App()->getClientScript()->registerCoreScript('ckeditor');
-            $out = '';
+           $out = '';
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : '';
             $metaData['class'][] = 'htmleditor';
