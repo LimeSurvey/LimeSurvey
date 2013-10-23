@@ -159,7 +159,7 @@ class Authdb extends AuthPluginBase
                 break;
                 
             case 'doc':
-                $event->set('label', gT("Microsoft Word (Latin charset)"));
+                $event->set('label', gT("Microsoft Word (UTF-8 charset)"));
                 $event->set('onclick', 'document.getElementById("ansfull").checked=true;document.getElementById("ansabbrev").disabled=true;');
                 break;
             
