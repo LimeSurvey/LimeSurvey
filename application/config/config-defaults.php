@@ -559,7 +559,7 @@ $config['InsertansUnsupportedtypes'] = array();
 * Default is 'stable'
 * @var string
 */
-$config['updatenotification'] = 'stable';
+$config['updatenotification'] = 'both';
 
 
 // === Advanced Setup
