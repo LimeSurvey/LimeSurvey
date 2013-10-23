@@ -3305,6 +3305,10 @@ class statistics_helper {
             $search['condition']="CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
         }
 
+        //filter incomplete answers if set
+        if (incompleteAnsFilterState() == "incomplete") {$search['condition'] .= " AND submitdate is null";}
+        elseif (incompleteAnsFilterState() == "complete") {$search['condition'] .= " AND submitdate is not null";}
+        
         //Look for any selects/filters set in the original statistics query, and apply them to the column listing
         if (isset(Yii::app()->session['statistics_selects_'.$surveyid]) && is_array(Yii::app()->session['statistics_selects_'.$surveyid]))
         {
