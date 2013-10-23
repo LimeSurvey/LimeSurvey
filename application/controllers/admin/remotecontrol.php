@@ -2459,7 +2459,85 @@ class remotecontrol_handle
         return base64_encode($sFileData);
     }
 
+    /**
+     * RPC Routine to export all token responses in a survey based on a table column value
+     * Returns the requested file as base64 encoded string
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey
+     * @param string $sAttribute The column name we'll be looking for
+     * @param string $sAttributeValue The value to find
+     * @param string $sDocumentType pdf,csv,xls,doc
+     * @param string $sLanguageCode The language to be used
+     * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to 'all'
+     * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'full'
+     * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
+     * @param array $aFields Optional Selected fields
+     * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
+     * 
+     */
+    public function export_responses_by_attr($sSessionKey, $iSurveyID, $sAttribute, $sAttributeValue, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='full', $sResponseType='short', $aFields=null)
+    {
+        // check session key
+        if (!$this->_checkSessionKey($sSessionKey)) 
+            return array('status' => 'Invalid session key');
 
+        // check user permissions
+        if (!hasSurveyPermission($iSurveyID, 'responses', 'export')) 
+            return array('status' => 'No permission');
+
+        // load LimeSurvey export helper
+        Yii::app()->loadHelper('admin/exportresults');
+
+        // check table metaphysics
+        if (!tableExists('{{survey_' . $iSurveyID . '}}')) 
+            return array('status' => 'No Data');
+
+        // check to see if we have any results before we continue
+        if (!$oResult = Survey_dynamic::model($iSurveyID)->findAllByAttributes(array($sAttribute => $sAttributeValue))) 
+            return array('status' => 'No Response found for attribute '.$sAttribute);
+
+        // our 'WHERE' statement
+        $sFilter = "{{survey_{$iSurveyID}}}.".$sAttribute."='".$sAttributeValue."'";
+
+        // use default language if not specified
+        if (empty($sLanguageCode)) 
+            $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
+
+        // if no fields specified, give them everything?
+        if (is_null($aFields)) 
+            $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
+
+        // if we're exporting to an Excel file, only give them the first 255 fields for what I'm sure is a good reason
+        if($sDocumentType=='xls'){
+           // Cut down to the first 255 fields
+           $aFields=array_slice($aFields,0,255);
+        }
+        
+        // set up some formatting and query settings
+        $oFomattingOptions = new FormattingOptions();
+
+        // the responseMin/MaxRecord set below are used in the exportSurvey function below to determine the range of found records exported
+        // if you have more than a billion records to export you should increase maxRecord
+        $oFomattingOptions->responseMinRecord = 1;
+        $oFomattingOptions->responseMaxRecord = 1000000000;
+        $oFomattingOptions->selectedColumns = $aFields;
+        $oFomattingOptions->responseCompletionState = $sCompletionStatus;
+        $oFomattingOptions->headingFormat = $sHeadingType;
+        $oFomattingOptions->answerFormat = $sResponseType;
+        $oFomattingOptions->output = 'file';
+
+        $oExport = new ExportSurveyResultsService();
+        
+        $sTempFile = $oExport->exportSurvey($iSurveyID, $sLanguageCode, $sDocumentType, $oFomattingOptions, $sFilter);
+        $sFileData = file_get_contents($sTempFile);
+        unlink($sTempFile);
+
+        return base64_encode($sFileData);
+    }
+
+    
     /**
      * Tries to login with username and password
      *
