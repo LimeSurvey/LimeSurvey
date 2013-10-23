@@ -2916,3 +2916,21 @@ function time () {
     // *     results 1: timeStamp > 1000000000 && timeStamp < 2000000000
     return Math.floor(new Date().getTime() / 1000);
 }
+
+// updates the deadings of a dynamic table
+function updateHeadings(tab, rep)
+{
+    tab.find('.repeat').remove();
+    var header = tab.find('thead>tr');
+    var trs = tab.find('tr:visible');
+    trs.each(function(i, tr)
+    {
+        // fix line colors
+        $(tr).removeClass('array1').removeClass('array2').addClass('array' + (1 + i % 2));
+        // add heading but not for the first and the last rows
+        if(i != 0 && i % rep == 0 && i != trs.length-1)
+        {
+            header.clone().addClass('repeat').addClass('headings').insertAfter(tr);
+        }
+    });
+}
