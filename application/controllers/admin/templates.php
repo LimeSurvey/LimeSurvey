@@ -82,9 +82,6 @@ class templates extends Survey_Common_Action
     public function upload()
     {
         $clang = $this->getController()->lang;
-
-//        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'templates.js');
-
         $aViewUrls = $this->_initialise('default', 'welcome', 'startpage.pstpl', FALSE);
         $lid = returnGlobal('lid');
         $action = returnGlobal('action');
@@ -1200,6 +1197,7 @@ class templates extends Survey_Common_Action
         if ($showsummary)
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $otherfiles, $myoutput));
 
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'admin_core.js');
         return $aViewUrls;
     }
 
