@@ -6727,6 +6727,19 @@
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
 
+                        // make sure to update array_filter headings
+                        if( ! empty($LEM->qattr[$arg['qid']]['array_filter'])) {
+                            $repeatheadings = Yii::app()->getConfig("repeatheadings");
+                            if( ! empty($LEM->qattr[$arg['qid']]['repeat_headings'])) {
+                                $repeatheadings = $LEM->qattr[$arg['qid']]['repeat_headings'];
+                            }
+                            if($repeatheadings > 0)
+                            {
+                                $relParts[] = "updateHeadings($('#question".$arg['qid']."').find('table.question'), "
+                                .$repeatheadings.");\n";
+                            }
+                        }
+                        // end
                         $relParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
                         if ($afHide)
                         {
