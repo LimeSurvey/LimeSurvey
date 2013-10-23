@@ -203,7 +203,7 @@ class PluginEvent
             }
             
         }
-        $this->_parameters = array_merge($this->_parameters, $value);
+        $this->_parameters = array_merge_recursive($this->_parameters, $value);
         return $this;
     }
     
