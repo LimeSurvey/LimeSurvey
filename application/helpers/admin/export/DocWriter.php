@@ -27,7 +27,8 @@ class DocWriter extends Writer
         }
         
         
-        $sOutput = '<style>
+        $sOutput = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <style>
         table {
         border-collapse:collapse;
         }
