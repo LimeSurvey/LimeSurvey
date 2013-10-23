@@ -3,7 +3,7 @@ var idexternal=parseInt(3);
 
 function checkbounces() {
     $("#dialog-modal").dialog('open');
-    $('#dialog-modal').html('<p><img style="margin-top:42px" src="../images/ajax-loader.gif" width="200" height="25" /></p>');
+    $('#dialog-modal').html('<p><img style="margin-top:42px" src="'+imageurl+'ajax-loader.gif" /></p>');
     $('#dialog-modal').load(sBounceProcessingURL);
 }
 
