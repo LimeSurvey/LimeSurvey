@@ -67,7 +67,7 @@ class InstallerConfigForm extends CFormModel
 			// Database
             array('dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'),
 			array('dbpwd, dbprefix', 'safe', 'on' => 'database'),
-			array('dbtype', 'in', 'range' => array_keys(CDbConnection::getAvailableDrivers()), 'on' => 'database'),
+			array('dbtype', 'in', 'range' => array_keys($this->supported_db_types), 'on' => 'database'),
 
 			//Optional
 			array('adminLoginName, adminName, siteName, confirmPwd', 'safe', 'on' => 'optional'),
