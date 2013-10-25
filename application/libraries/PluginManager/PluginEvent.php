@@ -71,7 +71,14 @@ class PluginEvent
      */
     public function get($key = null, $default = null)
     {
-        return Hash::get($this->_parameters, $key);
+        if (!Hash::check($this->_parameters, $key))
+        {
+            return $default;
+        }
+        else
+        {
+            return Hash::get($this->_parameters, $key);
+        }
     }
     
     /**
