@@ -1,4 +1,7 @@
 <?php
+
+Yii::import('application.helpers.Hash');
+
 class PluginEvent
 {
     /**
@@ -68,38 +71,7 @@ class PluginEvent
      */
     public function get($key = null, $default = null)
     {
-        if ($key != null)
-        {
-            $keys = explode('.', $key);
-            $array = $this->_parameters;
-
-            // Retrieve using dot notation.
-            while (count($keys) > 1)
-            {
-                $first = array_shift($keys);
-                if  (isset($array[$first]))
-                {
-                    $array = $array[$first];
-                }
-                else
-                {
-                    return $default;
-                }
-            }
-
-            if (isset($array[$keys[0]]))
-            {
-                return $array[$keys[0]];
-            }
-            else
-            {
-                return $default;
-            }
-        }
-        else
-        {
-            return $this->_parameters;
-        }
+        return Hash::get($this->_parameters, $key);
     }
     
     /**
@@ -188,22 +160,7 @@ class PluginEvent
      */
     public function set($key, $value)
     {
-        // Split by . to allow for arrays using dotnotation.
-        $keys = explode('.', $key);
-        while (count($keys) > 0)
-        {
-            $key = array_pop($keys);
-            if ($key == '')
-            {
-                $value = array($value);
-            }
-            else
-            {
-                $value = array($key => $value);
-            }
-            
-        }
-        $this->_parameters = array_merge_recursive($this->_parameters, $value);
+        $this->_parameters = Hash::insert($this->_parameters, $key, $value);
         return $this;
     }
     
