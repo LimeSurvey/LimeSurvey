@@ -1558,7 +1558,12 @@ class quexmlpdf extends pdf {
 		foreach($questionnaire['sections'] as $sk => $sv)
 		{
 			//link the section title with the first question for pagination purposes
-			$questions = count($sv['questions']);
+            if (isset($sv['questions'])) 
+            {
+                $questions = count($sv['questions']);
+            }
+            else $questions=0;
+            
 			
 			$this->startTransaction();
 			$this->addSection($sv['text'],$sv['title'],$sv['info']);

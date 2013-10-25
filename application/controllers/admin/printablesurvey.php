@@ -234,7 +234,7 @@ class printablesurvey extends Survey_Common_Action
                         $x=0;
 
                         $conditions1="qid={$deqrow['qid']} AND scenario={$scenariorow['scenario']}";
-                        $distinctresult=Condition::model()->getSomeConditions(array('cqid','method', 'cfieldname', 'value'), $conditions1, array('cqid'),array('cqid', 'method','cfieldname','value'));
+                        $distinctresult=Condition::model()->getSomeConditions(array('cqid','method', 'cfieldname'), $conditions1, array('cqid'),array('cqid', 'method','cfieldname'));
 
                         //Loop through each condition for a particular scenario.
                         foreach ($distinctresult->readAll() as $distinctrow)
@@ -283,13 +283,6 @@ class printablesurvey extends Survey_Common_Action
                                 else
                                 {
                                     $sExplanation .= $clang->gT("Answer was")." ";
-                                }
-                                if($distinctrow['value'] == '') {
-                                    $sExplanation .= ' '.$clang->gT("Not selected").' ';
-                                }
-                                //If question type is numerical or multi-numerical, show the actual value - otherwise, don't.
-                                if($subresult['type'] == 'N' || $subresult['type'] == 'K') {
-                                    $sExplanation .= ' '.$distinctrow['value']. ' ';
                                 }
                             }
                             if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
@@ -359,6 +352,7 @@ class printablesurvey extends Survey_Common_Action
                                     case "B":
                                     case ":":
                                     case ";":
+                                    case "5":
                                         $conditions[]=$conrow['value'];
                                         break;
                                     case "C":
@@ -429,6 +423,7 @@ class printablesurvey extends Survey_Common_Action
                                         $conditions = array_unique($conditions);
                                         break;
                                     case "N":
+                                    case "K":
                                         $conditions[]=$value;
                                         break;
                                     case "F":
