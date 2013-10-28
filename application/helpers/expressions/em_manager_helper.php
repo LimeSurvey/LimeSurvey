@@ -6727,10 +6727,13 @@
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
 
-                        // make sure to update array_filter headings
+                        // make sure to update array_filter headings and colors
                         if( ! empty($LEM->qattr[$arg['qid']]['array_filter'])) {
+                            // js to fix colors
+                            $relParts[] = "updateColors($('#question".$arg['qid']."').find('table.question'));\n";
+                            // js to fix headings
                             $repeatheadings = Yii::app()->getConfig("repeatheadings");
-                            if( ! empty($LEM->qattr[$arg['qid']]['repeat_headings'])) {
+                            if(isset($LEM->qattr[$arg['qid']]['repeat_headings']) && $LEM->qattr[$arg['qid']]['repeat_headings'] !== "") {
                                 $repeatheadings = $LEM->qattr[$arg['qid']]['repeat_headings'];
                             }
                             if($repeatheadings > 0)
