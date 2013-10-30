@@ -146,6 +146,9 @@ class export extends Survey_Common_Action {
 
         Yii::app()->loadHelper("admin/exportresults");
 
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . '/exportresults.js');
+
         $surveybaselang = Survey::model()->findByPk($iSurveyID)->language;
         $exportoutput = "";
 
@@ -182,12 +185,19 @@ class export extends Survey_Common_Action {
                 $selectshow = "selected='selected'";
             }
 
+            $aFields=array();
+            foreach($aFieldMap as $sFieldName=>$fieldinfo)
+            {
+                $sCode=viewHelper::getFieldCode($fieldinfo);
+                $aFields[$sCode]=$sCode.' - '.htmlspecialchars(ellipsize(html_entity_decode(viewHelper::getFieldText($fieldinfo)),30,.6,'...'));
+            }
+            
             $data['SingleResponse']=(int)returnGlobal('id');
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
             $data['selectinc'] = $selectinc;
             $data['afieldcount'] = $iFieldCount;
-            $data['excesscols'] = $aFieldMap;
+            $data['aFields'] = $aFields;
 
             //get max number of datasets
             $iMaximum = SurveyDynamic::model($iSurveyID)->getMaxId();

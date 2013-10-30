@@ -141,25 +141,21 @@ class Authdb extends AuthPluginBase
         $type = $event->get('type');
         
         switch ($type) {
-            case 'csv':
-                $event->set('label', gT("CSV File (All charsets)"));
-                if (!function_exists('iconv')) {
-                    $event->set('default', true);
-                }
+            case 'csv':                 
+                $event->set('label', gT("CSV"));
+                $event->set('default', true);
                 break;
                 
             case 'xls':
-                $label = gT("Microsoft Excel (All charsets)");
-                if (function_exists('iconv')) {
-                    $event->set('default', true);
-                } else {
+                $label = gT("Microsoft Excel");
+                if (!function_exists('iconv')) {
                     $label .= '<font class="warningtitle">'.$clang->gT("(Iconv Library not installed)").'</font>';
                 }
                 $event->set('label', $label);
                 break;
                 
             case 'doc':
-                $event->set('label', gT("Microsoft Word (UTF-8 charset)"));
+                $event->set('label', gT("Microsoft Word"));
                 $event->set('onclick', 'document.getElementById("ansfull").checked=true;document.getElementById("ansabbrev").disabled=true;');
                 break;
             
@@ -187,12 +183,12 @@ class Authdb extends AuthPluginBase
         
         // Yes we overwrite existing classes if available
         $className = get_class();
-        $exports['doc'] = $className;
+        $exports['csv'] = $className;
         $exports['xls'] = $className;
         $exports['pdf'] = $className;
         $exports['html'] = $className;
         $exports['json'] = $className;
-        $exports['csv'] = $className;
+        $exports['doc'] = $className;
         
         $event->set('exportplugins', $exports);
     }
