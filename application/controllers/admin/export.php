@@ -189,7 +189,7 @@ class export extends Survey_Common_Action {
             foreach($aFieldMap as $sFieldName=>$fieldinfo)
             {
                 $sCode=viewHelper::getFieldCode($fieldinfo);
-                $aFields[$sCode]=$sCode.' - '.htmlspecialchars(ellipsize(html_entity_decode(viewHelper::getFieldText($fieldinfo)),30,.6,'...'));
+                $aFields[$sFieldName]=$sCode.' - '.htmlspecialchars(ellipsize(html_entity_decode(viewHelper::getFieldText($fieldinfo)),30,.6,'...'));
             }
             
             $data['SingleResponse']=(int)returnGlobal('id');
