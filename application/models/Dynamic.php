@@ -12,9 +12,8 @@
 		protected $id;
 
 		public function __construct($scenario = 'insert') {
-			parent::__construct($scenario);
-			list(,$this->id)=explode('_', get_class($this));
-			//$this->id = explode('_', get_class($this))[1];
+            list(,$this->id)=explode('_', get_class($this));
+            parent::__construct($scenario);
 		}
 
 		/**
