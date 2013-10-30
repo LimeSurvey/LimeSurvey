@@ -320,37 +320,13 @@ class tokens extends Survey_Common_Action
         {
             $end = 0;
         }
+        $order = Yii::app()->request->getPost('order','tid');
+        $order = preg_replace('/[^_ a-z0-9-]/i', '', $order);
 
-        $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
         $aData['next'] = $next;
         $aData['last'] = $last;
         $aData['end'] = $end;
-        $limit = Yii::app()->request->getPost('limit');
-        $start = Yii::app()->request->getPost('start');
         $searchstring = Yii::app()->request->getPost('searchstring');
-        $order = Yii::app()->request->getPost('order');
-        $order = preg_replace('/[^_ a-z0-9-]/i', '', $order);
-        if ($order == '')
-        {
-            $order = 'tid';
-        }
-
-        $iquery = '';
-        if (!empty($searchstring))
-        {
-            $idata = array("firstname", "lastname", "email", "emailstatus", "token");
-            $iquery = array();
-            foreach ($idata as $k)
-                $iquery[] = $k . ' LIKE "' . $searchstring . '%"';
-            $iquery = '(' . implode(' OR ', $iquery) . ')';
-        }
-
-        $tokens = Tokens_dynamic::model($iSurveyId)->findAll(array('condition' => $iquery, 'limit' => $limit, 'offset' => $start, 'order' => $order));
-        $aData['bresult'] = array();
-        foreach ($tokens as $token)
-        {
-            $aData['bresult'][] = $token->attributes;
-        }
 
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['searchstring'] = $searchstring;
