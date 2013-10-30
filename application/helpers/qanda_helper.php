@@ -3490,7 +3490,17 @@ function do_multiplenumeric($ia)
         $question_tip = '';
         if($hidetip == 0)
         {
-            $question_tip .= '<p class="tip">'.$clang->gT('Only numbers may be entered in these fields')."</p>\n";
+            $question_tip .= '<p class="tip">';
+            if ($slider_layout)
+            {
+                $question_tip .= $clang->gT('Only numbers may be entered in these fields');    
+            }
+            else
+            {
+                $question_tip .= $clang->gT('Please click and drag the slider handles to enter your answer.');    
+            }
+            $question_tip .= "</p>\n";    
+            
         }
         //        if ($max_num_value)
         //        {
