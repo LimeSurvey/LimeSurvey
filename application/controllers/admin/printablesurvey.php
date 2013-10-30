@@ -235,7 +235,7 @@ class printablesurvey extends Survey_Common_Action
                         $x=0;
 
                         $conditions1="qid={$deqrow['qid']} AND scenario={$scenariorow['scenario']}";
-                        $distinctresult=Condition::model()->getSomeConditions(array('cqid','method', 'cfieldname'), $conditions1, array('cqid'),array('cqid', 'method','cfieldname'));
+                        $distinctresult=Conditions::model()->getSomeConditions(array('cqid','method', 'cfieldname'), $conditions1, array('cqid'),array('cqid', 'method','cfieldname'));
 
                         //Loop through each condition for a particular scenario.
                         foreach ($distinctresult->readAll() as $distinctrow)
