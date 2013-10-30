@@ -3251,7 +3251,21 @@ function do_multiplenumeric($ia)
             $inputnames[]=$myfname;
         }
         $question_tip = '';
-
+        if($hidetip == 0)
+        {
+            $question_tip .= '<p class="tip">';
+            if ($slider_layout)
+            {
+                $question_tip .= $clang->gT('Only numbers may be entered in these fields');    
+            }
+            else
+            {
+                $question_tip .= $clang->gT('Please click and drag the slider handles to enter your answer.');    
+            }
+            $question_tip .= "</p>\n";    
+            
+        }
+ 
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
         || trim($aQuestionAttributes['max_num_value']) != ''
