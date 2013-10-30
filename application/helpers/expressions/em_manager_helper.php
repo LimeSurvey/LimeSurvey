@@ -2881,7 +2881,14 @@
                         $qtips['default']=$this->gT("Only numbers may be entered in this field.");
                         break;
                     case 'K':
-                        $qtips['default']=$this->gT("Only numbers may be entered in these fields.");
+                        if ($qattr['slider_layout'])
+                        {
+                            $qtips['default']=$this->gT('Please click and drag the slider handles to enter your answer.'); 
+                        }
+                        else
+                        {
+                            $qtips['default']=$this->gT("Only numbers may be entered in these fields.");
+                        }
                         break;
                     case 'R':
                         $qtips['default']=$this->gT("All your answers must be different.");
