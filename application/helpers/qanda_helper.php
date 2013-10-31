@@ -3250,8 +3250,6 @@ function do_multiplenumeric($ia)
             $fn++;
             $inputnames[]=$myfname;
         }
-        $question_tip = '';
-
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
         || trim($aQuestionAttributes['max_num_value']) != ''
@@ -3275,7 +3273,7 @@ function do_multiplenumeric($ia)
             . "$suffix</span>\n"
             . "\t</li>\n";
         }
-        $answer .= $question_tip."<ul class=\"subquestions-list questions-list text-list {$prefixclass}-list\">\n".$answer_main."</ul>\n";
+        $answer .= "<ul class=\"subquestions-list questions-list text-list {$prefixclass}-list\">\n".$answer_main."</ul>\n";
     }
 
     if($aQuestionAttributes['slider_layout']==1)

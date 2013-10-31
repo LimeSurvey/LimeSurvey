@@ -8,6 +8,21 @@ class CsvWriter extends Writer
      * The open filehandle
      */
     private $file = null;
+    
+    /**
+     * The filename to use for the resulting file when output = display
+     * 
+     * @var string 
+     */
+    protected $csvFilename = '';
+    
+    /**
+     * Should headers be output? For example spss and r export use more or less 
+     * the same output but do not need headers at all.
+     *
+     * @var boolean
+     */
+    protected $doHeaders = true;
 
     function __construct()
     {
@@ -19,10 +34,10 @@ class CsvWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
-        if ($oOptions->output=='display') {
-            header("Content-Disposition: attachment; filename=results-survey".$survey->id.".csv");
-            header("Content-type: text/comma-separated-values; charset=UTF-8");
-        } elseif ($oOptions->output == 'file') {
+        
+        $this->csvFilename = "results-survey".$survey->id.".csv";
+        
+        if ($oOptions->output == 'file') {
             $this->file = fopen($this->filename, 'w');
         }
         
@@ -33,14 +48,22 @@ class CsvWriter extends Writer
         $sRecord='';
         if(!$this->hasOutputHeader)
         {
-            $index = 0;
-            foreach ($headers as $header)
-            {
-                $headers[$index] = $this->csvEscape($header);
-                $index++;
+            if ($oOptions->output=='display') {
+                header("Content-Disposition: attachment; filename=" . $this->csvFilename);
+                header("Content-type: text/comma-separated-values; charset=UTF-8");
             }
-            //Output the header...once and only once.
-            $sRecord.=implode($this->separator, $headers);
+            
+            // If we don't want headers in our csv, for example in exports like r/spss etc. we suppress the header by setting this switch in the init
+            if ($this->doHeaders == true) {
+                $index = 0;
+                foreach ($headers as $header)
+                {
+                    $headers[$index] = $this->csvEscape($header);
+                    $index++;
+                }
+                //Output the header...once and only once.
+                $sRecord.=implode($this->separator, $headers) . PHP_EOL;
+            }
             $this->hasOutputHeader = true;
         }
         //Output the values.
@@ -50,7 +73,7 @@ class CsvWriter extends Writer
             $values[$index] = $this->csvEscape($value);
             $index++;
         }
-        $sRecord.=PHP_EOL.implode($this->separator, $values);
+        $sRecord.= implode($this->separator, $values) . PHP_EOL;
         if ($oOptions->output=='display')
         {
             echo $sRecord; 

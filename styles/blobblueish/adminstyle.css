@@ -1335,16 +1335,16 @@ thead tr .headerSortDown, thead tr .headerSortUp {
 div.left
 {
     float:left;
-    width:300px;
+    width:400px;
 }
 
 div.right {
     float:right;
-    width:300px;
+    width:400px;
 }
 
 .wrap2columns {
-    width:600px;
+    width:800px;
     margin:0 auto;
 }
 

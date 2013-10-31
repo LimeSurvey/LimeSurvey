@@ -70,7 +70,7 @@
                 <a href='<?php echo $this->createUrl("admin/export/sa/exportspss/sid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>exportspss.png' alt="<?php $clang->eT("Export results to a SPSS/PASW command file"); ?>" /></a>
 
-                <a href='<?php echo $this->createUrl("admin/export/sa/exportr/sid/$surveyid"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>exportr.png' alt='<?php $clang->eT("Export results to a R data file"); ?>' /></a>
                 <?php
                 }

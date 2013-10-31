@@ -1,8 +1,14 @@
 <?php
 Yii::import('application.helpers.admin.export.*');
 class RDataWriter extends CsvWriter {
-    public function init(\SurveyObj $survey, $sLanguageCode, \FormattingOptions $oOptions) {
+    public function init(\SurveyObj $survey, $sLanguageCode, \FormattingOptions $oOptions) {       
         parent::init($survey, $sLanguageCode, $oOptions);
+        
+        // Change filename
+        $this->csvFilename = 'survey_' . $survey->id .'_R_data_file.csv';
+        // Skip the first line with headers
+        $this->doHeaders = false;
+        
         $oOptions->answerFormat = "short";      // force answer codes
         $oOptions->convertN = true;
         $oOptions->nValue = 1;

@@ -1,3 +1,8 @@
+<script type="text/javascript">
+    var sMsgMaximumExcelColumns = '<?php $clang->eT("You can only choose 255 colums at a maximum for Excel export.",'js'); ?>';
+    var sMsgExcelColumnsReduced = '<?php $clang->eT("The number of selected columns was reduced automatically.",'js'); ?>';
+    var sMsgColumnCount = '<?php $clang->eT("%s of %s columns selected",'js'); ?>';
+</script>
 <div class='header ui-widget-header'><?php $clang->eT("Export results");?>
     <?php     if (isset($_POST['sql'])) {echo" - ".$clang->gT("Filtered from statistics script");}
         if ($SingleResponse) {
@@ -61,8 +66,8 @@
             <?php } ?>
             ><legend><?php $clang->eT("General");?></legend>
 
-                <ul><li><label><?php $clang->eT("Range:");?></label> <?php $clang->eT("From");?> <input type='text' name='export_from' size='8' value='1' />
-                        <?php $clang->eT("to");?> <input type='text' name='export_to' size='8' value='<?php echo $max_datasets;?>' /></li>
+                <ul><li><label><?php $clang->eT("Range:");?></label><br> <?php $clang->eT("From");?> <input type='text' name='export_from' size='7' value='1' />
+                        <?php $clang->eT("to");?> <input type='text' name='export_to' size='7' value='<?php echo $max_datasets;?>' /></li>
 
                     <li><br /><label for='completionstate'><?php $clang->eT("Completion state");?></label> <select id='completionstate' name='completionstate'>
                             <option value='complete' <?php echo $selecthide;?>><?php $clang->eT("Completed responses only");?></option>
@@ -113,41 +118,12 @@
                     <input type='hidden' name='response_id' value="<?php echo $SingleResponse;?>" />
                     <?php }
                     $clang->eT("Choose columns");?>:
-
-                <?php if ($afieldcount > 255) {
-                        echo "\t<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
-                        .$clang->gT("Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below.","js")
-                        ."\")' />";
-                    }
-                    else
-                    {
-                        echo "\t<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
-                        .$clang->gT("Choose the columns you wish to export.","js")
-                        ."\")' />";
-                } ?>
-                <br /><select name='colselect[]' multiple size='20'>
-                    <?php $i=1;
-                        foreach($excesscols as $sFieldName=>$fieldinfo)
-                        {
-                            $questiontext=viewHelper::getFieldText($fieldinfo);
-                            $questioncode=viewHelper::getFieldCode($fieldinfo);
-                            echo "<option value='{$sFieldName}'";
-                            if (isset($_POST['summary']))
-                            {
-                                if (in_array($ec, $_POST['summary']))
-                                {
-                                    echo "selected";
-                                }
-                            }
-                            elseif ($i<256)
-                            {
-                                echo " selected";
-                            }
-                            echo " title='{$sFieldName} : ".str_replace("'", "&#39;",$questiontext)."'>".ellipsize("{$i} : {$questioncode} - ".str_replace(array("\r\n", "\n", "\r"), " ", $questiontext),45)."</option>\n";
-                            $i++;
-                    } ?>
-                </select>
-                <br />&nbsp;</fieldset>
+                <br />
+                <?php 
+                echo CHtml::listBox('colselect[]',array_keys($aFields),$aFields,array('multiple'=>'multiple','size'=>'20','style'=>'width:370px;'));
+                echo "\t<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\"".$clang->gT("Please note: The export to Excel is currently limited to loading no more than 255 columns.","js")."\")'>";?>
+                <span id='columncount'>&nbsp;</span>
+                </fieldset>
             <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && Permission::model()->hasSurveyPermission($surveyid,'tokens','read')) { ?>
                 <fieldset><legend><?php $clang->eT("Token control");?></legend>
                     <?php $clang->eT("Choose token fields");?>:
