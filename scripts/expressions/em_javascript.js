@@ -530,7 +530,6 @@ function LEMval(alias)
             if (value === '') {
                 return '';
             }
-
             if (suffix == 'value' || suffix == 'valueNAOK') {
                 // if in assessment mode, this returns the assessment value
                 // in non-assessment mode, this is identical to .code
@@ -612,7 +611,7 @@ function LEMval(alias)
                 if (value.length > 0 && value[0]==0) {
                     return value;   // so keep 0 prefixes on numbers
                 }
-                return ''+value;  // convert it to string return type: because we need string compare
+                return +value;  // convert it to numeric
             }
         }
         case 'rowdivid':

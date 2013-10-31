@@ -254,7 +254,7 @@ class ExpressionManager {
      * @return boolean - false if there is any error, else true
      */
 
-       private function RDP_EvaluateBinary(array $token)
+     private function RDP_EvaluateBinary(array $token)
     {
         if (count($this->RDP_stack) < 2)
         {
@@ -270,18 +270,20 @@ class ExpressionManager {
         }
         // Set bothnumeric only if set to numeric
         // Not sure if needed to test if [2] is set. : TODO review
-        $bNumericArg1 = ((is_numeric($arg1[0]) || $arg1[0] == '') && (!isset($arg1[2]) || $arg1[2]=='NUMBER'));
-        $bNumericArg2 = ((is_numeric($arg2[0]) || $arg2[0] == '') && (!isset($arg2[2]) || $arg2[2]=='NUMBER'));
+        $bNumericArg1 = (is_numeric($arg1[0]) || $arg1[0] == '');
+        $bNumericArg2 = (is_numeric($arg2[0]) || $arg2[0] == '');
         $bStringArg1 = !$bNumericArg1 || $arg1[0] == '';
         $bStringArg2 = !$bNumericArg2 || $arg2[0] == '';
         $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
         $bBothString = ($bStringArg1 && $bStringArg2);
         $bMismatchType=(!$bBothNumeric && !$bBothString);
-        if($bMismatchType){// Try same than JS: if can be numeric: convert to numeric else false
-            if((is_numeric($arg1[0]) || $arg1[0] == '') && (is_numeric($arg2[0]) || $arg2[0] == ''))
+        if($bMismatchType){
+            if(!((isset($arg2[2]) && $arg2[2]=='NUMBER') || (isset($arg1[2]) && $arg1[2]=='NUMBER')))
             {
-                $bBothNumeric=true;
+                $bBothString=true;
                 $bMismatchType=false;
+                $arg1[0]=strval($arg1[0]);
+                $arg2[0]=strval($arg2[0]);
             }
         }
         switch(strtolower($token[0]))
