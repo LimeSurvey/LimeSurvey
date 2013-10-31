@@ -60,6 +60,38 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.00+ (build 131022) to 2.00+ (build 131031) Oct 31, 2013
++New translation: Tamil by seesiva
+-Updated feature: Revised favicon kindly provided by mrasquinho (Carsten Schmitz)
+-Fixed issue #7782: HTML5 misinterpretation of <track> nesting (Carsten Schmitz)
+-Fixed issue #8073: PHP notice on survey_logic_file after importing a question group (Carsten Schmitz)
+-Fixed issue #8173: High memory usage when using alot of tokens, particularly with MSSQL (Carsten Schmitz)
+-Fixed issue #8267: Conditions in print view are incorrect and duplicated when referring to certain question types (Carsten Schmitz)
+-Fixed issue #8285: Exporting statistics with "Show text responses inline" enabled is showing inclomplete answers also (Carsten Schmitz)
+-Fixed issue #8288: Error during statistics for multiple text question type (Carsten Schmitz)
+-Fixed issue #8312: Bounce checker progress bar broken (Carsten Schmitz)
+-Fixed issue #8320: Faulty hint text with sliders (Carsten Schmitz)
+-Fixed issue: Printable survey broken (Carsten Schmitz)
+#Updated translation: Catalan by valdomir
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by kirsikka
+#Updated translation: French (France) by arnaud21, DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Persian by ashkesarmaa
+#Updated translation: Polish by elisa
+#Updated translation: Slovenian by dusan
+#Updated translation: Spanish (Spain) by valdomir, xtingray, kadejo, Nodens, aesteban
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.00+ (build 131009) to 2.00+ (build 131022) Oct 22, 2013
 -New translation: Armenian 
 -New translation: Dari 
