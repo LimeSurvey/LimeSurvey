@@ -597,6 +597,13 @@
         $supportedLanguages['sv']['dateformat'] = 6;
         $supportedLanguages['sv']['radixpoint'] = 1;
 
+        // Tamil
+        $supportedLanguages['ta']['description'] = $clang->gT('Tamil');
+        $supportedLanguages['ta']['nativedescription'] = '&#2980;&#2990;&#3007;&#2996;&#3021;';
+        $supportedLanguages['ta']['rtl'] = false;
+        $supportedLanguages['ta']['dateformat'] = 2;
+        $supportedLanguages['ta']['radixpoint'] = 0;
+
         // Turkish
         $supportedLanguages['tr']['description'] = $clang->gT('Turkish');
         $supportedLanguages['tr']['nativedescription'] = 'T&#252;rk&#231;e';
