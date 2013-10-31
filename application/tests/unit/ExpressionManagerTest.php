@@ -11,7 +11,7 @@
 		{
 			parent::setUp();
 			Yii::import('application.helpers.expressions.em_core_helper', 'true');
-			if (!function_exists('gT'))
+            if (!function_exists('gT'))
 			{
 				// Create gT function that ExpressionManager uses (but ideally should not).
 				eval('function gT() { }');
@@ -71,7 +71,7 @@
 //			}
 //
 //		}
-		
+//		
 		public function testEvaluator()
 		{
 			$booleanExpressions = array(
@@ -92,7 +92,7 @@
 			}
 		}
 
-		public function testFunctions()
+        public function testFunctions()
 		{
 			$functions = array(
 				'abs(5)' => 5,
@@ -120,6 +120,24 @@
 				$this->assertEquals($expected, $this->em->sProcessStringContainingExpressions($escaped));
 			}
 		}
+
+        public function testJuggling()
+        {
+            $equalities = array(
+                '"1" == 1' => 1,
+                '"1" + "1"' => 2,
+                '"1" == 0' => '', // False is an empty string.
+                '1 == "1"' => 1,
+                '1 + "1"' => 2,
+                '"1" + "a"' => '1a',
+                '1 + "a"' => '1a'
+            );
+            foreach ($equalities as $expression => $expected)
+            {
+                $result = $this->em->sProcessStringContainingExpressions('{' . $expression . '}');
+                $this->assertEquals($expected, $result);
+            }
+        }
 		public function oldTestEvaluator()
 		{
 			
