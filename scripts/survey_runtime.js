@@ -83,7 +83,7 @@ function setJsVar(){
     else {
       bFixNumAuto=LSvar.bFixNumAuto;
       bNumRealValue=LSvar.bNumRealValue;
-      LEMradix=LSvar.LEMradix;
+      LEMradix=LSvar.sLEMradix;
     }
     numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
     intRegex = new RegExp('[^-0-9]','g');
