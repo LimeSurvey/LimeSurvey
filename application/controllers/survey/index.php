@@ -151,6 +151,8 @@ class index extends CAction {
         $this->_niceExit($redata, __LINE__, null, $asMessage);
         };*/
 
+        // Keep the old value, because SetSurveyLanguage update $_SESSION
+        $sOldLang=isset($_SESSION['survey_'.$surveyid]['s_lang'])?$_SESSION['survey_'.$surveyid]['s_lang']:"";
         // Set the language of the survey, either from POST, GET parameter of session var
         if (!is_null($param['lang']) )
         {
@@ -171,9 +173,11 @@ class index extends CAction {
             LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
             $clang = SetSurveyLanguage( $surveyid, $sDisplayLanguage);
             if($previewmode) LimeExpressionManager::SetPreviewMode($previewmode);
-            UpdateGroupList($surveyid, $clang->langcode);  // to refresh the language strings in the group list session variable
-			if (!isset($_SESSION['survey_'.$surveyid]['s_lang']) && $sDisplayLanguage != $_SESSION['survey_'.$surveyid]['s_lang'])
-            UpdateFieldArray();        // to refresh question titles and question text
+            if ($clang->langcode != $sOldLang)// Update the Session var only if needed
+            {
+                UpdateGroupList($surveyid, $clang->langcode);   // to refresh the language strings in the group list session variable
+                UpdateFieldArray();                             // to refresh question titles and question text
+            }
 
         }
         else
