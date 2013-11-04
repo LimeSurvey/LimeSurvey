@@ -16,7 +16,7 @@
 limesurveySubmitHandler();
 needConfirmHandler();
 tableCellAdapters();
-
+activateLanguageChanger();
 $(document).ready(function()
 {
     navbuttonsJqueryUi();
@@ -237,6 +237,21 @@ function showStartPopups(){
     }
 }
 /**
+ * Update survey just when select a new language
+ */
+function activateLanguageChanger(){
+    $(document).on('change','select.languagechanger', function() {
+        if($(this).hasClass('getparam')){
+            document.location.href=$(this).find('option:selected').val();
+        }else{
+            $('#changelangbtn').click();
+        }
+    });
+    $(function(){
+        $(".changelang.jshide").hide();
+    });
+}
+/**
  * Manage the index
  */
 function manageIndex(){
@@ -250,7 +265,8 @@ function manageIndex(){
         $(".outerframe").addClass("withindex");
         var idx = $("#index");
         var row = $("#index .row.current");
-        idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
+        if(row.length)
+            idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
     });
 }
 /**

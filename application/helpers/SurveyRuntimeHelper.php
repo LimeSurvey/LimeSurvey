@@ -351,7 +351,7 @@ class SurveyRuntimeHelper {
                         $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps'] + 1, false);
                     }
                 }
-                if (isset($move) && (preg_match('/^changelang_/', $move)))
+                if (isset($move) && (preg_match('/^changelang_/', $move) || $move=='changelang'))
                 {
                     // jump to current step using new language, processing POST values
                     $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);  // do process the POST data

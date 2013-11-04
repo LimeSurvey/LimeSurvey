@@ -42,7 +42,12 @@ function jalert(text) {
 
 
 $(document).ready(function(){
-
+	moveLanguageChanger();
 })
 
-
+function moveLanguageChanger(){
+	if($("#languageselect-wrapper").text()){
+		offset=$("#languageselect-wrapper").offset();
+		$("#languageselect-wrapper").css("float",'rigth').css('margin-top','-'+(offset.top)+'px')
+	}
+}

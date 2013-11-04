@@ -48,6 +48,7 @@ class index extends CAction {
         Yii::app()->setConfig('surveyID',$surveyid);
         $thisstep = $param['thisstep'];
         $move=getMove();
+        Yii::app()->setConfig('move',$move);
         $clienttoken = $param['token'];
         $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
         if (is_null($thissurvey) && !is_null($surveyid)) $thissurvey = getSurveyInfo($surveyid);
@@ -111,7 +112,7 @@ class index extends CAction {
                 if((intval($param['gid']) && $param['action']=='previewgroup')) $previewmode='group';
             }
         }
-
+        Yii::app()->setConfig('previewmode',$previewmode);
         if ( $this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists) )
         {
             $bPreviewRight = $this->_userHasPreviewAccessSession($surveyid);
@@ -151,9 +152,9 @@ class index extends CAction {
         $this->_niceExit($redata, __LINE__, null, $asMessage);
         };*/
 
-        // Keep the old value, because SetSurveyLanguage update $_SESSION
-        $sOldLang=isset($_SESSION['survey_'.$surveyid]['s_lang'])?$_SESSION['survey_'.$surveyid]['s_lang']:"";
         // Set the language of the survey, either from POST, GET parameter of session var
+        // Keep the old value, because SetSurveyLanguage update $_SESSION
+        $sOldLang=isset($_SESSION['survey_'.$surveyid]['s_lang'])?$_SESSION['survey_'.$surveyid]['s_lang']:"";// Keep the old value, because SetSurveyLanguage update $_SESSION
         if (!is_null($param['lang']) )
         {
             $sDisplayLanguage = $param['lang'];// $param take lang from returnGlobal and returnGlobal sanitize langagecode
@@ -173,12 +174,11 @@ class index extends CAction {
             LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
             $clang = SetSurveyLanguage( $surveyid, $sDisplayLanguage);
             if($previewmode) LimeExpressionManager::SetPreviewMode($previewmode);
-            if ($clang->langcode != $sOldLang)// Update the Session var only if needed
+            if ($clang->langcode != $sOldLang)  // Update the Session var only if needed
             {
                 UpdateGroupList($surveyid, $clang->langcode);   // to refresh the language strings in the group list session variable
                 UpdateFieldArray();                             // to refresh question titles and question text
             }
-
         }
         else
         {
@@ -717,7 +717,6 @@ class index extends CAction {
             $baselang = Yii::app()->getConfig('defaultlang');
         }
         Yii::import("application.libraries.Limesurvey_lang");
-
         return new Limesurvey_lang($baselang);
     }
 

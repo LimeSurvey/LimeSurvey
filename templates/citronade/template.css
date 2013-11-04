@@ -178,7 +178,7 @@ input.checkbox[disabled],input.radio[disabled]{opacity: 0.3;}
 #movenextbtn{background-image:url(go-east.png);background-repeat:no-repeat;background-position:right center;padding:3px 26px 3px 6px;}
 #moveprevbtn{background-image:url(go-west.png);background-repeat:no-repeat;background-position:left center;padding:3px 6px 3px 26px;}
 /* index */
-#index {margin:2em auto 1em}
+#index {margin:2em auto 1em;clear:both;}
 #index .container{border: 1px solid #5670A1;background:#EEF6FF;}
 #index .container h2{padding:0.2em 1em 0.5em;margin:0 0 0;font-size:1.1em;}
 #index .container h2{background:#5670A1;color:#FEFEFE;font-size:1.2em}
@@ -224,8 +224,9 @@ table.question tbody tr:hover {background:#D5DBE7}
 #head img#logo{vertical-align:middle;}
 #head a#link-logo:hover,#head a#link-logo:focus,#head a#link-logo:active{background:transparent;}
 #head a#link-logo {outline: 0;} /* remove the outline on logo click */
-#head .tools{float:right;}
 #languagechanger {margin:0.5em;}
+#languageselect-wrapper{float:right;margin:0.5em;}
+.js #languageselect-wrapper{margin-top:-1em;}
 /* survey list                                   */
 #surveylist{margin: 0.5em auto;padding: 0;overflow:auto;display:inline-block;}
 #surveylist li{padding:0.5em 10px;}
