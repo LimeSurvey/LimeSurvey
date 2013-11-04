@@ -153,7 +153,8 @@ function is_template_editable($templatename)
 */
 function templateExtractFilter($p_event, &$p_header)
 {
-    $aAllowExtensions=explode(',',Yii::app()->getConfig('allowedresourcesuploads'));    
+    $aAllowExtensions=explode(',',Yii::app()->getConfig('allowedtemplateuploads'));    
+    $aAllowExtensions[]='pstpl'; 
     $info = pathinfo($p_header['filename']);
     if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'],$aAllowExtensions)) {
         return 1;
