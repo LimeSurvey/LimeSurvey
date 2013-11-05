@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.05RC5! 
+Welcome to LimeSurvey v2.05RC6! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -58,6 +58,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.05RC5 (build 131030) to 2.05RC6 (build 131105) Nov 5, 2013
+-Fixed issue #7782: HTML5 misinterpretation of <track> nesting (Carsten Schmitz)
+-Fixed issue #8186: Can not use "language changer" without javascript (Denis Chenu)
+-Fixed issue #8332: JS files are not imported during template import (Carsten Schmitz)
+-New translation: Tamil
+-Fixed issue: EM additions not working (Denis Chenu)
+-Updated feature: Revised favicon kindly provided by mrasquinho (Carsten Schmitz)
+
 
 Changes from 2.05RC4 (build 131024) to 2.05RC5 (build 131030) Oct 30, 2013
 -Fixed issue #8173: High memory usage when using alot of tokens, particularly with MSSQL (Carsten Schmitz)
