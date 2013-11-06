@@ -1030,7 +1030,7 @@ class dataentry extends Survey_Common_Action
                             {//file metadata
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
                                 $qAttributes = getQuestionAttributeValues($fname['qid']);
-                                for ($i = 0; $i < $qAttributes['max_num_of_files'], isset($metadata[$i]); $i++)
+                                for ($i = 0; $i < $qAttributes['max_num_of_files']; $i++)
                                 {
                                     if ($qAttributes['show_title'])
                                         $aDataentryoutput .= '<tr><td>Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>';
