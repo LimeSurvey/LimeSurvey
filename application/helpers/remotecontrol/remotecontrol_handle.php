@@ -206,7 +206,7 @@ class remotecontrol_handle
         {
             if (Permission::model()->hasGlobalPermission('surveys','create'))
             {
-                if (!in_array($sImportDataType,array('zip','csv','xls','lss'))) return array('status' => 'Invalid extension');
+                if (!in_array($sImportDataType,array('zip','csv','xls','lss','txt'))) return array('status' => 'Invalid extension');
                 Yii::app()->loadHelper('admin/import');
                 // First save the data to a temporary file
                 $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
