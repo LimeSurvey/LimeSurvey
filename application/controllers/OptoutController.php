@@ -181,7 +181,7 @@ class OptoutController extends LSYii_Controller {
                     if($cpdb->blacklisted=="Y")
                     {
                         $html .= "<br />";
-                        $html .= $clang->gt("You have already been removed from the central participants list for this site");
+                        $html .= $clang->gT("You have already been removed from the central participants list for this site");
                     } else
                     {
                         $cpdb->blacklisted='Y';
