@@ -5512,6 +5512,10 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
             'showregister'=>'N'
             );
         }
+        elseif(empty($aSavedExtraTokenFields[$sField]['description']))
+        {
+            $aSavedExtraTokenFields[$sField]['description']=$sField;
+        }
     }
     if ($bOnlyAttributes)
     {
