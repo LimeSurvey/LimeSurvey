@@ -3,10 +3,12 @@
     var getuserurl = '<?php echo $this->createUrl('admin/survey/sa/ajaxgetusers'); ?>';
     var ownerediturl = '<?php echo $this->createUrl('admin/survey/sa/ajaxowneredit'); ?>';
     var delmsg ='<?php $clang->eT("Are you sure you want to delete these surveys?",'js');?>';
+    var sWarningMsg = "<?php $clang->eT("Warning", 'js') ?>";
     var sCaption ='<?php $clang->eT("Surveys",'js');?>';
     var sSelectColumns ='<?php $clang->eT("Select columns",'js');?>';
     var sRecordText = '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
     var sPageText = '<?php $clang->eT("Page {0} of {1}",'js');?>';
+    var sSelectRowMsg = "<?php $clang->eT("Select at least one survey.", 'js') ?>";
     var sLoadText = '<?php $clang->eT("Loading...",'js');?>';
     var sDelTitle = '<?php $clang->eT("Delete selected survey(s)",'js');?>';
     var sDelCaption = '<?php $clang->eT("Delete",'js');?>';

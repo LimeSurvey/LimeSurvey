@@ -129,6 +129,8 @@ $(document).ready(function(){
     jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ deltitle: sDelTitle, 
                                                           searchtitle: sSearchTitle,
                                                           refreshtitle: sRefreshTitle,
+                                                          alertcap: sWarningMsg,
+                                                          alerttext: sSelectRowMsg,
                                                           add:false,
                                                           del:true,
                                                           edit:false,
