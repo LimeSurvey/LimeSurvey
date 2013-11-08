@@ -81,7 +81,7 @@ else
     var notcontainsTxt="<?php $clang->eT("Does not contain") ?>";
     var greaterthanTxt="<?php $clang->eT("Greater than") ?>";
     var lessthanTxt="<?php $clang->eT("Less than") ?>";
-    var beginswithTxt="<?php $clang->et("Begins with") ?>";
+    var beginswithTxt="<?php $clang->eT("Begins with") ?>";
     var andTxt="<?php $clang->eT("AND") ?>";
     var orTxt="<?php $clang->eT("OR") ?>";
     /* End search form titles */
