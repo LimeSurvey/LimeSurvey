@@ -251,7 +251,7 @@ $(document).ready(function() {
     $("#displaytokens").navButtonAdd('#pager',{
         caption:"",
         title: sFind,
-        buttonicon:'searchicon',
+        buttonicon:'ui-icon-search',
         onClickButton:function(){
             var dialog_buttons={};
             dialog_buttons[searchBtn]=function(){
