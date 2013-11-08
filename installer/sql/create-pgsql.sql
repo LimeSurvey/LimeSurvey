@@ -233,7 +233,7 @@ CREATE TABLE prefix_permissions (
 -- Table structure for table plugins
 --
 CREATE TABLE prefix_plugins (
-  id integer PRIMARY KEY NOT NULL,
+  id serial NOT NULL,
   name character varying(50) NOT NULL,
   active integer NOT NULL default '0'
 );
