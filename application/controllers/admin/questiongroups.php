@@ -237,7 +237,7 @@ class questiongroups extends Survey_Common_Action
 
             $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupId, $iSurveyId);
 
-            if ($iGroupsDeleted !== 1)
+            if ($iGroupsDeleted > 0)
             {
                 fixSortOrderGroups($iSurveyId);
                 Yii::app()->setFlashMessage($clang->gT('The question group was deleted.'));
