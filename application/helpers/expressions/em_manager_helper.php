@@ -1168,6 +1168,7 @@
                                             $fsqs = array();
                                             foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
                                             {
+                                                if (!isset($fsq['csuffix'])) $fsq['csuffix']='';
                                                 if ($this->q2subqInfo[$fqid]['type'] == 'R')
                                                 {
                                                     // we know the suffix exists
