@@ -21,9 +21,7 @@ function doPopupDate(qId){
             firstDay: "1",
             duration: 'fast',
             // set more options at "runtime"
-            beforeShow: setPickerOptions,
-            // Validate input. Necessary because datepicker also allows keyboard entry.
-            onClose: validateInput,
+            beforeShow: setPickerOptions
         }, $.datepicker.regional[language]);
     }
 }
@@ -59,7 +57,8 @@ function setPickerOptions(input)
     var bshowButtonPanel=true;
     var bshowTimepicker=true;
     var sonSelect = '';
-    var sonClose = '';
+    // Validate input. Necessary because datepicker also allows keyboard entry.
+    var sonClose = validateInput(basename);
     var balwaysSetTime = true;
           
     //Configure the layout of the picker according to the format of the field
@@ -125,14 +124,13 @@ function setPickerOptions(input)
         onSelect: sonSelect,
         dateFormat: sdateFormat,
         timeFormat: stimeFormat,
-        onClose: sonClose,
+        onClose: sonClose
    };
 }
 
-function validateInput(input) 
+function validateInput(basename) 
 {
     if(typeof showpopup=="undefined"){showpopup=1;}
-    var basename = this.id.substr(6);
     format=$('#dateformat'+basename).val();
     answer=$('#answer'+basename).val();
     //only validate if the format mask says it's a complete date and only a date
@@ -148,6 +146,7 @@ function validateInput(input)
         {
             if(showpopup)
             {
+                $(".ui-datepicker-calendar").hide();
                 alert(translt.alertInvalidDate);
             }
             $('#answer'+basename).val("");

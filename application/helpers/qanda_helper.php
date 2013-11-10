@@ -1286,7 +1286,8 @@ function do_date($ia)
 
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
         $goodchars = "0123456789".substr($goodchars,0,1);
-        $iLength=strlen($dateformatdetails['dateformat']);
+        // "+1" makes room for a trailing space in date/time values
+        $iLength=strlen($dateformatdetails['dateformat'])+1;
 
         // HTML for date question using datepicker
         $answer="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Date picker')}</label>
