@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2013-11-07 11:11:05+00:00\n"
+"POT-Creation-Date: 2013-11-11 00:07:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10485,6 +10485,8 @@ msgid "Only one CSV attribute is mapped with central attribute."
 msgstr ""
 
 #: application/views/admin/participants/attributeMapCSV_view.php:16
+#: application/views/admin/participants/attributeMapToken_view.php:11
+#: application/views/admin/participants/attributeMap_view.php:17
 msgid "This list cannot accept token attributes."
 msgstr ""
 
@@ -10536,6 +10538,23 @@ msgstr ""
 msgid "Processing..."
 msgstr ""
 
+#: application/views/admin/participants/attributeMapToken_view.php:8
+msgid "There are no unmapped attributes"
+msgstr ""
+
+#: application/views/admin/participants/attributeMapToken_view.php:9
+#: application/views/admin/participants/attributeMap_view.php:15
+msgid "You have to pair it with one attribute of the token table"
+msgstr ""
+
+#: application/views/admin/participants/attributeMapToken_view.php:10
+msgid "Only one central attribute is mapped with token attribute"
+msgstr ""
+
+#: application/views/admin/participants/attributeMapToken_view.php:12
+msgid "You have to add the element below the list"
+msgstr ""
+
 #: application/views/admin/participants/attributeMapToken_view.php:19
 msgid "Map your token attributes to an existing participant attribute or create a new one"
 msgstr ""
@@ -10573,6 +10592,14 @@ msgstr ""
 
 #: application/views/admin/participants/attributeMapToken_view.php:69
 msgid "This attribute is automatically mapped"
+msgstr ""
+
+#: application/views/admin/participants/attributeMap_view.php:14
+msgid "All the attributes are automatically mapped"
+msgstr ""
+
+#: application/views/admin/participants/attributeMap_view.php:16
+msgid "Only one central attribute is mapped with token attribute "
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:24
@@ -10715,6 +10742,11 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:81
 #: application/views/admin/participants/displayParticipants_view.php:207
 msgid "Does not contain"
+msgstr ""
+
+#: application/views/admin/participants/displayParticipants_view.php:84
+#: application/views/admin/participants/displayParticipants_view.php:205
+msgid "Begins with"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:90
@@ -10889,10 +10921,6 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:160
 #: application/views/admin/participants/displayParticipants_view.php:226
 msgid "Add search condition"
-msgstr ""
-
-#: application/views/admin/participants/displayParticipants_view.php:205
-msgid "Begins with"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:235
