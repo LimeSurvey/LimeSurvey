@@ -147,7 +147,7 @@
                     'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"
                 ),
                 'editable' => array(
-                    'condition' => "usesleft > 0 AND COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"
+                    'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"
                 )
             );
 		}
