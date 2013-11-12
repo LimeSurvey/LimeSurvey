@@ -1,10 +1,18 @@
 $(document).ready(function(){
-    // popup calendar
-    $(".popupdate").each(function(i,e) {
-        var basename = e.id.substr(6);
+
+    // dropdown dates
+
+});
+/* 
+ * Function to launch timepicker in question id
+ */
+function doPopupDate(qId){
+    if($("#question"+qId+" .popupdate").length){
+        console.log($("#question"+qId+" .popupdate"));
+        var basename = $("#question"+qId+" .popupdate").attr("id").substr(6);
         format=$('#dateformat'+basename).val();
         language=$('#datelanguage'+basename).val();
-        $(e).datetimepicker({ 
+        $("#question"+qId+" .popupdate").datetimepicker({ 
             showOn: 'both',
             changeYear: true,
             changeMonth: true,
@@ -13,21 +21,19 @@ $(document).ready(function(){
             firstDay: "1",
             duration: 'fast',
             // set more options at "runtime"
-            beforeShow: setPickerOptions,
-            // Validate input. Necessary because datepicker also allows keyboard entry.
-            onClose: validateInput,
+            beforeShow: setPickerOptions
         }, $.datepicker.regional[language]);
+    }
+}
+/* 
+ * Function to launch timepicker in question id
+ */
+function doDropDownDate(qId){
+    $(document).on("change",'#question'+qId+' select',dateUpdater);
+    $(document).ready(function(){
+        $("#question"+qId+" select").filter(':first').trigger("change");
     });
-
-    // dropdown dates
-    $('.month').change(dateUpdater);
-    $('.day').change(dateUpdater)
-    $('.minute').change(dateUpdater)
-    $('.hour').change(dateUpdater)
-    $('.year').change(dateUpdater);
-    $('.year').change();
-});
-
+}
 /* This function is called each time shortly before the picker pops up.
  *  Here we set all the picker options that can be different from question to question.
  */
@@ -51,7 +57,8 @@ function setPickerOptions(input)
     var bshowButtonPanel=true;
     var bshowTimepicker=true;
     var sonSelect = '';
-    var sonClose = '';
+    // Validate input. Necessary because datepicker also allows keyboard entry.
+    var sonClose = validateInput(basename);
     var balwaysSetTime = true;
           
     //Configure the layout of the picker according to the format of the field
@@ -117,14 +124,13 @@ function setPickerOptions(input)
         onSelect: sonSelect,
         dateFormat: sdateFormat,
         timeFormat: stimeFormat,
-        onClose: sonClose,
+        onClose: sonClose
    };
 }
 
-function validateInput(input) 
+function validateInput(basename) 
 {
     if(typeof showpopup=="undefined"){showpopup=1;}
-    var basename = this.id.substr(6);
     format=$('#dateformat'+basename).val();
     answer=$('#answer'+basename).val();
     //only validate if the format mask says it's a complete date and only a date
@@ -140,7 +146,8 @@ function validateInput(input)
         {
             if(showpopup)
             {
-                alert('Date entered is invalid!');
+                $(".ui-datepicker-calendar").hide();
+                alert(translt.alertInvalidDate);
             }
             $('#answer'+basename).val("");
         }
@@ -150,7 +157,6 @@ function validateInput(input)
 
 
 function dateUpdater() {
-
     if(this.id.substr(0,3)=='yea')
     {
         thisid=this.id.substr(4);
@@ -187,12 +193,11 @@ function dateUpdater() {
         ($('#day'+thisid).length && $('#day'+thisid).val()=='') ||
         ($('#hour'+thisid).length && $('#hour'+thisid).val()==''))
         {
-            $('#qattribute_answer'+thisid).val('Please complete all parts of the date!');
+            $('#qattribute_answer'+thisid).val(translt.infoCompleteAll);
             $('#answer'+thisid).val('');
         }
         else
         {
-
             if ($('#year'+thisid).size()==0)
             {
                 iYear='1900';
@@ -233,7 +238,7 @@ function dateUpdater() {
             {
                 iMinute=$('#minute'+thisid).val(); 
             }
-            ValidDate(this,iYear+'-'+iMonth+'-'+iDay);          
+            ValidDate(this,iYear+'-'+iMonth+'-'+iDay);
             parseddate=$.datepicker.parseDate( 'dd-mm-yy', iDay+'-'+iMonth+'-'+iYear);
             parseddate=$.datepicker.formatDate( $('#dateformat'+thisid).val(), parseddate);
             parseddate=parseddate.replace('HH',pad(iHour,2));
@@ -250,7 +255,8 @@ function pad (str, max) {
     return str.length < max ? pad("0" + str, max) : str;
 }
 
-function ValidDate(oObject, value) {// Regular expression used to check if date is in correct format 
+function ValidDate(oObject, value) {// Regular expression used to check if date is in correct format
+    if(typeof showpopup=="undefined"){showpopup=1;}
     var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/; 
     var pattern = new RegExp(str_regexp); 
     if ((value.match(pattern)!=null)) 
@@ -279,8 +285,11 @@ function ValidDate(oObject, value) {// Regular expression used to check if date 
         { 
             return true; 
         }         
-    } 
-    window.alert('Date is not valid!'); 
+    }
+    if(showpopup)
+    {
+        window.alert(translt.alertInvalidDate);
+    }// TODO : use EM and move it to EM
     oObject.focus(); 
     return false; 
 } 

@@ -260,10 +260,10 @@ class update extends Survey_Common_Action
         $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
 
         if ($v_list == 0) {
-            $aFileBackup= array('class'=>'error','text'=>sprintf($clang->gt("Error on file backup: %s"),$archive->errorInfo(true)));
+            $aFileBackup= array('class'=>'error','text'=>sprintf($clang->gT("Error on file backup: %s"),$archive->errorInfo(true)));
         }
         else{
-            $aFileBackup= array('class'=>'success','text'=>sprintf($clang->gt("File backup created: %s"),$tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'));
+            $aFileBackup= array('class'=>'success','text'=>sprintf($clang->gT("File backup created: %s"),$tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'));
         }
         $aData['aFileBackup']=$aFileBackup;
 
@@ -285,7 +285,7 @@ class update extends Survey_Common_Action
                     $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir,PCLZIP_OPT_ADD_TEMP_FILE_ON);
                     unlink($sfilename);
                     if ($v_list == 0) {// Unknow reason because backup of DB work ?
-                        $aSQLBackup=array('class'=>'warning','text'=>$clang->gt("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
+                        $aSQLBackup=array('class'=>'warning','text'=>$clang->gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
                     }
                     else
                     {
@@ -294,7 +294,7 @@ class update extends Survey_Common_Action
                 }
                 else
                 {
-                    $aSQLBackup=array('class'=>'warning','text'=>$clang->gt("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
+                    $aSQLBackup=array('class'=>'warning','text'=>$clang->gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
                 }
             }
         }

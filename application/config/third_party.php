@@ -26,6 +26,16 @@ return array(
         )
 
     ),
+    'jqgrid.addons' => array(
+        'baseUrl' => 'third_party/jqgrid/plugins/',
+        'js' => array(
+            'grid.addons.js'
+        ),
+        'depends' => array(
+            'jqgrid'
+        )
+        
+    ),
     'jquery-notify' => array(
         'baseUrl' => 'third_party/jquery-notify',
         'js' => array(
@@ -49,6 +59,15 @@ return array(
         ),
         'depends' => array(
             'jquery',
+        )
+    ),
+    'jquery-bindWithDelay' => array(
+        'baseUrl' => 'third_party/jquery-bindWithDelay',
+        'js' => array(
+            'bindWithDelay.js'
+        ),
+        'depends' => array(
+            'jquery'
         )
     ),
     'jquery-cookie' => array(

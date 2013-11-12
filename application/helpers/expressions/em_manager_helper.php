@@ -1168,6 +1168,7 @@
                                             $fsqs = array();
                                             foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
                                             {
+                                                if (!isset($fsq['csuffix'])) $fsq['csuffix']='';
                                                 if ($this->q2subqInfo[$fqid]['type'] == 'R')
                                                 {
                                                     // we know the suffix exists
@@ -8527,6 +8528,9 @@ EOD;
                     $sqrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
                     return ($grel && $qrel && $sqrel);
                 case 'onlynum':
+                    if (isset($args[1]) && ($args[1]=='value' || $args[1]=='valueNAOK')) {
+                        return 1;
+                    }
                     return (isset($var[$attr])) ? $var[$attr] : $default;
                     break;
                 default:

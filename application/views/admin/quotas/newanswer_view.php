@@ -4,7 +4,7 @@
         <table class="addquotaanswer">
             <thead>
                 <tr>
-                    <th class="header ui-widget-header"  colspan="2"><?php echo sprintf($clang->gt("New answer for quota '%s'"), $quota_name);?></th>
+                    <th class="header ui-widget-header"  colspan="2"><?php echo sprintf($clang->gT("New answer for quota '%s'"), $quota_name);?></th>
                 </tr>
             </thead>
             <tbody>

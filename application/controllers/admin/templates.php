@@ -437,29 +437,23 @@ class templates extends Survey_Common_Action
             Yii::app()->loadHelper('admin/template');
             $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
             $copydirname = getTemplatePath($copydir);
-            
             $oFileHelper=new CFileHelper;
-            
-
             $mkdirresult = mkdir_p($newdirname);
-
             if ($mkdirresult == 1) {
                 $oFileHelper->copyDirectory($copydirname,$newdirname);
                 $templatename = $newname;
-                $this->getController()->redirect(array(App()->getController()->createUrl("admin/templates/sa/view",array('templatename'=>$newname))));
+                $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$newname));
             }
             elseif ($mkdirresult == 2)
             {
                 Yii::app()->setFlashMessage(sprintf($clang->gT("Directory with the name `%s` already exists - choose another name"), $newname),'error');
-                $this->getController()->redirect(array(App()->getController()->createUrl("admin/templates/sa/view",array('templatename'=>$copydir))));
-                //$this->index("startpage.pstpl", "welcome", $copydirname);
+                $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$copydir));
             }
             else
             {
                 Yii::app()->setFlashMessage(sprintf($clang->gT("Unable to create directory `%s`."), $newname),'error');
                 Yii::app()->setFlashMessage($clang->gT("Please check the directory permissions."));
                 $this->getController()->redirect(array("admin/templates/sa/view"));
-                //$this->index("startpage.pstpl", "welcome", $copydirname);
             }
         }
         else

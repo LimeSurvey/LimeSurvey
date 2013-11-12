@@ -63,7 +63,7 @@ function dirReport($dir, $write, $clang)
                <td><?php $clang->eT("Minimum memory available"); ?></td>
                <td>64MB</td>
                <td><?php 
-               if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Outdated"); ?>: <?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
+               if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Too low"); ?>: <?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
                <?php } else { ?><?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB <?php } ?></td>
         </tr>
         <tr>

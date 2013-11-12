@@ -12,7 +12,7 @@
 				<tbody>
 					<thead>
 					<tr>
-					  <th class="header ui-widget-header" colspan="2"><?php echo sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name);?></th>
+					  <th class="header ui-widget-header" colspan="2"><?php echo sprintf($clang->gT("New answer for quota '%s'"), $quota_name);?></th>
 					</tr>
 					</thead>
 					<tr class="evenrow">

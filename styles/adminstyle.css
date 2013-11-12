@@ -116,9 +116,12 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 textarea{
     height: auto;
 }
+.ui-jqgrid{clear:both}
+.ui-jqgrid-btable.load{opacity:0.5}
 .ui-jqgrid select,.ui-jqgrid textarea,.ui-jqgrid input[type="text"]{
     padding: 2px;
 }
+.gridcontrol.disabled{visibility:hidden}
 label, legend {
     width:auto;
     min-height: 26px;

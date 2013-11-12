@@ -1706,6 +1706,10 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
             $fields = $fieldmap[$sFieldCode];
         else
             return false;
+
+        // If it is a comment field there is nothing to convert here
+        if ($fields['aid']=='comment') return $sValue; 
+            
         //Find out the question type
         $this_type = $fields['type'];
         switch($this_type)
@@ -5511,6 +5515,10 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
             'mandatory'=>'N',
             'showregister'=>'N'
             );
+        }
+        elseif(empty($aSavedExtraTokenFields[$sField]['description']))
+        {
+            $aSavedExtraTokenFields[$sField]['description']=$sField;
         }
     }
     if ($bOnlyAttributes)

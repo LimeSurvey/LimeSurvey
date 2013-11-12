@@ -237,13 +237,13 @@ class questiongroups extends Survey_Common_Action
 
             $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupId, $iSurveyId);
 
-            if ($iGroupsDeleted !== 1)
+            if ($iGroupsDeleted > 0)
             {
                 fixSortOrderGroups($iSurveyId);
-                Yii::app()->user->setFlash('flashmessage', $clang->gT('The question group was deleted.'));
+                Yii::app()->setFlashMessage($clang->gT('The question group was deleted.'));
             }
             else
-                Yii::app()->user->setFlash('flashmessage', $clang->gT('Group could not be deleted'));
+                Yii::app()->setFlashMessage($clang->gT('Group could not be deleted'),'error');
             LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyId));
         }

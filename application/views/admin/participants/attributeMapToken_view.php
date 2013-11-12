@@ -5,11 +5,11 @@
     var surveyId = "<?php echo Yii::app()->request->getQuery('sid'); ?>";
 
     /* LANGUAGE */
-    var attributesMappedText = "<?php $clang->et("There are no unmapped attributes") ?>";
-    var mustPairAttributeText= "<?php $clang->et("You have to pair it with one attribute of the token table") ?>";
-    var onlyOneAttributeMappedText="<?php $clang->et("Only one central attribute is mapped with token attribute") ?>";
-    var cannotAcceptTokenAttributesText="<?php $clang->et("This list cannot accept token attributes.") ?>";
-    var addElementBelowText="<?php $clang->et("You have to add the element below the list") ?>";
+    var attributesMappedText = "<?php $clang->eT("There are no unmapped attributes") ?>";
+    var mustPairAttributeText= "<?php $clang->eT("You have to pair it with one attribute of the token table") ?>";
+    var onlyOneAttributeMappedText="<?php $clang->eT("Only one central attribute is mapped with token attribute") ?>";
+    var cannotAcceptTokenAttributesText="<?php $clang->eT("This list cannot accept token attributes.") ?>";
+    var addElementBelowText="<?php $clang->eT("You have to add the element below the list") ?>";
 
 </script>
 </head>

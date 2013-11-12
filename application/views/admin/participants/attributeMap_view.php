@@ -11,10 +11,10 @@
     var participant_id = "<?php echo $participant_id; ?>";
 
     /* SCRIPT TEXT */
-    var attributesMappedText = "<?php $clang->et("All the attributes are automatically mapped") ?>";
-    var mustPairAttributeText= "<?php $clang->et("You have to pair it with one attribute of the token table") ?>";
-    var onlyOneAttributeMappedText="<?php $clang->et("Only one central attribute is mapped with token attribute ") ?>";
-    var cannotAcceptTokenAttributesText="<?php $clang->et("This list cannot accept token attributes.") ?>";
+    var attributesMappedText = "<?php $clang->eT("All the attributes are automatically mapped") ?>";
+    var mustPairAttributeText= "<?php $clang->eT("You have to pair it with one attribute of the token table") ?>";
+    var onlyOneAttributeMappedText="<?php $clang->eT("Only one central attribute is mapped with token attribute ") ?>";
+    var cannotAcceptTokenAttributesText="<?php $clang->eT("This list cannot accept token attributes.") ?>";
 
     </script>
 </head>

@@ -987,14 +987,15 @@ function do_5pointchoice($ia)
 function do_date($ia)
 {
     global $thissurvey;
-
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
-
-
     $clang=Yii::app()->lang;
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
-
+    $sDateLangvarJS=" translt = {
+         alertInvalidDate: '" . $clang->gT('Date entered is invalid!','js') . "',
+         infoCompleteAll: '" . $clang->gT('Please complete all parts of the date!','js') . "'
+        };";
+    App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
     $checkconditionFunction = "checkconditions";
 
     $dateformatdetails = getDateFormatDataForQID($aQuestionAttributes,$thissurvey);
@@ -1233,6 +1234,7 @@ function do_date($ia)
                     break;
                 default:  $answer .= $datepart;
             }
+
         }
 
         // Format the date  for output
@@ -1250,7 +1252,7 @@ function do_date($ia)
         $answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1].'" />
         <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" />
         <input type="hidden" id="dateformat'.$ia[1].'" value="'.$dateformatdetails['jsdate'].'"/>';
-
+        App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
         // MayDo:
         // add js code to
         //        - fill dropdown boxes according to min/max
@@ -1259,7 +1261,6 @@ function do_date($ia)
     }
     else
     {
-        
         //register timepicker extension
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . '/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.css');
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party')."/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js");
@@ -1285,7 +1286,8 @@ function do_date($ia)
 
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
         $goodchars = "0123456789".substr($goodchars,0,1);
-        $iLength=strlen($dateformatdetails['dateformat']);
+        // "+1" makes room for a trailing space in date/time values
+        $iLength=strlen($dateformatdetails['dateformat'])+1;
 
         // HTML for date question using datepicker
         $answer="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Date picker')}</label>
@@ -1310,7 +1312,6 @@ function do_date($ia)
                         $('.popupdate').change(function() {
                             if (typeof LEMalias2varName !== 'undefined') {
                             ";
-                            
             if ($date_min_dynvars==true) {
                 $answer.="	if ('$date_min' in LEMalias2varName) {
                                     $('#datemin{$ia[1]}').attr('value', $.datepicker.formatDate('yy-mm-dd', 
@@ -1335,6 +1336,12 @@ function do_date($ia)
                 if (trim($aQuestionAttributes['hide_tip'])==1) {
             $answer.="<p class=\"tip\">".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."</p>";
         }
+        //App()->getClientScript()->registerScript("doPopupDate{$ia[0]}","doPopupDate({$ia[0]})",CClientScript::POS_END);// Beter if just afetre answers part
+        $answer .= "<script type='text/javascript'>\n"
+        . "  /*<![CDATA[*/\n"
+        ." doPopupDate({$ia[0]});\n"
+        ." /*]]>*/\n"
+        ."</script>\n";
     }
     $inputnames[]=$ia[1];
 
