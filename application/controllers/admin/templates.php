@@ -317,6 +317,7 @@ class templates extends Survey_Common_Action
             $templatename = Yii::app()->getConfig("defaulttemplate");
         }
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile);
+        App()->getClientScript()->reset();
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'templates.js');
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jquery-superfish');
