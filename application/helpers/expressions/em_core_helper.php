@@ -1,7 +1,7 @@
 <?php
 /**
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 /**
  * Description of ExpressionManager
@@ -24,6 +23,7 @@
  * (3) The core of Expression Manager is a Recursive Descent Parser (RDP), based off of one build via JavaCC by TMSWhite in 1999.
  *   (a) Functions that start with RDP_ should not be touched unless you really understand compiler design.
  *
+ * @author LimeSurvey Team (limesurvey.org)
  * @author Thomas M. White (TMSWhite)
  */
 

@@ -403,7 +403,6 @@ function LEMval(alias)
     var str = new String(alias);
     var varName = alias;
     var suffix = 'code';    // the default
-
     /* If passed a number, return that number */
     if (str == '') return '';
     newval = str;
@@ -427,6 +426,7 @@ function LEMval(alias)
     }
 
     jsName = LEMalias2varName[varName];
+
     attr = LEMvarNameAttr[jsName];
     if ((suffix.match(/^code|NAOK|shown|valueNAOK|value$/)) && attr.qid!='') {
         if (!LEMval(varName + '.relevanceStatus')) {
@@ -450,7 +450,8 @@ function LEMval(alias)
         case 'relevanceStatus': {
             grel = qrel = sgqarel = 1;
             if (!(typeof attr.gseq === 'undefined') && !(document.getElementById('relevanceG' + attr.gseq) === null)) {
-                grel = parseInt(document.getElementById('relevanceG' + attr.gseq).value);
+                if(typeof attr.type === 'undefined' || attr.type!="*")// Equation question don't test visibility of group ( child of bug #08315).
+                    grel = parseInt(document.getElementById('relevanceG' + attr.gseq).value);
             }
             if (!(typeof attr.qid === 'undefined') && !(document.getElementById('relevance' + attr.qid) === null)) {
                 qrel = parseInt(document.getElementById('relevance' + attr.qid).value);
@@ -576,7 +577,6 @@ function LEMval(alias)
             if (value === '') {
                 return '';
             }
-
             if (suffix == 'value' || suffix == 'valueNAOK') {
                 // if in assessment mode, this returns the assessment value
                 // in non-assessment mode, this is identical to .code

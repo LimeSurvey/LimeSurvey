@@ -1,7 +1,7 @@
 <?php
     /**
     * LimeSurvey
-    * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+    * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
     * All rights reserved.
     * License: GNU/GPL License v2 or later, see LICENSE.php
     * LimeSurvey is free software. This version may have been modified pursuant
@@ -10,13 +10,13 @@
     * other free or open source software licenses.
     * See COPYRIGHT.php for copyright notices and details.
     *
-    *	$Id$
     */
     /**
     * Description of LimeExpressionManager
     * This is a wrapper class around ExpressionManager that implements a Singleton and eases
     * passing of LimeSurvey variable values into ExpressionManager
     *
+    * @author LimeSurvey Team (limesurvey.org)
     * @author Thomas M. White (TMSWhite)
     */
     include_once('em_core_helper.php');
@@ -6129,6 +6129,8 @@
                     if (!$LEM->allOnOnePage && $LEM->currentGroupSeq != $arg['gseq']) {
                         continue;
                     }
+                    if ($arg['hidden'] && $arg['type']!="*")// No dynamic for hidden attribute (except for equation, child of bug #08315).
+                        continue;
                     $gseqList[$arg['gseq']] = $arg['gseq'];    // so keep them in order
                     // First check if there is any tailoring  and construct the tailoring JavaScript if needed
                     $tailorParts = array();
@@ -6204,10 +6206,12 @@
                     if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars']==0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0)
                     {
                         // Only show constitutively true relevances if there is tailoring that should be done.
+                        // After we can assign var with EM and change again relevance : then doing it second time (see bug #08315).
                         $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
                         $GalwaysRelevant[$arg['gseq']] = true;
                         continue;
                     }
+
                     $relevance = ($relevance == '' || ($arg['result'] == true && $arg['numJsVars']==0)) ? '1' : $relevance;
                     $relParts[] = "\nif (" . $relevance . ")\n{\n";
                     ////////////////////////////////////////////////////////////////////////
@@ -6493,14 +6497,22 @@
                         {
                             $dynamicQinG[$arg['gseq']] = array();
                         }
-                        $dynamicQinG[$arg['gseq']][$arg['qid']]=true;
+                        if( !($arg['hidden'] && $arg['type']=="*"))// Equation question type don't update visibility of group if hidden ( child of bug #08315).
+                            $dynamicQinG[$arg['gseq']][$arg['qid']]=true;
                         $relParts[] = "else {\n";
                         $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
                         $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
                         $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                         $relParts[] = "}\n";
                     }
-
+                    else
+                    {
+                        // Second time : now if relevance is true: Group is allways visible (see bug #08315).
+                        $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
+                        if( !($arg['hidden'] && $arg['type']=="*"))// Equation question type don't update visibility of group if hidden ( child of bug #08315).
+                            $GalwaysRelevant[$arg['gseq']] = true;
+                        // Do if after : else can break jsvarused
+                    }
                     $vars = explode('|',$arg['relevanceVars']);
                     if (is_array($vars))
                     {
