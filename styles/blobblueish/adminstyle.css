@@ -254,6 +254,7 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
     width:25%;
     font-weight:bold;
     text-align:right;
+    vertical-align:top;
 
 }
 
