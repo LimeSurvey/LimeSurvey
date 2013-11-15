@@ -67,7 +67,7 @@ class index extends CAction {
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         }
 
-        if ( $this->_isSurveyFinished($surveyid) )
+        if ( $this->_isSurveyFinished($surveyid) && ($thissurvey['alloweditaftercompletion'] != 'Y' || $thissurvey['tokenanswerspersistence'] != 'Y')) // No test for response update
         {
             $asMessage = array(
             $clang->gT('Previous session is set to be finished.'),
