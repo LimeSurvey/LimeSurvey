@@ -404,7 +404,8 @@ function LEMval(alias)
         case 'relevanceStatus': {
             grel = qrel = sgqarel = 1;
             if (!(typeof attr.gseq === 'undefined') && !(document.getElementById('relevanceG' + attr.gseq) === null)) {
-                grel = parseInt(document.getElementById('relevanceG' + attr.gseq).value);
+                if(typeof attr.type === 'undefined' || attr.type!="*")// Equation question don't test visibility of group ( child of bug #08315).
+                    grel = parseInt(document.getElementById('relevanceG' + attr.gseq).value);
             }
             if (!(typeof attr.qid === 'undefined') && !(document.getElementById('relevance' + attr.qid) === null)) {
                 qrel = parseInt(document.getElementById('relevance' + attr.qid).value);
