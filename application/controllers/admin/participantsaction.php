@@ -833,10 +833,13 @@ class participantsaction extends Survey_Common_Action
             }
             $aRowToAdd['cell'] = array($row['participant_id'], $sCanEdit, htmlspecialchars($row['firstname']), htmlspecialchars($row['lastname']), htmlspecialchars($row['email']), $row['blacklisted'], $row['survey'], $row['language'], $row['ownername']);
             $aRowToAdd['id'] = $row['participant_id'];
-            unset($row['participant_id'], $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $row['language'],$row['ownername'],$row['owner_uid'], $row['can_edit'], $row['survey'], $row['username']);
+            // add attribute values
             foreach($row as $key=>$attvalue)
             {
-              $aRowToAdd['cell'][] = $attvalue;
+                if(preg_match('/^a\d+$/', $key))
+                {
+                    $aRowToAdd['cell'][] = $attvalue;
+                }
             }
             
             $aData->rows[] = $aRowToAdd;
