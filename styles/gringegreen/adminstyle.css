@@ -252,21 +252,6 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
     clear:left;
 }
 
-#surveydetails td:first-child,
-#groupdetails td:first-child,
-#questiondetails td:first-child {
-    width:25%;
-    font-weight:bold;
-    text-align:right;
-    vertical-align:top;
-
-}
-
-#surveydetails td+td,
-#groupdetails td+td,
-#questiondetails td+td {
-    text-align:left;
-}
 .extra-action{
     float: right;
     margin-top: -60px
