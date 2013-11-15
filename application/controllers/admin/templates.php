@@ -626,7 +626,11 @@ class templates extends Survey_Common_Action
             @fwrite($fnew, $myoutput);
             @fclose($fnew);
         }
-
+        if (Yii::app()->session['templateeditormode'] !== 'default') {
+            $sTemplateEditorMode = Yii::app()->session['templateeditormode'];
+        } else {
+            $sTemplateEditorMode = getGlobalSetting('templateeditormode', 'full');
+        }
         $sExtension=substr(strrchr($editfile, '.'), 1);
         switch ($sExtension)
         {
@@ -654,6 +658,7 @@ class templates extends Survey_Common_Action
         $aData['tempurl'] = $tempurl;
         $aData['time'] = $time;
         $aData['sEditorFileType'] = $sEditorFileType;
+        $aData['sTemplateEditorMode'] = $sTemplateEditorMode;
 
         $aViewUrls['templatesummary_view'][] = $aData;
 

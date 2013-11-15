@@ -2,7 +2,7 @@
 
 $(document).ready(function(){
 
-    $('#changes').ace({
+    $('.ace:not(.none)').ace({
         'mode' : editorfiletype,
         'toolbarCallback' : createToolbar
     });

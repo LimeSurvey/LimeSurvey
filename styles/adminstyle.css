@@ -113,7 +113,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     line-height: 1.5;
     height: 2em;
 }
-textarea{
+textarea,select[size]{
     height: auto;
 }
 .ui-jqgrid{clear:both}
