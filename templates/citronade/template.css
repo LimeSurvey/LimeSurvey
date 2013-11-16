@@ -56,8 +56,10 @@ input, button, select {vertical-align: middle;}
   #progressbar,#progress-pre,#progress-post{display:none}
   #progress-wrapper .hide{position:relative;top:0;left:0;}
 }
+.no-js #progressbar,.no-js #progress-pre,.no-js #progress-post{display:none}
+.no-js #progress-wrapper .hide{position:relative;top:0;left:0;}
 /* Hide some element if javascript is not activated */
-.no-js input.saveall,.no-js input.clearall,.no-js #moveprevbtn{display:none}
+/*.no-js input.saveall,.no-js input.clearall,.no-js #moveprevbtn{display:none}*/
 .no-js .slider_showmin,.no-js .slider_showmax{display:none;}
 .no-js .slider_lefttext,.no-js .slider_righttext{display:none;}
 
@@ -224,7 +226,10 @@ table.question tbody tr:hover {background:#D5DBE7}
 #head img#logo{vertical-align:middle;}
 #head a#link-logo:hover,#head a#link-logo:focus,#head a#link-logo:active{background:transparent;}
 #head a#link-logo {outline: 0;} /* remove the outline on logo click */
-#languagechanger {margin:0.5em;}
+.languagechanger {margin:0.5em;}
+.js .changelang{display:none}
+.no-js .languagechanger,.no-js .changelang{display:none}
+.no-js form .languagechanger,.no-js form .changelang{display:inline;display:inline-block;}
 #languageselect-wrapper{float:right;margin:0.5em;}
 .js #languageselect-wrapper{margin-top:-1em;}
 /* survey list                                   */

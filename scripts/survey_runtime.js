@@ -241,8 +241,11 @@ function showStartPopups(){
  */
 function activateLanguageChanger(){
     $(document).on('change','select.languagechanger', function() {
-        if($(this).hasClass('getparam')){
-            document.location.href=$(this).find('option:selected').val();
+        if(!$(this).closest('form').length){// If there are no form : we can't use it, we need to create and submit. This break no-js compatibility in some page (token for example).
+            $('<form>', {
+                "html": '<input type="hidden" name="lang" value="' + $(this).find('option:selected').val() + '" />',
+                "action": document.location.href
+            }).appendTo(document.body).submit();
         }else{
             $('#changelangbtn').click();
         }

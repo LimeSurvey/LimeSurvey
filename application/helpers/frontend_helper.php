@@ -258,7 +258,7 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
         }
         $sHTMLCode=CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass));
         // We don't have to add this button if in previewmode
-        $sHTMLCode.= CHtml::htmlButton($clang->gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'changelang jshide hide'));
+        $sHTMLCode.= CHtml::htmlButton($clang->gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'changelang jshide'));
         return $sHTMLCode;
     }
     else
