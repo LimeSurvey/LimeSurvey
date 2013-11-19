@@ -57,10 +57,14 @@ function setPickerOptions(input)
     var bshowButtonPanel=true;
     var bshowTimepicker=true;
     var sonSelect = '';
-    // Validate input. Necessary because datepicker also allows keyboard entry.
-    var sonClose = validateInput(basename);
+    var sonClose = '';
     var balwaysSetTime = true;
-          
+    
+    // Validate input. Necessary because datepicker also allows keyboard entry.
+    $(this).blur(function() {
+        validateInput(basename);
+    });
+    
     //Configure the layout of the picker according to the format of the field
     if (stimeFormat==null) // no time component in mask: switch off timepicker
     {
@@ -146,7 +150,7 @@ function validateInput(basename)
         {
             if(showpopup)
             {
-                $(".ui-datepicker-calendar").hide();
+                $('#answer'+basename).datetimepicker('hide');
                 alert(translt.alertInvalidDate);
             }
             $('#answer'+basename).val("");
