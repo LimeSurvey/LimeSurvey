@@ -58,9 +58,17 @@
         private $debugLevel=0;
          /**
         * sPreviewMode used for relevance equation force to 1 in preview mode
+        * Maybe we can set it public
         * @var string
         */
         private $sPreviewMode=false;
+        /**
+         /**
+        * bProcessPost save value to DB
+        * Maybe we can set it public
+        * @var bool
+        */
+        private $bProcessPost=true;
         /**
         * Collection of variable attributes, indexed by SGQA code
         *
@@ -4441,7 +4449,7 @@
             $updatedValues = $this->updatedValues;
             $message = '';
             $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
-            if ($this->surveyOptions['active'] && !isset($_SESSION[$this->sessid]['srid']))
+            if ($this->surveyOptions['active'] && !isset($_SESSION[$this->sessid]['srid']) && $this->bProcessPost)
             {
                 // Create initial insert row for this record
                 $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
@@ -4666,7 +4674,10 @@
         static function JumpTo($seq,$preview=false,$processPOST=true,$force=false,$changeLang=false) {
             $now = microtime(true);
             $LEM =& LimeExpressionManager::singleton();
-
+            if(!$preview)
+                $preview=$LEM->sPreviewMode;
+            if(!$processPOST || $preview)
+                $LEM->bProcessPost=false;
             if ($changeLang)
             {
                 $LEM->setVariableAndTokenMappingsForExpressionManager($LEM->sid,true,$LEM->surveyOptions['anonymized'],$LEM->allOnOnePage);
