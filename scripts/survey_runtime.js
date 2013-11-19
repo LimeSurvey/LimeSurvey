@@ -304,8 +304,8 @@ function tableCellAdapters()
 //	$('table.question').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label',"click", function(e) {
 //		e.stopPropagation();
 //	});
-	$('table.question').delegate('tbody td',"click",function(event) {
-		var eventTarget=$(event.target).prop("tagName");
+	$(document).on('click','table.question tbody td',function(event) {// 'table.question tbody td' or 'td.radio-item,td.checkbox-item': maybe less js here
+		var eventTarget=$(event.target).prop("tagName");// Alternative us data
 		var eventActivate=$(this).find("input:radio,input:checkbox");
 		if(eventActivate.length==1 && (eventTarget!='INPUT' && eventTarget!='LABEL' ) )
 		{
