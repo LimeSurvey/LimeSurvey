@@ -3383,11 +3383,6 @@ function do_numerical($ia)
         $tiwidth=10;
     }
 
-    $fValue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-    if(strpos($fValue,"."))
-    {
-        $fValue=rtrim(rtrim($fValue,"0"),".");
-    }
     if (trim($aQuestionAttributes['num_value_int_only'])==1)
     {
         $acomma="";
@@ -3406,9 +3401,16 @@ function do_numerical($ia)
         $integeronly=0;
     }
 
+    $fValue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
-    $fValue = rtrim(trim($fValue,"0"),".");
+    // Fix the display value : remove extra 0 left, extra 0 rigth after dot and remove dot if it's at end
+    // TODO : use a function and do it with other numeric question type or move it to EM (if we need to fix display value ?)
+    if(strpos($fValue,"."))
+    {
+        $fValue=rtrim(rtrim($fValue,"0"),".");
+    }
+    $fValue = ltrim($fValue,"0");
     $fValue = str_replace('.',$sSeparator,$fValue);
 
     if ($thissurvey['nokeyboard']=='Y')
