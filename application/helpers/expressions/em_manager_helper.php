@@ -58,9 +58,17 @@
         private $debugLevel=0;
          /**
         * sPreviewMode used for relevance equation force to 1 in preview mode
+        * Maybe we can set it public
         * @var string
         */
         private $sPreviewMode=false;
+        /**
+         /**
+        * bProcessPost save value to DB
+        * Maybe we can set it public
+        * @var bool
+        */
+        private $bProcessPost=true;
         /**
         * Collection of variable attributes, indexed by SGQA code
         *
@@ -4950,9 +4958,13 @@
             //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
             $updatedValues = $this->updatedValues;
             $message = '';
-            $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
-            if ($this->surveyOptions['active'] && !isset($_SESSION[$this->sessid]['srid']))
+            if (!$this->surveyOptions['active'] || !$this->bProcessPost)
             {
+                return $message;
+            }
+            if (!isset($_SESSION[$this->sessid]['srid']))// Create the response line, and fill Session with primaryKey
+            {
+                $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                 // Create initial insert row for this record
                 $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                 $sdata = array(
@@ -5179,6 +5191,11 @@
         static function JumpTo($seq,$preview=false,$processPOST=true,$force=false,$changeLang=false) {
             $now = microtime(true);
             $LEM =& LimeExpressionManager::singleton();
+
+            if(!$preview)
+                $preview=$LEM->sPreviewMode;
+            if(!$processPOST || $preview)
+                $LEM->bProcessPost=false;
 
             if ($changeLang)
             {
