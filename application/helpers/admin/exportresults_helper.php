@@ -305,8 +305,8 @@ class SurveyDao
             $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}} tokentable','tokentable.token={{survey_' . $survey->id . '}}.token');
             $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . $survey->id . '}}')->getColumnNames();
             foreach ($aTokenFields as &$sField)
-               $sField ="token.".$sField;
-            $aSelectFields=array_merge($aSelectFields,array_diff($aTokenFields, array('token.token')));
+               $sField ="tokentable.".$sField;
+            $aSelectFields=array_merge($aSelectFields,array_diff($aTokenFields, array('tokentable.token')));
             //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.token'));
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.token';
         }
