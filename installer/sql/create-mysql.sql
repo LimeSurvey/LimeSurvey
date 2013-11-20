@@ -211,7 +211,7 @@ CREATE TABLE `prefix_participants` (
 CREATE TABLE `prefix_permissions` (
     `id` int(11) NOT NULL auto_increment,
 	`entity` varchar(50) NOT NULL,
-	`entity_id` varchar(100) NOT NULL,
+	`entity_id` int(11) NOT NULL,
 	`uid` int(11) NOT NULL,
 	`permission` varchar(100) NOT NULL,
 	`create_p` int(11) NOT NULL default '0',
@@ -581,4 +581,4 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '171');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '172');

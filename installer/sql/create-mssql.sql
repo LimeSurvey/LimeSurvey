@@ -211,7 +211,7 @@ PRIMARY KEY  ([participant_id])
 CREATE TABLE [prefix_permissions] (
 [id] int NOT NULL IDENTITY (1,1) PRIMARY KEY,
 [entity] varchar(50) NOT NULL,
-[entity_id] varchar(100) NOT NULL,
+[entity_id] int NOT NULL,
 [uid] int NOT NULL,
 [permission] varchar(100) NOT NULL,
 [create_p] int NOT NULL default '0',
@@ -576,4 +576,4 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '171');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '172');

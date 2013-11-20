@@ -216,7 +216,7 @@ CREATE TABLE prefix_participants (
 CREATE TABLE prefix_permissions (
     id serial NOT NULL,
 	entity character varying(50) NOT NULL,
-	entity_id character varying(100) NOT NULL,
+	entity_id integer NOT NULL,
 	uid integer NOT NULL,
 	permission character varying(100) NOT NULL,
 	create_p integer DEFAULT 0 NOT NULL,
@@ -585,4 +585,4 @@ create unique index permissions_idx2 ON lime_permissions (entity_id, entity, uid
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '171');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '172');

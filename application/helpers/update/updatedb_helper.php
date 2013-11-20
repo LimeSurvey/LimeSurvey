@@ -1157,6 +1157,11 @@ function db_upgrade_all($iOldDBVersion) {
             }
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>171),"stg_name='DBVersion'");
         }
+        if ($iOldDBVersion < 172)
+        {
+            alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
+            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>172),"stg_name='DBVersion'");
+        }
         $oTransaction->commit();
     }
     catch(Exception $e)
