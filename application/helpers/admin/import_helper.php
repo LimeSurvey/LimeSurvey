@@ -871,37 +871,40 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
 
 
     $results['questions']=0;
-    foreach ($xml->questions->rows->row as $row)
+    if (isset($xml->questions))
     {
-        $insertdata=array();
-        foreach ($row as $key=>$value)
+        foreach ($xml->questions->rows->row as $row)
         {
-            $insertdata[(string)$key]=(string)$value;
-        }
-        $iOldSID=$insertdata['sid'];
-        $insertdata['sid']=$iNewSID;
-        if (!isset($aGIDReplacements[$insertdata['gid']]) || trim($insertdata['title'])=='') continue; // Skip questions with invalid group id
-        $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
-        $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
+            $insertdata=array();
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $iOldSID=$insertdata['sid'];
+            $insertdata['sid']=$iNewSID;
+            if (!isset($aGIDReplacements[$insertdata['gid']]) || trim($insertdata['title'])=='') continue; // Skip questions with invalid group id
+            $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
+            $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
-        // now translate any links
-        $insertdata['title']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['title']);
-        $insertdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-        $insertdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
-        // Insert the new question
-        if (isset($aQIDReplacements[$oldqid]))
-        {
-            $insertdata['qid']=$aQIDReplacements[$oldqid];
-        }
-        if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',true);
-        
-        $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
-        if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',false);
-        if (!isset($aQIDReplacements[$oldqid]))
-        {
-            $newqid=getLastInsertID('{{questions}}');
-            $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
-            $results['questions']++;
+            // now translate any links
+            $insertdata['title']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['title']);
+            $insertdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
+            $insertdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+            // Insert the new question
+            if (isset($aQIDReplacements[$oldqid]))
+            {
+                $insertdata['qid']=$aQIDReplacements[$oldqid];
+            }
+            if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',true);
+            
+            $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
+            if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',false);
+            if (!isset($aQIDReplacements[$oldqid]))
+            {
+                $newqid=getLastInsertID('{{questions}}');
+                $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
+                $results['questions']++;
+            }
         }
     }
 
