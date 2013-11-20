@@ -959,11 +959,11 @@ class InstallerController extends CController {
             //{
             $showScriptName = 'true';
             //}
-            if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false)
+            if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false || (ini_get('security.limit_extensions') && ini_get('security.limit_extensions')!=''))
             {
                 $sURLFormat='path';
             }
-            else
+            else // Apache
             {
                 $sURLFormat='get'; // Fall back to get if an Apache server cannot be determined reliably
             }
