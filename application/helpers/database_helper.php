@@ -209,7 +209,7 @@ function createTable($sTableName, $aColumns, $sOptions=null)
             $sType=str_replace('text','varchar(max)',$sType);
             $sType=str_replace('binary','text',$sType);
             if ($sType=='pk') $sType.=' NOT NULL';
-            if (stripos($sType,'null')===false) $sType.=' NULL';
+            if (stripos($sType,'null')===false && stripos($sType,'PRIMARY KEY')===false) $sType.=' NULL';
         }
     }
     if ($sDBDriverName=='pgsql')
