@@ -296,22 +296,28 @@ class SurveyDao
 
         // Get info about the survey
         $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . $survey->id . '}}')->getColumnNames();
-        
+        // Allways add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
+        foreach ($aSelectFields as &$sField)
+           $sField ="{{survey_{$survey->id}}}.".$sField;
         $oRecordSet = Yii::app()->db->createCommand()->from('{{survey_' . $survey->id . '}}');
         if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',Survey_dynamic::model($survey->id)->attributes) && hasSurveyPermission($survey->id,'tokens','read'))
         {
             $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}} tokentable','tokentable.token={{survey_' . $survey->id . '}}.token');
             $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . $survey->id . '}}')->getColumnNames();
-            $aSelectFields=array_merge($aSelectFields,array_diff($aTokenFields, array('token')));
-            $aSelectFields=array_diff($aSelectFields, array('token'));
-            $aSelectFields[]='{{survey_' . $survey->id . '}}.token';
+            foreach ($aTokenFields as &$sField)
+               $sField ="token.".$sField;
+            $aSelectFields=array_merge($aSelectFields,array_diff($aTokenFields, array('token.token')));
+            //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.token'));
+            //$aSelectFields[]='{{survey_' . $survey->id . '}}.token';
         }
         if ($survey->info['savetimings']=="Y") {
             $oRecordSet->leftJoin("{{survey_" . $survey->id . "_timings}} survey_timings", "{{survey_" . $survey->id . "}}.id = survey_timings.id");
             $aTimingFields=Yii::app()->db->schema->getTable("{{survey_" . $survey->id . "_timings}}")->getColumnNames();
-            $aSelectFields=array_merge($aSelectFields,array_diff($aTimingFields, array('id')));
-            $aSelectFields=array_diff($aSelectFields, array('id'));
-            $aSelectFields[]='{{survey_' . $survey->id . '}}.id';
+            foreach ($aTimingFields as &$sField)
+               $sField ="survey_timings.".$sField;
+            $aSelectFields=array_merge($aSelectFields,array_diff($aTimingFields, array('survey_timings.id')));
+            //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.id'));
+            //$aSelectFields[]='{{survey_' . $survey->id . '}}.id';
         }
 
         if ($sFilter!='')
