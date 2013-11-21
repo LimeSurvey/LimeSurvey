@@ -383,7 +383,7 @@ class participantsaction extends Survey_Common_Action
         $limit = Yii::app()->request->getPost('rows');
     	$limit = isset($limit) ? $limit : 50; //Stop division by zero errors
 
-        $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll();
+        $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll(array('order'=>'attribute_name'));
 
         $attribute_types = array(
             'DD' => $clang->gT("Drop-down list"),
