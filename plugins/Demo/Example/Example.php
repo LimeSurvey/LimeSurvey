@@ -44,8 +44,9 @@ class Example extends PluginBase {
      * Below are the actual methods that handle events
      */
     
-    public function afterAdminMenuLoaded(PluginEvent $event)
+    public function afterAdminMenuLoaded()
     {
+        $event = $this->event;
         $menu = $event->get('menu', array());
         $menu['left'][]=array(
                 'href' => "http://docs.limesurvey.org",
@@ -56,8 +57,9 @@ class Example extends PluginBase {
         $event->set('menu', $menu);
     }
 
-    public function helloWorld(PluginEvent $event) 
+    public function helloWorld() 
     {
+        $event = $this->event;
         $count = (int) $this->get('count');
         if ($count === false) $count = 0;
         $count++;
@@ -72,8 +74,9 @@ class Example extends PluginBase {
      * The plugin should return setting meta data.
      * @param PluginEvent $event
      */
-    public function beforeSurveySettings(PluginEvent $event)
+    public function beforeSurveySettings()
     {
+        $event = $this->event;
         $event->set("surveysettings.{$this->id}", array(
             'name' => get_class($this),
             'settings' => array(
@@ -86,8 +89,9 @@ class Example extends PluginBase {
          ));
     }
     
-    public function newSurveySettings(PluginEvent $event)
+    public function newSurveySettings()
     {
+        $event = $this->event;
         foreach ($event->get('settings') as $name => $value)
         {
             
