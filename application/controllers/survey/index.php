@@ -38,7 +38,11 @@ class index extends CAction {
         global $clienttoken, $tokensexist, $token;
         global $clang;
         $clang = Yii::app()->lang;
-        @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('iSessionExpirationTime'));
+        // only attempt to change session lifetime if using a DB backend
+        // with file based sessions, it's up to the admin to configure maxlifetime
+        if(isset(Yii::app()->session->connectionID)) {
+            @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('iSessionExpirationTime'));
+        }
 
         $this->_loadRequiredHelpersAndLibraries();
 
