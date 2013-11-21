@@ -143,7 +143,7 @@ class Permission extends LSActiveRecord
      * A permission may be invalid if the permission does not exist or that particular user may not give that permission
      * 
      */
-    public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions)
+    public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions, $bBypassCheck=false)
     {
         $iUserID = sanitize_int($iUserID);
         
@@ -151,7 +151,7 @@ class Permission extends LSActiveRecord
         if ($sEntityName=='global')
         {
             $aBasePermissions=Permission::model()->getGlobalBasePermissions();
-            if (!Permission::model()->hasGlobalPermission('superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
+            if (!Permission::model()->hasGlobalPermission('superadmin','read') && ! $bBypassCheck) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
             {
                 // Make sure that he owns the user he wants to give global permissions for
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));

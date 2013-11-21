@@ -183,15 +183,11 @@ $config['auth_webserver_autocreate_profile'] = Array(
     'full_name' => 'autouser',
     'email' => 'autouser@test.test',
     'lang' => 'en',
-    'htmleditormode' => $config['defaulthtmleditormode'],
-    'templatelist' => 'default,basic',
-    'create_survey' => 1,
-    'create_user' => 0,
-    'delete_user' => 0,
-    'superadmin' => 0,
-    'configurator' => 0,
-    'manage_template' => 0,
-    'manage_label' => 0
+    'htmleditormode' => $config['defaulthtmleditormode']
+);
+
+$config['auth_webserver_autocreate_permissions'] = Array(
+	'surveys' => array('create'=>true,'read'=>true,'update'=>true,'delete'=>true)
 );
 
 // hook_get_auth_webserver_profile
@@ -209,15 +205,7 @@ $config['auth_webserver_autocreate_profile'] = Array(
 //			'full_name' => '$user_name',
 //			'email' => "$user_name@localdomain.org",
 //			'lang' => 'en',
-//			'htmleditormode' => 'inline',
-//			'templatelist' => 'default,basic,MyOrgTemplate',
-//			'create_survey' => 1,
-//			'create_user' => 0,
-//			'delete_user' => 0,
-//			'superadmin' => 0,
-//			'configurator' =>0,
-//			'manage_template' => 0,
-//			'manage_label' => 0);
+//			'htmleditormode' => 'inline');
 //}
 
 

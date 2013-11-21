@@ -89,25 +89,11 @@ class Authwebserver extends AuthPluginBase
             $oUser->parent_id=1;
             $oUser->lang=$aUserProfile['lang'];
             $oUser->email=$aUserProfile['email'];
-            $oUser->create_survey=$aUserProfile['create_survey'];
-            $oUser->create_user=$aUserProfile['create_user'];
-            $oUser->delete_user=$aUserProfile['delete_user'];
-            $oUser->superadmin=$aUserProfile['superadmin'];
-            $oUser->configurator=$aUserProfile['configurator'];
-            $oUser->manage_template=$aUserProfile['manage_template'];
-            $oUser->manage_label=$aUserProfile['manage_label'];
 
             if ($oUser->save())
             {
-                $aTemplates=explode(",",$aUserProfile['templatelist']);
-                foreach ($aTemplates as $sTemplateName)
-                {
-                    $oRecord=new Templates_rights;
-                    $oRecord->uid = $oUser->uid;
-                    $oRecord->folder = trim($sTemplateName);
-                    $oRecord->use = 1;
-                    $oRecord->save();
-                }
+                $permission=new Permission;
+                $permission->setPermissions($oUser->uid, 0, 'global', $this->api->getConfigKey('auth_webserver_autocreate_permissions'), true);
 
                 // read again user from newly created entry
                 $this->setAuthSuccess($oUser);
