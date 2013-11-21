@@ -5656,7 +5656,7 @@ function getUpdateInfo()
 
     $http->timeout=0;
     $http->data_timeout=0;
-    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
+    $http->user_agent="LimeSurvey ".Yii::app()->getConfig("versionnumber")." build ".Yii::app()->getConfig("buildnumber");
     $http->GetRequestArguments("http://update.limesurvey.org?build=".Yii::app()->getConfig("buildnumber").'&id='.md5(getGlobalSetting('SessionName')).'&crosscheck=true',$arguments);
 
     $updateinfo=false;
@@ -5696,6 +5696,13 @@ function getUpdateInfo()
 function updateCheck()
 {
     $aUpdateVersions=getUpdateInfo();
+    $clang = Yii::app()->lang;
+
+    if (isset($aUpdateVersions['errorcode'])) 
+    {
+        Yii::app()->setFlashMessage(sprintf($clang->gT("Error when checking for new version: %s"),$aUpdateVersions['errorcode']).'<br>'.$aUpdateVersions['errorhtml'],'error');
+        $aUpdateVersions=array(); 
+    }
     if (count($aUpdateVersions) && trim(Yii::app()->getConfig('buildnumber'))!='')
     {
         $sUpdateNotificationType = getGlobalSetting('updatenotification');
