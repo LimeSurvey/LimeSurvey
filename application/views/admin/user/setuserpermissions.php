@@ -18,7 +18,7 @@
         foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions)
         { ?>
         <tr><td><img src='<?php echo $sImageURL.$aCRUDPermissions['img'];?>_30.png' alt='<?php echo $aCRUDPermissions['description'];?>'/></td>
-            <td><?php if ($sPermissionKey=='superadmin') {?> <strong class='warning'> <?php }; echo $aCRUDPermissions['title']; if ($sPermissionKey=='superadmin') {?> </span> <?php };?></td>
+            <td><?php if ($sPermissionKey=='superadmin') {?> <span class='warning'> <?php }; echo $aCRUDPermissions['title']; if ($sPermissionKey=='superadmin') {?> </span> <?php };?></td>
             <td><input type="checkbox" class="markrow" id='all_<?php echo $sPermissionKey;?>' name='all_<?php echo $sPermissionKey;?>' /></td>
             <?php
                 foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
@@ -49,7 +49,6 @@
 
     </table>
     <p><input type='submit' value='<?php $clang->eT("Save");?>' />
-    <input type='hidden' name='perm_survey_read' value='1' />
     <input type='hidden' name='action' value='surveyrights' />
     <input type='hidden' name='uid' value='<?php echo $oUser->uid;?>' />
 </form>
