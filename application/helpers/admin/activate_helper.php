@@ -26,7 +26,7 @@ function fixNumbering($fixnumbering, $iSurveyID)
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
     //Fix a question id - requires renumbering a question
     $oldqid = (int) $fixnumbering;
-    $lastqid=Questions::model()->getMaxId('qid', true); // Always refresh as we insert new qid's
+    $lastqid=Question::model()->getMaxId('qid', true); // Always refresh as we insert new qid's
     $newqid=$lastqid+1;
 
     // Not sure we can do this in MSSQL ?

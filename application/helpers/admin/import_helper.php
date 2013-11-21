@@ -2948,7 +2948,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                         if ($qtypes[$questionrowdata['type']]['subquestions']<2)
                         {
                             $aInsertData=array('qid'=>$aQIDReplacements[$oldqid],'code'=>$labelrow['code'],'answer'=>$labelrow['title'],'sortorder'=>$labelrow['sortorder'],'language'=>$labelrow['language'],'assessment_value'=>$labelrow['assessment_value']);
-                            Answers::model()->insertRecords($aInsertData) or safeDie($clang->gT("Error").": Failed to insert data [4]<br />");
+                            Answer::model()->insertRecords($aInsertData) or safeDie($clang->gT("Error").": Failed to insert data [4]<br />");
                         }
                         else
                         {
@@ -3148,7 +3148,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             $asrowdata["sid"]=$iNewSID;
             unset($asrowdata["id"]);
 
-            $result=Assessments::model()->insertRecords($asrowdata) or safeDie("Couldn't insert assessment<br />");
+            $result=Assessment::model()->insertRecords($asrowdata) or safeDie("Couldn't insert assessment<br />");
 
             unset($newgid);
         }
