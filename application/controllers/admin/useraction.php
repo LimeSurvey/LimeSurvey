@@ -78,11 +78,11 @@ class UserAction extends Survey_Common_Action
 
     function adduser()
     {
-        if (!Permission::model()->hasGlobalPermission('users','create')) {
-            die(accessDenied('adduser'));
-        }
-
         $clang = Yii::app()->lang;
+        if (!Permission::model()->hasGlobalPermission('users','create')) {
+            Yii::app()->setFlashMessage($clang->gT("You do not have sufficient rights to access this page."),'error');
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
         $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
         $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
         $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
@@ -175,40 +175,43 @@ class UserAction extends Survey_Common_Action
     */
     function deluser()
     {
-        if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
-            die(accessDenied('deluser'));
-        }
         $clang = Yii::app()->lang;
+        if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
+            Yii::app()->setFlashMessage($clang->gT("You do not have sufficient rights to access this page."),'error');
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
         $action = Yii::app()->request->getPost("action");
         $aViewUrls = array();
 
-        // CAN'T DELETE ORIGINAL SUPERADMIN
-        // Initial SuperAdmin has parent_id == 0
-        $row = User::model()->findByAttributes(array('parent_id' => 0));
+        // CAN'T DELETE ORIGINAL SUPERADMIN (with findByAttributes : found the first user without parent)
+        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
 
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $postuser = flattenText(Yii::app()->request->getPost("user"));
-        if ($row['uid'] == $postuserid) // it's the original superadmin !!!
+        if ($oInitialAdmin['uid'] == $postuserid) // it's the original superadmin !!!
         {
-            $aViewUrls['message'] = array('title' => $clang->gT('Initial Superadmin cannot be deleted!'), 'class' => 'warningheader');
+            Yii::app()->setFlashMessage($clang->gT("Initial Superadmin cannot be deleted!"),'error');
+            $this->getController()->redirect(array("admin/user/sa/index"));
         }
         else
         {
-            if ($postuserid) {
+            if ($postuserid)
+            {
                 $sresultcount = 0; // 1 if I am parent of $postuserid
-                if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
+                if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+                {
                     $sresult = User::model()->findAllByAttributes(array('parent_id' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
                     $sresultcount = count($sresult);
                 }
 
-                if (Permission::model()->hasGlobalPermission('superadmin','read') || $sresultcount > 0 || $postuserid == Yii::app()->session['loginID']) {
+                if (Permission::model()->hasGlobalPermission('superadmin','read') || $sresultcount > 0 || $postuserid == Yii::app()->session['loginID'])
+                {
                     $transfer_surveys_to = 0;
                     $ownerUser = User::model()->findAll();
                     $aData['users'] = $ownerUser;
 
                     $current_user = Yii::app()->session['loginID'];
                     if (count($ownerUser) == 2) {
-
                         $action = "finaldeluser";
                         foreach ($ownerUser as &$user)
                         {
@@ -222,7 +225,8 @@ class UserAction extends Survey_Common_Action
                         $action = "finaldeluser";
                     }
 
-                    if ($action == "finaldeluser") {
+                    if ($action == "finaldeluser")
+                    {
                         $aViewUrls=$this->deleteFinalUser($ownerUser, $transfer_surveys_to);
                     }
                     else
@@ -233,18 +237,18 @@ class UserAction extends Survey_Common_Action
 
                         $aViewUrls['deluser'][] = $aData;
                         $this->_renderWrappedTemplate('user', $aViewUrls);
-                        
                     }
                 }
                 else
                 {
-                    echo accessDenied('deluser');
-                    die();
+                    Yii::app()->setFlashMessage($clang->gT("You do not have sufficient rights to access this page."),'error');
+                    $this->getController()->redirect(array("admin/user/sa/index"));
                 }
             }
             else
             {
-                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect("", $clang->gT("Could not delete user. User was not supplied."), "warningheader");
+                Yii::app()->setFlashMessage($clang->gT("Could not delete user. User was not supplied."),'error');
+                $this->getController()->redirect(array("admin/user/sa/index"));
             }
         }
 
@@ -256,7 +260,13 @@ class UserAction extends Survey_Common_Action
         $clang = Yii::app()->lang;
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $postuser = flattenText(Yii::app()->request->getPost("user"));
-
+        // Never delete initial admin (with findByAttributes : found the first user without parent)
+        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
+        if ($oInitialAdmin['uid'] == $postuserid) // it's the original superadmin !!!
+        {
+            Yii::app()->setFlashMessage($clang->gT("Initial Superadmin cannot be deleted!"),'error');
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
         if (isset($_POST['transfer_surveys_to'])) {
             $transfer_surveys_to = sanitize_int(Yii::app()->request->getPost("transfer_surveys_to"));
         }
@@ -304,6 +314,7 @@ class UserAction extends Survey_Common_Action
             $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
             $sresultcount = count($sresult);
 
+
             if (Permission::model()->hasGlobalPermission('superadmin','read') || Yii::app()->session['loginID'] == $postuserid ||
             (Permission::model()->hasGlobalPermission('users','update') && $sresultcount > 0) )
             {
@@ -311,11 +322,18 @@ class UserAction extends Survey_Common_Action
                 $aData['mur'] = $sresult;
 
                 $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
+                return;
             }
-            return;
+            else
+            {
+                Yii::app()->setFlashMessage(Yii::app()->lang->gT("You do not have sufficient rights to access this page."),'error');
+                $this->getController()->redirect(array("admin/user/sa/index"));
+            }
         }
-        echo accessDenied('modifyuser');
-        die();
+        Yii::app()->setFlashMessage(Yii::app()->lang->gT("You do not have sufficient rights to access this page."),'error');
+        $this->getController()->redirect(array("admin/user/sa/index"));
+        //echo accessDenied('modifyuser');
+        //die();
     }
 
     /**
@@ -337,7 +355,8 @@ class UserAction extends Survey_Common_Action
 
         if ((Permission::model()->hasGlobalPermission('superadmin','read') || $postuserid == Yii::app()->session['loginID'] ||
         ($sresultcount > 0 && Permission::model()->hasGlobalPermission('users','update'))) && !(Yii::app()->getConfig("demoMode") == true && $postuserid == 1)
-        ) {
+        )
+        {
             $users_name = html_entity_decode($postuser, ENT_QUOTES, 'UTF-8');
             $email = html_entity_decode($postemail, ENT_QUOTES, 'UTF-8');
             $sPassword = html_entity_decode(Yii::app()->request->getPost('pass'), ENT_QUOTES, 'UTF-8');
@@ -389,7 +408,10 @@ class UserAction extends Survey_Common_Action
                 }
             }
         }
-
+        else
+        {
+            Yii::app()->setFlashMessage(Yii::app()->lang->gT("You do not have sufficient rights to access this page."),'error');
+        }
         $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
@@ -400,10 +422,16 @@ class UserAction extends Survey_Common_Action
         $iUserID=(int)App()->request->getPost('uid');
         // A user may not modify his own permissions
         if (Yii::app()->session['loginID']==$iUserID) {
-            Yii::app()->session['flashmessage'] = $clang->gT("You are not allowed to edit your own user permissions.");
+            Yii::app()->setFlashMessage($clang->gT("You are not allowed to edit your own user permissions."),"error");
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
-
+        // Can not update initial superadmin permissions (with findByAttributes : found the first user without parent)
+        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
+        if ($oInitialAdmin['uid'] == $iUserID) // it's the original superadmin !!!
+        {
+            Yii::app()->setFlashMessage($clang->gT("Initial Superadmin permissions cannot be updated!"),'error');
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
         $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
         
         $aPermissions=array();
@@ -442,20 +470,25 @@ class UserAction extends Survey_Common_Action
     function setuserpermissions()
     {
         $iUserID = (int) Yii::app()->request->getPost('uid');
-        if ($iUserID) {
-            $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
-        }
-        else
+        // Can not update initial superadmin permissions (with findByAttributes : found the first user without parent)
+        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
+        if ($oInitialAdmin['uid'] == $iUserID) // it's the original superadmin !!!
         {
-            echo accessDenied('setuserpermissions');
-            die();
+            Yii::app()->setFlashMessage(Yii::app()->lang->gT("Initial Superadmin permissions cannot be updated!"),'error');
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
+        $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
+        if ($iUserID) {//Never update 1st admin
+            if(Permission::model()->hasGlobalPermission('superadmin','read'))
+                $oUser = User::model()->findByAttributes(array('uid' => $iUserID));
+            else
+                $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
         }
         // Check permissions
         $aBasePermissions=Permission::model()->getGlobalBasePermissions();
         if (!Permission::model()->hasGlobalPermission('superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
         {
             Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
-            
             $aFilteredPermissions=array();
             foreach  ($aBasePermissions as $PermissionName=>$aPermission)
             {
@@ -471,8 +504,9 @@ class UserAction extends Survey_Common_Action
             }
             $aBasePermissions=$aFilteredPermissions;
         }
-        
-        if ($oUser && (Permission::model()->hasGlobalPermission('superadmin','read') || (Permission::model()->hasGlobalPermission('users','update') &&  Yii::app()->session['loginID'] != $iUserID)))
+
+        // Did we need to filtering superadmin rigth for other superadmin than first superadmin ?
+        if ($oUser && (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','update') &&  Yii::app()->session['loginID'] != $iUserID) )
         {
             $aData['aBasePermissions']=$aBasePermissions;
             $data['sImageURL'] = Yii::app()->getConfig("imageurl");
@@ -480,13 +514,12 @@ class UserAction extends Survey_Common_Action
             $aData['oUser'] =$oUser;
             App()->getClientScript()->registerPackage('jquery-tablesorter');
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "userpermissions.js");
-            
             $this->_renderWrappedTemplate('user', 'setuserpermissions', $aData);
         } 
         else
         {
-            echo accessDenied('setuserpermissions');
-            die();
+            Yii::app()->setFlashMessage(Yii::app()->lang->gT("You do not have sufficient rights to access this page."),'error');
+            $this->getController()->redirect(array("admin/user/sa/index"));
         } 
     }
 
@@ -523,7 +556,8 @@ class UserAction extends Survey_Common_Action
         $postuserid = (int) Yii::app()->request->getPost('uid');
 
         // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
-        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','update')) {
+        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','update'))
+        {
             $aTemplatePermissions = array();
             $tresult = Template::model()->findAll();
             $postvalue= array_flip($_POST);
@@ -558,7 +592,8 @@ class UserAction extends Survey_Common_Action
         }
         else
         {
-            die('access denied');
+            Yii::app()->setFlashMessage($clang->gT("You do not have sufficient rights to access this page."),'error');
+            $this->getController()->redirect(array("admin/user/sa/index"));
         }
 
         $this->_renderWrappedTemplate('user', $aViewUrls);

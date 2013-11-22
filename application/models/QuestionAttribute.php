@@ -77,6 +77,18 @@ class QuestionAttribute extends LSActiveRecord
             array('value','LSYii_Validators'),
         );
     }
+    
+    public function setQuestionAttribute($iQuestionID,$sAttributeName, $sValue)
+    {
+        $oModel = new self;
+        $oModel->updateAll(array('value'=>$sValue),'attribute=:attributeName and qid=:questionID',array(':attributeName'=>$sAttributeName,':questionID'=>$iQuestionID));
+        return Yii::app()->db->createCommand()
+            ->select()
+            ->from($this->tableName())
+            ->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid)
+            ->order('qaid asc')
+            ->query();
+    }    
 
     /**
     * Returns Question attribute array name=>value

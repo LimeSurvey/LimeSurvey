@@ -214,7 +214,7 @@
                         <?php echo $clang->gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ". $clang->gT("Corrected time:").' '.convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
                     </span></li>
 
-                <li><label for='iSessionExpirationTime'><?php $clang->eT("Session lifetime (seconds):"); ?></label>
+                <li <?php if( ! isset(Yii::app()->session->connectionID)) echo 'style="display: none"';?>><label for='iSessionExpirationTime'><?php $clang->eT("Session lifetime (seconds):"); ?></label>
                     <input type='text' size='10' id='iSessionExpirationTime' name='iSessionExpirationTime' value="<?php echo htmlspecialchars(getGlobalSetting('iSessionExpirationTime')); ?>" /></li>
                 <li><label for='ipInfoDbAPIKey'><?php $clang->eT("IP Info DB API Key:"); ?></label>
                     <input type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value="<?php echo htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey')); ?>" /></li>
