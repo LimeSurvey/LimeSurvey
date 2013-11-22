@@ -708,8 +708,8 @@ class SurveyRuntimeHelper {
         {
             //SURVEY DOES NOT EXIST. POLITELY EXIT.
             echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
-            echo "\t<center><br />\n";
-            echo "\t" . $clang->gT("Sorry. There is no matching survey.") . "<br /></center>&nbsp;\n";
+            echo "\t<div class='nosurvey'><br />\n";
+            echo "\t" . $clang->gT("Sorry. There is no matching survey.") . "<br /></div>&nbsp;\n";
             echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"), array(), $redata);
             doFooter();
             exit;

@@ -2,7 +2,7 @@
     if (!$surveyid)
     {
         //need to have a survey id
-        echo "<center>You have not selected a survey!</center>";
+        echo "<div class='nosurvey'>".$clang->gT("You have not selected a survey!")."</div>";
         exit;
     }
 ?>

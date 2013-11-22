@@ -80,11 +80,11 @@ class PrintanswersController extends LSYii_Controller {
             sendCacheHeaders();
             doHeader();
             echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/startpage.pstpl'),array(),$redata);
-            echo "<center><br />\n"
-            ."\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
+            echo "<div class='sessionexpired'><br />\n"
+            ."\t<span class='errormandatory'>".$clang->gT("Error")."</span><br />\n"
             ."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
             ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
-            ."</center><br />\n";
+            ."</div><br />\n";
             echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/endpage.pstpl'),array(),$redata);
             doFooter();
             exit;
@@ -110,7 +110,7 @@ class PrintanswersController extends LSYii_Controller {
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
         //SHOW HEADER
         $printoutput = CHtml::form(array("printanswers/view/surveyid/{$surveyid}/printableexport/pdf"), 'post')
-        ."<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+        ."<div class='pdfexport'><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></div></form>";
         if($printableexport == 'pdf')
         {
             //require (Yii::app()->getConfig('rootdir').'/application/config/tcpdf.php');
