@@ -61,6 +61,19 @@ class Question_attributes extends CActiveRecord
 			->query();
     }
 
+    public function setQuestionAttribute($iQuestionID,$sAttributeName, $sValue)
+    {
+        $oModel = new self;
+        $oModel->updateAll(array('value'=>$sValue),'attribute=:attributeName and qid=:questionID',array(':attributeName'=>$sAttributeName,':questionID'=>$iQuestionID));
+        return Yii::app()->db->createCommand()
+            ->select()
+            ->from($this->tableName())
+            ->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid, PDO::PARAM_STR)
+            ->order('qaid asc')
+            ->query();
+    }
+    
+    
 	public static function insertRecords($data)
     {
         $attrib = new self;

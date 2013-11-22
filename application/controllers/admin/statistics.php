@@ -525,7 +525,8 @@ class statistics extends Survey_Common_Action {
         $MyCache = new pCache($tempdir.'/');
 	    $aData['success'] = 1;
         $sStatisticsLanguage=sanitize_languagecode($_POST['sStatisticsLanguage']);
-        $oStatisticsLanguage = new Limesurvey_lang($sStatisticsLanguage);        
+        $oStatisticsLanguage = new Limesurvey_lang($sStatisticsLanguage);  
+
 	    if (isset($_POST['cmd']) && isset($_POST['id'])) {
 	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);
             if(!is_numeric(substr($qsid,0,1))) {
@@ -547,7 +548,7 @@ class statistics extends Survey_Common_Action {
                             "width" => $aattr['location_mapwidth'],
                             "height" => $aattr['location_mapheight']
                         );
-	                    Question_attributes::model()->setAttribute($qqid, 'statistics_showmap', 1);
+	                    Question_attributes::model()->setQuestionAttribute($qqid, 'statistics_showmap', 1);
                     } else {
 	                    $aData['success'] = 0;
                     }
@@ -555,7 +556,7 @@ class statistics extends Survey_Common_Action {
 	            case 'hidemap':
 	                if (isset($aattr['location_mapservice'])) {
                         $aData['success'] = 1;
-	                    Question_attributes::model()->setAttribute($qqid, 'statistics_showmap', 0);
+	                    Question_attributes::model()->setQuestionAttribute($qqid, 'statistics_showmap', 0);
                     } else {
 	                    $aData['success'] = 0;
                     }
@@ -571,15 +572,14 @@ class statistics extends Survey_Common_Action {
 	                }
 
                     $bChartType = $qtype != "M" && $qtype != "P" && $aattr["statistics_graphtype"] == "1";
-
                     $adata = Yii::app()->session['stats'][$_POST['id']];
 	                $aData['chartdata'] = createChart($qqid, $qsid, $bChartType, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache, $oStatisticsLanguage, $qtype);
 
 
-                    Question_attributes::model()->setAttribute($qqid, 'statistics_showgraph', 1);
+                    Question_attributes::model()->setQuestionAttribute($qqid, 'statistics_showgraph', 1);
 	                break;
 	            case 'hidegraph':
-                    Question_attributes::model()->setAttribute($qqid, 'statistics_showgraph', 0);
+                    Question_attributes::model()->setQuestionAttribute($qqid, 'statistics_showgraph', 0);
 	                break;
 	            case 'showbar':
 	                if ($qtype == "M" || $qtype == "P") {
@@ -587,7 +587,7 @@ class statistics extends Survey_Common_Action {
 	                    break;
 	                }
 
-                    Question_attributes::model()->setAttribute($qqid, 'statistics_graphtype', 0);
+                    Question_attributes::model()->setQuestionAttribute($qqid, 'statistics_graphtype', 0);
 
                     $adata = Yii::app()->session['stats'][$_POST['id']];
 	                $aData['chartdata'] =  createChart($qqid, $qsid, 0, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache, $oStatisticsLanguage, $qtype);
@@ -600,7 +600,7 @@ class statistics extends Survey_Common_Action {
 	                    break;
 	                }
 
-                    Question_attributes::model()->setAttribute($qqid, 'statistics_graphtype', 1);
+                    Question_attributes::model()->setQuestionAttribute($qqid, 'statistics_graphtype', 1);
 
                     $adata = Yii::app()->session['stats'][$_POST['id']];
 	                $aData['chartdata'] =  createChart($qqid, $qsid, 1, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache, $oStatisticsLanguage, $qtype);
