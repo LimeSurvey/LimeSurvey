@@ -973,11 +973,14 @@ function QueXMLCreateFixed($qid,$rotate=false,$labels=true,$scale=0,$other=false
 /**
 * from export_structure_quexml.php
 */
-function quexml_get_lengthth($qid,$attribute,$default)
+function quexml_get_lengthth($qid,$attribute,$default, $quexmllang=false)
 {
     global $dom;
-
-    $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND attribute = '$attribute'";
+    if ($quexmllang!=false)
+        $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='$attribute'";
+    else
+        $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND attribute='$attribute'";
+        
     //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
 
@@ -1272,6 +1275,24 @@ function quexml_export($surveyi, $quexmllan)
 
                 $question->appendChild($directive);
             }
+            
+			if (Yii::app()->getConfig('quexmlshowprintablehelp')==true)
+			{
+				
+				$RowQ['printable_help']=quexml_get_lengthth($qid,"printable_help","", $quexmllang);
+            
+				if (!empty($RowQ['printable_help']))
+				{
+					$directive = $dom->createElement("directive");
+					$position = $dom->createElement("position","before");
+					$text = $dom->createElement("text", '['.$qlang->gT('Only answer the following question if:')." ".QueXMLCleanup($RowQ['printable_help'])."]");
+					$administration = $dom->createElement("administration","self");
+					$directive->appendChild($position);
+					$directive->appendChild($text);
+					$directive->appendChild($administration);
+					$question->appendChild($directive);
+				}
+			}
 
             $response = $dom->createElement("response");
             $sgq = $RowQ['title'];

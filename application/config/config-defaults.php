@@ -359,6 +359,9 @@ $config['notsupportlanguages'] = array(
 $config['pdffontsize']    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
 
+// QueXML-PDF: If set to true, the printable_help attribute will be visible on the exported PDF questionnaires
+// If used, the appearance (font size, justification, etc.) may be adjusted by editing td.questionHelpBefore and $helpBeforeBorderBottom of quexml.
+$config['quexmlshowprintablehelp'] = false;
 
 // CAS Settings
 /**
