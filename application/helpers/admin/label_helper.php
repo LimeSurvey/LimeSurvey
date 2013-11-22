@@ -92,11 +92,9 @@ function insertlabelset()
     //	$labelsoutput.= $_POST['languageids'];  For debug purposes
     $clang = Yii::app()->lang;
 
-    $postlanguageids=Yii::app()->getRequest()->getPost('languageids');
-    $postlabel_name=Yii::app()->getRequest()->getPost('label_name');
+    $postlanguageids=sanitize_languagecodeS(Yii::app()->getRequest()->getPost('languageids'));
+    $postlabel_name=flattenText(Yii::app()->getRequest()->getPost('label_name'),false,true,'UTF-8',true);
 
-    //postlabel_name = dbQuoteAll($postlabel_name,true);
-    //$postlanguageids = dbQuoteAll($postlanguageids,true);
     $data = array(
     'label_name' => $postlabel_name,
     'languages' => $postlanguageids
