@@ -61,6 +61,44 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.00+ (build 131107) to 2.00+ (build 131122) Nov 22, 2013
+-Fixed issue #8315: Group hidden when Multiple Choice has placeholder question text and a dependent question. (Denis Chenu)
+-Fixed issue #8323: (span) tags in confirmation messages when survey in all-in-one mode (Carsten Schmitz)
+-Fixed issue #8356: PHP5.5 FPM with security.limit_extensions parameter breaks LimeSurvey (Carsten Schmitz)
+-Fixed issue #8359: Importing an empty group causes an error (Carsten Schmitz)
+-Fixed issue #8365: Error when accessing admin page (Carsten Schmitz)
+-Fixed issue #8374: Previewing a question in an active survey add a response line (Denis Chenu)
+-Fixed issue #8394: Selected graph type in statistics is not saved (Carsten Schmitz)
+-Fixed issue #8396: Sub Question code TIME with Save timings survey : unable to export survey (Denis Chenu)
+-Fixed issue #8398: XSS issue in label sets administration and path/SQL revelation issue in usergroup administration (Carsten Schmitz)
+-Fixed issue: Problem with update from 1.92 (Carsten Schmitz)
+#Updated translation: Albanian by florianika
+#Updated translation: Basque by oabad
+#Updated translation: Catalan by pellix, valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Chinese (Taiwan) (Traditional) by chungyi
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by kpadm, Han, mdekker
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by DenisChenu, arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Kurdish (Sorani) by merxan
+#Updated translation: Lithuanian by simasj
+#Updated translation: Malay by apisznasdin
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by nfuria, mauriciofurtado
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Slovak by c_schmitz
+#Updated translation: Spanish (Mexican) by rhernandez
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+#Updated translation: Ukrainian by myksyd
+
 Changes from 2.00+ (build 131031) to 2.00+ (build 131107) Nov 7, 2013
 -Fixed issue #8318: Missing translation (Carsten Schmitz)
 -Fixed issue #8330: Some translations not being picked up by translate.limesurvey.org (Carsten Schmitz)
