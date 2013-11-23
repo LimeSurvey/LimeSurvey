@@ -5739,7 +5739,6 @@ function updateCheck()
         setGlobalSetting('updateavailable',0);    
         $aUpdateVersions = array();
     }
-    
     setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
     return $aUpdateVersions;
 }

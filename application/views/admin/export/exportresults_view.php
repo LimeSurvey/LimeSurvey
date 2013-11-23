@@ -66,7 +66,7 @@
             <?php } ?>
             ><legend><?php $clang->eT("General");?></legend>
 
-                <ul><li><label><?php $clang->eT("Range:");?></label><br> <?php $clang->eT("From");?> <input type='text' name='export_from' size='7' value='1' />
+                <ul><li><label><?php $clang->eT("Range:");?></label><br /> <?php $clang->eT("From");?> <input type='text' name='export_from' size='7' value='1' />
                         <?php $clang->eT("to");?> <input type='text' name='export_to' size='7' value='<?php echo $max_datasets;?>' /></li>
 
                     <li><br /><label for='completionstate'><?php $clang->eT("Completion state");?></label> <select id='completionstate' name='completionstate'>

@@ -304,18 +304,18 @@ class index extends CAction {
             //$data['privacy'] = $privacy;
             $data['surveylist'] = $surveylist;
             $data['surveyid'] = $surveyid;
-            $data['templatedir'] = getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
-            $data['templateurl'] = getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
             $data['templatename'] = Yii::app()->getConfig("defaulttemplate");
+            $data['templatedir'] = getTemplatePath($data['templatename']);
+            $data['templateurl'] = getTemplateURL($data['templatename'])."/";
             $data['sitename'] = Yii::app()->getConfig("sitename");
             $data['languagechanger'] = $languagechanger;
 
             //A nice exit
             sendCacheHeaders();
             doHeader();
-            $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/startpage.pstpl", $data, __LINE__);
+            $this->_printTemplateContent($data['templatedir']."/startpage.pstpl", $data, __LINE__);
 
-            $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/surveylist.pstpl", $data, __LINE__);
+            $this->_printTemplateContent($data['templatedir']."/surveylist.pstpl", $data, __LINE__);
 
             echo '<script type="text/javascript" >
             function sendreq(surveyid)
@@ -330,7 +330,7 @@ class index extends CAction {
             }
             </script>';
 
-            $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/endpage.pstpl", $data, __LINE__);
+            $this->_printTemplateContent($data['templatedir']."/endpage.pstpl", $data, __LINE__);
             doFooter();
             return;
         }
@@ -796,8 +796,6 @@ class index extends CAction {
         // Let's redirect the client to the same URL after having reset the session
         $this->_niceExit($redata, $iDebugLine, $templatename, $asMessage);
     }
-
-
 
     function _printMessage($asLines)
     {
