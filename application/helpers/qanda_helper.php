@@ -3591,9 +3591,9 @@ function do_shortfreetext($ia)
         <div class='map' id=\"map_canvas_$ia[1]\"
         style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
 
-        <input class=\"text location ".$kpclass."\" type='text' value='' placeholder='Digite um endereço aqui...'
+        <input class=\"text location ".$kpclass."\" type='text' value='' placeholder=\"{$clang->gT('Type an address here...')}\"
         name=\"n_$ia[1]\" id=\"location_$ia[1]\" />
-        </div>";//placeholder=\"{$clang->gT('Type an address here...')}\"
+        </div>";
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
         if ($mapservice==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
             Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&language=".$clang->getlangcode());
