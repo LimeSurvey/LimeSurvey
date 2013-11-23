@@ -1,4 +1,4 @@
-/*! jQuery Timepicker Addon - v1.4 - 2013-08-11
+/*! jQuery Timepicker Addon - v1.4.1 - 2013-11-10
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2013 Trent Richardson; Licensed MIT */
 (function ($) {
@@ -16,7 +16,7 @@
 	*/
 	$.extend($.ui, {
 		timepicker: {
-			version: "1.4"
+			version: "1.4.1"
 		}
 	});
 
@@ -743,6 +743,9 @@
 			if (microsec !== false) {
 				microsec = parseInt(microsec, 10);
 			}
+			if (timezone !== false) {
+				timezone = parseInt(timezone, 10);
+			}
 
 			var ampm = o[hour < 12 ? 'amNames' : 'pmNames'][0];
 
@@ -829,7 +832,7 @@
 			var formattedDateTime = this.formattedDate;
 			
 			// if a slider was changed but datepicker doesn't have a value yet, set it
-			if (dp_inst.lastVa === "") {
+			if (dp_inst.lastVal === "") {
                 dp_inst.currentYear = dp_inst.selectedYear;
                 dp_inst.currentMonth = dp_inst.selectedMonth;
                 dp_inst.currentDay = dp_inst.selectedDay;
@@ -2129,6 +2132,6 @@
 	/*
 	* Keep up with the version
 	*/
-	$.timepicker.version = "1.4";
+	$.timepicker.version = "1.4.1";
 
 })(jQuery);
