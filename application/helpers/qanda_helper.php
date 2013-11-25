@@ -1097,19 +1097,19 @@ function do_date($ia)
                 case 'n':
                 case 'm':   $answer .= '<label for="month'.$ia[1].'" class="hide">'.$clang->gT('Month').'</label><select id="month'.$ia[1].'" name="month'.$ia[1].'" class="month">
                     <option value="">'.$clang->gT('Month')."</option>\n";
-                    $montharray=array(
-                    $clang->gT('Jan'),
-                    $clang->gT('Feb'),
-                    $clang->gT('Mar'),
-                    $clang->gT('Apr'),
-                    $clang->gT('May'),
-                    $clang->gT('Jun'),
-                    $clang->gT('Jul'),
-                    $clang->gT('Aug'),
-                    $clang->gT('Sep'),
-                    $clang->gT('Oct'),
-                    $clang->gT('Nov'),
-                    $clang->gT('Dec'));
+                    switch ((int)trim($aQuestionAttributes['dropdown_dates_month_style']))
+                    {
+                        case 0: 
+                            $montharray=Yii::app()->getLocale($clang->langcode)->getMonthNames('abbreviated',false);
+                            break;
+                        case 1: 
+                            $montharray=Yii::app()->getLocale($clang->langcode)->getMonthNames('wide',false);
+                            break;
+                        case 2: 
+                            $montharray=array(1=>'01',2=>'02',3=>'03',4=>'04',5=>'05',6=>'06',7=>'07',8=>'08',9=>'09',10=>'10',11=>'11',12=>'12');
+                            break;
+                    }
+                    
                     for ($i=1; $i<=12; $i++) {
                         if ($i == $currentmonth)
                         {
@@ -1119,8 +1119,7 @@ function do_date($ia)
                         {
                             $i_date_selected = '';
                         }
-
-                        $answer .= '<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
+                        $answer .= '<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i].'</option>';
                     }
                     $answer .= '</select>';
                     break;
