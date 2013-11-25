@@ -48,14 +48,12 @@ class Usergroups extends Survey_Common_Action
                 $criteria->compare('ugid',$ugid)->addNotInCondition('users.uid',array(Yii::app()->session['loginID']));
                 $eguresult = UserInGroup::model()->with('users')->findAll($criteria);
                 //die('me');
-                $to = '';
+                $to = array();
 
                 foreach ($eguresult as $egurow)
                 {
-                    $to .= $egurow->users->users_name . ' <' . $egurow->users->email . '>' . '; ';
+                    $to[] = $egurow->users->users_name . ' <' . $egurow->users->email . '>';
                 }
-
-                $to = substr($to, 0, -2);
 
                 $from_user_result = User::model()->findByPk(Yii::app()->session['loginID']);
                 $from_user_row = $from_user_result;
@@ -74,10 +72,7 @@ class Usergroups extends Survey_Common_Action
                 $subject = $_POST['subject'];
 
                 if (isset($_POST['copymail']) && $_POST['copymail'] == 1) {
-                    if ($to == "")
-                        $to = $from;
-                    else
-                        $to .= ", " . $from;
+                        $to[] = $from;
                 }
                 $body = str_replace("\n.", "\n..", $body);
                 $body = wordwrap($body, 70);
