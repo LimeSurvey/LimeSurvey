@@ -48,7 +48,6 @@ class UserAction extends Survey_Common_Action
             $noofsurveys = Survey::model()->countByAttributes(array("owner_id" => $usrhimself['uid']));
             $aData['noofsurveys'] = $noofsurveys;
         }
-
         $aData['row'] = 0;
         if (isset($usrhimself['parent_id']) && $usrhimself['parent_id'] != 0)
         {
@@ -188,7 +187,7 @@ class UserAction extends Survey_Common_Action
 
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $postuser = flattenText(Yii::app()->request->getPost("user"));
-        if ($oInitialAdmin['uid'] == $postuserid) // it's the original superadmin !!!
+        if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) // it's the original superadmin !!!
         {
             Yii::app()->setFlashMessage($clang->gT("Initial Superadmin cannot be deleted!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
@@ -262,7 +261,7 @@ class UserAction extends Survey_Common_Action
         $postuser = flattenText(Yii::app()->request->getPost("user"));
         // Never delete initial admin (with findByAttributes : found the first user without parent)
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
-        if ($oInitialAdmin['uid'] == $postuserid) // it's the original superadmin !!!
+        if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) // it's the original superadmin !!!
         {
             Yii::app()->setFlashMessage($clang->gT("Initial Superadmin cannot be deleted!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
@@ -427,7 +426,7 @@ class UserAction extends Survey_Common_Action
         }
         // Can not update initial superadmin permissions (with findByAttributes : found the first user without parent)
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
-        if ($oInitialAdmin['uid'] == $iUserID) // it's the original superadmin !!!
+        if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // it's the original superadmin !!!
         {
             Yii::app()->setFlashMessage($clang->gT("Initial Superadmin permissions cannot be updated!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
@@ -472,7 +471,7 @@ class UserAction extends Survey_Common_Action
         $iUserID = (int) Yii::app()->request->getPost('uid');
         // Can not update initial superadmin permissions (with findByAttributes : found the first user without parent)
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
-        if ($oInitialAdmin['uid'] == $iUserID) // it's the original superadmin !!!
+        if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // it's the original superadmin !!!
         {
             Yii::app()->setFlashMessage(Yii::app()->lang->gT("Initial Superadmin permissions cannot be updated!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
