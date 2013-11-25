@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.05RC6! 
+Welcome to LimeSurvey v2.05RC7! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -58,6 +58,53 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+
+Changes from 2.05RC6 (build 131105) to 2.05RC7 (build 131125) Nov 25, 2013
+-New feature #8298: Easy move page in token + quick search (Denis Chenu)
+-New feature: Allow search on token attribute if exist in token table (Denis Chenu)
+-Fixed issue #7805: Comparison String and Numeric is different in same page and other page (second time) (Denis Chenu)
+-Fixed issue #8059: Template editor register js and css file from template (Sam Mousa)
+-Fixed issue #8219: show printable_help on quexml-PDFs (mfaber)
+-Fixed issue #8220: quexf-pdf export: single answer question > 1 page are cut (Adam Zammit)
+-Fixed issue #8315: Group hidden when Multiple Choice has placeholder question text and a dependent question. (Denis Chenu)
+-Fixed issue #8318: Missing translation (Carsten Schmitz)
+-Fixed issue #8323: (span) tags in confirmation messages when survey in all-in-one mode (Carsten Schmitz)
+-Fixed issue #8330: Some translations not being picked up by translate.limesurvey.org (Carsten Schmitz)
+-Fixed issue #8333: List with comment, question type(O) and cquestion code bug (Carsten Schmitz)
+-Fixed issue #8334: Creating unique index on permissions table fails during installation - patch by wehr (Carsten Schmitz)
+-Fixed issue #8339: Schema fix for PostgreSQL based installations (Carsten Schmitz)
+-Fixed issue #8339: Some schema fixes for PostgreSQL based installations (Carsten Schmitz)
+-Fixed issue #8340: Filter button does not display properly in token grid (Carsten Schmitz)
+-Fixed issue #8345: Copy template caused an error (Carsten Schmitz)
+-Fixed issue #8354: Notice in group preview (Carsten Schmitz)
+-Fixed issue #8355: Error (CDbException) when adding a user group to a survey (mfaber)
+-Fixed issue #8356: PHP5.5 FPM with security.limit_extensions parameter breaks LimeSurvey (Carsten Schmitz)
+-Fixed issue #8359: Importing an empty group causes an error (Carsten Schmitz)
+-Fixed issue #8362: quexf-pdf export: text ends abruptly after &-sign (Adam Zammit)
+-Fixed issue #8364: Error in Plugin Example (Sam Mousa)
+-Fixed issue #8365: Error when accessing admin page (Carsten Schmitz)
+-Fixed issue #8366: attribute values displayed incorrectly in participants admin. (Alexis Bezverkhyy)
+-Fixed issue #8368: Issue with user autocreate. (Alexis Bezverkhyy)
+-Fixed issue #8370: CPDB attribute editing is not working (Carsten Schmitz)
+-Fixed issue #8372: template editor - wrong height of select lists (Denis Chenu)
+-Fixed issue #8374: Previewing a question in an active survey add a response line (Denis Chenu)
+-Fixed issue #8376: Last row of global permissions not being saved (Carsten Schmitz)
+-Fixed issue #8378: Copying a template does nothing (javascript error) (Denis Chenu)
+-Fixed issue #8384: impossible to have survey session lifetime greater than default PHP value (Alexis Bezverkhyy)
+-Fixed issue #8385: right supression of '0' in print value of numeric field (Denis Chenu)
+-Fixed issue #8386: Blank page when try to export statistics of input text file (Carsten Schmitz)
+-Fixed issue #8387: Export of csv-file - holds no attribute fields (Carsten Schmitz)
+-Fixed issue #8394: Selected graph type in statistics is not saved (Carsten Schmitz)
+-Fixed issue #8396: Sub Question code TIME with Save timings survey : unable to export survey (Denis Chenu)
+-Fixed issue #8398: XSS issue in label sets administration and path/SQL revelation issue in usergroup administration (Carsten Schmitz)
+-Fixed issue #8399: Admin can't edit another admin created user rights (Denis Chenu)
+-Fixed issue #8404: Email to user group is mail to only one (Carsten Schmitz)
+-Fixed issue #8405: Date/time doesn't work correctly (Carsten Schmitz)
+-Fixed issue: Empty token field in attribute description on browse token table (Denis Chenu)
+-Fixed issue: Error message on deleting an empty group though it was properly deleted (Carsten Schmitz)
+-Fixed issue: Problem with update from 1.92 (Carsten Schmitz)
+-Fixed issue: Template editor user pref don't change template editor mode (Denis Chenu)
 
 Changes from 2.05RC5 (build 131030) to 2.05RC6 (build 131105) Nov 5, 2013
 -Fixed issue #7782: HTML5 misinterpretation of <track> nesting (Carsten Schmitz)
@@ -3001,4 +3048,3 @@ present an "assessment" when the users submits the survey.
 
 
 ... and tons of bugfixes - too many to write down here...
-
