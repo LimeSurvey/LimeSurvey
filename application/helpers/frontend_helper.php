@@ -1996,8 +1996,8 @@
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url
-    $oResult=Survey_url_parameters::model()->getParametersForSurvey($surveyid);
-    foreach($oResult->readAll() as $aRow)
+    $oResult=Survey_url_parameters::model()->getParametersForSurvey($surveyid)->readAll();
+    foreach($oResult as $aRow)
     {
         if(isset($_GET[$aRow['parameter']]) && !$preview)
         {

@@ -1403,11 +1403,12 @@ class SurveyAdmin extends Survey_Common_Action
     function getUrlParamsJSON($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
+        $sLanguage=getBaseLanguageFromSurveyID($iSurveyID);
         Yii::app()->loadHelper('database');
         $oResult = dbExecuteAssoc("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
         left join {{questions}} q on q.qid=up.targetqid
         left join {{questions}} sq on sq.qid=up.targetsqid
-        where up.sid={$iSurveyID}");
+        where up.sid={$iSurveyID} and q.language='{$sLanguage}'");
         $oResult= $oResult->readAll();
         $i = 0;
         $clang = $this->getController()->lang;
