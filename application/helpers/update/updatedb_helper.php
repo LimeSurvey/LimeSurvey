@@ -675,7 +675,6 @@ function db_upgrade_all($iOldDBVersion) {
             addColumn('{{question_attributes}}','language',"{$sVarchar}(20)");
 
             upgradeQuestionAttributes148();
-            upgradeTokens148();
             fixSubquestions();
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>148),"stg_name='DBVersion'");
         }
@@ -1047,6 +1046,7 @@ function db_upgrade_all($iOldDBVersion) {
 
         if ($iOldDBVersion < 164)
         {
+            upgradeTokens148(); // this should have bee done in 148 - that's why it is named this way
             // fix survey tables for missing or incorrect token field
             upgradeSurveyTables164();
             $db->createCommand()->update('{{settings_global}}',array('stg_value'=>164),"stg_name='DBVersion'");
