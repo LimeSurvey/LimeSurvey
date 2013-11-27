@@ -484,16 +484,18 @@ function submittokens($quotaexit=false)
             if(isset($token->participant_id))
             {
                 $slquery = SurveyLink::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=> $token->participant_id, ':sid'=>$surveyid, ':tid'=>$token->tid));
-                
-                if (isTokenCompletedDatestamped($thissurvey))
-                {
-                    $slquery->date_completed = $today;
-                } else {
-                    // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
-                    $slquery->date_completed = $slquery->date_created;
+                if ($slquery)
+                {                
+                    if (isTokenCompletedDatestamped($thissurvey))
+                    {
+                        $slquery->date_completed = $today;
+                    } else {
+                        // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
+                        $slquery->date_completed = $slquery->date_created;
+                    }
+                    $slquery->save();
                 }
-                $slquery->save();
-                }
+            }
         }
         $token->usesleft--;
     }
