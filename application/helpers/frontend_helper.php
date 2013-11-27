@@ -959,15 +959,17 @@
                 if(!empty($participant_id))
                 {
                     $slquery = Survey_links::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=>$participant_id, ':sid'=>$surveyid, ':tid'=>$oTokenInformation->tid));
-
-                    if (isTokenCompletedDatestamped($thissurvey))
+                    if ($slquery)
                     {
-                        $slquery->date_completed = $today;
-                    } else {
-                        // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
-                        $slquery->date_completed = $slquery->date_created;
+                        if (isTokenCompletedDatestamped($thissurvey))
+                        {
+                            $slquery->date_completed = $today;
+                        } else {
+                            // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
+                            $slquery->date_completed = $slquery->date_created;
+                        }
+                        $slquery->save();
                     }
-                    $slquery->save();
                 }
             }
             $oTokenInformation->usesleft = $oTokenInformation->usesleft-1;
