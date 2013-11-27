@@ -173,9 +173,8 @@ class Usergroups extends Survey_Common_Action
             if ($action == "usergroupindb") {
 
                 if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
-                    $db_group_name = $_POST['group_name'];
+                    $db_group_description = $_POST['group_description'];
                     $db_group_name = flattenText($_POST['group_name'],false,true,'UTF-8',true);
-                
                     if (isset($db_group_name) && strlen($db_group_name) > 0) {
                         if (strlen($db_group_name) > 21) {
                             list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group name length more than 20 characters.")));
