@@ -3411,10 +3411,6 @@ function do_numerical($ia)
         $acomma="";
         $extraclass .=" integeronly";
         $answertypeclass .= " integeronly";
-        if(is_numeric($fValue))
-        {
-            //$fValue=number_format($fValue, 0, '', '');
-        }
         $integeronly=1;
     }
     else
