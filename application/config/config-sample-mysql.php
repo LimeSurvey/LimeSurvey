@@ -43,6 +43,9 @@ return array(
 			'charset' => 'utf8',
 			'tablePrefix' => 'lime_',
 		),
+// Uncomment the following section if you wish to store sessions in the database
+// rather than in files.
+// Make sure MySQL max_allowed_packet setting is large enough, some surveys generate over 2 MB of session data.
 /*
 		'session' => array (
 			'class' => 'system.web.CDbHttpSession',
