@@ -799,7 +799,18 @@ class database extends Survey_Common_Action
                             $uqresult = $question->save();//($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
                             if (!$uqresult)
                             {
-                                Yii::app()->setFlashMessage($clang->gT("Question could not be updated."),'error');
+                                $bOnError=true;
+                                $aErrorMessage=$question->getErrors();
+                                if(isset($aErrorMessage['title']) && count($aErrorMessage['title']))
+                                {
+                                    foreach($aErrorMessage['title'] as $sTitleError){
+                                        Yii::app()->setFlashMessage($sTitleError,'error');
+                                    }
+                                }
+                                else
+                                {
+                                    Yii::app()->setFlashMessage($clang->gT("Question could not be updated."),'error');
+                                }
                             }
                         }
                     }
@@ -825,8 +836,8 @@ class database extends Survey_Common_Action
 
                     // Remove old subquestion scales
                     Question::model()->deleteAllByAttributes(array('parent_qid' => $qid), 'scale_id >= :scale_id', array(':scale_id' => $iSubquestionScales));
-
-                    Yii::app()->session['flashmessage'] = $clang->gT("Question was successfully saved.");
+                    if(!isset($bOnError) || !$bOnError)// This really a quick hack and need a better system
+                        Yii::app()->setFlashMessage($clang->gT("Question was successfully saved."));
                     //                    }
                     //                    else
                     //                    {
