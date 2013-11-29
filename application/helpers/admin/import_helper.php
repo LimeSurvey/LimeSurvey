@@ -3682,7 +3682,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($insertdata)
                 XSSFilterArray($insertdata);
-            $question = new Question();
+            $question = new Question('import');
             $question->setAttributes($insertdata, false);
             $attempts = 0;
             while (!$question->validate(array('title')))

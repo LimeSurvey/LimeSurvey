@@ -933,7 +933,6 @@ function doHtmlSaveAll($move="")
     {
         $_saveall .= CHtml::htmlButton($clang->gT("Resume later"),$aHtmlOptionsSaveall);
     }
-    $_saveall="";
     return $_saveall;
 }
 

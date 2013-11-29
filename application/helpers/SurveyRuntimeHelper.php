@@ -367,7 +367,7 @@ class SurveyRuntimeHelper {
 				elseif (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 2)
 				{
 					$move = (int) $move;
-					$moveResult = LimeExpressionManager::JumpTo($move, false, false, true);
+					$moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
 				}
                 if (!isset($moveResult) && !($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0))
                 {
