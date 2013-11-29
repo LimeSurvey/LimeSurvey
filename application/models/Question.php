@@ -94,7 +94,7 @@
                         )
                     ),
                     'message' => 'Question codes must be unique.'),
-                //array('title', 'match', 'pattern' => '/[a-z,A-Z][[:alnum:]]+/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.'),
+                array('title', 'match', 'pattern' => '/[a-z,A-Z][[:alnum:]]+/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.', 'on' => 'update, import'),
                 array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
                 array('mandatory', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
                 array('question_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
