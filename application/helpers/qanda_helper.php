@@ -3090,7 +3090,7 @@ function do_multipleshorttext($ia)
 }
 
 // -----------------------------------------------------------------
-// TMSW TODO - Can remove DB query by passing in answer list from EM
+// @todo: Can remove DB query by passing in answer list from EM
 function do_multiplenumeric($ia)
 {
     global $thissurvey;
@@ -3269,6 +3269,7 @@ function do_multiplenumeric($ia)
                 $sSeparator = $sSeparator['separator'];
 
                 $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+                $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth."\" name=\"".$myfname."\" id=\"answer".$myfname."\" title=\"".$clang->gT('Only numbers may be entered in this field.')."\" value=\"";                
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
                     $dispVal = str_replace('.',$sSeparator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]);
