@@ -219,12 +219,13 @@ class LSYii_Application extends CWebApplication
      * 
      * @param string $message
      * @param string $type
+     * @param string $detail
      * @return LSYii_Application Provides a fluent interface
      */
-    public function setFlashMessage($message,$type='default')
+    public function setFlashMessage($message,$type='default',$detail="")
     {
         $aFlashMessage=$this->session['aFlashMessage'];
-        $aFlashMessage[]=array('message'=>$message,'type'=>$type);
+        $aFlashMessage[]=array('message'=>$message,'type'=>$type,'detail'=>$detail);
         $this->session['aFlashMessage'] = $aFlashMessage;
         return $this;
     }
