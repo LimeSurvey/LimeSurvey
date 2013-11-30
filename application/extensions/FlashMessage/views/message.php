@@ -5,6 +5,7 @@
             <span style="float:left; margin:2px 5px 0 0;" class="ui-icon ui-icon-info">&nbsp;</span>
             #{message}
         </p>
+        #{detail}
     </div>
     <div id="error-notify"  class="ui-state-highlight ui-corner-all ui-state-error error">
         <p> 
@@ -12,6 +13,7 @@
             <span style="float:left; margin:2px 5px 0 0;" class="ui-icon ui-icon-alert">&nbsp;</span>
              #{message}
         </p>
+        #{detail}
     </div>
     <!-- ui-state-success doesn't exist -->
     <div id="success-notify"  class="ui-state-highlight ui-corner-all ui-state-success success">
@@ -20,5 +22,6 @@
             <span style="float:left; margin:2px 5px 0 0;" class="ui-icon ui-icon-alert">&nbsp;</span>
              #{message}
         </p>
+        #{detail}
     </div>
 </div>

@@ -799,13 +799,20 @@ class database extends Survey_Common_Action
                             $uqresult = $question->save();//($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
                             if (!$uqresult)
                             {
+                                // TODO : create a viewHelper function for this
                                 $bOnError=true;
-                                $aErrorMessage=$question->getErrors();
-                                if(isset($aErrorMessage['title']) && count($aErrorMessage['title']))
+                                $aErrors=$question->getErrors();
+                                if(count($aErrors))// Validate what is returned
                                 {
-                                    foreach($aErrorMessage['title'] as $sTitleError){
-                                        Yii::app()->setFlashMessage($sTitleError,'error');
+                                    $sErrorDetail=CHtml::tag('dl',array(),false,false);
+                                    foreach($aErrors as $sAttribute=>$aStringErrors){
+                                        $sErrorDetail.=CHtml::tag('dt',array(),$sAttribute);
+                                        foreach($aStringErrors as $sError){
+                                            $sErrorDetail.=CHtml::tag('dd',array(),$sError);
+                                        }
+                                        $sErrorDetail.=CHtml::closeTag('dl');
                                     }
+                                    Yii::app()->setFlashMessage($clang->gT("Question could not be updated:"),'error',$sErrorDetail);
                                 }
                                 else
                                 {

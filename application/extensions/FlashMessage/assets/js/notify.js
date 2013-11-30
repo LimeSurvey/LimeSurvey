@@ -16,6 +16,10 @@ $(document).ready(function(){
                 oMessage.template=oMessage.type+"-notify";
             }
         }
-        $notifycontainer.notify("create", oMessage.template, { message:oMessage.message});
+        if(typeof oMessage.detail !=="string")
+        {
+            oMessage.detail="";
+        }
+        $notifycontainer.notify("create", oMessage.template, { message:oMessage.message,detail:oMessage.detail});
     });
 });
