@@ -800,12 +800,17 @@ class database extends Survey_Common_Action
                             if (!$uqresult)
                             {
                                 $bOnError=true;
-                                $aErrorMessage=$question->getErrors();
-                                if(isset($aErrorMessage['title']) && count($aErrorMessage['title']))
+                                $aErrors=$question->getErrors();
+                                if(count($aErrors))
                                 {
-                                    foreach($aErrorMessage['title'] as $sTitleError){
-                                        Yii::app()->setFlashMessage($sTitleError,'error');
+                                    $sErrorMessage=$clang->gT("Question could not be updated with this errors:");
+                                    foreach($aErrors as $sAttribute=>$aStringErrors)
+                                    {
+                                        $sErrorMessage.=CHtml::tag('br');
+                                        $sErrorMessage.=CHtml::tag('strong',array(),$sAttribute);
+                                        $sErrorMessage.=implode(",",$aStringErrors);
                                     }
+                                    Yii::app()->setFlashMessage($sErrorMessage,'error');
                                 }
                                 else
                                 {
