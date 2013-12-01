@@ -3806,7 +3806,11 @@ function do_shortfreetext($ia)
     global $thissurvey;
 
     $clang = Yii::app()->lang;
-    $googleMapsAPIKey = Yii::app()->getConfig("googleMapsAPIKey");
+    $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
+    if ($sGoogleMapsAPIKey!='')
+    {
+        $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
+    }
     $extraclass ="";
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
@@ -3957,9 +3961,9 @@ function do_shortfreetext($ia)
         <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
         </div>";
         if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
-            header_includes("https://maps.googleapis.com/maps/api/js?sensor=false");
+            header_includes("https://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey");
         else if ($aQuestionAttributes['location_mapservice']==1)
-            header_includes("http://maps.googleapis.com/maps/api/js?sensor=false");
+            header_includes("http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey");
         elseif ($aQuestionAttributes['location_mapservice']==2)
             header_includes("http://www.openlayers.org/api/OpenLayers.js");
 
