@@ -60,6 +60,36 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.00+ (build 131122) to 2.00+ (build 131202) Dec 2, 2013
+-Fixed issue #8362: quexf-pdf export: text ends abruptly after &-sign (Adam Zammit)
+-Fixed issue #8405: Date/time doesn't work correctly (Carsten Schmitz)
+-Fixed issue #8405: Date/time doesn't work correctly (mfaber)
+-Fixed issue #8406: Upgrade from 1.92 yields Property "Tokens_dynamic.blacklisted" is not defined. (Carsten Schmitz)
+-Fixed issue #8410: Save fails on final submit for token with participant_id (Carsten Schmitz)
+-Fixed issue #8411: Adding new user group fails with error (Carsten Schmitz)
+-Fixed issue #8418: Export to excel  error "Syntax error: , lookahead: , current char: 0" when information starts with @ (Carsten Schmitz)
+-Fixed issue: Duplicate URL params showing when survey has additional languages (Carsten Schmitz)
+-Fixed issue: Google Maps API key not being used when entered (Carsten Schmitz)
+#Updated translation: Catalan by valdomir, jmontane
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by kpadm, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by Brunotwm, arnaud21, JMI
+#Updated translation: Georgian by giorgi
+#Updated translation: German by c_schmitz, finnnns
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hebrew by yavin, c_schmitz
+#Updated translation: Japanese by nomoto
+#Updated translation: Lithuanian by simasj
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by PeanutButter9000
+#Updated translation: Turkish by kayazeren
 
 Changes from 2.00+ (build 131107) to 2.00+ (build 131122) Nov 22, 2013
 -Fixed issue #8315: Group hidden when Multiple Choice has placeholder question text and a dependent question. (Denis Chenu)
