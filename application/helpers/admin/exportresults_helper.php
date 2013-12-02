@@ -1572,7 +1572,7 @@ class ExcelWriter extends Writer
 
     private function excelEscape($value)
     {
-        if (substr($value, 0, 1) == '=')
+        if ((substr($value, 0, 1) == '=') || (substr($value, 0, 1) == '@'))
         {
             $value = '"'.$value.'"';
         }
