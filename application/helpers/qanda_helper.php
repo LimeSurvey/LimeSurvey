@@ -3348,7 +3348,7 @@ function do_multiplenumeric($ia)
     $hidetip=$aQuestionAttributes['hide_tip'];
     if ($slider_layout === true) // auto hide tip when using sliders
     {
-        $hidetip=1;
+        //$hidetip=1;
     }
 
     if ($aQuestionAttributes['random_order']==1)
@@ -3516,11 +3516,11 @@ function do_multiplenumeric($ia)
             $question_tip .= '<p class="tip">';
             if ($slider_layout)
             {
-                $question_tip .= $clang->gT('Only numbers may be entered in these fields');    
+                $question_tip .= $clang->gT('Please click and drag the slider handles to enter your answer.');// Must be shown only in javascript
             }
             else
             {
-                $question_tip .= $clang->gT('Please click and drag the slider handles to enter your answer.');    
+                $question_tip .= $clang->gT('Only numbers may be entered in these fields');
             }
             $question_tip .= "</p>\n";    
             
