@@ -8750,7 +8750,7 @@ EOD;
                 }
             }
 
-            $out .= "<tr><th>#</th><th>".$LEM->gT('Name [ID]')."</th><th>".$LEM->gT('Relevance [Validation] (Default)')."</th><th>".$LEM->gT('Text [Help] (Tip)')."</th></tr>\n";
+            $out .= "<tr><th>#</th><th>".$LEM->gT('Name [ID]')."</th><th>".$LEM->gT('Relevance [Validation] (Default value)')."</th><th>".$LEM->gT('Text [Help] (Tip)')."</th></tr>\n";
 
             $_gseq=-1;
             foreach ($LEM->currentQset as $q) {
@@ -8802,7 +8802,7 @@ EOD;
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
                     }
-                    $default = '<br />(' . $LEM->gT('Default:') . '  ' . $_default . ')';
+                    $default = '<br />(' . $LEM->gT('Default:') . '  ' . htmlspecialchars($_default) . ')';
                 }
                 else
                 {
