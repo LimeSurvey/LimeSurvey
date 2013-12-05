@@ -729,11 +729,11 @@ class Survey_Common_Action extends CAction
         }
         if ($surveyinfo['emailnotificationto'] != '')
         {
-            $surveysummary2 .= $clang->gT("Basic email notification is sent to:") . " {$surveyinfo['emailnotificationto']}<br />\n";
+            $surveysummary2 .= $clang->gT("Basic email notification is sent to:") .' '. htmlspecialchars($surveyinfo['emailnotificationto'])."<br />\n";
         }
         if ($surveyinfo['emailresponseto'] != '')
         {
-            $surveysummary2 .= $clang->gT("Detailed email notification with response data is sent to:") . " {$surveyinfo['emailresponseto']}<br />\n";
+            $surveysummary2 .= $clang->gT("Detailed email notification with response data is sent to:") .' '. htmlspecialchars($surveyinfo['emailresponseto'])."<br />\n";
         }
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
