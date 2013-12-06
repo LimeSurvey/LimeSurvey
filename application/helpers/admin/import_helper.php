@@ -3636,7 +3636,44 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($insertdata)
                 XSSFilterArray($insertdata);
-            $newqid = Question::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [4]<br />");
+                
+            //$newqid = Question::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [4]<br />");
+            $oQuestion = new Question('import');
+            $oQuestion->setAttributes($insertdata, false);
+            $attempts = 0;
+            if(!$oQuestion->validate(array('title')) && isset($insertdata['title'])){
+                $results['importwarnings'][] = sprintf("Title of question %s was updated.",$insertdata['title']);
+            }
+            while (!$oQuestion->validate(array('title')))
+            {
+                if (is_numeric($oQuestion->title))
+                {
+                    $oQuestion->title = 'q' . $oQuestion->title;// Thinks it's a really bad idea to update question code without information
+                }
+                else
+                {
+                    if (!isset($index))
+                    {
+                        $index = 0;
+                        $rand = mt_rand(0, 1024);
+                    }
+                    else
+                    {
+                        $index++;
+                    }
+                    $oQuestion->title = 'r' . $rand  . 'q' . $index;
+                }
+                $attempts++;
+                if ($attempts > 10)
+                {
+                    safeDie($clang->gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                }
+            }
+            if (!$oQuestion->save())
+            {
+                safeDie($clang->gT("Error while saving: "). print_r($oQuestion->errors, true));
+            }
+            $newqid = $oQuestion->qid;
             if (!isset($aQIDReplacements[$oldqid]))
             {
                 $aQIDReplacements[$oldqid]=$newqid;
@@ -3685,11 +3722,14 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $question = new Question('import');
             $question->setAttributes($insertdata, false);
             $attempts = 0;
+            if(!$question->validate(array('title')) && isset($insertdata['title'])){
+                $results['importwarnings'][] = sprintf("Title of subquestion %s was updated.",$insertdata['title']);
+            }
             while (!$question->validate(array('title')))
             {
                 if (is_numeric($question->title))
                 {
-                    $question->title = 'q' . $question->title;
+                    $question->title = 'sq' . $question->title;// Thinks it's a really bad idea to update sub question code without information (Shnoulle 131206)
                 }
                 else
                 {
