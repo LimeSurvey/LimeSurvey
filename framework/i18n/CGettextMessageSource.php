@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -22,7 +22,6 @@
  * {@link catalog} property, which defaults to 'messages'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGettextMessageSource.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.i18n
  * @since 1.0
  */
@@ -92,7 +91,7 @@ class CGettextMessageSource extends CMessageSource
 
 		if ($this->cachingDuration > 0 && $this->cacheID!==false && ($cache=Yii::app()->getComponent($this->cacheID))!==null)
 		{
-			$key = self::CACHE_KEY_PREFIX . $messageFile;
+			$key = self::CACHE_KEY_PREFIX . $messageFile . "." . $category;
 			if (($data=$cache->get($key)) !== false)
 				return unserialize($data);
 		}

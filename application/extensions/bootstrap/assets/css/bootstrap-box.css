@@ -1,0 +1,195 @@
+.bootstrap-widget {
+
+    position: relative;
+    clear: both;
+
+    width: auto;
+
+    margin-bottom: 2em;
+
+    /*overflow: hidden;*/
+}
+
+.bootstrap-widget-header {
+
+    position: relative;
+
+    height: 40px;
+    /*line-height: 40px;*/
+
+    background: #E9E9E9;
+    background: -moz-linear-gradient(top, #FAFAFA 0%, #E9E9E9 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #FAFAFA), color-stop(100%, #E9E9E9)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #FAFAFA 0%, #E9E9E9 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #FAFAFA 0%, #E9E9E9 100%); /* Opera11.10+ */
+    background: -ms-linear-gradient(top, #FAFAFA 0%, #E9E9E9 100%); /* IE10+ */
+    background: linear-gradient(top, #FAFAFA 0%, #E9E9E9 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#FAFAFA', endColorstr = '#E9E9E9');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#E9E9E9')";
+
+    border: 1px solid #D5D5D5;
+
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+    -moz-border-radius-topleft: 4px;
+    -moz-border-radius-topright: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+
+    -webkit-background-clip: padding-box;
+}
+.bootstrap-widget-header .bootstrap-toolbar
+{
+    margin: 0 2px;
+}
+.bootstrap-widget-header .bootstrap-toolbar ul.dropdown-menu i
+{
+    margin-left: -18px;
+    margin-right: 1px;
+}
+.bootstrap-widget-header .bootstrap-toolbar > .btn,
+.bootstrap-widget-header .bootstrap-toolbar > .btn-group{
+    margin-left: 7px;
+}
+.bootstrap-widget-header .bootstrap-toolbar > .btn,
+.bootstrap-widget-header .bootstrap-toolbar > .btn-group > .btn{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.bootstrap-widget-header .bootstrap-toolbar > *:last-child{
+    margin-left: 0;
+}
+.bootstrap-widget-header .bootstrap-toolbar > .btn-large,
+.bootstrap-widget-header .bootstrap-toolbar > .btn-group > .btn-large{
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+.bootstrap-widget-header .bootstrap-toolbar > .btn-small,
+.bootstrap-widget-header .bootstrap-toolbar > .btn-group > .btn-small{
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+.bootstrap-widget-header .bootstrap-toolbar > .btn-mini,
+.bootstrap-widget-header .bootstrap-toolbar > .btn-group > .btn-mini{
+    margin-top: 8px;
+    margin-bottom: 9px;
+}
+
+
+.bootstrap-widget-header h3 {
+
+    position: relative;
+    top: 2px;
+    left: 10px;
+
+    display: inline-block;
+    margin-right: 3em;
+
+    font-size: 14px;
+    font-weight: 800;
+    color: #555;
+    line-height: 18px;
+
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, .5);
+}
+
+.bootstrap-widget-header [class^="icon-"], .bootstrap-widget-header [class*=" icon-"] {
+
+    display: inline-block;
+    margin-left: 13px;
+    margin-right: -2px;
+
+    font-size: 16px;
+    color: #555;
+    vertical-align: middle;
+
+}
+
+.bootstrap-widget-content {
+    padding: 20px 15px 15px;
+
+    background: #FFF;
+
+    border: 1px solid #D5D5D5;
+
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.bootstrap-widget-header+.bootstrap-widget-content {
+    border-top: none;
+
+    -webkit-border-top-left-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -moz-border-radius-topleft: 0;
+    -moz-border-radius-topright: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.bootstrap-widget-nopad .bootstrap-widget-content {
+    padding: 0;
+}
+
+/* Widget Content Clearfix */
+.bootstrap-widget-content:before,
+.bootstrap-widget-content:after {
+    content: "";
+    display: table;
+}
+
+.bootstrap-widget-content:after {
+    clear: both;
+}
+
+/* For IE 6/7 (trigger hasLayout) */
+.bootstrap-widget-content {
+    zoom: 1;
+}
+
+/* Widget Table */
+
+.bootstrap-widget-table .bootstrap-widget-content {
+    padding: 0;
+}
+
+.bootstrap-widget-table .table {
+    margin-bottom: 0;
+
+    border: none;
+}
+
+.bootstrap-widget-table .table tr td:first-child {
+    border-left: none;
+}
+
+.bootstrap-widget-table .table tr th:first-child {
+    border-left: none;
+}
+
+/* Widget Plain */
+.bootstrap-widget-plain {
+
+    background: transparent;
+
+    border: none;
+}
+
+.bootstrap-widget-plain .widget-content {
+    padding: 0;
+
+    background: transparent;
+
+    border: none;
+}
+
+/* Widget Box */
+.bootstrap-widget-box {
+
+}
+
+.bootstrap-widget-box .bootstrap-widget-content {
+    background: #E3E3E3;
+    background: #FFF;
+}

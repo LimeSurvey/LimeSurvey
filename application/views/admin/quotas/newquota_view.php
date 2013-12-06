@@ -1,5 +1,5 @@
 <div class='header ui-widget-header'><?php $clang->eT("New quota");?></div>
-    <?php echo CHtml::form(array("admin/quotas/sa/insertquota/surveyid/{$iSurveyId}"), 'post', array('class'=>'form44', 'id'=>'addnewquota')); ?>
+<?php echo CHtml::form(array("admin/quotas/sa/insertquota/surveyid/{$iSurveyId}"), 'post', array('class'=>'form30', 'id'=>'addnewquotaform', 'name'=>'addnewquotaform')); ?>
     <ul>
         <li>
             <label for="quota_name"><?php $clang->eT("Quota name");?>:</label>
@@ -13,7 +13,7 @@
             <label for="quota_action"><?php $clang->eT("Quota action");?>:</label>
             <select id="quota_action" name="quota_action">
                 <option value ="1"><?php $clang->eT("Terminate survey");?></option>
-                <option value ="2"><?php $clang->eT("Show message and allow user to modify answers");?></option>
+                <option value ="2"><?php $clang->eT("Terminate survey with warning");?></option>
             </select>
         </li>
         <li>
@@ -21,14 +21,14 @@
             <input id="autoload_url" name="autoload_url" type="checkbox" value="1" />
         </li>
     </ul>
-    <div id="tabs">
-        <ul>
+    <div id="tabs"><ul>
             <?php foreach ($langs as $lang) { ?>
                 <li><a href="#tabpage_<?php echo $lang ?>"><?php echo getLanguageNameFromCode($lang,false);
-                    if ($lang==$baselang) {echo '('.$clang->gT("Base language").')';} ;?>
-                </a></li>
+                        if ($lang==$baselang) {echo '('.$clang->gT("Base language").')';} ;?></a></li>
                 <?php } ?>
         </ul>
+
+
         <?php foreach ($langs as $lang) { ?>
             <div id="tabpage_<?php echo $lang ?>">
                 <ul>
@@ -47,11 +47,9 @@
                 </ul>
             </div>
             <?php } ?>
-    </div>
-    <p>
-        <input name="submit" type="submit" value="<?php $clang->eT("Add New Quota");?>" />
         <input type="hidden" name="sid" value="<?php echo $surveyid;?>" />
         <input type="hidden" name="action" value="quotas" />
         <input type="hidden" name="subaction" value="insertquota" />
-    </p>
+    </div>
+    <p><input name="submit" type="submit" value="<?php $clang->eT("Add New Quota");?>" />
 	</form>

@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*    $Id$
 */
 
 /**
@@ -82,10 +81,15 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
     // Build array that has to be returned
     $fields = SPSSFieldMap($iSurveyID);
 
+    // Now see if we have parameters for from (offset) & num (limit)
+    $limit = App()->getRequest()->getParam('limit');
+    $offset = App()->getRequest()->getParam('offset');
+    
     //Now get the query string with all fields to export
-    $query = SPSSGetQuery($iSurveyID);
-
-    $result=Yii::app()->db->createCommand($query)->query();
+    $query = SPSSGetQuery($iSurveyID, $limit, $offset);
+    
+    $result = $query->query();
+    
     $rownr = 0;
 
     foreach ($result as $row) {
@@ -215,8 +219,8 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
 * @param $field array field from SPSSFieldMap
 * @return array or false
 */
-function SPSSGetValues ($field = array(), $qidattributes = null ) {
-    global $iSurveyID, $language, $length_vallabel;
+function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
+    $length_vallabel = 120;
     $clang = Yii::app()->lang;
 
     if (!isset($field['LStype']) || empty($field['LStype'])) return false;
@@ -325,8 +329,8 @@ function SPSSGetValues ($field = array(), $qidattributes = null ) {
 * @return array
 */
 function SPSSFieldMap($iSurveyID, $prefix = 'V') {
-    global $clang, $surveyprivate, $language;
-
+    global $clang, $surveyprivate;
+    
     $typeMap = array(
 '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
 'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
@@ -375,7 +379,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $fieldno=0;
 
     $fields=array();
-    if ($bTokenTableExists && $surveyprivate == 'N' && hasSurveyPermission($iSurveyID,'tokens','read')) {
+    if ($bTokenTableExists && $surveyprivate == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
@@ -398,7 +402,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage');
     # Build array that has to be returned
     for ($i=0; $i < $num_results; $i++) {
-        #Conditions for SPSS fields:
+        #Condition for SPSS fields:
         # - Length may not be longer than 8 characters
         # - Name may not begin with a digit
         $fieldname = $fieldnames[$i];
@@ -407,7 +411,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $val_size = 1;
         $hide = 0;
         $export_scale = '';
-        $code='';           
+        $code='';
         $scale_id = null;
         $aQuestionAttribs=array();
 
@@ -486,7 +490,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
         'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
         //Now check if we have to retrieve value labels
-        $answers = SPSSGetValues($tempArray, $aQuestionAttribs);
+        $answers = SPSSGetValues($tempArray, $aQuestionAttribs, $language);
         if (is_array($answers)) {
             //Ok we have answers
             if (isset($answers['size'])) {
@@ -507,42 +511,46 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
 /**
 * Creates a query string with all fields for the export
 * @param
-* @return string
+* @return CDbCommand
 */
-function SPSSGetQuery($iSurveyID) {
+function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
 
     $bDataAnonymized=(Survey::model()->findByPk($iSurveyID)->anonymized=='Y');
     $tokensexist=tableExists('tokens_'.$iSurveyID);
 
-
-
     #See if tokens are being used
-    if (isset($tokensexist) && $tokensexist == true && !$bDataAnonymized && hasSurveyPermission($iSurveyID,'tokens','read')) {
-        $query="SELECT ";
+    $query = App()->db->createCommand();
+    $query->from('{{survey_' . $iSurveyID . '}} s');
+    $columns = array('s.*');
+    if (isset($tokensexist) && $tokensexist == true && !$bDataAnonymized && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=array_keys(getTokenFieldsAndNames($iSurveyID,false));
         foreach ($tokenattributes as $attributefield) {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
-                $query .= Yii::app()->db->quoteColumnName( 't.' . $attributefield) . ',';
+                $columns[] = 't.' . $attributefield;
             }
         }
-        $query .= "s.*
-        FROM {{survey_$iSurveyID}} s
-        LEFT JOIN {{tokens_$iSurveyID}} t ON s.token = t.token";
-    } else {
-        $query = "SELECT s.*
-        FROM {{survey_$iSurveyID}} s";
+        
+        $query->leftJoin('{{tokens_' . $iSurveyID . '}} t',  App()->db->quoteColumnName('s.token') . ' = ' .  App()->db->quoteColumnName('t.token'));
+        //LEFT JOIN {{tokens_$iSurveyID}} t ON ";
     }
+    $query->select($columns);
     switch (incompleteAnsFilterState()) {
         case 'incomplete':
             //Inclomplete answers only
-            $query .= ' WHERE s.submitdate is null ';
+            $query->where('s.submitdate IS NULL');
             break;
         case 'complete':
             //Inclomplete answers only
-            $query .= ' WHERE s.submitdate is not null ';
+            $query->where('s.submitdate IS NOT NULL');
             break;
     }
+    
+    if (!empty($limit) & !is_null($offset)) 
+    {
+        $query->limit((int) $limit,  (int) $offset);
+    }
+    
     return $query;
 }
 
@@ -628,7 +636,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
     $sdump = "";
     if (!isset($exclude['answers']))
     {
-        //Answers table
+        //Answer table
         $aquery = "SELECT {{answers}}.*
         FROM {{answers}}, {{questions}}
         WHERE {{answers}}.language={{questions}}.language
@@ -645,7 +653,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
 
     if (!isset($exclude['conditions']))
     {
-        //Conditions table
+        //Condition table
         $cquery = "SELECT DISTINCT {{conditions}}.*
         FROM {{conditions}}, {{questions}}
         WHERE {{conditions}}.qid={{questions}}.qid
@@ -659,7 +667,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
 
     buildXMLFromQuery($xmlwriter,$query);
 
-    // Groups
+    // QuestionGroup
     $gquery = "SELECT *
     FROM {{groups}}
     WHERE sid=$iSurveyID
@@ -965,11 +973,14 @@ function QueXMLCreateFixed($qid,$rotate=false,$labels=true,$scale=0,$other=false
 /**
 * from export_structure_quexml.php
 */
-function quexml_get_lengthth($qid,$attribute,$default)
+function quexml_get_lengthth($qid,$attribute,$default, $quexmllang=false)
 {
     global $dom;
-
-    $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND attribute = '$attribute'";
+    if ($quexmllang!=false)
+        $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='$attribute'";
+    else
+        $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND attribute='$attribute'";
+        
     //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
 
@@ -1031,7 +1042,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
         else
             $response->appendChild(QueXMLCreateFree($free['f'],$free['len'],$Row['question']));
 
-        $response->setAttribute("varName",$varname . QueXMLCleanup($Row['title']));
+        $response->setAttribute("varName",QueXMLCleanup($Row['title']));
 
         $question->appendChild($response);
     }
@@ -1097,7 +1108,7 @@ function quexml_create_subQuestions(&$question,$qid,$varname,$use_answers = fals
         $subQuestion = $dom->createElement("subQuestion");
         $text = $dom->createElement("text",QueXMLCleanup($Row['question'],''));
         $subQuestion->appendChild($text);
-        $subQuestion->setAttribute("varName",$varname . QueXMLCleanup($Row['title']));
+        $subQuestion->setAttribute("varName",$varname .'_'. QueXMLCleanup($Row['title']));
         $question->appendChild($subQuestion);
     }
 
@@ -1264,6 +1275,24 @@ function quexml_export($surveyi, $quexmllan)
 
                 $question->appendChild($directive);
             }
+            
+			if (Yii::app()->getConfig('quexmlshowprintablehelp')==true)
+			{
+				
+				$RowQ['printable_help']=quexml_get_lengthth($qid,"printable_help","", $quexmllang);
+            
+				if (!empty($RowQ['printable_help']))
+				{
+					$directive = $dom->createElement("directive");
+					$position = $dom->createElement("position","before");
+					$text = $dom->createElement("text", '['.$qlang->gT('Only answer the following question if:')." ".QueXMLCleanup($RowQ['printable_help'])."]");
+					$administration = $dom->createElement("administration","self");
+					$directive->appendChild($position);
+					$directive->appendChild($text);
+					$directive->appendChild($administration);
+					$question->appendChild($directive);
+				}
+			}
 
             $response = $dom->createElement("response");
             $sgq = $RowQ['title'];
@@ -1291,9 +1320,17 @@ function quexml_export($surveyi, $quexmllan)
                     $question->appendChild($response);
                     break;
                 case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    quexml_create_subQuestions($question,$qid,$sgq);
+                    $response = $dom->createElement("response");
+                    $response->setAttribute("varName",QueXMLCleanup($sgq));
                     $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
+                    
+                    $response2 = $dom->createElement("response");
+                    $response2->setAttribute("varName",QueXMLCleanup($sgq) . "_comment");
+                    $response2->appendChild(QueXMLCreateFree("longtext","40",""));
+                    
                     $question->appendChild($response);
-                    //no comment - this should be a separate question
+                    $question->appendChild($response2);
                     break;
                 case "R": //RANKING STYLE
                     quexml_create_subQuestions($question,$qid,$sgq,true);
@@ -1328,7 +1365,8 @@ function quexml_export($surveyi, $quexmllan)
                     $question->appendChild($response);
                     break;
                 case "S": //SHORT FREE TEXT
-                    $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","240"),""));
+                    // default is fieldlength of 24 characters.
+                    $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","24"),""));
                     $question->appendChild($response);
                     break;
                 case "T": //LONG FREE TEXT
@@ -1382,10 +1420,22 @@ function quexml_export($surveyi, $quexmllan)
                 case "1": //Dualscale multi-flexi array
                     //select subQuestions from answers table where QID
                     quexml_create_subQuestions($question,$qid,$sgq);
+                    //get the header of the first scale of the dual scale question
+                    $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='dualscale_headerA'";
+                    $QRE = Yii::app()->db->createCommand($Query)->query();
+                    $QROW = $QRE->read();
                     $response = $dom->createElement("response");
+                    if ($QROW['value'])
+                        $response->setAttribute("varName",QueXMLCleanup($QROW['value']));
                     $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
+                    
+                    //get the header of the second scale of the dual scale question
+                    $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='dualscale_headerB'";
+                    $QRE = Yii::app()->db->createCommand($Query)->query();
+                    $QROW = $QRE->read();
                     $response2 = $dom->createElement("response");
-                    $response2->setAttribute("varName",QueXMLCleanup($sgq) . "_2");
+                    if ($QROW['value'])
+                        $response2->setAttribute("varName",QueXMLCleanup($QROW['value']));
                     $response2->appendChild(QueXMLCreateFixed($qid,false,false,1,$other,$sgq));
                     $question->appendChild($response);
                     $question->appendChild($response2);
@@ -1398,15 +1448,15 @@ function quexml_export($surveyi, $quexmllan)
                         quexml_create_multi($question,$qid,$sgq,1);
                     else
                     {
-                        //get multiflexible_max - if set then make boxes of max this width
-                        $mcm = strlen(quexml_get_lengthth($qid,'multiflexible_max',1));
+                        //get multiflexible_max and maximum_chars - if set then make boxes of max of these widths
+                        $mcm = max(quexml_get_lengthth($qid,'maximum_chars',1), strlen(quexml_get_lengthth($qid,'multiflexible_max',1)));
                         quexml_create_multi($question,$qid,$sgq,1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
                     }
                     break;
                 case ";": //multi-flexi array text
                     quexml_create_subQuestions($question,$qid,$sgq);
                     //foreach question where scale_id = 1 this is a textbox
-                    quexml_create_multi($question,$qid,$sgq,1,array('f' => 'text', 'len' => 10, 'lab' => ''));
+                    quexml_create_multi($question,$qid,$sgq,1,array('f' => 'text', 'len' => quexml_get_lengthth($qid,'maximum_chars',10), 'lab' => ''));
                     break;
                 case "^": //SLIDER CONTROL - not supported
                     $response->appendChild(QueXMLFixedArray(array("NOT SUPPORTED:$type" => 1)));
@@ -1474,7 +1524,7 @@ function group_export($action, $iSurveyID, $gid)
     $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
     $xml->startElement('languages');
 
-    $lresult = Groups::model()->findAllByAttributes(array('gid' => $gid), array('select'=>'language','group' => 'language'));
+    $lresult = QuestionGroup::model()->findAllByAttributes(array('gid' => $gid), array('select'=>'language','group' => 'language'));
     foreach($lresult as $row)
     {
         $xml->writeElement('language',$row->language);
@@ -1487,7 +1537,7 @@ function group_export($action, $iSurveyID, $gid)
 
 function groupGetXMLStructure($xml,$gid)
 {
-    // Groups
+    // QuestionGroup
     $gquery = "SELECT *
     FROM {{groups}}
     WHERE gid=$gid";
@@ -1505,14 +1555,14 @@ function groupGetXMLStructure($xml,$gid)
     WHERE gid=$gid and parent_qid>0 order by question_order, language, scale_id";
     buildXMLFromQuery($xml,$qquery,'subquestions');
 
-    //Answers
+    //Answer
     $aquery = "SELECT DISTINCT {{answers}}.*
     FROM {{answers}}, {{questions}}
     WHERE ({{answers}}.qid={{questions}}.qid)
     AND ({{questions}}.gid=$gid)";
     buildXMLFromQuery($xml,$aquery);
 
-    //Conditions - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
+    //Condition - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
     $cquery = "SELECT DISTINCT c.*
     FROM {{conditions}} c, {{questions}} q, {{questions}} b
     WHERE (c.cqid=q.qid)
@@ -1553,7 +1603,7 @@ function groupGetXMLStructure($xml,$gid)
 // DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR
 // ON ANOTHER SURVEY SETUP DUMP ALL DATA WITH RELATED QID FROM THE FOLLOWING TABLES
 //  - Questions
-//  - Answers
+//  - Answer
 //  - Question attributes
 //  - Default values
 function questionExport($action, $iSurveyID, $gid, $qid)
@@ -1586,6 +1636,7 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     questionGetXMLStructure($xml,$gid,$qid);
     $xml->endElement(); // close columns
     $xml->endDocument();
+    exit;
 }
 
 function questionGetXMLStructure($xml,$gid,$qid)
@@ -1603,7 +1654,7 @@ function questionGetXMLStructure($xml,$gid,$qid)
     buildXMLFromQuery($xml,$qquery,'subquestions');
 
 
-    // Answers table
+    // Answer table
     $aquery = "SELECT *
     FROM {{answers}}
     WHERE qid = $qid order by language, scale_id, sortorder";
@@ -1762,7 +1813,7 @@ function tokensExport($iSurveyID)
 
     if (Yii::app()->request->getPost('tokendeleteexported') && !empty($aExportedTokens))
     {
-        Tokens_dynamic::model($iSurveyID)->deleteByPk($aExportedTokens);
+		Token::model($iSurveyID)->deleteByPk($aExportedTokens);
     }
 }
 

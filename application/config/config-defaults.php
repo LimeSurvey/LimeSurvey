@@ -86,7 +86,7 @@ $config['defaulttemplate']    =  'default';         // This setting specifys the
 
 $config['allowedtemplateuploads'] = 'gif,ico,jpg,png,css,js';  // File types allowed to be uploaded in the templates section.
 
-$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip,pstpl,css';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
+$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
 $config['memory_limit']        =  '32';   // This sets how much memory LimeSurvey can access in megabytes. 32 mb is the minimum recommended - if you are using PDF functions up to 64 mb may be needed
 
@@ -183,15 +183,11 @@ $config['auth_webserver_autocreate_profile'] = Array(
     'full_name' => 'autouser',
     'email' => 'autouser@test.test',
     'lang' => 'en',
-    'htmleditormode' => $config['defaulthtmleditormode'],
-    'templatelist' => 'default,basic',
-    'create_survey' => 1,
-    'create_user' => 0,
-    'delete_user' => 0,
-    'superadmin' => 0,
-    'configurator' => 0,
-    'manage_template' => 0,
-    'manage_label' => 0
+    'htmleditormode' => $config['defaulthtmleditormode']
+);
+
+$config['auth_webserver_autocreate_permissions'] = Array(
+	'surveys' => array('create'=>true,'read'=>true,'update'=>true,'delete'=>true)
 );
 
 // hook_get_auth_webserver_profile
@@ -209,15 +205,7 @@ $config['auth_webserver_autocreate_profile'] = Array(
 //			'full_name' => '$user_name',
 //			'email' => "$user_name@localdomain.org",
 //			'lang' => 'en',
-//			'htmleditormode' => 'inline',
-//			'templatelist' => 'default,basic,MyOrgTemplate',
-//			'create_survey' => 1,
-//			'create_user' => 0,
-//			'delete_user' => 0,
-//			'superadmin' => 0,
-//			'configurator' =>0,
-//			'manage_template' => 0,
-//			'manage_label' => 0);
+//			'htmleditormode' => 'inline');
 //}
 
 
@@ -371,6 +359,9 @@ $config['notsupportlanguages'] = array(
 $config['pdffontsize']    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
 
+// QueXML-PDF: If set to true, the printable_help attribute will be visible on the exported PDF questionnaires
+// If used, the appearance (font size, justification, etc.) may be adjusted by editing td.questionHelpBefore and $helpBeforeBorderBottom of quexml.
+$config['quexmlshowprintablehelp'] = false;
 
 // CAS Settings
 /**
@@ -559,7 +550,7 @@ $config['InsertansUnsupportedtypes'] = array();
 * Default is 'stable'
 * @var string
 */
-$config['updatenotification'] = 'stable';
+$config['updatenotification'] = 'both';
 
 
 // === Advanced Setup
@@ -608,6 +599,15 @@ $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upl
 $config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
 $config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
 $config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
+
+// Use alias notation, we should move to this format everywhere.
+$config['plugindir']               = 'webroot.plugins';
+
+// (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric caracters; 0 : leave all caracters
+$config['bFixNumAuto']             = 1;
+// (javascript) Send real value entered when using Numeric question type in Expression Manager : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
+$config['bNumRealValue']             = 0;
+
 
 return $config;
 //settings deleted

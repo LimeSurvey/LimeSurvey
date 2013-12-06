@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 
 
@@ -19,7 +18,7 @@ function getSurveyDefaultSettings()
 {
     return array(
     'active'=>'N',
-    'allowjumps'               => 'N',
+    'questionindex'               => 0,
     'format'                   => 'G', //Group-by-group mode
     'template'                 => $this->config->item('defaulttemplate'),
     'allowsave'                => 'Y',

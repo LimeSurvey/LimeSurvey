@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 
 /**
@@ -27,9 +26,10 @@ function fixNumbering($fixnumbering, $iSurveyID)
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
     //Fix a question id - requires renumbering a question
     $oldqid = (int) $fixnumbering;
-    $lastqid=Questions::model()->getMaxId();
+    $lastqid=Question::model()->getMaxId('qid', true); // Always refresh as we insert new qid's
     $newqid=$lastqid+1;
 
+    // Not sure we can do this in MSSQL ?
     $query = "UPDATE {{questions}} SET qid=$newqid WHERE qid=$oldqid";
     $result = db_execute_assosc($query);
     // Update subquestions
@@ -56,7 +56,7 @@ function fixNumbering($fixnumbering, $iSurveyID)
             $result = db_execute_assosc($query);
         }
     }
-    // TMSW Conditions->Relevance:  (1) Call LEM->ConvertConditionsToRelevance()when done. (2) Should relevance for old conditions be removed first?
+    // TMSW Condition->Relevance:  (1) Call LEM->ConvertConditionsToRelevance()when done. (2) Should relevance for old conditions be removed first?
     //Now question_attributes
     $query = "UPDATE {{question_attributes}} SET qid=$newqid WHERE qid=$oldqid";
     $result = db_execute_assosc($query);

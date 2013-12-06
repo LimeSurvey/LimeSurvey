@@ -62,7 +62,8 @@ function doFileUpload(){
             max_filesize : $('#'+fieldname+'_maxfilesize').val(),
             preview : $('#preview').val(),
             surveyid : surveyid,
-            fieldname : fieldname
+            fieldname : fieldname,
+            YII_CSRF_TOKEN : csrfToken
         },
         onSubmit : function(file, ext){
 

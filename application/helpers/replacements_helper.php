@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*    $Id$
 */
 /**
 * This function replaces keywords in a text and is mainly intended for templates
@@ -23,10 +22,9 @@
 * @param mixed $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
 * @param boolean $anonymized Determines if token data is being used or just replaced with blanks
 * @param questionNum - needed to support dynamic JavaScript-based tailoring within questions
-* @param bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
 * @return string  Text with replaced strings
 */
-function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array(), $bStaticReplacement = false)
+function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array())
 {
     /*
     global $clienttoken,$token,$sitename,$move,$showxquestions,$showqnumcode,$questioncode;
@@ -136,70 +134,49 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_templatecss="";$_templatejs="";
     if(stripos ($line,"{TEMPLATECSS}"))
     {
-        $css_header_includes=Yii::app()->getConfig("css_header_includes");
         if (file_exists($templatedir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
         {
-            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}jquery-ui-custom.css' />\n";
+			Yii::app()->getClientScript()->registerCssFile("{$templateurl}jquery-ui-custom.css");
         }
         elseif(file_exists($templatedir.DIRECTORY_SEPARATOR.'jquery-ui.css'))
         {
-            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}jquery-ui.css' />\n";
+			Yii::app()->getClientScript()->registerCssFile("{$templateurl}jquery-ui.css");
         }
         else
         {
-            $_templatecss .="<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('publicstyleurl')."jquery-ui.css' />\n"; // Remove it after corrected slider
-            $template_jqueryui_css="";
+			Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."jquery-ui.css");
         }
-        if($css_header_includes){
-            foreach ($css_header_includes as $cssinclude)
-            {
-                if (substr($cssinclude,0,4) == 'http' || substr($cssinclude,0,1) == '/' || substr($cssinclude,0,strlen(Yii::app()->getConfig('publicurl'))) == Yii::app()->getConfig('publicurl'))
-                {
-                    $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".$cssinclude."' />\n";
-                }
-                else
-                {
-                    if(file_exists($templatedir.DIRECTORY_SEPARATOR.$cssinclude))
-                    {
-                        $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}{$cssinclude}' />\n";
-                    }
-                    else
-                    {
-                        $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('publicstyleurl').$cssinclude."' />\n";
-                    }
-                }
-            }
-        }
-        $_templatecss.= $template_jqueryui_css; // Template jquery ui after default css
-        $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}template.css' />\n";
-        if (getLanguageRTL($clang->langcode))
+
+		Yii::app()->getClientScript()->registerCssFile("{$templateurl}template.css");
+		if (getLanguageRTL($clang->langcode))
         {
-            $_templatecss.="<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}template-rtl.css' />\n";
+            Yii::app()->getClientScript()->registerCssFile("{$templateurl}template-rtl.css");
         }
     }
     if(stripos ($line,"{TEMPLATEJS}"))
     {
-        $js_header_includes =header_includes(false,'js');
-        $_jqueryuijsurl=Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js";
-        $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."jquery/jquery.js'></script>\n";
-        $_templatejs.= "<script type='text/javascript' src='{$_jqueryuijsurl}'></script>\n";
-        $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."jquery/jquery.ui.touch-punch.min.js'></script>\n";
-        if($js_header_includes){
-            foreach ($js_header_includes as $jsinclude)
-            {
-                if (substr($jsinclude,0,4) == 'http' || substr($jsinclude,0,2) == '/' || substr($jsinclude,0,strlen(Yii::app()->getConfig('publicurl'))) == Yii::app()->getConfig('publicurl'))
-                {
-                    $_templatejs .= "<script type='text/javascript' src='{$jsinclude}'></script>\n";
-                }
-                else
-                {
-                    $_templatejs .= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts').$jsinclude."'></script>\n";
-                }
-            }
+        // Javascript Var
+        $aLSJavascriptVar=array();
+        $aLSJavascriptVar['bFixNumAuto']=(int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
+        $aLSJavascriptVar['bNumRealValue']=(int)(bool)Yii::app()->getConfig('bNumRealValue',0);
+        if(isset($thissurvey['surveyls_numberformat']))
+        {
+            $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
         }
-        $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."survey_runtime.js'></script>\n";
-        $_templatejs.= "<script type='text/javascript' src='{$templateurl}template.js'></script>\n";
-        $_templatejs.= useFirebug();
+        else
+        {
+            $aLangData=getLanguageData();
+            $radix=getRadixPointData($aLangData[ Yii::app()->getConfig('defaultlang')]['radixpoint']);// or $clang->langcode . defaultlang  ensure it's same for each language ?
+        }
+        $aLSJavascriptVar['sLEMradix']=$radix['separator'];
+        $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar);
+        App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
+        App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)
+        App()->getClientScript()->registerPackage('jqueryui');
+        App()->getClientScript()->registerPackage('jquery-touch-punch');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
+        App()->getClientScript()->registerScriptFile($templateurl . 'template.js',CClientScript::POS_BEGIN);
+        useFirebug();
     }
 
     // surveyformat
@@ -216,7 +193,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $surveyformat .= " page-odd";
     }
 
-    if (isset($thissurvey['allowjumps']) && $thissurvey['allowjumps']=="Y" && $surveyformat!="allinone" && (isset(Yii::app()->session['step']) && Yii::app()->session['step']>0)){
+    if (isset($thissurvey['questionindex']) && $thissurvey['questionindex'] > 0 && $surveyformat!="allinone" && (isset(Yii::app()->session['step']) && Yii::app()->session['step']>0)){
         $surveyformat .= " withindex";
     }
     if (isset($thissurvey['showprogress']) && $thissurvey['showprogress']=="Y"){
@@ -411,7 +388,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if(isset($thissurvey['sid']) && isset($_SESSION['survey_'.$thissurvey['sid']]['srid']) && $thissurvey['active']=='Y')
     {
-        $iscompleted=Survey_dynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$thissurvey['sid']]['srid']);
+        $iscompleted=SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$thissurvey['sid']]['srid']);
     }
     else
     {
@@ -424,9 +401,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         {
             $aURLParams['token'] = trim(sanitize_token(strip_tags(returnGlobal('token'))));
         }
-        $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and clear survey") . "' class='clearall' "
-        . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",$aURLParams,'&amp;');
-        $_clearall .= "', '_self')}\" />";
+        // Use a real link for accessibility : this need to be accessible without javascript
+        $_clearall="<a href='".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",$aURLParams,'&amp;')."' class='clearall button confirm-needed' title='".$clang->gT("Are you sure you want to clear all your responses?", 'js')."'>".$clang->gT("Exit and clear survey")."</a>";
     }
     else
     {
@@ -443,38 +419,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
     {
-        // Find out if the user has any saved data
-        if ($thissurvey['format'] == 'A')
-        {
-            if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
-            {
-                $_saveall = "\t\t\t<input type='button' name='loadall' value='" . $clang->gT("Load unfinished survey") . "' class='saveall' onclick=\"javascript:addHiddenField(document.getElementById('limesurvey'),'loadall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>"
-                . "\n\t\t\t<input type='button' name='saveallbtn' value='" . $clang->gT("Resume later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
-            }
-            else
-            {
-                $_saveall = "\t\t\t<input type='button' name='saveallbtn' value='" . $clang->gT("Resume later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
-            };
-        }
-        elseif (isset($surveyid) && (!isset($_SESSION['survey_'.$surveyid]['step']) || !$_SESSION['survey_'.$surveyid]['step']))
-        {  //First page, show LOAD
-            if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
-            {
-                $_saveall = "\t\t\t<input type='button' name='loadall' value='" . $clang->gT("Load unfinished survey") . "' class='saveall' onclick=\"javascript:addHiddenField(document.getElementById('limesurvey'),'loadall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";
-            }
-            else
-            {
-                $_saveall = '';
-            }
-        }
-        elseif (isset($surveyid) && isset($_SESSION['survey_'.$surveyid]['scid']) && (isset($move) && $move == "movelast"))
-        {  //Already saved and on Submit Page, dont show Save So Far button
-            $_saveall = '';
-        }
-        else
-        {
-            $_saveall = "<input type='button' name='saveallbtn' value='" . $clang->gT("Resume later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
-        }
+        $_saveall = doHtmlSaveAll(isset($move)?$move:NULL);
     }
     else
     {
@@ -789,7 +734,7 @@ EOD;
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
-    $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
+	$coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['AID'] = isset($questiondetails['aid']) ? $questiondetails['aid'] : '';
     $coreReplacements['ANSWER'] = isset($answer) ? $answer : '';  // global
     $coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers cleared");
@@ -801,7 +746,7 @@ EOD;
     $coreReplacements['CLOSEWINDOW']  =  "<a href='javascript:%20self.close()'>".$clang->gT("Close this window")."</a>";
     $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : '';    // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
-    $coreReplacements['ENDTEXT'] = $_endtext;
+	$coreReplacements['ENDTEXT'] = $_endtext;
     $coreReplacements['EXPIRY'] = $_dateoutput;
     $coreReplacements['GID'] = isset($questiondetails['gid']) ? $questiondetails['gid']: '';
     $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;
@@ -819,7 +764,7 @@ EOD;
     $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
     $coreReplacements['PRIVACY'] = isset($privacy) ? $privacy : '';    // global
-    $coreReplacements['PRIVACYMESSAGE'] = "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey.");
+    $coreReplacements['PRIVACYMESSAGE'] = "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it.").' '.$clang->gT("If you used an identifying token to access this survey, please rest assured that this token will not be stored together with your responses. It is managed in a separate database and will only be updated to indicate whether you did (or did not) complete this survey. There is no way of matching identification tokens with survey responses.");
     $coreReplacements['QID'] = isset($questiondetails['qid']) ? $questiondetails['qid'] : '';// $questiondetails['qid'] or $questionNum, see bug #06954
     $coreReplacements['QUESTION'] = $_question;
     $coreReplacements['QUESTIONHELP'] = $_questionhelp;
@@ -881,8 +826,7 @@ EOD;
     }
 
     // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default
-    $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 3, 1, false, true, $bStaticReplacement);
-    
+    $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 3, 1);
     return $line;
 
 }
@@ -944,6 +888,52 @@ function PassthruReplace($line, $thissurvey)
     }
 
     return $line;
+}
+
+/**
+* doHtmlSaveAll return HTML part of saveall button in survey
+**/
+function doHtmlSaveAll($move="")
+{
+    $surveyid=Yii::app()->getConfig('surveyID');
+    $thissurvey=getsurveyinfo($surveyid);
+    $clang = Yii::app()->lang;
+    $aHtmlOptionsLoadall=array('type'=>'submit','id'=>'loadallbtn','value'=>'loadall','name'=>'loadall','class'=>"saveall submit button");
+    $aHtmlOptionsSaveall=array('type'=>'submit','id'=>'saveallbtn','value'=>'saveall','name'=>'saveall','class'=>"saveall submit button");
+    if($thissurvey['active'] != "Y"){
+        $aHtmlOptionsLoadall['disabled']='disabled';
+        $aHtmlOptionsSaveall['disabled']='disabled';
+    }
+    $_saveall="";
+    // Find out if the user has any saved data
+    if ($thissurvey['format'] == 'A')
+    {
+        if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
+        {
+            $_saveall .= CHtml::htmlButton($clang->gT("Load unfinished survey"),$aHtmlOptionsLoadall);
+        }
+        $_saveall .= CHtml::htmlButton($clang->gT("Resume later"),$aHtmlOptionsSaveall);
+    }
+    elseif ($surveyid && (!isset($_SESSION['survey_'.$surveyid]['step']) || !$_SESSION['survey_'.$surveyid]['step']))//First page, show LOAD (but not save)
+    {  
+        if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
+        {
+            $_saveall .= CHtml::htmlButton($clang->gT("Load unfinished survey"),$aHtmlOptionsLoadall);
+        }
+    }
+    elseif ($surveyid && (isset($_SESSION['survey_'.$surveyid]['maxstep']) && $_SESSION['survey_'.$surveyid]['maxstep']==1) && $thissurvey['showwelcome']=="N")//First page, show LOAD and SAVE
+    {  //First page, show LOAD
+        if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
+        {
+            $_saveall .= CHtml::htmlButton($clang->gT("Load unfinished survey"),$aHtmlOptionsLoadall);
+        }
+        $_saveall .= CHtml::htmlButton($clang->gT("Resume later"),$aHtmlOptionsSaveall);
+    }
+    elseif (!isset($_SESSION['survey_'.$surveyid]['scid']) || $move == "movelast") // Not on last page or submited survey
+    {
+        $_saveall .= CHtml::htmlButton($clang->gT("Resume later"),$aHtmlOptionsSaveall);
+    }
+    return $_saveall;
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay

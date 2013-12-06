@@ -7,12 +7,13 @@
  * Copyright © 1991-2007 Unicode, Inc. All rights reserved.
  * Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
  *
- * Copyright © 2008-2011 Yii Software LLC (http://www.yiiframework.com/license/)
+ * @copyright 2008-2013 Yii Software LLC (http://www.yiiframework.com/license/)
  */
 return array (
-  'version' => '5992',
+  'version' => '6546',
   'numberSymbols' => 
   array (
+    'alias' => '',
     'decimal' => ',',
     'group' => ' ',
     'list' => ';',
@@ -23,7 +24,6 @@ return array (
     'perMille' => '‰',
     'infinity' => '∞',
     'nan' => 'NaN',
-    'alias' => '',
   ),
   'decimalFormat' => '#,##0.###',
   'scientificFormat' => '#E0',
@@ -32,7 +32,7 @@ return array (
   'currencySymbols' => 
   array (
     'AUD' => 'AU$',
-    'BRL' => 'BR$',
+    'BRL' => 'R$',
     'CAD' => 'CA$',
     'CNY' => 'CN¥',
     'EUR' => '€',
@@ -914,7 +914,6 @@ return array (
     '054' => 'Melanezja',
     '057' => 'Mikronezja',
     '061' => 'Polinezja',
-    '062' => 'Azja Południowo-Środkowa',
     142 => 'Azja',
     143 => 'Azja Środkowa',
     145 => 'Azja Zachodnia',
@@ -922,9 +921,7 @@ return array (
     151 => 'Europa Wschodnia',
     154 => 'Europa Północna',
     155 => 'Europa Zachodnia',
-    172 => 'Wspólnota Niezależnych Państw',
     419 => 'Ameryka Łacińska',
-    830 => 'Wyspy Normandzkie',
     'ac' => 'Wyspa Wniebowstąpienia',
     'ad' => 'Andora',
     'ae' => 'Zjednoczone Emiraty Arabskie',

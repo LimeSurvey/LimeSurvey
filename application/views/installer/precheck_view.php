@@ -1,4 +1,3 @@
-<?php $this->render("/installer/header_view", compact('progressValue', 'clang')); ?>
 
 <?php
 
@@ -26,7 +25,7 @@ function dirReport($dir, $write, $clang)
 
     if ($error)
     {
-       return '<b><font color="red">'.$a.' &amp; '.$b.'</font></b>';
+       return '<font color="red">'.$a.' &amp; '.$b.'</font>';
     }
     else
     {
@@ -35,129 +34,130 @@ function dirReport($dir, $write, $clang)
 }
 
 ?>
+<div class="row">
+    <div class="span3">
+        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+    </div>
+    <div class="span9">
+        <h2><?php echo $title; ?></h2>
+        <p><?php echo $descp; ?></p>
+        <fieldset>
+        <legend><?php $clang->eT("Minimum requirements"); ?></legend>
 
-<div class="container_6">
+        <table class='table-striped'>
+        <thead>
+        <tr>
+               <th>&nbsp;</th>
+               <th class='text-center'><?php $clang->eT("Required"); ?></th>
+               <th class='text-center'><?php $clang->eT("Current"); ?></th>
+        </tr>
+        </thead>
+        <tbody>        
+        <tr>
+               <td><?php $clang->eT("PHP version"); ?></td>
+               <td>5.1.6+</td>
+               <td><?php if (isset($verror) && $verror) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Outdated"); ?>: <?php echo $phpVersion; ?></span>
+               <?php } else { ?><?php echo $phpVersion ; ?> <?php } ?></td>
+        </tr>
+        <tr>
+               <td><?php $clang->eT("Minimum memory available"); ?></td>
+               <td>64MB</td>
+               <td><?php 
+               if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Too low"); ?>: <?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
+               <?php } else { ?><?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB <?php } ?></td>
+        </tr>
+        <tr>
+               <td><?php $clang->eT("PHP PDO driver library"); ?></td>
+               <td><?php $clang->eT("At least one installed"); ?></td>
+               <td><?php if (count($dbtypes)==0) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("None found"); ?></span>
+               <?php } else { ?><?php echo implode(', ',$dbtypes); ?> <?php } ?></td>
+        </tr>
+        <tr>
+               <td><?php $clang->eT("PHP mbstring library"); ?></td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Yes" /></td>
+               <td><?php echo $mbstringPresent; ?></td>
+        </tr>
+        <tr>
+               <td><?php $clang->eT("PHP/PECL JSON library"); ?></td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Yes" /></td>
+               <td><?php echo $bJSONPresent; ?></td>
+        </tr>
+        <tr>
+               <td>/application/config <?php $clang->eT("directory"); ?></td>
+               <td><?php $clang->eT("Found & writable"); ?></td>
+               <td><?php  echo dirReport($configPresent,$configWritable,$clang); ?></td>
+        </tr>
+        <tr>
+               <td>/upload <?php $clang->eT("directory"); ?></td>
+               <td><?php $clang->eT("Found & writable"); ?></td>
+               <td><?php  echo dirReport($uploaddirPresent,$uploaddirWritable,$clang); ?></td>
+        </tr>
+        <tr>
+               <td>/tmp <?php $clang->eT("directory"); ?></td>
+               <td><?php $clang->eT("Found & writable"); ?></td>
+               <td><?php  echo dirReport($tmpdirPresent,$tmpdirWritable,$clang); ?></td>
+        </tr>
+        <tr>
+               <td><?php $clang->eT("Session writable"); ?></td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+               <td><?php echo $sessionWritableImg; if (!$sessionWritable) echo '<br/>session.save_path: ' . session_save_path(); ?></td>
+        </tr>
+        </tbody>
+        </table>
+        </fieldset>
+        <fieldset>
+        <legend><?php $clang->eT('Optional modules'); ?></legend>
+        <table class='table-striped'>
+        <thead>
+            <tr>
+                   <th>&nbsp;</th>
+                   <th><?php $clang->eT('Recommended'); ?></th>
+                   <th><?php $clang->eT('Current'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+               <td>PHP GD library</td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+               <td><?php echo $gdPresent ; ?></td>
+        </tr>
+        <tr>
+               <td>PHP LDAP library</td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+               <td><?php echo $ldapPresent ; ?></td>
+        </tr>
+        <tr>
+               <td>PHP zip library</td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+               <td><?php echo $zipPresent ; ?></td>
+        </tr>
+        <tr>
+               <td>PHP zlib library</td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+               <td><?php echo $zlibPresent ; ?></td>
+        </tr>
+        <tr>
+               <td>PHP imap library</td>
+               <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+               <td><?php echo $bIMAPPresent ; ?></td>
+        </tr>
+        </tbody>        
 
-<?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+        </table>
+        </fieldset>
+        <div class="row navigator">
+            <div class="span3" >
+                <input class="btn" type="button" value="<?php $clang->eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
+            </div>
+            <div class="span3">
+                <input class="btn" type="button" value="<?php $clang->eT('Check again'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
+            </div>
+            <div class="span3">
 
-<div class="grid_4 table">
-
-<p class="maintitle">&nbsp;<?php echo "$title"; ?></p>
-<div style="-moz-border-radius:15px; border-radius:15px; " >
-<p>&nbsp;<?php echo $descp; ?></p>
-<hr />
-<fieldset class="content-table">
-<legend class="content-table-heading"><?php $clang->eT("Minimum requirements"); ?></legend>
-
-<table style="width: 671px; margin-top: 0px; border-top-width: 1px; ">
-<tr>
-       <td>&nbsp;</td>
-       <td align="center" style="width: 225px;"><b><?php $clang->eT("Required"); ?></b></td>
-       <td align="center" style="width: 225px;"><b><?php $clang->eT("Current"); ?></b></td>
-</tr>
-<tr>
-       <td style="width: 209px;"><?php $clang->eT("PHP version"); ?></td>
-       <td align="center" style="width: 225px;">5.1.6+</td>
-       <td align="center" style="width: 225px;"><?php if (isset($verror) && $verror) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Outdated"); ?>: <?php echo $phpVersion; ?></span></b>
-       <?php } else { ?><?php echo $phpVersion ; ?> <?php } ?></td>
-</tr>
-<tr>
-       <td style="width: 209px;"><?php $clang->eT("PHP PDO driver library"); ?></td>
-       <td align="center" style="width: 225px;"><?php $clang->eT("At least one installed"); ?></td>
-       <td align="center" style="width: 225px;"><?php if (count($dbtypes)==0) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("None found"); ?></span></b>
-       <?php } else { ?><?php echo implode(', ',$dbtypes); ?> <?php } ?></td>
-</tr>
-<tr>
-       <td style="width: 209px;"><?php $clang->eT("PHP mbstring library"); ?></td>
-       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Yes" /></td>
-       <td align="center" style="width: 225px;"><?php echo $mbstringPresent; ?></td>
-</tr>
-<tr>
-       <td style="width: 209px;"><?php $clang->eT("PHP/PECL JSON library"); ?></td>
-       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Yes" /></td>
-       <td align="center" style="width: 225px;"><?php echo $bJSONPresent; ?></td>
-</tr>
-<tr>
-       <td style="width: 209px;">/application/config <?php $clang->eT("directory"); ?></td>
-       <td align="center" style="width: 225px;"><?php $clang->eT("Found & writable"); ?></td>
-       <td align="center" style="width: 225px;"><?php  echo dirReport($configPresent,$configWritable,$clang); ?></td>
-</tr>
-<tr>
-       <td style="width: 209px;">/upload <?php $clang->eT("directory"); ?></td>
-       <td align="center" style="width: 225px;"><?php $clang->eT("Found & writable"); ?></td>
-       <td align="center" style="width: 225px;"><?php  echo dirReport($uploaddirPresent,$uploaddirWritable,$clang); ?></td>
-</tr>
-<tr>
-       <td style="width: 209px;">/tmp <?php $clang->eT("directory"); ?></td>
-       <td align="center" style="width: 225px;"><?php $clang->eT("Found & writable"); ?></td>
-       <td align="center" style="width: 225px;"><?php  echo dirReport($tmpdirPresent,$tmpdirWritable,$clang); ?></td>
-</tr>
-<tr>
-       <td style="width: 209px;"><?php $clang->eT("Session writable"); ?></td>
-       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
-       <td align="center" style="width: 225px;"><?php echo $sessionWritableImg; if (!$sessionWritable) echo '<br/>session.save_path: ' . session_save_path(); ?></td>
-</tr>
-
-</table>
-</fieldset>
-<fieldset class="content-table">
-<legend class="content-table-heading"><?php $clang->eT('Optional modules'); ?></legend>
-<table style="width: 671px; margin-top: 0px; border-top-width: 1px;" >
-<tr>
-       <td style="width: 209px;">&nbsp;</td>
-       <td align="center" style="width: 225px;"><b><?php $clang->eT('Recommended'); ?></b></td>
-       <td align="center" style="width: 225px;"><b><?php $clang->eT('Current'); ?></b></td>
-</tr>
-<tr>
-       <td style="width: 209px;">PHP GD library</td>
-       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
-       <td align="center" style="width: 225px;"><?php echo $gdPresent ; ?></td>
-</tr>
-<tr>
-       <td style="width: 209px;">PHP LDAP library</td>
-       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
-       <td align="center" style="width: 225px;"><?php echo $ldapPresent ; ?></td>
-</tr>
-<tr>
-       <td style="width: 209px;">PHP zip library</td>
-       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
-       <td align="center" style="width: 225px;"><?php echo $zipPresent ; ?></td>
-</tr>
-<tr>
-       <td style="width: 209px;">PHP zlib library</td>
-       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
-       <td align="center" style="width: 225px;"><?php echo $zlibPresent ; ?></td>
-</tr>
-<tr>
-       <td style="width: 209px;">PHP imap library</td>
-       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
-       <td align="center" style="width: 225px;"><?php echo $bIMAPPresent ; ?></td>
-</tr>
-
-</table>
-</fieldset>
+                <?php if (isset($next) && $next== TRUE) { ?>
+                <input class="btn" type="button" value="<?php $clang->eT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
+                <?php } ?>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
-</div>
-
-<div class="container_6">
-<div class="grid_2">&nbsp;</div>
-<div class="grid_4 demo">
-<br/>
-<table style="font-size:11px; width: 694px;">
-<tbody>
-<tr>
-<td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php $clang->eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" /></td>
-<td align="center" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php $clang->eT('Check again'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" /></td>
-<td align="right" style="width: 227px;">
-<?php if (isset($next) && $next== TRUE) { ?>
-<input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php $clang->eT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
-<?php } ?>
-
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<?php $this->render("/installer/footer_view"); ?>

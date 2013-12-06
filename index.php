@@ -175,7 +175,19 @@
 require_once BASEPATH . 'yii' . EXT;
 require_once APPPATH . 'core/LSYii_Application' . EXT;
 
-Yii::createApplication('LSYii_Application', APPPATH . 'config/config' . EXT)->run();
+$config = require_once(APPPATH . 'config/internal' . EXT);
+
+if (!file_exists(APPPATH . 'config/config' . EXT)) {    
+    // If Yii can not start due to unwritable runtimePath, present an error    
+    $runtimePath = $config['runtimePath'];
+    if (!is_dir($runtimePath) || !is_writable($runtimePath)) {
+        // @@TODO: present html page styled like the installer
+        die (sprintf('%s should be writable by the webserver (755 or 775).', $runtimePath));
+    }
+}
+
+
+Yii::createApplication('LSYii_Application', $config)->run();
 
 /* End of file index.php */
 /* Location: ./index.php */

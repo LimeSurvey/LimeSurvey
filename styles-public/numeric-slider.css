@@ -1,0 +1,17 @@
+/* This file is part of LimeSurvey - http://www.limesurvey.org */
+/* reset.png is part of Tango Project - http://tango.freedesktop.org/ */
+.slider-reset{
+	float:right;
+	height:1.4em;min-height:20px;
+	width:20px;
+	margin-left:2em;
+	text-indent: -9999999px;
+	background: url("img/reset.png") no-repeat scroll 0 0 transparent;
+	cursor: pointer;
+	}
+.slider-reset:hover,.slider-reset:focus{
+	background-position:-20px 0;
+}
+.slider-reset:active{
+	background-position:-40px 0;
+}

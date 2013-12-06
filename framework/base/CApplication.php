@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -30,6 +30,13 @@
  *   application messages. This application component is dynamically loaded when needed.</li>
  * <li>{@link getCoreMessages coreMessages}: provides the message source for translating
  *   Yii framework messages. This application component is dynamically loaded when needed.</li>
+ * <li>{@link getUrlManager urlManager}: provides URL construction as well as parsing functionality.
+ *   This application component is dynamically loaded when needed.</li>
+ * <li>{@link getRequest request}: represents the current HTTP request by encapsulating
+ *   the $_SERVER variable and managing cookies sent from and sent to the user.
+ *   This application component is dynamically loaded when needed.</li>
+ * <li>{@link getFormat format}: provides a set of commonly used data formatting methods.
+ *   This application component is dynamically loaded when needed.</li>
  * </ul>
  *
  * CApplication will undergo the following lifecycles when processing a user request:
@@ -72,7 +79,6 @@
  * @property string $homeUrl The homepage URL.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplication.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -134,7 +140,18 @@ abstract class CApplication extends CModule
 			$this->setBasePath('protected');
 		Yii::setPathOfAlias('application',$this->getBasePath());
 		Yii::setPathOfAlias('webroot',dirname($_SERVER['SCRIPT_FILENAME']));
-		Yii::setPathOfAlias('ext',$this->getBasePath().DIRECTORY_SEPARATOR.'extensions');
+		if(isset($config['extensionPath']))
+		{
+			$this->setExtensionPath($config['extensionPath']);
+			unset($config['extensionPath']);
+		}
+		else
+			Yii::setPathOfAlias('ext',$this->getBasePath().DIRECTORY_SEPARATOR.'extensions');
+		if(isset($config['aliases']))
+		{
+			$this->setAliases($config['aliases']);
+			unset($config['aliases']);
+		}
 
 		$this->preinit();
 
@@ -159,6 +176,7 @@ abstract class CApplication extends CModule
 	{
 		if($this->hasEventHandler('onBeginRequest'))
 			$this->onBeginRequest(new CEvent($this));
+		register_shutdown_function(array($this,'end'),0,false);
 		$this->processRequest();
 		if($this->hasEventHandler('onEndRequest'))
 			$this->onEndRequest(new CEvent($this));
@@ -172,7 +190,7 @@ abstract class CApplication extends CModule
 	 * @param boolean $exit whether to exit the current request. This parameter has been available since version 1.1.5.
 	 * It defaults to true, meaning the PHP's exit() function will be called at the end of this method.
 	 */
-	public function end($status=0, $exit=true)
+	public function end($status=0,$exit=true)
 	{
 		if($this->hasEventHandler('onEndRequest'))
 			$this->onEndRequest(new CEvent($this));
@@ -285,6 +303,7 @@ abstract class CApplication extends CModule
 	/**
 	 * Sets the root directory that holds all third-party extensions.
 	 * @param string $path the directory that contains all third-party extensions.
+	 * @throws CException if the directory does not exist
 	 */
 	public function setExtensionPath($path)
 	{
@@ -620,7 +639,7 @@ abstract class CApplication extends CModule
 				$this->_stateChanged=true;
 			}
 		}
-		else if(!isset($this->_globalState[$key]) || $this->_globalState[$key]!==$value)
+		elseif(!isset($this->_globalState[$key]) || $this->_globalState[$key]!==$value)
 		{
 			$this->_globalState[$key]=$value;
 			$this->_stateChanged=true;

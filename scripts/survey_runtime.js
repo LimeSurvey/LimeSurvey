@@ -1,15 +1,30 @@
-var DOM1;
+/*
+ * JavaScript functions in survey taking
+ *
+ * This file is part of LimeSurvey
+ * Copyright (C) 2007-2013 The LimeSurvey Project Team
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
+
+// Some function can be launch before document ready (and seems intersting)
+limesurveySubmitHandler();
+needConfirmHandler();
+tableCellAdapters();
+activateLanguageChanger();
 $(document).ready(function()
 {
-
-	// Jquery-ui navigation buttons
     navbuttonsJqueryUi();
+    showStartPopups();
     addClassEmpty();
-	DOM1 = (typeof document.getElementsByTagName!='undefined');
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
-	prepareCellAdapters();
     if (typeof(focus_element) != 'undefined')
     {
         $(focus_element).focus();
@@ -54,54 +69,138 @@ $(document).ready(function()
     // Maxlength for textareas TODO limit to not CSS3 compatible browser
     maxlengthtextarea();
 
-    // Maps
-	$(".location").each(function(index,element){
-		var question = $(element).attr('name');
-		var coordinates = $(element).val();
-		var latLng = coordinates.split(" ");
-		var question_id = question.substr(0,question.length-2);
-		if ($("#mapservice_"+question_id).val()==1){
-			// Google Maps
-			if (gmaps[''+question] == undefined) {
-				GMapsInitialize(question,latLng[0],latLng[1]);
-			}
-		}
-		else if ($("#mapservice_"+question_id).val()==2){
-			// Open Street Map
-			if (osmaps[''+question]==undefined) {
-				osmaps[''+question] = OSMapInitialize(question,latLng[0],latLng[1]);
-			}
-		}
-	});
-	$(".location").live('focusout',function(event){
-		var question = $(event.target).attr('name');
-		var name = question.substr(0,question.length - 2);
-		var coordinates = $(event.target).attr('value');
-		var xy = coordinates.split(" ");
-		var currentMap = gmaps[question];
-		var marker = gmaps['marker__'+question];
-		var markerLatLng = new google.maps.LatLng(xy[0],xy[1]);
-		geocodeAddress(name, markerLatLng);
-		marker.setPosition(markerLatLng);
-		currentMap.panTo(markerLatLng);
-	});
-	
-	// #index
-    if ($("#index").size() && $("#index .row.current").size()){
-        var idx = $("#index");
-        var row = $("#index .row.current");
-        idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
-    }
 });
 
+/**
+ * setJsVar : Get all global used var
+ */
+function setJsVar(){
+    if (typeof LSvar!="undefined" && LSvar instanceof Object == false) {
+      bFixNumAuto=1;
+      bNumRealValue=0;
+      LEMradix=".";
+    }
+    else {
+      bFixNumAuto=LSvar.bFixNumAuto;
+      bNumRealValue=LSvar.bNumRealValue;
+      LEMradix=LSvar.sLEMradix;
+    }
+    numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
+    intRegex = new RegExp('[^-0-9]','g');
+}
+// Deactivate all other button on submit
+function limesurveySubmitHandler(){
+    $(document).on("click",".disabled",function(){return false;});
+    $(document).on('click',"button[type='submit'],a.button", function(event){
+        $("button[type='submit']").not($(this)).prop('disabled',true);
+        $("a.button").not($(this)).addClass('disabled');
+    });
+    if('v'=='\v'){ // Quick hack for IE6/7/ Alternative ? http://tanalin.com/en/articles/ie-version-js/ ?
+        $(function() { 
+            $("#defaultbtn").css('display','inline').css('width','0').css('height','0').css('padding','0').css('margin','0').css('overflow','hidden');
+            $("#limesurvey [type='submit']").not("#defaultbtn").first().before($("#defaultbtn"));
+        });
+    }
+}
+
+
+// Ask confirmation on click on .needconfirm
+function needConfirmHandler(){
+    $(document).on('click',".confirm-needed", function(event){
+        text=$(this).attr('title');
+        if (confirm(text)) {
+            return true;
+        }
+        return false;
+    });
+    /* 130712 IE7 need this */
+    $(function() {
+    $("a.confirm-needed").click(function(e){
+        text=$(this).attr('title');
+        if (confirm(text)) {
+            return true;
+        }
+        return false;
+        });
+    });
+}
+/**
+ * checkconditions : javascript function attach to some element 
+ * Launch ExprMgr_process_relevance_and_tailoring with good value
+ */
+function checkconditions(value, name, type, evt_type)
+{
+    if (typeof evt_type === 'undefined')
+    {
+        evt_type = 'onchange';
+    }
+    if (type == 'radio' || type == 'select-one')
+    {
+        $('#java'+name).val(value);
+    }
+    else if (type == 'checkbox')
+    {
+        if ($('#answer'+name).is(':checked'))
+        {
+            $('#java'+name).val('Y');
+        } else
+        {
+            $('#java'+name).val('');
+        }
+    }
+    else if (type == 'text' && name.match(/other$/))
+    {
+        $('#java'+name).val(value);
+    }
+    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ))
+        ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
+}
+/**
+ * fixnum_checkconditions : javascript function attach to some element 
+ * Update the answer of the user to be numeric and launch checkconditions
+ */
+function fixnum_checkconditions(value, name, type, evt_type, intonly)
+{
+    newval = new String(value);
+    if(!bNumRealValue)
+    {
+        if (typeof intonly !=='undefined' && intonly==1) {
+            newval = newval.replace(intRegex,'');
+        }
+        else {
+            newval = newval.replace(numRegex,'');
+        }
+        aNewval = newval.split(LEMradix);
+        if(aNewval.length>0){
+            newval=aNewval[0];
+        }
+        if(aNewval.length>1){
+            newval=newval+"."+aNewval[1];
+        }
+        if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {// Todo : do it in reg
+            newval = '';
+        }
+    }
+    if(bFixNumAuto)
+    {
+        displayVal = newval;
+        if (LEMradix === ',') {
+            displayVal = displayVal.split('.').join(',');
+        }
+        if (name.match(/other$/)) {
+            $('#answer'+name+'text').val(displayVal);
+        }
+        $('#answer'+name).val(displayVal);
+    }
+    if (typeof evt_type === 'undefined')
+    {
+        evt_type = 'onchange';
+    }
+    checkconditions(newval, name, type, evt_type);
+}
 
 // Set jquery-ui to LS Button
 function navbuttonsJqueryUi(){
-    if ($.browser.msie && $.browser.version.substr(0,1)<8 && $('button.submit').length > 0) { // Get rid of the focus outline in IE7
-        $('#movenextbtn, #movesubmitbtn').focus().blur(); 
-        $(this).scrollTop(0); 
-    }
-
     $('[dir!="rtl"] #moveprevbtn').button({
     icons: {
         primary: 'ui-icon-triangle-1-w'
@@ -122,163 +221,99 @@ function navbuttonsJqueryUi(){
         primary: 'ui-icon-triangle-1-w'
     }
     });
-    $('#movesubmitbtn, input.saveall, input.clearall').button();
+    $(".button").button();
+    // TODO trigger handler activate/deactivate to update ui-button class
 }
-
-// Put a empty class on empty answer text item (limit to answers part)
-function addClassEmpty(){
-      $('.answer-item input.text[value=""]').addClass('empty');
-      $('.answer-item input[type=text][value=""]').addClass('empty');
-      $('.answer-item textarea').each(function(index) {
-        if ($(this).val() == ""){
-          $(this).addClass('empty');
+/**
+ * showStartPopups : Take all message in startPopups json array and launch an alert with text
+ */
+function showStartPopups(){
+    if(typeof showpopup=="undefined"){showpopup=1;}
+    if(typeof startPopups=="undefined"){startPopups=[];}
+    if(showpopup){
+        $.each(startPopups,function(key, text){
+            alert($("<div/>").html(text).text());// Parse HTML because of &#039;
+        });
+    }
+}
+/**
+ * Update survey just when select a new language
+ */
+function activateLanguageChanger(){
+    $(document).on('change','select.languagechanger', function() {
+        if(!$(this).closest('form').length){// If there are no form : we can't use it, we need to create and submit. This break no-js compatibility in some page (token for example).
+            $('<form>', {
+                "html": '<input type="hidden" name="lang" value="' + $(this).find('option:selected').val() + '" />',
+                "action": document.location.href
+            }).appendTo(document.body).submit();
+        }else{
+            $('#changelangbtn').click();
         }
-      });
-
-    $(".answer-item input.text,.text-item input[type=text]").live("blur", function(){ 
-      if ($(this).val() == ""){
-        $(this).addClass('empty');
-      }else{
-        $(this).removeClass('empty');
-      }
     });
-    $(".answer-item textarea").live("blur", function(){ 
-      if ($(this).val() == ""){
-        $(this).addClass('empty');
-      }else{
-        $(this).removeClass('empty');
-      }
+    $(function(){
+        $(".changelang.jshide").hide();
     });
 }
-
-
-gmaps = new Object;
-osmaps = new Object;
-zoom = [];
-
-// OSMap functions
-function OSMapInitialize(question,lat,lng){
-
-    map = new OpenLayers.Map("gmap_canvas_" + question);
-    map.addLayer(new OpenLayers.Layer.OSM());
-    var lonLat = new OpenLayers.LonLat(lat,lng)
-          .transform(
-            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-            map.getProjectionObject() // to Spherical Mercator Projection
-          );
-    var zoom=11;
-    var markers = new OpenLayers.Layer.Markers( "Markers" );
-    map.addLayer(markers);
-    markers.addMarker(new OpenLayers.Marker(lonLat));
-    map.setCenter (lonLat, zoom);
-    return map;
-
+/**
+ * Manage the index
+ */
+function manageIndex(){
+    $("#index .jshide").hide();
+    $("#index").on('click','li,.row',function(e){ 
+        if(!$(e.target).is('button')){
+            $(this).children("[name='move']").click();
+        }
+    });
+    $(function() {
+        $(".outerframe").addClass("withindex");
+        var idx = $("#index");
+        var row = $("#index .row.current");
+        if(row.length)
+            idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
+    });
 }
-
-//// Google Maps Functions (for API V3) ////
-
-// Initialize map
-function GMapsInitialize(question,lat,lng) {
-	
-	var name = question.substr(0,question.length - 2);
-	var latlng = new google.maps.LatLng(lat, lng);
-	
-	var mapOptions = {
-		zoom: zoom[name],
-		center: latlng,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
-	};
-	
-	var map = new google.maps.Map(document.getElementById("gmap_canvas_" + question), mapOptions);
-	gmaps[''+question] = map;
-    
-	var marker = new google.maps.Marker({
-		position: latlng,
-		draggable:true,
-		map: map,
-		id: 'marker__'+question
-	});
-	gmaps['marker__'+question] = marker;
-	
-	google.maps.event.addListener(map, 'rightclick', function(event) {
-		marker.setPosition(event.latLng);
-		map.panTo(event.latLng);
-		geocodeAddress(name, event.latLng);
-		$("#answer"+question).val(Math.round(event.latLng.lat()*10000)/10000 + " " + Math.round(event.latLng.lng()*10000)/10000);
-	});
-	
-	google.maps.event.addListener(marker, 'dragend', function(event) {
-		//map.panTo(event.latLng);
-		geocodeAddress(name, event.latLng);
-		$("#answer"+question).val(Math.round(event.latLng.lat()*10000)/10000 + " " + Math.round(event.latLng.lng()*10000)/10000);
-	});
-}
-
-// Reset map when shown by conditions
-function resetMap(qID) {
-	var question = $('#question'+qID+' input.location').attr('name');
-	var name = question.substr(0,question.length - 2);
-	var coordinates = $('#question'+qID+' input.location').attr('value');
-	var xy = coordinates.split(" ");
-	if(gmaps[question]) {
-		var currentMap = gmaps[question];
-		var marker = gmaps['marker__'+question];
-		var markerLatLng = new google.maps.LatLng(xy[0],xy[1]);
-		marker.setPosition(markerLatLng);
-		google.maps.event.trigger(currentMap, 'resize')
-		currentMap.setCenter(markerLatLng);
+/**
+ * Put a empty class on empty answer text item (limit to answers part)
+ * @author Denis Chenu / Shnoulle
+ */
+function addClassEmpty()
+{
+	$('.answer-item input.text[value=""]').addClass('empty');
+	$('.answer-item input[type=text][value=""]').addClass('empty');
+	$('.answer-item textarea').each(function(index) {
+	if ($(this).val() == ""){
+		$(this).addClass('empty');
 	}
-}
-
-// Reverse geocoder
-function geocodeAddress(name, pos) {
-	var geocoder = new google.maps.Geocoder();
-	
-	var city  = '';
-	var state = '';
-	var country = '';
-	var postal = '';
-	
-	geocoder.geocode({
-		latLng: pos
-	}, function(results, status) {
-		if (status == google.maps.GeocoderStatus.OK && results[0]) {
-			$(results[0].address_components).each(function(i, val) {
-				if($.inArray('locality', val.types) > -1) {
-					city = val.short_name;
-				}
-				else if($.inArray('administrative_area_level_1', val.types) > -1) {
-					state = val.short_name;
-				}
-				else if($.inArray('country', val.types) > -1) {
-					country = val.short_name;
-				}
-				else if($.inArray('postal_code', val.types) > -1) {
-					postal = val.short_name;
-				}
-			});
-			
-			var location = (results[0].geometry.location);
-		}
-		getInfoToStore(name, pos.lat(), pos.lng(), city, state, country, postal);
+	});
+	$("body").delegate(".answer-item input.text,.text-item input[type=text],.answer-item textarea","blur focusout",function(){
+	if ($(this).val() == ""){
+		$(this).addClass('empty');
+	}else{
+		$(this).removeClass('empty');
+	}
 	});
 }
 
-// Store address info
-function getInfoToStore(name, lat, lng, city, state, country, postal){
-    
-	var boycott = $("#boycott_"+name).val();
-    // 2 - city; 3 - state; 4 - country; 5 - postal
-    if (boycott.indexOf("2")!=-1)
-        city = '';
-    if (boycott.indexOf("3")!=-1)
-        state = '';
-    if (boycott.indexOf("4")!=-1)
-        country = '';
-    if (boycott.indexOf("5")!=-1)
-        postal = '';
-    
-    $("#answer"+name).val(lat + ';' + lng + ';' + city + ';' + state + ';' + country + ';' + postal);
+/**
+ * Adapt cell to have a click on cell do a click on input:radio or input:checkbox (if unique)
+ * Using delegate the can be outside document.ready (using .on is possible but on $(document) then : less readbale
+ * @author Denis Chenu / Shnoulle
+ */
+function tableCellAdapters()
+{
+//	$('table.question').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label',"click", function(e) {
+//		e.stopPropagation();
+//	});
+	$(document).on('click','table.question tbody td',function(event) {// 'table.question tbody td' or 'td.radio-item,td.checkbox-item': maybe less js here
+		var eventTarget=$(event.target).prop("tagName");// Alternative us data
+		var eventActivate=$(this).find("input:radio,input:checkbox");
+		if(eventActivate.length==1 && (eventTarget!='INPUT' && eventTarget!='LABEL' ) )
+		{
+			$(eventActivate).click();
+			$(eventActivate).triggerHandler("click");
+			// Why not use trigger('click'); only ?
+		}
+	});
 }
 
 Array.prototype.push = function()
@@ -324,73 +359,6 @@ function match_regex(testedstring,str_regexp)
 	if (str_regexp == '' || testedstring == '') return false;
 	pattern = new RegExp(str_regexp);
 	return pattern.test(testedstring)
-}
-
-function cellAdapter(evt,src)
-{
-	var eChild = null, eChildren = src.getElementsByTagName('INPUT');
-	var curCount = eChildren.length;
-	//This cell contains multiple controls, don't know which to set.
-	if (eChildren.length > 1)
-	{
-		//Some cells contain hidden fields
-		for (i = 0; i < eChildren.length; i++)
-		{
-			if ( ( eChildren[i].type == 'radio' || eChildren[i].type == 'checkbox' ) && eChild == null)
-				eChild = eChildren[i];
-			else if ( ( eChildren[i].type == 'radio' || eChildren[i].type == 'checkbox' ) && eChild != null)
-			{
-				//A cell with multiple radio buttons -- unhandled
-				return;
-			}
-
-		}
-	}
-	else eChild = eChildren[0];
-
-	if (eChild && eChild.type == 'radio')
-	{
-		eChild.checked = true;
-		//Make sure the change propagates to the conditions handling mechanism
-		if(eChild.onclick) eChild.onclick(evt);
-		if(eChild.onchange) eChild.onchange(evt);
-	}
-	else if (eChild && eChild.type == 'checkbox')
-	{
-		eChild.checked = !eChild.checked;
-		//Make sure the change propagates to the conditions handling mechanism
-		if(eChild.onclick) eChild.onclick(evt);
-		if(eChild.onchange) eChild.onchange(evt);
-	}
-}
-
-function prepareCellAdapters()
-	{
-	if (!DOM1) return;
-	var formCtls = document.getElementsByTagName('INPUT');
-	var ptr = null;
-	var foundTD = false;
-	for (var i = 0; i < formCtls.length; i++)
-	{
-		ptr = formCtls[i];
-		if (ptr.type == 'radio' || ptr.type == 'checkbox')
-{
-			foundTD = false;
-			while (ptr && !foundTD)
-	{
-				if(ptr.nodeName == 'TD')
-		{
-					foundTD = true;
-					ptr.onclick =
-						function(evt){
-							return cellAdapter(evt,this);
-						};
-					continue;
-				}
-				ptr = ptr.parentNode;
-			}
-		}
-	}
 }
 
 function addHiddenField(theform,thename,thevalue)
@@ -492,62 +460,6 @@ function show_hide_group(group_id)
 		}
 }
 
-function navigator_countdown_btn()
-{
-	return $('#movenextbtn, #moveprevbtn, #movesubmitbtn');
-}
-
-function navigator_countdown_end()
-{
-	navigator_countdown_btn().each(function(i, e)
-	{
-		e.value = $(e).data('text');
-        $(e).button("option", "disabled", false);
-        $(e).attr('aria-disabled','false');
-	});
-	$(window).data('countdown', null);
-}
-
-function navigator_countdown_int()
-{
-	var n = $(window).data('countdown');
-	if(n)
-	{
-		navigator_countdown_btn().each(function(i, e)
-		{
-			e.value = $(e).data('text');
-            $(e).find('.ui-button-text').html( $(e).data('text'));
-            // just count-down for delays longer than 1 second
-            if(n > 1) $(e).find('.ui-button-text').html( $(e).data('text')+ " (" + n + ")");
-		});
-
-		$(window).data('countdown', --n);
-	}
-	window.setTimeout((n > 0? navigator_countdown_int: navigator_countdown_end), 1000);
-}
-
-function navigator_countdown(n)
-{
-	$(document).ready(function()
-	{
-		$(window).data('countdown', n);
-
-		navigator_countdown_btn().each(function(i, e)
-		{
-			$(e).data('text', e.value);
-		});
-
-		navigator_countdown_int();
-	});
-}
-
-function std_onsubmit_handler()
-{
-    // disable double-posts in all forms
-    $('#moveprevbtn, #movenextbtn, #movesubmitbtn').attr('disabled', 'disabled');
-    return true;
-}
-
 // round function from phpjs.org
 function round (value, precision, mode) {
     // http://kevin.vanzonneveld.net
@@ -577,384 +489,6 @@ function round (value, precision, mode) {
 
     return (isHalf ? value : Math.round(value)) / m;
 }
-
-// ==========================================================
-// totals
-
-function multi_set(ids,_radix)
-{
-	//quick ie check
-	var ie=(navigator.userAgent.indexOf("MSIE")>=0)?true:false;
-	//match for grand
-	var _match_grand = new RegExp('grand');
-	//match for total
-	var _match_total = new RegExp('total');
-    var radix = _radix; // comma, period, X (for not using numbers only)
-    var numRegex = new RegExp('[^-' + radix + '0-9]','g');
-	//main function (obj)
-	//id = wrapper id
-	function multi_total(id)
-	{
-		if(!document.getElementById(id)){return;};
-		//alert('multi total called value ' + id);
-		//generic vars
-		//grand total 0 = none, 1 = horo, 2 = vert set if grand found
-		var _grand = 0;
-		//multi array holder
-		var _bits = new Array();
-
-		//var _obj = document.getElementById(id);
-		//grab the tr's
-		var _obj = document.getElementById(id);//.getElementsByTagName('table');
-
-		//alert(_obj.length);
-		var _tr = _obj.getElementsByTagName('tr');
-		//counter used in top level of _bits array
-		var _counter = 0;
-		//generic for vars
-		var _i = 0;
-		var _l = _tr.length;
-		for(_i=0; _i<_l; _i++)
-		{
-			//check we really have inputs to deal with
-			if(_tr[_i].getElementsByTagName('input'))
-			{
-				var _td = _tr[_i].getElementsByTagName('td');
-				//start building some nice arrays
-				_bits.push(new Array());
-				//clear the vert var set when total found in tr
-				var vert =false;
-				if(_tr[_i].className && _tr[_i].className.match(_match_total,'ig'))
-				{
-					//will need to set it up vertical
-					vert = true;
-				};
-				//generic for vars for second level _bits[_i]
-				var _a=0;
-				var _al = _td.length;
-				//alert(_al + ' ' + _i);
-				if(_al > 0)
-				{
-				//	//counter for inner array
-					var _tcounter=0;
-					for(_a=0; _a < _al; _a++)
-					{
-						//only bother if we have inputs
-						if(_td[_a].getElementsByTagName('input'))
-						{
-							//grab the first text input
-							var _tdin = first_text(_td[_a].getElementsByTagName('input'));
-							//check we got a text input
-							if(_tdin)
-							{
-								//add it to the array @ counter
-								_bits[_counter].push(_tdin);
-								//set key board actions
-								_tdin.onkeyup = calc;
-								//check for total and grand total
-								if(_td[_a].className && _td[_a].className.match(_match_total,'ig'))
-								{
-									//clear the key events with false returns
-									_tdin.onkeydown = dummy;
-									_tdin.onkeyup = dummy;
-									//need to check for grand
-									if(_td[_a].className.match(_match_grand,'ig'))
-									{
-										//set up a grand total
-										if(vert && _bits[_counter].length > 1)
-										{
-											_grand=1;
-                                            //run calc across last row
-                                            calc_horo(_bits.length - 1);
-										}
-										else
-										{
-											_grand=2;
-											_bits[_counter][_bits[0].length - 1]=_bits[_counter][0];
-                                            //run calc on last col
-                                            calc_vert(_bits[0].length - 1);
-										}
-									}
-									else
-									{
-										//set up horo
-										horo_set_up(_counter);
-									};
-
-								};
-								if(vert && _grand == 0)
-								{
-									//deal with vert calc and clear the keyboard action
-									_tdin.onkeydown = dummy;
-									_tdin.onkeyup = dummy;
-									vert_set_up(_tcounter);
-
-								};
-								_tcounter++;
-							};
-						};
-
-					};
-					//check we got some thing that time
-					if(_bits[_counter].length == 0)
-					{
-						_bits.pop();
-					}
-					else
-					{
-						_counter++;
-					}
-				}
-				else
-				{
-					//remove blanks
-					_bits.pop();
-				}
-
-			};
-		};
-		//returns the first text input or false
-		function first_text(arr)
-		{
-			var i=0;
-			var l=arr.length;
-			for(i=0; i<l; i++)
-			{
-				if(arr[i].getAttribute('type') && arr[i].getAttribute('type') == 'text')
-				{
-					return(arr[i]);
-				}
-			}
-			return(false);
-		}
-		//sets up the horizontal calc
-		function horo_set_up(id)
-		{
-			//make all in the row update the final
-			//alert('set horo called for row ' + id);
-
-			var i=0;
-			var l=_bits[id].length;
-			var qt=0;
-			for(i=0; i<l; i++)
-			{
-				var addaclass=!_bits[id][i].getAttribute(ie ? 'className' : 'class') ? '' : _bits[id][i].getAttribute(ie ? 'className' : 'class') + ' ';
-				_bits[id][i].setAttribute((ie ? 'className' : 'class'), addaclass + 'horo_' + id);
-				_bits[id][i].onkeyup = calc;
-				if(i == (l - 1))
-				{
-					_bits[id][i].value = round(qt,12)
-				}
-				else if(_bits[id][i].value)
-				{
-                    _aval=_bits[id][i].value;
-                    if (radix===',') {
-                        _aval = _aval.split(',').join('.');
-                        _bits[id][i].value = _aval.split('.').join(',');
-                    }
-                    if  (_aval == parseFloat(_aval)) {
-                        qt += +_aval;
-                    }
-				};
-			};
-
-		}
-		//sets up the vertical calc
-		function vert_set_up(id)
-		{
-			//alert('set vert called for col ' + id + ' ' + _bits.join('-'));
-			id *= 1;
-			var i=0;
-			var l=_bits.length;
-			var qt = 0;
-			for(i=0; i<l; i++)
-			{
-				var addaclass=!_bits[i][id].getAttribute(ie ? 'className' : 'class') ? '' : _bits[i][id].getAttribute(ie ? 'className' : 'class') + ' ';
-				_bits[i][id].setAttribute((ie ? 'className' : 'class'), addaclass + 'vert_' + id);
-				_bits[i][id].onkeyup = calc;
-				if(i == (l - 1))
-				{
-					_bits[i][id].value = round(qt,12);
-				}
-				else if(_bits[i][id].value)
-				{
-                    _aval=_bits[i][id].value;
-                    if (radix===',') {
-                        _aval = _aval.split(',').join('.');
-                        _bits[i][id].value = _aval.split('.').join(',');
-                    }
-                    if  (_aval == parseFloat(_aval)) {
-                        qt += +_aval;
-                    }
-				};
-			};
-		};
-		//calculates a row or col or both
-		//runs the grand totals if required
-		function calc(e)
-		{
-			//alert('calc called ');
-			e=(e)?e:event;
-			var el=e.target||e.srcElement;
-			var _id=el.getAttribute(ie ? 'className' : 'class');
-
-            // eliminate bad numbers
-            _aval=new String(el.value);
-            if (radix!=='X') {
-                _aval=_aval.replace(numRegex,'');
-            }
-            if (radix===',') {
-                _aval = _aval.split(',').join('.');
-            }
-            if (radix!=='X' && _aval != '-' && _aval != '.' && _aval != '-.' && _aval != parseFloat(_aval)) {
-                _aval = "";
-            }
-            if (radix===',') {
-                el.value = _aval.split('.').join(',');
-            }
-            else if (radix!=='X') {
-                el.value = _aval;
-            }
-
-			//vert_[id] horo_[id] in class trigger vert or horo calc on row[id]
-			if(_id.match('vert_','ig'))
-			{
-				var vid = get_an_id(_id,'vert_');
-				calc_vert(vid);
-			};
-			if(_id.match('horo_','ig'))
-			{
-				var hid = get_an_id(_id,'horo_');
-				calc_horo(hid);
-			};
-			//check for grand total
-			switch(_grand)
-			{
-				case 1:
-				//run calc across last row
-					calc_horo(_bits.length - 1);
-				 	break;
-				case 2:
-				//run calc on last col
-					calc_vert(_bits[0].length - 1);
-					break;
-			}
-            checkconditions($(el).val(), $(el).attr('name'), $(el).attr('type'));
-			return(true);
-		};
-		//retuns the id from end of string like 'vert_[id] horo_[id] other class'
-		//_id = string
-		//_break = string to break @
-		function get_an_id(_id,_break)
-		{
-			var id = _id.split(_break);
-			id[1] = id[1].split(' ');
-			return(id[1][0] * 1);
-		};
-		//run vert calc on col[vid]
-		function calc_vert(vid)
-		{
-			var i=0;
-			var l=_bits.length;
-			var qt = 0;
-			//get or set the last ones id
-			for(i=0; i<l; i++)
-			{
-				if(i == (l - 1))
-				{
-					//check if sum is a number
-                    if(isNaN(qt))
-                    {
-                        _bits[i][vid].value = "Not a number";
-                    }
-                    else
-                    {
-                        _bits[i][vid].value = round(qt,12);
-                    }
-				}
-				else if(_bits[i][vid].value)
-				{
-                    _aval=_bits[i][vid].value;
-                    if (radix===',') {
-                        _aval = _aval.split(',').join('.');
-                    }
-                    if  (_aval == parseFloat(_aval)) {
-                        qt += +_aval;
-                    }
-				};
-			};
-
-		};
-		//run horo calc on row[hid]
-		function calc_horo(hid)
-		{
-			var i=0;
-			var l=_bits[hid].length;
-			var qt=0;
-			for(i=0; i<l; i++)
-			{
-				if(i == (l - 1))
-				{
-					if (isNaN(qt))
-                    {
-                        _bits[hid][i].value = "Not a number"
-                    }
-                    else
-                    {
-                        _bits[hid][i].value = round(qt,12);
-                    }
-				}
-				else if(_bits[hid][i].value)
-				{
-                    _aval=_bits[hid][i].value;
-                    if (radix===',') {
-                        _aval = _aval.split(',').join('.');
-                    }
-                    if  (_aval == parseFloat(_aval)) {
-                        qt += +_aval;
-                    }
-				};
-			};
-		};
-		//clear key input
-		function dummy(e)
-		{
-			return(false);
-		};
-	};
-	//set up the dom
-	//alert('multi called called value ' + ids);
-	ids = ids.split(',');
-	//generic for vars
-	var ii = 0;
-	var ll=ids.length;
-	//object place holder
-	var _collection=new Array();
-
-	for(ii=0; ii<ll; ii++)
-	{
-		//run main function per id
-		_collection.push(new multi_total(ids[ii]));
-	}
-}
-
-//Special function for array dual scale in drop down layout to check conditions
-/* 
-Deactivated 20130221
-Why do this: a user can answer one select and not another one
-Never change default behaviour if it's not good for respondant
-*/
-//function array_dual_dd_checkconditions(value, name, type, rank, condfunction)
-//{
-//   if (value == '') {
-//        //If value is set to empty, reset both drop downs and check conditions
-//        if (rank == 0) { dualname = name.replace(/#0/g,"#1"); }
-//        else if (rank == 1) { dualname = name.replace(/#1/g,"#0"); }
-//        document.getElementsByName(dualname)[0].value=value;
-//        condfunction(value, dualname, type);
-//   }
-//    condfunction(value, name, type);
-//}
 
 /* Maxlengt on textarea */
 function maxlengthtextarea(){

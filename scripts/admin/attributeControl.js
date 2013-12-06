@@ -11,7 +11,7 @@ $(document).ready(function() {
     // Set some custom messages
     $.jgrid.edit.msg.required = sRequired;
 
-    jQuery("#attributeControl").jqGrid({
+    $("#attributeControl").jqGrid({
         loadtext : sLoadText,
         align:"center",
         url: attributeInfoUrl,
@@ -36,8 +36,7 @@ $(document).ready(function() {
         recordtext: viewRecordTxt
     });
 
-    jQuery.extend($.fn.fmatter , {
-        rowactions : function(rid,gid,act, pos) {
+    $.extend($.fn.fmatter.rowactions = function(act) {
             var delOptions = {
                 bCancel: sCancel,
                 bSubmit: sDeleteButtonCaption,                
@@ -46,6 +45,9 @@ $(document).ready(function() {
                 reloadAfterSubmit: true,
                 width: 400
             };
+            var $tr = $(this).closest("tr.jqgrow");
+            rid = $tr.attr("id");
+            gid = $(this).closest("table.ui-jqgrid-btable").attr('id').replace(/_frozen([^_]*)$/,'$1');
             switch(act)
             {
                 case 'edit' :
@@ -56,9 +58,9 @@ $(document).ready(function() {
                     break;
             }
         }
-    });
+    );
 
-    jQuery('#attributeControl').jqGrid('navGrid', '#pager',
+    $('#attributeControl').jqGrid('navGrid', '#pager',
         { add:true,
             edit:false,
             del:true,
@@ -68,11 +70,9 @@ $(document).ready(function() {
             deltitle: deleteCaption,
             edittitle: sEditAttributeMsg,
             searchtitle: searchMsg,
-            msg: {required: sRequired},
             refreshtitle: refreshMsg},
         {
             edittitle: sEditAttributeMsg,
-            msg: {required: sRequired}
         }, //Default settings for edit
         { addCaption: addCaption,
             bCancel: sCancel,

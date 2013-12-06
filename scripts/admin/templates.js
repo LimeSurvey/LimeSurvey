@@ -1,15 +1,11 @@
-// $Id: templates.js 9697 2011-01-16 18:37:40Z shnoulle $
 // based on TTabs from http://interface.eyecon.ro/
 
 $(document).ready(function(){
-// activate codemirror
-		$('#changes').not('.none').each(function(index) {
-		               var textarea = $(this).get(0) ;
-		               var uiOptions = { path : codemirropath, searchMode : 'inline', buttons : ['undo','redo','jump','reindent','about'] }
-		               var codeMirrorOptions = { mode: editorfiletype }
-		               var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);
-		});
 
+    $('.ace:not(.none)').ace({
+        'mode' : editorfiletype,
+        'toolbarCallback' : createToolbar
+    });
     $('#iphone').click(function(){
       $('#previewiframe').css("width", "320px");
       $('#previewiframe').css("height", "396px");
@@ -31,3 +27,30 @@ $(document).ready(function(){
       $('#previewiframe').css("height", "768px");
     });
 });
+
+// Creates a toolbar.
+function createToolbar(element, editor)
+{
+    element.css('background-color', '#F0F0F0');
+    element.css('padding', '5px');
+    element.css('text-align', 'center');
+    $('<button/>').text('Undo (ctrl + Z)').attr('type', 'button').appendTo(element).on('click', function()
+    {
+        editor.commands.exec('undo', editor);
+    });
+    $('<button/>').text('Redo (ctrl + Y)').attr('type', 'button').appendTo(element).on('click', function()
+    {
+        editor.commands.exec('redo', editor);
+    });
+    $('<button/>').text('Find (ctrl + F)').attr('type', 'button').appendTo(element).on('click', function()
+    {
+        editor.commands.exec('find', editor);
+    });
+    $('<button/>').text('Replace (ctrl + H)').attr('type', 'button').appendTo(element).on('click', function()
+    {
+        editor.commands.exec('replace', editor);
+    });
+
+
+
+}

@@ -20,7 +20,6 @@ if (!defined('BASEPATH'))
 * @package LimeSurvey
 * @author
 * @copyright 2011
-* @version $Id$
 */
 class templates extends Survey_Common_Action
 {
@@ -83,9 +82,6 @@ class templates extends Survey_Common_Action
     public function upload()
     {
         $clang = $this->getController()->lang;
-
-//        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'templates.js');
-
         $aViewUrls = $this->_initialise('default', 'welcome', 'startpage.pstpl', FALSE);
         $lid = returnGlobal('lid');
         $action = returnGlobal('action');
@@ -198,18 +194,18 @@ class templates extends Survey_Common_Action
                 if(strpos($content, "{TEMPLATEJS}")===false)
                 {
                     $templateFixes['success']=false;
-                    $templateFixes['details']['templatejs']="Unable to adding {TEMPLATEJS} placeholder, please control your startpage.pstpl.";
+                    $templateFixes['details']['templatejs']=$clang->gT("Unable to add {TEMPLATEJS} placeholder, please check your startpage.pstpl.");
                 }
                 else
                 {
-                    $templateFixes['details']['templatejs']="Placeholder {TEMPLATEJS} added to your startpage.pstpl.";
+                    $templateFixes['details']['templatejs']=$clang->gT("Placeholder {TEMPLATEJS} added to your startpage.pstpl.");
                 }
             }
         }
         else
         {
             $templateFixes['success']=false;
-            $templateFixes['details']['templatejs']="Unable to find startpage.pstpl to add {TEMPLATEJS} placeholder, please control your template.";
+            $templateFixes['details']['templatejs']=$clang->gT("Unable to find startpage.pstpl to add {TEMPLATEJS} placeholder, please check your template.");
         }
         return $templateFixes;
     }
@@ -321,13 +317,12 @@ class templates extends Survey_Common_Action
             $templatename = Yii::app()->getConfig("defaulttemplate");
         }
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile);
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'templates.js');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/mode/css/css.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/mode/xml/xml.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/css/codemirror-ui.css');
-
+        App()->getClientScript()->reset();
+        // After reseting, we need register again the script : maybe move it to endScripts_view for allways needed scripts ?
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'templates.js');
+        App()->getClientScript()->registerPackage('ace');
+        App()->getClientScript()->registerPackage('jquery-superfish');
         $this->_renderWrappedTemplate('templates', $aViewUrls);
 
         if ($screenname != 'welcome')
@@ -353,7 +348,7 @@ class templates extends Survey_Common_Action
         {
             $templatename = Yii::app()->getConfig("defaulttemplate");
         }
-        $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
 
     /**
@@ -371,7 +366,7 @@ class templates extends Survey_Common_Action
         {
             $templatename = Yii::app()->getConfig("defaulttemplate");
         }
-        $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
 
     /**
@@ -396,7 +391,7 @@ class templates extends Survey_Common_Action
             {
                 Yii::app()->session['flashmessage'] = sprintf($clang->gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete));
             }
-            $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . returnGlobal('editfile') . "/screenname/" . returnGlobal('screenname') . "/templatename/" . returnGlobal('templatename')));
+            $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . returnGlobal('editfile') . "/screenname/" . returnGlobal('screenname') . "/templatename/" . returnGlobal('templatename')));
         }
     }
 
@@ -437,30 +432,36 @@ class templates extends Survey_Common_Action
     public function templatecopy()
     {
         $clang = $this->getController()->lang;
-
-        if (returnGlobal('action') == "templatecopy" && returnGlobal('newname') && returnGlobal('copydir')) {
+        $newname=sanitize_paranoid_string(Yii::app()->request->getPost("newname"));
+        $copydir=sanitize_paranoid_string(Yii::app()->request->getPost("copydir"));
+        $action=Yii::app()->request->getPost("action");
+        if ($newname && $copydir) {
             // Copies all the files from one template directory to a new one
-            // This is a security issue because it is allowing copying from get variables...
             Yii::app()->loadHelper('admin/template');
-            $newname= sanitize_paranoid_string(returnGlobal('newname'));
             $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
-            $copydirname = getTemplatePath(returnGlobal('copydir'));
-            
+            $copydirname = getTemplatePath($copydir);
             $oFileHelper=new CFileHelper;
-            
-
             $mkdirresult = mkdir_p($newdirname);
-
             if ($mkdirresult == 1) {
                 $oFileHelper->copyDirectory($copydirname,$newdirname);
                 $templatename = $newname;
-                $this->index("startpage.pstpl", "welcome", $templatename);
+                $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$newname));
             }
             elseif ($mkdirresult == 2)
-                $this->getController()->error(sprintf($clang->gT("Directory with the name `%s` already exists - choose another name", "js"), $newname));
+            {
+                Yii::app()->setFlashMessage(sprintf($clang->gT("Directory with the name `%s` already exists - choose another name"), $newname),'error');
+                $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$copydir));
+            }
             else
-                $this->getController()->error(sprintf($clang->gT("Unable to create directory `%s`.", "js"), $newname) . " " . $clang->gT("Please check the directory permissions.", "js"));
-            ;
+            {
+                Yii::app()->setFlashMessage(sprintf($clang->gT("Unable to create directory `%s`."), $newname),'error');
+                Yii::app()->setFlashMessage($clang->gT("Please check the directory permissions."));
+                $this->getController()->redirect(array("admin/templates/sa/view"));
+            }
+        }
+        else
+        {
+            $this->getController()->redirect(array("admin/templates/sa/view"));
         }
     }
 
@@ -486,16 +487,16 @@ class templates extends Survey_Common_Action
                 }
 
                 Template::model()->deleteAllByAttributes(array('folder' => $templatename));
-                Templates_rights::model()->deleteAllByAttributes(array('folder' => $templatename));
+                Permission::model()->deleteAllByAttributes(array('permission' => $templatename,'entity' => 'template'));
 
-                Yii::app()->session['flashmessage'] = sprintf($clang->gT("Template '%s' was successfully deleted."), $templatename);
+                Yii::app()->setFlashMessage(sprintf($clang->gT("Template '%s' was successfully deleted."), $templatename));
             }
             else
-                Yii::app()->session['flashmessage'] = sprintf($clang->gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename);
+                Yii::app()->setFlashMessage(sprintf($clang->gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename),'error');
         }
 
         // Redirect with default templatename, editfile and screenname
-        $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view"));
+        $this->getController()->redirect(array("admin/templates/sa/view"));
     }
 
     /**
@@ -553,7 +554,7 @@ class templates extends Survey_Common_Action
             }
         }
 
-        $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
 
     /**
@@ -622,23 +623,26 @@ class templates extends Survey_Common_Action
             @fwrite($fnew, getHeader());
             foreach ($cssfiles as $cssfile)
                 $myoutput = str_replace($cssfile['name'], $cssfile['name'] . "?t=$time", $myoutput);
-
-            foreach ($myoutput as $line)
-                @fwrite($fnew, $line);
-
+            $myoutput = implode("\n", $myoutput);
+            App()->getClientScript()->render($myoutput);
+            @fwrite($fnew, $myoutput);
             @fclose($fnew);
         }
-
+        if (Yii::app()->session['templateeditormode'] !== 'default') {
+            $sTemplateEditorMode = Yii::app()->session['templateeditormode'];
+        } else {
+            $sTemplateEditorMode = getGlobalSetting('templateeditormode', 'full');
+        }
         $sExtension=substr(strrchr($editfile, '.'), 1);
         switch ($sExtension)
         {
            case 'css':$sEditorFileType='css';
            break;
-           case 'pstpl':$sEditorFileType='htmlmixed';
+           case 'pstpl':$sEditorFileType='html';
            break;
            case 'js':$sEditorFileType='javascript';
            break;
-           default: $sEditorFileType='htmlmixed';
+           default: $sEditorFileType='html';
            break;
         }
 
@@ -656,6 +660,7 @@ class templates extends Survey_Common_Action
         $aData['tempurl'] = $tempurl;
         $aData['time'] = $time;
         $aData['sEditorFileType'] = $sEditorFileType;
+        $aData['sTemplateEditorMode'] = $sTemplateEditorMode;
 
         $aViewUrls['templatesummary_view'][] = $aData;
 
@@ -731,6 +736,7 @@ class templates extends Survey_Common_Action
     */
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
+        App()->getClientScript()->reset();
         $clang = $this->getController()->lang;
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
@@ -1193,6 +1199,7 @@ class templates extends Survey_Common_Action
         if ($showsummary)
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $otherfiles, $myoutput));
 
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'admin_core.js');
         return $aViewUrls;
     }
 

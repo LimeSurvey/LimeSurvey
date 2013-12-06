@@ -60,7 +60,7 @@ function deleteinput()
 
     // 1.) Check if there is at least one answe
 
-    countanswers=$(this).parent().parent().parent().children().length;
+    countanswers=$(this).closest("tbody").children("tr").length;//Maybe use class is better
     if (countanswers>1)
         {
         // 2.) Remove the table row
@@ -137,11 +137,11 @@ function addinput()
             assessment_type='hidden';
         }
         if (x==0) {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input class="code" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" value="'+htmlspecialchars(sNextCode)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(newansweroption_text)+'"></input><a class="editorLink"><img class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input class="code" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" required value="'+htmlspecialchars(sNextCode)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" /><a class="editorLink"><img class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
         }
         else
             {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>&nbsp;</td><td>'+htmlspecialchars(sNextCode)+'</td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(newansweroption_text)+'"></input><a class="editorLink"><img class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td>&nbsp;</td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>&nbsp;</td><td>'+htmlspecialchars(sNextCode)+'</td><td><input type="text" size="100" class="answer" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" /><a class="editorLink"><img class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td></td></tr>'
         }
         tablerow.after(inserthtml);
         tablerow.next().find('.btnaddanswer').click(addinput);
@@ -219,7 +219,7 @@ function updaterowproperties()
         var rownumber=1;
         $(this).children('tr').each(function(){
 
-            $(this).removeClass();
+            $(this).attr('class','');//see http://bugs.jqueryui.com/ticket/9015
             if (highlight){
                 $(this).addClass('highlight');
             }
@@ -751,7 +751,7 @@ function ajaxcheckdup()
 
 function ajaxreqsave() {
     var lid = $('#lasets').val() ? $('#lasets').val() : 0;
-
+    var csrfToken=$("input[name='YII_CSRF_TOKEN']:first").val();
     // get code for the current scale
     var code = new Array();
     $('.code').each(function(index) {
@@ -772,7 +772,7 @@ function ajaxreqsave() {
     }
 
 
-    $.post(lasaveurl, { laname: $('#laname').val(), lid: lid, code: code, answers: answers }, function(data) {
+    $.post(lasaveurl, { laname: $('#laname').val(), lid: lid, code: code, answers: answers, YII_CSRF_TOKEN: csrfToken }, function(data) {
         $("#saveaslabel").dialog('close');
         if(jQuery.parseJSON(data) == "ok")
             {

@@ -39,10 +39,12 @@ hr{
 
 /* Wrapper */
 .wrapper {
+    /*
     min-height: 100%;
     height: auto !important;
     height: 100%;
     margin: 0 auto -40px;
+    */
     background-color:#fefefe;
     width:100%;
 }
@@ -50,7 +52,6 @@ hr{
 /* Administration footer box */
 .footer {
     text-align: center;
-    height: 30px;
     margin: 0 auto;
     padding-top:0.4em;
     border-top: 1px solid #eee;
@@ -126,8 +127,9 @@ div.menubar {
     background-color: #fefefe;
     clear:left;
     padding:0;
-    margin:0 auto 58px auto !important;
+    margin:0 auto !important;
     width: 99%;
+    display:inline-block;
 }
 
 div.menubar .ui-widget-header
@@ -193,9 +195,8 @@ div.menubar .ui-widget-header
 }
 
 .menubar-left img{
-    float:left;
     border:0;
-    padding:3px 1px;
+    padding:3px 0;
 }
 
 .menubar-right > img{
@@ -216,7 +217,9 @@ div.menubar .ui-widget-header
     color: #333;
     width: 200px;
 }
-
+.menubar option.emphasis{
+    font-weight:700
+}
 .menubar-right .arrow-wrapper {
     display: inline; /* For IE */
     position: relative;
@@ -249,21 +252,7 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
     clear:left;
 }
 
-#surveydetails td:first-child,
-#groupdetails td:first-child,
-#questiondetails td:first-child {
-    width:25%;
-    font-weight:bold;
-    text-align:right;
-
-}
-
-#surveydetails td+td,
-#groupdetails td+td,
-#questiondetails td+td {
-    text-align:left;
-}
-#questionactioncopy{
+.extra-action{
     float: right;
     margin-top: -60px
 }
@@ -312,7 +301,6 @@ td {
 
 input, select, button {
     color: #000;
-    font: 10px verdana, arial, sans-serif;
 }
 
 /* Uncomment these styles if you are using a system theme with a dark background
@@ -355,8 +343,6 @@ textarea {
 }
 
 .listboxtemplates {
-    margin-top: 10px;
-    height: 20px;
     color: #333;
     width: 180px;
 }
@@ -750,6 +736,11 @@ ul.assessmentscope li label:first-child {
     padding:4px;
 }
 
+.users
+{
+    max-width:1200px;
+}
+
 .users td,
 .surveysecurity td,
 .listsurveys td {
@@ -761,7 +752,10 @@ ul.assessmentscope li label:first-child {
 {
     margin-left:2px;
 }
-
+.users td:first-child
+{
+    text-align: left;
+}
 .assessmentlist td form,
 #users td form {
     display:inline;
@@ -918,32 +912,33 @@ table.templatecontrol select
 }
 
 /* Added by evan to help usability on the user template rights form in useradmin/userrighthandling.php */
-table#user-template-rights
+table#user-template-permissions
 {
     width: 50%;
     border: none;
     border-collapse: collapse
 }
 
-table#user-template-rights thead{
+table#user-template-permissions th{
+    font-size:0.8em;
 }
 
-table#user-template-rights tr.row_odd
+table#user-template-permissions tr.row_odd
 {
     background-color: #EBF2FA;
 }
-table#user-template-rights tr:hover
+table#user-template-permissions tr:hover
 {
     background-color: #D1D1DF;
 }
-table#user-template-rights tr td
-,table#user-template-rights tr th
-,table#user-template-rights tfoot tr td
+table#user-template-permissions tr td
+,table#user-template-permissions tr th
+,table#user-template-permissions tfoot tr td
 {
     border: none;
     text-align: center;
 }
-table#user-template-rights tbody tr td:first-child
+table#user-template-permissions tbody tr td:first-child
 {
     text-align: left;
 }
@@ -1346,16 +1341,16 @@ thead tr .headerSortDown, thead tr .headerSortUp {
 div.left
 {
     float:left;
-    width:300px;
+    width:400px;
 }
 
 div.right {
     float:right;
-    width:300px;
+    width:400px;
 }
 
 .wrap2columns {
-    width:600px;
+    width:800px;
     margin:0 auto;
 }
 
@@ -1373,13 +1368,13 @@ div.right {
 }
 
 #advancedquestionsettings fieldset {
-    width:600px;
-    margin:0 auto;
+    width:49%;
+    margin:0 15%;
     display: block;
 }
 
 #advancedquestionsettings textarea{
-    width:200px;
+    width:380px;
 }
 
 .statistics-tbl-separator td {
@@ -1455,25 +1450,66 @@ div.right {
     width:210px;
 }
 
+/*.limebutton, input.limebutton*/
+/*{*/
+/*    outline: 0;*/
+/*    margin:1px 4px 1px 0;*/
+/*    padding: 1px 1em;*/
+/*    text-decoration:none !important;*/
+/*    cursor:pointer;*/
+/*    text-align: center;*/
+/*    zoom: 1;*/
+/*    border: 1px solid #CDF078;*/
+/*    background: #EFFBDB url(images/ui-bg_glass_100_effbdb_1x400.png) 50% 50%*/
+/*    repeat-x;*/
+/*}*/
+
+/*.limebutton.ui-state-hover*/
+/*{*/
+/*    border: 1px solid #94D200;*/
+/*}*/
 .limebutton
 {
-    outline: 0;
-    margin:1px 4px 1px 0;
-    padding: 1px 1em;
-    text-decoration:none !important;
-    cursor:pointer;
-    text-align: center;
-    zoom: 1;
-    border: 1px solid #CDF078;
-    background: #EFFBDB url(images/ui-bg_glass_100_effbdb_1x400.png) 50% 50%
-    repeat-x;
+  display: inline-block;
+  *display: inline;
+  padding: 0.3em 1em;;padding: 0.3rem 1rem;
+  text-align: center;
+  vertical-align: middle;
+/*  font-weight:bold;*/
+  cursor: pointer;
+  border: 1px solid #bbbbbb;
+  *border: 0;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  *zoom: 1;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+     -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
-
-.limebutton.ui-state-hover
+.limebutton
 {
-    border: 1px solid #94D200;
+  border-color: #CDF078;
+  border-color: rgba(205, 240, 120, 0.3) rgba(205, 240, 120, 0.3) rgba(205, 240, 120, 0.5);
+  color:#344c00;
+  background-color: #dfeffc;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#E0F4BD), to(#CEF078));
+  background-image: -webkit-linear-gradient(top, #E0F4BD, #CEF078);
+  background-image: -o-linear-gradient(top, #E0F4BD, #CEF078);
+  background-image: linear-gradient(to bottom, #E0F4BD, #CEF078);
+  background-image: -moz-linear-gradient(top, #E0F4BD, #CEF078);
+  background-repeat: repeat-x;
+  border-color: #CDF078 #CDF078 #7eb900;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffe0f4bd', endColorstr='#ffcef078', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
 }
-
+.limebutton:focus,.limebutton:hover,.limebutton:active
+{
+  background-position:0 -15px;
+  color: #444;
+  background-color: #CEF078;
+}
 
 #emailtemplates .ui-tabs-panel .limebutton {
     margin: 3px 20% 10px 30.5%;
@@ -1512,11 +1548,11 @@ table.limetable tbody tr.highlight {
 thead th
 {
 }
-
+.userpermissions,
 .usersurveypermissions {
     text-align:center;
 }
-
+.userpermissions th,
 .usersurveypermissions th{
     padding:0 2em;
 }

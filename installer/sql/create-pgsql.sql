@@ -203,7 +203,52 @@ CREATE TABLE prefix_participants (
   "email" character varying(80),
   "language" character varying(40),
   "blacklisted" character varying(1) NOT NULL,
-  "owner_uid" integer NOT NULL
+  "owner_uid" integer NOT NULL,
+  "created_by" integer NOT NULL,
+  "created" timestamp,
+  "modified" timestamp
+);
+
+
+--
+-- Table structure for table permissions
+--
+CREATE TABLE prefix_permissions (
+    id serial NOT NULL,
+	entity character varying(50) NOT NULL,
+	entity_id integer NOT NULL,
+	uid integer NOT NULL,
+	permission character varying(100) NOT NULL,
+	create_p integer DEFAULT 0 NOT NULL,
+    read_p integer DEFAULT 0 NOT NULL,
+	update_p integer DEFAULT 0 NOT NULL,
+	delete_p integer DEFAULT 0 NOT NULL,
+    import_p integer DEFAULT 0 NOT NULL,
+    export_p integer DEFAULT 0 NOT NULL,
+    CONSTRAINT prefix_permissions_pkey PRIMARY KEY (id)
+);
+
+
+--
+-- Table structure for table plugins
+--
+CREATE TABLE prefix_plugins (
+  id serial NOT NULL,
+  name character varying(50) NOT NULL,
+  active integer NOT NULL default '0'
+);
+
+
+--
+-- Table structure for table plugin_settings
+--
+CREATE TABLE prefix_plugin_settings (
+  id integer PRIMARY KEY NOT NULL,
+  plugin_id integer NOT NULL,
+  model character varying(50) NULL,
+  model_id integer NULL,
+  key character varying(50) NOT NULL,
+  value text NULL
 );
 
 
@@ -289,7 +334,6 @@ CREATE TABLE prefix_quota_members (
 CREATE INDEX prefix_quota_members_ixcode_idx ON prefix_quota_members USING btree (sid, qid, quota_id, code);
 
 
-
 --
 -- Table structure for table saved_control
 --
@@ -315,7 +359,7 @@ CREATE TABLE prefix_saved_control (
 CREATE TABLE prefix_sessions(
       id character varying(32) NOT NULL,
       expire integer DEFAULT NULL,
-      data text,
+      data bytea,
       CONSTRAINT prefix_sessions_pkey PRIMARY KEY ( id )
 );
 
@@ -341,23 +385,6 @@ CREATE TABLE prefix_survey_links (
   "date_invited" timestamp,
   "date_completed" timestamp,
   CONSTRAINT prefix_survey_links_pkey PRIMARY KEY (participant_id,token_id,survey_id)
-);
-
-
---
--- Table structure for table survey_permissions
---
-CREATE TABLE prefix_survey_permissions (
-	sid integer NOT NULL,
-	uid integer NOT NULL,
-	permission character varying(20) NOT NULL,
-	create_p integer DEFAULT 0 NOT NULL,
-    read_p integer DEFAULT 0 NOT NULL,
-	update_p integer DEFAULT 0 NOT NULL,
-	delete_p integer DEFAULT 0 NOT NULL,
-    import_p integer DEFAULT 0 NOT NULL,
-    export_p integer DEFAULT 0 NOT NULL,
-    CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission)
 );
 
 
@@ -429,7 +456,7 @@ CREATE TABLE prefix_surveys (
     bounceaccountuser character varying(200),
     showwelcome character varying(1) DEFAULT 'Y',
     showprogress character varying(1) DEFAULT 'Y',
-    allowjumps character varying(1) DEFAULT 'N',
+    questionindex integer DEFAULT '0' NOT NULL,
     navigationdelay integer DEFAULT '0' NOT NULL,
     nokeyboard character varying(1) DEFAULT 'N',
     alloweditaftercompletion character varying(1) DEFAULT 'N',
@@ -449,7 +476,7 @@ CREATE TABLE prefix_surveys_languagesettings (
     surveyls_description text,
     surveyls_welcometext text,
     surveyls_endtext text,
-    surveyls_url character varying(255),
+    surveyls_url text,
     surveyls_urldescription character varying(255),
     surveyls_email_invite_subj character varying(255),
     surveyls_email_invite text,
@@ -466,6 +493,7 @@ CREATE TABLE prefix_surveys_languagesettings (
     email_admin_responses_subj character varying(255),
     email_admin_responses text,
     surveyls_numberformat integer NOT NULL DEFAULT 0,
+    attachments text DEFAULT NULL,
     CONSTRAINT prefix_surveys_languagesettings_pkey PRIMARY KEY (surveyls_survey_id, surveyls_language)
 );
 
@@ -502,19 +530,13 @@ CREATE TABLE prefix_users (
     parent_id integer NOT NULL,
     lang character varying(20),
     email character varying(320),
-    create_survey integer DEFAULT 0 NOT NULL,
-    create_user integer DEFAULT 0 NOT NULL,
-    participant_panel integer DEFAULT 0 NOT NULL,
-    delete_user integer DEFAULT 0 NOT NULL,
-    superadmin integer DEFAULT 0 NOT NULL,
-    configurator integer DEFAULT 0 NOT NULL,
-    manage_template integer DEFAULT 0 NOT NULL,
-    manage_label integer DEFAULT 0 NOT NULL,
     htmleditormode character varying(7) DEFAULT 'default',
     templateeditormode character varying(7) DEFAULT 'default' NOT NULL,
     questionselectormode character varying(7) DEFAULT 'default' NOT NULL,
 	one_time_pw bytea,
-    "dateformat" integer DEFAULT 1 NOT NULL
+    "dateformat" integer DEFAULT 1 NOT NULL,
+    "created" timestamp,
+    "modified" timestamp
 );
 
 
@@ -557,9 +579,10 @@ create index quota_idx2 on prefix_quota (sid);
 create index saved_control_idx2 on prefix_saved_control (sid);
 create index parent_qid_idx on prefix_questions (parent_qid);
 create index labels_code_idx on prefix_labels (code);
+create unique index permissions_idx2 ON lime_permissions (entity_id, entity, uid, permission);
 
 
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '164');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '172');

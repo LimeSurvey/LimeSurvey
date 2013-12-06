@@ -1,7 +1,7 @@
 <?php echo PrepareEditorScript(false, $this);?>
 
 <div class='header ui-widget-header'><?php $clang->eT("Edit Group"); ?></div>
-<?php echo CHtml::form(array("admin/questiongroup/sa/update/gid/{$gid}"), 'post', array('id'=>'frmeditgroup', 'name'=>'frmeditgroup', 'class'=>'form30')); ?>
+<?php echo CHtml::form(array("admin/questiongroups/sa/update/gid/{$gid}"), 'post', array('id'=>'frmeditgroup', 'name'=>'frmeditgroup', 'class'=>'form30')); ?>
     <div id='tabs'>
         <ul>
             <?php foreach ($tabtitles as $i=>$eachtitle){?>

@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 
 /*
@@ -36,6 +35,11 @@ class Statistics_userController extends LSYii_Controller {
 
 	function actionAction($surveyid,$language)
 	{
+		ob_start(function($buffer, $phase) {
+			App()->getClientScript()->render($buffer);
+			return $buffer;
+		});
+		ob_implicit_flush(false);
 		$iSurveyID=(int)$surveyid;
         //$postlang = returnglobal('lang');
 		Yii::import('application.libraries.admin.progressbar',true);
@@ -395,7 +399,7 @@ class Statistics_userController extends LSYii_Controller {
 
 
 		// 1: Get list of questions with answers chosen
-		//"Getting Questions and Answers ..." is shown above the bar
+		//"Getting Questions and Answer ..." is shown above the bar
 		$prb->setLabelValue('txt1',$clang->gT('Getting questions and answers ...'));
 		$prb->moveStep(5);
 
@@ -451,8 +455,8 @@ class Statistics_userController extends LSYii_Controller {
 
         $redata = compact(array_keys(get_defined_vars()));
         $data['redata'] = $redata;
-        header_includes('statistics_user.js');
-		$this->render('/statistics_user_view',$data);
+		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'statistics_user.js');
+        $this->renderPartial('/statistics_user_view',$data);
 
 		//output footer
 		echo getFooter();

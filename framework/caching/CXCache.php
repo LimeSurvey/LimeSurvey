@@ -4,7 +4,7 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,11 +12,11 @@
  * CXCache implements a cache application module based on {@link http://xcache.lighttpd.net/ xcache}.
  *
  * To use this application component, the XCache PHP extension must be loaded.
+ * Flush functionality will only work correctly if "xcache.admin.enable_auth" is set to "Off" in php.ini.
  *
  * See {@link CCache} manual for common cache operations that are supported by CXCache.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CXCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  */
 class CXCache extends CCache
@@ -38,7 +38,7 @@ class CXCache extends CCache
 	 * Retrieves a value from cache with a specified key.
 	 * This is the implementation of the method declared in the parent class.
 	 * @param string $key a unique key identifying the cached value
-	 * @return string the value stored in cache, false if the value is not in the cache or expired.
+	 * @return string|boolean the value stored in cache, false if the value is not in the cache or expired.
 	 */
 	protected function getValue($key)
 	{

@@ -1,7 +1,7 @@
 <?php
 /*
  * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -17,8 +17,7 @@
  *
  * @package LimeSurvey
  * @copyright 2011
- * @version $Id$
- * @access public
+  * @access public
  */
 
 class emailtemplates extends Survey_Common_Action {
@@ -32,7 +31,7 @@ class emailtemplates extends Survey_Common_Action {
     {
         $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
+        App()->getClientScript()->registerPackage('jquery-superfish');
 
         Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->loadHelper('surveytranslator');
@@ -68,7 +67,8 @@ class emailtemplates extends Survey_Common_Action {
         foreach ($grplangs as $key => $grouplang)
         {
             $aData['bplangs'][$key] = new limesurvey_lang($grouplang);
-            $aData['attrib'][$key] = Surveys_languagesettings::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
+            $aData['attrib'][$key] = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
+            $aData['attrib'][$key]['attachments'] = unserialize($aData['attrib'][$key]['attachments']);
             $aData['defaulttexts'][$key] = templateDefaultTexts($aData['bplangs'][$key],$sEscapeMode);
         }
 
@@ -84,33 +84,74 @@ class emailtemplates extends Survey_Common_Action {
      */
     function update($iSurveyId)
     {
+        $uploadUrl = Yii::app()->getBaseUrl(true) . Yii::app()->getConfig('uploadurl');
+        // We need the real path since we check that the resolved file name starts with this path.
+        $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
+        $save=Yii::app()->request->getPost('save','');
         $clang = $this->getController()->lang;
-        if (hasSurveyPermission($iSurveyId, 'surveylocale','update'))
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale','update'))
         {
             $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             $languagelist[] = Survey::model()->findByPk($iSurveyId)->language;
             array_filter($languagelist);
             foreach ($languagelist as $langname)
             {
+                if (isset($_POST['attachments'][$langname]))
+                {
+                    foreach ($_POST['attachments'][$langname] as $template => &$attachments)
+                    {
+                        foreach ($attachments as  $index => &$attachment)
+                        {
+                            // We again take the real path.
+                            $localName = realpath(str_replace($uploadUrl, $uploadDir, $attachment['url']));
+                            if ($localName !== false)
+                            {
+                                if (strpos($localName, $uploadDir) === 0)
+                                {
+                                    $attachment['url'] = $localName;
+                                    $attachment['size'] = filesize($localName);
+                                }
+                                else
+                                {
+                                    unset($attachments[$index]);
+                                }
+                            }
+                            else 
+                            {
+                                unset($attachments[$index]);
+                            }
+                        }
+                        unset($attachments);
+                    }
+                }
+                else
+                {
+                    $_POST['attachments'][$langname] = array();
+                }
+                
                 $attributes = array(
-                        'surveyls_email_invite_subj' => $_POST['email_invite_subj_'.$langname],
-                        'surveyls_email_invite' => $_POST['email_invite_'.$langname],
-                        'surveyls_email_remind_subj' => $_POST['email_remind_subj_'.$langname],
-                        'surveyls_email_remind' => $_POST['email_remind_'.$langname],
-                        'surveyls_email_register_subj' => $_POST['email_register_subj_'.$langname],
-                        'surveyls_email_register' => $_POST['email_register_'.$langname],
-                        'surveyls_email_confirm_subj' => $_POST['email_confirm_subj_'.$langname],
-                        'surveyls_email_confirm' => $_POST['email_confirm_'.$langname],
-                        'email_admin_notification_subj' => $_POST['email_admin_notification_subj_'.$langname],
-                        'email_admin_notification' => $_POST['email_admin_notification_'.$langname],
-                        'email_admin_responses_subj' => $_POST['email_admin_responses_subj_'.$langname],
-                        'email_admin_responses' => $_POST['email_admin_responses_'.$langname]
-                        );
-                $usquery = Surveys_languagesettings::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
+                    'surveyls_email_invite_subj' => $_POST['email_invitation_subj_'.$langname],
+                    'surveyls_email_invite' => $_POST['email_invitation_'.$langname],
+                    'surveyls_email_remind_subj' => $_POST['email_reminder_subj_'.$langname],
+                    'surveyls_email_remind' => $_POST['email_reminder_'.$langname],
+                    'surveyls_email_register_subj' => $_POST['email_registration_subj_'.$langname],
+                    'surveyls_email_register' => $_POST['email_registration_'.$langname],
+                    'surveyls_email_confirm_subj' => $_POST['email_confirmation_subj_'.$langname],
+                    'surveyls_email_confirm' => $_POST['email_confirmation_'.$langname],
+                    'email_admin_notification_subj' => $_POST['email_admin_notification_subj_'.$langname],
+                    'email_admin_notification' => $_POST['email_admin_notification_'.$langname],
+                    'email_admin_responses_subj' => $_POST['email_admin_detailed_notification_subj_'.$langname],
+                    'email_admin_responses' => $_POST['email_admin_detailed_notification_'.$langname],
+                    'attachments' => serialize($_POST['attachments'][$langname])
+                );
+                $usquery = SurveyLanguageSetting::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Email templates successfully saved.");
         }
-        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyId));
+        if($save=='saveclose')
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyId));
+        else
+            self::index($iSurveyId);
     }
 
 
@@ -123,7 +164,7 @@ class emailtemplates extends Survey_Common_Action {
      */
     protected function _renderWrappedTemplate($sAction = 'emailtemplates', $aViewUrls = array(), $aData = array())
 	{
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'emailtemplates.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'emailtemplates.js');
 
         $aData['display']['menu_bars']['surveysummary'] = 'editemailtemplates';
 

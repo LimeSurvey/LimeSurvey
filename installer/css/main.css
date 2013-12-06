@@ -89,3 +89,45 @@ div.messagebox .header{
     background-color: #D2E0F2;
     color: #1D2D45;
 }
+
+h1 {
+    font-size: 16px;
+}
+h2 {
+    color: #8CCE00;
+}
+table {
+    width: 100%;
+}
+
+table td + td {
+    text-align: center;
+}
+table td, table th {
+    width: 33%;
+    padding: 1px;
+}       
+table th {
+    text-align: center;
+}
+div.navigator {
+    margin-top: 30px;
+}
+
+div.navigator > div {
+    text-align: center;
+}
+div.navigator > div:first-child {
+    text-align: left;
+}
+div.navigator > div:last-child {
+    text-align: right;
+}
+
+.form-horizontal .controls {
+    margin-left: 220px;
+}
+
+.form-horizontal .control-label {
+    width: 200px;
+}

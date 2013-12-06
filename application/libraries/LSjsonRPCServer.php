@@ -1,4 +1,5 @@
 <?php
+    Yii::import('application.libraries.BigData', true);
     Yii::import('application.libraries.jsonRPCServer');
     class LSjsonRPCServer extends jsonRPCServer
     {
@@ -22,33 +23,42 @@
 		// reads the input data
 		$request = json_decode(file_get_contents('php://input'),true);
         // executes the task on local object
-		try {
-            $result = @call_user_func_array(array($object,$request['method']),$request['params']);
-			if ($result!==false) {
-				$response = array (
-									'id' => $request['id'],
-									'result' => $result,
-									'error' => NULL
-									);
-			} else {
-				$response = array (
-									'id' => $request['id'],
-									'result' => NULL,
-									'error' => 'unknown method or incorrect parameters'
-									);
-			}
-		} catch (Exception $e) {
-			$response = array (
-								'id' => $request['id'],
-								'result' => NULL,
-								'error' => $e->getMessage()
-								);
-		}
+        if (is_null($request)) {
+            // Can not decode the json, issue error
+            $response = array (
+                                'id' => null,
+                                'result' => NULL,
+                                'error' => sprintf('unable to decode malformed json')
+                                );
+        } else {
+            try {
+                $result = @call_user_func_array(array($object,$request['method']),$request['params']);
+                if ($result!==false) {
+                    $response = array (
+                                        'id' => $request['id'],
+                                        'result' => $result,
+                                        'error' => NULL
+                                        );
+                } else {
+                    $response = array (
+                                        'id' => $request['id'],
+                                        'result' => NULL,
+                                        'error' => 'unknown method or incorrect parameters'
+                                        );
+                }
+            } catch (Exception $e) {
+                $response = array (
+                                    'id' => $request['id'],
+                                    'result' => NULL,
+                                    'error' => $e->getMessage()
+                                    );
+            }
+        }
 
 		// output the response
-		if (!empty($request['id'])) { // notifications don't want response
+		if (is_null($request) || !empty($request['id'])) { // notifications don't want response
 			header('content-type: text/javascript');
-			echo json_encode($response);
+            BigData::json_echo($response);
 		}
 
 		// finish

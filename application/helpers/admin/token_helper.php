@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 
 
@@ -78,8 +77,8 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		$bHtml = false;
 	
 	$attributes = array_keys(getTokenFieldsAndNames($iSurveyID));	
-	$oSurveyLocale=Surveys_languagesettings::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
-	$oTokens = Tokens_dynamic::model($iSurveyID);		
+	$oSurveyLocale=SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
+	$oTokens = Token::model($iSurveyID);
 	$aSurveyLangs = $oSurvey->additionalLanguages;
 	array_unshift($aSurveyLangs, $oSurvey->language);
 			
@@ -141,7 +140,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		$fieldsarray["{OPTINURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optin/tokens/langcode/" . trim($aTokenRow['language']) . "/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
 		$fieldsarray["{SURVEYURL}"] = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/token/{$aTokenRow['token']}/lang/" . trim($aTokenRow['language']) . "/");
 	
-		if($bHtml ==  true)
+		if($bEmail ==  true)
 		{
 			foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
 			{

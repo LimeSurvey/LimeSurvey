@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -19,8 +19,7 @@
  *
  * @package LimeSurvey
  * @copyright 2011
- * @version $Id$
- * @access public
+  * @access public
  */
 class OptinController extends LSYii_Controller {
 
@@ -35,7 +34,7 @@ class OptinController extends LSYii_Controller {
 
         if (!$iSurveyID)
         {
-            $this->redirect($this->getController()->createUrl('/'));
+            $this->redirect(array('/'));
         }
         $iSurveyID = (int)$iSurveyID;
 
@@ -65,21 +64,21 @@ class OptinController extends LSYii_Controller {
         }
         else
         {
-            $row = Tokens_dynamic::model($iSurveyID)->getEmailStatus($sToken);
+			$tokenInstance = Token::model($iSurveyID)->findByAttributes(array('token' => $token));
 
-            if ($row == false)
+            if (!isset($tokenInstance))
             {
                 $html = $clang->gT('You are not a participant in this survey.');
             }
             else
             {
-                $usresult = $row['emailstatus'];
-                if ($usresult=='OptOut')
+                if ($tokenInstance->emailstatus =='OptOut')
                 {
-                    $usresult = Tokens_dynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OK');
+					$tokenInstance->emailstatus = 'OK';
+					$tokenInstance->save();
                     $html = $clang->gT('You have been successfully added back to this survey.');
                 }
-                else if ($usresult=='OK')
+                elseif ($tokenInstance->emailstatus == 'OK')
                 {
                     $html = $clang->gT('You are already a part of this survey.');
                 }

@@ -1,42 +1,25 @@
-<?php $this->render("/installer/header_view", compact('progressValue', 'clang')); ?>
+<div class="row">
+    <div class="span3">
+        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+    </div>
+    <div class="span9">
+        <?php
+            echo CHtml::tag('h2', array(), $title);
+            echo CHtml::tag('p', array(), $descp);
+        ?>
+        <iframe src="<?php echo $this->createUrl('installer/viewlicense'); ?>" style="height: 268px; width: 100%; border-width: 0px;"> </iframe>
+        <?php echo CHtml::form(array("installer/license"), 'post', array('name'=>'formcheck')); ?>
 
-<div class="container_6">
 
-<?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
-
-<div class="grid_4 table">
-
-
-<p class="maintitle">&nbsp;<?php echo $title; ?></p>
-
-
-
-<div style="-moz-border-radius:15px; border-radius:15px;" >
-<p>&nbsp;<?php echo $descp; ?></p>
-<hr />
-<iframe src="<?php echo $this->createUrl('installer/viewlicense'); ?>" style="height: 268px; width: 694px; border-width: 0px;"> </iframe>
-<hr />
-
+            <div class="row navigator">
+            <div class="span3">
+                <input class="btn" type="button" value="<?php $clang->eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/install/welcome"); ?>', '_top')" />
+            </div>
+            <div class="span3"></div>
+            <div class="span3">
+                <input class="btn"  type="submit" value="<?php $clang->eT('I accept'); ?>" />
+            </div>
+            </div>
+        </form>
+    </div>
 </div>
-</div>
-
-</div>
-<div class="container_6">
-<div class="grid_2">&nbsp;</div>
-<div class="grid_4 demo">
-<br/>
-<?php echo CHtml::form(array("installer/license"), 'post', array('style'=>'width: 300px;', 'name'=>'formcheck')); ?>
-
-<table style="font-size:11px; width: 694px; background: #ffffff;">
-<tbody>
-   <tr>
-    <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php $clang->eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/install/welcome"); ?>', '_top')" /></td>
-    <td align="center" style="width: 227px;"></td>
-    <td align="right" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"  type="submit" value="<?php $clang->eT('I accept'); ?>" /></td>
-   </tr>
-</tbody>
-</table>
-</form>
-</div>
-</div>
-<?php $this->render("/installer/footer_view"); ?>

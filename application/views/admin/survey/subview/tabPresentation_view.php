@@ -29,7 +29,7 @@
             <select id='template' name='template'>
                 <?php foreach (array_keys(getTemplateList()) as $tname) {
 
-                        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1) { ?>
+                        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1) { ?>
                         <option value='<?php echo $tname; ?>'
                             <?php if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) { ?>
                                 selected='selected'
@@ -88,22 +88,17 @@
             </select>
         </li>
 
-        <li><label for='allowjumps'><?php $clang->eT("Show question index / allow jumping"); ?></label>
-            <select id='allowjumps' name='allowjumps'>
-                <option value='Y'
-                    <?php if (!isset($esrow['allowjumps']) || !$esrow['allowjumps'] || $esrow['allowjumps'] == "Y") { ?>
-
-                        selected='selected'
-                        <?php } ?>
-                    ><?php $clang->eT("Yes"); ?>
-                </option>
-                <option value='N'
-                    <?php if (isset($esrow['allowjumps']) && $esrow['allowjumps'] == "N") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php $clang->eT("No"); ?>
-                </option>
-            </select>
+        <li><label for='questionindex'><?php $clang->eT("Show question index / allow jumping"); ?></label>
+			<?php
+				$data = array(
+					0 => gT('Disabled'),
+					1 => gT('Incremental'),
+					2 => gT('Full')
+				);
+				echo CHtml::dropDownList('questionindex', $esrow['questionindex'], $data, array(
+					'id' => 'questionindex'
+				));
+			?>
         </li>
 
 

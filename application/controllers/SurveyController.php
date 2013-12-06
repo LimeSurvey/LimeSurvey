@@ -10,12 +10,11 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 class SurveyController extends LSYii_Controller
 {
     public $lang = null;
-
+    
     /**
      * Initialises this controller, does some basic checks and setups
      *

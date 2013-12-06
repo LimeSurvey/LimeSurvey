@@ -10,12 +10,12 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 
 class AdminController extends LSYii_Controller
 {
     public $lang = null;
+    public $layout = false;
     protected $user_id = 0;
 
     /**
@@ -27,6 +27,7 @@ class AdminController extends LSYii_Controller
     protected function _init()
     {
         parent::_init();
+        App()->getComponent('bootstrap')->init();
         $updatelastcheck = getGlobalSetting('updatelastcheck');
 
         $this->_sessioncontrol();
@@ -35,10 +36,8 @@ class AdminController extends LSYii_Controller
             updateCheck();
 
         //unset(Yii::app()->session['FileManagerContext']);
-
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
         $this->user_id = Yii::app()->user->getId();
-        Yii::app()->setConfig('adminimageurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/images/');
-        Yii::app()->setConfig('adminstyleurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/');
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid'));}         //SurveyID
         if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid'));}                //Usergroup-ID
         if (!Yii::app()->getConfig("gid")) {Yii::app()->setConfig("gid", returnGlobal('gid'));}                   //GroupID
@@ -143,7 +142,7 @@ class AdminController extends LSYii_Controller
         {
             $usrow = getGlobalSetting('DBVersion');
             if ((int) $usrow < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
-                $this->redirect($this->createUrl('/admin/update/sa/db'));
+                $this->redirect(array('/admin/update/sa/db'));
         }
 
         if ($action != "update" && $action != "db")
@@ -152,9 +151,9 @@ class AdminController extends LSYii_Controller
                 if (!empty($action) && $action != 'index')
                     Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
 
-                Yii::app()->session['redirectopage'] = Yii::app()->request->requestUri;
+                App()->user->setReturnUrl(App()->request->requestUri);
 
-                $this->redirect($this->createUrl('/admin/authentication/sa/login'));
+                $this->redirect(array('/admin/authentication/sa/login'));
             }
             elseif (!empty($this->user_id)  && $action != "remotecontrol")
             {
@@ -162,7 +161,7 @@ class AdminController extends LSYii_Controller
                 {
                     Yii::app()->session->clear();
                     Yii::app()->session->close();
-                    $this->redirect($this->createUrl('/admin/authentication/sa/login'));
+                    $this->redirect(array('/admin/authentication/sa/login'));
                 }
                 
             }
@@ -208,8 +207,8 @@ class AdminController extends LSYii_Controller
         'labels'           => 'labels',
         'participants'     => 'participantsaction',
         'printablesurvey'  => 'printablesurvey',
-        'question'         => 'question',
-        'questiongroup'    => 'questiongroup',
+        'questiongroups'    => 'questiongroups',
+        'questions'         => 'questions',
         'quotas'           => 'quotas',
         'remotecontrol'    => 'remotecontrol',
         'responses'        => 'responses',
@@ -236,18 +235,6 @@ class AdminController extends LSYii_Controller
     {
         $user = User::model()->findByPk($loginID);
 
-        if (!empty($user))
-        {
-            Yii::app()->session['USER_RIGHT_SUPERADMIN']        = $user->superadmin;
-            Yii::app()->session['USER_RIGHT_CREATE_SURVEY']     = ($user->create_survey || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] = ($user->participant_panel || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_CONFIGURATOR']      = ($user->configurator || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_CREATE_USER']       = ($user->create_user || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_DELETE_USER']       = ($user->delete_user || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE']   = ($user->manage_template || $user->superadmin);
-            Yii::app()->session['USER_RIGHT_MANAGE_LABEL']      = ($user->manage_label || $user->superadmin);
-        }
-
         // SuperAdmins
         // * original superadmin with uid=1 unless manually changed and defined
         //   in config-defaults.php
@@ -264,7 +251,6 @@ class AdminController extends LSYii_Controller
 
         if ($initialSuperadmin === true)
         {
-            Yii::app()->session['USER_RIGHT_SUPERADMIN'] = 1;
             Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 1;
         }
         else
@@ -313,8 +299,9 @@ class AdminController extends LSYii_Controller
         $data['baseurl'] = Yii::app()->baseUrl . '/';
         $data['datepickerlang']="";
         if (Yii::app()->session["adminlang"] != 'en')
-            $data['datepickerlang'] = "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."jquery/locale/jquery.ui.datepicker-".Yii::app()->session["adminlang"].".js\"></script>\n";
-
+            Yii::app()->getClientScript()->registerScriptFile(App()->baseUrl . "/third_party/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-" . Yii::app()->session['adminlang'] .".js");
+            
+            
         $data['sitename'] = Yii::app()->getConfig("sitename");
         $data['admintheme'] = Yii::app()->getConfig("admintheme");
         $data['firebug'] = useFirebug();
@@ -322,16 +309,17 @@ class AdminController extends LSYii_Controller
         if (!empty(Yii::app()->session['dateformat']))
             $data['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
-        // Prepare flashmessage
-        if (!empty(Yii::app()->session['flashmessage']) && Yii::app()->session['flashmessage'] != '')
+        $out = $this->renderPartial("/admin/super/header", $data, true);
+        
+        
+        if ($return)
         {
-            $data['flashmessage'] = Yii::app()->session['flashmessage'];
-            unset(Yii::app()->session['flashmessage']);
+            return $out;
         }
-
-        $data['css_admin_includes'] = $this->_css_admin_includes(array(), true);
-
-        return $this->renderPartial("/admin/super/header", $data, $return);
+        else
+        {
+            echo $out;
+        }
     }
 
     /**
@@ -370,10 +358,7 @@ class AdminController extends LSYii_Controller
         $data['imageurl'] = Yii::app()->getConfig("imageurl");
         $data['url'] = $url;
 
-        $data['js_admin_includes']  = $this->_js_admin_includes(array(), true);
-        $data['css_admin_includes'] = $this->_css_admin_includes(array(), true);
-
-        return $this->render("/admin/super/footer", $data, $return);
+        return $this->renderPartial("/admin/super/footer", $data, $return);
 
     }
 
@@ -393,7 +378,7 @@ class AdminController extends LSYii_Controller
         $data['class'] = $class;
         $data['clang'] = $this->lang;
 
-        $this->render('/admin/super/messagebox', $data);
+        $this->renderPartial('/admin/super/messagebox', $data);
     }
 
     /**
@@ -421,21 +406,18 @@ class AdminController extends LSYii_Controller
         $data['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && getGlobalSetting("updatenotification")!='never' && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );
         if($data['showupdate'])
         {
-            $data['aUpdateVersions'] = json_decode(getGlobalSetting("updateversions"),true);
+        $data['aUpdateVersions'] = json_decode(getGlobalSetting("updateversions"),true);
             $aUpdateTexts=array();
-            if($data['aUpdateVersions'])
+            foreach ($data['aUpdateVersions'] as $aVersion)
             {
-                foreach ($data['aUpdateVersions'] as $aVersion)
-                {
-                   $aUpdateTexts[]=$aVersion['versionnumber'].'('.$aVersion['build'].')';
-                }
+               $aUpdateTexts[]=$aVersion['versionnumber'].'('.$aVersion['build'].')';
             }
             $data['sUpdateText']=implode(' '.$clang->gT('or').' ',$aUpdateTexts);
         }
         $data['surveyid'] = $surveyid;
         $data['iconsize'] = Yii::app()->getConfig('adminthemeiconsize');
         $data['sImageURL'] = Yii::app()->getConfig('adminimageurl');
-        $this->render("/admin/super/adminmenu", $data);
+        $this->renderPartial("/admin/super/adminmenu", $data);
 
     }
 
@@ -450,36 +432,6 @@ class AdminController extends LSYii_Controller
 
         unset(Yii::app()->session['metaHeader']);
 
-        return $this->render('/admin/endScripts_view', array());
-    }
-
-    public function _css_admin_includes($includes = array(), $reset = false)
-    {
-        return $this->_admin_includes('css', $includes, $reset);
-    }
-
-    public function _js_admin_includes($includes = array(), $reset = false)
-    {
-        return $this->_admin_includes('js', $includes, $reset);
-    }
-
-    private function _admin_includes($method, $includes = array(), $reset = false)
-    {
-        $method = in_array($method, array('js', 'css')) ? $method : 'js';
-        $includes = (array) $includes;
-        $admin_includes = (array) Yii::app()->getConfig("{$method}_admin_includes");
-        $admin_includes = array_merge($admin_includes, $includes);
-        $admin_includes = array_filter($admin_includes);
-        $admin_includes = array_unique($admin_includes);
-        if ($reset == true)
-        {
-            Yii::app()->setConfig("{$method}_admin_includes", array());
-        }
-        else
-        {
-            Yii::app()->setConfig("{$method}_admin_includes", $admin_includes);
-        }
-
-        return $admin_includes;
+        return $this->renderPartial('/admin/endScripts_view', array());
     }
 }

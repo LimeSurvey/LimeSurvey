@@ -372,7 +372,7 @@
                 $acomma = "";
             } else {
                 $acomma = getRadixPointData($thissurvey['surveyls_numberformat']);
-                $acomma = $acomma['seperator'];
+                $acomma = $acomma['separator'];
             }
             $title = $clang->gT('Only numbers may be entered in this field.');
 
@@ -407,9 +407,9 @@
 
             if ($qidattributes['numbers_only']==1)
             {
-                $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-                $sSeperator = $sSeperator['seperator'];
-                $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
+                $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+                $sSeparator = $sSeparator['separator'];
+                $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeparator.'\')"';
             }
             else
             {

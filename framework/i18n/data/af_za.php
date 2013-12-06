@@ -7,12 +7,13 @@
  * Copyright © 1991-2007 Unicode, Inc. All rights reserved.
  * Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
  *
- * Copyright © 2008-2011 Yii Software LLC (http://www.yiiframework.com/license/)
+ * @copyright 2008-2013 Yii Software LLC (http://www.yiiframework.com/license/)
  */
 return array (
   'version' => '4123',
   'numberSymbols' => 
   array (
+    'alias' => '',
     'decimal' => ',',
     'group' => ' ',
     'list' => ';',
@@ -23,7 +24,6 @@ return array (
     'perMille' => '‰',
     'infinity' => '∞',
     'nan' => 'NaN',
-    'alias' => '',
   ),
   'decimalFormat' => '#,##0.###',
   'scientificFormat' => '#E0',
@@ -32,7 +32,7 @@ return array (
   'currencySymbols' => 
   array (
     'AUD' => 'AU$',
-    'BRL' => 'BR$',
+    'BRL' => 'R$',
     'CAD' => 'CA$',
     'CNY' => 'CN¥',
     'EUR' => '€',
@@ -460,7 +460,6 @@ return array (
     151 => 'Oos-Europa',
     154 => 'Noord-Europa',
     155 => 'Wes-Europa',
-    172 => 'Gemenebes van Onafhanklike State',
     419 => 'Latyns Amerika',
     'ac' => 'Ascension-eiland',
     'ad' => 'Andorra',

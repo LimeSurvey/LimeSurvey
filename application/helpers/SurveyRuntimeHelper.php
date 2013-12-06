@@ -10,11 +10,159 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*    $Id$
 */
 
 class SurveyRuntimeHelper {
 
+
+	protected function createFullQuestionIndex($LEMsessid, $surveyMode)
+	{
+		if ($surveyMode == 'group')
+		{
+			$this->createFullQuestionIndexByGroup($LEMsessid);
+		}
+		else
+		{
+			$this->createFullQuestionIndexByQuestion($LEMsessid);
+		}
+		
+	}
+
+	protected function createFullQuestionIndexByGroup($LEMsessid)
+	{
+		echo "\n\n<!-- PRESENT THE INDEX -->\n";
+		echo CHtml::openTag('div', array('id' => 'index'));
+			echo CHtml::openTag('div', array('class' => 'container'));
+				echo CHtml::tag('h2', array(), gT("Question index"));
+				echo CHtml::openTag('ol');
+					foreach ($_SESSION[$LEMsessid]['grouplist'] as $key => $group)
+					{
+//						echo '<script>';
+//						echo 'var session = '. json_encode(LimeExpressionManager::singleton()->_ValidateGroup($key)) . ';';
+//						echo 'console.log(session);';
+//						echo '</script>';
+// Better to use tracevar / 
+						if (LimeExpressionManager::GroupIsRelevant($group['gid']))
+						{
+							$group['step'] = $key + 1;
+							$stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($key);
+							$classes = implode(' ', array(
+								'row',
+								$stepInfo['anyUnanswered'] ? 'missing' : '',
+								$_SESSION[$LEMsessid]['step'] == $group['step'] ? 'current' : ''
+
+							));
+							$sButtonSubmit=CHtml::htmlButton(gT('Go to this group'),array('type'=>'submit','value'=>$group['step'],'name'=>'move','class'=>'jshide'));
+							echo CHtml::tag('li', array(
+								'data-gid' => $group['gid'],
+								'title' => $group['description'],
+								'class' => $classes,
+							), $group['group_name'].$sButtonSubmit);
+						}
+					}
+				echo CHtml::closeTag('ol');
+			echo CHtml::closeTag('div');
+		echo CHtml::closeTag('div');
+
+        App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
+	}
+
+	protected function createFullQuestionIndexByQuestion($LEMsessid)
+	{
+		echo CHtml::openTag('div', array('id' => 'index'));
+			echo CHtml::openTag('div', array('class' => 'container'));
+				echo CHtml::tag('h2', array(), gT("Question index"));
+				echo 'Question by question not yet supported, use incremental index.';
+			echo CHtml::closeTag('div');
+		echo CHtml::closeTag('div');
+
+        App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
+	}
+	
+	protected function createIncrementalQuestionIndex($LEMsessid, $surveyMode)
+	{
+		echo "\n\n<!-- PRESENT THE INDEX -->\n";
+
+		echo '<div id="index"><div class="container"><h2>' . gT("Question index") . '</h2>';
+
+		$stepIndex = LimeExpressionManager::GetStepIndexInfo();
+		$lastGseq=-1;
+		$gseq = -1;
+		$grel = true;
+		for($v = 0, $n = 0; $n != $_SESSION[$LEMsessid]['maxstep']; ++$n)
+		{
+			if (!isset($stepIndex[$n])) {
+				continue;   // this is an invalid group - skip it
+			}
+			$stepInfo = $stepIndex[$n];
+
+			if ($surveyMode == 'question')
+			{
+				if ($lastGseq != $stepInfo['gseq']) {
+					// show the group label
+					++$gseq;
+					$g = $_SESSION[$LEMsessid]['grouplist'][$gseq];
+					$grel = !LimeExpressionManager::GroupIsIrrelevantOrHidden($gseq);
+					if ($grel)
+					{
+						$gtitle = LimeExpressionManager::ProcessString($g['group_name']);
+						echo '<h3>' . flattenText($gtitle) . "</h3>";
+					}
+					$lastGseq = $stepInfo['gseq'];
+				}
+				if (!$grel || !$stepInfo['show'])
+				{
+					continue;
+				}
+				$q = $_SESSION[$LEMsessid]['fieldarray'][$n];
+			}
+			else
+			{
+				++$gseq;
+				if (!$stepInfo['show'])
+				{
+					continue;
+				}
+				$g = $_SESSION[$LEMsessid]['grouplist'][$gseq];
+			}
+
+			if ($surveyMode == 'group')
+			{
+				$indexlabel = LimeExpressionManager::ProcessString($g['group_name']);
+				$sButtonText=gT('Go to this group');
+			}
+			else
+			{
+				$indexlabel = LimeExpressionManager::ProcessString($q[3]);
+				$sButtonText=gT('Go to this question');
+			}
+
+			$sText = (($surveyMode == 'group') ? flattenText($indexlabel) : flattenText($indexlabel));
+			$bGAnsw = !$stepInfo['anyUnanswered'];
+
+			++$v;
+
+			$class = ($n == $_SESSION[$LEMsessid]['step'] - 1 ? 'current' : ($bGAnsw ? 'answer' : 'missing'));
+			if ($v % 2)
+				$class .= " odd";
+
+			$s = $n + 1;
+			echo "<div class=\"row $class\"\">";
+			echo "<span class=\"hdr\">$v</span>";
+			echo "<span title=\"$sText\">$sText</span>";
+            echo CHtml::htmlButton($sButtonText,array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'jshide'));
+			echo "</div>";
+		}
+
+		if ($_SESSION[$LEMsessid]['maxstep'] == $_SESSION[$LEMsessid]['totalsteps'])
+		{
+            echo CHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>'movesubmit','name'=>'move','class'=>'submit button'));
+		}
+
+		echo '</div></div>';
+        App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
+
+	}
     /**
     * Main function
     *
@@ -51,7 +199,7 @@ class SurveyRuntimeHelper {
                 break;
         }
         $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
-        $radix = $radix['seperator'];
+        $radix = $radix['separator'];
 
         $surveyOptions = array(
         'active' => ($thissurvey['active'] == 'Y'),
@@ -148,13 +296,10 @@ class SurveyRuntimeHelper {
                 else
                 {
                     // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
-                    $LEMskipReprocessing=true;
+					$LEMskipReprocessing=true;
                     $move = "movenext"; // so will re-display the survey
                     $invalidLastPage=true;
-                    $vpopup="<script type=\"text/javascript\">\n
-                    <!--\n $(document).ready(function(){
-                    alert(\"".$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.", "js")."\");});\n //-->\n
-                    </script>\n";
+                    $backpopup=$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
                 }
             }
 
@@ -180,7 +325,7 @@ class SurveyRuntimeHelper {
             else if (!$LEMskipReprocessing)
                 {
                     //Move current step ###########################################################################
-                    if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev'] == 'Y' || $thissurvey['allowjumps'] == 'Y'))
+                    if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev'] == 'Y' || $thissurvey['questionindex'] > 0))
                     {
                         $moveResult = LimeExpressionManager::NavigateBackwards();
                         if ($moveResult['at_start'])
@@ -206,19 +351,24 @@ class SurveyRuntimeHelper {
                         $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps'] + 1, false);
                     }
                 }
-                if (isset($move) && (preg_match('/^changelang_/', $move)))
+                if (isset($move) && (preg_match('/^changelang_/', $move) || $move=='changelang'))
                 {
                     // jump to current step using new language, processing POST values
                     $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);  // do process the POST data
                 }
-                if (isset($move) && isNumericInt($move) && $thissurvey['allowjumps'] == 'Y')
+                if (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 1)
                 {
-                    $move = (int) $move;
+					$move = (int) $move;
                     if ($move > 0 && (($move <= $_SESSION[$LEMsessid]['step']) || (isset($_SESSION[$LEMsessid]['maxstep']) && $move <= $_SESSION[$LEMsessid]['maxstep'])))
                     {
                         $moveResult = LimeExpressionManager::JumpTo($move, false);
                     }
                 }
+				elseif (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 2)
+				{
+					$move = (int) $move;
+					$moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
+				}
                 if (!isset($moveResult) && !($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0))
                 {
                     // Just in case not set via any other means, but don't do this if it is the welcome page
@@ -291,7 +441,7 @@ class SurveyRuntimeHelper {
                 }
                 else 
                 {
-                    // TODO : update lastpage to $_SESSION[$LEMsessid]['step'] in Survey_dynamic
+                    // TODO : update lastpage to $_SESSION[$LEMsessid]['step'] in SurveyDynamic
                 }
             }
 
@@ -368,7 +518,7 @@ class SurveyRuntimeHelper {
                 //Before doing the "templatereplace()" function, check the $thissurvey['url']
                 //field for limereplace stuff, and do transformations!
                 $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
-                $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], array(), $redata, 'Unspecified', false, NULL, array(), true );   // to do INSERTANS substitutions
+                $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], array(), $redata);   // to do INSERTANS substitutions
                 
                 //END PAGE - COMMIT CHANGES TO DATABASE
                 if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
@@ -431,7 +581,7 @@ class SurveyRuntimeHelper {
                     }
 
                     //Update the token if needed and send a confirmation email
-                    if (isset($_SESSION['survey_'.$surveyid]['thistoken']))
+                    if (isset($_SESSION['survey_'.$surveyid]['token']))
                     {
                         submittokens();
                     }
@@ -508,7 +658,26 @@ class SurveyRuntimeHelper {
                     echo $content;
                 }
                 $redata['completed'] = $completed;
+                
+                // @todo Remove direct session access.
+                $event = new PluginEvent('afterSurveyComplete');
+                if (isset($_SESSION[$LEMsessid]['srid']))
+                {
+                    $event->set('responseId', $_SESSION[$LEMsessid]['srid']);
+                }
+                $event->set('surveyId', $surveyid);
+                App()->getPluginManager()->dispatchEvent($event);
+                $blocks = array();
+
+                foreach ($event->getAllContent() as $blockData)
+                {
+                    /* @var $blockData PluginEventContent */
+                    $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
+                }
+
+                $redata['completed'] = implode("\n", $blocks) ."\n". $redata['completed'];
                 $redata['thissurvey']['surveyls_url'] = $thissurvey['surveyls_url'];
+                
                 echo templatereplace(file_get_contents($sTemplatePath."completed.pstpl"), array('completed' => $completed), $redata);
                 echo "\n";
                 if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING))
@@ -728,20 +897,29 @@ class SurveyRuntimeHelper {
 
         $redata = compact(array_keys(get_defined_vars()));
         echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
-        //popup need jquery
-        if (isset($popup))
+        $aPopup=array(); // We can move this part where we want now
+        if (isset($backpopup))
         {
-            echo $popup;
+            $aPopup[]=$backpopup;// If user click reload: no need other popup
         }
-        if (isset($vpopup))
+        else
         {
-            echo $vpopup;
+            if (isset($popup))
+            {
+                $aPopup[]=$popup;
+            }
+            if (isset($vpopup))
+            {
+                $aPopup[]=$vpopup;
+            }
+            if (isset($fpopup))
+            {
+                $aPopup[]=$fpopup;
+            }
         }
-        if (isset($fpopup))
-        {
-            echo $fpopup;
-        }
-
+        Yii::app()->clientScript->registerScript("showpopup","showpopup=".(int)Yii::app()->getConfig('showpopups').";",CClientScript::POS_HEAD);
+        //if(count($aPopup))
+            Yii::app()->clientScript->registerScript('startPopup',"startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
         //ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
         if ($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] != $_SESSION[$LEMsessid]['prevstep'] ||
         (isset($_SESSION[$LEMsessid]['stepno']) && $_SESSION[$LEMsessid]['stepno'] % 2))
@@ -768,10 +946,10 @@ class SurveyRuntimeHelper {
             echo CHtml::form(array("survey/index"), 'post',array('id'=>'limesurvey', 'name'=>'limesurvey', 'autocomplete'=>'off'))."\n
             <!-- INPUT NAMES -->
             <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
-        echo sDefaultSubmitHandler();
-
         // <-- END FEATURE - SAVE
 
+        // The default submit button
+        echo CHtml::htmlButton("default",array('type'=>'submit','id'=>"defaultbtn",'value'=>"default",'name'=>'move','class'=>"submit noview",'style'=>'display:none'));
         if ($surveyMode == 'survey')
         {
             if (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
@@ -797,122 +975,31 @@ class SurveyRuntimeHelper {
 
         // the runonce element has been changed from a hidden to a text/display:none one
         // in order to workaround an not-reproduced issue #4453 (lemeur)
-        echo "<input type='text' id='runonce' value='0' style='display: none;'/>
-        <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
-        <script type='text/javascript'>
-        <!--\n";
-
-        echo "var LEMradix='" . $radix . "';\n";
-        echo "var numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');\n";
-        echo "var intRegex = new RegExp('[^-0-9]','g');\n";
-
-        print <<<END
-            function fixnum_checkconditions(value, name, type, evt_type, intonly)
-            {
-                newval = new String(value);
-                if (typeof intonly !=='undefined' && intonly==1) {
-                    newval = newval.replace(intRegex,'');
-                }
-                else {
-                    newval = newval.replace(numRegex,'');
-                }
-                aNewval = newval.split(LEMradix);
-                if(aNewval.length>0){
-                    newval=aNewval[0];
-                }
-                if(aNewval.length>1){
-                    newval=newval+'.'+aNewval[1];
-                }
-                if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {
-                    newval = '';
-                }
-                displayVal = newval;
-                if (LEMradix === ',') {
-                    displayVal = displayVal.split('.').join(',');
-                }
-                if (name.match(/other$/)) {
-                    $('#answer'+name+'text').val(displayVal);
-                }
-                $('#answer'+name).val(displayVal);
-
-                if (typeof evt_type === 'undefined')
-                {
-                    evt_type = 'onchange';
-                }
-                checkconditions(newval, name, type, evt_type);
-            }
-
-            function checkconditions(value, name, type, evt_type)
-            {
-                if (typeof evt_type === 'undefined')
-                {
-                    evt_type = 'onchange';
-                }
-                if (type == 'radio' || type == 'select-one')
-                {
-                    $('#java'+name).val(value);
-                }
-                else if (type == 'checkbox')
-                {
-                    if ($('#answer'+name).is(':checked'))
-                    {
-                        $('#java'+name).val('Y');
-                    } else
-                    {
-                        $('#java'+name).val('');
-                    }
-                }
-                else if (type == 'text' && name.match(/other$/))
-                {
-                    $('#java'+name).val(value);
-                }
-                ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
-END;
-
-#        if ($previewgrp && false)
-#        {
-#            // force the group to be visible, even if irrelevant - will not always work
-#            print <<<END
-#    $('#relevanceG' + LEMgseq).val(1);
-#    $(document).ready(function() {
-#        $('#group-' + LEMgseq).show();
-#    });
-#    $(document).change(function() {
-#        $('#group-' + LEMgseq).show();
-#    });
-#    $(document).bind('keydown',function(e) {
-#                if (e.keyCode == 9) {
-#                    $('#group-' + LEMgseq).show();
-#                    return true;
-#                }
-#                return true;
-#            });
-
-#END;
-#        }
+        echo "<input type='text' id='runonce' value='0' style='display: none;'/>";
         
-        print <<<END
-            }
-        // -->
-        </script>
-END;
+#        // lemradix and var for LemRadix
+#        $sLemRadixVarScript=" LEMradix='" . $radix . "';\n"
+#                        ." numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');\n"
+#                        ." intRegex = new RegExp('[^-0-9]','g');\n";
+#        Yii::app()->clientScript->registerScript('LemRadixVarScript',$sLemRadixVarScript,CClientScript::POS_HEAD);
+
         $showpopups=Yii::app()->getConfig('showpopups');
         //Display the "mandatory" message on page if necessary
         if (!$showpopups && $stepInfo['mandViolation'] && $okToShowErrors)
         {
-            echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
+            echo "<p class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</p>";
         }
 
         //Display the "validation" message on page if necessary
         if (!$showpopups && !$stepInfo['valid'] && $okToShowErrors)
         {
-            echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
+            echo "<p class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</p>";
         }
 
         //Display the "file validation" message on page if necessary
         if (!$showpopups && isset($filenotvalidated) && $filenotvalidated == true && $okToShowErrors)
         {
-            echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
+            echo "<p class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</p>";
         }
 
         $_gseq = -1;
@@ -980,7 +1067,7 @@ END;
                     continue; // skip this one
                 }
 
-                if (!$qinfo['relevant'] || ($qinfo['hidden'] && $qinfo['info']['type'] == '*'))
+                if ((!$qinfo['relevant']) || ($qinfo['hidden'] && $qinfo['info']['type'] == '*'))
                 {
                     $n_q_display = ' style="display: none;"';
                 }
@@ -1037,26 +1124,6 @@ END;
 
         LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
-#        if ($previewquestion && false){
-#            // force the question to be visible, even if irrelevant
-#            echo "
-#        <script type='text/javascript'>
-#    $('#relevance" . $_qid . "').val(1);
-#    $(document).ready(function() {
-#        $('#question" . $_qid . "').show();
-#    });
-#    $(document).change(function() {
-#        $('#question" . $_qid . "').show();
-#    });
-#    $(document).bind('keydown',function(e) {
-#                if (e.keyCode == 9) {
-#                    $('#question" . $_qid . "').show();
-#                    return true;
-#                }
-#                return true;
-#            });
-#         </script>";
-#        }
         LimeExpressionManager::FinishProcessingPage();
 
         if (!$previewgrp && !$previewquestion)
@@ -1074,91 +1141,14 @@ END;
             }
 
 
-            if ($surveyMode != 'survey' && $thissurvey['allowjumps'] == 'Y')
+            if ($surveyMode != 'survey' && $thissurvey['questionindex'] == 1)
             {
-                echo "\n\n<!-- PRESENT THE INDEX -->\n";
-
-                echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
-
-                $stepIndex = LimeExpressionManager::GetStepIndexInfo();
-                $lastGseq=-1;
-                $gseq = -1;
-                $grel = true;
-                for($v = 0, $n = 0; $n != $_SESSION[$LEMsessid]['maxstep']; ++$n)
-                {
-                    if (!isset($stepIndex[$n])) {
-                        continue;   // this is an invalid group - skip it
-                    }
-                    $stepInfo = $stepIndex[$n];
-
-                    if ($surveyMode == 'question')
-                    {
-                        if ($lastGseq != $stepInfo['gseq']) {
-                            // show the group label
-                            ++$gseq;
-                            $g = $_SESSION[$LEMsessid]['grouplist'][$gseq];
-                            $grel = !LimeExpressionManager::GroupIsIrrelevantOrHidden($gseq);
-                            if ($grel)
-                            {
-                                $gtitle = LimeExpressionManager::ProcessString($g['group_name']);
-                                echo '<h3>' . flattenText($gtitle) . "</h3>";
-                            }
-                            $lastGseq = $stepInfo['gseq'];
-                        }
-                        if (!$grel || !$stepInfo['show'])
-                        {
-                            continue;
-                        }
-                        $q = $_SESSION[$LEMsessid]['fieldarray'][$n];
-                    }
-                    else
-                    {
-                        ++$gseq;
-                        if (!$stepInfo['show'])
-                        {
-                            continue;
-                        }
-                        $g = $_SESSION[$LEMsessid]['grouplist'][$gseq];
-                    }
-
-                    if ($surveyMode == 'group')
-                    {
-                        $indexlabel = LimeExpressionManager::ProcessString($g['group_name']);
-                    }
-                    else
-                    {
-                        $indexlabel = LimeExpressionManager::ProcessString($q[3]);
-                    }
-
-                    $sText = (($surveyMode == 'group') ? flattenText($indexlabel) : flattenText($indexlabel));
-                    $bGAnsw = !$stepInfo['anyUnanswered'];
-
-                    ++$v;
-
-                    $class = ($n == $_SESSION[$LEMsessid]['step'] - 1 ? 'current' : ($bGAnsw ? 'answer' : 'missing'));
-                    if ($v % 2)
-                        $class .= " odd";
-
-                    $s = $n + 1;
-                    echo "<div class=\"row $class\" onclick=\"javascript:document.limesurvey.move.value = '$s'; document.limesurvey.submit();\"><span class=\"hdr\">$v</span><span title=\"$sText\">$sText</span></div>";
-                }
-
-                if ($_SESSION[$LEMsessid]['maxstep'] == $_SESSION[$LEMsessid]['totalsteps'])
-                {
-                    echo "<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
-                    . $clang->gT("Submit") . " ' name='move2' />\n";
-                }
-
-                echo '</div></div>';
-                /* Can be replaced by php or in global js */
-                echo "<script type=\"text/javascript\">\n"
-                . "  $(\".outerframe\").addClass(\"withindex\");\n"
-                . "  var idx = $(\"#index\");\n"
-                . "  var row = $(\"#index .row.current\");\n"
-                . "  idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);\n"
-                . "</script>\n";
-                echo "\n";
+				$this->createIncrementalQuestionIndex($LEMsessid, $surveyMode);
             }
+			elseif ($surveyMode != 'survey' && $thissurvey['questionindex'] == 2)
+			{
+				$this->createFullQuestionIndex($LEMsessid, $surveyMode);
+			}
 
             echo "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
             echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";

@@ -9,11 +9,11 @@
 <?php if(isset($with_token)){ ?>
 <table class='statisticssummary'>
   <caption class="header ui-widget-header"><?php $clang->eT("Token summary"); ?></caption>
-    <tfoot><tr><th><?php $clang->eT("Total records in this token table"); ?></th><td><?php echo $tokeninfo['tkcount']; ?></td></tr></tfoot>
+    <tfoot><tr><th><?php $clang->eT("Total records in this token table"); ?></th><td><?php echo $tokeninfo['count']; ?></td></tr></tfoot>
     <tbody>
-        <tr><th><?php $clang->eT("Total invitations sent"); ?></th><td><?php echo $tokeninfo['tksent']; ?></td></tr>
-        <tr><th><?php $clang->eT("Total surveys completed"); ?></th><td><?php echo $tokeninfo['tkcompleted']; ?></td></tr>
-        <tr><th><?php $clang->eT("Total with no unique Token"); ?></th><td><?php echo $tokeninfo['tkinvalid'] ?></td></tr>
+        <tr><th><?php $clang->eT("Total invitations sent"); ?></th><td><?php echo $tokeninfo['sent']; ?></td></tr>
+        <tr><th><?php $clang->eT("Total surveys completed"); ?></th><td><?php echo $tokeninfo['completed']; ?></td></tr>
+        <tr><th><?php $clang->eT("Total with no unique Token"); ?></th><td><?php echo $tokeninfo['invalid'] ?></td></tr>
     </tbody>
 </table>
 <?php } ?>

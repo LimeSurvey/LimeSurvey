@@ -15,8 +15,6 @@
  * of the guide for details.
  *
  * NOTE, this file must be saved in UTF-8 encoding.
- *
- * @version $Id: $
  */
 return array (
   'Failed to set unsafe attribute "{attribute}" of "{class}".' => 'Gagal mengeset atribut unsafe "{attribute}" dari kelas "{class}".',
@@ -31,7 +29,7 @@ return array (
   'Active record "{class}" has an invalid configuration for relation "{relation}". It must specify the relation type, the related active record class and the foreign key.' => 'Active record "{class}" memiliki konfigurasi relasi "{relation}" yang salah. Kelas ini harus menetapkan tipe, kelas active record yang terkait dan foreign key.',
   'Active record "{class}" is trying to select an invalid column "{column}". Note, the column must exist in the table or be an expression with alias.' => 'Active Record "{class}" mencoba select kolom "{column}" yang tidak valid. Perhatian, kolom harus ada dalam table atau merupakan sebuah ekspresi dengan alias.',
   'Adding a foreign key constraint to an existing table is not supported by SQLite.' => 'SQLite tidak mendukung penambahan constraint foreign key ke tabel yang sudah ada.',
-  'Alias "{alias}" is invalid. Make sure it points to an existing PHP file.' => 'Alias "{alias}" tidak valid. Pastikan alias tersebut menunjuk ke file PHP yang ada',
+  'Alias "{alias}" is invalid. Make sure it points to an existing PHP file and the file is readable.' => 'Alias "{alias}" tidak valid. Pastikan alias tersebut menunjuk ke file PHP yang ada',
   'Alias "{alias}" is invalid. Make sure it points to an existing directory or file.' => 'Alias "{alias}" tidak valid. Pastikan alias merujuk ke direktori atau file yang ada.',
   'Alias "{alias}" is invalid. Make sure it points to an existing directory.' => 'Alias "{alias}" tidak valid. Pastikan alias tersebut menunjuk ke direktori yang ada',
   'Altering a DB column is not supported by SQLite.' => 'SQLite tidak mendukung pengubahan kolom DB.',

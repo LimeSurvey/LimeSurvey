@@ -21,6 +21,7 @@
 */
 class update extends Survey_Common_Action
 {
+
     /**
     * Default Controller Action
     */
@@ -236,6 +237,7 @@ class update extends Survey_Common_Action
         }
 
         $aData['updateinfo'] = $updateinfo;
+
         // okay, updateinfo now contains all necessary updateinformation
         // Create DB and file backups now
 
@@ -264,6 +266,7 @@ class update extends Survey_Common_Action
             $aFileBackup= array('class'=>'success','text'=>sprintf($clang->gT("File backup created: %s"),$tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'));
         }
         $aData['aFileBackup']=$aFileBackup;
+
         $aData['databasetype'] = $aDatabasetype;
 
         //TODO: Yii provides no function to backup the database. To be done after dumpdb is ported
@@ -281,7 +284,7 @@ class update extends Survey_Common_Action
                     $archive = new PclZip($dfilename);
                     $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir,PCLZIP_OPT_ADD_TEMP_FILE_ON);
                     unlink($sfilename);
-                    if ($v_list == 0) {
+                    if ($v_list == 0) {// Unknow reason because backup of DB work ?
                         $aSQLBackup=array('class'=>'warning','text'=>$clang->gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
                     }
                     else
@@ -507,7 +510,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $oHTTPRequest->data_timeout=0;
         $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $oHTTPRequest->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/{$this->updaterversion}",$arguments);
+        $oHTTPRequest->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/{$buildnumber}",$arguments);
 
         $oHTTPRequesterror=$oHTTPRequest->Open($arguments);
         $oHTTPRequesterror=$oHTTPRequest->SendRequest($arguments);

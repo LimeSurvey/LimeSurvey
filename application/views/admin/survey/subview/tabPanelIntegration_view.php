@@ -3,7 +3,7 @@
 	$controller = $yii->getController();
 ?>
 <script type="text/javascript">
-    var jsonUrl = "<?php echo $yii->homeUrl.("/admin/survey/getUrlParamsJSON/surveyid/{$surveyid}");?>";
+    var jsonUrl = "<?php echo App()->createUrl('admin/survey', array('sa' => 'getUrlParamsJson', 'surveyid' => $surveyid))?>";
     var imageUrl = "<?php echo $yii->getConfig("adminimageurl");?>";
     var sAction = "<?php $clang->eT('Action','js');?>";
     var sParameter = "<?php $clang->eT('Parameter','js');?>";

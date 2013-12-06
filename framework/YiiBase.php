@@ -4,9 +4,8 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 3564 2012-02-13 01:29:03Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -49,7 +48,6 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
  * you can customize methods of YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 3564 2012-02-13 01:29:03Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -63,8 +61,8 @@ class YiiBase
 	public static $classMap=array();
 	/**
 	 * @var boolean whether to rely on PHP include path to autoload class files. Defaults to true.
-	 * You may set this to be false if your hosting environment doesn't allow changing PHP include path,
-	 * or if you want to append additional autoloaders to the default Yii autoloader.
+	 * You may set this to be false if your hosting environment doesn't allow changing the PHP
+	 * include path, or if you want to append additional autoloaders to the default Yii autoloader.
 	 * @since 1.1.8
 	 */
 	public static $enableIncludePath=true;
@@ -82,7 +80,7 @@ class YiiBase
 	 */
 	public static function getVersion()
 	{
-		return '1.1.10';
+		return '1.1.14';
 	}
 
 	/**
@@ -128,7 +126,7 @@ class YiiBase
 	}
 
 	/**
-	 * Returns the application singleton, null if the singleton has not been created yet.
+	 * Returns the application singleton or null if the singleton has not been created yet.
 	 * @return CApplication the application singleton, null if the singleton has not been created yet.
 	 */
 	public static function app()
@@ -169,7 +167,7 @@ class YiiBase
 	 * If the former, the string is treated as the object type which can
 	 * be either the class name or {@link YiiBase::getPathOfAlias class path alias}.
 	 * If the latter, the 'class' element is treated as the object type,
-	 * and the rest name-value pairs in the array are used to initialize
+	 * and the rest of the name-value pairs in the array are used to initialize
 	 * the corresponding object properties.
 	 *
 	 * Any additional parameters passed to this method will be
@@ -186,7 +184,7 @@ class YiiBase
 			$type=$config;
 			$config=array();
 		}
-		else if(isset($config['class']))
+		elseif(isset($config['class']))
 		{
 			$type=$config['class'];
 			unset($config['class']);
@@ -202,9 +200,9 @@ class YiiBase
 			$args=func_get_args();
 			if($n===2)
 				$object=new $type($args[1]);
-			else if($n===3)
+			elseif($n===3)
 				$object=new $type($args[1],$args[2]);
-			else if($n===4)
+			elseif($n===4)
 				$object=new $type($args[1],$args[2],$args[3]);
 			else
 			{
@@ -250,8 +248,8 @@ class YiiBase
 	 * <code>application\components\GoogleMap</code> is similar to importing <code>application.components.GoogleMap</code>.
 	 * The difference is that the former class is using qualified name, while the latter unqualified.
 	 *
-	 * Note, importing a class in namespace format requires that the namespace is corresponding to
-	 * a valid path alias if we replace the backslash characters with dot characters.
+	 * Note, importing a class in namespace format requires that the namespace corresponds to
+	 * a valid path alias once backslash characters are replaced with dot characters.
 	 * For example, the namespace <code>application\components</code> must correspond to a valid
 	 * path alias <code>application.components</code>.
 	 *
@@ -281,7 +279,7 @@ class YiiBase
 					if(is_file($classFile))
 						require($classFile);
 					else
-						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file.',array('{alias}'=>$alias)));
+						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file and the file is readable.',array('{alias}'=>$alias)));
 					self::$_imports[$alias]=$alias;
 				}
 				else
@@ -289,8 +287,14 @@ class YiiBase
 				return $alias;
 			}
 			else
-				throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing directory.',
-					array('{alias}'=>$namespace)));
+			{
+				// try to autoload the class with an autoloader
+				if (class_exists($alias,true))
+					return self::$_imports[$alias]=$alias;
+				else
+					throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing directory or file.',
+						array('{alias}'=>$namespace)));
+			}
 		}
 
 		if(($pos=strrpos($alias,'.'))===false)  // a simple class name
@@ -315,7 +319,7 @@ class YiiBase
 					if(is_file($path.'.php'))
 						require($path.'.php');
 					else
-						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file.',array('{alias}'=>$alias)));
+						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file and the file is readable.',array('{alias}'=>$alias)));
 					self::$_imports[$alias]=$className;
 				}
 				else
@@ -355,12 +359,12 @@ class YiiBase
 	{
 		if(isset(self::$_aliases[$alias]))
 			return self::$_aliases[$alias];
-		else if(($pos=strpos($alias,'.'))!==false)
+		elseif(($pos=strpos($alias,'.'))!==false)
 		{
 			$rootAlias=substr($alias,0,$pos);
 			if(isset(self::$_aliases[$rootAlias]))
 				return self::$_aliases[$alias]=rtrim(self::$_aliases[$rootAlias].DIRECTORY_SEPARATOR.str_replace('.',DIRECTORY_SEPARATOR,substr($alias,$pos+1)),'*'.DIRECTORY_SEPARATOR);
-			else if(self::$_app instanceof CWebApplication)
+			elseif(self::$_app instanceof CWebApplication)
 			{
 				if(self::$_app->findModule($rootAlias)!==null)
 					return self::getPathOfAlias($alias);
@@ -395,7 +399,7 @@ class YiiBase
 		// use include so that the error PHP file may appear
 		if(isset(self::$classMap[$className]))
 			include(self::$classMap[$className]);
-		else if(isset(self::$_coreClasses[$className]))
+		elseif(isset(self::$_coreClasses[$className]))
 			include(YII_PATH.self::$_coreClasses[$className]);
 		else
 		{
@@ -410,6 +414,11 @@ class YiiBase
 						if(is_file($classFile))
 						{
 							include($classFile);
+							if(YII_DEBUG && basename(realpath($classFile))!==$className.'.php')
+								throw new CException(Yii::t('yii','Class name "{class}" does not match class file "{file}".', array(
+									'{class}'=>$className,
+									'{file}'=>$classFile,
+								)));
 							break;
 						}
 					}
@@ -474,7 +483,7 @@ class YiiBase
 	}
 
 	/**
-	 * Marks the begin of a code block for profiling.
+	 * Marks the beginning of a code block for profiling.
 	 * This has to be matched with a call to {@link endProfile()} with the same token.
 	 * The begin- and end- calls must also be properly nested, e.g.,
 	 * <pre>
@@ -557,6 +566,7 @@ class YiiBase
 	 * an appropriate message translation.
 	 * Starting from version 1.1.6 you can pass parameter for {@link CChoiceFormat::format}
 	 * or plural forms format without wrapping it with array.
+	 * This parameter is then available as <code>{n}</code> in the message translation string.
 	 * @param string $source which message source application component to use.
 	 * Defaults to null, meaning using 'coreMessages' for messages belonging to
 	 * the 'yii' category and using 'messages' for the rest messages.
@@ -608,6 +618,9 @@ class YiiBase
 	 * any other existing autoloaders.
 	 * @param callback $callback a valid PHP callback (function name or array($className,$methodName)).
 	 * @param boolean $append whether to append the new autoloader after the default Yii autoloader.
+	 * Be careful using this option as it will disable {@link enableIncludePath autoloading via include path}
+	 * when set to true. After this the Yii autoloader can not rely on loading classes via simple include anymore
+	 * and you have to {@link import} all classes explicitly.
 	 */
 	public static function registerAutoloader($callback, $append=false)
 	{
@@ -652,6 +665,7 @@ class YiiBase
 		'CEAcceleratorCache' => '/caching/CEAcceleratorCache.php',
 		'CFileCache' => '/caching/CFileCache.php',
 		'CMemCache' => '/caching/CMemCache.php',
+		'CRedisCache' => '/caching/CRedisCache.php',
 		'CWinCache' => '/caching/CWinCache.php',
 		'CXCache' => '/caching/CXCache.php',
 		'CZendDataCache' => '/caching/CZendDataCache.php',
@@ -676,6 +690,8 @@ class YiiBase
 		'CTypedMap' => '/collections/CTypedMap.php',
 		'CConsoleApplication' => '/console/CConsoleApplication.php',
 		'CConsoleCommand' => '/console/CConsoleCommand.php',
+		'CConsoleCommandBehavior' => '/console/CConsoleCommandBehavior.php',
+		'CConsoleCommandEvent' => '/console/CConsoleCommandEvent.php',
 		'CConsoleCommandRunner' => '/console/CConsoleCommandRunner.php',
 		'CHelpCommand' => '/console/CHelpCommand.php',
 		'CDbCommand' => '/db/CDbCommand.php',
@@ -696,10 +712,11 @@ class YiiBase
 		'CMssqlColumnSchema' => '/db/schema/mssql/CMssqlColumnSchema.php',
 		'CMssqlCommandBuilder' => '/db/schema/mssql/CMssqlCommandBuilder.php',
 		'CMssqlPdoAdapter' => '/db/schema/mssql/CMssqlPdoAdapter.php',
-		'CMssqlSqlsrvPdoAdapter' => '/db/schema/mssql/CMssqlSqlsrvPdoAdapter.php',
 		'CMssqlSchema' => '/db/schema/mssql/CMssqlSchema.php',
+		'CMssqlSqlsrvPdoAdapter' => '/db/schema/mssql/CMssqlSqlsrvPdoAdapter.php',
 		'CMssqlTableSchema' => '/db/schema/mssql/CMssqlTableSchema.php',
 		'CMysqlColumnSchema' => '/db/schema/mysql/CMysqlColumnSchema.php',
+		'CMysqlCommandBuilder' => '/db/schema/mysql/CMysqlCommandBuilder.php',
 		'CMysqlSchema' => '/db/schema/mysql/CMysqlSchema.php',
 		'CMysqlTableSchema' => '/db/schema/mysql/CMysqlTableSchema.php',
 		'COciColumnSchema' => '/db/schema/oci/COciColumnSchema.php',
@@ -707,6 +724,7 @@ class YiiBase
 		'COciSchema' => '/db/schema/oci/COciSchema.php',
 		'COciTableSchema' => '/db/schema/oci/COciTableSchema.php',
 		'CPgsqlColumnSchema' => '/db/schema/pgsql/CPgsqlColumnSchema.php',
+		'CPgsqlCommandBuilder' => '/db/schema/pgsql/CPgsqlCommandBuilder.php',
 		'CPgsqlSchema' => '/db/schema/pgsql/CPgsqlSchema.php',
 		'CPgsqlTableSchema' => '/db/schema/pgsql/CPgsqlTableSchema.php',
 		'CSqliteColumnSchema' => '/db/schema/sqlite/CSqliteColumnSchema.php',
@@ -723,6 +741,7 @@ class YiiBase
 		'CGettextFile' => '/i18n/gettext/CGettextFile.php',
 		'CGettextMoFile' => '/i18n/gettext/CGettextMoFile.php',
 		'CGettextPoFile' => '/i18n/gettext/CGettextPoFile.php',
+		'CChainedLogFilter' => '/logging/CChainedLogFilter.php',
 		'CDbLogRoute' => '/logging/CDbLogRoute.php',
 		'CEmailLogRoute' => '/logging/CEmailLogRoute.php',
 		'CFileLogRoute' => '/logging/CFileLogRoute.php',
@@ -735,7 +754,9 @@ class YiiBase
 		'CDateTimeParser' => '/utils/CDateTimeParser.php',
 		'CFileHelper' => '/utils/CFileHelper.php',
 		'CFormatter' => '/utils/CFormatter.php',
+		'CLocalizedFormatter' => '/utils/CLocalizedFormatter.php',
 		'CMarkdownParser' => '/utils/CMarkdownParser.php',
+		'CPasswordHelper' => '/utils/CPasswordHelper.php',
 		'CPropertyValue' => '/utils/CPropertyValue.php',
 		'CTimestamp' => '/utils/CTimestamp.php',
 		'CVarDumper' => '/utils/CVarDumper.php',
@@ -768,6 +789,7 @@ class YiiBase
 		'CClientScript' => '/web/CClientScript.php',
 		'CController' => '/web/CController.php',
 		'CDataProvider' => '/web/CDataProvider.php',
+		'CDataProviderIterator' => '/web/CDataProviderIterator.php',
 		'CDbHttpSession' => '/web/CDbHttpSession.php',
 		'CExtController' => '/web/CExtController.php',
 		'CFormModel' => '/web/CFormModel.php',
@@ -800,6 +822,7 @@ class YiiBase
 		'CWebUser' => '/web/auth/CWebUser.php',
 		'CFilter' => '/web/filters/CFilter.php',
 		'CFilterChain' => '/web/filters/CFilterChain.php',
+		'CHttpCacheFilter' => '/web/filters/CHttpCacheFilter.php',
 		'CInlineFilter' => '/web/filters/CInlineFilter.php',
 		'CForm' => '/web/form/CForm.php',
 		'CFormButtonElement' => '/web/form/CFormButtonElement.php',
@@ -811,6 +834,7 @@ class YiiBase
 		'CHtml' => '/web/helpers/CHtml.php',
 		'CJSON' => '/web/helpers/CJSON.php',
 		'CJavaScript' => '/web/helpers/CJavaScript.php',
+		'CJavaScriptExpression' => '/web/helpers/CJavaScriptExpression.php',
 		'CPradoViewRenderer' => '/web/renderers/CPradoViewRenderer.php',
 		'CViewRenderer' => '/web/renderers/CViewRenderer.php',
 		'CWebService' => '/web/services/CWebService.php',

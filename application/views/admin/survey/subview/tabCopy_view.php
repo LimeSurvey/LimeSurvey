@@ -17,6 +17,8 @@
                 <input id='copysurveyexcludeanswers' name="copysurveyexcludeanswers" type="checkbox" /></li>
             <li><label for='copysurveyresetconditions'><?php echo $clang->gT("Reset conditions/relevance?"); ?></label>
                 <input id='copysurveyresetconditions' name="copysurveyresetconditions" type="checkbox" /></li>
+            <li><label for='copysurveyresetstartenddate'><?php echo $clang->gT("Reset start/end date/time?"); ?></label>
+                <input id='copysurveyresetstartenddate' name="copysurveyresetstartenddate" type="checkbox" /></li>
         </ul>
         <p><input type='submit' value='<?php $clang->eT("Copy survey"); ?>' />
             <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>

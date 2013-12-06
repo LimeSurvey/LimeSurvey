@@ -1,7 +1,7 @@
 <script type="text/javascript">
     var shareinfoUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getShareInfo_json"); ?>";
     var editurlshare = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/editShareInfo"); ?>";
-    var isadmin = "<?php echo (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == '1' ? 1 : 0); ?>";
+    var isadmin = "<?php echo (Permission::model()->hasGlobalPermission('superadmin','read') ? 1 : 0); ?>";
 
     /* Colnames and heading for survey links subgrid */
     var firstNameText= "<?php $clang->eT("First name") ?>";

@@ -192,53 +192,6 @@ function LEMis_string(a)
     return isNaN(a);
 }
 
-/**
- * Find the closest matching numerical input values in a list an replace it by the
- * corresponding value within another list 
- *
- * @author Johannes Weberhofer, 2013
- *
- * @param numeric fValueToReplace
- * @param numeric iStrict - 1 for exact matches only otherwise interpolation the 
- * 		  closest value should be returned
- * @param string sTranslateFromList - comma seperated list of values to translate from
- * @param string sTranslateToList - comma seperated list of values to translate to
- * @return numeric
- */
-function LEMconvert_value( fValueToReplace, iStrict, sTranslateFromList, sTranslateToList) 
-{
-	if ( isNaN(fValueToReplace) || (iStrict==null) || (sTranslateFromList==null) || (sTranslateToList==null) ) 
-	{
-		return null;
-	}
-	aFromValues = sTranslateFromList.split(",");
-	aToValues = sTranslateToList.split(",");
-	if ( (aFromValues.length > 0)  && (aFromValues.length == aToValues.length) ) 
-	{
-		fMinimumDiff = null;
-		iNearestIndex = 0;
-		for ( i = 0; i < aFromValues.length; i++) {
-			if ( isNaN(aFromValues[i]) ) {
-				// break processing when non-numeric variables are about to be processed
-				return null;
-			}
-			fCurrentDiff = Math.abs(aFromValues[i] - fValueToReplace);
-			if (fCurrentDiff === 0) {
-				return aToValues[i];
-			} else if (i === 0) {
-				fMinimumDiff = fCurrentDiff;
-			} else if ( fMinimumDiff > fCurrentDiff ) {
-				fMinimumDiff = fCurrentDiff;
-				iNearestIndex = i;
-			}
-		}					
-		if ( iStrict !== 1 ) {
-			return aToValues[iNearestIndex];
-		}
-	}
-	return null;
-}
-
 function LEMif(a,b,c)
 {
     // implements conditional logic.  Note double negation of a to ensure it is cast to Boolean
@@ -403,6 +356,8 @@ function LEMval(alias)
     var str = new String(alias);
     var varName = alias;
     var suffix = 'code';    // the default
+    if(typeof bNumRealValue == 'undefined'){bNumRealValue=false;} // Allow to update {QCODE} even with text
+
     /* If passed a number, return that number */
     if (str == '') return '';
     newval = str;
@@ -426,7 +381,6 @@ function LEMval(alias)
     }
 
     jsName = LEMalias2varName[varName];
-
     attr = LEMvarNameAttr[jsName];
     if ((suffix.match(/^code|NAOK|shown|valueNAOK|value$/)) && attr.qid!='') {
         if (!LEMval(varName + '.relevanceStatus')) {
@@ -617,15 +571,35 @@ function LEMval(alias)
                         break;
                 }
             }
-
             if (typeof attr.onlynum !== 'undefined' && attr.onlynum==1) {
-                newval = value;
+                if(value=="")
+                {
+                    return "";
+                }
+                if (LEMradix === ',') {
+                    var regValidateNum = /^-?\d*\,?\d*$/;
+                }else{
+                    var regValidateNum = /^-?\d*\.?\d*$/;
+                }
+                if(!regValidateNum.test(value))
+                {
+                    if(bNumRealValue)
+                    {
+                        return value;
+                    }
+                    else
+                    {
+                        return '';
+                    }
+                }
+                newval=value;
                 if (LEMradix === ',') {
                     newval = value.split(',').join('.');
                 }
-                if (newval != parseFloat(newval)) {
-                    newval = '';
-                }
+//                Already sone with regValidateNum.test(value)
+//                if (newval != parseFloat(newval)) {
+//                   return '';
+//                }
                 return +newval;
             }
             else if (isNaN(value)) {
@@ -638,7 +612,7 @@ function LEMval(alias)
                 if (value.length > 0 && value[0]==0) {
                     return value;   // so keep 0 prefixes on numbers
                 }
-                return +value;  // convert it to numeric return type
+                return +value;  // convert it to numeric
             }
         }
         case 'rowdivid':
@@ -661,7 +635,9 @@ function LEMfixnum(value)
     }
     if (LEMradix===',') {
         newval = newval.split('.').join(',');
-        return newval;
+        if (parseFloat(newval) != value) {
+            return value;   // unchanged
+        }
     }
     return value;
 }
@@ -2939,4 +2915,31 @@ function time () {
     // *     example 1: timeStamp = time();
     // *     results 1: timeStamp > 1000000000 && timeStamp < 2000000000
     return Math.floor(new Date().getTime() / 1000);
+}
+
+// updates the repeated headings in a dynamic table
+function updateHeadings(tab, rep)
+{
+    tab.find('.repeat').remove();
+    var header = tab.find('thead>tr');
+    var trs = tab.find('tr:visible');
+    trs.each(function(i, tr)
+    {
+        // add heading but not for the first and the last rows
+        if(i != 0 && i % rep == 0 && i != trs.length-1)
+        {
+            header.clone().addClass('repeat').addClass('headings').insertAfter(tr);
+        }
+    });
+}
+
+// updates the colors in a dynamic table
+function updateColors(tab)
+{
+    var trs = tab.find('tr:visible');
+    trs.each(function(i, tr)
+    {
+        // fix line colors
+        $(tr).removeClass('array1').removeClass('array2').addClass('array' + (1 + i % 2));
+    });
 }

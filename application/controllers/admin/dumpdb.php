@@ -10,15 +10,13 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 /**
  * Dump Database
  *
  * @package LimeSurvey
  * @copyright 2011
- * @version $Id$
- * @access public
+  * @access public
  */
 class Dumpdb extends Survey_Common_Action {
 
@@ -26,7 +24,7 @@ class Dumpdb extends Survey_Common_Action {
     {
         parent::__construct($controller, $id);
 
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
         {
             die();
         }

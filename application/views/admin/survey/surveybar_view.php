@@ -38,20 +38,18 @@
                             <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
                         </a></li>
                     <?php } else { ?>
-                    <li><a href='#' accesskey='d'>
+                    <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" >
                             <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
                         </a><ul>
-                            <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y"); ?>'>
-                                <img src='<?php echo $sImageURL;?>do_30.png' alt=''/> <?php echo $icontext;?> </a><ul>
-                                    <?php foreach ($languagelist as $tmp_lang) { ?>
-                                        <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$tmp_lang");?>'>
-                                            <img src='<?php echo $sImageURL;?>do_30.png' alt=''/> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
-                                        <?php } ?>
-                                </ul></li>
-                        </ul></li>
+                            <?php foreach ($languagelist as $tmp_lang) { ?>
+                                <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$tmp_lang");?>'>
+                                    <img src='<?php echo $sImageURL;?>do_30.png' alt=''/> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
+                                <?php } ?>
+                        </ul>
+                    </li>
                     <?php } ?>
-                <?php } ?> 
-            
+                <?php } ?>
+                
             <?php if($surveylocale || $surveysettings || $surveysecurity || $quotas || $assessments || $surveycontent) { ?>
             <li><a href='#'>
                     <img src='<?php echo $sImageURL;?>edit.png' alt='<?php $clang->eT("Survey properties");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
@@ -99,7 +97,7 @@
                 </li>
             <?php } ?>
             
-            <?php if($surveydelete || $surveytranslate || hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
+            <?php if($surveydelete || $surveytranslate || Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) { ?>            
             <li><a href="#">
                     <img src='<?php echo $sImageURL;?>tools.png' alt='<?php $clang->eT("Tools");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
                     <?php if ($surveydelete) { ?>
@@ -115,11 +113,11 @@
                                 <img src='<?php echo $sImageURL;?>translate_disabled_30.png' alt=''/> <?php $clang->eT("Quick-translation");?></a></li>
                             <?php } ?>
                         <?php } ?>
-                    <?php if (hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
+                    <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
                         <li><a href="<?php echo $this->createUrl("admin/expressions"); ?>">
                             <img src='<?php echo $sImageURL;?>expressionmanager_30.png' alt=''/> <?php $clang->eT("Expression Manager");?></a></li>
                         <?php } ?>
-                    <?php if (hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
+                    <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
                         <li>
                             <?php if ($conditionscount>0){?>
                                 <a href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$surveyid}"); ?>">
@@ -145,7 +143,7 @@
                 </li>
             <?php } ?> 
             
-            <?php if($surveyexport || hasSurveyPermission($surveyid,'surveycontent','read')) { ?>
+            <?php if($surveyexport || Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')) { ?>
             <li><a href='#'>
                     <img src='<?php echo $sImageURL;?>display_export.png' alt='<?php $clang->eT("Display / Export");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
                     <ul>
@@ -153,7 +151,7 @@
                         <li><a href='#'>
                             <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php $clang->eT("Export...");?></a>
                             <?php } ?>
-                        	<ul>
+                       		<ul>
                             <?php if($surveyexport) { ?>
                                 <li><a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/$surveyid");?>' >
                                     <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php $clang->eT("Survey structure (.lss)");?></a>
@@ -181,7 +179,7 @@
 
                         </ul>
                     </li>
-                    <?php if(hasSurveyPermission($surveyid,'surveycontent','read')) { ?>
+                    <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')) { ?>
                         <?php if($onelanguage) { ?>
                             <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
                                 <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php $clang->eT("Printable version");?></a></li>
@@ -214,8 +212,8 @@
             <?php } ?> 
             
             <?php if($respstatsread || $responsescreate || $responsesread) { ?>
-                <li><a href='#'><img src='<?php echo $sImageURL;?>responses.png' alt='<?php $clang->eT("Responses");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
-					<ul>
+            	<li><a href='#'><img src='<?php echo $sImageURL;?>responses.png' alt='<?php $clang->eT("Responses");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
+            		<ul>
                     <?php if($respstatsread) {
                             if($activated) { ?>
                             <li><a href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid/");?>' >
@@ -308,7 +306,7 @@
 
 
 
-            <?php if(hasSurveyPermission($surveyid,'surveycontent','create'))
+            <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
                 {
                     if ($activated)
                     { ?>
@@ -318,7 +316,7 @@
                     else
                     { ?>
 
-                    <a href="<?php echo $this->createUrl("admin/questiongroup/sa/add/surveyid/$surveyid"); ?>">
+                    <a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/$surveyid"); ?>">
                         <img src='<?php echo $sImageURL; ?>add.png' alt='<?php $clang->eT("Add new group to survey"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
                     <?php }
             } ?>

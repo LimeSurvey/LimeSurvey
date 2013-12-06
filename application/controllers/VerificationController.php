@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 
 /**
@@ -38,7 +37,7 @@ class VerificationController extends LSYii_Controller
         $blue = ImageColorAllocate($im, 0, 0, 255);
         $grey_shade = ImageColorAllocate($im, 204, 204, 204);
 
-        // Create the random numbers
+        // Create the random numberes
         srand((double)microtime()*1000000);
 
         $num1 = rand(1,5);
@@ -52,15 +51,6 @@ class VerificationController extends LSYii_Controller
                 break;
             }
         }
-        if (isset($_SESSION['survey_'.$iSurveyID]['secanswerdetails']['time']) && (time()-$_SESSION['survey_'.$iSurveyID]['secanswerdetails']['time']<5))
-        {
-            $num1=$_SESSION['survey_'.$iSurveyID]['secanswerdetails']['num1'];
-            $num2=$_SESSION['survey_'.$iSurveyID]['secanswerdetails']['num2'];
-        } 
-        else          
-        {
-            $_SESSION['survey_'.$iSurveyID]['secanswerdetails']['time']  = time();
-        }      
         $font_c_rand = rand(1,3);
         if ($font_c_rand == 1)
         {
@@ -109,8 +99,6 @@ class VerificationController extends LSYii_Controller
 
         // Add the answer to the session
         $_SESSION['survey_'.$iSurveyID]['secanswer']  = $num1+$num2;
-        $_SESSION['survey_'.$iSurveyID]['secanswerdetails']['num1']  = $num1;
-        $_SESSION['survey_'.$iSurveyID]['secanswerdetails']['num2']  = $num2;
     }
 }
 

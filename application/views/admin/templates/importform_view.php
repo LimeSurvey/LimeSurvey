@@ -8,20 +8,13 @@
             <label for='the_file'><?php $clang->eT("Select template ZIP file:") ?></label>
             <input id='the_file' name='the_file' type="file" />
         </li>
-        <li >
+        <li>
             <label>&nbsp;</label>
-        <?php
-        if (!function_exists("zip_open"))
-        {?>
+        <?php if (!function_exists("zip_open")) {?>
             <?php $clang->eT("zip library not supported by PHP, Import ZIP Disabled", "js") ?>
-<?php
-        }
-        else
-        {?>
+        <?php } else {?>
             <input type='button' value='<?php $clang->eT("Import template ZIP archive") ?>' onclick='if (validatefilename(this.form,"<?php $clang->eT('Please select a file to import!', 'js') ?>")) { this.form.submit();}' />
-        <?php
-        }?>
-
+        <?php }?>
         </li>
     </ul>
 </form>

@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 
 /**
@@ -27,7 +26,7 @@ class GlobalSettings extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] != 1) {
+        if (!Permission::model()->hasGlobalPermission('settings','read')) {
             die();
         }
     }
@@ -117,8 +116,8 @@ class GlobalSettings extends Survey_Common_Action
             return;
         }
 
-        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] != 1) {
-            $this->getController()->redirect($this->getController()->createUrl('/admin'));
+        if (!Permission::model()->hasGlobalPermission('settings','update')) {
+            $this->getController()->redirect(array('/admin'));
         }
         $clang = $this->getController()->lang;
         Yii::app()->loadHelper('surveytranslator');
@@ -174,7 +173,7 @@ class GlobalSettings extends Survey_Common_Action
         } else {
             $warning .= $clang->gT("Warning! Admin bounce email was not saved because it was not valid.").'<br/>';
         }
-	if (Yii::app()->request->getPost('siteadminemail', '') == ''
+        if (Yii::app()->request->getPost('siteadminemail', '') == ''
             || validateEmailAddress(Yii::app()->request->getPost('siteadminemail'))) {
             setGlobalSetting('siteadminemail', strip_tags(Yii::app()->request->getPost('siteadminemail')));
         } else {
@@ -200,6 +199,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('force_ssl', $_POST['force_ssl']);
         setGlobalSetting('surveyPreview_require_Auth', $_POST['surveyPreview_require_Auth']);
         setGlobalSetting('RPCInterface', $_POST['RPCInterface']);
+        setGlobalSetting('rpc_publish_api', (bool) $_POST['rpc_publish_api']);
         $savetime = ((float)$_POST['timeadjust'])*60 . ' minutes'; //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+' . $savetime;
@@ -278,8 +278,7 @@ class GlobalSettings extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jquery.selectboxes.min.js");
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "globalsettings.js");
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "globalsettings.js");
 
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }

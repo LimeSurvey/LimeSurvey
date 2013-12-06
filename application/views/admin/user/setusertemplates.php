@@ -1,10 +1,10 @@
 <?php echo CHtml::form(array("admin/user/sa/usertemplates"), 'post', array('name'=>'modtemplaterightsform', 'id'=>'modtemplaterightsform')); ?>
 
 	<div class='header ui-widget-header'><?php $clang->eT('Edit template permissions');?></div>
-    <table id="user-template-rights" width='50%' border='0' cellpadding='3' style='margin:5px auto 0 auto;'>
+    <table id="user-template-permissions" class="activecell" style="margin:0 auto;">
 	<thead>
 	<tr>
-	<th colspan="2" style="background-color:#000; color:#fff;">
+	<th colspan="2" class="header">
     <?php $clang->eT('Set templates that this user may access');?>: <?php echo htmlspecialchars(sanitize_user($_POST['user']));?></th>
 	</tr>
 	<?php
@@ -38,15 +38,13 @@
         {
             if($table_row_odd_even == 'odd' )
             {
-                $row_class = ' class="row_odd"';
                 $table_row_odd_even = 'even';
             }
             else
             {
-                $row_class = ' class="row_even"';
                 $table_row_odd_even = 'odd';
             }
-            echo "\t<tr$row_class>\n<td>".$trow["folder"]."</td>\n";
+            echo "\t<tr class=\"$table_row_odd_even\">\n<td>".$trow["folder"]."</td>\n";
             echo "<td><input type=\"checkbox\" class=\"checkboxbtn\" name=\"".$trow["folder"]."_use\" value=\"".$trow["folder"]."_use\"";
 
             if(isset($templaterights[$trow['folder']]) && $templaterights[$trow['folder']]['use'] == 1)

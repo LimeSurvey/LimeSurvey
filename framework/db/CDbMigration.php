@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -20,6 +20,9 @@
  * the database used in an application; while the {@link down} method contains "downgrading"
  * logic. The "yiic migrate" command manages all available migrations in an application.
  *
+ * By overriding {@link safeUp} or {@link safeDown} methods instead of {@link up} and {@link down}
+ * the migration logic will be wrapped with a DB transaction.
+ *
  * CDbMigration provides a set of convenient methods for manipulating database data and schema.
  * For example, the {@link insert} method can be used to easily insert a row of data into
  * a database table; the {@link createTable} method can be used to create a database table.
@@ -30,7 +33,6 @@
  * @property CDbConnection $dbConnection The currently active database connection.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbMigration.php 3514 2011-12-27 20:28:26Z alexander.makarow $
  * @package system.db
  * @since 1.1.6
  */
@@ -41,7 +43,7 @@ abstract class CDbMigration extends CComponent
 	/**
 	 * This method contains the logic to be executed when applying this migration.
 	 * Child classes may implement this method to provide actual migration logic.
-	 * @return boolean
+	 * @return boolean Returning false means, the migration will not be applied.
 	 */
 	public function up()
 	{
@@ -50,7 +52,7 @@ abstract class CDbMigration extends CComponent
 		{
 			if($this->safeUp()===false)
 			{
-				$transaction->rollBack();
+				$transaction->rollback();
 				return false;
 			}
 			$transaction->commit();
@@ -59,16 +61,15 @@ abstract class CDbMigration extends CComponent
 		{
 			echo "Exception: ".$e->getMessage().' ('.$e->getFile().':'.$e->getLine().")\n";
 			echo $e->getTraceAsString()."\n";
-			$transaction->rollBack();
+			$transaction->rollback();
 			return false;
 		}
 	}
 
 	/**
 	 * This method contains the logic to be executed when removing this migration.
-	 * The default implementation throws an exception indicating the migration cannot be removed.
 	 * Child classes may override this method if the corresponding migrations can be removed.
-	 * @return boolean
+	 * @return boolean Returning false means, the migration will not be applied.
 	 */
 	public function down()
 	{
@@ -77,7 +78,7 @@ abstract class CDbMigration extends CComponent
 		{
 			if($this->safeDown()===false)
 			{
-				$transaction->rollBack();
+				$transaction->rollback();
 				return false;
 			}
 			$transaction->commit();
@@ -86,7 +87,7 @@ abstract class CDbMigration extends CComponent
 		{
 			echo "Exception: ".$e->getMessage().' ('.$e->getFile().':'.$e->getLine().")\n";
 			echo $e->getTraceAsString()."\n";
-			$transaction->rollBack();
+			$transaction->rollback();
 			return false;
 		}
 	}
@@ -97,7 +98,8 @@ abstract class CDbMigration extends CComponent
 	 * be enclosed within a DB transaction.
 	 * Child classes may implement this method instead of {@link up} if the DB logic
 	 * needs to be within a transaction.
-	 * @return boolean
+	 * @return boolean Returning false means, the migration will not be applied and
+	 * the transaction will be rolled back.
 	 * @since 1.1.7
 	 */
 	public function safeUp()
@@ -110,7 +112,8 @@ abstract class CDbMigration extends CComponent
 	 * be enclosed within a DB transaction.
 	 * Child classes may implement this method instead of {@link up} if the DB logic
 	 * needs to be within a transaction.
-	 * @return boolean
+	 * @return boolean Returning false means, the migration will not be applied and
+	 * the transaction will be rolled back.
 	 * @since 1.1.7
 	 */
 	public function safeDown()
@@ -123,6 +126,7 @@ abstract class CDbMigration extends CComponent
 	 * You can call {@link setDbConnection} to switch to a different database connection.
 	 * Methods such as {@link insert}, {@link createTable} will use this database connection
 	 * to perform DB queries.
+	 * @throws CException if "db" application component is not configured
 	 * @return CDbConnection the currently active database connection
 	 */
 	public function getDbConnection()
@@ -397,6 +401,35 @@ abstract class CDbMigration extends CComponent
 		echo "    > refresh table $table schema cache ...";
 		$time=microtime(true);
 		$this->getDbConnection()->getSchema()->getTable($table,true);
+		echo " done (time: ".sprintf('%.3f', microtime(true)-$time)."s)\n";
+	}
+
+	/**
+	 * Builds and executes a SQL statement for creating a primary key, supports composite primary keys.
+	 * @param string $name name of the primary key constraint to add
+	 * @param string $table name of the table to add primary key to
+	 * @param string $columns name of the column to utilise as primary key. If there are multiple columns, separate them with commas.
+	 * @since 1.1.13
+	 */
+	public function addPrimaryKey($name,$table,$columns)
+	{
+		echo "    > alter table $table add constraint $name primary key ($columns) ...";
+		$time=microtime(true);
+		$this->getDbConnection()->createCommand()->addPrimaryKey($name,$table,$columns);
+		echo " done (time: ".sprintf('%.3f', microtime(true)-$time)."s)\n";
+	}
+
+	/**
+	 * Builds and executes a SQL statement for removing a primary key, supports composite primary keys.
+	 * @param string $name name of the constraint to remove
+	 * @param string $table name of the table to remove primary key from
+	 * @since 1.1.13
+	 */
+	public function dropPrimaryKey($name,$table)
+	{
+		echo "    > alter table $table drop primary key $name ...";
+		$time=microtime(true);
+		$this->getDbConnection()->createCommand()->dropPrimaryKey($name,$table);
 		echo " done (time: ".sprintf('%.3f', microtime(true)-$time)."s)\n";
 	}
 }

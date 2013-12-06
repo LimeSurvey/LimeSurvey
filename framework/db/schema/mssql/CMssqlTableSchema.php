@@ -5,7 +5,7 @@
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -14,7 +14,6 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
- * @version $Id: CMssqlTableSchema.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema.mssql
  */
 class CMssqlTableSchema extends CDbTableSchema

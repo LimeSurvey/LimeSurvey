@@ -1,42 +1,23 @@
-// $Id: surveytoolbar.js 9401 2010-11-03 11:54:50Z c_schmitz $
-// based on TTabs from http://interface.eyecon.ro/
+/*
+ * JavaScript functions for LimeSurvey Survey tool bar
+ *
+ * This file is part of LimeSurvey
+ * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
 
-$(document).ready(function(){
-    // Load the superfish menu
-    $('ul.sf-menu').superfish({
-        speed:'fast'
-    });
-    //Load the special tooltips for the surveybar
-    $('.surveybar img[alt]').each(function() {
-        if($(this).attr('alt') != '')
-        {
-             $(this).qtip({
-               style: { name: 'cream',
-                        tip:true,
-                        color:'#1D2D45',
-                        border: {
-                             width: 1,
-                             radius: 5,
-                             color: '#EADF95'}
-                       },
-               position: { adjust: {
-                        screen: true, scroll:true },
-                        corner: {
-                                target: 'topRight',
-                                tooltip: 'bottomLeft'}
-                        },
-                show: {effect: { length:50},
-                       delay:1000
-                      },
-                hide: { when: 'mouseout' },
-                api: { onRender: function() {$(this.options.hide.when.target).bind('click', this.hide);}}
+// @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
-               });
-        }
-    });
-    $(".saveandreturn").click(function() {
-        var form=$(this).parents('form:first'); //Get the parent form info
+$(document).on('click','[submit].saveandreturn',function(){
+    if($(this).closest('form')[0].checkValidity())
+    {
         $("#newpage").val('return');
-        form.submit();
-    });
+    }
 });
+

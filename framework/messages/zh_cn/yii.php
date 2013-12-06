@@ -12,12 +12,10 @@
  * enclosed between a pair of '@@' marks.
  *
  * NOTE, this file must be saved in UTF-8 encoding.
- *
- * @version $Id: yii.php 2879 2011-01-16 23:13:00Z qiang.xue $
  */
 return array (
   'Active record class "{class}" does not have a scope named "{scope}".' => 'AR类 "{class}" 没有名为 "{scope}" 的命名范围。',
-  'Alias "{alias}" is invalid. Make sure it points to an existing PHP file.' => '别名 "{alias}" 无效。请确认它指向一个存在的PHP文件。',
+  'Alias "{alias}" is invalid. Make sure it points to an existing PHP file and the file is readable.' => '别名 "{alias}" 无效。请确认它指向一个存在的PHP文件。',
   'Alias "{alias}" is invalid. Make sure it points to an existing directory.' => '别名 "{alias}" 无效。请确认它指向一个存在的目录。',
   'Application Log' => '程序日志',
   'Base path "{path}" is not a valid directory.' => '基准路径 "{path}" 不是一个有效的目录。',

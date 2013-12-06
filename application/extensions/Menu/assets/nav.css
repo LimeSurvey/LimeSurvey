@@ -1,0 +1,97 @@
+nav {
+    overflow: hidden;
+    border-color: #EFEFEF;
+    border-style: solid;
+    border-width: 1px;
+    padding: 2px;
+}
+
+nav ol {
+    background-color: white;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    display: inline-block;
+    box-shadow: 7px 7px 5px rgba(50, 50, 50, 0.75);
+}
+
+nav > ol.menubar-left {
+    float: left;
+}
+
+nav > ol.menubar-right {
+    float: right;
+}
+
+
+nav li {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    white-space:nowrap;
+    padding: 5px;
+}
+
+nav ol.level0 > li {
+    padding: 2px !important;
+}
+
+
+nav a {
+    display: inline-block;
+    
+    width: 100%;
+}
+
+nav img {
+    float: none !important;
+    vertical-align: middle;
+}
+
+nav ol.level0 {
+    box-shadow: none !important;
+}
+nav ol.level0 > li {
+    display: inline-block;
+}
+
+nav ol.level1 {
+    z-index: 1;
+    position: absolute;
+    display: block;
+    visibility: hidden;
+}
+
+
+nav ol.level1 > li {
+    position: relative;
+}
+
+nav ol.level1 img {
+    margin-right: 10px;
+}
+
+nav ol.level2 {
+    top: 0px;
+    visibility: hidden;
+    position: absolute;
+    left: 100%;
+}
+
+nav li:hover > ol {
+    visibility: visible;
+}
+
+nav li:hover{
+    background-color: #e0dfde;
+}
+
+nav select, nav label {
+    margin: 0px;
+    display: inline-block;
+}
+
+nav .select {
+	width: 300px;
+}
+/* Fix bootstrap causing menu to disappear on FF */
+nav.menubar { clear: both; }

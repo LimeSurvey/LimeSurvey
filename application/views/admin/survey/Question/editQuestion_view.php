@@ -1,6 +1,8 @@
 <script type='text/javascript'>
-    var attr_url = "<?php echo $this->createUrl('/admin/question/sa/ajaxquestionattributes'); ?>";
+    var attr_url = "<?php echo $this->createUrl('admin/questions', array('sa' => 'ajaxquestionattributes')); ?>";
     var imgurl = '<?php echo Yii::app()->getConfig('imageurl'); ?>';
+    var yii_csrf = "<?php echo Yii::app()->request->csrfToken; ?>";
+    
 </script>
 <?php PrepareEditorScript(true, $this); ?>
 
@@ -34,15 +36,16 @@
         ?>
     </ul>
     <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmeditquestion','name'=>'frmeditquestion','onsubmit'=>"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');")); ?>
-            <div id='questionactioncopy'>
-                <p><input type='button' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
+            <div id='questionactioncopy' class='extra-action'>
+                <p><input type='submit' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
                 <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
             </div>
 
             <div id="<?php echo $eqrow['language']; ?>">
             <?php $eqrow  = array_map('htmlspecialchars', $eqrow); ?>
                 <ul><li>
-                        <label for='title'> <?php $clang->eT("Code:"); ?></label><input type='text' size='20' maxlength='20' id='title' name='title' value="<?php echo $eqrow['title']; ?>" /> <?php if ($copying) $clang->eT("Note: You MUST enter a new question code!"); ?>
+                        <?php if($eqrow['title']) {$sPattern="^([a-zA-Z][a-zA-Z0-9]*|{$eqrow['title']})$";}else{$sPattern="^[a-zA-Z][a-zA-Z0-9]*$";} ?>
+                        <label for='title'> <?php $clang->eT("Code:"); ?></label><input type='text' size='20' maxlength='20' id='title' required='required' name='title' pattern='<?php echo $sPattern ?>' value="<?php echo $eqrow['title']; ?>" /> <?php if ($copying) $clang->eT("Note: You MUST enter a new question code!"); ?>
                     </li><li>
                         <label for='question_<?php echo $eqrow['language']; ?>'><?php $clang->eT("Question:"); ?></label>
                         <div class="htmleditor">
@@ -101,6 +104,7 @@
                              <div class="htmleditor">
                             <textarea cols='50' rows='4' id='question_<?php echo $addlanguage; ?>' name='question_<?php echo $addlanguage; ?>'></textarea>
                             </div>
+
                             <?php echo getEditor("question-text","question_".$addlanguage, "[".$clang->gT("Question:", "js")."](".$addlanguage.")",$surveyid,$gid,$qid,$action); ?>
                         </li><li>
                             <label for='help_<?php echo $addlanguage; ?>'><?php $clang->eT("Help:"); ?></label>
@@ -116,19 +120,52 @@
             <ul>
                 <li><label for='question_type'><?php $clang->eT("Question Type:"); ?></label>
                     <?php if ($activated != "Y")
-                        { ?>
-
-                        <select id='question_type' style='margin-bottom:5px' name='type' class='<?php echo $selectormodeclass; ?>'>
-                            <?php echo getQuestionTypeList($eqrow['type'],'group'); ?>
-
-                        </select>
-                        <?php }
+                        {
+                            if($selectormodeclass!="none")
+                            {
+                                foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
+                                {
+                                    if (!isset($groups[$questionType['group']]))
+                                    {
+                                        $groups[$questionType['group']] = array();
+                                    }
+                                    $groups[$questionType['group']][$key] = $questionType['description'];
+                                }
+                                $this->widget('ext.bootstrap.widgets.TbSelect2', array(
+                                    'data' => $groups,
+                                    'name' => 'type',
+                                    'options' => array(
+                                        'width' => '300px',
+                                        'minimumResultsForSearch' => 1000
+                                    ),
+                                    'events' => array(
+                                    ),
+                                    'htmlOptions' => array(
+                                        'id' => 'question_type',
+                                        'options' => array(
+                                        $eqrow['type']=>array('selected'=>true))
+                                    )
+                                ));
+                                $script = '$("#question_type option").addClass("questionType");';
+                                App()->getClientScript()->registerScript('add_class_to_options', $script);
+                            }
+                            else
+                            {
+                                $aQtypeData=array();
+                                foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
+                                {
+                                    $aQtypeData[]=array('code'=>$key,'description'=>$questionType['description'],'group'=>$questionType['group']);
+                                }
+                                echo CHtml::dropDownList('type','category',CHtml::listData($aQtypeData,'code','description','group'),
+                                    array('class' => 'none','id'=>'question_type','options' => array($eqrow['type']=>array('selected'=>true)))
+                                );
+                            }
+                        }
                         else
                         {
-
                             $qtypelist=getQuestionTypeList('','array');
                             echo "{$qtypelist[$eqrow['type']]['description']} - ".$clang->gT("Cannot be changed (survey is active)"); ?>
-                        <input type='hidden' name='type' id='question_type' value='<?php echo $eqrow['type']; ?>' />
+                            <input type='hidden' name='type' id='question_type' value='<?php echo $eqrow['type']; ?>' />
                         <?php } ?>
 
                 </li>
@@ -191,8 +228,8 @@
                 </li>
                 <li>
                     <label for='relevance'><?php $clang->eT("Relevance equation:"); ?></label>
-                    <textarea cols='50' rows='1' id='relevance' name='relevance' <?php if (isset($bRelevanceReadOnly) && $bRelevanceReadOnly) {?> readonly='readonly'<?php } ?>><?php echo $eqrow['relevance']; ?></textarea>
-                     <?php if (isset($bRelevanceReadOnly) && $bRelevanceReadOnly) {?>
+                    <textarea cols='50' rows='1' id='relevance' name='relevance' <?php if ($eqrow['conditions_number']) {?> readonly='readonly'<?php } ?>><?php echo $eqrow['relevance']; ?></textarea>
+                     <?php if ($eqrow['conditions_number']) {?>
                         <span class='annotation'> <?php $clang->eT("Note: You can't edit the relevance equation because there are currently conditions set for this question."); ?></span>
                      <?php } ?>
                 </li>
@@ -268,7 +305,7 @@
                     <input type='hidden' name='action' value='updatequestion' />
                     <input type='hidden' id='newpage' name='newpage' value='' />
                     <input type='hidden' id='qid' name='qid' value='<?php echo $qid; ?>' />
-					<p><input type='button' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
+					<p><input type='submit' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
                     <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
                     <?php } ?>
                 <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' /></p><br />
@@ -280,10 +317,10 @@
     {
 
 
-        if (hasSurveyPermission($surveyid,'surveycontent','import'))
+        if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
         { ?>
         <br /><div class='header ui-widget-header'><?php $clang->eT("...or import a question"); ?></div>
-        <?php echo CHtml::form(array("admin/question/sa/import"), 'post', array('id'=>'importquestion', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return validatefilename(this, '".$clang->gT("Please select a file to import!",'js')."');")); ?>
+        <?php echo CHtml::form(array("admin/questions/sa/import"), 'post', array('id'=>'importquestion', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return validatefilename(this, '".$clang->gT("Please select a file to import!",'js')."');")); ?>
             <ul>
                 <li>
                     <label for='the_file'><?php $clang->eT("Select LimeSurvey question file (*.lsq/*.csv)"); ?>:</label>

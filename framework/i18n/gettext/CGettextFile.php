@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,6 @@
  * CGettextFile is the base class for representing a Gettext message file.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGettextFile.php 2798 2011-01-01 19:29:03Z qiang.xue $
  * @package system.i18n.gettext
  * @since 1.0
  */

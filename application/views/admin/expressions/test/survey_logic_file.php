@@ -18,7 +18,7 @@ if (empty($_REQUEST['sid']))   //  || count($_REQUEST) == 0) {
     $sFormTag= CHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post');
     $form = <<< EOD
 $sFormTag    
-<h1>Generate a logic file for the survey</h1>
+<h3>Generate a logic file for the survey</h3>
 <table border='1'>
 <tr><th>Parameter</th><th>Value</th></tr>
 <tr><td>Survey ID (SID)</td>

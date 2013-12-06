@@ -1,0 +1,36 @@
+div.pluginsettings * {
+    padding: 0px;
+    margin: 0px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+div.pluginsettings {
+    width: 550px;
+    margin: auto;
+    text-align: center;
+    
+}
+div.pluginsettings ol {
+    list-style: none;
+}
+
+
+div.pluginsettings form input, div.pluginsettings form textarea, div.pluginsettings div.select2-container{
+    width: 60%;
+    display: inline-block;
+}
+
+div.pluginsettings form label {
+    width: 40%;
+    display: inline-block;
+}
+div.pluginsettings li {
+    margin-top: 10px;
+}
+
+div.pluginsettings input[type=submit], div.pluginsettings img, div.pluginsettings .limebutton {
+    display: inline-block;
+    margin: 1em;
+    width: 150px;
+}

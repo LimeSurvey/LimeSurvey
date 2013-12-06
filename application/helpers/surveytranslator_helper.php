@@ -11,8 +11,7 @@
     * other free or open source software licenses.
     * See COPYRIGHT.php for copyright notices and details.
     *
-    *	$Id$
-    */
+       */
 
 
     /*
@@ -649,7 +648,7 @@
 
 
     /**
-    *  Returns avaliable formats for Radix Points (Decimal Seperators) or returns
+    *  Returns avaliable formats for Radix Points (Decimal Separators) or returns
     *  radix point info about a specific format.
     *
     *  @param int $format Format ID/Number [optional]
@@ -658,8 +657,8 @@
     {
         $clang = Yii::app()->lang;
         $aRadixFormats = array (
-        0=>array('seperator'=> '.', 'desc'=> $clang->gT('Dot (.)')),
-        1=>array('seperator'=> ',', 'desc'=> $clang->gT('Comma (,)'))
+        0=>array('separator'=> '.', 'desc'=> $clang->gT('Dot (.)')),
+        1=>array('separator'=> ',', 'desc'=> $clang->gT('Comma (,)'))
         );
 
         // hack for fact that null sometimes sent to this function
@@ -788,7 +787,7 @@
         {
             $languagecode=Survey::model()->findByPk($surveyid)->language;
         }
-        $data = Surveys_languagesettings::model()->getDateFormat($surveyid,$languagecode);
+        $data = SurveyLanguageSetting::model()->getDateFormat($surveyid,$languagecode);
 
         if(empty($data))
         {

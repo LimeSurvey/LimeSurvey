@@ -10,8 +10,7 @@
     * other free or open source software licenses.
     * See COPYRIGHT.php for copyright notices and details.
     *
-    *	$Id$
-    *
+       *
 
 
     Wrapper to use phpgettext as a class and omit having an english translation

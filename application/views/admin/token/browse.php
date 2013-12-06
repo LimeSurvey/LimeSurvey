@@ -16,6 +16,28 @@
         }
     }
     $langnames = implode(";", $lname);
+    // Build the column information : columnname=>Description,search(true/false) (type ?)
+    // Don't add id : because we don't really need it. This different from columnNames (no action).
+    // TODO: Merge columnNames and aTokenColumns : need more option (name,index,search, type, editable ...)
+    $aTokenColumns=getTokenFieldsAndNames($surveyid,false);
+    $aNotQuickFilter=array('tid','emailstatus','sent','remindersent','remindercount','completed','usesleft','validfrom','validuntil');
+    foreach($aTokenColumns as $aTokenColumn => &$aTokenInformation)
+    {
+        if($aTokenColumn=="tid"){
+            $aTokenInformation['editable']=false;
+            $aTokenInformation['search']=false;
+            $aTokenInformation['add']=false;
+        }else{
+            $aTokenInformation['editable']=true;
+            $aTokenInformation['search']=true;
+            $aTokenInformation['add']=true;
+        }
+        if(in_array($aTokenColumn,$aNotQuickFilter)){
+            $aTokenInformation['quickfilter']=false;
+        }else{
+            $aTokenInformation['quickfilter']=true;
+        }
+    }
     // Build the columnNames for the extra attributes 
     // and, build the columnModel
     $attributes = getTokenFieldsAndNames($surveyid,true);
@@ -29,11 +51,10 @@
         }
         $columnNames='"'.implode('","',$aColumnHeaders).'"';
     }
-
+    $sJsonColumnInformation=json_encode($aTokenColumns);
     // Build the javasript variables to pass to the jqGrid
 ?>
 <script type="text/javascript">
-    <!--
     var sAddParticipantToCPDBText = '<?php $clang->eT("Add participants to central database",'js');?>';
     var sLoadText = '<?php $clang->eT("Loading...",'js');?>';
     var sSelectRowMsg = "<?php $clang->eT("Please select at least one participant.", 'js') ?>";
@@ -65,7 +86,7 @@
     var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/setSession"); ?>";
     var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/editToken/surveyid/{$surveyid}"); ?>";
     var sEmptyRecords ='<?php $clang->eT("Participant table is empty.",'js');?>';
-    var sCaption ='<?php $clang->eT("Survey participants",'js');?>';
+    var sCaption ='';
     var sDelTitle = '<?php $clang->eT("Delete selected participant(s) from this survey",'js');?>';
     var sRefreshTitle ='<?php $clang->eT("Reload participant list",'js');?>';
     var noSearchResultsTxt = '<?php $clang->eT("No survey participants matching the search criteria",'js');?>';
@@ -79,7 +100,7 @@
     var showBounceButton = <?php echo $showBounceButton?>;
     var showInviteButton = <?php echo $showInviteButton?>;
     var showRemindButton = <?php echo $showRemindButton?>;
-    <?php if (!hasGlobalPermission('USER_RIGHT_PARTICIPANT_PANEL')){?>
+    <?php if (!Permission::model()->hasGlobalPermission('participantpanel','read')){?>
     var bParticipantPanelPermission=false;
     <?php 
     } else {?>
@@ -108,48 +129,41 @@
     { "name":"validfrom", "index":"validfrom","align":"center", "sorttype":"int", "sortable": true,"width":160,"editable":true},
     { "name":"validuntil", "index":"validuntil","align":"center", "sorttype":"int", "sortable": true,"width":160,"editable":true}
     <?php if (count($uidNames)) echo ','.implode(",\n", $uidNames); ?>];
-
-    function addHiddenElement(theform,thename,thevalue)
-    {
-        var myel = document.createElement('input');
-        myel.type = 'hidden';
-        myel.name = thename;
-        theform.appendChild(myel);
-        myel.value = thevalue;
-        return myel;
-    }
-
-    function sendPost(myaction,checkcode,arrayparam,arrayval)
-    {
-        var myform = document.createElement('form');
-        document.body.appendChild(myform);
-        myform.action =myaction;
-        myform.method = 'POST';
-        for (i=0;i<arrayparam.length;i++)
-            {
-            addHiddenElement(myform,arrayparam[i],arrayval[i])
-        }
-        myform.submit();
-    }
-
-    //-->
+    var colInformation=<?php echo $sJsonColumnInformation ?>
 </script>
+<div class='menubar'>
+    <div class='menubar-title ui-widget-header'>
+        <strong><?php $clang->eT("Survey participants",'js'); ?></strong></div>
+    <div class='menubar-main'>
+        <div class='menubar-left'>
+            <img src='<?php echo $sImageURL; ?>databegin.png' alt='<?php $clang->eT("Show start..."); ?>' class="gridcontrol disabled databegin" />
+            <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous.."); ?>' class="gridcontrol disabled databack" />
+            <img src='<?php echo $sImageURL; ?>blank.gif' width='13' height='20' alt='' />
+            <img src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' class="gridcontrol disabled dataforward" />
+            <img src='<?php echo $sImageURL; ?>dataend.png' alt='<?php $clang->eT("Show last.."); ?>' class="gridcontrol disabled dataend" />
+            <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
+            <div id='tokensearch' class='form-menubar'><label for='searchstring'><?php $clang->eT("Filter by") ?></label><input type='text' name='searchstring' id='searchstring' class='gridsearch' value="" /></div>
+        </div>
+    </div>
+</div>
+<?php
+    // Add some script for gridsearch
+    App()->getClientScript()->registerPackage('jquery-bindWithDelay');
+    App()->getClientScript()->registerPackage('jqgrid.addons');
+?>
+<table id="displaytokens"></table>
+<div id="pager"></div>
+
 <div id ="search" style="display:none">
     <?php
-        $optionsearch = array('' => $clang->gT('Select...'),
-        'firstname' => $clang->gT("First name"),
-        'lastname' => $clang->gT("Last name"),
-        'email' => $clang->gT("Email address"),
-        'emailstatus' => $clang->gT("Email status"),
-        'token' => $clang->gT("Token"),
-        'language' => $clang->gT("Language"),
-        'sent' => $clang->gT("Invitation sent?"),
-        'remindersent' => $clang->gT("Reminder sent?"),
-        'remindercount' => $clang->gT("Reminder count"),
-        'completed' => $clang->gT("Completed?"),
-        'usesleft' => $clang->gT("Uses left"),
-        'validfrom' => $clang->gT("Valid from"),
-        'validuntil' => $clang->gT("Valid until"));
+        $optionsearch = array('' => $clang->gT('Select...'));
+        foreach($aTokenColumns as $aTokenColumn => $aTokenInformation)
+        {
+            if($aTokenInformation['search'])
+            {
+                $optionsearch[$aTokenColumn]=$aTokenInformation['description'];
+            }
+        }
         $optioncontition = array('' => $clang->gT('Select...'),
         'equal' => $clang->gT("Equals"),
         'contains' => $clang->gT("Contains"),
@@ -163,17 +177,12 @@
             <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $optionsearch); ?></td>
             <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $optioncontition); ?></td>
             <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-            <td><img src=<?php echo Yii::app()->getConfig('adminimageurl')."plus.png" ?> alt='<?php $clang->eT("Add another search criteria");?>' id="addbutton" style="margin-bottom:4px"></td>
+            <td><img src=<?php echo Yii::app()->getConfig('adminimageurl')."plus.png" ?> alt='<?php $clang->eT("Add another search criteria");?>' class="addcondition-button" style="margin-bottom:4px"></td>
         </tr>
     </table>
-    <br/>
-
-
 </div>
-<br/>
-<table id="displaytokens"></table> <div id="pager"></div>
 
-<?php if (hasGlobalPermission('USER_RIGHT_PARTICIPANT_PANEL')) { ?>
+<?php if (Permission::model()->hasGlobalPermission('participantpanel','read')) { ?>
     <div id="addcpdb" title="addsurvey" style="display:none">
         <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
         <p>

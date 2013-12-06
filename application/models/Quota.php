@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
    * LimeSurvey
-   * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -10,11 +10,10 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-   *	$Id$
-   *	Files Purpose: lots of common functions
+     *	Files Purpose: lots of common functions
 */
 
-class Quota extends CActiveRecord
+class Quota extends LSActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table
@@ -59,9 +58,10 @@ class Quota extends CActiveRecord
 	 */
 	public function relations()
 	{
+		$alias = $this->getTableAlias();
 		return array(
-			'languagesettings' => array(self::HAS_MANY, 'Quota_languagesettings', '',
-				'on' => 't.id = languagesettings.quotals_quota_id'),
+			'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', '',
+				'on' => "$alias.id = languagesettings.quotals_quota_id"),
 		);
 	}
 
@@ -89,8 +89,8 @@ class Quota extends CActiveRecord
             $oResult = Quota::model()->findAllByAttributes($condition);
             foreach ($oResult as $aRow)
             {
-                Quota_languagesettings::model()->deleteAllByAttributes(array('quotals_quota_id' => $aRow['id']));
-                Quota_members::model()->deleteAllByAttributes(array('quota_id' => $aRow['id']));
+                QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $aRow['id']));
+                QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $aRow['id']));
             }
         }
 

@@ -10,11 +10,9 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 /*
- * $Id$
- *
+  *
  * Copyright (c) 2002,2003 Free Software Foundation
  * developed under the custody of the
  * Open Web Application Security Project
@@ -172,7 +170,7 @@ function sanitize_system_string($string, $min='', $max='')
     if (isset($string))
     {
         $pattern = '/(;|\||`|>|<|&|^|"|'."\n|\r|'".'|{|}|[|]|\)|\()/i'; // no piping, passing possible environment variables ($),
-        // seperate commands, nested execution, file redirection,
+        // separate commands, nested execution, file redirection,
         // background processing, special commands (backspace, etc.), quotes
         // newlines, or some other special characters
         $string = preg_replace($pattern, '', $string);

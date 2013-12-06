@@ -16365,7 +16365,7 @@ class TCPDF {
 		}
 		if (strpos($this->javascript, 'this.addField') > 0) {
 			if (!$this->ur['enabled']) {
-				//$this->setUserRights();
+				//$this->setuserpermissions();
 			}
 			// the following two lines are used to avoid form fields duplication after saving
 			// The addField method only works when releasing user rights (UR3)
@@ -17548,7 +17548,7 @@ class TCPDF {
 	 * @author Nicola Asuni
 	 * @since 2.9.000 (2008-03-26)
 	 */
-	public function setUserRights(
+	public function setuserpermissions(
 			$enable=true,
 			$document='/FullSave',
 			$annots='/Create/Delete/Modify/Copy/Import/Export',

@@ -10,10 +10,9 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 
-class User extends CActiveRecord
+class User extends LSActiveRecord
 {
     /**
     * @var string Default value for user language
@@ -181,7 +180,6 @@ class User extends CActiveRecord
         {
             $this->password=stream_get_contents($this->password,-1,0); 
         }
-        
         return parent::beforeSave();
     }
     
@@ -195,8 +193,8 @@ class User extends CActiveRecord
     function deleteUser($iUserID)
     {
         $iUserID= (int)$iUserID;
-        $iRecordsAffected = Yii::app()->db->createCommand()->from('{{users}}')->delete('{{users}}', "uid={$iUserID}");
-        return (bool) $iRecordsAffected;
+        $oUser=$this->findByPk($iUserID);
+        return (bool) $oUser->delete();
     }
 
     /**
@@ -284,7 +282,15 @@ class User extends CActiveRecord
     */
     public function getCommonUID($surveyid, $postusergroupid)
     {
-        $query2 = "SELECT b.uid FROM (SELECT uid FROM {{survey_permissions}} WHERE sid = :surveyid) AS c RIGHT JOIN {{user_in_groups}} AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = :postugid";
+        $query2 = "SELECT b.uid FROM (SELECT uid FROM {{permissions}} WHERE entity_id = :surveyid AND entity = 'survey') AS c RIGHT JOIN {{user_in_groups}} AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = :postugid";
         return Yii::app()->db->createCommand($query2)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->bindParam(":postugid", $postusergroupid, PDO::PARAM_INT)->query(); //Checked
     }
+
+
+	public function relations()
+	{
+		return array(
+			'permissions' => array(self::HAS_MANY, 'Permission', 'uid')
+		);
+	}
 }

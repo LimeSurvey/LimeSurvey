@@ -19,7 +19,7 @@ foreach($assessments as $assess) {
 else {echo "<tr class='evenrow'>\n";} ?>
 <td><?php echo $assess['id'];?></td>
 <td>
-<?php if (hasSurveyPermission($surveyid, 'assessments','update')) { ?>
+<?php if (Permission::model()->hasSurveyPermission($surveyid, 'assessments','update')) { ?>
     <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post');?>
         <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php $clang->eT("Edit");?>' />
         <input type='hidden' name='action' value='assessmentedit' />
@@ -27,7 +27,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
     </form>
 <?php } ?>
 
-<?php if (hasSurveyPermission($surveyid, 'assessments','delete')) { ?>
+<?php if (Permission::model()->hasSurveyPermission($surveyid, 'assessments','delete')) { ?>
      <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post');?>
      <input type='image' src='<?php echo $imageurl;?>/token_delete.png' alt='<?php $clang->eT("Delete");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
      <input type='hidden' name='action' value='assessmentdelete' />
@@ -61,7 +61,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
 <?php } ?>
 </tbody></table>
 
-<?php if ((hasSurveyPermission($surveyid, 'assessments','update') && $actionvalue=="assessmentupdate") || (hasSurveyPermission($surveyid, 'assessments','create')&& $actionvalue=="assessmentadd")) { ?>
+<?php if ((Permission::model()->hasSurveyPermission($surveyid, 'assessments','update') && $actionvalue=="assessmentupdate") || (Permission::model()->hasSurveyPermission($surveyid, 'assessments','create')&& $actionvalue=="assessmentadd")) { ?>
 <br />
 <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post', array('class'=>'form30','id'=>'assessmentsform','name'=>'assessmentsform'));?>
 	<div class='header ui-widget-header'><?php echo $actiontitle;?></div>

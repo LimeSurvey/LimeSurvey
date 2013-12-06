@@ -1,3 +1,7 @@
+<?php
+    App()->getClientScript()->registerPackage('jquery-selectboxes');
+
+?>
 <script type="text/javascript">
     var msgAtLeastOneLanguageNeeded = '<?php $clang->eT("You must set at last one available language.",'js'); ?>';
 </script>
@@ -48,7 +52,7 @@
                 ?>
             </table>
             <?php
-                if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
+                if (Permission::model()->hasGlobalPermission('superadmin','read'))
                 {
                 ?>
                     <p><a href="<?php echo $this->createUrl('admin/globalsettings',array('sa'=>'showphpinfo')) ?>" target="blank" class="button"><?php $clang->eT("Show PHPInfo"); ?></a></p>
@@ -210,7 +214,7 @@
                         <?php echo $clang->gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ". $clang->gT("Corrected time:").' '.convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
                     </span></li>
 
-                <li><label for='iSessionExpirationTime'><?php $clang->eT("Session lifetime (for surveys only, in seconds):"); ?></label>
+                <li <?php if( ! isset(Yii::app()->session->connectionID)) echo 'style="display: none"';?>><label for='iSessionExpirationTime'><?php $clang->eT("Session lifetime for surveys (seconds):"); ?></label>
                     <input type='text' size='10' id='iSessionExpirationTime' name='iSessionExpirationTime' value="<?php echo htmlspecialchars(getGlobalSetting('iSessionExpirationTime')); ?>" /></li>
                 <li><label for='ipInfoDbAPIKey'><?php $clang->eT("IP Info DB API Key:"); ?></label>
                     <input type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value="<?php echo htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey')); ?>" /></li>
@@ -355,10 +359,8 @@
 
                 <?php $thisforce_ssl = getGlobalSetting('force_ssl');
                     $opt_force_ssl_on = $opt_force_ssl_off = $opt_force_ssl_neither = '';
-                    $warning_force_ssl = $clang->gT('Warning: Before turning on HTTPS, ')
-                    . '<a href="https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" title="'
-                    . $clang->gT('Test if your server has SSL enabled by clicking on this link.').'">'
-                    . $clang->gT('check if this link works.').'</a><br/> '
+                    $warning_force_ssl = sprintf($clang->gT('Warning: Before turning on HTTPS,%s check if this link works.%s'),'<a href="https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" title="'. $clang->gT('Test if your server has SSL enabled by clicking on this link.').'">','</a>')
+                    .'<br/> '
                     . $clang->gT("If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it.");
                     switch($thisforce_ssl)
                     {
@@ -515,6 +517,17 @@
                             ><?php $clang->eT("XML-RPC"); ?></option>
                     </select></li>
                     <li><label><?php $clang->eT("URL:"); ?></label><?php echo $this->createAbsoluteUrl("admin/remotecontrol"); ?></li>
+                    <?php $rpc_publish_api=getGlobalSetting('rpc_publish_api'); ?>
+                    <li><label for='rpc_publish_api'><?php $clang->eT("Publish API on /admin/remotecontrol:"); ?></label>
+                        <select id='rpc_publish_api' name='rpc_publish_api'>
+                            <option value='1'
+                                <?php if ($rpc_publish_api == true) { echo " selected='selected'";}?>
+                                ><?php $clang->eT("Yes"); ?></option>
+                            <option value='0'
+                                <?php if ($rpc_publish_api == false) { echo " selected='selected'";}?>
+                                ><?php $clang->eT("No"); ?></option>
+                        </select>
+                    </li>
             </ul>
         </div>
         <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ',$restrictToLanguages); ?>'/>

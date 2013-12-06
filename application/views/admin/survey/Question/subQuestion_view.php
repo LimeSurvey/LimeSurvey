@@ -1,7 +1,7 @@
 <script type='text/javascript'>
     var sLabelSetName='<?php $clang->eT('Label set name','js'); ?>';
     var languagecount=<?php echo count($anslangs); ?>;
-    var newansweroption_text='<?php $clang->eT('New answer option','js'); ?>';
+    var newansweroption_text='<?php $clang->eT('New subquestion','js'); ?>';
     var strcode='<?php $clang->eT('Code','js'); ?>';
     var strlabel='<?php $clang->eT('Label','js'); ?>';
     var strCantDeleteLastAnswer='<?php $clang->eT('You cannot delete the last subquestion.','js'); ?>';
@@ -15,8 +15,8 @@
     var saveaslabletitle  = '<?php $clang->eT('Save as label set','js'); ?>';
     var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/getAllSets'); ?>';
     var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/ajaxSets'); ?>';
-    var lsdetailurl = '<?php echo Yii::app()->createUrl('/admin/question/sa/ajaxlabelsetdetails'); ?>';
-    var lspickurl = '<?php echo Yii::app()->createUrl('/admin/question/sa/ajaxlabelsetpicker'); ?>';
+    var lsdetailurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetdetails'); ?>';
+    var lspickurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetpicker'); ?>';
     var check = true;
     var lasuccess = '<?php $clang->eT('The records have been saved successfully!'); ?>';
     var lafail = '<?php $clang->eT('Sorry, the request failed!'); ?>';
@@ -109,9 +109,12 @@
                                             &nbsp;</td><td><input type='hidden' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='20' size='5'
                                                 /><?php echo $row->title; ?>
                                             <?php }
-                                            elseif ($activated != 'Y' && $first) // If survey is decactivated
+                                            elseif ($activated != 'Y' && $first) // If survey is not activated and first language
                                             { ?>
-                                            <img class='handle' src='<?php echo $sImageURL; ?>handle.png' alt=''/></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" /><input type='text' id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' class='code' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='20' size='5'
+                                            <?php if($row->title) {$sPattern="^([a-zA-Z][a-zA-Z0-9]*|{$row->title})$";}else{$sPattern="^[a-zA-Z][a-zA-Z0-9]*$";} ?>
+                                            <img class='handle' src='<?php echo $sImageURL; ?>handle.png' alt=''/></td>
+                                            <td><input type='hidden' class='oldcode' id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" />
+                                            <input type='text' id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' class='code' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='20' size='5' pattern='<?php echo $sPattern; ?>'
                                                 onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;} " />
 
                                             <?php }
@@ -122,7 +125,7 @@
                                             <?php } ?>
 
                                     </td><td>
-                                        <input type='text' size='100' class='answer' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+                                        <input type='text' size='100' class='answer' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' placeholder='<?php $clang->eT("Some example subquestion","js") ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
                                         <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".$clang->gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
                                     </td>
                                     <td>
@@ -146,7 +149,7 @@
                     } ?>
                     <button class='btnlsbrowser' id='btnlsbrowser_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Predefined label sets...'); ?></button>
                     <button class='btnquickadd' id='btnquickadd_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Quick add...'); ?></button>
-                    <?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1){ ?>
+                    <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create')){ ?>
                         <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php $clang->eT('Save as label set'); ?></button>
                         <?php } ?>
 

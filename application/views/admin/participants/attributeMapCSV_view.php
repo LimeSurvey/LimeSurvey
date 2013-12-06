@@ -14,7 +14,7 @@
             var notPairedErrorTxt = "<?php $clang->eT("You have to pair this field with an existing attribute.") ?>";
             var onlyOnePairedErrorTxt = "<?php $clang->eT("Only one CSV attribute is mapped with central attribute.") ?>";
             var cannotAcceptErrorTxt="<?php $clang->eT("This list cannot accept token attributes.") ?>";
-            var seperator = "<?php echo sanitize_paranoid_string($_POST['seperatorused']); ?>";
+            var separator = "<?php echo sanitize_paranoid_string($_POST['separatorused']); ?>";
             var thefilepath = "<?php echo $fullfilepath ?>";
             var filterblankemails = "<?php echo $filterbea ?>";
         </script>

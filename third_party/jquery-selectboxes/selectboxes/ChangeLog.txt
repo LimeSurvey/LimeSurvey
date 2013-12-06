@@ -1,0 +1,49 @@
+Select box manipulation ChangeLog
+
+8 February 2009
+ Sorting no longer has the wrong options selected. selectOptions now takes an array. New selectedTexts (like selectedValues)
+
+6 October 2008
+  ajaxAddOption documentation (in source) update. removeOption can take an array. new selectedOptions
+  minified version
+
+17 June 2008
+  available under a MIT/GPL dual license. Callback function for containsOption is passed on the index of the found option
+
+14 December 2007
+  removing options by index now works again
+
+12 September 2007
+  new selectedValues plugin - returns values of selected options as an array
+
+27 July 2007
+  cache (created when adding an option) is removed when removing options
+  if you supply a second parameter to removeOption and it is true, then the option will only be removed
+    if it is selected as well
+
+15 June 2007
+  addOption is now much faster when adding many options (no longer causing an 'unresponsive script' dialog box)
+
+22 May 2007
+  Packed version available using Dean Edwards' Packer: http://dean.edwards.name/packer/
+
+5 April 2007
+  ajaxAddOption takes two additional arguments - fn (function to call when after the options have been added)
+    and args (arguments to pass on to the function)
+  New containsOption plugin, for checking if an option is within the select list
+
+20 February 2007
+  removeOption can now take a regular expression
+  (useful if you want to remove multiple options in one go)
+
+13 February 2007
+  addOption can also replace options that already exist with the same value
+  selectOptions can clear previously selected options
+  new copyOptions now allows you to copy options from one select to another
+
+2 February 2007
+  Fix for Safari 2.0 - couldn't add option
+
+5 December 2006
+  Select option(s) by value with 'selectOptions'
+  Based on code by Mathias Bank (http://www.mathias-bank.de)

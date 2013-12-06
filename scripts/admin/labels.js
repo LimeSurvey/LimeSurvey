@@ -27,9 +27,8 @@ $(document).ready(function(){
     if ($(".answertable tbody").children().length == 0)
         add_label(undefined);
 
-
-    $(".btnaddanswer").live('click',add_label);
-    $(".btndelanswer").live('click',del_label);
+    $(document).on('click', '.btnaddanswer', add_label);
+    $(document).on('click', '.btndelanswer', del_label);
 
     $('#neweditlblset0 .answertable tbody').sortable({
         update:sort_complete,
@@ -41,7 +40,7 @@ $(document).ready(function(){
         width:600,
         title: $("#quickadd").attr('name')});
 
-    $('.btnquickadd').live('click',function(){
+    $('.btnquickadd').click(function(){
         $('#quickadd').dialog('open');
     });
 
@@ -105,9 +104,9 @@ function quickaddfunction(){
     }
 
     lsrows=$('#quickaddarea').val().split("\n");
-    var seperatorchar="\t";
+    var separatorchar="\t";
     if (lsrows[0].indexOf("\t")==-1){
-        seperatorchar=';'
+        separatorchar=';'
     }
 
 
@@ -115,7 +114,7 @@ function quickaddfunction(){
     $(lsrows).each(function(index,element){
         code = undefined;
 
-        params = element.split(seperatorchar);
+        params = element.split(separatorchar);
         k = 0;
         if (params.length > $(".lslanguage").length){
             code = params[0].replace(/[^a-zA-Z 0-9]+/g,'').substr(0,5);

@@ -167,11 +167,11 @@ class labels extends Survey_Common_Action
         $lid = sanitize_int($lid);
         $aViewUrls = array();
 
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1)
+        if (Permission::model()->hasGlobalPermission('labelsets','read'))
         {
-            if ($sa == "editlabelset")
+            if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets','update'))
             {
-                $result = Labelsets::model()->findAllByAttributes(array('lid' => $lid));
+                $result = LabelSet::model()->findAllByAttributes(array('lid' => $lid));
                 foreach ($result as $row)
                 {
                     $row = $row->attributes;
@@ -186,7 +186,7 @@ class labels extends Survey_Common_Action
             $aData['action'] = $sa;
             $aData['lid'] = $lid;
 
-            if ($sa == "newlabelset")
+            if ($sa == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets','create'))
             {
                 $langids = Yii::app()->session['adminlang'];
                 $tabitem = $clang->gT("Create new label set");
@@ -235,13 +235,13 @@ class labels extends Survey_Common_Action
         $aData = array();
 
         // Includes some javascript files
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'labels.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.json.min.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
+        App()->getClientScript()->registerPackage('jquery-json');
         // Checks if user have the sufficient rights to manage the labels
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1)
+        if (Permission::model()->hasGlobalPermission('labelsets','read'))
         {
             // Get a result containing labelset with the specified id
-            $result = Labelsets::model()->findByAttributes(array('lid' => $lid));
+            $result = LabelSet::model()->findByAttributes(array('lid' => $lid));
 
             // If there is label id in the variable $lid and there are labelset records in the database
             $labelset_exists = !empty($result);
@@ -319,7 +319,7 @@ class labels extends Survey_Common_Action
      */
     public function process()
     {
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1)
+        if ( Permission::model()->hasGlobalPermission('labelsets','update'))
         {
             if (isset($_POST['method']) && get_magic_quotes_gpc())
                 $_POST['method'] = stripslashes($_POST['method']);
@@ -346,9 +346,9 @@ class labels extends Survey_Common_Action
 
 
             if ($lid)
-                $this->getController()->redirect($this->getController()->createUrl("admin/labels/sa/view/lid/" . $lid));
+                $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $lid));
             else
-                $this->getController()->redirect($this->getController()->createUrl("admin/labels/sa/view"));
+                $this->getController()->redirect(array("admin/labels/sa/view"));
         }
     }
 
@@ -360,13 +360,13 @@ class labels extends Survey_Common_Action
      */
     public function exportmulti()
     {
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'labels.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
         $this->_renderWrappedTemplate('labels', 'exportmulti_view');
     }
 
     public function getAllSets()
     {
-        $results = Labelsets::model()->findAll();
+        $results = LabelSet::model()->findAll();
 
         $output = array();
 
@@ -391,9 +391,9 @@ class labels extends Survey_Common_Action
         $language = trim($language);
         if ($lid == 0)
         {
-            $lset = new Labelsets;
+            $lset = new LabelSet;
             $lset->label_name = Yii::app()->getRequest()->getPost('laname');
-            $lset->languages = sanitize_languagecodeS($language);
+            $lset->languages = $language;
             $lset->save();
 
             $lid = getLastInsertID($lset->tableName());

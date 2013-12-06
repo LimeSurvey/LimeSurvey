@@ -13,10 +13,9 @@ if (!defined('BASEPATH'))
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* 	$Id$
 */
 
-class Survey extends CActiveRecord
+class Survey extends LSActiveRecord
 {
     /**
      * This is a static cache, it lasts only during the active request. If you ever need
@@ -26,7 +25,31 @@ class Survey extends CActiveRecord
      * @var array
      */
     protected $findByPkCache = array();
-    
+
+    /**
+     * Expires a survey. If the object was invoked using find or new surveyId can be ommited.
+     * @param int $surveyId
+     */
+    public function expire($surveyId = null)
+    {
+        $dateTime = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+        $dateTime = dateShift($dateTime, "Y-m-d H:i:s", '-1 day');
+        
+        if (!isset($surveyId))
+        {
+            $this->expires = $dateTime;
+            if ($this->scenario == 'update')
+            {
+                return $this->save();
+            }
+        }
+        else
+        {
+            self::model()->updateByPk($surveyId,array('expires' => $dateTime));
+        }
+
+    }
+
     /**
     * Returns the table's name
     *
@@ -70,9 +93,10 @@ class Survey extends CActiveRecord
     */
     public function relations()
     {
+		$alias = $this->getTableAlias();
         return array(
-        'languagesettings' => array(self::HAS_MANY, 'Surveys_languagesettings', 'surveyls_survey_id'),
-        'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 't.owner_id = owner.uid'),
+			'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id'),
+			'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
         );
     }
 
@@ -126,7 +150,7 @@ class Survey extends CActiveRecord
         array('shownoanswer', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('showwelcome', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('showprogress', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('allowjumps', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('questionindex', 'numerical','min' => 0, 'max' => 2, 'allowEmpty'=>false),
         array('nokeyboard', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('alloweditaftercompletion', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
         array('bounceprocessing', 'in','range'=>array('L','N','G'), 'allowEmpty'=>true),
@@ -172,12 +196,13 @@ class Survey extends CActiveRecord
         $loginID = (int) $loginID;
         $criteria = $this->getDBCriteria();
         $criteria->mergeWith(array(
-            'condition' => 'sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid = :uid AND permission = :permission AND read_p = 1)
+            'condition' => 'sid IN (SELECT entity_id FROM {{permissions}} WHERE entity = :entity AND  uid = :uid AND permission = :permission AND read_p = 1)
                             OR owner_id = :owner_id',
         ));
         $criteria->params[':uid'] = $loginID;
         $criteria->params[':permission'] = 'survey';
         $criteria->params[':owner_id'] = $loginID;
+        $criteria->params[':entity'] = 'survey';
 
         return $this;
     }
@@ -195,6 +220,20 @@ class Survey extends CActiveRecord
             return explode(' ', $sLanguages);
         else
             return array();
+    }
+
+    /**
+    * Returns all languages array
+    *
+    * @access public
+    * @return array
+    */
+    public function getAllLanguages()
+    {
+        $sLanguages = self::getAdditionalLanguages();
+        $baselang=$this->language;
+        array_unshift($sLanguages,$baselang);
+        return $sLanguages;
     }
 
     /**
@@ -223,7 +262,7 @@ class Survey extends CActiveRecord
                     );
                     $languagesettings[$fieldname] = $desc;
                 }
-                $ls = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $this->sid, 'surveyls_language' => $this->language));
+                $ls = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $this->sid, 'surveyls_language' => $this->language));
             self::model()->updateByPk($this->sid, array('attributedescriptions' => serialize($fields)));
             $ls->surveyls_attributecaptions = serialize($languagesettings);
             $ls->save();
@@ -319,24 +358,24 @@ class Survey extends CActiveRecord
                 Yii::app()->db->createCommand()->dropTable("{{tokens_".intval($iSurveyID)."}}");
             }
 
-            $oResult = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID));
+            $oResult = Question::model()->findAllByAttributes(array('sid' => $iSurveyID));
             foreach ($oResult as $aRow)
             {
-                Answers::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                Conditions::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
-                Question_attributes::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                Defaultvalues::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                Answer::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                Condition::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
+                QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                DefaultValue::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
             }
 
-            Questions::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            Question::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             Assessment::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            Groups::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            Surveys_languagesettings::model()->deleteAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
-            Survey_permissions::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            Saved_control::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            Survey_url_parameters::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            QuestionGroup::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
+            Permission::model()->deleteAllByAttributes(array('entity_id' => $iSurveyID, 'entity'=>'survey'));
+            SavedControl::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             //Remove any survey_links to the CPDB
-            Survey_links::model()->deleteLinksBySurvey($iSurveyID);
+            SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
             Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
         }
     }
@@ -363,5 +402,19 @@ class Survey extends CActiveRecord
      */
     public function resetCache() {
         $this->findByPkCache = array();
+    }
+    
+    /**
+     * Attribute renamed to questionindex in dbversion 169
+     * Y maps to 1 otherwise 0;
+     * @param type $value
+     */
+    public function setAllowjumps($value)
+    {
+        if ($value === 'Y') {
+            $this->questionindex = 1;
+        } else {
+            $this->questionindex = 0;
+        }
     }
 }

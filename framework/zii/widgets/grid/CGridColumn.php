@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -22,7 +22,6 @@
  * This is determined based on whether {@link footer} is set.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridColumn.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -30,7 +29,7 @@ abstract class CGridColumn extends CComponent
 {
 	/**
 	 * @var string the ID of this column. This value should be unique among all grid view columns.
-	 * If this is set, it will be assigned one automatically.
+	 * If this is not set, it will be assigned one automatically.
 	 */
 	public $id;
 	/**
@@ -51,15 +50,26 @@ abstract class CGridColumn extends CComponent
 	public $visible=true;
 	/**
 	 * @var string a PHP expression that is evaluated for every data cell and whose result
-	 * is used as the CSS class name for the data cell. In this expression, the variable
-	 * <code>$row</code> the row number (zero-based); <code>$data</code> the data model for the row;
-	 * and <code>$this</code> the column object.
+	 * is used as the CSS class name for the data cell. In this expression, you can use the following variables:
+	 * <ul>
+	 *   <li><code>$row</code> the row number (zero-based)</li>
+	 *   <li><code>$data</code> the data model for the row</li>
+	 *   <li><code>$this</code> the column object</li>
+	 * </ul>
+	 * The PHP expression will be evaluated using {@link evaluateExpression}.
+	 *
+	 * A PHP expression can be any PHP code that has a value. To learn more about what an expression is,
+	 * please refer to the {@link http://www.php.net/manual/en/language.expressions.php php manual}.
 	 */
 	public $cssClassExpression;
 	/**
 	 * @var array the HTML options for the data cell tags.
 	 */
 	public $htmlOptions=array();
+	/**
+	 * @var array the HTML options for the filter cell tag.
+	 */
+	public $filterHtmlOptions=array();
 	/**
 	 * @var array the HTML options for the header cell tag.
 	 */
@@ -102,7 +112,7 @@ abstract class CGridColumn extends CComponent
 	 */
 	public function renderFilterCell()
 	{
-		echo "<td>";
+		echo CHtml::openTag('td',$this->filterHtmlOptions);
 		$this->renderFilterCellContent();
 		echo "</td>";
 	}
@@ -129,10 +139,13 @@ abstract class CGridColumn extends CComponent
 		if($this->cssClassExpression!==null)
 		{
 			$class=$this->evaluateExpression($this->cssClassExpression,array('row'=>$row,'data'=>$data));
-			if(isset($options['class']))
-				$options['class'].=' '.$class;
-			else
-				$options['class']=$class;
+			if(!empty($class))
+			{
+				if(isset($options['class']))
+					$options['class'].=' '.$class;
+				else
+					$options['class']=$class;
+			}
 		}
 		echo CHtml::openTag('td',$options);
 		$this->renderDataCellContent($row,$data);

@@ -8,7 +8,7 @@
             <?php $clang->eT("Total records in this token table"); ?>
         </th>
         <td>
-            <?php echo $queries['tkcount']; ?>
+            <?php echo $queries['count']; ?>
         </td>
     </tr>
     <tr>
@@ -16,7 +16,7 @@
             <?php $clang->eT("Total with no unique Token"); ?>
         </th>
         <td>
-            <?php echo $queries['tkinvalid']; ?>
+            <?php echo $queries['invalid']; ?>
         </td>
     </tr>
     <tr>
@@ -24,7 +24,7 @@
             <?php $clang->eT("Total invitations sent"); ?>
         </th>
         <td>
-            <?php echo $queries['tksent']; ?>
+            <?php echo $queries['sent']; ?>
         </td>
     </tr>
     <tr>
@@ -32,7 +32,7 @@
             <?php $clang->eT("Total opted out"); ?>
         </th>
         <td>
-            <?php echo $queries['tkoptout']; ?>
+            <?php echo $queries['optout']; ?>
         </td>
     </tr>
     <tr>
@@ -40,7 +40,7 @@
             <?php $clang->eT("Total surveys completed"); ?>
         </th>
         <td>
-            <?php echo $queries['tkcompleted']; ?>
+            <?php echo $queries['completed']; ?>
         </td>
     </tr>
 </table>
@@ -48,19 +48,19 @@
 <script type='text/javascript'>
     surveyid = '<?php echo $surveyid; ?>'
 </script>
-<?php /* if (hasSurveyPermission($surveyid, 'tokens', 'update') || hasSurveyPermission($surveyid, 'tokens', 'delete'))
+<?php /* if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update') || Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'delete'))
 { ?>
     <div class='header ui-widget-header'><?php $clang->eT("Token database administration options"); ?></div>
     <div style='width:30%; margin:0 auto;'>
         <ul>
-                    <?php if (hasSurveyPermission($surveyid, 'tokens', 'update'))
+                    <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'))
                     { ?>
                 <li><a href='#' onclick="if( confirm('<?php $clang->eT("Are you really sure you want to reset all invitation records to NO?", "js"); ?>')) { <?php echo convertGETtoPOST(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites"); ?>}">
                         <?php $clang->eT("Set all entries to 'No invitation sent'."); ?></a></li>
                 <li><a href='#' onclick="if ( confirm('<?php $clang->eT("Are you sure you want to delete all unique token strings?", "js"); ?>')) { <?php echo convertGETtoPOST(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens"); ?>}">
                 <?php $clang->eT("Delete all unique token strings"); ?></a></li>
                     <?php }
-                    if (hasSurveyPermission($surveyid, 'tokens', 'delete'))
+                    if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'delete'))
                     { ?>
                 <li><a href='#' onclick=" if (confirm('<?php $clang->eT("Are you really sure you want to delete ALL token entries?", "js"); ?>')) { <?php echo convertGETtoPOST(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall"); ?>}">
         <?php $clang->eT("Delete all token entries"); ?></a></li>

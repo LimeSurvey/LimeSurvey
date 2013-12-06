@@ -49,10 +49,12 @@ $(document).ready(function() {
             //data can be string of parameters or array/object
             data = typeof data == 'string' ? data : jQuery.param(data);
             //split params into form inputs
-            var inputs = '';
+            var csrfToken=$("input[name='YII_CSRF_TOKEN']:first").val();
+            
+            var inputs = '<input type="hidden" name="YII_CSRF_TOKEN" value="'+csrfToken+'">';
             jQuery.each(data.split('&'), function(){
                 var pair = this.split('=');
-                inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />';
+                inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'">';
             });
             //send request
             jQuery('<form action="'+ url +'" method="'+ (method||'post') +'">'+inputs+'</form>')
@@ -267,7 +269,7 @@ $(document).ready(function() {
         }
     });
 
-    $.jgrid.formatter.integer.thousandsSeparator=''; //Removes the default spacing as a thousands seperator
+    $.jgrid.formatter.integer.thousandsSeparator=''; //Removes the default spacing as a thousands separator
     //Todo - global setting for all jqGrids to match language/regional number formats
 
     /* Set up default buttons in the main jqGrid Pager */
@@ -340,7 +342,7 @@ $(document).ready(function() {
         {
             caption:"",
             title: fullSearchTitle,
-            buttonicon:'searchicon',
+            buttonicon:'ui-icon-search',
             onClickButton:function(){
                 var dialog_buttons={};
                 dialog_buttons[searchBtn]=function(){
@@ -461,7 +463,7 @@ $(document).ready(function() {
                             title: titlemsg,
                             buttons: dialog_buttons,
                             width : 400,
-                            height : 400,
+                            height : 450,
                             open: function(event, ui) {
                                 $('#attributes').multiselect({ noneSelectedText: 'Select Attributes',autoOpen:true, height:150 }).multiselectfilter();
                             }

@@ -16,7 +16,7 @@
     </ul>
     <div id='usercontrol-1'>
         <?php
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+        if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
             $attribute = array('class' => 'form44');
             echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeUserControlValues'), 'post', $attribute);

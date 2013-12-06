@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 
 /**
@@ -18,8 +17,7 @@
  *
  * @package LimeSurvey
  * @copyright 2011
- * @version $Id$
- * @access public
+  * @access public
  */
 class OptoutController extends LSYii_Controller {
 
@@ -44,7 +42,7 @@ class OptoutController extends LSYii_Controller {
 
         if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
         {
-            $this->redirect(Yii::app()->getController()->createUrl('/'));
+            $this->redirect(array('/'));
         }
         $iSurveyID = (int)$iSurveyID; //Make sure it's an integer (protect from SQL injects)
         //Check that there is a SID
@@ -72,18 +70,18 @@ class OptoutController extends LSYii_Controller {
         }
         else
         {
-            $row = Tokens_dynamic::model($iSurveyID)->getEmailStatus($sToken);
+            $tokenInstance = Token::model($iSurveyID)->findByAttributes($sToken);
 
-            if ($row == false)
+            if (!isset($tokenInstance))
             {
                 $html = $clang->gT('You are not a participant in this survey.');
             }
             else
             {
-                $usresult = $row['emailstatus'];
-                if ($usresult == 'OK')
+                if ($tokenInstance->emailstatus == 'OK')
                 {
-                    $usresult = Tokens_dynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OptOut');
+					$tokenInstance->emailstatus = 'OptOut';
+					$tokenInstance->save();
                     $html = $clang->gT('You have been successfully removed from this survey.');
                 }
                 else
@@ -127,7 +125,7 @@ class OptoutController extends LSYii_Controller {
 
         if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
         {
-            $this->redirect(Yii::app()->getController()->createUrl('/'));
+            $this->redirect(array('/'));
         }
         $iSurveyID = (int)$iSurveyID; //Make sure it's an integer (protect from SQL injects)
         //Check that there is a SID
@@ -155,29 +153,27 @@ class OptoutController extends LSYii_Controller {
         }
         else
         {
-            $row = Tokens_dynamic::model($iSurveyID)->getEmailStatus($sToken);
-            $datas = Tokens_dynamic::model($iSurveyID)->find('token = :token', array(":token"=>$sToken));
-
-            if ($row == false)
+            $tokenInstance = Token::model($iSurveyID)->findByAttributes(array('token' => $sToken));
+            if (!isset($tokenInstance))
             {
                 $html = $clang->gT('You are not a participant in this survey.');
             }
             else
             {
-                $usresult = $row['emailstatus'];
-                if ($usresult == 'OK')
+                if ($tokenInstance->emailstatus == 'OK')
                 {
-                    $usresult = Tokens_dynamic::model($iSurveyID)->updateEmailStatus($sToken, 'OptOut');
+					$tokenInstance->emailstatus = 'OptOut';
+					$tokenInstance->save();
                     $html = $clang->gT('You have been successfully removed from this survey.');
                 }
                 else
                 {
                     $html = $clang->gT('You have been already removed from this survey.');
                 }
-                if(!empty($datas->participant_id) && $datas->participant_id != "")
+                if(!empty($tokenInstance->participant_id))
                 {
                     //Participant also exists in central db
-                    $cpdb = Participants::model()->find('participant_id = :participant_id', array(":participant_id"=>$datas->participant_id));
+                    $cpdb = Participant::model()->findByPk($tokenInstance->participant_id);
                     if($cpdb->blacklisted=="Y")
                     {
                         $html .= "<br />";

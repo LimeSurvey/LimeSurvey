@@ -7,12 +7,13 @@
  * Copyright © 1991-2007 Unicode, Inc. All rights reserved.
  * Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
  *
- * Copyright © 2008-2011 Yii Software LLC (http://www.yiiframework.com/license/)
+ * @copyright 2008-2013 Yii Software LLC (http://www.yiiframework.com/license/)
  */
 return array (
   'version' => '5798',
   'numberSymbols' => 
   array (
+    'alias' => '',
     'decimal' => ',',
     'group' => ' ',
     'list' => ';',
@@ -23,7 +24,6 @@ return array (
     'perMille' => '‰',
     'infinity' => '∞',
     'nan' => 'NaN',
-    'alias' => '',
   ),
   'decimalFormat' => '#,##0.###',
   'scientificFormat' => '#E0',
@@ -32,7 +32,7 @@ return array (
   'currencySymbols' => 
   array (
     'AUD' => 'AU$',
-    'BRL' => 'BR$',
+    'BRL' => 'R$',
     'CAD' => 'CA$',
     'CNY' => 'CN¥',
     'EUR' => '€',
@@ -118,13 +118,13 @@ return array (
     ),
     'abbreviated' => 
     array (
-      0 => 'asi',
+      0 => 'asa',
       1 => 'ayn',
       2 => 'asi',
       3 => 'akṛ',
       4 => 'akw',
       5 => 'asim',
-      6 => 'Asiḍ',
+      6 => 'asiḍ',
     ),
   ),
   'weekDayNamesSA' => 

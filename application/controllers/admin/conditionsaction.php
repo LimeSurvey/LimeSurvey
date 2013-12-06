@@ -10,10 +10,9 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 /**
-* Conditions Controller
+* Condition Controller
 *
 * This controller performs token actions
 *
@@ -165,9 +164,9 @@ class conditionsaction extends Survey_Common_Action {
             else
             {
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
-                Conditions::model()->deleteRecords("qid in (select qid from {{questions}} where sid={$iSurveyID})");
+                Condition::model()->deleteRecords("qid in (select qid from {{questions}} where sid={$iSurveyID})");
                 Yii::app()->session['flashmessage']=$clang->gT("All conditions in this survey have been deleted.");
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyID));
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
 
             }
         }
@@ -244,13 +243,13 @@ class conditionsaction extends Survey_Common_Action {
                         //First lets make sure there isn't already an exact replica of this condition
                         $condition_data['value'] = $ca;
 
-                        $result = Conditions::model()->findAllByAttributes($condition_data);
+                        $result = Condition::model()->findAllByAttributes($condition_data);
 
                         $count_caseinsensitivedupes = count($result);
 
                         if ($count_caseinsensitivedupes == 0)
                         {
-                            $result = Conditions::model()->insertRecords($condition_data);;
+                            $result = Condition::model()->insertRecords($condition_data);;
                         }
                     }
                 }
@@ -278,7 +277,7 @@ class conditionsaction extends Survey_Common_Action {
                 if (isset($posted_condition_value))
                 {
                     $condition_data['value'] = $posted_condition_value;
-                    $result = Conditions::model()->insertRecords($condition_data);
+                    $result = Condition::model()->insertRecords($condition_data);
                 }
             }
             LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
@@ -321,7 +320,7 @@ class conditionsaction extends Survey_Common_Action {
                         'method' => $p_method,
                         'value' => $ca
                         );
-                        $result = Conditions::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
+                        $result = Condition::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
                     }
                 }
 
@@ -355,7 +354,7 @@ class conditionsaction extends Survey_Common_Action {
                     'method' => $p_method,
                     'value' => $posted_condition_value
                     );
-                    $result = Conditions::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
+                    $result = Condition::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
                 }
             }
             LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
@@ -365,7 +364,7 @@ class conditionsaction extends Survey_Common_Action {
         if (isset($p_subaction) && $p_subaction == "delete")
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
-            $result = Conditions::model()->deleteRecords(array('cid'=>$p_cid));
+            $result = Condition::model()->deleteRecords(array('cid'=>$p_cid));
             LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
         }
 
@@ -373,14 +372,14 @@ class conditionsaction extends Survey_Common_Action {
         if (isset($p_subaction) && $p_subaction == "deletescenario")
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
-            $result = Conditions::model()->deleteRecords(array('qid'=>$qid, 'scenario'=>$p_scenario));
+            $result = Condition::model()->deleteRecords(array('qid'=>$qid, 'scenario'=>$p_scenario));
             LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
         }
 
         // UPDATE SCENARIO
         if (isset($p_subaction) && $p_subaction == "updatescenario" && isset($p_newscenarionum))
         {
-            $result = Conditions::model()->insertRecords(array('scenario'=>$p_newscenarionum), TRUE, array(
+            $result = Condition::model()->insertRecords(array('scenario'=>$p_newscenarionum), TRUE, array(
             'qid'=>$qid, 'scenario'=>$p_scenario));
             LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
         }
@@ -389,7 +388,7 @@ class conditionsaction extends Survey_Common_Action {
         if (isset($p_subaction) && $p_subaction == "deleteallconditions")
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
-            $result = Conditions::model()->deleteRecords(array('qid'=>$qid));
+            $result = Condition::model()->deleteRecords(array('qid'=>$qid));
         }
 
         // RENUMBER SCENARIOS
@@ -402,7 +401,7 @@ class conditionsaction extends Survey_Common_Action {
             foreach ($result->readAll() as $srow)
             {
                 // new var $update_result == old var $result2
-                $update_result = Conditions::model()->insertRecords(array('scenario'=>$newindex), TRUE,
+                $update_result = Condition::model()->insertRecords(array('scenario'=>$newindex), TRUE,
                 array( 'qid'=>$qid, 'scenario'=>$srow['scenario'] )
                 );
                 $newindex++;
@@ -460,7 +459,7 @@ class conditionsaction extends Survey_Common_Action {
                         'value' 		=> 	$pfc['value']
                         );
 
-                        $result = Conditions::model()->findAllByAttributes($conditions_data);
+                        $result = Condition::model()->findAllByAttributes($conditions_data);
 
                         $count_caseinsensitivedupes = count($result);
 
@@ -475,7 +474,7 @@ class conditionsaction extends Survey_Common_Action {
 
                         if ($countduplicates == 0) //If there is no match, add the condition.
                         {
-                            $result = Conditions::model()->insertRecords($conditions_data);
+                            $result = Condition::model()->insertRecords($conditions_data);
                             $conditionCopied = true;
                         }
                         else
@@ -490,13 +489,13 @@ class conditionsaction extends Survey_Common_Action {
                     if (isset($conditionDuplicated) && $conditionDuplicated ==true)
                     {
                         $CopyConditionsMessage = CHtml::tag('div', array('class'=>'partialheader'),
-                        '('.$clang->gT("Conditions successfully copied (some were skipped because they were duplicates)").')'
+                        '('.$clang->gT("Condition successfully copied (some were skipped because they were duplicates)").')'
                         );
                     }
                     else
                     {
                         $CopyConditionsMessage = CHtml::tag('div', array('class'=>'successheader'),
-                        '('.$clang->gT("Conditions successfully copied").')'
+                        '('.$clang->gT("Condition successfully copied").')'
                         );
                     }
                 }
@@ -520,7 +519,7 @@ class conditionsaction extends Survey_Common_Action {
         if (!isset($iSurveyID)) { $iSurveyID = returnGlobal('sid'); }
         $thissurvey = getSurveyInfo($iSurveyID);
 
-        $qresult = Questions::model()->with('groups')->findByAttributes(array('qid' => $qid, 'parent_qid' => 0, 'language' => Survey::model()->findByPk($iSurveyID)->language));
+        $qresult = Question::model()->with('groups')->findByAttributes(array('qid' => $qid, 'parent_qid' => 0, 'language' => Survey::model()->findByPk($iSurveyID)->language));
         $questiongroupname = $qresult->groups->group_name;
         $questiontitle = $qresult['title'];
         $questiontext = $qresult['question'];
@@ -531,7 +530,7 @@ class conditionsaction extends Survey_Common_Action {
         // To avoid natural sort order issues,
         // first get all questions in natural sort order
         // , and find out which number in that order this question is
-        $qresult = Questions::model()->with(array(
+        $qresult = Question::model()->with(array(
         'groups' => array(
         'condition' => 'groups.language = :lang',
         'params' => array(':lang' => Survey::model()->findByPk($iSurveyID)->language),
@@ -583,7 +582,7 @@ class conditionsaction extends Survey_Common_Action {
             foreach ($questionlist as $ql)
             {
 
-                $result = Questions::model()->with(array(
+                $result = Question::model()->with(array(
                 'groups' => array(
                 'condition' => 'groups.language = :lang',
                 'params' => array(':lang' => Survey::model()->findByPk($iSurveyID)->language),
@@ -613,7 +612,7 @@ class conditionsaction extends Survey_Common_Action {
         {
             foreach ($postquestionlist as $pq)
             {
-                $result = Questions::model()->with(array(
+                $result = Question::model()->with(array(
                 'groups' => array(
                 'condition' => 'groups.language = :lang',
                 'params' => array(':lang' => Survey::model()->findByPk($iSurveyID)->language),
@@ -667,7 +666,7 @@ class conditionsaction extends Survey_Common_Action {
                 $rows['type'] == "H"
                 )
                 {
-                    $aresult = Questions::model()->findAllByAttributes(array('parent_qid'=>$rows['qid'], 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'question_order ASC'));
+                    $aresult = Question::model()->findAllByAttributes(array('parent_qid'=>$rows['qid'], 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'question_order ASC'));
 
                     foreach ($aresult as $arows)
                     {
@@ -704,7 +703,7 @@ class conditionsaction extends Survey_Common_Action {
                             case "F": //Array Flexible Row
                             case "H": //Array Flexible Column
 
-                                $fresult = Answers::model()->findAllByAttributes(array(
+                                $fresult = Answer::model()->findAllByAttributes(array(
                                 'qid' => $rows['qid'],
                                 "language" => Survey::model()->findByPk($iSurveyID)->language,
                                 'scale_id' => 0,
@@ -810,7 +809,7 @@ class conditionsaction extends Survey_Common_Action {
                 } //if A,B,C,E,F,H
                 elseif ($rows['type'] == "1") //Multi Scale
                 {
-                    $aresult = Questions::model()->findAllByAttributes(array('parent_qid' => $rows['qid'], 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'question_order desc'));
+                    $aresult = Question::model()->findAllByAttributes(array('parent_qid' => $rows['qid'], 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'question_order desc'));
 
                     foreach ($aresult as $arows)
                     {
@@ -826,14 +825,14 @@ class conditionsaction extends Survey_Common_Action {
                         $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1");
 
                         // first label
-                        $lresult = Answers::model()->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0, 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'sortorder, answer'));
+                        $lresult = Answer::model()->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0, 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'sortorder, answer'));
                         foreach ($lresult as $lrows)
                         {
                             $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "{$lrows['code']}", "{$lrows['code']}");
                         }
 
                         // second label
-                        $lresult = Answers::model()->findAllByAttributes(array(
+                        $lresult = Answer::model()->findAllByAttributes(array(
                         'qid' => $rows['qid'],
                         'scale_id' => 1,
                         'language' => Survey::model()->findByPk($iSurveyID)->language,
@@ -854,7 +853,7 @@ class conditionsaction extends Survey_Common_Action {
                 }
                 elseif ($rows['type'] == "K" ||$rows['type'] == "Q") //Multi shorttext/numerical
                 {
-                    $aresult = Questions::model()->findAllByAttributes(array(
+                    $aresult = Question::model()->findAllByAttributes(array(
                     "parent_qid" => $rows['qid'],
                     "language" =>Survey::model()->findByPk($iSurveyID)->language,
                     ), array('order' => 'question_order desc'));
@@ -875,7 +874,7 @@ class conditionsaction extends Survey_Common_Action {
                 }
                 elseif ($rows['type'] == "R") //Answer Ranking
                 {
-                    $aresult = Answers::model()->findAllByAttributes(array(
+                    $aresult = Answer::model()->findAllByAttributes(array(
                     "qid" => $rows['qid'],
                     "scale_id" => 0,
                     "language" => Survey::model()->findByPk($iSurveyID)->language,
@@ -908,7 +907,7 @@ class conditionsaction extends Survey_Common_Action {
                     $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
 
-                    $aresult = Questions::model()->findAllByAttributes(array(
+                    $aresult = Question::model()->findAllByAttributes(array(
                     "parent_qid" => $rows['qid'],
                     "language" => Survey::model()->findByPk($iSurveyID)->language,
                     ), array('order' => 'question_order desc'));
@@ -976,7 +975,7 @@ class conditionsaction extends Survey_Common_Action {
 
                         default:
 
-                            $aresult = Answers::model()->findAllByAttributes(array(
+                            $aresult = Answer::model()->findAllByAttributes(array(
                             'qid' => $rows['qid'],
                             'scale_id' => 0,
                             'language' => Survey::model()->findByPk($iSurveyID)->language,
@@ -1040,7 +1039,7 @@ class conditionsaction extends Survey_Common_Action {
 
             $questionNavOptions .= CHtml::tag('option', array(
             'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$row['gid']}/qid/{$row['qid']}")),
-            htmlspecialchars($row['title']).":".$questionselecter
+            strip_tags($row['title']).':'.$questionselecter
             );
         }
         $questionNavOptions .= CHtml::closeTag('optgroup');
@@ -1057,9 +1056,9 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         $questionNavOptions .= CHtml::tag('option', array(
-            'value'=>$this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$gid/qid/$qid"),
-            'selected'=>'selected'),
-            $questiontitle .': '. $questiontextshort);
+        'value'=>$this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$gid/qid/$qid"),
+        'selected'=>'selected'),
+        $questiontitle .': '. $questiontextshort);
         $questionNavOptions .= CHtml::closeTag('optgroup');
         $questionNavOptions .= CHtml::openTag('optgroup', array('class'=> 'activesurveyselect', 'label'=>$clang->gT("After","js")));
 
@@ -1078,7 +1077,7 @@ class conditionsaction extends Survey_Common_Action {
             }
             $questionNavOptions .=  CHtml::tag('option', array(
             'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$row['gid']}/qid/{$row['qid']}")),
-            htmlspecialchars($row['title']).":".$questionselecter
+            strip_tags($row['title']).':'.$questionselecter
             );
         }
         $questionNavOptions .= CHtml::closeTag('optgroup');
@@ -1134,8 +1133,6 @@ class conditionsaction extends Survey_Common_Action {
 
         //END: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
 
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig("publicstyleurl").'jquery.multiselect.css');
-
         $aViewUrls = array();
 
         $aData['clang'] = $clang;
@@ -1171,7 +1168,7 @@ class conditionsaction extends Survey_Common_Action {
             $criteria->order='scenario';
             $criteria->group='scenario';
 
-            $scenarioresult = Conditions::model()->findAll($criteria);
+            $scenarioresult = Condition::model()->findAll($criteria);
             $scenariocount=count($scenarioresult);
 
             $showreplace="$questiontitle". $this->_showSpeaker($questiontext);
@@ -1191,8 +1188,7 @@ class conditionsaction extends Survey_Common_Action {
             if ($scenariocount > 0)
             {
 
-                //self::_js_admin_includes($this->config->item("generalscripts").'jquery/jquery.checkgroup.js');
-                $this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/jquery.checkgroup.js');
+                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts").'checkgroup.js');
                 foreach ($scenarioresult as $scenarionr)
                 {
                     $scenariotext = "";
@@ -1243,7 +1239,7 @@ class conditionsaction extends Survey_Common_Action {
                     $aData['scenariotext'] = $scenariotext;
                     $aData['scenarionr'] = $scenarionr;
                     if (!isset($aViewUrls['output'])) $aViewUrls['output']='';
-                    $aViewUrls['output'] .= $this->getController()->render('/admin/conditions/includes/conditions_scenario',
+                    $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/conditions_scenario',
                     $aData, TRUE);
 
                     unset($currentfield);
@@ -1284,8 +1280,7 @@ class conditionsaction extends Survey_Common_Action {
                     ->bindValue(":lang1", $sLanguage, PDO::PARAM_STR)
                     ->bindValue(":lang2", $sLanguage, PDO::PARAM_STR)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-                    $aConditionsResult1=$result->readAll(); // Read result into an array to be able to close the resultset to enable further queris
-
+                    
                     $querytoken = "SELECT count(*) as recordcount "
                     ."FROM {{conditions}} "
                     ."WHERE "
@@ -1325,7 +1320,7 @@ class conditionsaction extends Survey_Common_Action {
                         {
                             $aConditionsMerged[]=$arow;
                         }
-                        foreach ($aConditionsResult1 as $arow)
+                        foreach ($result->readAll() as $arow)
                         {
                             $aConditionsMerged[]=$arow;
                         }
@@ -1508,7 +1503,7 @@ class conditionsaction extends Survey_Common_Action {
 
                                 //$aViewUrls['includes/conditions_edit'][] = $aData;
 
-                                $aViewUrls['output'] .= $this->getController()->render('/admin/conditions/includes/conditions_edit',$aData, TRUE);
+                                $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/conditions_edit',$aData, TRUE);
 
                                 // now sets e corresponding hidden input field
                                 // depending on the leftOperandType
@@ -1608,7 +1603,7 @@ class conditionsaction extends Survey_Common_Action {
             if (isset($conditionsList) && is_array($conditionsList))
             {
                 //TIBO
-                $this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/jquery.multiselect.min.js');
+                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/jquery.multiselect.min.js');
 
                 // TODO
                 $aViewUrls['output'] .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( { autoOpen: true, noneSelectedText: '".$clang->gT("No questions selected")."', checkAllText: '".$clang->gT("Check all")."', uncheckAllText: '".$clang->gT("Uncheck all")."', selectedText: '# ".$clang->gT("selected")."', beforeclose: function(){ return false;},height: 200 } ); });</script>";
@@ -1893,7 +1888,7 @@ class conditionsaction extends Survey_Common_Action {
                 }
             }
             $aViewUrls['output'] .= "\t\t</select>\n"
-            ."\t\t<br /><span id='prevQuestionSGQALabel'>".$clang->gT("Answers from previous questions")."</span>\n"
+            ."\t\t<br /><span id='prevQuestionSGQALabel'>".$clang->gT("Answer from previous questions")."</span>\n"
             ."\t</div>\n";
 
             // Token tab
@@ -1917,8 +1912,8 @@ class conditionsaction extends Survey_Common_Action {
             $aViewUrls['output'] .= "</div>\n"; // end conditiontarget div
 
 
-            $this->getController()->_js_admin_includes(Yii::app()->getConfig("adminscripts").'conditions.js');
-            $this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/lime-conditions-tabs.js');
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts").'conditions.js');
+            //App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/lime-conditions-tabs.js');
 
             if ($subaction == "editthiscondition" && isset($p_cid))
             {
@@ -2069,7 +2064,7 @@ class conditionsaction extends Survey_Common_Action {
         $aData['conditionsoutput'] = $conditionsoutput;
         $this->_renderWrappedTemplate('conditions', $aViewUrls, $aData);
 
-        // TMSW Conditions->Relevance:  Must call LEM->ConvertConditionsToRelevance() whenever Condition is added or updated - what is best location for that action?
+        // TMSW Condition->Relevance:  Must call LEM->ConvertConditionsToRelevance() whenever Condition is added or updated - what is best location for that action?
     }
 
     private function _showSpeaker($hinttext)

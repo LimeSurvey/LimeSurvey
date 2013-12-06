@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 /**
 * Translate Controller
@@ -37,7 +36,7 @@ class translate extends Survey_Common_Action {
             return;
         }
 
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig("adminscripts") . 'translation.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts") . 'translation.js');
 
         $clang = Yii::app()->lang;
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
@@ -75,7 +74,7 @@ class translate extends Survey_Common_Action {
         if ( ! empty($tolang) )
         {
             // Only save if the administration user has the correct permission
-			if ( $actionvalue == "translateSave" && hasSurveyPermission($iSurveyID, 'translations', 'update') )
+			if ( $actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update') )
 			{
 				$this->_translateSave($iSurveyID, $tolang, $baselang, $tab_names);
 			}
@@ -119,8 +118,8 @@ class translate extends Survey_Common_Action {
 					{
 						$id1 = Yii::app()->getRequest()->getPost("{$type}_id1_{$i}");
 						$id2 = Yii::app()->getRequest()->getPost("{$type}_id2_{$i}");
-
-						$this->query($type, 'queryupdate', $iSurveyID, $tolang, $baselang, $id1, $id2, $new);
+                        $iScaleID = Yii::app()->getRequest()->getPost("{$type}_scaleid_{$i}");
+						$this->query($type, 'queryupdate', $iSurveyID, $tolang, $baselang, $id1, $id2, $iScaleID, $new);
 					}
 				}
 				$i++;
@@ -169,7 +168,7 @@ class translate extends Survey_Common_Action {
 			$aData['tolangdesc'] = $tolangdesc;
 			$aData['type'] = $type;
 			$aData['translateTabs'] = $this->displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type);
-			$aViewUrls['output'] .= $this->getController()->render("/admin/translate/translatetabs_view", $aData, true);
+			$aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatetabs_view", $aData, true);
 			foreach ( $resultbase as $rowfrom )
 			{
 				$textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
@@ -215,18 +214,18 @@ class translate extends Survey_Common_Action {
 											$amTypeOptions2, $baselangdesc, $tolangdesc, $textfrom2, $textto2, $i, $resultbase2[$i], $evenRow);
 				}
 
-				$aViewUrls['output'] .= $this->getController()->render("/admin/translate/translatefields_view", $aData, true);
+				$aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatefields_view", $aData, true);
 
 				$i++;
 			} // end while
 
 			$aData['all_fields_empty'] = $all_fields_empty;
 			$aData['translateFieldsFooter'] = $this->displayTranslateFieldsFooter();
-            $aData['bReadOnly']=!hasSurveyPermission($iSurveyID, 'translations', 'update');
-			$aViewUrls['output'] .= $this->getController()->render("/admin/translate/translatefieldsfooter_view", $aData, true);
+            $aData['bReadOnly']=!Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update');
+			$aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatefieldsfooter_view", $aData, true);
 		} // end foreach
 
-		// Submit button
+		// Submit buttonrender
 		$aViewUrls['translatefooter_view'][] = $aData;
 
         return $aViewUrls;
@@ -579,6 +578,7 @@ class translate extends Survey_Common_Action {
 					'dbColumn' => 'answer',
 					'id1' => 'qid',
 					'id2' => 'code',
+                    'scaleid' => 'scale_id',
 					'gid' => FALSE,
 					'qid' => TRUE,
 					'description' => $clang->gT("Answer options"),
@@ -741,7 +741,7 @@ class translate extends Survey_Common_Action {
         return $aData;
     }
 
-	private function query($type, $action, $iSurveyID, $tolang, $baselang, $id1 = "", $id2 = "", $new = "")
+	private function query($type, $action, $iSurveyID, $tolang, $baselang, $id1 = "", $id2 = "", $iScaleID="", $new = "")
 	{
 		$amTypeOptions = array();
         switch ($action)
@@ -765,62 +765,61 @@ class translate extends Survey_Common_Action {
                     case 'emailregistrationbody':
                     case 'email_confirm':
                     case 'email_confirmbody':
-                        return Surveys_languagesettings::model()->findAllByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$baselang));
+                        return SurveyLanguageSetting::model()->findAllByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$baselang));
                     case 'group':
                     case 'group_desc':
-                        return Groups::model()->findAllByAttributes(array('sid'=>$iSurveyID, 'language'=>$baselang), array('order' => 'gid'));
+                        return QuestionGroup::model()->findAllByAttributes(array('sid'=>$iSurveyID, 'language'=>$baselang), array('order' => 'gid'));
                     case 'question':
                     case 'question_help':
-                        return Questions::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang,'parent_qid' => 0), array('order' => 'groups.group_order, t.question_order, t.scale_id'));
+                        return Question::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang,'parent_qid' => 0), array('order' => 'groups.group_order, t.question_order, t.scale_id'));
                     case 'subquestion':
-                        return Questions::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang), array('order' => 'groups.group_order, parents.question_order, t.scale_id, t.question_order', 'condition'=>'parents.language=:baselang1 AND groups.language=:baselang2 AND t.parent_qid>0', 'params'=>array(':baselang1'=>$baselang,':baselang2'=>$baselang)));
+                        return Question::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $iSurveyID,'language' => $baselang), array('order' => 'groups.group_order, parents.question_order, t.scale_id, t.question_order', 'condition'=>'parents.language=:baselang1 AND groups.language=:baselang2 AND t.parent_qid>0', 'params'=>array(':baselang1'=>$baselang,':baselang2'=>$baselang)));
                     case 'answer':
-                        return Answers::model()->with('questions', 'groups')->findAllByAttributes(array('language' => $baselang), array('order' => 'groups.group_order, questions.question_order, t.scale_id, t.sortorder', 'condition'=>'questions.sid=:sid AND questions.language=:baselang1 AND groups.language=:baselang2', 'params'=>array(':baselang1'=>$baselang, ':baselang2'=>$baselang, ':sid' => $iSurveyID)));
+                        return Answer::model()->with('questions', 'groups')->findAllByAttributes(array('language' => $baselang), array('order' => 'groups.group_order, questions.question_order, t.scale_id, t.sortorder', 'condition'=>'questions.sid=:sid AND questions.language=:baselang1 AND groups.language=:baselang2', 'params'=>array(':baselang1'=>$baselang, ':baselang2'=>$baselang, ':sid' => $iSurveyID)));
                 }
             case "queryupdate":
                 switch ( $type )
                 {
                     case 'title':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_title'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_title'=>$new));
                     case 'description':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_description'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_description'=>$new));
                     case 'welcome':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_welcometext'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_welcometext'=>$new));
                     case 'end':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_endtext'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_endtext'=>$new));
                     case 'emailinvite':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_invite_subj'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_invite_subj'=>$new));
                     case 'emailinvitebody':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_invite'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_invite'=>$new));
                     case 'emailreminder':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_remind_subj'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_remind_subj'=>$new));
                     case 'emailreminderbody':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_remind'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_remind'=>$new));
                     case 'emailconfirmation':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_confirm_subj'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_confirm_subj'=>$new));
                     case 'emailconfirmationbody':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_confirm'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_confirm'=>$new));
                     case 'emailregistration':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_register_subj'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_register_subj'=>$new));
                     case 'emailregistrationbody':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_register'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_register'=>$new));
                     case 'email_confirm':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_confirm_subject'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_confirm_subject'=>$new));
                     case 'email_confirmbody':
-                        return Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_confirm'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID,'surveyls_language'=>$tolang),array('surveyls_email_confirm'=>$new));
                     case 'group':
-                        return Groups::model()->updateByPk(array('gid'=>$id1, 'language'=>$tolang),array('group_name' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
+                        return QuestionGroup::model()->updateByPk(array('gid'=>$id1, 'language'=>$tolang),array('group_name' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
                     case 'group_desc':
-                        return Groups::model()->updateByPk(array('gid'=>$id1, 'language'=>$tolang),array('description' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
+                        return QuestionGroup::model()->updateByPk(array('gid'=>$id1, 'language'=>$tolang),array('description' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
                     case 'question':
-                        return Questions::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang),array('question' => $new), 'sid=:sid AND parent_qid=0', array(':sid'=>$iSurveyID));
+                        return Question::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang),array('question' => $new), 'sid=:sid AND parent_qid=0', array(':sid'=>$iSurveyID));
                     case 'question_help':
-                        return Questions::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang),array('help' => $new), 'sid=:sid AND parent_qid=0', array(':sid'=>$iSurveyID));
+                        return Question::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang),array('help' => $new), 'sid=:sid AND parent_qid=0', array(':sid'=>$iSurveyID));
                     case 'subquestion':
-                        return Questions::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang),array('question' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
+                        return Question::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang),array('question' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
                     case 'answer':
-                        return Answers::model()->updateByPk(array('qid'=>$id1, 'code'=>$id2, 'language'=>$tolang, 'scale_id'=>0),array('answer' => $new));
-                        // @todo: FIXME for dual scale answer options
+                        return Answer::model()->updateByPk(array('qid'=>$id1, 'code'=>$id2, 'language'=>$tolang, 'scale_id'=>$iScaleID),array('answer' => $new));
                 }
 
         }
@@ -879,6 +878,7 @@ class translate extends Survey_Common_Action {
 
         $value1 = ( ! empty($amTypeOptions["id1"]) ) ? $rowfrom[$amTypeOptions["id1"]] : "";
         $value2 = ( ! empty($amTypeOptions["id2"]) ) ? $rowfrom[$amTypeOptions["id2"]] : "";
+        $iScaleID = ( ! empty($amTypeOptions["scaleid"]) ) ? $rowfrom[$amTypeOptions["scaleid"]] : "";
 
         // Display text in original language
         // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
@@ -909,6 +909,7 @@ class translate extends Survey_Common_Action {
         $translateoutput .= CHtml::openTag('td');
 		$translateoutput .= CHtml::hiddenField("{$type}_id1_{$i}", $value1);
 		$translateoutput .= CHtml::hiddenField("{$type}_id2_{$i}", $value2);
+        if ($iScaleID!='') $translateoutput .= CHtml::hiddenField("{$type}_scaleid_{$i}", $iScaleID);
 
         $nrows = max($this->calc_nrows($textfrom), $this->calc_nrows($textto));
 

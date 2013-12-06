@@ -7,12 +7,13 @@
  * Copyright © 1991-2007 Unicode, Inc. All rights reserved.
  * Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
  *
- * Copyright © 2008-2011 Yii Software LLC (http://www.yiiframework.com/license/)
+ * @copyright 2008-2013 Yii Software LLC (http://www.yiiframework.com/license/)
  */
 return array (
   'version' => '4123',
   'numberSymbols' => 
   array (
+    'alias' => '',
     'decimal' => ',',
     'group' => ' ',
     'list' => ';',
@@ -23,7 +24,6 @@ return array (
     'perMille' => '‰',
     'infinity' => '∞',
     'nan' => 'nav skaitlis',
-    'alias' => '',
   ),
   'decimalFormat' => '#,##0.###',
   'scientificFormat' => '#E0',
@@ -32,7 +32,7 @@ return array (
   'currencySymbols' => 
   array (
     'AUD' => 'AU$',
-    'BRL' => 'BR$',
+    'BRL' => 'R$',
     'CAD' => 'CA$',
     'CNY' => 'CN¥',
     'EUR' => '€',
@@ -799,7 +799,6 @@ return array (
     '054' => 'Melanēzija',
     '057' => 'Mikronēzijas reģions',
     '061' => 'Polinēzija',
-    '062' => 'Centrāldienvidāzija',
     142 => 'Āzija',
     143 => 'Centrālāzija',
     145 => 'Rietumāzija',
@@ -807,7 +806,6 @@ return array (
     151 => 'Austrumeiropa',
     154 => 'Ziemeļeiropa',
     155 => 'Rietumeiropa',
-    172 => 'Neatkarīgo Valstu Savienība',
     419 => 'Latīņamerika',
     'ac' => 'Debesbraukšanas sala',
     'ad' => 'Andora',

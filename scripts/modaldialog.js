@@ -31,7 +31,7 @@ $(document).ready(function() {
                     autoResize: true,
                     draggable: true,
                     closeOnEscape: false,
-                    beforeclose: function() {
+                    beforeClose: function() {
                         var pass;
                         if(document.getElementById('uploader').contentDocument) {
                             if(document.getElementById('uploader').contentDocument.defaultView)

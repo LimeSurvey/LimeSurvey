@@ -14542,7 +14542,7 @@ $("#CHOICES_25 option[value='A1'").remove();
    <fieldname>bounceaccountuser</fieldname>
    <fieldname>showwelcome</fieldname>
    <fieldname>showprogress</fieldname>
-   <fieldname>allowjumps</fieldname>
+   <fieldname>questionindex</fieldname>
    <fieldname>navigationdelay</fieldname>
    <fieldname>nokeyboard</fieldname>
    <fieldname>alloweditaftercompletion</fieldname>
@@ -14597,7 +14597,7 @@ $("#CHOICES_25 option[value='A1'").remove();
     <bounceaccountuser><![CDATA[]]></bounceaccountuser>
     <showwelcome><![CDATA[Y]]></showwelcome>
     <showprogress><![CDATA[Y]]></showprogress>
-    <allowjumps><![CDATA[Y]]></allowjumps>
+    <questionindex><![CDATA[1]]></questionindex>
     <navigationdelay><![CDATA[0]]></navigationdelay>
     <nokeyboard><![CDATA[N]]></nokeyboard>
     <alloweditaftercompletion><![CDATA[N]]></alloweditaftercompletion>

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,6 @@
  * CExceptionEvent represents the parameter for the {@link CApplication::onException onException} event.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExceptionEvent.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.base
  * @since 1.0
  */

@@ -1,0 +1,31 @@
+/* Tips plugin */
+.qtip .qtip-tip{
+	margin: 0 auto;
+	overflow: hidden;
+	z-index: 10;
+	
+}
+
+	/* Opera bug #357 - Incorrect tip position
+	https://github.com/Craga89/qTip2/issues/367 */
+	x:-o-prefocus, .qtip .qtip-tip{
+		visibility: hidden;
+	}
+
+	.qtip .qtip-tip,
+	.qtip .qtip-tip .qtip-vml,
+	.qtip .qtip-tip canvas{
+		position: absolute;
+
+		color: #123456;
+		background: transparent;
+		border: 0 dashed transparent;
+	}
+	
+	.qtip .qtip-tip canvas{ top: 0; left: 0; }
+
+	.qtip .qtip-tip .qtip-vml{
+		behavior: url(#default#VML);
+		display: inline-block;
+		visibility: visible;
+	}

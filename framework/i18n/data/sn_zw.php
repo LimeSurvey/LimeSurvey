@@ -7,12 +7,13 @@
  * Copyright © 1991-2007 Unicode, Inc. All rights reserved.
  * Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
  *
- * Copyright © 2008-2011 Yii Software LLC (http://www.yiiframework.com/license/)
+ * @copyright 2008-2013 Yii Software LLC (http://www.yiiframework.com/license/)
  */
 return array (
   'version' => '5798',
   'numberSymbols' => 
   array (
+    'alias' => '',
     'decimal' => '.',
     'group' => ',',
     'list' => ';',
@@ -23,7 +24,6 @@ return array (
     'perMille' => '‰',
     'infinity' => '∞',
     'nan' => 'NaN',
-    'alias' => '',
   ),
   'decimalFormat' => '#,##0.###',
   'scientificFormat' => '#E0',
@@ -32,7 +32,7 @@ return array (
   'currencySymbols' => 
   array (
     'AUD' => 'AU$',
-    'BRL' => 'BR$',
+    'BRL' => 'R$',
     'CAD' => 'CA$',
     'CNY' => 'CN¥',
     'EUR' => '€',
@@ -76,9 +76,9 @@ return array (
       2 => 'Kuk',
       3 => 'Kur',
       4 => 'Kub',
-      5 => 'Chi',
-      6 => 'Chi',
-      7 => 'Chi',
+      5 => 'Chv',
+      6 => 'Chk',
+      7 => 'Chg',
       8 => 'Nya',
       9 => 'Gun',
       10 => 'Gum',

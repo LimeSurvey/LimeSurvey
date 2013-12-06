@@ -54,5 +54,21 @@
         <li><label for='faxto'><?php $clang->eT("Fax to:"); ?></label>
             <input type='text' size='50' id='faxto' name='faxto' value="<?php echo $esrow['faxto']; ?>" />
         </li>
+        <?php
+           if (isset($pluginSettings))
+           {
+               Yii::import('application.helpers.PluginSettingsHelper');
+               $PluginSettings = new PluginSettingsHelper();
+               foreach ($pluginSettings as $id => $plugin)
+               {
+                   foreach ($plugin['settings'] as $name => $setting)
+                   {
+                       $name = "plugin[{$plugin['name']}][$name]";
+                       echo CHtml::tag('li', array(), $PluginSettings->renderSetting($name, $setting, null, true));
+                   }
+               }
+           }
+
+        ?>
     </ul>
 </div>

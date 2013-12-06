@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 *
 //Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
 
@@ -36,7 +35,7 @@ Partial survey answers are saved (provided at least Next/Prev/Last/Submit/Save s
 Details.
 1. The answers are saved in the "survey_x" table only.  The "saved" table is no longer used.
 2. The "saved_control" table has new column (srid) that points to the "survey_x" record it corresponds to.
-3. Answers are saved every time you move between pages (Next,Prev,Last,Submit, or Save so far).
+3. Answer are saved every time you move between pages (Next,Prev,Last,Submit, or Save so far).
 4. Only the fields modified on the page are updated. A new hidden field "modfields" store which fields have changed. - REVERTED
 5. Answered are reloaded from the database after the save so that if some other answers were modified by someone else
 the updates would be picked up for the current page.  There is still an issue if two people modify the same
@@ -137,7 +136,7 @@ class Save {
             return;
         }
 
-        $duplicate = Saved_control::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $_POST['savename']));
+        $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $_POST['savename']));
         if (!empty($duplicate) && $duplicate->count() > 0)  // OK - AR count
         {
             $errormsg .= $clang->gT("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
@@ -155,7 +154,7 @@ class Save {
                     "startlanguage" => $_SESSION['survey_'.$surveyid]['s_lang'],
                     "refurl" => getenv("HTTP_REFERER")
                 );
-                if (Survey_dynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
+                if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
                 {
                     $srid = getLastInsertID('{{survey_' . $surveyid . '}}');
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
@@ -167,7 +166,7 @@ class Save {
             }
             //CREATE ENTRY INTO "saved_control"
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
-            $saved_control = new Saved_control;
+            $saved_control = new SavedControl;
             $saved_control->sid = $surveyid;
             $saved_control->srid = $_SESSION['survey_'.$surveyid]['srid'];
             $saved_control->identifier = $_POST['savename']; // Binding does escape, so no quoting/escaping necessary
@@ -295,7 +294,7 @@ class Save {
         }
         else
         {
-            $aColumnNames=Survey_timings::model($thissurvey['sid'])->getTableSchema()->columnNames;
+            $aColumnNames=SurveyTimingDynamic::model($thissurvey['sid'])->getTableSchema()->columnNames;
             $setField .= "time";
             if (!in_array($setField,$aColumnNames)) die('Invalid last group timing fieldname');
             $setField = Yii::app()->db->quoteColumnName($setField);

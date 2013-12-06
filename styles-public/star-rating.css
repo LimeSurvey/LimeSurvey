@@ -1,0 +1,27 @@
+.star-rating{
+    background: url("img/stars.png") no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    display: block;
+    float: left;
+    height: 36px;
+    overflow: hidden;
+    width: 36px;
+}
+.star-cancel{background-position:0 0;}
+.star-cancel.star-drained{background-position:0 0;}
+.star-cancel.star-hover{background-position:0 -36px;}
+.star-1{background-position:-36px 0}
+.star-1.star-rated-on{background-position:-36px -72px}
+.star-1.star-drained{background-position:-36px -36px}
+.star-2{background-position:-72px 0}
+.star-2.star-rated-on{background-position:-72px -72px}
+.star-2.star-drained{background-position:-72px -36px}
+.star-3{background-position:-108px 0}
+.star-3.star-rated-on{background-position:-108px -72px}
+.star-3.star-drained{background-position:-108px -36px}
+.star-4{background-position:-144px 0}
+.star-4.star-rated-on{background-position:-144px -72px}
+.star-4.star-drained{background-position:-144px -36px}
+.star-5{background-position:-180px 0}
+.star-5.star-rated-on{background-position:-180px -72px}
+.star-5.star-drained{background-position:-180px -36px}

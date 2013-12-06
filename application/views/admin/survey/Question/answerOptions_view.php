@@ -28,8 +28,8 @@
         var saveaslabletitle  = '<?php $clang->eT('Save as label set','js'); ?>';
         var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/getAllSets'); ?>';
         var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/ajaxSets'); ?>';
-        var lsdetailurl = '<?php echo Yii::app()->createUrl('/admin/question/sa/ajaxlabelsetdetails'); ?>';
-        var lspickurl = '<?php echo Yii::app()->createUrl('/admin/question/sa/ajaxlabelsetpicker'); ?>';
+        var lsdetailurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetdetails'); ?>';
+        var lspickurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetpicker'); ?>';
         var check = true;
         var lasuccess = '<?php $clang->eT('The records have been saved successfully!'); ?>';
         var lafail = '<?php $clang->eT('Sorry, the request failed!'); ?>';
@@ -52,7 +52,7 @@
 
             <?php for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
                 {
-                    $position=0;
+                    $position=1;
                     if ($scalecount>1)
                     { ?>
                     <div class='header ui-widget-header' style='margin-top:5px;'><?php echo sprintf($clang->gT("Answer scale %s"),$scale_id+1); ?></div>
@@ -91,10 +91,10 @@
                             $row['answer']=htmlspecialchars($row['answer']);
                         ?>
                         <tr class='row_<?php echo $position; ?><?php if ($alternate==true){ ?> highlight<?php } ?><?php $alternate=!$alternate; ?>'><td>
-
                                 <?php if ($first)
                                     { ?>
-                                    <img class='handle' src='<?php echo $sImageURL; ?>handle.png' alt=''/></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" /><input type='text' class='code' id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" maxlength='5' size='5'
+                                    <img class='handle' src='<?php echo $sImageURL; ?>handle.png' alt=''/></td>
+                                    <td><input type='hidden' class='oldcode' id='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" /><input type='text' class='code' id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" maxlength='5' size='5' required
                                         onkeypress="return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')"
                                         />
                                     <?php }
@@ -129,21 +129,14 @@
                                     <?php } ?>
 
                             </td><td>
-                                <input type='text' class='answer' id='answer_<?php echo $row['language']; ?>_<?php echo $row['sortorder']; ?>_<?php echo $scale_id; ?>' name='answer_<?php echo $row['language']; ?>_<?php echo $row['sortorder']; ?>_<?php echo $scale_id; ?>' size='100' value="<?php echo $row['answer']; ?>" />
+                                <input type='text' class='answer' id='answer_<?php echo $row['language']; ?>_<?php echo $row['sortorder']; ?>_<?php echo $scale_id; ?>' name='answer_<?php echo $row['language']; ?>_<?php echo $row['sortorder']; ?>_<?php echo $scale_id; ?>' size='100' placeholder='<?php $clang->eT("Some example answer option","js") ?>' value="<?php echo $row['answer']; ?>" />
                                 <?php echo  getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".$clang->gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer'); ?>
 
 
-                            </td><td>
-                                <?php if ($first)
-                                    { ?>
-                                        <img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' alt='<?php $clang->eT("Insert a new answer option after this one") ?>' />
-                                        <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' alt='<?php $clang->eT("Delete this answer option") ?>' />
-                                    <?php }
-                                    else
-                                    { ?>
-                                    &nbsp;
-                                    <?php } ?>
-                            
+                            </td><td><?php if ($first) { ?>
+                                <img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' alt='<?php $clang->eT("Insert a new answer option after this one") ?>' />
+                                <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' alt='<?php $clang->eT("Delete this answer option") ?>' />
+                                <?php } ?>
                             </td></tr>
                         <?php $position++;
                     } ?>
@@ -155,7 +148,7 @@
                 <button id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser' type='button'><?php $clang->eT('Predefined label sets...'); ?></button>
                 <button id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnquickadd' type='button'><?php $clang->eT('Quick add...'); ?></button>
 
-                <?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1) { //){ ?>
+                <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create')) { //){ ?>
                     <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php $clang->eT('Save as label set'); ?></button>
 
                     <?php }

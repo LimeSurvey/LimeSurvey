@@ -1,0 +1,32 @@
+.label-red {
+	color: #fff;
+	background: #c92020;
+	padding: 0 7px;
+	border-radius: 4px;
+}
+
+.redactor_clips_box {
+	margin-left: 0;
+	padding-left: 0;
+	list-style: none;
+}
+.redactor_clips_box li {
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #ddd;
+}
+.redactor_clips_box li:first-child {
+	border-top: none;
+}
+.redactor_clips_box li:last-child {
+	border-bottom: none;
+}
+.redactor_clips_box li a {
+	padding: 10px 5px;
+	color: #000;
+	text-decoration: none;
+	font-size: 13px;
+	display: block;
+}
+.redactor_clips_box li a:hover {	
+	background-color: #fff;
+}

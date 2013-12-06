@@ -13,7 +13,7 @@
         }
         else
             $clang->eT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
-    }
+    } // Not sure we can continue
     ?>
     <?php if($result=="success") { ?>
         <div class='successheader'><?php $clang->eT("Success"); ?></div>

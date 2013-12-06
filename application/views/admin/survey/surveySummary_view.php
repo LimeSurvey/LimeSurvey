@@ -31,7 +31,6 @@
 
         <?php
         } ?>
-	</tr>
     <tr>
     	<td>
     		<strong><?php $clang->eT("Description:");?></strong>

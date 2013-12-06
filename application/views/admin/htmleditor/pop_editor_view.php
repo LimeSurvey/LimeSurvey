@@ -4,7 +4,13 @@
         <title><?php printf($clang->gT('Editing %s'), $sFieldText); ?></title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="noindex, nofollow" />
-        <script type="text/javascript" src="<?php echo Yii::app()->getConfig('generalscripts') . 'jquery/jquery.js'; ?>"></script>
+        <?php
+        App()->getClientScript()->registerPackage('jqueryui');
+        App()->getClientScript()->registerPackage('jquery-superfish');
+        App()->getClientScript()->registerCoreScript('ckeditor');
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
+        ?>
+<!--        <script type="text/javascript" src="<?php echo Yii::app()->getConfig('generalscripts') . 'jquery/jquery.js'; ?>"></script> -->
         <script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL') . '/ckeditor.js'; ?>"></script>
     </head>
 

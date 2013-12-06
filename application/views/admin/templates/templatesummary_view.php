@@ -1,29 +1,21 @@
+<?php
+Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$sEditorFileType."';",CClientScript::POS_HEAD); // Is this deprecated (2013-09-25) ?
+?>
 <?php if (is_template_editable($templatename)==true)
-    { ?>
-    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.js" ></script>
-    <?php if ($sEditorFileType=='htmlmixed')
-        {?>
-        <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/mode/xml/xml.js" ></script>
-        <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.js" ></script>
-        <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/mode/css/css.js" ></script>
-        <?php }
+    {
+        App()->getClientScript()->registerPackage('jquery-ace');
     ?>
-    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/mode/<?php echo $sEditorFileType; ?>/<?php echo $sEditorFileType; ?>.js" ></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/js/codemirror-ui.js" ></script>
-    <script type="text/javascript">
-        var editorfiletype='<?php echo $sEditorFileType; ?>';
-    </script>
     <div class='header'>
         <?php echo sprintf($clang->gT("Editing template '%s' - File '%s'"),$templatename,$editfile); ?>
     </div>
-    <div id='templateleft' style="float:left;padding-left:1em;width:12%;">
-        <div >
+    <div id='templateleft' style="float:left;width:12%;">
+        <div style="padding-left:1em;">
             <?php $clang->eT("Standard files:"); ?><br>
             <select size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                 <?php echo makeoptions($files, "name", "name", $editfile); ?>
             </select>
         </div>
-        <div style='margin-top:1em;'>
+        <div style='margin-top:1em;padding-left:1em;'>
             <?php $clang->eT("CSS & Javascript files:"); ?>
             <br/><select size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                 <?php echo makeoptions($cssfiles, "name", "name", $editfile); ?>
@@ -31,7 +23,7 @@
         </div>
     </div>
 
-    <div style='float:left;width:70%; padding:1.3em;' >
+    <div class="templateeditor">
         <?php echo CHtml::form(array('admin/templates/sa/templatesavechanges'), 'post', array('id'=>'editTemplate', 'name'=>'editTemplate')); ?>
         
             <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
@@ -39,14 +31,11 @@
             <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
             <input type='hidden' name='action' value='templatesavechanges' />
 
-            <textarea name='changes' id='changes' rows='20' cols='40' class='codepress html <?php echo $templateclasseditormode; ?>' style='width:100%'>
+            <textarea name='changes' id='changes' rows='20' cols='40' data-filetype="<?php echo $sEditorFileType; ?>" class="ace <?php echo $sTemplateEditorMode; ?>" style='width:100%'>
                 <?php if (isset($editfile)) {
                         echo textarea_encode(filetext($templatename,$editfile,$templates));
                 } ?>
             </textarea>
-            <script type="text/javascript">
-                var codemirropath = '<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/js/';
-            </script>
             <p>
                 <?php if (is_writable($templates[$templatename])) { ?>
                     <input type='submit' value='<?php $clang->eT("Save changes"); ?>'
@@ -63,7 +52,7 @@
         </form>
     </div>
 
-    <div style="float:left;width:12%">
+    <div style="float:left;width:12%;">
         <div>
             <?php $clang->eT("Other files:"); ?>
             <?php echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post'); ?>
@@ -79,7 +68,7 @@
         </div>
         <div style='margin-top:1em;'>
             <?php echo CHtml::form(array('admin/templates/sa/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
-                <?php $clang->eT("Upload a file:"); ?><br><input size=10 name='upload_file' id="upload_file" type="file" /><br />
+                <?php $clang->eT("Upload a file:"); ?><br><input name='upload_file' id="upload_file" type="file" required="required"/><br />
                 <input type='submit' value='<?php $clang->eT("Upload"); ?>'
                     <?php if (!is_template_editable($templatename))  { ?>
                         disabled='disabled'

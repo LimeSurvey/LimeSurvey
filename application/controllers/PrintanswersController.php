@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 
 /**
@@ -18,8 +17,7 @@
  *
  * @package LimeSurvey
  * @copyright 2011
- * @version $Id$
- * @access public
+  * @access public
  */
 class PrintanswersController extends LSYii_Controller {
 
@@ -120,7 +118,6 @@ class PrintanswersController extends LSYii_Controller {
             Yii::import('application.helpers.pdfHelper');
             $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings($clang->langcode);
             $pdf = new pdf();
-            // set document information
             $pdf->SetTitle($clang->gT("Survey name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
             $pdf->SetSubject($surveyname);
             $pdf->SetDisplayMode('fullpage', 'two');
@@ -141,7 +138,7 @@ class PrintanswersController extends LSYii_Controller {
         $aFullResponseTable = getFullResponseTable($surveyid,$id,$language,$printanswershonorsconditions);
 
         //Get the fieldmap @TODO: do we need to filter out some fields?
-        if($thissurvey['datestamp']!="Y"){
+        if($thissurvey['datestamp']!="Y" || $anonymized == 'Y'){
             unset ($aFullResponseTable['submitdate']);
         }else{
             unset ($aFullResponseTable['id']);

@@ -1,0 +1,23 @@
+div.row {
+    border: 2px solid red;
+}
+
+/*
+    Special layout for list settings (inline).
+*/
+
+form.settingswidget .settingslist input[data-type=int]{
+    width: 50px;
+}
+
+form.settingswidget .settingslist table{
+    width: 100%;
+}
+form.settingswidget .settingslist label{
+    width: auto;
+    margin-right: 5px;
+}
+
+form.settingswidget div {
+    display: inline-block;
+}

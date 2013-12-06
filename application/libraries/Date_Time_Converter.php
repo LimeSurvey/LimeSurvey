@@ -246,7 +246,7 @@ class Date_Time_Converter
                 continue;
 
                 // find the value from $thedate
-                $val = substr($thedate, $pos, strlen($chars));
+                $val = substr(trim($thedate), $pos, strlen($chars));
 
                 /*		START FIX FOR UNITS WITHOUT LEADING ZEROS		*/
                 if ($type == "n" || $type == "j" || $type == "g" || $type == "G") {

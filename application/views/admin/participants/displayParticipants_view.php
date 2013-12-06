@@ -231,10 +231,8 @@ echo $colModels;
 
 </div>
 <br/>
-<table id="displayparticipants"></table> <div id="pager"></div>
-<p><input type="button" name="addtosurvey" id="addtosurvey" value="<?php $clang->eT("Add to survey") ?>" />
-</p>
-
+<table id="displayparticipants"></table> 
+<div id="pager"></div>
 <div id="fieldnotselected" title="<?php $clang->eT("Error") ?>" style="display:none">
     <p>
 <?php $clang->eT("Please select a field"); ?>

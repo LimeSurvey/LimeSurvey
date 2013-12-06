@@ -13,7 +13,7 @@
  *
  */
 
-class Label extends CActiveRecord
+class Label extends LSActiveRecord
 {
     /**
      * Used for some statistical queries
@@ -40,7 +40,7 @@ class Label extends CActiveRecord
 	 */
 	public function primaryKey()
 	{
-		return 'lid,language';
+		return array('lid', 'language');
 	}
     /**
     * Returns the static model of Settings table

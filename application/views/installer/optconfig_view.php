@@ -1,107 +1,90 @@
-<?php $this->render("/installer/header_view", compact('progressValue', 'clang')); ?>
+<div class="row">
+    <div class="span3">
+        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+    </div>
+    <div class="span9">
+    <?php echo CHtml::beginForm($this->createUrl('installer/optional'), 'post', array('class' => 'form-horizontal')); ?>
+    <h2><?php echo $title; ?></h2>
+    <p><?php echo $descp; ?></p>
+    <?php echo $confirmation; ?>
+    <div style="color:red; font-size:12px;">
+        <?php echo CHtml::errorSummary($model, null, null, array('class' => 'errors')); ?>
+    </div>
+    <?php  ?>
+    <fieldset>
+    <legend><?php 
+        $clang->eT("You can leave these settings blank and change them later");
+        ?>
 
-<?php echo CHtml::beginForm($this->createUrl('installer/optional')); ?>
+    </legend>
+    <?php
+        $rows = array();
+        $rows[] = array(
+            'label' => CHtml::activeLabelEx($model, 'adminLoginName', array('class' => 'control-label', 'label' => $clang->gT("Admin login name"), 'autofocus' => 'autofocus')),
+            'description' => $clang->gT("This will be the userid by which admin of board will login."),
+            'control' => CHtml::activeTextField($model, 'adminLoginName')
+        );
+        $rows[] = array(
+            'label' => CHtml::activeLabelEx($model, 'adminLoginPwd', array('class' => 'control-label', 'label' => $clang->gT("Admin login password"))),
+            'description' => $clang->gT("This will be the password of admin user."),
+            'control' => CHtml::activePasswordField($model, 'adminLoginPwd')
+        );
+        $rows[] = array(
+            'label' => CHtml::activeLabelEx($model, 'confirmPwd', array('class' => 'control-label', 'label' => $clang->gT("Confirm your admin password"))),
+            'control' => CHtml::activePasswordField($model, 'confirmPwd')
+        );
+        $rows[] = array(
+            'label' => CHtml::activeLabelEx($model, 'adminName', array('class' => 'control-label', 'label' => $clang->gT("Administrator name"))),
+            'description' => $clang->gT("This is the default name of the site administrator and used for system messages and contact options."),
+            'control' => CHtml::activeTextField($model, 'adminName')
+        );
+        $rows[] = array(
+            'label' => CHtml::activeLabelEx($model, 'adminEmail', array('class' => 'control-label', 'label' => $clang->gT("Administrator email"))),
+            'description' => $clang->gT("This is the default email address of the site administrator and used for system messages, contact options and default bounce email."),
+            'control' => CHtml::activeTextField($model, 'adminEmail')
+        );
+        $rows[] = array(
+            'label' => CHtml::activeLabelEx($model, 'siteName', array('class' => 'control-label', 'label' => $clang->gT("Site name"))),
+            'description' => $clang->gT("This name will appear in the survey list overview and in the administration header."),
+            'control' => CHtml::activeTextField($model, 'siteName')
+        );
+        foreach(getLanguageData(true, Yii::app()->session['installerLang']) as $langkey => $languagekind)
+        {
+            $languages[$langkey] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
+        }
 
-<div class="container_6">
+        $rows[] = array(
+            'label' => CHtml::activeLabelEx($model, 'surveylang', array('class' => 'control-label', 'label' => $clang->gT("Default language"))),
+            'description' => $clang->gT("This will be your default language."),
+            'control' => CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => 'width: 156px', 'encode' => false, 'options'=>array('en' => array('selected' => true))))
+        );
 
-<?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+        foreach ($rows as $row)
+        {
+            echo CHtml::openTag('div', array('class' => 'control-group'));
+                echo $row['label'];
 
-<div class="grid_4 table">
+                echo CHtml::openTag('div', array('class' => 'controls'));
+                echo $row['control'];
+                if (isset($row['description']))
+                {
+                    echo CHtml::tag('div', array('class' => 'description-field'), $row['description']);
+                }
+                echo CHtml::closeTag('div');
+            echo CHtml::closeTag('div');
+        }
+    ?>
+    </fieldset>
+        <div class="row navigator">
+            <div class="span3">
+                <input class="btn" type="button" value="<?php $clang->eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" />
+            </div>
+            <div class="span3"></div>
+            <div class="span3">
+                <?php echo CHtml::submitButton($clang->gT("Next"), array('class' => 'btn')); ?>
+            </div>
+        </div>
 
-<p class="maintitle"><?php echo $title; ?></p>
-
-<div style="-moz-border-radius:15px; border-radius:15px;" >
-<p><?php echo $descp; ?></p>
-<hr />
-<?php echo $confirmation; ?>
-<div style="color:red; font-size:12px;">
-	<?php echo CHtml::errorSummary($model, null, null, array('class' => 'errors')); ?>
+    <?php echo CHtml::endForm(); ?>
+    </div>
 </div>
-<br />
-<?php $clang->eT("You can leave these settings blank and change them later"); ?>
-<br />
-
-<fieldset class="content-table">
-<legend class="content-table-heading"><?php $clang->eT("Optional settings"); ?></legend>
-<table style="width: 640px; font-size:14px;">
-<tr>
-<td><b><?php echo CHtml::activeLabelEx($model, 'adminLoginName', array('label' => $clang->gT("Admin login name"), 'autofocus' => 'autofocus')); ?></b><br />
-<div class="description-field"><?php $clang->eT("This will be the userid by which admin of board will login."); ?></div>
-</td>
-<td align="right"><?php echo CHtml::activeTextField($model, 'adminLoginName'); ?></td>
-</tr>
-<tr>
-<td><b><?php echo CHtml::activeLabelEx($model, 'adminLoginPwd', array('label' => $clang->gT("Admin login password"))); ?></b><br />
-<div class="description-field"><?php $clang->eT("This will be the password of admin user."); ?></div>
-</td>
-<td align="right"><?php echo CHtml::activePasswordField($model, 'adminLoginPwd'); ?></td>
-</tr>
-<tr>
-<td><b><?php echo CHtml::activeLabelEx($model, 'confirmPwd', array('label' => $clang->gT("Confirm your admin password"))); ?></b><br />
-</td>
-<td align="right"><?php echo CHtml::activePasswordField($model, 'confirmPwd'); ?></td>
-</tr>
-<tr>
-<td><b><?php echo CHtml::activeLabelEx($model, 'adminName', array('label' => $clang->gT("Administrator name"))); ?></b><br />
-<div class="description-field"><?php $clang->eT("This is the default name of the site administrator and used for system messages and contact options."); ?></div>
-</td>
-<td align="right"><?php echo CHtml::activeTextField($model, 'adminName'); ?></td>
-</tr>
-<tr>
-<td><b><?php echo CHtml::activeLabelEx($model, 'adminEmail', array('label' => $clang->gT("Administrator email"))); ?></b><br />
-<div class="description-field"><?php $clang->eT("This is the default email address of the site administrator and used for system messages, contact options and default bounce email."); ?></div>
-</td>
-<?php /* @todo HTML5 email field */ ?>
-<td align="right"><?php echo CHtml::activeTextField($model, 'adminEmail'); ?></td>
-</tr>
-<tr>
-<td><b><?php echo CHtml::activeLabelEx($model, 'siteName', array('label' => $clang->gT("Site name"))); ?></b><br />
-<div class="description-field"><?php $clang->eT("This name will appear in the survey list overview and in the administration header."); ?></div>
-</td>
-<td align="right"><?php echo CHtml::activeTextField($model, 'siteName'); ?></td>
-</tr>
-<tr>
-<td><b><?php echo CHtml::activeLabelEx($model, 'surveylang', array('label' => $clang->gT("Default language"))); ?></b><br />
-<div class="description-field"><?php $clang->eT("This will be your default language."); ?></div>
-</td>
-<td align="right">
-<?php
-foreach(getLanguageData(true, Yii::app()->session['installerLang']) as $langkey => $languagekind)
-{
-	$languages[$langkey] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
-}
-echo CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => 'width: 156px', 'encode' => false, 'options'=>array('en' => array('selected' => true))));
-?>
-</td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-</table>
-</fieldset>
-
-</div>
-</div>
-</div>
-
-<div class="container_6">
-<div class="grid_2">&nbsp;</div>
-<div class="grid_4 demo">
- <br/>
- <table style="font-size:11px; width: 694px; background: #ffffff;">
-  <tbody>
-   <tr>
-    <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php $clang->eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" /></td>
-    <td align="center" style="width: 227px;"></td>
-    <td align="right" style="width: 227px;"><?php echo CHtml::submitButton($clang->gT("Next"), array('class' => 'ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only')); ?></td>
-   </tr>
-  </tbody>
- </table>
-</div>
-</div>
-
-
-<?php echo CHtml::endForm(); ?>
-
-<?php $this->render("/installer/footer_view"); ?>
