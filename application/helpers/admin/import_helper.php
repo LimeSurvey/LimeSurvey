@@ -4278,7 +4278,7 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
     $aLemFieldNames=LimeExpressionManager::getLEMqcode2sgqa($iSurveyId);
     $aKeyForFieldNames=array();// An array assicated each fieldname with corresponding responses key
     if(!$aCsvHeader){
-        $CSVImportResult['errors'][]=$clang->gT("File seems empty or have only one line");
+        $CSVImportResult['errors'][]=$clang->gT("File seems empty or has only one line");
         return $CSVImportResult;
     }
     // Assign fieldname with $aFileResponses[] key
@@ -4326,7 +4326,7 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
     }
     // check if forced error failed
     if(isset($force_import_failed)){
-        $CSVImportResult['errors'][]=$clang->gT("Import failed: forced import was requested but the input file doesn't contain enough columns to fill the survey.");
+        $CSVImportResult['errors'][]=$clang->gT("Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey.");
         return $CSVImportResult;
     }
 
@@ -4338,7 +4338,7 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
         }
     }
     if( ! isset($import_ok)){
-        $CSVImportResult['errors'][]=$clang->gT("Import failed: no answers could be mapped.");
+        $CSVImportResult['errors'][]=$clang->gT("Import failed: No answers could be mapped.");
         return $CSVImportResult;
     }
 
@@ -4453,19 +4453,19 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
     // End of import
     // Construction of returned information
     if($iNbResponseLine){
-        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses line in your file."),$iNbResponseLine);
+        $CSVImportResult['success'][]=sprintf($clang->gT("%s response lines in your file."),$iNbResponseLine);
     }else{
-        $CSVImportResult['errors'][]=$clang->gT("No responses line in your file.");
+        $CSVImportResult['errors'][]=$clang->gT("No response lines in your file.");
     }
     if(count($aResponsesInserted)){
-        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses was inserted."),count($aResponsesInserted));
+        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses were inserted."),count($aResponsesInserted));
         // Maybe add implode aResponsesInserted array
     }
     if(count($aResponsesUpdated)){
-        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses was updated."),count($aResponsesUpdated));
+        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses were updated."),count($aResponsesUpdated));
     }
     if(count($aResponsesError)){
-        $CSVImportResult['errors'][]=sprintf($clang->gT("%s responses can not be inserted or updated."),count($aResponsesError));
+        $CSVImportResult['errors'][]=sprintf($clang->gT("%s responses cannot be inserted or updated."),count($aResponsesError));
     }
     if(count($aExistingsId) && ($aOptions['sExistingId']=='skip' || $aOptions['sExistingId']=='ignore'))
     {
@@ -4946,7 +4946,7 @@ function TSVImportSurvey($sFullFilepath)
                     // Insert sub question and keep the sqid for multi language survey
                     $newsqid = Question::model()->insertRecords($insertdata);
                     if(!$newsqid){
-                        $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert sub question").". ".$clang->gT("Text file row number ").$rownumber." (".$qname.")";
+                        $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert subquestion").". ".$clang->gT("Text file row number ").$rownumber." (".$qname.")";
                         break;
                     }
                     if (!isset($sqinfo[$fullsqname]))
