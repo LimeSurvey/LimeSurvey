@@ -438,21 +438,34 @@ class database extends Survey_Common_Action
                 $_POST['question_'.$baselang]=fixCKeditorText(Yii::app()->request->getPost('question_'.$baselang));
                 $_POST['help_'.$baselang]=fixCKeditorText(Yii::app()->request->getPost('help_'.$baselang));
 
-                $data = array(
-                'sid' => $surveyid,
-                'gid' => $gid,
-                'type' => Yii::app()->request->getPost('type'),
-                'title' => Yii::app()->request->getPost('title'),
-                'question' => Yii::app()->request->getPost('question_'.$baselang),
-                'preg' => Yii::app()->request->getPost('preg'),
-                'help' => Yii::app()->request->getPost('help_'.$baselang),
-                'other' => Yii::app()->request->getPost('other'),
-                'mandatory' => Yii::app()->request->getPost('mandatory'),
-                'relevance' => Yii::app()->request->getPost('relevance'),
-                'question_order' => $question_order,
-                'language' => $baselang
-                );
-                 $qid=Question::model()->insertRecords($data);
+                $qid=0;
+                $oQuestion= new Question;
+                $oQuestion->sid = $surveyid;
+                $oQuestion->gid = $gid;
+                $oQuestion->type = Yii::app()->request->getPost('type');
+                $oQuestion->title = Yii::app()->request->getPost('title');
+                $oQuestion->question = Yii::app()->request->getPost('question_'.$baselang);
+                $oQuestion->preg = Yii::app()->request->getPost('preg');
+                $oQuestion->help = Yii::app()->request->getPost('help_'.$baselang);
+                $oQuestion->other = Yii::app()->request->getPost('other');
+                $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
+                $oQuestion->relevance = Yii::app()->request->getPost('relevance');
+                $oQuestion->question_order = $question_order;
+                $oQuestion->language = $baselang;
+                $oQuestion->save();
+                if($oQuestion)
+                {
+                    $qid=$oQuestion->qid;
+                }
+                $aErrors=$oQuestion->getErrors();
+                if(count($aErrors))
+                {
+                    foreach($aErrors as $sAttribute=>$aStringErrors)
+                    {
+                        foreach($aStringErrors as $sStringErrors)
+                            Yii::app()->setFlashMessage(sprintf($clang->gT("Question could not be created with error on %s: %s"), $sAttribute,$sStringErrors),'error');
+                    }
+                }
                 // Add other languages
                 if ($qid)
                 {
@@ -461,29 +474,41 @@ class database extends Survey_Common_Action
                     {
                         if ($alang != "")
                         {
-                            $data = array(
-                            'qid' => $qid,
-                            'sid' => $surveyid,
-                            'gid' => $gid,
-                            'type' => Yii::app()->request->getPost('type'),
-                            'title' => Yii::app()->request->getPost('title'),
-                            'question' => Yii::app()->request->getPost('question_'.$alang),
-                            'preg' => Yii::app()->request->getPost('preg'),
-                            'help' => Yii::app()->request->getPost('help_'.$alang),
-                            'other' => Yii::app()->request->getPost('other'),
-                            'mandatory' => Yii::app()->request->getPost('mandatory'),
-                            'question_order' => $question_order,
-                            'language' => $alang
-                            );
-                            switchMSSQLIdentityInsert('questions',true);
-                            $langqid=Question::model()->insertRecords($data);
+                            $langqid=0;
+                            $oQuestion= new Question;
+                            $oQuestion->sid = $qid;
+                            $oQuestion->sid = $surveyid;
+                            $oQuestion->gid = $gid;
+                            $oQuestion->type = Yii::app()->request->getPost('type');
+                            $oQuestion->title = Yii::app()->request->getPost('title');
+                            $oQuestion->question = Yii::app()->request->getPost('question_'.$alang);
+                            $oQuestion->preg = Yii::app()->request->getPost('preg');
+                            $oQuestion->help = Yii::app()->request->getPost('help_'.$alang);
+                            $oQuestion->other = Yii::app()->request->getPost('other');
+                            $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
+                            $oQuestion->relevance = Yii::app()->request->getPost('relevance');
+                            $oQuestion->question_order = $question_order;
+                            $oQuestion->language = $alang;
+                            switchMSSQLIdentityInsert('questions',true);// Not sure for this one ?
+                            $oQuestion->save();
                             switchMSSQLIdentityInsert('questions',false);
-
-                            // Checked */
-                            if (!$langqid)
+                            if($oQuestion)
                             {
-                                Yii::app()->setFlashMessage($clang->gT("Question in language %s could not be created."),'error');
+                                $langqid=$oQuestion->qid;
                             }
+                            $aErrors=$oQuestion->getErrors();
+                            if(count($aErrors))
+                            {
+                                foreach($aErrors as $sAttribute=>$aStringErrors)
+                                {
+                                    foreach($aStringErrors as $sStringErrors)
+                                        Yii::app()->setFlashMessage(sprintf($clang->gT("Question in language %s could not be cretaed with error on %s: %s"), $alang, $sAttribute,$sStringErrors),'error');
+                                }
+                            }
+#                            if (!$langqid)
+#                            {
+#                                Yii::app()->setFlashMessage($clang->gT("Question in language %s could not be created."),'error');
+#                            }
                         }
                     }
                 }
@@ -797,13 +822,12 @@ class database extends Survey_Common_Action
                             $_POST['help_'.$qlang] = html_entity_decode(Yii::app()->request->getPost('help_'.$qlang), ENT_QUOTES, "UTF-8");
                         }
 
-                        // Fix bug with FCKEditor saving strange BR types
+                        // Fix bug with FCKEditor saving strange BR types : in rules ?
                         $_POST['question_'.$qlang]=fixCKeditorText(Yii::app()->request->getPost('question_'.$qlang));
                         $_POST['help_'.$qlang]=fixCKeditorText(Yii::app()->request->getPost('help_'.$qlang));
 
                         if (isset($qlang) && $qlang != "")
-                        { // ToDo: Sanitize the POST variables !
-
+                        {
                             $udata = array(
                             'type' => Yii::app()->request->getPost('type'),
                             'title' => Yii::app()->request->getPost('title'),
@@ -837,16 +861,16 @@ class database extends Survey_Common_Action
                                     $udata = array_merge($udata,array('question_order' => 0));
                                 }
                             }
-                            $condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
-                            $question = Question::model()->findByAttributes($condn);
+                            //$condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
+                            $oQuestion = Question::model()->findByPk(array("qid"=>$qid,'language'=>$qlang));
                             foreach ($udata as $k => $v)
-                                $question->$k = $v;
+                                $oQuestion->$k = $v;
 
-                            $uqresult = $question->save();//($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
+                            $uqresult = $oQuestion->save();//($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
                             if (!$uqresult)
                             {
                                 $bOnError=true;
-                                $aErrors=$question->getErrors();
+                                $aErrors=$oQuestion->getErrors();
                                 if(count($aErrors))
                                 {
                                     foreach($aErrors as $sAttribute=>$aStringErrors)
