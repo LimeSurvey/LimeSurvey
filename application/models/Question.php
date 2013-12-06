@@ -94,6 +94,14 @@
                         )
                     ),
                     'message' => 'Question codes must be unique.'),
+                array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+                        'condition' => 'language=:language AND sid=:sid AND parent_qid > 0',
+                        'params' => array(
+                            ':language' => $this->language,
+                            ':sid' => $this->sid
+                        )
+                    ),
+                    'message' => 'Subquestions codes must be unique.'),
                 array('title', 'match', 'pattern' => '/[a-z,A-Z][[:alnum:]]+/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.', 'on' => 'update, import'),
                 array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
                 array('mandatory', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),

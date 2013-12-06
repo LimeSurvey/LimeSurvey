@@ -314,26 +314,71 @@ class database extends Survey_Common_Action
                     {
                         if (substr($subquestionkey,0,3)!='new')
                         {
-                            Question::model()->updateByPk(array('qid'=>$subquestionkey, 'language'=>$language), array('question_order'=>$position+1, 'title'=>$codes[$scale_id][$position], 'question'=>$subquestionvalue, 'scale_id'=>$scale_id));
-
-                            if(isset($oldcodes[$scale_id][$position]) && $codes[$scale_id][$position] !== $oldcodes[$scale_id][$position])
-                            {
-                                Condition::model()->updateAll(array('cfieldname'=>'+'.$surveyid.'X'.$gid.'X'.$qid.$codes[$scale_id][$position], 'value'=>$codes[$scale_id][$position]), 'cqid=:cqid AND cfieldname=:cfieldname AND value=:value', array(':cqid'=>$qid, ':cfieldname'=>$surveyid.'X'.$gid.'X'.$qid, ':value'=>$oldcodes[$scale_id][$position]));
-
-                            }
-
+                            //Question::model()->updateByPk(array('qid'=>$subquestionkey, 'language'=>$language), array('question_order'=>$position+1, 'title'=>$codes[$scale_id][$position], 'question'=>$subquestionvalue, 'scale_id'=>$scale_id));
+                            $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$subquestionkey,':language'=>$language));
+                            $oSubQuestion->question_order=$position+1;
+                            $oSubQuestion->title=$codes[$scale_id][$position];
+                            $oSubQuestion->question=$subquestionvalue;
+                            $oSubQuestion->scale_id=$scale_id;
                         }
                         else
                         {
                             if (!isset($insertqid[$scale_id][$position]))
                             {
-                                $insertqid[$scale_id][$position]=Question::model()->insertRecords(array('sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
+                                //$insertqid[$scale_id][$position]=Question::model()->insertRecords(array('sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
+                                $oSubQuestion=new Question;
+                                $oSubQuestion->sid=$surveyid;
+                                $oSubQuestion->gid=$gid;
+                                $oSubQuestion->question_order=$position+1;
+                                $oSubQuestion->title=$codes[$scale_id][$position];
+                                $oSubQuestion->question=$subquestionvalue;
+                                $oSubQuestion->parent_qid=$qid;
+                                $oSubQuestion->language=$language;
+                                $oSubQuestion->scale_id=$scale_id;
                             }
                             else
                             {
-                                switchMSSQLIdentityInsert('questions',true);
-                                Question::model()-> insertRecords(array('qid'=>$insertqid[$scale_id][$position],'sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
-                                switchMSSQLIdentityInsert('questions',true);
+                                //switchMSSQLIdentityInsert('questions',true);
+                                //Question::model()-> insertRecords(array('qid'=>$insertqid[$scale_id][$position],'sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
+                                //switchMSSQLIdentityInsert('questions',true);
+                                $oSubQuestion=Question::model()->find("qid=:qid AND language:=language",array(":qid"=>$insertqid[$scale_id][$position],':language'=>$language));
+                                $oSubQuestion->sid=$surveyid;
+                                $oSubQuestion->gid=$gid;
+                                $oSubQuestion->question_order=$position+1;
+                                $oSubQuestion->title=$codes[$scale_id][$position];
+                                $oSubQuestion->question=$subquestionvalue;
+                                $oSubQuestion->parent_qid=$qid;
+                                $oSubQuestion->language=$language;
+                                $oSubQuestion->scale_id=$scale_id;
+                            }
+                        }
+                        $bSubQuestionResult=$oSubQuestion->save();
+                        if($bSubQuestionResult)
+                        {
+                            if(substr($subquestionkey,0,3)!='new' && isset($oldcodes[$scale_id][$position]) && $codes[$scale_id][$position] !== $oldcodes[$scale_id][$position])
+                            {
+                                Condition::model()->updateAll(array('cfieldname'=>'+'.$surveyid.'X'.$gid.'X'.$qid.$codes[$scale_id][$position], 'value'=>$codes[$scale_id][$position]), 'cqid=:cqid AND cfieldname=:cfieldname AND value=:value', array(':cqid'=>$qid, ':cfieldname'=>$surveyid.'X'.$gid.'X'.$qid, ':value'=>$oldcodes[$scale_id][$position]));
+                            }
+                            if (!isset($insertqid[$scale_id][$position]))
+                            {
+                                $insertqid[$scale_id][$position]=$oSubQuestion->qid;
+                            }
+                        }
+                        else
+                        {
+                            $aErrors=$oSubQuestion->getErrors();
+                            if(count($aErrors))
+                            {
+                                //$sErrorMessage=$clang->gT("Question could not be updated with this errors:");
+                                foreach($aErrors as $sAttribute=>$aStringErrors)
+                                {
+                                    foreach($aStringErrors as $sStringErrors)
+                                        Yii::app()->setFlashMessage(sprintf($clang->gT("Error on %s for subquestion %s: %s"), $sAttribute,$codes[$scale_id][$position],$sStringErrors),'error');
+                                }
+                            }
+                            else
+                            {
+                                Yii::app()->setFlashMessage(sprintf($clang->gT("Subquestions %s could not be updated."),$codes[$scale_id][$position]),'error');
                             }
                         }
                         $position++;
@@ -342,17 +387,18 @@ class database extends Survey_Common_Action
                 }
             }
 
-            LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
-
-            if (!Yii::app()->request->getPost('bFullPOST'))
+            LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);// Do it only if there are no error ?
+            if(!isset($aErrors) || !count($aErrors))
             {
-                Yii::app()->session['flashmessage'] = $clang->gT("Not all subquestions were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
+                if (!Yii::app()->request->getPost('bFullPOST'))
+                {
+                    Yii::app()->session['flashmessage'] = $clang->gT("Not all subquestions were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
+                }
+                else
+                {
+                    Yii::app()->session['flashmessage'] = $clang->gT("Subquestions were successfully saved.");
+                }
             }
-            else
-            {
-                Yii::app()->session['flashmessage'] = $clang->gT("Subquestions were successfully saved.");
-            }
-
             //$action='editsubquestions';
             LimeExpressionManager::SetDirtyFlag();
             if ($databaseoutput != '')
@@ -803,14 +849,11 @@ class database extends Survey_Common_Action
                                 $aErrors=$question->getErrors();
                                 if(count($aErrors))
                                 {
-                                    $sErrorMessage=$clang->gT("Question could not be updated with this errors:");
                                     foreach($aErrors as $sAttribute=>$aStringErrors)
                                     {
-                                        $sErrorMessage.=CHtml::tag('br');
-                                        $sErrorMessage.=CHtml::tag('strong',array(),$sAttribute);
-                                        $sErrorMessage.=implode(",",$aStringErrors);
+                                        foreach($aStringErrors as $sStringErrors)
+                                            Yii::app()->setFlashMessage(sprintf($clang->gT("Question could not be updated with error on %s: %s"), $sAttribute,$sStringErrors),'error');
                                     }
-                                    Yii::app()->setFlashMessage($sErrorMessage,'error');
                                 }
                                 else
                                 {
