@@ -452,7 +452,6 @@ function transferlabels()
                 var y;
                 for (y in json)
                     {
-
                     language=json[y];
                     var lsrows = new Array();
                     //defaultdata=language[languages[0]][0];
@@ -520,16 +519,16 @@ function quickaddlabels()
     var qID=$('input[name=qid]').val();
 
     if ($(this).attr('id')=='btnqareplace')
-        {
+    {
         var lsreplace=true;
     }
     else
-        {
+    {
         var lsreplace=false;
     }
 
     if (lsreplace)
-        {
+    {
         $('.answertable:eq('+scale_id+') tbody tr').each(function(){
             aRowInfo=this.id.split('_');
             $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
@@ -538,7 +537,7 @@ function quickaddlabels()
 
     languages=langs.split(';');
     for (x in languages)
-        {
+    {
         lsrows=$('#quickaddarea').val().split("\n");
 
         if (lsrows[0].indexOf("\t")==-1)
@@ -551,11 +550,11 @@ function quickaddlabels()
         }
         tablerows='';
         for (k in lsrows)
-            {
+        {
             thisrow=lsrows[k].splitCSV(separatorchar);
             if (thisrow.length<=languages.length)
             {
-                thisrow.unshift(parseInt(k)+1);
+                thisrow.unshift("SQ"+(parseInt(k)+1));
             }
             else
             {
