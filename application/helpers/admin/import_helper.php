@@ -3640,29 +3640,34 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             //$newqid = Question::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [4]<br />");
             $oQuestion = new Question('import');
             $oQuestion->setAttributes($insertdata, false);
-            $attempts = 0;
-            if(!$oQuestion->validate(array('title')) && isset($insertdata['title'])){
-                $results['importwarnings'][] = sprintf("Title of question %s was updated.",$insertdata['title']);
+
+            // Try to fix question title for valid question code enforcement
+            if(!$oQuestion->validate(array('title')))
+            {
+                $sOldTitle=$oQuestion->title;
+                $sNewTitle=preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
+                if (is_numeric($sNewTitle))
+                {
+                    $sNewTitle='q' . $sNewTitle;
+                }
+                $oQuestion->title =$sNewTitle;
             }
+
+            $attempts = 0;
+            // Try to fix question title for unique question code enforcement
             while (!$oQuestion->validate(array('title')))
             {
-                if (is_numeric($oQuestion->title))
+                if (!isset($index))
                 {
-                    $oQuestion->title = 'q' . $oQuestion->title;// Thinks it's a really bad idea to update question code without information
+                    $index = 0;
+                    $rand = mt_rand(0, 1024);
                 }
                 else
                 {
-                    if (!isset($index))
-                    {
-                        $index = 0;
-                        $rand = mt_rand(0, 1024);
-                    }
-                    else
-                    {
-                        $index++;
-                    }
-                    $oQuestion->title = 'r' . $rand  . 'q' . $index;
+                    $index++;
                 }
+                $sNewTitle='r' . $rand  . 'q' . $index;
+                $oQuestion->title = $sNewTitle;
                 $attempts++;
                 if ($attempts > 10)
                 {
@@ -3672,6 +3677,13 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             if (!$oQuestion->save())
             {
                 safeDie($clang->gT("Error while saving: "). print_r($oQuestion->errors, true));
+            }
+            // Set a warning if question title was updated
+            if(isset($sNewTitle))
+            {
+                $results['importwarnings'][] = sprintf("Title of question %s was updated to %s.",$sOldTitle,$sNewTitle);
+                unset($sNewTitle);
+                unset($sOldTitle);
             }
             $newqid = $oQuestion->qid;
             if (!isset($aQIDReplacements[$oldqid]))
@@ -3721,29 +3733,34 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 XSSFilterArray($insertdata);
             $question = new Question('import');
             $question->setAttributes($insertdata, false);
-            $attempts = 0;
-            if(!$question->validate(array('title')) && isset($insertdata['title'])){
-                $results['importwarnings'][] = sprintf("Title of subquestion %s was updated.",$insertdata['title']);
+
+            // Try to fix question title for valid question code enforcement
+            if(!$question->validate(array('title')))
+            {
+                $sOldTitle=$question->title;
+                $sNewTitle=preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
+                if (is_numeric($sNewTitle))
+                {
+                    $sNewTitle='sq' . $sNewTitle;
+                }
+                $question->title =$sNewTitle;
             }
+
+            $attempts = 0;
+            // Try to fix question title for unique question code enforcement
             while (!$question->validate(array('title')))
             {
-                if (is_numeric($question->title))
+                if (!isset($index))
                 {
-                    $question->title = 'sq' . $question->title;// Thinks it's a really bad idea to update sub question code without information (Shnoulle 131206)
+                    $index = 0;
+                    $rand = mt_rand(0, 1024);
                 }
                 else
                 {
-                    if (!isset($index))
-                    {
-                        $index = 0;
-                        $rand = mt_rand(0, 1024);
-                    }
-                    else
-                    {
-                        $index++;
-                    }
-                    $question->title = 'r' . $rand  . 'q' . $index;
+                    $index++;
                 }
+                $sNewTitle='r' . $rand  . 'sq' . $index;
+                $question->title = $sNewTitle;
                 $attempts++;
                 if ($attempts > 10)
                 {
@@ -3753,6 +3770,13 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             if (!$question->save())
             {
                 safeDie($clang->gT("Error while saving: "). print_r($question->errors, true));
+            }
+            // Set a warning if question title was updated
+            if(isset($sNewTitle))
+            {
+                $results['importwarnings'][] = sprintf("Title of subquestion %s was updated to %s.",$sOldTitle,$sNewTitle);// Maybe add the question title ?
+                unset($sNewTitle);
+                unset($sOldTitle);
             }
             $newsqid = $question->qid;
             //$newsqid =Question::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [5]<br />");
