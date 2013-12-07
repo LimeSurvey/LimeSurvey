@@ -3268,7 +3268,6 @@ function do_multiplenumeric($ia)
                 $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
                 $sSeparator = $sSeparator['separator'];
 
-                $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
                 $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth."\" name=\"".$myfname."\" id=\"answer".$myfname."\" title=\"".$clang->gT('Only numbers may be entered in this field.')."\" value=\"";                
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
