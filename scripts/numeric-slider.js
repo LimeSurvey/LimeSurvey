@@ -17,7 +17,6 @@ function doNumericSlider(qID,jsonOptions) {
 	{
 		// Remove not needed tips
 		$("#question"+qID+" .em_value_range").remove();
-		$("#question"+qID+" .tip.default").remove();
 		// Construction of HTML
 		var htmlSlider="<div id='container-myfname' class='multinum-slider'>\n"
 			+ "<div id='slider-myfname' class='ui-slider-1'>\n"
@@ -86,6 +85,8 @@ function doNumericSlider(qID,jsonOptions) {
 				}
 				$(thisinput).triggerHandler("keyup"); // Needed for EM
 			});
+			// Replace default em tip 
+			$("#question"+qID).find(".em_default").text(jsonOptions.lang.tip);
 		});
 	}
 

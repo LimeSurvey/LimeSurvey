@@ -3329,6 +3329,7 @@ function do_multiplenumeric($ia)
         //some var for slider
         $aJsLang=array(
             'reset' => $clang->gT('Reset'),
+            'tip' => $clang->gT('Please click and drag the slider handles to enter your answer.'),
             );
         $aJsVar=array(
             'slider_showminmax'=>$slider_showminmax,
