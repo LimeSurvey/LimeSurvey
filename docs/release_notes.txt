@@ -18,6 +18,7 @@ This release does have the following requirements:
 *PHP 5.3.0 or later with the following modules/libraries enabled:
     *mbstring (Multibyte String Functions) extension library (see also Installation FAQ(external link))
     *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv)
+    *For PHP versions <5.2 you will need to have the PECL JSON library( see http://pecl.php.net/package/json(external link)) installed 
     
 If you are doing a complete new installation please refer to the manual at
 http://docs.limesurvey.org/Installation
@@ -59,7 +60,7 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.00+ (build 130325) to 2.05+ (build 131206) Dec 06, 2013
+Changes from 2.00+ (build 131206) to 2.05+ (build 131209) Dec 06, 2013
 -New feature #5740: Improve VV response import (Denis Chenu)
 -New feature #6477: optionnal comment place with  "multi choice with comment" (Denis Chenu)
 -New feature #6880: Allow adaptation of 5 point slider (Denis Chenu)
@@ -94,18 +95,32 @@ Changes from 2.00+ (build 130325) to 2.05+ (build 131206) Dec 06, 2013
 -Updated feature: Min/max date fields - codes/expressions should be entered without curly braces (mfaber)
 -Updated feature: Revised favicon kindly provided by mrasquinho (Carsten Schmitz)
 
-Changes from 2.00 (build 120920) to 2.00+ (build 130325) Mar 25, 2013
--New feature: Extra class for multi column: colstyle-ul, colstyle-table and colstyle-css with display columns settings (Denis Chenu)
--New feature: Use SGQA identifier to prefill some answer with URL in preview mode (Denis Chenu)
+Changes from 2.00+ (build 120920) to 2.00+ (build 131206) Dec 6, 2013
+-New feature #8028: File upload system can be replaced (Denis Chenu)
+-New Feature: export_timeline function in remotecontrol (Spiros Trougakos)
+-New feature: Export Response By Token routine added to remote control (ravindrakhokharia)
+-New feature: Add php-func strtotime() to EM (mfaber)
+-New feature: Added a function to the expression manager which allows numerical values (weberho)
 -New feature: Added new setting 'showrelevance' to config file -  When this settings is activated then the printable survey option will show the raw relevance equation below the general fill-out instructions in case the question has conditions (Carsten Schmitz)
--New feature: New advanced question attribute to set a fill-out help text for the printable view (Carsten Schmitz)
--New feature: Global settings now shows URL to remote control interface (Menno Dekker)
--New feature: Kurdish (Sorani) translation by havalabdulkarim, bryar1991
--New feature: Installer checks if session save path is writable (Menno Dekker)
--New feature: Added the option to export statistics (in remotecontrol) for a group or a selection of groups of a survey. (Spiros Trougakos)
 -New feature: Added subquestions, attributes, attributes_lang and answeroptions properties for RemoteControl get_question_properties (Diogo Gonçalves)
--New feature: Mongolian translation
--New feature: Serbian (Latin script) translation
+-New feature: Added the option to export statistics (in remotecontrol) for a group or a selection of groups of a survey. (Spiros Trougakos)
+-New feature: Allow multiple answers with one token (Denis Chenu)
+-New feature: ComfortUpdate now supports updates to/from unstable versions (Carsten Schmitz)
+-New feature: Console installation scripts (Carsten Schmitz)
+-New feature: Extra class for multi column: colstyle-ul, colstyle-table and colstyle-css with display columns settings (Denis Chenu)
+-New feature: Global settings now shows URL to remote control interface (Menno Dekker)
+-New feature: Installer checks if session save path is writable (Menno Dekker)
+-New feature: New advanced question attribute to set a fill-out help text for the printable view (Carsten Schmitz)
+-New feature: Spanish (Argentinia) informal translation (Carsten Schmitz)
+-New feature: Spanish (Argentinia) translation (Carsten Schmitz)
+-New feature: Use SGQA identifier to prefill some answer with URL in preview mode (Denis Chenu)
+-New translation: Kurdish (Sorani) translation by havalabdulkarim, bryar1991
+-New translation: Mongolian (Carsten Schmitz)
+-New translation: Occitan by Cedric Valmary (Carsten Schmitz)
+-New translation: Serbian (Latin script) (OnSpot)
+-New translation: Tamil by seesiva
+-New translation: Valencian (Carsten Schmitz)
+-Updated feature #7882: Monday first day in calender (mfaber)
 
 Changes from 1.92 (build 120919) to 2.00 (build 120920) Sept 20, 2012
 +New feature #5044: Allowing selection of token valid from/until datea(#1) (Shubham Sachdeva)
