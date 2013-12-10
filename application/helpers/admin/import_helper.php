@@ -3646,7 +3646,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $sOldTitle=$oQuestion->title;
                 $sNewTitle=preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
-                if (is_numeric($sNewTitle))
+                if (is_numeric(substr($sNewTitle,0,1)))
                 {
                     $sNewTitle='q' . $sNewTitle;
                 }
@@ -3739,7 +3739,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $sOldTitle=$question->title;
                 $sNewTitle=preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
-                if (is_numeric($sNewTitle))
+                if (is_numeric(substr($sNewTitle,0,1)))
                 {
                     $sNewTitle='sq' . $sNewTitle;
                 }
