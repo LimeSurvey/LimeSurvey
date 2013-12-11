@@ -1181,6 +1181,7 @@ function db_upgrade_all($iOldDBVersion) {
 */
 function upgradePermissions166()
 {
+    Permission::model()->refreshMetaData();  // Needed because otherwise Yii tries to use the outdate permission schema for the permission table
     $oUsers=User::model()->findAll();
     foreach($oUsers as $oUser)
     {
