@@ -5,12 +5,8 @@
     <div class="span9">
         <h2><?php echo $title; ?></h2>
         <p><?php echo $descp; ?></p>
-        <div class='messagebox'>
-            <div class='header'><?php $clang->eT('LimeSurvey setup'); ?>
-            </div>
+            <h3><?php $clang->eT('Database creation'); ?></h3>
                 <?php if (isset($adminoutputText)) echo $adminoutputText; ?>
-            </div>
-        
     
             <div class="row">
                 <div class="span3" >
@@ -32,4 +28,3 @@
                     ?>
 
                 </div>
-            </div>

@@ -615,6 +615,7 @@ class InstallerController extends CController {
                 $sDefaultAdminUserName = $model->adminLoginName;
                 $sDefaultAdminPassword = $model->adminLoginPwd;
                 $sDefaultAdminRealName = $model->adminName;
+                $sDefaultSiteName = $model->siteName;
                 $sDefaultSiteLanguage = $model->surveylang;
                 $sDefaultAdminEmail = $model->adminEmail;                
 
@@ -630,6 +631,7 @@ class InstallerController extends CController {
                 if ($this->connection->getActive() == true) {
                     $sPasswordHash=hash('sha256', $sDefaultAdminPassword);
                     try {
+                        // Save user
                         $user=new User;
                         $user->users_name=$sDefaultAdminUserName;
                         $user->password=$sPasswordHash;
@@ -638,7 +640,7 @@ class InstallerController extends CController {
                         $user->lang=$sDefaultSiteLanguage;
                         $user->email=$sDefaultAdminEmail;
                         $user->save();
-                        
+                        // Save permissions
                         $permission=new Permission;
                         $permission->entity_id=0;
                         $permission->entity='global';
@@ -646,12 +648,13 @@ class InstallerController extends CController {
                         $permission->permission='superadmin';
                         $permission->read_p=1;
                         $permission->save();
-                        
+                        // Save  global settings
                         $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => self::_getRandomString()));
-
-                        foreach(array('sitename', 'siteadminname', 'siteadminemail', 'siteadminbounce', 'defaultlang') as $insert) {
-                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => $insert, 'stg_value' => $$insert));
-                        }
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sDefaultSiteName));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $sDefaultAdminRealName));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sDefaultAdminEmail));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sDefaultAdminEmail));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sDefaultSiteLanguage));
                         // only continue if we're error free otherwise setup is broken.
                     } catch (Exception $e) {
                         throw new Exception(sprintf('Could not add optional settings: %s.', $e));
