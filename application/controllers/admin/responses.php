@@ -586,6 +586,7 @@ class responses extends Survey_Common_Action
             $aData['end'] = $end;
             $aData['fncount'] = $fncount;
             $aData['fnames'] = $fnames;
+            $aData['bHasFileUploadQuestion'] = hasFileUploadQuestion($iSurveyID);
 
             $aViewUrls[] = 'browseallheader_view';
 

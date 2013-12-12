@@ -105,7 +105,7 @@ echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post
 <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
 <img id='imgDeleteMarkedResponses' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php $clang->eT('Delete marked responses'); ?>' />
 <?php } ?>
-<?php if (hasFileUploadQuestion($iSurveyId)) { ?>
+<?php if ($bHasFileUploadQuestion) { ?>
 <img id='imgDownloadMarkedFiles' src='<?php echo $sImageURL; ?>down_all.png' alt='<?php $clang->eT('Download marked files'); ?>' />
 <?php } ?>
 </td>
