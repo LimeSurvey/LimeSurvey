@@ -71,7 +71,7 @@
                 }
             ?>
             <th class='<?php echo $gbc; ?>'>
-                <strong><?php echo flattenText(stripJavaScript($fn[1]), true); ?></strong>
+                <strong><?php echo flattenText($fn[1], true); ?></strong>
             </th>
             <?php } ?>
     </tr>

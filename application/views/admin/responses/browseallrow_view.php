@@ -6,8 +6,7 @@
 { ?>
 <a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$dtrow['id']}"); ?>'><img src='<?php echo $sImageURL; ?>edit_16.png' alt='<?php $clang->eT('Edit this response'); ?>'/></a>
 <?php }
-if (hasFileUploadQuestion($surveyid))
-{ ?>
+if ($bHasFileUploadQuestion) { ?>
 <a><img id='downloadfile_<?php echo $dtrow['id']; ?>' src='<?php echo $sImageURL; ?>down.png' alt='<?php $clang->eT('Download all files in this response as a zip file'); ?>' class='downloadfile'/></a>
 <?php }
 if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))

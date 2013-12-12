@@ -479,7 +479,7 @@ class responses extends Survey_Common_Action
                         $question .=' (' . $fielddetails['subquestion1'] . ':' . $fielddetails['subquestion2'] . ')';
                     if (isset($fielddetails['scale_id']))
                         $question .='[' . $fielddetails['scale'] . ']';
-                    $fnames[] = array($fielddetails['fieldname'], flattenText(stripJavaScript($question), true));
+                    $fnames[] = array($fielddetails['fieldname'], flattenText($question,true));
                 }
                 elseif ($fielddetails['aid'] !== 'filecount')
                 {
