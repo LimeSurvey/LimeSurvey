@@ -110,13 +110,13 @@
         * @param mixed $escapemode Different uses require the string to be escaped accordinlgy. Possible values are 'html'(default),'js' and 'unescaped'
         * @return string Translated string
         */
-        function gT($string, $escapemode = 'html')
+        function gT($sText, $sEscapeMode = 'html')
         {
             if ($this->gettextclass)
             {
-                $basestring=str_replace('&lsquo;','\'',$this->gettextclass->translate($string));
+                $basestring=$this->gettextclass->translate($sText);
 
-                switch ($escapemode)
+                switch ($sEscapeMode)
                 {
                     case 'html':
                         return $this->HTMLEscape($basestring);
@@ -132,16 +132,16 @@
                         break;
                 }
             } else {
-                switch ($escapemode)
+                switch ($sEscapeMode)
                 {
                     case 'html':
-                        return $this->HTMLEscape($string);
+                        return $this->HTMLEscape($sText);
                         break;
                     case 'js':
-                        return $this->javascriptEscape($string);
+                        return $this->javascriptEscape($sText);
                         break;
                     case 'unescaped':
-                        return $string;
+                        return $sText;
                         break;
                     default:
                         return "Unsupported EscapeMode in gT method";

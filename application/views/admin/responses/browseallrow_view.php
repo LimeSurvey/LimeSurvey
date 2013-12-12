@@ -40,7 +40,7 @@ if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
 
         for ($i; $i < $fncount; $i++)
         {
-            if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "|")
+            if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "|" && $dtrow[$fnames[$i][0]]!='')
             {
                 $index = $fnames[$i]['index'];
                 $metadata = $fnames[$i]['metadata'];

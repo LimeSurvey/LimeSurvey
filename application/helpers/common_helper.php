@@ -1695,7 +1695,7 @@ function getSIDGIDQIDAIDType($fieldcode)
 */
 function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
 {
-    if (is_null($sValue) || $sValue=='') return '';
+    if ($sValue==null || $sValue=='') return '';
     $sLanguage = $oLanguage->langcode;
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
