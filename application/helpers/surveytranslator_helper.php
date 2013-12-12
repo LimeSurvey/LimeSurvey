@@ -632,6 +632,13 @@
         $supportedLanguages['vi']['dateformat'] = 5;
         $supportedLanguages['vi']['radixpoint'] = 1;
 
+        // Zulu
+        $supportedLanguages['zu']['description'] = $clang->gT('Zulu');
+        $supportedLanguages['zu']['nativedescription'] = 'isiZulu';
+        $supportedLanguages['zu']['rtl'] = false;
+        $supportedLanguages['zu']['dateformat'] = 5;
+        $supportedLanguages['zu']['radixpoint'] = 1;
+
         if ($bOrderByNative)
         {
             uasort($supportedLanguages,"userSortNative");
