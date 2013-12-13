@@ -206,6 +206,13 @@
             }
             else//Display the page with user answers
             {
+                ob_start(function($buffer, $phase) {
+                    App()->getClientScript()->render($buffer);
+                    App()->getClientScript()->reset();
+                    return $buffer;
+                });
+                ob_implicit_flush(false);
+                
                 sendCacheHeaders();
                 doHeader();
                 $sData['thissurvey']=$aSurveyInfo;
@@ -213,6 +220,8 @@
                 echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$sData);
                 echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/endpage.pstpl'),array(),$sData);
                 echo "</body></html>";
+                
+                ob_flush();
             }
 
             LimeExpressionManager::FinishProcessingGroup();
