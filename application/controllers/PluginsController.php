@@ -166,7 +166,7 @@
                  Yii::app()->user->setFlash('pluginmanager', 'This plugin has no settings');
                  $this->forward('plugins/index', true);
              }
-             $this->render('/plugins/configure', compact('settings', 'plugin'));
+             $this->render('/plugins/configure', array('settings'=>$aSettings, 'plugin'=>$arPlugin));
              
          }
          
