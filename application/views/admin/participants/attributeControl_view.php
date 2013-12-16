@@ -22,7 +22,7 @@
     var sOptionOr= "<?php $clang->eT("OR", 'js') ?>";
     var attributeInfoUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getAttributeInfo_json"); ?>";
     var editAttributeUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/editAttributeInfo"); ?>";
-    var attributeControlCols = '["<?php $clang->eT('Actions'); ?>", "<?php $clang->eT('Attribute name'); ?>", "<?php $clang->eT('Attribute type'); ?>", "<?php $clang->eT('Visible in participants panel'); ?>"]';
+    var attributeControlCols = '["<?php $clang->eT('Actions'); ?>", "<?php $clang->eT('Attribute name (translation)'); ?>", "<?php $clang->eT('Attribute type'); ?>", "<?php $clang->eT('Visible in participants panel'); ?>"]';
     var attributeTypeSelections = "TB:<?php $clang->eT("Text box"); ?>;DD:<?php $clang->eT("Drop-down list"); ?>;DP:<?php $clang->eT("Date"); ?>";
     var attributeTypeSearch = "<?php $clang->eT("Text box"); ?>:<?php $clang->eT("Text box"); ?>; <?php $clang->eT("Date"); ?>:<?php $clang->eT("Date"); ?>; <?php $clang->eT("Drop-down list"); ?>:<?php $clang->eT("Drop-down list"); ?>"
     var attributeEditUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/viewAttribute/aid"); ?>";

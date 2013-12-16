@@ -28,7 +28,7 @@ class FlashMessage extends CWidget {
             elseif(is_array($message) && is_string($message['message']) )
                 $aMessage[]=array('message'=>$message['message']);
         }
-        Yii::app()->clientScript->registerScript('notify-messages',"LS.messages=".json_encode($aMessage),CClientScript::POS_HEAD);
+        Yii::app()->clientScript->registerScript('notify-messages',"LS.messages=".json_encode($aMessage).';',CClientScript::POS_HEAD);
         $this->render('message', array('aMessage'=>$aMessage));
     }
 }

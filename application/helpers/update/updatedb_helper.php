@@ -1121,8 +1121,8 @@ function db_upgrade_all($iOldDBVersion) {
             // Add new column for question index options.
             addColumn('{{surveys}}', 'questionindex', 'integer not null default "0"');
             // Set values for existing surveys.
-            $oDB->createCommand('update {{surveys}} set `questionindex` = 0 where `allowjumps` = "Y"')->query();
-            $oDB->createCommand('update {{surveys}} set `questionindex` = 1 where `allowjumps` = "N"')->query();
+            $oDB->createCommand("update {{surveys}} set questionindex = 0 where allowjumps = 'Y'")->query();
+            $oDB->createCommand("update {{surveys}} set questionindex = 1 where allowjumps = 'N'")->query();
 
             // Remove old column.
             Yii::app()->getDb()->createCommand()->dropColumn('{{surveys}}', 'allowjumps');
@@ -1162,6 +1162,12 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>172),"stg_name='DBVersion'");
         }
+        if ($iOldDBVersion < 173)
+        {
+            addColumn('{{participant_attribute_names}}','defaultname',"{$sVarchar}(50) NOT NULL default ''");
+            upgradeCPDBAttributeDefaultNames173();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>173),"stg_name='DBVersion'");
+        }
         $oTransaction->commit();
     }
     catch(Exception $e)
@@ -1173,6 +1179,20 @@ function db_upgrade_all($iOldDBVersion) {
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($oLang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
+}
+
+
+function upgradeCPDBAttributeDefaultNames173()
+{
+    $sQuery = "SELECT attribute_id,attribute_name,COALESCE (lang)
+        FROM {{participant_attribute_names_lang}}
+        group by attribute_id, attribute_name
+        order by attribute_id";
+    $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
+    foreach ( $oResult as $aAttribute )
+    {
+        Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',array('defaultname'=>substr($aAttribute['attribute_name'],0,50)),"attribute_id={$aAttribute['attribute_id']}");
+    }
 }
 
 /** 

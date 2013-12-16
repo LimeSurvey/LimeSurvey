@@ -154,6 +154,18 @@ return array(
             'jquery'
         )
     ),
+    'bootstrap-multiselect' => array(
+        'baseUrl' => 'third_party/bootstrap-multiselect',
+        'js' => array(
+            'js/bootstrap-multiselect.js',
+        ),
+        'css' => array(
+            'css/bootstrap-multiselect.css',
+        ),
+        'depends' => array(
+            'jquery'
+        )
+    ),
     'ace' => array(
         'baseUrl' => 'third_party/ace',
         'js' => array(

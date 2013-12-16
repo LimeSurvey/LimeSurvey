@@ -16,7 +16,7 @@
             $data['adminImageUrl']              = Yii::app()->getConfig('adminimageurl');
             $data['replacementFields']['path']  = App()->createUrl("admin/limereplacementfields/sa/index/");
             $json = json_encode($data, JSON_FORCE_OBJECT);
-            $script = "LS.data = $json";
+            $script = "LS.data = $json;";
             App()->getClientScript()->registerScript('LimeScript', $script, CClientScript::POS_HEAD);
         }
     }

@@ -42,27 +42,6 @@ function addcondition(newcid)
 }
 
 $(document).ready(function() {
-    // Code for AJAX download
-    jQuery.download = function(url, data, method){
-        //url and data options required
-        if( url && data ){
-            //data can be string of parameters or array/object
-            data = typeof data == 'string' ? data : jQuery.param(data);
-            //split params into form inputs
-            var csrfToken=$("input[name='YII_CSRF_TOKEN']:first").val();
-            
-            var inputs = '<input type="hidden" name="YII_CSRF_TOKEN" value="'+csrfToken+'">';
-            jQuery.each(data.split('&'), function(){
-                var pair = this.split('=');
-                inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'">';
-            });
-            //send request
-            jQuery('<form action="'+ url +'" method="'+ (method||'post') +'">'+inputs+'</form>')
-            .appendTo('body').submit().remove();
-        };
-    };
-
-    // Code for AJAX download
     $("#addbutton").click(function(){
         conditionid++;
         if(typeof optionstring === "undefined") {
@@ -101,10 +80,10 @@ $(document).ready(function() {
         $('#searchtable tr:last').after(html);
     });
 
-    
+
     if(typeof searchconditions === "undefined") {
-            searchconditions = {};
-        }
+        searchconditions = {};
+    }
 
     var field;
     $('#searchbutton').click(function(){
@@ -140,9 +119,9 @@ $(document).ready(function() {
         loadComplete : function() {
             /* Sneaky way of adding custom icons to jqGrid pager buttons */
             $("#pager").find(".ui-share-icon")
-                .css({"background-image":"url("+imageurl+"share_12.png)", "background-position":"0", "color":"black"});
+            .css({"background-image":"url("+imageurl+"share_12.png)", "background-position":"0", "color":"black"});
             $("#pager").find(".ui-addtosurvey-icon")
-                .css({"background-image":"url("+imageurl+"tokens_12.png)", "background-position":"0", "color":"black"});
+            .css({"background-image":"url("+imageurl+"tokens_12.png)", "background-position":"0", "color":"black"});
         },
         loadError : function(xhr, st, str) {
             var dialog_buttons={};
@@ -203,11 +182,11 @@ $(document).ready(function() {
                 sortable: true,
                 colNames:[surveyNameColTxt,surveyIdColTxt,tokenIdColTxt,dateAddedColTxt,dateInvitedColTxt,dateCompletedColTxt],
                 colModel:[{ name:'survey_name',index:'survey_name', width:400,align:'center', sorttype:"string", sortable: true},
-                { name:'survey_id',index:'survey_id', width:90,align:'center', sorttype:"int", sortable: true},
-                { name:'token_id',index:'token_id', width:80, align:'center', sorttype:"int", sortable: true},
-                { name:'date_created',index:'date_created', width:100,align:'center', sorttype:"string", sortable: true},
-                { name:'date_invited',index:'date_invited', width:100,align:'center', sorttype:"string", sortable: true},
-                { name:'date_completed',index:'date_invited', width:100,align:'center', sorttype:"string", sortable: true}],
+                    { name:'survey_id',index:'survey_id', width:90,align:'center', sorttype:"int", sortable: true},
+                    { name:'token_id',index:'token_id', width:80, align:'center', sorttype:"int", sortable: true},
+                    { name:'date_created',index:'date_created', width:100,align:'center', sorttype:"string", sortable: true},
+                    { name:'date_invited',index:'date_invited', width:100,align:'center', sorttype:"string", sortable: true},
+                    { name:'date_completed',index:'date_invited', width:100,align:'center', sorttype:"string", sortable: true}],
                 caption: linksHeadingTxt,
                 gridComplete: function () {
                     var recs = $("#"+second_subgrid_table_id).jqGrid('getGridParam','reccount');
@@ -234,13 +213,13 @@ $(document).ready(function() {
                 colModel: [ { name:'act',index:'act',width:55,align:'center',search: false,sortable:false,formatter:'actions',formatoptions : { keys:true,onEdit:function(id){
                     var iRow = $('#' + $.jgrid.jqID(id))[0].rowIndex;
                     editModifier(id,iRow, method='edit');
-                }}},
-                { name:'participant_id',index:'participant_id', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
-                { name:'atttype',index:'atttype', width:150, sorttype:"string",align:"center",editable:false,hidden:true},
-                { name:'attid',index:'attid', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
-                { name:'attname',index:'attname', width:150, sorttype:"string",align:"center",editable:false},
-                { name:'attvalue',index:'attvalue', width:150, sorttype:"string",align:"center",editable:true},
-                { name:'attpvalues',index:'attpvalues', width:150, sorttype:"string",align:"center",editable:false,hidden:true}],
+                    }}},
+                    { name:'participant_id',index:'participant_id', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
+                    { name:'atttype',index:'atttype', width:150, sorttype:"string",align:"center",editable:false,hidden:true},
+                    { name:'attid',index:'attid', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
+                    { name:'attname',index:'attname', width:150, sorttype:"string",align:"center",editable:false},
+                    { name:'attvalue',index:'attvalue', width:150, sorttype:"string",align:"center",editable:true},
+                    { name:'attpvalues',index:'attpvalues', width:150, sorttype:"string",align:"center",editable:false,hidden:true}],
                 sortname: attributeNameColTxt,
                 sortorder: 'asc',
                 sortable: true,
@@ -277,10 +256,10 @@ $(document).ready(function() {
         'navGrid',
         '#pager',
         {add:true,
-        del:true,
-        edit:false,
-        refresh: true,
-        search: false,
+            del:true,
+            edit:false,
+            refresh: true,
+            search: false,
             alertcap: sWarningMsg,
             alerttext: sSelectRowMsg,
             addtitle: createParticipantTxt, 
@@ -321,7 +300,7 @@ $(document).ready(function() {
                     $.post(delparticipantUrl, {
                         participant_id : postdata,
                         selectedoption : $('#selectable .ui-selected').attr('id')
-                    }, function(data) {
+                        }, function(data) {
                     });
                     success = "dummy";
                     message = "dummy";
@@ -388,7 +367,7 @@ $(document).ready(function() {
                                     var dialog_buttons={};
                                     dialog_buttons[okBtn]=function(){
                                         $( this ).dialog( "close" );
-                                        };
+                                    };
                                     $("<p>"+noSearchResultsTxt+"</p>").dialog({
                                         modal: true,
                                         buttons: dialog_buttons,
@@ -396,12 +375,12 @@ $(document).ready(function() {
                                     });
                                     jQuery("#displayparticipants").jqGrid('setGridParam',{mtype:'GET'});
                                 }
-                            }}).trigger("reloadGrid");
+                        }}).trigger("reloadGrid");
                         $(this).dialog("close");
                     }
                 };
                 dialog_buttons[cancelBtn]=function(){
-                $( this ).dialog( "close" );
+                    $( this ).dialog( "close" );
                 };
                 dialog_buttons[resetBtn]=function(){
                     jQuery("#displayparticipants").jqGrid('setGridParam',{
@@ -422,17 +401,19 @@ $(document).ready(function() {
                     });
                     $("#displayparticipants").jqGrid('setGridParam', { search: false, postData: { "filters": ""} }).trigger("reloadGrid");
                 };
-            /* End of building array for button functions */
-            $("#search").dialog({
-                height: 300,
-                width: 750,
-                modal: true,
-                title : fullSearchTitle,
-                buttons: dialog_buttons
-            });
+                /* End of building array for button functions */
+                $("#search").dialog({
+                    height: 300,
+                    width: 750,
+                    modal: true,
+                    title : fullSearchTitle,
+                    buttons: dialog_buttons
+                });
+            }
         }
-    }
     );
+    // Add separator
+    $("#displayparticipants").navSeparatorAdd('#pager');
     /* Add the CSV Export Button to the main jqGrid Pager */
     $("#displayparticipants").navButtonAdd('#pager',
         {
@@ -443,18 +424,16 @@ $(document).ready(function() {
                 $.post(
                     exporttocsvcount,
                     { searchcondition: searchconditions,
-                      searchURL: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')
+                        searchURL: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')
                     },
                     function(data) {
                         titlemsg = data;
                         var dialog_buttons={};
-                        dialog_buttons[cancelBtn]=function(){
+                        dialog_buttons[exportBtn]=function(){
+                            $.download(exportToCSVURL,{ searchcondition: searchconditions, attributes: $('#attributes').val().join(' ') },"POST");
                             $(this).dialog("close");
                         };
-                        dialog_buttons[exportBtn]=function(){
-                            //$.load(exporttocsv+"/"+$('#attributes').val(),{ } );
-                            var url = jQuery('#displayparticipants').jqGrid('getGridParam', 'url');
-                            $.download(exporttocsv+"/"+$('#attributes').val(),'searchcondition='+searchconditions+'&searchURL='+url );
+                        dialog_buttons[cancelBtn]=function(){
                             $(this).dialog("close");
                         };
                         /* End of building array for button functions */
@@ -462,10 +441,12 @@ $(document).ready(function() {
                             modal: true,
                             title: titlemsg,
                             buttons: dialog_buttons,
-                            width : 400,
-                            height : 450,
+                            width : 600,
+                            height : 300,
                             open: function(event, ui) {
-                                $('#attributes').multiselect({ noneSelectedText: 'Select Attributes',autoOpen:true, height:150 }).multiselectfilter();
+                                $('#attributes').multiselect({ includeSelectAllOption:true, 
+                                    selectAllText: 'Select all',
+                                    maxHeight: 140 });
                             }
                         });
                     }
@@ -562,12 +543,12 @@ $(document).ready(function() {
                         individual users are selected, or the whole grid is to be copied */
                         if(rows=="") { /* All in grid */
                             $.post(
-                            getSearchIDs,
-                            { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
-                            function(data) {
-                                $('#count').val(totalitems);
-                                $('#participant_id').val(data);
-                                $("#addsurvey").submit();
+                                getSearchIDs,
+                                { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
+                                function(data) {
+                                    $('#count').val(totalitems);
+                                    $('#participant_id').val(data);
+                                    $("#addsurvey").submit();
                             });
                         } else { /* Add selected (checked) jqGrid items only */
                             rows = myGrid.getGridParam('selarrrow');
@@ -624,20 +605,20 @@ $(document).ready(function() {
             participantid:pid,
             shareuser:$("#shareuser").val(),
             can_edit:$('#can_edit').attr('checked')
-        }, function(msg){
-            $(this).dialog("close");
-            alert(msg+"."+shareMsg);
-            $(location).attr('href',redUrl);
+            }, function(msg){
+                $(this).dialog("close");
+                alert(msg+"."+shareMsg);
+                $(location).attr('href',redUrl);
         });
     }
     //End of Script for sharing
 
     function addtoSurvey(participant_id,survey_id,redirect) {
         $("#addsurvey").load(postUrl,
-                            {participantid:participant_id},
-                            function(){
-                                $(location).attr('href',attMapUrl+'/'+survey_id+'/'+redirect);
-                            });
+            {participantid:participant_id},
+            function(){
+                $(location).attr('href',attMapUrl+'/'+survey_id+'/'+redirect);
+        });
     }
 
     function basename(path) {
@@ -681,12 +662,12 @@ $(document).ready(function() {
                 individual users are selected, or the whole grid is to be copied */
                 if(rows=="") { /* All in grid */
                     $.post(
-                    getSearchIDs,
-                    { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
-                    function(data) {
-                        $('#count').val(totalitems);
-                        $('#participant_id').val(data);
-                        $("#addsurvey").submit();
+                        getSearchIDs,
+                        { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
+                        function(data) {
+                            $('#count').val(totalitems);
+                            $('#participant_id').val(data);
+                            $("#addsurvey").submit();
                     });
                 } else { /* Add selected (checked) jqGrid items only */
                     rows = myGrid.getGridParam('selarrrow');

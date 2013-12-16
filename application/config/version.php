@@ -13,7 +13,7 @@
  */
 
 $config['versionnumber'] = "2.05+";
-$config['dbversionnumber'] = 172;
+$config['dbversionnumber'] = 173;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
 

@@ -571,7 +571,6 @@ a.optoutemail {
     clear:left;
 }
 
-.ui-jqgrid-btable tr:hover td,
 .browsetable tr:hover {
     background-color: #C5D0F2;
 }
@@ -1680,12 +1679,22 @@ ol.organizer {
 .button-list{text-align:left}
 #gbox_displaysurveys{ margin:0 auto;}
 
-.ui-jqgrid tr.jqgrow {
-    background-color:#fff;
+
+
+.ui-jqgrid .ui-jqgrid-htable th div {
+    height: 22px;
+}
+
+.ui-jqgrid .ui-icon-asc {
+    margin-left: 1px;
 }
 
 .ui-jqgrid tr.ui-row-ltr td {
     border:none !important;
+}
+
+ui-jqgrid-btable table, .ui-pg-table table{
+    border-collapse: separate;
 }
 
 .separator{

@@ -159,6 +159,7 @@ CREATE TABLE `prefix_participant_attribute_names_lang` (
 CREATE TABLE `prefix_participant_attribute_names` (
   `attribute_id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_type` varchar(4) NOT NULL,
+  `defaultname` varchar(50) NOT NULL,
   `visible` varchar(5) NOT NULL,
   PRIMARY KEY  (`attribute_id`,`attribute_type`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -581,4 +582,4 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '172');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '173');

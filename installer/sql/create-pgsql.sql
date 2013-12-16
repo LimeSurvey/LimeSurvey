@@ -166,6 +166,7 @@ CREATE TABLE prefix_participant_attribute_names_lang (
 CREATE TABLE prefix_participant_attribute_names (
   "attribute_id" serial NOT NULL,
   "attribute_type" character varying( 4 ) NOT NULL,
+  "defaultname" character varying(50) NOT NULL,
   "visible" character varying( 5 ) NOT NULL,
   CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id, attribute_type)
 );
@@ -585,4 +586,4 @@ create unique index permissions_idx2 ON lime_permissions (entity_id, entity, uid
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '172');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '173');
