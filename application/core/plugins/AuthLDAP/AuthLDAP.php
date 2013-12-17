@@ -6,14 +6,34 @@ class AuthLDAP extends AuthPluginBase
     static protected $description = 'Core: Basic LDAP authentication';
     static protected $name = 'LDAP';
     
+    /**
+     * Can we autocreate users? For the moment this is disabled, will be moved 
+     * to a setting when we have more robust user creation system.
+     * 
+     * @var boolean
+     */
+    protected $autoCreate = false;
+    
     protected $settings = array(
         'server' => array(
             'type' => 'string',
             'label' => 'Ldap server e.g. ldap://ldap.mydomain.com'
         ),
+        'ldapport' => array(
+            'type' => 'string',
+            'label' => 'Port number (default when omitted is 389)'
+        ),
+        'ldapversion' => array(
+            'type' => 'string',
+            'label' => 'LDAP version (LDAPv2 = 2), e.g. 3'
+        ),
+        'userprefix' => array(
+            'type' => 'string',
+            'label' => 'Username prefix cn= or uid='
+        ),
         'domainsuffix' => array(
             'type' => 'string',
-            'label' => 'Domain suffix for username e.g. @mydomain.com'
+            'label' => 'Username suffix e.g. @mydomain.com or remaining part of ldap query'
         ),
         'is_default' => array(
             'type' => 'checkbox',
@@ -31,15 +51,6 @@ class AuthLDAP extends AuthPluginBase
         $this->subscribe('newLoginForm');
         $this->subscribe('afterLoginFormSubmit');
         $this->subscribe('newUserSession');
-        $this->subscribe('beforeDeactivate');
-    }
-
-    public function beforeDeactivate()
-    {
-        $this->getEvent()->set('success', false);
-
-        // Optionally set a custom error message.
-        $this->getEvent()->set('message', gT('Core plugin can not be disabled.'));
     }
     
     public function beforeLogin()
@@ -75,36 +86,72 @@ class AuthLDAP extends AuthPluginBase
         
         $user = $this->api->getUserByName($username);
         
-        if ($user === null)
+        if ($user === null && $this->autoCreate === false)
         {
-            // If the user doesnt exist Ã­n th eLS database, he can not login
+            // If the user doesnt exist ín the LS database, he can not login
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
         
         // Get configuration settings:
-        $ldapserver = $this->get('server');        
-        $domain     = $this->get('domainsuffix');;
+        $ldapserver = $this->get('server');
+        $ldapport   = $this->get('ldapport');
+        $ldapver    = $this->get('ldapversion');
+        $suffix     = $this->get('domainsuffix');
+        $prefix     = $this->get('userprefix');
+        
+        if (empty($ldapport)) {
+            $ldapport = 389;
+        }
 
         // Try to connect
-        $ldapconn = ldap_connect($ldapserver);
+        $ldapconn = ldap_connect($ldapserver, (int) $ldapport);
         if (false == $ldapconn) {
             $this->setAuthFailure(1, gT('Could not connect to LDAP server.'));
             return;
         }
+        
+        // using LDAP version
+        if ($ldapver === null)
+        {
+            // If the version hasn't been set, default = 2
+            $ldapver = 2;
+        }
+        ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, $ldapver);
 
-        if($ldapconn) {
-            // binding to ldap server
-            $ldapbind = ldap_bind($ldapconn, $username.$domain, $password);
-            // verify binding
-            if (!$ldapbind) {
-                $this->setAuthFailure(100, ldap_error($ldapconn));
+        // binding to ldap server
+        $ldapbind = ldap_bind($ldapconn, $prefix . $username . $suffix, $password);
+        // verify binding
+        if (!$ldapbind) {
+            $this->setAuthFailure(100, ldap_error($ldapconn));
+            ldap_close($ldapconn); // all done? close connection
+            return;
+        }        
+        
+        // Authentication was successful, now see if we have a user or that we should create one
+         if (is_null($user)) {
+            if ($this->autoCreate === true)  {
+                /*
+                 * Dispatch the newUserLogin event, and hope that after this we can find the user
+                 * this allows users to create their own plugin for handling the user creation
+                 * we will need more methods to pass username, rdn and ldap connection.
+                 */                
+                $this->pluginManager->dispatchEvent(new PluginEvent('newUserLogin', $this));
+                
+                // Check ourselves, we do not want fake resonses from a plugin
+                $user = $this->api->getUserByName($username);
+            }
+            
+            if (is_null($user)) {
+                $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
                 ldap_close($ldapconn); // all done? close connection
                 return;
             }
-            ldap_close($ldapconn); // all done? close connection
         }
-
+        
+        ldap_close($ldapconn); // all done? close connection
+        
+        // If we made it here, authentication was a success and we do have a valid user
         $this->setAuthSuccess($user);
     }
 }
