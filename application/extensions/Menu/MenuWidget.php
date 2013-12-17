@@ -111,7 +111,9 @@
             $menu['items']['right'][] = array(
                 'title' => 'Surveys:',
                 'type' => 'select',
-                'name' => 'surveylist',
+                'name' => 'surveyid',
+                'route' => 'admin/survey/sa/view',
+                'param' => 'surveyid',
                 'empty' => gT('No surveys available.'),
                 'values' => $surveyList,
                 'value' => $this->surveyId
@@ -334,7 +336,8 @@
             $menu['items']['right'][] = array(
                 'title' => 'QuestionGroup:',
                 'type' => 'select',
-                'name' => 'grouplist',
+                'name' => 'id',
+                'route' => 'groups/view',
                 'values' => QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name', 'gid'),
                 'value' => $this->groupId
             );
@@ -377,7 +380,8 @@
             $menu['items']['right'][] = array(
                 'type' => 'select',
                 'title' => gT('Questions'),
-                'name' => 'questionlist',
+                'name' => 'id',
+                'route' => 'questions/update',
                 'values' => Question::model()->findListByAttributes(array('sid' => $group->sid, 'gid' => $groupId), 'code', 'qid'),
                 'value' => $this->questionId
             );
@@ -468,6 +472,15 @@
             }
             if (!empty($listData))
             {
+                $htmlOptions = array(
+                    'class' => 'select',
+                    'id' => $item['name'],
+                    'prompt' => ''//gT('Please choose...')
+                );
+                if (isset($item['route']))
+                {
+                    $htmlOptions['data-route'] = $item['route'];
+                }
                 $result .= $this->widget('ext.bootstrap.widgets.TbSelect2', array(
                     'name' => $item['name'],
                     'value' => $item['value'],
@@ -476,11 +489,7 @@
                         'minimumResultsForSearch' => 10,
                         'placeholder' => gT('Please choose...')
                     ),
-                    'htmlOptions' => array(
-                        'class' => 'select',
-                        'id' => $item['name'],
-                        'prompt' => ''//gT('Please choose...')
-                    )
+                    'htmlOptions' => $htmlOptions
                 ), true);
             }
             elseif (isset($item['empty']))

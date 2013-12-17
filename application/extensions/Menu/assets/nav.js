@@ -1,26 +1,7 @@
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 $(document).ready(function() {
-    $('#surveylist').bind('change', selectSurvey);
-    $('#grouplist').bind('change', selectGroup);
-    $('#questionlist').bind('change', selectQuestion);
+    $('select[data-route]').on('change', function(event) {
+        var params = {}
+        params[$(this).attr('name')] = $(this).val();
+        window.location.href = LS.createUrl($(this).data('route'), params);
+    });
 });
-
-function selectQuestion(event)
-{
-    window.location.href = LS.createUrl('questions/update', { 'id' : $(this).val()});
-}
-
-function selectGroup(event)
-{
-    window.location.href = LS.createUrl('groups/view', { 'id' : $(this).val()});
-}
-
-function selectSurvey(event)
-{
-    window.location.href = LS.createUrl('admin/survey', { 'sa' : 'view', 'surveyid' : $(this).val()});
-}
