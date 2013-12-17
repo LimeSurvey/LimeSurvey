@@ -141,7 +141,7 @@
 
             return array(
                 'incomplete' => array(
-                    'condition' => 'completed = "N"'
+                    'condition' => "completed = 'N'"
                 ),
                 'usable' => array(
                     'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"

@@ -155,4 +155,19 @@ class viewHelper
         }
         return $questioncode;
     }
+
+    /**
+     * disableLogging deactivate default logging in HTML if we don't produce HTML
+     *
+     * Usage: disableLogging()
+     *
+     * @return void
+     * @author Menno Dekker
+     */
+     public static function disableHtmlLogging(){
+        foreach (App()->log->routes as $route)
+        {
+            $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
+        }
+     }
 }

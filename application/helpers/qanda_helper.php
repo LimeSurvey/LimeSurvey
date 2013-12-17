@@ -3268,7 +3268,6 @@ function do_multiplenumeric($ia)
                 $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
                 $sSeparator = $sSeparator['separator'];
 
-                $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
                 $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth."\" name=\"".$myfname."\" id=\"answer".$myfname."\" title=\"".$clang->gT('Only numbers may be entered in this field.')."\" value=\"";                
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
@@ -3330,6 +3329,7 @@ function do_multiplenumeric($ia)
         //some var for slider
         $aJsLang=array(
             'reset' => $clang->gT('Reset'),
+            'tip' => $clang->gT('Please click and drag the slider handles to enter your answer.'),
             );
         $aJsVar=array(
             'slider_showminmax'=>$slider_showminmax,
@@ -3463,7 +3463,11 @@ function do_shortfreetext($ia)
     global $thissurvey;
 
     $clang = Yii::app()->lang;
-    $googleMapsAPIKey = Yii::app()->getConfig("googleMapsAPIKey");
+    $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
+    if ($sGoogleMapsAPIKey!='')
+    {
+        $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
+    }
     $extraclass ="";
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
@@ -3615,9 +3619,9 @@ function do_shortfreetext($ia)
         </div>";
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
         if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
-            Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false");
+            Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey");
         else if ($aQuestionAttributes['location_mapservice']==1)
-            Yii::app()->getClientScript()->registerScriptFile("http://maps.googleapis.com/maps/api/js?sensor=false");
+            Yii::app()->getClientScript()->registerScriptFile("http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey");
         elseif ($aQuestionAttributes['location_mapservice']==2)
             Yii::app()->getClientScript()->registerScriptFile("http://www.openlayers.org/api/OpenLayers.js");
 

@@ -33,7 +33,7 @@ class Assessments extends Survey_Common_Action
     public function index($iSurveyID)
     {
         $iSurveyID = sanitize_int($iSurveyID);
-        $action = Yii::app()->request->getPost('action');
+        $sAction = Yii::app()->request->getPost('action');
 
         $languages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
         $surveyLanguage = Survey::model()->findByPk($iSurveyID)->language;
@@ -45,11 +45,11 @@ class Assessments extends Survey_Common_Action
         Yii::app()->setConfig("baselang", $surveyLanguage);
         Yii::app()->setConfig("assessmentlangs", $languages);
 
-        if ($action == "assessmentadd")
+        if ($sAction == "assessmentadd")
             $this->_add($iSurveyID);
-        if ($action == "assessmentupdate")
+        if ($sAction == "assessmentupdate")
             $this->_update($iSurveyID);
-        if ($action == "assessmentdelete")
+        if ($sAction == "assessmentdelete")
              $this->_delete($iSurveyID, $_POST['id']);
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
@@ -60,7 +60,7 @@ class Assessments extends Survey_Common_Action
                 die();
             }
 
-            $this->_showAssessments($iSurveyID, $action, $surveyLanguage, $clang);
+            $this->_showAssessments($iSurveyID, $sAction, $surveyLanguage, $clang);
         }
 
     }
@@ -83,9 +83,9 @@ class Assessments extends Survey_Common_Action
 
     private function _showAssessments($iSurveyID, $action, $surveyLanguage, Limesurvey_lang $clang)
     {
-        $assessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID));
+        $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID));
         $aData = $this->_collectGroupData($iSurveyID);
-        $headings = array($clang->gT("Scope"), $clang->gT("Question group"), $clang->gT("Minimum"), $clang->gT("Maximum"));
+        $aHeadings = array($clang->gT("Scope"), $clang->gT("Question group"), $clang->gT("Minimum"), $clang->gT("Maximum"));
         $aData['actiontitle'] = $clang->gT("Add");
         $aData['actionvalue'] = "assessmentadd";
         $aData['editId'] = '';
@@ -99,8 +99,8 @@ class Assessments extends Survey_Common_Action
         $aData['surveyinfo'] = $surveyinfo;
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         $aData['surveyid'] = $iSurveyID;
-        $aData['headings'] = $headings;
-        $aData['assessments'] = $assessments;
+        $aData['headings'] = $aHeadings;
+        $aData['assessments'] = $oAssessments;
         $aData['assessmentlangs'] = Yii::app()->getConfig("assessmentlangs");
         $aData['baselang'] = $surveyLanguage;
         $aData['action'] = $action;
@@ -145,20 +145,20 @@ class Assessments extends Survey_Common_Action
     private function _add($iSurveyID)
     {
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'create')) {
-            $first = true;
-            $assessmentId = -1;
-            $languages = Yii::app()->getConfig("assessmentlangs");
-            foreach ($languages as $language)
+            $bFirst = true;
+            $iAssessmentID = -1;
+            $aLanguages = Yii::app()->getConfig("assessmentlangs");
+            foreach ($aLanguages as $sLanguage)
             {
-                $aData = $this->_getAssessmentPostData($iSurveyID, $language);
+                $aData = $this->_getAssessmentPostData($iSurveyID, $sLanguage);
 
-                if ($first == false) {
-                    $aData['id'] = $assessmentId;
+                if ($bFirst == false) {
+                    $aData['id'] = $iAssessmentID;
                 }
                 $assessment = Assessment::model()->insertRecords($aData);
-                if ($first == true) {
-                    $first = false;
-                    $assessmentId = $assessment->id;
+                if ($bFirst == true) {
+                    $bFirst = false;
+                    $iAssessmentID = $assessment->id;
                 }
             }
         }

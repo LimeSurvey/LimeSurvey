@@ -2,18 +2,18 @@
 var labelcache=[];
 $(document).ready(function(){
     removeCSRFDivs();    
-    $("body").delegate(".code", "keypress", function(e) {
-        key=e.which;
-        if ( key==null || key==0 || key==8 || key==9  || key==27 )
-            return true;
-        thischar=String.fromCharCode(key);
-        returnvalue=(thischar==thischar.replace(/[^a-zA-Z0-9_]/,''));
-        return returnvalue;
-    });
-    $("body").delegate(".code", "keyup", function() {
-        if ($(this).val().replace(/[^a-zA-Z0-9_]/,'')!=$(this).val())
-            $(this).val($(this).val().replace(/[^a-zA-Z0-9_]/,''));
-    });
+//    $("body").delegate(".code", "keypress", function(e) {
+//        key=e.which;
+//        if ( key==null || key==0 || key==8 || key==9  || key==27 )
+//            return true;
+//        thischar=String.fromCharCode(key);
+//        returnvalue=(thischar==thischar.replace(/[^a-zA-Z0-9_]/,''));
+//        return returnvalue;
+//    });
+//    $("body").delegate(".code", "keyup", function() {
+//        if ($(this).val().replace(/[^a-zA-Z0-9_]/,'')!=$(this).val())
+//            $(this).val($(this).val().replace(/[^a-zA-Z0-9_]/,''));
+//    });
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         start:startmove,
         update:aftermove,
@@ -70,7 +70,6 @@ $(document).ready(function(){
 
 function deleteinput()
 {
-
     // 1.) Check if there is at least one answe
     countanswers=$(this).closest("tbody").children("tr").length;//Maybe use class is better
     if (countanswers>1)
@@ -83,7 +82,7 @@ function deleteinput()
 
         var x;
         for (x in languages)
-            {
+        {
             tablerow=$('#answertable_'+languages[x]+'_'+scale_id+' tbody tr:nth-child('+index+')');
             if (x==0) {
                 tablerow.fadeTo(400, 0, function(){
@@ -95,8 +94,11 @@ function deleteinput()
                 tablerow.remove();
             }
         }
-        rowinfo=tablerow.attr('id').split('_');
-        $('#deletedqids').val($('#deletedqids').val()+' '+rowinfo[2]);
+        if ($(tablerow).is('[id]'))
+        {
+            rowinfo=$(tablerow).attr('id').split('_');
+            $('#deletedqids').val($('#deletedqids').val()+' '+rowinfo[2]);
+        }
     }
     else
         {
@@ -127,7 +129,7 @@ function addinput()
         tablerow=$('#answertable_'+languages[x]+'_'+scale_id+' tbody tr:nth-child('+newposition+')');
         var randomid='new'+Math.floor(Math.random()*111111)
         if (x==0) {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" class="code" type="text" maxlength="20" size="5" required value="'+htmlspecialchars(sNextCode)+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer"  placeholder="'+htmlspecialchars(newansweroption_text)+'" value=""></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" required="required" pattern="^[a-zA-Z][a-zA-Z0-9]*$" class="code" type="text" maxlength="20" size="5" value="'+htmlspecialchars(sNextCode)+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer"  placeholder="'+htmlspecialchars(newansweroption_text)+'" value=""></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
         }
         else
             {
@@ -284,28 +286,28 @@ function lsbrowser()
         var x=0;
         $("#labelsets").removeOption(/.*/);
         for (x in json)
-            {
+        {
             $('#labelsets').addOption(json[x][0],json[x][1]);
             if (x==0){
                 remind=json[x][0];
             }
         }
         if ($('#labelsets > option').size()>0)
-            {
+        {
             $('#labelsets').selectOptions(remind);
             lspreview();
             $('#btnlsreplace').removeClass('ui-state-disabled');
             $('#btnlsinsert').removeClass('ui-state-disabled');
-            $('#btnlsreplace').attr('disabled','');
-            $('#btnlsinsert').attr('disabled','');
+            $('#btnlsreplace').removeProp('disabled');
+            $('#btnlsinsert').removeProp('disabled');
         }
         else
-            {
+        {
             $("#labelsetpreview").html("<p class='ui-state-highlight ui-corner-all ui-notify-message'>"+strNoLabelSet+"</p>");
             $('#btnlsreplace').addClass('ui-state-disabled');
             $('#btnlsinsert').addClass('ui-state-disabled');
-            $('#btnlsreplace').attr('disabled','disabled');
-            $('#btnlsinsert').attr('disabled','disabled');
+            $('#btnlsreplace').prop( "disabled", true );
+            $('#btnlsinsert').prop( "disabled", true );
         }
     });
 
@@ -315,7 +317,7 @@ function lsbrowser()
 function lspreview()
 {
     if ($('#labelsets > option').size()==0)
-        {
+    {
         return;
     }
 
@@ -330,7 +332,7 @@ function lspreview()
             data: {lid:lsid, sid:surveyid},
             cache: true,
             success: function(json){
-                $("#labelsetpreview").tabs('destroy');
+                //$("#labelsetpreview").tabs('destroy');
                 $("#labelsetpreview").empty();
                 var tabindex='';
                 var tabbody='';
@@ -364,15 +366,17 @@ function lspreview()
                 $("#labelsetpreview").append('<ul>'+tabindex+'</ul>'+tabbody);
                 labelcache[lsid]='<ul>'+tabindex+'</ul>'+tabbody;
                 $("#labelsetpreview").tabs();
+                $("#labelsetpreview").tabs( "refresh" );
         }}
         );
     }
     else
-        {
-        $("#labelsetpreview").tabs('destroy');
+    {
+        //$("#labelsetpreview").tabs('destroy');
         $("#labelsetpreview").empty();
         $("#labelsetpreview").append(labelcache[lsid]);
         $("#labelsetpreview").tabs();
+        $("#labelsetpreview").tabs( "refresh" );
     }
 
 
@@ -448,28 +452,28 @@ function transferlabels()
                 var y;
                 for (y in json)
                     {
-
                     language=json[y];
                     var lsrows = new Array();
                     //defaultdata=language[languages[0]][0];
                     for (z in language)
-                        {
+                    {
                         if (z==languages[0])
-                            {
+                        {
                             defaultdata_labels=language[languages[0]];
                         }
                         if (z==languages[x])
-                            {
+                        {
                             lang_x_found_in_label = true;
                             lsrows=language[z][0];
                         }
 
                         var k;
                         for (k in lsrows)
-                            {
+                        {
                             var randomid='new'+Math.floor(Math.random()*111111)
-                            if (x==0) {
-                                tablerows=tablerows+'<tr class="row_'+k+'_'+scale_id+'" ><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input class="code" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="20" size="5" value="'+htmlspecialchars(lsrows[k].code)+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
+                            if (x==0)
+                            {
+                                tablerows=tablerows+'<tr class="row_'+k+'_'+scale_id+'" ><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input class="code" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" pattern="^[a-zA-Z][a-zA-Z0-9]*$" required="required" type="text" maxlength="20" size="5" value="'+htmlspecialchars(lsrows[k].code)+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
                             }
                             else
                                 {
@@ -515,16 +519,16 @@ function quickaddlabels()
     var qID=$('input[name=qid]').val();
 
     if ($(this).attr('id')=='btnqareplace')
-        {
+    {
         var lsreplace=true;
     }
     else
-        {
+    {
         var lsreplace=false;
     }
 
     if (lsreplace)
-        {
+    {
         $('.answertable:eq('+scale_id+') tbody tr').each(function(){
             aRowInfo=this.id.split('_');
             $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
@@ -533,37 +537,38 @@ function quickaddlabels()
 
     languages=langs.split(';');
     for (x in languages)
-        {
+    {
         lsrows=$('#quickaddarea').val().split("\n");
 
         if (lsrows[0].indexOf("\t")==-1)
-            {
+        {
             separatorchar=';'
         }
         else
-            {
+        {
             separatorchar="\t";
         }
         tablerows='';
         for (k in lsrows)
-            {
+        {
             thisrow=lsrows[k].splitCSV(separatorchar);
             if (thisrow.length<=languages.length)
-                {
-                thisrow.unshift(parseInt(k)+1);
+            {
+                thisrow.unshift("SQ"+(parseInt(k)+1));
             }
             else
-                {
+            {
                 thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "").substr(0,20);
             }
             var randomid='new'+Math.floor(Math.random()*111111)
 
             if (typeof thisrow[parseInt(x)+1]=='undefined')
-                {
+            {
                 thisrow[parseInt(x)+1]=thisrow[1];
             }
-            if (x==0) {
-                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input class="code" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" type="text" maxlength="20" size="5" value="'+thisrow[0]+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+thisrow[parseInt(x)+1]+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
+            if (x==0)
+            {
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input class="code" required="required" pattern="^[a-zA-Z][a-zA-Z0-9]*$" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" type="text" maxlength="20" size="5" value="'+thisrow[0]+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+thisrow[parseInt(x)+1]+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
             }
             else
                 {

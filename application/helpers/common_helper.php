@@ -1695,7 +1695,7 @@ function getSIDGIDQIDAIDType($fieldcode)
 */
 function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
 {
-    if (is_null($sValue) || $sValue=='') return '';
+    if ($sValue==null || $sValue=='') return '';
     $sLanguage = $oLanguage->langcode;
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
@@ -2245,13 +2245,13 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
     $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = sanitize_int($surveyid);
-    $clang = new Limesurvey_lang($sLanguage);
 
     //checks to see if fieldmap has already been built for this page.
     if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid == false) {
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
 
+    $clang = new Limesurvey_lang($sLanguage);
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")
     {
@@ -2822,12 +2822,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 * @param $surveyid The survey ID
 * @return bool
 */
-function hasFileUploadQuestion($surveyid) {
-    $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid));
-
-    foreach ($fieldmap as $field) {
-        if (isset($field['type']) &&  $field['type'] === '|') return true;
-    }
+function hasFileUploadQuestion($iSurveyID) {
+    $iCount = Question::model()->count( "sid=:surveyid AND parent_qid=0 AND type='|'", array(':surveyid' => $iSurveyID));    
+    return $iCount>0 ;
 }
 
 /**

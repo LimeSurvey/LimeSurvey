@@ -187,7 +187,7 @@ class index extends CAction {
         else
         {
             $clang = $this->_loadLimesurveyLang($sDisplayLanguage);
-
+            Yii::app()->session['s_lang']=$clang->langcode;
             $languagechanger = makeLanguageChanger($clang->langcode);
             //Find out if there are any publicly available surveys
             $query = "SELECT sid, surveyls_title, publicstatistics, language

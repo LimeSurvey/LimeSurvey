@@ -982,6 +982,7 @@ class questions extends Survey_Common_Action
             $criteria->order='sortorder';
             $labelsdata=Label::model()->findAll($criteria);
             $i=0;
+            $data=array();
             foreach($labelsdata as $labeldata)
             {
                 $data[$i]['lid'] = $labeldata->lid;
@@ -996,7 +997,7 @@ class questions extends Survey_Common_Action
             //$labels=dbExecuteAssoc($query); //Label::model()->find(array('lid' => $lid, 'language' => $language), array('order' => 'sortorder')); //$connect->GetArray($query);
             $resultdata[]=array($language=>array($labels,getLanguageNameFromCode($language,false)));
         }
-
+        header('Content-type: application/json');
         echo ls_json_encode($resultdata);
     }
 
@@ -1019,6 +1020,7 @@ class questions extends Survey_Common_Action
             $language=null;
         }
         $resultdata=getlabelsets($language);
+        header('Content-type: application/json');
         echo ls_json_encode($resultdata);
     }
 

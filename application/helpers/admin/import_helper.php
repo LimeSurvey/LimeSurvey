@@ -3636,7 +3636,56 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($insertdata)
                 XSSFilterArray($insertdata);
-            $newqid = Question::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [4]<br />");
+                
+            //$newqid = Question::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [4]<br />");
+            $oQuestion = new Question('import');
+            $oQuestion->setAttributes($insertdata, false);
+
+            // Try to fix question title for valid question code enforcement
+            if(!$oQuestion->validate(array('title')))
+            {
+                $sOldTitle=$oQuestion->title;
+                $sNewTitle=preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
+                if (is_numeric(substr($sNewTitle,0,1)))
+                {
+                    $sNewTitle='q' . $sNewTitle;
+                }
+                $oQuestion->title =$sNewTitle;
+            }
+
+            $attempts = 0;
+            // Try to fix question title for unique question code enforcement
+            while (!$oQuestion->validate(array('title')))
+            {
+                if (!isset($index))
+                {
+                    $index = 0;
+                    $rand = mt_rand(0, 1024);
+                }
+                else
+                {
+                    $index++;
+                }
+                $sNewTitle='r' . $rand  . 'q' . $index;
+                $oQuestion->title = $sNewTitle;
+                $attempts++;
+                if ($attempts > 10)
+                {
+                    safeDie($clang->gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                }
+            }
+            if (!$oQuestion->save())
+            {
+                safeDie($clang->gT("Error while saving: "). print_r($oQuestion->errors, true));
+            }
+            // Set a warning if question title was updated
+            if(isset($sNewTitle))
+            {
+                $results['importwarnings'][] = sprintf("Title of question %s was updated to %s.",$sOldTitle,$sNewTitle);
+                unset($sNewTitle);
+                unset($sOldTitle);
+            }
+            $newqid = $oQuestion->qid;
             if (!isset($aQIDReplacements[$oldqid]))
             {
                 $aQIDReplacements[$oldqid]=$newqid;
@@ -3684,26 +3733,34 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 XSSFilterArray($insertdata);
             $question = new Question('import');
             $question->setAttributes($insertdata, false);
+
+            // Try to fix question title for valid question code enforcement
+            if(!$question->validate(array('title')))
+            {
+                $sOldTitle=$question->title;
+                $sNewTitle=preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
+                if (is_numeric(substr($sNewTitle,0,1)))
+                {
+                    $sNewTitle='sq' . $sNewTitle;
+                }
+                $question->title =$sNewTitle;
+            }
+
             $attempts = 0;
+            // Try to fix question title for unique question code enforcement
             while (!$question->validate(array('title')))
             {
-                if (is_numeric($question->title))
+                if (!isset($index))
                 {
-                    $question->title = 'q' . $question->title;
+                    $index = 0;
+                    $rand = mt_rand(0, 1024);
                 }
                 else
                 {
-                    if (!isset($index))
-                    {
-                        $index = 0;
-                        $rand = mt_rand(0, 1024);
-                    }
-                    else
-                    {
-                        $index++;
-                    }
-                    $question->title = 'r' . $rand  . 'q' . $index;
+                    $index++;
                 }
+                $sNewTitle='r' . $rand  . 'sq' . $index;
+                $question->title = $sNewTitle;
                 $attempts++;
                 if ($attempts > 10)
                 {
@@ -3713,6 +3770,13 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             if (!$question->save())
             {
                 safeDie($clang->gT("Error while saving: "). print_r($question->errors, true));
+            }
+            // Set a warning if question title was updated
+            if(isset($sNewTitle))
+            {
+                $results['importwarnings'][] = sprintf("Title of subquestion %s was updated to %s.",$sOldTitle,$sNewTitle);// Maybe add the question title ?
+                unset($sNewTitle);
+                unset($sOldTitle);
             }
             $newsqid = $question->qid;
             //$newsqid =Question::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [5]<br />");
@@ -4238,7 +4302,7 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
     $aLemFieldNames=LimeExpressionManager::getLEMqcode2sgqa($iSurveyId);
     $aKeyForFieldNames=array();// An array assicated each fieldname with corresponding responses key
     if(!$aCsvHeader){
-        $CSVImportResult['errors'][]=$clang->gT("File seems empty or have only one line");
+        $CSVImportResult['errors'][]=$clang->gT("File seems empty or has only one line");
         return $CSVImportResult;
     }
     // Assign fieldname with $aFileResponses[] key
@@ -4286,7 +4350,7 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
     }
     // check if forced error failed
     if(isset($force_import_failed)){
-        $CSVImportResult['errors'][]=$clang->gT("Import failed: forced import was requested but the input file doesn't contain enough columns to fill the survey.");
+        $CSVImportResult['errors'][]=$clang->gT("Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey.");
         return $CSVImportResult;
     }
 
@@ -4298,7 +4362,7 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
         }
     }
     if( ! isset($import_ok)){
-        $CSVImportResult['errors'][]=$clang->gT("Import failed: no answers could be mapped.");
+        $CSVImportResult['errors'][]=$clang->gT("Import failed: No answers could be mapped.");
         return $CSVImportResult;
     }
 
@@ -4413,19 +4477,19 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
     // End of import
     // Construction of returned information
     if($iNbResponseLine){
-        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses line in your file."),$iNbResponseLine);
+        $CSVImportResult['success'][]=sprintf($clang->gT("%s response lines in your file."),$iNbResponseLine);
     }else{
-        $CSVImportResult['errors'][]=$clang->gT("No responses line in your file.");
+        $CSVImportResult['errors'][]=$clang->gT("No response lines in your file.");
     }
     if(count($aResponsesInserted)){
-        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses was inserted."),count($aResponsesInserted));
+        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses were inserted."),count($aResponsesInserted));
         // Maybe add implode aResponsesInserted array
     }
     if(count($aResponsesUpdated)){
-        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses was updated."),count($aResponsesUpdated));
+        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses were updated."),count($aResponsesUpdated));
     }
     if(count($aResponsesError)){
-        $CSVImportResult['errors'][]=sprintf($clang->gT("%s responses can not be inserted or updated."),count($aResponsesError));
+        $CSVImportResult['errors'][]=sprintf($clang->gT("%s responses cannot be inserted or updated."),count($aResponsesError));
     }
     if(count($aExistingsId) && ($aOptions['sExistingId']=='skip' || $aOptions['sExistingId']=='ignore'))
     {
@@ -4906,7 +4970,7 @@ function TSVImportSurvey($sFullFilepath)
                     // Insert sub question and keep the sqid for multi language survey
                     $newsqid = Question::model()->insertRecords($insertdata);
                     if(!$newsqid){
-                        $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert sub question").". ".$clang->gT("Text file row number ").$rownumber." (".$qname.")";
+                        $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert subquestion").". ".$clang->gT("Text file row number ").$rownumber." (".$qname.")";
                         break;
                     }
                     if (!isset($sqinfo[$fullsqname]))

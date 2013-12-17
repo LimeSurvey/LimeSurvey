@@ -19,21 +19,21 @@
 function db_upgrade_all($iOldDBVersion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
-    global $modifyoutput, $usertemplaterootdir, $standardtemplaterootdir;
+    global $modifyoutput;
     Yii::app()->loadHelper('database');
 
-    $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
-    $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
-    $clang = Yii::app()->lang;
-    echo str_pad($clang->gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". $clang->gT('Please be patient...')."<br /><br />\n";
+    $sUserTemplateRootDir = Yii::app()->getConfig('usertemplaterootdir');
+    $sStandardTemplateRootDir = Yii::app()->getConfig('standardtemplaterootdir');
+    $oLang = Yii::app()->lang;
+    echo str_pad($oLang->gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". $oLang->gT('Please be patient...')."<br /><br />\n";
 
     $sDBDriverName=setsDBDriverName();
     setVarchar($sDBDriverName);
     $sVarchar = Yii::app()->getConfig('varchar');
     $sAutoIncrement  = Yii::app()->getConfig('autoincrement');
 
-    $db = Yii::app()->getDb();
-    $oTransaction = $db->beginTransaction();
+    $oDB = Yii::app()->getDb();
+    $oTransaction = $oDB->beginTransaction();
     try
     {
         if ($iOldDBVersion < 111)
@@ -53,13 +53,13 @@ function db_upgrade_all($iOldDBVersion) {
             {
                 alterLanguageCode($sOldLanguageCode,$sNewLanguageCode);
             }
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>111),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>111),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 112) {
             // New size of the username field (it was previously 20 chars wide)
-            $db->createCommand()->alterColumn('{{users}}','users_name',"{$sVarchar}(64) NOT NULL");
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>112),"stg_name='DBVersion'");
+            $oDB->createCommand()->alterColumn('{{users}}','users_name',"{$sVarchar}(64) NOT NULL");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>112),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 113) {
@@ -67,19 +67,19 @@ function db_upgrade_all($iOldDBVersion) {
 
             if ($sDBDriverName=='mysql')
             {
-                $databasename=getDBConnectionStringProperty('dbname');
+                $sDatabaseName=getDBConnectionStringProperty('dbname');
                 fixMySQLCollations();
-                modifyDatabase("","ALTER DATABASE `$databasename` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");echo $modifyoutput; flush();@ob_flush();
+                modifyDatabase("","ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");echo $modifyoutput; flush();@ob_flush();
             }
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>113),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>113),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 114) {
-            $db->createCommand()->alterColumn('{{saved_control}}','email',"{$sVarchar}(320) NOT NULL");
-            $db->createCommand()->alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320) NOT NULL");
-            $db->createCommand()->alterColumn('{{users}}','email',"{$sVarchar}(320) NOT NULL");
-            $db->createCommand()->insert('{{settings_global}}',array('stg_name'=>'SessionName','stg_value'=>randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"$%&/()=?`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789')));
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>114),"stg_name='DBVersion'");
+            $oDB->createCommand()->alterColumn('{{saved_control}}','email',"{$sVarchar}(320) NOT NULL");
+            $oDB->createCommand()->alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320) NOT NULL");
+            $oDB->createCommand()->alterColumn('{{users}}','email',"{$sVarchar}(320) NOT NULL");
+            $oDB->createCommand()->insert('{{settings_global}}',array('stg_name'=>'SessionName','stg_value'=>randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"$%&/()=?`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789')));
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>114),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 126) {
@@ -108,7 +108,7 @@ function db_upgrade_all($iOldDBVersion) {
             'quota_id' => 'integer',
             'code' => $sVarchar.'(5)'
             ));
-            $db->createCommand()->createIndex('sid','{{quota_members}}','sid,qid,quota_id,code',true);
+            $oDB->createCommand()->createIndex('sid','{{quota_members}}','sid,qid,quota_id,code',true);
 
 
             // Create templates_rights table
@@ -140,12 +140,12 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{conditions}}','value',"string",false,'');
             alterColumn('{{labels}}','title',"text");
 
-            $db->createCommand()->update('{{users}}',array('superadmin'=>1),"create_survey=1 AND create_user=1 AND move_user=1 AND delete_user=1 AND configurator=1");
-            $db->createCommand()->update('{{conditions}}',array('method'=>'=='),"(method is null) or method='' or method='0'");
+            $oDB->createCommand()->update('{{users}}',array('superadmin'=>1),"create_survey=1 AND create_user=1 AND move_user=1 AND delete_user=1 AND configurator=1");
+            $oDB->createCommand()->update('{{conditions}}',array('method'=>'=='),"(method is null) or method='' or method='0'");
 
             dropColumn('{{users}}','move_user');
 
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>126),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>126),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 127) {
@@ -162,37 +162,37 @@ function db_upgrade_all($iOldDBVersion) {
             modifyDatabase("","create index quota_idx2 on {{quota}} (sid)"); echo $modifyoutput;
             modifyDatabase("","create index saved_control_idx2 on {{saved_control}} (sid)"); echo $modifyoutput;
             modifyDatabase("","create index user_in_groups_idx1 on {{user_in_groups}} (ugid, uid)"); echo $modifyoutput;
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>127),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>127),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 128) {
             upgradeTokens128();
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>128),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>128),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 129) {
             addColumn('{{surveys}}','startdate',"datetime");
             addColumn('{{surveys}}','usestartdate',"{$sVarchar}(1) NOT NULL default 'N'");
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>129),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>129),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 130)
         {
             addColumn('{{conditions}}','scenario',"integer NOT NULL default '1'");
-            $db->createCommand()->update('{{conditions}}',array('scenario'=>'1'),"(scenario is null) or scenario=0");
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>130),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{conditions}}',array('scenario'=>'1'),"(scenario is null) or scenario=0");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>130),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 131)
         {
             addColumn('{{surveys}}','publicstatistics',"{$sVarchar}(1) NOT NULL default 'N'");
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>131),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>131),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 132)
         {
             addColumn('{{surveys}}','publicgraphs',"{$sVarchar}(1) NOT NULL default 'N'");
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>132),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>132),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 133)
@@ -207,37 +207,37 @@ function db_upgrade_all($iOldDBVersion) {
             switch ($sDBDriverName){
                 case 'mysql':
                 case 'mysqli':
-                    $db->createCommand("UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
-                    $db->createCommand("UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
+                    $oDB->createCommand("UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
+                    $oDB->createCommand("UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
                     // copy assessment link to message since from now on we will have HTML assignment messages
-                    $db->createCommand("UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')")->execute();
+                    $oDB->createCommand("UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')")->execute();
                     break;
                 case 'sqlsrv':
                 case 'dblib':
                 case 'mssql':
                     try{
-                    $db->createCommand("UPDATE {{answers}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
-                    $db->createCommand("UPDATE {{labels}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
+                    $oDB->createCommand("UPDATE {{answers}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
+                    $oDB->createCommand("UPDATE {{labels}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
                     } catch(Exception $e){};
                     // copy assessment link to message since from now on we will have HTML assignment messages
                     alterColumn('{{assessments}}','link',"varchar(max)",false);
                     alterColumn('{{assessments}}','message',"varchar(max)",false);
-                    $db->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')+'<br /><a href=\"'+link+'\">'+link+'</a>'")->execute();
+                    $oDB->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')+'<br /><a href=\"'+link+'\">'+link+'</a>'")->execute();
                     break;
                 case 'pgsql':
-                    $db->createCommand("UPDATE {{answers}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
-                    $db->createCommand("UPDATE {{labels}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
+                    $oDB->createCommand("UPDATE {{answers}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
+                    $oDB->createCommand("UPDATE {{labels}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
                     // copy assessment link to message since from now on we will have HTML assignment messages
-                    $db->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')||'<br /><a href=\"'||link||'\">'||link||'</a>'")->execute();
+                    $oDB->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')||'<br /><a href=\"'||link||'\">'||link||'</a>'")->execute();
                     break;
                 default: die('Unkown database type');
             }
             // activate assessment where assessment rules exist
-            $db->createCommand("UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)")->execute();
+            $oDB->createCommand("UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)")->execute();
             // add language field to assessment table
             addColumn('{{assessments}}','language',"{$sVarchar}(20) NOT NULL default 'en'");
             // update language field with default language of that particular survey
-            $db->createCommand("UPDATE {{assessments}} SET language=(select language from {{surveys}} where sid={{assessments}}.sid)")->execute();
+            $oDB->createCommand("UPDATE {{assessments}} SET language=(select language from {{surveys}} where sid={{assessments}}.sid)")->execute();
             // drop the old link field
             dropColumn('{{assessments}}','link');
 
@@ -245,10 +245,10 @@ function db_upgrade_all($iOldDBVersion) {
             addColumn('{{surveys_languagesettings}}','surveyls_url',"string");
             addColumn('{{surveys_languagesettings}}','surveyls_endtext','text');
             // copy old URL fields ot language specific entries
-            $db->createCommand("UPDATE {{surveys_languagesettings}} set surveyls_url=(select url from {{surveys}} where sid={{surveys_languagesettings}}.surveyls_survey_id)")->execute();
+            $oDB->createCommand("UPDATE {{surveys_languagesettings}} set surveyls_url=(select url from {{surveys}} where sid={{surveys_languagesettings}}.surveyls_survey_id)")->execute();
             // drop old URL field
             dropColumn('{{surveys}}','url');
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>133),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>133),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 134)
@@ -259,20 +259,20 @@ function db_upgrade_all($iOldDBVersion) {
             dropColumn('{{surveys}}','attribute1');
             dropColumn('{{surveys}}','attribute2');
             upgradeTokenTables134();
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>134),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>134),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 135)
         {
             alterColumn('{{question_attributes}}','value','text');
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>135),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>135),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 136) //New Quota Functions
         {
             addColumn('{{quota}}','autoload_url',"integer NOT NULL default 0");
             // Create quota table
-            $fields = array(
+            $aFields = array(
             'quotals_id' => 'pk',
             'quotals_quota_id' => 'integer NOT NULL DEFAULT 0',
             'quotals_language' => "{$sVarchar}(45) NOT NULL default 'en'",
@@ -281,53 +281,53 @@ function db_upgrade_all($iOldDBVersion) {
             'quotals_url' => 'string',
             'quotals_urldescrip' => 'string',
             );
-            createTable('{{quota_languagesettings}}',$fields);
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>136),"stg_name='DBVersion'");
+            createTable('{{quota_languagesettings}}',$aFields);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>136),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 137) //New Quota Functions
         {
             addColumn('{{surveys_languagesettings}}','surveyls_dateformat',"integer NOT NULL default 1");
             addColumn('{{users}}','dateformat',"integer NOT NULL default 1");
-            $db->createCommand()->update('{{surveys}}',array('startdate'=>NULL),"usestartdate='N'");
-            $db->createCommand()->update('{{surveys}}',array('expires'=>NULL),"useexpiry='N'");
+            $oDB->createCommand()->update('{{surveys}}',array('startdate'=>NULL),"usestartdate='N'");
+            $oDB->createCommand()->update('{{surveys}}',array('expires'=>NULL),"useexpiry='N'");
             dropColumn('{{surveys}}','useexpiry');
             dropColumn('{{surveys}}','usestartdate');
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>137),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>137),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 138) //Modify quota field
         {
             alterColumn('{{quota_members}}','code',"{$sVarchar}(11)");
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>138),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>138),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 139) //Modify quota field
         {
             upgradeSurveyTables139();
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>139),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>139),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 140) //Modify surveys table
         {
             addColumn('{{surveys}}','emailresponseto','text');
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>140),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>140),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 141) //Modify surveys table
         {
             addColumn('{{surveys}}','tokenlength','integer NOT NULL default 15');
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>141),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>141),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 142) //Modify surveys table
         {
             upgradeQuestionAttributes142();
-            $db->createCommand()->alterColumn('{{surveys}}','expires',"datetime");
-            $db->createCommand()->alterColumn('{{surveys}}','startdate',"datetime");
-            $db->createCommand()->update('{{question_attributes}}',array('value'=>0),"value='false'");
-            $db->createCommand()->update('{{question_attributes}}',array('value'=>1),"value='true'");
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>142),"stg_name='DBVersion'");
+            $oDB->createCommand()->alterColumn('{{surveys}}','expires',"datetime");
+            $oDB->createCommand()->alterColumn('{{surveys}}','startdate',"datetime");
+            $oDB->createCommand()->update('{{question_attributes}}',array('value'=>0),"value='false'");
+            $oDB->createCommand()->update('{{question_attributes}}',array('value'=>1),"value='true'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>142),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 143)
@@ -339,7 +339,7 @@ function db_upgrade_all($iOldDBVersion) {
             dropPrimaryKey('answers');
             addPrimaryKey('answers', array('qid','code','language','scale_id'));
 
-            $fields = array(
+            $aFields = array(
             'qid' => "integer NOT NULL default 0",
             'scale_id' => 'integer NOT NULL default 0',
             'sqid' => 'integer  NOT NULL default 0',
@@ -347,7 +347,7 @@ function db_upgrade_all($iOldDBVersion) {
             'specialtype' => $sVarchar."(20) NOT NULL default ''",
             'defaultvalue' => 'text',
             );
-            createTable('{{defaultvalues}}',$fields);
+            createTable('{{defaultvalues}}',$aFields);
             addPrimaryKey('defaultvalues', array('qid','specialtype','language','scale_id','sqid'));
 
             // -Move all 'answers' that are subquestions to the questions table
@@ -360,7 +360,7 @@ function db_upgrade_all($iOldDBVersion) {
             dropColumn('{{questions}}','lid');
             dropColumn('{{questions}}','lid1');
 
-            $fields = array(
+            $aFields = array(
             'sesskey' => "{$sVarchar}(64) NOT NULL DEFAULT ''",
             'expiry' => "datetime NOT NULL",
             'expireref' => "{$sVarchar}(250) DEFAULT ''",
@@ -368,19 +368,19 @@ function db_upgrade_all($iOldDBVersion) {
             'modified' => "datetime NOT NULL",
             'sessdata' => 'text'
             );
-            createTable('{{sessions}}',$fields);
+            createTable('{{sessions}}',$aFields);
             addPrimaryKey('sessions',array('sesskey'));
-            $db->createCommand()->createIndex('sess2_expiry','{{sessions}}','expiry');
-            $db->createCommand()->createIndex('sess2_expireref','{{sessions}}','expireref');
+            $oDB->createCommand()->createIndex('sess2_expiry','{{sessions}}','expiry');
+            $oDB->createCommand()->createIndex('sess2_expireref','{{sessions}}','expireref');
             // Move all user templates to the new user template directory
-            echo sprintf($clang->gT("Moving user templates to new location at %s..."),$usertemplaterootdir)."<br />";
-            $myDirectory = opendir($standardtemplaterootdir);
+            echo sprintf($oLang->gT("Moving user templates to new location at %s..."),$sUserTemplateRootDir)."<br />";
+            $hTemplateDirectory = opendir($sStandardTemplateRootDir);
             $aFailedTemplates=array();
             // get each entry
-            while($entryName = readdir($myDirectory)) {
-                if (!in_array($entryName,array('.','..','.svn')) && is_dir($standardtemplaterootdir.DIRECTORY_SEPARATOR.$entryName) && !isStandardTemplate($entryName))
+            while($entryName = readdir($hTemplateDirectory)) {
+                if (!in_array($entryName,array('.','..','.svn')) && is_dir($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$entryName) && !isStandardTemplate($entryName))
                 {
-                    if (!rename($standardtemplaterootdir.DIRECTORY_SEPARATOR.$entryName,$usertemplaterootdir.DIRECTORY_SEPARATOR.$entryName))
+                    if (!rename($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$entryName,$sUserTemplateRootDir.DIRECTORY_SEPARATOR.$entryName))
                     {
                         $aFailedTemplates[]=$entryName;
                     };
@@ -388,7 +388,7 @@ function db_upgrade_all($iOldDBVersion) {
             }
             if (count($aFailedTemplates)>0)
             {
-                echo "The following templates at {$standardtemplaterootdir} could not be moved to the new location at {$usertemplaterootdir}:<br /><ul>";
+                echo "The following templates at {$sStandardTemplateRootDir} could not be moved to the new location at {$sUserTemplateRootDir}:<br /><ul>";
                 foreach ($aFailedTemplates as $sFailedTemplate)
                 {
                     echo "<li>{$sFailedTemplate}</li>";
@@ -396,8 +396,8 @@ function db_upgrade_all($iOldDBVersion) {
                 echo "</ul>Please move these templates manually after the upgrade has finished.<br />";
             }
             // close directory
-            closedir($myDirectory);
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>143),"stg_name='DBVersion'");
+            closedir($hTemplateDirectory);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>143),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 145)
@@ -422,7 +422,7 @@ function db_upgrade_all($iOldDBVersion) {
             addColumn('{{surveys}}','alloweditaftercompletion',"{$sVarchar}(1) default 'N'");
 
 
-            $fields = array(
+            $aFields = array(
             'sid' => "integer NOT NULL",
             'uid' => "integer NOT NULL",
             'permission' => $sVarchar.'(20) NOT NULL',
@@ -433,13 +433,13 @@ function db_upgrade_all($iOldDBVersion) {
             'import_p' => "integer NOT NULL default 0",
             'export_p' => "integer NOT NULL default 0"
             );
-            createTable('{{survey_permissions}}',$fields);
+            createTable('{{survey_permissions}}',$aFields);
             addPrimaryKey('survey_permissions', array('sid','uid','permission'));
 
             upgradeSurveyPermissions145();
 
             // drop the old survey rights table
-            $db->createCommand()->dropTable('{{surveys_rights}}');
+            $oDB->createCommand()->dropTable('{{surveys_rights}}');
 
             // Add new fields for email templates
             addColumn('{{surveys_languagesettings}}','email_admin_notification_subj',"string");
@@ -448,7 +448,7 @@ function db_upgrade_all($iOldDBVersion) {
             addColumn('{{surveys_languagesettings}}','email_admin_responses',"text");
 
             //Add index to questions table to speed up subquestions
-            $db->createCommand()->createIndex('parent_qid_idx','{{questions}}','parent_qid');
+            $oDB->createCommand()->createIndex('parent_qid_idx','{{questions}}','parent_qid');
 
             addColumn('{{surveys}}','emailnotificationto',"text");
 
@@ -456,24 +456,24 @@ function db_upgrade_all($iOldDBVersion) {
             dropColumn('{{surveys}}','notification');
             alterColumn('{{conditions}}','method',"{$sVarchar}(5)",false,'');
 
-            $db->createCommand()->renameColumn('{{surveys}}','private','anonymized');
-            $db->createCommand()->update('{{surveys}}',array('anonymized'=>'N'),"anonymized is NULL");
+            $oDB->createCommand()->renameColumn('{{surveys}}','private','anonymized');
+            $oDB->createCommand()->update('{{surveys}}',array('anonymized'=>'N'),"anonymized is NULL");
             alterColumn('{{surveys}}','anonymized',"{$sVarchar}(1)",false,'N');
 
             //now we clean up things that were not properly set in previous DB upgrades
-            $db->createCommand()->update('{{answers}}',array('answer'=>''),"answer is NULL");
-            $db->createCommand()->update('{{assessments}}',array('scope'=>''),"scope is NULL");
-            $db->createCommand()->update('{{assessments}}',array('name'=>''),"name is NULL");
-            $db->createCommand()->update('{{assessments}}',array('message'=>''),"message is NULL");
-            $db->createCommand()->update('{{assessments}}',array('minimum'=>''),"minimum is NULL");
-            $db->createCommand()->update('{{assessments}}',array('maximum'=>''),"maximum is NULL");
-            $db->createCommand()->update('{{groups}}',array('group_name'=>''),"group_name is NULL");
-            $db->createCommand()->update('{{labels}}',array('code'=>''),"code is NULL");
-            $db->createCommand()->update('{{labelsets}}',array('label_name'=>''),"label_name is NULL");
-            $db->createCommand()->update('{{questions}}',array('type'=>'T'),"type is NULL");
-            $db->createCommand()->update('{{questions}}',array('title'=>''),"title is NULL");
-            $db->createCommand()->update('{{questions}}',array('question'=>''),"question is NULL");
-            $db->createCommand()->update('{{questions}}',array('other'=>'N'),"other is NULL");
+            $oDB->createCommand()->update('{{answers}}',array('answer'=>''),"answer is NULL");
+            $oDB->createCommand()->update('{{assessments}}',array('scope'=>''),"scope is NULL");
+            $oDB->createCommand()->update('{{assessments}}',array('name'=>''),"name is NULL");
+            $oDB->createCommand()->update('{{assessments}}',array('message'=>''),"message is NULL");
+            $oDB->createCommand()->update('{{assessments}}',array('minimum'=>''),"minimum is NULL");
+            $oDB->createCommand()->update('{{assessments}}',array('maximum'=>''),"maximum is NULL");
+            $oDB->createCommand()->update('{{groups}}',array('group_name'=>''),"group_name is NULL");
+            $oDB->createCommand()->update('{{labels}}',array('code'=>''),"code is NULL");
+            $oDB->createCommand()->update('{{labelsets}}',array('label_name'=>''),"label_name is NULL");
+            $oDB->createCommand()->update('{{questions}}',array('type'=>'T'),"type is NULL");
+            $oDB->createCommand()->update('{{questions}}',array('title'=>''),"title is NULL");
+            $oDB->createCommand()->update('{{questions}}',array('question'=>''),"question is NULL");
+            $oDB->createCommand()->update('{{questions}}',array('other'=>'N'),"other is NULL");
 
             alterColumn('{{answers}}','answer',"text",false);
             alterColumn('{{answers}}','assessment_value','integer',false , '0');
@@ -485,7 +485,7 @@ function db_upgrade_all($iOldDBVersion) {
             // change the primary index to include language
             if ($sDBDriverName=='mysql') // special treatment for mysql because this needs to be in one step since an AUTOINC field is involved
             {
-                $db->createCommand("ALTER TABLE {{assessments}} DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `language`)")->execute();
+                $oDB->createCommand("ALTER TABLE {{assessments}} DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `language`)")->execute();
             }
             else
             {
@@ -507,30 +507,30 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{questions}}','title',"{$sVarchar}(20)",false , '');
             alterColumn('{{questions}}','question',"text",false);
             alterColumn('{{questions}}','type',"{$sVarchar}(1)",false , 'T');
-            try{ $db->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e){};
+            try{ $oDB->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e){};
             alterColumn('{{questions}}','other',"{$sVarchar}(1)",false , 'N');
             alterColumn('{{questions}}','mandatory',"{$sVarchar}(1)");
             alterColumn('{{question_attributes}}','attribute',"{$sVarchar}(50)");
             alterColumn('{{quota}}','qlimit','integer');
 
-            $db->createCommand()->update('{{saved_control}}',array('identifier'=>''),"identifier is NULL");
+            $oDB->createCommand()->update('{{saved_control}}',array('identifier'=>''),"identifier is NULL");
             alterColumn('{{saved_control}}','identifier',"text",false);
-            $db->createCommand()->update('{{saved_control}}',array('access_code'=>''),"access_code is NULL");
+            $oDB->createCommand()->update('{{saved_control}}',array('access_code'=>''),"access_code is NULL");
             alterColumn('{{saved_control}}','access_code',"text",false);
             alterColumn('{{saved_control}}','email',"{$sVarchar}(320)");
-            $db->createCommand()->update('{{saved_control}}',array('ip'=>''),"ip is NULL");
+            $oDB->createCommand()->update('{{saved_control}}',array('ip'=>''),"ip is NULL");
             alterColumn('{{saved_control}}','ip',"text",false);
-            $db->createCommand()->update('{{saved_control}}',array('saved_thisstep'=>''),"saved_thisstep is NULL");
+            $oDB->createCommand()->update('{{saved_control}}',array('saved_thisstep'=>''),"saved_thisstep is NULL");
             alterColumn('{{saved_control}}','saved_thisstep',"text",false);
-            $db->createCommand()->update('{{saved_control}}',array('status'=>''),"status is NULL");
+            $oDB->createCommand()->update('{{saved_control}}',array('status'=>''),"status is NULL");
             alterColumn('{{saved_control}}','status',"{$sVarchar}(1)",false , '');
-            $db->createCommand()->update('{{saved_control}}',array('saved_date'=>'1980-01-01 00:00:00'),"saved_date is NULL");
+            $oDB->createCommand()->update('{{saved_control}}',array('saved_date'=>'1980-01-01 00:00:00'),"saved_date is NULL");
             alterColumn('{{saved_control}}','saved_date',"datetime",false);
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>''),"stg_value is NULL");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>''),"stg_value is NULL");
             alterColumn('{{settings_global}}','stg_value',"string",false , '');
 
             alterColumn('{{surveys}}','admin',"{$sVarchar}(50)");
-            $db->createCommand()->update('{{surveys}}',array('active'=>'N'),"active is NULL");
+            $oDB->createCommand()->update('{{surveys}}',array('active'=>'N'),"active is NULL");
 
             alterColumn('{{surveys}}','active',"{$sVarchar}(1)",false , 'N');
 
@@ -550,7 +550,7 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{surveys}}','bounce_email',"{$sVarchar}(320)");
             alterColumn('{{surveys}}','tokenlength','integer',true , 15);
 
-            $db->createCommand()->update('{{surveys_languagesettings}}',array('surveyls_title'=>''),"surveyls_title is NULL");
+            $oDB->createCommand()->update('{{surveys_languagesettings}}',array('surveyls_title'=>''),"surveyls_title is NULL");
             alterColumn('{{surveys_languagesettings}}','surveyls_title',"{$sVarchar}(200)",false);
             alterColumn('{{surveys_languagesettings}}','surveyls_endtext',"text");
             alterColumn('{{surveys_languagesettings}}','surveyls_url',"string");
@@ -561,8 +561,8 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{surveys_languagesettings}}','surveyls_email_confirm_subj',"string");
             alterColumn('{{surveys_languagesettings}}','surveyls_dateformat','integer',false , 1);
 
-            $db->createCommand()->update('{{users}}',array('users_name'=>''),"users_name is NULL");
-            $db->createCommand()->update('{{users}}',array('full_name'=>''),"full_name is NULL");
+            $oDB->createCommand()->update('{{users}}',array('users_name'=>''),"users_name is NULL");
+            $oDB->createCommand()->update('{{users}}',array('full_name'=>''),"full_name is NULL");
             alterColumn('{{users}}','users_name',"{$sVarchar}(64)",false , '');
             alterColumn('{{users}}','full_name',"{$sVarchar}(50)",false);
             alterColumn('{{users}}','lang',"{$sVarchar}(20)");
@@ -571,19 +571,19 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{users}}','htmleditormode',"{$sVarchar}(7)",true,'default');
             alterColumn('{{users}}','dateformat','integer',false , 1);
             try{
-                $db->createCommand()->dropIndex('email','{{users}}');
+                $oDB->createCommand()->dropIndex('email','{{users}}');
             }
             catch(Exception $e)
             {
                 // do nothing
             }
 
-            $db->createCommand()->update('{{user_groups}}',array('name'=>''),"name is NULL");
-            $db->createCommand()->update('{{user_groups}}',array('description'=>''),"description is NULL");
+            $oDB->createCommand()->update('{{user_groups}}',array('name'=>''),"name is NULL");
+            $oDB->createCommand()->update('{{user_groups}}',array('description'=>''),"description is NULL");
             alterColumn('{{user_groups}}','name',"{$sVarchar}(20)",false);
             alterColumn('{{user_groups}}','description',"text",false);
 
-            try { $db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}'); } catch(Exception $e) {}
+            try { $oDB->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}'); } catch(Exception $e) {}
             try { addPrimaryKey('user_in_groups', array('ugid','uid')); } catch(Exception $e) {}
 
             addColumn('{{surveys_languagesettings}}','surveyls_numberformat',"integer NOT NULL DEFAULT 0");
@@ -595,22 +595,22 @@ function db_upgrade_all($iOldDBVersion) {
             'number_attempts' => "integer NOT NULL"
             ));
             upgradeTokens145();
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>145),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>145),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 146) //Modify surveys table
         {
             upgradeSurveyTimings146();
             // Fix permissions for new feature quick-translation
-            try { setTransactionBookmark(); $db->createCommand("INSERT into {{survey_permissions}} (sid,uid,permission,read_p,update_p) SELECT sid,owner_id,'translations','1','1' from {{surveys}}")->execute(); echo $modifyoutput; flush();@ob_flush();} catch(Exception $e) { rollBackToTransactionBookmark();}
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>146),"stg_name='DBVersion'");
+            try { setTransactionBookmark(); $oDB->createCommand("INSERT into {{survey_permissions}} (sid,uid,permission,read_p,update_p) SELECT sid,owner_id,'translations','1','1' from {{surveys}}")->execute(); echo $modifyoutput; flush();@ob_flush();} catch(Exception $e) { rollBackToTransactionBookmark();}
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>146),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 147)
         {
             addColumn('{{users}}','templateeditormode',"{$sVarchar}(7) NOT NULL default 'default'");
             addColumn('{{users}}','questionselectormode',"{$sVarchar}(7) NOT NULL default 'default'");
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>147),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>147),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 148)
@@ -676,38 +676,38 @@ function db_upgrade_all($iOldDBVersion) {
 
             upgradeQuestionAttributes148();
             fixSubquestions();
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>148),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>148),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 149)
         {
-            $fields = array(
+            $aFields = array(
             'id' => 'integer',
             'sid' => 'integer',
             'parameter' => $sVarchar.'(50)',
             'targetqid' => 'integer',
             'targetsqid' => 'integer'
             );
-            createTable('{{survey_url_parameters}}',$fields);
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>149),"stg_name='DBVersion'");
+            createTable('{{survey_url_parameters}}',$aFields);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>149),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 150)
         {
             addColumn('{{questions}}','relevance','TEXT');
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>150),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>150),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 151)
         {
             addColumn('{{groups}}','randomization_group',"{$sVarchar}(20) NOT NULL default ''");
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>151),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>151),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 152)
         {
-            $db->createCommand()->createIndex('question_attributes_idx3','{{question_attributes}}','attribute');
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>152),"stg_name='DBVersion'");
+            $oDB->createCommand()->createIndex('question_attributes_idx3','{{question_attributes}}','attribute');
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>152),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 153)
@@ -724,21 +724,21 @@ function db_upgrade_all($iOldDBVersion) {
             'eqn' => 'text',
             'prettyprint' => 'text'
             ));
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>153),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>153),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 154)
         {
-            $db->createCommand()->addColumn('{{groups}}','grelevance',"text");
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>154),"stg_name='DBVersion'");
+            $oDB->createCommand()->addColumn('{{groups}}','grelevance',"text");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>154),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 155)
         {
             addColumn('{{surveys}}','googleanalyticsstyle',"{$sVarchar}(1)");
             addColumn('{{surveys}}','googleanalyticsapikey',"{$sVarchar}(25)");
-            try { setTransactionBookmark(); $db->createCommand()->renameColumn('{{surveys}}','showXquestions','showxquestions');} catch(Exception $e) { rollBackToTransactionBookmark();}
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>155),"stg_name='DBVersion'");
+            try { setTransactionBookmark(); $oDB->createCommand()->renameColumn('{{surveys}}','showXquestions','showxquestions');} catch(Exception $e) { rollBackToTransactionBookmark();}
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>155),"stg_name='DBVersion'");
         }
 
 
@@ -746,7 +746,7 @@ function db_upgrade_all($iOldDBVersion) {
         {
             try
             {
-                $db->createCommand()->dropTable('{{survey_url_parameters}}');
+                $oDB->createCommand()->dropTable('{{survey_url_parameters}}');
             }
             catch(Exception $e)
             {
@@ -760,7 +760,7 @@ function db_upgrade_all($iOldDBVersion) {
             'targetsqid' => 'integer'
             ));
 
-            $db->createCommand()->dropTable('{{sessions}}');
+            $oDB->createCommand()->dropTable('{{sessions}}');
             if ($sDBDriverName=='mysql')
             {
                 createTable('{{sessions}}',array(
@@ -785,7 +785,7 @@ function db_upgrade_all($iOldDBVersion) {
             upgradeSurveys156();
 
             // If a survey has an deleted owner, re-own the survey to the superadmin
-            $db->schema->refresh();
+            $oDB->schema->refresh();
             Survey::model()->refreshMetaData();
             $surveys = Survey::model();
             $surveys = $surveys->with(array('owner'))->findAll();
@@ -796,15 +796,15 @@ function db_upgrade_all($iOldDBVersion) {
                     Survey::model()->updateByPk($row->sid,array('owner_id'=>1));
                 }
             }
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>156),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>156),"stg_name='DBVersion'");
             $oTransaction->commit();
-            $oTransaction=$db->beginTransaction();
+            $oTransaction=$oDB->beginTransaction();
         }
 
         if ($iOldDBVersion < 157)
         {
             // MySQL DB corrections
-            try { setTransactionBookmark(); $db->createCommand()->dropIndex('questions_idx4','{{questions}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('questions_idx4','{{questions}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
 
             alterColumn('{{answers}}','assessment_value','integer',false , '0');
             dropPrimaryKey('answers');
@@ -895,19 +895,19 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{user_in_groups}}','uid',"integer",false);
 
             // Additional corrections for Postgres
-            try{ setTransactionBookmark(); $db->createCommand()->createIndex('questions_idx3','{{questions}}','gid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); $db->createCommand()->createIndex('conditions_idx3','{{conditions}}','cqid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); $db->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); $db->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); $db->createCommand()->dropIndex('{{user_name_key}}','{{users}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); $db->createCommand()->createIndex('users_name','{{users}}','users_name',true);} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->createIndex('questions_idx3','{{questions}}','gid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->createIndex('conditions_idx3','{{conditions}}','cqid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('user_in_groups_idx1','{{user_in_groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('{{user_name_key}}','{{users}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->createIndex('users_name','{{users}}','users_name',true);} catch(Exception $e) { rollBackToTransactionBookmark(); };
             try{ setTransactionBookmark(); addPrimaryKey('user_in_groups', array('ugid','uid'));} catch(Exception $e) { rollBackToTransactionBookmark(); };
 
             alterColumn('{{participant_attribute}}','value',"{$sVarchar}(50)", false);
             try{ setTransactionBookmark(); alterColumn('{{participant_attribute_names}}','attribute_type',"{$sVarchar}(4)", false);} catch(Exception $e) { rollBackToTransactionBookmark(); };
             try{ setTransactionBookmark(); dropColumn('{{participant_attribute_names_lang}}','id');} catch(Exception $e) { rollBackToTransactionBookmark(); };
             try{ setTransactionBookmark(); addPrimaryKey('participant_attribute_names_lang',array('attribute_id','lang'));} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); $db->createCommand()->renameColumn('{{participant_shares}}','shared_uid','share_uid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->renameColumn('{{participant_shares}}','shared_uid','share_uid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
             alterColumn('{{participant_shares}}','date_added',"datetime", false);
             alterColumn('{{participants}}','firstname',"{$sVarchar}(40)");
             alterColumn('{{participants}}','lastname',"{$sVarchar}(40)");
@@ -936,19 +936,19 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{surveys}}','bounce_email',"{$sVarchar}(320)");
             alterColumn('{{users}}','email',"{$sVarchar}(320)");
 
-            try{ setTransactionBookmark(); $db->createCommand()->dropIndex('assessments_idx','{{assessments}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); $db->createCommand()->createIndex('assessments_idx3','{{assessments}}','gid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('assessments_idx','{{assessments}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->createIndex('assessments_idx3','{{assessments}}','gid');} catch(Exception $e) { rollBackToTransactionBookmark(); };
 
-            try{ setTransactionBookmark(); $db->createCommand()->dropIndex('ixcode','{{labels}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); $db->createCommand()->dropIndex('{{labels_ixcode_idx}}','{{labels}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); $db->createCommand()->createIndex('labels_code_idx','{{labels}}','code');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('ixcode','{{labels}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('{{labels_ixcode_idx}}','{{labels}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->createIndex('labels_code_idx','{{labels}}','code');} catch(Exception $e) { rollBackToTransactionBookmark(); };
 
 
 
             if ($sDBDriverName=='pgsql')
             {
-                try{ setTransactionBookmark(); $db->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;} catch(Exception $e) { rollBackToTransactionBookmark(); };
-                try{ setTransactionBookmark(); $db->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;} catch(Exception $e) { rollBackToTransactionBookmark(); };
+                try{ setTransactionBookmark(); $oDB->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;} catch(Exception $e) { rollBackToTransactionBookmark(); };
+                try{ setTransactionBookmark(); $oDB->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;} catch(Exception $e) { rollBackToTransactionBookmark(); };
             }
 
             // Additional corrections for MSSQL
@@ -999,33 +999,33 @@ function db_upgrade_all($iOldDBVersion) {
             addColumn('{{users}}','one_time_pw','binary');
 
 
-            $db->createCommand()->update('{{question_attributes}}',array('value'=>'1'),"attribute = 'random_order' and value = '2'");
+            $oDB->createCommand()->update('{{question_attributes}}',array('value'=>'1'),"attribute = 'random_order' and value = '2'");
 
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>157),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>157),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 158)
         {
             LimeExpressionManager::UpgradeConditionsToRelevance();
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>158),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>158),"stg_name='DBVersion'");
         }
         if ($iOldDBVersion < 159)
         {
             alterColumn('{{failed_login_attempts}}', 'ip', "{$sVarchar}(40)",false);
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>159),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>159),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 160)
         {
             alterLanguageCode('it','it-informal');
             alterLanguageCode('it-formal','it');
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>160),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>160),"stg_name='DBVersion'");
         }
         if ($iOldDBVersion < 161)
         {
             addColumn('{{survey_links}}','date_invited','datetime NULL default NULL');
             addColumn('{{survey_links}}','date_completed','datetime NULL default NULL');
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>161),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>161),"stg_name='DBVersion'");
         }
         if ($iOldDBVersion < 162)
         {
@@ -1033,14 +1033,14 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{participant_attribute}}', 'value', "text", false);
             alterColumn('{{participant_attribute_names_lang}}', 'attribute_name', "{$sVarchar}(255)", false);
             alterColumn('{{participant_attribute_values}}', 'value', "text", false);
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>162),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>162),"stg_name='DBVersion'");
         }
         if ($iOldDBVersion < 163)
         {
             //Replace  by <script type="text/javascript" src="{TEMPLATEURL}template.js"></script> by {TEMPLATEJS}
 
             $replacedTemplate=replaceTemplateJS();
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>163),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>163),"stg_name='DBVersion'");
 
         }
 
@@ -1049,19 +1049,19 @@ function db_upgrade_all($iOldDBVersion) {
             upgradeTokens148(); // this should have bee done in 148 - that's why it is named this way
             // fix survey tables for missing or incorrect token field
             upgradeSurveyTables164();
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>164),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>164),"stg_name='DBVersion'");
             
             // Not updating settings table as upgrade process takes care of that step now
         }
         
         if ($iOldDBVersion < 165)
         {
-            $db->createCommand()->createTable('{{plugins}}', array(
+            $oDB->createCommand()->createTable('{{plugins}}', array(
                 'id' => 'pk',
                 'name' => 'string NOT NULL',
                 'active' => 'boolean'
             ));
-            $db->createCommand()->createTable('{{plugin_settings}}', array(
+            $oDB->createCommand()->createTable('{{plugin_settings}}', array(
                 'id' => 'pk',
                 'plugin_id' => 'integer NOT NULL',
                 'model' => 'string',
@@ -1070,20 +1070,20 @@ function db_upgrade_all($iOldDBVersion) {
                 'value' => 'text'
             ));
             alterColumn('{{surveys_languagesettings}}','surveyls_url',"text");
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>165),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>165),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 166)
         {
-            $db->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');
+            $oDB->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');
             alterColumn('{{permissions}}', 'permission', "{$sVarchar}(100)", false);
-            $db->createCommand()->renameColumn('{{permissions}}','sid','entity_id');
+            $oDB->createCommand()->renameColumn('{{permissions}}','sid','entity_id');
             alterColumn('{{permissions}}', 'entity_id', "{$sVarchar}(100)", false);
             addColumn('{{permissions}}','entity',"{$sVarchar}(50)");
-            $db->createCommand("update {{permissions}} set entity='survey'")->query();
+            $oDB->createCommand("update {{permissions}} set entity='survey'")->query();
             dropPrimaryKey('permissions');
             addColumn('{{permissions}}','id','pk');
-            $db->createCommand()->createIndex('idxPermissions','{{permissions}}','entity_id,entity,permission,uid',true);
+            $oDB->createCommand()->createIndex('idxPermissions','{{permissions}}','entity_id,entity,permission,uid',true);
             
             upgradePermissions166();
             dropColumn('{{users}}','create_survey');
@@ -1094,8 +1094,8 @@ function db_upgrade_all($iOldDBVersion) {
             dropColumn('{{users}}','manage_template');
             dropColumn('{{users}}','manage_label');      
             dropColumn('{{users}}','participant_panel');   
-            $db->createCommand()->dropTable('{{templates_rights}}');
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>166),"stg_name='DBVersion'");
+            $oDB->createCommand()->dropTable('{{templates_rights}}');
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>166),"stg_name='DBVersion'");
         }
         
         if ($iOldDBVersion < 167)
@@ -1103,7 +1103,7 @@ function db_upgrade_all($iOldDBVersion) {
             addColumn('{{surveys_languagesettings}}', 'attachments', 'text');
             addColumn('{{users}}', 'created', 'datetime');
             addColumn('{{users}}', 'modified', 'datetime');
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>167),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>167),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 168)
@@ -1111,9 +1111,9 @@ function db_upgrade_all($iOldDBVersion) {
             addColumn('{{participants}}', 'created', 'datetime');
             addColumn('{{participants}}', 'modified', 'datetime');
             addColumn('{{participants}}', 'created_by', 'integer');
-            $db->createCommand('update {{participants}} set created_by=owner_uid')->query();
+            $oDB->createCommand('update {{participants}} set created_by=owner_uid')->query();
             alterColumn('{{participants}}', 'created_by', "integer", false);
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>168),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>168),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 169)
@@ -1121,20 +1121,20 @@ function db_upgrade_all($iOldDBVersion) {
             // Add new column for question index options.
             addColumn('{{surveys}}', 'questionindex', 'integer not null default "0"');
             // Set values for existing surveys.
-            $db->createCommand('update {{surveys}} set `questionindex` = 0 where `allowjumps` = "Y"')->query();
-            $db->createCommand('update {{surveys}} set `questionindex` = 1 where `allowjumps` = "N"')->query();
+            $oDB->createCommand('update {{surveys}} set `questionindex` = 0 where `allowjumps` = "Y"')->query();
+            $oDB->createCommand('update {{surveys}} set `questionindex` = 1 where `allowjumps` = "N"')->query();
 
             // Remove old column.
             Yii::app()->getDb()->createCommand()->dropColumn('{{surveys}}', 'allowjumps');
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>169),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>169),"stg_name='DBVersion'");
         }
         
         if ($iOldDBVersion < 170)
         {
             // renamed advanced attributes fields dropdown_dates_year_min/max
-            $db->createCommand()->update('{{question_attributes}}',array('attribute'=>'date_min'),"attribute='dropdown_dates_year_min'");
-            $db->createCommand()->update('{{question_attributes}}',array('attribute'=>'date_max'),"attribute='dropdown_dates_year_max'");
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>170),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{question_attributes}}',array('attribute'=>'date_min'),"attribute='dropdown_dates_year_min'");
+            $oDB->createCommand()->update('{{question_attributes}}',array('attribute'=>'date_max'),"attribute='dropdown_dates_year_max'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>170),"stg_name='DBVersion'");
         }
 
         if ($iOldDBVersion < 171)
@@ -1155,23 +1155,23 @@ function db_upgrade_all($iOldDBVersion) {
                     break;
                 default: die('Unkown database type');
             }
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>171),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>171),"stg_name='DBVersion'");
         }
         if ($iOldDBVersion < 172)
         {
             alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
-            $db->createCommand()->update('{{settings_global}}',array('stg_value'=>172),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>172),"stg_name='DBVersion'");
         }
         $oTransaction->commit();
     }
     catch(Exception $e)
     {
        $oTransaction->rollback();
-       echo '<br /><br />'.$clang->gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
+       echo '<br /><br />'.$oLang->gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
        return false;
     }
     fixLanguageConsistencyAllSurveys();
-    echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
+    echo '<br /><br />'.sprintf($oLang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
 }
 
@@ -1181,6 +1181,7 @@ function db_upgrade_all($iOldDBVersion) {
 */
 function upgradePermissions166()
 {
+    Permission::model()->refreshMetaData();  // Needed because otherwise Yii tries to use the outdate permission schema for the permission table
     $oUsers=User::model()->findAll();
     foreach($oUsers as $oUser)
     {
@@ -1330,10 +1331,10 @@ function upgradeQuestionAttributes148()
     $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
     foreach ( $oSurveyResult->readAll()  as $aSurveyRow)
     {
-        $surveyid=$aSurveyRow['sid'];
-        $languages=array_merge(array(Survey::model()->findByPk($surveyid)->language), Survey::model()->findByPk($surveyid)->additionalLanguages);
+        $iSurveyID=$aSurveyRow['sid'];
+        $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
 
-        $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$surveyid}";
+        $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$iSurveyID}";
         $oAttributeResult = dbExecuteAssoc($sAttributeQuery);
         $aAllAttributes=questionAttributes(true);
         foreach ( $oAttributeResult->readAll() as $aAttributeRow)
@@ -1341,9 +1342,9 @@ function upgradeQuestionAttributes148()
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n'])
             {
                 Yii::app()->db->createCommand("delete from {{question_attributes}} where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'")->execute();
-                foreach ($languages as $language)
+                foreach ($aLanguages as $sLanguage)
                 {
-                    $sAttributeInsertQuery="insert into {{question_attributes}} (qid,attribute,value,language) VALUES({$aAttributeRow['qid']},'{$aAttributeRow['attribute']}','{$aAttributeRow['value']}','{$language}' )";
+                    $sAttributeInsertQuery="insert into {{question_attributes}} (qid,attribute,value,language) VALUES({$aAttributeRow['qid']},'{$aAttributeRow['attribute']}','{$aAttributeRow['value']}','{$sLanguage}' )";
                     modifyDatabase("",$sAttributeInsertQuery); echo $modifyoutput; flush();@ob_flush();
                 }
             }
@@ -1354,7 +1355,6 @@ function upgradeQuestionAttributes148()
 
 function upgradeSurveyTimings146()
 {
-    global $modifyoutput;
     $aTables = dbGetTablesLike("%timings");
     foreach ($aTables as $sTable) {
         Yii::app()->db->createCommand()->renameColumn($sTable,'interviewTime','interviewtime');
@@ -1365,7 +1365,6 @@ function upgradeSurveyTimings146()
 // Add the usesleft field to all existing token tables
 function upgradeTokens145()
 {
-    global $modifyoutput;
     $aTables = dbGetTablesLike("tokens%");
     foreach ( $aTables as $sTable )
     {
@@ -1430,17 +1429,16 @@ function upgradeSurveys145()
 
 function upgradeSurveyPermissions145()
 {
-    global $modifyoutput;
     $sPermissionQuery = "SELECT * FROM {{surveys_rights}}";
     $oPermissionResult = Yii::app()->db->createCommand($sPermissionQuery)->queryAll();
     if (empty($oPermissionResult)) {return "Database Error";}
     else
     {
-        $tablename = '{{survey_permissions}}';
+        $sTableName = '{{survey_permissions}}';
         foreach ( $oPermissionResult as $aPermissionRow )
         {
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename, array('permission'=>'assessments',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName, array('permission'=>'assessments',
             'create_p'=>$aPermissionRow['define_questions'],
             'read_p'=>$aPermissionRow['define_questions'],
             'update_p'=>$aPermissionRow['define_questions'],
@@ -1448,7 +1446,7 @@ function upgradeSurveyPermissions145()
             'sid'=>$aPermissionRow['sid'],
             'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'quotas',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'quotas',
             'create_p'=>$aPermissionRow['define_questions'],
             'read_p'=>$aPermissionRow['define_questions'],
             'update_p'=>$aPermissionRow['define_questions'],
@@ -1456,7 +1454,7 @@ function upgradeSurveyPermissions145()
             'sid'=>$aPermissionRow['sid'],
             'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'responses',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'responses',
             'create_p'=>$aPermissionRow['browse_response'],
             'read_p'=>$aPermissionRow['browse_response'],
             'update_p'=>$aPermissionRow['browse_response'],
@@ -1466,23 +1464,23 @@ function upgradeSurveyPermissions145()
             'sid'=>$aPermissionRow['sid'],
             'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'statistics',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'statistics',
             'read_p'=>$aPermissionRow['browse_response'],
             'sid'=>$aPermissionRow['sid'],
             'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'survey',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'survey',
             'read_p'=>1,
             'delete_p'=>$aPermissionRow['delete_survey'],
             'sid'=>$aPermissionRow['sid'],
             'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'surveyactivation',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'surveyactivation',
             'update_p'=>$aPermissionRow['activate_survey'],
             'sid'=>$aPermissionRow['sid'],
             'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'surveycontent',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'surveycontent',
             'create_p'=>$aPermissionRow['define_questions'],
             'read_p'=>$aPermissionRow['define_questions'],
             'update_p'=>$aPermissionRow['define_questions'],
@@ -1492,19 +1490,19 @@ function upgradeSurveyPermissions145()
             'sid'=>$aPermissionRow['sid'],
             'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'surveylocale',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'surveylocale',
             'read_p'=>$aPermissionRow['edit_survey_property'],
             'update_p'=>$aPermissionRow['edit_survey_property'],
             'sid'=>$aPermissionRow['sid'],
             'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'surveysettings',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'surveysettings',
             'read_p'=>$aPermissionRow['edit_survey_property'],
             'update_p'=>$aPermissionRow['edit_survey_property'],
             'sid'=>$aPermissionRow['sid'],
             'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'tokens',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'tokens',
             'create_p'=>$aPermissionRow['activate_survey'],
             'read_p'=>$aPermissionRow['activate_survey'],
             'update_p'=>$aPermissionRow['activate_survey'],

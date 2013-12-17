@@ -21,22 +21,21 @@
 */
 class RegisterController extends LSYii_Controller {
 
-    function actionAJAXRegisterForm
-    ($surveyid)
+    function actionAJAXRegisterForm($surveyid)
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('replacements');
         $redata = compact(array_keys(get_defined_vars()));
-        $surveyid = sanitize_int($surveyid);
-        $row = Survey::model()->find('sid=:sid',array(':sid' => $surveyid)) or show_error("Can't find survey data");
-        $thistpl=getTemplatePath(validateTemplateDir($row->template));
-        $data['sid'] = $surveyid;
-        $data['startdate'] = $row->startdate;
-        $data['enddate'] = $row->expires;
+        $iSurveyID = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->find('sid=:sid',array(':sid' => $iSurveyID)) or show_error("Can't find survey data");
+        $thistpl=getTemplatePath(validateTemplateDir($oSurvey->template));
+        $data['sid'] = $iSurveyID;
+        $data['startdate'] = $oSurvey->startdate;
+        $data['enddate'] = $oSurvey->expires;
         Yii::import('application.libraries.Limesurvey_lang');
         Yii::app()->lang = new Limesurvey_lang($baselang);
         echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata,'register.php',false,NULL,$data);
-        unset($_SESSIOn['survey_'.$surveyid]['register_errormsg']);
+        unset($_SESSION['survey_'.$iSurveyID]['register_errormsg']);
 
     }
 
@@ -49,39 +48,40 @@ class RegisterController extends LSYii_Controller {
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('replacements');
-        $postlang = Yii::app()->request->getPost('lang');
-        if($surveyid == null)
+        $sLanguageFromPOST = Yii::app()->request->getPost('lang');
+        $iSurveyID=$surveyid;
+        if($iSurveyID == null)
         {
-            $surveyid = Yii::app()->request->getPost('sid');
+            $iSurveyID = Yii::app()->request->getPost('sid');
         }
-        if (!$surveyid)
+        if (!$iSurveyID)
         {
             $this->redirect(Yii::app()->baseUrl);
         }
 
         // Get passed language from form, so that we dont loose this!
-        if (!isset($postlang) || $postlang == "" || !$postlang )
+        if (!isset($sLanguageFromPOST) || $sLanguageFromPOST == "" || !$sLanguageFromPOST )
         {
-            $baselang = Survey::model()->findByPk($surveyid)->language;
+            $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
             Yii::import('application.libraries.Limesurvey_lang');
-            Yii::app()->lang = new Limesurvey_lang($baselang);
+            Yii::app()->lang = new Limesurvey_lang($sBaseLanguage);
             $clang = Yii::app()->lang;
         } else {
             Yii::import('application.libraries.Limesurvey_lang');
-            Yii::app()->lang = new Limesurvey_lang($postlang);
+            Yii::app()->lang = new Limesurvey_lang($sLanguageFromPOST);
             $clang = Yii::app()->lang;
-            $baselang = $postlang;
+            $sBaseLanguage = $sLanguageFromPOST;
         }
 
-        $thissurvey=getSurveyInfo($surveyid,$baselang);
+        $thissurvey=getSurveyInfo($iSurveyID,$sBaseLanguage);
 
         $register_errormsg = "";
         // Check the security question's answer
         if (function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen',$thissurvey['usecaptcha']) )
         {
             if (!isset($_POST['loadsecurity']) ||
-            !isset($_SESSION['survey_'.$surveyid]['secanswer']) ||
-            Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$surveyid]['secanswer'])
+            !isset($_SESSION['survey_'.$iSurveyID]['secanswer']) ||
+            Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$iSurveyID]['secanswer'])
             {
                 $register_errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
             }
@@ -95,7 +95,7 @@ class RegisterController extends LSYii_Controller {
 
         // Check for additional fields
         $attributeinsertdata = array();
-        foreach (GetParticipantAttributes($surveyid) as $field => $data)
+        foreach (GetParticipantAttributes($iSurveyID) as $field => $data)
         {
             if (empty($data['show_register']) || $data['show_register'] != 'Y')
                 continue;
@@ -107,19 +107,19 @@ class RegisterController extends LSYii_Controller {
         }
         if ($register_errormsg != "")
         {
-            $_SESSION['survey_'.$surveyid]['register_errormsg']=$register_errormsg;
-            $this->redirect(array('survey/index/sid/'.$surveyid));
+            $_SESSION['survey_'.$iSurveyID]['register_errormsg']=$register_errormsg;
+            $this->redirect(array('survey/index/sid/'.$iSurveyID));
         }
 
         //Check if this email already exists in token database
-        $query = "SELECT email FROM {{tokens_$surveyid}}\n"
+        $query = "SELECT email FROM {{tokens_$iSurveyID}}\n"
         . "WHERE email = '".sanitize_email(Yii::app()->request->getPost('register_email'))."'";
         $usrow = Yii::app()->db->createCommand($query)->queryRow();
         if ($usrow)
         {
             $register_errormsg=$clang->gT("The email you used has already been registered.");
-            $_SESSION['survey_'.$surveyid]['register_errormsg']=$register_errormsg;
-            $this->redirect(array('survey/index/sid/'.$surveyid));
+            $_SESSION['survey_'.$iSurveyID]['register_errormsg']=$register_errormsg;
+            $this->redirect(array('survey/index/sid/'.$iSurveyID));
             //include "index.php";
             //exit;
         }
@@ -128,7 +128,7 @@ class RegisterController extends LSYii_Controller {
 
         // Get the survey settings for token length
         //$this->load->model("surveys_model");
-        $tlresult = Survey::model()->findAllByAttributes(array("sid"=>$surveyid));
+        $tlresult = Survey::model()->findAllByAttributes(array("sid"=>$iSurveyID));
         if (isset($tlresult[0])) {
             $tlrow = $tlresult[0];
         }
@@ -146,7 +146,7 @@ class RegisterController extends LSYii_Controller {
         while ($mayinsert != true)
         {
             $newtoken = randomChars($tokenlength);
-            $ntquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token='$newtoken'";
+            $ntquery = "SELECT * FROM {{tokens_$iSurveyID}} WHERE token='$newtoken'";
             $usrow = Yii::app()->db->createCommand($ntquery)->queryRow();
             if (!$usrow) {$mayinsert = true;}
         }
@@ -159,7 +159,7 @@ class RegisterController extends LSYii_Controller {
         $postattribute2=sanitize_xss_string(strip_tags(returnGlobal('register_attribute2')));   */
 
         // Insert new entry into tokens db
-		$token = Token::create($thissurvey['sid']);
+        $token = Token::create($thissurvey['sid']);
         $token->firstname = $postfirstname;
         $token->lastname = $postlastname;
         $token->email = Yii::app()->request->getPost('register_email');
@@ -170,7 +170,7 @@ class RegisterController extends LSYii_Controller {
             $token->validfrom = $starttime;
             $token->validuntil = $endtime;
         }
-		$token->setAttributes($attributeinsertdata, false);
+        $token->setAttributes($attributeinsertdata, false);
         $result = $token->save();
 
         /**
@@ -203,10 +203,10 @@ class RegisterController extends LSYii_Controller {
 
         $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 
-        $surveylink = $this->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$baselang,'token'=>$newtoken));
-        $optoutlink = $this->createAbsoluteUrl("/optout/tokens/surveyid/{$surveyid}",array('langcode'=>'fr','token'=>'newtoken'));
-        $optinlink = $this->createAbsoluteUrl("/optin/tokens/surveyid/{$surveyid}",array('langcode'=>'fr','token'=>'newtoken'));
-        if (getEmailFormat($surveyid) == 'html')
+        $surveylink = $this->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}",array('lang'=>$sBaseLanguage,'token'=>$newtoken));
+        $optoutlink = $this->createAbsoluteUrl("/optout/tokens/surveyid/{$iSurveyID}",array('langcode'=>'fr','token'=>'newtoken'));
+        $optinlink = $this->createAbsoluteUrl("/optin/tokens/surveyid/{$iSurveyID}",array('langcode'=>'fr','token'=>'newtoken'));
+        if (getEmailFormat($iSurveyID) == 'html')
         {
             $useHtmlEmail = true;
             $fieldsarray["{SURVEYURL}"]="<a href='$surveylink'>".$surveylink."</a>";
@@ -227,11 +227,11 @@ class RegisterController extends LSYii_Controller {
         $html = ""; //Set variable
         $sitename =  Yii::app()->getConfig('sitename');
 
-        if (SendEmailMessage($message, $subject, Yii::app()->request->getPost('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
+        if (SendEmailMessage($message, $subject, Yii::app()->request->getPost('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($iSurveyID)))
         {
             // TLR change to put date into sent
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
-            $query = "UPDATE {{tokens_$surveyid}}\n"
+            $query = "UPDATE {{tokens_$iSurveyID}}\n"
             ."SET sent='$today' WHERE tid=$tid";
             $result=dbExecuteAssoc($query) or show_error("Unable to execute this query : $query<br />");     //Checked
             $html="<center>".$clang->gT("Thank you for registering to participate in this survey.")."<br /><br />\n".$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."<br /><br />\n".$clang->gT("Survey administrator")." {ADMINNAME} ({ADMINEMAIL})";

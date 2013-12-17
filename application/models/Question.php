@@ -77,30 +77,41 @@
         */
         public function rules()
         {
-            return array(
-#                array('title','required','length', 'min' => 1, 'max'=>20),
-                array('qid', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                                'condition'=>'language=:language',
-                                'params'=>array(':language'=>$this->language)
-                        ),
-                        'message'=>'{attribute} "{value}" is already in use.'),
-                array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
-                array('title,question,help','LSYii_Validators'),
-                array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                        'condition' => 'language=:language AND sid=:sid AND parent_qid IS NULL',
-                        'params' => array(
-                            ':language' => $this->language,
-                            ':sid' => $this->sid
-                        )
-                    ),
-                    'message' => 'Question codes must be unique.'),
-                array('title', 'match', 'pattern' => '/[a-z,A-Z][[:alnum:]]+/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.', 'on' => 'update, import'),
-                array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-                array('mandatory', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-                array('question_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-                array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-                array('same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            );
+            $aRules= array(
+                        //array('title','required','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'), // 131206 : Have to track down why set in comment
+                        array('qid', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+                                        'condition'=>'language=:language',
+                                        'params'=>array(':language'=>$this->language)
+                                ),
+                                'message'=>'{attribute} "{value}" is already in use.'),
+                        array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
+                        array('title,question,help','LSYii_Validators'),
+                        array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+                        array('mandatory', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+                        array('question_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+                        array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+                        array('same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+                    );
+            if(isset($this->qid) && isset($this->language))
+            {
+                $oActualValue=Question::model()->findByPk(array("qid"=>$this->qid,'language'=>$this->language));
+                if($oActualValue && $oActualValue->title==$this->title)
+                {
+                    return $aRules; // We don't change title, then don't put rules on title
+                }
+            }
+            $aRules= array_merge($aRules,array(
+                                array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+                                    'condition' => 'language=:language AND sid=:sid AND parent_qid=0',
+                                    'params' => array(
+                                        ':language' => $this->language,
+                                        ':sid' => $this->sid
+                                    )
+                                ),
+                                'message' => 'Question codes must be unique.'),
+                            array('title', 'match', 'pattern' => '/[a-z,A-Z][[:alnum:]]+/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.', 'on' => 'update, insert, import'),
+                        ));
+            return $aRules;
         }
 
         /**
@@ -271,6 +282,7 @@
         */
         function insertRecords($data)
         {
+            // This function must be deprecated : don't find a way to have getErrors after (Shnoulle on 131206)
             $questions = new self;
             foreach ($data as $k => $v){
                 $questions->$k = $v;

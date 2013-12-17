@@ -368,42 +368,39 @@ function lspreview()
             data: {lid:lsid, sid:surveyid},
             cache: true,
             success: function(json){
-                $("#labelsetpreview").tabs('destroy');
                 $("#labelsetpreview").empty();
                 var tabindex='';
                 var tabbody='';
                 for ( x in json)
-                    {
-
+                {
                     language=json[x];
                     for (y in language)
-                        {
+                    {
                         tabindex=tabindex+'<li><a href="#language_'+y+'">'+language[y][1]+'</a></li>';
                         tabbody=tabbody+"<div id='language_"+y+"'><table class='limetable'>";
                         lsrows=language[y][0];
                         tablerows='';
                         var highlight=true;
                         for (z in lsrows)
-                            {
+                        {
                             highlight=!highlight;
                             tabbody=tabbody+'<tbody><tr';
                             if (highlight==true) {
                                 tabbody=tabbody+" class='highlight' ";
                             }
-                            if (lsrows[z].title==null)
-                                {
+                            if (lsrows[z].title==null) {
                                 lsrows[z].title='';
                             }
                             tabbody=tabbody+'><td>'+lsrows[z].code+'</td>';
                             if (assessmentvisible)
-                                {
+                            {
                                 tabbody=tabbody+'<td>'+lsrows[z].assessment_value+'</td>';
                             }
                             tabbody=tabbody+'<td>'+lsrows[z].title+'</td></tr><tbody>';
                         }
                         tabbody=tabbody+'<thead><tr><th>'+strcode+'</th>';
                         if (assessmentvisible)
-                            {
+                        {
                             tabbody=tabbody+'<th>'+sAssessmentValue+'</th>';
                         }
                         tabbody=tabbody+'<th>'+strlabel+'</th></tr></thead></table></div>';
@@ -412,15 +409,16 @@ function lspreview()
                 $("#labelsetpreview").append('<ul>'+tabindex+'</ul>'+tabbody);
                 labelcache[lsid]='<ul>'+tabindex+'</ul>'+tabbody;
                 $("#labelsetpreview").tabs();
-        }}
-        );
+                $("#labelsetpreview").tabs('refresh');
+            }
+        });
     }
     else
-        {
-        $("#labelsetpreview").tabs('destroy');
+    {
         $("#labelsetpreview").empty();
         $("#labelsetpreview").append(labelcache[lsid]);
         $("#labelsetpreview").tabs();
+        $("#labelsetpreview").tabs('refresh');
     }
 
 

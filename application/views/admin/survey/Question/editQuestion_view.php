@@ -37,14 +37,15 @@
     </ul>
     <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmeditquestion','name'=>'frmeditquestion','onsubmit'=>"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');")); ?>
             <div id='questionactioncopy' class='extra-action'>
-                <p><input type='button' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
+                <p><input type='submit' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
                 <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
             </div>
 
             <div id="<?php echo $eqrow['language']; ?>">
             <?php $eqrow  = array_map('htmlspecialchars', $eqrow); ?>
                 <ul><li>
-                        <label for='title'> <?php $clang->eT("Code:"); ?></label><input type='text' size='20' maxlength='20' id='title' required='required' name='title' value="<?php echo $eqrow['title']; ?>" /> <?php if ($copying) $clang->eT("Note: You MUST enter a new question code!"); ?>
+                        <?php if($eqrow['title']) {$sPattern="^([a-zA-Z][a-zA-Z0-9]*|{$eqrow['title']})$";}else{$sPattern="^[a-zA-Z][a-zA-Z0-9]*$";} ?>
+                        <label for='title'> <?php $clang->eT("Code:"); ?></label><input type='text' size='20' maxlength='20' id='title' required='required' name='title' pattern='<?php echo $sPattern ?>' value="<?php echo $eqrow['title']; ?>" /> <?php if ($copying) $clang->eT("Note: You MUST enter a new question code!"); ?>
                     </li><li>
                         <label for='question_<?php echo $eqrow['language']; ?>'><?php $clang->eT("Question:"); ?></label>
                         <div class="htmleditor">
@@ -304,7 +305,7 @@
                     <input type='hidden' name='action' value='updatequestion' />
                     <input type='hidden' id='newpage' name='newpage' value='' />
                     <input type='hidden' id='qid' name='qid' value='<?php echo $qid; ?>' />
-					<p><input type='button' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
+					<p><input type='submit' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
                     <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
                     <?php } ?>
                 <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' /></p><br />

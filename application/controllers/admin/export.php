@@ -297,12 +297,7 @@ class export extends Survey_Common_Action {
         {
             $sFilter='';
         }
-        
-        // Now disable logging to prevent errors when for example database logging is on
-        foreach (App()->log->routes as $route)
-        {
-            $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
-        }
+        viewHelper::disableHtmlLogging();
         $resultsService->exportSurvey($iSurveyID, $explang, $type, $options, $sFilter);
 
         exit;
@@ -1012,6 +1007,7 @@ class export extends Survey_Common_Action {
 
     private function _surveyexport($action, $iSurveyID)
     {
+        viewHelper::disableHtmlLogging();
         if ( $action == "exportstructurexml" )
         {
             $fn = "limesurvey_survey_{$iSurveyID}.lss";
