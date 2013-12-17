@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title></title>
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" ?>" />
-        <script src="<?php echo Yii::app()->getConfig('generalscripts') . "/jquery/jquery.js" ?>" type="text/javascript"></script>
-        <script src="<?php echo Yii::app()->getConfig('adminscripts') . "/uploadsummary.js" ?>" type="text/javascript"></script>
-        <script type="text/javascript">var redUrl = "<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>";</script>
-    </head>
-    <body>
         <?php
         $uploadSummary = "<div class='header ui-widget-header'>" . $clang->gT("CPDB CSV summary") . "</div><div class='messagebox ui-corner-all'>";
         $uploadSummary .= "<div class='uploadsummary'>\n";
@@ -83,9 +72,6 @@
             echo $errorinupload['error'];
             $uploadSummary .= "<div class='warningheader'>" . $errorinupload['error'] . "</div>";
         }
-
+        foreach($aGlobalErrors as $sGlobalError)
+            echo "<script> \$notifycontainer.notify('create', 'error-notify', { message:'{$sGlobalError}'});</script>";
         echo $uploadSummary;
-        ?>
-
-    </body>
-</html>

@@ -1144,6 +1144,25 @@ class participantsaction extends Survey_Common_Action
                 'filterbea' => $filterblankemails,
                 'participant_id_exists' => in_array('participant_id', $fieldlist)
             );
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "attributeMapCSV.css");
+        App()->getClientScript()->registerPackage('qTip2');
+        App()->getClientScript()->registerPackage('jquery-nestedSortable');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "attributeMapCSV.js");
+        
+        $sAttributeMapJS="var copyUrl = '".App()->createUrl("admin/participants/sa/uploadCSV")."';\n"
+                        ."var displayParticipants = '".App()->createUrl("admin/participants/sa/displayParticipants")."';\n"
+                        ."var mapCSVcancelled = '".App()->createUrl("admin/participants/sa/mapCSVcancelled")."';\n"
+                        ."var characterset = '".sanitize_paranoid_string($_POST['characterset'])."';\n"
+                        ."var okBtn = '".$clang->gT("OK")."';\n"
+                        ."var processed = '".$clang->gT("Summary")."';\n"
+                        ."var summary = '".$clang->gT("Upload summary")."';\n"
+                        ."var notPairedErrorTxt = '".$clang->gT("You have to pair this field with an existing attribute.")."';\n"
+                        ."var onlyOnePairedErrorTxt = '".$clang->gT("Only one CSV attribute is mapped with central attribute.")."';\n"
+                        ."var cannotAcceptErrorTxt='".$clang->gT("This list cannot accept token attributes.")."';\n"
+                        ."var separator = '".sanitize_paranoid_string($_POST['separatorused'])."';\n"
+                        ."var thefilepath = '".$sRandomFileName."';\n"
+                        ."var filterblankemails = '".$filterblankemails."';\n";
+        App()->getClientScript()->registerScript("sAttributeMapJS",$sAttributeMapJS,CClientScript::POS_BEGIN);
             $this->_renderWrappedTemplate('participants', 'attributeMapCSV', $aData);
         }
     }
@@ -1153,11 +1172,12 @@ class participantsaction extends Survey_Common_Action
      */
     function uploadCSV()
     {
+        $clang = $this->getController()->lang;
         unset(Yii::app()->session['summary']);
         $characterset = Yii::app()->request->getPost('characterset');
         $separator = Yii::app()->request->getPost('separatorused');
         $newarray = Yii::app()->request->getPost('newarray');
-        $mappedarray = Yii::app()->request->getPost('mappedarray');
+        $mappedarray = Yii::app()->request->getPost('mappedarray',false);
         $filterblankemails = Yii::app()->request->getPost('filterbea');
         $overwrite = Yii::app()->request->getPost('overwrite');
         $sFilePath = Yii::app()->getConfig('tempdir') . '/' . basename(Yii::app()->request->getPost('fullfilepath'));
@@ -1174,7 +1194,10 @@ class participantsaction extends Survey_Common_Action
         $invalidformatlist = array();
         $invalidattribute = array();
         $invalidparticipantid = array();
-
+        $aGlobalErrors=array();
+        /* If no mapped array */
+        if(!$mappedarray)
+            $mappedarray=array();
         /* Adjust system settings to read file with MAC line endings */
         @ini_set('auto_detect_line_endings', true);
         /* Open the uploaded file into an array */
@@ -1207,7 +1230,7 @@ class participantsaction extends Survey_Common_Action
         }
         foreach ($tokenlistarray as $buffer) //Iterate through the CSV file line by line
         {
-        	$buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
+            $buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
             $firstname = "";
             $lastname = "";
             $email = "";
@@ -1219,6 +1242,7 @@ class participantsaction extends Survey_Common_Action
                 $buffer = removeBOM($buffer);
                 $attrid = ParticipantAttributeName::model()->getAttributeID();
                 $allowedfieldnames = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
+                $aFilterDuplicateFields = array('firstname', 'lastname', 'email');
                 if (!empty($mappedarray))
                 {
                     foreach ($mappedarray as $key => $value)
@@ -1262,7 +1286,11 @@ class participantsaction extends Survey_Common_Action
                     $recordcount = count($tokenlistarray);
                     break;
                 }
-        	} else {
+                foreach($aFilterDuplicateFields as $sFilterDuplicateField){
+                    if(!in_array($sFilterDuplicateField, $firstline))
+                         $aGlobalErrors[]=sprintf($clang->gT("No %s in header, create empty value for all records."),$sFilterDuplicateField);
+                }
+            } else {
                 // After looking at the first line, we now import the actual values
                 $line = convertCSVRowToArray($buffer, $separator, '"');
 
@@ -1278,10 +1306,14 @@ class participantsaction extends Survey_Common_Action
                 {
                     unset($writearray[$column]);
                 }
+                // Add aFilterDuplicateFields not in CSV to writearray : quick fix 
+                foreach($aFilterDuplicateFields as $sFilterDuplicateField){
+                    if(!in_array($sFilterDuplicateField, $firstline))
+                        $writearray[$sFilterDuplicateField]="";
+                }
                 $invalidemail = false;
                 $dupfound = false;
                 $thisduplicate = 0;
-                $filterduplicatefields = array('firstname', 'lastname', 'email');
 
                 //Check for duplicate participants
                 $aData = array(
@@ -1299,7 +1331,7 @@ class participantsaction extends Survey_Common_Action
                     $aData = "firstname = ".Yii::app()->db->quoteValue($writearray['firstname'])." AND lastname = ".Yii::app()->db->quoteValue($writearray['lastname'])." AND email = ".Yii::app()->db->quoteValue($writearray['email'])." AND owner_uid = '".Yii::app()->session['loginID']."'";
                 }
                 //End of HACK
-				$aData = Participant::model()->checkforDuplicate($aData, "participant_id");
+                $aData = Participant::model()->checkforDuplicate($aData, "participant_id");
                 if ($aData !== false) {
                     $thisduplicate = 1;
                     $dupcount++;
@@ -1365,7 +1397,7 @@ class participantsaction extends Survey_Common_Action
                         unset($writearray['validuntil']);
                     }
                     $dontimport=false;
-                    if (($filterblankemails == "accept" && $writearray['email'] == "") || $writearray['firstname'] == "" || $writearray['lastname'] == "") {
+                    if (($filterblankemails == "accept" && $writearray['email'] == "")) {
                     	//The mandatory fields of email, firstname and lastname
 						//must be filled, but one or more are empty
                         $mandatory++;
@@ -1405,7 +1437,6 @@ class participantsaction extends Survey_Common_Action
         }
 
         unlink($sFilePath);
-        $clang = $this->getController()->lang;
         $aData = array();
         $aData['clang'] = $clang;
         $aData['recordcount'] = $recordcount - 1;
@@ -1416,11 +1447,11 @@ class participantsaction extends Survey_Common_Action
         $aData['invalidemaillist'] = $invalidemaillist;
         $aData['mandatory'] = $mandatory;
         $aData['invalidattribute'] = $invalidattribute;
-        $aData['mandatory'] = $mandatory;
         $aData['invalidparticipantid'] = $invalidparticipantid;
         $aData['overwritten'] = $overwritten;
         $aData['dupreason'] = $dupreason;
-        $this->getController()->render('/admin/participants/uploadSummary_view', $aData);
+        $aData['aGlobalErrors'] = $aGlobalErrors;
+        $this->getController()->renderPartial('/admin/participants/uploadSummary_view', $aData);
     }
 
     function summaryview()
