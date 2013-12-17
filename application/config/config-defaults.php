@@ -400,9 +400,9 @@ $config['alternatechartfontfile']=array(
     'ko'=>'UnBatang.ttf',
     'si'=>'FreeSans.ttf',
     'th'=>'TlwgTypist.ttf',
+    'zh-Hans'=>'fireflysung.ttf',
     'zh-Hant-HK'=>'fireflysung.ttf',
-    'zh-Hant-HK'=>'fireflysung.ttf',
-    'zh-Hant-HK'=>'fireflysung.ttf',
+    'zh-Hant-TW'=>'fireflysung.ttf',
 );
 
 /**

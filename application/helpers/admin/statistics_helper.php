@@ -30,7 +30,11 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     /* This is a lazy solution to bug #6389. A better solution would be to find out how
        the "T" gets passed to this function from the statistics.js file in the first place! */
     if(substr($iSurveyID,0,1)=="T") {$iSurveyID=substr($iSurveyID,1);}
+    static $bErrorGenerate=false;
 
+    if($bErrorGenerate){
+        return false;
+    }
     $rootdir = Yii::app()->getConfig("rootdir");
     $homedir = Yii::app()->getConfig("homedir");
     $homeurl = Yii::app()->getConfig("homeurl");
@@ -42,7 +46,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     $language = $oLanguage->langcode;
     $clang = $oLanguage;
     $cachefilename = "";
-
+    
     /* Set the fonts for the chart */
     if ($chartfontfile=='auto')
     {
@@ -58,11 +62,12 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             }
             else
             {
-                Yii::app()->session['flashmessage'] = sprintf($clang->gT('The fonts file %s was not found in <limesurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory.'),$neededfontfile);
+                Yii::app()->setFlashMessage(sprintf($clang->gT('The fonts file %s was not found in <limesurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory to generate the charts.'),$neededfontfile),'error');
+                $bErrorGenerate=true;// Don't do a graph again.
+                return false;
             }
         }
     }
-
     if (count($lbl)>72)
     {
         $DataSet = array(1=>array(1=>1));
@@ -2719,49 +2724,49 @@ class statistics_helper {
             if ($bShowGraph == true)
             {
                 $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $statlang, $outputs['qtype']);
-                //introduce new counter
-                if (!isset($ci)) {$ci=0;}
-
-                //increase counter, start value -> 1
-                $ci++;
-                switch($outputType)
+                if($cachefilename) // Add the image only if constructed
                 {
-                    case 'xls':
+                    //introduce new counter
+                    if (!isset($ci)) {$ci=0;}
 
-                        /**
-                        * No Image for Excel...
-                        */
+                    //increase counter, start value -> 1
+                    $ci++;
+                    switch($outputType)
+                    {
+                        case 'xls':
 
-                        break;
-                    case 'pdf':
+                            /**
+                            * No Image for Excel...
+                            */
 
-                        $this->pdf->AddPage('P','A4');
+                            break;
+                        case 'pdf':
 
-                        $this->pdf->titleintopdf($pdfTitle,$titleDesc);
-                        $this->pdf->Image($tempdir."/".$cachefilename, 0, 70, 180, 0, '', Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$surveyid), 'B', true, 150,'C',false,false,0,true);
+                            $this->pdf->AddPage('P','A4');
 
-                        break;
-                    case 'html':
-                        $statisticsoutput .= "<img src=\"$tempurl/".$cachefilename."\" border='1' />";
+                            $this->pdf->titleintopdf($pdfTitle,$titleDesc);
+                            $this->pdf->Image($tempdir."/".$cachefilename, 0, 70, 180, 0, '', Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$surveyid), 'B', true, 150,'C',false,false,0,true);
 
-                        $aattr = getQuestionAttributeValues($qqid, $firstletter);
-                        if ($bShowMap) {
-                            $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
+                            break;
+                        case 'html':
+                            $statisticsoutput .= "<img src=\"$tempurl/".$cachefilename."\" border='1' />";
 
-                            $agmapdata[$rt] = array (
-                            "coord" => getQuestionMapData(substr($rt, 1), $qsid),
-                            "zoom" => $aattr['location_mapzoom'],
-                            "width" => $aattr['location_mapwidth'],
-                            "height" => $aattr['location_mapheight']
-                            );
-                        }
-                        break;
-                    default:
+                            $aattr = getQuestionAttributeValues($qqid, $firstletter);
+                            if ($bShowMap) {
+                                $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
 
-
-                        break;
+                                $agmapdata[$rt] = array (
+                                "coord" => getQuestionMapData(substr($rt, 1), $qsid),
+                                "zoom" => $aattr['location_mapzoom'],
+                                "width" => $aattr['location_mapwidth'],
+                                "height" => $aattr['location_mapheight']
+                                );
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
             }
         }
 
