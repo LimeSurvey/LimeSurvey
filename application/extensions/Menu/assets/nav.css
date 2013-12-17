@@ -93,5 +93,9 @@ nav select, nav label {
 nav .select {
 	width: 300px;
 }
+nav .jshide{
+position:absolute;
+left:999em;
+}
 /* Fix bootstrap causing menu to disappear on FF */
 nav.menubar { clear: both; }
