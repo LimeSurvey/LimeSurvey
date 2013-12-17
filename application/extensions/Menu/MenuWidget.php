@@ -13,7 +13,7 @@
             'alt' => '',
             'type' => 'link'
         );
-        
+
         public $surveyId = null;
         public $groupId = null;
         public $questionId = null;
@@ -95,7 +95,7 @@
                 $tmpList[$list][] = array(
                     'id' => $survey['sid'],
                     'title' => $survey['surveyls_title'],
-                    'group' => $group                
+                    'group' => $group
                 );
             }
             $surveyList = array();
@@ -111,10 +111,15 @@
             $menu['items']['right'][] = array(
                 'title' => 'Surveys:',
                 'type' => 'select',
-                'name' => 'surveylist',
+                'name' => 'surveyid',
                 'empty' => gT('No surveys available.'),
                 'values' => $surveyList,
-                'value' => $this->surveyId
+                'value' => $this->surveyId,
+                'form' => array(
+                    'action'=>Yii::app()->getController()->createUrl("/admin/survey",array('sa'=>"view")),
+                    'method'=>'get',
+                    'button'=>gt('Select this survey')
+                    )
             );
             $menu['items']['right'][] = array(
                 'href' => array('admin/survey', 'sa' => 'index'),
@@ -405,7 +410,7 @@
                 {
                     $result .= $item['title'];
                 }
-                
+
                 if(isset($item['values']))
                 {
                     
@@ -426,9 +431,8 @@
                 {
                     $result = $this->renderSub($item, $imageUrl, $level + 1);
                 }
-                
-                
-                
+
+
             }
             elseif (is_string($item) && $item == 'separator' && $allowSeparator)
             {
@@ -457,7 +461,14 @@
         
         protected function renderSelect($item)
         {
-            $result = CHtml::label($item['title'],  $item['name']);
+            $result="";
+            $extraclass="";
+            if(isset($item['form']))
+            {
+                $result .= CHtml::beginForm($item['form']['action'],$item['form']['method']);
+                $extraclass.=" active";
+            }
+            $result .= CHtml::label($item['title'],  $item['name']);
             if (is_array(current($item['values'])))
             {
                 $listData = CHtml::listData($item['values'], 'id', 'title', 'group');
@@ -477,7 +488,7 @@
                         'placeholder' => gT('Please choose...')
                     ),
                     'htmlOptions' => array(
-                        'class' => 'select',
+                        'class' => 'select'.$extraclass,
                         'id' => $item['name'],
                         'prompt' => ''//gT('Please choose...')
                     )
@@ -486,6 +497,11 @@
             elseif (isset($item['empty']))
             {
                 $result .= CHtml::tag('span', array(), ' '. $item['empty']);
+            }
+            if(isset($item['form']))
+            {
+                $result .= CHtml::submitButton($item['form']['button'],array('name'=>'','class'=>'jshide'));
+                CHtml::endForm();
             }
             return $result;
         }
