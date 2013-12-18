@@ -123,9 +123,6 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     min-width: 6em;
     width:auto;
     margin-bottom: 0px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
     font-size: 1em;
     line-height: 1.5;
 }
