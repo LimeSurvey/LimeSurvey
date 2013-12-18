@@ -112,14 +112,14 @@
                 'title' => 'Surveys:',
                 'type' => 'select',
                 'name' => 'surveyid',
-                'route' => App()->createUrl('admin/survey/sa/view'),// Work too with 'route' => App()->createUrl('admin/survey',array('sa'=> "view")),
+                'route' => 'admin/survey/sa/view',
                 'param' => 'surveyid',
                 'empty' => gT('No surveys available.'),
                 'values' => $surveyList,
                 'value' => $this->surveyId
             );
             $menu['items']['right'][] = array(
-                'href' => array('admin/survey','sa' => 'index'),
+                'href' => array('admin/survey', 'sa' => 'index'),
                 'alt' => gT('Detailed list of surveys'),
                 'image' => 'surveylist.png'
             );
