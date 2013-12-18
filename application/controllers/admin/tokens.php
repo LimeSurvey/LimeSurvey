@@ -477,7 +477,8 @@ class tokens extends Survey_Common_Action
             }
             $aData->rows[] = $aRowToAdd;
         }
-
+        viewHelper::disableHtmlLogging();
+        header("Content-type: application/json");
         echo ls_json_encode($aData);
     }
 
@@ -487,7 +488,6 @@ class tokens extends Survey_Common_Action
         $searchcondition = urldecode($searchcondition);
         $finalcondition = array();
         $condition = explode("||", $searchcondition);
-        
         return $this->getTokens_json($iSurveyId, $condition);
     }
 
@@ -589,9 +589,8 @@ class tokens extends Survey_Common_Action
                     $this->getController()->error(sprintf($clang->gT('%s cannot be left empty'), $desc['description']));
                 $aData[$attr_name] = Yii::app()->request->getPost($attr_name);
             }
-            echo ls_json_encode(var_export($aData));
             $token = Token::create($surveyId);
-			$token->setAttributes($aData, false);
+            $token->setAttributes($aData, false);
             echo $token->save();
         }
         elseif ($sOperation == 'del' && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
