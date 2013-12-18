@@ -7326,11 +7326,7 @@ function getHeader($meta = false)
     Yii::app()->loadHelper('surveytranslator');
 
     // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
-    if (Yii::app()->session['s_lang'] )
-    {
-        $languagecode =  Yii::app()->session['s_lang'];
-    }
-    elseif (Yii::app()->session['survey_'.$surveyid]['s_lang'] )
+    if (Yii::app()->session['survey_'.$surveyid]['s_lang'] )
     {
         $languagecode =  Yii::app()->session['survey_'.$surveyid]['s_lang'];
     }
