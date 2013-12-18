@@ -1864,5 +1864,6 @@ td.LEMerror  {
     font-weight:bold;
 }
 
-
-.browsetable thead td span
+.sf-menu ul a > .sf-sub-indicator {
+    top: 0.7em;
+}
