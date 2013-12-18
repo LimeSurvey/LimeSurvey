@@ -215,7 +215,7 @@ div.menubar .ui-widget-header
 }
 .menubar select {
     color: #333;
-    width: 200px;
+    width: 250px;
 }
 .menubar option.emphasis{
     font-weight:700
@@ -1742,7 +1742,7 @@ ui-jqgrid-btable table, .ui-pg-table table{
 
 #templateleft select
 {
-    width:140px;
+   width:160px;
 }
 
 legend{

@@ -318,7 +318,10 @@ class templates extends Survey_Common_Action
         }
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile);
         App()->getClientScript()->reset();
+        App()->getComponent('bootstrap')->init();
+        
         // After reseting, we need register again the script : maybe move it to endScripts_view for allways needed scripts ?
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'templates.js');
         App()->getClientScript()->registerPackage('ace');

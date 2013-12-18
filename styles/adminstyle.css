@@ -128,7 +128,6 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     box-sizing: border-box;
     font-size: 1em;
     line-height: 1.5;
-    height: 2em;
 }
 textarea,select[size]{
     height: auto;

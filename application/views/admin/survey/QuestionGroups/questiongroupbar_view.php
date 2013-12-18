@@ -36,7 +36,7 @@
             { ?>
             <img id='separator6' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <a  target='_blank' href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
-                <img src='<?php echo $imageurl; ?>quality_assurance.png' alt='<?php $clang->eT("Check survey logic for current question group"); ?>' /></a>
+            <img src='<?php echo $imageurl; ?>quality_assurance.png' alt='<?php $clang->eT("Check survey logic for current question group"); ?>' /></a>
             <?php } ?>
 
         <?php
@@ -60,9 +60,7 @@
                     <?php }
                 }
                 else
-                { ?>
-                <img src='<?php echo $imageurl; ?>blank.gif' alt='' height="<?php echo $iIconSize;?>" width='40' />
-                <?php }
+                { ?><img src='<?php echo $imageurl; ?>blank.gif' alt='' height="<?php echo $iIconSize;?>"  width="<?php echo $iIconSize;?>" /><?php }
             }
             if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
