@@ -20,7 +20,6 @@
     // Don't add id : because we don't really need it. This different from columnNames (no action).
     // TODO: Merge columnNames and aTokenColumns : need more option (name,index,search, type, editable ...)
     $aTokenColumns=getTokenFieldsAndNames($surveyid,false);
-    tracevar($aTokenColumns);
     $aNotQuickFilter=array('tid','emailstatus','sent','remindersent','remindercount','completed','usesleft','validfrom','validuntil');
     foreach($aTokenColumns as $aTokenColumn => &$aTokenInformation)
     {
