@@ -20,7 +20,6 @@
     // Don't add id : because we don't really need it. This different from columnNames (no action).
     // TODO: Merge columnNames and aTokenColumns : need more option (name,index,search, type, editable ...)
     $aTokenColumns=getTokenFieldsAndNames($surveyid,false);
-    tracevar($aTokenColumns);
     $aNotQuickFilter=array('tid','emailstatus','sent','remindersent','remindercount','completed','usesleft','validfrom','validuntil');
     foreach($aTokenColumns as $aTokenColumn => &$aTokenInformation)
     {
@@ -157,15 +156,15 @@
 
 <div id ="search" style="display:none">
     <?php
-        $aOptionSearch = array('' => $clang->gT('Select...'));
+        $optionsearch = array('' => $clang->gT('Select...'));
         foreach($aTokenColumns as $aTokenColumn => $aTokenInformation)
         {
             if($aTokenInformation['search'])
             {
-                $aOptionSearch[$aTokenColumn]=$aTokenInformation['description'];
+                $optionsearch[$aTokenColumn]=$aTokenInformation['description'];
             }
         }
-        $aOptionCondition = array('' => $clang->gT('Select...'),
+        $optioncontition = array('' => $clang->gT('Select...'),
         'equal' => $clang->gT("Equals"),
         'contains' => $clang->gT("Contains"),
         'notequal' => $clang->gT("Not equal"),
@@ -175,8 +174,8 @@
     ?>
     <table id='searchtable'>
         <tr>
-            <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $aOptionSearch); ?></td>
-            <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $aOptionCondition); ?></td>
+            <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $optionsearch); ?></td>
+            <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $optioncontition); ?></td>
             <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
             <td><img src=<?php echo Yii::app()->getConfig('adminimageurl')."plus.png" ?> alt='<?php $clang->eT("Add another search criteria");?>' class="addcondition-button" style="margin-bottom:4px"></td>
         </tr>

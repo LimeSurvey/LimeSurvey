@@ -5464,11 +5464,6 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
             'mandatory'=>'N',
             'showregister'=>'Y'
         ),
-        'emailstatus'=>array(
-            'description'=>$clang->gT("Email status"),
-            'mandatory'=>'N',
-            'showregister'=>'N'
-        ),
         'token'=>array(
             'description'=>$clang->gT('Token'),
             'mandatory'=>'N',
