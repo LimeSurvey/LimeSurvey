@@ -7,12 +7,17 @@ LS.createUrl = function (route, params)
         params = {};
     }
     var result = LS.data.baseUrl;
-    
+
+    if (result.indexOf('/', result.length - 1) === -1)
+    {
+        result = result + '/';
+    }
+
     if (LS.data.showScriptName)
     {
-        result = result + '/index.php';
+        result = result + 'index.php';
     }
-    
+
     
     if (LS.data.urlFormat == 'get')
     {
@@ -27,6 +32,10 @@ LS.createUrl = function (route, params)
     }
     else
     {
+        if (LS.data.showScriptName)
+        {
+            result = result + '/';
+        }
         // Configure route.
         result += route;
         
