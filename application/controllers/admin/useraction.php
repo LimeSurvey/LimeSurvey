@@ -502,9 +502,13 @@ class UserAction extends Survey_Common_Action
             $aBasePermissions=$aFilteredPermissions;
         }
 
-        // Did we need to filtering superadmin rigth for other superadmin than first superadmin ?
         if ($oUser && (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','update') &&  Yii::app()->session['loginID'] != $iUserID) )
         {
+            // Only the original superadmin (UID 1) may create new superadmins
+            if (Yii::app()->session['loginID']!=1)
+            {
+                unset($aBasePermissions['superadmin']);
+            }
             $aData['aBasePermissions']=$aBasePermissions;
             $data['sImageURL'] = Yii::app()->getConfig("imageurl");
             

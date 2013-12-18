@@ -136,22 +136,26 @@ class Permission extends LSActiveRecord
         }     
         return $aBasePermissions;
     }
-
+     
     /**
-     * Sets permissions (global or survey-specific) for a survey administrator
-     * Checks what permissions may be set and automatically filters invalid ones. 
-     * A permission may be invalid if the permission does not exist or that particular user may not give that permission
-     * 
-     */
+    * Sets permissions (global or survey-specific) for a survey administrator
+    * Checks what permissions may be set and automatically filters invalid ones. 
+    * A permission may be invalid if the permission does not exist or that particular user may not give that permission
+    * 
+    * @param mixed $iUserID
+    * @param mixed $iEntityID
+    * @param mixed $sEntityName
+    * @param mixed $aPermissions
+    * @param mixed $bBypassCheck
+    */
     public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions, $bBypassCheck=false)
     {
         $iUserID = sanitize_int($iUserID);
-        
         // Filter global permissions on save
         if ($sEntityName=='global')
         {
             $aBasePermissions=Permission::model()->getGlobalBasePermissions();
-            if (!Permission::model()->hasGlobalPermission('superadmin','read') && ! $bBypassCheck) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
+            if (!Permission::model()->hasGlobalPermission('superadmin','read') && !$bBypassCheck) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
             {
                 // Make sure that he owns the user he wants to give global permissions for
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
@@ -172,6 +176,10 @@ class Permission extends LSActiveRecord
                     }
                 }
                 $aBasePermissions=$aFilteredPermissions;        
+            }
+            elseif (Permission::model()->hasGlobalPermission('superadmin','read') && Yii::app()->session['loginID']!=1)
+            {
+                unset($aBasePermissions['superadmin']);
             }
         }
         elseif ($sEntityName=='survey')
@@ -196,8 +204,16 @@ class Permission extends LSActiveRecord
         $oEvent->set('iSurveyID',$iEntityID);
         $oEvent->set('iUserID',$iUserID);
         $result = App()->getPluginManager()->dispatchEvent($oEvent);
-        
-        Permission::model()->deleteAllByAttributes($condition);
+
+        // Only the original superadmin may change the superadmin permissions
+        if (Yii::app()->session['loginID']!=1)
+        {
+            Permission::model()->deleteAllByAttributes($condition,"permission <> 'superadmin'");
+        }
+        else
+        {
+            Permission::model()->deleteAllByAttributes($condition);
+        }
 
         foreach ($aFilteredPermissions as $sPermissionname=>$aPermission)
         {
