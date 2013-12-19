@@ -170,4 +170,17 @@ class viewHelper
             $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
         }
      }
+
+    /**
+     * Deactivate script but show it for debuging
+     * This only filter script tag
+     * @todo : filter inline javascript (onclick etc ..., but don't filter EM javascript)
+     * Maybe doing it directly in LEM->GetLastPrettyPrintExpression();
+     * @param string : Html to filter
+     * @return string
+     * @author Denis Chenu
+     */
+     public static function filterScript($sHtml){
+        return preg_replace('#<script(.*?)>(.*?)</script>#is', '<pre>&lt;script&gt;${2}&lt;/script&gt;</pre>', $sHtml);
+     }
 }

@@ -8787,12 +8787,12 @@ EOD;
                 $sgqas = explode('|',$q['sgqa']);
                 if (count($sgqas) == 1 && !is_null($q['info']['default']))
                 {
-                    $LEM->ProcessString($q['info']['default'], $qid,NULL,false,1,1,false,false);
+                    $LEM->ProcessString(htmlspecialchars($q['info']['default']), $qid,NULL,false,1,1,false,false);// Default value is Y or answer code or go to input/textarea, then we can filter it
                     $_default = $LEM->GetLastPrettyPrintExpression();
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
                     }
-                    $default = '<br />(' . $LEM->gT('Default:') . '  ' . htmlspecialchars($_default) . ')';
+                    $default = '<br />(' . $LEM->gT('Default:') . '  ' . viewHelper::filterScript($_default) . ')';
                 }
                 else
                 {
@@ -8886,7 +8886,7 @@ EOD;
                 }
 
                 $LEM->ProcessString($qtext . $help . $prettyValidTip . $attrTable, $qid,NULL,false,1,1,false,false);
-                $qdetails = $LEM->GetLastPrettyPrintExpression();
+                $qdetails = viewHelper::filterScript($LEM->GetLastPrettyPrintExpression());
                 if ($LEM->em->HasErrors()) {
                     ++$errorCount;
                 }
@@ -9034,11 +9034,10 @@ EOD;
 
                     $sgqaInfo = $LEM->knownVars[$sgqa];
                     $subqText = $sgqaInfo['subqtext'];
-
                     if (isset($sgqaInfo['default']) && $sgqaInfo['default'] !== '')
                     {
-                        $LEM->ProcessString($sgqaInfo['default'], $qid,NULL,false,1,1,false,false);
-                        $_default = $LEM->GetLastPrettyPrintExpression();
+                        $LEM->ProcessString(htmlspecialchars($sgqaInfo['default']), $qid,NULL,false,1,1,false,false);
+                        $_default = viewHelper::filterScript($LEM->GetLastPrettyPrintExpression());
                         if ($LEM->em->HasErrors()) {
                             ++$errorCount;
                         }
@@ -9053,7 +9052,7 @@ EOD;
                     . "</tr>";
                 }
                 $LEM->ProcessString($sqRows, $qid,NULL,false,1,1,false,false);
-                $sqRows = $LEM->GetLastPrettyPrintExpression();
+                $sqRows = viewHelper::filterScript($LEM->GetLastPrettyPrintExpression());
                 if ($LEM->em->HasErrors()) {
                     ++$errorCount;
                 }
@@ -9105,7 +9104,7 @@ EOD;
                         . "</tr>\n";
                     }
                     $LEM->ProcessString($answerRows, $qid,NULL,false,1,1,false,false);
-                    $answerRows = $LEM->GetLastPrettyPrintExpression();
+                    $answerRows = viewHelper::filterScript($LEM->GetLastPrettyPrintExpression());
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
                     }
