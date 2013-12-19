@@ -2941,7 +2941,7 @@
                     $_minA = (($min_answers == '') ? "''" : $min_answers);
                     $_maxA = (($max_answers == '') ? "''" : $max_answers    );
                     /* different messages for text and checkbox questions */
-                    if($type == 'Q')
+                    if($type == 'Q' || $type == 'K' || $type == ';' || $type == ':')
                     {
                         $_msgs = array(
                             'atleast_m' => $this->gT("Please fill in at least %s answers"),
