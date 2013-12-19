@@ -146,12 +146,6 @@ label, legend {
     font-size: 1em;
 }
 
-/* fixing login form password/login height in IE */
-#loginform input { 
-    height: 26px;
-    
-}
-
 /* Make line spacing more compact for advanced question settings */
 li label {
     line-height: 1em;

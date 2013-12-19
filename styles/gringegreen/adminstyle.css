@@ -1697,6 +1697,10 @@ ui-jqgrid-btable table, .ui-pg-table table{
     border-collapse: separate;
 }
 
+.ui-jqgrid .ui-pg-selbox {
+    height: auto;
+}
+
 .separator{
     height:32px;
 }
