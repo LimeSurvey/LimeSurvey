@@ -18,7 +18,6 @@ This release does have the following requirements:
 *PHP 5.3.0 or later with the following modules/libraries enabled:
     *mbstring (Multibyte String Functions) extension library (see also Installation FAQ(external link))
     *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv)
-    *For PHP versions <5.2 you will need to have the PECL JSON library( see http://pecl.php.net/package/json(external link)) installed 
     
 If you are doing a complete new installation please refer to the manual at
 http://docs.limesurvey.org/Installation
@@ -60,7 +59,46 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.00+ (build 131206) to 2.05+ (build 131209) Dec 06, 2013
+Changes from 2.05 (build 131209) to 2.05+ (build 131219) Dec 19, 2013
+-New translation: Zulu
+-Changed feature: Better configuration for LDAP authentication plugin (Menno Dekker)
+-Fixed issue #8451: No webserver auth and errors accessing the webserver auth options (Menno Dekker)
+-Fixed issue #8373: Any superadmins can create more superadmins (Carsten Schmitz)
+-Fixed issue #8387: Exporting participants from CPDB as CSV-file omits attribute fields (Carsten Schmitz)
+-Fixed issue #8391: Unable to use "select" survey list in Plugin page (Sam Mousa)
+-Fixed issue #8429: {LANG} Attribute not updated when changing language on survey list page (Carsten Schmitz)
+-Fixed issue #8431: Regenerate question by group gives invalid codes (Carsten Schmitz)
+-Fixed issue #8438: Hidden Fields Not recording default data (Denis Chenu)
+-Fixed issue #8439: Installer optional settings (6) not saved: error 1048 column stg_value cannot be null (Carsten Schmitz)
+-Fixed issue #8441: Print answers son't have any script or CSS files (Menno Dekker)
+-Fixed issue #8443: PDF in print view does not format properly (Carsten Schmitz)
+-Fixed issue #8444: Participant DB : CSV Import Fails To Display All Fields (Denis Chenu)
+-Fixed issue #8453: word is not displayed in statistic page (Denis Chenu)
+-Fixed issue #8456: File upload problems with ' or " in name/comment (Carsten Schmitz)
+-Fixed issue #8461: Unable to filter by Email Status inside Token view (Denis Chenu)
+-Fixed issue #8470: Script are hard to debug in Survey Logic File (Denis Chenu)
+-Fixed issue: Can't download individual files with special chars in file name (Carsten Schmitz)
+-Fixed issue: Error 'Property "Permission.entity_id" is not defined' when updating (Carsten Schmitz)
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by actxcellence
+#Updated translation: German (Informal) by mfaber
+#Updated translation: Greek by MikeConom, kiolalis
+#Updated translation: Lithuanian by simasj
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by fboaventura, mauriciofurtado
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Tagalog by lolskidoodles, avevengers
+#Updated translation: Turkish by kayazeren
+#Updated translation: Zulu by cmkeet
+
+Changes from 2.00+ (build 131206) to 2.05 (build 131209) Dec 06, 2013
 -New feature #5740: Improve VV response import (Denis Chenu)
 -New feature #6477: optionnal comment place with  "multi choice with comment" (Denis Chenu)
 -New feature #6880: Allow adaptation of 5 point slider (Denis Chenu)
