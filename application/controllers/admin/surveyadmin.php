@@ -93,7 +93,7 @@ class SurveyAdmin extends Survey_Common_Action
                     $gseq++;
                 }
                 $usql="UPDATE {{questions}} "
-                ."SET title='".(($sSubAction == 'bygroup') ? ('G' . $gseq . '_') : '')."Q".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
+                ."SET title='".(($sSubAction == 'bygroup') ? ('G' . $gseq ) : '')."Q".str_pad($question_number, 5, "0", STR_PAD_LEFT)."'\n"
                 ."WHERE qid=".$grow['qid'];
                 //$databaseoutput .= "[$sql]";
                 $uresult=dbExecuteAssoc($usql) or safe_die("Error: ".$connect->ErrorMsg());  // Checked
