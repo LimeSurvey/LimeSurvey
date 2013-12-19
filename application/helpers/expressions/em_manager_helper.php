@@ -2940,14 +2940,39 @@
                 {
                     $_minA = (($min_answers == '') ? "''" : $min_answers);
                     $_maxA = (($max_answers == '') ? "''" : $max_answers    );
+                    /* different messages for text and checkbox questions */
+                    if($type == 'Q')
+                    {
+                        $_msgs = array(
+                            'atleast_m' => $this->gT("Please fill in at least %s answers"),
+                            'atleast_1' => $this->gT("Please fill in at least one answer"),
+                            'atmost_m' => $this->gT("Please fill in at most %s answers"),
+                            'atmost_1' => $this->gT("Please fill in at most one answer"),
+                            '1' => $this->gT("Please fill in at most one answer"),
+                            'n' => $this->gT("Please fill in %s answers"),
+                            'between' => $this->gT("Please fill in between %s and %s answers")
+                        );
+                    }
+                    else
+                    {
+                        $_msgs = array(
+                            'atleast_m' => $this->gT("Please select at least %s answers"),
+                            'atleast_1' => $this->gT("Please select at least one answer"),
+                            'atmost_m' => $this->gT("Please select at most %s answers"),
+                            'atmost_1' => $this->gT("Please select at most one answer"),
+                            '1' => $this->gT("Please select at most one answer"),
+                            'n' => $this->gT("Please select %s answers"),
+                            'between' => $this->gT("Please select between %s and %s answers")
+                        );
+                    }
                     $qtips['num_answers']=
-                        "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)!=1,sprintf('".$this->gT("Please select at least %s answers")."',fixnum($_minA)),'')}" .
-                        "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)==1,sprintf('".$this->gT("Please select at least one answer")."',fixnum($_minA)),'')}" .
-                        "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)!=1,sprintf('".$this->gT("Please select at most %s answers")."',fixnum($_maxA)),'')}" .
-                        "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)==1,sprintf('".$this->gT("Please select at most one answer")."',fixnum($_maxA)),'')}" .
-                        "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) == 1,'".$this->gT("Please select one answer")."','')}" .
-                        "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) != 1,sprintf('".$this->gT("Please select %s answers")."',fixnum($_minA)),'')}" .
-                        "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) != ($_maxA),sprintf('".$this->gT("Please select between %s and %s answers")."',fixnum($_minA),fixnum($_maxA)),'')}";
+                        "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)!=1,sprintf('".$_msgs['atleast_m']."',fixnum($_minA)),'')}" .
+                        "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)==1,sprintf('".$_msgs['atleast_1']."',fixnum($_minA)),'')}" .
+                        "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)!=1,sprintf('".$_msgs['atmost_m']."',fixnum($_maxA)),'')}" .
+                        "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)==1,sprintf('".$_msgs['atmost_1']."',fixnum($_maxA)),'')}" .
+                        "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) == 1,'".$_msgs['1']."','')}" .
+                        "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) != 1,sprintf('".$_msgs['n']."',fixnum($_minA)),'')}" .
+                        "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) != ($_maxA),sprintf('".$_msgs['between']."',fixnum($_minA),fixnum($_maxA)),'')}";
                 }
 
                 // min/max value for each numeric entry
