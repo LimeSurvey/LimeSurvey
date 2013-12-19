@@ -2583,11 +2583,11 @@ function exprmgr_if($test,$ok,$error)
  * Return true if the variable is an integer
  * @param string $arg
  * @return boolean
- * @link http://www.php.net/manual/en/function.is-int.php#87670
+ * @link http://php.net/is_int#82857
  */
 function exprmgr_int($arg)
 {
-    return ($arg !== true) && ((string)(int) $arg) === ((string) $arg);
+    return (ctype_digit((string)$arg));// Accept empty value too before PHP 5.1 see http://php.net/ctype-digit#refsect1-function.ctype-digit-changelog
 }
 /**
  * Join together $args[0-N] with ', '
