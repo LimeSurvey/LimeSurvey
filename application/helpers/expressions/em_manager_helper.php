@@ -63,13 +63,6 @@
         */
         private $sPreviewMode=false;
         /**
-         /**
-        * bProcessPost save value to DB
-        * Maybe we can set it public
-        * @var bool
-        */
-        private $bProcessPost=true;
-        /**
         * Collection of variable attributes, indexed by SGQA code
         *
         * Actual variables are stored in this structure:
@@ -4472,7 +4465,6 @@
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sid=sanitize_int($surveyid);
             $LEM->sessid = 'survey_' . $LEM->sid;
-
             $LEM->em->StartProcessingGroup($surveyid);
             if (is_null($aSurveyOptions)) {
                 $aSurveyOptions = array();
@@ -4951,7 +4943,7 @@
             //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
             $updatedValues = $this->updatedValues;
             $message = '';
-            if (!$this->surveyOptions['active'] || !$this->bProcessPost)
+            if (!$this->surveyOptions['active'] || $this->sPreviewMode)
             {
                 return $message;
             }
@@ -5187,8 +5179,8 @@
 
             if(!$preview)
                 $preview=$LEM->sPreviewMode;
-            if(!$processPOST || $preview)
-                $LEM->bProcessPost=false;
+            if(!$LEM->sPreviewMode && $preview)
+                $LEM->sPreviewMode=$preview;
 
             if ($changeLang)
             {
