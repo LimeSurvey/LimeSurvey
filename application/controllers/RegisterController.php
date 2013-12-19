@@ -112,10 +112,8 @@ class RegisterController extends LSYii_Controller {
         }
 
         //Check if this email already exists in token database
-        $query = "SELECT email FROM {{tokens_$iSurveyID}}\n"
-        . "WHERE email = '".sanitize_email(Yii::app()->request->getPost('register_email'))."'";
-        $usrow = Yii::app()->db->createCommand($query)->queryRow();
-        if ($usrow)
+        $oToken=TokenDynamic::model($surveyid)->find('email=:email',array(':email'=>Yii::app()->request->getPost('register_email')));
+        if ($oToken)
         {
             $register_errormsg=$clang->gT("The email you used has already been registered.");
             $_SESSION['survey_'.$iSurveyID]['register_errormsg']=$register_errormsg;
@@ -253,6 +251,13 @@ class RegisterController extends LSYii_Controller {
             $thistpl=getTemplatePath(validateTemplateDir($thissurvey['template']));
         }
 
+        // Same fix than http://bugs.limesurvey.org/view.php?id=8441
+        ob_start(function($buffer, $phase) {
+            App()->getClientScript()->render($buffer);
+            App()->getClientScript()->reset();
+            return $buffer;
+        });
+        ob_implicit_flush(false);
         sendCacheHeaders();
         doHeader();
         Yii::app()->lang = $clang;
@@ -262,8 +267,8 @@ class RegisterController extends LSYii_Controller {
         $this->_printTemplateContent($thistpl.'/survey.pstpl', $redata, __LINE__);
         echo $html;
         $this->_printTemplateContent($thistpl.'/endpage.pstpl', $redata, __LINE__);
-        
         doFooter();
+        ob_flush();
     }
     
     /**
