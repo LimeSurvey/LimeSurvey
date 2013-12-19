@@ -1184,7 +1184,7 @@ function db_upgrade_all($iOldDBVersion) {
 
 function upgradeCPDBAttributeDefaultNames173()
 {
-    $sQuery = "SELECT attribute_id,attribute_name,COALESCE (lang)
+    $sQuery = "SELECT attribute_id,attribute_name,COALESCE(lang)
         FROM {{participant_attribute_names_lang}}
         group by attribute_id, attribute_name
         order by attribute_id";
