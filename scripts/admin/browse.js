@@ -34,16 +34,15 @@ $(document).ready(function(){
     $('.browsetable th .questiontext').qtip({
         content: {
             text: function(api) {
-                return $(this).html();
+                return $(this).text();
             }
         },
         style: {
             classes: "qtip-light qtip-rounded"
         },
         position: {
-            viewport: $(window),
-            my: 'top right',
-            at: 'bottom right'
+            my: 'top left',
+            at: 'top right'
         }
     });
     $('.browsetable td span.content').qtip({

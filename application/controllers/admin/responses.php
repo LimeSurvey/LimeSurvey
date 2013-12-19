@@ -137,7 +137,7 @@ class responses extends Survey_Common_Action
 #                        $question .=' (' . $field['subquestion1'] . ':' . $field['subquestion2'] . ')';
 #                    if (isset($field['scale_id']))
 #                        $question .='[' . $field['scale'] . ']';
-                    $fnames[] = array($field['fieldname'], $question,'code'=>viewHelper::getFieldCode($field));
+                    $fnames[] = array($field['fieldname'], viewHelper::getFieldText($field),'code'=>viewHelper::getFieldCode($field));
                 }
                 elseif ($field['aid'] !== 'filecount')
                 {
@@ -473,7 +473,7 @@ class responses extends Survey_Common_Action
                         continue;
                     if ($fielddetails['type'] == 'answer_time')
                         continue;
-                    $fnames[] = array($fielddetails['fieldname'], $question,'code'=>viewHelper::getFieldCode($fielddetails,array('LEMcompat'=>true)));
+                    $fnames[] = array($fielddetails['fieldname'], viewHelper::getFieldText($fielddetails),'code'=>viewHelper::getFieldCode($fielddetails,array('LEMcompat'=>true)));
                 }
                 elseif ($fielddetails['aid'] !== 'filecount')
                 {
