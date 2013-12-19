@@ -137,68 +137,34 @@
             unset ($aFullResponseTable['datestamp']);
             unset ($aFullResponseTable['startdate']);
             $sOutput .= "<table class='printouttable' >\n";
-            if($sExportType == 'pdf')
-            {
-                $oPDF->intopdf($clang->gT("Question",'unescaped').": ".$clang->gT("Your answer",'unescaped'));
-            }
             foreach ($aFullResponseTable as $sFieldname=>$fname)
             {
                 if (substr($sFieldname,0,4) == 'gid_')
                 {
 
-                    if($sExportType)
-                    {
-                        $oPDF->intopdf(flattenText(templatereplace($fname[0]),false,true));
-                        $oPDF->ln(2);
-                    }
-                    else
-                    {
+
                         $sOutput .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
-                    }
                 }
                 elseif (substr($sFieldname,0,4)=='qid_')
                 {
-                    if($sExportType == 'pdf')
-                    {
-                        $oPDF->intopdf(flattenText(templatereplace($fname[0]).templatereplace($fname[1]),false,true).": ".$fname[2]);
-                        $oPDF->ln(2);
-                    }
-                    else
-                    {
                         $sOutput .= "\t<tr class='printanswersquestionhead'><td colspan='2'>{$fname[0]}</td></tr>\n";
-                    }
                 }
                 elseif ($sFieldname=='submitdate')
                 {
                     if($sAnonymized != 'Y')
                     {
-                        if($sExportType == 'pdf')
-                        {
-                            $oPDF->intopdf(flattenText($fname[0].$fname[1],false,true).": ".$fname[2]);
-                            $oPDF->ln(2);
-                        }
-                        else
-                        {
                             $sOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]} {$sFieldname}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
-                        }
                     }
                 }
                 else
                 {
-                    if($sExportType == 'pdf')
-                    {
-                        $oPDF->intopdf(flattenText(templatereplace($fname[0]).templatereplace($fname[1]),false,true).": ".$fname[2]);
-                        $oPDF->ln(2);
-                    }
-                    else
-                    {
-                        $sOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>".flattenText($fname[2])."</td></tr>";
-                    }
+                       $sOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>".flattenText($fname[2])."</td></tr>";
                 }
             }
             $sOutput .= "</table>\n";
             if($sExportType == 'pdf')
             {
+                $oPDF->writeHTML($sOutput);
                 header("Pragma: public");
                 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
                 $sExportFileName = sanitize_filename($sSurveyName);
