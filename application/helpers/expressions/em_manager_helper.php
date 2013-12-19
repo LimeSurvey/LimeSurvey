@@ -8954,9 +8954,9 @@ EOD;
                     );
                 }
 
-                if (!preg_match('/^[_a-zA-Z][_0-9a-zA-Z]*$/', $rootVarName))
+                if (!preg_match('/^[a-zA-Z][0-9a-zA-Z]*$/', $rootVarName))
                 {
-                    $varNameErrorMsg .= $LEM->gT('Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated.');
+                    $varNameErrorMsg .= $LEM->gT('Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated.');
                 }
                 if ($varNameErrorMsg != '')
                 {
