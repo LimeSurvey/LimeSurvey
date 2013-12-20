@@ -2299,7 +2299,7 @@ function SetSurveyLanguage($surveyid, $language)
         $clang = new limesurvey_lang($_SESSION['survey_'.$surveyid]['s_lang']);
         $thissurvey=getSurveyInfo($surveyid, @$_SESSION['survey_'.$surveyid]['s_lang']);
         Yii::app()->loadHelper('surveytranslator');
-        $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
+        $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat'],$_SESSION['survey_'.$surveyid]['s_lang']);
         LimeExpressionManager::SetEMLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
     }
     else
