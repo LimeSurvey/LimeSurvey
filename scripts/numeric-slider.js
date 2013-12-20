@@ -58,12 +58,13 @@ function doNumericSlider(qID,jsonOptions) {
 				slide: function( event, ui ) {
 					$(thisinput).val(ui.value);
 					$(thisinput).triggerHandler("keyup");
-					$('#slider-callout-'+myfname).text(jsonOptions.slider_prefix + ui.value + jsonOptions.slider_suffix);
+                    displayvalue=''+ui.value;
+					$('#slider-callout-'+myfname).text(jsonOptions.slider_prefix + displayvalue.replace(/\./,LSvar.sLEMradix) + jsonOptions.slider_suffix);
 				}
 			});
 			// Update the value of the input if Slider start is set
 			if(!havevalue && startvalue && jsonOptions.slider_displaycallout){
-				$("#slider-callout-"+myfname).text(jsonOptions.slider_prefix + startvalue + jsonOptions.slider_suffix);
+				$("#slider-callout-"+myfname).text(jsonOptions.slider_prefix + startvalue.replace(/\./,LSvar.sLEMradix) + jsonOptions.slider_suffix);
 				$(thisinput).val(startvalue);
 				$(function() {
 					$(thisinput).triggerHandler("keyup"); // Needed for EM
@@ -77,7 +78,8 @@ function doNumericSlider(qID,jsonOptions) {
 					$( "#container-"+myfname ).slider( "option", "value", jsonOptions.slider_startvalue );
 				}
 				if(jsonOptions.slider_displaycallout && jsonOptions.slider_startvalue!="NULL"){
-					$('#slider-callout-'+myfname).text(jsonOptions.slider_prefix + jsonOptions.slider_startvalue + jsonOptions.slider_suffix);
+                    
+					$('#slider-callout-'+myfname).text(jsonOptions.slider_prefix + jsonOptions.slider_startvalue.replace(/\./,LSvar.sLEMradix) + jsonOptions.slider_suffix);
 					$(thisinput).val(jsonOptions.slider_startvalue);
 				}else{
 					$('#slider-callout-'+myfname).text("");
