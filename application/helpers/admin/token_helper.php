@@ -47,10 +47,12 @@ function createTokenTable($iSurveyID, $aAttributeFields=array())
         $fields[$sAttributeField]='string';
     }
     try{
-        createTable("{{tokens_".intval($iSurveyID)."}}", $fields);
+        $sTableName="{{tokens_".intval($iSurveyID)."}}";
+        createTable($sTableName, $fields);
         try{
             Yii::app()->db->createCommand()->createIndex("idx_token_token_{$iSurveyID}_".rand(1,50000),"{{tokens_".intval($iSurveyID)."}}",'token');
         } catch(Exception $e) {}
+        Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
         return true;
     } catch(Exception $e) {
         return false;

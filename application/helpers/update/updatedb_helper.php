@@ -33,6 +33,7 @@ function db_upgrade_all($iOldDBVersion) {
     $sAutoIncrement  = Yii::app()->getConfig('autoincrement');
 
     $oDB = Yii::app()->getDb();
+    $oDB->schemaCachingDuration=0; // Deactivate schema caching
     $oTransaction = $oDB->beginTransaction();
     try
     {
@@ -1169,10 +1170,22 @@ function db_upgrade_all($iOldDBVersion) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>173),"stg_name='DBVersion'");
         }
         $oTransaction->commit();
+        // Activate schema caching
+        $oDB->schemaCachingDuration=3600; 
+        // Load all tables of the application in the schema
+        Yii::app()->db->schema->getTables();
+        // clear the cache of all loaded tables
+        Yii::app()->db->schema->refresh();
     }
     catch(Exception $e)
     {
        $oTransaction->rollback();
+       // Activate schema caching
+       $oDB->schemaCachingDuration=3600; 
+       // Load all tables of the application in the schema
+       Yii::app()->db->schema->getTables();
+       // clear the cache of all loaded tables
+       Yii::app()->db->schema->refresh();
        echo '<br /><br />'.$oLang->gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
        return false;
     }

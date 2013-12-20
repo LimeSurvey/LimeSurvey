@@ -12,6 +12,7 @@
 /upload/.htaccess
 /nbproject
 /tmp/assets/*
+/tmp/runtime/cache/*
 .svn
 /third_party/jqgrid/src
 .settings/org.eclipse.php.core.prefs
