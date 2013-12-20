@@ -45,6 +45,8 @@ class index extends CAction {
         }
 
         $this->_loadRequiredHelpersAndLibraries();
+        $beforeSurveyPage = new PluginEvent('beforeSurveyPage');
+        App()->getPluginManager()->dispatchEvent($beforeSurveyPage);
 
         $param = $this->_getParameters(func_get_args(), $_POST);
 
