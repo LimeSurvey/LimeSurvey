@@ -1576,7 +1576,7 @@ ol.organizer {
 
 
 .organizer li div  {
-    background-color:#85BD00;
+    background: none repeat scroll 0 0 #85BD00;
     color:#fff;
     padding: 3px;
     margin: 0;
