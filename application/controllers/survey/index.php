@@ -190,27 +190,22 @@ class index extends CAction {
             Yii::app()->session['s_lang']=$clang->langcode;
             $languagechanger = makeLanguageChanger($clang->langcode);
             //Find out if there are any publicly available surveys
-            $query = "SELECT sid, surveyls_title, publicstatistics, language
-            FROM {{surveys}}
-            INNER JOIN {{surveys_languagesettings}}
-            ON ( surveyls_survey_id = sid  )
-            AND (surveyls_language=language)
-            WHERE
-            active='Y'
-            AND listpublic='Y'
-            AND ((expires >= '".date("Y-m-d H:i")."') OR (expires is null))
-            AND ((startdate <= '".date("Y-m-d H:i")."') OR (startdate is null))
-            ORDER BY surveyls_title";
-            $result = dbExecuteAssoc($query,false,true) or safeDie("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://manual.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
+            $sSqlDateNow=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
+            $aActiveSurvey = Yii::app()->db->createCommand()
+                                    ->select('sid,surveyls_title,publicstatistics,language')
+                                    ->from('{{surveys}}')
+                                    ->join('{{surveys_languagesettings}}', 'sid = surveyls_survey_id AND language=surveyls_language')
+                                    ->andWhere("active='Y'")
+                                    ->andWhere("listpublic='Y'")
+                                    ->andWhere("expires >= :expires OR expires is null")
+                                    ->andWhere("startdate <= :startdate OR startdate is null")
+                                    ->order("surveyls_title ASC")
+                                    ->bindParam(':expires',$sSqlDateNow)
+                                    ->bindParam(':startdate',$sSqlDateNow)
+                                    ->queryAll();
             $list=array();
-
-            foreach($result->readAll() as $rows)
+            foreach($aActiveSurvey as $rows)
             {
-#                $querylang="SELECT surveyls_title
-#                FROM {{surveys_languagesettings}}
-#                WHERE surveyls_survey_id={$rows['sid']}
-#                AND surveyls_language='{$sDisplayLanguage}'";
-#                $resultlang=Yii::app()->db->createCommand($querylang)->queryRow();
                 $resultlang=SurveyLanguageSetting::model()->find(
                         "surveyls_survey_id=:surveyls_survey_id AND surveyls_language=:surveyls_language",
                         array(':surveyls_survey_id'=>intval($rows['sid']),':surveyls_language'=>$sDisplayLanguage)
@@ -235,47 +230,70 @@ class index extends CAction {
 
             //Check for inactive surveys which allow public registration.
             // TODO add a new template replace {SURVEYREGISTERLIST} ?
-            $squery = "SELECT sid, surveyls_title, publicstatistics, language
-            FROM {{surveys}}
-            INNER JOIN {{surveys_languagesettings}}
-            ON (surveyls_survey_id = sid)
-            AND (surveyls_language=language)
-            WHERE allowregister='Y'
-            AND active='Y'
-            AND listpublic='Y'
-            AND ((expires >= '".date("Y-m-d H:i")."') OR (expires is null))
-            AND (startdate >= '".date("Y-m-d H:i")."')
-            ORDER BY surveyls_title";
-
-            $sresult = dbExecuteAssoc($squery) or safeDie("Couldn't execute $squery");
-            $aRows=$sresult->readAll();
-            if(count($aRows) > 0)
+#            $squery = "SELECT sid, surveyls_title, publicstatistics, language
+#            FROM {{surveys}}
+#            INNER JOIN {{surveys_languagesettings}}
+#            ON (surveyls_survey_id = sid)
+#            AND (surveyls_language=language)
+#            WHERE allowregister='Y'
+#            AND active='Y'
+#            AND listpublic='Y'
+#            AND ((expires >= '".date("Y-m-d H:i")."') OR (expires is null))
+#            AND (startdate >= '".date("Y-m-d H:i")."')
+#            ORDER BY surveyls_title";
+#            $sresult = dbExecuteAssoc($squery) or safeDie("Couldn't execute $squery");
+#            $aRows=$sresult->readAll();
+            $aRegisteringBeforeSurveys = Yii::app()->db->createCommand()
+                                    ->select('sid,surveyls_title,publicstatistics,language')
+                                    ->from('{{surveys}}')
+                                    ->join('{{surveys_languagesettings}}', 'sid = surveyls_survey_id AND language=surveyls_language')
+                                    ->andWhere("active='Y'")
+                                    ->andWhere("allowregister='Y'")// And if there are no token table ...
+                                    ->andWhere("listpublic='Y'")
+                                    ->andWhere("expires >= :expires OR expires is null")
+                                    ->andWhere("startdate > :startdate")
+                                    ->order("surveyls_title ASC")
+                                    ->bindParam(':expires',$sSqlDateNow)
+                                    ->bindParam(':startdate',$sSqlDateNow)
+                                    ->queryAll();
+                                    
+            if(count($aRegisteringBeforeSurveys) > 0)
             {
                 $list[] = "</ul>"
                 ." <div class=\"survey-list-heading\">".$clang->gT("Following survey(s) are not yet active but you can register for them.")."</div>"
                 ." <ul>"; // TODO give it to template
-                foreach($aRows as $rows)
+                foreach($aRegisteringBeforeSurveys as $aRegisteringBeforeSurvey)
                 {
-                    $querylang="SELECT surveyls_title
-                    FROM {{surveys_languagesettings}}
-                    WHERE surveyls_survey_id={$rows['sid']}
-                    AND surveyls_language='{$sDisplayLanguage}'";
-                    $resultlang=Yii::app()->db->createCommand($querylang)->queryRow();
-                    if ($resultlang['surveyls_title'] )
+                    $oSurveyLang=SurveyLanguageSetting::model()->find(
+                            "surveyls_survey_id=:surveyls_survey_id AND surveyls_language=:surveyls_language",
+                            array(':surveyls_survey_id'=>intval($aRegisteringBeforeSurvey['sid']),':surveyls_language'=>$sDisplayLanguage)
+                    );
+                    if ($oSurveyLang )
                     {
-                        $rows['surveyls_title']=$resultlang['surveyls_title'];
+                        $aRegisteringBeforeSurvey['surveyls_title']=$oSurveyLang->surveyls_title;
                         $langtag = "";
                     }
                     else
                     {
-                        $langtag = "lang=\"{$rows['language']}\"";
+                        $langtag = "lang=\"{$aRegisteringBeforeSurvey['language']}\"";
                     }
-                    $link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'sendreq(".$rows['sid'].");' ";
-                    //$link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'convertGETtoPOST(".$this->getController()->createUrl('survey/send/')."?sid={$rows['sid']}&amp;)sendreq(".$rows['sid'].",".$rows['startdate'].",".$rows['expires'].");' ";
-                    $link .= " $langtag class='surveytitle'>".$rows['surveyls_title']."</a>\n";
-                    $link .= "</li><div id='regform'></div>\n";
+                    $link = "<li><a data-inactivesurvey='".$aRegisteringBeforeSurvey['sid']."' $langtag class='surveytitle'> ";
+                    $link .= $aRegisteringBeforeSurvey['surveyls_title']."</a>\n";
+                    $link .= "</li><div data-regformsurvey='".$aRegisteringBeforeSurvey['sid']."'></div>\n";
                     $list[]=$link;
                 }
+                $sSendreqJs="$(document).on('click','a[data-inactivesurvey]',function(){\n"
+                            ."var surveyid=$(this).data('inactivesurvey');\n"
+                            ."var regform=$('[data-regformsurvey='+surveyid+']');\n"
+                            ."$.ajax({\n"
+                            ."type: 'GET',\n"
+                            ."url: '".$this->getController()->createUrl("/register/ajaxregisterform")."',\n"
+                            ."data: { 'surveyid' : surveyid}\n"
+                            ."}).done(function(msg) {\n"
+                            ."regform.html(msg);\n"
+                            ."});\n"
+                            ."});";
+                App()->clientScript->registerScript('sSendreqJs',$sSendreqJs,CClientScript::POS_BEGIN);
             }
 
             if(count($list) < 1)
@@ -316,19 +334,6 @@ class index extends CAction {
             $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/startpage.pstpl", $data, __LINE__);
 
             $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/surveylist.pstpl", $data, __LINE__);
-
-            echo '<script type="text/javascript" >
-            function sendreq(surveyid)
-            {
-
-            $.ajax({
-            type: "GET",
-            url: "'.$this->getController()->createUrl("/register/ajaxregisterform/surveyid").'/" + surveyid,
-            }).done(function(msg) {
-            document.getElementById("regform").innerHTML = msg;
-            });
-            }
-            </script>';
 
             $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/endpage.pstpl", $data, __LINE__);
             doFooter();
