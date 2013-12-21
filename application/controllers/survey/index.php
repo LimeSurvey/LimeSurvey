@@ -492,13 +492,7 @@ class index extends CAction {
 
 			if (!isset($tokenInstance) && !$previewmode)
             {
-                sendCacheHeaders();
-                doHeader();
                 //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-
-                $redata = compact(array_keys(get_defined_vars()));
-                $this->_printTemplateContent($thistpl.'/startpage.pstpl', $redata, __LINE__);
-                $this->_printTemplateContent($thistpl.'/survey.pstpl', $redata, __LINE__);
                 $asMessage = array(
                 null,
                 $clang->gT("This is a controlled survey. You need a valid token to participate."),
@@ -518,14 +512,7 @@ class index extends CAction {
             }
             if (!isset($tokenInstance))
             {
-                sendCacheHeaders();
-                doHeader();
                 //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-
-                $redata = compact(array_keys(get_defined_vars()));
-                $this->_printTemplateContent($thistpl.'/startpage.pstpl', $redata, __LINE__);
-                $this->_printTemplateContent($thistpl.'/survey.pstpl', $redata, __LINE__);
-
                 $asMessage = array(
                 null,
                 $clang->gT("We are sorry but you are not allowed to enter this survey."),
