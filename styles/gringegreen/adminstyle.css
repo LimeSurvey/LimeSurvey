@@ -1449,67 +1449,6 @@ div.right {
     width:210px;
 }
 
-/*.limebutton, input.limebutton*/
-/*{*/
-/*    outline: 0;*/
-/*    margin:1px 4px 1px 0;*/
-/*    padding: 1px 1em;*/
-/*    text-decoration:none !important;*/
-/*    cursor:pointer;*/
-/*    text-align: center;*/
-/*    zoom: 1;*/
-/*    border: 1px solid #CDF078;*/
-/*    background: #EFFBDB url(images/ui-bg_glass_100_effbdb_1x400.png) 50% 50%*/
-/*    repeat-x;*/
-/*}*/
-
-/*.limebutton.ui-state-hover*/
-/*{*/
-/*    border: 1px solid #94D200;*/
-/*}*/
-.limebutton
-{
-  display: inline-block;
-  *display: inline;
-  padding: 0.3em 1em;;padding: 0.3rem 1rem;
-  text-align: center;
-  vertical-align: middle;
-/*  font-weight:bold;*/
-  cursor: pointer;
-  border: 1px solid #bbbbbb;
-  *border: 0;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-  *zoom: 1;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-     -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-.limebutton
-{
-  border-color: #CDF078;
-  border-color: rgba(205, 240, 120, 0.3) rgba(205, 240, 120, 0.3) rgba(205, 240, 120, 0.5);
-  color:#344c00;
-  background-color: #dfeffc;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#E0F4BD), to(#CEF078));
-  background-image: -webkit-linear-gradient(top, #E0F4BD, #CEF078);
-  background-image: -o-linear-gradient(top, #E0F4BD, #CEF078);
-  background-image: linear-gradient(to bottom, #E0F4BD, #CEF078);
-  background-image: -moz-linear-gradient(top, #E0F4BD, #CEF078);
-  background-repeat: repeat-x;
-  border-color: #CDF078 #CDF078 #7eb900;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffe0f4bd', endColorstr='#ffcef078', GradientType=0);
-  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
-}
-.limebutton:focus,.limebutton:hover,.limebutton:active
-{
-  background-position:0 -15px;
-  color: #444;
-  background-color: #CEF078;
-}
-
 #emailtemplates .ui-tabs-panel .limebutton {
     margin: 3px 20% 10px 30.5%;
 }
@@ -1690,7 +1629,6 @@ ol.organizer {
 }
 
 .ui-jqgrid tr.ui-row-ltr td {
-    border:none !important;
 }
 
 ui-jqgrid-btable table, .ui-pg-table table{
@@ -1870,4 +1808,7 @@ td.LEMerror  {
 
 .sf-menu ul a > .sf-sub-indicator {
     top: 0.7em;
+}
+.ui-pager-control,.ui-search-toolbar > th.ui-th-column{
+    background: #F4FFDB !important;
 }

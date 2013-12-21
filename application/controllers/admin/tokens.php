@@ -1092,6 +1092,7 @@ class tokens extends Survey_Common_Action
             $fields['attribute_' . $i] = array('type' => 'VARCHAR', 'constraint' => '255');
         }
 
+        Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyId . '}}', true); // Refresh schema cache just in case the table existed in the past
         LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
 
         Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s field(s) were successfully added."), $number2add);
@@ -1147,7 +1148,9 @@ class tokens extends Survey_Common_Action
         }
         elseif($sAttributeToDelete)
         {
-            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->dropColumn("{{tokens_".intval($iSurveyId)."}}", $sAttributeToDelete))->execute();
+            $sTableName="{{tokens_".intval($iSurveyId)."}}";
+            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->dropColumn($sTableName, $sAttributeToDelete))->execute();
+            Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
             LimeExpressionManager::SetDirtyFlag();
             Yii::app()->session['flashmessage'] = sprintf($clang->gT("Attribute %s was deleted."), $sAttributeToDelete);
             Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl("/admin/tokens/sa/managetokenattributes/surveyid/$iSurveyId"));
@@ -2386,6 +2389,8 @@ class tokens extends Survey_Common_Action
 
 
             Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), Yii::app()->db->tablePrefix."tokens_".intval($iSurveyId));
+            Yii::app()->db->schema->getTable(Yii::app()->db->tablePrefix."tokens_".intval($iSurveyId), true); // Refresh schema cache just in case the table existed in the past
+            
             //Check that the tokens table has the required fields
             TokenDynamic::model($iSurveyId)->checkColumns();
 

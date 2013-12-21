@@ -49,7 +49,13 @@ $internalConfig = array(
         ),
 		'log' => array(
 			'class' => 'CLogRouter'
-		)
+		),
+        'cache'=>array(
+           'class'=>'system.caching.CFileCache',
+        ),
+        'db' => array(
+                'schemaCachingDuration' => 3600,
+        )
 	)
 );
 
