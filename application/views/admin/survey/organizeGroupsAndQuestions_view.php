@@ -8,18 +8,18 @@
     <?php $clang->eT("After you are done please click the bottom 'Save' button to save your changes.");?>
 </p>
 <div class='movableList'>
-    <ol class="organizer">
+    <ol class="organizer group-list" data-level='group'>
         <?php
             foreach ($aGroupsAndQuestions as  $aGroupAndQuestions)
             {?>
-            <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>'><div class='ui-widget-header'> <?php echo $aGroupAndQuestions['group_name'];?></div>
+            <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='group-item' data-level='group'><div class='ui-widget-header'> <?php echo $aGroupAndQuestions['group_name'];?></div>
                 <?php if (isset ($aGroupAndQuestions['questions']))
                     {?>
-                    <ol>
+                    <ol class='question-list' data-level='question'>
                         <?php
                             foreach($aGroupAndQuestions['questions'] as $aQuestion)
                             {?>
-                            <li id='list_q<?php echo $aQuestion['qid'];?>'><div><b><a href='<?php echo Yii::app()->getController()->createUrl('admin/questions/sa/editquestion/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']);?>'><?php echo $aQuestion['title'];?></a></b>: <?php echo flattenText($aQuestion['question'],true);?></div></li>
+                            <li id='list_q<?php echo $aQuestion['qid'];?>' class='question-item' data-level='question'><div><b><a href='<?php echo Yii::app()->getController()->createUrl('admin/questions/sa/editquestion/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']);?>'><?php echo $aQuestion['title'];?></a></b>: <?php echo flattenText($aQuestion['question'],true);?></div></li>
 
                             <?php }?>
                     </ol>
