@@ -1,4 +1,4 @@
-<br />
+
 <script type='text/javascript'>
     var getuserurl = '<?php echo $this->createUrl('admin/survey/sa/ajaxgetusers'); ?>';
     var ownerediturl = '<?php echo $this->createUrl('admin/survey/sa/ajaxowneredit'); ?>';
@@ -55,7 +55,6 @@
     { "name":"available", "index":"available","align":"center", "sorttype":"int", "sortable": true,"width":25,"editable":false},
     { "name":"rate", "index":"rate","align":"center", "sorttype":"int", "sortable": true,"width":25,"editable":false}];
 </script>
-<br/>
 <table id="displaysurveys"></table> <div id="pager"></div>
 <select id='gs_status_select' style='display: none'>
     <option value=''><?php $clang->eT("Any") ?></option>

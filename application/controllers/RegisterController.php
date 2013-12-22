@@ -32,9 +32,10 @@ class RegisterController extends LSYii_Controller {
         $data['sid'] = $iSurveyID;
         $data['startdate'] = $oSurvey->startdate;
         $data['enddate'] = $oSurvey->expires;
+        $data['thissurvey'] = getSurveyInfo($iSurveyID , $oSurvey->language);
         Yii::import('application.libraries.Limesurvey_lang');
-        Yii::app()->lang = new Limesurvey_lang($baselang);
-        echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata,'register.php',false,NULL,$data);
+        Yii::app()->lang = new Limesurvey_lang($oSurvey->language);
+        echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$data,'register.php',false,NULL,$data);
         unset($_SESSION['survey_'.$iSurveyID]['register_errormsg']);
 
     }
@@ -157,31 +158,21 @@ class RegisterController extends LSYii_Controller {
         $postattribute2=sanitize_xss_string(strip_tags(returnGlobal('register_attribute2')));   */
 
         // Insert new entry into tokens db
-        $token = Token::create($thissurvey['sid']);
-        $token->firstname = $postfirstname;
-        $token->lastname = $postlastname;
-        $token->email = Yii::app()->request->getPost('register_email');
-        $token->emailstatus = 'OK';
-        $token->token = $newtoken;
+        $oToken = Token::create($thissurvey['sid']);
+        $oToken->firstname = $postfirstname;
+        $oToken->lastname = $postlastname;
+        $oToken->email = Yii::app()->request->getPost('register_email');
+        $oToken->emailstatus = 'OK';
+        $oToken->token = $newtoken;
         if ($starttime && $endtime)
         {
-            $token->validfrom = $starttime;
-            $token->validuntil = $endtime;
+            $oToken->validfrom = $starttime;
+            $oToken->validuntil = $endtime;
         }
-        $token->setAttributes($attributeinsertdata, false);
-        $result = $token->save();
+        $oToken->setAttributes($attributeinsertdata, false);
+        $result = $oToken->save();
 
-        /**
-        $result = $connect->Execute($query, array($postfirstname,
-        $postlastname,
-        returnGlobal('register_email'),
-        'OK',
-        $newtoken)
-
-        //                             $postattribute1,   $postattribute2)
-        ) or safeDie ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
-        */
-        $tid = getLastInsertID($token->tableName());;
+        //$tid = $oToken->tid;// Not needed any more
         $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
         $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
         $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
@@ -189,10 +180,10 @@ class RegisterController extends LSYii_Controller {
         $fieldsarray["{FIRSTNAME}"]=$postfirstname;
         $fieldsarray["{LASTNAME}"]=$postlastname;
         $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
-        $fieldsarray["{TOKEN}"]=$token->token;
-        $fieldsarray["{EMAIL}"]=$token->email;
+        $fieldsarray["{TOKEN}"]=$oToken->token;
+        $fieldsarray["{EMAIL}"]=$oToken->email;
 
-        $token=$token->token;
+        $token=$oToken->token;
         
         
         $message=$thissurvey['email_register'];
@@ -229,12 +220,14 @@ class RegisterController extends LSYii_Controller {
         {
             // TLR change to put date into sent
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
-            $query = "UPDATE {{tokens_$iSurveyID}}\n"
-            ."SET sent='$today' WHERE tid=$tid";
-            $result=dbExecuteAssoc($query) or show_error("Unable to execute this query : $query<br />");     //Checked
-            $html="<center>".$clang->gT("Thank you for registering to participate in this survey.")."<br /><br />\n".$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."<br /><br />\n".$clang->gT("Survey administrator")." {ADMINNAME} ({ADMINEMAIL})";
+            $oToken->sent=$today;
+            $oToken->save();
+            $html="<div id='wrapper' class='message tokenmessage'>"
+                . "<p>".$clang->gT("Thank you for registering to participate in this survey.")."</p>\n"
+                . "<p>".$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."</p>\n"
+                . "<p>".$clang->gT("Survey administrator")." {ADMINNAME} ({ADMINEMAIL})</p>";
+                . "</div>\n";
             $html=ReplaceFields($html, $fieldsarray);
-            $html .= "<br /><br /></center>\n";
         }
         else
         {
