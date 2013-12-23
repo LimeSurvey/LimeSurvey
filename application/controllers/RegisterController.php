@@ -225,7 +225,7 @@ class RegisterController extends LSYii_Controller {
             $html="<div id='wrapper' class='message tokenmessage'>"
                 . "<p>".$clang->gT("Thank you for registering to participate in this survey.")."</p>\n"
                 . "<p>".$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."</p>\n"
-                . "<p>".$clang->gT("Survey administrator")." {ADMINNAME} ({ADMINEMAIL})</p>";
+                . "<p>".$clang->gT("Survey administrator")." {ADMINNAME} ({ADMINEMAIL})</p>"
                 . "</div>\n";
             $html=ReplaceFields($html, $fieldsarray);
         }
