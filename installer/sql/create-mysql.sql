@@ -284,7 +284,7 @@ CREATE TABLE `prefix_questions` (
   `scale_id` int(11) NOT NULL default '0',
   `same_default` int(11) NOT NULL default '0' COMMENT 'Saves if user set to use the same default value across languages in default options dialog',
   `relevance` text,
-  PRIMARY KEY  (`qid`,`language`)
+  PRIMARY KEY  (`language`, `qid`)
 ) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
@@ -563,20 +563,20 @@ CREATE TABLE `prefix_templates` (
 --
 -- Secondary indexes
 --
-create index `answers_idx2` on `prefix_answers` (`sortorder`);
-create index `assessments_idx2` on `prefix_assessments` (`sid`);
-create index `assessments_idx3` on `prefix_assessments` (`gid`);
-create index `conditions_idx2` on `prefix_conditions` (`qid`);
-create index `conditions_idx3` on `prefix_conditions` (`cqid`);
-create index `groups_idx2` on `prefix_groups` (`sid`);
-create index `question_attributes_idx2` on `prefix_question_attributes` (`qid`);
-create index `question_attributes_idx3` on `prefix_question_attributes` (`attribute`);
-create index `questions_idx2` on `prefix_questions` (`sid`);
-create index `questions_idx3` on `prefix_questions` (`gid`);
-create index `questions_idx4` on `prefix_questions` (`type`);
-create index `quota_idx2` on `prefix_quota` (`sid`);
-create index `saved_control_idx2` on `prefix_saved_control` (`sid`);
-create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
+CREATE INDEX `answers_idx2` ON `prefix_answers` (`sortorder`);
+CREATE INDEX `assessments_idx2` ON `prefix_assessments` (`sid`);
+CREATE INDEX `assessments_idx3` ON `prefix_assessments` (`gid`);
+CREATE INDEX `conditions_idx2` ON `prefix_conditions` (`qid`);
+CREATE INDEX `conditions_idx3` ON `prefix_conditions` (`cqid`);
+CREATE INDEX `groups_idx2` ON `prefix_groups` (`sid`);
+CREATE INDEX `question_attributes_idx2` ON `prefix_question_attributes` (`qid`);
+CREATE INDEX `question_attributes_idx3` ON `prefix_question_attributes` (`attribute`);
+CREATE INDEX `questions_idx2` ON `prefix_questions` (`sid`);
+CREATE INDEX `questions_idx3` ON `prefix_questions` (`gid`);
+CREATE INDEX `questions_idx4` ON `prefix_questions` (`type`);
+CREATE INDEX `quota_idx2` ON `prefix_quota` (`sid`);
+CREATE INDEX `saved_control_idx2` ON `prefix_saved_control` (`sid`);
+CREATE INDEX `parent_qid_idx` ON `prefix_questions` (`parent_qid`);
 
 
 --
