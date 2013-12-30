@@ -147,7 +147,7 @@ class SurveyRuntimeHelper {
 				$class .= " odd";
 
 			$s = $n + 1;
-			echo "<div class=\"row $class\"\">";
+			echo "<div class=\"row $class\">";
 			echo "<span class=\"hdr\">$v</span>";
 			echo "<span title=\"$sText\">$sText</span>";
             echo CHtml::htmlButton($sButtonText,array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'jshide'));
