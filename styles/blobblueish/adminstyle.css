@@ -250,7 +250,7 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 
 .extra-action{
     float: right;
-    margin-top:-2em;
+    margin: -34px 0.5% 0 0;
 }
 .extra-action p{
     margin: 0
@@ -741,7 +741,7 @@ ul.assessmentscope li label:first-child {
 
 .answertable th {
     font-weight:bold;
-    font-size: 0.8em;font-size: 0.8rem;
+    font-size: 0.8em;font-size: 0.8em;
     padding:3px;
 }
 
@@ -1639,9 +1639,25 @@ ol.organizer {
 .labelsets-update label{
     display:block
 }
+
 .button-list{
     text-align:left
 }
+
+.button-list button{
+	margin-bottom: 0.5em;
+	padding: 0;
+}
+
+#saveaslabel p {
+	padding: 0;
+    text-align:left
+}
+
+#saveaslabel p.label-name-wrapper {
+	margin-top: -10px;
+}
+
 #gbox_displaysurveys{
     margin:0 auto;
 }
@@ -1779,4 +1795,16 @@ td.LEMerror  {
 .highlighterror {
 	border: 2px solid #FF00FF;
 	color: red;
+}
+
+/* Edit answer and sub-question action buttons */
+
+.ui-tabs .action-buttons {
+	margin: 1em 0 0 0;
+	text-align: center;
+}
+
+.ui-tabs .action-buttons button {
+	margin: 0 0.5em;
+	padding: 0;
 }

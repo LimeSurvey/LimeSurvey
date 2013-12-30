@@ -254,7 +254,7 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 
 .extra-action{
     float: right;
-    margin-top: -60px
+    margin: -73px 0.5% 0 0;
 }
 .outlinetable {
     border: 1px solid #111;
@@ -1615,7 +1615,21 @@ ol.organizer {
     font-size: 0.8em;
 }
 .labelsets-update label{display:block}
-.button-list{text-align:left}
+
+.button-list{
+	margin-top: 1em;
+	text-align:left
+}
+
+#saveaslabel p {
+	padding: 0;
+    text-align:left
+}
+
+#saveaslabel p.label-name-wrapper {
+	margin-top: -10px;
+}
+
 #gbox_displaysurveys{ margin:0 auto;}
 
 
@@ -1811,4 +1825,15 @@ td.LEMerror  {
 }
 .ui-pager-control,.ui-search-toolbar > th.ui-th-column{
     background: #F4FFDB !important;
+}
+
+/* Edit answer and sub-question action buttons */
+
+.ui-tabs .action-buttons {
+	margin: 1em 0 0 0;
+	text-align: center;
+}
+
+.ui-tabs .action-buttons button {
+	margin: 0 0.5em;
 }

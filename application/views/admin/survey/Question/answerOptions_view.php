@@ -140,19 +140,22 @@
                             </td></tr>
                         <?php $position++;
                     } ?>
-                </table><br />
+                </table>
                 <?php if ($first)
                     { ?>
                     <input type='hidden' id='answercount_<?php echo $scale_id; ?>' name='answercount_<?php echo $scale_id; ?>' value='<?php echo $anscount; ?>' />
                     <?php } ?>
-                <button id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser' type='button'><?php $clang->eT('Predefined label sets...'); ?></button>
-                <button id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnquickadd' type='button'><?php $clang->eT('Quick add...'); ?></button>
+                <div class="action-buttons">
+                    <button id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser' type='button'><?php $clang->eT('Predefined label sets...'); ?></button>
+                    <button id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnquickadd' type='button'><?php $clang->eT('Quick add...'); ?></button>
 
-                <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create')) { //){ ?>
+                    <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create')) { //){ ?>
                     <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php $clang->eT('Save as label set'); ?></button>
 
-                    <?php }
-                }
+                   <?php } ?>
+                </div>
+
+                <?php }
 
                 $position=sprintf("%05d", $position);
 
@@ -182,10 +185,18 @@
         </div>
         </div>
         <div id="saveaslabel" style='display:none;'>
-        <input type="radio" name="savelabeloption" id="newlabel"> <label for="newlabel"><?php $clang->eT('New label set'); ?></label><br /><br />
-        <input type="radio" name="savelabeloption" id="replacelabel"> <label for="replacelabel"><?php $clang->eT('Replace existing label set'); ?></label><br /><br />
-        <button id='btnsave' type='button'><?php $clang->eT('Save'); ?></button>
-        <button id='btnlacancel' type='button'><?php $clang->eT('Cancel'); ?></button>
+            <p>
+                <input type="radio" name="savelabeloption" id="newlabel">
+                <label for="newlabel"><?php $clang->eT('New label set'); ?></label>
+            </p>
+            <p>
+                <input type="radio" name="savelabeloption" id="replacelabel">
+                <label for="replacelabel"><?php $clang->eT('Replace existing label set'); ?>
+            </p>
+            <p class='button-list'>
+                <button id='btnsave' type='button'><?php $clang->eT('Save'); ?></button>
+                <button id='btnlacancel' type='button'><?php $clang->eT('Cancel'); ?></button>
+            </p>
         </div>
 
         <div id="dialog-confirm-replace" title="<?php $clang->eT('Replace label set?'); ?>" style='display:none;'>

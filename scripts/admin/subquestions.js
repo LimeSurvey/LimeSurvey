@@ -607,9 +607,9 @@ function setlabel()
     {
         case 'newlabel':
         if(!flag[0]){
-            $('#lasets').remove();
-            $($(this).next().next()).after('<label for="laname">'+sLabelSetName+':</label> ' +
-            '<input type="text" name="laname" id="laname">');
+            $('#lasets').parent().remove();
+            $(this).parent().after('<p class="label-name-wrapper"><label for="laname">'+sLabelSetName+':</label> ' +
+            '<input type="text" name="laname" id="laname"></p>');
             flag[0] = true;
             flag[1] = false;
         }
@@ -617,9 +617,8 @@ function setlabel()
 
         case 'replacelabel':
         if(!flag[1]){
-            $('#laname').remove();
-            $('[for=laname]').remove();
-            $($(this).next().next()).after('<select name="laname" id="lasets"><option value=""></option></select>');
+            $('#laname').parent().remove();
+            $(this).parent().after('<p class="label-name-wrapper"><select name="laname" id="lasets"><option value=""></option></select></p>');
             jQuery.getJSON(lanameurl, function(data) {
                 $.each(data, function(key, val) {
                     $('#lasets').append('<option value="' + key + '">' + val + '</option>');
