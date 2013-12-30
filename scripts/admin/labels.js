@@ -35,10 +35,12 @@ $(document).ready(function(){
         distance:2
     });
 
-    $('#quickadd').dialog({autoOpen: false,
+    $('#quickadd').dialog({
+        autoOpen: false,
         modal: true,
         width:600,
-        title: $("#quickadd").attr('name')});
+        title: quickaddtitle
+    });
 
     $('.btnquickadd').click(function(){
         $('#quickadd').dialog('open');
