@@ -5263,7 +5263,7 @@ function do_array_multitext($ia)
 <script type="text/javascript">
 <!--
     $('#question{$ia[0]} .question').delegate('input[type=text]:visible:enabled','blur keyup',function(event){
-        {$checkconditionFunction}($(this).attr('value'), $(this).attr('name'), $(this).attr('type'));
+        {$checkconditionFunction}($(this).val(), $(this).attr('name'), 'text');
         return true;
     })
 // -->
