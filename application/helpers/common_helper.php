@@ -4533,16 +4533,16 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     }
     $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
     if (get_magic_quotes_gpc() != "0")    {$body = stripcslashes($body);}
-    if ($ishtml) {
+    if ($ishtml)
+    {
         $mail->IsHTML(true);
-        $mail->Body = $body;
-        $mail->AltBody = strip_tags(breakToNewline(html_entity_decode($body,ENT_QUOTES,$emailcharset)));
-    } else
+        //$mail->AltBody = strip_tags(breakToNewline(html_entity_decode($body,ENT_QUOTES,$emailcharset))); // Use included PHPmailer system see bug #8234
+    }
+    else
     {
         $mail->IsHTML(false);
-        $mail->Body = $body;
     }
-
+    $mail->Body = $body;
     // Add attachments if they are there.
     if (is_array($attachments))
     {
