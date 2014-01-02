@@ -1,6 +1,7 @@
     <script type='text/javascript'>
         var duplicatelabelcode='<?php $clang->eT('Error: You are trying to use duplicate label codes.','js'); ?>';
         var otherisreserved='<?php $clang->eT("Error: 'other' is a reserved keyword.",'js'); ?>';
+        var quickaddtitle='<?php $clang->eT('Quick-add subquestion or answer items','js'); ?>';
     </script>
 <div class='header ui-widget-header'><?php $clang->eT("Labels") ?></div>
 <div id='tabs' class='ui-tabs ui-widget ui-widget-content ui-corner-all'>
@@ -105,7 +106,9 @@
                         ?>
                     </tbody>
                 </table>
-                <button class='btnquickadd' id='btnquickadd_<?php echo $i ?>' type='button'><?php $clang->eT('Quick add...') ?></button>
+                <div class="action-buttons">
+                    <button class='btnquickadd' id='btnquickadd_<?php echo $i ?>' type='button'><?php $clang->eT('Quick add...') ?></button>
+                </div>
                 <p><input type='submit' name='method' value='<?php $clang->eT("Save changes") ?>'  id='saveallbtn_<?php echo $lslanguage ?>' /></p>
             </div>
             <?php
@@ -157,9 +160,11 @@
             <label for='quickaddarea'><?php $clang->eT('Enter your labels:') ?></label>
             <br />
             <textarea id='quickaddarea' name='quickaddarea' class='tipme' title='<?php $clang->eT('Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.') ?>' rows='30' cols='100' style='width:570px;'></textarea>
-            <br /><button id='btnqareplace' type='button'><?php $clang->eT('Replace') ?></button>
-            <button id='btnqainsert' type='button'><?php $clang->eT('Add') ?></button>
-            <button id='btnqacancel' type='button'><?php $clang->eT('Cancel') ?></button>
+            <p class='button-list'>
+                <button id='btnqareplace' type='button'><?php $clang->eT('Replace') ?></button>
+                <button id='btnqainsert' type='button'><?php $clang->eT('Add') ?></button>
+                <button id='btnqacancel' type='button'><?php $clang->eT('Cancel') ?></button>
+            </p>
         </div>
     </div>
     </div>

@@ -216,6 +216,9 @@ return array(
         'js' => array(
             'jquery-ui-timepicker-addon.js'
         ),
+        'css' => array(
+            'jquery-ui-timepicker-addon.css'
+        ),
         'depends' => array(
             'jqueryui'
         )

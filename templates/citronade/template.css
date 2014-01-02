@@ -58,6 +58,7 @@ input, button, select {vertical-align: middle;}
 }
 .no-js #progressbar,.no-js #progress-pre,.no-js #progress-post{display:none}
 .no-js #progress-wrapper .hide{position:relative;top:0;left:0;}
+.no-js #progress-wrapper {width:auto;text-align:center}
 /* Hide some element if javascript is not activated */
 /*.no-js input.saveall,.no-js input.clearall,.no-js #moveprevbtn{display:none}*/
 .no-js .slider_showmin,.no-js .slider_showmax{display:none;}
@@ -78,7 +79,7 @@ a:hover, a:focus, a:active {background-color: #E5F8A8;color: #5670A1;text-decora
 /* Head decoration */
 #head{
   border-bottom:2px solid #AAA;border-top:2px solid #CCC;
-  color:#5670A1;	background:#dbdbdb url(header-bkg.png) repeat-x center bottom;
+  color:#5670A1;background:#dbdbdb url(header-bkg.png) repeat-x center bottom;
 }
 #sitename{line-height:2;margin:0;}
 
@@ -182,13 +183,15 @@ input.checkbox[disabled],input.radio[disabled]{opacity: 0.3;}
 /* index */
 #index {margin:2em auto 1em;clear:both;}
 #index .container{border: 1px solid #5670A1;background:#EEF6FF;}
-#index .container h2{padding:0.2em 1em 0.5em;margin:0 0 0;font-size:1.1em;}
-#index .container h2{background:#5670A1;color:#FEFEFE;font-size:1.2em}
+#index .container h3{padding:0.5em 1em 0.1em;margin:0 0 0;font-size:1.1em;color:#5670A1;}
+#index .container h2{padding:0.2em 1em 0.5em;margin:0 0 0;background:#5670A1;color:#FEFEFE;font-size:1.2em}
 #index .hdr{color:#5670A1;padding:0 0.5em;}
-#index .row{padding:0.1em 1em;cursor: pointer;color:#5670A1;text-decoration: underline;}
-#index .current{padding:0.1em 1em;cursor: pointer;color:#5670A1;text-decoration: none;font-weight:bold;}
+#index .row{padding:0.1em 1em;color:#5670A1;}
+#index .current{padding:0.1em 1em;color:#5670A1;text-decoration: none;font-weight:bold;}
 #index .missing{/*background: url()*/}
-#index .row:hover, #index .row:focus, #index .row:active {background-color: #E5F8A8;color: #5670A1;text-decoration:none;}
+.js #index .row{cursor: pointer;text-decoration: underline;}
+.js #index .row:hover{background-color: #E5F8A8;color: #5670A1;text-decoration:none;}
+.current .jshide{display:none}
 #index .container .submit{margin:0 auto 0.5em;display:block}
 /* Question specific decoration */
 table.question{border-color:#D5DBE7;}
@@ -326,6 +329,8 @@ ul.tools li{margin-right:1em;}
     color: #944;
     font-weight: bold;
 }
+.errormandatory{border: 1px solid #944; background: #fcf5c9; color: #944; padding:0.5em;}
+.help-wrapper .errormandatory{border: 0 none #944; background: transparent; color: #944; padding:0;}
 /* Some LimeSurvey specific code */
 .asterisk {color:#FF8900;}
 /*.asterisk{background:transparent url(exclamation.png) no-repeat center;height:1em;min-height:16px;width:20px;}*/

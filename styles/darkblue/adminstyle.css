@@ -1676,7 +1676,26 @@ ol.organizer {
     font-size: 0.8em;
 }
 .labelsets-update label{display:block}
-.button-list{text-align:left}
+
+.button-list{
+	margin-top: 1em;
+    text-align:left
+}
+
+.button-list button{
+	margin-bottom: 0.5em;
+	padding: 0;
+}
+
+#saveaslabel p {
+	padding: 0;
+    text-align:left
+}
+
+#saveaslabel p.label-name-wrapper {
+	margin-top: -10px;
+}
+
 #gbox_displaysurveys{ margin:0 auto;}
 
 .ui-jqgrid tr.jqgrow {
@@ -1854,5 +1873,14 @@ td.LEMerror  {
     font-weight:bold;
 }
 
+/* Edit answer and sub-question action buttons */
 
-.browsetable thead td span
+.ui-tabs .action-buttons {
+	margin: 1em 0 0 0;
+	text-align: center;
+}
+
+.ui-tabs .action-buttons button {
+	margin: 0 0.5em;
+	padding: 0;
+}

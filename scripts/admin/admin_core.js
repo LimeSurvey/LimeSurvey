@@ -684,8 +684,8 @@ function removeCSRFDivs()
     $('input[name=YII_CSRF_TOKEN]').each(function(){
        parent = $(this).parent();
        grandfather = $(parent).parent();
-       grandfather.append(this);
-       parent.remove();
+       $(grandfather).append(this);
+       $(parent).remove();
     });
 }
 
