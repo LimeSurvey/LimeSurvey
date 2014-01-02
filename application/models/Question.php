@@ -109,7 +109,7 @@
                                     )
                                 ),
                                 'message' => 'Question codes must be unique.'),
-                            array('title', 'match', 'pattern' => '/[a-z,A-Z][[:alnum:]]+/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.', 'on' => 'update, insert, import'),
+                            array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.', 'on' => 'update, insert, import'),
                         ));
             return $aRules;
         }
