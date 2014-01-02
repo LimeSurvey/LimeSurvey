@@ -846,7 +846,8 @@ function buildsurveysession($surveyid,$preview=false)
     $clang = Yii::app()->lang;
     $sLangCode=$clang->langcode;
     $languagechanger=makeLanguageChangerSurvey($sLangCode);
-
+    if(!$preview)
+        $preview=Yii::app()->getConfig('previewmode');
 	$thissurvey = getSurveyInfo($surveyid,$sLangCode);
 
     $_SESSION['survey_'.$surveyid]['templatename']=validateTemplateDir($thissurvey['template']);
@@ -1308,7 +1309,7 @@ function buildsurveysession($surveyid,$preview=false)
 
     $randomized = false;    // So we can trigger reorder once for group and question randomization
     // Now adjust the grouplist
-    if (count($aRandomGroups)>0)
+    if (count($aRandomGroups)>0 && !$preview)
     {
         $randomized = true;    // So we can trigger reorder once for group and question randomization
         // Now adjust the grouplist
@@ -1373,7 +1374,7 @@ function buildsurveysession($surveyid,$preview=false)
 
     // If we have randomization groups set, then lets cycle through each group and
     // replace questions in the group with a randomly chosen one from the same group
-    if (count($randomGroups) > 0)
+    if (count($randomGroups) > 0 && !$preview)
     {
         $randomized   = true;    // So we can trigger reorder once for group and question randomization
         $copyFieldMap = array();
@@ -1858,7 +1859,7 @@ function UpdateGroupList($surveyid, $language)
         $gidList[$row['gid']] = $group;
     }
 
-    if (isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap'])>0)
+    if (!Yii::app()->getConfig('previewmode') && isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap'])>0)
     {
         // Now adjust the grouplist
         $groupRemap = $_SESSION['survey_'.$surveyid]['groupReMap'];
@@ -1872,7 +1873,6 @@ function UpdateGroupList($surveyid, $language)
         }
         $groupList = $groupListCopy;
      }
-
      $_SESSION['survey_'.$surveyid]['grouplist'] = $groupList;
 }
 
@@ -1891,7 +1891,6 @@ function UpdateFieldArray()
 		foreach ($_SESSION['survey_'.$surveyid]['fieldarray'] as $key => $value)
         {
             $questionarray = &$_SESSION['survey_'.$surveyid]['fieldarray'][$key];
-			Yii::log("test" . print_r($questionarray, true), CLogger::LEVEL_TRACE, 'system.db.CDbCommand');
             $query = "SELECT title, question FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
             $usrow = Yii::app()->db->createCommand($query)->queryRow();
             if ($usrow)
