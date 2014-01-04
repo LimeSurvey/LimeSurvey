@@ -215,13 +215,13 @@ function passJSON(fieldname, show_title, show_comment, pos) {
             json += '{';
 
             if ($("#"+fieldname+"_show_title").val() == 1)
-                json += '"title":"' +$("#"+fieldname+"_title_"  +i).val().replace(/"/g, '\\"')+'",';
+                json += '"title":"' +escapeHtml($("#"+fieldname+"_title_"  +i).val().replace(/"/g, '\"'))+'",';
             if ($("#"+fieldname+"_show_comment").val() == 1)
-                json += '"comment":"'+$("#"+fieldname+"_comment_"+i).val().replace(/"/g, '\\"')+'",';
+                json += '"comment":"'+escapeHtml($("#"+fieldname+"_comment_"+i).val().replace(/"/g, '\"'))+'",';
             json += '"size":"'   +$("#"+fieldname+"_size_"   +i).val()+'",'+
-                    '"name":"'   +$("#"+fieldname+"_name_"   +i).val()+'",'+
-                    '"filename":"'   +$("#"+fieldname+"_filename_"   +i).val()+'",'+
-                    '"ext":"'    +$("#"+fieldname+"_ext_"    +i).val()+'"}';
+                '"name":"'   +escapeHtml($("#"+fieldname+"_name_"   +i).val())+'",'+
+                '"filename":"'   +escapeHtml($("#"+fieldname+"_filename_"   +i).val())+'",'+
+                '"ext":"'    +$("#"+fieldname+"_ext_"    +i).val()+'"}';
 
             filecount += 1;
         }
