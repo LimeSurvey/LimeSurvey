@@ -480,7 +480,7 @@ class index extends CAction {
         // bypass only this check at first page (Step=0) because
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
-		if ($tokensexist == 1 && isset($token) && $token &&
+		if ($tokensexist == 1 && isset($token) && $token!="" &&
         isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
             // check also if it is allowed to change survey after completion
@@ -502,7 +502,7 @@ class index extends CAction {
                 $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
             }
         }
-        if ($tokensexist == 1 && isset($token) && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) //check if token is in a valid time frame
+        if ($tokensexist == 1 && isset($token) && $token!="" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) //check if token is in a valid time frame
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {

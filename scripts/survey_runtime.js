@@ -242,9 +242,10 @@ function showStartPopups(){
 function activateLanguageChanger(){
     $(document).on('change','select.languagechanger', function() {
         if(!$(this).closest('form').length){// If there are no form : we can't use it, we need to create and submit. This break no-js compatibility in some page (token for example).
-            if($('form#limesurvey').length){ // A limesurvey form exist in document, move select and button inside and click
-                $("<input type='hidden']>").attr('name','lang').val($(this).find('option:selected').val()).appendTo($('form#limesurvey'));
-                $("#changelangbtn").appendTo($('form#limesurvey'));
+            if($('form').length==1){ // A form exist in document, move select and button inside and click
+                $("form [name='lang']").remove();// Remove existing lang selector
+                $("<input type='hidden']>").attr('name','lang').val($(this).find('option:selected').val()).appendTo($('form'));
+                $("#changelangbtn").appendTo($('form'));
                 $('#changelangbtn').click();
             }else{
                 $('<form>', {
