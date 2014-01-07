@@ -238,25 +238,27 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
             {
                 $route.="/token/".Yii::app()->request->getParam('token');
             }
+            $sClass.=" previewmode";
             // Maybe add other param (for prefilling by URL): then need a real createUrl with array
-            foreach ($aSurveyLangs as $sLangCode => $aSurveyLang)
-            {
-                $sTargetURL=Yii::app()->getController()->createUrl($route."/lang/$sLangCode");
-                $aListLang[$sTargetURL]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
-                if($clang->langcode==$sLangCode)
-                    $sSelected=$sTargetURL;
-            }
-            $sClass.=" getparam preview nojshide";
+#            foreach ($aSurveyLangs as $sLangCode => $aSurveyLang)
+#            {
+#                $sTargetURL=Yii::app()->getController()->createUrl($route."/lang/$sLangCode");
+#                $aListLang[$sTargetURL]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
+#                if($clang->langcode==$sLangCode)
+#                    $sSelected=$sTargetURL;
+#            }
         }
         else
         {
-            foreach ($aSurveyLangs as $sLangCode => $aSurveyLang)
-            {
-                $aListLang[$sLangCode]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
-            }
-            $sSelected=$clang->langcode;
+            $route="/survey/index/sid/{$surveyid}";
         }
-        $sHTMLCode=CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass));
+        $sTargetURL=Yii::app()->getController()->createUrl($route);
+        foreach ($aSurveyLangs as $sLangCode => $aSurveyLang)
+        {
+            $aListLang[$sLangCode]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
+        }
+        $sSelected=$clang->langcode;
+        $sHTMLCode=CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass,'data-targeturl'=>$sTargetURL));
         // We don't have to add this button if in previewmode
         $sHTMLCode.= CHtml::htmlButton($clang->gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'changelang jshide'));
         return $sHTMLCode;

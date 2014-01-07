@@ -241,16 +241,29 @@ function showStartPopups(){
  */
 function activateLanguageChanger(){
     $(document).on('change','select.languagechanger', function() {
+        if($(this).hasClass('previewmode'))
+        {
+            $('<form>', {
+                "html": '<input type="hidden" name="lang" value="' + $(this).find('option:selected').val() + '" />',
+                "action": target
+            }).appendTo(document.body).submit();
+            return false;
+        }
         if(!$(this).closest('form').length){// If there are no form : we can't use it, we need to create and submit. This break no-js compatibility in some page (token for example).
-            if($('form').length==1){ // A form exist in document, move select and button inside and click
-                $("form [name='lang']").remove();// Remove existing lang selector
-                $("<input type='hidden']>").attr('name','lang').val($(this).find('option:selected').val()).appendTo($('form'));
-                $("#changelangbtn").appendTo($('form'));
+            if($('form#limesurvey').length==1){ // The limesurvey form exist in document, move select and button inside and click
+                $("form#limesurvey [name='lang']").remove();// Remove existing lang selector
+                $("<input type='hidden']>").attr('name','lang').val($(this).find('option:selected').val()).appendTo($('form#limesurvey'));
+                $("#changelangbtn").appendTo($('form#limesurvey'));
                 $('#changelangbtn').click();
             }else{
+                if($(this).data('targeturl')){
+                    var target=$(this).data('targeturl');
+                }else{
+                    var target=document.location.href;
+                }
                 $('<form>', {
                     "html": '<input type="hidden" name="lang" value="' + $(this).find('option:selected').val() + '" />',
-                    "action": document.location.href
+                    "action": target
                 }).appendTo(document.body).submit();
             }
         }else{
