@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 2.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2013-12-25 08:44:06+0000\n"
+"PO-Revision-Date: 2014-01-07 07:23:43+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -100,9 +100,161 @@ msgstr "இறக்குமதி தோல்வி: ஒப்பிடப
 msgid "Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey."
 msgstr "இறக்குமதி தோல்வி: கட்டாயம் இறக்குமதி கோரிய ஆனால் உள்ளீடு கோப்பு ஆய்வு நிரப்ப போதுமான பத்திகள் இல்லை."
 
+#: application/helpers/admin/import_helper.php:4480
+msgid "%s response lines in your file."
+msgstr "உங்கள் கோப்பில் %s பதில் வரிகள்."
+
+#: application/helpers/admin/import_helper.php:4482
+msgid "No response lines in your file."
+msgstr "உங்கள் கோப்பில் பதில் வரிகள் இல்லை."
+
+#: application/helpers/admin/import_helper.php:4485
+msgid "%s responses were inserted."
+msgstr "%s பதில்களை சேர்க்கப்பட்டது."
+
+#: application/helpers/admin/import_helper.php:4489
+msgid "%s responses were updated."
+msgstr "%s பதில்களை புதுப்பிக்கப்பட்டது."
+
+#: application/helpers/admin/import_helper.php:4492
+msgid "%s responses cannot be inserted or updated."
+msgstr "%s பதில்களை சேர்க்கப்பட அல்லது புதுப்பிக்கப்பட முடியாது"
+
+#: application/helpers/admin/import_helper.php:4973
+msgid "Could not insert subquestion"
+msgstr "துணை கேள்வி செருக முடியவில்லை"
+
+#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:15
+msgid "Preview this question group in:"
+msgstr "இந்த கேள்விக்குழு முன்பார்வை:"
+
+#: application/views/admin/user/editusers.php:7
+msgid "User ID"
+msgstr "பயனர் ஐடி"
+
+#: application/views/admin/token/managetokenattributes.php:87
+msgid "Add or delete token attributes"
+msgstr "டோக்கன் பண்புகளை சேர்க்க அல்லது நீக்க"
+
+#: application/views/admin/token/managetokenattributes.php:104
+msgid "Delete this attribute:"
+msgstr "இந்த பண்பு நீக்கு:"
+
+#: application/views/admin/survey/Question/questionbar_view.php:17
+msgid "Preview this question in:"
+msgstr "இந்த கேள்வியை முன்பார்வை:"
+
+#: application/views/admin/survey/Question/subQuestion_view.php:4
+msgid "New subquestion"
+msgstr "புதிய துணை கேள்வி"
+
+#: application/views/admin/survey/copySurvey_view.php:35
+#: application/views/admin/survey/importSurvey_view.php:50
+msgid "Condition"
+msgstr "நிபந்தனை"
+
+#: application/views/admin/survey/subview/tabCopy_view.php:20
+msgid "Reset start/end date/time?"
+msgstr "துவக்கம் / முடிவு நாள் / நேரம் மீட்டமை?"
+
+#: application/views/admin/survey/subview/tabPresentation_view.php:95
+msgid "Incremental"
+msgstr "கூடும் முறை"
+
+#: application/views/admin/token/browse.php:145
+msgid "Filter by"
+msgstr "மூலம் வடிகட்டி"
+
+#: application/views/admin/token/managetokenattributes.php:105
+msgid "none"
+msgstr "எதுவும் இல்லை"
+
+#: application/views/installer/dbconfig_view.php:25
+msgid "Set this to the IP/net location of your database server. In most cases \"localhost\" will work. You can force Unix socket with complete socket path."
+msgstr "உங்கள் தரவுத்தள சர்வர் ஐபி / வலை இடம் என அமைக்கவும். பெரும்பாலான சந்தர்ப்பங்களில் \"localhost\" வேலை செய்யும். நீங்கள் முழு சாக்கெட் பாதை யூனிக்ஸ் சாக்கெட் கட்டாயப்படுத்தலாம்."
+
+#: application/views/admin/user/setuserpermissions.php:2
+msgid "Edit user permissions for user %s"
+msgstr "பயனர் அனுமதிகள் %s பயனருக்கு திருத்து"
+
+#: application/views/installer/precheck_view.php:63
+msgid "Minimum memory available"
+msgstr "குறைந்தபட்ச நினைவகம் கிடைக்க"
+
+#: application/views/installer/precheck_view.php:66
+msgid "Too low"
+msgstr "மிக குறைந்த"
+
+#: application/views/plugins/configure.php:4
+#: application/views/plugins/index.php:1
+msgid "Plugins"
+msgstr "செருகுநிரல்கள்"
+
+#: application/views/plugins/configure.php:12
+msgid "Settings for plugin %s"
+msgstr "%s சொருகி அமைப்புகள்"
+
+#: application/views/plugins/configure.php:22
+msgid "Save plugin settings"
+msgstr "சொருகி அமைப்புகள் காப்பாற்ற"
+
+#: application/views/plugins/index.php:23
+msgid "Activate"
+msgstr "செயல்படுத்து"
+
+#: application/views/plugins/index.php:25
+msgid "Deactivate"
+msgstr "செயலற்றதாக்கு"
+
+#: application/views/plugins/index.php:36
+msgid "Plugin"
+msgstr "சொருகி"
+
+#: application/views/plugins/index.php:41
+msgid "Description"
+msgstr "விளக்கம்"
+
+#: application/views/plugins/index.php:29
+msgid "Configure"
+msgstr "கட்டமைக்கவும்"
+
 #: application/helpers/common_helper.php:3199
 msgid "Choose when user can add a comment"
 msgstr "பயனர் ஒரு கருத்துரை சேர்க்க முடியும் போது தேர்வு"
+
+#: application/views/admin/dataentry/import.php:20
+msgid "Import responses"
+msgstr "பதில்களை இறக்குமதி"
+
+#: application/helpers/expressions/em_manager_helper.php:2904
+msgid "Comment only when you don't choose an answer."
+msgstr "நீங்கள் ஒரு பதில் தேர்வு செய்யாமல் மட்டுமே போது கருத்துரை."
+
+#: application/helpers/expressions/em_manager_helper.php:2901
+msgid "Comment only when you choose an answer."
+msgstr "நீங்கள் ஒரு பதில் தேர்ந்தெடுக்கவும் மட்டுமே கருத்துரை."
+
+#: application/views/admin/dataentry/import.php:36
+msgid "Question is removed from target (result is ignored)."
+msgstr "கேள்வி இலக்கு (விளைவாக புறக்கணிக்கப்படுகிறது) இருந்து நீக்கப்பட்டது."
+
+#: application/helpers/expressions/em_manager_helper.php:2890
+msgid "All your answers must be different."
+msgstr "உங்கள் பதில்களை வேறு வேறு இருக்க வேண்டும்."
+
+#: application/helpers/expressions/em_manager_helper.php:2887
+#: application/helpers/expressions/em_manager_helper.php:2924
+#: application/helpers/expressions/em_manager_helper.php:3052
+msgid "Only numbers may be entered in these fields."
+msgstr "இந்த துறைகள் எண்கள் மட்டுமே உள்ளிட."
+
+#: application/helpers/export_helper.php:1288
+msgid "Only answer the following question if:"
+msgstr "பின்வரும் கேள்விக்கு பதில் என்றால் மட்டுமே:"
+
+#: application/helpers/qanda_helper.php:994
+msgid "Date entered is invalid!"
+msgstr "உள்ளிட்ட தேதி தவறானது!"
 
 #: application/controllers/admin/templates.php:418
 msgid "A template with that name already exists."
@@ -300,6 +452,31 @@ msgstr "பின்னர் தொடங்கு"
 #: application/views/admin/survey/subview/tabNotification_view.php:135
 msgid "Participant may save and resume later?"
 msgstr "பங்கேற்பாளர் சேமித்து பின் தொடரும் முடியும்?"
+
+#: application/views/admin/globalSettings_view.php:490
+#: application/views/admin/labels/editlabel_view.php:34
+#: application/views/admin/quotas/viewquotasrow_view.php:37
+#: application/views/admin/quotas/viewquotasrowsub_view.php:10
+#: application/views/admin/survey/subview/tabGeneralEditSurvey_view.php:33
+msgid "Remove"
+msgstr "நீக்கு"
+
+#: application/views/admin/labels/editlabel_view.php:34
+msgid "You cannot remove this item since you need at least one language in a labelset."
+msgstr "நீங்கள் ஒரு முத்திரை தொகுப்பில் குறைந்தது ஒரு மொழி வேண்டும் என்பதால் இந்த உருப்படியை நீக்க முடியாது."
+
+#: application/views/admin/participants/displayParticipants_view.php:137
+#: application/views/admin/token/browse.php:67
+msgid "Remove condition"
+msgstr "நிபந்தனை நீக்கு"
+
+#: application/views/admin/participants/displayParticipants_view.php:158
+msgid "Remove search condition"
+msgstr "தேடல் நிபந்தனை நீக்கு"
+
+#: application/views/admin/token/csvpost.php:28
+msgid "%s duplicate records removed"
+msgstr "%s பிரதிகள் பதிவுகள் நீக்கப்பட்டது"
 
 #: application/controllers/AdminController.php:66
 #: application/controllers/PrintanswersController.php:82
@@ -576,12 +753,12 @@ msgstr "ஆம்"
 #: application/controllers/admin/assessments.php:89
 #: application/views/admin/globalSettings_view.php:490
 #: application/views/admin/labels/editlabel_view.php:34
-#: application/views/admin/labels/labelview_view.php:161
+#: application/views/admin/labels/labelview_view.php:165
 #: application/views/admin/participants/displayParticipants_view.php:64
-#: application/views/admin/survey/Question/answerOptions_view.php:167
-#: application/views/admin/survey/Question/answerOptions_view.php:179
-#: application/views/admin/survey/Question/subQuestion_view.php:167
-#: application/views/admin/survey/Question/subQuestion_view.php:180
+#: application/views/admin/survey/Question/answerOptions_view.php:170
+#: application/views/admin/survey/Question/answerOptions_view.php:182
+#: application/views/admin/survey/Question/subQuestion_view.php:169
+#: application/views/admin/survey/Question/subQuestion_view.php:182
 #: application/views/admin/survey/subview/tabGeneralEditSurvey_view.php:33
 msgid "Add"
 msgstr "சேர்"
@@ -591,20 +768,20 @@ msgstr "சேர்"
 #: application/controllers/admin/tokens.php:2203
 #: application/views/admin/assessments_view.php:131
 #: application/views/admin/conditions/includes/conditions_scenario.php:13
-#: application/views/admin/labels/labelview_view.php:162
+#: application/views/admin/labels/labelview_view.php:166
 #: application/views/admin/participants/attributeControl_view.php:6
 #: application/views/admin/participants/attributeMapCSV_view.php:45
 #: application/views/admin/participants/displayParticipants_view.php:66
 #: application/views/admin/participants/displayParticipants_view.php:139
 #: application/views/admin/quotas/editquota_view.php:30
 #: application/views/admin/survey/Question/answerOptions_view.php:37
-#: application/views/admin/survey/Question/answerOptions_view.php:168
-#: application/views/admin/survey/Question/answerOptions_view.php:180
-#: application/views/admin/survey/Question/answerOptions_view.php:188
+#: application/views/admin/survey/Question/answerOptions_view.php:171
+#: application/views/admin/survey/Question/answerOptions_view.php:183
+#: application/views/admin/survey/Question/answerOptions_view.php:198
 #: application/views/admin/survey/Question/subQuestion_view.php:24
-#: application/views/admin/survey/Question/subQuestion_view.php:168
-#: application/views/admin/survey/Question/subQuestion_view.php:181
-#: application/views/admin/survey/Question/subQuestion_view.php:189
+#: application/views/admin/survey/Question/subQuestion_view.php:170
+#: application/views/admin/survey/Question/subQuestion_view.php:183
+#: application/views/admin/survey/Question/subQuestion_view.php:198
 #: application/views/admin/survey/deleteSurvey_view.php:36
 #: application/views/admin/survey/editSurvey_view.php:50
 #: application/views/admin/survey/listSurveys_view.php:35
@@ -766,10 +943,34 @@ msgid "Load unfinished survey"
 msgstr "முடிக்கப்படாத ஆய்வு ஏற்ற"
 
 #: application/helpers/SurveyRuntimeHelper.php:159
-#: application/helpers/frontend_helper.php:1666
+#: application/helpers/frontend_helper.php:1667
 #: application/helpers/replacements_helper.php:371
 #: application/views/admin/dataentry/active_html_view.php:67
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
 #: application/views/admin/dataentry/insert.php:41
 msgid "Submit"
 msgstr "சமர்ப்பிக்கவும்"
+
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:208
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:219
+#: application/helpers/export_helper.php:284
+#: application/helpers/export_helper.php:288
+msgid "Not Selected"
+msgstr "தேர்வாகவில்லை"
+
+#: application/helpers/expressions/em_core_helper.php:156
+msgid "Absolute value"
+msgstr "தனிமதிப்பு"
+
+#: application/helpers/common_helper.php:6515
+msgid "You are not allowed to perform this operation!"
+msgstr "இந்த செயலை செய்ய உங்களுக்கு அனுமதி இல்லை!"
+
+#: application/helpers/common_helper.php:6505
+#: application/helpers/common_helper.php:6510
+msgid "Security alert"
+msgstr "பாதுகாப்பு எச்சரிக்கை"
+
+#: application/helpers/common_helper.php:6491
+msgid "You are not allowed to import a group!"
+msgstr "உங்களுக்கு ஒரு குழு இறக்குமதி செய்ய அனுமதி இல்லை!"
