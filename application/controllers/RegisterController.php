@@ -60,7 +60,7 @@ class RegisterController extends LSYii_Controller {
             $this->redirect(Yii::app()->baseUrl);
         }
 
-        if ($sLanguage!="" )
+        if ($sLanguage=="" )
         {
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
         }
