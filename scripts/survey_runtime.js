@@ -243,6 +243,7 @@ function activateLanguageChanger(){
     $(document).on('change','select.languagechanger', function() {
         if($(this).hasClass('previewmode'))
         {
+            var target=$(this).data('targeturl');
             $('<form>', {
                 "html": '<input type="hidden" name="lang" value="' + $(this).find('option:selected').val() + '" />',
                 "action": target
