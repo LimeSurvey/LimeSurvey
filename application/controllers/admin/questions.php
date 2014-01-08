@@ -704,20 +704,20 @@ class questions extends Survey_Common_Action
                 {
                     if ($value != 99)
                     {
-                        Question::model()->insert(array(
-                        'qid' => $qid,
-                        'sid' => $surveyid,
-                        'gid' => $gid,
-                        'type' => $basesettings['type'],
-                        'title' => $basesettings['title'],
-                        'question' => $basesettings['question'],
-                        'preg' => $basesettings['preg'],
-                        'help' => $basesettings['help'],
-                        'other' => $basesettings['other'],
-                        'mandatory' => $basesettings['mandatory'],
-                        'question_order' => $basesettings['question_order'],
-                        'language' => $key,
-                        ));
+                        $arQuestion=new Question;
+                        $arQuestion->qid = $qid;
+                        $arQuestion->sid = $surveyid;
+                        $arQuestion->gid = $gid;
+                        $arQuestion->type = $basesettings['type'];
+                        $arQuestion->title = $basesettings['title'];
+                        $arQuestion->question = $basesettings['question'];
+                        $arQuestion->preg = $basesettings['preg'];
+                        $arQuestion->help = $basesettings['help'];
+                        $arQuestion->other = $basesettings['other'];
+                        $arQuestion->mandatory = $basesettings['mandatory'];
+                        $arQuestion->question_order = $basesettings['question_order'];
+                        $arQuestion->language = $key;
+                        $arQuestion->insert();
                     }
                 }
 
