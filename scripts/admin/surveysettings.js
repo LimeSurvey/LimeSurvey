@@ -52,8 +52,8 @@ $(document).ready(function(){
 
     $('#btnSaveParams').click(saveParameter);
     $('#addnewsurvey').submit(PostParameterGrid);
-    $( "#tabs" ).bind( "tabsselect", function(event, ui) {
-        if (ui.index>4)    // Hide on import and copy tab, otherwise show
+    $( "#tabs" ).bind( "tabsactivate", function(event, ui) {
+        if (ui.newTab.index()>4)    // Hide on import and copy tab, otherwise show
         {$('#btnSave').hide();}
         else
         {$('#btnSave').show();}
