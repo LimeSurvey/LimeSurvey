@@ -299,7 +299,7 @@ class translate extends Survey_Common_Action {
         $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
 
         $surveyinfo = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByPk($iSurveyID);
-        $surveyinfo = array_merge($surveyinfo->attributes, $surveyinfo->languagesettings[0]->attributes);
+        $surveyinfo = array_merge($surveyinfo->attributes, $surveyinfo->defaultlanguage->attributes);
 
 		$surveyinfo = array_map('flattenText', $surveyinfo);
 		$menutext = ( $surveyinfo['active'] == "N" ) ? $clang->gT("Test this survey") : $clang->gT("Execute this survey");

@@ -27,6 +27,22 @@ class Survey extends LSActiveRecord
     protected $findByPkCache = array();
 
     /**
+     * Returns the title of the survey. Uses the current language and
+     * falls back to the surveys' default language if the current language is not available.
+     */
+    public function getLocalizedTitle()
+    {
+        return $this->languagesettings[$this->language]->surveyls_title;
+        if (isset($this->languagesettings[App()->lang->langcode]))
+        {
+            return $this->languagesettings[App()->lang->langcode]->surveyls_title;
+        }
+        else
+        {
+            return $this->languagesettings[$this->language]->surveyls_title;
+        }
+    }
+    /**
      * Expires a survey. If the object was invoked using find or new surveyId can be ommited.
      * @param int $surveyId
      */
@@ -95,8 +111,9 @@ class Survey extends LSActiveRecord
     {
 		$alias = $this->getTableAlias();
         return array(
-			'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id'),
-			'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
+			'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
+            'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
+            'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
         );
     }
 
@@ -109,9 +126,14 @@ class Survey extends LSActiveRecord
     public function scopes()
     {
         return array(
-        'active' => array(
-        'condition' => "active = 'Y'",
-        ),
+            'active' => array('condition' => "active = 'Y'"),
+            'open' => array('condition' => '(startdate > :now OR startdate IS NULL) AND (expires < :now OR expires IS NULL)', 'params' => array(
+                ':now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
+            )),
+            'public' => array('condition' => "listpublic = 'Y'"),
+            'registration' => array('condition' => "allowregister = 'Y' AND startdate > :now AND (expires < :now OR expires IS NULL)", 'params' => array(
+                ':now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
+            ))
         );
     }
 

@@ -347,8 +347,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
         $surveynames = array();
         foreach ($surveyidresult as $result)
         {
-            $surveynames[] = array_merge($result->attributes, $result->languagesettings[0]->attributes);
-
+            $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
         }
 
         $cached = $surveynames;
@@ -6127,7 +6126,7 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
         {
             $survey_quotas = $_survey_quotas->attributes;
             // !!! Doubting this
-            foreach ($_survey_quotas->languagesettings[0] as $k => $v)
+            foreach ($_survey_quotas->defaultlanguage as $k => $v)
                 $survey_quotas[$k] = $v;
 
             array_push($quota_info,array('Name' => $survey_quotas['name'],

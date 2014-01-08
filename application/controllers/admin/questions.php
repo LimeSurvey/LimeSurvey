@@ -397,7 +397,7 @@ class questions extends Survey_Common_Action
             $this->getController()->error('Invalid survey ID');
 
         $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
+        $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
         $assessmentvisible = ($surveyinfo['assessments'] == 'Y' && $qtypes[$qtype]['assessable'] == 1);
         $aData['assessmentvisible'] = $assessmentvisible;
@@ -596,7 +596,7 @@ class questions extends Survey_Common_Action
             $this->getController()->error('Invalid survey id');
 
         $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
+        $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
 
         $aData['activated'] = $activated = $surveyinfo['active'];

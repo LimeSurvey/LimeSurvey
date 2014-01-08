@@ -231,7 +231,7 @@ class participantsaction extends Survey_Common_Action
         $tSurveyNames=array();
         foreach($aSurveyNames as $row)
         {
-            $row = array_merge($row->attributes, $row->languagesettings[0]->attributes);
+            $row = array_merge($row->attributes, $row->defaultlanguage->attributes);
             $bTokenExists = tableExists('{{tokens_' . $row['sid'] . '}}');
             if ($bTokenExists) //If tokens table exists
             {

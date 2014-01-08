@@ -581,7 +581,7 @@ class SurveyAdmin extends Survey_Common_Action
         foreach ($surveys as $rows)
         {
             if (!isset($rows->owner->attributes)) $aOwner=array('users_name'=>$clang->gT('(None)')); else $aOwner=$rows->owner->attributes;
-            $rows = array_merge($rows->attributes, $rows->languagesettings[0]->attributes, $aOwner);
+            $rows = array_merge($rows->attributes, $rows->defaultlanguage->attributes, $aOwner);
             $aSurveyEntry = array();
             // Set status
             if ($rows['active'] == "Y" && $rows['expires'] != '' && $rows['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
