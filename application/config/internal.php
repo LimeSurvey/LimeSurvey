@@ -10,7 +10,7 @@ $internalConfig = array(
 	'basePath' => dirname(dirname(__FILE__)),
 	'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
 	'name' => 'LimeSurvey',
-	'defaultController' => 'survey',
+	'defaultController' => 'surveys',
 	'import' => array(
 		'application.core.*',
 		'application.models.*',
