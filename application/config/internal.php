@@ -65,6 +65,10 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
     $userConfig = require(dirname(__FILE__) . '/config.php');
 }
 
-return CMap::mergeArray($internalConfig, $userConfig);
+$result = CMap::mergeArray($internalConfig, $userConfig);
+/**
+ * Some workarounds for erroneous settings in user config.php.
+ */
+$result['defaultController'] = $internalConfig['defaultController'];
 /* End of file internal.php */
 /* Location: ./application/config/internal.php */
