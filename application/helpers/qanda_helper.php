@@ -1002,8 +1002,10 @@ function do_date($ia)
     $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
 
 
-    $date_min_dynvars=false;
-    $date_max_dynvars=false;
+    $sMindatetailor='';
+    $sMaxdatetailor='';
+
+
     
     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
     if (trim($aQuestionAttributes['date_min'])!='') 
@@ -1020,8 +1022,13 @@ function do_date($ia)
         }
         else
         {
-            $date_min_dynvars=true;
             $mindate='{'.$aQuestionAttributes['date_min'].'}';
+            // get the LEMtailor ID, remove the span tags
+            $sMindatespan=LimeExpressionManager::ProcessString($mindate, $ia[0],NULL, false, 1, 1);
+            preg_match("/LEMtailor_Q_[0-9]{1,7}_[0-9]{1,3}/", $sMindatespan, $matches);
+            if (isset($matches[0]))
+                $sMindatetailor=$matches[0];
+
         }
     }
     else
@@ -1044,8 +1051,12 @@ function do_date($ia)
         }
         else
         {
-            $date_max_dynvars=true;
             $maxdate='{'.$aQuestionAttributes['date_max'].'}';
+            // get the LEMtailor ID, remove the span tags
+            $sMaxdatespan=LimeExpressionManager::ProcessString($maxdate, $ia[0],NULL, false, 1, 1);
+            preg_match("/LEMtailor_Q_[0-9]{1,7}_[0-9]{1,3}/", $sMaxdatespan, $matches);
+            if (isset($matches[0]))
+                $sMaxdatetailor=$matches[0];
         }
     }
     else
@@ -1257,7 +1268,6 @@ function do_date($ia)
                     break;
                 default:  $answer .= $datepart;
             }
-
         }
 
         // Format the date  for output
@@ -1285,8 +1295,7 @@ function do_date($ia)
     else
     {
         //register timepicker extension
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . '/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.css');
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party')."/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js");
+        App()->getClientScript()->registerPackage('jqueryui-timepicker');
         
         // Locale for datepicker and timpicker extension
         if ($clang->langcode !== 'en')
@@ -1312,6 +1321,7 @@ function do_date($ia)
         // "+1" makes room for a trailing space in date/time values
         $iLength=strlen($dateformatdetails['dateformat'])+1;
 
+
         // HTML for date question using datepicker
         $answer="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Date picker')}</label>
         <input class='popupdate' type=\"text\" size=\"{$iLength}\" name=\"{$ia[1]}\" title='".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."' id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"{$iLength}\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
@@ -1319,39 +1329,54 @@ function do_date($ia)
         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
         <input  type='hidden' name='datemin{$ia[1]}' id='datemin{$ia[1]}' value=\"{$mindate}\"    />
         <input  type='hidden' name='datemax{$ia[1]}' id='datemax{$ia[1]}' value=\"{$maxdate}\"   />
-
         </p>";
-             
-            // following JS is for setting datepicker limits on-the-fly according to variables given in date_min/max attributes
-            // works with full dates (format: YYYY-MM-DD, js not needed), only a year, for backward compatibility (YYYY, js not needed),
-            // or variable names which refer to another date question
-            // Conversion of date formats (same page/previous page etc.) is handled in EM's LEMval function
+
+        // adds min and max date as a hidden element to the page so EM creates the needed LEM_tailor_Q_XX sections 
+        if (!empty($sMindatetailor))
+        {
+            $answer.="{$sMindatespan}
+           <script> document.getElementById('{$sMindatetailor}').hidden=true; </script>
+            ";
+        }
+
+        if (!empty($sMaxdatetailor))
+        {
+            $answer.="{$sMaxdatespan}
+           <script> document.getElementById('{$sMaxdatetailor}').hidden=true; </script>
+            ";
+        }
+
+        // following JS is for setting datepicker limits on-the-fly according to variables given in date_min/max attributes
+        // works with full dates (format: YYYY-MM-DD, js not needed), only a year, for backward compatibility (YYYY, js not needed),
+        // variable names which refer to another date question or expressions.
+        // Actual conversion of date formats is handled in LEMval()
+        
             
-            // only write JS code if there are variables/expressions used.... everything else can be dealt with in PHP
-            if ($date_min_dynvars==true || $date_max_dynvars==true) {
+        if (!empty($sMindatetailor) || !empty($sMaxdatetailor))
+        {
             $answer.="<script> 
                 $(document).ready(function() {
                         $('.popupdate').change(function() {
-                            if (typeof LEMalias2varName !== 'undefined') {
+                            
                             ";
-            if ($date_min_dynvars==true) {
-                $answer.="	if ('$date_min' in LEMalias2varName) {
-                                    $('#datemin{$ia[1]}').attr('value', LEMval('$date_min'));
-                                }
-                            ";
-            }
-            if ($date_max_dynvars==true) {
-                $answer.="	if ('$date_max' in LEMalias2varName) {
-                                    $('#datemax{$ia[1]}').attr('value', LEMval('$date_max'));
-                                }
-                            ";
-            }
-            $answer.="}
+                if (!empty($sMindatetailor)) 
+                    $answer.=" 
+                        $('#datemin{$ia[1]}').attr('value', 
+                        document.getElementById('{$sMindatetailor}').innerHTML);
+                    ";
+                if (!empty($sMaxdatetailor)) 
+                    $answer.="
+                        $('#datemax{$ia[1]}').attr('value', 
+                        document.getElementById('{$sMaxdatetailor}').innerHTML);
+                    ";
+            
+            $answer.="
                         });
                     });
                 </script>";
-            }
-                if (trim($aQuestionAttributes['hide_tip'])==1) {
+        }
+        
+        if (trim($aQuestionAttributes['hide_tip'])==1) {
             $answer.="<p class=\"tip\">".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."</p>";
         }
         //App()->getClientScript()->registerScript("doPopupDate{$ia[0]}","doPopupDate({$ia[0]})",CClientScript::POS_END);// Beter if just afetre answers part
