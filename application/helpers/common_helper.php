@@ -681,6 +681,7 @@ function getQidNext($surveyid, $gid, $qid)
 
 function convertGETtoPOST($url)
 {
+    // This function must be deprecated and replaced by $.post
     $url = preg_replace('/&amp;/i','&',$url);
     $stack = explode('?',$url);
     $calledscript = array_shift($stack);
@@ -697,8 +698,6 @@ function convertGETtoPOST($url)
         $arrayParam[] = "'".$paramname."'";
         $arrayVal[] = substr($value, 0, 9) != "document." ? "'".$value."'" : $value;
     }
-    $arrayParam[]	= "'YII_CSRF_TOKEN'"; 
-    $arrayVal[] 	= "'".Yii::app()->request->csrfToken."'";
     //    $Paramlist = "[" . implode(",",$arrayParam) . "]";
     //    $Valuelist = "[" . implode(",",$arrayVal) . "]";
     $Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
