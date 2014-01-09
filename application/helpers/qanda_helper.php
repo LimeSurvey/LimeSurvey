@@ -1324,10 +1324,9 @@ function do_date($ia)
              
             // following JS is for setting datepicker limits on-the-fly according to variables given in date_min/max attributes
             // works with full dates (format: YYYY-MM-DD, js not needed), only a year, for backward compatibility (YYYY, js not needed),
-            // or variable names which refer to another date question (in curly brackets)
-            // The term $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate($((LEMalias2varName['$date_min']).replace(/java/g, '#dateformat')).attr('value')
-            // gets the date format from the source variable (in extended attributes min/max field) and converts the date to the yy-mm-dd format
-             
+            // or variable names which refer to another date question
+            // Conversion of date formats (same page/previous page etc.) is handled in EM's LEMval function
+            
             // only write JS code if there are variables/expressions used.... everything else can be dealt with in PHP
             if ($date_min_dynvars==true || $date_max_dynvars==true) {
             $answer.="<script> 
@@ -1337,17 +1336,13 @@ function do_date($ia)
                             ";
             if ($date_min_dynvars==true) {
                 $answer.="	if ('$date_min' in LEMalias2varName) {
-                                    $('#datemin{$ia[1]}').attr('value', $.datepicker.formatDate('yy-mm-dd', 
-                                    $.datepicker.parseDate($((LEMalias2varName['$date_min']).replace(/java/g, '#dateformat'))
-                                    .attr('value'), LEMval('$date_min'))));
+                                    $('#datemin{$ia[1]}').attr('value', LEMval('$date_min'));
                                 }
                             ";
             }
             if ($date_max_dynvars==true) {
                 $answer.="	if ('$date_max' in LEMalias2varName) {
-                                    $('#datemax{$ia[1]}').attr('value', $.datepicker.formatDate('yy-mm-dd', 
-                                    $.datepicker.parseDate($((LEMalias2varName['$date_max']).replace(/java/g, '#dateformat'))
-                                    .attr('value'), LEMval('$date_max'))));
+                                    $('#datemax{$ia[1]}').attr('value', LEMval('$date_max'));
                                 }
                             ";
             }
