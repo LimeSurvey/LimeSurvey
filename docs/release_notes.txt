@@ -59,6 +59,43 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.05+ (build 131219) to 2.05+ (build 140109) Jan 14, 2014
+-New feature #8343: queXML: next page message with new question splitting option (Adam Zammit)
+-New feature #8344: queXML: conditional splitting with new question splitting option (Adam Zammit)
+-Fixed issue #8234: Text email send with HTML email are not filtered (Denis Chenu)
+-Fixed issue #8452: Preview Question Group doesn't load randomly with Randomization Group set (Denis Chenu)
+-Fixed issue #8467: Questions can disappear during sorting (tpartner)
+-Fixed issue #8473: Resume later leads to lose answers (Denis Chenu)
+-Fixed issue #8474: Unable to advance on survey when any numeric field answer starts with 0 (Denis Chenu)
+-Fixed issue #8478: Numerical sliders don't use the configured decimal separator (Carsten Schmitz)
+-Fixed issue #8480: Error when trying to edit a multilingual survey question (Carsten Schmitz)
+-Fixed issue #8492: Cannot add or remove subquestion or answers in IE (tpartner)
+-Fixed issue #8505: Multi-flexible text field does not save anything when set up as "Number only". (Denis Chenu)
+-Fixed issue #8509: INSERTANS SPAN problem in end URL/page when using then all-in-one page presentation setting (Carsten Schmitz)
+-Fixed issue #8511: Save button displays on import / copy survey page (Carsten Schmitz)
+-Fixed issue #8515: Language switcher does not work in token registration form (Denis Chenu)
+-Fixed issue #8520: Import participants from .csv fails (Carsten Schmitz)
+-Fixed issue #8523: Broken javascript with crsfToken (Denis Chenu)
+-Fixed issue: With min/max answers set up, text questions had an incorrect caption "please select N answers" insted of "fill in" (Alexis Bezverkhyy)
+#Updated translation: Bulgarian by simid
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by actxcellence
+#Updated translation: Greek by MikeConom, kiolalis
+#Updated translation: Latvian by vipgroup, marcic
+#Updated translation: Lithuanian by simasj
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Slovenian by dusan
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Tagalog by lolskidoodles
+#Updated translation: Tamil by apmuthu
+
 Changes from 2.05 (build 131209) to 2.05+ (build 131219) Dec 19, 2013
 -New translation: Zulu
 -Changed feature: Better configuration for LDAP authentication plugin (Menno Dekker)
