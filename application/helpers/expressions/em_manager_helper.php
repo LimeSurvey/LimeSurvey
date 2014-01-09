@@ -1393,6 +1393,9 @@
                             );
                         }
                         break;
+                    case 'D':
+                        // TODO: implement generic validation of "[SGQA].shown" according to "dateformat[SGQA].value"
+                         break;
                     default:
                         break;
                 }
@@ -1449,6 +1452,155 @@
                             break;
                     }
                 }
+                
+                // date_min
+                // Maximum date allowed in date question
+                if (isset($qattr['date_min']) && trim($qattr['date_min']) != '')
+                {
+                    $date_min = $qattr['date_min'];
+                    if ($hasSubqs) {
+                        $subqs = $qinfo['subqs'];
+                        $sq_names = array();
+                        $subqValidEqns = array();
+                        foreach ($subqs as $sq) {
+                            $sq_name = NULL;
+                            switch ($type)
+                            {
+                                case 'D': //DATE QUESTION TYPE
+                                    // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
+                                    if (trim($qattr['date_min'])!='') 
+                                    {
+                                        $mindate=$qattr['date_min'];
+                                        if ((strlen($mindate)==4) && ($mindate>=1900) && ($mindate<=2037))
+                                        {
+                                            // backward compatibility: if only a year is given, add month and day 
+                                            $date_min='\''.$mindate.'-01-01'.' 00:00\''; 
+                                        }
+                                        elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$mindate))
+                                        {
+                                            $date_min='\''.$mindate.' 00:00\'';
+                                        }
+                                        elseif (array_key_exists($date_min, $this->qcode2sgqa))  // refers to another question
+                                        {
+                                            $date_min=$date_min.'.NAOK';
+                                        }
+                                    }
+                                  
+                                    $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                    
+                                    if(($qinfo['mandatory']=='Y')){
+                                        $sq_name = '('. $sq_name . ' >= ' . $date_min . ')';
+                                    }else{
+                                        $sq_name = '(is_empty(' . $sq_name . ') || ('. $sq_name . ' >= ' . $date_min . '))';
+                                    }
+                                    $subqValidSelector = '';
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (!is_null($sq_name)) {
+                                $sq_names[] = $sq_name;
+                                $subqValidEqns[$subqValidSelector] = array(
+                                'subqValidEqn' => $sq_name,
+                                'subqValidSelector' => $subqValidSelector,
+                                );
+                            }
+                        }
+                        if (count($sq_names) > 0) {
+                            if (!isset($validationEqn[$questionNum]))
+                            {
+                                $validationEqn[$questionNum] = array();
+                            }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'date_min',
+                            'class' => 'value_range',
+                            'eqn' => implode(' && ', $sq_names),
+                            'qid' => $questionNum,
+                            'subqValidEqns' => $subqValidEqns,
+                            );
+                        }
+                    }
+                }
+                else
+                {
+                    $date_min='';
+                }
+
+                // date_max
+                // Maximum date allowed in date question
+                if (isset($qattr['date_max']) && trim($qattr['date_max']) != '')
+                {
+                    $date_max = $qattr['date_max'];
+                    if ($hasSubqs) {
+                        $subqs = $qinfo['subqs'];
+                        $sq_names = array();
+                        $subqValidEqns = array();
+                        foreach ($subqs as $sq) {
+                            $sq_name = NULL;
+                            switch ($type)
+                            {
+                                case 'D': //DATE QUESTION TYPE
+                                    // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
+                                    if (trim($qattr['date_max'])!='') 
+                                    {
+                                        $maxdate=$qattr['date_max'];
+                                        if ((strlen($maxdate)==4) && ($maxdate>=1900) && ($maxdate<=2037))
+                                        {
+                                            // backward compatibility: if only a year is given, add month and day 
+                                            $date_max='\''.$maxdate.'-12-31 00:00'.'\''; 
+                                        }
+                                        elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$maxdate))
+                                        {
+                                            $date_max='\''.$maxdate.' 00:00\'';
+                                        }
+                                        elseif (array_key_exists($date_max, $this->qcode2sgqa))  // refers to another question
+                                        {
+                                            $date_max=$date_max.'.NAOK';
+                                        }
+                                    }
+                                  
+                                    $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                    
+                                    if(($qinfo['mandatory']=='Y')){
+                                        $sq_name = '(is_empty(' . $date_max . ') || ('. $sq_name . ' <= ' . $date_max . ')';
+                                    }else{
+                                        $sq_name = '(is_empty(' . $sq_name . ') || is_empty(' . $date_max . ') || ('. $sq_name . ' <= ' . $date_max . '))';
+                                    }
+                                    $subqValidSelector = '';
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (!is_null($sq_name)) {
+                                $sq_names[] = $sq_name;
+                                $subqValidEqns[$subqValidSelector] = array(
+                                'subqValidEqn' => $sq_name,
+                                'subqValidSelector' => $subqValidSelector,
+                                );
+                            }
+                        }
+                        if (count($sq_names) > 0) {
+                            if (!isset($validationEqn[$questionNum]))
+                            {
+                                $validationEqn[$questionNum] = array();
+                            }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'date_max',
+                            'class' => 'value_range',
+                            'eqn' => implode(' && ', $sq_names),
+                            'qid' => $questionNum,
+                            'subqValidEqns' => $subqValidEqns,
+                            );
+                        }
+                    }
+                }
+                else
+                {
+                    $date_max='';
+                }
+
                 // equals_num_value
                 // Validation:= sum(sq1,...,sqN) == value (which could be an expression).
                 if (isset($qattr['equals_num_value']) && trim($qattr['equals_num_value']) != '')
@@ -2979,6 +3131,18 @@
                         "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('".$this->gT("Each answer must be %s")."', fixnum($_minV)), '')}" .
                         "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('".$this->gT("Each answer must be between %s and %s")."', fixnum($_minV), fixnum($_maxV)), '')}";
                 }
+
+                // min/max value for dates
+                if ($date_min!='' || $date_max!='')
+                {
+                    $_minV = (($date_min == '') ? "''" : $date_min);
+                    $_maxV = (($date_max == '') ? "''" : $date_max);
+                    $qtips['value_range']=
+                        "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('".$this->gT("Answer must be greater or equal to %s")."',$_minV), '')}" .
+                        "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('".$this->gT("Answer must be less or equal to %s")."',$_maxV), '')}" .
+                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('".$this->gT("Answer must be %s")."', $_minV), '')}" .
+                        "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('".$this->gT("Answer must be between %s and %s")."', ($_minV), ($_maxV)), '')}";
+                    }
 
                 // min/max value for each numeric entry - for multi-flexible question type
                 if ($multiflexible_min!='' || $multiflexible_max!='')
@@ -8341,6 +8505,7 @@ EOD;
                                 case 'Q': //MULTIPLE SHORT TEXT
                                 case ';': //ARRAY (Multi Flexi) Text
                                 case 'S': //SHORT FREE TEXT
+                                case 'D': //DATE
                                 case 'T': //LONG FREE TEXT
                                 case 'U': //HUGE FREE TEXT
                                     return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
@@ -8862,6 +9027,8 @@ EOD;
                             case 'array_filter':
                             case 'array_filter_exclude':
                             case 'code_filter':
+                            case 'date_max':
+                            case 'date_min':
                             case 'em_validation_q_tip':
                             case 'em_validation_sq_tip':
                                 break;
