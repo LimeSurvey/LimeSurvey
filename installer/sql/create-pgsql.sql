@@ -580,7 +580,7 @@ create index quota_idx2 on prefix_quota (sid);
 create index saved_control_idx2 on prefix_saved_control (sid);
 create index parent_qid_idx on prefix_questions (parent_qid);
 create index labels_code_idx on prefix_labels (code);
-create unique index permissions_idx2 ON lime_permissions (entity_id, entity, uid, permission);
+create unique index permissions_idx2 ON prefix_permissions (entity_id, entity, uid, permission);
 
 
 --

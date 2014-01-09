@@ -222,7 +222,7 @@ CREATE TABLE [prefix_permissions] (
 [import_p] int NOT NULL default '0',
 [export_p] int NOT NULL default '0'
 );
-create unique index [permissions_idx2] ON [lime_permissions] ([entity_id],[entity],[permission],[uid]);
+create unique index [permissions_idx2] ON [prefix_permissions] ([entity_id],[entity],[permission],[uid]);
 
 
 --
