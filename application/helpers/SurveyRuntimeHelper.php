@@ -518,7 +518,7 @@ class SurveyRuntimeHelper {
                 //Before doing the "templatereplace()" function, check the $thissurvey['url']
                 //field for limereplace stuff, and do transformations!
                 $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
-                $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], array(), $redata);   // to do INSERTANS substitutions
+                $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], array(), $redata, 'URLReplace', false, NULL, array(), true );   // to do INSERTANS substitutions
                 
                 //END PAGE - COMMIT CHANGES TO DATABASE
                 if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
@@ -530,12 +530,12 @@ class SurveyRuntimeHelper {
                     sendCacheHeaders();
                     doHeader();
 
-                    echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
+                    echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata, 'SubmitStartpageI', false, NULL, array(), true );
 
                     //Check for assessments
                     if ($thissurvey['assessments'] == "Y" && $assessments)
                     {
-                        echo templatereplace(file_get_contents($sTemplatePath."assessment.pstpl"), array(), $redata);
+                        echo templatereplace(file_get_contents($sTemplatePath."assessment.pstpl"), array(), $redata, 'SubmitAssessmentI', false, NULL, array(), true );
                     }
 
                     // fetch all filenames from $_SESSIONS['files'] and delete them all
@@ -547,7 +547,7 @@ class SurveyRuntimeHelper {
                     }
                     */
                     // can't kill session before end message, otherwise INSERTANS doesn't work.
-                    $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata);
+                    $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, NULL, array(), true );
                     $completed .= "<br /><strong><font size='2' color='red'>" . $clang->gT("Did Not Save") . "</font></strong><br /><br />\n\n";
                     $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
                     if ($thissurvey['printanswers'] == 'Y')
@@ -568,7 +568,7 @@ class SurveyRuntimeHelper {
 
                     
                     $content = '';
-                    $content .= templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
+                    $content .= templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
 
                     //Check for assessments
                     if ($thissurvey['assessments'] == "Y")
@@ -576,7 +576,7 @@ class SurveyRuntimeHelper {
                         $assessments = doAssessment($surveyid);
                         if ($assessments)
                         {
-                            $content .= templatereplace(file_get_contents($sTemplatePath."assessment.pstpl"), array(), $redata);
+                            $content .= templatereplace(file_get_contents($sTemplatePath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                         }
                     }
 
@@ -593,7 +593,7 @@ class SurveyRuntimeHelper {
 
                     $content = '';
 
-                    $content .= templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
+                    $content .= templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
 
                     //echo $thissurvey['url'];
                     //Check for assessments
@@ -602,7 +602,7 @@ class SurveyRuntimeHelper {
                         $assessments = doAssessment($surveyid);
                         if ($assessments)
                         {
-                            $content .= templatereplace(file_get_contents($sTemplatePath."assessment.pstpl"), array(), $redata);
+                            $content .= templatereplace(file_get_contents($sTemplatePath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                         }
                     }
 
@@ -614,7 +614,7 @@ class SurveyRuntimeHelper {
                     }
                     else
                     {
-                        $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata);
+                        $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                     }
 
                     // Link to Print Answer Preview  **********
@@ -678,7 +678,7 @@ class SurveyRuntimeHelper {
                 $redata['completed'] = implode("\n", $blocks) ."\n". $redata['completed'];
                 $redata['thissurvey']['surveyls_url'] = $thissurvey['surveyls_url'];
                 
-                echo templatereplace(file_get_contents($sTemplatePath."completed.pstpl"), array('completed' => $completed), $redata);
+                echo templatereplace(file_get_contents($sTemplatePath."completed.pstpl"), array('completed' => $completed), $redata, 'SubmitCompleted', false, NULL, array(), true );
                 echo "\n";
                 if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING))
                 {
@@ -688,7 +688,7 @@ class SurveyRuntimeHelper {
                 {
                     echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
                 }
-                echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"), array(), $redata);
+                echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"), array(), $redata, 'SubmitEndpage', false, NULL, array(), true );
                 doFooter();
                 
                 // The session cannot be killed until the page is completely rendered
