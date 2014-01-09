@@ -70,5 +70,6 @@ $result = CMap::mergeArray($internalConfig, $userConfig);
  * Some workarounds for erroneous settings in user config.php.
  */
 $result['defaultController'] = $internalConfig['defaultController'];
+return $result;
 /* End of file internal.php */
 /* Location: ./application/config/internal.php */
