@@ -1332,18 +1332,18 @@ function do_date($ia)
         </p>";
 
         // adds min and max date as a hidden element to the page so EM creates the needed LEM_tailor_Q_XX sections 
+        $sHiddenHtml="";
         if (!empty($sMindatetailor))
         {
-            $answer.="{$sMindatespan}
-           <script> document.getElementById('{$sMindatetailor}').hidden=true; </script>
-            ";
+            $sHiddenHtml.=$sMindatespan;
         }
-
         if (!empty($sMaxdatetailor))
         {
-            $answer.="{$sMaxdatespan}
-           <script> document.getElementById('{$sMaxdatetailor}').hidden=true; </script>
-            ";
+            $sHiddenHtml.=$sMaxdatespan;
+        }
+        if (!empty($sHiddenHtml))
+        {
+            $answer.="<div class='hidden nodisplay' style='display:none'>{$sHiddenHtml}</div>";
         }
 
         // following JS is for setting datepicker limits on-the-fly according to variables given in date_min/max attributes
@@ -1351,7 +1351,7 @@ function do_date($ia)
         // variable names which refer to another date question or expressions.
         // Actual conversion of date formats is handled in LEMval()
         
-            
+        
         if (!empty($sMindatetailor) || !empty($sMaxdatetailor))
         {
             $answer.="<script> 
