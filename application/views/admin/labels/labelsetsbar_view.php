@@ -25,9 +25,9 @@
                     {
                         foreach ($labelsets as $lb)
                         { ?>
-                        <option value='<?php echo $this->createUrl("admin/labels/sa/view/lid/".$lb[0]); ?>'
+                        <option data-labelset-id='<?php echo $lb[0]; ?>' value='<?php echo $this->createUrl("admin/labels/sa/view/lid/".$lb[0]); ?>'
                             <?php if ($lb[0] == $lid) { ?> selected='selected' <?php } ?>
-                            ><?php echo $lb[0]; ?>: <?php echo htmlspecialchars($lb[1],ENT_QUOTES); ?></option>
+                            ><?php echo htmlspecialchars($lb[1],ENT_QUOTES); ?></option>
                         <?php }
                 } ?>
 
