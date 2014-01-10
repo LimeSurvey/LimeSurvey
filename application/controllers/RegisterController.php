@@ -50,7 +50,6 @@ class RegisterController extends LSYii_Controller {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('replacements');
         $sLanguage = Yii::app()->request->getParam('lang','');
-        $surveyid=$iSurveyID;
         if($iSurveyID == null)
         {
             $iSurveyID = Yii::app()->request->getPost('sid');
@@ -110,7 +109,7 @@ class RegisterController extends LSYii_Controller {
         }
 
         //Check if this email already exists in token database
-        $oToken=TokenDynamic::model($surveyid)->find('email=:email',array(':email'=>Yii::app()->request->getPost('register_email')));
+        $oToken=TokenDynamic::model($iSurveyID)->find('email=:email',array(':email'=>Yii::app()->request->getPost('register_email')));
         if ($oToken)
         {
             $register_errormsg=$clang->gT("The email you used has already been registered.");
@@ -134,7 +133,7 @@ class RegisterController extends LSYii_Controller {
         while ($mayinsert != true)
         {
             $newtoken = randomChars($tokenlength);
-            $oTokenExist=TokenDynamic::model($surveyid)->find('token=:token',array(':token'=>$newtoken));
+            $oTokenExist=TokenDynamic::model($iSurveyID)->find('token=:token',array(':token'=>$newtoken));
             if (!$oTokenExist) {$mayinsert = true;}
         }
 
