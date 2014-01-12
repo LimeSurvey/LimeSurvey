@@ -3135,8 +3135,12 @@
                 // min/max value for dates
                 if ($date_min!='' || $date_max!='')
                 {
-                    $_minV = (($date_min == '') ? "''" : $date_min);
-                    $_maxV = (($date_max == '') ? "''" : $date_max);
+                    //Get date format of current question and convert date in help text accordingly
+                    $LEM =& LimeExpressionManager::singleton();
+                    $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $questionNum,$_SESSION['LEMlang']);
+                    $aDateFormatData=getDateFormatDataForQID($aAttributes[$questionNum],$LEM->surveyOptions);
+                    $_minV = (($date_min == '') ? "''" : "if((strtotime(".$date_min.")), date('".$aDateFormatData['phpdate']."', strtotime(".$date_min.")),'')");
+                    $_maxV = (($date_max == '') ? "''" : "if((strtotime(".$date_max.")), date('".$aDateFormatData['phpdate']."', strtotime(".$date_max.")),'')");
                     $qtips['value_range']=
                         "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('".$this->gT("Answer must be greater or equal to %s")."',$_minV), '')}" .
                         "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('".$this->gT("Answer must be less or equal to %s")."',$_maxV), '')}" .
