@@ -8669,6 +8669,16 @@ EOD;
                             case '5': //5 POINT CHOICE radio-buttons
                                 $shown = $code;
                                 break;
+                            case 'D': //DATE
+                                $LEM =& LimeExpressionManager::singleton();
+                                $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $var['qid'],$_SESSION['LEMlang']);
+                                $aDateFormatData=getDateFormatDataForQID($aAttributes[$var['qid']],$LEM->surveyOptions);
+                                $shown='';
+                                if (strtotime($code))
+                                {
+                                    $shown=date($aDateFormatData['phpdate'], strtotime($code));
+                                }
+                                break;
                             case 'N': //NUMERICAL QUESTION TYPE
                             case 'K': //MULTIPLE NUMERICAL QUESTION
                             case 'Q': //MULTIPLE SHORT TEXT
@@ -8676,7 +8686,6 @@ EOD;
                             case 'S': //SHORT FREE TEXT
                             case 'T': //LONG FREE TEXT
                             case 'U': //HUGE FREE TEXT
-                            case 'D': //DATE
                             case '*': //Equation
                             case 'I': //Language Question
                             case '|': //File Upload
