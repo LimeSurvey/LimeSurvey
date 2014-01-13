@@ -3814,8 +3814,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($insertdata)
                 XSSFilterArray($insertdata);
-            $result=Answer::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[6]<br />");
-            $results['answers']++;
+                
+            if (Answer::model()->insertRecords($insertdata))
+            {
+                $results['answers']++;
+            }
         }
     }
 
