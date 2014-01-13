@@ -19,7 +19,7 @@ function loadanswers()
     $clang = Yii::app()->lang;
 
     $scid=returnGlobal('scid',true);
-    if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
+    if (Yii::app()->request->getParam('loadall') == "reload")
     {
         $query = "SELECT * FROM {{saved_control}} INNER JOIN {$thissurvey['tablename']}
         ON {{saved_control}}.srid = {$thissurvey['tablename']}.id
@@ -31,13 +31,13 @@ function loadanswers()
         }
         $query .="AND {{saved_control}}.identifier = '".autoEscape($_SESSION['survey_'.$surveyid]['holdname'])."' ";
 
-            if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
+        if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
         {
-            $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(autoUnescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
+            $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5($_SESSION['survey_'.$surveyid]['holdpass'])."'\n";
         }
         else
         {
-            $query .="AND {{saved_control}}.access_code = '".md5(autoUnescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
+            $query .="AND {{saved_control}}.access_code = '".md5($_SESSION['survey_'.$surveyid]['holdpass'])."'\n";// md5 don't need to be escaped
         }
     }
     elseif (isset($_SESSION['survey_'.$surveyid]['srid']))
@@ -49,7 +49,7 @@ function loadanswers()
     {
         return;
     }
-    $aRow = Yii::app()->db->createCommand($query)->queryRow();
+    $aRow = Yii::app()->db->createCommand($query)->queryRow();// TODO : use Yii for query
     if (!$aRow)
     {
         return false;

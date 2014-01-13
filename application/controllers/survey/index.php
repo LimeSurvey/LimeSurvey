@@ -267,62 +267,57 @@ class index extends CAction {
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
         }
 
-        if (returnGlobal('loadall',true)=="reload") // Used if reload is done by URL (GET)
-        {
-            $_POST['loadall']="reload";
-        }
-
         //LOAD SAVED SURVEY
-        if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
+        if (Yii::app()->request->getParam('loadall') == "reload")
         {
             $errormsg="";
-            if ( !isset($param['loadname']) || $param['loadname'] == null )
+            $sLoadName=Yii::app()->request->getParam('loadname');
+            $sLoadPass=Yii::app()->request->getParam('loadpass');
+            if ( isset($sLoadName) && !$sLoadName)
             {
                 $errormsg .= $clang->gT("You did not provide a name")."<br />\n";
             }
-            if (!isset($param['loadpass']) || $param['loadpass'] == null )
+            if ( isset($sLoadPass) && !$sLoadPass)
             {
                 $errormsg .= $clang->gT("You did not provide a password")."<br />\n";
             }
 
             // if security question answer is incorrect
             // Not called if scid is set in GET params (when using email save/reload reminder URL)
-            if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen',$thissurvey['usecaptcha']))
+            if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen',$thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid')))
             {
-                if ( (!isset($_POST['loadsecurity']) ||
-                !isset($_SESSION['survey_'.$surveyid]['secanswer']) ||
-                $_POST['loadsecurity'] != $_SESSION['survey_'.$surveyid]['secanswer']) &&
-                !isset($_GET['scid']))
+                $sLoadSecurity=Yii::app()->request->getPost('loadsecurity');
+                if(empty($sLoadSecurity))
+                {
+                    $errormsg .= $clang->gT("You did not answer to the security question.")."<br />\n";
+                }
+                elseif ( (!isset($_SESSION['survey_'.$surveyid]['secanswer']) || $sLoadSecurity != $_SESSION['survey_'.$surveyid]['secanswer']) )
                 {
                     $errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
                 }
             }
 
-            // Load session before loading the values from the saved data
-            if (isset($_POST['loadall']))
-            {
-                LimeExpressionManager::SetDirtyFlag();  
-                buildsurveysession($surveyid);
-            }
+            $_SESSION['survey_'.$surveyid]['holdname'] = $sLoadName;
+            $_SESSION['survey_'.$surveyid]['holdpass'] = $sLoadPass;
+            $_SESSION['survey_'.$surveyid]['scid'] = Yii::app()->request->getQuery('scid');
 
-            $_SESSION['survey_'.$surveyid]['holdname'] = $param['loadname']; //Session variable used to load answers every page.
-            $_SESSION['survey_'.$surveyid]['holdpass'] = $param['loadpass']; //Session variable used to load answers every page.
 
             if ($errormsg == "") {
+                LimeExpressionManager::SetDirtyFlag();  
+                buildsurveysession($surveyid);
                 if (loadanswers()){
-                    $move = "movenext";
+                    Yii::app()->setConfig('move','movenext');
+                    $move = "movenext";// 140113 : deprecated ?
                 } else {
                     $errormsg .= $clang->gT("There is no matching saved survey");
                 }
             }
-
-            if ($errormsg)
-            {
-                $_POST['loadall'] = $clang->gT("Load unfinished survey");
+            if ($errormsg) {
+                Yii::app()->setConfig('move',"loadall");// Show loading form
             }
         }
         //Allow loading of saved survey
-        if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load unfinished survey"))
+        if (Yii::app()->getConfig('move')=="loadall")
         {
             $redata = compact(array_keys(get_defined_vars()));
             Yii::import("application.libraries.Load_answers");

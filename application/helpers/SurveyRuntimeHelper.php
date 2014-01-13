@@ -303,7 +303,7 @@ class SurveyRuntimeHelper {
                 }
             }
 
-            if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_POST['loadall']) || isset($_GET['sid']) || $LEMskipReprocessing || (isset($move) && (preg_match('/^changelang_/',$move)))))
+            if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_GET['sid']) || $LEMskipReprocessing || (isset($move) && (preg_match('/^changelang_/',$move)))))
             {
                 $_SESSION[$LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step'];
             }
@@ -445,11 +445,11 @@ class SurveyRuntimeHelper {
                 }
             }
 
-            if ($thissurvey['active'] == "Y" && isset($_POST['saveprompt']))
+            if ($thissurvey['active'] == "Y" && Yii::app()->request->getParam('savesubmit') )
             {
                 // The response from the save form
                 // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
-                $flashmessage = $cSave->savedcontrol();
+                $popup = $cSave->savedcontrol();
 
                 if (isset($errormsg) && $errormsg != "")
                 {
