@@ -201,7 +201,7 @@ CREATE TABLE prefix_participants (
   "participant_id" character varying(50) PRIMARY KEY NOT NULL,
   "firstname" character varying(40),
   "lastname" character varying(40),
-  "email" character varying(80),
+  "email" character varying(254),
   "language" character varying(40),
   "blacklisted" character varying(1) NOT NULL,
   "owner_uid" integer NOT NULL,
@@ -344,7 +344,7 @@ CREATE TABLE prefix_saved_control (
     srid integer DEFAULT 0 NOT NULL,
     identifier text NOT NULL,
     access_code text NOT NULL,
-    email character varying(320),
+    email character varying(254),
     ip text NOT NULL,
     saved_thisstep text NOT NULL,
     status character varying(1) DEFAULT '' NOT NULL,
@@ -411,7 +411,7 @@ CREATE TABLE prefix_surveys (
     active character varying(1) DEFAULT 'N' NOT NULL,
     expires timestamp,
     startdate timestamp,
-    adminemail character varying(320),
+    adminemail character varying(254),
     anonymized character varying(1) DEFAULT 'N' NOT NULL,
     faxto character varying(20),
     format character varying(1),
@@ -439,7 +439,7 @@ CREATE TABLE prefix_surveys (
     assessments character varying(1) DEFAULT 'N' NOT NULL,
     usecaptcha character varying(1) DEFAULT 'N' NOT NULL,
     usetokens character varying(1) DEFAULT 'N' NOT NULL,
-    "bounce_email" character varying(320),
+    "bounce_email" character varying(254),
     attributedescriptions text,
 	emailresponseto text,
     emailnotificationto text,
@@ -530,7 +530,7 @@ CREATE TABLE prefix_users (
     full_name character varying(50) NOT NULL,
     parent_id integer NOT NULL,
     lang character varying(20),
-    email character varying(320),
+    email character varying(254),
     htmleditormode character varying(7) DEFAULT 'default',
     templateeditormode character varying(7) DEFAULT 'default' NOT NULL,
     questionselectormode character varying(7) DEFAULT 'default' NOT NULL,
@@ -586,4 +586,4 @@ create unique index permissions_idx2 ON prefix_permissions (entity_id, entity, u
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '173');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '174');

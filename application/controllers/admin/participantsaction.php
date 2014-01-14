@@ -1356,11 +1356,11 @@ class participantsaction extends Survey_Common_Action
                 $writearray['email'] = trim($writearray['email']);
                 if ($writearray['email'] != '') {
                     $aEmailAddresses = explode(';', $writearray['email']);
-                    foreach ($aEmailAddresses as $sEmailaddress) {
-                        if (!validateEmailAddress($sEmailaddress)) {
-                            $invalidemail = true;
-                            $invalidemaillist[] = $line[0] . " " . $line[1] . " (" . $line[2] . ")";
-                        }
+                    // Ignore additional email addresses
+                    $sEmailaddress = $aEmailAddresses[0];
+                    if (!validateEmailAddress($sEmailaddress)) {
+                        $invalidemail = true;
+                        $invalidemaillist[] = $line[0] . " " . $line[1] . " (" . $line[2] . ")";
                     }
                 }
                 if (!$dupfound && !$invalidemail) {

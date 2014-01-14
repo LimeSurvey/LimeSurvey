@@ -195,7 +195,7 @@ CREATE TABLE [prefix_participants] (
 [participant_id] varchar(50) NOT NULL,
 [firstname] varchar(40),
 [lastname] varchar(40),
-[email] varchar(80),
+[email] varchar(254),
 [language] varchar(40),
 [blacklisted] varchar(1) NOT NULL,
 [owner_uid] int NOT NULL,
@@ -338,7 +338,7 @@ CREATE TABLE [prefix_saved_control] (
 [srid] int NOT NULL default '0',
 [identifier] varchar(max) NOT NULL,
 [access_code] varchar(max) NOT NULL,
-[email] varchar(320) NULL,
+[email] varchar(254) NULL,
 [ip] varchar(max) NOT NULL,
 [saved_thisstep] varchar(max) NOT NULL,
 [status] varchar(1) NOT NULL default '',
@@ -405,7 +405,7 @@ CREATE TABLE [prefix_surveys] (
 [active] varchar(1) NOT NULL default 'N',
 [expires] DATETIME NULL,
 [startdate] DATETIME NULL,
-[adminemail] varchar(320) NULL,
+[adminemail] varchar(254) NULL,
 [anonymized] varchar(1) NOT NULL default 'N',
 [faxto] varchar(20) NULL,
 [format] varchar(1) NULL,
@@ -433,7 +433,7 @@ CREATE TABLE [prefix_surveys] (
 [assessments] varchar(1) NOT NULL default 'N',
 [usecaptcha] varchar(1) NOT NULL default 'N',
 [usetokens] varchar(1) NOT NULL default 'N',
-[bounce_email] varchar(320) NULL,
+[bounce_email] varchar(254) NULL,
 [attributedescriptions] varchar(max) NULL,
 [emailresponseto] varchar(max) NULL,
 [emailnotificationto] varchar(max) NULL,
@@ -524,7 +524,7 @@ CREATE TABLE [prefix_users] (
 [full_name] varchar(50) NOT NULL,
 [parent_id] int NOT NULL,
 [lang] varchar(20) NULL,
-[email] varchar(320) NULL,
+[email] varchar(254) NULL,
 [htmleditormode] varchar(7) default 'default',
 [templateeditormode] varchar(7) NOT NULL default 'default',
 [questionselectormode] varchar(7)  NOT NULL default 'default',
@@ -577,4 +577,4 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '173');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '174');
