@@ -64,7 +64,7 @@ function dirReport($dir, $write, $clang)
                <td>64MB</td>
                <td><?php 
                if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Too low"); ?>: <?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
-               <?php } else { ?><?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB <?php } ?></td>
+               <?php } elseif (ini_get('memory_limit')=='-1') $clang->eT("Unlimited"); else { echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; echo ' MB';} ?></td>
         </tr>
         <tr>
                <td><?php $clang->eT("PHP PDO driver library"); ?></td>
