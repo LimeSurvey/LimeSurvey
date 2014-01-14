@@ -120,7 +120,7 @@
     { "name":"email", "index":"email","align":"center","width":170, "sorttype":"string", "sortable": true, "editable":true},
     { "name":"emailstatus", "index":"emailstatus","align":"center","width":80,"sorttype":"string", "sortable": true, "editable":true},
     { "name":"token", "index":"token","align":"center", "sorttype":"int", "sortable": true,"width":150,"editable":true},
-    { "name":"language", "index":"language","align":"center", "sorttype":"int", "sortable": true,"width":100,"editable":true, "edittype":"select", "editoptions":{"value":"<?php echo $langnames; ?>"}},
+    { "name":"language", "index":"language","align":"center", "sorttype":"int", "sortable": true,"width":100,"editable":true, "formatter":'select', "edittype":"select", "editoptions":{"value":"<?php echo $langnames; ?>"}},
     { "name":"sent", "index":"sent","align":"center", "sorttype":"int", "sortable": true,"width":130,"editable":true},
     { "name":"remindersent", "index":"remindersent","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
     { "name":"remindercount", "index":"remindercount","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
