@@ -859,9 +859,8 @@ function buildsurveysession($surveyid,$preview=false)
     $loadsecurity = returnGlobal('loadsecurity',true);
 
     // NO TOKEN REQUIRED BUT CAPTCHA ENABLED FOR SURVEY ACCESS
-    if ($tokensexist == 0 && isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']) && !$preview)
+    if ($tokensexist == 0 && isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']) && !isset($_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen'])&& !$preview)
     {
-
         // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
         if (!isset($loadsecurity) ||
         !isset($_SESSION['survey_'.$surveyid]['secanswer']) ||
@@ -872,9 +871,9 @@ function buildsurveysession($surveyid,$preview=false)
             // No or bad answer to required security question
 
             $redata = compact(array_keys(get_defined_vars()));
-            echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[1525]');
+            echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[875]');
             //echo makedropdownlist();
-            echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1527]');
+            echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[877]');
 
             if (isset($loadsecurity))
             { // was a bad answer
@@ -917,6 +916,9 @@ function buildsurveysession($surveyid,$preview=false)
             echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[1567]');
             doFooter();
             exit;
+        }
+        else{
+            $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']=true;
         }
     }
 
@@ -1041,7 +1043,7 @@ function buildsurveysession($surveyid,$preview=false)
         if (isset($loadsecurity) &&
         isset($_SESSION['survey_'.$surveyid]['secanswer']) &&
         $loadsecurity == $_SESSION['survey_'.$surveyid]['secanswer'])
-        {
+        {          
 			if ($thissurvey['alloweditaftercompletion'] == 'Y' )
             {
                 $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=> $clienttoken));
