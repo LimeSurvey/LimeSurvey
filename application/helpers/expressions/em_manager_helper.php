@@ -1341,6 +1341,7 @@
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_equs=array();
+                            $subqValidEqns = array();
                             foreach($subqs as $sq)
                             {
                                 $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
@@ -1675,6 +1676,7 @@
                             if ($hasSubqs) {
                                 $subqs = $qinfo['subqs'];
                                 $sq_equs=array();
+                                $subqValidEqns = array();
                                 foreach($subqs as $sq)
                                 {
                                     $sq_name = ($this->sgqaNaming)?substr($sq['jsVarName'],4).".NAOK":$sq['varName'].".NAOK";
@@ -2446,6 +2448,7 @@
                             if ($hasSubqs) {
                                 $subqs = $qinfo['subqs'];
                                 $sq_equs=array();
+                                $subqValidEqns = array();
                                 foreach($subqs as $sq)
                                 {
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
@@ -2481,6 +2484,7 @@
                             if ($hasSubqs) {
                                 $subqs = $qinfo['subqs'];
                                 $sq_equs=array();
+                                $subqValidEqns = array();
                                 foreach($subqs as $sq)
                                 {
                                     $sq_name = ($this->sgqaNaming)?substr($sq['jsVarName'],4).".NAOK":$sq['varName'].".NAOK";
