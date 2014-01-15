@@ -6096,6 +6096,7 @@ function includeKeypad()
 /**
 * getQuotaInformation() returns quota information for the current survey
 * @param string $surveyid - Survey identification number
+* @param string $language - Language of the quota
 * @param string $quotaid - Optional quotaid that restricts the result to a given quota
 * @return array - nested array, Quotas->Members->Fields
 */
@@ -6111,10 +6112,11 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
     }
 
     $result = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes($aAttributes);
+    
     $quota_info = array();
     $x=0;
 
-    $surveyinfo=getSurveyInfo($surveyid);
+    $surveyinfo=getSurveyInfo($surveyid,$language);
 
     // Check all quotas for the current survey
     //if ($result->RecordCount() > 0)
@@ -6123,10 +6125,10 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
         //while ($survey_quotas = $result->FetchRow())
         foreach ($result as $_survey_quotas)
         {
-            $survey_quotas = $_survey_quotas->attributes;
+            $survey_quotas = array_merge($_survey_quotas->attributes,$_survey_quotas->languagesettings[0]->attributes);// We have only one language, then we can use first only
             // !!! Doubting this
-            foreach ($_survey_quotas->defaultlanguage as $k => $v)
-                $survey_quotas[$k] = $v;
+#            foreach ($_survey_quotas->defaultlanguage as $k => $v)
+#                $survey_quotas[$k] = $v;
 
             array_push($quota_info,array('Name' => $survey_quotas['name'],
             'Limit' => $survey_quotas['qlimit'],
