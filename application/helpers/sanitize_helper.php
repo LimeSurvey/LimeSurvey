@@ -185,7 +185,7 @@ function sanitize_xss_string($string)
 {
     if (isset($string))
     {
-        $bad = array ('*','^','&','\'','-',';','\"','(',')','%','$','?');
+        $bad = array ('*','^','&',';','\"','(',')','%','$','?');
         return str_replace($bad, '',$string);
     }
 }

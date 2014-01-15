@@ -6,7 +6,7 @@ $(document).ready(function() {
             //data can be string of parameters or array/object
             data = typeof data == 'string' ? data : jQuery.param(data);
             //split params into form inputs
-            var inputs = '<input type="hidden" name="YII_CSRF_TOKEN" value="'+csrfToken+'">';
+            var inputs = '<input type="hidden" name="YII_CSRF_TOKEN" value="'+LS.data.csrfToken+'">';
             jQuery.each(data.split('&'), function(){
                 var pair = this.split('=');
                 inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'">';

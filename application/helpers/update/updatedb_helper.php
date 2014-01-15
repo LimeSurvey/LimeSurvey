@@ -1169,6 +1169,17 @@ function db_upgrade_all($iOldDBVersion) {
             upgradeCPDBAttributeDefaultNames173();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>173),"stg_name='DBVersion'");
         }
+        if ($iOldDBVersion < 174)
+        {
+            alterColumn('{{participants}}', 'email', "{$sVarchar}(254)");
+            alterColumn('{{saved_control}}', 'email', "{$sVarchar}(254)");
+            alterColumn('{{surveys}}', 'adminemail', "{$sVarchar}(254)");
+            alterColumn('{{surveys}}', 'bounce_email', "{$sVarchar}(254)");
+            alterColumn('{{users}}', 'email', "{$sVarchar}(254)");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>174),"stg_name='DBVersion'");
+        }
+        
+
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600; 
@@ -1193,7 +1204,6 @@ function db_upgrade_all($iOldDBVersion) {
     echo '<br /><br />'.sprintf($oLang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
 }
-
 
 function upgradeCPDBAttributeDefaultNames173()
 {

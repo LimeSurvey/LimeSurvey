@@ -16,13 +16,12 @@ function navigator_countdown(n)
 	$(document).ready(function()
 	{
 		$('button.disabled').prop("disabled", true);// Double check : already in navbuttonsJqueryUi
-		$('button.disabled').button("option", "disabled", true );
+		$('button.disabled.ui-button').button("option", "disabled", true );
 		$(window).data('countdown', n);
 		navigator_countdown_btn().each(function(i, e)
 		{
 			$(e).data('text', $(e).text());
 		});
-
 		navigator_countdown_int();
 	});
 }
@@ -36,14 +35,16 @@ function navigator_countdown_end()
 {
 	navigator_countdown_btn().each(function(i, e)
 	{
+		$(e).prop("disabled",false);
+		if($(e).is(".ui-button" )){
+			$(e).button("option", "disabled", false );
+		}
+		$(e).removeClass("disabled");
 		if($(e).find('.ui-button-text').length){
 			$(e).find('.ui-button-text').html( $(e).data('text'));
 		}else{
 			$(e).html($(e).data('text'));
 		}
-		$(e).prop("disabled",false);
-		$(e).button("option", "disabled", false );
-		$(e).removeClass("disabled");
 	});
 	$(window).data('countdown', null);
 }
@@ -64,7 +65,6 @@ function navigator_countdown_int()
 				if(n > 1) $(e).html( $(e).data('text')+ " (" + n + ")");
 			}
 		});
-
 		$(window).data('countdown', --n);
 	}
 	window.setTimeout((n > 0? navigator_countdown_int: navigator_countdown_end), 1000);

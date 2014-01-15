@@ -176,27 +176,28 @@ sendPost(siteURL + "/admin/responses/" + surveyID + "/grid", {
 }
 })  */
 
+/* Deprecated : use admin_core.js function */
+///**
+//Send a post request to the server to download a file
 
-/**
-Send a post request to the server to download a file
+//@param myaction     post action
+//@param data         parameters for $_POST
 
-@param myaction     post action
-@param data         parameters for $_POST
+//*/
+//function sendPost(myaction, checkcode, arrayparam, arrayval)
+//{
+//    var myform = document.createElement('form');
+//    document.body.appendChild(myform);
+//    myform.action =myaction;
+//    myform.method = 'POST';
+//    for (i=0;i<arrayparam.length;i++)
+//    {
+//        addHiddenElement(myform,arrayparam[i],arrayval[i])
+//    }
 
-*/
-function sendPost(myaction, checkcode, arrayparam, arrayval)
-{
-    var myform = document.createElement('form');
-    document.body.appendChild(myform);
-    myform.action =myaction;
-    myform.method = 'POST';
-    for (i=0;i<arrayparam.length;i++)
-    {
-        addHiddenElement(myform,arrayparam[i],arrayval[i])
-    }
-    addHiddenElement(myform,'checksessionbypost',checkcode)
-    myform.submit();
-}
+//    addHiddenElement(myform,'YII_CSRF_TOKEN',LS.data.csrfToken)
+//    myform.submit();
+//}
 
 
 

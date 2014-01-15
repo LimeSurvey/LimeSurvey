@@ -186,158 +186,7 @@ class index extends CAction {
         }
         else
         {
-            $clang = $this->_loadLimesurveyLang($sDisplayLanguage);
-            Yii::app()->session['s_lang']=$clang->langcode;
-            $languagechanger = makeLanguageChanger($clang->langcode);
-            //Find out if there are any publicly available surveys
-            $sSqlDateNow=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
-            $aActiveSurvey = Yii::app()->db->createCommand()
-                                    ->select('sid,surveyls_title,publicstatistics,language')
-                                    ->from('{{surveys}}')
-                                    ->join('{{surveys_languagesettings}}', 'sid = surveyls_survey_id AND language=surveyls_language')
-                                    ->andWhere("active='Y'")
-                                    ->andWhere("listpublic='Y'")
-                                    ->andWhere("expires >= :expires OR expires is null")
-                                    ->andWhere("startdate <= :startdate OR startdate is null")
-                                    ->order("surveyls_title ASC")
-                                    ->bindParam(':expires',$sSqlDateNow)
-                                    ->bindParam(':startdate',$sSqlDateNow)
-                                    ->queryAll();
-            $list=array();
-            foreach($aActiveSurvey as $rows)
-            {
-                $resultlang=SurveyLanguageSetting::model()->find(
-                        "surveyls_survey_id=:surveyls_survey_id AND surveyls_language=:surveyls_language",
-                        array(':surveyls_survey_id'=>intval($rows['sid']),':surveyls_language'=>$sDisplayLanguage)
-                );
-                $langparam=array();
-                $langtag = "";
-                if ($resultlang )
-                {
-                    $rows['surveyls_title']=$resultlang->surveyls_title;
-                    $langparam=array('lang'=>$sDisplayLanguage);
-                }
-                else
-                {
-                    $langtag = "lang=\"{$rows['language']}\"";
-                }
-                $link = "<li><a href='".$this->getController()->createUrl('/survey/index/sid/'.$rows['sid'],$langparam);
-                $link .= "' $langtag class='surveytitle'>".$rows['surveyls_title']."</a>\n";
-                if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."/language/".$sDisplayLanguage."'>(".$clang->gT('View statistics').")</a>";
-                $link .= "</li>\n";
-                $list[]=$link;
-            }
-
-            //Check for inactive surveys which allow public registration.
-            // TODO add a new template replace {SURVEYREGISTERLIST} ?
-#            $squery = "SELECT sid, surveyls_title, publicstatistics, language
-#            FROM {{surveys}}
-#            INNER JOIN {{surveys_languagesettings}}
-#            ON (surveyls_survey_id = sid)
-#            AND (surveyls_language=language)
-#            WHERE allowregister='Y'
-#            AND active='Y'
-#            AND listpublic='Y'
-#            AND ((expires >= '".date("Y-m-d H:i")."') OR (expires is null))
-#            AND (startdate >= '".date("Y-m-d H:i")."')
-#            ORDER BY surveyls_title";
-#            $sresult = dbExecuteAssoc($squery) or safeDie("Couldn't execute $squery");
-#            $aRows=$sresult->readAll();
-            $aRegisteringBeforeSurveys = Yii::app()->db->createCommand()
-                                    ->select('sid,surveyls_title,publicstatistics,language')
-                                    ->from('{{surveys}}')
-                                    ->join('{{surveys_languagesettings}}', 'sid = surveyls_survey_id AND language=surveyls_language')
-                                    ->andWhere("active='Y'")
-                                    ->andWhere("allowregister='Y'")// And if there are no token table ...
-                                    ->andWhere("listpublic='Y'")
-                                    ->andWhere("expires >= :expires OR expires is null")
-                                    ->andWhere("startdate > :startdate")
-                                    ->order("surveyls_title ASC")
-                                    ->bindParam(':expires',$sSqlDateNow)
-                                    ->bindParam(':startdate',$sSqlDateNow)
-                                    ->queryAll();
-                                    
-            if(count($aRegisteringBeforeSurveys) > 0)
-            {
-                $list[] = "</ul>"
-                ." <div class=\"survey-list-heading\">".$clang->gT("Following survey(s) are not yet active but you can register for them.")."</div>"
-                ." <ul>"; // TODO give it to template
-                foreach($aRegisteringBeforeSurveys as $aRegisteringBeforeSurvey)
-                {
-                    $oSurveyLang=SurveyLanguageSetting::model()->find(
-                            "surveyls_survey_id=:surveyls_survey_id AND surveyls_language=:surveyls_language",
-                            array(':surveyls_survey_id'=>intval($aRegisteringBeforeSurvey['sid']),':surveyls_language'=>$sDisplayLanguage)
-                    );
-                    if ($oSurveyLang )
-                    {
-                        $aRegisteringBeforeSurvey['surveyls_title']=$oSurveyLang->surveyls_title;
-                        $langtag = "";
-                    }
-                    else
-                    {
-                        $langtag = "lang=\"{$aRegisteringBeforeSurvey['language']}\"";
-                    }
-                    $link = "<li><a data-inactivesurvey='".$aRegisteringBeforeSurvey['sid']."' $langtag class='surveytitle'> ";
-                    $link .= $aRegisteringBeforeSurvey['surveyls_title']."</a>\n";
-                    $link .= "</li><div data-regformsurvey='".$aRegisteringBeforeSurvey['sid']."'></div>\n";
-                    $list[]=$link;
-                }
-                $sSendreqJs="$(document).on('click','a[data-inactivesurvey]',function(){\n"
-                            ."var surveyid=$(this).data('inactivesurvey');\n"
-                            ."var regform=$('[data-regformsurvey='+surveyid+']');\n"
-                            ."$.ajax({\n"
-                            ."type: 'GET',\n"
-                            ."url: '".$this->getController()->createUrl("/register/ajaxregisterform")."',\n"
-                            ."data: { 'surveyid' : surveyid}\n"
-                            ."}).done(function(msg) {\n"
-                            ."regform.html(msg);\n"
-                            ."});\n"
-                            ."});";
-                App()->clientScript->registerScript('sSendreqJs',$sSendreqJs,CClientScript::POS_BEGIN);
-            }
-
-            if(count($list) < 1)
-            {
-                $list[]="<li class='surveytitle'>".$clang->gT("No available surveys")."</li>";
-            }
-            if(!$surveyid)
-            {
-                $thissurvey['name']=Yii::app()->getConfig("sitename");
-                $nosid=$clang->gT("You have not provided a survey identification number");
-            }
-            else
-            {
-                $thissurvey['name']=$clang->gT("The survey identification number is invalid");
-                $nosid=$clang->gT("The survey identification number is invalid");
-            }
-            $surveylist=array(
-            "nosid"=>$nosid,
-            "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),Yii::app()->getConfig("siteadminname"),encodeEmail(Yii::app()->getConfig("siteadminemail"))),
-            "listheading"=>$clang->gT("The following surveys are available:"),
-            "list"=>implode("\n",$list),
-            );
-
-
-            $data['thissurvey'] = $thissurvey;
-            //$data['privacy'] = $privacy;
-            $data['surveylist'] = $surveylist;
-            $data['surveyid'] = $surveyid;
-            $data['templatedir'] = getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
-            $data['templateurl'] = getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
-            $data['templatename'] = Yii::app()->getConfig("defaulttemplate");
-            $data['sitename'] = Yii::app()->getConfig("sitename");
-            $data['languagechanger'] = $languagechanger;
-
-            //A nice exit
-            sendCacheHeaders();
-            doHeader();
-            $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/startpage.pstpl", $data, __LINE__);
-
-            $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/surveylist.pstpl", $data, __LINE__);
-
-            $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/endpage.pstpl", $data, __LINE__);
-            doFooter();
-            return;
+            throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         }
 
         // Get token
@@ -348,6 +197,14 @@ class index extends CAction {
 
         //GET BASIC INFORMATION ABOUT THIS SURVEY
         $thissurvey=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+
+        $event = new PluginEvent('beforeSurveyPage');
+        $event->set('surveyId', $surveyid);
+        App()->getPluginManager()->dispatchEvent($event);
+        if (!is_null($event->get('template')))
+        {
+            $thissurvey['templatedir'] = $event->get('template');
+        }
 
         //SEE IF SURVEY USES TOKENS
         if ($surveyExists == 1 && tableExists('{{tokens_'.$thissurvey['sid'].'}}'))
@@ -410,62 +267,57 @@ class index extends CAction {
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
         }
 
-        if (returnGlobal('loadall',true)=="reload") // Used if reload is done by URL (GET)
-        {
-            $_POST['loadall']="reload";
-        }
-
         //LOAD SAVED SURVEY
-        if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
+        if (Yii::app()->request->getParam('loadall') == "reload")
         {
             $errormsg="";
-            if ( !isset($param['loadname']) || $param['loadname'] == null )
+            $sLoadName=Yii::app()->request->getParam('loadname');
+            $sLoadPass=Yii::app()->request->getParam('loadpass');
+            if ( isset($sLoadName) && !$sLoadName)
             {
                 $errormsg .= $clang->gT("You did not provide a name")."<br />\n";
             }
-            if (!isset($param['loadpass']) || $param['loadpass'] == null )
+            if ( isset($sLoadPass) && !$sLoadPass)
             {
                 $errormsg .= $clang->gT("You did not provide a password")."<br />\n";
             }
 
             // if security question answer is incorrect
             // Not called if scid is set in GET params (when using email save/reload reminder URL)
-            if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen',$thissurvey['usecaptcha']))
+            if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen',$thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid')))
             {
-                if ( (!isset($_POST['loadsecurity']) ||
-                !isset($_SESSION['survey_'.$surveyid]['secanswer']) ||
-                $_POST['loadsecurity'] != $_SESSION['survey_'.$surveyid]['secanswer']) &&
-                !isset($_GET['scid']))
+                $sLoadSecurity=Yii::app()->request->getPost('loadsecurity');
+                if(empty($sLoadSecurity))
+                {
+                    $errormsg .= $clang->gT("You did not answer to the security question.")."<br />\n";
+                }
+                elseif ( (!isset($_SESSION['survey_'.$surveyid]['secanswer']) || $sLoadSecurity != $_SESSION['survey_'.$surveyid]['secanswer']) )
                 {
                     $errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
                 }
             }
 
-            // Load session before loading the values from the saved data
-            if (isset($_POST['loadall']))
-            {
-                LimeExpressionManager::SetDirtyFlag();  
-                buildsurveysession($surveyid);
-            }
+            $_SESSION['survey_'.$surveyid]['holdname'] = $sLoadName;
+            $_SESSION['survey_'.$surveyid]['holdpass'] = $sLoadPass;
+            $_SESSION['survey_'.$surveyid]['scid'] = Yii::app()->request->getQuery('scid');
 
-            $_SESSION['survey_'.$surveyid]['holdname'] = $param['loadname']; //Session variable used to load answers every page.
-            $_SESSION['survey_'.$surveyid]['holdpass'] = $param['loadpass']; //Session variable used to load answers every page.
 
             if ($errormsg == "") {
+                LimeExpressionManager::SetDirtyFlag();  
+                buildsurveysession($surveyid);
                 if (loadanswers()){
-                    $move = "movenext";
+                    Yii::app()->setConfig('move','movenext');
+                    $move = "movenext";// 140113 : deprecated ?
                 } else {
                     $errormsg .= $clang->gT("There is no matching saved survey");
                 }
             }
-
-            if ($errormsg)
-            {
-                $_POST['loadall'] = $clang->gT("Load unfinished survey");
+            if ($errormsg) {
+                Yii::app()->setConfig('move',"loadall");// Show loading form
             }
         }
         //Allow loading of saved survey
-        if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load unfinished survey"))
+        if (Yii::app()->getConfig('move')=="loadall")
         {
             $redata = compact(array_keys(get_defined_vars()));
             Yii::import("application.libraries.Load_answers");
@@ -480,7 +332,7 @@ class index extends CAction {
         // bypass only this check at first page (Step=0) because
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
-		if ($tokensexist == 1 && isset($token) && $token &&
+		if ($tokensexist == 1 && isset($token) && $token!="" &&
         isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
             // check also if it is allowed to change survey after completion
@@ -502,7 +354,7 @@ class index extends CAction {
                 $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
             }
         }
-        if ($tokensexist == 1 && isset($token) && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) //check if token is in a valid time frame
+        if ($tokensexist == 1 && isset($token) && $token!="" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) //check if token is in a valid time frame
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {

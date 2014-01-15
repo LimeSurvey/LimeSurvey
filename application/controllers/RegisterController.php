@@ -45,12 +45,11 @@ class RegisterController extends LSYii_Controller {
     * Process register form data and take appropriate action
     * @return
     */
-    function actionIndex($surveyid = null)
+    function actionIndex($iSurveyID = null)
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('replacements');
-        $sLanguageFromPOST = Yii::app()->request->getPost('lang');
-        $iSurveyID=$surveyid;
+        $sLanguage = Yii::app()->request->getParam('lang','');
         if($iSurveyID == null)
         {
             $iSurveyID = Yii::app()->request->getPost('sid');
@@ -60,20 +59,17 @@ class RegisterController extends LSYii_Controller {
             $this->redirect(Yii::app()->baseUrl);
         }
 
-        // Get passed language from form, so that we dont loose this!
-        if (!isset($sLanguageFromPOST) || $sLanguageFromPOST == "" || !$sLanguageFromPOST )
+        if ($sLanguage=="" )
         {
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-            Yii::import('application.libraries.Limesurvey_lang');
-            Yii::app()->lang = new Limesurvey_lang($sBaseLanguage);
-            $clang = Yii::app()->lang;
-        } else {
-            Yii::import('application.libraries.Limesurvey_lang');
-            Yii::app()->lang = new Limesurvey_lang($sLanguageFromPOST);
-            $clang = Yii::app()->lang;
-            $sBaseLanguage = $sLanguageFromPOST;
         }
-
+        else
+        {
+            $sBaseLanguage = $sLanguage;
+        }
+        Yii::import('application.libraries.Limesurvey_lang');
+        Yii::app()->lang = new Limesurvey_lang($sBaseLanguage);
+        $clang = Yii::app()->lang;
         $thissurvey=getSurveyInfo($iSurveyID,$sBaseLanguage);
 
         $register_errormsg = "";
@@ -109,16 +105,16 @@ class RegisterController extends LSYii_Controller {
         if ($register_errormsg != "")
         {
             $_SESSION['survey_'.$iSurveyID]['register_errormsg']=$register_errormsg;
-            $this->redirect(array('survey/index/sid/'.$iSurveyID));
+            $this->redirect($this->createUrl("survey/index/sid/{$iSurveyID}",array('lang'=>$sBaseLanguage)));
         }
 
         //Check if this email already exists in token database
-        $oToken=TokenDynamic::model($surveyid)->find('email=:email',array(':email'=>Yii::app()->request->getPost('register_email')));
+        $oToken=TokenDynamic::model($iSurveyID)->find('email=:email',array(':email'=>Yii::app()->request->getPost('register_email')));
         if ($oToken)
         {
             $register_errormsg=$clang->gT("The email you used has already been registered.");
             $_SESSION['survey_'.$iSurveyID]['register_errormsg']=$register_errormsg;
-            $this->redirect(array('survey/index/sid/'.$iSurveyID));
+            $this->redirect($this->createUrl("survey/index/sid/{$iSurveyID}",array('lang'=>$sBaseLanguage)));
             //include "index.php";
             //exit;
         }
@@ -126,16 +122,8 @@ class RegisterController extends LSYii_Controller {
         $mayinsert = false;
 
         // Get the survey settings for token length
-        //$this->load->model("surveys_model");
-        $tlresult = Survey::model()->findAllByAttributes(array("sid"=>$iSurveyID));
-        if (isset($tlresult[0])) {
-            $tlrow = $tlresult[0];
-        }
-        else
-        {
-            $tlrow = $tlresult;
-        }
-        $tokenlength = $tlrow['tokenlength'];
+
+        $tokenlength = $thissurvey['tokenlength'];
         //if tokenlength is not set or there are other problems use the default value (15)
         if(!isset($tokenlength) || $tokenlength == '')
         {
@@ -145,9 +133,8 @@ class RegisterController extends LSYii_Controller {
         while ($mayinsert != true)
         {
             $newtoken = randomChars($tokenlength);
-            $ntquery = "SELECT * FROM {{tokens_$iSurveyID}} WHERE token='$newtoken'";
-            $usrow = Yii::app()->db->createCommand($ntquery)->queryRow();
-            if (!$usrow) {$mayinsert = true;}
+            $oTokenExist=TokenDynamic::model($iSurveyID)->find('token=:token',array(':token'=>$newtoken));
+            if (!$oTokenExist) {$mayinsert = true;}
         }
 
         $postfirstname=sanitize_xss_string(strip_tags(Yii::app()->request->getPost('register_firstname')));
@@ -193,8 +180,8 @@ class RegisterController extends LSYii_Controller {
         $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 
         $surveylink = $this->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}",array('lang'=>$sBaseLanguage,'token'=>$newtoken));
-        $optoutlink = $this->createAbsoluteUrl("/optout/tokens/surveyid/{$iSurveyID}",array('langcode'=>'fr','token'=>'newtoken'));
-        $optinlink = $this->createAbsoluteUrl("/optin/tokens/surveyid/{$iSurveyID}",array('langcode'=>'fr','token'=>'newtoken'));
+        $optoutlink = $this->createAbsoluteUrl("/optout/tokens/surveyid/{$iSurveyID}",array('langcode'=>$sBaseLanguage,'token'=>$newtoken));
+        $optinlink = $this->createAbsoluteUrl("/optin/tokens/surveyid/{$iSurveyID}",array('langcode'=>$sBaseLanguage,'token'=>$newtoken));
         if (getEmailFormat($iSurveyID) == 'html')
         {
             $useHtmlEmail = true;

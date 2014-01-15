@@ -29,7 +29,7 @@ function doNumericSlider(qID,jsonOptions) {
 		var htmlSliderResest=((jsonOptions.slider_reset==1)? "<a id='slider-reset-myfname' class='slider-reset' title='"+jsonOptions.lang.reset+"'>"+jsonOptions.lang.reset+"</a>\n" : "");
 		// Replace each input by the slider
 		$("#question"+qID+" .slider-list").children('.answer-item').each(function(){
-			var thisinput=$(this).children(".input").children('input.text');
+			var thisinput=$(this).children(".input").children('input.text').first();
 			var myfname=$(thisinput).attr('name');
 			var actualval=$(thisinput).attr('value');
 			if(actualval!=""){
@@ -56,19 +56,20 @@ function doNumericSlider(qID,jsonOptions) {
 					$('#slider-callout-'+myfname).appendTo($('#container-'+myfname+' .ui-slider-handle').get(0));
 				},
 				slide: function( event, ui ) {
-					$(thisinput).val(ui.value);
-					$(thisinput).triggerHandler("keyup");
                     displayvalue=''+ui.value;
-					$('#slider-callout-'+myfname).text(jsonOptions.slider_prefix + displayvalue.replace(/\./,LSvar.sLEMradix) + jsonOptions.slider_suffix);
+                    displayvalue=displayvalue.replace(/\./,LSvar.sLEMradix);
+					$(thisinput).val(displayvalue);
+					$(thisinput).triggerHandler("keyup");
+					$('#slider-callout-'+myfname).text(jsonOptions.slider_prefix + displayvalue + jsonOptions.slider_suffix);
 				}
 			});
 			// Update the value of the input if Slider start is set
 			if(!havevalue && startvalue && jsonOptions.slider_displaycallout){
-				$("#slider-callout-"+myfname).text(jsonOptions.slider_prefix + startvalue.replace(/\./,LSvar.sLEMradix) + jsonOptions.slider_suffix);
+                startvalue=''+startvalue;
+                startvalue=startvalue.replace(/\./,LSvar.sLEMradix);
+				$("#slider-callout-"+myfname).text(jsonOptions.slider_prefix + startvalue + jsonOptions.slider_suffix);
 				$(thisinput).val(startvalue);
-				$(function() {
-					$(thisinput).triggerHandler("keyup"); // Needed for EM
-				});
+                $(thisinput).triggerHandler("keyup"); // Needed for EM
 			}
 			// Reset on click on .slider-reset
 			$(this).on("click",".slider-reset",function(){

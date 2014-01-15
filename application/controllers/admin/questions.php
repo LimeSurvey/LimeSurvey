@@ -397,7 +397,7 @@ class questions extends Survey_Common_Action
             $this->getController()->error('Invalid survey ID');
 
         $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
+        $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
         $assessmentvisible = ($surveyinfo['assessments'] == 'Y' && $qtypes[$qtype]['assessable'] == 1);
         $aData['assessmentvisible'] = $assessmentvisible;
@@ -596,7 +596,7 @@ class questions extends Survey_Common_Action
             $this->getController()->error('Invalid survey id');
 
         $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
+        $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
 
         $aData['activated'] = $activated = $surveyinfo['active'];
@@ -704,20 +704,20 @@ class questions extends Survey_Common_Action
                 {
                     if ($value != 99)
                     {
-                        Question::model()->insert(array(
-                        'qid' => $qid,
-                        'sid' => $surveyid,
-                        'gid' => $gid,
-                        'type' => $basesettings['type'],
-                        'title' => $basesettings['title'],
-                        'question' => $basesettings['question'],
-                        'preg' => $basesettings['preg'],
-                        'help' => $basesettings['help'],
-                        'other' => $basesettings['other'],
-                        'mandatory' => $basesettings['mandatory'],
-                        'question_order' => $basesettings['question_order'],
-                        'language' => $key,
-                        ));
+                        $arQuestion=new Question;
+                        $arQuestion->qid = $qid;
+                        $arQuestion->sid = $surveyid;
+                        $arQuestion->gid = $gid;
+                        $arQuestion->type = $basesettings['type'];
+                        $arQuestion->title = $basesettings['title'];
+                        $arQuestion->question = $basesettings['question'];
+                        $arQuestion->preg = $basesettings['preg'];
+                        $arQuestion->help = $basesettings['help'];
+                        $arQuestion->other = $basesettings['other'];
+                        $arQuestion->mandatory = $basesettings['mandatory'];
+                        $arQuestion->question_order = $basesettings['question_order'];
+                        $arQuestion->language = $key;
+                        $arQuestion->insert();
                     }
                 }
 

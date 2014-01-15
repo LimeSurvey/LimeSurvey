@@ -744,8 +744,7 @@ function sendPost(myaction,checkcode,arrayparam,arrayval)
     var $form = $("<form method='POST'>").attr("action", myaction);
     for (var i = 0; i < arrayparam.length; i++)
         $("<input type='hidden'>").attr("name", arrayparam[i]).attr("value", arrayval[i]).appendTo($form);
-    if(typeof csrfToken =="string")
-        $("<input type='hidden'>").attr("name", 'YII_CSRF_TOKEN').attr("value", csrfToken).appendTo($form);
+    $("<input type='hidden'>").attr("name", 'YII_CSRF_TOKEN').attr("value", LS.data.csrfToken).appendTo($form);
     $form.appendTo("body");
     $form.submit();
 }

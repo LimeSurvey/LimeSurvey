@@ -22,18 +22,7 @@
 |
 */
 return array(
-	'basePath' => dirname(dirname(__FILE__)),
-	'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
 	'name' => 'LimeSurvey',
-	'defaultController' => 'survey',
-	
-	'import' => array(
-		'application.core.*',
-		'application.models.*',
-		'application.controllers.*',
-		'application.modules.*',
-	),
-	
 	'components' => array(
 		'db' => array(
 			'connectionString' => 'pgsql:host=localhost;port=5432;user=postgres;password=somepassword;dbname=limesurvey;',

@@ -189,7 +189,7 @@ $(document).ready(function() {
                 .appendTo(jQuery(this).parent().parent())
                 .click(function()
                 {
-                    jQuery('#displaytokens').saveRow(row.attr('id'),{extraparam : {YII_CSRF_TOKEN:csrfToken}});
+                    jQuery('#displaytokens').saveRow(row.attr('id'));
                     func();
                 });
             });

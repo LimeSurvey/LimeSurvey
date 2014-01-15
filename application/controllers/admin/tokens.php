@@ -450,7 +450,7 @@ class tokens extends Survey_Common_Action
                 $attribs = array('onclick' => 'if (confirm("' . $clang->gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}');
                 $action .= viewHelper::getImageLink('token_delete.png', null, $clang->gT("Delete token entry"), null, 'imagelink btnDelete', $attribs);
             }
-            if (strtolower($token['emailstatus']) == 'ok' && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
+            if (strtolower($token['emailstatus']) == 'ok' && $token['email'] && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
                 if ($token['completed'] == 'N' && $token['usesleft'] > 0) {
                     if ($token['sent'] == 'N') {
                         $action .= viewHelper::getImageLink('token_invite.png', "admin/tokens/sa/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], $clang->gT("Send invitation email to this person (if they have not yet been sent an invitation email)"), "_blank");

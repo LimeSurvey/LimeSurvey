@@ -347,8 +347,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
         $surveynames = array();
         foreach ($surveyidresult as $result)
         {
-            $surveynames[] = array_merge($result->attributes, $result->languagesettings[0]->attributes);
-
+            $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
         }
 
         $cached = $surveynames;
@@ -682,6 +681,7 @@ function getQidNext($surveyid, $gid, $qid)
 
 function convertGETtoPOST($url)
 {
+    // This function must be deprecated and replaced by $.post
     $url = preg_replace('/&amp;/i','&',$url);
     $stack = explode('?',$url);
     $calledscript = array_shift($stack);
@@ -698,8 +698,6 @@ function convertGETtoPOST($url)
         $arrayParam[] = "'".$paramname."'";
         $arrayVal[] = substr($value, 0, 9) != "document." ? "'".$value."'" : $value;
     }
-    $arrayParam[]	= "'YII_CSRF_TOKEN'"; 
-    $arrayVal[] 	= "'".Yii::app()->request->csrfToken."'";
     //    $Paramlist = "[" . implode(",",$arrayParam) . "]";
     //    $Valuelist = "[" . implode(",",$arrayVal) . "]";
     $Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
@@ -6127,7 +6125,7 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
         {
             $survey_quotas = $_survey_quotas->attributes;
             // !!! Doubting this
-            foreach ($_survey_quotas->languagesettings[0] as $k => $v)
+            foreach ($_survey_quotas->defaultlanguage as $k => $v)
                 $survey_quotas[$k] = $v;
 
             array_push($quota_info,array('Name' => $survey_quotas['name'],

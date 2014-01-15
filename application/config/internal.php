@@ -10,7 +10,7 @@ $internalConfig = array(
 	'basePath' => dirname(dirname(__FILE__)),
 	'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
 	'name' => 'LimeSurvey',
-	'defaultController' => 'survey',
+	'defaultController' => 'surveys',
 	'import' => array(
 		'application.core.*',
 		'application.models.*',
@@ -65,6 +65,11 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
     $userConfig = require(dirname(__FILE__) . '/config.php');
 }
 
-return CMap::mergeArray($internalConfig, $userConfig);
+$result = CMap::mergeArray($internalConfig, $userConfig);
+/**
+ * Some workarounds for erroneous settings in user config.php.
+ */
+$result['defaultController'] = $internalConfig['defaultController'];
+return $result;
 /* End of file internal.php */
 /* Location: ./application/config/internal.php */

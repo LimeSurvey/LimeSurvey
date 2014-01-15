@@ -3681,7 +3681,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             // Set a warning if question title was updated
             if(isset($sNewTitle))
             {
-                $results['importwarnings'][] = sprintf("Title of question %s was updated to %s.",$sOldTitle,$sNewTitle);
+                $results['importwarnings'][] = sprintf("Question code %s was updated to %s.",$sOldTitle,$sNewTitle);
                 unset($sNewTitle);
                 unset($sOldTitle);
             }
@@ -3814,8 +3814,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($insertdata)
                 XSSFilterArray($insertdata);
-            $result=Answer::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[6]<br />");
-            $results['answers']++;
+                
+            if (Answer::model()->insertRecords($insertdata))
+            {
+                $results['answers']++;
+            }
         }
     }
 

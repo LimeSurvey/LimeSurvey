@@ -886,8 +886,11 @@ class responses extends Survey_Common_Action
                              * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
                              * files from a different source with the same name.
                              */
-                            $filelist[] = array(PCLZIP_ATT_FILE_NAME => $tmpdir . $file['filename'],
-                                PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s_%s", $file['responseid'], $file['index'], $file['name']));
+                             if (file_exists($tmpdir . $file['filename']))
+                             {
+                                $filelist[] = array(PCLZIP_ATT_FILE_NAME => $tmpdir . $file['filename'],
+                                    PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s_%s", $file['responseid'], $file['index'], $file['name']));
+                             }
                         }
                     }
                 }

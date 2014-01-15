@@ -231,7 +231,7 @@ class participantsaction extends Survey_Common_Action
         $tSurveyNames=array();
         foreach($aSurveyNames as $row)
         {
-            $row = array_merge($row->attributes, $row->languagesettings[0]->attributes);
+            $row = array_merge($row->attributes, $row->defaultlanguage->attributes);
             $bTokenExists = tableExists('{{tokens_' . $row['sid'] . '}}');
             if ($bTokenExists) //If tokens table exists
             {
@@ -1356,11 +1356,11 @@ class participantsaction extends Survey_Common_Action
                 $writearray['email'] = trim($writearray['email']);
                 if ($writearray['email'] != '') {
                     $aEmailAddresses = explode(';', $writearray['email']);
-                    foreach ($aEmailAddresses as $sEmailaddress) {
-                        if (!validateEmailAddress($sEmailaddress)) {
-                            $invalidemail = true;
-                            $invalidemaillist[] = $line[0] . " " . $line[1] . " (" . $line[2] . ")";
-                        }
+                    // Ignore additional email addresses
+                    $sEmailaddress = $aEmailAddresses[0];
+                    if (!validateEmailAddress($sEmailaddress)) {
+                        $invalidemail = true;
+                        $invalidemaillist[] = $line[0] . " " . $line[1] . " (" . $line[2] . ")";
                     }
                 }
                 if (!$dupfound && !$invalidemail) {
