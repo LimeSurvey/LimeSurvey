@@ -24,7 +24,7 @@
         <title>Limesurvey Administration</title>
     </head>
     <body>
-        <div class="wrapper">
+        <div class="wrapper" style="display: inline-block"> <!-- Fix a gap between content and footer I can not explain -->
             <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
             <?php echo CHtml::tag('div', array('class' => 'maintitle titlebar'), App()->getConfig('sitename')); ?>
             <?php $this->widget('ext.Menu.MenuWidget', $this->navData); ?>
@@ -35,6 +35,7 @@
                 <img src="<?php echo Yii::app()->getConfig('adminstyleurl');?>/images/ajax-loader.gif"/>
             </div>
         </div>
+        <?php $this->widget('ext.AdminFooter.AdminFooter'); ?>
     </body>
 
 </html>
