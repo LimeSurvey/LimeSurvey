@@ -24,7 +24,7 @@
         <title>Limesurvey Administration</title>
     </head>
     <body>
-        <div class="wrapper" style="display: inline-block"> <!-- Fix a gap between content and footer I can not explain -->
+        <div class="wrapper clearfix">
             <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
             <?php echo CHtml::tag('div', array('class' => 'maintitle titlebar'), App()->getConfig('sitename')); ?>
             <?php $this->widget('ext.Menu.MenuWidget', $this->navData); ?>
