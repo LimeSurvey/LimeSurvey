@@ -268,28 +268,30 @@ class ExpressionManager {
             $this->RDP_AddError(gT("Invalid value(s) on the stack"), $token);
             return false;
         }
-        // Set bothnumeric only if set to numeric
-        // Not sure if needed to test if [2] is set. : TODO review
-        $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMERIC or WORD : DQ and DS is string entered by user, STRING is a result of a String function
-        $bNumericArg1 = ((is_numeric($arg1[0]) || $arg1[0] == '') && (!isset($arg1[2]) || !in_array($arg1[2],$aForceStringArray)) );
-        $bNumericArg2 = ((is_numeric($arg2[0]) || $arg2[0] == '') && (!isset($arg2[2]) || !in_array($arg2[2],$aForceStringArray)) );
 
-        $bStringArg1 = !$bNumericArg1 || $arg1[0] == '';
-        $bStringArg2 = !$bNumericArg2 || $arg2[0] == '';
+        $bNumericArg1 = (is_numeric($arg1[0]) || $arg1[0] == '');
+        $bNumericArg2 = (is_numeric($arg2[0]) || $arg2[0] == '');
+
+        $bStringArg1 = (!$bNumericArg1 || $arg1[0] == '');
+        $bStringArg2 = (!$bNumericArg2 || $arg2[0] == '');
+
         $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
-
         $bBothString = ($bStringArg1 && $bStringArg2);
         $bMismatchType=(!$bBothNumeric && !$bBothString);
-        // In javascript : qCode are forced to numeric if possible: then compare code A3 with 3 allways return false. Mimic this in PHP
-#        if($bMismatchType){// If mismatch type : test if arg1 and arg2 is forced to be a number (entred by user, numeric question return)
-#            if(!((isset($arg2[2]) && $arg2[2]=='NUMBER') || (isset($arg1[2]) && $arg1[2]=='NUMBER')))
-#            {
-#                $bBothString=true;
-#                $bMismatchType=false;
-#                $arg1[0]=strval($arg1[0]);
-#                $arg2[0]=strval($arg2[0]);
-#            }
-#        }
+
+        // Set bBothString if one is forced to be string, only if bith can be numeric. Mimic JS and PHO
+        // Not sure if needed to test if [2] is set. : TODO review
+        if($bBothNumeric){
+            $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMERIC or WORD : DQ and DS is string entered by user, STRING is a result of a String function
+            if( (isset($arg1[2]) && in_array($arg1[2],$aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2],$aForceStringArray)) ) )
+            {
+                $bBothNumeric=false;
+                $bBothString=true;
+                $bMismatchType=false;
+                $arg1[0]=strval($arg1[0]);
+                $arg2[0]=strval($arg2[0]);
+            }
+        }
         switch(strtolower($token[0]))
         {
             case 'or':
