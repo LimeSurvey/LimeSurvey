@@ -5,24 +5,26 @@ div.pluginsettings * {
     box-sizing: border-box;
 }
 
-div.pluginsettings {
-    width: 550px;
-    margin: auto;
-    text-align: center;
-    
-}
+div.pluginsettings.messagebox { width: 80%;}
+
 div.pluginsettings ol {
     list-style: none;
 }
 
 
-div.pluginsettings form input, div.pluginsettings form textarea, div.pluginsettings div.select2-container{
-    width: 60%;
+div.pluginsettings form input, 
+div.pluginsettings form textarea, 
+div.pluginsettings div.select2-container{
+    width: 50%;
     display: inline-block;
 }
 
+div.pluginsettings form input[type=checkbox]{
+    width: 10%; /* make smaller so it aligns to the left */
+}
+
 div.pluginsettings form label {
-    width: 40%;
+    width: 50%;
     display: inline-block;
 }
 div.pluginsettings li {

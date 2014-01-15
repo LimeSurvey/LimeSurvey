@@ -103,6 +103,7 @@
 
                 
                 $result = $this->$function($name, $metaData, $form);
+                $result = CHtml::tag('div',array('class'=>'setting'), $result);     // render inside a div
                 
                 if ($return)
                 {

@@ -21,3 +21,8 @@ form.settingswidget .settingslist label{
 form.settingswidget div {
     display: inline-block;
 }
+
+form.settingswidget div.setting {
+    width: 99%;
+    text-align: left;
+}
