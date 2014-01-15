@@ -10,6 +10,12 @@
          * @var array of mixed.
          */
         protected $properties = array();
+        
+        public function _init()
+        {
+            parent::_init();
+            Yii::app()->bootstrap->init();      // Make sure bootstrap css is rendered in time
+        }
 
         public function accessRules()
         {

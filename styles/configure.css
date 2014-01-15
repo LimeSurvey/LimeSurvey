@@ -33,4 +33,6 @@ div.pluginsettings input[type=submit], div.pluginsettings img, div.pluginsetting
     display: inline-block;
     margin: 1em;
     width: 150px;
+    font-size: 1.1em;
+    font-size: 1.1rem;
 }
