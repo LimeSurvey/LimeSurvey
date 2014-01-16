@@ -3774,7 +3774,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             // Set a warning if question title was updated
             if(isset($sNewTitle))
             {
-                $results['importwarnings'][] = sprintf("Title of subquestion %s was updated to %s.",$sOldTitle,$sNewTitle);// Maybe add the question title ?
+                $results['importwarnings'][] = sprintf($clang->gT("Title of subquestion %s was updated to %s."),$sOldTitle,$sNewTitle);// Maybe add the question title ?
                 unset($sNewTitle);
                 unset($sOldTitle);
             }
