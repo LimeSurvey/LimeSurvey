@@ -59,8 +59,41 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140109) to 2.05+ (build 140116) Jan 16, 2014
+-Fixed issue #8466: CSS/HTML issue with Plugin/settings (Menno Dekker)
+-Fixed issue #8403: redundant em_javascript.js and dir (mfaber)
+-Fixed issue #8476: there is no reason to wipe quote and dash characters from people names, in many countries this is a valid character and there is no XSS risk. (Alexis Bezverkhyy)
+-Fixed issue #8488: Language display instead of abbreviation in edited records in token list (Carsten Schmitz)
+-Fixed issue #8489: Non-operational CAPTCHA due backup to resume later. (Carsten Schmitz)
+-Fixed issue #8495: Unecessary IDs in label select element (tpartner)
+-Fixed issue #8497: Long email address fields are truncated when utilizing "Add participants to central database" from token table (Carsten Schmitz)
+-Fixed issue #8510: Survey import/copy not working (Carsten Schmitz)
+-Fixed issue #8517: Quota Answers not in Base Language (Denis Chenu)
+-Fixed issue #8518: Error during fresh installation on PostgreSQL/MSSQL and using a non-default table prefix (Carsten Schmitz)
+-Fixed issue #8527: Internal Server Error during registration (Denis Chenu)
+-Fixed issue #8532: Check for minimum memory available fails if PHP has "memory_limit" equal to -1 (Carsten Schmitz)
+-Fixed issue #8533: Button Load survey is inactive (Denis Chenu)
+-Fixed issue #8538: Problem with array (numbers) questions error information (Denis Chenu)
+-Fixed issue #8541: str_replace seems to be replacing just the first occurrence of search string rather than all occurrences (Carsten Schmitz)
+-Fixed issue #8542: Compare string and numeric can be different in same page and other page (Denis Chenu)
+-Fixed issue #8543: Missing translation during installation (Carsten Schmitz)
+-Fixed issue #8544: Missing translation (Carsten Schmitz)
+-Fixed issue: File download not working if one of the files in the response is missing (Carsten Schmitz)
+-Fixed issue: Navigator coutdown javascript broken without navbuttonsJqueryUi (Denis Chenu)
+#Updated translation: Armenian by Satenik
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: German (Informal) by Akaer, actxcellence
+#Updated translation: Greek by MikeConom, kiolalis
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Russian by vipgroup
+#Updated translation: Tagalog by avevengers, arriz08, lolskidoodles
+#Updated translation: Zulu by Tanita93, cmkeet
 
-Changes from 2.05+ (build 131219) to 2.05+ (build 140109) Jan 14, 2014
+Changes from 2.05+ (build 131219) to 2.05+ (build 140109) Jan 09, 2014
 -New feature #8343: queXML: next page message with new question splitting option (Adam Zammit)
 -New feature #8344: queXML: conditional splitting with new question splitting option (Adam Zammit)
 -Fixed issue #8234: Text email send with HTML email are not filtered (Denis Chenu)
