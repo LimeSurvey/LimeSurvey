@@ -3561,7 +3561,7 @@ function do_shortfreetext($ia)
     }
     elseif((int)($aQuestionAttributes['location_mapservice'])!=0){
         $mapservice = $aQuestionAttributes['location_mapservice'];
-        $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+        $savedLocation = $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentLatLong = null;
 
         $floatLat = 0;
@@ -3570,7 +3570,12 @@ function do_shortfreetext($ia)
         // Get the latitude/longtitude for the point that needs to be displayed by default
         if (strlen($currentLocation) > 2){
             $currentLatLong = explode(';',$currentLocation);
-            $currentLatLong = array($currentLatLong[0],$currentLatLong[1]);
+            if (count($currentLatLong) == 1) {
+            	$currentLatLong = explode(' ',$currentLocation);
+            	$currentLatLong = array($currentLatLong[0],$currentLatLong[1]);
+            } else {
+            	$currentLatLong = array($currentLatLong[0],$currentLatLong[1]);
+            }
         }
         else{
             if ((int)($aQuestionAttributes['location_nodefaultfromip'])==0)
@@ -3579,50 +3584,45 @@ function do_shortfreetext($ia)
                 $floatLat = 0;
                 $floatLng = 0;
                 $LatLong = explode(" ",trim($aQuestionAttributes['location_defaultcoordinates']));
-
                 if (isset($LatLong[0]) && isset($LatLong[1])){
                     $floatLat = $LatLong[0];
                     $floatLng = $LatLong[1];
                 }
-
                 $currentLatLong = array($floatLat,$floatLng);
             }
         }
         // 2 - city; 3 - state; 4 - country; 5 - postal
-        $strBuild = "";
+        $strBoycott = "";
         if ($aQuestionAttributes['location_city'])
-            $strBuild .= "2";
+            $strBoycott .= "2";
         if ($aQuestionAttributes['location_state'])
-            $strBuild .= "3";
+            $strBoycott .= "3";
         if ($aQuestionAttributes['location_country'])
-            $strBuild .= "4";
+            $strBoycott .= "4";
         if ($aQuestionAttributes['location_postal'])
-            $strBuild .= "5";
+            $strBoycott .= "5";
 
-        $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
+        if (count(explode(';',$savedLocation)) < 3) $savedLocation = $currentLatLong[0] . ";" . $currentLatLong[1];
         $answer = "
-        <script type=\"text/javascript\">
-        zoom['$ia[1]'] = {$aQuestionAttributes['location_mapzoom']};
-        </script>
         <div class=\"question answer-item geoloc-item {$extraclass}\">
-        <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\">
+        <script type='text/javascript'>zoom['$ia[1]'] = {$aQuestionAttributes['location_mapzoom']};</script>
+        <input type='hidden' name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\" value = \"{$strBoycott}\" />
+        <input type='hidden' value=\"{$aQuestionAttributes['location_mapservice']}\"
+        name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\" class='mapservice' />
+        <input type='hidden' name=\"$ia[1]\" id=\"answer_$ia[1]\" class='coordinates' value=\"{$savedLocation}\" />
 
-        <input class=\"text location ".$kpclass."\" type=\"text\" size=\"20\" name=\"$ia[1]_c\"
-        id=\"answer$ia[1]_c\" value=\"$currentLocation\"
-        onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
+        <div class='map' id=\"map_canvas_$ia[1]\"
+        style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
 
-        <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\"
-        value = \"{$strBuild}\" >
-        <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\"
-        class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
-        <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
+        <input class=\"text location ".$kpclass."\" type='text' value='' placeholder=\"{$clang->gT('Type an address here...')}\"
+        name=\"n_$ia[1]\" id=\"location_$ia[1]\" />
         </div>";
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
-        if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
-            Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey");
-        else if ($aQuestionAttributes['location_mapservice']==1)
-            Yii::app()->getClientScript()->registerScriptFile("http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey");
-        elseif ($aQuestionAttributes['location_mapservice']==2)
+        if ($mapservice==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
+            Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&language=".$clang->getlangcode());
+        else if ($mapservice==1)
+            Yii::app()->getClientScript()->registerScriptFile("http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&language=".$clang->getlangcode());
+        elseif ($mapservice==2)
             Yii::app()->getClientScript()->registerScriptFile("http://www.openlayers.org/api/OpenLayers.js");
 
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
