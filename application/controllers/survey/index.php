@@ -143,18 +143,18 @@ class index extends CAction {
         // recompute $redata since $saved_id used to be a global
         $redata = compact(array_keys(get_defined_vars()));
 
-
-        /*if ( $this->_didSessionTimeOut() )
+        // set up a script that redirects the user to an error page when his session expires
+        Yii::app()->clientScript->registerScript('sessionexpires', "setTimeout(function(){location.href='?sessionExpired=yes'}, ".(Yii::app()->getConfig('iSessionExpirationTime')*1000).")", CClientScript::POS_READY);
+        if (Yii::app()->request->getQuery('sessionExpired') === 'yes')
         {
-        // @TODO is this still required ?
-        $asMessage = array(
-        $clang->gT("Error"),
-        $clang->gT("We are sorry but your session has expired."),
-        $clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
-        sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
-        );
-        $this->_niceExit($redata, __LINE__, null, $asMessage);
-        };*/
+                $asMessage = array(
+                        $clang->gT("Error"),
+                        $clang->gT("We are sorry but your session has expired."),
+                        $clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
+                        sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+                );
+                $this->_niceExit($redata, __LINE__, null, $asMessage);
+        };
 
         // Set the language of the survey, either from POST, GET parameter of session var
         // Keep the old value, because SetSurveyLanguage update $_SESSION
