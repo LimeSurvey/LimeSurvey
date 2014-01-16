@@ -380,7 +380,7 @@ class InstallerController extends CController {
 
                         $aValues['next'] =  array(
                             'action' => 'installer/populatedb',
-                            'label' => 'Populate database',
+                            'label' => $clang->gT("Populate database"),
                             'name' => 'createdbstep2',
                         );
                     }
@@ -499,7 +499,7 @@ class InstallerController extends CController {
             .$clang->gT("Please continue with populating the database.")."<br /><br />\n";
             $aData['next'] =  array(
                 'action' => 'installer/populatedb',
-                'label' => 'Populate database',
+                'label' => $clang->gT("Populate database"),
                 'name' => 'createdbstep2',
             );
         }
