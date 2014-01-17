@@ -3364,7 +3364,8 @@ function importSurveyFile($sFullFilepath, $bTranslateLinksFields, $sNewSurveyNam
                     $aTokenCreateResults = array('tokentablecreated' => true);
                 $aImportResults = array_merge($aTokenCreateResults, $aImportResults);
                 $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid']);
-                $aImportResults = array_merge($aTokenImportResults, $aImportResults);
+                $aImportResults = array_merge_recursive($aTokenImportResults, $aImportResults);
+                $aImportResults['importwarnings']=array_merge($aImportResults['importwarnings'],$aImportResults['warnings']);
                 unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
                 break;
             }
@@ -4133,7 +4134,7 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
     Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
     $xml = simplexml_load_file($sFullFilepath);
-
+    $results['warnings']=array();
     if ($xml->LimeSurveyDocType!='Tokens')
     {
         $results['error'] = $clang->gT("This is not a valid token data XML file.");
@@ -4191,8 +4192,10 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
 
 		$token = Token::create($iSurveyID);
 		$token->setAttributes($insertdata, false);
-        $result = $token->save() or safeDie($clang->gT("Error").": " . print_r($token->errors, true));
-
+        if (!$token->save())
+        {                   
+            $results['warnings'][]=$clang->gT("Skipped tokens entry:").' '. implode('. ',$token->errors['token']);
+        };
         $results['tokens']++;
     }
     switchMSSQLIdentityInsert('tokens_'.$iSurveyID,false);
