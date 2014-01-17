@@ -1016,6 +1016,10 @@ class database extends Survey_Common_Action
             {
                 $tokenlength = 15;
             }
+            if($tokenlength > 36)
+            {
+                $tokenlength = 36;
+            }
 
             cleanLanguagesFromSurvey($iSurveyID,Yii::app()->request->getPost('languageids'));
 

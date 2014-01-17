@@ -1492,7 +1492,18 @@ class SurveyAdmin extends Survey_Common_Action
                 $converter = new Date_Time_Converter($sExpiryDate, $aDateFormatData['phpdate'] . ' H:i:s');
                 $sExpiryDate = $converter->convert("Y-m-d H:i:s");
             }
-
+                  
+            $iTokenLength=$_POST['tokenlength'];
+            //token length has to be at least 5, otherwise set it to default (15)
+            if($iTokenLength < 5)
+            {
+                $iTokenLength = 15;
+            }
+            if($iTokenLength > 36)
+            {
+                $iTokenLength = 36;
+            }
+                              
             // Insert base settings into surveys table
             $aInsertData = array(
             'expires' => $sExpiryDate,
@@ -1535,7 +1546,7 @@ class SurveyAdmin extends Survey_Common_Action
             'publicgraphs' => $_POST['publicgraphs'],
             'assessments' => $_POST['assessments'],
             'emailresponseto' => $_POST['emailresponseto'],
-            'tokenlength' => $_POST['tokenlength']
+            'tokenlength' => $iTokenLength
             );
 
             $warning = '';
