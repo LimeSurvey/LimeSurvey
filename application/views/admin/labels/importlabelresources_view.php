@@ -68,5 +68,5 @@
 <?php
     }
 ?>
-    <input type='submit' value='<?php $clang->eT("Back") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/view/lid/' . $lid) ?>', '_top')" />
+    <input type='submit' value='<?php $clang->eT("Back") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/sa/view/lid/' . $lid) ?>', '_top')" />
 </div>
