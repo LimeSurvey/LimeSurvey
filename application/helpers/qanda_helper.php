@@ -4839,20 +4839,6 @@ function do_array($ia)
             $answer .= "\t<td >\n"
             . "<select name=\"$myfname\" id=\"answer$myfname\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\">\n";
 
-            if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] =='')
-            {
-                $answer .= "\t<option value=\"\" ".SELECTED.'>'.$clang->gT('Please choose')."...</option>\n";
-            }
-
-            foreach ($labels as $lrow)
-            {
-                $answer .= "\t<option value=\"".$lrow['code'].'" ';
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $lrow['code'])
-                {
-                    $answer .= SELECTED;
-                }
-                $answer .= '>'.flattenText($lrow['answer'])."</option>\n";
-            }
             // If not mandatory and showanswer, show no ans
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
@@ -4862,6 +4848,15 @@ function do_array($ia)
                     $answer .= SELECTED;
                 }
                 $answer .= '>'.$clang->gT('No answer')."</option>\n";
+            }
+            foreach ($labels as $lrow)
+            {
+                $answer .= "\t<option value=\"".$lrow['code'].'" ';
+                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $lrow['code'])
+                {
+                    $answer .= SELECTED;
+                }
+                $answer .= '>'.flattenText($lrow['answer'])."</option>\n";
             }
             $answer .= "</select>\n";
 
