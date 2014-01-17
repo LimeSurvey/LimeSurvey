@@ -2821,7 +2821,7 @@ function do_file_upload($ia)
     // Modal dialog
     $answer .= $uploadbutton;
 
-    $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."' />";
+    $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."' value='".htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES,'utf-8')."' />";
     $answer .= "<input type='hidden' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value=";
 
     if (array_key_exists($ia[1]."_filecount", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]))
