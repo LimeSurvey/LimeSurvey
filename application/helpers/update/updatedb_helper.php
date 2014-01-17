@@ -1077,12 +1077,12 @@ function db_upgrade_all($iOldDBVersion) {
         if ($iOldDBVersion < 166)
         {
             $oDB->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');
+            dropPrimaryKey('permissions');
             alterColumn('{{permissions}}', 'permission', "{$sVarchar}(100)", false);
             $oDB->createCommand()->renameColumn('{{permissions}}','sid','entity_id');
             alterColumn('{{permissions}}', 'entity_id', "{$sVarchar}(100)", false);
             addColumn('{{permissions}}','entity',"{$sVarchar}(50)");
             $oDB->createCommand("update {{permissions}} set entity='survey'")->query();
-            dropPrimaryKey('permissions');
             addColumn('{{permissions}}','id','pk');
             $oDB->createCommand()->createIndex('idxPermissions','{{permissions}}','entity_id,entity,permission,uid',true);
             
@@ -1120,7 +1120,7 @@ function db_upgrade_all($iOldDBVersion) {
         if ($iOldDBVersion < 169)
         {
             // Add new column for question index options.
-            addColumn('{{surveys}}', 'questionindex', 'integer not null default "0"');
+            addColumn('{{surveys}}', 'questionindex', 'integer not null default 0');
             // Set values for existing surveys.
             $oDB->createCommand("update {{surveys}} set questionindex = 0 where allowjumps = 'Y'")->query();
             $oDB->createCommand("update {{surveys}} set questionindex = 1 where allowjumps = 'N'")->query();
@@ -1160,7 +1160,14 @@ function db_upgrade_all($iOldDBVersion) {
         }
         if ($iOldDBVersion < 172)
         {
-            alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
+            switch ($sDBDriverName){
+                case 'pgsql': 
+                    // Special treatment for Postgres as it is too dumb to convert a string to a number without explicit being told to do so ... seriously?
+                    alterColumn('{{permissions}}', 'entity_id', "INTEGER USING (entity_id::integer)", false);
+                    break;
+                default: 
+                    alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
+            } 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>172),"stg_name='DBVersion'");
         }
         if ($iOldDBVersion < 173)
@@ -1209,7 +1216,7 @@ function upgradeCPDBAttributeDefaultNames173()
 {
     $sQuery = "SELECT attribute_id,attribute_name,COALESCE(lang)
         FROM {{participant_attribute_names_lang}}
-        group by attribute_id, attribute_name
+        group by attribute_id, attribute_name, lang
         order by attribute_id";
     $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
     foreach ( $oResult as $aAttribute )
