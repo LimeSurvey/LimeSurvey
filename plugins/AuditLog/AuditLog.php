@@ -104,16 +104,16 @@
         */
         public function beforeUserSave()
         {
-            $oUserData=$this->getEvent()->getSender();
+            $oUserData=$this->getEvent()->get('model');
             $oCurrentUser=$this->api->getCurrentUser();
-            $oOldUser=$this->api->getUser($oUserData->uid);
-            if (!$oOldUser)
+            if (!isset($oUserData->uid))
             {
                 $sAction='create';
                 $aOldValues=array();
             }
             else
             {                
+                $oOldUser=$this->api->getUser($oUserData->uid);
                 $sAction='update';
                 $aOldValues=$oOldUser->getAttributes();
             }
