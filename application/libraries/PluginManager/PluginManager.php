@@ -293,7 +293,7 @@
         {
             try {
                 $pluginModel = Plugin::model();    
-                $records = $pluginModel->findAllByAttributes(array('active'=>1));
+                $records = $pluginModel->findAllByAttributes(array('active'=>true));
             
                 foreach ($records as $record) {
                     $this->loadPlugin($record->name, $record->id);
