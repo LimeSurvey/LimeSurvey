@@ -236,7 +236,8 @@ CREATE TABLE prefix_permissions (
 CREATE TABLE prefix_plugins (
   id serial NOT NULL,
   name character varying(50) NOT NULL,
-  active integer NOT NULL default '0'
+  active integer NOT NULL default '0',
+  CONSTRAINT prefix_plugins_pkey PRIMARY KEY (id)
 );
 
 
@@ -244,12 +245,13 @@ CREATE TABLE prefix_plugins (
 -- Table structure for table plugin_settings
 --
 CREATE TABLE prefix_plugin_settings (
-  id integer PRIMARY KEY NOT NULL,
+  id serial NOT NULL,
   plugin_id integer NOT NULL,
   model character varying(50) NULL,
   model_id integer NULL,
   key character varying(50) NOT NULL,
-  value text NULL
+  value text NULL,
+  CONSTRAINT prefix_plugin_settings_pkey PRIMARY KEY (id)
 );
 
 
