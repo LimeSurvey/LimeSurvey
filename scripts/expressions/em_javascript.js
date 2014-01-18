@@ -159,7 +159,7 @@ function LEMis_null(a)
 
 function LEMis_float(a)
 {
-    if (isNaN(a))
+    if (!LEMis_numeric(a))
     {
         return false;
     }
@@ -168,23 +168,22 @@ function LEMis_float(a)
     return (Math.floor(num) != num);
 }
 
-function LEMis_int(a)
+/**
+ * Test if mixed_var is_int same way than PHP
+ * From: http://phpjs.org/functions/is_int/
+ */
+function LEMis_int(mixed_var)
 {
-    if (isNaN(a))
-    {
-        return false;
-    }
-    var num = new Number(a);
-    // should this only return true if there is a non-zero decimal part to the number?
-    return (Math.floor(num) == num);
+  return mixed_var === +mixed_var && isFinite(mixed_var) && !(mixed_var % 1);
 }
-
-function LEMis_numeric(a)
+/**
+ * Test if mixed_var is a PHP numeric value
+ * From: http://phpjs.org/functions/is_numeric/
+ */
+function LEMis_numeric(mixed_var)
 {
-    if (a === '') {
-        return false;   // to make consistent with PHP
-    }
-    return !(isNaN(a));
+    var whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
+    return (typeof mixed_var === 'number' || (typeof mixed_var === 'string' && whitespace.indexOf(mixed_var.slice(-1)) === -1)) && mixed_var !== '' && !isNaN(mixed_var);
 }
 
 function LEMis_string(a)
@@ -632,8 +631,8 @@ function LEMval(alias)
                 return value;
             }
             else {
-                if (value.length > 0 && value[0]==0) {
-                    return value;   // so keep 0 prefixes on numbers
+                if (!LEMis_numeric(value) || (value.length > 0 && value[0]==0)) {// so keep 0 prefixes on numbers
+                    return value;
                 }
                 return +value;  // convert it to numeric
             }
