@@ -496,7 +496,7 @@ function LEMval(alias)
                 case 'S': //SHORT FREE TEXT
                 case 'T': //LONG FREE TEXT
                 case 'U': //HUGE FREE TEXT
-                case 'D': //DATE
+                case 'D': //DATE (".shown" only works on same page, TODO: add conversion...access to adv. q-attribs w/ js?)
                 case '*': //Equation
                 case 'I': //Language Question
                 case '|': //File Upload
@@ -627,6 +627,26 @@ function LEMval(alias)
             else if (isNaN(value)) {
                 if (value==='false') {
                     return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string
+                }
+                // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
+                if (attr.type=='D')  {
+                    // get date format pattern of referenced question
+                    var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).attr('value');
+                    
+                    // if undefined (eg., variable on a previous page), set default format yy-mm-dd HH:MM
+                    sdatetimePattern=typeof sdatetimePattern=='undefined'? 'yy-mm-dd HH:MM': sdatetimePattern;
+                    
+                    //split format into a date part and a time part
+                    var datepattern=new RegExp(/[mydYD][mydYD.:\/-]*[mydYD]/);
+                    var timepattern=new RegExp(/[HMN][HMN.:\/-]*[HMN]/);
+                    var sdateFormat=datepattern.exec(sdatetimePattern);
+                    var stimeFormat=timepattern.exec(sdatetimePattern);
+                    sdateFormat=sdateFormat!=null? sdateFormat.toString(): "";
+                    // datetimepicker needs minutes lower case
+                    stimeFormat=stimeFormat!=null? stimeFormat.toString().replace(/[MN]/gi,"m"): "";
+                    
+                    // For parsing patterns with time first (eg., HH:MM dd/mm/yyyy), we might need a specialised js lib 
+                    value=date('Y-m-d H:i', $.datepicker.parseDateTime(sdateFormat, stimeFormat, value));
                 }
                 return value;
             }
