@@ -340,7 +340,7 @@ class ParticipantAttributeName extends LSActiveRecord
     function storeAttribute($data)
     {      
         $insertnames = array('attribute_type' => $data['attribute_type'],
-            'defaultname'=> $data['attribute_name'],
+            'defaultname'=> $data['defaultname'],
             'visible' => $data['visible']);
         Yii::app()->db->createCommand()
         ->insert('{{participant_attribute_names}}',$insertnames);

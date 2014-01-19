@@ -417,7 +417,7 @@ class participantsaction extends Survey_Common_Action
      * Basically takes the call on can_edit
      */
     function editAttributeInfo()
-    {       
+    {    
         $clang = Yii::app()->lang;
         $operation = Yii::app()->request->getPost('oper');
 
@@ -436,6 +436,7 @@ class participantsaction extends Survey_Common_Action
         {
             $aData = array(
                 'defaultname' => Yii::app()->request->getPost('attribute_name'),
+                'attribute_name' => Yii::app()->request->getPost('attribute_name'),
                 'attribute_type' => Yii::app()->request->getPost('attribute_type'),
                 'visible' => Yii::app()->request->getPost('visible')? 'TRUE' : 'FALSE'
             );
