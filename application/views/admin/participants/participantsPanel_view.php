@@ -5,6 +5,7 @@
     var okBtn = "<?php $clang->eT("OK", 'js') ?>";
     var error = "<?php $clang->eT("Error", 'js') ?>";
     var exportBtn = "<?php $clang->eT("Export", 'js') ?>";
+    var cancelBtn = "<?php $clang->eT("Cancel", 'js') ?>";
     var exportToCSVURL = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv"); ?>";
 </script>
 <div class="menubar">
