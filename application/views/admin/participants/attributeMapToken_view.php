@@ -51,9 +51,14 @@
             
             <?php if (!empty($attribute)) { ?>
             <div class='explanation'>
-                <label for='overwriteman'><?php $clang->eT("Overwrite existing attribute values if a participant already exists?") ?></label><br /><input type='checkbox' id='overwriteman' name='overwriteman' />
-                <br />
-                <label for='createautomap'><?php $clang->eT("Make these mappings automatic in future") ?></label><br /><input type='checkbox' id='createautomap' name='createautomap' />
+                <div class="explanation-row">
+                    <input type='checkbox' id='overwriteman' name='overwriteman' />
+                    <label for='overwriteman'><?php $clang->eT("Overwrite existing attribute values if a participant already exists?") ?></label>
+                </div>
+                <div class="explanation-row">
+                    <input type='checkbox' id='createautomap' name='createautomap' />
+                    <label for='createautomap'><?php $clang->eT("Make these mappings automatic in future") ?></label>
+                </div>
             </div>
             <?php } else { ?>
             
@@ -70,7 +75,10 @@
                 ?>
                 </div>
                 <div class='explanation'>
-                    <label for='overwrite'><?php $clang->eT("Overwrite existing attribute values if a participant already exists?") ?></label><input type='checkbox' id='overwrite' name='overwrite' /> 
+                    <div class="explanation-row">
+                        <input type='checkbox' id='overwrite' name='overwrite' />
+                        <label for='overwrite'><?php $clang->eT("Overwrite existing attribute values if a participant already exists?") ?></label>
+                    </div>
                 </div>
                 <?php
             }

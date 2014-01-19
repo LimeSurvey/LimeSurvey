@@ -109,8 +109,29 @@ div.mappable-attribute-wrapper div.attribute-item {
 	color: white;
 }
 
-#centralattribute .explanation input {
-	margin: 2px 0 10px 0;
+#centralattribute .explanation {
+	width:90%;
+	margin: 0 auto;
+	text-align: left;
+}
+
+#centralattribute .explanation-row {
+	display: table-row;
+}
+
+#centralattribute .explanation input,
+#centralattribute .explanation label {
+	display: table-cell;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+#centralattribute .explanation label {
+	padding-left: 8px;
+}
+
+.attribute-item.draggable {
+	cursor: move;
 }
 
 .droppable.target-hover {
