@@ -75,7 +75,13 @@ class DocWriter extends Writer
             $counter = 0;
             foreach ($headers as $header)
             {
-                $this->output .= "<tr><td>".$header."</td><td>".$values[$counter]."</td></tr>".PHP_EOL;
+                //if cell empty, output a space instead, otherwise the cell will be in 2pt font
+                $value = "&nbsp;";
+                if($values[$counter] != "")
+                {
+                    $value = $values[$counter];
+                }
+                $this->output .= "<tr><td>".$header."</td><td>".$value."</td></tr>".PHP_EOL;
                 $counter++;
             }
             $this->output .= "</table>".PHP_EOL;           
