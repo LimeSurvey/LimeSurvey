@@ -1185,6 +1185,11 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{users}}', 'email', "{$sVarchar}(254)");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>174),"stg_name='DBVersion'");
         }
+        if ($iOldDBVersion < 175)
+        {
+            alterColumn('{{plugins}}', 'active', "integer",false,'0');
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>175),"stg_name='DBVersion'");
+        }
         
 
         $oTransaction->commit();
