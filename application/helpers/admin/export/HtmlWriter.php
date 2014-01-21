@@ -96,8 +96,8 @@
                         {
                             if (isset($values[$question['index']]) && isset($headers[$question['index']]))
                             {
-                                $this->renderQuestion($question, $values[$question['index']], $headers[$question['index']]);
-                            }                            
+                                $this->renderQuestion($question, CHtml::encode($values[$question['index']]), $headers[$question['index']]);
+                            }
                         }
                     $this->closeTag();
                 }
