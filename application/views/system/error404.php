@@ -5,7 +5,7 @@
     <body>
         <h1>404 Not found.</h1>
         <?php
-            echo CHtml::tag('h2', array(), $data['message']);
+            echo CHtml::tag('h2', array(), nl2br(CHtml::encode($data['message'])));
         ?>
         <p>
         The requested URL was not found on this server.
