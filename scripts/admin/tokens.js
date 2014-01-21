@@ -156,6 +156,7 @@ $(document).ready(function() {
             window.editing = false;
             jQuery(".token_edit").unbind('click').bind('click', function(e)
             {
+                e.preventDefault();
                 if (window.editing)
                     return true;
                 var row = jQuery(this).closest('.jqgrow');
