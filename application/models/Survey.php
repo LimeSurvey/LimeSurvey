@@ -268,7 +268,7 @@ class Survey extends LSActiveRecord
     {
         $attdescriptiondata = @unserialize($this->attributedescriptions);
         // Catches malformed data
-        if ($attdescriptiondata && strpos(reset($attdescriptiondata),'attribute_')===false)
+        if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)),'attribute_')===false)
         {
             $attdescriptiondata=array_flip(GetAttributeFieldNames($this->sid));
         }
