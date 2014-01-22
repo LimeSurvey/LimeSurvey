@@ -284,7 +284,7 @@ class database extends Survey_Common_Action
                             }
                             else
                             {
-                                $oSubQuestion=Question::model()->find("qid=:qid AND language:=language",array(":qid"=>$aInsertQID[$iScaleID][$iPosition],':language'=>$sLanguage));
+                                $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$aInsertQID[$iScaleID][$iPosition],':language'=>$sLanguage));
                                 $oSubQuestion->sid=$iSurveyID;
                                 $oSubQuestion->gid=$iQuestionGroupID;
                                 $oSubQuestion->question_order=$iPosition+1;
