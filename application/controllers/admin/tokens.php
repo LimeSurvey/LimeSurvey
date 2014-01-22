@@ -1053,8 +1053,12 @@ class tokens extends Survey_Common_Action
         $aData['languages'] = $languages;
         $aData['tokencaptions'] = $captions;
         $aData['nrofattributes'] = 0;
-        $aData['examplerow'] = TokenDynamic::model($iSurveyId)->find();
-
+        $aData['examplerow'] = TokenDynamic::model($iSurveyId)->find();         
+        $aData['aCPDBAttributes']['']=$clang->gT('(none)');
+        foreach (ParticipantAttributeName::model()->getCPDBAttributes() as $aCPDBAttribute)
+        {
+            $aData['aCPDBAttributes'][$aCPDBAttribute['attribute_id']]=$aCPDBAttribute['attribute_name']; 
+        }
         $this->_renderWrappedTemplate('token', array('tokenbar', 'managetokenattributes'), $aData);
     }
 
@@ -1192,6 +1196,7 @@ class tokens extends Survey_Common_Action
             'description' => strip_tags(Yii::app()->request->getPost('description_' . $fieldname)),
             'mandatory' => Yii::app()->request->getPost('mandatory_' . $fieldname) == 'Y' ? 'Y' : 'N',
             'show_register' => Yii::app()->request->getPost('show_register_' . $fieldname) == 'Y' ? 'Y' : 'N',
+            'cpdbmap' => Yii::app()->request->getPost('cpdbmap_' . $fieldname)
             );
             foreach ($languages as $language)
                 $captions[$language][$fieldname] = $_POST["caption_{$fieldname}_$language"];

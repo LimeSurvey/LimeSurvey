@@ -593,7 +593,7 @@ a.optoutemail {
 .edituser,
 .users,
 .assessmentlist,
-.listsurveys,
+.listtokenattributes,
 .surveysecurity {
     text-align:center;
     margin:0 auto;
@@ -689,7 +689,7 @@ ul.assessmentscope li label:first-child {
     width:80%;
 }
 
-.listsurveys
+.listtokenattributes
 {
     width:70%;
 }
@@ -708,7 +708,7 @@ ul.assessmentscope li label:first-child {
 .edituser th,
 .surveysecurity th,
 .users th,
-.listsurveys th {
+.listtokenattributes th {
     background-color: #fff;
     text-align: center;
     font-size:0.8em;
@@ -742,7 +742,7 @@ ul.assessmentscope li label:first-child {
 
 .users td,
 .surveysecurity td,
-.listsurveys td {
+.listtokenattributes td {
     font-size:0.8em;
     padding:2px 6px;
 }

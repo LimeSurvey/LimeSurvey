@@ -396,7 +396,7 @@ class participantsaction extends Survey_Common_Action
         $aData = new stdClass();
         $aData->page = $page;
         $aData->records = count($records);
-        $aData->total = ceil(ParticipantAttributeName::model()->getAttributes(true) / $limit);
+        $aData->total = ceil(ParticipantAttributeName::model()->getCPDBAttributes(true) / $limit);
         $i = 0;
         foreach($records as $row) { //Iterate through each attribute
             $sAttributeCaption=$row->defaultname; //Choose the first item by default
@@ -894,7 +894,7 @@ class participantsaction extends Survey_Common_Action
         /* The user has NO values stored against any attribute */
         if (count($doneattributes) == 0)
         {
-            $attributenotdone = ParticipantAttributeName::model()->getAttributes();
+            $attributenotdone = ParticipantAttributeName::model()->getCPDBAttributes();
         }
         /* The user has SOME values stored against attributes */
         else
@@ -1131,7 +1131,7 @@ class participantsaction extends Survey_Common_Action
             }
             $linecount = count(file($sFilePath));
 
-            $attributes = ParticipantAttributeName::model()->model()->getAttributes();
+            $attributes = ParticipantAttributeName::model()->model()->getCPDBAttributes();
             $aData = array(
                 'attributes' => $attributes,
                 'firstline' => $selectedcsvfields,
@@ -1572,7 +1572,7 @@ class participantsaction extends Survey_Common_Action
         $clang = $this->getController()->lang;
         if (empty($newcreate[0])) { $newcreate = array(); }
 
-        $response = Participant::model()->copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);
+        $response = Participant::model()->copyCPBDAttributesToTokens($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);
 
         printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {
@@ -1598,7 +1598,7 @@ class participantsaction extends Survey_Common_Action
         $redirect = Yii::app()->request->getPost('redirect');
         $count = Yii::app()->request->getPost('count');
         $iParticipantId = Yii::app()->request->getPost('participant_id');
-        $attributes = ParticipantAttributeName::model()->getAttributes();
+        $attributes = ParticipantAttributeName::model()->getCPDBAttributes();
         $tokenattributefieldnames = getTokenFieldsAndNames($iSurveyId, TRUE);
         /* $arr = Yii::app()->db
                          ->createCommand()
@@ -1661,18 +1661,17 @@ class participantsaction extends Survey_Common_Action
     }
 
     /*
-     * This function is responsible for attribute mapping while copying participants from cpdb to token's table
+     * This function is responsible for attribute mapping while copying participants from tokens to CPDB
      */
-
     function attributeMapToken()
     {
         Yii::app()->loadHelper('common');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "attributeMapToken.js");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') ."attributeMapToken.css");
 
-        $iSurveyId = Yii::app()->request->getQuery('sid');
-        $attributes = ParticipantAttributeName::model()->getAttributes();
-        $tokenattributefieldnames = getTokenFieldsAndNames($iSurveyId, TRUE);
+        $iSurveyID = (int)Yii::app()->request->getQuery('sid');
+        $aCPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();
+        $aTokenAttributes = getTokenFieldsAndNames($iSurveyID, TRUE);
 
         $selectedattribute = array();
         $selectedcentralattribute = array();
@@ -1682,31 +1681,31 @@ class participantsaction extends Survey_Common_Action
         $i = 0;
         $j = 0;
 
-        foreach ($tokenattributefieldnames as $key => $value)
+        foreach ($aTokenAttributes as $key => $value)
         {
-            if (is_numeric($key[10]))
+            if ($value['cpdbmap']=='')
             {
                 $selectedattribute[$value['description']] = $key;
             }
             else
             {
-                $attributeid=substr($key,15);
+                $attributeid=$value['cpdbmap'];
                 $continue=false;
-                foreach($attributes as $attribute) {
+                foreach($aCPDBAttributes as $attribute) {
                     if($attribute['attribute_id']==$attributeid) {
                         $continue=true;
                     }
                 }
                 if($continue) {
-                    array_push($alreadymappedattid, $attributeid);
-                    array_push($alreadymappedattdisplay, $key);
+                    $alreadymappedattid[]=$attributeid;
+                    $alreadymappedattdisplay[]=$key;
                     $alreadymappedattnames[$key]=$value['description'];
                 } else {
                     $selectedattribute[$value['description']]=$key;
                 }
             }
         }
-        foreach ($attributes as $row)
+        foreach ($aCPDBAttributes as $row)
         {
             if (!in_array($row['attribute_id'], $alreadymappedattid))
             {

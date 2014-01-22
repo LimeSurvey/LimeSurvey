@@ -255,7 +255,7 @@ class ParticipantAttributeName extends LSActiveRecord
         return $data;
     }
 
-    function getAttributes($count = false, $limit = -1, $offset = -1)
+    function getCPDBAttributes($count = false, $limit = -1, $offset = -1)
     {
         $findCriteria=new CDbCriteria();
         $findCriteria->offset=$offset;
@@ -342,14 +342,12 @@ class ParticipantAttributeName extends LSActiveRecord
         $insertnames = array('attribute_type' => $data['attribute_type'],
             'defaultname'=> $data['defaultname'],
             'visible' => $data['visible']);
-        Yii::app()->db->createCommand()
-        ->insert('{{participant_attribute_names}}',$insertnames);
+        Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}',$insertnames);
         $attribute_id = getLastInsertID($this->tableName());
         $insertnameslang = array('attribute_id' => intval($attribute_id),
             'attribute_name'=> $data['attribute_name'],
             'lang' => Yii::app()->session['adminlang']);
-        Yii::app()->db->createCommand()
-        ->insert('{{participant_attribute_names_lang}}',$insertnameslang);
+        Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}',$insertnameslang);
         return $attribute_id;
     }
 

@@ -266,13 +266,20 @@ class Survey extends LSActiveRecord
     */
     public function getTokenAttributes()
     {
-        // !!! Legacy records support
-        if (($attdescriptiondata = @unserialize($this->attributedescriptions)) === false)
+        $attdescriptiondata = @unserialize($this->attributedescriptions);
+        // Catches malformed data
+        if ($attdescriptiondata && strpos(reset($attdescriptiondata),'attribute_')===false)
+        {
+            $attdescriptiondata=array_flip(GetAttributeFieldNames($this->sid));
+        }
+        // Legacy records support
+        if ($attdescriptiondata === false)
         {
             $attdescriptiondata = explode("\n", $this->attributedescriptions);
             $fields = array();
             $languagesettings = array();
             foreach ($attdescriptiondata as $attdescription)
+            {
                 if (trim($attdescription) != '')
                 {
                     $fieldname = substr($attdescription, 0, strpos($attdescription, '='));
@@ -281,16 +288,30 @@ class Survey extends LSActiveRecord
                     'description' => $desc,
                     'mandatory' => 'N',
                     'show_register' => 'N',
+                    'cpdbmap' =>''
                     );
                     $languagesettings[$fieldname] = $desc;
                 }
-                $ls = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $this->sid, 'surveyls_language' => $this->language));
+            }
+            $ls = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $this->sid, 'surveyls_language' => $this->language));
             self::model()->updateByPk($this->sid, array('attributedescriptions' => serialize($fields)));
             $ls->surveyls_attributecaptions = serialize($languagesettings);
             $ls->save();
             $attdescriptiondata = $fields;
         }
-        return $attdescriptiondata;
+
+        
+        foreach ($attdescriptiondata as $sKey=>$aValues)
+        {                                   
+            if (!is_array($aValues)) $aValues=array();
+            $aCompleteData[$sKey]= array_merge(array(
+                    'description' => '',
+                    'mandatory' => 'N',
+                    'show_register' => 'N',
+                    'cpdbmap' =>''
+                    ),$aValues);
+        }
+        return $aCompleteData;
     }
     
     /**

@@ -904,7 +904,7 @@ class Participant extends LSActiveRecord
      * @param bool $overwritest If true, overwrite standard fields (ie: names, email, participant_id, token)
      * @param bool $createautomap If true, rename the fieldnames of automapped attributes so that in future they are automatically mapped
      * */
-    function copytosurveyatt($surveyid, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false, $overwritest=false, $createautomap=true)
+    function copyCPBDAttributesToTokens($surveyid, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false, $overwritest=false, $createautomap=true)
     {
         Yii::app()->loadHelper('common');
         $duplicate = 0;
@@ -931,69 +931,28 @@ class Participant extends LSActiveRecord
             $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterForAttributes');
         }
 
-        /* Rename an existing attribute in the token table to this attribute so
-         * it maps automatically in future.
-         *
-         * Fieldname renamed from the $key of $mappeed to the $val of $mapped
-         * */
+        // If automapping is enabled then update the token field properties with the mapped CPDB field ID
+        
         if($createautomap=="true") {
-            foreach($mapped as $key=>$val) {
-                if(is_numeric($val)) {
-                    $newname = 'attribute_cpdb_' . intval($val);
-                    //Rename the field in the tokens_[sid] table
-                    Yii::app()->db
-                              ->createCommand()
-                              ->renameColumn('{{tokens_' . intval($surveyid) . '}}', $key, $newname);
-                    //Make the field a TEXT field
-                    Yii::app()->db
-                              ->createCommand()
-                              ->alterColumn('{{tokens_' . intval($surveyid) . '}}', $newname, 'TEXT');
-
+            foreach($mapped as $key=>$iIDAttributeCPDB) {
+                if(is_numeric($iIDAttributeCPDB)) {
                     /* Update the attributedescriptions info */
-                    $previousatt = Yii::app()->db
-                                             ->createCommand()
-                                             ->select('attributedescriptions')
-                                             ->from('{{surveys}}')
-                                             ->where("sid = ".$surveyid);
-                    $patt=$previousatt->queryRow();
-                    $previousattribute = unserialize($patt['attributedescriptions']);
-                    $previousattribute[$newname]=$previousattribute[$key];
-                    unset($previousattribute[$key]);
-                    //Rename the token field the name of the participant_attribute
-                    $attributedetails=ParticipantAttributeName::model()->getAttributeNames($val);
-                    $previousattribute[$newname]['description']=$attributedetails[0]['attribute_name'];
-                    $previousattribute=serialize($previousattribute);
-
+                    $aTokenAttributes=Survey::model()->findByPk($surveyid)->tokenattributes;
+                    $aTokenAttributes[$key]['cpdbmap']=$iIDAttributeCPDB;
                     Yii::app()->db
-                              ->createCommand()
-                              ->update('{{surveys}}',
-                                        array("attributedescriptions" => $previousattribute),
-                                        'sid = '.$surveyid); //load description in the surveys table
-                    //Finally, update the $mapped key/val pair to reflect the new keyname of $newname
-                    $mapped[$newname]=$mapped[$key];
-                    unset($mapped[$key]);
-                }
-
+                    ->createCommand()
+                    ->update('{{surveys}}', array("attributedescriptions" => serialize($aAttributes)), 'sid = '.$surveyid);                }
             }
-
         }
         foreach ($tokenattributefieldnames as $key => $value)
         {
-            if ($value[10] == 'c') /* Existence of 'c' as 11th letter assume it is a CPDB link */
-            {
-                $attid = substr($value, 15);
-                $mapped[$value] = $attid;
-            } elseif (is_numeric($value[10]))
-            {
-                $mapped[$key]=$value;
-            }
+            $mapped[$key]=$value;
         }
-
         if (!empty($newcreate)) //Create new fields in the tokens table
         {
             foreach ($newcreate as $key => $value)
             {
-                $newfieldname='attribute_cpdb_'.$value;
+                $newfieldname='attribute_'.$value;
                 $fields[$newfieldname] = array('type' => 'VARCHAR', 'constraint' => '255');
                 $attname = Yii::app()->db
                                      ->createCommand()
@@ -1018,7 +977,7 @@ class Participant extends LSActiveRecord
                 $fieldcontents[$newfieldname]=array("description"=>$newname,
                                                     "mandatory"=>"N",
                                                     "show_register"=>"N");
-                array_push($attributeidadded, 'attribute_cpdb_' . $value);
+                array_push($attributeidadded, 'attribute_' . $value);
                 array_push($attributesadded, $value);
             }
             //Update the attributedescriptions in the survey table to include the newly created attributes
@@ -1028,16 +987,16 @@ class Participant extends LSActiveRecord
                                      ->where("sid = :sid")
                                      ->from('{{surveys}}')
                                      ->bindParam(":sid", $surveyid, PDO::PARAM_INT);
-            $previousattribute = $previousatt->queryRow();
-            $previousattribute = unserialize($previousattribute['attributedescriptions']);
-            foreach($fieldcontents as $key=>$val) {
-                $previousattribute[$key]=$val;
+            $aTokenAttributes = $previousatt->queryRow();
+            $aTokenAttributes = unserialize($aTokenAttributes['attributedescriptions']);
+            foreach($fieldcontents as $key=>$iIDAttributeCPDB) {
+                $aTokenAttributes[$key]=$iIDAttributeCPDB;
             }
-            $previousattribute = serialize($previousattribute);
+            $aTokenAttributes = serialize($aTokenAttributes);
             Yii::app()->db
                       ->createCommand()
                       ->update('{{surveys}}',
-                                array("attributedescriptions" => $previousattribute), 'sid = '.intval($surveyid)); // load description in the surveys table
+                                array("attributedescriptions" => $aTokenAttributes), 'sid = '.intval($surveyid)); // load description in the surveys table
 
             //Actually create the fields in the tokens table
             foreach ($fields as $key => $value)
@@ -1242,24 +1201,23 @@ class Participant extends LSActiveRecord
      *       here in the model file. Portions of this should be moved out at some stage.
      *
      * @param int $surveyid The id of the survey, used to find the appropriate tokens table
-     * @param array $newarr An array containing the names of token attributes that have to be created in the cpdb
+     * @param array $aAttributesToBeCreated An array containing the names of token attributes that have to be created in the cpdb
      * @param array $aMapped An array containing the names of token attributes that are to be mapped to an existing cpdb attribute
-     * @param bool $overwriteauto If true, overwrites existing automatically mapped attribute values (where token fieldname=attribute_cpdb_n)
+     * @param bool $overwriteauto If true, overwrites existing automatically mapped attribute values
      * @param bool $overwriteman If true, overwrites manually mapped attribute values (where token fieldname=attribute_n)
-     * @param bool $createautomap If true, updates manuall mapped token fields to fieldname=attribute_cpdb_n from fieldname=attribute_n, s in future mapping is automatic
+     * @param bool $createautomap If true, updates tokendescription field with new mapping
      * @param array $tokenid is assumed, saved by an earlier script as a session string called "participantid". It holds a list of token_ids
      *                       for the token participants we are copying to the central db
      *
      * @return array An array contaning list of successful and list of failed ids
      */
 
-    function copyToCentral($surveyid, $newarr, $aMapped, $overwriteauto=false, $overwriteman=false, $createautomap=true)
+    function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto=false, $overwriteman=false, $createautomap=true)
     {
         $tokenid = Yii::app()->session['participantid']; //List of token_id's to add to participants table
         $duplicate = 0;
         $sucessfull = 0;
         $writearray = array();
-        $aAutoMapped=array();
         $attid = array(); //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
         $pid = "";
 
@@ -1274,20 +1232,10 @@ class Participant extends LSActiveRecord
         {
             $tokenattributefieldnames = array();
         }
-        /* Automatically mapped attribute names are named "attribute_cpdb_[some_number]" */
-        foreach ($tokenattributefieldnames as $key => $value) //mapping the automatically mapped
-        {
-            if ($value[10] == 'c') /* This is going to cause a problem one day! It's deciding that an item is an automatically mapped because the 10th letter is "c"*/
-            {
-                $autoattid = substr($value, 15);
-                $aAutoMapped[$autoattid] = $value;
-            }
-        }
-
         /* Create new CPDB attributes */
-        if (!empty($newarr))
+        if (!empty($aAttributesToBeCreated))
         {
-            foreach ($newarr as $key => $value) //creating new central attribute
+            foreach ($aAttributesToBeCreated as $key => $value) //creating new central attribute
             {
                 /* $key is the fieldname from the token table (ie "attribute_1")
                  * $value is the 'friendly name' for the attribute (ie "Gender")
@@ -1296,7 +1244,7 @@ class Participant extends LSActiveRecord
                 Yii::app()->db
                           ->createCommand()
                           ->insert('{{participant_attribute_names}}', $insertnames);
-                $attid[$key] = getLastInsertID('{{participant_attribute_names}}'); /* eg $attid['attribute_1']='8372' */
+                $attid[$key] = $aAttributesToBeCreated[$key]=getLastInsertID('{{participant_attribute_names}}'); /* eg $attid['attribute_1']='8372' */
                 $insertnameslang = array(
                                          'attribute_id' => $attid[$key],
                                          'attribute_name' => urldecode($value),
@@ -1335,24 +1283,9 @@ class Participant extends LSActiveRecord
                 if (count($query) > 0)
                 {
                     $duplicate++;
-                    //HERE is where we can add "overwrite" feature to update attribute values for existing participants
-                    if($overwriteauto == "true" && !empty($newarr))
-                    {
-                        foreach ($newarr as $key => $value)
-                        {
-                            Participant::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $attid[$key], $key);
-                        }
-                    }
                     if($overwriteman == "true" && !empty($aMapped))
                     {
                         foreach ($aMapped as $cpdbatt => $tatt)
-                        {
-                            Participant::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
-                        }
-                    }
-                    if($overwriteauto == "true" && !empty($aAutoMapped))
-                    {
-                        foreach ($aAutoMapped as $cpdbatt => $tatt)
                         {
                             Participant::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
                         }
@@ -1381,9 +1314,9 @@ class Participant extends LSActiveRecord
                               ->update('{{tokens_'.intval($surveyid).'}}', $data, "tid = $tid");
 
                     /* Now add any new attribute values */
-                    if (!empty($newarr))
+                    if (!empty($aAttributesToBeCreated))
                     {
-                        foreach ($newarr as $key => $value)
+                        foreach ($aAttributesToBeCreated as $key => $value)
                         {
                             Participant::model()->updateAttributeValueToken($surveyid, $pid, $attid[$key], $key);
                         }
@@ -1392,10 +1325,6 @@ class Participant extends LSActiveRecord
                     if (!empty($aMapped))
                     {
                         foreach ($aMapped as $cpdbatt => $tatt)
-                        {
-                            Participant::model()->updateAttributeValueToken($surveyid,$pid,$cpdbatt,$tatt);
-                        }
-                        foreach ($aAutoMapped as $cpdbatt => $tatt)
                         {
                             Participant::model()->updateAttributeValueToken($surveyid,$pid,$cpdbatt,$tatt);
                         }
@@ -1416,76 +1345,30 @@ class Participant extends LSActiveRecord
             }
         }
 
-        if (!empty($newarr))
+        if ($createautomap=="true")
         {
-            /* Rename the token attribute fields to a cpdb field, so in future
-             * we know that it belongs to a CPDB field */
-            foreach ($newarr as $key => $value)
+            $aAttributes=Survey::model()->findByPk($surveyid)->tokenattributes;
+            if (!empty($aAttributesToBeCreated))
             {
-                $newname = 'attribute_cpdb_' . intval($attid[$key]);
-
-                $fields = array($value => array('name' => $newname, 'type' => 'TEXT'));
-                //Rename the field in the tokens_[sid] table
-                Yii::app()->db
-                          ->createCommand()
-                          ->renameColumn('{{tokens_' . intval($surveyid) . '}}', $key, $newname);
-                //Make the field a TEXT field
-                Yii::app()->db
-                          ->createCommand()
-                          ->alterColumn('{{tokens_' . intval($surveyid) . '}}', $newname, 'TEXT');
-
-                $previousatt = Yii::app()->db
-                                         ->createCommand()
-                                         ->select('attributedescriptions')
-                                         ->from('{{surveys}}')
-                                         ->where("sid = ".$surveyid);
-                $patt=$previousatt->queryRow();
-                $previousattribute = unserialize($patt['attributedescriptions']);
-                $previousattribute[$newname]=$previousattribute[$key];
-                unset($previousattribute[$key]);
-                $previousattribute=serialize($previousattribute);
-                Yii::app()->db
-                          ->createCommand()
-                          ->update('{{surveys}}',
-                                    array("attributedescriptions" => $previousattribute),
-                                    'sid = '.$surveyid); //load description in the surveys table
-            }
-        }
-        if (!empty($aMapped))
-        {
-            foreach ($aMapped as $cpdbatt => $tatt)
-            {
-                if ($tatt[10] != 'c' && $createautomap=="true") //This attribute is not already mapped
+                // If automapping is enabled then update the token field properties with the mapped CPDB field ID
+                foreach ($aAttributesToBeCreated as $tatt => $cpdbatt)
                 {
-                    // Change the fieldname in the token table to attribute_cpdb_[participant_attribute_id]
-                    // so future mapping is done automatically
-                    $newname = 'attribute_cpdb_' . $cpdbatt;
-                    $fields = array($tatt => array('name' => $newname, 'type' => 'TEXT'));
-                    Yii::app()->db
-                              ->createCommand()
-                              ->renameColumn('{{tokens_' . intval($surveyid) . '}}', $tatt, $newname);
-                    Yii::app()->db
-                              ->createCommand()
-                              ->alterColumn('{{tokens_' . intval($surveyid) . '}}', $newname, 'TEXT');
-                    $previousatt = Yii::app()->db
-                                             ->createCommand()
-                                             ->select('attributedescriptions')
-                                             ->from('{{surveys}}')
-                                             ->where("sid = :sid")
-                                             ->bindParam(":sid", $surveyid, PDO::PARAM_INT);
-                    $previousattribute = $previousatt->queryRow();
-                    $previousattribute = unserialize($previousattribute['attributedescriptions']);
-                    $previousattribute[$newname]=$previousattribute[$tatt];
-                    unset($previousattribute[$tatt]);
-                    //Rename the token field the name of the participant_attribute
-                    $attributedetails=ParticipantAttributeName::model()->getAttributeNames($cpdbatt);
-                    $previousattribute[$newname]['description']=$attributedetails[0]['attribute_name'];
-                    $previousattribute = serialize($previousattribute);
-                    //$newstring = str_replace($tatt, $newname, $previousattribute['attributedescriptions']);
-                    Yii::app()->db
-                              ->createCommand()
-                              ->update('{{surveys}}', array("attributedescriptions" => $previousattribute), 'sid = '.$surveyid);
+                    $aAttributes[$tatt]['cpdbmap']=$cpdbatt;
                 }
+                Yii::app()->db
+                ->createCommand()
+                ->update('{{surveys}}', array("attributedescriptions" => serialize($aAttributes)), 'sid = '.$surveyid);
+            }
+            if (!empty($aMapped))
+            {
+                foreach ($aMapped as $cpdbatt => $tatt)
+                {
+                    // Update the attributedescriptions so future mapping can be done automatically
+                    $aAttributes[$tatt]['cpdbmap']=$cpdbatt;
+                }
+                Yii::app()->db
+                ->createCommand()
+                ->update('{{surveys}}', array("attributedescriptions" => serialize($aAttributes)), 'sid = '.$surveyid);
             }
         }
         $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'overwriteauto'=>$overwriteauto, 'overwriteman'=>$overwriteman);
