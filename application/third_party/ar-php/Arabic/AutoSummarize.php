@@ -2,7 +2,7 @@
 /**
  * ----------------------------------------------------------------------
  *  
- * Copyright (c) 2006-2012 Khaled Al-Sham'aa.
+ * Copyright (c) 2006-2013 Khaled Al-Sham'aa.
  *  
  * http://www.ar-php.org
  *  
@@ -122,7 +122,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -147,7 +147,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -216,7 +216,11 @@ class I18N_Arabic_AutoSummarize
      */
     protected function summarize($str, $keywords, $int, $mode, $output, $style=null)
     {
-        preg_match_all("/[^\.\n\،\؛\,\;](.+?)[\.\n\،\؛\,\;]/u", $str, $sentences);
+        preg_match_all(
+            "/[^\.\n\،\؛\,\;](.+?)[\.\n\،\؛\,\;]/u", 
+            $str, 
+            $sentences
+        );
         $_sentences = $sentences[0];
 
         if ($mode == 'rate') {
@@ -237,7 +241,11 @@ class I18N_Arabic_AutoSummarize
         $cleanedStr    = $this->cleanCommon($normalizedStr);
         $stemStr       = $this->draftStem($cleanedStr);
         
-        preg_match_all("/[^\.\n\،\؛\,\;](.+?)[\.\n\،\؛\,\;]/u", $stemStr, $sentences);
+        preg_match_all(
+            "/[^\.\n\،\؛\,\;](.+?)[\.\n\،\؛\,\;]/u", 
+            $stemStr, 
+            $sentences
+        );
         $_stemmedSentences = $sentences[0];
 
         $wordRanks = $this->rankWords($stemStr);
@@ -252,9 +260,11 @@ class I18N_Arabic_AutoSummarize
             }
         }
         
-        $sentencesRanks = $this->rankSentences($_sentences, 
-                                               $_stemmedSentences, 
-                                               $wordRanks);
+        $sentencesRanks = $this->rankSentences(
+            $_sentences, 
+            $_stemmedSentences, 
+            $wordRanks
+        );
         
         list($sentences, $ranks) = $sentencesRanks;
 
@@ -297,8 +307,9 @@ class I18N_Arabic_AutoSummarize
      */
     public function doSummarize($str, $int, $keywords)
     {
-        $summary = $this->summarize($str, $keywords, $int, 
-                                    'number', 'summary', $style);
+        $summary = $this->summarize(
+            $str, $keywords, $int, 'number', 'summary', $style
+        );
         
         return $summary;
     }
@@ -317,8 +328,9 @@ class I18N_Arabic_AutoSummarize
      */
     public function doRateSummarize($str, $rate, $keywords)
     {
-        $summary = $this->summarize($str, $keywords, $rate, 
-                                    'rate', 'summary', $style);
+        $summary = $this->summarize(
+            $str, $keywords, $rate, 'rate', 'summary', $style
+        );
         
         return $summary;
     }
@@ -339,8 +351,9 @@ class I18N_Arabic_AutoSummarize
      */
     public function highlightSummary($str, $int, $keywords, $style)
     {
-        $summary = $this->summarize($str, $keywords, $int, 
-                                    'number', 'highlight', $style);
+        $summary = $this->summarize(
+            $str, $keywords, $int, 'number', 'highlight', $style
+        );
         
         return $summary;
     }
@@ -361,8 +374,9 @@ class I18N_Arabic_AutoSummarize
      */
     public function highlightRateSummary($str, $rate, $keywords, $style)
     {
-        $summary = $this->summarize($str, $keywords, $rate, 
-                                    'rate', 'highlight', $style);
+        $summary = $this->summarize(
+            $str, $keywords, $rate, 'rate', 'highlight', $style
+        );
         
         return $summary;
     }
@@ -447,9 +461,11 @@ class I18N_Arabic_AutoSummarize
     {
         $str = str_replace($this->_normalizeAlef, 'ا', $str);
         $str = str_replace($this->_normalizeDiacritics, '', $str);
-        $str = strtr($str, 
-                     'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
-                     'abcdefghijklmnopqrstuvwxyz');
+        $str = strtr(
+            $str, 
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
+            'abcdefghijklmnopqrstuvwxyz'
+        );
 
         return $str;
     }

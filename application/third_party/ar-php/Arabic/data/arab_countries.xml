@@ -28,6 +28,17 @@
       <iso>DZD</iso>
       <arabic>دينار جزائري</arabic>
       <english>Algerian dinar</english>
+      <money>
+        <arabic>
+          <basic>دينار</basic>
+          <fraction>فلس</fraction>
+        </arabic>
+        <english>
+          <basic>Dinar</basic>
+          <fraction>Fils</fraction>
+        </english>
+        <decimals>3</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -58,6 +69,17 @@
       <iso>BHD</iso>
       <arabic>دينار بحريني</arabic>
       <english>Bahraini dinar</english>
+      <money>
+        <arabic>
+          <basic>دينار</basic>
+          <fraction>فلس</fraction>
+        </arabic>
+        <english>
+          <basic>Dinar</basic>
+          <fraction>Fils</fraction>
+        </english>
+        <decimals>3</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -88,6 +110,17 @@
       <iso>DJF</iso>
       <arabic>فرنك جيبوتي</arabic>
       <english>Djiboutian franc</english>
+      <money>
+        <arabic>
+          <basic>فرنك</basic>
+          <fraction>سنتيم</fraction>
+        </arabic>
+        <english>
+          <basic>Franc</basic>
+          <fraction>Centime</fraction>
+        </english>
+        <decimals>2</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -121,6 +154,17 @@
       <iso>EGP</iso>
       <arabic>جنيه مصري</arabic>
       <english>Egyptian pound</english>
+      <money>
+        <arabic>
+          <basic>جنيه</basic>
+          <fraction>قرش</fraction>
+        </arabic>
+        <english>
+          <basic>Pound</basic>
+          <fraction>Piastre</fraction>
+        </english>
+        <decimals>2</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -154,6 +198,17 @@
       <iso>IQD</iso>
       <arabic>دينار عراقي</arabic>
       <english>Iraqi dinar</english>
+      <money>
+        <arabic>
+          <basic>دينار</basic>
+          <fraction>فلس</fraction>
+        </arabic>
+        <english>
+          <basic>Dinar</basic>
+          <fraction>Fils</fraction>
+        </english>
+        <decimals>3</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -187,6 +242,17 @@
       <iso>JOD</iso>
       <arabic>دينار أردني</arabic>
       <english>Jordanian dinar</english>
+      <money>
+        <arabic>
+          <basic>دينار</basic>
+          <fraction>فلس</fraction>
+        </arabic>
+        <english>
+          <basic>Dinar</basic>
+          <fraction>Fils</fraction>
+        </english>
+        <decimals>3</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -217,6 +283,17 @@
       <iso>KWD</iso>
       <arabic>دينار كويتي</arabic>
       <english>Kuwaiti dinar</english>
+      <money>
+        <arabic>
+          <basic>دينار</basic>
+          <fraction>فلس</fraction>
+        </arabic>
+        <english>
+          <basic>Dinar</basic>
+          <fraction>Fils</fraction>
+        </english>
+        <decimals>3</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -250,6 +327,17 @@
       <iso>LBP</iso>
       <arabic>ليرة لبنانية</arabic>
       <english>Lebanese lira</english>
+      <money>
+        <arabic>
+          <basic>ليرة</basic>
+          <fraction>قرش</fraction>
+        </arabic>
+        <english>
+          <basic>Pound</basic>
+          <fraction>Piastre</fraction>
+        </english>
+        <decimals>2</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -280,6 +368,17 @@
       <iso>LYD</iso>
       <arabic>دينار ليبي</arabic>
       <english>Libyan dinar</english>
+      <money>
+        <arabic>
+          <basic>دينار</basic>
+          <fraction>درهم</fraction>
+        </arabic>
+        <english>
+          <basic>Dinar</basic>
+          <fraction>Dirham</fraction>
+        </english>
+        <decimals>3</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -310,6 +409,17 @@
       <iso>MRO</iso>
       <arabic>أوقية موريتانية</arabic>
       <english>Mauritanian ouguiya</english>
+      <money>
+        <arabic>
+          <basic>أوقية</basic>
+          <fraction></fraction>
+        </arabic>
+        <english>
+          <basic>Ouguiya</basic>
+          <fraction></fraction>
+        </english>
+        <decimals>0</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -343,6 +453,17 @@
       <iso>MAD</iso>
       <arabic>درهم مغربي</arabic>
       <english>Moroccan dirham</english>
+      <money>
+        <arabic>
+          <basic>درهم</basic>
+          <fraction>سنتيم</fraction>
+        </arabic>
+        <english>
+          <basic>Dirham</basic>
+          <fraction>Centime</fraction>
+        </english>
+        <decimals>2</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -373,6 +494,17 @@
       <iso>OMR</iso>
       <arabic>ريال عماني</arabic>
       <english>Omani rial</english>
+      <money>
+        <arabic>
+          <basic>ريال</basic>
+          <fraction>بايزاس</fraction>
+        </arabic>
+        <english>
+          <basic>Rial</basic>
+          <fraction>Baisa</fraction>
+        </english>
+        <decimals>3</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -403,6 +535,17 @@
       <iso>USD</iso>
       <arabic>دولار أمريكي</arabic>
       <english>US Dollar</english>
+      <money>
+        <arabic>
+          <basic>دولار</basic>
+          <fraction>سنت</fraction>
+        </arabic>
+        <english>
+          <basic>Dollar</basic>
+          <fraction>Cent</fraction>
+        </english>
+        <decimals>2</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -433,6 +576,17 @@
       <iso>QAR</iso>
       <arabic>ريال قطري</arabic>
       <english>Qatari riyal</english>
+      <money>
+        <arabic>
+          <basic>ريال</basic>
+          <fraction>درهم</fraction>
+        </arabic>
+        <english>
+          <basic>Riyal</basic>
+          <fraction>Dirham</fraction>
+        </english>
+        <decimals>2</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -463,6 +617,17 @@
       <iso>SAR</iso>
       <arabic>ريال سعودي</arabic>
       <english>Saudi riyal</english>
+      <money>
+        <arabic>
+          <basic>ريال</basic>
+          <fraction>هللة</fraction>
+        </arabic>
+        <english>
+          <basic>Riyal</basic>
+          <fraction>Halala</fraction>
+        </english>
+        <decimals>2</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -493,6 +658,17 @@
       <iso>SOS</iso>
       <arabic>شلن صومالي</arabic>
       <english>Somali shilling</english>
+      <money>
+        <arabic>
+          <basic>شلن</basic>
+          <fraction>سنتسيمي</fraction>
+        </arabic>
+        <english>
+          <basic>Shilling</basic>
+          <fraction>Cent</fraction>
+        </english>
+        <decimals>2</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -523,6 +699,17 @@
       <iso>SDG</iso>
       <arabic>جنيه سوداني</arabic>
       <english>Sudanese pound</english>
+      <money>
+        <arabic>
+          <basic>جنيه</basic>
+          <fraction>قرش</fraction>
+        </arabic>
+        <english>
+          <basic>Pound</basic>
+          <fraction>Piastre</fraction>
+        </english>
+        <decimals>2</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -556,6 +743,17 @@
       <iso>SYP</iso>
       <arabic>ليرة سورية</arabic>
       <english>Syrian pound</english>
+      <money>
+        <arabic>
+          <basic>ليرة</basic>
+          <fraction>قرش</fraction>
+        </arabic>
+        <english>
+          <basic>Pound</basic>
+          <fraction>Piastre</fraction>
+        </english>
+        <decimals>2</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -586,6 +784,17 @@
       <iso>TND</iso>
       <arabic>دينار تونسي</arabic>
       <english>Tunisian dinar</english>
+      <money>
+        <arabic>
+          <basic>دينار</basic>
+          <fraction>مليم</fraction>
+        </arabic>
+        <english>
+          <basic>Dinar</basic>
+          <fraction>Millime</fraction>
+        </english>
+        <decimals>3</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -616,6 +825,17 @@
       <iso>AED</iso>
       <arabic>درهم إماراتي</arabic>
       <english>United Arab Emirates dirham</english>
+      <money>
+        <arabic>
+          <basic>درهم</basic>
+          <fraction>فلس</fraction>
+        </arabic>
+        <english>
+          <basic>Dirham</basic>
+          <fraction>Fils</fraction>
+        </english>
+        <decimals>2</decimals>
+      </money>
     </currency>
   </country>
   <country>
@@ -646,6 +866,17 @@
       <iso>YER</iso>
       <arabic>ريال يمني</arabic>
       <english>Yemeni rial</english>
+      <money>
+        <arabic>
+          <basic>ريال</basic>
+          <fraction>فلس</fraction>
+        </arabic>
+        <english>
+          <basic>Rial</basic>
+          <fraction>Fils</fraction>
+        </english>
+        <decimals>2</decimals>
+      </money>
     </currency>
   </country>
 </countries>

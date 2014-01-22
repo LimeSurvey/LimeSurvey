@@ -2,7 +2,7 @@
 /**
  * ----------------------------------------------------------------------
  *  
- * Copyright (c) 2006-2012 Khaled Al-Sham'aa.
+ * Copyright (c) 2006-2013 Khaled Al-Sham'aa.
  *  
  * http://www.ar-php.org
  *  
@@ -86,7 +86,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -109,7 +109,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -153,13 +153,14 @@ class I18N_Arabic_Stemmer
      */
     public static function stem($word)
     {
-        $nounStem = self::roughStem($word, self::$_nounMay, self::$_nounPre, 
-                                    self::$_nounPost, self::$_nounMaxPre, 
-                                    self::$_nounMaxPost, self::$_nounMinStem);
-
-        $verbStem = self::roughStem($word, self::$_verbMay, self::$_verbPre, 
-                                    self::$_verbPost, self::$_verbMaxPre, 
-                                    self::$_verbMaxPost, self::$_verbMinStem);
+        $nounStem = self::roughStem(
+            $word, self::$_nounMay, self::$_nounPre, self::$_nounPost, 
+            self::$_nounMaxPre, self::$_nounMaxPost, self::$_nounMinStem
+        );
+        $verbStem = self::roughStem(
+            $word, self::$_verbMay, self::$_verbPre, self::$_verbPost, 
+            self::$_verbMaxPre, self::$_verbMaxPost, self::$_verbMinStem
+        );
         
         if (mb_strlen($nounStem, 'UTF-8') < mb_strlen($verbStem, 'UTF-8')) {
             $stem = $nounStem;
@@ -184,9 +185,9 @@ class I18N_Arabic_Stemmer
      * @return string Arabic stem of the word under giving rules
      * @author Khaled Al-Sham'aa <khaled@ar-php.org>
      */
-    protected static function roughStem ($word, $notChars, $preChars, $postChars, 
-                                         $maxPre, $maxPost, $minStem)
-    {
+    protected static function roughStem (
+        $word, $notChars, $preChars, $postChars, $maxPre, $maxPost, $minStem
+    ) {
         $right = -1;
         $left  = -1;
         $max   = mb_strlen($word, 'UTF-8');
