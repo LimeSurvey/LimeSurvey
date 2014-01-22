@@ -267,10 +267,15 @@ class Survey extends LSActiveRecord
     public function getTokenAttributes()
     {
         $attdescriptiondata = @unserialize($this->attributedescriptions);
+        if (is_null($attdescriptiondata))
         // Catches malformed data
         if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)),'attribute_')===false)
         {
             $attdescriptiondata=array_flip(GetAttributeFieldNames($this->sid));
+        }
+        elseif (is_null($attdescriptiondata))
+        {
+            $attdescriptiondata=array();
         }
         // Legacy records support
         if ($attdescriptiondata === false)
