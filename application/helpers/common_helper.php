@@ -3759,7 +3759,7 @@ function questionAttributes($returnByName=false)
         "caption"=>$clang->gT('Answer prefix'));
 
         $qattributes["printable_help"]=array(
-        "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
+        "types"=>"15ABCDEFGHKLMNOPRWYZ!:*",
         'category'=>$clang->gT('Display'),
         'sortorder'=>201,
         "inputtype"=>"text",
