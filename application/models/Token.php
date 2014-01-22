@@ -137,8 +137,7 @@
 
 		public function scopes()
 		{
-            $now = date('Y-m-d H:i:s');
-
+            $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
             return array(
                 'incomplete' => array(
                     'condition' => "completed = 'N'"
@@ -168,7 +167,7 @@
 		public function tableName()
 		{
 			return '{{tokens_' . $this->id . '}}';
-		}
+		}           
 	}
 
 ?>
