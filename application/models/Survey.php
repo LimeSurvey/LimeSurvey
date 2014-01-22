@@ -267,7 +267,6 @@ class Survey extends LSActiveRecord
     public function getTokenAttributes()
     {
         $attdescriptiondata = @unserialize($this->attributedescriptions);
-        if (is_null($attdescriptiondata))
         // Catches malformed data
         if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)),'attribute_')===false)
         {
