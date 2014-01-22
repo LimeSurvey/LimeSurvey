@@ -92,7 +92,19 @@
                         array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                         array('same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                     );
-            if(isset($this->qid) && isset($this->language))
+            if($this->parent_qid)// Allways enforce unicity on Sub question code (DB issue).
+            {
+                $aRules[]=array('title', 'unique', 'caseSensitive'=>false, 'criteria'=>array(
+                                    'condition' => 'language=:language AND sid=:sid AND parent_qid=:parent_qid',
+                                    'params' => array(
+                                        ':language' => $this->language,
+                                        ':sid' => $this->sid,
+                                        ':parent_qid' => $this->parent_qid
+                                        )
+                                    ),
+                                'message' => 'Subquestion codes must be unique.');
+            }
+            if($this->qid && $this->language)
             {
                 $oActualValue=Question::model()->findByPk(array("qid"=>$this->qid,'language'=>$this->language));
                 if($oActualValue && $oActualValue->title==$this->title)
@@ -100,17 +112,19 @@
                     return $aRules; // We don't change title, then don't put rules on title
                 }
             }
-            $aRules= array_merge($aRules,array(
-                                array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+            if(!$this->parent_qid)// 0 or empty
+            {
+                $aRules[]=array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
                                     'condition' => 'language=:language AND sid=:sid AND parent_qid=0',
                                     'params' => array(
                                         ':language' => $this->language,
                                         ':sid' => $this->sid
-                                    )
-                                ),
-                                'message' => 'Question codes must be unique.'),
-                            array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.', 'on' => 'update, insert, import'),
-                        ));
+                                        )
+                                    ),
+                                'message' => 'Question codes must be unique.');
+            }
+            $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.', 'on' => 'update, insert, import');// Think we can remove the scenario here (on: allways)
+
             return $aRules;
         }
 

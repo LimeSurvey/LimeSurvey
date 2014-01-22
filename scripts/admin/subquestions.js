@@ -1,42 +1,35 @@
 // $Id: subquestions.js 9692 2011-01-15 21:31:10Z c_schmitz $
 var labelcache=[];
 $(document).ready(function(){
-    removeCSRFDivs();    
-//    $("body").delegate(".code", "keypress", function(e) {
-//        key=e.which;
-//        if ( key==null || key==0 || key==8 || key==9  || key==27 )
-//            return true;
-//        thischar=String.fromCharCode(key);
-//        returnvalue=(thischar==thischar.replace(/[^a-zA-Z0-9_]/,''));
-//        return returnvalue;
-//    });
-//    $("body").delegate(".code", "keyup", function() {
-//        if ($(this).val().replace(/[^a-zA-Z0-9_]/,'')!=$(this).val())
-//            $(this).val($(this).val().replace(/[^a-zA-Z0-9_]/,''));
-//    });
-    $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
+    removeCSRFDivs();
+    $(document).on("click","#editsubquestionsform :submit", function() {//Validate duplicate before try to submit: surely some other javascript elsewhere
+        return code_duplicates_check();
+    });
+
+    $('.tab-page:first .answertable tbody').sortable({
+        containment:'parent',
         start:startmove,
         update:aftermove,
         distance:3});
     $('.btnaddanswer').click(addinput);
     $('.btndelanswer').click(deleteinput);
-    $('#editsubquestionsform').submit(code_duplicates_check)
-    $('#labelsetbrowser').dialog({ autoOpen: false,
+    $('#labelsetbrowser').dialog({
+        autoOpen: false,
         modal: true,
         width:800,
         title: lsbrowsertitle});
     $('#quickadd').dialog({ 
-		autoOpen: false,
+        autoOpen: false,
         modal: true,
         width:600,
         title: quickaddtitle,
-		open: function( event, ui ) {
-			$('textarea', this).show(); // IE 8 hack
-		},
-		beforeClose: function( event, ui ) {
-			$('textarea', this).hide(); // IE 8 hack
-		}
-	});
+        open: function( event, ui ) {
+            $('textarea', this).show(); // IE 8 hack
+        },
+        beforeClose: function( event, ui ) {
+            $('textarea', this).hide(); // IE 8 hack
+        }
+        });
 
     $('.btnlsbrowser').click(lsbrowser);
     $('#btncancel').click(function(){
@@ -246,29 +239,26 @@ function popupeditor()
 function code_duplicates_check()
 {
     languages=langs.split(';');
-    var dupefound=false;
+    var cansubmit=true;
     $('#tabpage_'+languages[0]+' .answertable tbody').each(function(){
         var codearray=[];
         $(this).find('tr .code').each(function(){
-            codearray.push($(this).val());
+            codearray.push($(this).val().toLowerCase());
         })
         if (arrHasDupes(codearray))
-            {
-            alert(duplicatesubquestioncode);
-            dupefound=true;
-            return;
+        {
+            //alert(duplicatesubquestioncode);
+            $notifycontainer.notify("create", 'error-notify', { message:duplicatesubquestioncode});
+            cansubmit= false;
         }
         if ($.inArray('other', codearray)!=-1)
         {
-            alert(otherisreserved);
-            dupefound=true;
-            return;
+            //alert(otherisreserved);
+            $notifycontainer.notify("create", 'error-notify', { message:otherisreserved});
+            cansubmit= false;
         }
     })
-    if (dupefound)
-        {
-        return false;
-    }
+    return cansubmit;
 }
 
 function lsbrowser()
