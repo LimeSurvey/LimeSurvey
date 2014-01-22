@@ -95,6 +95,7 @@ $(document).ready(function(){
         return colModels;
     }
     jQuery("#displaysurveys").jqGrid({
+        autoencode: false,// autoencode to false is really a bad idea. Need JS system for link and update
         recordtext: sRecordText,
         emptyrecords: sEmptyRecords,
         pgtext: sPageText,

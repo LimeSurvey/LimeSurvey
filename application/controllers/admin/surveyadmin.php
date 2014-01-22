@@ -623,7 +623,7 @@ class SurveyAdmin extends Survey_Common_Action
             '<a href="' . $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']) . '">' . $rows['sid'] . '</a>';
 
             //Set Title
-            $aSurveyEntry[] = '<!--' . flattenText($rows['surveyls_title']) . '--><a href="' . $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']) . '" title="' . flattenText($rows['surveyls_title'])  . '">' . flattenText($rows['surveyls_title'])  . '&nbsp;&nbsp;&nbsp;</a>';
+            $aSurveyEntry[] = '<a href="' . $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']) . '">' . CHtml::encode($rows['surveyls_title'])  . '</a>';
 
             //Set Date
             Yii::import('application.libraries.Date_Time_Converter', true);
@@ -692,7 +692,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
             $aSurveyEntries->rows[] = array('id' => $rows['sid'], 'cell' => $aSurveyEntry);
         }
-
+        header('Content-type: application/json');
         echo ls_json_encode($aSurveyEntries);
     }
 
