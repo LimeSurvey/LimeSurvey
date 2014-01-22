@@ -269,7 +269,7 @@ class I18N_Arabic_Glyphs
             $form = 0;
             
             //if ($prevChar == 'لا' && (mb_strpos('آأإا', $crntChar) !== false)) {
-            if ($prevChar == 'ل' && (mb_strpos('آأإا', $crntChar) !== false)) {
+            if ($prevChar == 'ل' && (mb_strpos('آأإا', $crntChar) !== false) && isset($chars[$i -2])) {
                 if (mb_strpos($this->_prevLink, $chars[$i - 2]) !== false) {
                     $form++;
                 }
@@ -437,7 +437,7 @@ class I18N_Arabic_Glyphs
         }
 
         // need more work to fix lines starts by English words
-        if (isset($en_start)) {
+        if (false && $en_start) {// $en_start isn't declared elsewhere
             $last = true;
             $from = 0;
             
