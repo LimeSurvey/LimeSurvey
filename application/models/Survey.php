@@ -299,8 +299,7 @@ class Survey extends LSActiveRecord
             $ls->save();
             $attdescriptiondata = $fields;
         }
-
-        
+        $aCompleteData=array();
         foreach ($attdescriptiondata as $sKey=>$aValues)
         {                                   
             if (!is_array($aValues)) $aValues=array();

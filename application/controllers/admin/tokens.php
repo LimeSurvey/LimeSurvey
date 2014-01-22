@@ -1909,17 +1909,9 @@ class tokens extends Survey_Common_Action
                 foreach ($tokenlistarray as $buffer)
                 {
                     $buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
-                    $firstname = "";
-                    $lastname = "";
-                    $email = "";
-                    $emailstatus = "OK";
-                    $token = "";
-                    $language = "";
-                    $attribute1 = "";
-                    $attribute2 = ""; //Clear out values from the last path, in case the next line is missing a value
                     if ($recordcount == 0)
                     {
-                        // Pick apart the first line
+                        // Parse first line (header) from CSV 
                         $buffer = removeBOM($buffer);
                         $allowedfieldnames = array('firstname', 'lastname', 'email', 'emailstatus', 'token', 'language', 'validfrom', 'validuntil', 'usesleft');
                         $allowedfieldnames = array_merge($attrfieldnames, $allowedfieldnames);
@@ -1942,7 +1934,7 @@ class tokens extends Survey_Common_Action
                         $firstline = convertCSVRowToArray($buffer, $separator, '"');
                         $firstline = array_map('trim', $firstline);
                         $ignoredcolumns = array();
-                        //now check the first line for invalid fields
+                        // Now check the first line for invalid fields
                         foreach ($firstline as $index => $fieldname)
                         {
                             $firstline[$index] = preg_replace("/(.*) <[^,]*>$/", "$1", $fieldname);
@@ -1996,10 +1988,7 @@ class tokens extends Survey_Common_Action
                                 $duplicatelist[] = Yii::app()->db->quoteValue($writearray['firstname']) . " " . Yii::app()->db->quoteValue($writearray['lastname']) . " (" . Yii::app()->db->quoteValue($writearray['email']) . ")";
                             }
                         }
-
-
                         $writearray['email'] = trim($writearray['email']);
-
                         //treat blank emails
                         if ($filterblankemail && $writearray['email'] == '')
                         {
