@@ -226,9 +226,9 @@ class I18N_Arabic_Glyphs
             }
             
             if ($prevChar && mb_strpos($this->_vowel, $prevChar) !== false) {
-                $prevChar = $chars[$i - 2];
+                $prevChar = $chars[$i - 2];// Did we need if $chars[$i - 2] is set ?
                 if ($prevChar && mb_strpos($this->_vowel, $prevChar) !== false) {
-                    $prevChar = $chars[$i - 3];
+                    $prevChar = $chars[$i - 3];// Did we need if $chars[$i - 3] is set ?
                 }
             }
             
@@ -277,13 +277,12 @@ class I18N_Arabic_Glyphs
             if (($prevChar == 'لا' || $prevChar == 'لآ' || $prevChar == 'لأ' 
                 || $prevChar == 'لإ' || $prevChar == 'ل') 
                 && (mb_strpos('آأإا', $crntChar) !== false)
-                && isset($chars[$i - 2])
             ) {
-                if (mb_strpos($this->_prevLink, $chars[$i - 2]) !== false) {
+                if (isset($chars[$i - 2]) && mb_strpos($this->_prevLink, $chars[$i - 2]) !== false) {
                     $form++;
                 }
                 
-                if (mb_strpos($this->_vowel, $chars[$i - 1])) {
+                if (isset($chars[$i - 1]) && mb_strpos($this->_vowel, $chars[$i - 1])) {
                     $output .= '&#x';
                     $output .= $this->getGlyphs($crntChar, $form).';';
                 } else {
