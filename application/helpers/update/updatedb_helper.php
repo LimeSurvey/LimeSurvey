@@ -1190,6 +1190,11 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{plugins}}', 'active', "integer",false,'0');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>175),"stg_name='DBVersion'");
         }
+        if ($iOldDBVersion < 176)
+        {
+            upgradeTokens176();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>176),"stg_name='DBVersion'");
+        }
         
 
         $oTransaction->commit();
@@ -1215,6 +1220,66 @@ function db_upgrade_all($iOldDBVersion) {
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($oLang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
+}
+
+
+/**
+* This function removes the old CPDB fields in token tables
+* replaces them with standard attribute fields 
+* and records the mapping information in the attributedescription field in the survey table instead
+*/
+function upgradeTokens176()
+{
+    $arSurveys = Survey::model()->findAll();
+    // Fix any active token tables
+    foreach ( $arSurveys as $arSurvey )
+    {
+        $sTokenTableName='tokens_'.$arSurvey->sid;
+        if (tableExists($sTokenTableName))
+        {
+            $aColumnNames=$aColumnNamesIterator=Yii::app()->db->schema->getTable('{{'.$sTokenTableName.'}}')->columnNames;
+            $aAttributes = $arSurvey->tokenAttributes;
+            foreach($aColumnNamesIterator as $sColumnName)
+            {
+                // Check if an old atttribute_cpdb column exists in that token table
+                if (strpos($sColumnName,'attribute_cpdb')!==false)
+                {
+                    $i=1;
+                    // Look for a an attribute ID that is available
+                    while (in_array('attribute_'.$i,$aColumnNames)) $i++;
+                    $sNewName='attribute_'.$i;
+                    $aColumnNames[]=$sNewName;
+                    Yii::app()->db->createCommand()->renameColumn('{{'.$sTokenTableName.'}}',$sColumnName,$sNewName);
+                    // Update attribute descriptions with the new mapping
+                    if (isset($aAttributes[$sColumnName]))
+                    {
+                        $aAttributes[$sNewName]['cpdbmap']=substr($sColumnName,15);
+                        unset($aAttributes[$sColumnName]);
+                    }
+                } 
+            }
+            Survey::model()->updateByPk($arSurvey->sid, array('attributedescriptions' => serialize($aAttributes)));
+        }
+    }
+    // Now fix all 'old' token tables
+    $aTables = dbGetTablesLike("%old_tokens%");
+    foreach ( $aTables as $sTable )
+    {
+        $aColumnNames=$aColumnNamesIterator=Yii::app()->db->schema->getTable($sTable)->columnNames;
+        foreach($aColumnNamesIterator as $sColumnName)
+        {
+            // Check if an old atttribute_cpdb column exists in that token table
+           if (strpos($sColumnName,'attribute_cpdb')!==false)
+           {
+               $i=1;
+               // Look for a an attribute ID that is available
+               while (in_array('attribute_'.$i,$aColumnNames)) $i++;
+               $sNewName='attribute_'.$i;
+               $aColumnNames[]=$sNewName;
+               Yii::app()->db->createCommand()->renameColumn($sTable,$sColumnName,$sNewName);
+           } 
+        }
+    }
 }
 
 function upgradeCPDBAttributeDefaultNames173()
