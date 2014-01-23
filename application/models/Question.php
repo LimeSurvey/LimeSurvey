@@ -95,11 +95,12 @@
             if($this->parent_qid)// Allways enforce unicity on Sub question code (DB issue).
             {
                 $aRules[]=array('title', 'unique', 'caseSensitive'=>false, 'criteria'=>array(
-                                    'condition' => 'language=:language AND sid=:sid AND parent_qid=:parent_qid',
+                                    'condition' => 'language=:language AND sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
                                     'params' => array(
                                         ':language' => $this->language,
                                         ':sid' => $this->sid,
-                                        ':parent_qid' => $this->parent_qid
+                                        ':parent_qid' => $this->parent_qid,
+                                        ':scale_id' => $this->scale_id
                                         )
                                     ),
                                 'message' => 'Subquestion codes must be unique.');
@@ -122,8 +123,12 @@
                                         )
                                     ),
                                 'message' => 'Question codes must be unique.');
+                $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.', 'on' => 'update, insert, import');// Think we can remove the scenario here (on: allways)
             }
-            $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.', 'on' => 'update, insert, import');// Think we can remove the scenario here (on: allways)
+            else
+            {
+                $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.', 'on' => 'update, insert, import');// Think we can remove the scenario here (on: allways)
+            }
 
             return $aRules;
         }
