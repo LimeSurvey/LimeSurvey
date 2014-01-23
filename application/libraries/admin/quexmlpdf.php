@@ -353,7 +353,7 @@ class quexmlpdf extends pdf {
    * @var bool  Defaults to false. 
    * @since 2013-10-24
    */
-  protected $allowSplittingSingleChoiceVertical = false;
+  protected $allowSplittingSingleChoiceVertical = true;
 
   /**
    * If splitting is allowed for single choice vertical, only split if there is at
@@ -362,7 +362,7 @@ class quexmlpdf extends pdf {
    * @var int  Defaults to 5. 
    * @since 2013-12-13
    */
-  protected $minSplittingSingleChoiceVertical = 5;
+  protected $minSplittingSingleChoiceVertical = 25;
 
   /**
    * Allows multiple responses to the same question to be split over multiple pages/columns
