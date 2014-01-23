@@ -119,10 +119,12 @@ function updateDragDropRank(qID){
   });
   // Update #relevance and lauch checkconditions function
   $("[id^=" + relevancename + "]").val('0');
-  $('#question'+qID+' .select-item select').each(function(index){
-    number=index+1;
-    if($(this).val()!=""){$("#"+relevancename+number).val("1");}
-    checkconditions($(this).val(),$(this).attr("name"),'select-one','onchange');
+  $('#question'+qID+' .select-item select:lt('+maxanswers+')').each(function(index){
+      number=index+1;
+      if($(this).val()!=""){
+          $("#"+relevancename+number).val("1");
+      }
+      checkconditions($(this).val(),$(this).attr("name"),'select-one','onchange');
   });
     $('#sortable-rank-'+qID+' li').removeClass("error");
     $('#sortable-choice-'+qID+' li').removeClass("error");
