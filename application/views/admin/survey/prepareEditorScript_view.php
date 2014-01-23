@@ -5,13 +5,16 @@
         var dialogName = ev.data.name;
         var dialogDefinition = ev.data.definition;
         if (dialogName == 'image') {
+            
             $(document).ready(function() {                
                 setTimeout(function() {
                     var uploadFrame = $('.cke_dialog_ui_vbox[name="Upload"] iframe[id$="fileInput"]'); 
                     $(uploadFrame).ready(function(){
                         $(uploadFrame).contents().find('input[name="upload"]').after("<input type='hidden' name='kcfinder_csrftoken' id='kcfinder_csrftoken' value='<?php echo $sKCFinderCSRFToken; ?>'>"); 
+                        $(uploadFrame).contents().find('input[name="upload"]').after("1234"); 
+                        $('.cke_dialog_ui_input_file').css('height', '150px');
                     });                            
-                }, 100);
+                }, 1000);
             });
         }
     });    
