@@ -7799,19 +7799,27 @@ function getIPAddress()
 {
     if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
     {
-        return $_SERVER['HTTP_CLIENT_IP'];
+        $sIPAddress=$_SERVER['HTTP_CLIENT_IP'];
     }
     elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
     {
-        return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        $sIPAddress= $_SERVER['HTTP_X_FORWARDED_FOR'];
     }
     elseif (!empty($_SERVER['REMOTE_ADDR']))
     {
-        return $_SERVER['REMOTE_ADDR'];
+        $sIPAddress= $_SERVER['REMOTE_ADDR'];
     }
     else
     {
-        return '127.0.0.1';
+        $sIPAddress= '127.0.0.1';
+    }
+    if (!filter_var($sIPAddress, FILTER_VALIDATE_IP))
+    {
+        return 'Invalid';
+    }
+    else
+    {
+       return $sIPAddress;
     }
 }
 
