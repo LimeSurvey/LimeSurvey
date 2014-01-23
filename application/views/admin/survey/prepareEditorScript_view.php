@@ -1,20 +1,20 @@
 <script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL'); ?>/ckeditor.js"></script>
 <script type='text/javascript'>
     <!--
-        CKEDITOR.on('dialogDefinition', function (ev) {
-            var dialogName = ev.data.name;
-            var dialogDefinition = ev.data.definition;
-            if (dialogName == 'image') {
-
-            var infoTab = dialogDefinition.getContents( 'Upload' );
-
-            // Add a text field to the "info" tab.
-            infoTab.add( {
-                    type : 'html',
-                    html : "<script type='javascript'>$(\"<input type='hidden' name='kcfinder_csrftoken' id='kcfinder_csrftoken' value='<?php echo $sKCFinderCSRFToken; ?>'>\").insertAfter(\"[name='upload']\",this.contentWindow.document||this.contentDocument);</script>"
-                });
-            }
-        });    
+    CKEDITOR.on('dialogDefinition', function (ev) {
+        var dialogName = ev.data.name;
+        var dialogDefinition = ev.data.definition;
+        if (dialogName == 'image') {
+            $(document).ready(function() {                
+                setTimeout(function() {
+                    var uploadFrame = $('.cke_dialog_ui_vbox[name="Upload"] iframe[id$="fileInput"]'); 
+                    $(uploadFrame).ready(function(){
+                        $(uploadFrame).contents().find('input[name="upload"]').after("<input type='hidden' name='kcfinder_csrftoken' id='kcfinder_csrftoken' value='<?php echo $sKCFinderCSRFToken; ?>'>"); 
+                    });                            
+                }, 100);
+            });
+        }
+    });    
 
     var sReplacementFieldTitle = '<?php $clang->eT('LimeSurvey replacement field properties','js');?>';
     var sReplacementFieldButton = '<?php $clang->eT('Insert/edit LimeSurvey replacement field','js');?>';
