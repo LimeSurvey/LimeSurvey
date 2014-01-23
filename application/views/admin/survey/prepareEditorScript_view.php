@@ -1,6 +1,21 @@
 <script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL'); ?>/ckeditor.js"></script>
 <script type='text/javascript'>
     <!--
+        CKEDITOR.on('dialogDefinition', function (ev) {
+            var dialogName = ev.data.name;
+            var dialogDefinition = ev.data.definition;
+            if (dialogName == 'image') {
+
+            var infoTab = dialogDefinition.getContents( 'Upload' );
+
+            // Add a text field to the "info" tab.
+            infoTab.add( {
+                    type : 'html',
+                    html : "<script type='javascript'>$(\"<input type='hidden' name='kcfinder_csrftoken' id='kcfinder_csrftoken' value='<?php echo $sKCFinderCSRFToken; ?>'>\").insertAfter(\"[name='upload']\",this.contentWindow.document||this.contentDocument);</script>"
+                });
+            }
+        });    
+
     var sReplacementFieldTitle = '<?php $clang->eT('LimeSurvey replacement field properties','js');?>';
     var sReplacementFieldButton = '<?php $clang->eT('Insert/edit LimeSurvey replacement field','js');?>';
     var editorwindowsHash = new Object();
@@ -66,18 +81,18 @@
 
     function updateCKeditor(fieldname,value)
     {
-    var mypopup= editorwindowsHash[fieldname];
-    if (mypopup)
-    {
-    var oMyEditor = mypopup.CKEDITOR.instances['MyTextarea'];
-    if (oMyEditor) {oMyEditor.setData(value);}
-    mypopup.focus();
-    }
-    else
-    {
-    var oMyEditor = CKEDITOR.instances[fieldname];
-    oMyEditor.setData(value);
-    }
+        var mypopup= editorwindowsHash[fieldname];
+        if (mypopup)
+        {
+            var oMyEditor = mypopup.CKEDITOR.instances['MyTextarea'];
+            if (oMyEditor) {oMyEditor.setData(value);}
+            mypopup.focus();
+        }
+        else
+        {
+            var oMyEditor = CKEDITOR.instances[fieldname];
+            oMyEditor.setData(value);
+        }
     }
 
     -->

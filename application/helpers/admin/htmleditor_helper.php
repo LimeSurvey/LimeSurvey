@@ -79,22 +79,30 @@
                 }
             }
         }
-
     } 
 
     function sTranslateLangCode2CK($sLanguageCode){
-
-        $aTranslationTable=array('de-informal'=>'de',
-        'nl-formal'=>'nl');
+        $aTranslationTable=array(
+        'ca-valencia'=>'ca',
+        'de-informal'=>'de',
+        'es-AR-informal'=>'es',
+        'es-AR'=>'es',
+        'es-CL'=>'es',
+        'es-MX'=>'es',
+        'it-informal'=>'it',
+        'nl-informal'=>'nl',
+        'zh-Hans'=>'zh-cn',
+        'zh-Hant-HK'=>'zh',
+        'zh-Hant-TW'=>'zh'
+        );
         if (isset($aTranslationTable[$sLanguageCode])) {
             $sResultCode=$aTranslationTable[$sLanguageCode];
         }
         else
         {
-            $sResultCode=$sLanguageCode;
+            $sResultCode=strtolower($sLanguageCode);
         }
         return $sResultCode;
-
     }
 
 
@@ -102,6 +110,7 @@
     {
         $clang = Yii::app()->lang;
         $data['clang'] = $clang;
+        $data['sKCFinderCSRFToken'] = $_SESSION['kcfinder_csrftoken']=randomChars(128);
         App()->getClientScript()->registerCoreScript('ckeditor');
         if ($controller == null)
         {
@@ -197,7 +206,7 @@
     }
 
     function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
-    {
+    {                         
         $htmlcode = '';
         $imgopts = '';
         $toolbarname = 'inline';
@@ -248,7 +257,8 @@
         
         $htmlcode .= ""
         . "<script type=\"text/javascript\">\n"
-        . "$(document).ready(function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
+        . "$(document).ready(
+        function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
         customConfig : \"".Yii::app()->getConfig('adminscripts')."ckeditor-config.js\"
         ,LimeReplacementFieldsType : \"".$fieldtype."\"
         ,LimeReplacementFieldsSID : \"".$surveyID."\"

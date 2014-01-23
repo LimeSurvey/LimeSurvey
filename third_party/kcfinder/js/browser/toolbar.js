@@ -123,6 +123,7 @@ browser.initUploadButton = function() {
         '<form enctype="multipart/form-data" method="post" target="uploadResponse" action="' + browser.baseGetData('upload') + '">' +
             '<input type="file" name="upload[]" onchange="browser.uploadFile(this.form)" style="height:' + height + 'px" multiple="multiple" />' +
             '<input type="hidden" name="dir" value="" />' +
+            '<input type="hidden" id="" name="kcfinder_csrftoken" value="'+browser.csrftoken+'" />' +
         '</form>' +
     '</div>');
     $('#upload input').css('margin-left', "-" + ($('#upload input').outerWidth() - width) + 'px');

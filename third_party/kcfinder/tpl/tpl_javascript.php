@@ -4,7 +4,8 @@
 <script src="js/helper.js" type="text/javascript"></script>
 <script src="js/browser/joiner.php" type="text/javascript"></script>
 <script src="js_localize.php?lng=<?php echo $this->lang ?>" type="text/javascript"></script>
-<?php IF (isset($this->opener['TinyMCE']) && $this->opener['TinyMCE']): ?>
+<?php 
+IF (isset($this->opener['TinyMCE']) && $this->opener['TinyMCE']): ?>
 <script src="<?php echo $this->config['_tinyMCEPath'] ?>/tiny_mce_popup.js" type="text/javascript"></script>
 <?php ENDIF ?>
 <?php IF (file_exists("themes/{$this->config['theme']}/init.js")): ?>
@@ -22,6 +23,7 @@ browser.access = <?php echo json_encode($this->config['access']) ?>;
 browser.dir = "<?php echo text::jsValue($this->session['dir']) ?>";
 browser.uploadURL = "<?php echo text::jsValue($this->config['uploadURL']) ?>";
 browser.thumbsURL = browser.uploadURL + "/<?php echo text::jsValue($this->config['thumbsDir']) ?>";
+browser.csrftoken = "<?php echo $this->getCSRFToken();?>";
 <?php IF (isset($this->get['opener']) && strlen($this->get['opener'])): ?>
 browser.opener.name = "<?php echo text::jsValue($this->get['opener']) ?>";
 <?php ENDIF ?>
