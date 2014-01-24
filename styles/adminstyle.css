@@ -162,6 +162,10 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
     padding: 0 2px;
 }
 /* Fix height of browsettable */
+.browsetable th .qcode {
+    display: block;
+    height: auto;
+}
 .browsetable th .questiontext {
     display: block;
     height: 4em;

@@ -79,7 +79,8 @@ if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
                 }
                 else
                 {
-                    $browsedatafield = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($surveyid, $fnames[$i][0], $dtrow[$fnames[$i][0]], $oBrowseLanguage))), ENT_QUOTES);
+                    //$browsedatafield = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($surveyid, $fnames[$i][0], $dtrow[$fnames[$i][0]], $oBrowseLanguage))), ENT_QUOTES);
+                    $browsedatafield=CHtml::encode(getExtendedAnswer($surveyid, $fnames[$i][0], $dtrow[$fnames[$i][0]], $oBrowseLanguage));
                 }
                 echo "<td><span>$browsedatafield</span></td>\n";
             }
