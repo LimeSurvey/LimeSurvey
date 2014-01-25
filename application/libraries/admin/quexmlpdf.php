@@ -1246,7 +1246,15 @@ class quexmlpdf extends pdf {
    */
   protected function setDefaultFont($size = 12,$style = '')
   {
-    $this->SetFont($this->defaultFont,$style);
+    $alternatepdffontfile=Yii::app()->getConfig('alternatepdffontfile');
+    if(array_key_exists($this->language,$alternatepdffontfile))
+    {
+      $this->SetFont($alternatepdffontfile[$this->language],$style);
+    }
+    else
+    {
+      $this->SetFont($this->defaultFont,$style);
+    }
     $this->SetFontSize($size);
   }
 
@@ -1271,7 +1279,7 @@ class quexmlpdf extends pdf {
       $this->AddFont('freeserif','I');
       $this->AddFont('freeserif','BI');
       
-      $this->SetFont($this->defaultFont);
+      $this->setDefaultFont();
     }
     
     // set document information
