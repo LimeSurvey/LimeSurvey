@@ -1,3 +1,9 @@
+<?php // Prepare purifier
+$purifier=new CHtmlPurifier();
+$purifier->options = array(
+
+);// Don't put option actually, leave default
+?>
 <tr class='<?php echo $bgcc; ?>' valign='top'>
     <td align='center'><input type='checkbox' class='cbResponseMarker' value='<?php echo $dtrow['id']; ?>' name='markedresponses[]' /></td>
     <td align='center'>
@@ -80,7 +86,8 @@ if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
                 else
                 {
                     //$browsedatafield = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($surveyid, $fnames[$i][0], $dtrow[$fnames[$i][0]], $oBrowseLanguage))), ENT_QUOTES);
-                    $browsedatafield=CHtml::encode(getExtendedAnswer($surveyid, $fnames[$i][0], $dtrow[$fnames[$i][0]], $oBrowseLanguage));
+                    //$browsedatafield=CHtml::encode(getExtendedAnswer($surveyid, $fnames[$i][0], $dtrow[$fnames[$i][0]], $oBrowseLanguage));
+                    $browsedatafield=$purifier->purify(getExtendedAnswer($surveyid, $fnames[$i][0], $dtrow[$fnames[$i][0]], $oBrowseLanguage));
                 }
                 echo "<td><span>$browsedatafield</span></td>\n";
             }
