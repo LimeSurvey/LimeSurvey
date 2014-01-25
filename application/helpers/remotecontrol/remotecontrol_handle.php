@@ -964,6 +964,7 @@ class remotecontrol_handle
 				}
 				elseif ( strtolower($sImportDataType)=='lsg')
 				{
+                    libxml_disable_entity_loader();
 					$xml = simplexml_load_file($sFullFilePath);
 					if(!$xml)
 					{
@@ -1257,7 +1258,7 @@ class remotecontrol_handle
 				}
 				elseif ( strtolower($sImportDataType)=='lsq')
 				{
-
+                    libxml_disable_entity_loader();
 					$xml = simplexml_load_file($sFullFilePath);
 					if(!$xml)
 					{

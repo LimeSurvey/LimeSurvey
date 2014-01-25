@@ -783,7 +783,7 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
     $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($iNewSID)->additionalLanguages);
-
+    libxml_disable_entity_loader();
     $xml = @simplexml_load_file($sFullFilepath);
     if ($xml==false || $xml->LimeSurveyDocType!='Group') safeDie('This is not a valid LimeSurvey group structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
@@ -1700,11 +1700,10 @@ function XMLImportQuestion($sFullFilepath, $iNewSID, $newgid)
 {
     $clang = Yii::app()->lang;
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
-
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
     $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($iNewSID)->additionalLanguages);
-
+    libxml_disable_entity_loader();
     $xml = simplexml_load_file($sFullFilepath);
     if ($xml->LimeSurveyDocType!='Question') safeDie('This is not a valid LimeSurvey question structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
@@ -2123,6 +2122,7 @@ function CSVImportLabelset($sFullFilepath, $options)
 function XMLImportLabelsets($sFullFilepath, $options)
 {
     $clang = Yii::app()->lang;
+    libxml_disable_entity_loader();
     $xml = simplexml_load_file($sFullFilepath);
     if ($xml->LimeSurveyDocType!='Label set') safeDie('This is not a valid LimeSurvey label set structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
@@ -3404,6 +3404,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     $clang = Yii::app()->lang;
 
     $aGIDReplacements = array();
+    libxml_disable_entity_loader();
     if ($sXMLdata == NULL)
     {
         $xml = simplexml_load_file($sFullFilepath);
@@ -4133,6 +4134,7 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
 {
     Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
+    libxml_disable_entity_loader();
     $xml = simplexml_load_file($sFullFilepath);
     $results['warnings']=array();
     if ($xml->LimeSurveyDocType!='Tokens')
@@ -4511,6 +4513,7 @@ function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
     Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
 
+    libxml_disable_entity_loader();
     $xml = simplexml_load_file($sFullFilepath);
 
     if ($xml->LimeSurveyDocType!='Timings')

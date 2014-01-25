@@ -1098,6 +1098,7 @@ class export extends Survey_Common_Action {
     private function _xmlToJson($fileContents) {
         $fileContents = str_replace(array("\n", "\r", "\t"), '', $fileContents);
         $fileContents = trim(str_replace('"', "'", $fileContents));
+        libxml_disable_entity_loader();
         $simpleXml = simplexml_load_string($fileContents,'SimpleXMLElement', LIBXML_NOCDATA);
         $json = json_encode($simpleXml);
         return $json;
