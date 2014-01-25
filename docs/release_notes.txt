@@ -59,6 +59,73 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140116) to 2.05+ (build 140125) Jan 25, 2014
+-New feature #8524: Implements min/max date in EM (mfaber)
+-Fixed issue #7159: PHP notice for arabic graph in statistics (Denis Chenu)
+-Fixed issue #7224: comparison of dates (partial fix) (mfaber)
+-Fixed issue #8042: QueXML PDF support for Chinese (mfaber)
+-Fixed issue #8083: Token attributes being mapped to the CPDB cannot be properly used (Carsten Schmitz)
+-Fixed issue #8125: Wrong SPSS date format for date question results (mfaber)
+-Fixed issue #8477: A clear error message is now displayed when a session expires (Carsten Schmitz)
+-Fixed issue #8484: Expressions in min/max date referring to questions on same page (mfaber)
+-Fixed issue #8496: Undefined attributes in Central Participant Database (tpartner)
+-Fixed issue #8501: Problem with importing a survey archive (Carsten Schmitz)
+-Fixed issue #8512: Matrix question in dropdown presentation shows obsolete "Please choose..." in dropdown (Carsten Schmitz)
+-Fixed issue #8514: No control on duplicate sub question code (case Unsensitive) (Denis Chenu)
+-Fixed issue #8519: Error during upgrade vom 2.00 to 2.05 using PostgreSQL (Carsten Schmitz)
+-Fixed issue #8526: No information when trying to install with php < 5.3 (Carsten Schmitz)
+-Fixed issue #8530: "Return to label set administration" button not working properly - patch by dkep (Carsten Schmitz)
+-Fixed issue #8531: Wrong date format for [code].shown (EM) (mfaber)
+-Fixed issue #8536: Double quotes in upload title/comment caused survey page not to re-display correctly (Carsten Schmitz)
+-Fixed issue #8537: Survey admin allows token length to be set at a value that exceeds schema column width (36) (Carsten Schmitz)
+-Fixed issue #8546: JavaScript Expression Manager rtrim numeric value (not PHP) (Denis Chenu)
+-Fixed issue #8551: Can't add a new user if AuditLog plugin is activated (Carsten Schmitz)
+-Fixed issue #8554: Hover over answer options no longer showing value (Carsten Schmitz)
+-Fixed issue #8557: If setting 'Keyboard-less operation' is activated then text inputs don't work at all (Carsten Schmitz)
+-Fixed issue #8558: Clean up interface for mapping attributes when imorting into CPDB (tpartner)
+-Fixed issue #8561: Cross-Site Scripting in 404 page (Denis Chenu)
+-Fixed issue #8562: Stored XSS - getSurveys_json (Denis Chenu)
+-Fixed issue #8563: Token validfrom and validuntil validations fail : they don't use the time difference setting - patch by ledut (Carsten Schmitz)
+-Fixed issue #8564: CSRF vulnerability in KCFinder (Carsten Schmitz, tpartner)
+-Fixed issue #8565: Possible code injection when using old mod_php versions (Carsten Schmitz)
+-Fixed issue #8566: IP Spoofing (Carsten Schmitz)
+-Fixed issue #8566: Stored XSS in HTML export (Denis Chenu)
+-Fixed issue #8572: Maintain scroll position when editing a token (tpartner)
+-Fixed issue #8576: Question-Type Ranking hangs up (tpartner)
+-Fixed issue: Cannot add attribue in CPDB (Carsten Schmitz)
+-Fixed issue: CPDB JS file not being found (Carsten Schmitz)
+-Fixed issue: Numeric-only codes on subquestions not being allowed (Carsten Schmitz)
+-Fixed issue: Unable to "predefined label set" if label are empty string (Denis Chenu)
+-Fixed issue: With .doc export, empty cells have 2pt size in Libre Office (Alexis Bezverkhyy)
+#Updated translation: Albanian by florianika
+#Updated translation: Armenian by c_schmitz, Satenik
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by arnaud21, karld
+#Updated translation: German by actxcellence, mfaber, c_schmitz
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by sancaka
+#Updated translation: Italian by lfanfoni, myliserta
+#Updated translation: Italian (Informal) by lfanfoni, myliserta
+#Updated translation: Japanese by yamatt, nomoto
+#Updated translation: Latvian by vipgroup, marcic
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by gabrielcavalari, mauriciofurtado
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Tagalog by arriz08
+#Updated translation: Tamil by apmuthu
+#Updated translation: Thai by adzpire
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.05+ (build 140109) to 2.05+ (build 140116) Jan 16, 2014
 -Fixed issue #8466: CSS/HTML issue with Plugin/settings (Menno Dekker)
 -Fixed issue #8403: redundant em_javascript.js and dir (mfaber)
