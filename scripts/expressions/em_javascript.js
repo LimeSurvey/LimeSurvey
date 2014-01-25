@@ -759,22 +759,30 @@ function LEManyNA()
     return false;
 }
 
-/** Set the tabIndex for all potentially visible form elements, and capture the TAB and SHIFT-TAB keys so can
+/* Set the tabIndex for all potentially visible form elements, and capture the TAB and SHIFT-TAB keys so can
  * control navigation when elements appear and disappear.
  */
 function  LEMsetTabIndexes()
 {
     if (typeof tabIndexesSet == 'undefined') {
-        $('#limesurvey :input[type!=hidden][id!=runonce]').each(function(index){
-            $(this).bind('keydown',function(e) {
-                if (e.keyCode == 9) {
-                    checkconditions($(this).attr('value'), $(this).attr('name'), $(this).attr('type'), 'TAB');
-                    $(this).focus();
-                    return true;
+        $(document).on('keydown',"#limesurvey :input[type!=hidden][id!=runonce]",function(event){
+            var keyCode = event.keyCode || event.which;
+            if (keyCode == 9) {
+                // see bug #08590 : lauch checkcondition only for text input. Not needed for radio or checkbox
+                // Not sure it's really needed actually, it's a blur event for text and change for select
+                // Can use $(this)[0].type
+                if($(this).attr('type')=="text")
+                {
+                    checkconditions($(this).val(), $(this).attr('name'), 'text', 'TAB');
                 }
+                if($(this).is('select'))
+                {
+                    checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'TAB');
+                }
+                $(this).focus();
                 return true;
-            })
-        })	// MUST DO THIS FIRST
+            }
+        });
         tabIndexesSet = true;
     }
 }
