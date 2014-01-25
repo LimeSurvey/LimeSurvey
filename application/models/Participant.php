@@ -988,7 +988,7 @@ class Participant extends LSActiveRecord
                                      ->from('{{surveys}}')
                                      ->bindParam(":sid", $surveyid, PDO::PARAM_INT);
             $aTokenAttributes = $previousatt->queryRow();
-            $aTokenAttributes = unserialize($aTokenAttributes['attributedescriptions']);
+            $aTokenAttributes = @unserialize($aTokenAttributes['attributedescriptions'],true);
             foreach($fieldcontents as $key=>$iIDAttributeCPDB) {
                 $aTokenAttributes[$key]=$iIDAttributeCPDB;
             }

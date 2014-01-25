@@ -1195,6 +1195,11 @@ function db_upgrade_all($iOldDBVersion) {
             upgradeTokens176();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>176),"stg_name='DBVersion'");
         }
+        if ($iOldDBVersion < 177)
+        {
+            upgradeSurveys177();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>177),"stg_name='DBVersion'");
+        }
         
 
         $oTransaction->commit();
@@ -1221,6 +1226,30 @@ function db_upgrade_all($iOldDBVersion) {
     echo '<br /><br />'.sprintf($oLang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
 }
+
+
+function upgradeSurveys177()
+{
+    $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";
+    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
+    foreach ( $oSurveyResult as $aSurveyRow )
+    {
+        $aAttributeDescriptions=@unserialize($aSurveyRow['surveyls_attributecaptions']);
+        if ($aAttributeDescriptions==NULL) $aAttributeDescriptions=array();
+        $sSurveyLSUpdateQuery= "update {{surveys_languagesettings}} set surveyls_attributecaptions=:attributecaptions where surveyls_survey_id=".$aSurveyRow['surveyls_survey_id'].' and surveyls_language=:language';
+        Yii::app()->db->createCommand($sSurveyLSUpdateQuery)->execute(array(':language'=>$aSurveyRow['surveyls_language'],':attributecaptions'=>json_encode($aAttributeDescriptions)));
+    }
+    $sSurveyQuery = "SELECT * FROM {{surveys}}";
+    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
+    foreach ( $oSurveyResult as $aSurveyRow )
+    {
+        $aAttributeDescriptions=@unserialize($aSurveyRow['attributedescriptions']);
+        if ($aAttributeDescriptions==NULL) $aAttributeDescriptions=array();
+        $sSurveyUpdateQuery= "update {{surveys}} set attributedescriptions=:attributedescriptions where sid=".$aSurveyRow['sid'];
+        Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute(array(':attributedescriptions'=>json_encode($aAttributeDescriptions)));
+    }
+}
+
 
 
 /**

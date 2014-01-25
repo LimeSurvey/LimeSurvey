@@ -2641,6 +2641,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     unset($surveyrowdata['attribute1']);
     unset($surveyrowdata['attribute2']);
     unset($surveyrowdata['usestartdate']);
+    unset($surveyrowdata['attributedescriptions']);
     unset($surveyrowdata['notification']);
     unset($surveyrowdata['useexpiry']);
     unset($surveyrowdata['url']);
@@ -2678,6 +2679,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             $surveylsrowdata['surveyls_email_confirm']=translateLinks('survey', $iOldSID, $iNewSID, $surveylsrowdata['surveyls_email_confirm']);
         }
         unset($surveylsrowdata['lastpage']);
+        unset($surveylsrowdata['surveyls_attributecaptions']);
         $surveylsrowdata['surveyls_survey_id']=$iNewSID;
 
         $lsiresult = SurveyLanguageSetting::model()->insertNewSurvey($surveylsrowdata) or safeDie("<br />".$clang->gT("Import of this survey file failed")."<br />");
@@ -3506,6 +3508,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['questionindex 	']=1; // 0 is default then need only Y
             unset($insertdata['allowjumps']);
         }
+        if (isset($insertdata['attributedescriptions']) && substr($insertdata['attributedescriptions'],0,1)!='{')
+        {
+            unset($insertdata['attributedescriptions']);
+        }
         /* Remove unknow column */
         $aSurveyModelsColumns=Survey::model()->attributes;
         $aSurveyModelsColumns['wishSID']=null;// To force a sid surely
@@ -3554,6 +3560,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             if (isset($insertdata['surveyls_email_register'])) $insertdata['surveyls_email_register']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_register']);
             if (isset($insertdata['surveyls_email_confirm'])) $insertdata['surveyls_email_confirm']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_confirm']);
         }
+        if (isset($insertdata['surveyls_attributecaptions']) && substr($insertdata['surveyls_attributecaptions'],0,1)!='{')
+        {
+            unset($insertdata['surveyls_attributecaptions']);
+        }
+        
 
 
         $result = SurveyLanguageSetting::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [2]<br />");
