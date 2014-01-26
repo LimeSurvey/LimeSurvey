@@ -3682,7 +3682,6 @@ function do_shortfreetext($ia)
 
 function getLatLongFromIp($ip){
     $ipInfoDbAPIKey = Yii::app()->getConfig("ipInfoDbAPIKey");
-    libxml_disable_entity_loader();
     $xml = simplexml_load_file("http://api.ipinfodb.com/v2/ip_query.php?key=$ipInfoDbAPIKey&ip=$ip&timezone=false");
     if ($xml->{'Status'} == "OK"){
         $lat = (float)$xml->{'Latitude'};

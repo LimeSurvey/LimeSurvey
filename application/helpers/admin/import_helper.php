@@ -15,17 +15,17 @@
 /**
 * This function imports an old-school question group file (*.csv,*.sql)
 *
-* @param mixed $sFullFilepath Full file patch to the import file
+* @param mixed $sFullFilePath Full file patch to the import file
 * @param mixed $iNewSID  Survey ID to which the question is attached
 */
-function CSVImportGroup($sFullFilepath, $iNewSID)
+function CSVImportGroup($sFullFilePath, $iNewSID)
 {
     $clang = Yii::app()->lang;
 
     $aLIDReplacements=array();
     $aQIDReplacements = array(); // this array will have the "new qid" for the questions, the key will be the "old qid"
     $aGIDReplacements = array();
-    $handle = fopen($sFullFilepath, "r");
+    $handle = fopen($sFullFilePath, "r");
     while (!feof($handle))
     {
         $buffer = fgets($handle);
@@ -771,10 +771,10 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
 /**
 * This function imports a LimeSurvey .lsg question group XML file
 *
-* @param mixed $sFullFilepath  The full filepath of the uploaded file
+* @param mixed $sFullFilePath  The full filepath of the uploaded file
 * @param mixed $iNewSID The new survey id - the group will always be added after the last group in the survey
 */
-function XMLImportGroup($sFullFilepath, $iNewSID)
+function XMLImportGroup($sFullFilePath, $iNewSID)
 {
     $clang = Yii::app()->lang;
 
@@ -783,8 +783,8 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
     $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($iNewSID)->additionalLanguages);
-    libxml_disable_entity_loader();
-    $xml = @simplexml_load_file($sFullFilepath);
+    $sXMLdata = file_get_contents($sFullFilePath);
+    $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
     if ($xml==false || $xml->LimeSurveyDocType!='Group') safeDie('This is not a valid LimeSurvey group structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
@@ -1098,11 +1098,11 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
 /**
 * This function imports an old-school question file (*.csv,*.sql)
 *
-* @param mixed $sFullFilepath Full file patch to the import file
+* @param mixed $sFullFilePath Full file patch to the import file
 * @param mixed $iNewSID  Survey ID to which the question is attached
 * @param mixed $newgid  Group ID top which the question is attached
 */
-function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
+function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
 {
     $clang = Yii::app()->lang;
 
@@ -1112,7 +1112,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
     $results['labelsets']=0;
     $results['labels']=0;
 
-    $handle = fopen($sFullFilepath, "r");
+    $handle = fopen($sFullFilePath, "r");
     while (!feof($handle))
     {
         $buffer = fgets($handle); //To allow for very long survey welcomes (up to 10k)
@@ -1692,19 +1692,19 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
 /**
 * This function imports a LimeSurvey .lsq question XML file
 *
-* @param mixed $sFullFilepath  The full filepath of the uploaded file
+* @param mixed $sFullFilePath  The full filepath of the uploaded file
 * @param mixed $iNewSID The new survey id
 * @param mixed $newgid The new question group id -the question will always be added after the last question in the group
 */
-function XMLImportQuestion($sFullFilepath, $iNewSID, $newgid)
+function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
 {
     $clang = Yii::app()->lang;
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
     $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($iNewSID)->additionalLanguages);
-    libxml_disable_entity_loader();
-    $xml = simplexml_load_file($sFullFilepath);
+    $sXMLdata = file_get_contents($sFullFilePath);
+    $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
     if ($xml->LimeSurveyDocType!='Question') safeDie('This is not a valid LimeSurvey question structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
@@ -1939,11 +1939,11 @@ function XMLImportQuestion($sFullFilepath, $iNewSID, $newgid)
 /**
 * CSVImportLabelset()
 * Function responsible to import label set from CSV format.
-* @param mixed $sFullFilepath
+* @param mixed $sFullFilePath
 * @param mixed $options
 * @return
 */
-function CSVImportLabelset($sFullFilepath, $options)
+function CSVImportLabelset($sFullFilePath, $options)
 {
     $clang = Yii::app()->lang;
     $results['labelsets']=0;
@@ -1952,7 +1952,7 @@ function CSVImportLabelset($sFullFilepath, $options)
     $csarray=buildLabelSetCheckSumArray();
     //$csarray is now a keyed array with the Checksum of each of the label sets, and the lid as the key
 
-    $handle = fopen($sFullFilepath, "r");
+    $handle = fopen($sFullFilePath, "r");
     while (!feof($handle))
     {
         $buffer = fgets($handle); //To allow for very long survey welcomes (up to 10k)
@@ -2115,15 +2115,15 @@ function CSVImportLabelset($sFullFilepath, $options)
 /**
 * XMLImportLabelsets()
 * Function resp[onsible to import a labelset from XML format.
-* @param mixed $sFullFilepath
+* @param mixed $sFullFilePath
 * @param mixed $options
 * @return
 */
-function XMLImportLabelsets($sFullFilepath, $options)
+function XMLImportLabelsets($sFullFilePath, $options)
 {
     $clang = Yii::app()->lang;
-    libxml_disable_entity_loader();
-    $xml = simplexml_load_file($sFullFilepath);
+    $sXMLdata = file_get_contents($sFullFilePath);
+    $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
     if ($xml->LimeSurveyDocType!='Label set') safeDie('This is not a valid LimeSurvey label set structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
     $csarray=buildLabelSetCheckSumArray();
@@ -2230,15 +2230,15 @@ function XMLImportLabelsets($sFullFilepath, $options)
 /**
 * This function imports the old CSV data from 1.50 to 1.87 or older. Starting with 1.90 (DBVersion 143) there is an XML format instead
 *
-* @param array $sFullFilepath
+* @param array $sFullFilePath
 * @returns array Information of imported questions/answers/etc.
 */
-function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=true)
+function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=true)
 {
     Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
 
-    $handle = fopen($sFullFilepath, "r");
+    $handle = fopen($sFullFilePath, "r");
     while (!feof($handle))
     {
 
@@ -2605,7 +2605,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             $importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br /><br />\n"; //Couldn't find the SID - cannot continue
             $importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
             $importsurvey .= "</div>\n";
-            unlink($sFullFilepath); //Delete the uploaded file
+            unlink($sFullFilePath); //Delete the uploaded file
             return;
         }
         else
@@ -3297,9 +3297,9 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 }
 
 
-function importSurveyFile($sFullFilepath, $bTranslateLinksFields, $sNewSurveyName=NULL, $DestSurveyID=NULL)
+function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName=NULL, $DestSurveyID=NULL)
 {
-    $aPathInfo = pathinfo($sFullFilepath);
+    $aPathInfo = pathinfo($sFullFilePath);
     if (isset($aPathInfo['extension']))
     {
         $sExtension = $aPathInfo['extension'];
@@ -3310,20 +3310,20 @@ function importSurveyFile($sFullFilepath, $bTranslateLinksFields, $sNewSurveyNam
     }
     if (isset($sExtension) && strtolower($sExtension) == 'csv')
     {
-        return CSVImportSurvey($sFullFilepath, $DestSurveyID, $bTranslateLinksFields);
+        return CSVImportSurvey($sFullFilePath, $DestSurveyID, $bTranslateLinksFields);
     }
     elseif (isset($sExtension) && strtolower($sExtension) == 'lss')
     {
-        return XMLImportSurvey($sFullFilepath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
+        return XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
     }
     elseif (isset($sExtension) && strtolower($sExtension) == 'txt')
     {
-        return TSVImportSurvey($sFullFilepath);
+        return TSVImportSurvey($sFullFilePath);
     }
     elseif (isset($sExtension) && strtolower($sExtension) == 'lsa')  // Import a survey archive
     {
         Yii::import("application.libraries.admin.pclzip.pclzip", true);
-        $pclzip = new PclZip(array('p_zipname' => $sFullFilepath));
+        $pclzip = new PclZip(array('p_zipname' => $sFullFilePath));
         $aFiles = $pclzip->listContent();
 
         if ($pclzip->extract(PCLZIP_OPT_PATH, Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR, PCLZIP_OPT_BY_EREG, '/(lss|lsr|lsi|lst)$/') == 0)
@@ -3398,22 +3398,19 @@ function importSurveyFile($sFullFilepath, $bTranslateLinksFields, $sNewSurveyNam
 /**
 * This function imports a LimeSurvey .lss survey XML file
 *
-* @param mixed $sFullFilepath  The full filepath of the uploaded file
+* @param mixed $sFullFilePath  The full filepath of the uploaded file
 */
-function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL, $bTranslateInsertansTags=true)
+function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL, $bTranslateInsertansTags=true)
 {
     Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
 
     $aGIDReplacements = array();
-    libxml_disable_entity_loader();
     if ($sXMLdata == NULL)
     {
-        $xml = simplexml_load_file($sFullFilepath);
-    } else
-    {
-        $xml = simplexml_load_string($sXMLdata);
-    }
+        $sXMLdata = file_get_contents($sFullFilePath);
+    } 
+    $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
 
     if ($xml->LimeSurveyDocType!='Survey')
     {
@@ -4141,12 +4138,12 @@ function GetNewSurveyID($iOldSID)
 }
 
 
-function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeFields=true)
+function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeFields=true)
 {
     Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
-    libxml_disable_entity_loader();
-    $xml = simplexml_load_file($sFullFilepath);
+    $sXMLdata = file_get_contents($sFullFilePath);
+    $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
     $results['warnings']=array();
     if ($xml->LimeSurveyDocType!='Tokens')
     {
@@ -4217,7 +4214,7 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
 }
 
 
-function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
+function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
 {
     Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
@@ -4225,7 +4222,7 @@ function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
     switchMSSQLIdentityInsert('survey_'.$iSurveyID, true);
     $results['responses']=0;
     $oXMLReader = new XMLReader();
-    $oXMLReader->open($sFullFilepath);
+    $oXMLReader->open($sFullFilePath);
     $DestinationFields = Yii::app()->db->schema->getTable('{{survey_'.$iSurveyID.'}}')->getColumnNames();
     while ($oXMLReader->read()) {
         if ($oXMLReader->name === 'LimeSurveyDocType' && $oXMLReader->nodeType == XMLReader::ELEMENT)
@@ -4280,12 +4277,12 @@ function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
 /**
 * This function import CSV file to responses table
 *
-* @param string $sFullFilepath
+* @param string $sFullFilePath
 * @param integer $iSurveyId
 * @param array $aOptions
 * Return array $result ("errors","warnings","success")
 */
-function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
+function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
 {
     $clang = Yii::app()->lang;
     // Default optional
@@ -4303,7 +4300,7 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
     // Prepare an array of sentence for result
     $CSVImportResult=array();
     // Read the file
-    $handle = fopen($sFullFilepath, "r"); // Need to be adapted for Mac ? in options ?
+    $handle = fopen($sFullFilePath, "r"); // Need to be adapted for Mac ? in options ?
     while (!feof($handle))
     {
         $buffer = fgets($handle); //To allow for very long lines . Another option is fgetcsv (0 to length), but need mb_convert_encoding
@@ -4518,15 +4515,13 @@ function CSVImportResponses($sFullFilepath,$iSurveyId,$aOptions=array())
 }
 
 
-function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
+function XMLImportTimings($sFullFilePath,$iSurveyID,$aFieldReMap=array())
 {
 
     Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
-
-    libxml_disable_entity_loader();
-    $xml = simplexml_load_file($sFullFilepath);
-
+    $sXMLdata = file_get_contents($sFullFilePath);
+    $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
     if ($xml->LimeSurveyDocType!='Timings')
     {
         $results['error'] = $clang->gT("This is not a valid timings data XML file.");
@@ -4593,12 +4588,12 @@ function XSSFilterArray(&$array)
 * @global type $dbprefix
 * @global type $clang
 * @global type $timeadjust
-* @param type $sFullFilepath
+* @param type $sFullFilePath
 * @return type
 *
 * @author TMSWhite
 */
-function TSVImportSurvey($sFullFilepath)
+function TSVImportSurvey($sFullFilePath)
 {
     $clang = Yii::app()->lang;
 
@@ -4608,7 +4603,7 @@ function TSVImportSurvey($sFullFilepath)
     $baselang = 'en';   // TODO set proper default
 
     $encoding='';
-    $handle = fopen($sFullFilepath, 'r');
+    $handle = fopen($sFullFilePath, 'r');
     $bom = fread($handle, 2);
     rewind($handle);
     $aAttributeList = questionAttributes();
