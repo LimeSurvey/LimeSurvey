@@ -163,15 +163,15 @@ $aReplacementData=array();
     <tr><td><strong>
             <?php $clang->eT("Question:"); ?></strong></td><td>
             <?php
-                templatereplace($qrrow['question'],array(),$aReplacementData,'Unspecified', false ,$qid);
-                echo FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), true);
+                templatereplace(FlattenText($qrrow['question']),array(),$aReplacementData,'Unspecified', false ,$qid);
+                echo LimeExpressionManager::GetLastPrettyPrintExpression();
         ?></td></tr>
     <tr><td><strong>
             <?php $clang->eT("Help:"); ?></strong></td><td>
             <?php
                 if (trim($qrrow['help'])!=''){
-                    templatereplace($qrrow['help'],array(),$aReplacementData,'Unspecified', false ,$qid);
-                    echo FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), true);
+                    templatereplace(FlattenText($qrrow['help']),array(),$aReplacementData,'Unspecified', false ,$qid);
+                    echo LimeExpressionManager::GetLastPrettyPrintExpression();
             } ?>
         </td></tr>
     <?php if ($qrrow['preg'])
