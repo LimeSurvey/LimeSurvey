@@ -1,3 +1,6 @@
+<?php
+$oPurifier=new CHtmlPurifier();
+?>
 <tr class='<?php echo $bgcc; ?>' valign='top'>
     <td align='center'><input type='checkbox' class='cbResponseMarker' value='<?php echo $dtrow['id']; ?>' name='markedresponses[]' /></td>
     <td align='center'>
@@ -53,7 +56,7 @@ if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
                     <?php }
                     else if ($metadata === "name")
                         { ?>
-                        <td><a href='#' onclick=" <?php echo convertGETtoPOST('?action=browse&amp;subaction=all&amp;downloadindividualfile=' . $phparray[$index][$metadata] . '&amp;fieldname=' . $fnames[$i][0] . '&amp;id=' . $dtrow['id'] . '&amp;sid=' . $surveyid); ?>" ><?php echo rawurldecode($phparray[$index][$metadata]); ?></a></td>
+                        <td><?php echo CHtml::link($oPurifier->purify(rawurldecode($phparray[$index][$metadata])), App()->getController()->createUrl("/admin/responses/sa/browse/fieldname/{$fnames[$i][0]}/id/{$dtrow['id']}/surveyid/{$surveyid}",array('downloadindividualfile'=>$phparray[$index][$metadata]))) ?></td>
                         <?php }
                         else
                         { ?>

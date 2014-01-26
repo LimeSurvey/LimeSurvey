@@ -181,6 +181,7 @@ class responses extends Survey_Common_Action
             $aViewUrls[] = 'browseidheader_view';
             if($exist)
             {
+                $oPurifier=new CHtmlPurifier();
                 //SHOW INDIVIDUAL RECORD
                 $oCriteria = new CDbCriteria();
                 if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
@@ -244,7 +245,7 @@ class responses extends Survey_Common_Action
                                     if ($metadata === "size")
                                         $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
                                     else if ($metadata === "name")
-                                        $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/sa/browse/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyID}",array('downloadindividualfile'=>$phparray[$index][$metadata])));
+                                        $answervalue = CHtml::link($oPurifier->purify(rawurldecode($phparray[$index][$metadata])), $this->getController()->createUrl("/admin/responses/sa/browse/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyID}",array('downloadindividualfile'=>$phparray[$index][$metadata])));
                                     else
                                         $answervalue = rawurldecode($phparray[$index][$metadata]);
                                 }
