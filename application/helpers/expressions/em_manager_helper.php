@@ -9836,6 +9836,78 @@ EOD;
                 return $LEM->sid;
         }
 
+                /**
+         * This function loads the relevant data about tokens for a survey.
+         * If specific token is not given it loads empty values, this is used for
+         * question previewing and the like.
+         *
+         * @param int $iSurveyId
+         * @param string $sToken
+         * @param boolean $bAnonymize
+         * @return void
+         */
+        public function loadTokenInformation($iSurveyId, $sToken = null, $bAnonymize = false)
+        {
+            if (!Survey::model()->hasTokens($iSurveyId))
+            {
+                return;
+            }
+            if ($sToken == null && isset($_SESSION[$this->sessid]['token']))
+            {
+                $sToken = $_SESSION[$this->sessid]['token'];
+            }
+            else
+            {
+                $sToken = null;
+            }
+
+            $aToken = getTokenData($iSurveyId, $sToken);
+
+            $this->knownVars['TOKEN:TOKEN'] = array(
+                'code'=> $sToken,
+                'jsName_on'=>'',
+                'jsName'=>'',
+                'readWrite'=>'N',
+            );
+
+            if (isset($aToken))
+            {
+                foreach ($aToken as $key => $val)
+                {
+                    if ($bAnonymize)
+                    {
+                        $val = "";
+                    }
+                    $key = "TOKEN:" . strtoupper($key);
+                    $this->knownVars[$key] = array(
+                    'code'=>$val,
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                    );
+                }
+            }
+            else
+            {
+                // Read list of available tokens from the tokens table so that preview and error checking works correctly
+
+                $blankVal = array(
+                'code'=>'',
+                'jsName_on'=>'',
+                'jsName'=>'',
+                'readWrite'=>'N',
+                );
+
+                foreach (getTokenFieldsAndNames($surveyId) as $field => $details)
+                {
+                    if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/', $field))
+                    {
+                        $this->knownVars['TOKEN:' . strtoupper($field)] = $blankVal;
+                    }
+                }
+            }
+        }
+
     }
 
     /**
