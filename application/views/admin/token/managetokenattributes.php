@@ -39,11 +39,11 @@
                             if ($sLanguage == $thissurvey['language'])
                             {
                                 echo "<td><input type='text' name='description_{$sTokenField}' value='" . htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8') . "' /></td>";
-                                echo "<td><input type='checkbox' name='mandatory_$tokenfield' value='Y'";
+                                echo "<td><input type='checkbox' name='mandatory_{$sTokenField}' value='Y'";
                                 if ($tokenvalues['mandatory'] == 'Y')
                                     echo ' checked="checked"';
                                 echo " /></td>
-                                <td><input type='checkbox' name='show_register_$tokenfield' value='Y'";
+                                <td><input type='checkbox' name='show_register_{$sTokenField}' value='Y'";
                                 if (!empty($tokenvalues['show_register']) && $tokenvalues['show_register'] == 'Y')
                                     echo ' checked="checked"';
                                 echo " /></td>";
