@@ -137,7 +137,7 @@ class responses extends Survey_Common_Action
 #                        $question .=' (' . $field['subquestion1'] . ':' . $field['subquestion2'] . ')';
 #                    if (isset($field['scale_id']))
 #                        $question .='[' . $field['scale'] . ']';
-                    $fnames[] = array($field['fieldname'], $question,'code'=>viewHelper::getFieldCode($field));
+                    $fnames[] = array($field['fieldname'], viewHelper::getFieldText($field),'code'=>viewHelper::getFieldCode($field,array('LEMcompat'=>true)));
                 }
                 elseif ($field['aid'] !== 'filecount')
                 {
@@ -473,13 +473,8 @@ class responses extends Survey_Common_Action
                         continue;
                     if ($fielddetails['type'] == 'answer_time')
                         continue;
-                    if (isset($fielddetails['subquestion']) && $fielddetails['subquestion'] != '')
-                        $question .=' (' . $fielddetails['subquestion'] . ')';
-                    if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
-                        $question .=' (' . $fielddetails['subquestion1'] . ':' . $fielddetails['subquestion2'] . ')';
-                    if (isset($fielddetails['scale_id']))
-                        $question .='[' . $fielddetails['scale'] . ']';
-                    $fnames[] = array($fielddetails['fieldname'], flattenText($question,true));
+
+                    $fnames[] = array($fielddetails['fieldname'], viewHelper::getFieldText($fielddetails),'code'=>viewHelper::getFieldCode($fielddetails,array('LEMcompat'=>true)));
                 }
                 elseif ($fielddetails['aid'] !== 'filecount')
                 {
