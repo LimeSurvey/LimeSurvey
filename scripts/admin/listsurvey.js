@@ -130,6 +130,11 @@ $(document).ready(function(){
 			$('#displaysurveys').setGridWidth($(window).width()-4);
             $('.wrapper').width($('#displaysurveys').width()+4);
             $('.footer').outerWidth($('#displaysurveys').outerWidth()+4).css({ 'margin':'0 auto' });
+            if (jQuery("#displaysurveys").jqGrid('getGridParam','datatype') === "json") {
+                setTimeout(function(){
+                    jQuery("#displaysurveys").trigger("reloadGrid");
+                },100);
+            }
         }
     });
     jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ deltitle: sDelTitle, 
