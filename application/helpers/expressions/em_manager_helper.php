@@ -22,6 +22,7 @@
     include_once('em_core_helper.php');
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('frontend');
+    Yii::app()->loadHelper('surveytranslator');
     Yii::import("application.libraries.Date_Time_Converter");
     define('LEM_DEBUG_TIMING',1);
     define('LEM_DEBUG_VALIDATION_SUMMARY',2);   // also includes  SQL error messages
