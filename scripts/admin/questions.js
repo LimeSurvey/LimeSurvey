@@ -50,9 +50,7 @@ function validateQuestion(jqObject){
                 else
                 {
                     $.each(data, function(name, aError) {
-                        if($(jqObject).is(":text")){
-                            //$(jqObject).focus(); // Deactivate : this allow user to do something else (choose another survey etc ...)
-                        }else{
+                        if($(jqObject).is(":submit")){
                             $("#frmeditquestion").closest("#tabs").find(".ui-tabs-anchor:first").click();
                             $('#frmeditquestion [type!=hidden][name="'+name+'"]').focus();// Focus on the first input
                         }
