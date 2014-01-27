@@ -40,9 +40,9 @@ function validateQuestion(jqObject){
         function(data){
                 if($.isEmptyObject(data))
                 {
-                    $('#frmeditquestion :not(:hidden)[name="title"]')[0].setCustomValidity('');
-                    $('#frmeditquestion :not(:hidden)[name="title"]').removeClass("has-error");// Just title actually, more input needed after
-                    $('#frmeditquestion :not(:hidden)[name="title"]').next('.errorMessage').remove();
+                    $('#frmeditquestion [type!=hidden][name="title"]').filter(":first")[0].setCustomValidity('');// Just title actually, more input needed after ($.each)
+                    $('#frmeditquestion [type!=hidden][name="title"]').removeClass("has-error");
+                    $('#frmeditquestion [type!=hidden][name="title"]').next('.errorMessage').remove();
                     if($(jqObject).is(":submit")){
                         $(jqObject).trigger('click', { validated: true });
                     }
@@ -50,21 +50,22 @@ function validateQuestion(jqObject){
                 else
                 {
                     $.each(data, function(name, aError) {
+                        $("#frmeditquestion").closest("#tabs").find(".ui-tabs-anchor:first").click();
                         if($(jqObject).is(":text")){
                             $(jqObject).focus();
                         }else{
-                            $('#frmeditquestion :not(:hidden)[name="'+name+'"]').focus();// Focus on the first input
+                            $('#frmeditquestion [type!=hidden][name="'+name+'"]').focus();// Focus on the first input
                         }
-                        $('#frmeditquestion :not(:hidden)[name="'+name+'"]').addClass("has-error");
-                        if(!$('#frmeditquestion :not(:hidden)[name="'+name+'"]').next('.errorMessage').length)// $.each ?
+                        $('#frmeditquestion [type!=hidden][name="'+name+'"]').addClass("has-error");
+                        if(!$('#frmeditquestion [type!=hidden][name="'+name+'"]').next('.errorMessage').length)// $.each ?
                         {
-                            $("<span class='errorMessage text-error' />").insertAfter('#frmeditquestion :not(:hidden)[name="'+name+'"]');
+                            $("<span class='errorMessage text-error' />").insertAfter('#frmeditquestion [type!=hidden][name="'+name+'"]');
                         }
                         $.each(aError,function(i,error){
-                            $('#frmeditquestion :not(:hidden)[name="'+name+'"]').each(function(){
+                            $('#frmeditquestion [type!=hidden][name="'+name+'"]').each(function(){
                                 $(this)[0].setCustomValidity(error);
                             });
-                            $('#frmeditquestion :not(:hidden)[name="'+name+'"]').next('.errorMessage').text(error);
+                            $('#frmeditquestion [type!=hidden][name="'+name+'"]').next('.errorMessage').text(error);
                         });
                     });
                 }
