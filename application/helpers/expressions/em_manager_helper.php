@@ -9836,7 +9836,7 @@ EOD;
                 return $LEM->sid;
         }
 
-                /**
+       /**
          * This function loads the relevant data about tokens for a survey.
          * If specific token is not given it loads empty values, this is used for
          * question previewing and the like.
@@ -9856,23 +9856,19 @@ EOD;
             {
                 $sToken = $_SESSION[$this->sessid]['token'];
             }
-            else
-            {
-                $sToken = null;
-            }
-
-            $aToken = getTokenData($iSurveyId, $sToken);
-
+            $token = Token::model($iSurveyId)->findByAttributes(array(
+                'token' => $sToken
+            ));
+            
             $this->knownVars['TOKEN:TOKEN'] = array(
                 'code'=> $sToken,
                 'jsName_on'=>'',
                 'jsName'=>'',
                 'readWrite'=>'N',
             );
-
-            if (isset($aToken))
+            if (isset($token))
             {
-                foreach ($aToken as $key => $val)
+                foreach ($token->attributes as $key => $val)
                 {
                     if ($bAnonymize)
                     {
