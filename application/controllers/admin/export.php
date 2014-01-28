@@ -396,6 +396,7 @@ class export extends Survey_Common_Action {
         $language = Survey::model()->findByPk($iSurveyID)->language;
         $clang = new limesurvey_lang($language);
         Yii::app()->loadHelper("admin/exportresults");
+        viewHelper::disableHtmlLogging();
 
         if ( $subaction == 'dldata' )
         {
