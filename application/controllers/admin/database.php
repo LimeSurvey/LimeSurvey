@@ -421,7 +421,7 @@ class database extends Survey_Common_Action
                         {
                             $langqid=0;
                             $oQuestion= new Question;
-                            $oQuestion->sid = $iQuestionID;
+                            $oQuestion->qid = $iQuestionID;
                             $oQuestion->sid = $iSurveyID;
                             $oQuestion->gid = $iQuestionGroupID;
                             $oQuestion->type = Yii::app()->request->getPost('type');

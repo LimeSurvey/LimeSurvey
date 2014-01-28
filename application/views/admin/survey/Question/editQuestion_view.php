@@ -1,8 +1,15 @@
+<?php
+// Surely better in controller
+if ($adding || $copying) {
+    $sValidateUrl=$this->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid));
+}else{
+    $sValidateUrl=$this->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid,'qid'=>$qid));
+}
+?>
 <script type='text/javascript'>
     var attr_url = "<?php echo $this->createUrl('admin/questions', array('sa' => 'ajaxquestionattributes')); ?>";
     var imgurl = '<?php echo Yii::app()->getConfig('imageurl'); ?>';
-    var yii_csrf = "<?php echo Yii::app()->request->csrfToken; ?>";
-    
+    var validateUrl = "<?php echo $sValidateUrl; ?>";
 </script>
 <?php PrepareEditorScript(true, $this); ?>
 
@@ -35,7 +42,7 @@
             <?php }
         ?>
     </ul>
-    <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmeditquestion','name'=>'frmeditquestion','onsubmit'=>"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');")); ?>
+    <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
             <div id='questionactioncopy' class='extra-action'>
                 <input type='submit' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
                 <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />

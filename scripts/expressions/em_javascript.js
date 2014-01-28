@@ -773,11 +773,11 @@ function  LEMsetTabIndexes()
                 // Can use $(this)[0].type
                 if($(this).attr('type')=="text")
                 {
-                    checkconditions($(this).val(), $(this).attr('name'), 'text', 'TAB');
+                    $(this).triggerHandler("keyup");
                 }
                 if($(this).is('select'))
                 {
-                    checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'TAB');
+                    $(this).triggerHandler("change");
                 }
                 $(this).focus();
                 return true;

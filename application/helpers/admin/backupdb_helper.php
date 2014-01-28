@@ -164,9 +164,9 @@
             {
 
                 if (isset($aRecord[$sFieldName]) && !is_null($aRecord[$sFieldName])) {
-                    $sValue= addslashes($aRecord[$sFieldName]);
+                    $sValue= addcslashes($aRecord[$sFieldName],"'");
                     $sValue = preg_replace("#\n#", "\\n", $sValue);
-                    $sOutput.= '"' . $sValue . '"';
+                    $sOutput.= "'" . $sValue . "'";
                 }
                 else
                 {

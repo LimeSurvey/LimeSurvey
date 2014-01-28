@@ -125,11 +125,20 @@ $(document).ready(function(){
         loadonce : true,
         pager: "#pager",
         caption: sCaption,
+        beforeProcessing: function(data){
+            $('#displaysurveys tbody').hide();
+        },
         loadComplete: function(data){
             // Need this for vertical scrollbar 
 			$('#displaysurveys').setGridWidth($(window).width()-4);
             $('.wrapper').width($('#displaysurveys').width()+4);
             $('.footer').outerWidth($('#displaysurveys').outerWidth()+4).css({ 'margin':'0 auto' });
+            if (jQuery("#displaysurveys").jqGrid('getGridParam','datatype') === "json") {
+                setTimeout(function(){
+                    jQuery("#displaysurveys").trigger("reloadGrid");
+					$('#displaysurveys tbody').show();
+                },100);
+            }
         }
     });
     jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ deltitle: sDelTitle, 

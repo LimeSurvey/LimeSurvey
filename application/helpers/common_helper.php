@@ -6605,7 +6605,7 @@ function fixLanguageConsistency($sid, $availlangs='')
     } else {
         $langs=Survey::model()->findByPk($sid)->additionalLanguages;
     }
-
+    if (count($langs)==0) return true; // Survey only has one language
     $baselang = Survey::model()->findByPk($sid)->language;
     $query = "SELECT * FROM {{groups}} WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
     $result = Yii::app()->db->createCommand($query)->query();
