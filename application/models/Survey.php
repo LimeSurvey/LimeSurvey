@@ -32,7 +32,6 @@ class Survey extends LSActiveRecord
      */
     public function getLocalizedTitle()
     {
-        return $this->languagesettings[$this->language]->surveyls_title;
         if (isset($this->languagesettings[App()->lang->langcode]))
         {
             return $this->languagesettings[App()->lang->langcode]->surveyls_title;

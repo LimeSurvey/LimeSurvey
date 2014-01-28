@@ -7,9 +7,14 @@
     {
         public $layout = 'bare';
         public $defaultAction = 'publicList';
-        public function actionPublicList()
+        public function actionPublicList($lang = null)
         {
             $this->sessioncontrol();
+            if (isset($lang))
+            {
+                App()->setLang(new Limesurvey_lang($lang));
+            }
+
             $this->render('publicSurveyList', array(
                 'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
                 'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),

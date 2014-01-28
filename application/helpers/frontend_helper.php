@@ -302,7 +302,7 @@ function makeLanguageChanger($sSelectedLanguage)
             $aListLang[$sLangCode]=html_entity_decode($aLanguage['nativedescription'], ENT_COMPAT,'UTF-8').' - '.$aLanguage['description'];
         $sSelected=$sSelectedLanguage;
 
-        $sHTMLCode= CHtml::beginForm(Yii::app()->getController()->createUrl('survey/index'),'get');
+        $sHTMLCode= CHtml::beginForm(App()->createUrl('surveys/publiclist'),'get');
         //$sHTMLCode="<pre>".var_export($test,true)."</pre>";
         $sHTMLCode.= CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass));
         //$sHTMLCode.= CHtml::htmlButton($clang->gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'jshide'));
