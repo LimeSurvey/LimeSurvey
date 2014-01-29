@@ -53,7 +53,7 @@
 			// Check if we have custom attributes.
 			if ($this->hasAttribute('attribute_1'))
 			{
-				foreach (json_decode($this->survey->attributedescriptions,true) as $key => $info)
+				foreach (unserialize($this->survey->attributedescriptions) as $key => $info)
 				{
 					$labels[$key] = $info['description'];
 				}

@@ -3505,10 +3505,6 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['questionindex 	']=1; // 0 is default then need only Y
             unset($insertdata['allowjumps']);
         }
-        if (isset($insertdata['attributedescriptions']) && substr($insertdata['attributedescriptions'],0,1)!='{')
-        {
-            unset($insertdata['attributedescriptions']);
-        }
         /* Remove unknow column */
         $aSurveyModelsColumns=Survey::model()->attributes;
         $aSurveyModelsColumns['wishSID']=null;// To force a sid surely
