@@ -5151,27 +5151,24 @@
                 // Create initial insert row for this record
                 $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                 $sdata = array(
-                "startlanguage"=>$this->surveyOptions['startlanguage'],
+                "startlanguage"=>$this->surveyOptions['startlanguage']
                 );
                 if ($this->surveyOptions['anonymized'] == false)
                 {
-                    $sdata = array_merge($sdata,array("token"=>($this->surveyOptions['token'])));
+                    $sdata['token'] = $this->surveyOptions['token'];
                 }
                 if ($this->surveyOptions['datestamp'] == true)
                 {
-                    $sdata = array_merge($sdata, array(
-                    "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION[$this->sessid]['datestamp'] : NULL),
-                    "startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION[$this->sessid]['datestamp'] : date("Y-m-d H:i:s",0))
-                    ));
-
+                    $sdata['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
+                    $sdata['startdate'] = $_SESSION[$this->sessid]['datestamp'];
                 }
                 if ($this->surveyOptions['ipaddr'] == true)
                 {
-                    $sdata = array_merge($sdata,array("ipaddr"=>getIPAddress()));
+                    $sdata['ipaddr'] = getIPAddress();
                 }
                 if ($this->surveyOptions['refurl'] == true)
                 {
-                    $sdata = array_merge($sdata,array("refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL)));
+                    $sdata['refurl'] = getenv("HTTP_REFERER");
                 }
 
                 $sdata = array_filter($sdata);
