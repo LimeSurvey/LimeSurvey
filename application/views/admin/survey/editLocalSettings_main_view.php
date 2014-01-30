@@ -11,15 +11,14 @@
             {
                 echo CHtml::tag('div', array('id' => "edittxtele-{$sLang}"), $sTabContent);
             } ?>
-        ?>
         </div>
 
-            <?php if($has_permissions): ?>
+            <?php if($has_permissions){ ?>
 	            <p>
 	            	<input type="submit" class="standardbtn" value="<?php $clang->eT("Save"); ?>" />
 	                <input type="hidden" name="action" value="updatesurveylocalesettings" />
 	                <input type="hidden" name="sid" value="<?php echo $surveyid; ?>" />
 	                <input type="hidden" name="language" value="<?php echo $surveyls_language; ?>" />
 	            </p>
-	        <?php endif; ?>
+	        <?php } ?>
     </form>
