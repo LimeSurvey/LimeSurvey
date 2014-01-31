@@ -55,7 +55,7 @@
     { "name":"available", "index":"available","align":"center", "sorttype":"int", "sortable": true,"width":25,"editable":false},
     { "name":"rate", "index":"rate","align":"center", "sorttype":"int", "sortable": true,"width":25,"editable":false}];
     function stripLinkSort(cell) {
-        var cellText = $(cell).text();
+        var cellText = $(cell).text().toLowerCase();
         return cellText;
     }
 </script>
