@@ -40,11 +40,11 @@ class Authentication extends Survey_Common_Action
             if (!$plugin) {
                 $plugin = new Plugin();
                 $plugin->name = 'Authdb';
-                $plugin->active = true;
+                $plugin->active = 1;
                 $plugin->save();                
                 App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
             } else {
-                $plugin->active = true;
+                $plugin->active = 1;
                 $plugin->save();
             }
         }
