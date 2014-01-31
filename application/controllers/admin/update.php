@@ -109,7 +109,7 @@ class update extends Survey_Common_Action
         $http->timeout = 0;
         $http->data_timeout = 0;
         $http->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
-        $http->GetRequestArguments('http://update.limesurvey.org/updates/changelog/' . $buildnumber . '/' . $updaterversion , $arguments);
+        $http->GetRequestArguments('https://update.limesurvey.org/updates/changelog/' . $buildnumber . '/' . $updaterversion , $arguments);
 
         $http->Open($arguments);
 
@@ -121,7 +121,7 @@ class update extends Survey_Common_Action
         $http->timeout = 0;
         $http->data_timeout = 0;
         $http->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
-        $http->GetRequestArguments('http://update.limesurvey.org/updates/update/' . $buildnumber . '/' . $updaterversion , $arguments);
+        $http->GetRequestArguments('https://update.limesurvey.org/updates/update/' . $buildnumber . '/' . $updaterversion , $arguments);
 
         $http->Open($arguments);
 
@@ -352,7 +352,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $http->data_timeout=0;
         $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $http->GetRequestArguments("http://update.limesurvey.org/updates/download/{$updateinfo['downloadid']}",$arguments);
+        $http->GetRequestArguments("https://update.limesurvey.org/updates/download/{$updateinfo['downloadid']}",$arguments);
         $http->RestoreCookies(Yii::app()->session['updatesession']);
 
         $error=$http->Open($arguments);
@@ -456,7 +456,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $oHTTPRequest->data_timeout=0;
         $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $oHTTPRequest->GetRequestArguments("http://update.limesurvey.org?updaterbuild={$buildnumber}",$arguments);
+        $oHTTPRequest->GetRequestArguments("https://update.limesurvey.org?updaterbuild={$buildnumber}",$arguments);
 
         $updateinfo=false;
         $error=$oHTTPRequest->Open($arguments);
@@ -510,7 +510,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $oHTTPRequest->data_timeout=0;
         $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $oHTTPRequest->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/{$buildnumber}",$arguments);
+        $oHTTPRequest->GetRequestArguments("https://update.limesurvey.org/updates/downloadupdater/{$buildnumber}",$arguments);
 
         $oHTTPRequesterror=$oHTTPRequest->Open($arguments);
         $oHTTPRequesterror=$oHTTPRequest->SendRequest($arguments);
