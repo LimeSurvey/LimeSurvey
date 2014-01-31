@@ -1165,6 +1165,13 @@ function db_upgrade_all($iOldDBVersion) {
                     // Special treatment for Postgres as it is too dumb to convert a string to a number without explicit being told to do so ... seriously?
                     alterColumn('{{permissions}}', 'entity_id', "INTEGER USING (entity_id::integer)", false);
                     break;
+                case 'sqlsrv':
+                case 'dblib':
+                case 'mssql':
+                    $oDB->createCommand()->dropIndex('permissions_idx2','{{permissions}}');
+                    alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
+                    $oDB->createCommand()->createIndex('permissions_idx2','{{permissions}}','entity_id,entity,permission,uid',true);
+                    break;
                 default: 
                     alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
             } 
@@ -1313,7 +1320,7 @@ function upgradeTokens176()
 
 function upgradeCPDBAttributeDefaultNames173()
 {
-    $sQuery = "SELECT attribute_id,attribute_name,COALESCE(lang)
+    $sQuery = "SELECT attribute_id,attribute_name,COALESCE(lang,NULL)
         FROM {{participant_attribute_names_lang}}
         group by attribute_id, attribute_name, lang
         order by attribute_id";
