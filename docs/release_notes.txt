@@ -59,6 +59,56 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140125) to 2.05+ (build 140131) Jan 31, 2014
+-New feature: Validate uniqueness of question code before submit (Denis Chenu)
+-Fixed #8125: SPSS Export SDATE Date Problem (Menno Dekker)
+-Fixed issue #8548: Attachments Fail To Carry Over To Token Invitation (Sam Mousa)
+-Fixed issue #8573: Surveylist does not show translated survey titles (Sam Mousa)
+-Fixed issue #8577: XXE in survey import (Carsten Schmitz)
+-Fixed issue #8579: Stored XSS in File upload (browse all and view one) (Denis Chenu)
+-Fixed issue #8585: Data corruption after adding questions to a multilingual survey (Carsten Schmitz)
+-Fixed issue #8589: PHP object injection in surveys (Carsten Schmitz)
+-Fixed issue #8590: Hidden questions appear when you tab to them, even if the conditions to show them haven't been met (Denis Chenu)
+-Fixed issue #8592: Bad HTML in question break layout (Denis Chenu)
+-Fixed issue #8598: incorrect alphabetically sort of surveys in list (tpartner)
+-Fixed issue #8599: Minor display issue in survey list selects (Carsten Schmitz)
+-Fixed issue #8605: Unable to add token attribute fields (Carsten Schmitz)
+-Fixed issue #8606: Unable to login using Postgres (Carsten Schmitz)
+-Fixed issue #8608: Cryptic message during ComfortUpdate (Carsten Schmitz)
+-Fixed issue #8609: Empty screen when clicking on sort question icon (mfaber)
+-Fixed issue #8626: Superfluous PHP closing tag in "edit text elements" (Denis Chenu)
+-Fixed issue #8628: Spelling mistake in English language file (Denis Chenu)
+-Fixed issue #8630: check data validity when unserializing attributedescription (Alexis Bezverkhyy)
+-Fixed issue #8632: Use SSL for ComfortUpdate (Carsten Schmitz)
+-Fixed issue #8642: Unable to create session key in RemoteControl when using MSSQL server (Carsten Schmitz)
+-Fixed issue: Double quote are removed for group title when editing (Denis Chenu)
+-Fixed issue: Error on database upgrade using MSSQL (Carsten Schmitz)
+-Fixed issue: Numeric-only codes on subquestions not being allowed (mfaber)
+-Fixed issue: PDF and Word exports had non internationalized strings (Alexis Bezverkhyy)
+-Fixed issue: Possibility to enter leading/trailing spaces for email address (Carsten Schmitz)
+-Fixed issue: Proper quoting of values when creating a database backup (Carsten Schmitz)
+-Fixed issue: Public survey list not working if MSSQL is used (Carsten Schmitz)
+-Fixed issue: Token attributes broken (Alexis Bezverkhyy)
+#Updated translation: Armenian by Satenik
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by actxcellence, c_schmitz, mfaber
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by myliserta, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by yamatt, nomoto
+#Updated translation: Latvian by vipgroup, marcic
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by maxzomborszki
+
 Changes from 2.05+ (build 140116) to 2.05+ (build 140125) Jan 25, 2014
 -New feature #8524: Implements min/max date in EM (mfaber)
 -Fixed issue #7159: PHP notice for arabic graph in statistics (Denis Chenu)
