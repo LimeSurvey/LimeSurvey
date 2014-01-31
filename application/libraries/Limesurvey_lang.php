@@ -26,14 +26,14 @@
         var $gettextclass;
         var $langcode;
 
-        function  __construct($sLanguageCode){
+        function  __construct($sLanguageCode, $bForceRefresh=false){
             if(empty($sLanguageCode))
                 trigger_error('langcode param is undefined ', E_USER_WARNING);
 
             static $aClassCache=array();
             Yii::app()->loadHelper('sanitize');
             $sLanguageCode=sanitize_languagecode($sLanguageCode);
-            if (isset($aClassCache[$sLanguageCode]))
+            if (isset($aClassCache[$sLanguageCode]) && !$bForceRefresh)
             {
                 $this->gettextclass = $aClassCache[$sLanguageCode];
             }
