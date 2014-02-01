@@ -1,6 +1,3 @@
-<?php
-$oPurifier=new CHtmlPurifier();
-?>
 <tr class='<?php echo $bgcc; ?>' valign='top'>
     <td align='center'><input type='checkbox' class='cbResponseMarker' value='<?php echo $dtrow['id']; ?>' name='markedresponses[]' /></td>
     <td align='center'>
@@ -56,7 +53,7 @@ if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
                     <?php }
                     else if ($metadata === "name")
                         { ?>
-                        <td><?php echo CHtml::link($oPurifier->purify(rawurldecode($phparray[$index][$metadata])), App()->getController()->createUrl("/admin/responses/sa/browse/fieldname/{$fnames[$i][0]}/id/{$dtrow['id']}/surveyid/{$surveyid}",array('downloadindividualfile'=>$phparray[$index][$metadata]))) ?></td>
+                        <td><?php echo CHtml::link(htmlspecialchars(rawurldecode($phparray[$index][$metadata])), App()->getController()->createUrl("/admin/responses/sa/browse/fieldname/{$fnames[$i][0]}/id/{$dtrow['id']}/surveyid/{$surveyid}",array('downloadindividualfile'=>$phparray[$index][$metadata]))) ?></td>
                         <?php }
                         else
                         { ?>
@@ -82,6 +79,7 @@ if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
                 }
                 else
                 {
+                    // Never use purify : too long (X40)
                     $browsedatafield = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($surveyid, $fnames[$i][0], $dtrow[$fnames[$i][0]], $oBrowseLanguage))), ENT_QUOTES);
                 }
                 echo "<td><span>$browsedatafield</span></td>\n";
