@@ -3336,7 +3336,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lss')
             {
                 //Import the LSS file
-                $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], null, null, null, true);
+                $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], null, null, null, true, false);
                 // Activate the survey
                 Yii::app()->loadHelper("admin/activate");
                 $activateoutput = activateSurvey($aImportResults['newsid']);
@@ -3400,7 +3400,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 *
 * @param mixed $sFullFilePath  The full filepath of the uploaded file
 */
-function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL, $bTranslateInsertansTags=true)
+function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL, $bTranslateInsertansTags=true, $bConvertInvalidQuestionCodes=true)
 {
     Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
@@ -3642,9 +3642,16 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($insertdata)
                 XSSFilterArray($insertdata);
-                
-            //$newqid = Question::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [4]<br />");
-            $oQuestion = new Question('import');
+
+            if (!$bConvertInvalidQuestionCodes)   
+            {
+                $sScenario='archiveimport';
+            }
+            else
+            {
+                $sScenario='import';
+            }
+            $oQuestion = new Question($sScenario);
             $oQuestion->setAttributes($insertdata, false);
 
             // Try to fix question title for valid question code enforcement
@@ -3692,6 +3699,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 unset($sOldTitle);
             }
             $newqid = $oQuestion->qid;
+
             if (!isset($aQIDReplacements[$oldqid]))
             {
                 $aQIDReplacements[$oldqid]=$newqid;
@@ -3707,7 +3715,6 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import subquestions -------------------------------------------------------
     if(isset($xml->subquestions))
     {
-
         foreach ($xml->subquestions->rows->row as $row)
         {
             $insertdata=array();
@@ -3737,9 +3744,18 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($insertdata)
                 XSSFilterArray($insertdata);
-            $question = new Question('import');
-            $question->setAttributes($insertdata, false);
 
+
+            if (!$bConvertInvalidQuestionCodes)   
+            {
+                $sScenario='archiveimport';
+            }
+            else
+            {
+                $sScenario='import';
+            }
+            $question = new Question($sScenario);
+            $question->setAttributes($insertdata, false);
             // Try to fix question title for valid question code enforcement
             if(!$question->validate(array('title')))
             {
@@ -3751,7 +3767,6 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 }
                 $question->title =$sNewTitle;
             }
-
             $attempts = 0;
             // Try to fix question title for unique question code enforcement
             while (!$question->validate(array('title')))
@@ -3785,7 +3800,6 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 unset($sOldTitle);
             }
             $newsqid = $question->qid;
-            //$newsqid =Question::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [5]<br />");
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array

@@ -122,12 +122,12 @@
                                         ':sid' => $this->sid
                                         )
                                     ),
-                                'message' => 'Question codes must be unique.');
-                $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.', 'on' => 'update, insert, import');// Think we can remove the scenario here (on: allways)
+                                'message' => 'Question codes must be unique.', 'except' => 'archiveimport');
+                $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => 'Question codes must start with a letter and may only contain alphanumeric characters.', 'except' => 'archiveimport');// Think we can remove the scenario here (on: allways)
             }
             else
             {
-                $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => 'Subquestion codes may only contain alphanumeric characters.', 'on' => 'update, insert, import');// Think we can remove the scenario here (on: allways)
+                $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => 'Subquestion codes may only contain alphanumeric characters.', 'except' => 'archiveimport');// Think we can remove the scenario here (on: allways)
             }
 
             return $aRules;
