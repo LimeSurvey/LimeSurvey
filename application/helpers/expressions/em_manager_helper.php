@@ -1550,11 +1550,11 @@
                                         if ((strlen($maxdate)==4) && ($maxdate>=1900) && ($maxdate<=2037))
                                         {
                                             // backward compatibility: if only a year is given, add month and day 
-                                            $date_max='\''.$maxdate.'-12-31 00:00'.'\''; 
+                                            $date_max='\''.$maxdate.'-12-31 23:59'.'\''; 
                                         }
                                         elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$maxdate))
                                         {
-                                            $date_max='\''.$maxdate.' 00:00\'';
+                                            $date_max='\''.$maxdate.' 23:59\'';
                                         }
                                         elseif (array_key_exists($date_max, $this->qcode2sgqa))  // refers to another question
                                         {
