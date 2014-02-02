@@ -79,7 +79,7 @@ $(document).ready(function(){
             // Dropped in new attributes
             if($(this).hasClass('newcreate')) { 
                 $(newDraggable).html($(newDraggable).attr('id').replace('t_',''));
-                $(newDraggable).append('<input type="text" id="td_'+$(newDraggable).attr('id')+'" value=\"'+$(newDraggable).attr('data-name')+'\">');
+                $(newDraggable).prepend('<input type="text" id="td_'+$(newDraggable).attr('id')+'" value=\"'+$(newDraggable).attr('data-name')+'\">');
             }            
             // Reset the mappable attribute classes        
             $('.mappable-attribute-wrapper').removeClass('paired');
