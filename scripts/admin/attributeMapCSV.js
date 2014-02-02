@@ -76,6 +76,17 @@ $(document).ready(function() {
                 opacity: 0.75
             });
                         
+            // Remove the text input if dropped out of the new attributes column
+            if(!$(this).hasClass('newcreate') && $('input[type="text"]', newDraggable).length > 0) { 
+                $('input[type="text"]', newDraggable).remove();
+                $(newDraggable).text($(newDraggable).attr('data-name'));
+            }        
+            // Dropped in new attributes
+            if($(this).hasClass('newcreate')) { 
+                $(newDraggable).html($(newDraggable).attr('id').replace('cs_',''));
+                $(newDraggable).prepend('<input type="text" id="td_'+$(newDraggable).attr('id')+'" value=\"'+$(newDraggable).attr('data-name')+'\">');
+            }  
+                        
             // Reset the mappable attribute classes 
             $('.mappable-attribute-wrapper').removeClass('paired');
             $('.mappable-attribute-wrapper .csv-attribute').closest('.mappable-attribute-wrapper').addClass('paired');
@@ -110,7 +121,9 @@ $(document).ready(function() {
             newcurrentarray.push($(this).attr('id'));
         });
         $.each(newcurrentarray, function(index,value) {
-            anewcurrentarray[index] = value.substring(3);
+			if(value[0]=='c') {
+                anewcurrentarray[value.substring(3)] = $("#td_"+value).val();
+            }
         });
         
         var mappedarray = {};

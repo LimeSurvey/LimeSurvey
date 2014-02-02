@@ -9,7 +9,7 @@
                 <?php
                 foreach ($firstline as $key => $value)
                 {
-                    echo "<div id='cs_" . $value . "' data-name='cs_" . $value . "' class=\"csv-attribute attribute-item draggable\">" . $value . "</div>";
+                    echo "<div id='cs_" . $value . "' data-name='" . $value . "' class=\"csv-attribute attribute-item draggable\">" . $value . "</div>";
                 }
                 ?>
             </div>
