@@ -3689,7 +3689,13 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if (!$oQuestion->save())
             {
-                safeDie($clang->gT("Error while saving: "). print_r($oQuestion->errors, true));
+                // safeDie($clang->gT("Error while saving: "). print_r($oQuestion->errors, true));  
+                //
+                // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
+                // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
+                // For this reason we ignore insertion errors (because it is most likely a duplicate)
+                // and continue with the next one
+                continue;
             }
             // Set a warning if question title was updated
             if(isset($sNewTitle))
@@ -3790,7 +3796,13 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if (!$question->save())
             {
-                safeDie($clang->gT("Error while saving: "). print_r($question->errors, true));
+                // safeDie($clang->gT("Error while saving: "). print_r($question->errors, true));  
+                //
+                // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
+                // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
+                // For this reason we ignore insertion errors (because it is most likely a duplicate)
+                // and continue with the next one
+                continue;
             }
             // Set a warning if question title was updated
             if(isset($sNewTitle))
