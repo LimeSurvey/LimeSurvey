@@ -133,17 +133,20 @@
             'full_name'=>$sArgument[2],
             'parent_id'=>0,
             'lang'=>'auto',
-            'email'=>$sArgument[3],
-            'create_survey'=>1,
-            'participant_panel'=>1,
-            'create_user'=>1,
-            'delete_user'=>1,
-            'superadmin'=>1,
-            'configurator'=>1,
-            'manage_template'=>1,
-            'manage_label'=>1
+            'email'=>$sArgument[3]
             ));
-
+            $this->connection->createCommand()->insert($aConfig['db']['tablePrefix'].'permissions', array(
+            'entity'=>'global',
+            'entity_id'=>0,
+            'uid'=>1,
+            'permission'=>'superadmin',
+            'create_p'=>0,
+            'read_p'=>1,
+            'update_p'=>0,
+            'delete_p'=>0,
+            'import_p'=>0,
+            'export_p'=>0
+            ));
         }
 
         function _executeSQLFile($sFileName, $sDatabasePrefix)
