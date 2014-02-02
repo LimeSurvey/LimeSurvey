@@ -4858,16 +4858,21 @@ function do_array($ia)
             $answer .= "\t<td >\n"
             . "<select name=\"$myfname\" id=\"answer$myfname\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\">\n";
 
-            // If not mandatory and showanswer, show no ans
+            // Dropdown representation is en exception - even if mandatory or  SHOW_NO_ANSWER is disable a neutral option needs to be shown where the mandatory case asks actively
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
-                $answer .= "\t<option value=\"\" ";
-                if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
-                {
-                    $answer .= SELECTED;
-                }
-                $answer .= '>'.$clang->gT('No answer')."</option>\n";
+                $sOptionText=$clang->gT('No answer');
             }
+            else
+            {
+                $sOptionText=$clang->gT('Please choose...');
+            }
+            $answer .= "\t<option value=\"\" ";
+            if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
+            {
+                $answer .= SELECTED;
+            }
+            $answer .= '>'.$sOptionText."</option>\n";
             foreach ($labels as $lrow)
             {
                 $answer .= "\t<option value=\"".$lrow['code'].'" ';
