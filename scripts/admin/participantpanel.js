@@ -50,7 +50,9 @@ $(document).ready(function() {
                         height : 300,
                         open: function(event, ui) {
                             $('#attributes').multiselect({ includeSelectAllOption:true, 
-                                                           selectAllText: 'Select all',
+                                                           selectAllText: sSelectAllText,
+                                                           nonSelectedText: sNonSelectedText,
+                                                           nSelectedText: sNSelectedText,
                                                            maxHeight: 140 });
                         }
                     });
