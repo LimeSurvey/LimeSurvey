@@ -141,42 +141,53 @@ $(document).ready(function(){
             }
         }
     });
-    jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ deltitle: sDelTitle, 
-                                                          searchtitle: sSearchTitle,
-                                                          refreshtitle: sRefreshTitle,
-                                                          alertcap: sWarningMsg,
-                                                          alerttext: sSelectRowMsg,
-                                                          add:false,
-                                                          del:true,
-                                                          edit:false,
-                                                          refresh: true,
-                                                          search: true
-                                                        },{},{},{ msg:delmsg, 
-                                                                  bSubmit: sDelCaption,
-                                                                  caption: sDelCaption,
-                                                                  bCancel: sCancel,
-                                                                  width : 450,
-                                                                  afterShowForm: function(form) {
-                                                                    form.closest('div.ui-jqdialog').center();
-                                                                  },
-                                                          afterSubmit: function(response, postdata) {
-                                                              if (postdata.oper=='del')
-                                                              {
-                                                                  // Remove surveys from dropdown, too
-                                                                    aSurveyIDs=postdata.id.split(",");
-                                                                    $.each(aSurveyIDs,function(iIndex, iSurveyID){
-                                                                        $("#surveylist option[value='"+iSurveyID+"']").remove();   
-                                                                    })
-                                                              };
-                                                              return [true];
-                                                          }
-                                                                },
-                                                                {
-                                                                      caption: sSearchCaption,
-                                                                      Find : sFind,
-                                                                      odata : [ sOperator1, sOperator2, sOperator3, sOperator4, sOperator5, sOperator6, sOperator7, sOperator8, sOperator9, sOperator10, sOperator11, sOperator12, sOperator13, sOperator14 ],
-                                                                      Reset: sReset
-                                                                });
+    
+    // Inject the translations into jqGrid
+    $.extend($.jgrid,{ 
+        del:{
+            msg:delmsg, 
+            bSubmit: sDelCaption,
+            caption: sDelCaption,
+            bCancel: sCancel
+        },
+        search : {
+            odata : [ sOperator1, sOperator2, sOperator3, sOperator4, sOperator5, sOperator6, sOperator7, sOperator8, sOperator9, sOperator10, sOperator11, sOperator12, sOperator13, sOperator14 ],
+            caption: sSearchCaption,
+            Find : sFind,
+            Reset: sReset,
+        }
+    });    
+    
+    jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ 
+        deltitle: sDelTitle, 
+        searchtitle: sSearchTitle,
+        refreshtitle: sRefreshTitle,
+        alertcap: sWarningMsg,        alerttext: sSelectRowMsg,
+        add:false,
+        del:true,
+        edit:false,
+        refresh: true,
+        search: true
+        },{},{},{ 
+            width : 450,
+            afterShowForm: function(form) {
+                form.closest('div.ui-jqdialog').center();
+            },
+            afterSubmit: function(response, postdata) {
+                if (postdata.oper=='del')
+                {
+                    // Remove surveys from dropdown, too
+                    aSurveyIDs=postdata.id.split(",");
+                    $.each(aSurveyIDs,function(iIndex, iSurveyID){
+                        $("#surveylist option[value='"+iSurveyID+"']").remove();   
+                    })
+                };
+                return [true];
+            }
+        },
+        {
+            width:600
+    });
     jQuery("#displaysurveys").jqGrid('filterToolbar', {searchOnEnter : false,defaultSearch: 'cn'});
     jQuery("#displaysurveys").jqGrid('navButtonAdd','#pager',{
         buttonicon:"ui-icon-calculator",
