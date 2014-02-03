@@ -104,14 +104,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $clang = Yii::app()->lang;
 
     Yii::app()->loadHelper('surveytranslator');
-    $questiondetails = array('sid' => 0, 'gid' => 0, 'qid' => 0, 'aid' =>0);
-    if(isset($question) && isset($question['sgq'])) {
-        $searchCode = $question['sgq'];
-        if (isset($question['aid']) && $question['aid']) { // See BUG #6947 and #6954
-            $searchCode .= $question['aid'];
-        }
-        $questiondetails=getSIDGIDQIDAIDType($searchCode); //Gets an array containing SID, GID, QID and Question Type)
-    }
 
     if (isset($thissurvey['sid'])) {
         $surveyid = $thissurvey['sid'];
@@ -262,7 +254,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_question_man_message = $question['man_message'];
         $_question_valid_message = $question['valid_message'];
         $_question_file_valid_message = $question['file_valid_message'];
-        $_question_sgq = (isset($question['sgq']) ? $question['sgq'] : '');
+        $question['sgq'] = (isset($question['sgq']) ? $question['sgq'] : '');
         $_question_essentials = $question['essentials'];
         $_getQuestionClass = $question['class'];
         $_question_man_class = $question['man_class'];
@@ -270,6 +262,11 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_question_number = $question['number'];
         $_question_code = $question['code'];
         $_question_type = $question['type'];
+        if($question['sgq']) // Not sure it can happen today ? But if set : allways sXgXq
+            list($question['sid'],$question['gid'],$question['qid'])=explode("X",$question['sgq']);
+        else
+            list($question['sid'],$question['gid'],$question['qid'])=array('','','');
+        $question['aid']= (isset($question['aid']) ? $question['aid'] : '');
     }
     else
     {
@@ -280,7 +277,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_question_man_message = '';
         $_question_valid_message = '';
         $_question_file_valid_message = '';
-        $_question_sgq = '';
         $_question_essentials = '';
         $_getQuestionClass = '';
         $_question_man_class = '';
@@ -288,6 +284,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_question_number = '';
         $_question_code = '';
         $_question_type = '';
+        $question = array_fill_keys(array('sid','gid','qid','aid','sgq'), '');
     };
 
     if ($_question_type == '*')
@@ -736,7 +733,7 @@ EOD;
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
-    $coreReplacements['AID'] = isset($questiondetails['aid']) ? $questiondetails['aid'] : '';
+    $coreReplacements['AID'] = $question['aid'];
     $coreReplacements['ANSWER'] = isset($answer) ? $answer : '';  // global
     $coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers cleared");
     $coreReplacements['ASSESSMENTS'] = $assessmenthtml;
@@ -749,7 +746,7 @@ EOD;
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['ENDTEXT'] = $_endtext;
     $coreReplacements['EXPIRY'] = $_dateoutput;
-    $coreReplacements['GID'] = isset($questiondetails['gid']) ? $questiondetails['gid']: '';
+    $coreReplacements['GID'] = ($question['gid']) ? $question['gid'] : Yii::app()->getConfig('gid','');// Use the gid of the question, except if we are not in question (Randomization group name)
     $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;
     $coreReplacements['GOOGLE_ANALYTICS_JAVASCRIPT'] = $_googleAnalyticsJavaScript;
     $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
@@ -766,7 +763,7 @@ EOD;
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
     $coreReplacements['PRIVACY'] = isset($privacy) ? $privacy : '';    // global
     $coreReplacements['PRIVACYMESSAGE'] = "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it.").' '.$clang->gT("If you used an identifying token to access this survey, please rest assured that this token will not be stored together with your responses. It is managed in a separate database and will only be updated to indicate whether you did (or did not) complete this survey. There is no way of matching identification tokens with survey responses.");
-    $coreReplacements['QID'] = isset($questiondetails['qid']) ? $questiondetails['qid'] : '';// $questiondetails['qid'] or $questionNum, see bug #06954
+    $coreReplacements['QID'] = $question['qid'];
     $coreReplacements['QUESTION'] = $_question;
     $coreReplacements['QUESTIONHELP'] = $_questionhelp;
     $coreReplacements['QUESTIONHELPPLAINTEXT'] = strip_tags(addslashes($help)); // global
@@ -795,8 +792,8 @@ EOD;
     $coreReplacements['SAVEFORM'] = $_saveform;
     $coreReplacements['SAVEHEADING'] = $clang->gT("Save your unfinished survey");
     $coreReplacements['SAVEMESSAGE'] = $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you.")."<br /><br />\n".$clang->gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
-    $coreReplacements['SGQ'] = $_question_sgq;
-    $coreReplacements['SID'] = (isset($surveyid) ? $surveyid : (isset($questiondetails['sid']) ? $questiondetails['sid'] : ''));
+    $coreReplacements['SGQ'] = $question['sgq'];
+    $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
     $coreReplacements['SITENAME'] = isset($sitename) ? $sitename : '';  // global
     $coreReplacements['SUBMITBUTTON'] = $_submitbutton;
     $coreReplacements['SUBMITCOMPLETE'] = "<strong>".$clang->gT("Thank you!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers.");

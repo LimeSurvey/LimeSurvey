@@ -1629,61 +1629,6 @@ function sendCacheHeaders()
     }
 }
 
-function getSIDGIDQIDAIDType($fieldcode)
-{
-    // use simple parsing to get {sid}, {gid}
-    // and what may be {qid} or {qid}{aid} combination
-    list($fsid, $fgid, $fqid) = explode('X', $fieldcode);
-    $fsid=sanitize_int($fsid);
-    $fgid=sanitize_int($fgid);
-    if (!$fqid) {$fqid=0;}
-    $fqid=sanitize_int($fqid);
-    // try a true parsing of fieldcode (can separate qid from aid)
-    // but fails for type M and type P multiple choice
-    // questions because the SESSION fieldcode is combined
-    // and we want here to pass only the sidXgidXqid for type M and P
-    $fields=arraySearchByKey($fieldcode, createFieldMap($fsid,'full',false,false,getBaseLanguageFromSurveyID($fsid)), "fieldname", 1);
-
-    if (count($fields) != 0)
-    {
-        $aRef['sid']=$fields['sid'];
-        $aRef['gid']=$fields['gid'];
-        $aRef['qid']=$fields['qid'];
-        $aRef['aid']=$fields['aid'];
-        $aRef['type']=$fields['type'];
-    }
-    else
-    {
-        // either the fielcode doesn't match a question
-        // or it is a type M or P question
-        $aRef['sid']=$fsid;
-        $aRef['gid']=$fgid;
-        $aRef['qid']=sanitize_int($fqid);
-
-        $s_lang = Survey::model()->findByPk($fsid)->language;
-        $fieldtoselect = array('type');
-        $condition = "qid = ".$fqid." AND language='".$s_lang."'";
-
-        $result = Question::model()->findAllByAttributes(array('qid' => $fqid, 'language' => $s_lang));
-
-        if ( count($result) == 0 )
-        { // question doesn't exist
-            return array();
-        }
-        else
-        {   // certainly is type M or P
-            foreach ($result as $row)
-            {
-                $aRef['type']=$row['type'];
-            }
-        }
-
-    }
-
-    //return array('sid'=>$fsid, "gid"=>$fgid, "qid"=>$fqid);
-    return $aRef;
-}
-
 /**
 * @param type $iSurveyID The Survey ID
 * @param type $sFieldCode Field code of the particular field

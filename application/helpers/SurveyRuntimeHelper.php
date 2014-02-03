@@ -1022,7 +1022,7 @@ class SurveyRuntimeHelper {
             }
 
             $redata = compact(array_keys(get_defined_vars()));
-
+            Yii::app()->setConfig('gid',$gid);// To be used in templaterplace in whole group. Attention : it's the actual GID (not the GID of the question)
             echo "\n\n<!-- START THE GROUP -->\n";
             echo "\n\n<div id='group-$_gseq'";
             $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
@@ -1126,6 +1126,7 @@ class SurveyRuntimeHelper {
             echo "\n\n<!-- END THE GROUP -->\n";
             echo templatereplace(file_get_contents($sTemplatePath."endgroup.pstpl"), array(), $redata);
             echo "\n\n</div>\n";
+            Yii::app()->setConfig('gid','');
         }
 
         LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
