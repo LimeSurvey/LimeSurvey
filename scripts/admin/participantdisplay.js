@@ -210,16 +210,17 @@ $(document).ready(function() {
                 editable: true,
                 loadonce : true,
                 colNames: [actionsColTxt,participantIdColTxt,attributeTypeColTxt,attributeIdColTxt,attributeNameColTxt,attributeValueColTxt,attributePosValColTxt],
-                colModel: [ { name:'act',index:'act',width:55,align:'center',search: false,sortable:false,formatter:'actions',formatoptions : { keys:true,onEdit:function(id){
-                    var iRow = $('#' + $.jgrid.jqID(id))[0].rowIndex;
-                    editModifier(id,iRow, method='edit');
+                colModel: [ { name:'act',index:'act',width:65,align:'center',search: false,sortable:false, formatter:'actions',
+                    formatoptions : { keys:true,onEdit:function(id){
+                        var iRow = $('#' + $.jgrid.jqID(id))[0].rowIndex;
+                        editModifier(id,iRow, method='edit');
                     }}},
-                    { name:'participant_id',index:'participant_id', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
-                    { name:'atttype',index:'atttype', width:150, sorttype:"string",align:"center",editable:false,hidden:true},
-                    { name:'attid',index:'attid', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
+                    { name:'participant_id',index:'participant_id', width:10, sorttype:"string",align:"center",editable:true,hidden:true},
+                    { name:'atttype',index:'atttype', width:170, sorttype:"string",align:"center",editable:false,hidden:true},
+                    { name:'attid',index:'attid', width:170, sorttype:"string",align:"center",editable:true,hidden:true},
                     { name:'attname',index:'attname', width:150, sorttype:"string",align:"center",editable:false},
-                    { name:'attvalue',index:'attvalue', width:150, sorttype:"string",align:"center",editable:true},
-                    { name:'attpvalues',index:'attpvalues', width:150, sorttype:"string",align:"center",editable:false,hidden:true}],
+                    { name:'attvalue',index:'attvalue', width:170, sorttype:"string",align:"center",editable:true},
+                    { name:'attpvalues',index:'attpvalues', width:10, sorttype:"string",align:"center",editable:false,hidden:true}],
                 sortname: attributeNameColTxt,
                 sortorder: 'asc',
                 sortable: true,
@@ -235,6 +236,9 @@ $(document).ready(function() {
                     /* Removes the delete icon from the actions bar */
                     $('div.ui-inline-del').html('');
                     $("#gview_"+subgrid_table_id).css("margin-top", "20px"); //Some spacing after the subgrid
+                    $(".ui-inline-edit").attr('title',sEditAttributeValueMsg);
+                    $(".ui-inline-save").attr('title',sSubmit);
+                    $(".ui-inline-cancel").attr('title',sCancel);
                 },
                 ondblClickRow: function(id,subgrid_id) {
                     editModifier(id, subgrid_id, method='click');
@@ -243,7 +247,12 @@ $(document).ready(function() {
             });
 
             /* Pager for attribute subgrid */
-            jQuery("#"+subgrid_table_id).jqGrid('navGrid',"#"+pager_id,{refresh: false, edit:false,add:false,del:false,search:false})
+            jQuery("#"+subgrid_table_id).jqGrid('navGrid',"#"+pager_id,{
+                refresh: false, 
+                edit:false,
+                add:false,
+                del:false,
+                search:false})
             jQuery("#"+subgrid_table_id).jqGrid('filterToolbar', {searchOnEnter : false, defaultSearch: 'cn'});
         }
     });

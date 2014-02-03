@@ -64,6 +64,7 @@ else
     var sAddButtonCaption = "<?php $clang->eT("Add", 'js') ?>";
     var sDeleteButtonCaption = "<?php $clang->eT("Delete", 'js') ?>";
     var sCancel = "<?php $clang->eT("Cancel", 'js') ?>";
+    var sSubmit = "<?php $clang->eT("Save", 'js') ?>";
     var fullSearchTitle = "<?php $clang->eT("Full search"); ?>";
     var selectTxt="<?php $clang->eT("Select...") ?>";
     var emailTxt="<?php $clang->eT("Email") ?>";
@@ -113,6 +114,7 @@ else
     var viewRecordTxt= '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
     var participantsTxt= '<?php $clang->eT("Participants",'js');?>';
     var emptyRecordsTxt= "<?php $clang->eT("No participants to view", 'js') ?>";
+    var sEditAttributeValueMsg = '<?php $clang->eT("Edit attribute value",'js');?>';
 
     var resetBtn = "<?php $clang->eT("Reset", 'js'); ?>";
     var exportToCSVTitle = "<?php $clang->eT("Export (filtered) participants to CSV", 'js'); ?>";
