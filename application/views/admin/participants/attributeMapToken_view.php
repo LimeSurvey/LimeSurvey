@@ -89,7 +89,7 @@
     <p>
         <input type="button" name="goback" id="back" value="<?php $clang->eT('Back')?>" />
         <input type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php $clang->eT('Reset') ?>" />
-        <input type="button" name="attmap" id="attmap" value="Continue" />
+        <input type="button" name="attmap" id="attmap" value="<?php $clang->eT('Continue') ?>" />
     </p>
     
     <?php
