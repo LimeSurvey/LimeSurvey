@@ -222,48 +222,6 @@ class Save {
     }
 
     /**
-    * savesilent() saves survey responses when the "Resume later" button
-    * is press but has no interaction. i.e. it does not ask for email,
-    * username or password or capture.
-    *
-    * @return string confirming successful save.
-    */
-    function savedsilent()
-    {
-        global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep;
-        submitanswer();
-        // Prepare email
-        $tokenentryquery = 'SELECT * from {{tokens_'.$surveyid.'}} WHERE token=\''.sanitize_paranoid_string($clienttoken).'\';';
-        $tokenentryresult = dbExecuteAssoc($tokenentryquery);
-        $tokenentryarray = $tokenentryresult->read();
-
-        $from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
-        $to = $tokenentryarray['firstname'].' '.$tokenentryarray['lastname'].' <'.$tokenentryarray['email'].'>';
-        $subject = $clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
-        $message = $clang->gT("Thank you for saving your survey in progress. You can return to the survey at the same point you saved it at any time using the link from this or any previous email sent to regarding this survey.")."\n\n";
-        $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):").":\n";
-        $language = $tokenentryarray['language'];
-
-        //$message .= "\n\n$publicurl/$surveyid/lang-$language/tk-$clienttoken";
-        $message .= "\n\n" . Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/lang/{$language}/token/{$clienttoken}");
-
-        if (SendEmailMessage($message, $subject, $to, $from, $sitename, false, getBounceEmail($surveyid)))
-        {
-            $emailsent = "Y";
-        }
-        else
-        {
-            $clang->eT('Error: Email failed, this may indicate a PHP Mail Setup problem on your server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
-            if (trim($thissurvey['adminemail'])=='')
-            {
-                $clang->eT('(Reason: Admin email address empty)');    
-            }
-            
-        };
-        return  $clang->gT('Your survey was successfully saved.');
-    }
-
-    /**
     * This functions saves the answer time for question/group and whole survey.
     * [ It compares current time with the time in $_POST['start_time'] ]
     * The times are saved in table: {prefix}{surveytable}_timings

@@ -439,9 +439,15 @@ class SurveyRuntimeHelper {
                 {
                     $cSave->showsaveform(); // generates a form and exits, awaiting input
                 }
-                else 
+                elseif ($thissurvey['tokenanswerspersistence'] == 'Y' && isset($surveyid) && tableExists('tokens_'.$surveyid))
                 {
-                    // TODO : update lastpage to $_SESSION[$LEMsessid]['step'] in SurveyDynamic
+                    // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
+                    // Now update lastpage to $_SESSION[$LEMsessid]['step'] in SurveyDynamic, otherwise we land on 
+                    // the previous page when we return.
+                    $iResponseID = $_SESSION[$LEMsessid]['srid'];
+                    $oResponse = SurveyDynamic::model($surveyid)->findByPk($iResponseID);
+                    $oResponse->lastpage = $_SESSION[$LEMsessid]['step'];
+                    $oResponse->save();                    
                 }
             }
 
