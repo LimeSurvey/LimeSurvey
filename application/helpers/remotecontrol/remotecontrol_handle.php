@@ -42,7 +42,7 @@ class remotecontrol_handle
             $session->id = $sSessionKey;
             $session->expire = time() + Yii::app()->getConfig('iSessionExpirationTime');
             if($sDatabasetype=='sqlsrv' || $sDatabasetype=='mssql' || $sDatabasetype=='dblib')
-                $username=new CDbExpression('CONVERT(VARBINARY(MAX), '.$db->quoteValue($username).')');            
+                $username=new CDbExpression('CONVERT(VARBINARY(MAX), '.Yii::app()->db->quoteValue($username).')');            
             $session->data = $username;
             $session->save();
             return $sSessionKey;
