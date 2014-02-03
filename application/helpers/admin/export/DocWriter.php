@@ -72,7 +72,7 @@ class DocWriter extends Writer
             {
                 $this->output .= "<br clear='all' style='page-break-before:always'>";
             }
-            $this->output .= "<table><tr><th colspan='2'>".$this->clang->gT("New record")."</td></tr>".PHP_EOL;
+            $this->output .= "<table><tr><th colspan='2'>".$this->clang->gT("Survey response")."</td></tr>".PHP_EOL;
 
             $counter = 0;
             foreach ($headers as $header)
