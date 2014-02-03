@@ -2918,15 +2918,60 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                 $questionrowdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $questionrowdata['question']);
                 $questionrowdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $questionrowdata['help']);
             }
+            $oQuestion = new Question();
+            $oQuestion->setAttributes($questionrowdata, false);
 
-
-            if (isset($questionrowdata['qid'])) {
-                switchMSSQLIdentityInsert('questions',true);
+            // Try to fix question title for valid question code enforcement
+            if(!$oQuestion->validate(array('title')))
+            {
+                $sOldTitle=$oQuestion->title;
+                $sNewTitle=preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
+                if (is_numeric(substr($sNewTitle,0,1)))
+                {
+                    $sNewTitle='q' . $sNewTitle;
+                }
+                $oQuestion->title =$sNewTitle;
             }
 
-
-            $sInsertID = Question::model()->insertRecords($questionrowdata) or safeDie ($clang->gT("Error").": Failed to insert question<br />");
-
+            $attempts = 0;
+            // Try to fix question title for unique question code enforcement
+            while (!$oQuestion->validate(array('title')))
+            {
+                if (!isset($index))
+                {
+                    $index = 0;
+                    $rand = mt_rand(0, 1024);
+                }
+                else
+                {
+                    $index++;
+                }
+                $sNewTitle='r' . $rand  . 'q' . $index;
+                $oQuestion->title = $sNewTitle;
+                $attempts++;
+                if ($attempts > 10)
+                {
+                    safeDie($clang->gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                }
+            }
+            if (!$oQuestion->save())
+            {
+                // safeDie($clang->gT("Error while saving: "). print_r($oQuestion->errors, true));  
+                //
+                // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
+                // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
+                // For this reason we ignore insertion errors (because it is most likely a duplicate)
+                // and continue with the next one
+                continue;
+            }
+            // Set a warning if question title was updated
+            if(isset($sNewTitle))
+            {
+                $importresults['importwarnings'][] = sprintf("Question code %s was updated to %s.",$sOldTitle,$sNewTitle);
+                unset($sNewTitle);
+                unset($sOldTitle);
+            }
+            $sInsertID = $oQuestion->qid;
             if (isset($questionrowdata['qid'])) {
                 switchMSSQLIdentityInsert('questions',false);
                 $saveqid=$questionrowdata['qid'];
@@ -3062,14 +3107,62 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                 $questionrowdata['question_order']=$answerrowdata['sortorder'];
                 $questionrowdata['language']=$answerrowdata['language'];
                 $questionrowdata['type']=$oldquestion['newtype'];
-
-
-
                 if (isset($questionrowdata['qid'])) switchMSSQLIdentityInsert('questions',true);
                 if ($questionrowdata)
                     XSSFilterArray($questionrowdata);
-                $sInsertID= Question::model()->insertRecords($questionrowdata) or safeDie("Error: Failed to insert subquestion <br />");
 
+                $question = new Question();
+                $question->setAttributes($questionrowdata, false);
+                // Try to fix question title for valid question code enforcement
+                if(!$question->validate(array('title')))
+                {
+                    $sOldTitle=$question->title;
+                    $sNewTitle=preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
+                    if (is_numeric(substr($sNewTitle,0,1)))
+                    {
+                        $sNewTitle='sq' . $sNewTitle;
+                    }
+                    $question->title =$sNewTitle;
+                }
+                $attempts = 0;
+                // Try to fix question title for unique question code enforcement
+                while (!$question->validate(array('title')))
+                {
+                    if (!isset($index))
+                    {
+                        $index = 0;
+                        $rand = mt_rand(0, 1024);
+                    }
+                    else
+                    {
+                        $index++;
+                    }
+                    $sNewTitle='r' . $rand  . 'sq' . $index;
+                    $question->title = $sNewTitle;
+                    $attempts++;
+                    if ($attempts > 10)
+                    {
+                        safeDie($clang->gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                    }
+                }
+                if (!$question->save())
+                {
+                    // safeDie($clang->gT("Error while saving: "). print_r($question->errors, true));  
+                    //
+                    // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
+                    // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
+                    // For this reason we ignore insertion errors (because it is most likely a duplicate)
+                    // and continue with the next one
+                    continue;
+                }
+                // Set a warning if question title was updated
+                if(isset($sNewTitle))
+                {
+                    $importresults['importwarnings'][] = sprintf($clang->gT("Title of subquestion %s was updated to %s."),$sOldTitle,$sNewTitle);// Maybe add the question title ?
+                    unset($sNewTitle);
+                    unset($sOldTitle);
+                }
+                $questionrowdata = $question->qid;
                 if (!isset($questionrowdata['qid']))
                 {
                     $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$sInsertID;
