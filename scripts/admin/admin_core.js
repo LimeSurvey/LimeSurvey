@@ -109,9 +109,7 @@ $(document).ready(function(){
         var selected_value = $("#question_type").val();
         OtherSelection(selected_value);
     });
-
-
-
+    $("#question_type").change();
 });
 
 function qTypeDropdownInit()
