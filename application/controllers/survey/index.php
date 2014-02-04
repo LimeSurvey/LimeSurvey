@@ -21,6 +21,28 @@ class index extends CAction {
 		 * if we call exit at some point in the code. (Which we shouldn't, but
 		 * it happens.)
 		 */
+        // Javascript Var
+        $aLSJavascriptVar=array();
+        $aLSJavascriptVar['bFixNumAuto']=(int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
+        $aLSJavascriptVar['bNumRealValue']=(int)(bool)Yii::app()->getConfig('bNumRealValue',0);
+        if(isset($thissurvey['surveyls_numberformat']))
+        {
+            $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
+        }
+        else
+        {
+            $aLangData=getLanguageData();
+            $radix=getRadixPointData($aLangData[ Yii::app()->getConfig('defaultlang')]['radixpoint']);// or $clang->langcode . defaultlang  ensure it's same for each language ?
+        }
+        $aLSJavascriptVar['sLEMradix']=$radix['separator'];
+        $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar);
+        App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
+        App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)
+        App()->getClientScript()->registerPackage('jqueryui');
+        App()->getClientScript()->registerPackage('jquery-touch-punch');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
+        useFirebug();
+
         ob_start(function($buffer, $phase) {
 			App()->getClientScript()->render($buffer);
 			App()->getClientScript()->reset();
