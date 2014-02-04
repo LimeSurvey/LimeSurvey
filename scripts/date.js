@@ -8,7 +8,7 @@ $(document).ready(function(){
  */
 function doPopupDate(qId){
     if($("#question"+qId+" .popupdate").length){
-        console.log($("#question"+qId+" .popupdate"));
+        //console.log($("#question"+qId+" .popupdate"));
         var basename = $("#question"+qId+" .popupdate").attr("id").substr(6);
         format=$('#dateformat'+basename).val();
         language=$('#datelanguage'+basename).val();
