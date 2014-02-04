@@ -1656,7 +1656,7 @@ class remotecontrol_handle
 				if (!isset($token))
 					return array('status' => 'Error: Invalid tokenid');
 
-				$result = array_intersect_key(array_flip($aTokenProperties), $token->attributes);
+				$result = array_intersect_key($token->attributes, array_flip($aTokenProperties));
                 if (empty($result))
 				{
 					return array('status' => 'No valid Data');
