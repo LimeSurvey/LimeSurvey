@@ -59,6 +59,49 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140131) to 2.05+ (build 140204) Feb 04, 2014
+-Fixed issue #8634: Resuming a saved survey goes to wrong page (Menno Dekker)
+-Fixed issue #8655: RemoteControl 2 API fails to validate session key on Postgre (Carsten Schmitz)
+-Fixed issue #8496: Undefined attributes in Central Participant Database (tpartner)
+-Fixed issue #7131: Response table shows only a fraction of question (Denis Chenu)
+-Fixed issue #8510: Survey import/copy not working (Carsten Schmitz)
+-Fixed issue #8558: Clean up interface for mapping attributes when imorting into CPDB (tpartner)
+-Fixed issue #8584: Data loss when importing .lsa files (Carsten Schmitz)
+-Fixed issue #8593: Existing surveys not using time difference setting for timestamps (Carsten Schmitz)
+-Fixed issue #8598: incorrect alphabetically sort of surveys in list (tpartner)
+-Fixed issue #8601: Missing translations in survey list filter (Carsten Schmitz)
+-Fixed issue #8602: Missing translation in participants panel (Carsten Schmitz)
+-Fixed issue #8604: Missing translation in CPDB grid (Carsten Schmitz)
+-Fixed issue #8614: Error during upgrade vom 2.00 to 2.05 when using Postgres (Carsten Schmitz)
+-Fixed issue #8617: Array dual scale not use {QID} (Denis Chenu)
+-Fixed issue #8618: Missing translation when mapping CPDB attributes (Carsten Schmitz)
+-Fixed issue #8619: List (dropdown) set of subsequent questions different (Carsten Schmitz)
+-Fixed issue #8620: XAMPP installation doesn't allow login (Carsten Schmitz)
+-Fixed issue #8622: Inputs for username and password not appearing in login mask when using Postgres (Carsten Schmitz)
+-Fixed issue #8631: Array/matrix question in dropdown presentation does not show "Please choose..." anymore (Carsten Schmitz)
+-Fixed issue #8636: Deactivate IE compatibility view on Admin and public template (Denis Chenu)
+-Fixed issue #8638: .csv survey import does not work (Carsten Schmitz)
+-Fixed issue #8644: Incomplete display of adv. attributes containing single quotes (mfaber)
+-Fixed issue #8649: Incorrect response when trying to invoke get_session_key method via remotecontrol and using MSSQL (Carsten Schmitz)
+-Fixed issue #8651: Incorrect validation msg. with mandatory quesstions and maxdate (mfaber)
+-Fixed issue #8654: Using {GID} in group description return allways 0 (Denis Chenu)
+-Fixed issue #8656: OPTOUTURL from invitation email not working (Carsten Schmitz)
+-Fixed issue #8658: get_participant_properties RemoteControl API function returns incorrect response (Carsten Schmitz)
+-Fixed issue: Lang javascript in browse responses (Denis Chenu)
+-Fixed issue: Use the right terms for exported survey responses (Alexis Bezverkhyy)
+#Updated translation: Armenian by Satenik
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: French (France) by arnaud21
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Latvian by marcic
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by maxzomborszki
+
 Changes from 2.05+ (build 140125) to 2.05+ (build 140131) Jan 31, 2014
 -New feature: Validate uniqueness of question code before submit (Denis Chenu)
 -Fixed #8125: SPSS Export SDATE Date Problem (Menno Dekker)
