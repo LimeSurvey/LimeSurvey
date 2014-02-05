@@ -16,7 +16,13 @@
 class UploaderController extends SurveyController {
 	function run($actionID)
 	{
-        $surveyid= $_SESSION['LEMsid'];
+
+        if(isset($_SESSION['LEMsid']) && Survey::model()->findByPk($_SESSION['LEMsid'])){
+            $surveyid= $_SESSION['LEMsid'];
+        }else{
+            throw new CHttpException(400);// See for debug > 1
+        }
+
         if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
         {
             $sLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
@@ -33,45 +39,76 @@ class UploaderController extends SurveyController {
 		$sTemplateUrl = getTemplateURL($aSurveyInfo['templatedir'])."/";
 
 		Yii::app()->loadHelper("database");
-        $param = $_REQUEST;
 
-		if (isset($param['filegetcontents']))
+        // Fill needed var
+        $sFileGetContent=Yii::app()->request->getParam('filegetcontents','');
+        $bDelete=Yii::app()->request->getParam('delete');
+        $sFieldName = Yii::app()->request->getParam('fieldname');// Sanitize 
+        $sFileName = Yii::app()->request->getParam('filename','');
+        $sOriginalFileName = Yii::app()->request->getParam('name','');
+        $sMode = Yii::app()->request->getParam('mode');
+        $sPreview=Yii::app()->request->getParam('preview',0);
+
+        // Validate and filter and throw error if problems
+        //$sFileGetContentFiltered=sanitize_paranoid_string($sFileGetContent);
+        //$sFileGetContentFiltered=str_replace(".","",$sFileGetContentFiltered); // Using 'futmp_'.randomChars(15).'_'.$pathinfo['extension'] for filename, then remove all other characters
+        $sFileGetContentFiltered=preg_replace('/[^a-z0-9_]/', '', $sFileGetContent);
+        $sFileNameFiltered = sanitize_filename($sFileName);
+        $sOriginalFileNameFiltered = sanitize_filename($sOriginalFileName);
+        $sFieldNameFiltered=preg_replace('/[^X0-9]/', '', $sFieldName);
+        if($sFileGetContent!=$sFileGetContentFiltered || $sFileName!=$sFileNameFiltered || $sOriginalFileName!=$sOriginalFileNameFiltered || $sFieldName!=$sFieldNameFiltered) 
+        {// If one seems to be a hack: Bad request
+            throw new CHttpException(400);// See for debug > 1
+        }
+		if ($sFileGetContent)
 		{
-		    $sFileName=$param['filegetcontents'];
+		    if (substr($sFileGetContent,0,6)=='futmp_')
+		    {
+		        $sFileDir = $tempdir.'/upload/';
+		    }
+		    elseif(substr($sFileGetContent,0,3)=='fu_')
+		    {
+		        $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
+		    }
+		    else
+		    {
+                throw new CHttpException(400);// See for debug > 1
+		    }
+		    if(is_file($sFileDir.$sFileGetContent))// Validate file before else 500 error by getMimeType 
+		    {
+                header('Content-Type: '. CFileHelper::getMimeType($sFileDir.$sFileGetContent));
+		        readfile($sFileDir.$sFileGetContent);
+		        exit();
+		    }
+		    else
+		    {
+		        exit();
+		    }
+		}
+		elseif ($bDelete) {
 		    if (substr($sFileName,0,6)=='futmp_')
 		    {
 		        $sFileDir = $tempdir.'/upload/';
 		    }
-		    elseif(substr($sFileName,0,3)=='fu_'){
-		        $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
-		    }
-            header('Content-Type: '. CFileHelper::getMimeType($sFileDir.$sFileName));
-		    readfile($sFileDir.$sFileName);
-		    exit();
-		}
-		elseif (isset($param['delete'])) {
-		    $sFieldname = $param['fieldname'];
-		    $sFilename = sanitize_filename($param['filename']);
-		    $sOriginalFileName=sanitize_filename($param['name']);
-		    if (substr($sFilename,0,6)=='futmp_')
+		    elseif(substr($sFileName,0,3)=='fu_')
 		    {
-		        $sFileDir = $tempdir.'/upload/';
-		    }
-		    elseif(substr($sFilename,0,3)=='fu_'){
 		        $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
 		    }
-		    else die('Invalid filename');
-		    
-			if(isset($_SESSION[$sFieldname])) {
+		    else
+		    {
+                throw new CHttpException(400);// See for debug > 1
+		    }
+			if(isset($_SESSION[$sFieldname])) {// We already have $sFieldName ?
 			    $sJSON = $_SESSION[$sFieldname];
 			    $aFiles = json_decode(stripslashes($sJSON),true);
 			
-			    if(substr($sFilename,0,3)=='fu_'){
+			    if(substr($sFileName,0,3)=='fu_'){
+			        // Need to validate $_SESSION['srid'], and this file is from this srid ! (or admin have this access too ?)
 			        $iFileIndex=0;
 			        $found=false;
 			        foreach ($aFiles as $aFile)
 			        {
-			           if ($aFile['filename']==$sFilename)
+			           if ($aFile['filename']==$sFileName)
 			           {
 			            $found=true;
 			            break;
@@ -83,7 +120,8 @@ class UploaderController extends SurveyController {
 			    }
 			}
 			//var_dump($sFileDir.$sFilename);
-		    if (@unlink($sFileDir.$sFilename))
+			// Return some json to do a beautiful text
+		    if (@unlink($sFileDir.$sFileName))
 		    {
 		       echo sprintf($clang->gT('File %s deleted'), $sOriginalFileName);
 		    }
@@ -93,7 +131,7 @@ class UploaderController extends SurveyController {
 		}
 
 
-		if(isset($param['mode']) && $param['mode'] == "upload")
+		if($sMode == "upload")
 		{
 			$clang = Yii::app()->lang;
 
@@ -106,10 +144,9 @@ class UploaderController extends SurveyController {
 		    $filename = $_FILES['uploadfile']['name'];
 		    $size = 0.001 * $_FILES['uploadfile']['size'];
 		    $preview = Yii::app()->session['preview'];
-		    $fieldname = $_POST['fieldname'];
             $aFieldMap = createFieldMap($surveyid,'short',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
-		    if (!isset($aFieldMap[$fieldname])) die();
-		    $aAttributes=getQuestionAttributeValues($aFieldMap[$fieldname]['qid'],$aFieldMap[$fieldname]['type']);
+		    if (!isset($aFieldMap[$sFieldName])) die();
+		    $aAttributes=getQuestionAttributeValues($aFieldMap[$sFieldName]['qid'],$aFieldMap[$sFieldName]['type']);
 
 		    $maxfilesize = (int) $aAttributes['max_filesize'];
 		    $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
@@ -247,8 +284,8 @@ class UploaderController extends SurveyController {
 		    var uploadurl = "'.$this->createUrl('/uploader/index/mode/upload/').'";
             var imageurl = "'.Yii::app()->getConfig('imageurl').'/";
 		    var surveyid = "'.$surveyid.'";
-		    var fieldname = "'.$param['fieldname'].'";
-		    var questgrppreview  = '.$param['preview'].';
+		    var fieldname = "'.$sFieldName.'";
+		    var questgrppreview  = '.$sPreview.';
 		    csrfToken = '.ls_json_encode(Yii::app()->request->csrfToken).';
 		    showpopups="'.Yii::app()->getConfig("showpopups").'";
 		';
@@ -278,10 +315,10 @@ class UploaderController extends SurveyController {
 
 		echo $header;
 
-		$fn = $param['fieldname'];
-		$qid = $param['qid'];
-        $minfiles = sanitize_int($param['minfiles']);
-        $maxfiles = sanitize_int($param['maxfiles']);
+		$fn = $sFieldName;
+		$qid = (int)Yii::app()->request->getParam('qid');
+        $minfiles = (int)Yii::app()->request->getParam('minfiles');
+        $maxfiles = (int)Yii::app()->request->getParam('maxfiles');
 		$qidattributes=getQuestionAttributeValues($qid);
 
 		$body = '</head><body>
