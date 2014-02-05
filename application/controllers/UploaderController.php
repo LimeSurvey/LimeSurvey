@@ -36,21 +36,20 @@ class UploaderController extends SurveyController {
         Yii::app()->loadHelper("database");
 
         // Fill needed var
-        $sFileGetContent=Yii::app()->request->getParam('filegetcontents','');
+        $sFileGetContent=Yii::app()->request->getParam('filegetcontents','');// The file to view fu_ or fu_tmp
         $bDelete=Yii::app()->request->getParam('delete');
-        $sFieldName = Yii::app()->request->getParam('fieldname');// Sanitize 
-        $sFileName = Yii::app()->request->getParam('filename','');
-        $sOriginalFileName = Yii::app()->request->getParam('name','');
+        $sFieldName = Yii::app()->request->getParam('fieldname');
+        $sFileName = Yii::app()->request->getParam('filename','');// The file to delete fu_ or fu_tmp
+        $sOriginalFileName = Yii::app()->request->getParam('name','');// Used for javascript return only
         $sMode = Yii::app()->request->getParam('mode');
         $sPreview=Yii::app()->request->getParam('preview',0);
 
         // Validate and filter and throw error if problems
         // Using 'futmp_'.randomChars(15).'_'.$pathinfo['extension'] for filename, then remove all other characters
         $sFileGetContentFiltered=preg_replace('/[^a-z0-9_]/', '', $sFileGetContent);
-        $sFileNameFiltered = preg_replace('/[^a-z0-9_]/', '',$sFileName);
-        $sOriginalFileNameFiltered = sanitize_filename($sOriginalFileName);// This don't disallow strange file name (like f>"<img onerror='alert(XSS)') (#08579), but disallow ../
+        $sFileNameFiltered = preg_replace('/[^a-z0-9]/', '',$sFileName);
         $sFieldNameFiltered=preg_replace('/[^X0-9]/', '', $sFieldName);
-        if($sFileGetContent!=$sFileGetContentFiltered || $sFileName!=$sFileNameFiltered || strtolower($sOriginalFileName)!=$sOriginalFileNameFiltered || $sFieldName!=$sFieldNameFiltered) 
+        if($sFileGetContent!=$sFileGetContentFiltered || $sFileName!=$sFileNameFiltered || $sFieldName!=$sFieldNameFiltered)
         {// If one seems to be a hack: Bad request
             throw new CHttpException(400);// See for debug > 1
         }
@@ -137,6 +136,8 @@ class UploaderController extends SurveyController {
                 mkdir($sTempUploadDir);
             }
             $filename = $_FILES['uploadfile']['name'];
+            // Do we filter file name ? It's used on displaying only , but not save like that.
+            //$filename = sanitize_filename($_FILES['uploadfile']['name']);// This remove all non alpha numeric characters and replaced by _ . Leave only one dot .
             $size = 0.001 * $_FILES['uploadfile']['size'];
             $preview = Yii::app()->session['preview'];
             $aFieldMap = createFieldMap($surveyid,'short',false,false,$sLanguage);
@@ -163,7 +164,7 @@ class UploaderController extends SurveyController {
                                 "success" => false,
                                 "msg" => sprintf($clang->gT("Sorry, this file extension (%s) is not allowed!"),$ext)
                             );
-                header('Content-Type: application/json');
+                //header('Content-Type: application/json');
                 echo ls_json_encode($return);
                 Yii::app()->end();
             }
