@@ -98,8 +98,8 @@ class UploaderController extends SurveyController {
 		    {
                 throw new CHttpException(400);// See for debug > 1
 		    }
-			if(isset($_SESSION[$sFieldname])) {// We already have $sFieldName ?
-			    $sJSON = $_SESSION[$sFieldname];
+			if(isset($_SESSION[$sFieldName])) {// We already have $sFieldName ?
+			    $sJSON = $_SESSION[$sFieldName];
 			    $aFiles = json_decode(stripslashes($sJSON),true);
 			
 			    if(substr($sFileName,0,3)=='fu_'){
@@ -116,7 +116,7 @@ class UploaderController extends SurveyController {
 			           $iFileIndex++;
 			        }
 			        if ($found==true) unset($aFiles[$iFileIndex]);
-			       $_SESSION[$sFieldname] = ls_json_encode($aFiles);
+			       $_SESSION[$sFieldName] = ls_json_encode($aFiles);
 			    }
 			}
 			//var_dump($sFileDir.$sFilename);
