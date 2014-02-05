@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
  <LimeSurveyDocType>Survey</LimeSurveyDocType>
- <DBVersion>155</DBVersion>
+ <DBVersion>177</DBVersion>
  <languages>
   <language>fr</language>
   <language>en</language>
@@ -11,117 +11,117 @@
    <fieldname>qid</fieldname>
    <fieldname>code</fieldname>
    <fieldname>answer</fieldname>
-   <fieldname>assessment_value</fieldname>
    <fieldname>sortorder</fieldname>
+   <fieldname>assessment_value</fieldname>
    <fieldname>language</fieldname>
    <fieldname>scale_id</fieldname>
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <code><![CDATA[A1]]></code>
     <answer><![CDATA[Some example answer option]]></answer>
-    <assessment_value><![CDATA[0]]></assessment_value>
     <sortorder><![CDATA[1]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <code><![CDATA[A2]]></code>
     <answer><![CDATA[New answer option]]></answer>
-    <assessment_value><![CDATA[1]]></assessment_value>
     <sortorder><![CDATA[2]]></sortorder>
+    <assessment_value><![CDATA[1]]></assessment_value>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1526]]></qid>
+    <code><![CDATA[A1]]></code>
+    <answer><![CDATA[Certains option de réponse par exemple]]></answer>
+    <sortorder><![CDATA[1]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <language><![CDATA[fr]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <qid><![CDATA[1526]]></qid>
+    <code><![CDATA[A2]]></code>
+    <answer><![CDATA[Nouvelle option de réponse]]></answer>
+    <sortorder><![CDATA[2]]></sortorder>
+    <assessment_value><![CDATA[1]]></assessment_value>
+    <language><![CDATA[fr]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <qid><![CDATA[1527]]></qid>
     <code><![CDATA[A1]]></code>
     <answer><![CDATA[Some example answer option]]></answer>
-    <assessment_value><![CDATA[0]]></assessment_value>
     <sortorder><![CDATA[1]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <code><![CDATA[A2]]></code>
     <answer><![CDATA[New answer option]]></answer>
-    <assessment_value><![CDATA[1]]></assessment_value>
     <sortorder><![CDATA[2]]></sortorder>
+    <assessment_value><![CDATA[1]]></assessment_value>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[1527]]></qid>
+    <code><![CDATA[A1]]></code>
+    <answer><![CDATA[Certains option de réponse par exemple]]></answer>
+    <sortorder><![CDATA[1]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <language><![CDATA[fr]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <qid><![CDATA[1527]]></qid>
+    <code><![CDATA[A2]]></code>
+    <answer><![CDATA[Nouvelle option de réponse]]></answer>
+    <sortorder><![CDATA[2]]></sortorder>
+    <assessment_value><![CDATA[1]]></assessment_value>
+    <language><![CDATA[fr]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <qid><![CDATA[1528]]></qid>
     <code><![CDATA[A1]]></code>
     <answer><![CDATA[Some example answer option]]></answer>
-    <assessment_value><![CDATA[0]]></assessment_value>
     <sortorder><![CDATA[1]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[1528]]></qid>
     <code><![CDATA[A2]]></code>
     <answer><![CDATA[New answer option]]></answer>
-    <assessment_value><![CDATA[1]]></assessment_value>
     <sortorder><![CDATA[2]]></sortorder>
+    <assessment_value><![CDATA[1]]></assessment_value>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1528]]></qid>
     <code><![CDATA[A1]]></code>
     <answer><![CDATA[Certains option de réponse par exemple]]></answer>
-    <assessment_value><![CDATA[0]]></assessment_value>
     <sortorder><![CDATA[1]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1528]]></qid>
     <code><![CDATA[A2]]></code>
     <answer><![CDATA[Nouvelle option de réponse]]></answer>
-    <assessment_value><![CDATA[1]]></assessment_value>
     <sortorder><![CDATA[2]]></sortorder>
-    <language><![CDATA[fr]]></language>
-    <scale_id><![CDATA[0]]></scale_id>
-   </row>
-   <row>
-    <qid><![CDATA[5]]></qid>
-    <code><![CDATA[A1]]></code>
-    <answer><![CDATA[Certains option de réponse par exemple]]></answer>
-    <assessment_value><![CDATA[0]]></assessment_value>
-    <sortorder><![CDATA[1]]></sortorder>
-    <language><![CDATA[fr]]></language>
-    <scale_id><![CDATA[0]]></scale_id>
-   </row>
-   <row>
-    <qid><![CDATA[5]]></qid>
-    <code><![CDATA[A2]]></code>
-    <answer><![CDATA[Nouvelle option de réponse]]></answer>
     <assessment_value><![CDATA[1]]></assessment_value>
-    <sortorder><![CDATA[2]]></sortorder>
-    <language><![CDATA[fr]]></language>
-    <scale_id><![CDATA[0]]></scale_id>
-   </row>
-   <row>
-    <qid><![CDATA[6]]></qid>
-    <code><![CDATA[A1]]></code>
-    <answer><![CDATA[Certains option de réponse par exemple]]></answer>
-    <assessment_value><![CDATA[0]]></assessment_value>
-    <sortorder><![CDATA[1]]></sortorder>
-    <language><![CDATA[fr]]></language>
-    <scale_id><![CDATA[0]]></scale_id>
-   </row>
-   <row>
-    <qid><![CDATA[6]]></qid>
-    <code><![CDATA[A2]]></code>
-    <answer><![CDATA[Nouvelle option de réponse]]></answer>
-    <assessment_value><![CDATA[1]]></assessment_value>
-    <sortorder><![CDATA[2]]></sortorder>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
@@ -140,64 +140,64 @@
   </fields>
   <rows>
    <row>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <sid><![CDATA[88881]]></sid>
     <group_name><![CDATA[Group A]]></group_name>
     <group_order><![CDATA[0]]></group_order>
-    <description><![CDATA[]]></description>
+    <description/>
     <language><![CDATA[en]]></language>
-    <randomization_group><![CDATA[]]></randomization_group>
-    <grelevance><![CDATA[]]></grelevance>
+    <randomization_group/>
+    <grelevance/>
    </row>
    <row>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <sid><![CDATA[88881]]></sid>
     <group_name><![CDATA[Groupe A]]></group_name>
     <group_order><![CDATA[0]]></group_order>
-    <description><![CDATA[]]></description>
+    <description/>
     <language><![CDATA[fr]]></language>
-    <randomization_group><![CDATA[]]></randomization_group>
-    <grelevance><![CDATA[]]></grelevance>
+    <randomization_group/>
+    <grelevance/>
    </row>
    <row>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <sid><![CDATA[88881]]></sid>
     <group_name><![CDATA[Group B]]></group_name>
     <group_order><![CDATA[1]]></group_order>
-    <description><![CDATA[]]></description>
+    <description/>
     <language><![CDATA[en]]></language>
-    <randomization_group><![CDATA[]]></randomization_group>
-    <grelevance><![CDATA[]]></grelevance>
+    <randomization_group/>
+    <grelevance/>
    </row>
    <row>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <sid><![CDATA[88881]]></sid>
     <group_name><![CDATA[Groupe B]]></group_name>
     <group_order><![CDATA[1]]></group_order>
-    <description><![CDATA[]]></description>
+    <description/>
     <language><![CDATA[fr]]></language>
-    <randomization_group><![CDATA[]]></randomization_group>
-    <grelevance><![CDATA[]]></grelevance>
+    <randomization_group/>
+    <grelevance/>
    </row>
    <row>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <sid><![CDATA[88881]]></sid>
     <group_name><![CDATA[Group C]]></group_name>
     <group_order><![CDATA[2]]></group_order>
-    <description><![CDATA[]]></description>
+    <description/>
     <language><![CDATA[en]]></language>
-    <randomization_group><![CDATA[]]></randomization_group>
-    <grelevance><![CDATA[]]></grelevance>
+    <randomization_group/>
+    <grelevance/>
    </row>
    <row>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <sid><![CDATA[88881]]></sid>
     <group_name><![CDATA[Groupe C]]></group_name>
     <group_order><![CDATA[2]]></group_order>
-    <description><![CDATA[]]></description>
+    <description/>
     <language><![CDATA[fr]]></language>
-    <randomization_group><![CDATA[]]></randomization_group>
-    <grelevance><![CDATA[]]></grelevance>
+    <randomization_group/>
+    <grelevance/>
    </row>
   </rows>
  </groups>
@@ -222,348 +222,348 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[Q1]]></title>
     <question><![CDATA[Q1 Text 1<br />]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[1]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[Q1]]></title>
     <question><![CDATA[1 Texte Q1 
 ]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[1]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[Q2]]></title>
     <question><![CDATA[Q2 Text 2<br />]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[2]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[Q2]]></title>
     <question><![CDATA[Texte Q2 2 
 ]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[2]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <type><![CDATA[U]]></type>
     <title><![CDATA[Q3]]></title>
     <question><![CDATA[Q3 Text 3<br />]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[4]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <type><![CDATA[U]]></type>
     <title><![CDATA[Q3]]></title>
     <question><![CDATA[Texte Q3 3 
 ]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[4]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <type><![CDATA[!]]></type>
     <title><![CDATA[Q4]]></title>
     <question><![CDATA[Q4 List 1<br />]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[1]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <type><![CDATA[!]]></type>
     <title><![CDATA[Q4]]></title>
     <question><![CDATA[Liste Q4 1 
 ]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[1]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <type><![CDATA[L]]></type>
     <title><![CDATA[Q5]]></title>
     <question><![CDATA[Q5 List 2<br />]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[3]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <type><![CDATA[L]]></type>
     <title><![CDATA[Q5]]></title>
     <question><![CDATA[Liste Q5 2 
 ]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[3]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[1528]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <type><![CDATA[O]]></type>
     <title><![CDATA[Q6]]></title>
     <question><![CDATA[Q6 List 3<br />]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[4]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[1528]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <type><![CDATA[O]]></type>
     <title><![CDATA[Q6]]></title>
     <question><![CDATA[Q6 Liste 3 
 ]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[4]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[7]]></qid>
+    <qid><![CDATA[1529]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[B]]></type>
     <title><![CDATA[Q7]]></title>
     <question><![CDATA[Q7 Array 1<br />]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[0]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[7]]></qid>
+    <qid><![CDATA[1529]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[B]]></type>
     <title><![CDATA[Q7]]></title>
     <question><![CDATA[Q7 tableau 1 
 ]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[0]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[:]]></type>
     <title><![CDATA[Q8]]></title>
     <question><![CDATA[Q8 array 2<br />]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[6]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[:]]></type>
     <title><![CDATA[Q8]]></title>
     <question><![CDATA[Tableau 2 Q8 
 ]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[6]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[9]]></qid>
+    <qid><![CDATA[1531]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[C]]></type>
     <title><![CDATA[Q9]]></title>
     <question><![CDATA[Q9 array 3<br />]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[7]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[9]]></qid>
+    <qid><![CDATA[1531]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[C]]></type>
     <title><![CDATA[Q9]]></title>
     <question><![CDATA[Tableau 3 Q9 
 ]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[7]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[g1q1]]></title>
     <question><![CDATA[This question should always appear on&nbsp; the first page]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[0]]></question_order>
@@ -573,15 +573,15 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[g1q1]]></title>
     <question><![CDATA[Cette question doit toujours apparaître sur la première page]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[0]]></question_order>
@@ -591,15 +591,15 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[g1q2]]></title>
     <question><![CDATA[This question should always appear on&nbsp; the first page]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[3]]></question_order>
@@ -609,15 +609,15 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[g1q2]]></title>
     <question><![CDATA[Cette question doit toujours apparaître sur la première page]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[3]]></question_order>
@@ -627,15 +627,15 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[g1q3]]></title>
     <question><![CDATA[This question should always appear on&nbsp; the first page]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[5]]></question_order>
@@ -645,15 +645,15 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[1]]></gid>
+    <gid><![CDATA[50]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[g1q3]]></title>
     <question><![CDATA[Cette question doit toujours apparaître sur la première page]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[5]]></question_order>
@@ -663,15 +663,15 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[g2q1]]></title>
     <question><![CDATA[This question should always appear on&nbsp; the second page]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[0]]></question_order>
@@ -681,15 +681,15 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[g2q1]]></title>
     <question><![CDATA[Cette question devrait toujours figurer sur la deuxième page]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[0]]></question_order>
@@ -699,15 +699,15 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[g2q2]]></title>
     <question><![CDATA[This question should always appear on&nbsp; the second page]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[2]]></question_order>
@@ -717,15 +717,15 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[g2q2]]></title>
     <question><![CDATA[Cette question devrait toujours figurer sur la deuxième page]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[2]]></question_order>
@@ -735,15 +735,15 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[g2q3]]></title>
     <question><![CDATA[This question should always appear on&nbsp; the second page]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[5]]></question_order>
@@ -753,15 +753,15 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[51]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[g2q3]]></title>
     <question><![CDATA[Cette question devrait toujours figurer sur la deuxième page]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[5]]></question_order>
@@ -793,256 +793,256 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[10]]></qid>
-    <parent_qid><![CDATA[7]]></parent_qid>
+    <qid><![CDATA[1538]]></qid>
+    <parent_qid><![CDATA[1529]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ001]]></title>
     <question><![CDATA[Some example subquestion]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[1]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[10]]></qid>
-    <parent_qid><![CDATA[7]]></parent_qid>
+    <qid><![CDATA[1538]]></qid>
+    <parent_qid><![CDATA[1529]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ001]]></title>
     <question><![CDATA[Certains sous-question par exemple]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[1]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[11]]></qid>
-    <parent_qid><![CDATA[7]]></parent_qid>
+    <qid><![CDATA[1539]]></qid>
+    <parent_qid><![CDATA[1529]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ002]]></title>
     <question><![CDATA[New subquestion option]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[4]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[11]]></qid>
-    <parent_qid><![CDATA[7]]></parent_qid>
+    <qid><![CDATA[1539]]></qid>
+    <parent_qid><![CDATA[1529]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ002]]></title>
     <question><![CDATA[Option de sous-question Nouveau]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[4]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[12]]></qid>
-    <parent_qid><![CDATA[8]]></parent_qid>
+    <qid><![CDATA[1540]]></qid>
+    <parent_qid><![CDATA[1530]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ001]]></title>
     <question><![CDATA[Some example subquestion]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[2]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[12]]></qid>
-    <parent_qid><![CDATA[8]]></parent_qid>
+    <qid><![CDATA[1540]]></qid>
+    <parent_qid><![CDATA[1530]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ001]]></title>
     <question><![CDATA[Certains sous-question par exemple]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[2]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[13]]></qid>
-    <parent_qid><![CDATA[8]]></parent_qid>
+    <qid><![CDATA[1541]]></qid>
+    <parent_qid><![CDATA[1530]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ001]]></title>
     <question><![CDATA[Some example subquestion]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[3]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[1]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[13]]></qid>
-    <parent_qid><![CDATA[8]]></parent_qid>
+    <qid><![CDATA[1541]]></qid>
+    <parent_qid><![CDATA[1530]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ001]]></title>
     <question><![CDATA[Certains sous-question par exemple]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[3]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[1]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[14]]></qid>
-    <parent_qid><![CDATA[8]]></parent_qid>
+    <qid><![CDATA[1542]]></qid>
+    <parent_qid><![CDATA[1530]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ002]]></title>
     <question><![CDATA[New answer option]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[5]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[14]]></qid>
-    <parent_qid><![CDATA[8]]></parent_qid>
+    <qid><![CDATA[1542]]></qid>
+    <parent_qid><![CDATA[1530]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ002]]></title>
     <question><![CDATA[Nouvelle option de réponse]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[5]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[15]]></qid>
-    <parent_qid><![CDATA[9]]></parent_qid>
+    <qid><![CDATA[1543]]></qid>
+    <parent_qid><![CDATA[1531]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ001]]></title>
     <question><![CDATA[Some example subquestion]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[1]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[15]]></qid>
-    <parent_qid><![CDATA[9]]></parent_qid>
+    <qid><![CDATA[1543]]></qid>
+    <parent_qid><![CDATA[1531]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ001]]></title>
     <question><![CDATA[Certains sous-question par exemple]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[1]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[16]]></qid>
-    <parent_qid><![CDATA[9]]></parent_qid>
+    <qid><![CDATA[1544]]></qid>
+    <parent_qid><![CDATA[1531]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ002]]></title>
     <question><![CDATA[New answer option]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[2]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
    <row>
-    <qid><![CDATA[16]]></qid>
-    <parent_qid><![CDATA[9]]></parent_qid>
+    <qid><![CDATA[1544]]></qid>
+    <parent_qid><![CDATA[1531]]></parent_qid>
     <sid><![CDATA[88881]]></sid>
-    <gid><![CDATA[3]]></gid>
+    <gid><![CDATA[52]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ002]]></title>
     <question><![CDATA[Nouvelle option de réponse]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
+    <preg/>
+    <help/>
     <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[]]></mandatory>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[2]]></question_order>
     <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[]]></relevance>
+    <relevance/>
    </row>
   </rows>
  </subquestions>
@@ -1051,1332 +1051,1613 @@
    <fieldname>qid</fieldname>
    <fieldname>attribute</fieldname>
    <fieldname>value</fieldname>
+   <fieldname>language</fieldname>
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[display_rows]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[maximum_chars]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[numbers_only]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[prefix]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
+    <attribute><![CDATA[prefix]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value><![CDATA[Group1]]></value>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[suffix]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
+    <attribute><![CDATA[suffix]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[text_input_width]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_action]]></attribute>
     <value><![CDATA[1]]></value>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_countdown_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
+    <attribute><![CDATA[time_limit_countdown_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_disable_next]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_disable_prev]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
+    <attribute><![CDATA[time_limit_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_message_delay]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_message_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_timer_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_warning]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_warning_2]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_warning_2_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
+    <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_warning_2_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_warning_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_warning_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1]]></qid>
+    <qid><![CDATA[1523]]></qid>
+    <attribute><![CDATA[time_limit_warning_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1523]]></qid>
     <attribute><![CDATA[time_limit_warning_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[array_filter]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[array_filter_exclude]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[display_rows]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[maximum_chars]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value><![CDATA[Group2]]></value>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[text_input_width]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_action]]></attribute>
     <value><![CDATA[1]]></value>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_countdown_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
+    <attribute><![CDATA[time_limit_countdown_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_disable_next]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_disable_prev]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
+    <attribute><![CDATA[time_limit_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_message_delay]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_message_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_timer_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_warning]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_warning_2]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_warning_2_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
+    <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_warning_2_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_warning_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_warning_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[1524]]></qid>
+    <attribute><![CDATA[time_limit_warning_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1524]]></qid>
     <attribute><![CDATA[time_limit_warning_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[display_rows]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[maximum_chars]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value><![CDATA[Group3]]></value>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[text_input_width]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_action]]></attribute>
     <value><![CDATA[1]]></value>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_countdown_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
+    <attribute><![CDATA[time_limit_countdown_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_disable_next]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_disable_prev]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
+    <attribute><![CDATA[time_limit_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_message_delay]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_message_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_timer_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_warning]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_warning_2]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_warning_2_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
+    <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_warning_2_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_warning_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_warning_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[1525]]></qid>
+    <attribute><![CDATA[time_limit_warning_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1525]]></qid>
     <attribute><![CDATA[time_limit_warning_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <attribute><![CDATA[alphasort]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <attribute><![CDATA[category_separator]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <attribute><![CDATA[other_comment_mandatory]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <attribute><![CDATA[other_replace_text]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
+    <attribute><![CDATA[other_replace_text]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1526]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <attribute><![CDATA[public_statistics]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value><![CDATA[Group1]]></value>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <attribute><![CDATA[random_order]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[4]]></qid>
+    <qid><![CDATA[1526]]></qid>
     <attribute><![CDATA[scale_export]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[alphasort]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[array_filter]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[array_filter_exclude]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[display_columns]]></attribute>
     <value><![CDATA[1]]></value>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[other_comment_mandatory]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[other_numbers_only]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[other_replace_text]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
+    <attribute><![CDATA[other_replace_text]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[public_statistics]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value><![CDATA[Group2]]></value>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[random_order]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[1527]]></qid>
     <attribute><![CDATA[scale_export]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[1528]]></qid>
     <attribute><![CDATA[alphasort]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[1528]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[1528]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[1528]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[1528]]></qid>
     <attribute><![CDATA[public_statistics]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[1528]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value><![CDATA[Group3]]></value>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[1528]]></qid>
     <attribute><![CDATA[random_order]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[1528]]></qid>
     <attribute><![CDATA[scale_export]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[7]]></qid>
+    <qid><![CDATA[1529]]></qid>
     <attribute><![CDATA[answer_width]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[7]]></qid>
+    <qid><![CDATA[1529]]></qid>
     <attribute><![CDATA[array_filter]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[7]]></qid>
+    <qid><![CDATA[1529]]></qid>
     <attribute><![CDATA[array_filter_exclude]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[7]]></qid>
+    <qid><![CDATA[1529]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[7]]></qid>
+    <qid><![CDATA[1529]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[7]]></qid>
+    <qid><![CDATA[1529]]></qid>
     <attribute><![CDATA[public_statistics]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[7]]></qid>
+    <qid><![CDATA[1529]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value><![CDATA[Group1]]></value>
    </row>
    <row>
-    <qid><![CDATA[7]]></qid>
+    <qid><![CDATA[1529]]></qid>
     <attribute><![CDATA[random_order]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[answer_width]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[array_filter]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[array_filter_exclude]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[input_boxes]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[multiflexible_checkbox]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[multiflexible_max]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[multiflexible_min]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[multiflexible_step]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[public_statistics]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value><![CDATA[Group2]]></value>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[random_order]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[reverse]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
+    <qid><![CDATA[1530]]></qid>
     <attribute><![CDATA[scale_export]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[9]]></qid>
+    <qid><![CDATA[1531]]></qid>
     <attribute><![CDATA[answer_width]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[9]]></qid>
+    <qid><![CDATA[1531]]></qid>
     <attribute><![CDATA[array_filter]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[9]]></qid>
+    <qid><![CDATA[1531]]></qid>
     <attribute><![CDATA[array_filter_exclude]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[9]]></qid>
+    <qid><![CDATA[1531]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[9]]></qid>
+    <qid><![CDATA[1531]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[9]]></qid>
+    <qid><![CDATA[1531]]></qid>
     <attribute><![CDATA[public_statistics]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[9]]></qid>
+    <qid><![CDATA[1531]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value><![CDATA[Group3]]></value>
    </row>
    <row>
-    <qid><![CDATA[9]]></qid>
+    <qid><![CDATA[1531]]></qid>
     <attribute><![CDATA[random_order]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[9]]></qid>
+    <qid><![CDATA[1531]]></qid>
     <attribute><![CDATA[scale_export]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_action]]></attribute>
     <value><![CDATA[1]]></value>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_countdown_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
+    <attribute><![CDATA[time_limit_countdown_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_disable_next]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_disable_prev]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
+    <attribute><![CDATA[time_limit_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_message_delay]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_message_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_timer_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_warning]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_warning_2]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_warning_2_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
+    <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_warning_2_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_warning_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_warning_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1072]]></qid>
+    <qid><![CDATA[1532]]></qid>
+    <attribute><![CDATA[time_limit_warning_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1532]]></qid>
     <attribute><![CDATA[time_limit_warning_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_action]]></attribute>
     <value><![CDATA[1]]></value>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_countdown_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
+    <attribute><![CDATA[time_limit_countdown_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_disable_next]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_disable_prev]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
+    <attribute><![CDATA[time_limit_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_message_delay]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_message_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_timer_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_warning]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_warning_2]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_warning_2_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
+    <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_warning_2_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_warning_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_warning_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1073]]></qid>
+    <qid><![CDATA[1533]]></qid>
+    <attribute><![CDATA[time_limit_warning_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1533]]></qid>
     <attribute><![CDATA[time_limit_warning_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_action]]></attribute>
     <value><![CDATA[1]]></value>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_countdown_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
+    <attribute><![CDATA[time_limit_countdown_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_disable_next]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_disable_prev]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
+    <attribute><![CDATA[time_limit_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_message_delay]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_message_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_timer_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_warning]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_warning_2]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_warning_2_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
+    <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_warning_2_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_warning_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_warning_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1074]]></qid>
+    <qid><![CDATA[1534]]></qid>
+    <attribute><![CDATA[time_limit_warning_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1534]]></qid>
     <attribute><![CDATA[time_limit_warning_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_action]]></attribute>
     <value><![CDATA[1]]></value>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_countdown_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
+    <attribute><![CDATA[time_limit_countdown_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_disable_next]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_disable_prev]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
+    <attribute><![CDATA[time_limit_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_message_delay]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_message_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_timer_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_warning]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_warning_2]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_warning_2_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
+    <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_warning_2_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_warning_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_warning_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1075]]></qid>
+    <qid><![CDATA[1535]]></qid>
+    <attribute><![CDATA[time_limit_warning_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1535]]></qid>
     <attribute><![CDATA[time_limit_warning_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_action]]></attribute>
     <value><![CDATA[1]]></value>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_countdown_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
+    <attribute><![CDATA[time_limit_countdown_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_disable_next]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_disable_prev]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
+    <attribute><![CDATA[time_limit_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_message_delay]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_message_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_timer_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_warning]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_warning_2]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_warning_2_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
+    <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_warning_2_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_warning_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_warning_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1076]]></qid>
+    <qid><![CDATA[1536]]></qid>
+    <attribute><![CDATA[time_limit_warning_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1536]]></qid>
     <attribute><![CDATA[time_limit_warning_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_action]]></attribute>
     <value><![CDATA[1]]></value>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_countdown_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
+    <attribute><![CDATA[time_limit_countdown_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_disable_next]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_disable_prev]]></attribute>
     <value><![CDATA[0]]></value>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
+    <attribute><![CDATA[time_limit_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_message_delay]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_message_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_timer_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_warning]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_warning_2]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_warning_2_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
+    <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_warning_2_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_warning_display_time]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_warning_message]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
+    <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[1077]]></qid>
+    <qid><![CDATA[1537]]></qid>
+    <attribute><![CDATA[time_limit_warning_message]]></attribute>
+    <value/>
+    <language><![CDATA[fr]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[1537]]></qid>
     <attribute><![CDATA[time_limit_warning_style]]></attribute>
-    <value><![CDATA[]]></value>
+    <value/>
    </row>
   </rows>
  </question_attributes>
@@ -2408,6 +2689,7 @@
    <fieldname>publicgraphs</fieldname>
    <fieldname>listpublic</fieldname>
    <fieldname>htmlemail</fieldname>
+   <fieldname>sendconfirmation</fieldname>
    <fieldname>tokenanswerspersistence</fieldname>
    <fieldname>assessments</fieldname>
    <fieldname>usecaptcha</fieldname>
@@ -2441,11 +2723,9 @@
    <row>
     <sid><![CDATA[88881]]></sid>
     <admin><![CDATA[Your Name]]></admin>
-    <expires><![CDATA[]]></expires>
-    <startdate><![CDATA[]]></startdate>
     <adminemail><![CDATA[your@email.org]]></adminemail>
     <anonymized><![CDATA[Y]]></anonymized>
-    <faxto><![CDATA[]]></faxto>
+    <faxto/>
     <format><![CDATA[G]]></format>
     <savetimings><![CDATA[Y]]></savetimings>
     <template><![CDATA[default]]></template>
@@ -2465,14 +2745,15 @@
     <publicgraphs><![CDATA[N]]></publicgraphs>
     <listpublic><![CDATA[N]]></listpublic>
     <htmlemail><![CDATA[Y]]></htmlemail>
+    <sendconfirmation><![CDATA[Y]]></sendconfirmation>
     <tokenanswerspersistence><![CDATA[N]]></tokenanswerspersistence>
     <assessments><![CDATA[Y]]></assessments>
     <usecaptcha><![CDATA[D]]></usecaptcha>
     <usetokens><![CDATA[N]]></usetokens>
     <bounce_email><![CDATA[your@email.org]]></bounce_email>
-    <attributedescriptions><![CDATA[]]></attributedescriptions>
-    <emailresponseto><![CDATA[]]></emailresponseto>
-    <emailnotificationto><![CDATA[]]></emailnotificationto>
+    <attributedescriptions/>
+    <emailresponseto/>
+    <emailnotificationto/>
     <tokenlength><![CDATA[15]]></tokenlength>
     <showxquestions><![CDATA[Y]]></showxquestions>
     <showgroupinfo><![CDATA[B]]></showgroupinfo>
@@ -2480,11 +2761,11 @@
     <showqnumcode><![CDATA[C]]></showqnumcode>
     <bouncetime><![CDATA[0]]></bouncetime>
     <bounceprocessing><![CDATA[N]]></bounceprocessing>
-    <bounceaccounttype><![CDATA[]]></bounceaccounttype>
-    <bounceaccounthost><![CDATA[]]></bounceaccounthost>
-    <bounceaccountpass><![CDATA[]]></bounceaccountpass>
-    <bounceaccountencryption><![CDATA[]]></bounceaccountencryption>
-    <bounceaccountuser><![CDATA[]]></bounceaccountuser>
+    <bounceaccounttype/>
+    <bounceaccounthost/>
+    <bounceaccountpass/>
+    <bounceaccountencryption/>
+    <bounceaccountuser/>
     <showwelcome><![CDATA[Y]]></showwelcome>
     <showprogress><![CDATA[Y]]></showprogress>
     <questionindex><![CDATA[1]]></questionindex>
@@ -2492,7 +2773,7 @@
     <nokeyboard><![CDATA[N]]></nokeyboard>
     <alloweditaftercompletion><![CDATA[N]]></alloweditaftercompletion>
     <googleanalyticsstyle><![CDATA[0]]></googleanalyticsstyle>
-    <googleanalyticsapikey><![CDATA[]]></googleanalyticsapikey>
+    <googleanalyticsapikey/>
    </row>
   </rows>
  </surveys>
@@ -2515,11 +2796,13 @@
    <fieldname>surveyls_email_confirm_subj</fieldname>
    <fieldname>surveyls_email_confirm</fieldname>
    <fieldname>surveyls_dateformat</fieldname>
+   <fieldname>surveyls_attributecaptions</fieldname>
    <fieldname>email_admin_notification_subj</fieldname>
    <fieldname>email_admin_notification</fieldname>
    <fieldname>email_admin_responses_subj</fieldname>
    <fieldname>email_admin_responses</fieldname>
    <fieldname>surveyls_numberformat</fieldname>
+   <fieldname>attachments</fieldname>
   </fields>
   <rows>
    <row>
@@ -2540,10 +2823,10 @@ Rand Group3&nbsp; Q3 |&nbsp; Q6&nbsp; | Q9<br />
 <br />
 <br />
 <br />]]></surveyls_description>
-    <surveyls_welcometext><![CDATA[]]></surveyls_welcometext>
-    <surveyls_endtext><![CDATA[]]></surveyls_endtext>
-    <surveyls_url><![CDATA[]]></surveyls_url>
-    <surveyls_urldescription><![CDATA[]]></surveyls_urldescription>
+    <surveyls_welcometext/>
+    <surveyls_endtext/>
+    <surveyls_url/>
+    <surveyls_urldescription/>
     <surveyls_email_invite_subj><![CDATA[Invitation to participate in a survey]]></surveyls_email_invite_subj>
     <surveyls_email_invite><![CDATA[Dear {FIRSTNAME},<br /><br />you have been invited to participate in a survey.<br /><br />The survey is titled:<br />"{SURVEYNAME}"<br /><br />"{SURVEYDESCRIPTION}"<br /><br />To participate, please click on the link below.<br /><br />Sincerely,<br /><br />{ADMINNAME} ({ADMINEMAIL})<br /><br />----------------------------------------------<br />Click here to do the survey:<br />{SURVEYURL}<br /><br />If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:<br />{OPTOUTURL}]]></surveyls_email_invite>
     <surveyls_email_remind_subj><![CDATA[Reminder to participate in a survey]]></surveyls_email_remind_subj>
@@ -2610,10 +2893,10 @@ Rand Group3&nbsp; Q3 |&nbsp; Q6&nbsp; | Q9<br />
 	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --------------------<br />
 	Rand Group3&nbsp; Q3 |&nbsp; Q6&nbsp; | Q9</p>
 ]]></surveyls_description>
-    <surveyls_welcometext><![CDATA[]]></surveyls_welcometext>
-    <surveyls_endtext><![CDATA[]]></surveyls_endtext>
-    <surveyls_url><![CDATA[]]></surveyls_url>
-    <surveyls_urldescription><![CDATA[]]></surveyls_urldescription>
+    <surveyls_welcometext/>
+    <surveyls_endtext/>
+    <surveyls_url/>
+    <surveyls_urldescription/>
     <surveyls_email_invite_subj><![CDATA[Invitation à participer à un questionnaire]]></surveyls_email_invite_subj>
     <surveyls_email_invite><![CDATA[Cher(e) {FIRSTNAME},
 
