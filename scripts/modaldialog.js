@@ -106,7 +106,7 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
             display += '<th>'+translt.headTitle+'</th>';
         if (show_comment != 0)
             display += '<th>'+translt.headComment+'</th>';
-        display += '<th>'+translt.headFileName+'</th></tr></thead><tbody>';
+        display += '<th>'+translt.headFileName+'</th><th class="edit"></th></tr></thead><tbody>';
         var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
 
         for (i = 0; i < filecount; i++)

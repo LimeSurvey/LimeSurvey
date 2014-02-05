@@ -15,7 +15,9 @@ function doFileUpload(){
     {
         var jsontext = window.parent.window.$('#'+fieldname).val();
         var json = eval('(' + jsontext + ')');
-
+        if( $('#field'+fieldname+'_listfiles').length==0){
+            $("<ul id='field"+fieldname+"_listfiles' class='files-list' />").insertAfter("#uploadstatus");
+        }
         var i;
         $('#'+fieldname+'_licount').val(filecount);
 
@@ -47,7 +49,7 @@ function doFileUpload(){
                     "</div></li>";
 
             // add file to the list
-            $('#'+fieldname+'_listfiles').append(previewblock);
+            $('#field'+fieldname+'_listfiles').append(previewblock);
         }
     }
 
@@ -134,6 +136,9 @@ function doFileUpload(){
             if (metadata.success)
             {
                 $('#notice').html('<p class="success">'+metadata.msg+'</p>');
+                if( $('#field'+fieldname+'_listfiles').length==0){
+                    $("<ul id='field"+fieldname+"_listfiles' class='files-list' />").insertAfter("#uploadstatus");
+                }
                 var previewblock =  "<li id='"+fieldname+"_li_"+count+"' class='previewblock'><div>"+
                                         "<table align='center'><tr>"+
                                             "<td  align='center' width='50%'>";
@@ -162,7 +167,7 @@ function doFileUpload(){
                                     "</div></li>";
 
                 // add file to the list
-                $('#'+fieldname+'_listfiles').prepend(previewblock);
+                $('#field'+fieldname+'_listfiles').prepend(previewblock);
                 var filecount = parseInt($('#'+fieldname+'_filecount').val());
                 var minfiles = parseInt($('#'+fieldname+'_minfiles').val());
                 filecount++;

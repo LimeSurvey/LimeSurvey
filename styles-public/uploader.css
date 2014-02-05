@@ -1,6 +1,6 @@
 body {font-family: verdana, arial, helvetica, sans-serif;font-size: 12px;color: black; direction: ltr;}
 h1 {color: #C7D92C;	font-size: 18px; font-weight: 400;}
-a {	color: white;}
+a {color: white;}
 a:hover, a.hover {color: #C7D92C;}
 ul { list-style: none; }
 #dialog-confirm { padding: 0 20px; float: left; width: 750px; }
@@ -18,6 +18,9 @@ img {
     border-style: solid;
 }
 
+.upload-div{
+    text-align: center;
+}
 .uploadmsg {
     text-align: center;
 }
