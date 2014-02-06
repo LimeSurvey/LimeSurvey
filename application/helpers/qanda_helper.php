@@ -996,17 +996,23 @@ function do_date($ia)
         };";
     App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
-    $checkconditionFunction = "checkconditions";
+    
+	//register timepicker extension, also needed for dropbox style dates for format conversions
+	App()->getClientScript()->registerPackage('jqueryui-timepicker');
+	
+	// Locale for datepicker and timpicker extension
+	if ($clang->langcode !== 'en')
+	{
+		Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-{$clang->langcode}.js");
+		Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jquery-ui-timepicker-addon/i18n/jquery-ui-timepicker-{$clang->langcode}.js");
+	}
+	$checkconditionFunction = "checkconditions";
 
     $dateformatdetails = getDateFormatDataForQID($aQuestionAttributes,$thissurvey);
     $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
-
-
     $sMindatetailor='';
     $sMaxdatetailor='';
 
-
-    
     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
     if (trim($aQuestionAttributes['date_min'])!='') 
     {
@@ -1028,7 +1034,6 @@ function do_date($ia)
             preg_match("/LEMtailor_Q_[0-9]{1,7}_[0-9]{1,3}/", $sMindatespan, $matches);
             if (isset($matches[0]))
                 $sMindatetailor=$matches[0];
-
         }
     }
     else
@@ -1294,15 +1299,6 @@ function do_date($ia)
     }
     else
     {
-        //register timepicker extension
-        App()->getClientScript()->registerPackage('jqueryui-timepicker');
-        
-        // Locale for datepicker and timpicker extension
-        if ($clang->langcode !== 'en')
-        {
-            Yii::app()->getClientScript()->registerScriptFile(App()->baseUrl . "/third_party/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-{$clang->langcode}.js");
-            Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jquery-ui-timepicker-addon/i18n/jquery-ui-timepicker-{$clang->langcode}.js");
-        }
         
         // Format the date  for output
         if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])!='')

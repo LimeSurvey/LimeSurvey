@@ -496,7 +496,7 @@ function LEMval(alias)
                 case 'S': //SHORT FREE TEXT
                 case 'T': //LONG FREE TEXT
                 case 'U': //HUGE FREE TEXT
-                case 'D': //DATE (".shown" only works on same page, TODO: add conversion...access to adv. q-attribs w/ js?)
+                case 'D': //DATE
                 case '*': //Equation
                 case 'I': //Language Question
                 case '|': //File Upload
@@ -624,29 +624,49 @@ function LEMval(alias)
 //                }
                 return +newval;
             }
+			// convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
+			else if (attr.type=='D')  {
+				// get date format pattern of referenced question
+				var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).attr('value');
+				
+				// if undefined (eg., variable on a previous page), set default format yy-mm-dd HH:MM
+				sdatetimePattern=typeof sdatetimePattern=='undefined'? 'yy-mm-dd HH:MM': sdatetimePattern;
+				
+				//split format into a date part and a time part
+				var datepattern=new RegExp(/[mydYD][mydYD.:\/-]*[mydYD]/);
+				var timepattern=new RegExp(/[HMN][HMN.:\/-]*[HMN]/);
+				var sdateFormat=datepattern.exec(sdatetimePattern);
+				var stimeFormat=timepattern.exec(sdatetimePattern);
+				if (sdateFormat!=null) {
+					sdateFormat=sdateFormat.toString();
+				
+				// quick fix for #08669...really need a proper date function lib or a date parsing function in js
+					datepattern=new RegExp(/m.*/);
+					match=datepattern.exec(sdatetimePattern);
+					if (match==null) {
+						sdateFormat=sdateFormat+'-mm';
+						value=trim(value)+'-01';
+					}
+					datepattern=new RegExp(/d.*/);
+					match=datepattern.exec(sdatetimePattern);
+					if (match==null) {
+						sdateFormat=sdateFormat+'-dd';
+						value=trim(value)+'-01';
+					}
+				} else {
+					sdateFormat="";
+				}
+				
+				// datetimepicker needs minutes lower case
+				stimeFormat=stimeFormat!=null? stimeFormat.toString().replace(/[MN]/gi,"m"): "";
+			
+				// For parsing patterns with time first (eg., HH:MM dd/mm/yyyy), we might need a specialised js lib 
+				value=date('Y-m-d H:i', $.datepicker.parseDateTime(sdateFormat, stimeFormat, value));
+				return value;
+			}
             else if (isNaN(value)) {
-                if (value==='false') {
+				if (value==='false') {
                     return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string
-                }
-                // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
-                if (attr.type=='D')  {
-                    // get date format pattern of referenced question
-                    var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).attr('value');
-                    
-                    // if undefined (eg., variable on a previous page), set default format yy-mm-dd HH:MM
-                    sdatetimePattern=typeof sdatetimePattern=='undefined'? 'yy-mm-dd HH:MM': sdatetimePattern;
-                    
-                    //split format into a date part and a time part
-                    var datepattern=new RegExp(/[mydYD][mydYD.:\/-]*[mydYD]/);
-                    var timepattern=new RegExp(/[HMN][HMN.:\/-]*[HMN]/);
-                    var sdateFormat=datepattern.exec(sdatetimePattern);
-                    var stimeFormat=timepattern.exec(sdatetimePattern);
-                    sdateFormat=sdateFormat!=null? sdateFormat.toString(): "";
-                    // datetimepicker needs minutes lower case
-                    stimeFormat=stimeFormat!=null? stimeFormat.toString().replace(/[MN]/gi,"m"): "";
-                    
-                    // For parsing patterns with time first (eg., HH:MM dd/mm/yyyy), we might need a specialised js lib 
-                    value=date('Y-m-d H:i', $.datepicker.parseDateTime(sdateFormat, stimeFormat, value));
                 }
                 return value;
             }
