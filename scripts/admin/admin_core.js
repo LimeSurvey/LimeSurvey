@@ -101,15 +101,17 @@ $(document).ready(function(){
         */
        qTypeDropdownInit();
         $("#question_type").change(function(event){
-            var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
-            OtherSelection(selected_value);
+            OtherSelection(this.value);
         });
+        $("#question_type").change();
     }
-    $("#question_type.none").change(function(event){
-        var selected_value = $("#question_type").val();
-        OtherSelection(selected_value);
-    });
-    $("#question_type").change();
+    else
+    {
+        $("#question_type.none").change(function(event){
+            OtherSelection(this.value);
+        });
+        $("#question_type.none").change();
+    }
 });
 
 function qTypeDropdownInit()
