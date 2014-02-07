@@ -1429,48 +1429,6 @@ div.right {
     width:210px;
 }
 
-.limebutton
-{
-  display: inline-block;
-  *display: inline;
-  padding: 0.3em 1em;;padding: 0.3rem 1rem;
-  text-align: center;
-  vertical-align: middle;
-/*  font-weight:bold;*/
-  cursor: pointer;
-  border: 1px solid #bbbbbb;
-  *border: 0;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-  *zoom: 1;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-     -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-.limebutton
-{
-  border-color: #79B7E7;
-  border-color: rgba(121, 183, 231, 0.3) rgba(121, 183, 231, 0.3) rgba(121, 183, 231, 0.5);
-  color: #1D5987;
-  background-color: #dfeffc;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dfeffc), to(#c8e4fa));
-  background-image: -webkit-linear-gradient(top, #dfeffc, #c8e4fa);
-  background-image: -o-linear-gradient(top, #dfeffc, #c8e4fa);
-  background-image: linear-gradient(to bottom, #dfeffc, #c8e4fa);
-  background-image: -moz-linear-gradient(top, #dfeffc, #c8e4fa);
-  background-repeat: repeat-x;
-  border-color: #79B7E7 #79B7E7 #5f8eb3;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffdfeffc', endColorstr='#ffc8e4fa', GradientType=0);
-  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
-}
-.limebutton:focus,.limebutton:hover,.limebutton:active
-{
-  background-position:0 -15px;
-  color: #444;
-  background-color: #c8e4fa;
-}
 #emailtemplates .ui-tabs-panel .limebutton {
     margin: 3px 20% 10px 30.5%;
 }

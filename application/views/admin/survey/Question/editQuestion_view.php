@@ -44,7 +44,7 @@ if ($adding || $copying) {
     </ul>
     <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
             <div id='questionactioncopy' class='extra-action'>
-                <input type='submit' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
+                <button type='submit' class="saveandreturn" name="redirection" value="edit"><?php $clang->eT("Save") ?> </button>
                 <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
             </div>
 
@@ -310,9 +310,8 @@ if ($adding || $copying) {
                     else
                     { ?>
                     <input type='hidden' name='action' value='updatequestion' />
-                    <input type='hidden' id='newpage' name='newpage' value='' />
                     <input type='hidden' id='qid' name='qid' value='<?php echo $qid; ?>' />
-					<p><input type='submit' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
+					<p><button type='submit' class="saveandreturn" name="redirection" value="edit"><?php $clang->eT("Save") ?> </button>
                     <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
                     <?php } ?>
                 <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' /></p><br />

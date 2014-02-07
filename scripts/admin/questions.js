@@ -40,7 +40,10 @@ function validateQuestion(jqObject){
         function(data){
                 if($.isEmptyObject(data))
                 {
-                    $('#frmeditquestion [type!=hidden][name="title"]').filter(":first")[0].setCustomValidity('');// Just title actually, more input needed after ($.each)
+                    if(hasFormValidation)
+                    {
+                        $('#frmeditquestion [type!=hidden][name="title"]').filter(":first")[0].setCustomValidity('');// Just title actually, more input needed after ($.each)
+                    }
                     $('#frmeditquestion [type!=hidden][name="title"]').removeClass("has-error");
                     $('#frmeditquestion [type!=hidden][name="title"]').next('.errorMessage').remove();
                     if($(jqObject).is(":submit")){
@@ -60,9 +63,12 @@ function validateQuestion(jqObject){
                             $("<span class='errorMessage text-error' />").insertAfter('#frmeditquestion [type!=hidden][name="'+name+'"]');
                         }
                         $.each(aError,function(i,error){
-                            $('#frmeditquestion [type!=hidden][name="'+name+'"]').each(function(){
-                                $(this)[0].setCustomValidity(error);
-                            });
+                            if(hasFormValidation)
+                            {
+                                $('#frmeditquestion [type!=hidden][name="'+name+'"]').each(function(){
+                                    $(this)[0].setCustomValidity(error);
+                                });
+                            }
                             $('#frmeditquestion [type!=hidden][name="'+name+'"]').next('.errorMessage').text(error);
                         });
                     });

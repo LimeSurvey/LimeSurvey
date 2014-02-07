@@ -902,7 +902,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                if(Yii::app()->request->getPost('newpage') == "return") {
+                if(Yii::app()->request->getPost('redirection') == "edit") {
                     $this->getController()->redirect(array('admin/questions/sa/editquestion/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
                 } else {
                     $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));

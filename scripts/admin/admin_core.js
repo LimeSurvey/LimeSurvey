@@ -14,6 +14,11 @@
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
+/* Set a variable to test if browser have HTML5 form ability
+ * Need to be replaced by some polyfills see #8009
+ */
+hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
+
 $(document).ready(function(){
     initializeAjaxProgress();
     tableCellAdapters();
@@ -669,6 +674,7 @@ jQuery.fn.center = function () {
 }
 
 // Fix broken substr function with negative start value (in older IE)
+// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr
 if ('ab'.substr(-1) != 'b') {
 	String.prototype.substr = function(substr) {
 		return function(start, length) {
@@ -681,13 +687,13 @@ if ('ab'.substr(-1) != 'b') {
 /**
 * Yii CSRF protection divs breaks this script so this function moves the 
 * hidden CSRF field out of the div and remove it if needed
-* 
+* 140207 : Why this function is needed ? Where is the script broken ?
 */
 function removeCSRFDivs()
 {
     $('input[name=YII_CSRF_TOKEN]').each(function(){
-       parent = $(this).parent();
-       grandfather = $(parent).parent();
+       var parent = $(this).parent();
+       var grandfather = $(parent).parent();
        $(grandfather).append(this);
        $(parent).remove();
     });
