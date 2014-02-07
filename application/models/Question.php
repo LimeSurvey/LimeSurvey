@@ -79,8 +79,10 @@
         {
             $clang = Yii::app()->lang;
             $aRules= array(
-                        //array('title','required','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'), // 131206 : Have to track down why set in comment
-                        array('qid', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+                        array('title','required','on' => 'update, insert'),// 140207 : Before was commented, put only on update/insert ?
+                        array('title','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'),
+                        array('qid', 'numerical','integerOnly'=>true),
+                        array('qid', 'unique', 'criteria'=>array(
                                         'condition'=>'language=:language',
                                         'params'=>array(':language'=>$this->language)
                                 ),
@@ -124,11 +126,11 @@
                                         )
                                     ),
                                 'message' => $clang->gT('Question codes must be unique.'), 'except' => 'archiveimport');
-                $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => $clang->gT('Question codes must start with a letter and may only contain alphanumeric characters.'), 'except' => 'archiveimport');// Think we can remove the scenario here (on: allways)
+                $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => $clang->gT('Question codes must start with a letter and may only contain alphanumeric characters.'), 'except' => 'archiveimport');
             }
             else
             {
-                $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => $clang->gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport');// Think we can remove the scenario here (on: allways)
+                $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => $clang->gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport');
             }
 
             return $aRules;

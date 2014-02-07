@@ -114,8 +114,7 @@
                                             <?php if($row->title) {$sPattern="^([a-zA-Z0-9]*|{$row->title})$";}else{$sPattern="^[a-zA-Z0-9]*$";} ?>
                                             <img class='handle' src='<?php echo $sImageURL; ?>handle.png' alt=''/></td>
                                             <td><input type='hidden' class='oldcode' id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" />
-                                            <input type='text' id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' class='code' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='20' size='5' pattern='<?php echo $sPattern; ?>'
-                                                onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;} " />
+                                            <input type='text' id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' class='code' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='20' size='5' pattern='<?php echo $sPattern; ?>' required='required' />
 
                                             <?php }
                                             else
