@@ -2252,6 +2252,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     $aLIDReplacements=array();
     $aGIDReplacements=array();
     $substitutions=array();
+    $aQuestionCodeReplacements=array();
     $aQuotaReplacements=array();
     $importresults['error']=false;
     $importresults['importwarnings']=array();
@@ -2968,6 +2969,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             if(isset($sNewTitle))
             {
                 $importresults['importwarnings'][] = sprintf("Question code %s was updated to %s.",$sOldTitle,$sNewTitle);
+                $aQuestionCodeReplacements[$sOldTitle]=$sNewTitle;
                 unset($sNewTitle);
                 unset($sOldTitle);
             }
@@ -3159,6 +3161,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                 if(isset($sNewTitle))
                 {
                     $importresults['importwarnings'][] = sprintf($clang->gT("Title of subquestion %s was updated to %s."),$sOldTitle,$sNewTitle);// Maybe add the question title ?
+                    $aQuestionCodeReplacements[$sOldTitle]=$sNewTitle;
                     unset($sNewTitle);
                     unset($sOldTitle);
                 }
@@ -3379,6 +3382,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
         }
     }
+    replaceExpressionCodes($iNewSID,$aQuestionCodeReplacements);
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::SetSurveyId($iNewSID);
@@ -3513,6 +3517,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
+    $aQuestionCodeReplacements=array();
     $aQuotaReplacements=array();
     $results['defaultvalues']=0;
     $results['answers']=0;
@@ -3794,6 +3799,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             if(isset($sNewTitle))
             {
                 $results['importwarnings'][] = sprintf("Question code %s was updated to %s.",$sOldTitle,$sNewTitle);
+                $aQuestionCodeReplacements[$sOldTitle]=$sNewTitle;
                 unset($sNewTitle);
                 unset($sOldTitle);
             }
@@ -3901,6 +3907,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             if(isset($sNewTitle))
             {
                 $results['importwarnings'][] = sprintf($clang->gT("Title of subquestion %s was updated to %s."),$sOldTitle,$sNewTitle);// Maybe add the question title ?
+                $aQuestionCodeReplacements[$sOldTitle]=$sNewTitle;
                 unset($sNewTitle);
                 unset($sOldTitle);
             }
@@ -4214,6 +4221,10 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     $results['FieldReMap']=$aOldNewFieldmap;
     LimeExpressionManager::SetSurveyId($iNewSID);
     translateInsertansTags($iNewSID,$iOldSID,$aOldNewFieldmap);
+    replaceExpressionCodes($iNewSID,$aQuestionCodeReplacements);
+    if (count($aQuestionCodeReplacements)) {
+          array_unshift($results['importwarnings'] , "<span class='warningtitle'>".$clang->gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.').'</span)>');
+    }
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
     return $results;

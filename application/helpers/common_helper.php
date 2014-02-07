@@ -5850,8 +5850,8 @@ function SSLRedirect($enforceSSLMode)
 function enforceSSLMode()
 {
     $bSSLActive = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")||
-    $_SERVER['HTTP_FORWARDED_PROTO']=="https"||
-    $_SERVER['HTTP_X_FORWARDED_PROTO']=="https");
+    (isset($_SERVER['HTTP_FORWARDED_PROTO']) && $_SERVER['HTTP_FORWARDED_PROTO']=="https")||
+    (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO']=="https"));
     if (Yii::app()->getConfig('ssl_emergency_override') !== true )
     {
         $force_ssl = strtolower(getGlobalSetting('force_ssl'));
@@ -6334,6 +6334,55 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
         } // Enf if modified
     } // end while qentry
 }
+
+/**
+* Replaces EM variable codes in a current survey with a new one
+* 
+* @param mixed $iSurveyID The survey ID
+* @param mixed $aCodeMap The codemap array (old_code=>new_code)
+*/
+function replaceExpressionCodes ($iSurveyID, $aCodeMap)
+{
+   $arQuestions=Question::model()->findAll("sid=:sid",array(':sid'=>$iSurveyID));
+   foreach ($arQuestions as $arQuestion)
+   {
+        $bModified=false;
+        foreach ($aCodeMap as $sOldCode=>$sNewCode)
+        {
+            // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
+            if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0])) 
+            {
+                $sOldCode=preg_quote($sOldCode,'/');
+                $arQuestion->relevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->relevance,-1,$iCount);
+                $bModified = $bModified || $iCount;
+                $arQuestion->question=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->question,-1,$iCount);
+                $bModified = $bModified || $iCount;
+            }
+        }
+        if ($bModified)
+        {
+            $arQuestion->save();
+        }
+   }
+   $arGroups=QuestionGroup::model()->findAll("sid=:sid",array(':sid'=>$iSurveyID));
+   foreach ($arGroups as $arGroup)
+   {
+        $bModified=false;
+        foreach ($aCodeMap as $sOldCode=>$sNewCode)
+        {
+            $sOldCode=preg_quote($sOldCode,'/');
+            $arGroup->grelevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arGroup->grelevance,-1,$iCount);
+            $bModified = $bModified || $iCount;
+            $arGroup->description=preg_replace("/\b{$sOldCode}/",$sNewCode,$arGroup->description,-1,$iCount);
+            $bModified = $bModified || $iCount;
+        }
+        if ($bModified)
+        {
+            $arGroup->save();
+        }
+   }
+}
+
 
 /**
 * This function is a replacement of accessDenied.php which return appropriate error message which is then displayed.
