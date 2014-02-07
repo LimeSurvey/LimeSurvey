@@ -1469,7 +1469,7 @@
                                     if (trim($qattr['date_min'])!='') 
                                     {
                                         $mindate=$qattr['date_min'];
-                                        if ((strlen($mindate)==4) && ($mindate>=1900) && ($mindate<=2037))
+                                        if ((strlen($mindate)==4) && ($mindate>=1900) && ($mindate<=2099))
                                         {
                                             // backward compatibility: if only a year is given, add month and day 
                                             $date_min='\''.$mindate.'-01-01'.' 00:00\''; 
@@ -1543,7 +1543,7 @@
                                     if (trim($qattr['date_max'])!='') 
                                     {
                                         $maxdate=$qattr['date_max'];
-                                        if ((strlen($maxdate)==4) && ($maxdate>=1900) && ($maxdate<=2037))
+                                        if ((strlen($maxdate)==4) && ($maxdate>=1900) && ($maxdate<=2099))
                                         {
                                             // backward compatibility: if only a year is given, add month and day 
                                             $date_max='\''.$maxdate.'-12-31 23:59'.'\''; 
