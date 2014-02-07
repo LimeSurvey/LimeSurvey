@@ -5849,7 +5849,9 @@ function SSLRedirect($enforceSSLMode)
 */
 function enforceSSLMode()
 {
-    $bSSLActive = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off");
+    $bSSLActive = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")||
+    $_SERVER['HTTP_FORWARDED_PROTO']=="https"||
+    $_SERVER['HTTP_X_FORWARDED_PROTO']=="https");
     if (Yii::app()->getConfig('ssl_emergency_override') !== true )
     {
         $force_ssl = strtolower(getGlobalSetting('force_ssl'));
