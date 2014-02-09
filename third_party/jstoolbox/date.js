@@ -10,7 +10,18 @@
  * your site. Copy the files locally to your server instead.
  * 
  */
-/*
+
+ /** Modified identifiers to match those in Limesurvey
+  *  Month:  M --> m
+  *      N --> n
+  *  Hour:   h --> H
+  *  Minute: m --> M
+  *  Year:   yyyy --> yy
+  *      yy --> y
+  */
+
+
+ /*
 Date functions
 
 These functions are used to parse, format, and manipulate Date objects.
@@ -45,9 +56,9 @@ if (!Date.prototype.getFullYear) {
 Date.parseString = function(val, format) {
   // If no format is specified, try a few common formats
   if (typeof(format)=="undefined" || format==null || format=="") {
-    var generalFormats=new Array('y-M-d','MMM d, y','MMM d,y','y-MMM-d','d-MMM-y','MMM d','MMM-d','d-MMM');
-    var monthFirst=new Array('M/d/y','M-d-y','M.d.y','M/d','M-d');
-    var dateFirst =new Array('d/M/y','d-M-y','d.M.y','d/M','d-M');
+    var generalFormats=new Array('y-m-d','mmm d, y','mmm d,y','y-mmm-d','d-mmm-y','mmm d','mmm-d','d-mmm');
+    var monthFirst=new Array('m/d/y','m-d-y','m.d.y','m/d','m-d');
+    var dateFirst =new Array('d/m/y','d-m-y','d.m.y','d/m','d-m');
     var checkList=new Array(generalFormats,Date.preferAmericanFormat?monthFirst:dateFirst,Date.preferAmericanFormat?dateFirst:monthFirst);
     for (var i=0; i<checkList.length; i++) {
       var l=checkList[i];
@@ -92,8 +103,8 @@ Date.parseString = function(val, format) {
   var year=new Date().getFullYear();
   var month=1;
   var date=1;
-  var hh=0;
-  var mm=0;
+  var HH=0;
+  var MM=0;
   var ss=0;
   var ampm="";
   while (i_format < format.length) {
@@ -109,10 +120,10 @@ Date.parseString = function(val, format) {
         x=4;y=4; 
       }
       if (token=="yy") { 
-        x=2;y=2; 
+        x=2;y=4; 
       }
       if (token=="y") { 
-        x=2;y=4; 
+        x=2;y=2; 
       }
       year=this.getInt(val,i_val,x,y);
       if (year==null) { 
@@ -128,9 +139,9 @@ Date.parseString = function(val, format) {
         }
       }
     }
-    else if (token=="MMM" || token=="NNN"){
+    else if (token=="mmm" || token=="nnn"){
       month=0;
-      var names = (token=="MMM"?(Date.monthNames.concat(Date.monthAbbreviations)):Date.monthAbbreviations);
+      var names = (token=="mmm"?(Date.monthNames.concat(Date.monthAbbreviations)):Date.monthAbbreviations);
       for (var i=0; i<names.length; i++) {
         var month_name=names[i];
         if (val.substring(i_val,i_val+month_name.length).toLowerCase()==month_name.toLowerCase()) {
@@ -153,7 +164,7 @@ Date.parseString = function(val, format) {
         }
       }
     }
-    else if (token=="MM"||token=="M") {
+    else if (token=="mm"||token=="m") {
       month=this.getInt(val,i_val,token.length,2);
       if(month==null||(month<1)||(month>12)){
         return null;
@@ -168,41 +179,41 @@ Date.parseString = function(val, format) {
       i_val+=date.length;
     }
     else if (token=="hh"||token=="h") {
-      hh=this.getInt(val,i_val,token.length,2);
-      if(hh==null||(hh<1)||(hh>12)){
+      HH=this.getInt(val,i_val,token.length,2);
+      if(HH==null||(HH<1)||(HH>12)){
         return null;
       }
-      i_val+=hh.length;
+      i_val+=HH.length;
     }
     else if (token=="HH"||token=="H") {
-      hh=this.getInt(val,i_val,token.length,2);
-      if(hh==null||(hh<0)||(hh>23)){
+      HH=this.getInt(val,i_val,token.length,2);
+      if(HH==null||(HH<0)||(HH>23)){
         return null;
       }
-      i_val+=hh.length;
+      i_val+=HH.length;
     }
     else if (token=="KK"||token=="K") {
-      hh=this.getInt(val,i_val,token.length,2);
-      if(hh==null||(hh<0)||(hh>11)){
+      HH=this.getInt(val,i_val,token.length,2);
+      if(HH==null||(HH<0)||(HH>11)){
         return null;
       }
-      i_val+=hh.length;
-      hh++;
+      i_val+=HH.length;
+      HH++;
     }
     else if (token=="kk"||token=="k") {
-      hh=this.getInt(val,i_val,token.length,2);
-      if(hh==null||(hh<1)||(hh>24)){
+      HH=this.getInt(val,i_val,token.length,2);
+      if(HH==null||(HH<1)||(HH>24)){
         return null;
       }
-      i_val+=hh.length;
-      hh--;
+      i_val+=HH.length;
+      HH--;
     }
-    else if (token=="mm"||token=="m") {
-      mm=this.getInt(val,i_val,token.length,2);
-      if(mm==null||(mm<0)||(mm>59)){
+    else if (token=="MM"||token=="M") {
+      MM=this.getInt(val,i_val,token.length,2);
+      if(MM==null||(MM<0)||(MM>59)){
         return null;
       }
-      i_val+=mm.length;
+      i_val+=MM.length;
     }
     else if (token=="ss"||token=="s") {
       ss=this.getInt(val,i_val,token.length,2);
@@ -256,13 +267,13 @@ Date.parseString = function(val, format) {
     }
   }
   // Correct hours value
-  if (hh<12 && ampm=="PM") {
-    hh=hh-0+12; 
+  if (HH<12 && ampm=="PM") {
+    HH=HH-0+12; 
   }
-  else if (hh>11 && ampm=="AM") { 
-    hh-=12; 
+  else if (HH>11 && ampm=="AM") { 
+    HH-=12; 
   }
-  return new Date(year,month-1,date,hh,mm,ss);
+  return new Date(year,month-1,date,HH,MM,ss);
 };
 
 // Check if a date string is valid
@@ -312,25 +323,25 @@ Date.prototype.format = function(format) {
   var c="";
   var token="";
   var y=this.getYear()+"";
-  var M=this.getMonth()+1;
+  var m=this.getMonth()+1;
   var d=this.getDate();
   var E=this.getDay();
   var H=this.getHours();
-  var m=this.getMinutes();
+  var M=this.getMinutes();
   var s=this.getSeconds();
-  var yyyy,yy,MMM,MM,dd,hh,h,mm,ss,ampm,HH,H,KK,K,kk,k;
+  var yyyy,yy,mmm,mm,dd,hh,h,MM,ss,ampm,HH,H,KK,K,kk,k;
   // Convert real date parts into formatted versions
   var value=new Object();
   if (y.length < 4) {
     y=""+(+y+1900);
   }
-  value["y"]=""+y;
+  value["y"]=y.substring(2,4);
   value["yyyy"]=y;
-  value["yy"]=y.substring(2,4);
-  value["M"]=M;
-  value["MM"]=Date.LZ(M);
-  value["MMM"]=Date.monthNames[M-1];
-  value["NNN"]=Date.monthAbbreviations[M-1];
+  value["yy"]=y;
+  value["m"]=m;
+  value["mm"]=Date.LZ(m);
+  value["mmm"]=Date.monthNames[m-1];
+  value["nnn"]=Date.monthAbbreviations[m-1];
   value["d"]=d;
   value["dd"]=Date.LZ(d);
   value["E"]=Date.dayAbbreviations[E];
@@ -357,8 +368,8 @@ Date.prototype.format = function(format) {
   else { 
     value["a"]="AM"; 
   }
-  value["m"]=m;
-  value["mm"]=Date.LZ(m);
+  value["M"]=M;
+  value["MM"]=Date.LZ(M);
   value["s"]=s;
   value["ss"]=Date.LZ(s);
   while (i_format < format.length) {
@@ -415,7 +426,7 @@ Date.prototype.add = function(interval, number) {
   if (interval=='y') { // year
     this.setFullYear(this.getFullYear()+number);
   }
-  else if (interval=='M') { // Month
+  else if (interval=='m') { // Month
     this.setMonth(this.getMonth()+number);
   }
   else if (interval=='d') { // Day
@@ -431,10 +442,10 @@ Date.prototype.add = function(interval, number) {
       number -= step;
     }
   }
-  else if (interval=='h') { // Hour
+  else if (interval=='H') { // Hour
     this.setHours(this.getHours() + number);
   }
-  else if (interval=='m') { // Minute
+  else if (interval=='M') { // Minute
     this.setMinutes(this.getMinutes() + number);
   }
   else if (interval=='s') { // Second
