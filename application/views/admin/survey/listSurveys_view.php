@@ -27,6 +27,8 @@
     var sOperator12= '<?php $clang->eT("does not end with",'js');?>';
     var sOperator13= '<?php $clang->eT("contains",'js');?>';
     var sOperator14= '<?php $clang->eT("does not contain",'js');?>';
+    var sOperator15= '<?php $clang->eT("is null",'js');?>';
+    var sOperator16= '<?php $clang->eT("is not null",'js');?>';
     var sFind= '<?php $clang->eT("Filter",'js');?>';
     var sReset= '<?php $clang->eT("Reset",'js');?>';
     var sSelectColumns= '<?php $clang->eT("Select columns",'js');?>';                          
