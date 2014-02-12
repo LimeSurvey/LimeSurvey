@@ -1778,12 +1778,15 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 ;
         } // switch
     }
+//        debugbreak();
     switch($sFieldCode)
     {
         case 'submitdate':
+        case 'startdate':
+        case 'datestamp':
             if (trim($sValue)!='')
             {
-                $dateformatdetails = getDateFormatDataForQID(array('date_format'=>''), $iSurveyID);
+                $dateformatdetails = getDateFormatDataForQID(null, $iSurveyID);
                 $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate'].' H:i:s');
             }
             break;
