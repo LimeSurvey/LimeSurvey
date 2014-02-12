@@ -1399,8 +1399,6 @@ class tokens extends Survey_Common_Action
 
                     $customheaders = array('1' => "X-surveyid: " . $iSurveyId,
                     '2' => "X-tokenid: " . $fieldsarray["{TOKEN}"]);
-                    debugbreak();
-
                     global $maildebug;
                     $modsubject = Replacefields(Yii::app()->request->getPost('subject_' . $emrow['language']), $fieldsarray);
                     $modmessage = Replacefields(Yii::app()->request->getPost('message_' . $emrow['language']), $fieldsarray);
