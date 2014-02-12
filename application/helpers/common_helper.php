@@ -1778,7 +1778,6 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 ;
         } // switch
     }
-//        debugbreak();
     switch($sFieldCode)
     {
         case 'submitdate':

@@ -1206,7 +1206,7 @@ class tokens extends Survey_Common_Action
         foreach ($languages as $language)
         {
             $ls = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language));
-            $ls->surveyls_attributecaptions = serialize($captions[$language]);
+            $ls->surveyls_attributecaptions = json_encode($captions[$language]);
             $ls->save();
         }
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
