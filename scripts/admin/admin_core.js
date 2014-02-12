@@ -144,9 +144,9 @@ function qTypeDropdownInit()
     });
     $(document).ready(function() {
         $('body').on('mouseenter mouseleave', 'li.questionType', function(e) {
-            if (e.type = 'mouseenter')
+            if (e.type == 'mouseenter')
             {
-                // Hide all others if we show a new one.
+				// Hide all others if we show a new one.
                 $('#question_type option').qtip('hide');
                 $($(e.currentTarget).data().select2Data.element).qtip('option', 'position.target', $(e.currentTarget)).qtip('show');
             }
@@ -156,6 +156,9 @@ function qTypeDropdownInit()
             }
             
             
+        });
+        $('#question_type').on('close', function(e) {
+            $('#question_type option').qtip('hide');
         });
     });
 }
