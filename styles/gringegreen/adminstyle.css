@@ -1498,6 +1498,15 @@ thead th
 .usersurveypermissions th{
     padding:0 2em;
 }
+.userpermissions td,
+.usersurveypermissions td {
+    padding: 0.2em 0.5em;
+    text-align:center;
+}
+.userpermissions input[type="checkbox"],
+.usersurveypermissions [type="checkbox"] {
+	margin: 0;
+}
 
 #responsedetail td{
     padding:3px 5px;
