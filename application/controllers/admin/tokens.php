@@ -1347,14 +1347,13 @@ class tokens extends Survey_Common_Action
                     $_POST['message_' . $language] = html_entity_decode(Yii::app()->request->getPost('message_' . $language), ENT_QUOTES, Yii::app()->getConfig("emailcharset"));
             }
 
-            $attributes = array_keys(getTokenFieldsAndNames($iSurveyId));
+            $attributes = array_keys(getTokenFieldsAndNames($iSurveyId,true));
             $tokenoutput = "";
-
             if ($emcount > 0)
             {
                 foreach ($emresult as $emrow)
                 {
-                    $to = array();
+                    $to = $fieldsarray = array();
                     $aEmailaddresses = explode(';', $emrow['email']);
                     foreach ($aEmailaddresses as $sEmailaddress)
                     {
@@ -1400,7 +1399,8 @@ class tokens extends Survey_Common_Action
 
                     $customheaders = array('1' => "X-surveyid: " . $iSurveyId,
                     '2' => "X-tokenid: " . $fieldsarray["{TOKEN}"]);
-                    
+                    debugbreak();
+
                     global $maildebug;
                     $modsubject = Replacefields(Yii::app()->request->getPost('subject_' . $emrow['language']), $fieldsarray);
                     $modmessage = Replacefields(Yii::app()->request->getPost('message_' . $emrow['language']), $fieldsarray);
