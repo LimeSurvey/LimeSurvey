@@ -335,13 +335,13 @@ class Permission extends LSActiveRecord
             if (!Yii::app()->user->getIsGuest()) $iUserID = Yii::app()->session['loginID'];
             else return false;
         }
-        
+
         if ($iEntityID>0 && $sEntityName=='survey')
         {
-            $thissurvey=getSurveyInfo($iEntityID);
-            if (!$thissurvey) return false;
+            $aSurveyInfo=getSurveyInfo($iEntityID);// OR find but then don't use $static
+            if (!$aSurveyInfo) return false;
             // If you own a survey you have access to the whole survey
-            if ($iEntityID==$thissurvey['owner_id']) return true;
+            if ($iUserID==$aSurveyInfo['owner_id']) return true;
         }
 
         // Check if superadmin and cache it
@@ -356,7 +356,7 @@ class Permission extends LSActiveRecord
             else
             {
                 $bPermission=true;
-            }            
+            }
             $aPermissionCache[0]['global'][$iUserID]['superadmin']['read_p']= $bPermission;
         }
         
