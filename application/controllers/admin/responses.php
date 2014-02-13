@@ -835,7 +835,7 @@ class responses extends Survey_Common_Action
     private function _zipFiles($iSurveyID, $responseIds, $zipfilename,$language)
     {
 
-        Yii::app()->loadLibrary('admin/pclzip/pclzip');
+        Yii::app()->loadLibrary('admin/pclzip');
         
         $tmpdir = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR."surveys". DIRECTORY_SEPARATOR . $iSurveyID . DIRECTORY_SEPARATOR."files".DIRECTORY_SEPARATOR;
 

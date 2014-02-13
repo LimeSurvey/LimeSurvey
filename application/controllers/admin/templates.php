@@ -38,7 +38,7 @@ class templates extends Survey_Common_Action
         $tempdir = Yii::app()->getConfig('tempdir');
 
         $zipfile = "$tempdir/$templatename.zip";
-        Yii::app()->loadLibrary('admin.pclzip.pclzip');
+        Yii::app()->loadLibrary('admin.pclzip');
         $zip = new PclZip($zipfile);
         $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, getTemplatePath($templatename));
 
@@ -90,7 +90,7 @@ class templates extends Survey_Common_Action
             if (Yii::app()->getConfig('demoMode'))
                 $this->getController()->error($clang->gT("Demo mode: Uploading templates is disabled."));
 
-            Yii::app()->loadLibrary('admin.pclzip.pclzip');
+            Yii::app()->loadLibrary('admin.pclzip');
 
             $zip = new PclZip($_FILES['the_file']['tmp_name']);
         

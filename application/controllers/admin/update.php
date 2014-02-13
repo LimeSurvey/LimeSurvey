@@ -254,7 +254,7 @@ class update extends Survey_Common_Action
             }
         }
 
-        Yii::app()->loadLibrary("admin/pclzip/pclzip");
+        Yii::app()->loadLibrary("admin/pclzip");
         $archive = new PclZip($tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip');
 
         $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
@@ -395,7 +395,7 @@ class update extends Survey_Common_Action
         //Now unzip the new files over the existing ones.
         $new_files = false;
         if (file_exists($tempdir.'/update.zip')){
-            Yii::app()->loadLibrary("admin/pclzip/pclzip");
+            Yii::app()->loadLibrary("admin/pclzip");
             $archive = new PclZip($tempdir.'/update.zip');
             if ($archive->extract(PCLZIP_OPT_PATH, $rootdir.'/', PCLZIP_OPT_REPLACE_NEWER)== 0) {
                 die("Error : ".$archive->errorInfo(true));
@@ -532,7 +532,7 @@ class update extends Survey_Common_Action
 
         //Now unzip the new updater over the existing ones.
         if (file_exists($tempdir.'/updater.zip')){
-            Yii::app()->loadLibrary("admin/pclzip/pclzip",array('p_zipname' => $tempdir.'/updater.zip'));
+            Yii::app()->loadLibrary("admin/pclzip",array('p_zipname' => $tempdir.'/updater.zip'));
             $archive = new PclZip(array('p_zipname' => $tempdir.'/updater.zip'));
             if ($archive->extract(PCLZIP_OPT_PATH, APPPATH.'/controllers/admin/', PCLZIP_OPT_REPLACE_NEWER)== 0) {
                 die("Error : ".$archive->errorInfo(true));

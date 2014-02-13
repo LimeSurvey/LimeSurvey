@@ -70,7 +70,7 @@ class export extends Survey_Common_Action {
         {
             $aZIPFileName=$this->config->item("tempdir") . DIRECTORY_SEPARATOR . randomChars(30);
 
-            $this->load->library("admin/pclzip/pclzip", array('p_zipname' => $aZIPFileName));
+            $this->load->library("admin/pclzip", array('p_zipname' => $aZIPFileName));
 
             $zip = new PclZip($aZIPFileName);
             foreach ($aExportedFiles as $iSurveyID=>$sFileName)
@@ -806,7 +806,7 @@ class export extends Survey_Common_Action {
         file_put_contents($f3, $quexml);
         file_put_contents($f4, $clang->gT('This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys.'));
 
-        Yii::app()->loadLibrary('admin.pclzip.pclzip');
+        Yii::app()->loadLibrary('admin.pclzip');
         $zipfile="$tempdir/quexmlpdf_{$qid}_{$surveyprintlang}.zip";
         $z = new PclZip($zipfile);
         $z->create($zipdir, PCLZIP_OPT_REMOVE_PATH, $zipdir);
@@ -847,7 +847,7 @@ class export extends Survey_Common_Action {
             $resourcesdir = Yii::app()->getConfig('uploaddir') . "/{$resourcesdir}/";
             $tmpdir = Yii::app()->getConfig('tempdir') . '/';
             $zipfilepath = $tmpdir . $zipfilename;
-            Yii::app()->loadLibrary('admin.pclzip.pclzip');
+            Yii::app()->loadLibrary('admin.pclzip');
             $zip = new PclZip($zipfilepath);
             $zipdirs = array();
             foreach (array('files', 'flash', 'images') as $zipdir)
@@ -935,7 +935,7 @@ class export extends Survey_Common_Action {
         $sLSTFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
         $sLSIFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
 
-        Yii::import('application.libraries.admin.pclzip.pclzip', TRUE);
+        Yii::import('application.libraries.admin.pclzip', TRUE);
         $zip = new PclZip($aZIPFileName);
 
         file_put_contents($sLSSFileName, surveyGetXMLData($iSurveyID));
