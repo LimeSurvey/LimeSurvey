@@ -770,4 +770,8 @@ function addHiddenElement(theform,thename,thevalue)
     myel.value = thevalue;
     return myel;
 }
+function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+
 // @license-end
