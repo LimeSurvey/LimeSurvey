@@ -288,6 +288,7 @@ class database extends Survey_Common_Action
                                 if(!$oSubQuestion)
                                     $oSubQuestion=new Question;
                                 $oSubQuestion->sid=$iSurveyID;
+                                $oSubQuestion->qid=$aInsertQID[$iScaleID][$iPosition];
                                 $oSubQuestion->gid=$iQuestionGroupID;
                                 $oSubQuestion->question_order=$iPosition+1;
                                 $oSubQuestion->title=$aCodes[$iScaleID][$iPosition];
