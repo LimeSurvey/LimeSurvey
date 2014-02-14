@@ -148,7 +148,7 @@ input[type="text"]:focus, input.text:focus,textarea:focus{
 }
 input.checkbox[disabled],input.radio[disabled]{opacity: 0.3;}
 /* survey tool decoration */
-.tools select,.tools input,.tools a,input.submit,input#savebutton,input#loadbutton,input#registercontinue,.navigator input,.navigator button
+.tools select,.button
   {
     border:1px solid #ABB8D1;background:#FEFEFE;color:#415479;
     -moz-box-shadow: 2px 2px 5px #ccc;-webkit-box-shadow: 2px 2px 5px #ccc;box-shadow: 2px 2px 5px #ccc;
@@ -158,24 +158,23 @@ input.checkbox[disabled],input.radio[disabled]{opacity: 0.3;}
   }
 .tools select
   {padding:1px 2px;}
-.tools input,.tools a,input.submit,input#savebutton,input#loadbutton,input#registercontinue,.navigator input,.navigator button
+.button
     {box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-ms-box-sizing: border-box;}/* same box sizing for link and button */
-.tools select:hover,.tools input:hover,.tools a:hover,.navigator input:hover,.navigator button:hover,input.submit:hover,input#savebutton:hover,input#loadbutton:hover,input#registercontinue:hover,
- .tools select:focus,.tools input:focus,.tools a:focus,.navigator input:focus,.navigator button:focus,input.submit:focus,input#savebutton:focus,input#loadbutton:focus,input#registercontinue:focus
+.tools select:hover,.button:hover,.button:focus
   {
     border-color:#ABB8D1;color:#415479;background:#f0f0f0;
     -moz-box-shadow: 2px 2px 5px #415479;-webkit-box-shadow: 2px 2px 5px #415479;box-shadow: 2px 2px 5px #415479;
   }
 .tools select:hover option{background:#FEFEFE;}
 /* for disabled tools */
-.tools input[disabled],.navigator input[disabled],.navigator button[disabled],input.submit[disabled],input#savebutton[disabled],input#loadbutton[disabled],input#registercontinue[disabled],.tools select[disabled]
+.btoon[disabled],.tools select[disabled]
   {
     border:1px solid #dbdbdb;background:#FEFEFE;color:#dbdbdb;cursor:inherit;
   }
-.tools *,.navigator,.tools :active,.navigator :active,.tools :focus,.navigator :focus{ outline: 0 none; }
-.tools ::-moz-focus-inner,.navigator ::-moz-focus-inner {border:0;}
+.tools *,.navigator *,.button{ outline: 0 none; }
+.tools ::-moz-focus-inner,.navigator ::-moz-focus-inner,.button::-moz-focus-inner {border:0;}
 /* ie specific: maybe some lt ? */
-.ie .tools input,.ie .tools a,.ie .navigator input,.ie .navigator button,.ie input#savebutton,.ie input#loadbutton
+.ielt7 .button
   {height:2em}
 /* movenext, moveprev specific */
 #movenextbtn{background-image:url(go-east.png);background-repeat:no-repeat;background-position:right center;padding:3px 26px 3px 6px;}

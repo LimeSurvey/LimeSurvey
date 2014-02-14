@@ -2,7 +2,7 @@
 <html lang="<?php echo $adminlang; ?>"<?php echo $languageRTL;?>>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge" /><![endif]-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <?php 
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-cookie');
