@@ -23,6 +23,10 @@ div.pluginsettings form input[type=checkbox]{
     width: 10%; /* make smaller so it aligns to the left */
 }
 
+div.pluginsettings form textarea {
+	min-height: 100px;
+}
+
 div.pluginsettings form label {
     width: 50%;
     display: inline-block;

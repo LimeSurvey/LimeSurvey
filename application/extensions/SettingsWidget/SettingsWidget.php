@@ -101,7 +101,20 @@
                     }
                 }
 
-                
+                // Handle styles
+                if (isset($metaData['style']) && is_array($metaData['style']))
+                {
+                    $style = '';
+                    foreach($metaData['style'] as $key => $value)
+                    {
+                        $style .= "$key : $value;";
+                    }
+                    $metaData['style'] = $style;
+                }
+                else
+                {
+                    $metaData['style'] = null;
+                }
                 $result = $this->$function($name, $metaData, $form);
                 $result = CHtml::tag('div',array('class'=>'setting'), $result);     // render inside a div
                 
@@ -292,7 +305,7 @@
             {
                 $out .= CHtml::label($metaData['label'], $id);
             }
-            $out .= CHtml::textArea($id, $value, array('id' => $id, 'form' => $form, 'readonly' => $readOnly));
+            $out .= CHtml::textArea($id, $value, array('id' => $id, 'form' => $form, 'readonly' => $readOnly, 'style' => $metaData['style']));
             return $out;
         }
 

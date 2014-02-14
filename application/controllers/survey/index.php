@@ -35,7 +35,7 @@ class index extends CAction {
             $radix=getRadixPointData($aLangData[ Yii::app()->getConfig('defaultlang')]['radixpoint']);// or $clang->langcode . defaultlang  ensure it's same for each language ?
         }
         $aLSJavascriptVar['sLEMradix']=$radix['separator'];
-        $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar);
+        $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
         App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)
         App()->getClientScript()->registerPackage('jqueryui');
