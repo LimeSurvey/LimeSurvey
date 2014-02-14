@@ -2199,7 +2199,6 @@ class tokens extends Survey_Common_Action
         /* The user has confirmed they want to delete the tokens table */
         {
             Yii::app()->db->createCommand()->renameTable("{{{$oldtable}}}", "{{{$newtable}}}");
-            Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => "a:0:{}"));
 
             //Remove any survey_links to the CPDB
             SurveyLink::model()->deleteLinksBySurvey($iSurveyId);
