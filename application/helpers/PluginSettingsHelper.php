@@ -176,6 +176,7 @@
             $out .= App()->getController()->widget('ext.bootstrap.widgets.TbSelect2', array(
                 'data' => $metaData['options'],
                 'name' => $name,
+                'value' => $value,
                 'options' => array(
                     //'width' => '100px',
                     'minimumResultsForSearch' => 1000
