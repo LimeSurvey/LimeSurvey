@@ -4596,23 +4596,41 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
                 if( $aResponses[$iFieldKey]=='{question_not_shown}'){
                     $oSurvey->$sFieldName = new CDbExpression('NULL'); 
                 }else{
-                    // Did we have to control validity (string|number|date|datetime) ? Yii do it for us BUT invalid numeric is set to 0 and date set to 0000-00-00 00:00:00 (with mysql)
                     $sResponse=str_replace(array("{quote}","{tab}","{cr}","{newline}","{lbrace}"),array("\"","\t","\r","\n","{"),$aResponses[$iFieldKey]);
                     $oSurvey->$sFieldName = $sResponse;
                 }
             }
-            if($oSurvey->save()){
-                if($bExistingsId && $aOptions['sExistingId']!='renumber')
+            // We use transaction to prevent DB error
+            $oTransaction = Yii::app()->db->beginTransaction();
+            try
+            {
+                if($oSurvey->save())
                 {
-                    $aResponsesUpdated[]=$aResponses[$iIdReponsesKey];
+                    $oTransaction->commit();
+                    if($bExistingsId && $aOptions['sExistingId']!='renumber')
+                    {
+                        $aResponsesUpdated[]=$aResponses[$iIdReponsesKey];
+                    }
+                    else
+                    {
+                        $aResponsesInserted[]=$aResponses[$iIdReponsesKey];
+                    }
                 }
-                else
+                else // Actually can not be, leave it if we have a $oSurvey->validate() in future release
                 {
-                    $aResponsesInserted[]=$aResponses[$iIdReponsesKey];
+                    $oTransaction->rollBack();
+                    $aResponsesError[]=$aResponses[$iIdReponsesKey];
                 }
-            }else{
-                $aResponsesError[]=$aResponses[$iIdReponsesKey];
             }
+            catch(Exception $oException)
+            {
+                $oTransaction->rollBack();
+                $aResponsesError[]=$aResponses[$iIdReponsesKey];
+                // Show some error to user ?
+                // $CSVImportResult['errors'][]=$oException->getMessage(); // Show it in view
+                // tracevar($oException->getMessage());// Show it in console (if debug is set)
+            }
+
         }
     }
 
