@@ -59,6 +59,9 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140216) to 2.05+ (build 140217) Feb 16, 2014
+-Fixed issue: ComfortUpdate not unzipping the update file
+
 Changes from 2.05+ (build 140212) to 2.05+ (build 140216) Feb 16, 2014
 -Fixed issue #8718: Adding subquestions to multilingual survey causes database inconsistency - patch by Adam Zammit (Carsten Schmitz)
 -Fixed issue #8252: The temporary path for PCLZIP is not properly set (Carsten Schmitz)
