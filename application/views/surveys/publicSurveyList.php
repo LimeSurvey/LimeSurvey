@@ -8,7 +8,7 @@
         $list .= CHtml::link($survey->localizedTitle, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->lang->langcode), array('class' => 'surveytitle'));
         if ($survey->publicstatistics == "Y")
         {
-            $list .= CHtml::link('(' . App()->lang->gT('View statistics') . ')', array('statistics_user/action', 'surveyid' => $survey->sid));
+            $list .= CHtml::link('(' . App()->lang->gT('View statistics') . ')', array('statistics_user/action', 'surveyid' => $survey->sid,'language' => App()->lang->langcode));
         }
         $list .= CHtml::closeTag('li');
         
