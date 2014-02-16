@@ -1391,8 +1391,33 @@
                             );
                         }
                         break;
-                    case 'D':
-                        // TODO: implement generic validation of "[SGQA].shown" according to "dateformat[SGQA].value"
+                    case 'D':  // dropdown box: validate that a complete date is entered
+                               // TODO: generic validation as to dateformat[SGQA].value
+                        if ($hasSubqs) {
+                            $subqs = $qinfo['subqs'];
+                            $sq_equs=array();
+                           
+                           foreach($subqs as $sq)
+                            {
+                                $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                if(($qinfo['mandatory']=='Y')){
+                                    $sq_equs[] = '('.$sq_name.'!="INVALID")';
+                                }else{
+                                    $sq_equs[] = '('.$sq_name.'!="INVALID")';
+                                }
+                            }
+                            if (!isset($validationEqn[$questionNum]))
+                            {
+                                $validationEqn[$questionNum] = array();
+                            }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'default',
+                            'class' => 'default',
+                            'eqn' =>  implode(' and ',$sq_equs),
+                            'qid' => $questionNum,
+                            );
+                        }
                          break;
                     default:
                         break;
@@ -3030,6 +3055,11 @@
                     case 'R':
                         $qtips['default']=$this->gT("All your answers must be different.");
                         break;
+// Helptext is added in qanda_help.php
+/*                  case 'D':
+                        $qtips['default']=$this->gT("Please complete all parts of the date.");
+                        break; 
+*/
                     default:
                         break;
                 }
@@ -4729,7 +4759,7 @@
                             {
                                 $value = NULL;
                             }
-                            else
+                            elseif ($value!='INVALID')
                             {
                                 $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
                                 $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
@@ -6565,7 +6595,6 @@
             );
 
             $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $qrel;
-
             return $qStatus;
         }
 
@@ -8325,18 +8354,19 @@ EOD;
                         switch($type)
                         {
                             case 'D': //DATE
-                                if (trim($value)=="")
+                                if (isset($_POST['qattribute_answer'.$sq]))       // push validation message (see qanda_helper) to $_SESSION
                                 {
-                                    $value = "";
+                                    $_SESSION[$LEM->sessid]['qattribute_answer'.$sq]=($_POST['qattribute_answer'.$sq]);
                                 }
-                                else
+                                $value=trim($value);
+                                if ($value!="" && $value!='INVALID')
                                 {
                                     $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $qid,$_SESSION['LEMlang']);
                                     if (!isset($aAttributes[$qid])) {
                                         $aAttributes[$qid]=array();
                                     }
                                     $aDateFormatData=getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
-                                    $oDateTimeConverter = new Date_Time_Converter($value, $aDateFormatData['phpdate']);
+                                    $oDateTimeConverter = new Date_Time_Converter(trim($value), $aDateFormatData['phpdate']);
                                     $value=$oDateTimeConverter->convert("Y-m-d H:i"); // TODO : control if inverse function original value
                                 }
                                 break;

@@ -187,6 +187,7 @@ function dateUpdater() {
         (!$('#hour'+thisid).length || $('#hour'+thisid).val()=='') &&
         (!$('#minute'+thisid).length || $('#minute'+thisid).val()==''))
     {
+        //nothing filled in
         $('#qattribute_answer'+thisid).val('');
         $('#answer'+thisid).val('');
         $('#answer'+thisid).change();
@@ -194,9 +195,13 @@ function dateUpdater() {
     else if (($('#year'+thisid).length && $('#year'+thisid).val()=='') ||
         ($('#month'+thisid).length && $('#month'+thisid).val()=='') ||
         ($('#day'+thisid).length && $('#day'+thisid).val()=='') ||
-        ($('#hour'+thisid).length && $('#hour'+thisid).val()==''))
+        ($('#hour'+thisid).length && $('#hour'+thisid).val()=='') ||
+        ($('#minute'+thisid).length && $('#minute'+thisid).val()==''))
         {
+            //incomplete
             $('#qattribute_answer'+thisid).val(translt.infoCompleteAll);
+            $('#answer'+thisid).val('INVALID');
+            $('#answer'+thisid).change();
         }
         else
         {

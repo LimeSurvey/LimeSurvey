@@ -633,9 +633,14 @@ function LEMval(alias)
                 sdatetimePattern=typeof sdatetimePattern=='undefined'? 'yy-mm-dd HH:MM': sdatetimePattern;
                 
                 if (sdatetimePattern==null) {
-                        sdatetimePattern="";
+                    sdatetimePattern="";
                 } 
-                value=date('Y-m-d H:i', Date.parseString(trim(value), sdatetimePattern));
+                if (value=='INVALID') {
+                    value="";
+                }
+                else {
+                    value=date('Y-m-d H:i', Date.parseString(trim(value), sdatetimePattern));
+                }
                 return value;
             }
             else if (isNaN(value)) {
