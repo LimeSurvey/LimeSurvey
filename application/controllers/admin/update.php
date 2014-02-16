@@ -377,21 +377,6 @@ class update extends Survey_Common_Action
             print( $error );
         }
 
-        // Now remove all files that are to be deleted according to update process
-        foreach ($updateinfo['files'] as $afile)
-        {
-            if ($afile['type']=='D' && file_exists($rootdir.$afile['file']))
-            {
-                if (is_file($rootdir.$afile['file']))
-                {
-                    @unlink($rootdir.$afile['file']);
-                }
-                else{
-                    rmdirr($rootdir.$afile['file']);
-                }
-            }
-        }
-
         //Now unzip the new files over the existing ones.
         $new_files = false;
         if (file_exists($tempdir.'/update.zip')){
@@ -411,6 +396,23 @@ class update extends Survey_Common_Action
             $downloaderror=true;
         }
 
+        // Now remove all files that are to be deleted according to update process
+        // This happens after unzipping
+        foreach ($updateinfo['files'] as $afile)
+        {
+            if ($afile['type']=='D' && file_exists($rootdir.$afile['file']))
+            {
+                if (is_file($rootdir.$afile['file']))
+                {
+                    @unlink($rootdir.$afile['file']);
+                }
+                else{
+                    rmdirr($rootdir.$afile['file']);
+                }
+            }
+        }
+        
+        
         $aData['new_files'] = $new_files;
         $aData['downloaderror'] = $downloaderror;
 
