@@ -44,14 +44,13 @@ function setPickerOptions(input)
 
     //split format into a date part and a time part
     var datepattern=new RegExp(/[mydYD][mydYD.:\/-]*[mydYD]/);
-    var timepattern=new RegExp(/[HMN][HMN.:\/-]*[HMN]/);
+    var timepattern=new RegExp(/[HM][HM.:\/-]*[HM]/);
     var sdateFormat=datepattern.exec(format);
     if (sdateFormat!=null)
         sdateFormat=sdateFormat.toString();
     var stimeFormat=timepattern.exec(format);
     if (stimeFormat!=null)
         stimeFormat=stimeFormat.toString().replace(/N/gi,"M");
-    // alert(format+'  '+sdateFormat+'  '+stimeFormat);
     
     var btimeOnly=false;
     var bshowButtonPanel=true;
@@ -138,7 +137,7 @@ function validateInput(basename)
     format=$('#dateformat'+basename).val();
     answer=$('#answer'+basename).val();
     //only validate if the format mask says it's a complete date and only a date
-    var str_regexp = /^[mydMYD]{1,4}[-.\s\/][mydMYD]{1,4}[-.\/\s][mydMYD]{1,4}$/; 
+    var str_regexp = /^[mydYD]{1,4}[-.\s\/][mydYD]{1,4}[-.\/\s][mydYD]{1,4}$/; 
     var pattern = new RegExp(str_regexp); 
     if (format.match(pattern)!=null)
     {
@@ -198,11 +197,10 @@ function dateUpdater() {
         ($('#hour'+thisid).length && $('#hour'+thisid).val()==''))
         {
             $('#qattribute_answer'+thisid).val(translt.infoCompleteAll);
-            $('#answer'+thisid).val('');
         }
         else
         {
-            if ($('#year'+thisid).size()==0)
+            if (!$('#year'+thisid).val())
             {
                 iYear='1900';
             }
@@ -210,7 +208,7 @@ function dateUpdater() {
             {
                 iYear=$('#year'+thisid).val(); 
             }
-            if ($('#month'+thisid).size()==0)
+            if (!$('#month'+thisid).val())
             {
                 iMonth='01';
             }
@@ -218,7 +216,7 @@ function dateUpdater() {
             {
                 iMonth=$('#month'+thisid).val(); 
             }
-            if ($('#day'+thisid).size()==0)
+            if (!$('#day'+thisid).val())
             {
                 iDay='01';
             }
@@ -226,7 +224,7 @@ function dateUpdater() {
             {
                 iDay=$('#day'+thisid).val(); 
             }
-            if ($('#hour'+thisid).size()==0)
+            if (!$('#hour'+thisid).val())
             {
                 iHour='00';
             }
@@ -234,7 +232,7 @@ function dateUpdater() {
             {
                 iHour=$('#hour'+thisid).val(); 
             }            
-            if ($('#minute'+thisid).size()==0)
+            if (!$('#minute'+thisid).val())
             {
                 iMinute='00';
             }
@@ -243,12 +241,8 @@ function dateUpdater() {
                 iMinute=$('#minute'+thisid).val(); 
             }
             ValidDate(this,iYear+'-'+iMonth+'-'+iDay);
-            parseddate=$.datepicker.parseDate( 'dd-mm-yy', iDay+'-'+iMonth+'-'+iYear);
-            parseddate=$.datepicker.formatDate( $('#dateformat'+thisid).val(), parseddate);
-            parseddate=parseddate.replace('HH',pad(iHour,2));
-            parseddate=parseddate.replace('H',iHour);
-            parseddate=parseddate.replace('NN',pad(iMinute,2));
-            parseddate=parseddate.replace('N',iMinute);
+            parseddate=Date.parseString(trim(iDay+'-'+iMonth+'-'+iYear+' '+iHour+':'+iMinute), 'dd-mm-yy H:M');
+            parseddate=parseddate.format($('#dateformat'+thisid).val());
             $('#answer'+thisid).val(parseddate); 
             $('#answer'+thisid).change();
             $('#qattribute_answer'+thisid).val('');

@@ -996,16 +996,7 @@ function do_date($ia)
         };";
     App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
-    
-    //register timepicker extension, also needed for dropbox style dates for format conversions
-    App()->getClientScript()->registerPackage('jqueryui-timepicker');
-    
-    // Locale for datepicker and timpicker extension
-    if ($clang->langcode !== 'en')
-    {
-        Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-{$clang->langcode}.js");
-        Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jquery-ui-timepicker-addon/i18n/jquery-ui-timepicker-{$clang->langcode}.js");
-    }
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("third_party").'/jstoolbox/date.js');
     $checkconditionFunction = "checkconditions";
 
     $dateformatdetails = getDateFormatDataForQID($aQuestionAttributes,$thissurvey);
@@ -1299,7 +1290,16 @@ function do_date($ia)
     }
     else
     {
+        //register timepicker extension
+        App()->getClientScript()->registerPackage('jqueryui-timepicker');
         
+        // Locale for datepicker and timpicker extension
+        if ($clang->langcode !== 'en')
+        {
+            Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-{$clang->langcode}.js");
+            Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jquery-ui-timepicker-addon/i18n/jquery-ui-timepicker-{$clang->langcode}.js");
+        }
+ 
         // Format the date  for output
         if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])!='')
         {

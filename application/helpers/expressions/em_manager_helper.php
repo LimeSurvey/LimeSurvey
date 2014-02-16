@@ -4733,7 +4733,7 @@
                             {
                                 $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
                                 $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
-                                $value=$datetimeobj->convert("Y-m-d");
+                                $value=$datetimeobj->convert("Y-m-d H:i");
                             }
                             break;
                         case 'N': //NUMERICAL QUESTION TYPE
