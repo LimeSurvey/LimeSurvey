@@ -59,6 +59,38 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140212) to 2.05+ (build 140216) Feb 16, 2014
+-Fixed issue #8718: Adding subquestions to multilingual survey causes database inconsistency - patch by Adam Zammit (Carsten Schmitz)
+-Fixed issue #8252: The temporary path for PCLZIP is not properly set (Carsten Schmitz)
+-Fixed issue #8623: preview image of "multiple numeric" question type is not hidden after choosing (tpartner)
+-Fixed issue #8686: Defaults email template texts not working with HTML templates (Carsten Schmitz)
+-Fixed issue #8693: When using non-numeric answer codes Limesurvey automatically adds non-unique follow up codes (Carsten Schmitz)
+-fixed issue #8703: Owner of a survey have no rigth on this survey (Denis Chenu)
+-Fixed issue #8708: Dual scale dropdown not displaying scale 2 answers on Previous or after resuming later (Carsten Schmitz)
+-Fixed issue #8709: Missing translation in CPDB table filter (Carsten Schmitz)
+-Fixed issue #8712: No confirmation email is sent if uses_left>1 (Carsten Schmitz)
+-Fixed issue #8713: Assessment values are not copied when copying a question (Carsten Schmitz)
+-Fixed issue #8715: CDbCommand error when importing broken VV file (Denis Chenu)
+-Fixed issue #8716: do not clear custom token attribute data when removing a token table (Alexis Bezverkhyy)
+-Fixed issue #8723: Public statistics link not properly working (Carsten Schmitz)
+-Fixed issue: Questionindex setting not imported (Carsten Schmitz)
+#Updated translation: Albanian by florianika
+#Updated translation: Catalan by valdomir
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by FabienC, arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Korean by cloudgarden
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Tagalog by avevengers, arriz08, lolskidoodles
+#Updated translation: Tamil by apmuthu
+
 Changes from 2.05+ (build 140204) to 2.05+ (build 140212) Feb 12, 2014
 -Fixed issue #8676: Adding answer options impossible in IE9 (Denis Chenu)
 -Fixed issue #8500: Example surveys not properly importing (Carsten Schmitz)
