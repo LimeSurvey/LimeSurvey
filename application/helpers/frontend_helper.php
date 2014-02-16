@@ -507,8 +507,8 @@ function submittokens($quotaexit=false)
     {
         if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y")
         {
-            if($token->completed == "Y" || $token->completed == $today)
-            {
+         //   if($token->completed == "Y" || $token->completed == $today)
+//            {
                 $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
                 $to = $token->email;
                 $subject=$thissurvey['email_confirm_subj'];
@@ -581,9 +581,9 @@ function submittokens($quotaexit=false)
                 }
                 SendEmailMessage($message, $subject, $to, $from, $sitename, $ishtml, null, $aRelevantAttachments);
             }
-        } else {
+     //   } else {
                 // Leave it to send optional confirmation at closed token
-            }
+  //          }
         }
     }
 }
