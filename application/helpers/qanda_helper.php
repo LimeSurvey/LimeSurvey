@@ -6297,9 +6297,25 @@ function do_array_dual($ia)
                 $answer .= "\t<td class=\"answer-item dropdown-item\">\n"
                 . "<select name=\"$myfname0\" id=\"answer$myfid0\">\n";
 
-                if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] =='')
+                // If not mandatory and showanswer, show 'Please choose'
+                if (SHOW_NO_ANSWER == 1)
                 {
-                    $answer .= "\t<option value=\"\" ".SELECTED.'>'.$clang->gT('Please choose...')."</option>\n";
+                    $answer .= "\t<option value=\"\" ";
+                    if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == '')
+                    {
+                        $answer .= SELECTED;
+                    }
+                    $answer .='>';
+                    if ($ia[6] != 'Y')
+                    {
+                        $answer .=$clang->gT('No answer');
+                    }
+                    else
+                    {
+                        $answer .=$clang->gT('Please choose...');
+                    }
+                    
+                    $answer .="</option>\n";
                 }
 
                 foreach ($labels0 as $lrow)
@@ -6310,16 +6326,6 @@ function do_array_dual($ia)
                         $answer .= SELECTED;
                     }
                     $answer .= '>'.flattenText($lrow['title'])."</option>\n";
-                }
-                // If not mandatory and showanswer, show no ans
-                if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-                {
-                    $answer .= "\t<option class=\"noanswer-item\" value=\"\" ";
-                    if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == '')
-                    {
-                        $answer .= SELECTED;
-                    }
-                    $answer .= '>'.$clang->gT('No answer')."</option>\n";
                 }
                 $answer .= "</select>\n";
                 $answer .= "</td>\n";
@@ -6339,9 +6345,25 @@ function do_array_dual($ia)
                 $answer .= "\t<td class=\"answer-item dropdown-item\">\n"
                 . "<label class=\"hide read\" for=\"answer{$myfid1}\">{$answertext}</label>"
                 . "<select name=\"$myfname1\" id=\"answer$myfid1\">\n";
-                if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+                // If not mandatory and showanswer, show 'Please choose'
+                if (SHOW_NO_ANSWER == 1)
                 {
-                    $answer .= "\t<option value=\"\"".SELECTED.'>'.$clang->gT('Please choose...')."</option>\n";
+                    $answer .= "\t<option value=\"\" ";
+                    if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == '')
+                    {
+                        $answer .= SELECTED;
+                    }
+                    $answer .='>';
+                    if ($ia[6] != 'Y')
+                    {
+                        $answer .=$clang->gT('No answer');
+                    }
+                    else
+                    {
+                        $answer .=$clang->gT('Please choose...');
+                    }
+                    
+                    $answer .="</option>\n";
                 }
                 foreach ($labels1 as $lrow1)
                 {
@@ -6351,16 +6373,6 @@ function do_array_dual($ia)
                         $answer .= SELECTED;
                     }
                     $answer .= '>'.flattenText($lrow1['title'])."</option>\n";
-                }
-                // If not mandatory and showanswer, show no ans
-                if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-                {
-                    $answer .= "\t<option class=\"noanswer-item\" value='' ";
-                    if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-                    {
-                        $answer .= SELECTED;
-                    }
-                    $answer .= ">".$clang->gT('No answer')."</option>\n";
                 }
                 $answer .= "</select>\n";
                 $answer .= "</td>\n";
