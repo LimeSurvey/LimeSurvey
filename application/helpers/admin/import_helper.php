@@ -3599,8 +3599,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
         if (isset($insertdata['allowjumps'])) 
         {
-            if( $insertdata['allowjumps']=="Y")
-                $insertdata['questionindex 	']=1; // 0 is default then need only Y
+            $insertdata['questionindex']= ($insertdata['allowjumps']=="Y")?1:0; 
             unset($insertdata['allowjumps']);
         }
         /* Remove unknow column */
