@@ -498,6 +498,7 @@ class database extends Survey_Common_Action
                                 'qid' => $iQuestionID,
                                 'code' => $qr1['code'],
                                 'answer' => $qr1['answer'],
+                                'assessment_value' => $qr1['assessment_value'],
                                 'sortorder' => $qr1['sortorder'],
                                 'language' => $qr1['language'],
                                 'scale_id' => $qr1['scale_id']
