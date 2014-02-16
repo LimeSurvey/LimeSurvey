@@ -49,8 +49,8 @@ $(document).ready(function() {
         }
         html = "<tr name='joincondition_"+conditionid+"' id='joincondition_"+conditionid+"'><td>\n\
         <select name='join_"+conditionid+"' id='join_"+conditionid+"'>\n\
-        <option value='and'>AND</option>\n\
-        <option value='or'>OR</option>\n\
+        <option value='and'>"+andTxt+"</option>\n\
+        <option value='or'>"+orTxt+"</option>\n\
         </td><td></td></tr><tr><td>\n\
         <select name='field_"+conditionid+"' id='field_"+conditionid+"'>\n\
         <option>"+selectTxt+"</option>\n\
