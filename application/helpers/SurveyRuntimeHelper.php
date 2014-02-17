@@ -830,7 +830,7 @@ class SurveyRuntimeHelper {
                 ++$qnumber;
                 $ia[9] = $qnumber; // incremental question count;
 
-                if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))
+                if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))// Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
                 {
                     if ($surveyMode == 'question' && $ia[0] != $stepInfo['qid'])
                     {
@@ -1044,10 +1044,11 @@ class SurveyRuntimeHelper {
 
             foreach ($qanda as $qa) // one entry per QID
             {
-                if ($gid != $qa[6]) {
-                    continue;
-                }
-
+                // This is already tested before : we do only qanda for question in $gid
+                // Broke question random attribute in different group
+                //if ($gid != $qa[6]) {
+                //    continue;
+                //}
                 $qid = $qa[4];
                 $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
                 $lastgrouparray = explode("X", $qa[7]);
