@@ -506,7 +506,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_saveform .="<tr><td align='right'>" . $clang->gT("Security question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt6='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
     }
     $_saveform .= "<tr><td align='right'></td><td></td></tr>\n"
-    . "<tr><td></td><td><input type='submit'  id='savebutton' name='savesubmit' value='" . $clang->gT("Save Now") . "' /></td></tr>\n"
+    . "<tr><td></td><td><input type='submit'  id='savebutton' name='savesubmit' class='button' value='" . $clang->gT("Save Now") . "' /></td></tr>\n"
     . "</table>";
 
     // Load Form
@@ -527,7 +527,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_loadform .="<tr><td align='right'>" . $clang->gT("Security question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
     }
     $_loadform .="<tr><td align='right'></td><td></td></tr>\n"
-    . "<tr><td></td><td><input type='submit' id='loadbutton' value='" . $clang->gT("Load now") . "' /></td></tr></table>\n";
+    . "<tr><td></td><td><input type='submit' id='loadbutton' class='button' value='" . $clang->gT("Load now") . "' /></td></tr></table>\n";
 
     // Registration Form
     if (isset($surveyid) || (isset($registerdata) && $debugSrc == 'register.php'))
@@ -589,7 +589,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         {
             $_registerform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
         }
-        $_registerform .= "<tr><td></td><td><input id='registercontinue' class='submit' type='submit' value='" . $clang->gT("Continue") . "' />"
+        $_registerform .= "<tr><td></td><td><input id='registercontinue' class='submit button' type='submit' value='" . $clang->gT("Continue") . "' />"
         . "</td></tr>\n"
         . "</table>\n";
 

@@ -91,11 +91,11 @@ function setJsVar(){
 // Deactivate all other button on submit
 function limesurveySubmitHandler(){
     $(document).on("click",".disabled",function(){return false;});
-    $(document).on('click',"button[type='submit'],a.button", function(event){
-        $("button[type='submit']").not($(this)).prop('disabled',true);
-        $("a.button").not($(this)).addClass('disabled');
+    $(document).on('click',".button", function(event){
+        $(".button.ui-button" ).not($(this)).button( "option", "disabled", true );
+        $(".button").not($(this)).prop('disabled',true).addClass('disabled');
     });
-    if('v'=='\v'){ // Quick hack for IE6/7/ Alternative ? http://tanalin.com/en/articles/ie-version-js/ ?
+    if (document.all && !document.querySelector) { // IE7 or lower
         $(function() { 
             $("#defaultbtn").css('display','inline').css('width','0').css('height','0').css('padding','0').css('margin','0').css('overflow','hidden');
             $("#limesurvey [type='submit']").not("#defaultbtn").first().before($("#defaultbtn"));
@@ -111,17 +111,9 @@ function needConfirmHandler(){
         if (confirm(text)) {
             return true;
         }
+        $(".button.ui-button" ).button( "option", "disabled", false );
+        $(".button").prop('disabled',false).removeClass('disabled');
         return false;
-    });
-    /* 130712 IE7 need this */
-    $(function() {
-    $("a.confirm-needed").click(function(e){
-        text=$(this).attr('title');
-        if (confirm(text)) {
-            return true;
-        }
-        return false;
-        });
     });
 }
 /**

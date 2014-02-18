@@ -2,7 +2,7 @@
 
 /*** Start jQuery UI Theme Styles ***/
 
-button.ui-button::-moz-focus-inner {
+.ui-button::-moz-focus-inner {
 	border: 0; 
 	padding: 0;   /* Get rid of extra padding in focused button in FF */
 }
@@ -17,20 +17,17 @@ button.ui-button::-moz-focus-inner {
 	line-height: normal;
 }
 
-button.ui-state-default,
-input.ui-state-default {  
+.ui-state-default {
 	color: #333333; 
 	border: 1px solid #A0A0A0;
 }
 
-button.ui-state-hover,
-input.ui-state-hover {  
+.ui-state-hover {
 	color: #212121; 
 	border: 1px solid #999999;
 }
 
-button.ui-state-active,
-input.ui-state-active {  
+.ui-state-active {
 	color: #212121; 
 	border: 1px solid #AAAAAA; 
 }

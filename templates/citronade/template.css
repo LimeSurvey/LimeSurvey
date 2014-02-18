@@ -30,8 +30,7 @@ h4{font-size:1.1em}
 ul,ol{margin:.75em 0 .75em 32px;padding:0}
 address{font-style:italic;margin:.75em 0}
 a{text-decoration:underline}
-a:link,a:visited{color:#11C}
-a:visited{color:#339}
+a{color:#11C}
 a:hover,a:focus,a:active{color:#00F}
 a:active{outline:none}
 a img{border:none}
@@ -72,8 +71,7 @@ input, button, select {vertical-align: middle;}
 /* Colors and themes                             */
 
 body {background:#FEFEFE;color:#444;font-size:.85em;font-family:Verdana, "DejaVu Sans", "Bitstream Vera Sans", Geneva, sans-serif;}
-a:link {color: #5670A1;} 
-a:visited {color: #5670A1;} 
+a {color: #5670A1;} 
 a:hover, a:focus, a:active {background-color: #E5F8A8;color: #5670A1;text-decoration:none;}
 
 /* Head decoration */
@@ -150,6 +148,7 @@ input.checkbox[disabled],input.radio[disabled]{opacity: 0.3;}
 /* survey tool decoration */
 .tools select,.button
   {
+    line-height:1.5;
     border:1px solid #ABB8D1;background:#FEFEFE;color:#415479;
     -moz-box-shadow: 2px 2px 5px #ccc;-webkit-box-shadow: 2px 2px 5px #ccc;box-shadow: 2px 2px 5px #ccc;
     font-family:Tahoma, Geneva, Kalimati, sans-serif;font-size:1em;vertical-align:middle;
@@ -159,7 +158,8 @@ input.checkbox[disabled],input.radio[disabled]{opacity: 0.3;}
 .tools select
   {padding:1px 2px;}
 .button
-    {box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-ms-box-sizing: border-box;}/* same box sizing for link and button */
+    {display:inline-block;
+    box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-ms-box-sizing: border-box;}/* same box sizing for link and button */
 .tools select:hover,.button:hover,.button:focus
   {
     border-color:#ABB8D1;color:#415479;background:#f0f0f0;

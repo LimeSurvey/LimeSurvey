@@ -25,7 +25,7 @@ table {
 
 /*** Start jQuery UI Theme Styles ***/
 
-button.ui-button::-moz-focus-inner {
+.ui-button::-moz-focus-inner {
 	border: 0; 
 	padding: 0;   /* Get rid of extra padding in focused button in FF */
 }
@@ -40,24 +40,21 @@ button.ui-button::-moz-focus-inner {
 	line-height: normal;
 }
 
-button.ui-state-default,
-input.ui-state-default {  
+.ui-state-default {  
 	color: #333333; 
 	border: 1px solid #A0A0A0;
 }
-
-button.ui-state-hover,
-input.ui-state-hover {  
+.ui-state-active .ui-button-text{color:#333333; }
+.ui-state-hover {  
 	color: #212121; 
 	border: 1px solid #999999;
 }
-
-button.ui-state-active,
-input.ui-state-active {  
+.ui-state-hover .ui-button-text{color:#212121; }
+.ui-state-active {  
 	color: #212121; 
 	border: 1px solid #AAAAAA; 
 }
-
+.ui-state-active .ui-button-text{color:#212121; }
 .ui-button-icon-only { 
 	width: 2.2em; /* To make room for the icon, a width needs to be set here */
 } 
@@ -155,16 +152,7 @@ a {
   color: #fff;
 }
 
-a:link {
-  color: #fff;
-}
-
 a:hover {
-  color: #fff;
-  text-decoration: none;
-}
-
-a:visited {
   color: #fff;
   text-decoration: none;
 }

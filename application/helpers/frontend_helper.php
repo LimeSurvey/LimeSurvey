@@ -989,7 +989,7 @@ function buildsurveysession($surveyid,$preview=false)
                 </li>";
             }
             echo "<li>
-            <input class='submit' type='submit' value='".$clang->gT("Continue")."' />
+            <input class='submit button' type='submit' value='".$clang->gT("Continue")."' />
             </li>
             </ul>
             </form></div>";
