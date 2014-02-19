@@ -4,6 +4,7 @@
 ?>
 <script type='text/javascript'>
     var sReplaceTextConfirmation='<?php $clang->eT("This will replace the existing text. Continue?","js"); ?>';
+    var sKCFinderLanguage='<?php echo sTranslateLangCode2CK($clang->getlangcode()) ?>';
     
 
 $(document).ready(function () {

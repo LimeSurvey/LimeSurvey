@@ -91,6 +91,7 @@
         'es-MX'=>'es',
         'it-informal'=>'it',
         'nl-informal'=>'nl',
+        'nn'=>'no',
         'zh-Hans'=>'zh-cn',
         'zh-Hant-HK'=>'zh',
         'zh-Hant-TW'=>'zh'

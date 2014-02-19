@@ -118,7 +118,7 @@
     </form>
     <div id='up_resmgmt'>                              
         <div>
-            <?php echo CHtml::form('third_party/kcfinder/browse.php', 'get', array('id'=>'browselabelresources','class'=>'form30','name'=>'browselabelresources','target'=>'_blank')); ?>
+            <?php echo CHtml::form('third_party/kcfinder/browse.php?language='.sTranslateLangCode2CK($clang->getlangcode()), 'get', array('id'=>'browselabelresources','class'=>'form30','name'=>'browselabelresources','target'=>'_blank')); ?>
                 <ul>
                     <li>
                         <label>&nbsp;</label>
