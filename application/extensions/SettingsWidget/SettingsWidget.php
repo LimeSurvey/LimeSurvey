@@ -115,8 +115,8 @@
                 {
                     $metaData['style'] = null;
                 }
-                $result = $this->$function($name, $metaData, $form);
-                $result = CHtml::tag('div',array('class'=>'setting'), $result);     // render inside a div
+
+                $result = CHtml::tag('div',array('class'=>'setting', 'data-name' => $name), $this->$function($name, $metaData, $form));     // render inside a div
                 
                 if ($return)
                 {
@@ -131,7 +131,6 @@
 
         protected function renderSettings()
         {
-            //echo '<pre>'; var_dump($this->settings); echo ('</pre>'); return;
             foreach($this->settings as $name => $metaData)
             {
                 $this->renderSetting($name, $metaData);
@@ -273,10 +272,17 @@
             $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : null);
             if (isset($metaData['label']))
             {
-                $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
+                $out .= CHtml::label($metaData['label'], $id);
             }
-            $out .= CHtml::dropDownList($name, $value, $metaData['options'], array('form' => $form));
+            $out .= App()->getController()->widget('ext.bootstrap.widgets.TbSelect2', array(
+                'data' => $metaData['options'],
+                'name' => $name,
+                'value' => $value,
+                'options' => array(
+                    'minimumResultsForSearch' => 1000
+                ),
 
+            ), true);
             return $out;
         }
 
@@ -328,11 +334,11 @@
             $id = $name;
             if (isset($metaData['label']))
             {
-                $label = CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
+                $result = CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
             }
             else
             {
-                $label = '';
+                $result = '';
             }
 
             $headers = '';
@@ -352,21 +358,21 @@
                 )
                 
             ), true));
-            echo CHtml::openTag('div', array('class' => 'settingslist'));
-                echo CHtml::openTag('table');
-                    // Create header row.
-                    echo CHtml::openTag('thead');
-                        echo $headers;
-                    echo CHtml::closeTag('thead');
-
-                    // Create cells.
-                    echo CHtml::openTag('tbody');
-                        echo CHtml::openTag('tr');
-                        echo $cells;
-                        echo CHtml::closeTag('tr');
-                    echo CHtml::closeTag('tbody');
-                echo CHtml::closeTag('table');
-            echo CHtml::closeTag('div');
+            $result .= CHtml::openTag('div', array('class' => 'settingslist'));
+            $result .= CHtml::openTag('table');
+            // Create header row.
+            $result .= CHtml::openTag('thead');
+            $result .= $headers;
+            $result .= CHtml::closeTag('thead');
+            // Create cells.
+            $result .= CHtml::openTag('tbody');
+            $result .= CHtml::openTag('tr');
+            $result .= $cells;
+            $result .= CHtml::closeTag('tr');
+            $result .= CHtml::closeTag('tbody');
+            $result .= CHtml::closeTag('table');
+            $result .= CHtml::closeTag('div');
+            return $result;
         }
     }
 

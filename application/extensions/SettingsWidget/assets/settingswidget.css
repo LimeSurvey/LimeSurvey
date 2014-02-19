@@ -26,3 +26,7 @@ form.settingswidget div.setting {
     width: 99%;
     text-align: left;
 }
+
+form.settingswidget {
+    padding-top: 10px;
+}
