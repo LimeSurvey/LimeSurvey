@@ -183,4 +183,13 @@ class viewHelper
      public static function filterScript($sHtml){
         return preg_replace('#<script(.*?)>(.*?)</script>#is', '<pre>&lt;script&gt;${2}&lt;/script&gt;</pre>', $sHtml);
      }
+    /**
+     * Show purified html
+     * @param string : Html to purify
+     * @return string
+     */
+     public static function purified($sHtml){
+        $oPurifier = new CHtmlPurifier();
+        return $oPurifier->purify($sHtml);
+     }
 }

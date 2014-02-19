@@ -258,7 +258,7 @@ function doToolTip()
     $(".sf-menu a > img[alt]").removeAttr("alt");
     $("a").each(function() {
         tipcontent=$(this).children("img").attr('alt');
-        if(!tipcontent){tipcontent=$(this).attr('title');}
+        if(!tipcontent){tipcontent=htmlEncode($(this).attr('title'));}
         if(tipcontent && tipcontent!=""){
             $(this).qtip({
                 content: {
@@ -360,7 +360,10 @@ function doToolTip()
     });
 
 }
-
+// A function to encode any HTML for qtip
+function htmlEncode(html){
+  return $('<div/>').text(html).html();
+}
 // If the length of the element's string is 0 then display helper message
 function isEmpty(elem, helperMsg)
 {
