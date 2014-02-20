@@ -368,7 +368,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (isset($surveyid) && !$iscompleted)
     {
-        $_clearall=CHtml::htmlButton($clang->gT("Exit and clear survey"),array('type'=>'submit','id'=>"clearall",'value'=>'clearall','name'=>'clearall','class'=>'clearall button','data-confirmedby'=>'confirm-clearall'));
+        $_clearall=CHtml::htmlButton($clang->gT("Exit and clear survey"),array('type'=>'submit','id'=>"clearall",'value'=>'clearall','name'=>'clearall','class'=>'clearall button','data-confirmedby'=>'confirm-clearall','title'=>$clang->gT("This action need confirmation.")));
         $_clearall.=CHtml::checkBox("confirm-clearall",false,array('id'=>'confirm-clearall','value'=>'confirm','class'=>'hide jshide'));
         $_clearall.=CHtml::label($clang->gT("Are you sure you want to clear all your responses?"),'confirm-clearall',array('class'=>'hide jshide'));
     }

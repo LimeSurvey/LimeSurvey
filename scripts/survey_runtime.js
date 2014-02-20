@@ -107,7 +107,7 @@ function limesurveySubmitHandler(){
 // Ask confirmation on click on .needconfirm
 function needConfirmHandler(){
     $(document).on('click',"[data-confirmedby]", function(event){
-        text=$("label[for='"+$(this).data('confirmedby')+"']").html();
+        text=$("label[for='"+$(this).data('confirmedby')+"']").text();
         if (confirm(text)) {
             $("#"+$(this).data('confirmedby')).prop('checked',true);
             return true;
