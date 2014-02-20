@@ -2638,7 +2638,6 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     if (validateTemplateDir($surveyrowdata['template'])!==$surveyrowdata['template']) $importresults['importwarnings'][] = sprintf($clang->gT('Template %s not found, please review when activating.'),$surveyrowdata['template']);
 
     //if (isset($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated'] = $connect->BindTimeStamp($surveyrowdata['datecreated']);}
-    unset($surveyrowdata['expires']);
     unset($surveyrowdata['attribute1']);
     unset($surveyrowdata['attribute2']);
     unset($surveyrowdata['usestartdate']);
@@ -3568,9 +3567,6 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             unset($insertdata['private']);
             unset($insertdata['notification']);
         }
-
-        unset($insertdata['expires']);
-        unset($insertdata['startdate']);
 
         //Make sure it is not set active
         $insertdata['active']='N';
