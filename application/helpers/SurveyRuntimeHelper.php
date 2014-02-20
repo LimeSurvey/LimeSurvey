@@ -177,6 +177,14 @@ class SurveyRuntimeHelper {
             $thissurvey = getSurveyInfo($surveyid);
         }
         $LEMsessid = 'survey_' . $surveyid;
+        if (isset($_SESSION[$LEMsessid]['s_lang']))
+        {
+            $this->setJavascriptVar($surveyid, $_SESSION[$LEMsessid]['s_lang']);
+        }
+        else
+        {
+            $this->setJavascriptVar($surveyid, $thissurvey['language']);
+        }
         $sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
         if (isset ($_SESSION['survey_'.$surveyid]['templatepath']))
         {
@@ -1189,5 +1197,28 @@ class SurveyRuntimeHelper {
 
         doFooter();
 
+    }
+    /**
+     * setJavascriptVar
+     *
+     *
+     * @return @void
+     * @param integer $iSurveyId : the survey id for the script
+     * @param string $sLanguage : the actual language for the survey
+     */
+    public function setJavascriptVar($iSurveyId, $sLanguage)
+    {
+        $aSurveyinfo=getSurveyInfo($iSurveyId);
+        if(isset($aSurveyinfo['surveyls_numberformat']))
+        {
+            $aLSJavascriptVar=array();
+            $aLSJavascriptVar['bFixNumAuto']=(int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
+            $aLSJavascriptVar['bNumRealValue']=(int)(bool)Yii::app()->getConfig('bNumRealValue',0);
+            $aRadix=getRadixPointData($aSurveyinfo['surveyls_numberformat']);
+            $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
+            $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
+            App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
+        }
+        // Don't update, because already set in index/run
     }
 }

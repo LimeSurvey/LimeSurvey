@@ -75,16 +75,9 @@ $(document).ready(function()
  * setJsVar : Get all global used var
  */
 function setJsVar(){
-    if (typeof LSvar!="undefined" && LSvar instanceof Object == false) {
-      bFixNumAuto=1;
-      bNumRealValue=0;
-      LEMradix=".";
-    }
-    else {
-      bFixNumAuto=LSvar.bFixNumAuto;
-      bNumRealValue=LSvar.bNumRealValue;
-      LEMradix=LSvar.sLEMradix;
-    }
+    bFixNumAuto=LSvar.bFixNumAuto;
+    bNumRealValue=LSvar.bNumRealValue;
+    LEMradix=LSvar.sLEMradix;
     numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
     intRegex = new RegExp('[^-0-9]','g');
 }
