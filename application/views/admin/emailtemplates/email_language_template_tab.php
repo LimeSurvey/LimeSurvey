@@ -17,7 +17,7 @@
     <li><label for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
         <textarea cols='80' rows='20' name='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>' id='<?php echo "email_{$tab}_{$grouplang}"; ?>'><?php echo htmlspecialchars($esrow->{$details['field']['body']}); ?></textarea>
        <?php 
-       echo getEditor("email-$tab","email_{$tab}_$grouplang", "",$surveyid,'','','editemailtemplates'); 
+       echo getEditor("email-$tab","email_{$tab}_$grouplang", $details['body'].'('.$grouplang.')',$surveyid,'','','editemailtemplates'); 
        ?>
         <input 
             type='button' 
