@@ -368,13 +368,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (isset($surveyid) && !$iscompleted)
     {
-        $aURLParams=array('move'=>'clearall','lang'=>$s_lang);
-        if (returnGlobal('token'))
-        {
-            $aURLParams['token'] = trim(sanitize_token(strip_tags(returnGlobal('token'))));
-        }
-        // Use a real link for accessibility : this need to be accessible without javascript
-        $_clearall="<a href='".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",$aURLParams,'&amp;')."' class='clearall button confirm-needed' title='".$clang->gT("Are you sure you want to clear all your responses?", 'js')."'>".$clang->gT("Exit and clear survey")."</a>";
+        $_clearall=CHtml::htmlButton($clang->gT("Exit and clear survey"),array('type'=>'submit','id'=>"clearall",'value'=>'clearall','name'=>'clearall','class'=>'clearall button','data-confirmedby'=>'confirm-clearall'));
+        $_clearall.=CHtml::checkBox("confirm-clearall",false,array('id'=>'confirm-clearall','value'=>'confirm','class'=>'hide jshide'));
+        $_clearall.=CHtml::label($clang->gT("Are you sure you want to clear all your responses?"),'confirm-clearall',array('class'=>'hide jshide'));
     }
     else
     {

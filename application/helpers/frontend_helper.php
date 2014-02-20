@@ -2336,6 +2336,9 @@ function getMove()
         if(Yii::app()->request->getParam($sAccepteMove))
             $move=$sAccepteMove;
     }
+    if($move=='clearall' && App()->request->getPost('confirm-clearall')!='confirm'){
+            $move="clearcancel";
+    }
     if($move=='default')
     {
         $surveyid=Yii::app()->getConfig('surveyID');

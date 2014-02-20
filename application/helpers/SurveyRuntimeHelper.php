@@ -171,8 +171,8 @@ class SurveyRuntimeHelper {
     */
     function run($surveyid,$args) {
         global $errormsg;
-
         extract($args);
+
         if (!$thissurvey) {
             $thissurvey = getSurveyInfo($surveyid);
         }
@@ -243,7 +243,6 @@ class SurveyRuntimeHelper {
         }
         else
         {
-                                       
             //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
             if (!isset($_SESSION[$LEMsessid]['step'])) // || !$_SESSION[$LEMsessid]['step']) - don't do this for step0, else rebuild the session
             {
@@ -272,7 +271,7 @@ class SurveyRuntimeHelper {
             }
 
             $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
-            
+
             if (!isset($_SESSION[$LEMsessid]['totalsteps']))
             {
                 $_SESSION[$LEMsessid]['totalsteps'] = 0;
@@ -296,13 +295,17 @@ class SurveyRuntimeHelper {
                 else
                 {
                     // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
-					$LEMskipReprocessing=true;
+                    $LEMskipReprocessing=true;
                     $move = "movenext"; // so will re-display the survey
                     $invalidLastPage=true;
                     $backpopup=$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
                 }
             }
-
+            if(isset($move) && $move=="clearcancel")
+            {
+                $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);
+                //$backpopup=$clang->gT("Clear all need confirmation.");
+            }
             if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_GET['sid']) || $LEMskipReprocessing || (isset($move) && (preg_match('/^changelang_/',$move)))))
             {
                 $_SESSION[$LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step'];

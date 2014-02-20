@@ -106,9 +106,10 @@ function limesurveySubmitHandler(){
 
 // Ask confirmation on click on .needconfirm
 function needConfirmHandler(){
-    $(document).on('click',".confirm-needed", function(event){
-        text=$(this).attr('title');
+    $(document).on('click',"[data-confirmedby]", function(event){
+        text=$("label[for='"+$(this).data('confirmedby')+"']").html();
         if (confirm(text)) {
+            $("#"+$(this).data('confirmedby')).prop('checked',true);
             return true;
         }
         $(".button.ui-button" ).button( "option", "disabled", false );
