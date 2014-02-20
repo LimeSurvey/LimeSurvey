@@ -7763,30 +7763,20 @@ function arraySwapAssoc($key1, $key2, $array) {
 * @param    string        ellipsis ; Default '...'
 * @return    string        ellipsized string
 */
-function ellipsize($str, $max_length, $position = 1, $ellipsis = '&hellip;')
+function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;')
 {
     // Strip tags
-    $str = trim(strip_tags($str));
-
+    $sString = trim(strip_tags($sString));
     // Is the string long enough to ellipsize?
-    if (strlen($str) <= $max_length+3)
+    if (mb_strlen($sString,'UTF-8') <= $iMaxLength+3)
     {
-        return $str;
+        return $sString;
     }
 
-    $beg = substr($str, 0, floor($max_length * $position));
-    $position = ($position > 1) ? 1 : $position;
-
-    if ($position === 1)
-    {
-        $end = substr($str, 0, -($max_length - strlen($beg)));
-    }
-    else
-    {
-        $end = substr($str, -($max_length - strlen($beg)));
-    }
-
-    return $beg.$ellipsis.$end;
+    $iStrLen=mb_strlen($sString,'UTF-8');
+    $sBegin = mb_substr($sString, 0, floor($iMaxLength * $fPosition),'UTF-8');
+    $sEnd = mb_substr($sString,$iStrLen-($iMaxLength-mb_strlen($sBegin,'UTF-8')),$iStrLen,'UTF-8');
+    return $sBegin.$sEllipsis.$sEnd;
 }
 
 /**
