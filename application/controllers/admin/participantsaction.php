@@ -980,6 +980,7 @@ class participantsaction extends Survey_Common_Action
         );
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'participants.css');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'viewAttribute.css');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "viewAttribute.js");
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'viewAttribute'), $aData);
     }
 
