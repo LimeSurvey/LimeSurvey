@@ -80,7 +80,11 @@
                                 <?php if ($activated != 'Y' && $first)
                                     { ?>
                                     <th><?php $clang->eT("Action"); ?></th>
-                                    <?php } ?>
+                                <?php } ?>
+                                <?php if ($scale_id==0)
+                                    { ?>
+                                    <th class="relevancehead"><img src='<?php echo $sImageURL; ?>subq_relevance_en.png' class='btntogglerelevance' alt='<?php $clang->eT("Edit subquestion relevance") ?>'/> <span style="display: none" class="relevance"> <?php $clang->eT("Relevance"); ?> </span> </th>
+                                <?php } ?>    
                             </tr></thead>
                         <tbody>
                             <?php $alternate=false;
@@ -88,6 +92,7 @@
                                 {
                                     $row->title = htmlspecialchars($row->title);
                                     $row->question=htmlspecialchars($row->question);
+                                    $row->relevance=htmlspecialchars($row->relevance);
 
                                     if ($first) {$codeids=$codeids.' '.$row->question_order;}
                                 ?>
@@ -125,18 +130,36 @@
 
                                     </td><td>
                                         <input type='text' size='100' class='answer' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' placeholder='<?php $clang->eT("Some example subquestion","js") ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+                                        
                                         <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".$clang->gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
-                                    </td>
-                                    <td>
-
-
+                                        </td>
                                         <?php if ($activated != 'Y' && $first)
                                             { ?>
+                                            <td>
                                             <img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' alt='<?php $clang->eT("Insert a new subquestion after this one") ?>' />
                                             <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' alt='<?php $clang->eT("Delete this subquestion") ?>' />
+                                            </td>
                                             <?php } ?>
 
-                                    </td></tr>
+                                    
+                                    
+                                  <?php if ($scale_id==0) {   /* relevance column */ ?>
+                                            <td>
+                                  <?php     if ($row->relevance!="1" && trim($row->relevance)!="") { ?> 
+                                            <img src='<?php echo $sImageURL; ?>subq_relevance_en.png' class='btntogglerelevance' alt='<?php $clang->eT("Edit subquestion relevance") ?>'/>
+                                  <?php     } else {   /* no relevance equation: icon deactivated */  ?> 
+                                            <img src='<?php echo $sImageURL; ?>subq_relevance_dis.png' class='btntogglerelevance' alt='<?php $clang->eT("Edit subquestion relevance") ?>'/>  
+                                  <?php     }
+                                            if ($first) {  /* default lang - input field */?> 
+                                                <input style="display: none" type='text' size='20' class='relevance' id='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+                                  <?php     } else {       /* additional language: just print rel. equation */  ?>
+                                        <span style="display: none" class="relevance"> <?php echo $row->relevance; ?> </span>
+                                  <?php     }   ?>
+                                            </td>
+                                  <?php } ?>
+
+                                  
+                                    </tr>
                                 <?php $position++;
                                 }
                                 ++$anscount; ?>
