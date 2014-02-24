@@ -107,12 +107,12 @@ class responses extends Survey_Common_Action
             //add token to top of list if survey is not private
             if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
             {
-                $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-                $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
-                $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
-                $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
+                $fnames[] = array("token", $clang->gT("Token ID"), 'code'=>'token');
+                $fnames[] = array("firstname", $clang->gT("First name"), 'code'=>'firstname');// or token:firstname ?
+                $fnames[] = array("lastname", $clang->gT("Last name"), 'code'=>'lastname');
+                $fnames[] = array("email", $clang->gT("Email"), 'code'=>'email');
             }
-            $fnames[] = array("submitdate", $clang->gT("Submission date"), $clang->gT("Completed"), "0", 'D');
+            $fnames[] = array("submitdate", $clang->gT("Submission date"), $clang->gT("Completed"), "0", 'D','code'=>'submitdate');
             $fnames[] = array("completed", $clang->gT("Completed"), "0");
 
             foreach ($fieldmap as $field)
@@ -440,10 +440,10 @@ class responses extends Survey_Common_Action
             {
                 if(Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
                 {
-                    $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-                    $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
-                    $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
-                    $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
+                    $fnames[] = array("token", $clang->gT("Token ID"), 'code'=>'token');
+                    $fnames[] = array("firstname", $clang->gT("First name"), 'code'=>'firstname');// or token:firstname ?
+                    $fnames[] = array("lastname", $clang->gT("Last name"), 'code'=>'lastname');
+                    $fnames[] = array("email", $clang->gT("Email"), 'code'=>'email');
                 }
             }
 
