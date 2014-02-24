@@ -633,11 +633,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
         <script type='text/javascript'>
         <!--
         function freezeFrame(elementid) {
-        if(document.getElementById(elementid) !== null) {
-        var answer=document.getElementById(elementid);
-        answer.blur();
-        answer.onfocus=function() { answer.blur();};
-        }
+            $('#'+elementid).prop('readonly',true);
         };
         //-->
         </script>";
@@ -662,7 +658,8 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
                     $qcount++;
                 }
             }
-            //Override all other options and just allow freezing, survey is presented in group by group mode
+            // Override all other options and just allow freezing, survey is presented in group by group mode
+            // Why don't allow submit in Group by group mode, this surely broke 'mandatory' question, but this remove a great system for user (Denis 140224)
             if($qcount > 1) {
                 $output .="
                 action = 3;";
@@ -684,90 +681,77 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
         var warning2display='LS_question'+questionid+'_warning_2';
         var expireddisplay='question'+questionid+'_timer';
         var timersessionname='timer_question_'+questionid;
-        document.getElementById(timersessionname).value=timeleft;
+        $('#'+timersessionname).val(timeleft);
         timeleft--;
         cookietimer=subcookiejar.fetch('limesurvey_timers',timersessionname);
-        if(cookietimer) {
-        if(cookietimer <= timeleft) {
-        timeleft=cookietimer;
-        }
+        if(cookietimer && cookietimer <= timeleft) {
+            timeleft=cookietimer;
         }
         var timeleftobject=new Object();
         subcookiejar.crumble('limesurvey_timers', timersessionname);
         timeleftobject[timersessionname]=timeleft;
         subcookiejar.bake('limesurvey_timers', timeleftobject, 7)\n";
-        if($disable_next > 0) {
+        if($disable_next > 0) {// $disable_next can be 1 or 0 (it's a select).
             $output .= "
-            if(document.getElementById('movenextbtn') !== null && timeleft > $disable_next) {
-            document.getElementById('movenextbtn').disabled=true;
-            } else if (document.getElementById('movenextbtn') !== null && $disable_next > 1 && timeleft <= $disable_next) {
-            document.getElementById('movenextbtn').disabled=false;
+            if(timeleft > $disable_next) {
+            $('#movenextbtn').prop('disabled',true);$('#movenextbtn.ui-button').button( 'option', 'disabled', true );
+            } else if ($disable_next >= 1 && timeleft <= $disable_next) {
+            $('#movenextbtn').prop('disabled',false);$('#movenextbtn.ui-button').button( 'option', 'disabled', false );
             }\n";
         }
         if($disable_prev > 0) {
             $output .= "
-            if(document.getElementById('moveprevbtn') !== null && timeleft > $disable_prev) {
-            document.getElementById('moveprevbtn').disabled=true;
-            } else if (document.getElementById('moveprevbtn') !== null && $disable_prev > 1 && timeleft <= $disable_prev) {
-            document.getElementById('moveprevbtn').disabled=false;
+            if(timeleft > $disable_prev) {
+            $('#moveprevbtn').prop('disabled',true);$('#moveprevbtn.ui-button').button( 'option', 'disabled', true );
+            } else if ($disable_prev >= 1 && timeleft <= $disable_prev) {
+            $('#moveprevbtn').prop('disabled',false);$('#moveprevbtn.ui-button').button( 'option', 'disabled', false );
             }\n";
         }
-        if(!is_numeric($disable_prev)) {
+        if(!is_numeric($disable_prev) && false) {
             $output .= "
-            if(document.getElementById('moveprevbtn') !== null) {
-            document.getElementById('moveprevbtn').disabled=true;
-            }\n";
+            $('#moveprevbtn').prop('disabled',true);$('#moveprevbtn.ui-button').button( 'option', 'disabled', true );
+            ";
         }
         $output .="
         if(warning > 0 && timeleft<=warning) {
-        var wsecs=warning%60;
-        if(wsecs<10) wsecs='0' + wsecs;
-        var WT1 = (warning - wsecs) / 60;
-        var wmins = WT1 % 60; if (wmins < 10) wmins = '0' + wmins;
-        var whours = (WT1 - wmins) / 60;
-        var dmins=''
-        var dhours=''
-        var dsecs=''
-        if (whours < 10) whours = '0' + whours;
-        if (whours > 0) dhours = whours + ' ".$clang->gT('hours').", ';
-        if (wmins > 0) dmins = wmins + ' ".$clang->gT('mins').", ';
-        if (wsecs > 0) dsecs = wsecs + ' ".$clang->gT('seconds')."';
-        if(document.getElementById(warningtimedisplay) !== null) {
-        document.getElementById(warningtimedisplay).innerHTML = dhours+dmins+dsecs;
-        }
-        document.getElementById(warningdisplay).style.display='';
+            var wsecs=warning%60;
+            if(wsecs<10) wsecs='0' + wsecs;
+            var WT1 = (warning - wsecs) / 60;
+            var wmins = WT1 % 60; if (wmins < 10) wmins = '0' + wmins;
+            var whours = (WT1 - wmins) / 60;
+            var dmins='';
+            var dhours='';
+            var dsecs='';
+            if (whours < 10) whours = '0' + whours;
+            if (whours > 0) dhours = whours + ' ".$clang->gT('hours').", ';
+            if (wmins > 0) dmins = wmins + ' ".$clang->gT('mins').", ';
+            if (wsecs > 0) dsecs = wsecs + ' ".$clang->gT('seconds')."';
+            $('#'+warningtimedisplay).html(dhours+dmins+dsecs);
+            $('#'+warningdisplay).show();
+            if(warninghide > 0 ) {
+                setTimeout(function(){ $('#'+warningdisplay).hide(); },warninghide*1000);
+            }
+            warning=0;
         }
         if(warning2 > 0 && timeleft<=warning2) {
-        var w2secs=warning2%60;
-        if(wsecs<10) w2secs='0' + wsecs;
-        var W2T1 = (warning2 - w2secs) / 60;
-        var w2mins = W2T1 % 60; if (w2mins < 10) w2mins = '0' + w2mins;
-        var w2hours = (W2T1 - w2mins) / 60;
-        var d2mins=''
-        var d2hours=''
-        var d2secs=''
-        if (w2hours < 10) w2hours = '0' + w2hours;
-        if (w2hours > 0) d2hours = w2hours + ' ".$clang->gT('hours').", ';
-        if (w2mins > 0) d2mins = w2mins + ' ".$clang->gT('mins').", ';
-        if (w2secs > 0) d2secs = w2secs + ' ".$clang->gT('seconds')."';
-        if(document.getElementById(warning2timedisplay) !== null) {
-        document.getElementById(warning2timedisplay).innerHTML = dhours+dmins+dsecs;
-        }
-        document.getElementById(warning2display).style.display='';
-        }
-        if(warning > 0 && warninghide > 0 && document.getElementById(warningdisplay).style.display != 'none') {
-        if(warninghide == 1) {
-        document.getElementById(warningdisplay).style.display='none';
-        warning=0;
-        }
-        warninghide--;
-        }
-        if(warning2 > 0 && warning2hide > 0 && document.getElementById(warning2display).style.display != 'none') {
-        if(warning2hide == 1) {
-        document.getElementById(warning2display).style.display='none';
-        warning2=0;
-        }
-        warning2hide--;
+            var w2secs=warning2%60;
+            if(wsecs<10) w2secs='0' + wsecs;
+            var W2T1 = (warning2 - w2secs) / 60;
+            var w2mins = W2T1 % 60; if (w2mins < 10) w2mins = '0' + w2mins;
+            var w2hours = (W2T1 - w2mins) / 60;
+            var d2mins='';
+            var d2hours='';
+            var d2secs='';
+            if (w2hours < 10) w2hours = '0' + w2hours;
+            if (w2hours > 0) d2hours = w2hours + ' ".$clang->gT('hours').", ';
+            if (w2mins > 0) d2mins = w2mins + ' ".$clang->gT('mins').", ';
+            if (w2secs > 0) d2secs = w2secs + ' ".$clang->gT('seconds')."';
+            $('#'+warning2timedisplay).html(dhours+dmins+dsecs);
+            $('#'+warning2display).show();
+            if(warning2hide > 0 ) {
+                setTimeout(function(){ $('#'+warning2display).hide(); },warning2hide*1000);
+            }
+            warning2=0;
         }
         var secs = timeleft % 60;
         if (secs < 10) secs = '0'+secs;
@@ -782,52 +766,36 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
         if (mins > 0) d2mins = mins+' ".$clang->gT('mins').": ';
         if (secs > 0) d2secs = secs+' ".$clang->gT('seconds')."';
         if (secs < 1) d2secs = '0 ".$clang->gT('seconds')."';
-        document.getElementById(timerdisplay).innerHTML = '".$time_limit_countdown_message."<br />'+d2hours + d2mins + d2secs;
+        $('#'+timerdisplay).html('".$time_limit_countdown_message."<br />'+d2hours + d2mins + d2secs);
         if (timeleft>0){
-        var text='countdown('+questionid+', '+timeleft+', '+action+', '+warning+', '+warning2+', '+warninghide+', '+warning2hide+', \"'+disable+'\")';
-        setTimeout(text,1000);
+            var text='countdown('+questionid+', '+timeleft+', '+action+', '+warning+', '+warning2+', '+warninghide+', '+warning2hide+', \"'+disable+'\")';
+            setTimeout(text,1000);
         } else {
-        //Countdown is finished, now do action
-        switch(action) {
-        case 2: //Just move on, no warning
-        if(document.getElementById('movenextbtn') !== null) {
-        if(document.getElementById('movenextbtn').disabled==true) document.getElementById('movenextbtn').disabled=false;
-        }
-        if(document.getElementById('moveprevbtn') !== null) {
-        if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
-        }
-        freezeFrame(disable);
-        subcookiejar.crumble('limesurvey_timers', timersessionname);
-        if(document.getElementById('movenextbtn') != null) {
-        document.limesurvey.submit();
-        } else {
-        setTimeout(\"document.limesurvey.submit();\", 1000);
-        }
-        break;
-        case 3: //Just warn, don't move on
-        document.getElementById(expireddisplay).style.display='';
-        if(document.getElementById('movenextbtn') !== null) {
-        if(document.getElementById('movenextbtn').disabled==true) document.getElementById('movenextbtn').disabled=false;
-        }
-        if(document.getElementById('moveprevbtn') !== null) {
-        if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
-        }
-        freezeFrame(disable);
-        this.onsubmit=function() { subcookiejar.crumble('limesurvey_timers', timersessionname);};
-        break;
-        default: //Warn and move on
-        document.getElementById(expireddisplay).style.display='';
-        if(document.getElementById('movenextbtn') !== null) {
-        if(document.getElementById('movenextbtn').disabled==true) document.getElementById('movenextbtn').disabled=false;
-        }
-        if(document.getElementById('moveprevbtn') !== null) {
-        if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
-        }
-        freezeFrame(disable);
-        subcookiejar.crumble('limesurvey_timers', timersessionname);
-        setTimeout('document.limesurvey.submit()', ".$time_limit_message_delay.");
-        break;
-        }
+            //Countdown is finished, now do action
+            switch(action) {
+                case 2: //Just move on, no warning
+                    $('#movenextbtn').prop('disabled',false);$('#movenextbtn.ui-button').button( 'option', 'disabled', false );
+                    $('#moveprevbtn').prop('disabled',false);$('#moveprevbtn.ui-button').button( 'option', 'disabled', false );
+                    freezeFrame(disable);
+                    subcookiejar.crumble('limesurvey_timers', timersessionname);
+                    $('#defaultbtn').click();
+                    break;
+                case 3: //Just warn, don't move on
+                    $('#'+expireddisplay).show();
+                    $('#movenextbtn').prop('disabled',false);$('#movenextbtn.ui-button').button( 'option', 'disabled', false );
+                    $('#moveprevbtn').prop('disabled',false);$('#moveprevbtn.ui-button').button( 'option', 'disabled', false );
+                    freezeFrame(disable);
+                    $('#limesurvey').submit(function(){ subcookiejar.crumble('limesurvey_timers', timersessionname); });
+                    break;
+                default: //Warn and move on
+                    $('#'+expireddisplay).show();
+                    $('#movenextbtn').prop('disabled',false);$('#movenextbtn.ui-button').button( 'option', 'disabled', false );
+                    $('#moveprevbtn').prop('disabled',false);$('#moveprevbtn.ui-button').button( 'option', 'disabled', false );
+                    freezeFrame(disable);
+                    subcookiejar.crumble('limesurvey_timers', timersessionname);
+                    setTimeout($('#defaultbtn').click(), ".$time_limit_message_delay.");
+                    break;
+            }
         }
         }
         //-->
