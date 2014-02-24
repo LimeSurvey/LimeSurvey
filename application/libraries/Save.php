@@ -243,7 +243,7 @@ class Save {
         {    
             $setField = $_POST['lastgroup'];
         }
-        $passedTime = round(microtime(true) - $_POST['start_time'],2);
+        $passedTime = str_replace(',','.',round(microtime(true) - $_POST['start_time'],2));
         if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
             $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
             ."interviewtime = (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " .$passedTime
