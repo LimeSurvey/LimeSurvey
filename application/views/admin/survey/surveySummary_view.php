@@ -72,7 +72,7 @@
             <strong><?php $clang->eT("Administrator:");?></strong>
         </td>
         <td>
-            <?php echo viewHelper::purified("{$surveyinfo['admin']} ({$surveyinfo['adminemail']})");?>
+            <?php echo flattenText("{$surveyinfo['admin']} ({$surveyinfo['adminemail']})");?>
         </td>
     </tr>
     <?php if (trim($surveyinfo['faxto'])!='') { ?>
@@ -81,7 +81,7 @@
                 <strong><?php $clang->eT("Fax to:");?></strong>
             </td>
             <td>
-                <?php echo viewHelper::purified($surveyinfo['faxto']);?>
+                <?php echo flattenText($surveyinfo['faxto']);?>
             </td>
         </tr>
     <?php } ?>
@@ -127,7 +127,7 @@
             <strong><?php $clang->eT("End URL");?>:</strong>
         </td>
         <td>
-            <?php echo viewHelper::purified($endurl);?>
+            <?php echo $endurl;?>
         </td>
     </tr>
     <tr>
