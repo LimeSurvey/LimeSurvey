@@ -9,7 +9,7 @@
     }
     ?>
     <br /><br />
-    <div style='border: 1px solid #ccc; height: 50px; overflow: auto'>
+    <div style='border: 1px solid #ccc; height: 200px; overflow: scroll; text-align:left; padding-left:0.5em;'>
         <?php echo $tokenoutput ?>
     </div>
 </div>
