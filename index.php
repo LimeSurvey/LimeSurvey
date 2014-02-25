@@ -161,9 +161,11 @@
         define('YII_DEBUG', false);
         error_reporting(0);
     }
+    
+    if (version_compare(PHP_VERSION, '5.3.0', '<'))
+        $dieoutput .= 'This script can only be run on PHP version 5.3.0 or later! Your version: '.PHP_VERSION.'<br />';
 
-
-
+        
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE
