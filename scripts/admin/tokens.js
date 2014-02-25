@@ -335,7 +335,14 @@ $(document).ready(function() {
             title:invitemsg,
             buttonicon:'ui-icon-mail-closed',
             onClickButton:function(){
-                window.open(inviteurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
+                if ($('#displaytokens').jqGrid('getGridParam', 'selarrrow').length==0)
+                {
+                    alert(sSelectRowMsg );
+                }
+                else
+                {
+                    window.open(inviteurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
+                }
             }
         });
     }
@@ -345,7 +352,14 @@ $(document).ready(function() {
             title:remindmsg,
             buttonicon:'ui-icon-mail-open',
             onClickButton:function(){
-                window.open(remindurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
+                if ($('#displaytokens').jqGrid('getGridParam', 'selarrrow').length==0)
+                {
+                    alert(sSelectRowMsg );
+                }
+                else
+                {
+                    window.open(remindurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
+                }
             }
         });
     }
