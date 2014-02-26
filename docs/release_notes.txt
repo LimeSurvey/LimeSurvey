@@ -59,6 +59,51 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140217) to 2.05+ (build 140226) Feb 26, 2014
+-Fixed issue #8756: Missing translations on browse responses (Denis Chenu)
+-Fixed issue #8224: Incomplete dates (dropdown mode) are recorded as missing (mfaber)
+-Fixed issue #8526: Blank screen if minimum PHP version requirement is not met (Carsten Schmitz)
+-Fixed issue #8526: No information if installation broke (Denis Chenu)
+-Fixed issue #8670: Screen to import responses from a de-activated survey is messed up (Sam Mousa)
+-Fixed issue #8683: Unique custom token values fail to merge in invite/reminder emails (Denis Chenu)
+-Fixed issue #8686: HTML popup editor not working in email templates (Carsten Schmitz)
+-Fixed issue #8686: line feed trouble when translating e.g. mail templates in translation system (tpartner)
+-Fixed issue #8688: Missing translations when using KCFinder (Carsten Schmitz)
+-Fixed issue #8730: Allways take default language radix separator for all s (Denis Chenu)
+-Fixed issue #8734: Missing translation when exporting participants from CPDB grid (Carsten Schmitz)
+-Fixed issue #8735: "Exit and clear survey" button text is a link <a> which adopts the <a> CSS-style (color) (Denis Chenu)
+-Fixed issue #8735: "Exit and clear survey" css style for shiped template (Denis Chenu)
+-Fixed issue #8739: Expiry date is ignored when importing LSA file (Carsten Schmitz)
+-Fixed issue #8740, #8741: Stored XSS (Denis Chenu)
+-Fixed issue #8742: CDbCommand failed error when using times and certain locales (Carsten Schmitz)
+-Fixed issue #8744: Can not add option values to drop-down attribute fields in CPDB (Carsten Schmitz)
+-Fixed issue #8749: Attribute time_limit broken (with action : move without warning) (Denis Chenu)
+-Fixed issue #8753: Token list columns are all centered (Carsten Schmitz)
+-Fixed issue #8755: Summary of sending invitations looks bad (Carsten Schmitz)
+-Fixed issue #8762: Invitations are sent even if no row was selected in token grid (Carsten Schmitz)
+-Fixed issue: Export selection show empty line with utf8 caracters (Denis Chenu)
+-Fixed issue: Notice when importing a TSV survey file (Carsten Schmitz)
+-Fixed issue: RTL issues in administration (Carsten Schmitz)
+#Updated translation: Albanian by lulzimavdiu
+#Updated translation: Catalan by valdomir
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: Finnish by zas
+#Updated translation: French (France) by arnaud21
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by olif, lfanfoni
+#Updated translation: Malay by apisznasdin
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Persian by blackeve, ardalan, ehsan
+#Updated translation: Polish by bustamante, elisa
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by maxzomborszki
+
 Changes from 2.05+ (build 140216) to 2.05+ (build 140217) Feb 16, 2014
 -Fixed issue: ComfortUpdate not unzipping the update file
 
