@@ -151,21 +151,25 @@
     {
         $aSettings=array();
     }
-    if (isset($aSettings['config']['debug']) && $aSettings['config']['debug']>0)
+    // Set debug : if not set : don't change 
+    if (isset($aSettings['config']['debug']))
     {
-        define('YII_DEBUG', true);
-        error_reporting(E_ALL);
+        if ($aSettings['config']['debug']>0)
+        {
+            define('YII_DEBUG', true);
+            error_reporting(E_ALL);
+        }
+        else
+        {
+            define('YII_DEBUG', false);
+            error_reporting(0);
+        }
     }
-    else
-    {
-        define('YII_DEBUG', false);
-        error_reporting(0);
-    }
-    
-    if (version_compare(PHP_VERSION, '5.3.0', '<'))
-        $dieoutput .= 'This script can only be run on PHP version 5.3.0 or later! Your version: '.PHP_VERSION.'<br />';
 
-        
+    if (version_compare(PHP_VERSION, '5.3.0', '<'))
+        die ('This script can only be run on PHP version 5.3.0 or later! Your version: '.PHP_VERSION.'<br />');
+
+
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE
