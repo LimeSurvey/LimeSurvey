@@ -128,6 +128,7 @@ $(document).ready(function() {
         headertitles: true,
         url: jsonUrl,
         editurl: editUrl,
+        direction: $('html').attr('dir'),
         datatype: "json",
         mtype: "post",
         colNames : colNames,

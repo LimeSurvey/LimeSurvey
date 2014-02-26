@@ -103,6 +103,7 @@ $(document).ready(function() {
         postData: {searchcondition:searchconditions},
         colNames : jQuery.parseJSON(colNames),
         colModel: jQuery.parseJSON(colModels),
+        direction: $('html').attr('dir'),
         height: "100%",
         width: "100%",
         rowNum: 25,
@@ -174,6 +175,7 @@ $(document).ready(function() {
 
             /* Subgrid that displays survey links */
             jQuery("#"+second_subgrid_table_id).jqGrid( {
+                direction: $('html').attr('dir'),
                 datatype: "json",
                 url: surveylinkUrl+'/'+row_id,
                 height: "100%",
@@ -202,6 +204,7 @@ $(document).ready(function() {
             /* Subgrid that displays user attributes */
             jQuery("#"+subgrid_table_id).jqGrid( {
                 url: getAttribute_json+'/'+row_id,
+                direction: $('html').attr('dir'),
                 editurl:editAttributevalue,
                 datatype: "json",
                 mtype: "post",

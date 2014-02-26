@@ -96,6 +96,7 @@ $(document).ready(function(){
     }
     jQuery("#displaysurveys").jqGrid({
         autoencode: false,// autoencode to false is really a bad idea. Need JS system for link and update
+        direction: $('html').attr('dir'),
         recordtext: sRecordText,
         emptyrecords: sEmptyRecords,
         pgtext: sPageText,

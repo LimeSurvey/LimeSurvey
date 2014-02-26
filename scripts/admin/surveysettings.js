@@ -15,6 +15,7 @@ $(document).ready(function(){
                    {name:'targetsqid',index:'targetsqid', hidden:true},
                    {name:'title',index:'title', width:400}
                    ],
+        direction: $('html').attr('dir'),
         sortname: 'parameter',
         pager: '#pagerurlparams',
         loadonce: true,

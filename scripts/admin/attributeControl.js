@@ -12,6 +12,7 @@ $(document).ready(function() {
     $.jgrid.edit.msg.required = sRequired;
 
     $("#attributeControl").jqGrid({
+        direction: $('html').attr('dir'),
         loadtext : sLoadText,
         align:"center",
         url: attributeInfoUrl,

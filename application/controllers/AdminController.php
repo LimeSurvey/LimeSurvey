@@ -280,6 +280,7 @@ class AdminController extends LSYii_Controller
         }
         else
         {
+            $aData['languageRTL'] = " dir=\"ltr\" ";
             $aData['bIsRTL']=false;
         }
 
