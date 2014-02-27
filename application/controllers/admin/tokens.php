@@ -202,16 +202,17 @@ class tokens extends Survey_Common_Action
                                     );
                                     $condn = array('token' => $tokenBounce[1]);
 									$record = Token::model($iSurveyId)->findByAttributes($condn);
-                                    foreach ($aData as $k => $v)
-                                        $record->$k = $v;
-                                    $record->save();
-
+                                    if ($record->emailstatus != 'bounced')
+                                    {
+                                        $record->emailstatus = 'bounced';
+                                        $record->save();
+                                        $bouncetotal++;
+                                    }
                                     $readbounce = imap_body($mbox, $count); // Put read
                                     if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) // TODO Y or just true, and a imap_delete
                                     {
                                         $deletebounce = imap_delete($mbox, $count); // Put delete
                                     }
-                                    $bouncetotal++;
                                 }
                             }
                         }
