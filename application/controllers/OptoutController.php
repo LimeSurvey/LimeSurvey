@@ -21,6 +21,9 @@
  */
 class OptoutController extends LSYii_Controller {
 
+     public $layout = 'bare';
+     public $defaultAction = 'tokens';
+    
     /* This function is run when opting out of an individual token table. The other function /optout/participants
      * opts the user out of ALL survey invitations from the system
      *
