@@ -530,8 +530,8 @@ CREATE TABLE [prefix_users] (
 [questionselectormode] varchar(7)  NOT NULL default 'default',
 [one_time_pw] text NULL,
 [dateformat] int NOT NULL DEFAULT 1,
-[created] datetime,
-[modified] datetime
+[created] datetime NULL,
+[modified] datetime NULL
 );
 
 
