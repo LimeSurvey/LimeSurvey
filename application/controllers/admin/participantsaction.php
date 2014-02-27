@@ -1083,9 +1083,13 @@ class participantsaction extends Survey_Common_Action
     {
 
         $clang = $this->getController()->lang;
+        if ($_FILES['the_file']['name']=='')
+        {                                                                                                                     
+            Yii::app()->setFlashMessage($clang->gT('Please select a file to import!'),'error');
+            Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
+        }
         $sRandomFileName=randomChars(20);
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
-
         $aPathinfo = pathinfo($_FILES['the_file']['name']);
         $sExtension = $aPathinfo['extension'];
         if (strtolower($sExtension)=='csv')
