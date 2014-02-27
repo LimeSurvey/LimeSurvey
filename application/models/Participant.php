@@ -953,7 +953,7 @@ class Participant extends LSActiveRecord
             foreach ($newcreate as $key => $value)
             {
                 $newfieldname='attribute_'.$value;
-                $fields[$newfieldname] = array('type' => 'VARCHAR', 'constraint' => '255');
+                $fields[$newfieldname] = array('type' => 'STRING');
                 $attname = Yii::app()->db
                                      ->createCommand()
                                      ->select('{{participant_attribute_names_lang}}.attribute_name, {{participant_attribute_names_lang}}.lang')
@@ -999,11 +999,10 @@ class Participant extends LSActiveRecord
                                 array("attributedescriptions" => $aTokenAttributes), 'sid = '.intval($surveyid)); // load description in the surveys table
 
             //Actually create the fields in the tokens table
+            Yii::app()->loadHelper('update/updatedb');
             foreach ($fields as $key => $value)
             {
-                Yii::app()->db
-                          ->createCommand("ALTER TABLE {{tokens_$surveyid}} ADD COLUMN ". Yii::app()->db->quoteColumnName($key) ." ". $value['type'] ." ( ".intval($value['constraint'])." )")
-                          ->query(); // add columns in token's table
+                addColumn("{{tokens_$surveyid}}", $key, $value['type']);
             }
         }
 
