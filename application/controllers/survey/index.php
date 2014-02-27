@@ -384,7 +384,7 @@ class index extends CAction {
                 $asMessage = array(
                 null,
                 $clang->gT("We are sorry but you are not allowed to enter this survey."),
-                $clang->gT("Your token seems to be valid but can be used only during a certain time period."),
+                $clang->gT("Your token was already used or can only be used only during a certain time period."),
                 sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
                 );
 
