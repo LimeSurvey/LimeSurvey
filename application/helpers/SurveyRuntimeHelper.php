@@ -861,6 +861,11 @@ class SurveyRuntimeHelper {
                     {
                         $plus_qanda[] = $ia[4];
                         $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
+                        // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
+                        if(isset($ia[10]))
+                            $plus_qanda['finalgroup']=$ia[10];
+                        else
+                            $plus_qanda['finalgroup']=$ia[5];
                         $qanda[] = $plus_qanda;
                     }
                     if ($plus_inputnames)
@@ -1055,11 +1060,10 @@ class SurveyRuntimeHelper {
 
             foreach ($qanda as $qa) // one entry per QID
             {
-                // This is already tested before : we do only qanda for question in $gid
-                // Broke question random attribute in different group
-                //if ($gid != $qa[6]) {
-                //    continue;
-                //}
+                // Test if finalgroup is in this qid (for all in one survey, else we do only qanda for needed question (in one by one or group by goup)
+                if ($gid != $qa['finalgroup']) {
+                    continue;
+                }
                 $qid = $qa[4];
                 $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
                 $lastgrouparray = explode("X", $qa[7]);
