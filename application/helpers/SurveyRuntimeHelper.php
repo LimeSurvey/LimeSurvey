@@ -995,15 +995,9 @@ class SurveyRuntimeHelper {
             echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"), array(), $redata);
         }
 
-        // the runonce element has been changed from a hidden to a text/display:none one
-        // in order to workaround an not-reproduced issue #4453 (lemeur)
-        echo "<input type='text' id='runonce' value='0' style='display: none;'/>";
-        
-#        // lemradix and var for LemRadix
-#        $sLemRadixVarScript=" LEMradix='" . $radix . "';\n"
-#                        ." numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');\n"
-#                        ." intRegex = new RegExp('[^-0-9]','g');\n";
-#        Yii::app()->clientScript->registerScript('LemRadixVarScript',$sLemRadixVarScript,CClientScript::POS_HEAD);
+        // runonce element has been changed from a hidden to a text/display:none one. In order to workaround an not-reproduced issue #4453 (lemeur)
+        // We don't need runonce actually (140228): the script was updated and replaced by EM see #08783 (grep show no other runonce)
+        // echo "<input type='text' id='runonce' value='0' style='display: none;'/>";
 
         $showpopups=Yii::app()->getConfig('showpopups');
         //Display the "mandatory" message on page if necessary

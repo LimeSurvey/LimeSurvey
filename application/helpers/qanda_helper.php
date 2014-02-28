@@ -2423,17 +2423,16 @@ function do_multiplechoice($ia)
             }
             $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
         }
-        $answer .="\" />";
-        $answer .="<script type='text/javascript'>\n";
+        $answer .="\" />\n";
+        $answer .="<script type='text/javascript'>\n/*<![CDATA[*/\n";
         $answer .="$('#answer{$myfname}cbox').prop('aria-hidden', 'true').css('visibility','');";
         $answer .="$('#answer{$myfname}').bind('keyup focusout',function(event){\n";
         $answer .= " if ($.trim($(this).val()).length>0) { $(\"#answer{$myfname}cbox\").prop(\"checked\",true); } else { \$(\"#answer{$myfname}cbox\").prop(\"checked\",false); }; $(\"#java{$myfname}\").val($(this).val());LEMflagMandOther(\"$myfname\",$('#answer{$myfname}cbox').is(\":checked\")); $oth_checkconditionFunction(this.value, this.name, this.type); \n";
         $answer .="});\n";
         $answer .="$('#answer{$myfname}cbox').click(function(event){\n";
-        $answer .= " //if (($(this)).is(':checked')) { $(\"#answer{$myfname}\").focus(); } else { $(\"#answer{$myfname}\").val('');{$checkconditionFunction}(\"\", \"{$myfname}\", \"text\"); }; return true;\n";
         $answer .= " if (($(this)).is(':checked') && $.trim($(\"#answer{$myfname}\").val()).length==0) { $(\"#answer{$myfname}\").focus();LEMflagMandOther(\"$myfname\",true);return false; } else {  $(\"#answer{$myfname}\").val('');{$checkconditionFunction}(\"\", \"{$myfname}\", \"text\");LEMflagMandOther(\"$myfname\",false); return true; }; \n";
         $answer .="});\n";
-        $answer .="</script>\n";
+        $answer .="/*]]>*/\n</script>\n";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
         //        if ($maxansw > 0)
