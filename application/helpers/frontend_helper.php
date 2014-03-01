@@ -258,7 +258,8 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
             $aListLang[$sLangCode]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
         }
         $sSelected=$clang->langcode;
-        $sHTMLCode=CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass,'data-targeturl'=>$sTargetURL));
+        $sHTMLCode=CHtml::label($clang->gT("Choose another language"), 'lang',array('class'=>'hide label'));
+        $sHTMLCode.=CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass,'data-targeturl'=>$sTargetURL));
         // We don't have to add this button if in previewmode
         $sHTMLCode.= CHtml::htmlButton($clang->gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'changelang jshide'));
         return $sHTMLCode;
@@ -303,7 +304,7 @@ function makeLanguageChanger($sSelectedLanguage)
         $sSelected=$sSelectedLanguage;
 
         $sHTMLCode= CHtml::beginForm(App()->createUrl('surveys/publiclist'),'get');
-        //$sHTMLCode="<pre>".var_export($test,true)."</pre>";
+        $sHTMLCode.=CHtml::label($clang->gT("Choose another language"), 'lang',array('class'=>'hide label'));
         $sHTMLCode.= CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass));
         //$sHTMLCode.= CHtml::htmlButton($clang->gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'jshide'));
         $sHTMLCode.="<button class='changelang jshide' value='changelang' id='changelangbtn' type='submit'>".$clang->gT("Change the language")."</button>";
