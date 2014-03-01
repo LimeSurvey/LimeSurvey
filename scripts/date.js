@@ -117,8 +117,8 @@ function setPickerOptions(input)
     return {
         // set minimum and maximum date
         // remove the time component for Firefox
-        minDate: new Date(Date.parse(datemin.substr(0,10))),
-        maxDate: new Date(Date.parse(datemax.substr(0,10))),
+        minDate: Date.parseString(datemin.substr(0,10), "yyyy-mm-dd"),
+        maxDate: Date.parseString(datemax.substr(0,10), "yyyy-mm-dd"),
         //set the other options so datetimepicker is either a datepicker or a timepicker or both
         showTimepicker: bshowTimepicker,
         timeOnly: btimeOnly,
