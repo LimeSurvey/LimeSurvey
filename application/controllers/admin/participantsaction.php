@@ -1134,14 +1134,14 @@ class participantsaction extends Survey_Common_Action
                 }
                 $fieldlist[]=$value;
             }
-            $linecount = count(file($sFilePath));
+            $iLineCount = count(array_filter(array_filter(file($sFilePath),'trim')));
 
             $attributes = ParticipantAttributeName::model()->model()->getCPDBAttributes();
             $aData = array(
                 'attributes' => $attributes,
                 'firstline' => $selectedcsvfields,
                 'fullfilepath' => $sRandomFileName,
-                'linecount' => $linecount - 1,
+                'linecount' => $iLineCount - 1,
                 'filterbea' => $filterblankemails,
                 'participant_id_exists' => in_array('participant_id', $fieldlist)
             );
@@ -1290,10 +1290,13 @@ class participantsaction extends Survey_Common_Action
             } else {
                 // After looking at the first line, we now import the actual values
                 $line = convertCSVRowToArray($buffer, $separator, '"');
-
+                // Discard empty lines
+                if (empty($line[0])) continue;
+                // Discard lines where the number of fields do not match
                 if (count($firstline) != count($line))
                 {
-                    $invalidformatlist[] = $recordcount;
+                    $invalidformatlist[] = $recordcount.','.count($line).','.count($firstline);
+                    $recordcount++;
                     continue;
                 }
                 $writearray = array_combine($firstline, $line);
@@ -1442,6 +1445,7 @@ class participantsaction extends Survey_Common_Action
         $aData['imported'] = $imported;
         $aData['errorinupload'] = $errorinupload;
         $aData['invalidemaillist'] = $invalidemaillist;
+        $aData['aInvalidFormatlist'] = $invalidformatlist;
         $aData['mandatory'] = $mandatory;
         $aData['invalidattribute'] = $invalidattribute;
         $aData['invalidparticipantid'] = $invalidparticipantid;
