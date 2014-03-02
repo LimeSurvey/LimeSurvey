@@ -1131,7 +1131,7 @@ function db_upgrade_all($iOldDBVersion) {
             $oDB->createCommand("update {{surveys}} set questionindex = 1 where allowjumps = 'N'")->query();
 
             // Remove old column.
-            Yii::app()->getDb()->createCommand()->dropColumn('{{surveys}}', 'allowjumps');
+            dropColumn('{{surveys}}', 'allowjumps');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>169),"stg_name='DBVersion'");
         }
 
@@ -1173,7 +1173,8 @@ function db_upgrade_all($iOldDBVersion) {
                 case 'sqlsrv':
                 case 'dblib':
                 case 'mssql':
-                    $oDB->createCommand()->dropIndex('permissions_idx2','{{permissions}}');
+                    try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('permissions_idx2','{{permissions}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+                    try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('idxPermissions','{{permissions}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
                     alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
                     $oDB->createCommand()->createIndex('permissions_idx2','{{permissions}}','entity_id,entity,permission,uid',true);
                     break;
@@ -2156,7 +2157,7 @@ function dropDefaultValueMSSQL($fieldname, $tablename)
     // find out the name of the default constraint
     // Did I already mention that this is the most suckiest thing I have ever seen in MSSQL database?
     $dfquery ="SELECT c_obj.name AS constraint_name
-    FROM  sys.sysobjects AS c_obj INNER JOIN
+    FROM sys.sysobjects AS c_obj INNER JOIN
     sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
     sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
     sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
@@ -2282,12 +2283,12 @@ function replaceTemplateJS(){
 */
 function upgradeSurveyTables164()
 {
-    $surveyidquery = "SELECT sid FROM {{surveys}} WHERE active='Y' and anonymized='N'";
-    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
-    if (!$surveyidresult) {
+    $sQuery = "SELECT sid FROM {{surveys}} WHERE active='Y' and anonymized='N'";
+    $aResult = Yii::app()->db->createCommand($sQuery)->queryAll();
+    if (!$aResult) {
         return "Database Error";
     } else {
-        foreach ( $surveyidresult as $sv )
+        foreach ( $aResult as $sv )
         {
             $token = SurveyDynamic::model($sv['sid'])->getTableSchema()->getColumn('token');
             if (is_null($token)) {

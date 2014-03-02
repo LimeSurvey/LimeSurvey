@@ -59,6 +59,39 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140226) to 2.05+ (build 140302) Mar 2, 2014
+-Fixed issue #8763: Small display issue response summary (Carsten Schmitz)
+-Fixed issue #8767: Users with missing optional attributes dropped silently when importing into Participant database (Carsten Schmitz)
+-Fixed issue #8768: Error when no csv file selected on CPDB import (Carsten Schmitz)
+-Fixed issue #8769: Optout and Optin controller show part of the admin template (Carsten Schmitz)
+-Fixed issue #8770: Wrong labels in statiscs chart (Carsten Schmitz)
+-Fixed issue #8775: Misleading error message when attempting to re-take a closed survey (Carsten Schmitz)
+-Fixed issue #8777: Error when mapping participant attributes to new token attributes adn using MSSQL (Carsten Schmitz)
+-Fixed issue #8778: 2.05+ install crashes when using MSSQL connecting from Linux (Carsten Schmitz)
+-Fixed issue #8781: Inconsistent report from email bounce processing (Carsten Schmitz)
+-Fixed issue #8782: "Option 'Other'" for multiple choice is not 508 compliant (Denis Chenu)
+-Fixed issue #8783: The main container form is not 508 compliant (Denis Chenu)
+-Fixed issue #8784: get_summary RPC routine only delivering one value at a time (Carsten Schmitz)
+-Fixed issue #8785: Repeated questions when choosing "All in One" (Build 140226 ) (Denis Chenu)
+-Fixed issue #8786: Errors when updating from 2.0 and using MSSQL (Carsten Schmitz)
+-Fixed issue #8787: Timezone problem w/ minmax date in datepicker (mfaber)
+-Fixed issue #8788: Notice in LSYii_Application.php is config.php don't have debug and server error log is set to E_ALL (Denis Chenu)
+-Fixed issue : Bad link for update information (Denis Chenu)
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: French (France) by arnaud21, DenisChenu, TGorbunovaEspace
+#Updated translation: German by mfaber, c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by yamatt
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Persian by ehsan, ardalan, farin
+#Updated translation: Polish by elisa, bustamante
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by maxzomborszki
+
 Changes from 2.05+ (build 140217) to 2.05+ (build 140226) Feb 26, 2014
 -Fixed issue #8756: Missing translations on browse responses (Denis Chenu)
 -Fixed issue #8224: Incomplete dates (dropdown mode) are recorded as missing (mfaber)

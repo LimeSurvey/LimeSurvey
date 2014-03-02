@@ -954,6 +954,7 @@ table.statisticstable, table.statisticssummary {
     border-style: none;
     margin: 0 auto;
     margin-bottom:20px;
+    min-width:270px;
 }
 
 .statisticssummary thead th
