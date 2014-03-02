@@ -502,8 +502,8 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey to get summary
-     * @param string $sStatName Name of the sumamry option
-     * @return string The requested value
+     * @param string $sStatName Name of the summary option - valid values are 'token_count', 'token_invalid', 'token_sent', 'token_opted_out', 'token_completed', 'completed_responses', 'incomplete_responses', 'full_responses' or 'all'
+     * @return string The requested value or an array of all values when $sStatName = 'all'
      */
    public function get_summary($sSessionKey,$iSurveyID, $sStatName)
     {
@@ -575,6 +575,17 @@ class remotecontrol_handle
 					case 'full_responses';
 						return SurveyDynamic::model($iSurveyID)->count();
 						break;
+                    case 'all';
+                        $aResult=array('completed_responses'=>SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null)),
+                                       'incomplete_responses'=>SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null)),
+                                       'full_responses'=>SurveyDynamic::model($iSurveyID)->count()
+                                        );
+                        if (isset($summary))
+                        {
+                            $aResult=array_merge($aResult,$summary);
+                        }
+                        return $aResult;
+                        break;
 					default:
 						return array('status' => 'Data is not available');
 				}
