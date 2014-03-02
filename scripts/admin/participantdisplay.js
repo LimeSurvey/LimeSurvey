@@ -729,9 +729,13 @@ $(document).ready(function() {
                 buttons: dialog_buttons
             });
         } else {
+            if(id && id!==lastSel2) { //If there was already another row open for editin save it before editing this one
+                $('tr#'+lastSel2+' div.ui-inline-save').click();
+                lastSel2=id;
+            }
             var att_type = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'atttype');
             if(att_type=="DP") { //Date
-                $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:{ dataInit:function (elem) {$(elem).datepicker();}}});
+                $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'text', editoptions:{ dataInit:function (elem) {$(elem).datepicker();}}});
             }
             if(att_type=="DD") { //Dropdown
                 var att_p_values = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attpvalues');
@@ -741,19 +745,15 @@ $(document).ready(function() {
                 $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'text'});
                 $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:''});
             }
-            var attap = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attap');
-            if(id && id!==lastSel2) { //If there was already another row open for editin save it before editing this one
-                jQuery("#displayparticipants_"+parid[0]+"_t").saveRow(lastSel2);
-                //jQuery.fn.fmatter.rowactions('97358ea2-8227-483b-a225-5d13a522402e_50','displayparticipants_97358ea2-8227-483b-a225-5d13a522402e_t','cancel',0);
-                lastSel2=id;
-            }
-            $.fn.fmatter.rowactions(id,'displayparticipants_'+parid[0]+'_t','edit',0);
             if(method=='edit') {
                 jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('restoreRow',id);
-                jQuery("#displayparticipants_"+parid[0]+"_t").restoreRow(id);
+            }
+            if(method=='click') {
+                jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('restoreRow',id);
+				jQuery("tr#"+id+" .ui-inline-edit").hide();
+				jQuery("tr#"+id+" .ui-inline-save, tr#"+id+" .ui-inline-cancel").show();
             }
             jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('editRow',id,true);
-            jQuery("#displayparticipants_"+parid[0]+"_t").editRow(id,true);
         }
     }
 
