@@ -1,5 +1,3 @@
-// $Id: tokens.js 8633 2010-04-25 12:57:33Z c_schmitz
-//var idexternal=parseInt(3);
 var conditionid=1;
 function checkbounces() {
     $("#dialog-modal").dialog('open');
@@ -370,7 +368,7 @@ $(document).ready(function() {
             buttonicon:'ui-bounceprocessing',
             onClickButton:function(){
                 $("#dialog-modal").dialog({
-                    title: "Summary",
+                    title: sSummary,
                     modal: true,
                     autoOpen: false,
                     height: 200,
