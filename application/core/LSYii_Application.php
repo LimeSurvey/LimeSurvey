@@ -55,8 +55,8 @@ class LSYii_Application extends CWebApplication
         if(is_string($config)) {
             $config = require($config);
         }
-        
-        if ($config['config']['debug'] == 2)
+
+        if (isset($config['config']['debug']) && $config['config']['debug'] == 2)
         {
             // If debug = 2 we add firebug / console logging for all trace messages
             // If you want to var_dump $config you could do:

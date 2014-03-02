@@ -151,7 +151,7 @@
     {
         $aSettings=array();
     }
-    // Set debug : if not set : don't change 
+    // Set debug : if not set : set to default from PHP 5.3
     if (isset($aSettings['config']['debug']))
     {
         if ($aSettings['config']['debug']>0)
@@ -164,6 +164,10 @@
             define('YII_DEBUG', false);
             error_reporting(0);
         }
+    }
+    else
+    {
+        error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);// Not needed if user don't remove his 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
     }
 
     if (version_compare(PHP_VERSION, '5.3.0', '<'))
