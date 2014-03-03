@@ -21,21 +21,21 @@
     // TODO: Merge columnNames and aTokenColumns : need more option (name,index,search, type, editable ...)
     $aTokenColumns=getTokenFieldsAndNames($surveyid,false);
     $aNotQuickFilter=array('tid','emailstatus','sent','remindersent','remindercount','completed','usesleft','validfrom','validuntil');
-    foreach($aTokenColumns as $aTokenColumn => &$aTokenInformation)
+    foreach($aTokenColumns as $aTokenColumn => $aTokenInformation)
     {
         if($aTokenColumn=="tid"){
-            $aTokenInformation['editable']=false;
-            $aTokenInformation['search']=false;
-            $aTokenInformation['add']=false;
+            $aTokenColumns[$aTokenColumn]['editable']=false;
+            $aTokenColumns[$aTokenColumn]['search']=false;
+            $aTokenColumns[$aTokenColumn]['add']=false;
         }else{
-            $aTokenInformation['editable']=true;
-            $aTokenInformation['search']=true;
-            $aTokenInformation['add']=true;
+            $aTokenColumns[$aTokenColumn]['editable']=true;
+            $aTokenColumns[$aTokenColumn]['search']=true;
+            $aTokenColumns[$aTokenColumn]['add']=true;
         }
         if(in_array($aTokenColumn,$aNotQuickFilter)){
-            $aTokenInformation['quickfilter']=false;
+            $aTokenColumns[$aTokenColumn]['quickfilter']=false;
         }else{
-            $aTokenInformation['quickfilter']=true;
+            $aTokenColumns[$aTokenColumn]['quickfilter']=true;
         }
     }
     // Build the columnNames for the extra attributes 
@@ -160,11 +160,11 @@
 <div id ="search" style="display:none">
     <?php
         $aOptionSearch = array('' => $clang->gT('Select...'));
-        foreach($aTokenColumns as $aTokenColumn => $aTokenInformation)
+        foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)
         {
             if($aTokenInformation['search'])
             {
-                $aOptionSearch[$aTokenColumn]=$aTokenInformation['description'];
+                $aOptionSearch[$sTokenColumn]=$aTokenInformation['description'];
             }
         }
         $aOptionCondition = array('' => $clang->gT('Select...'),
