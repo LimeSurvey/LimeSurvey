@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-03-02 10:42:08+00:00\n"
+"POT-Creation-Date: 2014-03-03 00:05:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -280,8 +280,8 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:85
 #: application/views/admin/participants/displayParticipants_view.php:84
 #: application/views/admin/participants/displayParticipants_view.php:209
-#: application/views/admin/token/browse.php:113
-#: application/views/admin/token/browse.php:173
+#: application/views/admin/token/browse.php:116
+#: application/views/admin/token/browse.php:176
 msgid "Less than"
 msgstr ""
 
@@ -309,8 +309,8 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:90
 #: application/views/admin/participants/displayParticipants_view.php:83
 #: application/views/admin/participants/displayParticipants_view.php:208
-#: application/views/admin/token/browse.php:113
-#: application/views/admin/token/browse.php:172
+#: application/views/admin/token/browse.php:116
+#: application/views/admin/token/browse.php:175
 msgid "Greater than"
 msgstr ""
 
@@ -922,6 +922,7 @@ msgstr ""
 #: application/views/admin/participants/attributeControl_view.php:22
 #: application/views/admin/participants/displayParticipants_view.php:87
 #: application/views/admin/participants/sharePanel_view.php:29
+#: application/views/admin/token/browse.php:115
 msgid "OR"
 msgstr ""
 
@@ -1317,9 +1318,9 @@ msgstr ""
 #: application/views/admin/templates/importuploaded_view.php:25
 #: application/views/admin/templates/importuploaded_view.php:82
 #: application/views/admin/token/browse.php:66
-#: application/views/admin/token/browse.php:208
-#: application/views/admin/token/browse.php:213
-#: application/views/admin/token/browse.php:218
+#: application/views/admin/token/browse.php:211
+#: application/views/admin/token/browse.php:216
+#: application/views/admin/token/browse.php:221
 #: application/views/admin/token/ldapform.php:2
 msgid "Error"
 msgstr ""
@@ -1939,6 +1940,7 @@ msgid "OK"
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:1158
+#: application/views/admin/token/browse.php:99
 msgid "Summary"
 msgstr ""
 
@@ -2300,7 +2302,7 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:174
 #: application/views/admin/participants/displayParticipants_view.php:193
 #: application/views/admin/participants/sharePanel_view.php:7
-#: application/views/admin/token/browse.php:114
+#: application/views/admin/token/browse.php:117
 #: application/views/admin/token/dummytokenform.php:13
 #: application/views/admin/token/tokenform.php:30
 msgid "First name"
@@ -2316,7 +2318,7 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:174
 #: application/views/admin/participants/displayParticipants_view.php:194
 #: application/views/admin/participants/sharePanel_view.php:8
-#: application/views/admin/token/browse.php:114
+#: application/views/admin/token/browse.php:117
 #: application/views/admin/token/dummytokenform.php:15
 #: application/views/admin/token/tokenform.php:35
 msgid "Last name"
@@ -2640,7 +2642,7 @@ msgstr ""
 #: application/views/admin/quotas/viewquotas_view.php:19
 #: application/views/admin/survey/Question/subQuestion_view.php:82
 #: application/views/admin/survey/subview/tabPanelIntegration_view.php:8
-#: application/views/admin/token/browse.php:114
+#: application/views/admin/token/browse.php:117
 #: application/views/admin/user/editusers.php:5
 #: application/views/admin/usergroup/viewUserGroup_view.php:33
 #: application/views/plugins/index.php:19
@@ -5512,7 +5514,7 @@ msgstr ""
 #: application/helpers/frontend_helper.php:1128 application/models/Token.php:42
 #: application/views/admin/dataentry/caption_view.php:29
 #: application/views/admin/participants/attributeMap_view.php:96
-#: application/views/admin/token/browse.php:114
+#: application/views/admin/token/browse.php:117
 #: application/views/admin/token/tokenform.php:56
 #: application/views/entertoken_view.php:15
 msgid "Token"
@@ -6724,12 +6726,12 @@ msgstr ""
 #: application/models/Token.php:40
 #: application/views/admin/export/exportresults_view.php:134
 #: application/views/admin/saved/savedlist_view.php:10
-#: application/views/admin/token/browse.php:114
+#: application/views/admin/token/browse.php:117
 msgid "Email address"
 msgstr ""
 
 #: application/helpers/common_helper.php:5413 application/models/Token.php:41
-#: application/views/admin/token/browse.php:114
+#: application/views/admin/token/browse.php:117
 msgid "Email status"
 msgstr ""
 
@@ -6750,7 +6752,7 @@ msgid "Total numbers of sent reminders"
 msgstr ""
 
 #: application/helpers/common_helper.php:5443 application/models/Token.php:49
-#: application/views/admin/token/browse.php:114
+#: application/views/admin/token/browse.php:117
 msgid "Uses left"
 msgstr ""
 
@@ -9188,13 +9190,13 @@ msgstr ""
 msgid "Blacklisted"
 msgstr ""
 
-#: application/models/Token.php:50 application/views/admin/token/browse.php:114
+#: application/models/Token.php:50 application/views/admin/token/browse.php:117
 #: application/views/admin/token/dummytokenform.php:24
 #: application/views/admin/token/tokenform.php:133
 msgid "Valid from"
 msgstr ""
 
-#: application/models/Token.php:51 application/views/admin/token/browse.php:114
+#: application/models/Token.php:51 application/views/admin/token/browse.php:117
 msgid "Valid until"
 msgstr ""
 
@@ -9282,7 +9284,7 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:76
 #: application/views/admin/participants/displayParticipants_view.php:174
 #: application/views/admin/participants/displayParticipants_view.php:199
-#: application/views/admin/token/browse.php:114
+#: application/views/admin/token/browse.php:117
 #: application/views/admin/token/dummytokenform.php:19
 #: application/views/admin/token/tokenform.php:66
 msgid "Language"
@@ -11190,6 +11192,7 @@ msgstr ""
 #: application/views/admin/participants/attributeControl_view.php:21
 #: application/views/admin/participants/displayParticipants_view.php:86
 #: application/views/admin/participants/sharePanel_view.php:28
+#: application/views/admin/token/browse.php:114
 msgid "AND"
 msgstr ""
 
@@ -11483,8 +11486,8 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:202
 #: application/views/admin/participants/displayParticipants_view.php:257
 #: application/views/admin/participants/viewAttribute_view.php:9
-#: application/views/admin/token/browse.php:159
-#: application/views/admin/token/browse.php:167
+#: application/views/admin/token/browse.php:162
+#: application/views/admin/token/browse.php:170
 msgid "Select..."
 msgstr ""
 
@@ -11512,22 +11515,22 @@ msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:79
 #: application/views/admin/participants/displayParticipants_view.php:203
-#: application/views/admin/token/browse.php:113
-#: application/views/admin/token/browse.php:168
+#: application/views/admin/token/browse.php:116
+#: application/views/admin/token/browse.php:171
 msgid "Equals"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:80
 #: application/views/admin/participants/displayParticipants_view.php:204
-#: application/views/admin/token/browse.php:113
-#: application/views/admin/token/browse.php:169
+#: application/views/admin/token/browse.php:116
+#: application/views/admin/token/browse.php:172
 msgid "Contains"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:81
 #: application/views/admin/participants/displayParticipants_view.php:206
-#: application/views/admin/token/browse.php:113
-#: application/views/admin/token/browse.php:170
+#: application/views/admin/token/browse.php:116
+#: application/views/admin/token/browse.php:173
 msgid "Not equal"
 msgstr ""
 
@@ -11654,7 +11657,7 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:135
 #: application/views/admin/participants/sharePanel_view.php:20
 #: application/views/admin/token/browse.php:60
-#: application/views/admin/token/browse.php:220
+#: application/views/admin/token/browse.php:223
 msgid "Please select at least one participant."
 msgstr ""
 
@@ -12229,26 +12232,26 @@ msgstr ""
 #: application/views/admin/responses/browseallheader_view.php:15
 #: application/views/admin/responses/browsetimeheader_view.php:13
 #: application/views/admin/responses/browsetimeheader_view.php:14
-#: application/views/admin/token/browse.php:139
+#: application/views/admin/token/browse.php:142
 msgid "Show start..."
 msgstr ""
 
 #: application/views/admin/responses/browseallheader_view.php:17
 #: application/views/admin/responses/browsetimeheader_view.php:16
 #: application/views/admin/responses/browsetimeheader_view.php:17
-#: application/views/admin/token/browse.php:140
+#: application/views/admin/token/browse.php:143
 msgid "Show previous.."
 msgstr ""
 
 #: application/views/admin/responses/browseallheader_view.php:21
 #: application/views/admin/responses/browsetimeheader_view.php:21
-#: application/views/admin/token/browse.php:142
+#: application/views/admin/token/browse.php:145
 msgid "Show next.."
 msgstr ""
 
 #: application/views/admin/responses/browseallheader_view.php:23
 #: application/views/admin/responses/browsetimeheader_view.php:24
-#: application/views/admin/token/browse.php:143
+#: application/views/admin/token/browse.php:146
 msgid "Show last.."
 msgstr ""
 
@@ -14472,59 +14475,59 @@ msgstr ""
 msgid "Send a reminder email to the selected entries (if they have already received the invitation email)"
 msgstr ""
 
-#: application/views/admin/token/browse.php:108
+#: application/views/admin/token/browse.php:109
 msgid "View participants of this survey in the central participant database panel"
 msgstr ""
 
-#: application/views/admin/token/browse.php:110
+#: application/views/admin/token/browse.php:111
 msgid "Start bounce processing"
 msgstr ""
 
-#: application/views/admin/token/browse.php:113
-#: application/views/admin/token/browse.php:171
+#: application/views/admin/token/browse.php:116
+#: application/views/admin/token/browse.php:174
 msgid "Not contains"
 msgstr ""
 
-#: application/views/admin/token/browse.php:114
+#: application/views/admin/token/browse.php:117
 #: application/views/admin/token/tokenform.php:79
 msgid "Invitation sent?"
 msgstr ""
 
-#: application/views/admin/token/browse.php:114
+#: application/views/admin/token/browse.php:117
 #: application/views/admin/token/tokenform.php:91
 msgid "Reminder sent?"
 msgstr ""
 
-#: application/views/admin/token/browse.php:114
+#: application/views/admin/token/browse.php:117
 msgid "Reminder count"
 msgstr ""
 
-#: application/views/admin/token/browse.php:114
+#: application/views/admin/token/browse.php:117
 #: application/views/admin/token/tokenform.php:109
 msgid "Completed?"
 msgstr ""
 
-#: application/views/admin/token/browse.php:136
+#: application/views/admin/token/browse.php:139
 msgid "Survey participants"
 msgstr ""
 
-#: application/views/admin/token/browse.php:145
+#: application/views/admin/token/browse.php:148
 msgid "Filter by"
 msgstr ""
 
-#: application/views/admin/token/browse.php:180
+#: application/views/admin/token/browse.php:183
 msgid "Add another search criteria"
 msgstr ""
 
-#: application/views/admin/token/browse.php:187
+#: application/views/admin/token/browse.php:190
 msgid "Please select the attributes that are to be added to the central database"
 msgstr ""
 
-#: application/views/admin/token/browse.php:210
+#: application/views/admin/token/browse.php:213
 msgid "Please select a field."
 msgstr ""
 
-#: application/views/admin/token/browse.php:215
+#: application/views/admin/token/browse.php:218
 msgid "Please select a condition."
 msgstr ""
 
