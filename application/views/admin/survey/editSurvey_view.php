@@ -6,7 +6,10 @@
 	$controller = $yii->getController();
     $controller->renderPartial('/admin/survey/subview/tab_view',$data);
     $controller->renderPartial('/admin/survey/subview/tabGeneralEditSurvey_view',$data);
-    $controller->renderPartial('/admin/survey/subview/tabPluginSettings_view',$data);
+    if (isset($pluginSettings))
+    {
+        $controller->renderPartial('/admin/survey/subview/tabPluginSettings_view',$data);
+    }
     $controller->renderPartial('/admin/survey/subview/tabPresentation_view',$data);
     $controller->renderPartial('/admin/survey/subview/tabPublication_view',$data);
     $controller->renderPartial('/admin/survey/subview/tabNotification_view',$data);

@@ -252,6 +252,7 @@
             $out .= Chtml::tag('div', array('class' => implode(' ', $metaData['class'])),
 				$this->widget('bootstrap.widgets.TbHtml5Editor', array(
 					'name' => $id,
+                    'value' => $value,
 					'width' => '100%',
 					'editorOptions' => array(
 						'html' => true,
