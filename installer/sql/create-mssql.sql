@@ -193,10 +193,10 @@ PRIMARY KEY  ([participant_id],[share_uid])
 --
 CREATE TABLE [prefix_participants] (
 [participant_id] varchar(50) NOT NULL,
-[firstname] varchar(40),
-[lastname] varchar(40),
-[email] varchar(254),
-[language] varchar(40),
+[firstname] varchar(40) NULL,
+[lastname] varchar(40) NULL,
+[email] varchar(254) NULL,
+[language] varchar(40) NULL,
 [blacklisted] varchar(1) NOT NULL,
 [owner_uid] int NOT NULL,
 [created_by] int NOT NULL,
@@ -453,10 +453,10 @@ CREATE TABLE [prefix_surveys] (
 [showprogress] varchar(1) NULL default 'Y',
 [questionindex] int NOT NULL default '0',
 [navigationdelay] int NOT NULL default '0',
-[nokeyboard] varchar(1) default 'N',
-[alloweditaftercompletion] varchar(1) default 'N',
-[googleanalyticsstyle] varchar(1),
-[googleanalyticsapikey] varchar(25),
+[nokeyboard] varchar(1) NULL default 'N',
+[alloweditaftercompletion] varchar(1) NULL default 'N',
+[googleanalyticsstyle] NULL varchar(1),
+[googleanalyticsapikey] NULL varchar(25),
 PRIMARY KEY  ([sid])
 );
 
@@ -488,7 +488,7 @@ CREATE TABLE [prefix_surveys_languagesettings] (
 [email_admin_responses_subj] varchar(255) NULL,
 [email_admin_responses] varchar(max) NULL,
 [surveyls_numberformat] int NOT NULL DEFAULT 0,
-[attachments] varchar(max) default null,
+[attachments] varchar(max) NULL default NULL,
 PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
 );
 
