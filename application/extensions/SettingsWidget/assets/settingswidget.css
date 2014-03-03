@@ -2,31 +2,87 @@ div.row {
     border: 2px solid red;
 }
 
+.settingswidget * {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.settingswidget input, .settingswidget label{
+    height: 30px;
+    line-height: 30px;
+    margin-top: 0px;
+}
+
+.settingswidget textarea {
+    min-height: 100px;
+}
+
+.settingswidget .boolean label{
+    margin-right: 10px;
+}
+
+.settingswidget {
+    margin: auto;
+    width: 60%;
+}
+
 /*
     Special layout for list settings (inline).
 */
 
-form.settingswidget .settingslist input[data-type=int]{
+.settingswidget .settingslist input[data-type=int]{
     width: 50px;
 }
 
-form.settingswidget .settingslist table{
+.settingswidget .settingslist table{
     width: 100%;
 }
-form.settingswidget .settingslist label{
+.settingswidget .settingslist label{
     width: auto;
     margin-right: 5px;
 }
 
-form.settingswidget div {
+.settingswidget div.setting {
+    width: 100%;
+    display: inline-block;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+
+.settingswidget {
+    padding-top: 10px;
+}
+
+.settingswidget .setting > * {
+    width: 70%;
     display: inline-block;
 }
 
-form.settingswidget div.setting {
-    width: 99%;
-    text-align: left;
+.settingswidget .setting > label {
+    text-align: right;
+    padding-right: 10px;
+    width: 30%;
+    display: inline-block;
+}
+.settingswidget .setting > label:after{
+    content: ':';
+}
+.settingswidget .setting input[type=checkbox]{
+    width: auto;
 }
 
-form.settingswidget {
-    padding-top: 10px;
+.settingswidget legend {
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+}
+
+.settingswidget .buttons {
+    text-align: center;
+}
+
+.settingswidget ul.wysihtml5-toolbar li {
+    clear: none !important;
 }

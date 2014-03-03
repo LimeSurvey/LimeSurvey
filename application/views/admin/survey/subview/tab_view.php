@@ -22,6 +22,7 @@
         elseif ($action == "editsurveysettings") { ?>
         <li><a href='#panelintegration'><?php $clang->eT("Panel integration"); ?></a></li>
         <li><a href='#resources'><?php $clang->eT("Resources"); ?></a></li>
+        <li><a href='#pluginsettings'><?php $clang->eT("Plugins"); ?></a></li>
         <?php } ?>
     </ul>
     <?php

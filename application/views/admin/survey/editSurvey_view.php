@@ -6,11 +6,13 @@
 	$controller = $yii->getController();
     $controller->renderPartial('/admin/survey/subview/tab_view',$data);
     $controller->renderPartial('/admin/survey/subview/tabGeneralEditSurvey_view',$data);
+    $controller->renderPartial('/admin/survey/subview/tabPluginSettings_view',$data);
     $controller->renderPartial('/admin/survey/subview/tabPresentation_view',$data);
     $controller->renderPartial('/admin/survey/subview/tabPublication_view',$data);
     $controller->renderPartial('/admin/survey/subview/tabNotification_view',$data);
     $controller->renderPartial('/admin/survey/subview/tabTokens_view',$data);
     $controller->renderPartial('/admin/survey/subview/tabPanelIntegration_view',$data);
+    
 ?>
 <input type='hidden' id='surveysettingsaction' name='action' value='updatesurveysettings' />
 <input type='hidden' id='sid' name='sid' value="<?php echo $esrow['sid'];?>" />
@@ -19,6 +21,7 @@
 </form>
 <?php
     $controller->renderPartial('/admin/survey/subview/tabResourceManagement_view',$data);
+    
 ?>
 </div>
 

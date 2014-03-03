@@ -10,15 +10,34 @@
          * @var array Buttons for the form.
          */
         public $buttons = array();
+
+        /**
+         * Set to false to render elements in an existing form.
+         * @var boolean
+         */
+        public $form = true;
         public $formHtmlOptions = array();
         public $method = 'post';
+        public $prefix;
         public $settings = array();
 
+        public $title;
 
 
         public function beginForm()
         {
-            echo CHtml::beginForm($this->action, $this->method, $this->formHtmlOptions);
+            if ($this->form)
+            {
+                echo CHtml::beginForm($this->action, $this->method, $this->formHtmlOptions);
+            }
+            else
+            {
+                echo CHtml::openTag('div', array('class' => 'settingswidget', 'id' => $this->getId(), 'style' => 'margin-left: 0px;'));
+            }
+            if (isset($this->title))
+            {
+                echo CHtml::tag('legend', array(), $this->title);
+            }
         }
 
         public function endForm()
@@ -39,7 +58,6 @@
 
             // Start form
             $this->beginForm();
-
         }
 
         protected function renderButton($label, $htmlOptions)
@@ -62,10 +80,12 @@
 
         protected function renderButtons()
         {
+            echo CHtml::openTag('div', array('class' => 'buttons'));
             foreach ($this->buttons as $label => $htmlOptions)
             {
                 $this->renderButton($label, $htmlOptions);
             }
+            echo CHtml::closeTag('div');
         }
 
         protected function renderSetting($name, $metaData, $form = null, $return = false)
@@ -79,6 +99,11 @@
             );
             $metaData = array_merge($defaults, $metaData);
 
+            if (isset($this->prefix))
+            {
+                $name = "{$this->prefix}[$name]";
+            }
+            
             if (is_string($metaData['class']))
             {
                 $metaData['class'] = array($metaData['class']);
@@ -147,7 +172,10 @@
             // Render buttons
             $this->renderButtons();
             // End form
-            $this->endForm();
+            if ($this->form)
+            {
+                $this->endForm();
+            }
         }
 
 
@@ -168,11 +196,12 @@
             {
                 $out .= CHtml::label($metaData['label'], $id);
             }
+            $out .= CHtml::openTag('div', array('class' => 'boolean'));
             $out .= CHtml::radioButtonList($id, $value, array(
                 0 => 'False',
                 1 => 'True'
-            ), array('id' => $id, 'form' => $form, 'container'=>'div', 'separator' => ''));
-
+            ), array('id' => $id, 'form' => $form, 'container'=> false, 'separator' => ''));
+            $out .= CHtml::closeTag('div');
 
             return $out;
         }
@@ -220,7 +249,16 @@
             {
                 $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
             }
-            $out .= Chtml::tag('div', array('class' => implode(' ', $metaData['class'])), CHtml::textArea($id, $value, array('id' => $id, 'form' => $form, 'readonly' => $readOnly)));
+            $out .= Chtml::tag('div', array('class' => implode(' ', $metaData['class'])),
+				$this->widget('bootstrap.widgets.TbHtml5Editor', array(
+					'name' => $id,
+					'width' => '100%',
+					'editorOptions' => array(
+						'html' => true,
+
+					)
+				), true)
+			);
             return $out;
         }
 
