@@ -62,7 +62,7 @@ class Participant extends LSActiveRecord
             array('participant_id', 'length', 'max' => 50),
             array('firstname, lastname, language', 'length', 'max' => 40),
             array('firstname, lastname, language', 'LSYii_Validators'),
-            array('email', 'length', 'max' => 80),
+            array('email', 'length', 'max' => 254),
             array('blacklisted', 'length', 'max' => 1),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
