@@ -5,7 +5,7 @@
         <div class='warningheader'>
             <?php $clang->eT("Warning"); ?><br /><?php $clang->eT("READ THIS CAREFULLY BEFORE PROCEEDING"); ?>
         </div>
-        <p><?php $clang->eT("There are two ways to stop a survey. Please read carefully on the two options below and choose the right one for you."); ?></p>
+        <p><?php $clang->eT("There are two ways to stop a survey. Please read carefully about the two options below and choose the right one for you."); ?></p>
         <table id='deactivation'><tr><th width='50%'><?php $clang->eT("Expiration"); ?></th><th><?php $clang->eT("Deactivation"); ?></th></tr>
             <tr><td><ul>
                         <li><?php $clang->eT("No responses are lost.");?></li>
@@ -17,7 +17,7 @@
                 </td>
                 <td>
                     <ul>
-                        <li><?php $clang->eT("All responses are not accessible anymore with LimeSurvey).");?> <?php echo $clang->gT("Your response table will be renamed to:")." {$dbprefix}old_".$surveyid."_{$date}"; ?></li>
+                        <li><?php $clang->eT("All responses are not accessible anymore with LimeSurvey.");?> <?php echo $clang->gT("Your response table will be renamed to:")." {$dbprefix}old_".$surveyid."_{$date}"; ?></li>
                         <li><?php $clang->eT("All participant information is lost.");?></li>
                         <li><?php $clang->eT("A deactivated survey is not accessible to participants (only a message appears that they are not permitted to see this survey).");?></li>
                         <li><?php $clang->eT("All questions, groups and parameters are editable again.");?></li>
