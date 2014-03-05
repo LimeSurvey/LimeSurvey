@@ -330,7 +330,7 @@ if ($adding || $copying) {
             <ul>
                 <li>
                     <label for='the_file'><?php $clang->eT("Select LimeSurvey question file (*.lsq/*.csv)"); ?>:</label>
-                    <input name='the_file' id='the_file' type="file"/>
+                    <input name='the_file' id='the_file' type="file" required="required" accept=".lsq,.csv" />
                 </li>
                 <li>
                     <label for='translinksfields'><?php $clang->eT("Convert resource links?"); ?></label>

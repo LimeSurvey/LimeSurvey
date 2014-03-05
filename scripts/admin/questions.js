@@ -19,7 +19,7 @@ $(document).on('blur','#frmeditquestion :not(:hidden)[name="title"]',function(){
 /**
 * Validate question object before click on a submit button
 */
-$(document).on('click',':submit',{validated:false},function(event,data){
+$(document).on('click','#frmeditquestion :submit',{validated:false},function(event,data){
     data = data || event.data;
     if(data.validated){
         return true;
