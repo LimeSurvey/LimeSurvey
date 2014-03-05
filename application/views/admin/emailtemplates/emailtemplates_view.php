@@ -24,29 +24,7 @@ $(document).ready(function () {
 
 
 </script>
-<style type="text/css">
 
-#emailtemplates table.attachments td, #emailtemplates button.add-attachment {
-    text-align: left;
-    margin: 2px 2px 2px 2px !important;
-    
-}
-
-table.attachments td span{
-    border: 1px solid #999999;
-    display:block;
-}
-
-table.attachments img, table.attachments span{
-    height: 16px;
-    cursor: pointer;
-}
-ul.editor-parent {
-    overflow: hidden;
-}
-
-
-</style>
 <div class='header ui-widget-header'>
     <?php $clang->eT("Edit email templates"); ?>
 </div>
