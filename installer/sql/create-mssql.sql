@@ -525,7 +525,7 @@ CREATE TABLE [prefix_users] (
 [parent_id] int NOT NULL,
 [lang] varchar(20) NULL,
 [email] varchar(254) NULL,
-[htmleditormode] varchar(7) default 'default',
+[htmleditormode] varchar(7) NULL default 'default',
 [templateeditormode] varchar(7) NOT NULL default 'default',
 [questionselectormode] varchar(7)  NOT NULL default 'default',
 [one_time_pw] text NULL,
