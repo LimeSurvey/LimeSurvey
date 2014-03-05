@@ -455,8 +455,8 @@ CREATE TABLE [prefix_surveys] (
 [navigationdelay] int NOT NULL default '0',
 [nokeyboard] varchar(1) NULL default 'N',
 [alloweditaftercompletion] varchar(1) NULL default 'N',
-[googleanalyticsstyle] NULL varchar(1),
-[googleanalyticsapikey] NULL varchar(25),
+[googleanalyticsstyle] varchar(1) NULL,
+[googleanalyticsapikey] varchar(25) NULL,
 PRIMARY KEY  ([sid])
 );
 
