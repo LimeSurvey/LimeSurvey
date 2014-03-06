@@ -7,7 +7,7 @@ div.row {
     box-sizing: border-box;
 }
 
-.settingswidget input, .settingswidget label{
+.settingswidget input[type^='button'], .settingswidget label{
     height: 30px;
     line-height: 30px;
     margin-top: 0px;
