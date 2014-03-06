@@ -36,7 +36,6 @@ class DbStorage implements iPluginStorage {
      * @param string $model Optional model name to which the data was attached.
      * @param int $id Optional id of the model instance to which the data was attached.
      * @param mixed $default Default value to return if key could not be found.
-     * @param string $language Optional language identifier used for retrieving the setting.
      * @return mixed Returns the value from the database or null if not set.
      */
     protected function getGeneric(iPlugin $plugin, $key, $model, $id, $default) 

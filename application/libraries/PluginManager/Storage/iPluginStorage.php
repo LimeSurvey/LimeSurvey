@@ -7,6 +7,8 @@
          * @param string | null $key The storage key, if null will return all data for the plugin.
          * @param string $model Name of a model in case its model specific plugin data, like for a specific question or survey.
          * @param int $id Id of the model for which the data is retreived
+         * @param mixed $default The default value to use when none present
+         * @param string $language The optional language to use
          * @return mixed The data stored.
          */
         public function get(iPlugin $plugin, $key = null, $model = null, $id = null, $default = null, $language = null);
@@ -18,6 +20,7 @@
          * @param mixed $data The data to be stored, serialized using serialize.
          * @param string $model Name of a model in case its model specific plugin data, like for a specific question or survey.
          * @param int $id Id of the model for which the data is retreived
+         * @param string $language The optional language to use
          */  
         public function set (iPlugin $plugin, $key, $data, $model = null, $id = null, $language = null);
 

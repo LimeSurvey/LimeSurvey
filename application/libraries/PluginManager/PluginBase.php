@@ -52,6 +52,7 @@
          * @param string $key
          * @param string $model
          * @param int $id
+         * @param mixed $default The default value to use when not was set
          * @return boolean
          */
         protected function get($key = null, $model = null, $id = null, $default = null)

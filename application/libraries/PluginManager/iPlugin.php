@@ -50,6 +50,15 @@ interface iPlugin {
     public function getStore();
     
     /**
+     * Saves the settings for this plugin
+     * 
+     * Assumes an array with valid key/value pairs is passed.
+     * 
+     * @param array $aSettings An array with key/value pairs for all plugin settings
+     */
+    public function saveSettings($aSettings);
+    
+    /**
      * Set the event to the plugin, this method is executed by the PluginManager
      * just before dispatching the event.
      * 
