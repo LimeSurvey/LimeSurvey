@@ -109,7 +109,7 @@
                 $surveyList = array_merge($surveyList, $tmpList['inactive']);
             }
             $menu['items']['right'][] = array(
-                'title' => 'Surveys:',
+                'title' => gT('Surveys:'),
                 'type' => 'select',
                 'name' => 'surveyid',
                 'route' => 'admin/survey/sa/view',
