@@ -56,7 +56,7 @@ class Authentication extends Survey_Common_Action
         /* @var $identity LSUserIdentity */
         $identity = $beforeLogin->get('identity');
 
-        if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit')) && is_null(App()->getRequest()->getParam('onepass')))
+        if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit')))
         {
             if (!is_null($beforeLogin->get('default'))) {
                 $aData['defaultAuth'] = $beforeLogin->get('default');
