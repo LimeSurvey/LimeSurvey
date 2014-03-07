@@ -35,17 +35,6 @@ class database extends Survey_Common_Action
         $iQuestionGroupID=returnGlobal('gid');
         $iQuestionID=returnGlobal('qid');
         $sDBOutput = '';
-        if(Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin','read'))
-        {
-            $oPurifier = new CHtmlPurifier();
-            $oPurifier->options = array('URI.AllowedSchemes'=>array(
-            'http' => true,
-            'https' => true,
-            ));
-            $bXSSFilter = true;
-        }
-        else
-            $bXSSFilter = false;
 
         if ($sAction == "updatedefaultvalues" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','update'))
         {
@@ -154,14 +143,6 @@ class database extends Survey_Common_Action
                     {
                         $sAnswerText=Yii::app()->request->getPost('answer_'.$sLanguage.'_'.$iSortOrderID.'_'.$iScaleID);
 
-                        if ($bXSSFilter)
-                        {
-                            $sAnswerText=$oPurifier->purify($sAnswerText);
-                        }
-                        else
-                        {
-                            $sAnswerText=html_entity_decode($sAnswerText, ENT_QUOTES, "UTF-8");
-                        }
                         // Fix bug with FCKEditor saving strange BR types
                         $sAnswerText=fixCKeditorText($sAnswerText);
                         // Now we insert the answers
@@ -376,13 +357,12 @@ class database extends Survey_Common_Action
                     $iQuestionOrder=(getMaxQuestionOrder($iQuestionGroupID,$iSurveyID));
                     $iQuestionOrder++;
                 }
-                $_POST['title'] = html_entity_decode(Yii::app()->request->getPost('title'), ENT_QUOTES, "UTF-8");
-                $_POST['question_'.$sBaseLanguage] = html_entity_decode(Yii::app()->request->getPost('question_'.$sBaseLanguage), ENT_QUOTES, "UTF-8");
-                $_POST['help_'.$sBaseLanguage] = html_entity_decode(Yii::app()->request->getPost('help_'.$sBaseLanguage), ENT_QUOTES, "UTF-8");
-
-                $_POST['title']=fixCKeditorText(Yii::app()->request->getPost('title'));
-                $_POST['question_'.$sBaseLanguage]=fixCKeditorText(Yii::app()->request->getPost('question_'.$sBaseLanguage));
-                $_POST['help_'.$sBaseLanguage]=fixCKeditorText(Yii::app()->request->getPost('help_'.$sBaseLanguage));
+                // &eacute; to é and &amp; to & : really needed ? Why not for answers ? (140307)
+                $sQuestionText=html_entity_decode(Yii::app()->request->getPost('question_'.$sBaseLanguage), ENT_QUOTES, "UTF-8");
+                $sQuestionHelp=html_entity_decode(Yii::app()->request->getPost('help_'.$sBaseLanguage), ENT_QUOTES, "UTF-8");
+                // Fix bug with FCKEditor saving strange BR types : in rules ?
+                $sQuestionText=fixCKeditorText($sQuestionText);
+                $sQuestionHelp=fixCKeditorText($sQuestionHelp);
 
                 $iQuestionID=0;
                 $oQuestion= new Question;
@@ -390,9 +370,9 @@ class database extends Survey_Common_Action
                 $oQuestion->gid = $iQuestionGroupID;
                 $oQuestion->type = Yii::app()->request->getPost('type');
                 $oQuestion->title = Yii::app()->request->getPost('title');
-                $oQuestion->question = Yii::app()->request->getPost('question_'.$sBaseLanguage);
+                $oQuestion->question = $sQuestionText;
                 $oQuestion->preg = Yii::app()->request->getPost('preg');
-                $oQuestion->help = Yii::app()->request->getPost('help_'.$sBaseLanguage);
+                $oQuestion->help = $sQuestionHelp;
                 $oQuestion->other = Yii::app()->request->getPost('other');
                 $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
                 $oQuestion->relevance = Yii::app()->request->getPost('relevance');
@@ -749,38 +729,22 @@ class database extends Survey_Common_Action
                     $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
                     $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
                     array_push($aSurveyLanguages,$sBaseLanguage);
-                    if ($bXSSFilter)
-                        $_POST['title'] = $oPurifier->purify($_POST['title']);
-                    else
-                        $_POST['title'] = html_entity_decode(Yii::app()->request->getPost('title'), ENT_QUOTES, "UTF-8");
-
-                    // Fix bug with FCKEditor saving strange BR types
-                    $_POST['title']=fixCKeditorText(Yii::app()->request->getPost('title'));
                     foreach ($aSurveyLanguages as $qlang)
                     {
-                        if ($bXSSFilter)
-                        {
-                            $_POST['question_'.$qlang] = $oPurifier->purify($_POST['question_'.$qlang]);
-                            $_POST['help_'.$qlang] = $oPurifier->purify($_POST['help_'.$qlang]);
-                        }
-                        else
-                        {
-                            $_POST['question_'.$qlang] = html_entity_decode(Yii::app()->request->getPost('question_'.$qlang), ENT_QUOTES, "UTF-8");
-                            $_POST['help_'.$qlang] = html_entity_decode(Yii::app()->request->getPost('help_'.$qlang), ENT_QUOTES, "UTF-8");
-                        }
-
-                        // Fix bug with FCKEditor saving strange BR types : in rules ?
-                        $_POST['question_'.$qlang]=fixCKeditorText(Yii::app()->request->getPost('question_'.$qlang));
-                        $_POST['help_'.$qlang]=fixCKeditorText(Yii::app()->request->getPost('help_'.$qlang));
-
                         if (isset($qlang) && $qlang != "")
                         {
+                            // &eacute; to é and &amp; to & : really needed ? Why not for answers ? (130307)
+                            $sQuestionText=html_entity_decode(Yii::app()->request->getPost('question_'.$qlang), ENT_QUOTES, "UTF-8");
+                            $sQuestionHelp=html_entity_decode(Yii::app()->request->getPost('help_'.$qlang), ENT_QUOTES, "UTF-8");
+                            // Fix bug with FCKEditor saving strange BR types : in rules ?
+                            $sQuestionText=fixCKeditorText($sQuestionText);
+                            $sQuestionHelp=fixCKeditorText($sQuestionHelp);
                             $udata = array(
                             'type' => Yii::app()->request->getPost('type'),
                             'title' => Yii::app()->request->getPost('title'),
-                            'question' => Yii::app()->request->getPost('question_'.$qlang),
+                            'question' => $sQuestionText,
                             'preg' => Yii::app()->request->getPost('preg'),
-                            'help' => Yii::app()->request->getPost('help_'.$qlang),
+                            'help' => $sQuestionHelp,
                             'gid' => $iQuestionGroupID,
                             'other' => Yii::app()->request->getPost('other'),
                             'mandatory' => Yii::app()->request->getPost('mandatory'),

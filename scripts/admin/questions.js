@@ -36,7 +36,7 @@ function validateQuestion(jqObject){
     if(typeof jqObject=="undefined"){jqObject=$([]);}
     $.post(
         validateUrl,
-        { title: $('#frmeditquestion :not(:hidden)[name="title"]:first').val() },
+        { title: $('#frmeditquestion [name="title"]:first').val() },
         function(data){
                 if($.isEmptyObject(data))
                 {
