@@ -5943,6 +5943,11 @@
                 'hasErrors'=>$hasErrors,
                 );
             }
+            // Do NOT hide the questions if there is an error in the relevance equation
+            if ($LEM->ParseResultCache[$relevanceEqn]['hasErrors'] == true)
+            {
+                $qrel=true;
+            }
 
             //////////////////////////////////////
             // ARE ANY SUB-QUESTION IRRELEVANT? //
