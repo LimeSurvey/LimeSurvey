@@ -4402,10 +4402,18 @@
             }
 
             if (!is_null($questionNum)) {
+                // make sure subquestions with errors in relevance equations are always shown and answers recorded  #7703
+                if ($hasErrors)
+                {
+                    $result=true;
+                    $relevanceJS=1;
+                } 
+                else
+                {
+                    $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
+                }
                 $jsVars = $this->em->GetJSVarsUsed();
                 $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
-                $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
-
                 $isExclusiveJS='';
                 $irrelevantAndExclusiveJS='';
                 // Only need to extract JS, since will already have Vars and error counts from main equation
@@ -4943,7 +4951,6 @@
                     $LEM->StartProcessingPage(true);
                     $updatedValues=$LEM->ProcessCurrentResponses();
                     $message = '';
-
                     $LEM->currentQset = array();    // reset active list of questions
                     $result = $LEM->_ValidateSurvey();
                     $message .= $result['message'];
@@ -6002,6 +6009,11 @@
                                         $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
                                         $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['gseq'], $qInfo['qseq']);
                                         $hasErrors = $LEM->em->HasErrors();
+                                        // make sure subquestions with errors in relevance equations are always shown and answers recorded  #7703
+                                        if ($hasErrors)
+                                        {
+                                            $sqrel=true;
+                                        }
                                         if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
                                         {
                                             $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
@@ -6043,6 +6055,11 @@
                                         $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
                                         $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['gseq'], $qInfo['qseq']);
                                         $hasErrors = $LEM->em->HasErrors();
+                                        // make sure subquestions with errors in relevance equations are always shown and answers recorded  #7703
+                                        if ($hasErrors)
+                                        {
+                                            $sqrel=true;
+                                        }
                                         if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
                                         {
                                             $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
@@ -6091,6 +6108,11 @@
                                         $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
                                         $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['gseq'], $qInfo['qseq']);
                                         $hasErrors = $LEM->em->HasErrors();
+                                        // make sure subquestions with errors in relevance equations are always shown and answers recorded  #7703
+                                        if ($hasErrors)
+                                        {
+                                            $sqrel=true;
+                                        }
                                         if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
                                         {
                                             $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
@@ -6131,6 +6153,11 @@
                                         $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
                                         $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['gseq'], $qInfo['qseq']);
                                         $hasErrors = $LEM->em->HasErrors();
+                                        // make sure subquestions with errors in relevance equations are always shown and answers recorded  #7703
+                                        if ($hasErrors)
+                                        {
+                                            $sqrel=true;
+                                        }
                                         if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
                                         {
                                             $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
@@ -6970,7 +6997,8 @@
                             }
                         }
                         // end
-                        $relParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
+                        //this change is optional....changes to array should prevent "if( )"
+                        $relParts[] = "  if ( " . (empty($sq['relevancejs'])?'1':$sq['relevancejs']) . " ) {\n";
                         if ($afHide)
                         {
                             $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
