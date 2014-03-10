@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-03-03 00:05:51+00:00\n"
+"POT-Creation-Date: 2014-03-10 00:05:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -489,7 +489,7 @@ msgstr ""
 #: application/views/admin/participants/participantsPanel_view.php:8
 #: application/views/admin/quotas/editquota_view.php:30
 #: application/views/admin/survey/deleteSurvey_view.php:36
-#: application/views/admin/survey/editSurvey_view.php:50
+#: application/views/admin/survey/editSurvey_view.php:56
 #: application/views/admin/survey/listSurveys_view.php:37
 #: application/views/admin/survey/Question/answerOptions_view.php:37
 #: application/views/admin/survey/Question/answerOptions_view.php:171
@@ -500,7 +500,7 @@ msgstr ""
 #: application/views/admin/survey/Question/subQuestion_view.php:182
 #: application/views/admin/survey/Question/subQuestion_view.php:197
 #: application/views/admin/token/browse.php:68
-#: application/views/plugins/configure.php:23
+#: application/views/plugins/configure.php:12
 msgid "Cancel"
 msgstr ""
 
@@ -1123,111 +1123,111 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: application/controllers/admin/database.php:111
+#: application/controllers/admin/database.php:100
 msgid "Default value settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:177
+#: application/controllers/admin/database.php:158
 #: application/views/admin/database/database_view.php:10
 msgid "Failed to update answers"
 msgstr ""
 
-#: application/controllers/admin/database.php:189
+#: application/controllers/admin/database.php:170
 msgid "Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."
 msgstr ""
 
-#: application/controllers/admin/database.php:193
+#: application/controllers/admin/database.php:174
 msgid "Answer options were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:230
+#: application/controllers/admin/database.php:211
 #: application/views/admin/database/database_view.php:28
 msgid "Failed to delete answer"
 msgstr ""
 
-#: application/controllers/admin/database.php:322
+#: application/controllers/admin/database.php:303
 msgid "Error on %s for subquestion %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:327
+#: application/controllers/admin/database.php:308
 msgid "Subquestions %s could not be updated."
 msgstr ""
 
-#: application/controllers/admin/database.php:341
+#: application/controllers/admin/database.php:322
 msgid "Not all subquestions were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."
 msgstr ""
 
-#: application/controllers/admin/database.php:345
+#: application/controllers/admin/database.php:326
 msgid "Subquestions were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:365
+#: application/controllers/admin/database.php:346
 msgid "The question could not be added. You must enter at least a question code."
 msgstr ""
 
-#: application/controllers/admin/database.php:412
+#: application/controllers/admin/database.php:392
 msgid "Question could not be created with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:451
+#: application/controllers/admin/database.php:431
 msgid "Question in language %s could not be created with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:465
+#: application/controllers/admin/database.php:445
 #: application/views/admin/database/database_view.php:46
 msgid "Question could not be created."
 msgstr ""
 
-#: application/controllers/admin/database.php:590
+#: application/controllers/admin/database.php:570
 msgid "Question was successfully added."
 msgstr ""
 
-#: application/controllers/admin/database.php:737
+#: application/controllers/admin/database.php:717
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions  before you can change the type of this question."
 msgstr ""
 
-#: application/controllers/admin/database.php:826
+#: application/controllers/admin/database.php:790
 msgid "Question could not be updated with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:831
+#: application/controllers/admin/database.php:795
 msgid "Question could not be updated."
 msgstr ""
 
-#: application/controllers/admin/database.php:859
+#: application/controllers/admin/database.php:823
 msgid "Question was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:896
+#: application/controllers/admin/database.php:860
 #: application/views/admin/database/database_view.php:4
 #: application/views/admin/database/database_view.php:58
 #: application/views/admin/database/database_view.php:71
 msgid "Question could not be updated"
 msgstr ""
 
-#: application/controllers/admin/database.php:964
+#: application/controllers/admin/database.php:928
 msgid "Survey text elements successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:1110
+#: application/controllers/admin/database.php:1074
 #: application/controllers/admin/surveyadmin.php:1559
 msgid "Warning! Notification email was not updated because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/database.php:1117
+#: application/controllers/admin/database.php:1081
 #: application/controllers/admin/surveyadmin.php:1566
 msgid "Warning! Bounce email was not updated because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/database.php:1167
+#: application/controllers/admin/database.php:1131
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:1171
+#: application/controllers/admin/database.php:1135
 msgid "Error:"
 msgstr ""
 
-#: application/controllers/admin/database.php:1171
+#: application/controllers/admin/database.php:1135
 msgid "Survey could not be updated."
 msgstr ""
 
@@ -1471,16 +1471,16 @@ msgstr ""
 #: application/helpers/admin/label_helper.php:129
 #: application/views/admin/assessments_view.php:126
 #: application/views/admin/dataentry/includes/editdata/edit.php:1
-#: application/views/admin/emailtemplates/emailtemplates_view.php:80
+#: application/views/admin/emailtemplates/emailtemplates_view.php:58
 #: application/views/admin/labels/editlabel_view.php:49
 #: application/views/admin/participants/attributeControl_view.php:5
 #: application/views/admin/participants/blacklist_view.php:65
 #: application/views/admin/participants/displayParticipants_view.php:67
 #: application/views/admin/participants/userControl_view.php:35
-#: application/views/admin/participants/viewAttribute_view.php:164
+#: application/views/admin/participants/viewAttribute_view.php:171
 #: application/views/admin/survey/editLocalSettings_main_view.php:18
-#: application/views/admin/survey/editSurvey_view.php:28
-#: application/views/admin/survey/editSurvey_view.php:50
+#: application/views/admin/survey/editSurvey_view.php:34
+#: application/views/admin/survey/editSurvey_view.php:56
 #: application/views/admin/survey/listSurveys_view.php:35
 #: application/views/admin/survey/listSurveys_view.php:40
 #: application/views/admin/survey/newSurvey_view.php:29
@@ -2148,7 +2148,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3253
 #: application/helpers/expressions/em_manager_helper.php:3265
 #: application/helpers/expressions/em_manager_helper.php:3651
-#: application/helpers/expressions/em_manager_helper.php:6216
+#: application/helpers/expressions/em_manager_helper.php:6221
 #: application/helpers/qanda_helper.php:1411
 #: application/helpers/qanda_helper.php:1736
 #: application/helpers/qanda_helper.php:2251
@@ -2210,7 +2210,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:360
 #: application/controllers/admin/surveyadmin.php:790
 #: application/views/admin/assessments_view.php:103
-#: application/views/admin/emailtemplates/emailtemplates_view.php:60
+#: application/views/admin/emailtemplates/emailtemplates_view.php:38
 #: application/views/admin/quotas/newquota_view.php:27
 #: application/views/admin/survey/Question/answerOptions_view.php:44
 #: application/views/admin/survey/Question/editQuestion_view.php:34
@@ -2618,7 +2618,7 @@ msgid "The survey was successfully expired by setting an expiration date in the 
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1379
-#: application/views/admin/survey/editSurvey_view.php:37
+#: application/views/admin/survey/editSurvey_view.php:43
 msgid "(No target question)"
 msgstr ""
 
@@ -3479,7 +3479,7 @@ msgid "Survey title and description"
 msgstr ""
 
 #: application/controllers/admin/translate.php:463
-#: application/helpers/expressions/em_manager_helper.php:8930
+#: application/helpers/expressions/em_manager_helper.php:8935
 #: application/views/admin/survey/editLocalSettings_view.php:5
 #: application/views/admin/survey/editLocalSettings_view.php:9
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:29
@@ -3500,7 +3500,7 @@ msgid "Welcome and end text"
 msgstr ""
 
 #: application/controllers/admin/translate.php:493
-#: application/helpers/expressions/em_manager_helper.php:8944
+#: application/helpers/expressions/em_manager_helper.php:8949
 #: application/views/admin/survey/editLocalSettings_view.php:17
 #: application/views/admin/survey/editLocalSettings_view.php:21
 #: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:33
@@ -4162,7 +4162,7 @@ msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
 #: application/controllers/survey/index.php:387
-msgid "Your token was already used or can only be used during a certain time period."
+msgid "Your token is invalid, was already used or can only be used during a certain time period."
 msgstr ""
 
 #: application/controllers/survey/index.php:537
@@ -4462,6 +4462,11 @@ msgstr ""
 #: application/helpers/common_helper.php:421
 #: application/views/admin/survey/listSurveys_view.php:67
 msgid "Expired"
+msgstr ""
+
+#: application/extensions/Menu/MenuWidget.php:112
+#: application/views/admin/super/adminmenu.php:96
+msgid "Surveys:"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:117
@@ -7607,7 +7612,7 @@ msgid "Only integer value may be entered in this fields."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3255
-#: application/helpers/expressions/em_manager_helper.php:6218
+#: application/helpers/expressions/em_manager_helper.php:6223
 msgid "If you choose '%s' please also specify your choice in the accompanying text field."
 msgstr ""
 
@@ -7627,64 +7632,64 @@ msgstr ""
 msgid "Error in SQL update"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6193
+#: application/helpers/expressions/em_manager_helper.php:6198
 msgid "This question is mandatory"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6207
+#: application/helpers/expressions/em_manager_helper.php:6212
 msgid "Please check at least one item."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6240
-#: application/helpers/expressions/em_manager_helper.php:6277
+#: application/helpers/expressions/em_manager_helper.php:6245
+#: application/helpers/expressions/em_manager_helper.php:6282
 msgid "Please complete all parts"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6269
+#: application/helpers/expressions/em_manager_helper.php:6274
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6285
+#: application/helpers/expressions/em_manager_helper.php:6290
 msgid "Please rank all items"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8915
+#: application/helpers/expressions/em_manager_helper.php:8920
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8921
+#: application/helpers/expressions/em_manager_helper.php:8926
 msgid "Logic File for Survey # "
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8937
+#: application/helpers/expressions/em_manager_helper.php:8942
 #: application/views/admin/survey/editLocalSettings_view.php:15
 #: application/views/admin/survey/surveySummary_view.php:50
 msgid "Welcome:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8951
+#: application/helpers/expressions/em_manager_helper.php:8956
 #: application/views/admin/survey/surveySummary_view.php:127
 msgid "End URL"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8955
+#: application/helpers/expressions/em_manager_helper.php:8960
 msgid "Name [ID]"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8955
+#: application/helpers/expressions/em_manager_helper.php:8960
 msgid "Relevance [Validation] (Default value)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8955
+#: application/helpers/expressions/em_manager_helper.php:8960
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9007
-#: application/helpers/expressions/em_manager_helper.php:9258
+#: application/helpers/expressions/em_manager_helper.php:9012
+#: application/helpers/expressions/em_manager_helper.php:9263
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9015
+#: application/helpers/expressions/em_manager_helper.php:9020
 #: application/views/admin/survey/Question/editQuestion_view.php:63
 #: application/views/admin/survey/Question/editQuestion_view.php:67
 #: application/views/admin/survey/Question/editQuestion_view.php:91
@@ -7695,47 +7700,47 @@ msgstr ""
 msgid "Help:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9016
+#: application/helpers/expressions/em_manager_helper.php:9021
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9033
+#: application/helpers/expressions/em_manager_helper.php:9038
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9033
+#: application/helpers/expressions/em_manager_helper.php:9038
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9161
+#: application/helpers/expressions/em_manager_helper.php:9166
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9173
+#: application/helpers/expressions/em_manager_helper.php:9178
 msgid "Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9330
+#: application/helpers/expressions/em_manager_helper.php:9335
 msgid "This question has at least %s error."
 msgid_plural "This question has at least %s errors."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/helpers/expressions/em_manager_helper.php:9369
+#: application/helpers/expressions/em_manager_helper.php:9374
 msgid "%s question contains errors that need to be corrected"
 msgid_plural "%s questions contain errors that need to be corrected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/helpers/expressions/em_manager_helper.php:9375
+#: application/helpers/expressions/em_manager_helper.php:9380
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9378
+#: application/helpers/expressions/em_manager_helper.php:9383
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9381
+#: application/helpers/expressions/em_manager_helper.php:9386
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
@@ -8883,23 +8888,23 @@ msgstr ""
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1242
+#: application/helpers/update/updatedb_helper.php:1266
 msgid "An non-recoverable error happened during the update. Error details:"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1246
+#: application/helpers/update/updatedb_helper.php:1270
 msgid "Database update finished (%s)"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2256
+#: application/helpers/update/updatedb_helper.php:2280
 msgid "Some user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2258
+#: application/helpers/update/updatedb_helper.php:2282
 msgid "Template(s) to be verified :"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2264
+#: application/helpers/update/updatedb_helper.php:2288
 msgid "All %s user templates updated."
 msgstr ""
 
@@ -9890,12 +9895,12 @@ msgstr ""
 msgid "This will replace the existing text. Continue?"
 msgstr ""
 
-#: application/views/admin/emailtemplates/emailtemplates_view.php:51
+#: application/views/admin/emailtemplates/emailtemplates_view.php:29
 #: application/views/admin/token/tokenbar.php:49
 msgid "Edit email templates"
 msgstr ""
 
-#: application/views/admin/emailtemplates/emailtemplates_view.php:81
+#: application/views/admin/emailtemplates/emailtemplates_view.php:59
 #: application/views/admin/survey/Question/editQuestion_view.php:48
 #: application/views/admin/survey/Question/editQuestion_view.php:315
 msgid "Save and close"
@@ -12005,7 +12010,7 @@ msgid "User ID editable:"
 msgstr ""
 
 #: application/views/admin/participants/viewAttribute_view.php:3
-#: application/views/admin/participants/viewAttribute_view.php:141
+#: application/views/admin/participants/viewAttribute_view.php:148
 msgid "Attribute name:"
 msgstr ""
 
@@ -12030,25 +12035,30 @@ msgid "Values:"
 msgstr ""
 
 #: application/views/admin/participants/viewAttribute_view.php:53
-#: application/views/admin/participants/viewAttribute_view.php:58
+#: application/views/admin/participants/viewAttribute_view.php:57
+msgid "Cancel editing"
+msgstr ""
+
+#: application/views/admin/participants/viewAttribute_view.php:60
+#: application/views/admin/participants/viewAttribute_view.php:65
 msgid "Edit value"
 msgstr ""
 
-#: application/views/admin/participants/viewAttribute_view.php:61
-#: application/views/admin/participants/viewAttribute_view.php:65
+#: application/views/admin/participants/viewAttribute_view.php:68
+#: application/views/admin/participants/viewAttribute_view.php:72
 msgid "Delete value"
 msgstr ""
 
-#: application/views/admin/participants/viewAttribute_view.php:78
+#: application/views/admin/participants/viewAttribute_view.php:85
 msgid "Add value"
 msgstr ""
 
-#: application/views/admin/participants/viewAttribute_view.php:89
+#: application/views/admin/participants/viewAttribute_view.php:96
 msgid "Add a language:"
 msgstr ""
 
-#: application/views/admin/participants/viewAttribute_view.php:96
-#: application/views/admin/participants/viewAttribute_view.php:97
+#: application/views/admin/participants/viewAttribute_view.php:103
+#: application/views/admin/participants/viewAttribute_view.php:104
 msgid "Add language"
 msgstr ""
 
@@ -12475,10 +12485,6 @@ msgid_plural "Updates available: %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/views/admin/super/adminmenu.php:96
-msgid "Surveys:"
-msgstr ""
-
 #: application/views/admin/super/firststeps.php:2
 msgid "Welcome to %s!"
 msgstr ""
@@ -12652,7 +12658,7 @@ msgid "Stop this survey"
 msgstr ""
 
 #: application/views/admin/survey/deactivateSurvey_view.php:8
-msgid "There are two ways to stop a survey. Please read carefully on the two options below and choose the right one for you."
+msgid "There are two ways to stop a survey. Please read carefully about the two options below and choose the right one for you."
 msgstr ""
 
 #: application/views/admin/survey/deactivateSurvey_view.php:9
@@ -12684,7 +12690,7 @@ msgid "It's still possible to perform statistics on responses using LimeSurvey."
 msgstr ""
 
 #: application/views/admin/survey/deactivateSurvey_view.php:20
-msgid "All responses are not accessible anymore with LimeSurvey)."
+msgid "All responses are not accessible anymore with LimeSurvey."
 msgstr ""
 
 #: application/views/admin/survey/deactivateSurvey_view.php:20
@@ -12817,20 +12823,20 @@ msgstr ""
 msgid "Edit survey settings"
 msgstr ""
 
-#: application/views/admin/survey/editSurvey_view.php:28
-#: application/views/admin/survey/editSurvey_view.php:29
+#: application/views/admin/survey/editSurvey_view.php:34
+#: application/views/admin/survey/editSurvey_view.php:35
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
 msgstr ""
 
-#: application/views/admin/survey/editSurvey_view.php:29
+#: application/views/admin/survey/editSurvey_view.php:35
 msgid "Save & edit survey text elements"
 msgstr ""
 
-#: application/views/admin/survey/editSurvey_view.php:34
+#: application/views/admin/survey/editSurvey_view.php:40
 msgid "Parameter name:"
 msgstr ""
 
-#: application/views/admin/survey/editSurvey_view.php:36
+#: application/views/admin/survey/editSurvey_view.php:42
 msgid "Target (sub-)question:"
 msgstr ""
 
@@ -13746,6 +13752,11 @@ msgstr ""
 msgid "Edit URL parameter"
 msgstr ""
 
+#: application/views/admin/survey/subview/tabPluginSettings_view.php:10
+#: application/views/plugins/configure.php:5
+msgid "Settings for plugin %s"
+msgstr ""
+
 #: application/views/admin/survey/subview/tabPresentation_view.php:4
 msgid "Format:"
 msgstr ""
@@ -13998,6 +14009,11 @@ msgstr ""
 
 #: application/views/admin/survey/subview/tab_view.php:24
 msgid "Resources"
+msgstr ""
+
+#: application/views/admin/survey/subview/tab_view.php:29
+#: application/views/plugins/index.php:1
+msgid "Plugins"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:9
@@ -15520,16 +15536,7 @@ msgstr ""
 msgid "LimeSurvey installer"
 msgstr ""
 
-#: application/views/plugins/configure.php:4
-#: application/views/plugins/index.php:1
-msgid "Plugins"
-msgstr ""
-
-#: application/views/plugins/configure.php:12
-msgid "Settings for plugin %s"
-msgstr ""
-
-#: application/views/plugins/configure.php:22
+#: application/views/plugins/configure.php:11
 msgid "Save plugin settings"
 msgstr ""
 
