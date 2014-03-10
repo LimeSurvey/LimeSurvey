@@ -2156,10 +2156,8 @@ class ExpressionManager {
      */
     public function asSplitStringOnExpressions($src)
     {
-         
         $parts = preg_split($this->RDP_ExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
-        
-        
+
         $count = count($parts);
         $tokens = array();
         $inSQString=false;
@@ -2302,7 +2300,11 @@ class ExpressionManager {
                     }
                     break;
                 default:
-                    $thistoken[] = $parts[$j];
+                    if($curlyDepth>0 && !$inDQString && !$inSQString)
+                        $thistoken[] = html_entity_decode($parts[$j],ENT_NOQUOTES);// Replace &lt: and &gt;
+                    else
+                        $thistoken[] = $parts[$j];
+                    //$thistoken[] = $parts[$j];
                     break;
             }
         }
