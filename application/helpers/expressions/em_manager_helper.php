@@ -1032,7 +1032,7 @@
 
         /**
         * Process all question attributes that apply to EM
-        * (1) Sub-question-level  relevance:  e.g. array_filter, array_filter_exclude
+        * (1) Sub-question-level relevance:  e.g. array_filter, array_filter_exclude, relevance equations entered in SQ-mask
         * (2) Validations: e.g. min/max number of answers; min/max/eq sum of answers
         * @param <integer> $onlyThisQseq - only process these attributes for the specified question
         */
@@ -1298,6 +1298,58 @@
                                 'sgqa' => $qinfo['sgqa'],
                                 );
                             }
+                        }
+                    }
+                }
+
+                // individual subquestion relevance
+                if ($hasSubqs & $type!='|' & $type!='!' & $type !='L') 
+                {
+                    $subqs = $qinfo['subqs'];
+                    $last_rowdivid = '--';
+                    foreach ($subqs as $sq) 
+                    {
+                        if ($sq['rowdivid'] == $last_rowdivid)
+                        {
+                            continue;
+                        }
+                        $last_rowdivid = $sq['rowdivid'];
+                        $rowdivid=NULL;
+                        $rowdivid=$sq['rowdivid'];
+                        switch($type)
+                        {
+                            case '1': //Array (Flexible Labels) dual scale
+                                $rowdivid = $rowdivid . '#0';
+                                break;
+                            case ':': //ARRAY Numbers
+                            case ';': //ARRAY Text
+                                $aCsuffix=(explode('_',$sq['csuffix']));
+                                $rowdivid = $rowdivid . '_'.$aCsuffix[1];
+                                break;
+                            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                            case 'F': //ARRAY (Flexible) - Row Format
+                            case 'M': //Multiple choice checkbox
+                            case 'P': //Multiple choice with comments checkbox + text
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (isset($this->knownVars[$rowdivid]['SQrelevance']) & $this->knownVars[$rowdivid]['SQrelevance']!='')
+                        {
+                            $subQrels[] = array(
+                            'qtype' => $type,
+                            'type' => 'SQ_relevance',
+                            'rowdivid' => $sq['rowdivid'],
+                            'eqn' => $this->knownVars[$rowdivid]['SQrelevance'],
+                            'qid' => $questionNum,
+                            'sgqa' => $qinfo['sgqa'],
+                            );
                         }
                     }
                 }
