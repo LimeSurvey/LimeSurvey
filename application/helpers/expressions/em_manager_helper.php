@@ -3572,6 +3572,7 @@
                 $questionId = $fieldNameParts[2];
                 $questionNum = $fielddata['qid'];
                 $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
+                $SQrelevance = (isset($fielddata['SQrelevance'])) ? $fielddata['SQrelevance'] : 1;
                 $grelevance = (isset($fielddata['grelevance'])) ? $fielddata['grelevance'] : 1;
                 $hidden = (isset($qattr[$questionNum]['hidden'])) ? ($qattr[$questionNum]['hidden'] == '1') : false;
                 $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
@@ -3983,6 +3984,7 @@
                 'gid'=>$groupNum,
                 'grelevance'=>$grelevance,
                 'relevance'=>$relevance,
+                'SQrelevance'=>$SQrelevance,
                 'qcode'=>$varName,
                 'qseq'=>$questionSeq,
                 'gseq'=>$groupSeq,
@@ -4001,6 +4003,7 @@
                 $this->questionSeq2relevance[$questionSeq] = array(
                 'relevance'=>$relevance,
                 'grelevance'=>$grelevance,
+                //'SQrelevance'=>$SQrelevance,
                 'qid'=>$questionNum,
                 'qseq'=>$questionSeq,
                 'gseq'=>$groupSeq,
@@ -4113,6 +4116,7 @@
             'gid'=>'',
             'grelevance'=>'',
             'relevance'=>'',
+            'SQrelevance'=>'',
             'qcode'=>'this',
             'qseq'=>'',
             'gseq'=>'',
@@ -6980,9 +6984,8 @@
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
-
-                        // make sure to update array_filter headings and colors
-                        if( ! empty($LEM->qattr[$arg['qid']]['array_filter'])) {
+                        // make sure to update headings and colors for filtered questions (array filter and individual SQ relevance)
+                        if( ! empty($sq['type'])) {
                             // js to fix colors
                             $relParts[] = "updateColors($('#question".$arg['qid']."').find('table.question'));\n";
                             // js to fix headings
