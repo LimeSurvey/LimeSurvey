@@ -70,7 +70,7 @@
 </select>
 <select id='gs_access_select' style='display: none'>
     <option value=''><?php $clang->eT("Any") ?></option>
-    <option value='Open'><?php $clang->eT("Open") ?></option>
-    <option value='Closed'><?php $clang->eT("Closed") ?></option>
+    <option><?php $clang->eT("Open") ?></option>
+    <option><?php $clang->eT("Closed") ?></option>
 </select>
 <br />
