@@ -9815,6 +9815,11 @@ EOD;
                         $rowdivid=$sgqa;
                         $varName=$LEM->knownVars[$sgqa]['qcode'];
 
+                        // if SQrelevance equation is using SGQA coding, convert to qcoding
+                        $SQrelevance = (($LEM->knownVars[$sgqa]['SQrelevance'] == '') ? 1 : $LEM->knownVars[$sgqa]['SQrelevance']);
+                        $LEM->em->ProcessBooleanExpression($SQrelevance, $gseq, $q['info']['qseq']);
+                        $SQrelevance = trim(strip_tags($LEM->em->GetPrettyPrintString()));
+                    
                         switch  ($q['info']['type'])
                         {
                             case '1':
@@ -9865,6 +9870,7 @@ EOD;
                         $row['class'] = 'SQ';
                         $row['type/scale'] = 0;
                         $row['name'] = substr($varName,strlen($rootVarName)+1);
+                        $row['relevance'] = $SQrelevance;
                         $row['text'] = $subqText;
                         $row['language'] = $lang;
                         $row['default'] = $default;
