@@ -70,6 +70,11 @@ class LSYii_Validators extends CValidator {
     {
         $filter = new CHtmlPurifier();
         $filter->options = array(
+            'AutoFormat.RemoveEmpty'=>false,
+            'CSS.AllowTricky'=>true, // Allow display:none; (and other)
+            'HTML.SafeObject'=>true, // To allow including youtube
+            'Output.FlashCompat'=>true,
+            'Attr.EnableID'=>true, // Allow to set id
             'URI.AllowedSchemes'=>array(
                 'http' => true,
                 'https' => true,
@@ -79,7 +84,33 @@ class LSYii_Validators extends CValidator {
                 'news' => true,
                 )
         );
-        return $filter->purify($value);
+        // To allow script BUT purify : HTML.Trusted=true,
+        Yii::import('application.helpers.expressions.em_core_helper');
+        $oExpressionManager= new ExpressionManager;
+        $aValues=$oExpressionManager->asSplitStringOnExpressions($value);// Return array of array : 0=>the string,1=>string length,2=>string type (STRING or EXPRESSION)
+        $newValue="";
+        foreach($aValues as $aValue){
+            if($aValue[2]=="STRING")
+                $newValue.=$filter->purify($aValue[0]);
+            else
+            {
+                $sExpression=trim($aValue[0], '{}');
+                $newValue.="{";
+                $aParsedExpressions=$oExpressionManager->emTokenize($sExpression);// Return array of array : 0=>the string,1=>string length,2=>string type 
+                foreach($aParsedExpressions as $aParsedExpression)
+                {
+                    if($aParsedExpression[2]=='DQ_STRING')
+                        $newValue.="\"".$filter->purify($aParsedExpression[0])."\"";
+                    elseif($aParsedExpression[2]=='SQ_STRING')
+                        $newValue.="'".$filter->purify($aParsedExpression[0])."'";
+                    else
+                        $newValue.=$aParsedExpression[0];
+                }
+                $newValue.="}";
+            }
+        }
+        return $newValue;
+        //return $filter->purify($value);
     }
     /**
     * Defines the customs validation rule for language string

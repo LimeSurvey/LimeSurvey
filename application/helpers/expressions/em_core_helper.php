@@ -2377,12 +2377,22 @@ class ExpressionManager {
     }
 
     /**
+    * Public call of RDP_Tokenize
+    * 
+    * @param $src
+    * @return array
+    */
+    public function emTokenize($src)
+    {
+        return $this->RDP_Tokenize($src);
+    }
+
+    /**
      * Split the source string into tokens, removing whitespace, and categorizing them by type.
      *
      * @param $src
      * @return array
      */
-
     private function RDP_Tokenize($src)
     {
         // $tokens0 = array of tokens from equation, showing value and offset position.  Will include SPACE, which should be removed
