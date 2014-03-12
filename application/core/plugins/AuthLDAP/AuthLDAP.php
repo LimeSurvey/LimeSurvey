@@ -122,9 +122,10 @@ class AuthLDAP extends AuthPluginBase
             // value over the saved value
             if (App()->request->isPostRequest) {
                 $ldapmode = App()->request->getPost('ldapmode', $ldapmode);
+                $aPluginSettings['ldapmode']['current'] = $ldapmode;
             }
             
-            if ($aPluginSettings['ldapmode']['current'] == 'searchandbind') {
+            if ($ldapmode == 'searchandbind') {
                 // Hide simple settings
                 unset($aPluginSettings['userprefix']);
                 unset($aPluginSettings['domainsuffix']);
