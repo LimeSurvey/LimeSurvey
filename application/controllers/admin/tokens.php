@@ -414,6 +414,11 @@ class tokens extends Survey_Common_Action
             }
         }
         
+        $bReadPermission = Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read');
+        $bCreatePermission = Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'create');
+        $bTokenUpdatePermission = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update');
+        $bTokenDeletePermission = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete');
+        $bGlobalPanelReadPermission = Permission::model()->hasGlobalPermission('participantpanel','read');
         foreach ($tokens as $token)
         {
             $aRowToAdd = array();
@@ -433,7 +438,7 @@ class tokens extends Survey_Common_Action
             $action="";
             $action .= "<div class='inputbuttons'>";    // so we can hide this when edit is clicked
             // Check is we have an answer
-            if (in_array($token['token'], $answeredTokens) && Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read')) {
+            if (in_array($token['token'], $answeredTokens) && $bReadPermission) {
                 // @@TODO change link
                 $url = $this->getController()->createUrl("admin/responses/sa/browse/surveyid/{$iSurveyId}", array('token'=>$token['token']));
                 $title = $clang->gT("View response details");
@@ -442,16 +447,16 @@ class tokens extends Survey_Common_Action
                     $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
             // Check if the token can be taken
-            if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "") && Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'create')) {
+            if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "") && $bCreatePermission) {
                 $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}/lang/{$token['language']}/newtest/Y", $clang->gT("Do survey"), '_blank');
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
-            if(Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete')){
+            if($bTokenDeletePermission){
                 $attribs = array('onclick' => 'if (confirm("' . $clang->gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}');
                 $action .= viewHelper::getImageLink('token_delete.png', null, $clang->gT("Delete token entry"), null, 'imagelink btnDelete', $attribs);
             }
-            if (strtolower($token['emailstatus']) == 'ok' && $token['email'] && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
+            if (strtolower($token['emailstatus']) == 'ok' && $token['email'] && $bTokenUpdatePermission) {
                 if ($token['completed'] == 'N' && $token['usesleft'] > 0) {
                     if ($token['sent'] == 'N') {
                         $action .= viewHelper::getImageLink('token_invite.png', "admin/tokens/sa/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], $clang->gT("Send invitation email to this person (if they have not yet been sent an invitation email)"), "_blank");
@@ -464,9 +469,9 @@ class tokens extends Survey_Common_Action
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
-            if(Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
+            if($bTokenUpdatePermission)
                 $action .= viewHelper::getImageLink('edit_16.png', null, $clang->gT("Edit token entry"), null, 'imagelink token_edit');
-            if(!empty($token['participant_id']) && $token['participant_id'] != "" && Permission::model()->hasGlobalPermission('participantpanel','read')) {
+            if(!empty($token['participant_id']) && $token['participant_id'] != "" && $bGlobalPanelReadPermission) {
                 $action .= viewHelper::getImageLink('cpdb_16.png', null, $clang->gT("View this person in the central participants database"), null, 'imagelink cpdb',array('onclick'=>"sendPost('".$this->getController()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$token['participant_id']}']);"));
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
@@ -939,14 +944,18 @@ class tokens extends Survey_Common_Action
             $tokenlength = sanitize_int(Yii::app()->request->getPost('tokenlen'));
 
             // Fill an array with all existing tokens
-			$criteria = Token::model($iSurveyId)->getDbCriteria();
+            $existingtokens = array();
+            $tokenModel     = Token::model($iSurveyId);
+			$criteria       = $tokenModel->getDbCriteria();
             $criteria->select = 'token';
-            $ntresult = Token::model($iSurveyId)->findAll($criteria);
-            $existingtokens=array();
-            foreach ($ntresult as $tkrow)
-            {
-                $existingtokens[$tkrow['token']] = true ;
+            $criteria->distinct = true;
+            $command = $tokenModel->getCommandBuilder()->createFindCommand($tokenModel->getTableSchema(),$criteria);
+            $result  = $command->query();
+            while ($tokenRow = $result->read()) {
+                $existingtokens[$tokenRow['token']] = true;
             }
+            $result->close();
+                        
             $invalidtokencount=0;
             $newDummyToken=0;
             while ($newDummyToken < $amount && $invalidtokencount < 50)
@@ -999,7 +1008,6 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            $tkcount = Token::model($iSurveyId)->count();
             $tokenlength = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
 
 			$thissurvey = getSurveyInfo($iSurveyId);
