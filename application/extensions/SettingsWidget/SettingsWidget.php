@@ -313,15 +313,25 @@
             {
                 $out .= CHtml::label($metaData['label'], $id);
             }
-            $out .= App()->getController()->widget('ext.bootstrap.widgets.TbSelect2', array(
+            $properties = array(
                 'data' => $metaData['options'],
                 'name' => $name,
                 'value' => $value,
                 'options' => array(
                     'minimumResultsForSearch' => 1000
-                ),
-
-            ), true);
+                )
+            );
+            
+            // allow to submit the form when this element changes
+            if (isset($metaData['submitonchange']) && $metaData['submitonchange']) {
+                $properties['events'] = array(
+                    'change' => 'js: function(e) {
+        this.form.submit();
+}'
+                );
+            }
+            
+            $out .= App()->getController()->widget('ext.bootstrap.widgets.TbSelect2', $properties, true);
             return $out;
         }
 

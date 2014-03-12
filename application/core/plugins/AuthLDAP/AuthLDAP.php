@@ -32,6 +32,7 @@ class AuthLDAP extends AuthPluginBase
             'label' => 'Select how to perform authentication.',
             'options' => array("simplebind" => "Simple bind", "searchandbind" => "Search and bind"),
             'default' => "simplebind",
+            'submitonchange'=> true
             ),
         'userprefix' => array(
             'type' => 'string',
@@ -102,6 +103,43 @@ class AuthLDAP extends AuthPluginBase
             $this->setUsername( $request->getPost('user'));
             $this->setPassword($request->getPost('password'));
         }
+    }
+    
+    /**
+     * Modified getPluginSettings since we have a select box that autosubmits
+     * and we only want to show the relevant options.
+     * 
+     * @param boolean $getValues
+     * @return array
+     */
+    public function getPluginSettings($getValues = true)
+    {
+        $aPluginSettings = parent::getPluginSettings($getValues);
+        if ($getValues) {
+            $ldapmode = $aPluginSettings['ldapmode']['current'];
+            
+            // If it is a post request, it could be an autosubmit so read posted
+            // value over the saved value
+            if (App()->request->isPostRequest) {
+                $ldapmode = App()->request->getPost('ldapmode', $ldapmode);
+            }
+            
+            if ($aPluginSettings['ldapmode']['current'] == 'searchandbind') {
+                // Hide simple settings
+                unset($aPluginSettings['userprefix']);
+                unset($aPluginSettings['domainsuffix']);
+
+            } else {
+                // Hide searchandbind settings
+                unset($aPluginSettings['searchuserattribute']);
+                unset($aPluginSettings['usersearchbase']);
+                unset($aPluginSettings['extrauserfilter']);
+                unset($aPluginSettings['binddn']);
+                unset($aPluginSettings['bindpwd']);
+            }
+        }
+        
+        return $aPluginSettings;
     }
 
     public function newUserSession()
