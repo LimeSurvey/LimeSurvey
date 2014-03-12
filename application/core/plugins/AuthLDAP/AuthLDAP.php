@@ -3,7 +3,7 @@ class AuthLDAP extends AuthPluginBase
 {
     protected $storage = 'DbStorage';
 
-    static protected $description = 'Core: Not so Basic LDAP authentication';
+    static protected $description = 'Core: LDAP authentication';
     static protected $name = 'LDAP';
 
     /**
