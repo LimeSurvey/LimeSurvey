@@ -48,9 +48,9 @@ class quotas extends Survey_Common_Action
         // Set the variables in an array
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
         $aData['clang'] = $this->getController()->lang;
-        $aData['aLangs'] = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
         $aData['sBaseLang'] = Survey::model()->findByPk($iSurveyId)->language;
-        array_push($aData['aLangs'], $aData['sBaseLang']);
+        $aData['aLangs'] = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
+        array_unshift($aData['aLangs'], $aData['sBaseLang']);
 
         $aData['action'] = $action = Yii::app()->request->getParam('action');
         if (!isset($action))
@@ -347,9 +347,6 @@ class quotas extends Survey_Common_Action
 
         $aQuotaInfo = Quota::model()->findByPk(Yii::app()->request->getPost('quota_id'));
         $aData['quotainfo'] = $aQuotaInfo;
-
-
-        
 
         $first=true;
         foreach ($aLangs as $sLanguage)
