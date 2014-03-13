@@ -65,6 +65,20 @@ class QuotaLanguageSetting extends LSActiveRecord
 		);
 	}
 
+    /**
+    * Returns this model's validation rules
+    *
+    */
+    public function rules()
+    {
+        return array(
+            array('quotals_name','LSYii_Validators'),// No access in quota editor, set to quota.name
+            array('quotals_message','LSYii_Validators'),
+            array('quotals_url','LSYii_Validators','isUrl'=>true),
+            array('quotals_urldescrip','LSYii_Validators'),
+        );
+    }
+
 	function insertRecords($data)
     {
         $settings = new self;

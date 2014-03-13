@@ -3,7 +3,7 @@
     </td>
 </tr>
 <tr>
-    <td><?php echo $quotalisting['name'];?></td>
+    <td><?php echo FlattenText($quotalisting['name']);?></td>
     <td>
         <?php if ($quotalisting['active'] == 1)
             {
