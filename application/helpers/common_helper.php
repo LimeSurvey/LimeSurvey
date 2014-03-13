@@ -5882,9 +5882,10 @@ function enforceSSLMode()
 function getQuotaCompletedCount($iSurveyId, $quotaid)
 {
     $result = "N/A";
+    if(!tableExists("survey_{$iSurveyId}")) // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
+        return $result;
     $quota_info = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
     $quota = $quota_info[0];
-
     if (Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}') &&
     count($quota['members']) > 0)
     {
