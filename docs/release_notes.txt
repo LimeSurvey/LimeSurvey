@@ -59,6 +59,55 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.05+ (build 140302) to 2.05+ (build 140317) Mar 17, 2014
+-Fixed issue #8738: Upgrading with webserver auth from 2.00+ to 2.05+ does not enable authwebserver plugin (Menno Dekker)
+-Fixed issue #8799: Administration login using a link with one time password (Menno Dekker)
+-Fixed issue #8813: Failed Login Attempt locks out all users when behind nginx proxy - doesn't use sIPAddress (Menno Dekker)
+-Fixed issue #8838: The "Access" filter in the administration surveylist only works in English (Thibault Le Meur)
+-Fixed issue #8600: some wrong sized buttons while editing plugin settings (Menno Dekker)
+-fixed issue #8818: XSS security enable : Comparison operators (< and >) get converted to HTML-entities in expressions in questions (Denis Chenu)
+-Fixed issue #7703: results not saved when rel eq contains errors (mfaber)
+-Fixed issue #8746: CPDB Attribute Type Dropdown is... broken (tpartner)
+-Fixed issue #8764: Token search criteria take only 2 criteria (Denis Chenu)
+-Fixed issue #8790: missing translation in token filter (Denis Chenu)
+-Fixed issue #8791: Two identical filter criteria in token tabl (Carsten Schmitz)
+-Fixed issue #8792: Missing translation (Carsten Schmitz)
+-Fixed issue #8794: False token produces irritating/wrong error message (Carsten Schmitz)
+-Fixed issue #8795: Unable to create or import survey after new installation and using MSSQL from Linux (Carsten Schmitz)
+-Fixed issue #8798: Editing a dropdown attribute value deletes everything but the first word (tpartner)
+-Fixed issue #8799: One time passwords not working (Carsten Schmitz)
+-Fixed issue #8800: Small translation fix (Carsten Schmitz)
+-Fixed issue #8802: Participants with long email addresses aren't added to the CPDB (Carsten Schmitz)
+-Fixed issue #8810: When importing a question entering a question code is required which doesn't make sense (Denis Chenu)
+-Fixed issue #8812: Email attachments configuration is not saved (Carsten Schmitz)
+-Fixed issue #8829: Questions with errors in relevance equations are hidden (mfaber)
+-Fixed issue #8847: Viewing quotas after having de-activated a survey shows internal server error. (Denis Chenu)
+-Fixed issue #8848: Quota end text are not XSS filtered (Denis Chenu)
+-Fixed issue: First language in quota edit is not the base survey language (Denis Chenu)
+#Updated translation: Catalan by valdomir
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: French (France) by arnaud21, TGorbunovaEspace
+#Updated translation: German by actxcellence
+#Updated translation: German (Informal) by mfaber, actxcellence
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Latvian by vipgroup, marcic
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Persian by farin
+#Updated translation: Polish by elisa
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Russian by ldemeschew, vipgroup
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.05+ (build 140226) to 2.05+ (build 140302) Mar 2, 2014
 -Fixed issue #8763: Small display issue response summary (Carsten Schmitz)
 -Fixed issue #8767: Users with missing optional attributes dropped silently when importing into Participant database (Carsten Schmitz)
