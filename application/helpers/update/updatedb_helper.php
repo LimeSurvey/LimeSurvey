@@ -509,6 +509,7 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{questions}}','parent_qid','integer',false ,'0');
             alterColumn('{{questions}}','title',"{$sVarchar}(20)",false , '');
             alterColumn('{{questions}}','question',"text",false);
+            try{ $oDB->createCommand()->dropIndex('questions_idx4','{{questions}}');} catch(Exception $e){};
             alterColumn('{{questions}}','type',"{$sVarchar}(1)",false , 'T');
             try{ $oDB->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e){};
             alterColumn('{{questions}}','other',"{$sVarchar}(1)",false , 'N');
@@ -1195,6 +1196,7 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{saved_control}}', 'email', "{$sVarchar}(254)");
             alterColumn('{{surveys}}', 'adminemail', "{$sVarchar}(254)");
             alterColumn('{{surveys}}', 'bounce_email', "{$sVarchar}(254)");
+            dropUniqueKeyMSSQL('email','{{users}}');
             alterColumn('{{users}}', 'email', "{$sVarchar}(254)");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>174),"stg_name='DBVersion'");
         }
@@ -2191,8 +2193,27 @@ function dropDefaultValueMSSQL($fieldname, $tablename)
     {
         Yii::app()->db->createCommand("ALTER TABLE {$tablename} DROP CONSTRAINT {$defaultname['constraint_name']}")->execute();
     }
-
 }
+
+/**
+* This function drops a unique Key of an MSSQL database field by using the name of the field it lies upon and the table name
+* 
+* @param mixed $sFieldName
+* @param mixed $sTableName
+*/
+function dropUniqueKeyMSSQL($sFieldName, $sTableName)
+{
+    $sQuery ="select TC.Constraint_Name, CC.Column_Name from information_schema.table_constraints TC
+    inner join information_schema.constraint_column_usage CC on TC.Constraint_Name = CC.Constraint_Name
+    where TC.constraint_type = 'Unique' and Column_name='{$sFieldName}' and TC.TABLE_NAME='{$sTableName}'";
+    $aUniqueKeyName = Yii::app()->db->createCommand($sQuery)->queryRow();
+    if ($aUniqueKeyName!=false)
+    {
+        Yii::app()->db->createCommand("ALTER TABLE {$sTableName} DROP CONSTRAINT {$aUniqueKeyName['Constraint_Name']}")->execute();
+    }
+}
+
+
 
 /**
 * Returns the name of the DB Driver - used for other functions that make db specific calls
