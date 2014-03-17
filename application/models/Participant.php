@@ -279,7 +279,15 @@ class Participant extends LSActiveRecord
         $selectValue[] = "luser.full_name as ownername";
         $selectValue[] = "luser.users_name as username";
         
-        
+        $aAllAttributes = ParticipantAttributeName::model()->getAllAttributes();
+        foreach ($aAllAttributes as $aAttribute)
+        {
+            if(strpos($search->condition,'attribute'.$aAttribute['attribute_id'])!==false)
+            {
+               $attid[]=$aAttribute; 
+            }
+        }
+        $attid=array_unique($attid);
         // Add survey count subquery
         $subQuery = Yii::app()->db->createCommand()
                 ->select('count(*) survey')
@@ -836,6 +844,7 @@ class Participant extends LSActiveRecord
             elseif (is_numeric($sFieldname)) //Searching for an attribute
             {
                 $command->addCondition('attribute'. $sFieldname . '.value ' . $operator . ' '.$param, $booloperator);
+//                $command->addCondition('(attribute_id='. $sFieldname . ' AND value ' . $operator . ' '.$param.' )', $booloperator);
             }
             else
             {
