@@ -42,7 +42,14 @@
 
         public function endForm()
         {
-            echo CHtml::endForm();
+            if ($this->form)
+            {
+                echo CHtml::endForm();
+            }
+            else
+            {
+                echo CHtml::closeTag('div');
+            }
         }
         public function init() {
             parent::init();
@@ -172,10 +179,7 @@
             // Render buttons
             $this->renderButtons();
             // End form
-            if ($this->form)
-            {
-                $this->endForm();
-            }
+            $this->endForm();
         }
 
 
