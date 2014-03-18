@@ -106,25 +106,28 @@
         {
             $oUserData=$this->getEvent()->get('model');
             $oCurrentUser=$this->api->getCurrentUser();
+            
+            $aNewValues=$oUserData->getAttributes();
             if (!isset($oUserData->uid))
             {
                 $sAction='create';
                 $aOldValues=array();
+                // Indicate the password has changed but assign fake hash
+                $aNewValues['password']=hash('md5','67890');
             }
             else
             {                
                 $oOldUser=$this->api->getUser($oUserData->uid);
                 $sAction='update';
                 $aOldValues=$oOldUser->getAttributes();
+                
+                // If the password has changed then indicate that it has changed but assign fake hashes
+                if ($aNewValues['password']!=$aOldValues['password'])
+                {
+                    $aOldValues['password']=hash('md5','12345');
+                    $aNewValues['password']=hash('md5','67890');
+                };
             }
-            $aNewValues=$oUserData->getAttributes();
-                        
-            // If the password has changed then indicate that it has changed but assign fake hashes
-            if ($aNewValues['password']!=$aOldValues['password'])
-            {
-                $aOldValues['password']=hash('md5','12345');
-                $aNewValues['password']=hash('md5','67890');
-            };
             
             if (count(array_diff_assoc($aNewValues,$aOldValues)))
             {
