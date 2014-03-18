@@ -1,8 +1,5 @@
 <?php
 
-/**
- * @property PluginSettingsHelper $PluginSettings
- */
 class PluginsController extends LSYii_Controller
 {
 
