@@ -473,25 +473,25 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     // Save Form
-    $_saveform = "<table><tr><td align='right'>" . $clang->gT("Name") . ":</td><td><input type='text' name='savename' value='";
+    $_saveform = "<table class='save-survey-form'><tr class='save-survey-row save-survey-name'><td class='save-survey-label label-cell' align='right'><label for='savename'>" . $clang->gT("Name") . "</label>:</td><td class='save-survey-input input-cell'><input type='text' name='savename' id='savename' value='";
     if (isset($_POST['savename']))
     {
         $_saveform .= HTMLEscape(autoUnescape($_POST['savename']));
     }
     $_saveform .= "' /></td></tr>\n"
-    . "<tr><td align='right'>" . $clang->gT("Password") . ":</td><td><input type='password' name='savepass' value='";
+    . "<tr class='save-survey-row save-survey-password-1'><td class='save-survey-label label-cell' align='right'><label for='savepass'>" . $clang->gT("Password") . "</label>:</td><td class='save-survey-input input-cell'><input type='password' id='savepass' name='savepass' value='";
     if (isset($_POST['savepass']))
     {
         $_saveform .= HTMLEscape(autoUnescape($_POST['savepass']));
     }
     $_saveform .= "' /></td></tr>\n"
-    . "<tr><td align='right'>" . $clang->gT("Repeat password") . ":</td><td><input type='password' name='savepass2' value='";
+    . "<tr class='save-survey-row save-survey-password-2'><td class='save-survey-label label-cell' align='right'><label for='savepass2'>" . $clang->gT("Repeat password") . "</label>:</td><td class='save-survey-input input-cell'><input type='password' id='savepass2' name='savepass2' value='";
     if (isset($_POST['savepass2']))
     {
         $_saveform .= HTMLEscape(autoUnescape($_POST['savepass2']));
     }
     $_saveform .= "' /></td></tr>\n"
-    . "<tr><td align='right'>" . $clang->gT("Your email address") . ":</td><td><input type='text' name='saveemail' value='";
+    . "<tr class='save-survey-row save-survey-email'><td class='save-survey-label label-cell' align='right'><label for='saveemail'>" . $clang->gT("Your email address") . "</label>:</td><td class='save-survey-input input-cell'><input type='text' id='saveemail' name='saveemail' value='";
     if (isset($_POST['saveemail']))
     {
         $_saveform .= HTMLEscape(autoUnescape($_POST['saveemail']));
@@ -499,20 +499,20 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_saveform .= "' /></td></tr>\n";
     if ( isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {                                                                                                                                                                                                     
-        $_saveform .="<tr><td align='right'>" . $clang->gT("Security question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt6='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
+        $_saveform .="<tr class='save-survey-row save-survey-captcha'><td class='save-survey-label label-cell' align='right'><label for='loadsecurity'>" . $clang->gT("Security question") . "</label>:</td><td class='save-survey-input input-cell'><table class='captcha-table'><tr><td class='captcha-image' valign='middle'><img alt='' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' /></td><td class='captcha-input' valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
     }
     $_saveform .= "<tr><td align='right'></td><td></td></tr>\n"
-    . "<tr><td></td><td><input type='submit'  id='savebutton' name='savesubmit' class='button' value='" . $clang->gT("Save Now") . "' /></td></tr>\n"
+    . "<tr class='save-survey-row save-survey-submit'><td class='save-survey-label label-cell'><label class='hide jshide' for='savebutton'>" . $clang->gT("Save Now") . "</label></td><td class='save-survey-input input-cell'><input type='submit' id='savebutton' name='savesubmit' class='button' value='" . $clang->gT("Save Now") . "' /></td></tr>\n"
     . "</table>";
 
     // Load Form
-    $_loadform = "<table><tr><td align='right'>" . $clang->gT("Saved name") . ":</td><td><input type='text' name='loadname' value='";
+    $_loadform = "<table class='load-survey-form'><tr class='load-survey-row load-survey-name'><td class='load-survey-label label-cell' align='right'><label for='loadname'>" . $clang->gT("Saved name") . "</label>:</td><td class='load-survey-input input-cell'><input type='text' id='loadname' name='loadname' value='";
     if (isset($loadname))
     {
         $_loadform .= HTMLEscape(autoUnescape($loadname));
     }
     $_loadform .= "' /></td></tr>\n"
-    . "<tr><td align='right'>" . $clang->gT("Password") . ":</td><td><input type='password' name='loadpass' value='";
+    . "<tr class='load-survey-row load-survey-password'><td class='load-survey-label label-cell' align='right'><label for='loadpass'>" . $clang->gT("Password") . "</label>:</td><td class='load-survey-input input-cell'><input type='password' id='loadpass' name='loadpass' value='";
     if (isset($loadpass))
     {
         $_loadform .= HTMLEscape(autoUnescape($loadpass));
@@ -520,10 +520,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_loadform .= "' /></td></tr>\n";
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_loadform .="<tr><td align='right'>" . $clang->gT("Security question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
+        $_loadform .="<tr class='load-survey-row load-survey-captcha'><td class='load-survey-label label-cell' align='right'><label for='loadsecurity'>" . $clang->gT("Security question") . "</label>:</td><td class='load-survey-input input-cell'><table class='captcha-table'><tr><td class='captcha-image' valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt='' /></td><td class='captcha-input' valign='middle'><input type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
     }
-    $_loadform .="<tr><td align='right'></td><td></td></tr>\n"
-    . "<tr><td></td><td><input type='submit' id='loadbutton' class='button' value='" . $clang->gT("Load now") . "' /></td></tr></table>\n";
+    $_loadform .="<tr class='load-survey-row load-survey-submit'><td class='load-survey-label label-cell'><label class='hide jshide' for='loadbutton'>" . $clang->gT("Load now") . "</label></td><td class='load-survey-input input-cell'><input type='submit' id='loadbutton' class='button' value='" . $clang->gT("Load now") . "' /></td></tr></table>\n";
 
     // Registration Form
     if (isset($surveyid) || (isset($registerdata) && $debugSrc == 'register.php'))
@@ -547,24 +546,24 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_registerform .= "\n<input type='hidden' name='lang' value='" . $_reglang . "' />\n";
         $_registerform .= "<input type='hidden' name='sid' value='$tokensid' id='sid' />\n";
 
-        $_registerform.="<table class='register' summary='Registrationform'>\n"
-        . "<tr><td align='right'>"
-        . $clang->gT("First name") . ":</td>"
-        . "<td align='left'><input class='text' type='text' name='register_firstname'";
+        $_registerform.="<table class='register register-form-table' summary='Registrationform'>\n"
+        . "<tr class='register-form-row register-form-fname'><td class='register-form-label label-cell' align='right'><label for='register_firstname'>"
+        . $clang->gT("First name") . "</label>:</td>"
+        . "<td class='register-form-input input-cell' align='left'><input class='text' type='text' id='register_firstname' name='register_firstname'";
         if (isset($_POST['register_firstname']))
         {
             $_registerform .= " value='" . htmlentities(returnGlobal('register_firstname'), ENT_QUOTES, 'UTF-8') . "'";
         }
         $_registerform .= " /></td></tr>"
-        . "<tr><td align='right'>" . $clang->gT("Last name") . ":</td>\n"
-        . "<td align='left'><input class='text' type='text' name='register_lastname'";
+        . "<tr class='register-form-row register-form-lname'><td class='register-form-label label-cell' align='right'><label for='register_lastname'>" . $clang->gT("Last name") . "</label>:</td>\n"
+        . "<td class='register-form-input input-cell' align='left'><input class='text' type='text' id='register_lastname' name='register_lastname'";
         if (isset($_POST['register_lastname']))
         {
             $_registerform .= " value='" . htmlentities(returnGlobal('register_lastname'), ENT_QUOTES, 'UTF-8') . "'";
         }
         $_registerform .= " /></td></tr>\n"
-        . "<tr><td align='right'>" . $clang->gT("Email address") . ":</td>\n"
-        . "<td align='left'><input class='text' type='text' name='register_email'";
+        . "<tr class='register-form-row register-form-email'><td class='register-form-label label-cell' align='right'><label for='register_email'>" . $clang->gT("Email address") . "</label>:</td>\n"
+        . "<td class='register-form-input input-cell' align='left'><input class='text' type='text' id='register_email' name='register_email'";
         if (isset($_POST['register_email']))
         {
             $_registerform .= " value='" . htmlentities(returnGlobal('register_email'), ENT_QUOTES, 'UTF-8') . "'";
@@ -576,16 +575,16 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                 continue;
 
             $_registerform .= '
-            <tr>
-            <td align="right">' . $thissurvey['attributecaptions'][$field] . ($attribute['mandatory'] == 'Y' ? '*' : '') . ':</td>
-            <td align="left"><input class="text" type="text" name="register_' . $field . '" /></td>
+            <tr class="register-form-row register-form-attribute">
+            <td class="register-form-label label-cell" align="right"><label for="register_' . $field . '">' . $thissurvey['attributecaptions'][$field] . ($attribute['mandatory'] == 'Y' ? '*' : '') . '</label>:</td>
+            <td class="register-form-input input-cell" align="left"><input class="text" type="text" id="register_' . $field . '" name="register_' . $field . '" /></td>
             </tr>';
         }
         if ((count($registerdata) > 1 || isset($thissurvey['usecaptcha'])) && function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $thissurvey['usecaptcha']))
         {
-            $_registerform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
+            $_registerform .="<tr class='register-form-row register-form-captcha'><td class='register-form-label label-cell' align='right'><label for='loadsecurity'>" . $clang->gT("Security Question") . "</label>:</td><td class='register-form-input input-cell'><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
         }
-        $_registerform .= "<tr><td></td><td><input id='registercontinue' class='submit button' type='submit' value='" . $clang->gT("Continue") . "' />"
+        $_registerform .= "<tr class='register-form-row register-form-submit'><td class='register-form-label label-cell'><label class='hide jshide' for='registercontinue'>" . $clang->gT("Continue") . "</label></td><td class='register-form-input input-cell' align='left'><input id='registercontinue' class='submit button' type='submit' value='" . $clang->gT("Continue") . "' />"
         . "</td></tr>\n"
         . "</table>\n";
 
