@@ -168,7 +168,7 @@ function fixChoiceListHeight(qID,samechoiceheight,samelistheight){
         maxHeight=$(this).actual('height');
       }
     });
-    $('.connectedSortable'+qID+' li').height(maxHeight);
+    $('.connectedSortable'+qID+' li').css('min-height',maxHeight+'px');
   }
   if(samelistheight)
   {
@@ -176,7 +176,7 @@ function fixChoiceListHeight(qID,samechoiceheight,samelistheight){
     $('.connectedSortable'+qID+' li').each(function(){
       totalHeight=totalHeight+$(this).actual('outerHeight',{includeMargin:true});;
     });
-    $('.connectedSortable'+qID).height(totalHeight);
+    $('.connectedSortable'+qID).css('min-height',totalHeight+'px');
   }
 }
 
