@@ -387,6 +387,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
 
             $aData['surveyid'] = $iSurveyID;
+            Yii::app()->db->schema->refresh();
         }
 
         $this->_renderWrappedTemplate('survey', 'deactivateSurvey_view', $aData);
