@@ -272,6 +272,7 @@
             $out = '';
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : '';
+            if (is_array($value)) { throw new CException('wrong type' . $name); }
             if (isset($metaData['label']))
             {
                 $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
@@ -284,6 +285,28 @@
             ));
 
             return $out;
+        }
+
+        public function renderJson($name, array $metaData, $form = null)
+        {
+            $out = '';
+            $id = $name;
+            $value = isset($metaData['current']) ? $metaData['current'] : '';
+            $readOnly = isset($metaData['readOnly']) ? $metaData['readOnly'] : false;
+            if (isset($metaData['label']))
+            {
+                $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
+            }
+            $editorOptions = array_merge(array(
+                'mode' => 'form',
+                'modes' => array('form', 'code', 'tree', 'text')
+            ), isset($metaData['editorOptions']) ? $metaData['editorOptions'] : array());
+            $out .= $this->widget('ext.yii-jsoneditor.JsonEditor', array(
+                'name' => $id,
+                'value' => $value,
+                'editorOptions' => $editorOptions
+            ), true);
+			return $out;
         }
 
         public function renderLogo($name, array $metaData)

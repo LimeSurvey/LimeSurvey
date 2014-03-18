@@ -86,3 +86,8 @@ div.row {
 .settingswidget ul.wysihtml5-toolbar li {
     clear: none !important;
 }
+
+.settingswidget .jsoneditor-wrapper {
+    height: 400px;
+    vertical-align: middle;
+}

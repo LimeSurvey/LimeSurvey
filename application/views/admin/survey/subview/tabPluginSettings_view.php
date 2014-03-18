@@ -1,3 +1,4 @@
+<div id='pluginsettings'>
 <?php
    if (isset($pluginSettings))
    {
@@ -6,7 +7,6 @@
             $this->widget('ext.SettingsWidget.SettingsWidget', array(
                 'settings' => $plugin['settings'],
                 'form' => false,
-                'id' => 'pluginsettings',
                 'title' => sprintf(gT("Settings for plugin %s"), $plugin['name']),
                 'prefix' => "plugin[{$plugin['name']}]"
 
@@ -16,7 +16,7 @@
 //                       $name = "plugin[{$plugin['name']}][$name]";
 //                       echo CHtml::tag('li', array(), $PluginSettings->renderSetting($name, $setting, null, true));
 //                   }
-               }
+            }
 
 
 //               Yii::import('application.helpers.PluginSettingsHelper');
@@ -24,3 +24,4 @@
     }
 
 ?>
+</div>
