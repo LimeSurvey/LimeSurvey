@@ -52,7 +52,7 @@
         */
         public function beforeParticipantSave()
         {
-            $oNewParticipant=$this->getEvent()->getSender();
+            $oNewParticipant=$this->getEvent()->get('model');
             if ($oNewParticipant->isNewRecord)
             {
                 return;
@@ -82,7 +82,7 @@
         */
         public function beforeParticipantDelete()
         {
-            $oNewParticipant=$this->getEvent()->getSender();
+            $oNewParticipant=$this->getEvent()->get('model');
             $oCurrentUser=$this->api->getCurrentUser();
 
             $aValues=$oNewParticipant->getAttributes();
