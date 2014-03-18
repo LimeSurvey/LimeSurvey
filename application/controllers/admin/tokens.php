@@ -1521,6 +1521,10 @@ class tokens extends Survey_Common_Action
                     $aData['lefttosend'] = $ctcount - $iMaxEmails;
                     $aViewUrls[] = 'emailwarning';
                 }
+                else
+                {
+                    $aData['tokenoutput'].='<b>All emails were sent.</b>';
+                }
 
                 $this->_renderWrappedTemplate('token', $aViewUrls, $aData);
             }
