@@ -4281,13 +4281,6 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
     $results['tokens']=0;
     $results['tokenfieldscreated']=0;
 
-    $aLanguagesSupported=array();
-    foreach ($xml->languages->language as $language)
-    {
-        $aLanguagesSupported[]=(string)$language;
-    }
-    $results['languages']=count($aLanguagesSupported);
-
     if ($sCreateMissingAttributeFields)
     {
         // Get a list with all fieldnames in the XML
