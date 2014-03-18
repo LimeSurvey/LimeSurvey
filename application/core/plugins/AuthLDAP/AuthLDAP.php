@@ -3,7 +3,7 @@ class AuthLDAP extends AuthPluginBase
 {
     protected $storage = 'DbStorage';
 
-    static protected $description = 'Core: Basic LDAP authentication';
+    static protected $description = 'Core: LDAP authentication';
     static protected $name = 'LDAP';
 
     /**
@@ -24,8 +24,16 @@ class AuthLDAP extends AuthPluginBase
             'label' => 'Port number (default when omitted is 389)'
             ),
         'ldapversion' => array(
-            'type' => 'string',
-            'label' => 'LDAP version (LDAPv2 = 2), e.g. 3'
+            'type' => 'select',
+            'label' => 'LDAP version',
+            'options' => array('2' => 'LDAPv2', '3'  => 'LDAPv3'),
+            'default' => '2',
+            'submitonchange'=> true
+            ),
+        'ldaptls' => array(
+            'type' => 'boolean',
+            'label' => 'Check to enable Start-TLS encryption When using LDAPv3',
+            'default' => '0'
             ),
         'ldapmode' => array(
             'type' => 'select',
@@ -36,31 +44,31 @@ class AuthLDAP extends AuthPluginBase
             ),
         'userprefix' => array(
             'type' => 'string',
-            'label' => '[Simple bind] Username prefix cn= or uid=',
+            'label' => 'Username prefix cn= or uid=',
             ),
         'domainsuffix' => array(
                 'type' => 'string',
-                'label' => '[Simple bind] Username suffix e.g. @mydomain.com or remaining part of ldap query'
+                'label' => 'Username suffix e.g. @mydomain.com or remaining part of ldap query'
                 ),
         'searchuserattribute' => array(
                 'type' => 'string',
-                'label' => '[Search and bind] attribute to compare to the given login can be uid, cn, mail, ...'
+                'label' => 'Attribute to compare to the given login can be uid, cn, mail, ...'
                 ),
         'usersearchbase' => array(
                 'type' => 'string',
-                'label' => '[Search and bind] base DN for the user search operation'
+                'label' => 'Base DN for the user search operation'
                 ),
         'extrauserfilter' => array(
                 'type' => 'string',
-                'label' => '[Search and bind](optional) Extra LDAP filter to be ANDed to the basic (searchuserattribute=username) filter. Don\'t forget the outmost  enclosing parentheses'
+                'label' => 'Optional extra LDAP filter to be ANDed to the basic (searchuserattribute=username) filter. Don\'t forget the outmost enclosing parentheses'
                 ),
         'binddn' => array(
                 'type' => 'string',
-                'label' => '[Search and bind](optional) DN of the search-DN-user used to search for the user\'s DN. An anonymous bind is performed if empty.'
+                'label' => 'Optional DN of the LDAP account used to search for the end-user\'s DN. An anonymous bind is performed if empty.'
                 ),
         'bindpwd' => array(
                 'type' => 'string',
-                'label' => '[Search and bind](optional) Password used to bind the search-DN-user unless anonymous bind is used.'
+                'label' => 'Password of the LDAP account used to search for the end-user\'s DN if previoulsy set.'
                 ),
         'is_default' => array(
                 'type' => 'checkbox',
@@ -117,14 +125,21 @@ class AuthLDAP extends AuthPluginBase
         $aPluginSettings = parent::getPluginSettings($getValues);
         if ($getValues) {
             $ldapmode = $aPluginSettings['ldapmode']['current'];
+            $ldapver = $aPluginSettings['ldapversion']['current'];
             
             // If it is a post request, it could be an autosubmit so read posted
             // value over the saved value
             if (App()->request->isPostRequest) {
                 $ldapmode = App()->request->getPost('ldapmode', $ldapmode);
                 $aPluginSettings['ldapmode']['current'] = $ldapmode;
+                $ldapver = App()->request->getPost('ldapversion', $ldapver);
+                $aPluginSettings['ldapversion']['current'] = $ldapver;
             }
             
+            if ($ldapver == '2' ) {
+               unset($aPluginSettings['ldaptls']); 
+            }
+
             if ($ldapmode == 'searchandbind') {
                 // Hide simple settings
                 unset($aPluginSettings['userprefix']);
@@ -162,6 +177,7 @@ class AuthLDAP extends AuthPluginBase
         $ldapserver 		= $this->get('server');
         $ldapport   		= $this->get('ldapport');
         $ldapver    		= $this->get('ldapversion');
+        $ldaptls    		= $this->get('ldaptls');
         $ldapmode    		= $this->get('ldapmode');
         $suffix     		= $this->get('domainsuffix');
         $prefix     		= $this->get('userprefix');
@@ -191,6 +207,17 @@ class AuthLDAP extends AuthPluginBase
             $ldapver = 2;
         }
         ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, $ldapver);
+
+        if (!empty($ldaptls) && $ldaptls == '1' && $ldapver == 3 && preg_match("/^ldaps:\/\//", $ldapserver) == 0 )
+        {
+            // starting TLS secure layer
+            if(!ldap_start_tls($ldapconn))
+            {
+                $this->setAuthFailure(100, ldap_error($ldapconn));
+                ldap_close($ldapconn); // all done? close connection
+                return;
+            }
+        }
 
         if (empty($ldapmode) || $ldapmode=='simplebind')
         {
