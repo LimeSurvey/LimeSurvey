@@ -145,7 +145,7 @@
                                                             
         public function beforeUserDelete()
         {
-            $oUserData=$this->getEvent()->getSender();
+            $oUserData=$this->getEvent()->get('model');
             $oCurrentUser=$this->api->getCurrentUser();
             $oOldUser=$this->api->getUser($oUserData->uid);
             if ($oOldUser)
