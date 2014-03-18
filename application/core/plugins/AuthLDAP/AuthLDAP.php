@@ -222,7 +222,7 @@ class AuthLDAP extends AuthPluginBase
         if (empty($ldapmode) || $ldapmode=='simplebind')
         {
             // in simple bind mode we know how to construct the userDN from the username
-            $ldapbind = ldap_bind($ldapconn, $prefix . $username . $suffix, $password);
+            $ldapbind = @ldap_bind($ldapconn, $prefix . $username . $suffix, $password);
         }
         else
         {
@@ -232,12 +232,12 @@ class AuthLDAP extends AuthPluginBase
             {
                 // There is no account defined to do the LDAP search, 
                 // let's use anonymous bind instead
-                $ldapbindsearch = ldap_bind($ldapconn);
+                $ldapbindsearch = @ldap_bind($ldapconn);
             }
             else
             {
                 // An account is defined to do the LDAP search, let's use it
-                $ldapbindsearch = ldap_bind($ldapconn, $binddn, $bindpwd);
+                $ldapbindsearch = @ldap_bind($ldapconn, $binddn, $bindpwd);
             }
             if (!$ldapbindsearch) {
                 $this->setAuthFailure(100, ldap_error($ldapconn));
@@ -270,8 +270,8 @@ class AuthLDAP extends AuthPluginBase
                 return;
             }
 
-            // binding to ldap server with teh userDN and privided credentials
-            $ldapbind = ldap_bind($ldapconn, $userdn, $password);
+            // binding to ldap server with the userDN and privided credentials
+            $ldapbind = @ldap_bind($ldapconn, $userdn, $password);
         }
 
         // verify user binding
@@ -279,7 +279,7 @@ class AuthLDAP extends AuthPluginBase
             $this->setAuthFailure(100, ldap_error($ldapconn));
             ldap_close($ldapconn); // all done? close connection
             return;
-        }        
+        } 
 
         // Authentication was successful, now see if we have a user or that we should create one
         if (is_null($user)) {
