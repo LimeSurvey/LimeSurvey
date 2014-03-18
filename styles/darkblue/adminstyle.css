@@ -1624,59 +1624,8 @@ div.translate {
     color:#8a1f11;
 }
 
-/* *** OLD ORGANIZER DEFS *** */
-/*
-ol.organizer {
-    padding: 0;
-    list-style-type: none;
-    font-weight: bold;
-    width:800px;
-	margin: 0;
-	padding: 0;
-}
 
-ol.organizer ol {
-    list-style-type: none;
-    font-weight: normal;
-    width:750px;
-	margin: 0;
-	padding: 0;
-}
-
-ol.organizer {
-    margin: 0;
-	padding: 0;
-	margin: 1em 0;
-}
-
-
-.organizer li {
-    margin: 10px 0 0 0;
-    padding: 0;
-}
-
-.organizer li ol li{
-    margin: 3px 0 0 0;
-}
-
-.organizer li div  {
-    background-color:#423A4E;
-    color:#fff;
-    padding: 3px;
-    margin: 0;
-    cursor: move;
-    width:80%;
-    font-size:11px;
-
-}
-
-.organizer li ol li div{
-    background-color:#EDEDFB;
-    color:#666;
-}
-/* ****************************************** */
-
-/* *** OV: START NEW *** */
+/* *** organizeGroupsAndQuestions_view *** */
 .movableList ol.group-list
 {
 	margin-left: 30px;
@@ -1684,7 +1633,26 @@ ol.organizer {
 	padding: 0px; 
 	list-style-type: none;
 }
-			
+
+.movableList ol div.add-group-item
+{
+	padding: 4px 0 4px 0;
+	width: 100%;
+	text-align:center;
+	font-size: 80.01%;
+	font-weight:bold;
+	background-color: #BFBFFC;
+	margin-top: 6px; 
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.movableList ol div.add-group-item:hover
+{
+	background-color: #DBDBFC;
+}
+
 .movableList ol li.group-item
 {
 	padding: 0px 0 6px 0;
@@ -1692,7 +1660,7 @@ ol.organizer {
 	border-bottom: 6px solid;
 	color: #fff;				/* backgroundcolor complete group field */
 }
-		
+
 .movableList ol li div.ui-widget-header 
 {
 	margin: 0;
@@ -1709,8 +1677,8 @@ ol.organizer {
 	background-color: #DBDBFC;
 	color: #000;				/* font-color while hovering group text*/
 }
-	
-	
+
+
 /* *** organize list: question-level styles *** */
 		
 .movableList ol li ol.question-list
@@ -1720,7 +1688,26 @@ ol.organizer {
 	padding: 0px; 
 	list-style-type: none;
 }
-		
+
+.movableList ol li ol div.add-question-item
+{
+	padding: 3px 0 3px 0;
+	width: 100%;
+	text-align:center;
+	font-size: 80.01%;
+	font-weight:bold;
+	background-color: #EDEDFB;
+	margin-top: 6px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.movableList ol li ol div.add-question-item:hover
+{
+	background-color: #DBDBFC;
+}
+
 .movableList ol li ol li.question-item
 {
 	padding: 0;
@@ -1795,7 +1782,6 @@ ol.organizer {
 	height: 20px;
 	margin: 0px;
 	padding: 0px;
-	/* margin-right:-1px;			only questions! make icons a little closer than standard */
 }
 		
 .movableList div.gq-infotext
@@ -1804,7 +1790,7 @@ ol.organizer {
 	margin-top: 2px;
 	margin-bottom: 3px;
 }
-/* ******** END NEW  ********* */
+/* ******** END organizeGroupsAndQuestions_view  ********* */
 
 .textresponses {
     text-align: center;

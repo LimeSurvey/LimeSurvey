@@ -133,17 +133,10 @@
 	</div>
 	<ol class="organizer group-list" data-level='group'>
 		<?php if (count($aGroupsAndQuestions)==0 && $isNotActive==1 && Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
-		{ ?><li id='list_g000' class='group-item' data-level='group'>
-				<div class='ui-widget-header'>
-					<div class='gq-leftcol'><div class='lefticons'><img src='<?php echo $sImageURL; ?>org_emptyicon_20.png' /></div></div>
-						<div class='gq-rightcol'><div class='righticons'><img src='<?php echo $sImageURL; ?>org_emptyicon_20.png' /></div></div>
-						<div class='gq-infocol' style='text-align:center;'>
-						<div class='gq-infotext'>
-							<a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/$surveyid"); ?>"><?php $clang->eT("Add new group to survey"); ?> <img src='<?php echo $sImageURL; ?>org_add_20.png'  alt='' /></a>
-						</div>
-					</div>
-				</div> 
-			</li><?php
+		{ ?>
+		<div class='add-group-item'>
+			<a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/$surveyid"); ?>"><?php $clang->eT("Add new group to survey"); ?> <img src='<?php echo $sImageURL; ?>org_add_20.png'  alt='' /></a>
+		</div><?php
 		} ?>
 
 		<?php foreach ($aGroupsAndQuestions as  $aGroupAndQuestions) 
@@ -218,22 +211,11 @@
 
 			<?php if (isset ($aGroupAndQuestions['questions']))
 			{?><ol id='gol_<?php echo $aGroupAndQuestions['gid']; ?>' class='question-list' data-level='question'>
-				
-			<!-- TODO: "add new question bar" if group is empty causes sometimes problems after reordering questions/ groups deactivated so far
-				<?php //if (count($aGroupAndQuestions['questions'])==0 && $isNotActive==1 && Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
-				{ ?><li id='list_q000' class='question-item' data-level='question'>
-						<div class='ui-widget-header question-wrapper'>
-							<div class='gq-leftcol'><div class='lefticons'><img src='<?php //echo $sImageURL; ?>org_emptyicon_20.png' /></div></div>
-							<div class='gq-rightcol'><div class='righticons'><img src='<?php //echo $sImageURL; ?>org_emptyicon_20.png' /></div></div>
-							<div class='gq-infocol' style='text-align:center;'>
-								<div class='gq-infotext'>
-									<a href='<?php //echo $this->createUrl("admin/questions/sa/addquestion/surveyid/".$surveyid."/gid/".$aGroupAndQuestions['gid']); ?>'><?php //$clang->eT("Add new question to group"); ?> <img src='<?php //echo $sImageURL; ?>org_add_20.png'  alt='' /></a>
-								</div>
-							</div>
-						</div> 
-					</li><?php
+				<?php if (count($aGroupAndQuestions['questions'])==0 && $isNotActive==1 && Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
+				{ ?><div class='add-question-item'>
+							<a href='<?php echo $this->createUrl("admin/questions/sa/addquestion/surveyid/".$surveyid."/gid/".$aGroupAndQuestions['gid']); ?>'><?php $clang->eT("Add new question to group"); ?> <img src='<?php echo $sImageURL; ?>org_add_20.png'  alt='' /></a>
+					</div><?php
 				} ?>
-			*******************  -->
 
 				<?php foreach($aGroupAndQuestions['questions'] as $aQuestion)
 				{?><li id='list_q<?php echo $aQuestion['qid'];?>' class='question-item' data-level='question'>
