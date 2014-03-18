@@ -70,20 +70,19 @@ function loadanswers()
             }
             elseif ($column == "saved_thisstep" && $thissurvey['alloweditaftercompletion'] != 'Y' )
             {
-                $_SESSION['survey_'.$surveyid]['step']=$value;
-                $thisstep=$value-1;
+                $_SESSION['survey_'.$surveyid]['step']=($value>1? $value:1) ;
+                $thisstep=$_SESSION['survey_'.$surveyid]['step']-1;
             }
             elseif ($column =='lastpage' && isset($_GET['token']))
             {
                 if(is_null($submitdate) || $submitdate=="N")
                 {
-                    if ($value<1) $value=1;
-                    $_SESSION['survey_'.$surveyid]['step']=$value;
-                    $thisstep=$value-1;
+                    $_SESSION['survey_'.$surveyid]['step']=($value>1? $value:1) ;
+                    $thisstep=$_SESSION['survey_'.$surveyid]['step']-1;
                 }
                 else
                 {
-                    $_SESSION['survey_'.$surveyid]['maxstep']=$value;
+                    $_SESSION['survey_'.$surveyid]['maxstep']=($value>1? $value:1) ;
                 }
             }
             /*

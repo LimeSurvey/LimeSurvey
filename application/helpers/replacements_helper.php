@@ -860,9 +860,14 @@ function PassthruReplace($line, $thissurvey)
 
 /**
 * doHtmlSaveAll return HTML part of saveall button in survey
+* @param string $move : 
+* @return string 
 **/
 function doHtmlSaveAll($move="")
 {
+    static $aSaveAllButtons=array();
+    if(isset($aSaveAllButtons[$move]))
+        return $aSaveAllButtons[$move];
     $surveyid=Yii::app()->getConfig('surveyID');
     $thissurvey=getsurveyinfo($surveyid);
     $clang = Yii::app()->lang;
@@ -872,36 +877,49 @@ function doHtmlSaveAll($move="")
         $aHtmlOptionsLoadall['disabled']='disabled';
         $aHtmlOptionsSaveall['disabled']='disabled';
     }
-    $_saveall="";
+    $sLoadButton=CHtml::htmlButton($clang->gT("Load unfinished survey"),$aHtmlOptionsLoadall);
+    $sSaveButton=CHtml::htmlButton($clang->gT("Resume later"),$aHtmlOptionsSaveall);
+    // Fill some test here, more clear ....
+    $bTokenanswerspersistence=$thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
+    $bAlreadySaved=isset($_SESSION['survey_'.$surveyid]['scid']);
+    $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step'])? $_SESSION['survey_'.$surveyid]['step'] : false );
+    $iSessionMaxStep=(isset($_SESSION['survey_'.$surveyid]['maxstep'])? $_SESSION['survey_'.$surveyid]['maxstep'] : false );
+
+    $sSaveAllButtons="";
     // Find out if the user has any saved data
     if ($thissurvey['format'] == 'A')
     {
-        if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
+        if ( !$bTokenanswerspersistence && !$bAlreadySaved )
         {
-            $_saveall .= CHtml::htmlButton($clang->gT("Load unfinished survey"),$aHtmlOptionsLoadall);
+            $sSaveAllButtons .= $sLoadButton;
         }
-        $_saveall .= CHtml::htmlButton($clang->gT("Resume later"),$aHtmlOptionsSaveall);
+        $sSaveAllButtons .= CHtml::htmlButton($clang->gT("Resume later"),$aHtmlOptionsSaveall);
     }
-    elseif ($surveyid && (!isset($_SESSION['survey_'.$surveyid]['step']) || !$_SESSION['survey_'.$surveyid]['step']))//First page, show LOAD (but not save)
+    elseif (!$iSessionStep) //Welcome page, show load (but not save)
     {  
-        if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
+        if (!$bTokenanswerspersistence && !$bAlreadySaved )
         {
-            $_saveall .= CHtml::htmlButton($clang->gT("Load unfinished survey"),$aHtmlOptionsLoadall);
+            $sSaveAllButtons .= $sLoadButton;
+        }
+        if($thissurvey['showwelcome']=="N")
+        {
+            $sSaveAllButtons .= $sSaveButton;
         }
     }
-    elseif ($surveyid && (isset($_SESSION['survey_'.$surveyid]['maxstep']) && $_SESSION['survey_'.$surveyid]['maxstep']==1) && $thissurvey['showwelcome']=="N")//First page, show LOAD and SAVE
-    {  //First page, show LOAD
-        if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
-        {
-            $_saveall .= CHtml::htmlButton($clang->gT("Load unfinished survey"),$aHtmlOptionsLoadall);
-        }
-        $_saveall .= CHtml::htmlButton($clang->gT("Resume later"),$aHtmlOptionsSaveall);
-    }
-    elseif (!isset($_SESSION['survey_'.$surveyid]['scid']) || $move == "movelast") // Not on last page or submited survey
+    elseif ($iSessionMaxStep==1 && $thissurvey['showwelcome']=="N")//First page, show LOAD and SAVE
     {
-        $_saveall .= CHtml::htmlButton($clang->gT("Resume later"),$aHtmlOptionsSaveall);
+        if (!$bTokenanswerspersistence && !$bAlreadySaved )
+        {
+            $sSaveAllButtons .= $sLoadButton;
+        }
+        $sSaveAllButtons .= $sSaveButton;
     }
-    return $_saveall;
+    elseif ($move != "movelast") // Not on last page or submited survey
+    {
+        $sSaveAllButtons .= $sSaveButton;
+    }
+    $aSaveAllButtons[$move]=$sSaveAllButtons;
+    return $aSaveAllButtons[$move];
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay

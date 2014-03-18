@@ -388,7 +388,7 @@ class SurveyRuntimeHelper {
                 }
             }
 
-            if (isset($moveResult))
+            if (isset($moveResult) && isset($moveResult['seq']) )// Reload at first page (welcome after click previous fill an empty $moveResult array
             {
                 if ($moveResult['finished'] == true)
                 {
@@ -442,15 +442,16 @@ class SurveyRuntimeHelper {
                 Yii::import("application.libraries.Save");
                 $cSave = new Save();
             }
-            if ($thissurvey['active'] == "Y" && isset($_POST['saveall']))
+           if ($thissurvey['active'] == "Y" && Yii::app()->request->getPost('saveall')) // Don't test if save is allowed
             {
+                $bTokenAnswerPersitance = $thissurvey['tokenanswerspersistence'] == 'Y' && isset($surveyid) && tableExists('tokens_'.$surveyid);
                 // must do this here to process the POSTed values
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false);   // by jumping to current step, saves data so far
-                if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
+                if (!isset($_SESSION[$LEMsessid]['scid']) && !$bTokenAnswerPersitance )
                 {
                     $cSave->showsaveform(); // generates a form and exits, awaiting input
                 }
-                elseif ($thissurvey['tokenanswerspersistence'] == 'Y' && isset($surveyid) && tableExists('tokens_'.$surveyid))
+                else
                 {
                     // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
                     // Now update lastpage to $_SESSION[$LEMsessid]['step'] in SurveyDynamic, otherwise we land on 
@@ -458,7 +459,7 @@ class SurveyRuntimeHelper {
                     $iResponseID = $_SESSION[$LEMsessid]['srid'];
                     $oResponse = SurveyDynamic::model($surveyid)->findByPk($iResponseID);
                     $oResponse->lastpage = $_SESSION[$LEMsessid]['step'];
-                    $oResponse->save();                    
+                    $oResponse->save();
                 }
             }
 

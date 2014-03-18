@@ -315,8 +315,6 @@ class index extends CAction {
 
             $_SESSION['survey_'.$surveyid]['holdname'] = $sLoadName;
             $_SESSION['survey_'.$surveyid]['holdpass'] = $sLoadPass;
-            $_SESSION['survey_'.$surveyid]['scid'] = Yii::app()->request->getQuery('scid');
-
 
             if ($errormsg == "") {
                 LimeExpressionManager::SetDirtyFlag();  
