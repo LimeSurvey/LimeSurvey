@@ -1196,7 +1196,11 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{saved_control}}', 'email', "{$sVarchar}(254)");
             alterColumn('{{surveys}}', 'adminemail', "{$sVarchar}(254)");
             alterColumn('{{surveys}}', 'bounce_email', "{$sVarchar}(254)");
-            dropUniqueKeyMSSQL('email','{{users}}');
+            switch ($sDBDriverName){
+                case 'sqlsrv':
+                case 'dblib':
+                case 'mssql': dropUniqueKeyMSSQL('email','{{users}}');
+            }
             alterColumn('{{users}}', 'email', "{$sVarchar}(254)");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>174),"stg_name='DBVersion'");
         }
