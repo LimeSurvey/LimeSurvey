@@ -25,7 +25,7 @@ class RDataWriter extends CsvWriter {
      * @return mixed
      */
     protected function transformResponseValue($value, $fieldType, FormattingOptions $oOptions) {
-        parent::transformResponseValue($value, $fieldType, $oOptions);
+        $value = parent::transformResponseValue($value, $fieldType, $oOptions);
 
         switch ($fieldType) {
             case 'G':       // Gender question
@@ -57,6 +57,7 @@ class RDataWriter extends CsvWriter {
                 break;
   
             default:
+                return $value;
                 break;
         }
     }
