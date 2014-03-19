@@ -50,6 +50,7 @@ $(document).ready(function() {
                         height : 300,
                         open: function(event, ui) {
                             $('#attributes').multiselect({ includeSelectAllOption:true, 
+                                                           selectAllValue: '0',
                                                            selectAllText: sSelectAllText,
                                                            nonSelectedText: sNonSelectedText,
                                                            nSelectedText: sNSelectedText,
