@@ -199,7 +199,7 @@
                         'default'=>0,             
                         'tab'=>'notification', // @todo: Setting no used yet
                         'category'=>'Auditing for person-related data', // @todo: Setting no used yet
-                        'label' => 'Audit log for this survey:',
+                        'label' => 'Audit log for this survey',
                         'current' => $this->get('auditing', 'Survey', $event->get('survey'))
                     )
                 )

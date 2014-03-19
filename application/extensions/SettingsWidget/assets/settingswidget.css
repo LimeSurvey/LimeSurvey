@@ -79,9 +79,7 @@ div.row {
 
 .settingswidget legend {
     width: 100%;
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-top: 0px;
+    margin: 0px 0px 10px 0px;
 }
 
 .settingswidget .buttons {
