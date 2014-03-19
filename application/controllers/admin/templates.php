@@ -408,20 +408,24 @@ class templates extends Survey_Common_Action
     {
         if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
             $clang = Yii::app()->lang;
-            $oldname = sanitize_paranoid_string(returnGlobal('copydir'));
-            $newname = sanitize_paranoid_string(returnGlobal('newname'));
-            $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
-            $olddirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
+            $sOldName = sanitize_paranoid_string(returnGlobal('copydir'));
+            $sNewName = sanitize_paranoid_string(returnGlobal('newname'));
+            $sNewDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
+            $sOldDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
             if (isStandardTemplate(returnGlobal('newname')))
-                $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), $newname) . " " . $clang->gT("This name is reserved for standard template.", "js"));
-            elseif (file_exists($newdirname))
-                $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), $newname) . " " . $clang->gT("A template with that name already exists.", "js"));
-            elseif (rename($olddirname, $newdirname) == false)
-                $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), $newname) . " " . $clang->gT("Maybe you don't have permission.", "js"));
+                $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . $clang->gT("This name is reserved for standard template.", "js"));
+            elseif (file_exists($sNewDirectoryPath))
+                $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . $clang->gT("A template with that name already exists.", "js"));
+            elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false)
+                $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . $clang->gT("Maybe you don't have permission.", "js"));
             else
             {
-                Survey::model()->updateAll(array( 'template' => $newname ), "template = :oldname", array(':oldname'=>$oldname));
-                $this->index("startpage.pstpl", "welcome", $newname);
+                Survey::model()->updateAll(array( 'template' => $sNewName ), "template = :oldname", array(':oldname'=>$sOldName));
+                if ( getGlobalSetting('defaulttemplate')==$sOldName)
+                {
+                    setGlobalSetting('defaulttemplate',$sNewName);
+                }
+                $this->index("startpage.pstpl", "welcome", $sNewName);
             }
         }
     }
