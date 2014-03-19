@@ -92,6 +92,7 @@ class PluginsController extends LSYii_Controller
             $oPluginObject->saveSettings($aSave);
 
             Yii::app()->user->setFlash('pluginmanager', 'Settings saved');
+            $this->forward('plugins/index', true);
         }
 
         $aSettings = $oPluginObject->getPluginSettings();
