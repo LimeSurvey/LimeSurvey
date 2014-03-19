@@ -420,7 +420,7 @@ class templates extends Survey_Common_Action
                 $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), $newname) . " " . $clang->gT("Maybe you don't have permission.", "js"));
             else
             {
-                Survey::model()->updateAll(array( 'template' => $newname ), "template = '{$oldname}'" );
+                Survey::model()->updateAll(array( 'template' => $newname ), "template = :oldname", array(':oldname'=>$oldname));
                 $this->index("startpage.pstpl", "welcome", $newname);
             }
         }
