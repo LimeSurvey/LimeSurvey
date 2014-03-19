@@ -56,6 +56,7 @@ function createTokenTable($iSurveyID, $aAttributeFields=array())
         $tokenattributefieldnames = Survey::model()->findByPk($iSurveyID)->tokenAttributes;
         foreach($tokenattributefieldnames as $attrname=>$attrdetails)
         {
+            if (isset($fields[$attrname])) continue; // Field was already created
             Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_".intval($iSurveyID)."}}", $attrname, 'VARCHAR(255)'))->execute();
         }
         Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
