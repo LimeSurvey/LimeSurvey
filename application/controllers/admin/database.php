@@ -992,10 +992,14 @@ class database extends Survey_Common_Action
             cleanLanguagesFromSurvey($iSurveyID,Yii::app()->request->getPost('languageids'));
 
             fixLanguageConsistency($iSurveyID,Yii::app()->request->getPost('languageids'));
+            $Survey=Survey::model()->findByPk($iSurveyID);
+            // Validate template : accepted: user have rigth to read template OR template are not updated : else set to the default from config
             $template = Yii::app()->request->getPost('template');
 
-            if(!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $template)) $template = "default";
-
+            if(!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $template) && $template!=$Survey->template)
+            {
+                $template = Yii::app()->getConfig('defaulttemplate');
+            }
             $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
             SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyID));
             if(isset($aURLParams))
@@ -1082,7 +1086,7 @@ class database extends Survey_Common_Action
             }
 
             // use model
-            $Survey=Survey::model()->findByPk($iSurveyID);
+
             foreach ($updatearray as $k => $v)
                 $Survey->$k = $v;
             $Survey->save();
