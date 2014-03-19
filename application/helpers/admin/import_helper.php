@@ -1782,6 +1782,11 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
         foreach ($insertdata as $k => $v)
             $ques->$k = $v;
         $result = $ques->save();
+        if (!$result)
+        {
+            $results['fatalerror'] = CHtml::errorSummary($ques,$clang->gT("The question could not be imported for the following reasons:"));
+            return $results;
+        }
         if (!isset($aQIDReplacements[$oldqid]))
         {
             $newqid=getLastInsertID($ques->tableName());
