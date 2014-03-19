@@ -32,7 +32,7 @@
             }
             else
             {
-                echo CHtml::openTag('div', array('class' => 'settingswidget', 'id' => $this->getId(), 'style' => 'margin-left: 0px;'));
+                echo CHtml::openTag('div', array('class' => 'settingswidget', 'id' => $this->getId()));
             }
             if (isset($this->title))
             {

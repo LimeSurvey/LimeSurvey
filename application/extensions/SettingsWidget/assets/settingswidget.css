@@ -23,7 +23,7 @@ div.row {
 
 .settingswidget {
     margin: auto;
-    width: 60%;
+    width: 80%;
 }
 
 /*
@@ -55,15 +55,19 @@ div.row {
     padding-bottom: 10px;
 }
 
+.settingswidget .setting > input,
+.settingswidget .setting > textarea {
+    width: 60%;
+}
+
 .settingswidget .setting > * {
-    width: 70%;
     display: inline-block;
 }
 
 .settingswidget .setting > label {
     text-align: right;
     padding-right: 10px;
-    width: 30%;
+    width: 40%;
     display: inline-block;
 }
 .settingswidget .setting > label:after{
