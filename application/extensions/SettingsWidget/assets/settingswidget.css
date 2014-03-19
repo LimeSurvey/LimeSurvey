@@ -52,6 +52,7 @@ div.row {
 
 .settingswidget {
     padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .settingswidget .setting > * {
