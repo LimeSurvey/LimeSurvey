@@ -321,7 +321,7 @@ abstract class Writer implements IWriter
         isset($fieldType) &&
         ($fieldType == 'M' || $fieldType == 'P' || $fieldType == 'Y'))
         {
-            if ($value == 'N' && $oOptions->convertN)
+            if (($value == 'N' || ($value == '' && !is_null($value)))  && $oOptions->convertN)
             {
                 //echo "Transforming 'N' to ".$oOptions->nValue.PHP_EOL;
                 return $oOptions->nValue;
