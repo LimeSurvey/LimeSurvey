@@ -5495,8 +5495,8 @@ function getAttributeValue($surveyid,$attrName,$token)
         return null;
     }
 
-	$token = Token::model($surveyid)->findByAttributes(array("token"=>$token));
-	return isset($token->$attrName) ? $token->$attrName : null;
+    $token = Token::model($surveyid)->findByAttributes(array("token"=>$token));
+    return isset($token->$attrName) ? $token->$attrName : null;
 }
 
 /**
@@ -6035,9 +6035,9 @@ function includeKeypad()
 {
     $clang = Yii::app()->lang;
 
-	Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
     $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.$clang->langcode.'.js';
-	if ($clang->langcode != 'en' && file_exists($localefile))
+    if ($clang->langcode != 'en' && file_exists($localefile))
     {
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad-'.$clang->langcode.'.js');
     }
@@ -6053,7 +6053,7 @@ function includeKeypad()
 */
 function getQuotaInformation($surveyid,$language,$iQuotaID='all')
 {
-	Yii::log('getQuotaInformation');
+    Yii::log('getQuotaInformation');
     global $clienttoken;
     $baselang = Survey::model()->findByPk($surveyid)->language;
     $aAttributes=array('sid' => $surveyid);
@@ -7351,7 +7351,7 @@ function getHeader($meta = false)
         $header .= $meta;
 
 
-	if ( !$embedded )
+    if ( !$embedded )
     {
         return $header;
     }
@@ -7365,7 +7365,7 @@ function getHeader($meta = false)
 
 function doHeader()
 {
-	echo getHeader();
+    echo getHeader();
 }
 
 /**
@@ -7855,5 +7855,33 @@ function array_diff_assoc_recursive($array1, $array2) {
     }
     return $difference;
 }
+
+
+    function convertPHPSizeToBytes($sSize)  
+    {  
+        //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)  
+        $sSuffix = substr($sSize, -1);  
+        $iValue = substr($sSize, 0, -1);  
+        switch(strtoupper($sSuffix)){  
+        case 'P':  
+            $iValue *= 1024;  
+        case 'T':  
+            $iValue *= 1024;  
+        case 'G':  
+            $iValue *= 1024;  
+        case 'M':  
+            $iValue *= 1024;  
+        case 'K':  
+            $iValue *= 1024;  
+            break;  
+        }  
+        return $iValue;  
+    }  
+      
+    function getMaximumFileUploadSize()  
+    {  
+        return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));  
+    }  
+
 // Closing PHP tag intentionally omitted - yes, it is okay
 
