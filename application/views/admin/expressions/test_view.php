@@ -5,14 +5,6 @@
         <td>Show the list of functions available within Expression Manager.</td>
     </tr>
     <tr>
-        <td><a href="<?php echo $this->createUrl('admin/expressions/sa/stringsplit'); ?>">String Splitter</a></td>
-        <td>Unit test of String Splitter to ensure splits source into Strings vs. Expressions.  Expressions are surrounded by un-escaped curly braces</td>
-    </tr>
-    <tr>
-        <td><a href="<?php echo $this->createUrl('admin/expressions/sa/tokenizer'); ?>">Tokenizer</a></td>
-        <td>Demonstrates that Expression Manager properly detects and categorizes tokens (e.g. variables, string, functions, operators)</td>
-    </tr>
-    <tr>
         <td><a href="<?php echo $this->createUrl('admin/expressions/sa/strings_with_expressions'); ?>">Unit Tests of Expressions Within Strings</a></td>
         <td>Test how Expression Manager can process strings containing one or more variable, token, or expression replacements surrounded by curly braces.</td>
     </tr>
