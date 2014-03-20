@@ -50,14 +50,22 @@
 */
 function setNoAnswerMode($thissurvey)
 {
-    if (getGlobalSetting('shownoanswer') > 0 && $thissurvey['shownoanswer'] != 'N')
+    if (getGlobalSetting('shownoanswer') == 1)
     {
         define('SHOW_NO_ANSWER', 1);
     }
-    else
+    elseif (getGlobalSetting('shownoanswer') == 0)
     {
         define('SHOW_NO_ANSWER', 0);
     }
+    elseif ($thissurvey['shownoanswer'] == 'N')
+    {
+        define('SHOW_NO_ANSWER', 0);
+    }   
+    else
+    {
+        define('SHOW_NO_ANSWER', 1);
+    }   
 }
 
 /**
