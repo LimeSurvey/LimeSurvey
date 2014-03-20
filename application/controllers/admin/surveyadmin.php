@@ -72,33 +72,33 @@ class SurveyAdmin extends Survey_Common_Action
 
             //Automatically renumbers the "question codes" so that they follow
             //a methodical numbering method
-            $question_number=1;
-            $group_number=0;
-            $gseq=0;
-            $gselect="SELECT a.qid, a.gid\n"
+            $iQuestionNumber=1;
+            $iGroupNumber=0;
+            $iSequence=0;
+            $sQuery="SELECT a.qid, a.gid\n"
             ."FROM {{questions}} as a, {{groups}} g "
             ."WHERE a.gid=g.gid AND a.sid={$iSurveyID} AND a.parent_qid=0 "
             ."GROUP BY a.gid, a.qid, g.group_order, question_order "
             ."ORDER BY g.group_order, question_order";
-            $gresult=dbExecuteAssoc($gselect) or safe_die ("Error: ".$connect->ErrorMsg());  // Checked
+            $arResult=dbExecuteAssoc($sQuery) or safe_die ("Error: ".$connect->ErrorMsg());  // Checked
             $grows = array(); //Create an empty array in case FetchRow does not return any rows
-            foreach ($gresult->readAll() as $grow) {$grows[] = $grow;} // Get table output into array
+            foreach ($arResult->readAll() as $grow) {$grows[] = $grow;} // Get table output into array
             foreach($grows as $grow)
             {
                 //Go through all the questions
-                if ($sSubAction == 'bygroup' && (!isset($group_number) || $group_number != $grow['gid']))
+                if ($sSubAction == 'bygroup' && (!isset($iGroupNumber) || $iGroupNumber != $grow['gid']))
                 { //If we're doing this by group, restart the numbering when the group number changes
-                    $question_number=1;
-                    $group_number = $grow['gid'];
-                    $gseq++;
+                    $iQuestionNumber=1;
+                    $iGroupNumber = $grow['gid'];
+                    $iSequence++;
                 }
                 $usql="UPDATE {{questions}} "
-                ."SET title='".(($sSubAction == 'bygroup') ? ('G' . $gseq ) : '')."Q".str_pad($question_number, 5, "0", STR_PAD_LEFT)."'\n"
+                ."SET title='".(($sSubAction == 'bygroup') ? ('G' . $iSequence ) : '')."Q".str_pad($iQuestionNumber, 5, "0", STR_PAD_LEFT)."'\n"
                 ."WHERE qid=".$grow['qid'];
                 //$databaseoutput .= "[$sql]";
                 $uresult=dbExecuteAssoc($usql) or safe_die("Error: ".$connect->ErrorMsg());  // Checked
-                $question_number++;
-                $group_number=$grow['gid'];
+                $iQuestionNumber++;
+                $iGroupNumber=$grow['gid'];
             }
             $_SESSION['flashmessage'] = $clang->gT("Question codes were successfully regenerated.");
             LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
@@ -675,7 +675,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']);
                 if (tableExists('tokens_' . $rows['sid'] ))
                 {
-					$summary = Token::model($rows['sid'])->summary();
+                    $summary = Token::model($rows['sid'])->summary();
                     $tokens = $summary['count'];
                     $tokenscompleted = $summary['completed'];
 
@@ -1178,7 +1178,6 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _generalTabEditSurvey($iSurveyID, $esrow)
     {
-        global $siteadminname, $siteadminemail;
         $clang = $this->getController()->lang;
         $aData['action'] = "editsurveysettings";
         $aData['clang'] = $clang;

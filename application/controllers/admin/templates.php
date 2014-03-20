@@ -956,10 +956,9 @@ class templates extends Survey_Common_Action
         {
             case 'surveylist':
                 unset($files);
-
                 $surveylist = array(
                 "nosid" => $clang->gT("You have not provided a survey identification number"),
-                "contact" => sprintf($clang->gT("Please contact %s ( %s ) for further assistance."), $siteadminname, $siteadminemail),
+                "contact" => sprintf($clang->gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail")),
                 "listheading" => $clang->gT("The following surveys are available:"),
                 "list" => $this->getController()->render('/admin/templates/templateeditor_surveylist_view', array(), true),
                 );
