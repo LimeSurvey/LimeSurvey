@@ -140,7 +140,7 @@ class LSYii_Application extends CWebApplication
         foreach ($settings as $key => $value)
             $this->setConfig($key, $value);
 
-        App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(true) . '/tmp/assets');
+        App()->getAssetManager()->setBaseUrl('/tmp/assets');
         // Now initialize the plugin manager
         $this->initPluginManager(); 
         
