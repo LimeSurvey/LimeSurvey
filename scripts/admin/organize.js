@@ -41,104 +41,71 @@ $(document).ready(function(){
         frmOrganize.submit();
     })
 
+	// select, unselect or toggle selected groups an questions
+	$("[data-select]").on('click',function(event){
+		
+		event.preventDefault();
+		switch ($(this).data('select'))
+		{
+			case 'all':
+				$("input[data^='qMark'],input[data^='gMark']").prop('checked', true);
+			break;
+
+			case 'none':
+				$("input[data^='qMark'],input[data^='gMark']").prop('checked', false);
+			break;
+
+			case 'toggle':
+				$("input[data^='qMark']").prop('checked', function(i,val) {return !val;});
+				$("input[data^='gMark']").prop('checked', false);
+			break;
+
+				}
+
+	});
+
+
+	// if a group checkbox is checked/unchecked, check/uncheck all questions within this group
+	$("input[data^='gMark']").on('click', function(event) {
+
+		var status = $(this).is(':checked');
+		var gTag = $(this).attr('data').split('_');
+		var qTag = "input[data^='qMark_" + gTag[1] + "']";
+
+		$(qTag).prop('checked', status);
+	});
+
+	
+	// collapse groups to make questions invisible in this view or expand groups
+	$("[data-view]").on('click',function(event){
+
+		event.preventDefault();
+		switch ($(this).data('view'))
+		{
+			case 'collapse':
+				$("ol[id^='gol']").css("display","none");
+			break;
+
+			case 'expand':
+				$("ol[id^='gol']").css("display","block");
+			break;
+			
+			default:
+				var questionsolID = "ol[id='gol_" + $(this).data('view')  + "']";
+
+				var status = $(questionsolID).css("display");
+
+				if(status=='none')
+				{
+					$(questionsolID).css("display","block");
+				} 
+				else
+				{
+					$(questionsolID).css("display","none");
+				}
+
+		}
+
+	});
+
 });
-
-	function xmarkAllQuestions(xmode)
-	{
-		var elements = document.getElementsByTagName('input');
-
-		switch (xmode)
-		{
-			case 0:
-				for(i=0;i<elements.length;i++)
-				{
-					var chkName = elements[i].name;
-					var chkTags = chkName.split('_');
-				
-					if (chkTags[0]=='qMark' || chkTags[0]=='gMark')
-					{
-						elements[i].checked = false;
-					}
-				}
-			break;
-			
-			case 1:
-				for(i=0;i<elements.length;i++)
-				{
-					var chkName = elements[i].name;
-					var chkTags = chkName.split('_');
-				
-					if (chkTags[0]=='qMark' || chkTags[0]=='gMark')
-					{
-						elements[i].checked = true;
-					}
-				}
-			break;
-			
-			case 2:
-				for(i=0;i<elements.length;i++)
-				{
-					var chkName = elements[i].name;
-					var chkTags = chkName.split('_');
-				
-					if (chkTags[0]=='qMark')
-					{
-						elements[i].checked = (elements[i].checked==true) ? false : true;
-					} else 
-					{
-						if (chkTags[0]=='gMark')
-							elements[i].checked = false;
-					}
-				}
-			break;
-		}
-	}
-
-	function xmarkGroupQuestions(groupName) 
-	{
-		var elements = document.getElementsByTagName('input');
-		var chkGroup = document.getElementsByName(groupName);
-		var groupID  = groupName.split('_')[1];
-
-		for(i=0;i<elements.length;i++)
-		{
-			var chkName = elements[i].name;
-			var chkTags = chkName.split('_');
-			
-			if (chkTags[0]=='qMark' && chkTags[1]==groupID)
-			{
-				elements[i].checked = chkGroup[0].checked;
-			}
-		}
-	}
-
-	function xMinMaxGroup(gID)
-	{
-		if(gID==0 || gID==-1)
-		{
-
-			var elements = document.getElementsByTagName('ol');
-
-			for(i=0;i<elements.length;i++)
-			{
-				var olID = elements[i].id;
-				var olTags = olID.split('_');
-			
-				if (olTags[0]=='gol')
-				{
-					if (gID==0) {elements[i].style.display='none';} else {elements[i].style.display='block';}
-				}
-			}
-			
-		} else
-		{
-			var ol = document.getElementById(gID);
-			if(ol.style.display=='block')
-			{
-				ol.style.display='none';
-			} else
-			{
-				ol.style.display='block';
-			}
-		}
-	}

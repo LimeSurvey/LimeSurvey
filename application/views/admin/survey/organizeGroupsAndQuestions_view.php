@@ -23,12 +23,14 @@
 <div class='movableList'>
 	<div style="margin-top:0; padding-top:0; margin-bottom:12px; margin-left:33px;">
 		<img src='<?php echo $sImageURL; ?>org_handle_20.png' /> <?php $clang->eT("Drag these icons below to move groups up and down, click them to collapse or expand groups."); ?>&nbsp;&nbsp;
-		<a onClick="xMinMaxGroup(0)"><?php $clang->eT("Collapse all groups"); ?></a> / 
-		<a onClick="xMinMaxGroup(-1)"><?php $clang->eT("Expand all groups"); ?></a>
+		<a href="#" data-view="collapse"><?php $clang->eT("Collapse all groups"); ?></a> / 
+		<a href="#" data-view="expand"><?php $clang->eT("Expand all groups"); ?></a>
 	</div>
+
 	<ol class="organizer group-list" data-level='group'>
 		<?php if (count($aGroupsAndQuestions)==0 && $isNotActive==1 && Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
 		{ ?>
+		
 		<div class='add-group-item'>
 			<a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/$surveyid"); ?>"><?php $clang->eT("Add new group to survey"); ?> <img src='<?php echo $sImageURL; ?>org_add_20.png'  alt='' /></a>
 		</div><?php
@@ -39,25 +41,31 @@
 			<div class='ui-widget-header'>
 				<div class='gq-leftcol'>
 					<div class='lefticons'>
-						<img src='<?php echo $sImageURL; ?>org_handle_20.png' class='handle' alt='<?php $clang->eT("Drag to move"); ?><br /><?php $clang->eT("Click to collapse/expand group"); ?>' onclick="xMinMaxGroup('gol_<?php echo $aGroupAndQuestions['gid']; ?>')" />
-						<input type='checkbox' name='gMark_<?php echo $aGroupAndQuestions['gid'];?>' value='<?php echo $surveyid; ?>X<?php echo $aGroupAndQuestions['gid'];?>' onclick="xmarkGroupQuestions('gMark_<?php echo $aGroupAndQuestions['gid'];?>')" style="width:12px;">
+					
+						<a href="#" data-view="<?php echo $aGroupAndQuestions['gid']; ?>"><img src='<?php echo $sImageURL; ?>org_handle_20.png' class='handle' alt='<?php $clang->eT("Drag to move"); ?><br /><?php $clang->eT("Click to collapse/expand group"); ?>' /></a>
+
+						<input type='checkbox' data='gMark_<?php echo $aGroupAndQuestions['gid'];?>' value='<?php echo $surveyid; ?>X<?php echo $aGroupAndQuestions['gid'];?>' onclick="xmarkGroupQuestions('gMark_<?php echo $aGroupAndQuestions['gid'];?>')" style="width:12px;">
+						
 					</div>
 				</div>
+				
 				<div class='gq-rightcol'>
 					<div class='righticons'>
 						<?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')) 
 							{ ?><a href='<?php echo $this->createUrl("survey/index/action/previewgroup/sid/" . $surveyid . "/gid/" . $aGroupAndQuestions['gid']); ?>' id='grouppreviewlink' target='_blank'><img src='<?php echo $sImageURL; ?>org_preview_20.png' alt='<?php $clang->eT("Preview current question group"); ?>' /></a>
-							<?php if (count($languagelist) > 1) 
-							{ ?><div class="popuptip" rel="grouppreviewlink"><?php $clang->eT("Preview this question group in:"); ?>
-									<ul>
-										<?php foreach ($languagelist as $tmp_lang){ ?>
-										<li><a target='_blank' href='<?php echo $this->createUrl("survey/index/action/previewgroup/sid/" . $surveyid . "/gid/lang/" . $tmp_lang); ?>' ><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
-										<?php } ?>
-									</ul>
-								</div><?php } 
-							} else 
-							{ ?><img src='<?php echo $sImageURL; ?>org_emptyicon_20.png' /><?php 
-							}
+							
+								<?php if (count($languagelist) > 1) 
+								{ ?><div class="popuptip" rel="grouppreviewlink"><?php $clang->eT("Preview this question group in:"); ?>
+										<ul>
+											<?php foreach ($languagelist as $tmp_lang){ ?>
+											<li><a target='_blank' href='<?php echo $this->createUrl("survey/index/action/previewgroup/sid/" . $surveyid . "/gid/lang/" . $tmp_lang); ?>' ><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
+											<?php } ?>
+										</ul>
+									</div><?php } 
+								} else 
+								{ ?><img src='<?php echo $sImageURL; ?>org_emptyicon_20.png' /><?php 
+								}
+								
 							if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) 
 							{ ?><a href='<?php echo $this->createUrl("admin/questiongroups/sa/edit/surveyid/".$surveyid."/gid/".$aGroupAndQuestions['gid']); ?>'><img src='<?php echo $sImageURL; ?>org_edit_20.png' alt='<?php $clang->eT("Edit current question group"); ?>' /></a><?php 
 							} else 
@@ -118,7 +126,7 @@
 						<div class='gq-leftcol'>
 							<div class='lefticons'>
 								<img src='<?php echo $sImageURL; ?>org_handle_20.png' class='handle' alt='<?php $clang->eT("Drag to move"); ?>' />
-								<input type='checkbox' name='qMark_<?php echo $aQuestion['gid']; ?>_<?php echo $aQuestion['qid']; ?>' value='<?php echo $surveyid; ?>X<?php echo $aQuestion['gid']; ?>X<?php echo $aQuestion['qid'];?>' />
+								<input type='checkbox' data='qMark_<?php echo $aQuestion['gid']; ?>_<?php echo $aQuestion['qid']; ?>' value='<?php echo $surveyid; ?>X<?php echo $aQuestion['gid']; ?>X<?php echo $aQuestion['qid'];?>' />
 							</div>
 						</div>
 						<div class='gq-rightcol'>
@@ -251,9 +259,9 @@
 
 		<div style="margin-top:0; padding-top:0; margin-left:75px;">
 			<img src='<?php echo $sImageURL; ?>org_chk_arrow_ltr.png'/>
-			<a onClick="xmarkAllQuestions(1)"><?php $clang->eT("Select all"); ?></a> / 
-			<a onClick="xmarkAllQuestions(0)"><?php $clang->eT("Unselect all"); ?></a> / 
-			<a onClick="xmarkAllQuestions(2)"><?php $clang->eT("Toggle selection"); ?></a>&nbsp;&nbsp;=>&nbsp;  
+			<a href="#" data-select="all"><?php $clang->eT("Select all"); ?></a> / 
+			<a href="#" data-select="none"><?php $clang->eT("Unselect all"); ?></a> / 
+			<a href="#" data-select="toggle"><?php $clang->eT("Toggle selection"); ?></a> =>
 			<?php $clang->eT("Set selected:"); ?>
 			
 			<select name="" size="1">
