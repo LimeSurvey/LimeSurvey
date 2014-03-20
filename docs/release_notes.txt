@@ -60,6 +60,39 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.05+ (build 140317) to 2.05+ (build 140320) Mar 20, 2014
+-Fixed issue #8807: When the AuditLog plugin is active, you can't add a Participant in the central participant database (Menno Dekker)
+-Fixed issue #8868: AuditLog plugin : Can't create/delete user (Menno Dekker)
+-Fixed issue #8500: Example surveys not properly importing (Thomas White)
+-Fixed issue #8797: Error 500 when searching for Attribute Field content in CPDB (Carsten Schmitz)
+-Fixed issue #8804: Unable to set advanced settings (Sam Mousa)
+-Fixed issue #8805: CSS styles needed in load/save forms (tpartner)
+-Fixed issue #8814: Multiple numeric input limit with big integer values (Carsten Schmitz)
+-Fixed issue #8821: Sending reminders process does not clearly indicate to user when it is complete (Carsten Schmitz)
+-Fixed issue #8833: RemoteControl activate_tokens throws error but action is done using imported survey (Carsten Schmitz)
+-Fixed issue #8842: Survey template reverts back to default when user don't have read access to actual template (Denis Chenu)
+-Fixed issue #8843: Overflow in dragdrop box (Denis Chenu)
+-Fixed issue #8844: Double import of the same question produce a fatal error (Carsten Schmitz)
+-Fixed issue #8846: "Resume later" button unavailable when reloading a survey after using this button (Denis Chenu)
+-Fixed issue #8847: Viewing quotas after having de-activated a survey shows internal server error (Carsten Schmitz)
+-Fixed issue #8852: If server upload maxfilesize < upload question maxfilesize, then the maxsize reported to users is incorrect (Carsten Schmitz)
+-Fixed issue #8860: String Splitter and Tokenizer tests in GUI available and failing (Carsten Schmitz)
+-Fixed issue #8861: Template name is forgotten after template rename (Carsten Schmitz)
+-Fixed issue #8869: Empty data in "R-data" export (Menno Dekker)
+-Fixed issue #8873: csv export for participants fails if "all attributes" entry is selected (Carsten Schmitz)
+-Fixed issue #8875: 'No answer' not available in Dual Scale dropdown even when 'No answer' is set to show (Carsten Schmitz)
+-Fixed issue #8876: Print answers shows fatal error if session expired (Carsten Schmitz)
+-Fixed issue: Error on survey archive import (Carsten Schmitz)
+-Fixed issue: Problems running DB update when updating from 1.92/1.90 using MSSQL (Carsten Schmitz)
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup
+#Updated translation: Spanish (Mexican) by mike
+#Updated translation: Thai by adzpire
+
 Changes from 2.05+ (build 140302) to 2.05+ (build 140317) Mar 17, 2014
 -Fixed issue #8738: Upgrading with webserver auth from 2.00+ to 2.05+ does not enable authwebserver plugin (Menno Dekker)
 -Fixed issue #8799: Administration login using a link with one time password (Menno Dekker)
