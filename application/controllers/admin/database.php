@@ -36,6 +36,10 @@ class database extends Survey_Common_Action
         $iQuestionID=returnGlobal('qid');
         $sDBOutput = '';
 
+        $oFixCKeditor= new LSYii_Validators;
+        $oFixCKeditor->fixCKeditor=true;
+        $oFixCKeditor->xssfilter=false;
+
         if ($sAction == "updatedefaultvalues" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','update'))
         {
 
@@ -144,7 +148,7 @@ class database extends Survey_Common_Action
                         $sAnswerText=Yii::app()->request->getPost('answer_'.$sLanguage.'_'.$iSortOrderID.'_'.$iScaleID);
 
                         // Fix bug with FCKEditor saving strange BR types
-                        $sAnswerText=fixCKeditorText($sAnswerText);
+                        $sAnswerText=$oFixCKeditor->fixCKeditor($sAnswerText);
                         // Now we insert the answers
                         $iInsertCount=Answer::model()->insertRecords(array('code'=>$sCode,
                         'answer'=>$sAnswerText,
@@ -357,12 +361,11 @@ class database extends Survey_Common_Action
                     $iQuestionOrder=(getMaxQuestionOrder($iQuestionGroupID,$iSurveyID));
                     $iQuestionOrder++;
                 }
-                // &eacute; to é and &amp; to & : really needed ? Why not for answers ? (140307)
-                $sQuestionText=html_entity_decode(Yii::app()->request->getPost('question_'.$sBaseLanguage), ENT_QUOTES, "UTF-8");
-                $sQuestionHelp=html_entity_decode(Yii::app()->request->getPost('help_'.$sBaseLanguage), ENT_QUOTES, "UTF-8");
+                $sQuestionText=Yii::app()->request->getPost('question_'.$sBaseLanguage,'');
+                $sQuestionHelp=Yii::app()->request->getPost('help_'.$sBaseLanguage,'');
                 // Fix bug with FCKEditor saving strange BR types : in rules ?
-                $sQuestionText=fixCKeditorText($sQuestionText);
-                $sQuestionHelp=fixCKeditorText($sQuestionHelp);
+                $sQuestionText=$oFixCKeditor->fixCKeditor($sQuestionText);
+                $sQuestionHelp=$oFixCKeditor->fixCKeditor($sQuestionHelp);
 
                 $iQuestionID=0;
                 $oQuestion= new Question;
@@ -734,11 +737,11 @@ class database extends Survey_Common_Action
                         if (isset($qlang) && $qlang != "")
                         {
                             // &eacute; to é and &amp; to & : really needed ? Why not for answers ? (130307)
-                            $sQuestionText=html_entity_decode(Yii::app()->request->getPost('question_'.$qlang), ENT_QUOTES, "UTF-8");
-                            $sQuestionHelp=html_entity_decode(Yii::app()->request->getPost('help_'.$qlang), ENT_QUOTES, "UTF-8");
+                            $sQuestionText=Yii::app()->request->getPost('question_'.$qlang,'');
+                            $sQuestionHelp=Yii::app()->request->getPost('help_'.$qlang,'');
                             // Fix bug with FCKEditor saving strange BR types : in rules ?
-                            $sQuestionText=fixCKeditorText($sQuestionText);
-                            $sQuestionHelp=fixCKeditorText($sQuestionHelp);
+                            $sQuestionText=$oFixCKeditor->fixCKeditor($sQuestionText);
+                            $sQuestionHelp=$oFixCKeditor->fixCKeditor($sQuestionHelp);
                             $udata = array(
                             'type' => Yii::app()->request->getPost('type'),
                             'title' => Yii::app()->request->getPost('title'),
@@ -904,10 +907,10 @@ class database extends Survey_Common_Action
                     $welcome = Yii::app()->request->getPost('welcome_'.$langname);
                     $endtext = Yii::app()->request->getPost('endtext_'.$langname);
 
-                    $short_title=fixCKeditorText($short_title);
-                    $description=fixCKeditorText($description);
-                    $welcome=fixCKeditorText($welcome);
-                    $endtext=fixCKeditorText($endtext);
+                    $short_title=$oFixCKeditor->fixCKeditor($short_title);
+                    $description=$oFixCKeditor->fixCKeditor($description);
+                    $welcome=$oFixCKeditor->fixCKeditor($welcome);
+                    $endtext=$oFixCKeditor->fixCKeditor($endtext);
 
                     $data = array(
                     'surveyls_title' => $short_title,

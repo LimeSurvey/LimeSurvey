@@ -15,6 +15,11 @@
 class LSYii_Validators extends CValidator {
 
     /**
+    * Filter attribute for fixCKeditor
+    * @var boolean
+    */
+    public $fixCKeditor=false;
+    /**
     * Filter attribute for XSS
     * @var boolean
     */
@@ -60,11 +65,39 @@ class LSYii_Validators extends CValidator {
             $object->$attribute=$this->multiLanguageFilter($object->$attribute);
         }
     }
-    
+
     /**
-    * Defines the customs validation rule xssfilter
+    * Remove some empty characters put by CK editor
+    * Did we need to do if user don't use inline HTML editor ?
     * 
-    * @param mixed $value
+    * @param string $value
+    */
+    public function fixCKeditor($value)
+    {
+        // Actually don't use it in model : model apply too when import : needed or not ?
+        $value = str_replace('<br type="_moz" />','',$value);
+        if ($value == "<br />" || $value == " " || $value == "&nbsp;")
+        {
+            $value = "";
+        }
+        if (preg_match("/^[\s]+$/",$value))
+        {
+            $value='';
+        }
+        if ($value == "\n")
+        {
+            $value = "";
+        }
+        if (trim($value) == "&nbsp;" || trim($value)=='')
+        { // chrome adds a single &nbsp; element to empty fckeditor fields
+            $value = "";
+        }
+        return $value;
+    }
+    /**
+    * Remove any script or dangerous HTML 
+    * 
+    * @param string $value
     */
     public function xssFilter($value)
     {
