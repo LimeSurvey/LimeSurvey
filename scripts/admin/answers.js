@@ -277,7 +277,10 @@ function getNextCode(sSourceCode)
         iNumberFound=iNumberFound+1;
         sNewNumber=iNumberFound+'';
         sResult=sBaseCode+sNewNumber;
-        sResult=sResult.substr(sResult.length - 5);
+        if (sResult.length>5)
+        {
+          sResult=sResult.substr(sResult.length - 5);  
+        }
     } 
     while (areCodesUnique(sResult)==false);
     return(sResult);
