@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-03-20 13:28:30+00:00\n"
+"POT-Creation-Date: 2014-03-24 00:05:57+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1123,111 +1123,111 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: application/controllers/admin/database.php:100
+#: application/controllers/admin/database.php:104
 msgid "Default value settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:158
+#: application/controllers/admin/database.php:162
 #: application/views/admin/database/database_view.php:10
 msgid "Failed to update answers"
 msgstr ""
 
-#: application/controllers/admin/database.php:170
+#: application/controllers/admin/database.php:174
 msgid "Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."
 msgstr ""
 
-#: application/controllers/admin/database.php:174
+#: application/controllers/admin/database.php:178
 msgid "Answer options were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:211
+#: application/controllers/admin/database.php:215
 #: application/views/admin/database/database_view.php:28
 msgid "Failed to delete answer"
 msgstr ""
 
-#: application/controllers/admin/database.php:303
+#: application/controllers/admin/database.php:307
 msgid "Error on %s for subquestion %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:308
+#: application/controllers/admin/database.php:312
 msgid "Subquestions %s could not be updated."
 msgstr ""
 
-#: application/controllers/admin/database.php:322
+#: application/controllers/admin/database.php:326
 msgid "Not all subquestions were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."
 msgstr ""
 
-#: application/controllers/admin/database.php:326
+#: application/controllers/admin/database.php:330
 msgid "Subquestions were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:346
+#: application/controllers/admin/database.php:350
 msgid "The question could not be added. You must enter at least a question code."
 msgstr ""
 
-#: application/controllers/admin/database.php:392
+#: application/controllers/admin/database.php:395
 msgid "Question could not be created with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:431
+#: application/controllers/admin/database.php:434
 msgid "Question in language %s could not be created with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:445
+#: application/controllers/admin/database.php:448
 #: application/views/admin/database/database_view.php:46
 msgid "Question could not be created."
 msgstr ""
 
-#: application/controllers/admin/database.php:570
+#: application/controllers/admin/database.php:573
 msgid "Question was successfully added."
 msgstr ""
 
-#: application/controllers/admin/database.php:717
+#: application/controllers/admin/database.php:720
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions  before you can change the type of this question."
 msgstr ""
 
-#: application/controllers/admin/database.php:790
+#: application/controllers/admin/database.php:793
 msgid "Question could not be updated with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:795
+#: application/controllers/admin/database.php:798
 msgid "Question could not be updated."
 msgstr ""
 
-#: application/controllers/admin/database.php:823
+#: application/controllers/admin/database.php:826
 msgid "Question was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:860
+#: application/controllers/admin/database.php:863
 #: application/views/admin/database/database_view.php:4
 #: application/views/admin/database/database_view.php:58
 #: application/views/admin/database/database_view.php:71
 msgid "Question could not be updated"
 msgstr ""
 
-#: application/controllers/admin/database.php:928
+#: application/controllers/admin/database.php:931
 msgid "Survey text elements successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:1078
-#: application/controllers/admin/surveyadmin.php:1560
+#: application/controllers/admin/database.php:1081
+#: application/controllers/admin/surveyadmin.php:1559
 msgid "Warning! Notification email was not updated because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/database.php:1085
-#: application/controllers/admin/surveyadmin.php:1567
+#: application/controllers/admin/database.php:1088
+#: application/controllers/admin/surveyadmin.php:1566
 msgid "Warning! Bounce email was not updated because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/database.php:1135
+#: application/controllers/admin/database.php:1138
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:1139
+#: application/controllers/admin/database.php:1142
 msgid "Error:"
 msgstr ""
 
-#: application/controllers/admin/database.php:1139
+#: application/controllers/admin/database.php:1142
 msgid "Survey could not be updated."
 msgstr ""
 
@@ -1913,7 +1913,7 @@ msgid "%s participant(s) are to be copied "
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:1088
-#: application/controllers/admin/surveyadmin.php:1326
+#: application/controllers/admin/surveyadmin.php:1325
 #: application/views/admin/labels/labelview_view.php:141
 #: application/views/admin/labels/labelview_view.php:150
 #: application/views/admin/survey/Question/editQuestion_view.php:329
@@ -1991,7 +1991,7 @@ msgid "Attribute values for existing participants have been updated from the par
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:80
-#: application/controllers/admin/templates.php:1139
+#: application/controllers/admin/templates.php:1138
 msgid "Please submit by %s"
 msgstr ""
 
@@ -2008,12 +2008,12 @@ msgid "Submit Your Survey."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:138
-#: application/controllers/admin/templates.php:1140
+#: application/controllers/admin/templates.php:1139
 msgid "Thank you for completing this survey."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:149
-#: application/controllers/admin/templates.php:1136
+#: application/controllers/admin/templates.php:1135
 msgid "Please fax your completed survey to:"
 msgstr ""
 
@@ -2104,8 +2104,8 @@ msgid "Question code:"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:616
-#: application/controllers/admin/templates.php:992
-#: application/controllers/admin/templates.php:1112
+#: application/controllers/admin/templates.php:991
+#: application/controllers/admin/templates.php:1111
 #: application/helpers/qanda_helper.php:301
 #: application/helpers/qanda_helper.php:302
 msgid "*"
@@ -2116,7 +2116,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:689
 #: application/controllers/admin/printablesurvey.php:751
 #: application/controllers/admin/printablesurvey.php:939
-#: application/controllers/admin/templates.php:1116
+#: application/controllers/admin/templates.php:1115
 msgid "Please choose *only one* of the following:"
 msgstr ""
 
@@ -2606,27 +2606,27 @@ msgstr ""
 msgid "The new question group/question order was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1329
+#: application/controllers/admin/surveyadmin.php:1328
 #: application/views/admin/labels/labelview_view.php:150
 #: application/views/admin/templates/importform_view.php:14
 #: application/views/admin/templates/templateeditorbar_view.php:72
 msgid "zip library not supported by PHP, Import ZIP Disabled"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1354
+#: application/controllers/admin/surveyadmin.php:1353
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1380
+#: application/controllers/admin/surveyadmin.php:1379
 #: application/views/admin/survey/editSurvey_view.php:43
 msgid "(No target question)"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1463
+#: application/controllers/admin/surveyadmin.php:1462
 msgid "Survey could not be created because it did not have a title"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1620
+#: application/controllers/admin/surveyadmin.php:1619
 msgid "Survey was successfully added."
 msgstr ""
 
@@ -3066,11 +3066,11 @@ msgstr ""
 msgid "This is some help text."
 msgstr ""
 
-#: application/controllers/admin/templates.php:961
+#: application/controllers/admin/templates.php:960
 msgid "You have not provided a survey identification number"
 msgstr ""
 
-#: application/controllers/admin/templates.php:962
+#: application/controllers/admin/templates.php:961
 #: application/controllers/PrintanswersController.php:84
 #: application/controllers/survey/index.php:145
 #: application/controllers/survey/index.php:170
@@ -3082,34 +3082,34 @@ msgstr ""
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
-#: application/controllers/admin/templates.php:963
+#: application/controllers/admin/templates.php:962
 #: application/views/surveys/publicSurveyList.php:34
 msgid "The following surveys are available:"
 msgstr ""
 
+#: application/controllers/admin/templates.php:987
 #: application/controllers/admin/templates.php:988
-#: application/controllers/admin/templates.php:989
 msgid "How many roads must a man walk down?"
 msgstr ""
 
+#: application/controllers/admin/templates.php:1011
 #: application/controllers/admin/templates.php:1012
-#: application/controllers/admin/templates.php:1013
 msgid "Please explain something in detail:"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1123
+#: application/controllers/admin/templates.php:1122
 msgid "This is a sample question text. The user was asked to pick an entry."
 msgstr ""
 
-#: application/controllers/admin/templates.php:1124
+#: application/controllers/admin/templates.php:1123
 msgid "This is some help text for this question."
 msgstr ""
 
-#: application/controllers/admin/templates.php:1137
+#: application/controllers/admin/templates.php:1136
 msgid "Submit your survey."
 msgstr ""
 
-#: application/controllers/admin/templates.php:1141
+#: application/controllers/admin/templates.php:1140
 msgid "This is the survey end message."
 msgstr ""
 
