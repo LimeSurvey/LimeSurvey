@@ -1100,10 +1100,13 @@ class participantsaction extends Survey_Common_Action
         }
         else
         {
-            $templateData['error_msg'] = sprintf($clang->gT("This is not a .csv file."), Yii::app()->getConfig('tempdir'));
-            $errorinupload = array('error' => $this->upload->display_errors());
-            Yii::app()->session['summary'] = array('errorinupload' => $errorinupload);
-            $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),array('aAttributes' => ParticipantAttributeName::model()->getAllAttributes()));
+            $templateData['errorinupload']['error'] = $clang->gT("This is not a .csv file.");
+            $templateData['aAttributes'] = ParticipantAttributeName::model()->getAllAttributes();
+            $templateData['aGlobalErrors'] = array();
+          //  $errorinupload = array('error' => $this->upload->display_errors());
+          //  Yii::app()->session['summary'] = array('errorinupload' => $errorinupload);
+            $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),$templateData);
+            exit;
         }
         
 
