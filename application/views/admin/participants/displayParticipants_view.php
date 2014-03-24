@@ -63,6 +63,7 @@ else
     var sAddCaption = "<?php $clang->eT("Add participant", 'js') ?>";
     var sAddButtonCaption = "<?php $clang->eT("Add", 'js') ?>";
     var sDeleteButtonCaption = "<?php $clang->eT("Delete", 'js') ?>";
+    var sDeleteDialogCaption = "<?php $clang->eT("Delete one or more participants...", 'js') ?>";
     var sCancel = "<?php $clang->eT("Cancel", 'js') ?>";
     var sSubmit = "<?php $clang->eT("Save", 'js') ?>";
     var fullSearchTitle = "<?php $clang->eT("Full search"); ?>";
