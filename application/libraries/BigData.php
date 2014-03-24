@@ -196,19 +196,18 @@
             echo '</data>';
             echo '</array>';
         }
+        
         /**
          * Prints XMLRPC numeric types.
          * @param type $data
          */
         protected static function xmlrpc_echo_number($data)
         {
-            if (is_float($data))
-            {
-                self::tag('double', $data);
-            }
-            elseif (is_int($data))
-            {
+            if (floor($data) == $data){
                 self::tag('int', $data);
+            }
+            else {
+                self::tag('double', $data);
             }
         }
         
