@@ -77,13 +77,13 @@
                     $uploadSummary .= "</ul></div></li>";
                 }
             }
-            $uploadSummary .= "</div></div>";
         }
         else
         {
-            echo $errorinupload['error'];
-            $uploadSummary .= "<div class='warningheader'>" . $errorinupload['error'] . "</div>";
+            $uploadSummary .= "<div class='warningheader'>" . $clang->gT('Error') . "</div>";
+            $uploadSummary .= $errorinupload['error'];
         }
         foreach($aGlobalErrors as $sGlobalError)
             echo "<script> \$notifycontainer.notify('create', 'error-notify', { message:'{$sGlobalError}'});</script>";
+        $uploadSummary .= "</div></div>";
         echo $uploadSummary;

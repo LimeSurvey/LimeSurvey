@@ -289,6 +289,7 @@ $(document).ready(function() {
         }, //default settings for add
         {msg:deleteMsg, 
             bCancel: sCancel,
+            caption: sDeleteDialogCaption,
             bSubmit: sDeleteButtonCaption,
             width : 900,
             afterShowForm: function($form) {
