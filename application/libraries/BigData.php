@@ -218,7 +218,7 @@
             {
                 echo '<member>';
                 echo '<name>';
-                self::xmlrpc_echo_string($key);
+                echo '<![CDATA['.$key.']]>';
                 echo '</name>';
                 echo '<value>';
                 self::xmlrpc_echo($value);
