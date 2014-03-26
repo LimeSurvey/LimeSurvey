@@ -217,9 +217,7 @@
             foreach ($data as $key => $value)
             {
                 echo '<member>';
-                echo '<name>';
-                self::xmlrpc_echo_string($key);
-                echo '</name>';
+                echo self::tag('name', "<![CDATA[$key]]>");
                 echo '<value>';
                 self::xmlrpc_echo($value);
                 echo '</value>';
@@ -240,7 +238,6 @@
         {
             self::tag('string', "<![CDATA[$data]]>");
         }
-        
     }
 
     class BigFile {
