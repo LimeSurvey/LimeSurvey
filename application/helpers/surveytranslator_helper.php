@@ -470,6 +470,20 @@
         $supportedLanguages['fa']['dateformat'] = 6;
         $supportedLanguages['fa']['radixpoint'] = 0;
 
+        // Papiamento (Aruba)
+        $supportedLanguages['pap-AW']['description'] = $clang->gT('Papiamento (Aruba)');
+        $supportedLanguages['pap-AW']['nativedescription'] = 'Papiamento';
+        $supportedLanguages['pap-AW']['rtl'] = false;
+        $supportedLanguages['pap-AW']['dateformat'] = 2;
+        $supportedLanguages['pap-AW']['radixpoint'] = 1;
+
+        // Papiamento (Curaçao and Bonaire)
+        $supportedLanguages['pap-CW']['description'] = $clang->gT('Papiamento (Curaçao and Bonaire)');
+        $supportedLanguages['pap-CW']['nativedescription'] = 'Papiamentu';
+        $supportedLanguages['pap-CW']['rtl'] = false;
+        $supportedLanguages['pap-CW']['dateformat'] = 2;
+        $supportedLanguages['pap-CW']['radixpoint'] = 1;
+
         // Polish
         $supportedLanguages['pl']['description'] = $clang->gT('Polish');
         $supportedLanguages['pl']['nativedescription'] = 'Polski';
