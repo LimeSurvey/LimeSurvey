@@ -37,11 +37,30 @@ $(document).ready(function(){
     });
 
     $('#btnSave').click(function(){
-        $('#orgdata').val($('ol.organizer').nestedSortable('serialize'));
-        
-        // var tmp=$('#orgdata').val($('ol.organizer').nestedSortable('serialize'));
-        
-        frmOrganize.submit();
+		// original line: 
+		//$('#orgdata').val($('ol.organizer').nestedSortable('serialize') + "/hello world");
+    
+		//look for desired bulk action
+		var tmp1 = $("#bulkaction").val();
+	
+		if (tmp1 != "...") {
+	
+			// look for checked checkboxes
+			var tmp2 = '';
+			$("input[data^='qMark']").each(function() {     
+				if (this.checked) {
+					tmp2 += '&'+this.value;
+				}
+			});
+ 
+			$('#orgdata').val($('ol.organizer').nestedSortable('serialize') + "/" + tmp1 + "/" + tmp2);
+		}	
+		else {
+			// no bulkaction required
+			$('#orgdata').val($('ol.organizer').nestedSortable('serialize'));
+		}
+
+        frmOrganize.submit(); 
     })
 
 	// select, unselect or toggle selected groups an questions

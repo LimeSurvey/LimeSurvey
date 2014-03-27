@@ -55,7 +55,7 @@
 					
 						<a href="#" data-view="<?php echo $aGroupAndQuestions['gid']; ?>"><img src='<?php echo $sImageURL; ?>org_handle_20.png' class='handle' alt='<?php $clang->eT("Drag to move"); ?><br /><?php $clang->eT("Click to collapse/expand group"); ?>' /></a>
 
-						<input type='checkbox' data='gMark_<?php echo $aGroupAndQuestions['gid'];?>' value='<?php echo $surveyid; ?>X<?php echo $aGroupAndQuestions['gid'];?>' onclick="xmarkGroupQuestions('gMark_<?php echo $aGroupAndQuestions['gid'];?>')" style="width:12px;">
+						<input type='checkbox' class="organizer" data='gMark_<?php echo $aGroupAndQuestions['gid'];?>' value='<?php echo $surveyid; ?>X<?php echo $aGroupAndQuestions['gid'];?>' onclick="xmarkGroupQuestions('gMark_<?php echo $aGroupAndQuestions['gid'];?>')" style="width:12px;">
 						
 					</div>
 				</div>
@@ -89,7 +89,7 @@
 						// show edit-icon for group
 						if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) 
 						{ ?>
-							<a href='<?php echo $this->createUrl("admin/questiongroups/sa/edit/surveyid/".$surveyid."/gid/".$aGroupAndQuestions['gid']); ?>'><img src='<?php echo $sImageURL; ?>org_edit_20.png' alt='<?php $clang->eT("Edit current question group"); ?>' /></a><?php 
+							<a href='<?php echo $this->createUrl("admin/questiongroups/sa/edit/surveyid/".$surveyid."/gid/".$aGroupAndQuestions['gid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_edit_20.png' alt='<?php $clang->eT("Edit current question group"); ?>' /></a><?php 
 						} 
 						else 
 						{ ?>
@@ -120,7 +120,7 @@
 						// show add-icon for group (add new group)
 						if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
 						{ ?>
-							<a href='<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/$surveyid"); ?>'><img src='<?php echo $sImageURL; ?>org_add_20.png' alt='<?php $clang->eT("Add new group to survey"); ?>' /></a><?php
+							<a href='<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/$surveyid"); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_add_20.png' alt='<?php $clang->eT("Add new group to survey"); ?>' /></a><?php
 						} 
 						else 
 						{ ?>
@@ -131,7 +131,7 @@
 						// show export-group icon
 						if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','export')) 
 						{ ?>
-							<a href='<?php echo $this->createUrl("admin/export/sa/group/surveyid/".$surveyid."/gid/".$aGroupAndQuestions['gid']);?>'><img src='<?php echo $sImageURL; ?>org_dumpquestion_20.png' alt='<?php $clang->eT("Export this question group"); ?>' /></a><?php 
+							<a href='<?php echo $this->createUrl("admin/export/sa/group/surveyid/".$surveyid."/gid/".$aGroupAndQuestions['gid']);?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_dumpquestion_20.png' alt='<?php $clang->eT("Export this question group"); ?>' /></a><?php 
 						} 
 						else 
 						{ ?>
@@ -173,13 +173,13 @@
 				// loop through all questions of this group
 				foreach($aGroupAndQuestions['questions'] as $aQuestion)
 				{?>
-					<li id='list_q<?php echo $aQuestion['qid'];?>' class='question-item' data-level='question'><!-- style="height:30px; overflow:hidden;" -->
-						<div class='ui-widget-header question-wrapper'> <!-- style="height:24px; overflow:hidden;" -->
+					<li id='list_q<?php echo $aQuestion['qid'];?>' class='question-item' data-level='question'>
+						<div class='ui-widget-header question-wrapper'>
 							<div class='gq-leftcol'>
 								<div class='lefticons'>
 									<a href="#" data-questview="<?php echo $aQuestion['qid']; ?>">
-									<img src='<?php echo $sImageURL; ?>org_handle_20.png' class='handle' alt='<?php $clang->eT("Drag to move"); ?><br /><?php $clang->eT("Click to collapse/expand question"); ?>' /></a>
-									<input type='checkbox' data='qMark_<?php echo $aQuestion['gid']; ?>_<?php echo $aQuestion['qid']; ?>' value='<?php echo $surveyid; ?>X<?php echo $aQuestion['gid']; ?>X<?php echo $aQuestion['qid'];?>' />
+									<img src='<?php echo $sImageURL; ?>org_handle_20.png' class='handle' alt='<?php $clang->eT("Drag to move"); ?>' /></a>
+									<input type='checkbox' data='qMark_<?php echo $aQuestion['gid']; ?>_<?php echo $aQuestion['qid']; ?>' value='<?php echo $aQuestion['qid'];?>' />
 								</div>
 							</div>
 
@@ -230,11 +230,11 @@
 										
 										if($sqct>0) 
 										{ ?>
-											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_subquestions_20.png' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a><?php
+											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_subquestions_20.png' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a><?php
 										} 
 										else 
 										{ ?>
-											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_subquestionserr_20.png' alt='<?php $clang->eT("You need to add subquestions to this question"); ?>' /></a><?php 
+											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_subquestionserr_20.png' alt='<?php $clang->eT("You need to add subquestions to this question"); ?>' /></a><?php 
 										} 
 
 										if($qtypes[$aQuestion['type']]['answerscales'] > 0) 
@@ -244,11 +244,11 @@
 
 											if($aoct>0) 
 											{ ?>
-												<a href='<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_answers_20.png' alt='<?php $clang->eT("Edit answer options for this question"); ?>' /></a><?php
+												<a href='<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_answers_20.png' alt='<?php $clang->eT("Edit answer options for this question"); ?>' /></a><?php
 											} 
 											else 
 											{ ?>
-												<a href='<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_answerserr_20.png' alt='<?php $clang->eT("You need to add answer options to this question"); ?>' /></a><?php
+												<a href='<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_answerserr_20.png' alt='<?php $clang->eT("You need to add answer options to this question"); ?>' /></a><?php
 											} 
 										} 
 										else 
@@ -263,11 +263,11 @@
 
 										if($sqct>0) 
 										{ ?>
-											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_subquestions2d_20.png' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a><?php
+											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_subquestions2d_20.png' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a><?php
 										} 
 										else 
 										{ ?>
-											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_subquestions2derr_20.png' alt='<?php $clang->eT("You need to add subquestions for this question"); ?>' /></a><?php
+											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_subquestions2derr_20.png' alt='<?php $clang->eT("You need to add subquestions for this question"); ?>' /></a><?php
 										} ?>
 										<img src='<?php echo $sImageURL; ?>org_emptyicon_20.png' /><?php
 									}
@@ -275,7 +275,7 @@
 									// show edit default answers icon if required by question type
 									if($qtypes[$aQuestion['type']]['hasdefaultvalues'] >0) 
 									{ ?>
-										<a href='<?php echo $this->createUrl('admin/questions/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_defaultanswers_20.png' alt='<?php $clang->eT("Edit default answers for this question"); ?>' /></a><?php 
+										<a href='<?php echo $this->createUrl('admin/questions/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_defaultanswers_20.png' alt='<?php $clang->eT("Edit default answers for this question"); ?>' /></a><?php 
 									} 
 									else 
 									{ ?>
@@ -286,7 +286,7 @@
 								// show edit conditions icon
 								if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) 
 								{ ?>
-									<a href='<?php echo $this->createUrl('admin/conditions/sa/index/subaction/editconditionsform/surveyid/' . $surveyid . '/gid/' . $aQuestion['gid'] . '/qid/' . $aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_conditions_20.png' alt='<?php $clang->eT("Set conditions for this question"); ?>'  /></a><?php 
+									<a href='<?php echo $this->createUrl('admin/conditions/sa/index/subaction/editconditionsform/surveyid/' . $surveyid . '/gid/' . $aQuestion['gid'] . '/qid/' . $aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_conditions_20.png' alt='<?php $clang->eT("Set conditions for this question"); ?>'  /></a><?php 
 								} 
 								else 
 								{ ?>
@@ -348,10 +348,10 @@
 								<div class='gq-infotext'>
 									<img src='<?php echo $sImageURL; ?>org_more.png' align='right' id='list_q<?php echo $aQuestion['qid'];?>' style="display:none;"/>
 									<b><a href='<?php echo Yii::app()->getController()->createUrl('admin/questions/sa/editquestion/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']);?>'><?php echo $aQuestion['title'];?></a></b>: <?php echo flattenText($aQuestion['question'],true);?>
-
 								</div>
 							</div>
 						</div>
+						
 				</li><?php
 			}?>
 
@@ -370,12 +370,12 @@
 		<a href="#" data-select="toggle"><?php $clang->eT("Toggle selection"); ?></a> =>
 		<?php $clang->eT("Set selected:"); ?>
 		
-		<select name="" size="1">
+		<select id="bulkaction" name="" size="1">
 			<option>...</option>
-			<option><?php $clang->eT("as visible"); ?></option>
-			<option><?php $clang->eT("as always hidden"); ?></option>
-			<option><?php $clang->eT("as mandatory"); ?></option>
-			<option><?php $clang->eT("as optional"); ?></option>
+			<option value="asvisible"><?php $clang->eT("as visible"); ?></option>
+			<option value="ashidden"><?php $clang->eT("as always hidden"); ?></option>
+			<option value="asmandatory"><?php $clang->eT("as mandatory"); ?></option>
+			<option value="asoptional"><?php $clang->eT("as optional"); ?></option>
 		</select>
 		<br /><br />
 	</div>
