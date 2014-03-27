@@ -505,104 +505,82 @@ class remotecontrol_handle
      * @param string $sStatName Name of the summary option - valid values are 'token_count', 'token_invalid', 'token_sent', 'token_opted_out', 'token_completed', 'completed_responses', 'incomplete_responses', 'full_responses' or 'all'
      * @return string The requested value or an array of all values when $sStatName = 'all'
      */
-   public function get_summary($sSessionKey,$iSurveyID, $sStatName)
-    {
-       $aPermittedStats = array();
-       if ($this->_checkSessionKey($sSessionKey))
-       {
+     public function get_summary($sSessionKey,$iSurveyID, $sStatName)
+     {
+         $aPermittedStats = array();
+         if ($this->_checkSessionKey($sSessionKey))
+         {
             $aPermittedTokenStats = array('token_count',
-                                    'token_invalid',
-                                    'token_sent',
-                                    'token_opted_out',
-                                    'token_completed',
-                                    );
+                'token_invalid',
+                'token_sent',
+                'token_opted_out',
+                'token_completed');
             $aPermittedSurveyStats  = array('completed_responses',
-                                    'incomplete_responses',
-                                    'full_responses',
-                                    'all'
-                                    );
-            $aPermittedStats = array_merge($aPermittedSurveyStats, $aPermittedTokenStats);
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            if (!isset($oSurvey))
-                return array('status' => 'Invalid surveyid');
+                'incomplete_responses',
+                'full_responses');
+             $aPermittedStats = array_merge($aPermittedSurveyStats, $aPermittedTokenStats, array('all'));  
+             // Check if survey exists
+             $oSurvey = Survey::model()->findByPk($iSurveyID);
+             if (!isset($oSurvey))
+                 return array('status' => 'Invalid surveyid');
 
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read'))
-            {
-                if(in_array($sStatName, $aPermittedTokenStats) || $sStatName=='all')
-                {
-                    if (tableExists('{{tokens_' . $iSurveyID . '}}'))
-                    {
-                        $aTokenSummary = Token::model($iSurveyID)->summary();
-                    }
-                    elseif ($sStatName!='all')
-                    {
-                        return array('status' => 'No available data');
-                    }
-                    else
-                    {
-                        $aTokenSummary=array();
-                    }
-                }
+             if (!in_array($sStatName, $aPermittedStats))
+                 return array('status' => 'Invalid summary key');
+                 
+             //Check permissions to access this survey
+             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read'))
+             {
+                 $aSummary=array();
+                 
+                 if (in_array($sStatName, $aPermittedTokenStats) || $sStatName=='all')
+                 {
+                     if (tableExists('{{tokens_' . $iSurveyID . '}}'))
+                     {
+                         $aTokenSummary = Token::model($iSurveyID)->summary();
+                         if ($aTokenSummary)
+                         {
+                             $aSummary['token_count']=$aTokenSummary['count'];
+                             $aSummary['token_invalid']=$aTokenSummary['invalid'];
+                             $aSummary['token_sent']=$aTokenSummary['sent'];
+                             $aSummary['token_opted_out']=$aTokenSummary['optout'];
+                             $aSummary['token_completed']=$aTokenSummary['completed'];
+                         }                        
+                     }
+                     elseif ($sStatName!='all')
+                     {
+                         return array('status' => 'No available data');
+                     }
+                 }
 
-                if(in_array($sStatName, $aPermittedSurveyStats) && !tableExists('{{survey_' . $iSurveyID . '}}'))
-                    return array('status' => 'No available data');
+                 if (in_array($sStatName, $aPermittedSurveyStats) || $sStatName=='all')
+                 {
+                     if (tableExists('{{survey_' . $iSurveyID . '}}'))
+                     {
+                         $aSummary['completed_responses']=SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
+                         $aSummary['incomplete_responses']=SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
+                         $aSummary['full_responses']=SurveyDynamic::model($iSurveyID)->count();
+                     }
+                     elseif ($sStatName!='all')
+                     {
+                         return array('status' => 'No available data');
+                     }
+                 }
 
-                if (!in_array($sStatName, $aPermittedStats))
-                    return array('status' => 'No such property');
-
-
-                switch($sStatName)
-                {
-                    case 'token_count':
-                        if (isset($aTokenSummary))
-                            return $aTokenSummary['count'];
-                        break;
-                    case 'token_invalid':
-                        if (isset($aTokenSummary))
-                            return $aTokenSummary['invalid'];
-                        break;
-                    case 'token_sent':
-                        if (isset($aTokenSummary))
-                            return $aTokenSummary['sent'];
-                        break;
-                    case 'token_opted_out':
-                        if (isset($aTokenSummary))
-                            return $aTokenSummary['optout'];
-                        break;
-                    case 'token_completed';
-                        if (isset($aTokenSummary))
-                            return $aTokenSummary['completed'];
-                        break;
-                    case 'completed_responses':
-                        return SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
-                        break;
-                    case 'incomplete_responses':
-                        return SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
-                        break;
-                    case 'full_responses';
-                        return SurveyDynamic::model($iSurveyID)->count();
-                        break;
-                    case 'all';
-                        $aResult=array('completed_responses'=>SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null)),
-                                       'incomplete_responses'=>SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null)),
-                                       'full_responses'=>SurveyDynamic::model($iSurveyID)->count()
-                                        );
-                        if (isset($aTokenSummary))
-                        {
-                            $aResult=array_merge($aResult,$aTokenSummary);
-                        }
-                        return $aResult;
-                        break;
-                    default:
-                        return array('status' => 'Data is not available');
-                }
-            }
-            else
-            return array('status' => 'No permission');
-        }
-        else
-            return array('status' => 'Invalid session key');
-    }
+                 if ($sStatName='all')
+                 {
+                     return $aSummary;
+                 }
+                 else
+                 {
+                     return $aSummary[$sStatName];
+                 }
+             }
+             else
+                 return array('status' => 'No permission');
+         }
+         else
+             return array('status' => 'Invalid session key');
+     }
 
     /*Survey language specific functions */
 
