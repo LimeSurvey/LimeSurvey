@@ -230,11 +230,11 @@
 										
 										if($sqct>0) 
 										{ ?>
-											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_subquestions_20.png' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a><?php
+											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_subquestions_20.png' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a><?php
 										} 
 										else 
 										{ ?>
-											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_subquestionserr_20.png' alt='<?php $clang->eT("You need to add subquestions to this question"); ?>' /></a><?php 
+											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_subquestionserr_20.png' alt='<?php $clang->eT("You need to add subquestions to this question"); ?>' /></a><?php 
 										} 
 
 										if($qtypes[$aQuestion['type']]['answerscales'] > 0) 
@@ -244,11 +244,11 @@
 
 											if($aoct>0) 
 											{ ?>
-												<a href='<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_answers_20.png' alt='<?php $clang->eT("Edit answer options for this question"); ?>' /></a><?php
+												<a href='<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_answers_20.png' alt='<?php $clang->eT("Edit answer options for this question"); ?>' /></a><?php
 											} 
 											else 
 											{ ?>
-												<a href='<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_answerserr_20.png' alt='<?php $clang->eT("You need to add answer options to this question"); ?>' /></a><?php
+												<a href='<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_answerserr_20.png' alt='<?php $clang->eT("You need to add answer options to this question"); ?>' /></a><?php
 											} 
 										} 
 										else 
@@ -263,11 +263,11 @@
 
 										if($sqct>0) 
 										{ ?>
-											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_subquestions2d_20.png' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a><?php
+											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_subquestions2d_20.png' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a><?php
 										} 
 										else 
 										{ ?>
-											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_subquestions2derr_20.png' alt='<?php $clang->eT("You need to add subquestions for this question"); ?>' /></a><?php
+											<a href='<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_subquestions2derr_20.png' alt='<?php $clang->eT("You need to add subquestions for this question"); ?>' /></a><?php
 										} ?>
 										<img src='<?php echo $sImageURL; ?>org_emptyicon_20.png' /><?php
 									}
@@ -275,7 +275,7 @@
 									// show edit default answers icon if required by question type
 									if($qtypes[$aQuestion['type']]['hasdefaultvalues'] >0) 
 									{ ?>
-										<a href='<?php echo $this->createUrl('admin/questions/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_defaultanswers_20.png' alt='<?php $clang->eT("Edit default answers for this question"); ?>' /></a><?php 
+										<a href='<?php echo $this->createUrl('admin/questions/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_defaultanswers_20.png' alt='<?php $clang->eT("Edit default answers for this question"); ?>' /></a><?php 
 									} 
 									else 
 									{ ?>
@@ -286,7 +286,7 @@
 								// show edit conditions icon
 								if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) 
 								{ ?>
-									<a href='<?php echo $this->createUrl('admin/conditions/sa/index/subaction/editconditionsform/surveyid/' . $surveyid . '/gid/' . $aQuestion['gid'] . '/qid/' . $aQuestion['qid']); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_conditions_20.png' alt='<?php $clang->eT("Set conditions for this question"); ?>'  /></a><?php 
+									<a href='<?php echo $this->createUrl('admin/conditions/sa/index/subaction/editconditionsform/surveyid/' . $surveyid . '/gid/' . $aQuestion['gid'] . '/qid/' . $aQuestion['qid']); ?>'><img src='<?php echo $sImageURL; ?>org_conditions_20.png' alt='<?php $clang->eT("Set conditions for this question"); ?>'  /></a><?php 
 								} 
 								else 
 								{ ?>
@@ -296,7 +296,7 @@
 								// show QA icon
 								if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')) 
 								{ ?>
-									<a target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$aQuestion['gid']}/qid/{$aQuestion['qid']}/"); ?>' target='_blank'><img src='<?php echo $sImageURL; ?>org_qaok_20.png' alt='<?php $clang->eT("Check survey logic for current question"); ?>' /></a><?php 
+									<a target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$aQuestion['gid']}/qid/{$aQuestion['qid']}/"); ?>'><img src='<?php echo $sImageURL; ?>org_qaok_20.png' alt='<?php $clang->eT("Check survey logic for current question"); ?>' /></a><?php 
 								} 
 								else 
 								{ ?>
