@@ -1463,7 +1463,20 @@ class tokens extends Survey_Common_Action
                             }
                         }
 
-                        if (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyId), $aRelevantAttachments, $customheaders))
+                        $event = new PluginEvent('beforeTokenEmail');
+                        $event->set('type', $sTemplate);
+                        $event->set('subject', $modsubject);
+                        $event->set('to', $to);
+                        $event->set('body', $modmessage);
+                        $event->set('from', $from);
+                        App()->getPluginManager()->dispatchEvent($event);
+                        $modsubject = $event->get('subject');
+                        $modmessage = $event->get('body');
+                        $to = $event->get('to');
+                        $from = $event->get('from');
+                        // This is some ancient global used for error reporting instead of a return value from the actual mail function..
+                        $maildebug = $event->get('error', $maildebug);
+                        if (!$event->isStopped() && SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyId), $aRelevantAttachments, $customheaders))
                         {
                             // Put date into sent
 							$token = Token::model($iSurveyId)->findByPk($emrow['tid']);
