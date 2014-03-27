@@ -1940,9 +1940,13 @@ class tokens extends Survey_Common_Action
                     {
                         // Parse first line (header) from CSV 
                         $buffer = removeBOM($buffer);
-                        $allowedfieldnames = array('firstname', 'lastname', 'email', 'emailstatus', 'token', 'language', 'validfrom', 'validuntil', 'usesleft');
+                        // We alow all field except tid because this one is really not needed.
+                        $allowedfieldnames = array('participant_id','firstname','lastname','email','emailstatus','token','language','blacklisted','sent','remindersent','remindercount','validfrom','validuntil','completed','usesleft');
                         $allowedfieldnames = array_merge($attrfieldnames, $allowedfieldnames);
-
+                        // Some header don't have same column name 
+                        $aReplacedFields=array(
+                            'invited'=>'sent'
+                        );
                         switch ($separator)
                         {
                             case 'comma':
@@ -1969,6 +1973,10 @@ class tokens extends Survey_Common_Action
                             if (!in_array($fieldname, $allowedfieldnames))
                             {
                                 $ignoredcolumns[] = $fieldname;
+                            }
+                            if (array_key_exists($fieldname, $aReplacedFields))
+                            {
+                                $firstline[$index] = $aReplacedFields[$fieldname];
                             }
                         }
                         if (!in_array('firstname', $firstline) || !in_array('lastname', $firstline) || !in_array('email', $firstline))
@@ -2035,44 +2043,28 @@ class tokens extends Survey_Common_Action
                             }
                         }
 
-                        if (!isset($writearray['token']))
-                        {
-                            $writearray['token'] = '';
-                        }
-                        else
+                        if (isset($writearray['token']))
                         {
                             $writearray['token'] = sanitize_token($writearray['token']);
                         }
 
                         if (!$dupfound && !$invalidemail)
                         {
-                            if (!isset($writearray['emailstatus']) || $writearray['emailstatus'] == '')
-                                $writearray['emailstatus'] = "OK";
-                            if (!isset($writearray['usesleft']) || $writearray['usesleft'] == '')
-                                $writearray['usesleft'] = 1;
-                            if (!isset($writearray['language']) || $writearray['language'] == "")
-                                $writearray['language'] = $sBaseLanguage;
-                            if (isset($writearray['validfrom']) && trim($writearray['validfrom'] == ''))
+                            // unset all empty value
+                            foreach ($writearray as $key=>$value)
                             {
-                                unset($writearray['validfrom']);
+                                if($writearray[$key]=="")
+                                    unset($writearray[$key]);
+                                if (substr($value, 0, 1)=='"' && substr($value, -1)=='"')// Fix CSV quote
+                                    $value = substr($value, 1, -1);
                             }
-                            if (isset($writearray['validuntil']) && trim($writearray['validuntil'] == ''))
-                            {
-                                unset($writearray['validuntil']);
-                            }
-
-                            // sanitize it before writing into table
+                            $oToken = Token::create($iSurveyId);
                             foreach ($writearray as $key => $value)
                             {
-                                if (substr($value, 0, 1)=='"' && substr($value, -1)=='"')
-                                    $value = substr($value, 1, -1);
-                                $sanitizedArray[Yii::app()->db->quoteColumnName($key)]= Yii::app()->db->quoteValue($value);
+                                //if(in_array($key,$oToken->attributes)) Not needed because we filter attributes before
+                                    $oToken->$key=$value;
                             }
-                            $iq = "INSERT INTO {{tokens_$iSurveyId}} \n"
-                            . "(" . implode(',', array_keys($writearray)) . ") \n"
-                            . "VALUES (" . implode(",", $sanitizedArray) . ")";
-                            $ir = Yii::app()->db->createCommand($iq)->execute();
-
+                            $ir=$oToken->save();
                             if (!$ir)
                             {
                                 $duplicatelist[] = $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")";

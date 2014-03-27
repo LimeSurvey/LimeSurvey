@@ -67,7 +67,7 @@ function addSelectedParticipantsToCPDB()
 $(document).ready(function() {
 
     $("#filterduplicatetoken").change(function(){
-        if ($("#filterduplicatetoken").attr('checked')==true) {
+        if ($("#filterduplicatetoken").prop('checked')) {
             $("#lifilterduplicatefields").slideDown();
         } else {
             $("#lifilterduplicatefields").slideUp();
