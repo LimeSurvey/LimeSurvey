@@ -461,25 +461,28 @@ class participantsaction extends Survey_Common_Action
      */
     function delParticipant()
     {
-        $selectoption = Yii::app()->request->getPost('selectedoption');
-        $iParticipantId = Yii::app()->request->getPost('participant_id');
+        if (Permission::model()->hasGlobalPermission('participantpanel','delete'))
+        {
+            $selectoption = Yii::app()->request->getPost('selectedoption');
+            $iParticipantId = Yii::app()->request->getPost('participant_id');
 
-        //echo $selectoption." -- ".$iParticipantId."<br />"; die();
+            //echo $selectoption." -- ".$iParticipantId."<br />"; die();
 
-        // Deletes from participants only
-        if ($selectoption == 'po')
-        {
-            Participant::model()->deleteParticipants($iParticipantId);
-        }
-        // Deletes from central and token table
-        elseif ($selectoption == 'ptt')
-        {
-            Participant::model()->deleteParticipantToken($iParticipantId);
-        }
-        // Deletes from central , token and assosiated responses as well
-        elseif ($selectoption == 'ptta')
-        {
-            Participant::model()->deleteParticipantTokenAnswer($iParticipantId);
+            // Deletes from participants only
+            if ($selectoption == 'po')
+            {
+                Participant::model()->deleteParticipants($iParticipantId);
+            }
+            // Deletes from central and token table
+            elseif ($selectoption == 'ptt')
+            {
+                Participant::model()->deleteParticipantToken($iParticipantId);
+            }
+            // Deletes from central , token and assosiated responses as well
+            elseif ($selectoption == 'ptta')
+            {
+                Participant::model()->deleteParticipantTokenAnswer($iParticipantId);
+            }
         }
     }
 
@@ -488,29 +491,10 @@ class participantsaction extends Survey_Common_Action
      */
     function editParticipant()
     {
-        $operation = Yii::app()->request->getPost('oper');
-
-        //In case the uid is not editable, then user id is not posted and hence the current user is added in the uid
-        if (Yii::app()->request->getPost('owner_uid') == '')
-        {
-            $oid = Yii::app()->session['loginID'];
-        }
-        //otherwise the one which is posted is added
-        else
-        {
-            $oid = Yii::app()->request->getPost('owner_uid');
-        }
-        if (Yii::app()->request->getPost('language') == '')
-        {
-            $lang = Yii::app()->session['adminlang'];
-        }
-        else
-        {
-            $lang = Yii::app()->request->getPost('language');
-        }
+        $sOperation = Yii::app()->request->getPost('oper');
 
         // if edit it will update the row
-        if ($operation == 'edit')
+        if ($sOperation == 'edit' && Permission::model()->hasGlobalPermission('participantpanel','update') && Participant::model()->is_owner(Yii::app()->request->getPost('id')))
         {
             $aData = array(
                 'participant_id' => Yii::app()->request->getPost('id'),
@@ -518,13 +502,12 @@ class participantsaction extends Survey_Common_Action
                 'lastname' => Yii::app()->request->getPost('lastname'),
                 'email' => Yii::app()->request->getPost('email'),
                 'language' => Yii::app()->request->getPost('language'),
-                'blacklisted' => Yii::app()->request->getPost('blacklisted'),
-                'owner_uid' => $oid
+                'blacklisted' => Yii::app()->request->getPost('blacklisted')
             );
             Participant::model()->updateRow($aData);
         }
         // if add it will insert a new row
-        elseif ($operation == 'add')
+        elseif ($sOperation == 'add' && Permission::model()->hasGlobalPermission('participantpanel','create'))
         {
             $uuid = $this->gen_uuid();
             $aData = array(
@@ -534,8 +517,8 @@ class participantsaction extends Survey_Common_Action
                 'email' => Yii::app()->request->getPost('email'),
                 'language' => Yii::app()->request->getPost('language'),
                 'blacklisted' => Yii::app()->request->getPost('blacklisted'),
-                'owner_uid' => $oid,
-                'created_by' => $oid
+                'owner_uid' => Yii::app()->session['loginID'],
+                'created_by' => Yii::app()->session['loginID']
             );
             Participant::model()->insertParticipant($aData);
         }
@@ -951,22 +934,6 @@ class participantsaction extends Survey_Common_Action
     }
 
     /*
-     * Gets the data from the form for add participants and pass it to the participants model
-     */
-    function storeParticipants()
-    {
-        $aData = array('participant_id' => uniqid(),
-            'firstname' => Yii::app()->request->getPost('firstname'),
-            'lastname' => Yii::app()->request->getPost('lastname'),
-            'email' => Yii::app()->request->getPost('email'),
-            'language' => Yii::app()->request->getPost('language'),
-            'blacklisted' => Yii::app()->request->getPost('blacklisted'),
-            'owner_uid' => Yii::app()->request->getPost('owner_uid'));
-
-        Participant::model()->insertParticipant($aData);
-    }
-
-    /*
      * Responsible for showing the additional attribute for central database
      */
     function viewAttribute()
@@ -1074,8 +1041,11 @@ class participantsaction extends Survey_Common_Action
         {
             $pid = explode('_',Yii::app()->request->getPost('participant_id'));
             $iAttributeId =  Yii::app()->request->getPost('attid');
-            $aData = array('participant_id' => $pid[0], 'attribute_id' => $iAttributeId, 'value' => Yii::app()->request->getPost('attvalue'));
-            ParticipantAttributeName::model()->editParticipantAttributeValue($aData);
+            if (Permission::model()->hasGlobalPermission('participantpanel','update') && Participant::model()->is_owner($pid[0]))
+            {
+                $aData = array('participant_id' => $pid[0], 'attribute_id' => $iAttributeId, 'value' => Yii::app()->request->getPost('attvalue'));
+                ParticipantAttributeName::model()->editParticipantAttributeValue($aData);
+            }
         }
     }
 

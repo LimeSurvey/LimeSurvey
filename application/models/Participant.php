@@ -282,7 +282,7 @@ class Participant extends LSActiveRecord
         $aAllAttributes = ParticipantAttributeName::model()->getAllAttributes();
         foreach ($aAllAttributes as $aAttribute)
         {
-            if(strpos($search->condition,'attribute'.$aAttribute['attribute_id'])!==false)
+            if(!is_null($search) && strpos($search->condition,'attribute'.$aAttribute['attribute_id'])!==false)
             {
                $attid[]=$aAttribute; 
             }
