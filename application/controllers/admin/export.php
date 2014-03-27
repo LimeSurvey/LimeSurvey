@@ -701,7 +701,8 @@ class export extends Survey_Common_Action {
             }
             $result = Yii::app()->db->createCommand($query)->query();
 
-            foreach ( $result->readAll() as $row )
+            echo $vvoutput;
+            foreach ($result as $row)
             {
                 foreach ( $fieldnames as $field )
                 {
@@ -743,14 +744,14 @@ class export extends Survey_Common_Action {
                     $sun[]=$value;
                 }
 
-                $beach = implode($s, $sun);
-                $vvoutput .= $beach;
+                /* it is important here to stream output data, line by line
+                 * in order to avoid huge memory consumption when exporting large
+                 * quantities of answers */
+                echo implode($s, $sun)."\n";
 
                 unset($sun);
-                $vvoutput .= "\n";
             }
 
-            echo $vvoutput;
             exit;
         }
     }
