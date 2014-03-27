@@ -78,16 +78,64 @@ class QuestionAttribute extends LSActiveRecord
         );
     }
     
-    public function setQuestionAttribute($iQuestionID,$sAttributeName, $sValue)
-    {
-        $oModel = new self;
-        $oModel->updateAll(array('value'=>$sValue),'attribute=:attributeName and qid=:questionID',array(':attributeName'=>$sAttributeName,':questionID'=>$iQuestionID));
-        return Yii::app()->db->createCommand()
-            ->select()
-            ->from($this->tableName())
-            ->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid)
-            ->order('qaid asc')
-            ->query();
+	/*
+	* Set a questions (advanced) attribute 
+	* if no language-code is set, the attributes of for all language-versions of this question will be set
+	* language is by default NULL (so this call is still compatible to the old version)
+	*
+	* @access public
+	* @param  int    $iQuestionID  		the question ID
+	* @param  string $sAttributeName	the attribute name, e.g. 'hidden'
+	* @param  string $sValue			the value to set for this attribute, e.g. '1'
+	* @option string $sLanguage			the language to be affected, default=NULL
+	*									if you give a language then only the attribute for this lanquage-version will be set
+	* @return void
+	*/
+
+    public function setQuestionAttribute($iQuestionID, $sAttributeName, $sValue, $sLanguage = NULL)
+    { 
+
+		$iQuestionID=(int)$iQuestionID;
+		$sValue=(string)$sValue;
+		$request = ($sLanguage==NULL) ? 'attribute=:attribute AND qid=:qid AND language IS NULL' : 'attribute=:attribute AND qid=:qid AND language=:language';
+
+		// in an entry already there?
+		$iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$sAttributeName, 'qid'=>$iQuestionID, 'language'=>$sLanguage));
+		if (count($iInsertCount)>0)
+		{
+
+			if ($sValue!=='')
+			{
+				if ($sLanguage==NULL)
+				{
+					QuestionAttribute::model()->updateAll(array('value'=>$sValue), $request, array(':attribute'=>$sAttributeName, ':qid'=>$iQuestionID));
+				}
+				else
+				{
+					QuestionAttribute::model()->updateAll(array('value'=>$sValue), $request, array(':attribute'=>$sAttributeName, ':qid'=>$iQuestionID, ':language'=>$sLanguage));
+				}
+			}
+			else
+			{
+				if ($sLanguage==NULL)
+				{
+					QuestionAttribute::model()->deleteAll($request, array(':attribute'=>$sAttributeName, ':qid'=>$iQuestionID));
+				}
+				else
+				{
+					QuestionAttribute::model()->deleteAll($request, array(':attribute'=>$sAttributeName, ':qid'=>$iQuestionID, ':language'=>$sLanguage));
+				}
+			}
+		}
+		elseif($sValue!=='')
+		{
+			$attribute = new QuestionAttribute;
+			$attribute->qid = $iQuestionID;
+			$attribute->value = $sValue;
+			$attribute->attribute = $sAttributeName;
+			$attribute->language = $sLanguage;
+			$attribute->save();
+		}
     }    
 
     /**

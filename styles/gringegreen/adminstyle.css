@@ -415,13 +415,22 @@ textarea {
 }
 
 
+/* *** OV: OLD *** */
+/* 
 .movableList {
-    padding: 10px 0px;
-    width: 60em;
+    padding: 10px 80px;
+    width: 100%;
     margin:0 auto;
     background-color: #fdfdff;
 }
+*/
 
+/* *** OV: NEW *** */
+.movableList { 
+	width: 100%; 
+	min-width:640px;
+}
+/* *** END NEW *** */
 
 .langpopup {
     display:none;
@@ -1560,50 +1569,173 @@ div.translate {
     color:#8a1f11;
 }
 
-
-ol.organizer {
-    padding: 0;
-    list-style-type: none;
-    font-weight: bold;
-    width:800px;
+/* *** organizeGroupsAndQuestions_view *** */
+.movableList ol.group-list
+{
+	margin-left: 30px;
+	margin-right: 30px;
+	padding: 0px; 
+	list-style-type: none;
 }
 
-ol.organizer ol {
-    list-style-type: none;
-    font-weight: normal;
-    width:750px;
-
+.movableList ol div.add-group-item
+{
+	padding: 4px 0 4px 0;
+	width: 100%;
+	text-align:center;
+	font-size: 80.01%;
+	font-weight:bold;
+	background-color: #C1EC58;
+	margin-top: 6px; 
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
-ol.organizer {
-    margin: 1em 0;
+.movableList ol div.add-group-item:hover
+{
+	background-color: #D8F491;
 }
 
-.organizer li {
-    margin: 10px 0 0 0;
-    padding: 0;
+.movableList ol li.group-item
+{
+	padding: 0px 0 6px 0;
+	width: 100%;
+	border-bottom: 6px solid;
+	color: #fff;				/* backgroundcolor complete group field */
 }
 
-.organizer li ol li{
-    margin: 3px 0 0 0;
+.movableList ol li div.ui-widget-header 
+{
+	margin: 0;
+	padding: 3px 0 3px 0; 
+	background: none;
+	background-color: #C1EC58; 
+	color: #000;				/* font-color question text */
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.movableList ol li div.ui-widget-header:hover 
+{
+	background-color: #D8F491;
+	color: #000;				/* font-color while hovering group text*/
+}
+	
+	
+/* *** organize list: question-level styles *** */
+
+.movableList ol li ol.question-list
+{
+	margin-left: 20px;  		/* indent space for question level: 1 icon width */
+	margin-right: 0px;
+	padding: 0px; 
+	list-style-type: none;
+}
+
+.movableList ol li ol div.add-question-item
+{
+	padding: 3px 0 3px 0;
+	width: 100%;
+	text-align:center;
+	font-size: 80.01%;
+	font-weight:bold;
+	background-color: #EFFBDB;
+	margin-top: 6px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.movableList ol li ol div.add-question-item:hover
+{
+	background-color: #D8F491;
+}
+
+.movableList ol li ol li.question-item
+{
+	padding: 0;
+	width: 100%;
+	margin-top:6px;
+}
+		
+.movableList ol li ol li div.question-wrapper
+{
+	margin: 0;
+	padding: 3px 0 3px 0; 
+	background-color: #EFFBDB;
+	color: #000;				/* font-color question text */
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+		
+.movableList ol li ol li div.question-wrapper:hover 
+{
+	background-color: #D8F491; 
+	color: #000;				/* font-color while hovering question text*/
 }
 
 
-.organizer li div  {
-    background: none repeat scroll 0 0 #85BD00;
-    color:#fff;
-    padding: 3px;
-    margin: 0;
-    cursor: move;
-    width:80%;
-    font-size:11px;
-
+/* organize list: common group & question level styles */
+/* edit width & margin data for icon columns only here! */
+	
+.movableList div.gq-leftcol
+{
+	float:left; 
+	width:54px; 				/* total width of left column, start with definition here */
+}
+		
+.movableList div.gq-rightcol
+{
+	float:right; 
+	width:335px;				/* total width of right column, start with definition here */
+}
+	
+.movableList div.gq-infocol
+{
+	margin: 0 335px 0 54px;  	/* total width of left and right column */
+}
+		
+.movableList div.lefticons
+{
+	width:45px; 				/* required frame width for the left icon bay, left column -12px */
+	margin-left:3px;
+}
+		
+.movableList div.lefticons input
+{
+	vertical-align:top;
+}
+		
+.movableList div.righticons
+{
+	text-align: right;
+	width:323px; 				/* required frame width for the right icon bay, right column width - 12px */
+	margin-left:6px;
 }
 
-.organizer li ol li div{
-    background-color:#EFFBDB;
-    color:#666;
+.movableList img.handle
+{
+	cursor: move;
 }
+
+.movableList ol li ol li div.question-wrapper div.gq-rightcol div.righticons img, .movableList ol li div.ui-widget-header div.gq-rightcol div.righticons img
+{
+	width: 20px;
+	height: 20px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.movableList div.gq-infotext
+{
+	font-size: 80.01%;			/* make text a little smaller = improved clear view */
+	margin-top: 2px;
+	margin-bottom: 3px;
+}
+/* ******** END organizeGroupsAndQuestions_view  ********* */
 
 .textresponses {
     text-align: center;
@@ -1850,4 +1982,8 @@ td.LEMerror  {
 
 .ui-tabs .action-buttons button {
 	margin: 0 0.5em;
+}
+
+.ui-widget-header #defaultanswerscale {
+	width: 600px;
 }

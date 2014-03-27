@@ -183,6 +183,32 @@
             }
         }
 
+		/**
+		* set a question as mandatory
+		* all language versions of a question are affected
+		*
+		* @access public
+		* @param int $iQuestionID
+		* @return void
+		*/
+		public function setQuestionMandatory($iQuestionID)
+		{
+			Question::model()->updateAll(array('mandatory'=>'Y'), 'qid=:qid', array( ':qid'=>$iQuestionID));
+		}
+
+		/**
+		* set a question as optional (=not mandatory)
+		* all language versions of a question are affected
+		*
+		* @access public
+		* @param int $iQuestionID
+		* @return void
+		*/
+		public function setQuestionOptional($iQuestionID)
+		{
+			Question::model()->updateAll(array('mandatory'=>'N'), 'qid=:qid', array(':qid'=>$iQuestionID));
+		}
+		
         /**
         * This function returns an array of the advanced attributes for the particular question
         * including their values set in the database

@@ -387,7 +387,6 @@ class SurveyAdmin extends Survey_Common_Action
             }
 
             $aData['surveyid'] = $iSurveyID;
-            Yii::app()->db->schema->refresh();
         }
 
         $this->_renderWrappedTemplate('survey', 'deactivateSurvey_view', $aData);
@@ -975,13 +974,70 @@ class SurveyAdmin extends Survey_Common_Action
 
         if (!empty($_POST['orgdata']) && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
         {
-            $this->_reorderGroup($iSurveyID);
+			$orgdata = explode("/", $_POST['orgdata']);
+
+			// do bulkaction 
+			if (strlen($orgdata[1]))
+			{
+				$this->_doBulkAction($iSurveyID, $orgdata[1], $orgdata[2]); 
+			}
+			
+			$this->_reorderGroup($iSurveyID, $orgdata[0]);
+			
         }
         else
         {
             $this->_showReorderForm($iSurveyID);
         }
     }
+
+
+	private function _doBulkAction($iSurveyID, $action, $qiddata)
+	{
+		$qids = explode("&", substr($qiddata,1));
+
+		switch ($action)
+		{
+			case "asvisible":
+			{
+				foreach($qids as $qid)
+				{
+					QuestionAttribute::model()->setQuestionAttribute($qid, 'hidden', 0);
+				}
+				break;
+			}
+
+			case "ashidden":
+			{
+
+				foreach($qids as $qid)
+				{
+					QuestionAttribute::model()->setQuestionAttribute($qid, 'hidden', 1);
+				}
+				break;
+			}
+
+			case "asmandatory":
+			{
+				foreach($qids as $qid)
+				{
+					Question::model()->setQuestionMandatory($qid);
+				}
+				break;
+			}
+
+			case "asoptional":
+			{
+				foreach($qids as $qid)
+				{
+					Question::model()->setQuestionOptional($qid);
+				}
+				break;
+			}
+
+		}
+	}
+
 
     private function _showReorderForm($iSurveyID)
     {
@@ -1026,10 +1082,13 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey', 'organizeGroupsAndQuestions_view', $aData);
     }
 
-    private function _reorderGroup($iSurveyID)
+    private function _reorderGroup($iSurveyID, $orgdata)
+	//private function _reorderGroup($iSurveyID)
     {
         $AOrgData = array();
-        parse_str($_POST['orgdata'], $AOrgData);
+        //parse_str($_POST['orgdata'], $AOrgData);
+		// neu: 
+		parse_str($orgdata, $AOrgData);
         $grouporder = 0;
         foreach ($AOrgData['list'] as $ID => $parent)
         {
