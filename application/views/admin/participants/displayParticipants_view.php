@@ -172,6 +172,8 @@ else
     var ajaxUrl = "<?php echo Yii::app()->getConfig('adminimageurl') . "/ajax-loader.gif" ?>";
     var redUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants"); ?>";
     var searchconditions = "<?php echo $sSearchCondition; ?>";
+    var bEditPermission = <?php echo (Permission::model()->hasGlobalPermission('participantpanel','update'))? 'true' : 'false'; ?>;
+    var bDeletePermission = <?php echo (Permission::model()->hasGlobalPermission('participantpanel','delete'))? 'true' : 'false'; ?>;
     var colNames = '["participant_id","can_edit","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("Email") ?>","<?php $clang->eT("Blacklisted") ?>","<?php $clang->eT("Surveys") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Owner name") ?>"<?php echo $columnNames; ?>]';
     var colModels = '[{ "name":"participant_id", "index":"participant_id", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{ "name":"can_edit", "index":"can_edit", "width":10, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
@@ -332,7 +334,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
 </div>
 <div id="notauthorised" title="notauthorised" style="display:none">
     <p>
-<?php $clang->eT("This is a shared participant and you are not authorised to edit it"); ?></p>
+<?php $clang->eT("You do not have the permission to edit this participant."); ?></p>
 
 </div>
 

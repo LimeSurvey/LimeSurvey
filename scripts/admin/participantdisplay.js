@@ -137,8 +137,8 @@ $(document).ready(function() {
             });
         },
         ondblClickRow: function(id) {
-            var can_edit = $('#displayparticipants').getCell(id, 'can_edit');
-            if(can_edit == 'false') {
+            var can_edit = ($('#displayparticipants').getCell(id, 'can_edit')=='true') && bEditPermission;
+            if(!can_edit) {
                 var dialog_buttons={};
                 dialog_buttons[okBtn]=function() {
                     $( this ).dialog( "close" );
@@ -717,8 +717,8 @@ $(document).ready(function() {
         var parid = id.split('_');
         var participant_id = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'participant_id');
         var lsel = parid[0];
-        var can_edit = $('#displayparticipants').getCell(participant_id,'can_edit');
-        if(can_edit == 'false') {
+        var can_edit = ($('#displayparticipants').getCell(participant_id,'can_edit')=='true' && bEditPermission);
+        if(!can_edit) {
             var dialog_buttons={};
             dialog_buttons[okBtn]=function(){
                 $( this ).dialog( "close" );
@@ -754,7 +754,7 @@ $(document).ready(function() {
 				jQuery("tr#"+id+" .ui-inline-edit").hide();
 				jQuery("tr#"+id+" .ui-inline-save, tr#"+id+" .ui-inline-cancel").show();
             }
-            jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('editRow',id,true);
+            //jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('editRow',id,true);
         }
     }
 

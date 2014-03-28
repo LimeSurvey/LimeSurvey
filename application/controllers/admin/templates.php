@@ -629,8 +629,15 @@ class templates extends Survey_Common_Action
         {
             @fwrite($fnew, getHeader());
             foreach ($cssfiles as $cssfile)
+            {
                 $myoutput = str_replace($cssfile['name'], $cssfile['name'] . "?t=$time", $myoutput);
+            }
             $myoutput = implode("\n", $myoutput);
+
+            App()->getClientScript()->registerPackage('jqueryui');
+            App()->getClientScript()->registerPackage('jquery-touch-punch');
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");            
+            
             App()->getClientScript()->render($myoutput);
             @fwrite($fnew, $myoutput);
             @fclose($fnew);
