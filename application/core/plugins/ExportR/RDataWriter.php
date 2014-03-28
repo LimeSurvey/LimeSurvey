@@ -11,9 +11,9 @@ class RDataWriter extends CsvWriter {
         
         $oOptions->answerFormat = "short";      // force answer codes
         $oOptions->convertN = true;
-        $oOptions->nValue = 1;
+        $oOptions->nValue = 0;
         $oOptions->convertY = true;
-        $oOptions->yValue = 2;
+        $oOptions->yValue = 1;
     }
 
     /**
