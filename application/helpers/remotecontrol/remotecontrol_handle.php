@@ -566,7 +566,7 @@ class remotecontrol_handle
                      }
                  }
 
-                 if ($sStatName='all')
+                 if ($sStatName=='all')
                  {
                      return $aSummary;
                  }
