@@ -3770,8 +3770,8 @@ function questionAttributes($returnByName=false)
         'options'=>array(0=>$clang->gT('No'),
         1=>$clang->gT('Yes')),
         'default'=>1,
-        "caption"=>$clang->gT('Same height for all choice'),
-        "help"=>$clang->gT('Force each choice to have the same height'));
+        "caption"=>$clang->gT('Same height for all answer options'),
+        "help"=>$clang->gT('Force each answer option to have the same height'));
         $qattributes["samelistheight"]=array(
         "types"=>"R",
         'category'=>$clang->gT('Display'),
