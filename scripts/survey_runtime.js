@@ -83,8 +83,12 @@ function setJsVar(){
 }
 // Deactivate all other button on submit
 function limesurveySubmitHandler(){
-    $(document).on("click",".disabled",function(){return false;});
+    // Return false disallow all other system
+    $(document).on("click",".disabled",function(){return false});
+    $(document).on("click",'.active',function(){return false;});// "[active]" don't seem to work with jquery-1.10.2
+
     $(document).on('click',".button", function(event){
+        $(this).prop('active',true).addClass('active');
         $(".button.ui-button" ).not($(this)).button( "option", "disabled", true );
         $(".button").not($(this)).prop('disabled',true).addClass('disabled');
     });
@@ -107,6 +111,7 @@ function needConfirmHandler(){
         }
         $(".button.ui-button" ).button( "option", "disabled", false );
         $(".button").prop('disabled',false).removeClass('disabled');
+        $(this).prop('active',false).removeClass('active');
         return false;
     });
 }
