@@ -31,11 +31,9 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
             <input type='hidden' name='action' value='templatesavechanges' />
 
-            <textarea name='changes' id='changes' rows='20' cols='40' data-filetype="<?php echo $sEditorFileType; ?>" class="ace <?php echo $sTemplateEditorMode; ?>" style='width:100%'>
-                <?php if (isset($editfile)) {
+            <textarea name='changes' id='changes' rows='20' cols='40' data-filetype="<?php echo $sEditorFileType; ?>" class="ace <?php echo $sTemplateEditorMode; ?>" style='width:100%'><?php if (isset($editfile)) {
                         echo textarea_encode(filetext($templatename,$editfile,$templates));
-                } ?>
-            </textarea>
+                } ?></textarea>
             <p>
                 <?php if (is_writable($templates[$templatename])) { ?>
                     <input type='submit' value='<?php $clang->eT("Save changes"); ?>'
