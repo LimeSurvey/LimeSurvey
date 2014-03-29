@@ -1463,20 +1463,42 @@ class tokens extends Survey_Common_Action
                             }
                         }
 
+                        /**
+                         * Event for email handling.
+                         * Parameter    type    description:
+                         * subject      rw      Body of the email
+                         * to           rw      Recipient(s)
+                         * from         rw      Sender(s)
+                         * type         r       "invitation" or "reminder"
+                         * send         w       If true limesurvey will send the email. Setting this to false will cause limesurvey to assume the mail has been sent by the plugin.
+                         * error        w       If set and "send" is true, log the error as failed email attempt.
+                         * token        r       Raw token data.
+                         */
                         $event = new PluginEvent('beforeTokenEmail');
                         $event->set('type', $sTemplate);
                         $event->set('subject', $modsubject);
                         $event->set('to', $to);
                         $event->set('body', $modmessage);
                         $event->set('from', $from);
+                        $event->set('bounce', getBounceEmail($iSurveyId));
+                        $event->set('token', $emrow);
                         App()->getPluginManager()->dispatchEvent($event);
                         $modsubject = $event->get('subject');
                         $modmessage = $event->get('body');
                         $to = $event->get('to');
                         $from = $event->get('from');
-                        // This is some ancient global used for error reporting instead of a return value from the actual mail function..
-                        $maildebug = $event->get('error', $maildebug);
-                        if (!$event->isStopped() && SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyId), $aRelevantAttachments, $customheaders))
+                        if ($event->get('send', true) == false)
+                        {
+                            // This is some ancient global used for error reporting instead of a return value from the actual mail function..
+                            $maildebug = $event->get('error', $maildebug);
+                            $success = $event->get('error') == null;
+                        }
+                        else
+                        {
+                            $success = SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyId), $aRelevantAttachments, $customheaders);
+                        }
+
+                        if ($success)
                         {
                             // Put date into sent
 							$token = Token::model($iSurveyId)->findByPk($emrow['tid']);
