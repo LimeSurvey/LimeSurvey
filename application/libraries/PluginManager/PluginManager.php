@@ -41,7 +41,7 @@
             }
             
             $this->pluginDirs[] = 'webroot.plugins';           // User plugins
-            $this->pluginDirs[] = 'webroot.application.core.plugins';  // Core plugins
+            $this->pluginDirs[] = 'application.core.plugins';  // Core plugins
         }
         
         /**

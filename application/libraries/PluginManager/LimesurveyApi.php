@@ -55,6 +55,20 @@
             return false;
         }
 
+        /**
+         * Builds and executes a SQL statement for dropping a DB table.
+         * @param mixed $plugin The plugin object, id or name.
+         * @param string $sTableName the name of the table to be created. The name will be properly quoted and prefixed by the method.
+         */
+        public function dropTable($plugin, $sTableName)
+        {
+            if (null !== $sTableName = $this->getTableName($plugin, $sTableName))
+            {
+                return App()->getDb()->createCommand()->dropTable($sTableName);
+            }
+            return false;
+        }
+
         public function createUrl($route, array $params)
         {
             return App()->createAbsoluteUrl($route, $params);
