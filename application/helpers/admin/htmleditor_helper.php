@@ -111,7 +111,7 @@
     {
         $clang = Yii::app()->lang;
         $data['clang'] = $clang;
-        $data['sKCFinderCSRFToken'] = $_SESSION['kcfinder_csrftoken']=randomChars(128);
+
         App()->getClientScript()->registerCoreScript('ckeditor');
         if ($controller == null)
         {
