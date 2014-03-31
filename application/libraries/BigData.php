@@ -231,6 +231,7 @@
         {
             $data->render();
         }
+
         protected static function xmlrpc_echo_string($data)
         {
             self::tag('string', "<![CDATA[$data]]>");
