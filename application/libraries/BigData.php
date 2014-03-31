@@ -229,10 +229,9 @@
         
         protected static function xmlrpc_echo_stream($data)
         {
-            echo '<base64>';
             $data->render();
-            echo '</base64>';
         }
+
         protected static function xmlrpc_echo_string($data)
         {
             self::tag('string', "<![CDATA[$data]]>");
