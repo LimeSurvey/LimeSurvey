@@ -229,10 +229,7 @@
         
         protected static function xmlrpc_echo_stream($data)
         {
-            echo '<base64>';
-            stream_filter_append($data, 'convert.base64-encode', STREAM_FILTER_READ);
-
-            echo '</base64>';
+            $data->render();
         }
         protected static function xmlrpc_echo_string($data)
         {
