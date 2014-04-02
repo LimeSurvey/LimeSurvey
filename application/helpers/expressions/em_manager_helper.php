@@ -8906,7 +8906,7 @@ EOD;
             // End Message
 
             $LEM =& LimeExpressionManager::singleton();
-
+            $LEM->sPreviewMode='logic';
             $aSurveyInfo=getSurveyInfo($sid,$_SESSION['LEMlang']);
 
             $allErrors = array();
