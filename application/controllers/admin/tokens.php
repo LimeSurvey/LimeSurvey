@@ -1903,7 +1903,7 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyId);
         }
 
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'tokens.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'tokensimport.js');
         $aEncodings =aEncodingsArray();
         if (Yii::app()->request->getPost('submit'))
         {

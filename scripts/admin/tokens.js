@@ -66,13 +66,6 @@ function addSelectedParticipantsToCPDB()
 
 $(document).ready(function() {
 
-    $("#filterduplicatetoken").change(function(){
-        if ($("#filterduplicatetoken").prop('checked')) {
-            $("#lifilterduplicatefields").slideDown();
-        } else {
-            $("#lifilterduplicatefields").slideUp();
-        }
-    })
     // Code for AJAX download
     jQuery.download = function(url, data, method){
         //url and data options required
@@ -118,7 +111,7 @@ $(document).ready(function() {
     $('#searchbutton').click(function(){
 
     });
-    var lastSel,lastSel2;
+
     oGrid=jQuery("#displaytokens").jqGrid({
         loadtext : sLoadText,
         recordtext: sRecordText,
