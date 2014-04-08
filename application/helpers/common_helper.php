@@ -7883,5 +7883,11 @@ function array_diff_assoc_recursive($array1, $array2) {
         return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));  
     }  
 
+
+	function run(Closure $closure)
+	{
+		return $closure();
+	}
 // Closing PHP tag intentionally omitted - yes, it is okay
+
 

@@ -20,16 +20,24 @@
         ?>
         <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />
         <link rel="icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />
-        <?php $this->widget('ext.LimeScript.LimeScript'); ?>
-        <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
+        <?php
+			$this->widget('ext.LimeScript.LimeScript');
+			$this->widget('ext.LimeDebug.LimeDebug');
+			Yii::app()->bootstrap->register();
+		?>
         <title>Limesurvey Administration</title>
     </head>
     <body>
+		<nav><?php
+			$this->widget('ext.yii-barmenu.BarMenu', array(
+				'items' => require __DIR__ . '/../menu.php',
+				'iconUrl' => App()->getConfig('adminimageurl')
+			));
+		?></nav>
         <div class="wrapper clearfix">
             <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
             <?php echo CHtml::tag('div', array('class' => 'maintitle titlebar'), App()->getConfig('sitename')); ?>
-            <?php $this->widget('ext.Menu.MenuWidget', $this->navData); ?>
-            <div id="content">
+			<div id="content">
             <?php echo $content; ?>
             </div>
             <div id="ajaxprogress" title="Ajax request in progress" style="text-align: center">

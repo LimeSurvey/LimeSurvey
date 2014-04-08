@@ -11,6 +11,9 @@ $internalConfig = array(
 	'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
 	'name' => 'LimeSurvey',
 	'defaultController' => 'surveys',
+	'aliases' => array(
+		'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap')
+	),
 	'import' => array(
 		'application.core.*',
 		'application.models.*',
@@ -19,9 +22,7 @@ $internalConfig = array(
 	),
 	'components' => array(
         'bootstrap' => array(
-            'class' => 'application.core.LSBootstrap',
-            'responsiveCss' => false,
-            'jqueryCss' => false
+            'class' => 'bootstrap.components.TbApi'
         ),
 		'urlManager' => array(
 			'urlFormat' => 'get',

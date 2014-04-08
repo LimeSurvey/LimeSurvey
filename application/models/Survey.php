@@ -351,7 +351,10 @@ class Survey extends LSActiveRecord
         return $tokens[$iSurveyID];
     }
 
-
+	public function isExpired()
+	{
+		return !empty($this->expires) && $this->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
+	}
     /**
     * Creates a new survey - does some basic checks of the suppplied data
     *

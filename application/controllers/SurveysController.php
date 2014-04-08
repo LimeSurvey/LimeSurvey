@@ -9,6 +9,9 @@
         public $defaultAction = 'publicList';
         public function actionPublicList($lang = null)
         {
+			echo '<pre>';
+			var_dump($_SERVER);
+			die();
             $this->sessioncontrol();
             if (isset($lang))
             {

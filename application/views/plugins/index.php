@@ -52,11 +52,11 @@
     );
         */
         
-    $this->widget('bootstrap.widgets.TbExtendedGridView', array(
+    $this->widget('zii.widgets.grid.CGridView', array(
         'dataProvider'=>$dataProvider,
-        'columns'=>$gridColumns,
-        'rowCssClassExpression'=> function ($data, $row) { return ($row % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },
-        'itemsCssClass' => 'items table-condensed table-bordered'
+//        'columns'=>$gridColumns,
+//        'rowCssClassExpression'=> function ($data, $row) { return ($row % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },
+//        'itemsCssClass' => 'items table-condensed table-bordered'
     ));
 ?>
 </div>
