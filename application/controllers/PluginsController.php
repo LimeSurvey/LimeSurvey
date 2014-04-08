@@ -156,7 +156,7 @@ class PluginsController extends LSYii_Controller
 
     public function actionIndex()
     {
-        $oPluginManager = App()->getPluginManager();
+		$oPluginManager = App()->getPluginManager();
 
         // Scan the plugins folder.
         $aDiscoveredPlugins = $oPluginManager->scanPlugins();

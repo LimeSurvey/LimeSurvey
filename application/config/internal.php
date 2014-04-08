@@ -11,6 +11,9 @@ $internalConfig = array(
 	'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
 	'name' => 'LimeSurvey',
 	'defaultController' => 'surveys',
+	'aliases' => array(
+		'vendor' => realpath(__DIR__ . '/../../vendor')
+	),
 	'import' => array(
 		'application.core.*',
 		'application.models.*',
@@ -19,7 +22,8 @@ $internalConfig = array(
 	),
 	'components' => array(
         'bootstrap' => array(
-            'class' => 'TbApi'
+            'class' => 'TbApi',
+			'assetsPath' => 'vendor.crisu83.yiistrap.assets'
         ),
 		'urlManager' => array(
 			'urlFormat' => 'get',

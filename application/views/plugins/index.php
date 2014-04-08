@@ -52,10 +52,10 @@
     );
         */
         
-    $this->widget('zii.widgets.grid.CGridView', array(
+    $this->widget('TbGridView', array(
         'dataProvider'=>$dataProvider,
-//        'columns'=>$gridColumns,
-//        'rowCssClassExpression'=> function ($data, $row) { return ($row % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },
+        'columns'=>$gridColumns,
+        'rowCssClassExpression'=> function ($index, $data) { return ($index % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },
 //        'itemsCssClass' => 'items table-condensed table-bordered'
     ));
 ?>
