@@ -1,0 +1,279 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "66d16fc786bb03b2745b8af73b05a4da",
+    "packages": [
+        {
+            "name": "crisu83/yiistrap",
+            "version": "dev-bs3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Crisu83/yiistrap.git",
+                "reference": "9045e7531cace008e3c0e030a2a5824c03d8d8fe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Crisu83/yiistrap/zipball/9045e7531cace008e3c0e030a2a5824c03d8d8fe",
+                "reference": "9045e7531cace008e3c0e030a2a5824c03d8d8fe",
+                "shasum": ""
+            },
+            "require-dev": {
+                "codeception/codeception": "@stable",
+                "crisu83/yii-composer": ">=1.0.0",
+                "yiisoft/yii": ">=1.1.13"
+            },
+            "type": "library",
+            "extra": {
+                "yii-install-writable": [
+                    "tests/_log"
+                ]
+            },
+            "autoload": {
+                "classmap": [
+                    "behaviors/",
+                    "components/",
+                    "form/",
+                    "helpers/",
+                    "widgets/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Christoffer Niska",
+                    "email": "christoffer.niska@gmail.com",
+                    "homepage": "http://www.cniska.net/"
+                },
+                {
+                    "name": "Antonio Ramirez",
+                    "email": "ramirez.cobos@gmail.com",
+                    "homepage": "http://www.ramirezcobos.com/"
+                }
+            ],
+            "description": "Twitter Bootstrap for the Yii PHP framework.",
+            "keywords": [
+                "bootstrap",
+                "yii"
+            ],
+            "time": "2014-03-13 00:01:08"
+        },
+        {
+            "name": "phpmailer/phpmailer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPMailer/PHPMailer.git",
+                "reference": "edab37dcd8781ec50328db5d46f8bdb7969d967b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/edab37dcd8781ec50328db5d46f8bdb7969d967b",
+                "reference": "edab37dcd8781ec50328db5d46f8bdb7969d967b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0.0"
+            },
+            "require-dev": {
+                "phpdocumentor/phpdocumentor": "*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "class.phpmailer.php",
+                    "class.pop3.php",
+                    "class.smtp.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Jim Jagielski",
+                    "email": "jimjag@gmail.com"
+                },
+                {
+                    "name": "Marcus Bointon",
+                    "email": "phpmailer@synchromedia.co.uk"
+                },
+                {
+                    "name": "Andy Prevost",
+                    "email": "codeworxtech@users.sourceforge.net"
+                },
+                {
+                    "name": "Brent R. Matzelle"
+                }
+            ],
+            "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
+            "time": "2014-04-05 06:09:25"
+        },
+        {
+            "name": "tecnick.com/tcpdf",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git://git.code.sf.net/p/tcpdf/code",
+                "reference": "5afe31385dc04dbcf99c0428fbbe58329b4afa54"
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "fonts",
+                    "config",
+                    "include",
+                    "tcpdf.php",
+                    "tcpdf_parser.php",
+                    "tcpdf_import.php",
+                    "tcpdf_barcodes_1d.php",
+                    "tcpdf_barcodes_2d.php",
+                    "include/tcpdf_colors.php",
+                    "include/tcpdf_filters.php",
+                    "include/tcpdf_font_data.php",
+                    "include/tcpdf_fonts.php",
+                    "include/tcpdf_images.php",
+                    "include/tcpdf_static.php",
+                    "include/barcodes/datamatrix.php",
+                    "include/barcodes/pdf417.php",
+                    "include/barcodes/qrcode.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Nicola Asuni",
+                    "email": "info@tecnick.com",
+                    "homepage": "http://nicolaasuni.tecnick.com"
+                }
+            ],
+            "description": "TCPDF is a PHP class for generating PDF documents.",
+            "homepage": "http://www.tcpdf.org/",
+            "keywords": [
+                "PDFD32000-2008",
+                "TCPDF",
+                "barcodes",
+                "datamatrix",
+                "pdf",
+                "pdf417",
+                "qrcode"
+            ],
+            "time": "2014-04-07 19:56:16"
+        },
+        {
+            "name": "yiisoft/yii",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii.git",
+                "reference": "7fc9bc0b4d7f18a1c00ca68477523ab732e04b58"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/7fc9bc0b4d7f18a1c00ca68477523ab732e04b58",
+                "reference": "7fc9bc0b4d7f18a1c00ca68477523ab732e04b58",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.1.0"
+            },
+            "bin": [
+                "framework/yiic"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Qiang Xue",
+                    "email": "qiang.xue@gmail.com",
+                    "homepage": "http://www.yiiframework.com/",
+                    "role": "Founder and project lead"
+                },
+                {
+                    "name": "Alexander Makarov",
+                    "email": "sam@rmcreative.ru",
+                    "homepage": "http://rmcreative.ru/",
+                    "role": "Core framework development"
+                },
+                {
+                    "name": "Maurizio Domba",
+                    "homepage": "http://mdomba.info/",
+                    "role": "Core framework development"
+                },
+                {
+                    "name": "Carsten Brandt",
+                    "email": "mail@cebe.cc",
+                    "homepage": "http://cebe.cc/",
+                    "role": "Core framework development"
+                },
+                {
+                    "name": "Wei Zhuo",
+                    "email": "weizhuo@gmail.com",
+                    "role": "Project site maintenance and development"
+                },
+                {
+                    "name": "Sebastián Thierer",
+                    "email": "sebas@artfos.com",
+                    "role": "Component development"
+                },
+                {
+                    "name": "Jeffrey Winesett",
+                    "email": "jefftulsa@gmail.com",
+                    "role": "Documentation and marketing"
+                },
+                {
+                    "name": "Timur Ruziev",
+                    "email": "resurtm@gmail.com",
+                    "homepage": "http://resurtm.com/",
+                    "role": "Core framework development"
+                },
+                {
+                    "name": "Paul Klimov",
+                    "email": "klimov.paul@gmail.com",
+                    "role": "Core framework development"
+                }
+            ],
+            "description": "Yii Web Programming Framework",
+            "homepage": "http://www.yiiframework.com/",
+            "keywords": [
+                "framework",
+                "yii"
+            ],
+            "time": "2014-04-05 11:02:58"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "crisu83/yiistrap": 20,
+        "yiisoft/yii": 20,
+        "tecnick.com/tcpdf": 20,
+        "phpmailer/phpmailer": 20
+    },
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}

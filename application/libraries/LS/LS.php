@@ -38,4 +38,4 @@ function LS($class)
     require $file; # provoke fatal error if file does not exists.
 }
  
-spl_autoload_register('LS');
+//spl_autoload_register('LS');

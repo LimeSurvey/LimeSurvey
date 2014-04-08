@@ -16,7 +16,6 @@
  * index.php
  */
 require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
-
 /**
 * Implements global  config
 * @property CLogRouter $log Log router component.
@@ -48,7 +47,7 @@ class LSYii_Application extends CWebApplication
     */
     public function __construct($config = null)
     {
-        if (is_string($config) && !file_exists($config))
+		if (is_string($config) && !file_exists($config))
         {
             $config = __DIR__ . '/../config/config-sample-mysql' . EXT;
         } 

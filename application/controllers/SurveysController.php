@@ -9,10 +9,8 @@
         public $defaultAction = 'publicList';
         public function actionPublicList($lang = null)
         {
-			echo '<pre>';
-			var_dump($_SERVER);
-			die();
-            $this->sessioncontrol();
+			$this->sessioncontrol();
+			
             if (isset($lang))
             {
                 App()->setLang(new Limesurvey_lang($lang));
@@ -34,11 +32,11 @@
          */
         protected function sessioncontrol()
         {
-            if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
+			if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
                 Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
-
+			
             Yii::import('application.libraries.Limesurvey_lang');
-            Yii::app()->setLang(new Limesurvey_lang(Yii::app()->session['adminlang']));
+			Yii::app()->setLang(new Limesurvey_lang(Yii::app()->session['adminlang']));
         }
     }
 ?>

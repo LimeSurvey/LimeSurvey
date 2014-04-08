@@ -1,0 +1,18 @@
+{
+    "name" : "sammousa/limesurvey",
+    "description" : "Limesurvey for composer.",
+    "license" : "GPL-2.0",
+    "require": {
+        "crisu83/yiistrap": "dev-bs3",
+		"yiisoft/yii" : "dev-master",
+		"tecnick.com/tcpdf": "dev-master",
+		"phpmailer/phpmailer": "dev-master",
+		"jsonrpc/jsonrpc" : "dev-master"
+    },
+	"require-dev" : {
+		
+	},
+    "autoload" : {
+        "classmap" : []
+    }
+}

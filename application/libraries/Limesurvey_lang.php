@@ -20,7 +20,6 @@
     print $locale->getTranslation("Hello World!");
     */
 
-
     class Limesurvey_lang {
 
         var $gettextclass;
@@ -183,7 +182,8 @@
 
     }
 
-    require_once(APPPATH.'third_party/php-gettext/streams.php');
-    require_once(APPPATH.'third_party/php-gettext/gettext.php');
+    Yii::import('application.third_party.php-gettext.streams', true);
+	Yii::import('application.third_party.php-gettext.gettext', true);
+    
 
 ?>
