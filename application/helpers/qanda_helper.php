@@ -3937,7 +3937,7 @@ function do_array_5point($ia)
     }
     else
     {
-        $answerwidth = 20;
+        $answerwidth = floatval(Yii::app()->getConfig('answer_width',20));
     }
     $cellwidth  = 5; // number of columns
 
@@ -4107,7 +4107,7 @@ function do_array_10point($ia)
     }
     else
     {
-        $answerwidth = 20;
+        $answerwidth = floatval(Yii::app()->getConfig('answer_width',20));
     }
     $cellwidth  = 10; // number of columns
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
@@ -4237,7 +4237,7 @@ function do_array_yesnouncertain($ia)
     }
     else
     {
-        $answerwidth = 20;
+        $answerwidth = floatval(Yii::app()->getConfig('answer_width',20));
     }
     $cellwidth  = 3; // number of columns
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
@@ -4392,7 +4392,7 @@ function do_array_increasesamedecrease($ia)
     }
     else
     {
-        $answerwidth = 20;
+        $answerwidth = floatval(Yii::app()->getConfig('answer_width',20));
     }
     $cellwidth  = 3; // number of columns
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
@@ -4555,7 +4555,7 @@ function do_array($ia)
     }
     else
     {
-        $answerwidth=20;
+        $answerwidth=floatval(Yii::app()->getConfig('answer_width',20));
     }
     $columnswidth=100-$answerwidth;
 
@@ -5049,7 +5049,7 @@ function do_array_multitext($ia)
     }
     else
     {
-        $answerwidth=20;
+        $answerwidth=floatval(Yii::app()->getConfig('answer_width',20));
     };
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
@@ -5060,7 +5060,7 @@ function do_array_multitext($ia)
     {
         $inputwidth = 20;
     }
-    $columnswidth=100-($answerwidth*2);
+    $columnswidth=100-($answerwidth);
 
     $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult = Yii::app()->db->createCommand($lquery)->query();
@@ -5390,7 +5390,7 @@ function do_array_multiflexi($ia)
     }
     else
     {
-        $answerwidth=20;
+        $answerwidth=floatval(Yii::app()->getConfig('answer_width',20));
     }
     $columnswidth=100-($answerwidth*2);
 
@@ -5868,7 +5868,7 @@ function do_array_dual($ia)
     }
     else
     {
-        $answerwidth=20;
+        $answerwidth=floatval(Yii::app()->getConfig('answer_width',20));
     }
     // Find if we have rigth and center text
     // TODO move "|" to attribute
