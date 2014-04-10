@@ -552,6 +552,16 @@ $config['InsertansUnsupportedtypes'] = array();
 */
 $config['updatenotification'] = 'both';
 
+// Proxy settings for ComfortUpdate
+/**
+* Set these if you are behind a proxy and want to update LS using ComfortUpdate
+*
+* $proxy_host_name Your proxy server name (string)
+* $proxy_host_port Your proxy server port (int)
+*/
+$config['proxy_host_name'] = '';
+$config['proxy_host_port'] = 80;
+
 
 // === Advanced Setup
 // The following parameters need information from config.php
