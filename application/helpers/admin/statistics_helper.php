@@ -2964,7 +2964,8 @@ class statistics_helper {
             /**
             * Initiate the Spreadsheet_Excel_Writer
             */
-            Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
+            require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Xlswriter.php');
+            
             if($pdfOutput=='F')
             {
                 $sFileName = $tempdir.'/statistic-survey'.$surveyid.'.xls';

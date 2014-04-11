@@ -25,7 +25,7 @@ class ExcelWriter extends Writer
     */
     public function __construct($filename = null)
     {
-        Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
+        require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Xlswriter.php');
         $this->separator = '~|';
         $this->hasOutputHeader = false;
         $this->rowCounter = 0;
