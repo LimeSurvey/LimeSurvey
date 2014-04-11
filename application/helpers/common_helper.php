@@ -5602,6 +5602,8 @@ function getUpdateInfo()
     Yii::import('application.libraries.admin.http.httpRequestIt');
     $http=new httpRequestIt;
 
+    $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+    $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
     $http->timeout=0;
     $http->data_timeout=0;
     $http->user_agent="LimeSurvey ".Yii::app()->getConfig("versionnumber")." build ".Yii::app()->getConfig("buildnumber");
