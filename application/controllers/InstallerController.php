@@ -99,7 +99,7 @@ class InstallerController extends CController {
     */
     function _checkInstallation()
     {
-        if (file_exists(APPPATH . 'config/config.php') && empty($_POST['InstallerConfigForm']))
+        if (file_exists(APPPATH . 'config/config.php') && is_null(Yii::app()->request->getPost('InstallerConfigForm')))
         {
             throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
             exit();
@@ -128,9 +128,9 @@ class InstallerController extends CController {
     private function stepWelcome()
     {
 
-        if (!empty($_POST['installerLang']))
+        if (!is_null(Yii::app()->request->getPost('installerLang')))
         {
-            Yii::app()->session['installerLang'] = $_POST['installerLang'];
+            Yii::app()->session['installerLang'] = Yii::app()->request->getPost('installerLang');
             $this->redirect(array('installer/license'));
         }
         $this->loadHelper('surveytranslator');
@@ -238,9 +238,9 @@ class InstallerController extends CController {
         $aData['progressValue'] = 40;
         $aData['model'] = $oModel = new InstallerConfigForm;
 
-        if(isset($_POST['InstallerConfigForm']))
+        if(!is_null(Yii::app()->request->getPost('InstallerConfigForm')))
         {
-            $oModel->attributes = $_POST['InstallerConfigForm'];
+            $oModel->attributes = Yii::app()->request->getPost('InstallerConfigForm');
 
             //run validation, if it fails, load the view again else proceed to next step.
             if($oModel->validate()) {
@@ -415,7 +415,7 @@ class InstallerController extends CController {
     */
     function stepCreateDb()
     {
-        // check status. to be called only when database don't exist else rdirect to proper link.
+        // check status. to be called only when database don't exist else redirect to proper link.
         if(!Yii::app()->session['databaseDontExist']) {
             $this->redirect(array('installer/welcome'));
         }
@@ -505,7 +505,21 @@ class InstallerController extends CController {
         }
         else
         {
-            $model->addError('dblocation', $clang->gT('Try again! Connection with database failed.'));
+            $this->loadHelper('surveytranslator');
+            $oModel = new InstallerConfigForm;
+            $oModel->dbtype=$aDbConfig['sDatabaseType'];
+            $oModel->dblocation=$aDbConfig['sDatabaseLocation'];
+            $oModel->dbuser=$aDbConfig['sDatabaseUser'];
+            //$oModel->dbpwd$aDbConfig['sDatabasePwd']; Don't set password for security issue
+            $oModel->dbprefix=$aDbConfig['sDatabasePrefix'];
+            $oModel->addError('dbname', $clang->gT('Try again! Creation of database failed.'));
+
+            $aData['title'] = $clang->gT('Database configuration');
+            $aData['descp'] = $clang->gT('Please enter the database settings you want to use for LimeSurvey:');
+            $aData['classesForStep'] = array('off','off','off','on','off','off');
+            $aData['progressValue'] = 40;
+            $aData['model'] = $oModel;
+
             $this->render('/installer/dbconfig_view',$aData);
         }
 
@@ -602,22 +616,27 @@ class InstallerController extends CController {
         $aData['descp'] = $clang->gT("Optional settings to give you a head start");
         $aData['classesForStep'] = array('off','off','off','off','off','on');
         $aData['progressValue'] = 80;
-
         $this->loadHelper('surveytranslator');
         $aData['model'] = $model = new InstallerConfigForm('optional');
-
-        if(isset($_POST['InstallerConfigForm']))
+        // Backup the default, needed only for $sDefaultAdminPassword
+        $sDefaultAdminUserName = $model->adminLoginName;
+        $sDefaultAdminPassword = $model->adminLoginPwd;
+        $sDefaultAdminRealName = $model->adminName;
+        $sDefaultSiteName = $model->siteName;
+        $sDefaultSiteLanguage = $model->surveylang;
+        $sDefaultAdminEmail = $model->adminEmail;
+        if(!is_null(Yii::app()->request->getPost('InstallerConfigForm')))
         {
-            $model->attributes = $_POST['InstallerConfigForm'];
+            $model->attributes = Yii::app()->request->getPost('InstallerConfigForm');
 
             //run validation, if it fails, load the view again else proceed to next step.
             if($model->validate()) {
-                $sDefaultAdminUserName = $model->adminLoginName;
-                $sDefaultAdminPassword = $model->adminLoginPwd;
-                $sDefaultAdminRealName = $model->adminName;
-                $sDefaultSiteName = $model->siteName;
-                $sDefaultSiteLanguage = $model->surveylang;
-                $sDefaultAdminEmail = $model->adminEmail;                
+                $sAdminUserName = $model->adminLoginName;
+                $sAdminPassword = $model->adminLoginPwd;
+                $sAdminRealName = $model->adminName;
+                $sSiteName = $model->siteName;
+                $sSiteLanguage = $model->surveylang;
+                $sAdminEmail = $model->adminEmail;
 
                 $aData['title'] = $clang->gT("Database configuration");
                 $aData['descp'] = $clang->gT("Please enter the database settings you want to use for LimeSurvey:");
@@ -629,16 +648,16 @@ class InstallerController extends CController {
 
                 //checking DB Connection
                 if ($this->connection->getActive() == true) {
-                    $sPasswordHash=hash('sha256', $sDefaultAdminPassword);
+                    $sPasswordHash=hash('sha256', $sAdminPassword);
                     try {
                         // Save user
                         $user=new User;
-                        $user->users_name=$sDefaultAdminUserName;
+                        $user->users_name=$sAdminUserName;
                         $user->password=$sPasswordHash;
-                        $user->full_name=$sDefaultAdminRealName;
+                        $user->full_name=$sAdminRealName;
                         $user->parent_id=0;
-                        $user->lang=$sDefaultSiteLanguage;
-                        $user->email=$sDefaultAdminEmail;
+                        $user->lang=$sSiteLanguage;
+                        $user->email=$sAdminEmail;
                         $user->save();
                         // Save permissions
                         $permission=new Permission;
@@ -650,11 +669,11 @@ class InstallerController extends CController {
                         $permission->save();
                         // Save  global settings
                         $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => self::_getRandomString()));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sDefaultSiteName));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $sDefaultAdminRealName));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sDefaultAdminEmail));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sDefaultAdminEmail));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sDefaultSiteLanguage));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sSiteName));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $sAdminRealName));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sAdminEmail));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sAdminEmail));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sSiteLanguage));
                         // only continue if we're error free otherwise setup is broken.
                     } catch (Exception $e) {
                         throw new Exception(sprintf('Could not add optional settings: %s.', $e));
@@ -666,8 +685,12 @@ class InstallerController extends CController {
                     $aData['descp'] = $clang->gT("LimeSurvey has been installed successfully.");
                     $aData['classesForStep'] = array('off','off','off','off','off','off');
                     $aData['progressValue'] = 100;
-                    $aData['user'] = $sDefaultAdminUserName;
-                    $aData['pwd'] = $sDefaultAdminPassword;
+                    $aData['user'] = $sAdminUserName;
+                    if($sDefaultAdminPassword==$sAdminPassword){
+                        $aData['pwd'] = $sAdminPassword;
+                    }else{
+                        $aData['pwd'] = $clang->gT("The password you have chosen at the optional settings step.");
+                    }
 
                     $this->render('/installer/success_view', $aData);
                     return;
