@@ -1,5 +1,5 @@
 filter:
-  excluded_paths: [framework/*, locale/*, docs/*, fonts/*, third_party/*, application/third_party/*]
+  excluded_paths: [framework/*, locale/*, docs/*, fonts/*, third_party/*, application/third_party/*, images/*, styles/*, styles-public/*, templates/*, themes/*, tmp/*, upload/*]
 tools:
     php_mess_detector:
         config:
@@ -7,3 +7,7 @@ tools:
     php_code_sniffer:
         config:
             sniffs: { generic: { white_space: { disallow_tab_indent_sniff: true }, php: { disallow_short_open_tag_sniff: true } } }
+    php_pdepend:
+        command: pdepend
+    php_cs_fixer:
+        config: { level: psr1 } 
