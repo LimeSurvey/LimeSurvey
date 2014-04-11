@@ -9,5 +9,4 @@ tools:
             { standard: PSR1 }
     php_pdepend:
         command: pdepend
-    php_cs_fixer:
-        config: { level: psr1 } 
+ 
