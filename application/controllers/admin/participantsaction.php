@@ -736,7 +736,7 @@ class participantsaction extends Survey_Common_Action
     {
         if (Yii::app()->request->getPost('searchcondition','') != '') // if there is a search condition then only the participants that match the search criteria are counted
         {
-            $condition = explode("||", $searchcondition);
+            $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition',''));
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
         } else {
             $search = null;

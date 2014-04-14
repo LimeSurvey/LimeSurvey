@@ -181,7 +181,7 @@ class ParticipantAttributeName extends LSActiveRecord
                 $language=$langs[0]->lang;
                 $attribute_name=$langs[0]->attribute_name;
             }
-            $output[]=array("attribute_id"=>$id->attribute_id,
+            $output[$id->attribute_id]=array("attribute_id"=>$id->attribute_id,
                           "attribute_type"=>$id->attribute_type,
                           "visible"=>$id->visible,
                           "attribute_name"=>$attribute_name,

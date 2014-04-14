@@ -458,6 +458,7 @@ $(document).ready(function() {
                             height : 300,
                             open: function(event, ui) {
                                 $('#attributes').multiselect({ includeSelectAllOption:true, 
+                                    selectAllValue: '0',
                                     selectAllText: sSelectAllText,
                                     nonSelectedText: sNonSelectedText,
                                     nSelectedText: sNSelectedText,
@@ -646,8 +647,7 @@ $(document).ready(function() {
     function editModifier(id, subgrid_id, method) {
         var parid = id.split('_');
         var participant_id = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'participant_id');
-        var lsel = parid[0];
-        var can_edit = ($('#displayparticipants').getCell(participant_id,'can_edit')=='true' && bEditPermission);
+        var can_edit = ($('#displayparticipants').getCell(parid[0],'can_edit')=='true' && bEditPermission);
         if(!can_edit) {
             var dialog_buttons={};
             dialog_buttons[okBtn]=function(){
@@ -677,7 +677,7 @@ $(document).ready(function() {
                 $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:''});
             }
             if(method=='edit') {
-                jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('restoreRow',id);
+             //   jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('restoreRow',id);
             }
             if(method=='click') {
                 jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('restoreRow',id);
