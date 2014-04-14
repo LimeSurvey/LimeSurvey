@@ -681,13 +681,14 @@ class participantsaction extends Survey_Common_Action
      */
     function getSearchIDs()
     {
-        $searchcondition = basename(Yii::app()->request->getPost('searchcondition')); // get the search condition from the URL
+        $searchcondition = Yii::app()->request->getPost('searchcondition'); // get the search condition from the URL
+        $sSearchURL = basename(Yii::app()->request->getPost('searchURL')); // get the search condition from the URL
         /* a search contains posted data inside $_POST['searchcondition'].
         * Each separate query is made up of 3 fields, separated by double-pipes ("|")
         * EG: fname||eq||jason||lname||ct||c
         *
         */
-        if ($searchcondition != 'getParticipants_json') // if there is a search condition present
+        if ($sSearchURL != 'getParticipants_json') // if there is a search condition present
         {
             $participantid = "";
             $condition = explode("||", $searchcondition);  // explode the condition to the array
