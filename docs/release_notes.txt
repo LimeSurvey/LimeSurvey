@@ -59,6 +59,32 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140404) to 2.05+ (build 140414) Apr 14, 2014
+-New feature #8659: Configurable proxy for ComfortUpdate (mfaber)
+-Fixed issue #8908: Javascript error in import tokens page (Carsten Schmitz)
+-Fixed issue #8925: Exporting a filtered list results in SQL error (Carsten Schmitz)
+-Fixed issue #8926: Add filtered participants to a survey adds ALL participants to the survey (Carsten Schmitz)
+-Fixed issue #8945: Only a super administrator can manage user groups (Carsten Schmitz)
+-Fixed issue #8955: YearRange for date picker not set (mfaber)
+-Fixed issue #8960: Proper installation fails if db password contains certain characters (Carsten Schmitz)
+-Fixed issue: Files with spaces cannot be attached to email templates (Carsten Schmitz)
+#Updated translation: Basque by ikt
+#Updated translation: Chinese (Hong Kong) (Traditional) by achan
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Greek by kiolalis, christof75, theseek3r
+#Updated translation: Japanese by yamatt
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Papiamento (Curaçao and Bonaire) by indigoblueconsult
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Ukrainian by Rusya, kuzenka167
+
 Changes from 2.05+ (build 140320) to 2.05+ (build 140404) Apr 04, 2014
 -Fixed issue #8784: get_summary RPC routine only delivering one value at a time (Carsten Schmitz)
 -Fixed issue #8856: It should not add the datatype tag for the key value which breakes response when converted to array (ravindrakhokharia)
