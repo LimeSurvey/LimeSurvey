@@ -11,10 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-// Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
-
-//if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
-
 /*
 * Let's explain what this strange $ia var means
 *
