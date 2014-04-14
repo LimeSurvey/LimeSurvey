@@ -939,19 +939,20 @@ function buildsurveysession($surveyid,$preview=false)
 
         // DISPLAY REGISTER-PAGE if needed
         // DISPLAY CAPTCHA if needed
-        sendCacheHeaders();
-        doHeader();
-
-        $redata = compact(array_keys(get_defined_vars()));
-        echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[1594]');
-        //echo makedropdownlist();
-        echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1596]');
-        if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
-        {
-            echo templatereplace(file_get_contents($sTemplatePath."register.pstpl"),array(),$redata,'frontend_helper[1599]');
+         if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
+         {
+            // Add the event and test if done
+            Yii::app()->runController("register/index/sid/{$surveyid}");
+            Yii::app()->end();
         }
         else
         {
+            sendCacheHeaders();
+            doHeader();
+            $redata = compact(array_keys(get_defined_vars()));
+            echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[1594]');
+            //echo makedropdownlist();
+            echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1596]');
             // ->renderPartial('entertoken_view');
             if (isset($secerror)) echo "<span class='error'>".$secerror."</span><br />";
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
@@ -993,11 +994,10 @@ function buildsurveysession($surveyid,$preview=false)
             </li>
             </ul>
             </form></div>";
+            echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
+            doFooter();
+            exit;
         }
-
-        echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
-        doFooter();
-        exit;
     }
     // TOKENS REQUIRED, A TOKEN PROVIDED
     // SURVEY WITH NO NEED TO USE CAPTCHA
