@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "66d16fc786bb03b2745b8af73b05a4da",
+    "hash": "219d769d79309baa7968b29b99513502",
     "packages": [
         {
             "name": "crisu83/yiistrap",
@@ -63,17 +63,60 @@
             "time": "2014-03-13 00:01:08"
         },
         {
+            "name": "jsonrpc/jsonrpc",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johnstevenson/jsonrpc.git",
+                "reference": "8cd385ae8b10bfe74d52a22661c8a0511b04fd48"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnstevenson/jsonrpc/zipball/8cd385ae8b10bfe74d52a22661c8a0511b04fd48",
+                "reference": "8cd385ae8b10bfe74d52a22661c8a0511b04fd48",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "JsonRpc": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "John Stevenson",
+                    "email": "john-stevenson@blueyonder.co.uk"
+                }
+            ],
+            "description": "JSON-RPC 2.0 client/server implementation",
+            "homepage": "http://github.com/johnstevenson/jsonrpc",
+            "keywords": [
+                "api",
+                "json",
+                "json-rpc",
+                "rpc"
+            ],
+            "time": "2013-04-12 10:33:44"
+        },
+        {
             "name": "phpmailer/phpmailer",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "edab37dcd8781ec50328db5d46f8bdb7969d967b"
+                "reference": "7b384d0bedf7feb1d3cdfaae689d8c5b68eb0515"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/edab37dcd8781ec50328db5d46f8bdb7969d967b",
-                "reference": "edab37dcd8781ec50328db5d46f8bdb7969d967b",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/7b384d0bedf7feb1d3cdfaae689d8c5b68eb0515",
+                "reference": "7b384d0bedf7feb1d3cdfaae689d8c5b68eb0515",
                 "shasum": ""
             },
             "require": {
@@ -81,7 +124,7 @@
             },
             "require-dev": {
                 "phpdocumentor/phpdocumentor": "*",
-                "phpunit/phpunit": "*"
+                "phpunit/phpunit": "4.0.*"
             },
             "type": "library",
             "autoload": {
@@ -113,7 +156,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2014-04-05 06:09:25"
+            "time": "2014-04-12 07:49:59"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -121,7 +164,7 @@
             "source": {
                 "type": "git",
                 "url": "git://git.code.sf.net/p/tcpdf/code",
-                "reference": "5afe31385dc04dbcf99c0428fbbe58329b4afa54"
+                "reference": "ce07b409874a7ac0567b3401c765febef9efb413"
             },
             "require": {
                 "php": ">=5.3.0"
@@ -170,7 +213,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2014-04-07 19:56:16"
+            "time": "2014-04-10 16:47:45"
         },
         {
             "name": "yiisoft/yii",
@@ -178,12 +221,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii.git",
-                "reference": "7fc9bc0b4d7f18a1c00ca68477523ab732e04b58"
+                "reference": "ffb9a06b2fdeef83098221334bfd34bc8c2e2aa6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii/zipball/7fc9bc0b4d7f18a1c00ca68477523ab732e04b58",
-                "reference": "7fc9bc0b4d7f18a1c00ca68477523ab732e04b58",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/ffb9a06b2fdeef83098221334bfd34bc8c2e2aa6",
+                "reference": "ffb9a06b2fdeef83098221334bfd34bc8c2e2aa6",
                 "shasum": ""
             },
             "require": {
@@ -254,7 +297,7 @@
                 "framework",
                 "yii"
             ],
-            "time": "2014-04-05 11:02:58"
+            "time": "2014-04-11 05:54:15"
         }
     ],
     "packages-dev": [
@@ -268,7 +311,8 @@
         "crisu83/yiistrap": 20,
         "yiisoft/yii": 20,
         "tecnick.com/tcpdf": 20,
-        "phpmailer/phpmailer": 20
+        "phpmailer/phpmailer": 20,
+        "jsonrpc/jsonrpc": 20
     },
     "platform": [
 
