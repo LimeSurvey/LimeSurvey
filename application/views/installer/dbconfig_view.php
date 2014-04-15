@@ -21,28 +21,28 @@
                 );
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dblocation', array('class' => 'control-label', 'label' => $clang->gT("Database location"))),
-                    'control' => CHtml::activeTextField($model, 'dblocation', array('required' => 'required')),
+                    'control' => CHtml::activeTextField($model, 'dblocation', array('required' => 'required','autocomplete'=>'off')),
                     'description' => $clang->gT('Set this to the IP/net location of your database server. In most cases "localhost" will work. You can force Unix socket with complete socket path.')
                 );
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dbuser', array('class' => 'control-label', 'label' => $clang->gT("Database user"))),
-                    'control' => CHtml::activeTextField($model, 'dbuser', array('required' => 'required')),
+                    'control' => CHtml::activeTextField($model, 'dbuser', array('required' => 'required','autocomplete'=>'off')),
                     'description' => $clang->gT('Your database server user name. In most cases "root" will work.')
                 );
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dbpwd', array('class' => 'control-label', 'label' => $clang->gT("Database password"))),
-                    'control' => CHtml::activePasswordField($model, 'dbpwd'),
+                    'control' => CHtml::activePasswordField($model, 'dbpwd',array('autocomplete'=>'off')),
                     'description' => $clang->gT("Your database server password.")
                 );
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dbname', array('class' => 'control-label', 'label' => $clang->gT("Database name"))),
-                    'control' => CHtml::activeTextField($model, 'dbname', array('required' => 'required')),
+                    'control' => CHtml::activeTextField($model, 'dbname', array('required' => 'required','autocomplete'=>'off')),
                     'description' => $clang->gT("If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing LimeSurvey tables in that database they will be upgraded automatically after installation.")
                 );
 
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dbprefix', array('class' => 'control-label', 'label' => $clang->gT("Table prefix"))),
-                    'control' => CHtml::activeTextField($model, 'dbprefix', array('value' => 'lime_')),
+                    'control' => CHtml::activeTextField($model, 'dbprefix', array('value' => 'lime_','autocomplete'=>'off')),
                     'description' => $clang->gT('If your database is shared, recommended prefix is "lime_" else you can leave this setting blank.')
                 );
 

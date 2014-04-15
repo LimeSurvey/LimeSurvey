@@ -5599,9 +5599,11 @@ function getUpdateInfo()
     {
         setGlobalSetting('SessionName',randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"$%&/()=?`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789'));
     }
-    Yii::import('application.libraries.admin.http.httpRequestIt');
-    $http=new httpRequestIt;
+    require_once(APPPATH.'/third_party/http/http.php');
+    $http=new http_class;
 
+    $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+    $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
     $http->timeout=0;
     $http->data_timeout=0;
     $http->user_agent="LimeSurvey ".Yii::app()->getConfig("versionnumber")." build ".Yii::app()->getConfig("buildnumber");

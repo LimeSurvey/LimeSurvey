@@ -524,84 +524,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     $_loadform .="<tr class='load-survey-row load-survey-submit'><td class='load-survey-label label-cell'><label class='hide jshide' for='loadbutton'>" . $clang->gT("Load now") . "</label></td><td class='load-survey-input input-cell'><input type='submit' id='loadbutton' class='button' value='" . $clang->gT("Load now") . "' /></td></tr></table>\n";
 
-    // Registration Form
-    if (isset($surveyid) || (isset($registerdata) && $debugSrc == 'register.php'))
-    {
-        if (isset($surveyid))
-            $tokensid = $surveyid;
-        else
-            $tokensid = $registerdata['sid'];
-
-        $_registerform = CHtml::form(array("/register/index/surveyid/{$tokensid}"), 'post');
-
-        if (!isset($_REQUEST['lang']))
-        {
-            $_reglang = Survey::model()->findByPk($tokensid)->language;
-        }
-        else
-        {
-            $_reglang = returnGlobal('lang');
-        }
-
-        $_registerform .= "\n<input type='hidden' name='lang' value='" . $_reglang . "' />\n";
-        $_registerform .= "<input type='hidden' name='sid' value='$tokensid' id='sid' />\n";
-
-        $_registerform.="<table class='register register-form-table' summary='Registrationform'>\n"
-        . "<tr class='register-form-row register-form-fname'><td class='register-form-label label-cell' align='right'><label for='register_firstname'>"
-        . $clang->gT("First name") . "</label>:</td>"
-        . "<td class='register-form-input input-cell' align='left'><input class='text' type='text' id='register_firstname' name='register_firstname'";
-        if (isset($_POST['register_firstname']))
-        {
-            $_registerform .= " value='" . htmlentities(returnGlobal('register_firstname'), ENT_QUOTES, 'UTF-8') . "'";
-        }
-        $_registerform .= " /></td></tr>"
-        . "<tr class='register-form-row register-form-lname'><td class='register-form-label label-cell' align='right'><label for='register_lastname'>" . $clang->gT("Last name") . "</label>:</td>\n"
-        . "<td class='register-form-input input-cell' align='left'><input class='text' type='text' id='register_lastname' name='register_lastname'";
-        if (isset($_POST['register_lastname']))
-        {
-            $_registerform .= " value='" . htmlentities(returnGlobal('register_lastname'), ENT_QUOTES, 'UTF-8') . "'";
-        }
-        $_registerform .= " /></td></tr>\n"
-        . "<tr class='register-form-row register-form-email'><td class='register-form-label label-cell' align='right'><label for='register_email'>" . $clang->gT("Email address") . "</label>:</td>\n"
-        . "<td class='register-form-input input-cell' align='left'><input class='text' type='text' id='register_email' name='register_email'";
-        if (isset($_POST['register_email']))
-        {
-            $_registerform .= " value='" . htmlentities(returnGlobal('register_email'), ENT_QUOTES, 'UTF-8') . "'";
-        }
-        $_registerform .= " /></td></tr>\n";
-        foreach ($thissurvey['attributedescriptions'] as $field => $attribute)
-        {
-            if (empty($attribute['show_register']) || $attribute['show_register'] != 'Y')
-                continue;
-
-            $_registerform .= '
-            <tr class="register-form-row register-form-attribute">
-            <td class="register-form-label label-cell" align="right"><label for="register_' . $field . '">' . $thissurvey['attributecaptions'][$field] . ($attribute['mandatory'] == 'Y' ? '*' : '') . '</label>:</td>
-            <td class="register-form-input input-cell" align="left"><input class="text" type="text" id="register_' . $field . '" name="register_' . $field . '" /></td>
-            </tr>';
-        }
-        if ((count($registerdata) > 1 || isset($thissurvey['usecaptcha'])) && function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $thissurvey['usecaptcha']))
-        {
-            $_registerform .="<tr class='register-form-row register-form-captcha'><td class='register-form-label label-cell' align='right'><label for='loadsecurity'>" . $clang->gT("Security Question") . "</label>:</td><td class='register-form-input input-cell'><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
-        }
-        $_registerform .= "<tr class='register-form-row register-form-submit'><td class='register-form-label label-cell'><label class='hide jshide' for='registercontinue'>" . $clang->gT("Continue") . "</label></td><td class='register-form-input input-cell' align='left'><input id='registercontinue' class='submit button' type='submit' value='" . $clang->gT("Continue") . "' />"
-        . "</td></tr>\n"
-        . "</table>\n";
-
-        if (count($registerdata) > 1 && $registerdata['sid'] != NULL && $debugSrc == 'register.php')
-        {
-            $_registerform .= "<input name='startdate' type ='hidden' value='".$registerdata['startdate']."' />";
-            $_registerform .= "<input name='enddate' type ='hidden' value='".$registerdata['enddate']."' />";
-        }
-
-
-        $_registerform .= "</form>\n";
-    }
-    else
-    {
-        $_registerform = "";
-    }
-
     // Assessments
     $assessmenthtml="";
     if (isset($surveyid) && !is_null($surveyid) && function_exists('doAssessment'))
@@ -693,11 +615,6 @@ EOD;
     {
         $_endtext = $thissurvey['surveyls_endtext'];
     }
-    if (isset($surveyid) && isset($_SESSION['survey_'.$surveyid]) && isset($_SESSION['survey_'.$surveyid]['register_errormsg']))
-    {
-        $register_errormsg=$_SESSION['survey_'.$surveyid]['register_errormsg'];
-    }
-
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
@@ -748,10 +665,6 @@ EOD;
     $coreReplacements['QUESTION_NUMBER'] = $_question_number;
     $coreReplacements['QUESTION_TEXT'] = $_question_text;
     $coreReplacements['QUESTION_VALID_MESSAGE'] = $_question_valid_message;
-    $coreReplacements['REGISTERERROR'] = isset($register_errormsg) ? $register_errormsg : '';    // global
-    $coreReplacements['REGISTERFORM'] = $_registerform;
-    $coreReplacements['REGISTERMESSAGE1'] = $clang->gT("You must be registered to complete this survey");
-    $coreReplacements['REGISTERMESSAGE2'] = $clang->gT("You may register for this survey if you wish to take part.")."<br />\n".$clang->gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.");
     $coreReplacements['RESTART'] = $_restart;
     $coreReplacements['RETURNTOSURVEY'] = $_return_to_survey;
     $coreReplacements['SAVE'] = $_saveall;

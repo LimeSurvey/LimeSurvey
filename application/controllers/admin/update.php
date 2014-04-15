@@ -29,8 +29,8 @@ class update extends Survey_Common_Action
     {
         updateCheck();
         $this->_RunUpdaterUpdate();
-        Yii::import('application.libraries.admin.http.httpRequestIt');
-
+        require_once(APPPATH.'/third_party/http/http.php');
+        
         $clang = $this->getController()->lang;
         $iCurrentBuildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -67,8 +67,8 @@ class update extends Survey_Common_Action
 
     private function _getChangedFiles($buildnumber, $updaterversion)
     {
-        Yii::import('application.libraries.admin.http.httpRequestIt');
-        $http = new httpRequestIt;
+        require_once(APPPATH.'/third_party/http/http.php');
+        $http = new http_class;
         $httperror = $this->_requestChangedFiles($http, $buildnumber, $updaterversion);
 
         if ($httperror != '') {
@@ -79,8 +79,8 @@ class update extends Survey_Common_Action
     
     private function _getChangelog($buildnumber, $updaterversion)
     {
-        Yii::import('application.libraries.admin.http.httpRequestIt');
-        $http = new httpRequestIt;
+        require_once(APPPATH.'/third_party/http/http.php');
+        $http = new http_class;
         $httperror = $this->_requestChangelog($http, $buildnumber, $updaterversion);
 
         if ($httperror != '') {
@@ -89,7 +89,7 @@ class update extends Survey_Common_Action
         return $this->_readChangelog($http);
     }
 
-    private function _readChangelog(httpRequestIt $http)
+    private function _readChangelog(http_class $http)
     {
         $szLines = '';
         $szResponse = '';
@@ -104,8 +104,10 @@ class update extends Survey_Common_Action
         }
     }
 
-    private function _requestChangelog(httpRequestIt $http, $buildnumber, $updaterversion)
+    private function _requestChangelog(http_class $http, $buildnumber, $updaterversion)
     {
+        $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+        $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
         $http->timeout = 0;
         $http->data_timeout = 0;
         $http->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
@@ -116,8 +118,10 @@ class update extends Survey_Common_Action
         return $http->SendRequest($arguments);
     }
     
-    private function _requestChangedFiles(httpRequestIt $http, $buildnumber, $updaterversion)
+    private function _requestChangedFiles(http_class $http, $buildnumber, $updaterversion)
     {
+        $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+        $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
         $http->timeout = 0;
         $http->data_timeout = 0;
         $http->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
@@ -344,6 +348,9 @@ class update extends Survey_Common_Action
         $downloaderror=false;
         Yii::import('application.libraries.admin.http.httpRequestIt');
         $http=new httpRequestIt;
+        
+        $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+        $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
 
         // Allow redirects
         $http->follow_redirect=1;
@@ -450,9 +457,12 @@ class update extends Survey_Common_Action
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
 
-        Yii::import('application.libraries.admin.http.httpRequestIt');
-        $oHTTPRequest=new httpRequestIt;
+        require_once(APPPATH.'/third_party/http/http.php');
+        $oHTTPRequest=new http_class;
         
+        $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+        $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
+
         /* Connection timeout */
         $oHTTPRequest->timeout=0;
         /* Data transfer timeout */
@@ -502,8 +512,11 @@ class update extends Survey_Common_Action
         // Create DB and file backups now
 
         $downloaderror=false;
-        Yii::import('application.libraries.admin.http.httpRequestIt');
-        $oHTTPRequest=new httpRequestIt;
+        require_once(APPPATH.'/third_party/http/http.php');
+        $oHTTPRequest=new http_class;
+
+        $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+        $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
 
         // Allow redirects
         $oHTTPRequest->follow_redirect=1;

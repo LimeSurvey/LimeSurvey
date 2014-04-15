@@ -1038,7 +1038,7 @@ class translate extends Survey_Common_Action {
 		$error = FALSE;
         try
 		{
-            Yii::app()->loadLibrary('admin/gtranslate/GTranslate');
+            require_once(APPPATH.'/third_party/gtranslate-api/GTranslate.php');
 			$gtranslate = new Gtranslate();
             $objGt = $gtranslate;
 
