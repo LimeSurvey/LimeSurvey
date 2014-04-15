@@ -1753,8 +1753,15 @@ class printablesurvey extends Survey_Common_Action
         }
         if(!empty($qidattributes['array_filter_exclude']))
         {
-            $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
-
+            $arQuestion = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid));
+            if ($arQuestion)
+            {
+                $newquestiontext=$arQuestion->getAttribute('question');
+            }
+            else
+            {
+                return '';
+            }
             $output .= "\n    <p class='extrahelp'>
                 ".sprintf($clang->gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext))."
             </p>\n";
