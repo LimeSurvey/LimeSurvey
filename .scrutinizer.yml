@@ -1,12 +1,10 @@
 filter:
   excluded_paths: [framework/*, locale/*, docs/*, fonts/*, third_party/*, application/third_party/*, images/*, styles/*, styles-public/*, templates/*, themes/*, tmp/*, upload/*]
 tools:
-    php_mess_detector:
-        config:
-            controversial_rules: { superglobals: false, camel_case_class_name: true, camel_case_property_name: true, camel_case_method_name: true, camel_case_parameter_name: true, camel_case_variable_name: true }
     php_code_sniffer:
         config:
-            { standard: PSR1 }
+            standard: "PSR1"
     php_pdepend:
         command: pdepend
- 
+    php_cs_fixer:
+        config: { level: psr1 }
