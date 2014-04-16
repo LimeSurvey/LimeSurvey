@@ -960,7 +960,7 @@ class Participant extends LSActiveRecord
             foreach ($newcreate as $key => $value)
             {
                 $newfieldname='attribute_'.$value;
-                $fields[$newfieldname] = array('type' => 'STRING');
+                $fields[$newfieldname] = array('type' => 'string');
                 $attname = Yii::app()->db
                                      ->createCommand()
                                      ->select('{{participant_attribute_names_lang}}.attribute_name, {{participant_attribute_names_lang}}.lang')
@@ -1011,6 +1011,8 @@ class Participant extends LSActiveRecord
             {
                 addColumn("{{tokens_$surveyid}}", $key, $value['type']);
             }
+            Yii::app()->db->schema->getTable("{{tokens_$surveyid}}", true); // Refresh schema cache just
+            
         }
 
         //Write each participant to the survey token table
