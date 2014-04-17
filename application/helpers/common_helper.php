@@ -1810,7 +1810,7 @@ function validateEmailAddress($sEmailAddress){
     require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
     $oIdnConverter = new idna_convert();
     $sEmailAddress=$oIdnConverter->encode($sEmailAddress);
-    $bResult=filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL));   
+    $bResult=filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);   
     if ($bResult!==false)
     {
         return true;
