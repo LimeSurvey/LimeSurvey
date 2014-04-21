@@ -196,3 +196,98 @@ ul.sf-menu li li li.sfHover ul {
     clear:both;
 }
 .button-list{text-align:right}
+
+/* *** organizeGroupsAndQuestions_view *** */
+.organizeFooter
+{
+	margin-top:0; 
+	padding-top:0; 
+	margin-left:0px;
+	margin-right:75px;
+	padding-right: 40px;
+	background-image: url("images/org_chk_arrow_rtl.png");
+	background-repeat:no-repeat;
+	background-position:right top;
+	text-align: right;
+	direction:rtl;
+}
+
+.organizeFooter .actions, .organizeHeader .actions
+{
+	float:right;
+	margin-left: 6px;
+}
+
+.organizeFooter .conclude
+{
+	float:right;
+	width:20px;
+	margin-left: 6px;
+	background-image: url("images/arrows_rtl.png");
+	background-position:middle;
+}
+
+.movableList ol li ol.question-list
+{
+	margin-left: 0px;  		/* indent space for question level: 1 icon width */
+	margin-right: 20px;
+}
+
+/* organize list: common group & question level styles */
+/* edit width & margin data for icon columns only here! */
+	
+.movableList div.gq-leftcol
+{
+	float:right; 
+	width:54px; 				/* total width of left column, start with definition here */
+}
+		
+.movableList div.gq-rightcol
+{
+	float:left; 
+	width:335px;				/* total width of right column, start with definition here */
+}
+	
+.movableList div.gq-infocol
+{
+	/* margin: 0 335px 0 54px;  	/* total width of left and right column */
+	margin: 0 54px 0 335px;
+}
+		
+.movableList div.lefticons
+{
+	width:45px; 				/* required frame width for the left icon bay, left column -12px */
+	margin-right:3px;
+}
+		
+.movableList div.lefticons input
+{
+	vertical-align:top;
+}
+		
+.movableList div.righticons
+{
+	text-align: right; /* left; */
+	width:323px; 				/* required frame width for the right icon bay, right column width - 12px */
+	margin-right:6px; 
+}
+
+.movableList img.handle
+{
+	cursor: move;
+}
+
+.movableList ol li ol li div.question-wrapper div.gq-rightcol div.righticons img, .movableList ol li div.ui-widget-header div.gq-rightcol div.righticons img
+{
+	width: 20px;
+	height: 20px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.movableList div.gq-infotext
+{
+	font-size: 80.01%;			/* make text a little smaller = improved clear view */
+	margin-top: 2px;
+	margin-bottom: 3px;
+}

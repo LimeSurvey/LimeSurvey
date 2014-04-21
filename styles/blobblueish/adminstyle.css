@@ -1547,6 +1547,42 @@ div.translate {
 }
 
 /* *** organizeGroupsAndQuestions_view *** */
+.organizeHeader
+{
+	margin-top:0; 
+	padding-top:0; 
+	margin-bottom:12px; 
+	margin-left:33px;
+	margin-right:33px;
+}
+
+.organizeFooter
+{
+	margin-top:0; 
+	padding-top:0; 
+	margin-left:75px;
+	margin-right:75px;
+	padding-left:40px;
+	background-image: url("images/org_chk_arrow_ltr.png");
+	background-repeat:no-repeat;
+}
+
+.organizeFooter .actions, .organizeHeader .actions
+{
+	float:left;
+	margin-left: 6px;
+}
+
+.organizeFooter .conclude
+{
+	float:left;
+	width:20px;
+	margin-left: 6px;
+	margin-left: 6px;
+	background-image: url("images/arrows.png");
+	background-position:middle;
+}
+
 .movableList ol.group-list
 {
 	margin-left: 30px;

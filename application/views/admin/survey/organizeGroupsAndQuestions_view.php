@@ -21,18 +21,21 @@
 </p>
 
 <div class='movableList'>
-	<div style="margin-top:0; padding-top:0; margin-bottom:12px; margin-left:33px;">
+	<div class='organizeHeader'>
 		<img src='<?php echo $sImageURL; ?>org_handle_20.png' /> <?php $clang->eT("Drag these icons below to move groups and questions up and down, click to collapse or expand them."); ?><br />
 
 
 		<img src='<?php echo $sImageURL; ?>org_emptyicon_20.png' />
 		<?php $clang->eT("After you are done please click the bottom 'Save' button to save your changes.");?><br/><br/>
-		<a href="#" data-view="collapse"><?php $clang->eT("Collapse all groups"); ?></a> / 
-		<a href="#" data-view="expand"><?php $clang->eT("Expand all groups"); ?></a>&nbsp;&nbsp;---&nbsp;&nbsp;
-		<a href="#" data-questview="collapse"><?php $clang->eT("Collapse all questions"); ?></a>&nbsp;/&nbsp;
-		<a href="#" data-questview="expand"><?php $clang->eT("Expand all questions"); ?></a>
+		<div>
+			<div class="actions"><a href="#" data-view="collapse"><?php $clang->eT("Collapse all groups"); ?></a> / </div>
+			<div class="actions"><a href="#" data-view="expand"><?php $clang->eT("Expand all groups"); ?></a></div>
+			<div class="actions">&nbsp;&nbsp;---&nbsp;&nbsp;</div>
+			<div class="actions"><a href="#" data-questview="collapse"><?php $clang->eT("Collapse all questions"); ?></a> / </div>
+			<div class="actions"><a href="#" data-questview="expand"><?php $clang->eT("Expand all questions"); ?></a></div>
+		</div>
 	</div>
-
+	<div style="float:none;">&nbsp;</div>
 	<ol class="organizer group-list" data-level='group'>
 		<?php
 
@@ -363,22 +366,28 @@
 
 	</ol>
 
-	<div style="margin-top:0; padding-top:0; margin-left:75px;">
-		<img src='<?php echo $sImageURL; ?>org_chk_arrow_ltr.png'/>
-		<a href="#" data-select="all"><?php $clang->eT("Select all"); ?></a> / 
-		<a href="#" data-select="none"><?php $clang->eT("Unselect all"); ?></a> / 
-		<a href="#" data-select="toggle"><?php $clang->eT("Toggle selection"); ?></a> =>
-		<?php $clang->eT("Set selected:"); ?>
+	<?php 
+	if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) 
+	{ ?>
+		<div class='organizeFooter'>
+			<div>
+				<div class="actions"><a href="#" data-select="all"><?php $clang->eT("Select all"); ?></a> / </div>
+				<div class="actions"><a href="#" data-select="none"><?php $clang->eT("Unselect all"); ?></a> / </div> 
+				<div class="actions"><a href="#" data-select="toggle"><?php $clang->eT("Toggle selection"); ?></a> </div>
+				<div class="conclude">&nbsp;</div>
+				<div class="actions"><?php $clang->eT("Set selected:"); ?> </div>
 		
-		<select id="bulkaction" name="" size="1">
-			<option>...</option>
-			<option value="asvisible"><?php $clang->eT("as visible"); ?></option>
-			<option value="ashidden"><?php $clang->eT("as always hidden"); ?></option>
-			<option value="asmandatory"><?php $clang->eT("as mandatory"); ?></option>
-			<option value="asoptional"><?php $clang->eT("as optional"); ?></option>
-		</select>
-		<br /><br />
-	</div>
+				<select id="bulkaction" name="" size="1">
+					<option>...</option>
+					<option value="asvisible"><?php $clang->eT("as visible"); ?></option>
+					<option value="ashidden"><?php $clang->eT("as always hidden"); ?></option>
+					<option value="asmandatory"><?php $clang->eT("as mandatory"); ?></option>
+					<option value="asoptional"><?php $clang->eT("as optional"); ?></option>
+				</select>
+			</div>
+			<br /><br />
+		</div><?php 
+	} ?>
 </div>
 
 <?php echo CHtml::form(array("admin/survey/sa/organize/surveyid/{$surveyid}"), 'post', array('id'=>'frmOrganize')); ?>
