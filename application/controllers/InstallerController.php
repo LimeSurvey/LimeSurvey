@@ -365,7 +365,7 @@ class InstallerController extends CController {
 
                         $aValues['next'] =  array(
                             'action' => 'installer/createdb',
-                            'label' => 'Create database',
+                            'label' => $clang->gT('Create database'),
                             'name' => '',
                         );
                     }
