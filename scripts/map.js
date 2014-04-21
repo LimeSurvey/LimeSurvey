@@ -17,25 +17,21 @@ $(document).ready(function()
 				GMapsInitialize(question,latLng[0],latLng[1]);
 			}
 		}
-		else if ($("#mapservice_"+question_id).val()==2){
+		else if ($("#mapservice_"+question_id).val()==100){
 			// Open Street Map
 			if (osmaps[''+question]==undefined) {
-				osmaps[''+question] = OSMapInitialize(question,latLng[0],latLng[1]);
+				osmaps[''+question] = OSGeoInitialize(question,latLng[0],latLng[1]);
 			}
 		}
+		
+		
+		/* Highlight search box text on click */
+		$("#searchbox").click(function () {
+		  $(this).select();
+		});
+		
 	});
-	$(document).on('focusout', ".location",function(event){
-		var question = $(event.target).attr('name');
-		var name = question.substr(0,question.length - 2);
-		var coordinates = $(event.target).attr('value');
-		var xy = coordinates.split(" ");
-		var currentMap = gmaps[question];
-		var marker = gmaps['marker__'+question];
-		var markerLatLng = new google.maps.LatLng(xy[0],xy[1]);
-		geocodeAddress(name, markerLatLng);
-		marker.setPosition(markerLatLng);
-		currentMap.panTo(markerLatLng);
-	});
+
 });
 
 gmaps = new Object;
@@ -43,27 +39,224 @@ osmaps = new Object;
 zoom = [];
 
 // OSMap functions
-function OSMapInitialize(question,lat,lng){
+function OSGeoInitialize(question,lat,lng){
 
-    map = new OpenLayers.Map("gmap_canvas_" + question);
-    map.addLayer(new OpenLayers.Layer.OSM());
-    var lonLat = new OpenLayers.LonLat(lat,lng)
-          .transform(
-            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-            map.getProjectionObject() // to Spherical Mercator Projection
-          );
-    var zoom=11;
-    var markers = new OpenLayers.Layer.Markers( "Markers" );
-    map.addLayer(markers);
-    markers.addMarker(new OpenLayers.Marker(lonLat));
-    map.setCenter (lonLat, zoom);
+	 
+		var mapquestOSM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
+		  maxZoom: 19,
+		  subdomains: ["otile1", "otile2", "otile3", "otile4"],
+		  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+		});
+
+		var mapquestOAM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
+		  maxZoom: 18,
+		  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
+		  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+		});
+
+		var mapquestHYB = L.layerGroup([L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
+		  maxZoom: 18,
+		  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"]
+		}), L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/hyb/{z}/{x}/{y}.png", {
+		  maxZoom: 19,
+		  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
+		  attribution: 'Labels courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+		})]);
+	
+	
+		//var map = L.map('map').setView([15, 15], 1);
+		var map = L.map("map", {
+			zoom:1,
+			center: [15, 15],
+			layers: [mapquestOSM]
+		});
+		
+		function zoomExtent(){
+			//map.fitBounds([[-180, -90], [180, 90]],{maxZoom:5});
+			map.setView([15, 15],1);
+		}
+		
+		if (isNaN(parseFloat(lat))) {lat=-9999; lng=-9999;}
+		
+		marker = new L.marker([lat,lng], {title:'Current Location',id:1,draggable:'true'});
+		map.addLayer(marker);
+
+		var mapquestOSM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
+		  maxZoom: 19,
+		  subdomains: ["otile1", "otile2", "otile3", "otile4"],
+		  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+		});
+
+
+		var baseLayers = {
+		  "Street Map": mapquestOSM,
+		  "Aerial Imagery": mapquestOAM,
+		  "Imagery with Streets": mapquestHYB
+		};	
+		var overlays = {
+		};	
+		
+		var layerControl = L.control.layers(baseLayers, overlays, {
+		  collapsed: true
+		}).addTo(map);
+		
+		//mapquestOSM.addTo(map);
+		
+		map.on('click', 
+			function(e) { 
+				var coords = L.latLng(e.latlng.lat,e.latlng.lng);
+				marker.setLatLng(coords);
+				UI_update(e.latlng.lat,e.latlng.lng)
+			}	
+		)
+		
+		marker.on('dragend', function(e){
+				var marker = e.target;
+				var position = marker.getLatLng();
+				UI_update(position.lat,position.lng)
+		});
+		
+		
+		var name = question.substr(0,question.length - 2);
+		
+		function UI_update(lat,lng){
+			$("#answer"+question).val(Math.round(lat*100000)/100000 + " " + Math.round(lng*100000)/100000);
+			$("#answer"+name).val(Math.round(lat*100000)/100000 + ";" + Math.round(lng*100000)/100000);
+			
+			$("#answer_lat"+question).val(Math.round(lat*100000)/100000);
+			$("#answer_lng"+question).val(Math.round(lng*100000)/100000);
+
+		}
+		
+		$('.coords').each(function() {
+			// Save current value of element
+			$(this).data('oldVal', $(this));
+			
+			// Look for changes
+			$(this).bind("propertychange keyup input cut paste", function(event){
+			   // If value has changed...
+			   if ($(this).data('oldVal') != $(this).val()) {
+				// Updated stored value
+				$(this).data('oldVal', $(this).val());
+				
+				var newLat = $("#answer_lat"+question).val();
+				var newLng = $("#answer_lng"+question).val();
+				
+				if (isNumber(newLat) && isNumber(newLng)) {
+					$("#answer"+name).val(newLat + ";" + newLng);
+					marker.setLatLng(L.latLng(newLat,newLng));
+				} else {
+					$("#answer"+name).val("-- --");
+					marker.setLatLng(L.latLng(9999,9999));
+				}
+				
+			  }
+			});
+		  });
+
+		 function isNumber(n){
+			return !isNaN(parseFloat(n)) && isFinite(n);
+		 }
+		  
+// ------------------------------------------------------------------- 
+/* Typeahead search functionality */
+
+		  //$(function() {
+			$("#zoomExtent").click(function(e) {
+			  zoomExtent();
+			  $("#searchbox").val("");
+			  $("#alertNoData").hide();
+			});
+		  //});
+			
+		   var geonamesBH = new Bloodhound({
+			name: "GeoNames",
+			datumTokenizer: function (d) {
+			  return Bloodhound.tokenizers.whitespace(d.name);
+			},
+			queryTokenizer: Bloodhound.tokenizers.whitespace,
+			remote: {
+			  url: "http://api.geonames.org/searchJSON?username=bootleaf&featureClass=P&maxRows=5&name_startsWith=%QUERY",
+			  filter: function (data) {
+			  	if (data.geonames.length == 0) {
+				 console.log("Geonames: no data");
+				 $("#alertNoData").show();
+				}
+				return $.map(data.geonames, function (result) {
+				  return {
+					name: result.name + ", " + result.countryName,
+					lat: result.lat,
+					lng: result.lng,
+					source: "GeoNames"
+				  };
+				});
+			  },
+			  ajax: {
+				beforeSend: function (jqXhr, settings) {
+				  settings.url += "&east=" + osmaps[''+question] .getBounds().getEast() + "&west=" + osmaps[''+question] .getBounds().getWest() + "&north=" + osmaps[''+question] .getBounds().getNorth() + "&south=" + osmaps[''+question] .getBounds().getSouth();
+				  $("#searchicon").removeClass("fa-search").addClass("fa-refresh fa-spin");
+				},
+				complete: function (jqXHR, status) {
+				  $('#searchicon').removeClass("fa-refresh fa-spin").addClass("fa-search");
+				}
+			  }
+			},
+			limit: 10
+		  });
+
+			geonamesBH.initialize();
+
+
+
+		  /* instantiate the typeahead UI */
+		  $("#searchbox").typeahead({
+			minLength: 3,
+			highlight: true,
+			hint: false
+		  }, {
+			name: "GeoNames",
+			displayKey: "name",
+			source: geonamesBH.ttAdapter(),
+			templates: {
+			  header: "<h4 class='typeahead-header'><img src='styles-public/images/globe.png' width='25' height='25'>&nbsp;GeoNames</h4>"
+			}
+		  }).on("typeahead:selected", function (obj, datum) {
+
+			if (datum.source === "GeoNames") {
+			  osmaps[''+question].setView([datum.lat, datum.lng], 13);
+			  marker.setLatLng([datum.lat, datum.lng]);
+			  UI_update(datum.lat, datum.lng);
+			}
+			
+			if ($(".navbar-collapse").height() > 50) {
+			  $(".navbar-collapse").collapse("hide");
+			}
+		  }).on("typeahead:opened", function () {
+			$(".navbar-collapse.in").css("max-height", $(document).height() - $(".navbar-header").height());
+			$(".navbar-collapse.in").css("height", $(document).height() - $(".navbar-header").height());
+		  }).on("typeahead:closed", function () {
+			$(".navbar-collapse.in").css("max-height", "");
+			$(".navbar-collapse.in").css("height", "");
+		  });
+		  $(".twitter-typeahead").css("position", "static");
+		  $(".twitter-typeahead").css("display", "block");
+		//});
+//--------------------------------------------------------------------------- end geonames		
+	
     return map;
 
 }
-//// Google Maps Functions (for API V3) ////
 
+
+
+
+
+
+
+//// Google Maps Functions (for API V3) ////
 // Initialize map
 function GMapsInitialize(question,lat,lng) {
+
 	
 	var name = question.substr(0,question.length - 2);
 	var latlng = new google.maps.LatLng(lat, lng);
@@ -166,3 +359,31 @@ function getInfoToStore(name, lat, lng, city, state, country, postal){
     $("#answer"+name).val(lat + ';' + lng + ';' + city + ';' + state + ';' + country + ';' + postal);
 }
 
+
+
+
+// geonames search
+
+
+
+
+
+//$("#searchbox").one("click", function () {
+//alert("ajaxStart");
+//});
+
+
+/* Placeholder hack for IE */
+if (navigator.appName == "Microsoft Internet Explorer") {
+  $("input").each(function () {
+    if ($(this).val() === "" && $(this).attr("placeholder") !== "") {
+      $(this).val($(this).attr("placeholder"));
+      $(this).focus(function () {
+        if ($(this).val() === $(this).attr("placeholder")) $(this).val("");
+      });
+      $(this).blur(function () {
+        if ($(this).val() === "") $(this).val($(this).attr("placeholder"));
+      });
+    }
+  });
+}
