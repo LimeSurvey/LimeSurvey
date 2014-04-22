@@ -2309,6 +2309,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                         $fieldmap[$fieldname]['preg']=$arow['preg'];
                         $fieldmap[$fieldname]['answerList']=$answerList;
+                        $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                     }
                 }
             }
@@ -2334,6 +2335,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+                    $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                 }
 
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#1";
@@ -2351,6 +2353,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+                    // TODO SQrelevance for different scales? $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                 }
             }
         }
@@ -2430,6 +2433,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             foreach ($abrows as $abrow)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
+                
                 if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
                 'type'=>$arow['type'],
@@ -2450,6 +2454,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                     $fieldmap[$fieldname]['preg']=$arow['preg'];
+                    // get SQrelevance from DB
+                    $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                     if (isset($defaultValues[$arow['qid'].'~'.$abrow['qid']])) {
                         $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~'.$abrow['qid']];
                     }
@@ -2514,6 +2520,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
         if (isset($fieldmap[$fieldname]))
         {
+            //set question relevance (uses last SQ's relevance field for question relevance)
             $fieldmap[$fieldname]['relevance']=$arow['relevance'];
             $fieldmap[$fieldname]['grelevance']=$arow['grelevance'];
             $fieldmap[$fieldname]['questionSeq']=$questionSeq;

@@ -221,6 +221,7 @@ class database extends Survey_Common_Action
             $aRows=array();
             $aCodes=array();
             $aOldCodes=array();
+            $aRelevance=array();
             foreach ($_POST as $sPOSTKey=>$sPOSTValue)
             {
                 $sPOSTKey=explode('_',$sPOSTKey);
@@ -236,6 +237,10 @@ class database extends Survey_Common_Action
                 {
                     $aOldCodes[$sPOSTKey[2]][]=$sPOSTValue;
                 }
+                if ($sPOSTKey[0]=='relevance')
+                {
+                    $aRelevance[$sPOSTKey[2]][]=$sPOSTValue;
+                }
             }
             $aInsertQID =array();
             for ($iScaleID=0;$iScaleID<$iScaleCount;$iScaleID++)
@@ -245,17 +250,19 @@ class database extends Survey_Common_Action
                     $iPosition=0;
                     foreach ($aRows[$iScaleID][$sLanguage] as $subquestionkey=>$subquestionvalue)
                     {
-                        if (substr($subquestionkey,0,3)!='new')
+                        if (substr($subquestionkey,0,3)!='new')           //update record
                         {
                             $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$subquestionkey,':language'=>$sLanguage));
                             $oSubQuestion->question_order=$iPosition+1;
                             $oSubQuestion->title=$aCodes[$iScaleID][$iPosition];
                             $oSubQuestion->question=$subquestionvalue;
                             $oSubQuestion->scale_id=$iScaleID;
+                            //dual matrix, text/number matrix: subQ relevance per line not per scale, so ScaleID is always 0
+                            $oSubQuestion->relevance=$aRelevance[0][$iPosition];
                         }
-                        else
+                        else  // new record
                         {
-                            if (!isset($aInsertQID[$iScaleID][$iPosition]))
+                            if (!isset($aInsertQID[$iScaleID][$iPosition]))     //new record: first (default) language
                             {
                                 $oSubQuestion=new Question;
                                 $oSubQuestion->sid=$iSurveyID;
@@ -266,8 +273,9 @@ class database extends Survey_Common_Action
                                 $oSubQuestion->parent_qid=$iQuestionID;
                                 $oSubQuestion->language=$sLanguage;
                                 $oSubQuestion->scale_id=$iScaleID;
+                                $oSubQuestion->relevance=$aRelevance[0][$iPosition];
                             }
-                            else
+                            else                                                //new record: additional language
                             {
                                 $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$aInsertQID[$iScaleID][$iPosition],':language'=>$sLanguage));
                                 if(!$oSubQuestion)
@@ -281,6 +289,7 @@ class database extends Survey_Common_Action
                                 $oSubQuestion->parent_qid=$iQuestionID;
                                 $oSubQuestion->language=$sLanguage;
                                 $oSubQuestion->scale_id=$iScaleID;
+                                $oSubQuestion->relevance=$aRelevance[$iScaleID][$iPosition];
                             }
                         }
                         $bSubQuestionResult=$oSubQuestion->save();
