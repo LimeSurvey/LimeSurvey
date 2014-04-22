@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-04-20 23:06:00+00:00\n"
+"POT-Creation-Date: 2014-04-22 16:01:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3899,6 +3899,10 @@ msgstr ""
 
 #: application/controllers/InstallerController.php:364
 msgid "LimeSurvey can attempt to create this database for you."
+msgstr ""
+
+#: application/controllers/InstallerController.php:368
+msgid "Create database"
 msgstr ""
 
 #: application/controllers/InstallerController.php:378
