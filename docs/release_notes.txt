@@ -59,6 +59,24 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140414) to 2.05+ (build 140422) Apr 22, 2014
+-Fixed issue #8513: ERROR: Invalid last group timing fieldname when reactivating a modified survey and using timings (Carsten Schmitz)
+-Fixed issue #8938: Showing inline text of text fields throws JS/AJAX error (Carsten Schmitz)
+-Fixed issue #8967: Unable to map paticipant attributes to "Token attributes to create" when adding participants to survey (Carsten Schmitz)
+-Fixed issue #8968: Survey cannot be printed if invalid array filter is set (Carsten Schmitz)
+-Fixed issue #8972: Currently only an administrator can save the link target in new window (_blank) (Carsten Schmitz)
+-Fixed issue #8974: Cannot use ComfortUpdate if OpenSSL extension not installed on webserver (Carsten Schmitz)
+-Fixed issue #8975: R data exported without a header (Carsten Schmitz)
+-Fixed issue #8977: Token import marks valid IDN email addresses as invalid (Carsten Schmitz)
+-Fixed issue #8982: Missing translation during installation (Carsten Schmitz)
+#Updated translation: Albanian by florianika
+#Updated translation: French (France) by arnaud21, jkurz
+#Updated translation: Hungarian by lukacs
+#Updated translation: Papiamento (Curaçao and Bonaire) by indigoblueconsult
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by cmcsilvaster, PauloJFMartins, samarta
+#Updated translation: Romanian by christianC, filipguttman
+
 Changes from 2.05+ (build 140404) to 2.05+ (build 140414) Apr 14, 2014
 -New feature #8659: Configurable proxy for ComfortUpdate (mfaber)
 -Fixed issue #8908: Javascript error in import tokens page (Carsten Schmitz)
