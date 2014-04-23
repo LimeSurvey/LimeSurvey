@@ -13,7 +13,7 @@
                 <input id='copysurveyexcludequotas' name="copysurveyexcludequotas" type="checkbox" /></li>
             <li><label for='copysurveyexcludepermissions'><?php echo $clang->gT("Exclude survey permissions?"); ?> </label>
                 <input id='copysurveyexcludepermissions' name="copysurveyexcludepermissions" type="checkbox"/></li>
-            <li><label for='copysurveyexcludeanswers'><?php echo $clang->gT("Exclude answers?"); ?> </label>
+            <li><label for='copysurveyexcludeanswers'><?php echo $clang->gT("Exclude answer options?"); ?> </label>
                 <input id='copysurveyexcludeanswers' name="copysurveyexcludeanswers" type="checkbox" /></li>
             <li><label for='copysurveyresetconditions'><?php echo $clang->gT("Reset conditions/relevance?"); ?></label>
                 <input id='copysurveyresetconditions' name="copysurveyresetconditions" type="checkbox" /></li>
