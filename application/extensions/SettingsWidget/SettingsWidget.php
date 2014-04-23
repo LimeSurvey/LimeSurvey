@@ -51,6 +51,7 @@
                 echo CHtml::closeTag('div');
             }
         }
+        
         public function init() {
             parent::init();
 
