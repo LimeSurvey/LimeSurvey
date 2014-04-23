@@ -3,8 +3,97 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "219d769d79309baa7968b29b99513502",
+    "hash": "0d4039d7209334510b31d49b81b642c4",
     "packages": [
+        {
+            "name": "2amigos/yiistrap",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2amigos/yiistrap.git",
+                "reference": "24537d27105acfc247417895dad6779a78c83296"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2amigos/yiistrap/zipball/24537d27105acfc247417895dad6779a78c83296",
+                "reference": "24537d27105acfc247417895dad6779a78c83296",
+                "shasum": ""
+            },
+            "require-dev": {
+                "codeception/codeception": "@stable",
+                "crisu83/yii-composer": "dev-master",
+                "php": ">=5.3.0",
+                "yiisoft/yii": "1.1.13"
+            },
+            "type": "library",
+            "extra": {
+                "yii-install-writable": [
+                    "tests/_log"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Christoffer Niska",
+                    "email": "christoffer.niska@gmail.com",
+                    "homepage": "http://www.cniska.net/"
+                },
+                {
+                    "name": "Antonio Ramirez",
+                    "email": "ramirez.cobos@gmail.com",
+                    "homepage": "http://www.ramirezcobos.com/"
+                }
+            ],
+            "description": "Twitter Bootstrap for the Yii PHP framework.",
+            "keywords": [
+                "bootstrap",
+                "yii"
+            ],
+            "time": "2013-09-01 21:42:53"
+        },
+        {
+            "name": "2amigos/yiiwheels",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2amigos/yiiwheels.git",
+                "reference": "924a07bbc6d7819600ffd7efa659caf4fc925252"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2amigos/yiiwheels/zipball/924a07bbc6d7819600ffd7efa659caf4fc925252",
+                "reference": "924a07bbc6d7819600ffd7efa659caf4fc925252",
+                "shasum": ""
+            },
+            "require": {
+                "2amigos/yiistrap": "1.*"
+            },
+            "require-dev": {
+                "php": ">=5.3.0",
+                "yiisoft/yii": "1.1.13"
+            },
+            "type": "yii-extension",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Antonio Ramirez",
+                    "email": "ramirez.cobos@gmail.com",
+                    "homepage": "http://www.ramirezcobos.com/"
+                }
+            ],
+            "description": "Extension library for Yiistrap, Yii Twitter's Bootstrap.",
+            "keywords": [
+                "bootstrap",
+                "yii"
+            ],
+            "time": "2014-03-26 23:37:37"
+        },
         {
             "name": "crisu83/yiistrap",
             "version": "dev-bs3",
@@ -111,12 +200,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "7b384d0bedf7feb1d3cdfaae689d8c5b68eb0515"
+                "reference": "bfddf97eddc396f4297ca10006fa20b410582a84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/7b384d0bedf7feb1d3cdfaae689d8c5b68eb0515",
-                "reference": "7b384d0bedf7feb1d3cdfaae689d8c5b68eb0515",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/bfddf97eddc396f4297ca10006fa20b410582a84",
+                "reference": "bfddf97eddc396f4297ca10006fa20b410582a84",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +245,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2014-04-12 07:49:59"
+            "time": "2014-04-22 12:38:07"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -164,7 +253,7 @@
             "source": {
                 "type": "git",
                 "url": "git://git.code.sf.net/p/tcpdf/code",
-                "reference": "ce07b409874a7ac0567b3401c765febef9efb413"
+                "reference": "2cf6cd032ee011214f0827650d3df677b9b86388"
             },
             "require": {
                 "php": ">=5.3.0"
@@ -213,7 +302,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2014-04-10 16:47:45"
+            "time": "2014-04-22 20:56:54"
         },
         {
             "name": "yiisoft/yii",
@@ -221,12 +310,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii.git",
-                "reference": "ffb9a06b2fdeef83098221334bfd34bc8c2e2aa6"
+                "reference": "8833552a7c7f2babe11019bf8e8b6e516f33d72b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii/zipball/ffb9a06b2fdeef83098221334bfd34bc8c2e2aa6",
-                "reference": "ffb9a06b2fdeef83098221334bfd34bc8c2e2aa6",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/8833552a7c7f2babe11019bf8e8b6e516f33d72b",
+                "reference": "8833552a7c7f2babe11019bf8e8b6e516f33d72b",
                 "shasum": ""
             },
             "require": {
@@ -297,7 +386,7 @@
                 "framework",
                 "yii"
             ],
-            "time": "2014-04-11 05:54:15"
+            "time": "2014-04-23 16:25:24"
         }
     ],
     "packages-dev": [
@@ -309,6 +398,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "crisu83/yiistrap": 20,
+        "2amigos/yiiwheels": 20,
         "yiisoft/yii": 20,
         "tecnick.com/tcpdf": 20,
         "phpmailer/phpmailer": 20,

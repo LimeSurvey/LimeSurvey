@@ -23,6 +23,12 @@
             ));
         }
 
+		public function actionOrganize($surveyId)
+		{
+			Group::model()->with('questions')->findAllByAttributes(array(
+				'sid' => $surveyId
+			));
+		}
 
         /**
          * Load and set session vars

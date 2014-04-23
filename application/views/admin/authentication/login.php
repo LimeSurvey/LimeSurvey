@@ -20,7 +20,7 @@
                     $info = App()->getPluginManager()->getPluginInfo($plugin);
                     $possibleAuthMethods[$plugin] = $info['pluginName'];
                 }
-                $this->widget('bootstrap.widgets.TbSelect2', array(
+                $this->widget('WhSelect2', array(
                     'name' => 'authMethod',
                     'value' => $selectedAuth,
                     'data' => $possibleAuthMethods,
@@ -48,7 +48,7 @@
             }
             echo CHtml::openTag('li');
             echo CHtml::label(gT('Language'), 'loginlang');
-            $this->widget('bootstrap.widgets.TbSelect2', array(
+            $this->widget('WhSelect2', array(
                 'name' => 'loginlang',
                 'data' => $languageData,
                 'options' => array(

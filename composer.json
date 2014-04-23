@@ -4,6 +4,7 @@
     "license" : "GPL-2.0",
     "require": {
         "crisu83/yiistrap": "dev-bs3",
+		"2amigos/yiiwheels": "dev-master",
 		"yiisoft/yii" : "dev-master",
 		"tecnick.com/tcpdf": "dev-master",
 		"phpmailer/phpmailer": "dev-master",
