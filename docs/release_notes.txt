@@ -59,6 +59,86 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140404) to 2.05+ (build 140414) Apr 14, 2014
+-New feature #8659: Configurable proxy for ComfortUpdate (mfaber)
+-Fixed issue #8908: Javascript error in import tokens page (Carsten Schmitz)
+-Fixed issue #8925: Exporting a filtered list results in SQL error (Carsten Schmitz)
+-Fixed issue #8926: Add filtered participants to a survey adds ALL participants to the survey (Carsten Schmitz)
+-Fixed issue #8945: Only a super administrator can manage user groups (Carsten Schmitz)
+-Fixed issue #8955: YearRange for date picker not set (mfaber)
+-Fixed issue #8960: Proper installation fails if db password contains certain characters (Carsten Schmitz)
+-Fixed issue: Files with spaces cannot be attached to email templates (Carsten Schmitz)
+#Updated translation: Basque by ikt
+#Updated translation: Chinese (Hong Kong) (Traditional) by achan
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Greek by kiolalis, christof75, theseek3r
+#Updated translation: Japanese by yamatt
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Papiamento (Curaçao and Bonaire) by indigoblueconsult
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Ukrainian by Rusya, kuzenka167
+
+Changes from 2.05+ (build 140320) to 2.05+ (build 140404) Apr 04, 2014
+-Fixed issue #8784: get_summary RPC routine only delivering one value at a time (Carsten Schmitz)
+-Fixed issue #8856: It should not add the datatype tag for the key value which breakes response when converted to array (ravindrakhokharia)
+-Fixed issue #8857: Fixed issue of type casting and return number value (ravindrakhokharia)
+-Fixed issue #8878: Cell width faulty in Array 10 point question type (Carsten Schmitz)
+-Fixed issue #8887: Question text and help : unable to use html entities of < and > for admin (Denis Chenu)
+-Fixed issue #8890: Automatic fill of answer code removes 1st character (Carsten Schmitz)
+-Fixed issue #8892: Missing translation (Carsten Schmitz)
+-Fixed issue #8893: Missing translation (Carsten Schmitz)
+-Fixed issue #8894: Error when importing an invalid file (Carsten Schmitz)
+-Fixed issue #8895: Missing translation (Carsten Schmitz)
+-Fixed issue #8896: JS file inclusion missing in template editor preview of startpage.pstpl (Carsten Schmitz)
+-Fixed issue #8899: When importing token data from CSV file the invitation date is ignored (Denis Chenu)
+-Fixed issue #8902: CPD Editing shared Participants results in duplicates (Carsten Schmitz)
+-Fixed issue #8903: Error when sharing an already shared participant (Carsten Schmitz)
+-Fixed issue #8910: Fixed added to output/render output of file data, using render routine of Bigfile class (ravindrakhokharia)
+-Fixed issue #8914: Allow to click next/submit more than once (Denis Chenu)
+-Fixed issue #8917: Error in R Export plugin (Menno Dekker)
+-Fixed issue #8917: Error in R Export plugin - patch by peterhol (Carsten Schmitz)
+-Fixed issue #8918: Paticipant responses contain only question marks (Carsten Schmitz)
+-Fixed issue #8922: KCFinder CSRF not always working (Menno Dekker)
+-Fixed issue #8923: Survey logic file for group : don't show relevance of Questions (Denis Chenu)
+-Fixed issue: Absolute URL for assets may cause HTTPS mixed content error (Carsten Schmitz)
+-Fixed issue: During vv export, output data was buffered and lead to out of memory errors when exporting large quantities of answers. (Alexis Bezverkhyy)
+-Fixed issue: Question index activated on update (Carsten Schmitz)
+-Fixed issue: Unable to redisplay duplcate token attribute (Denis Chenu)
+-New translation: Added Papiamento (pap-AW and pap-CW) (Ace Suares)
+#Updated translation: Albanian by lulzimavdiu
+#Updated translation: Armenian by Satenik
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Hong Kong) (Traditional) by superleo888
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by Mazi, c_schmitz
+#Updated translation: German (Informal) by senden9, c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by mzzvtr, lfanfoni
+#Updated translation: Japanese by yamatt, nomoto
+#Updated translation: Latvian by vipgroup, marcic
+#Updated translation: Malay by apisznasdin, betakerotin
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Papiamento (Curacao and Bonaire) by indigoblueconsult
+#Updated translation: Polish by elisa
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by adzpire
+#Updated translation: Turkish by kayazeren
+#Updated translation: Welsh by c_schmitz
 
 Changes from 2.05+ (build 140317) to 2.05+ (build 140320) Mar 20, 2014
 -Fixed issue #8807: When the AuditLog plugin is active, you can't add a Participant in the central participant database (Menno Dekker)

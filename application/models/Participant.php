@@ -284,10 +284,9 @@ class Participant extends LSActiveRecord
         {
             if(!is_null($search) && strpos($search->condition,'attribute'.$aAttribute['attribute_id'])!==false)
             {
-               $attid[]=$aAttribute; 
+               $attid[$aAttribute['attribute_id']]=$aAttribute; 
             }
         }
-        $attid=array_unique($attid);
         // Add survey count subquery
         $subQuery = Yii::app()->db->createCommand()
                 ->select('count(*) survey')
@@ -295,17 +294,16 @@ class Participant extends LSActiveRecord
                 ->where('sl.participant_id = p.participant_id');
         $selectValue[] = sprintf('(%s) survey',$subQuery->getText());
         array_push($joinValue,"left join {{users}} luser ON luser.uid=p.owner_uid");
-        foreach($attid as $key=>$attid)
+        foreach($attid as $iAttributeID=>$aAttributeDetails)
         {
-            $attid = $attid['attribute_id'];
             $sDatabaseType = Yii::app()->db->getDriverName();
             if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv" || $sDatabaseType == 'dblib')
             {
-                $selectValue[]= "cast(attribute".$attid.".value as varchar(max)) as a".$attid;
+                $selectValue[]= "cast(attribute".$iAttributeID.".value as varchar(max)) as a".$iAttributeID;
             } else {
-                $selectValue[]= "attribute".$attid.".value as a".$attid;
+                $selectValue[]= "attribute".$iAttributeID.".value as a".$iAttributeID;
             }
-            array_push($joinValue,"LEFT JOIN {{participant_attribute}} attribute".$attid." ON attribute".$attid.".participant_id=p.participant_id AND attribute".$attid.".attribute_id=".$attid);
+            array_push($joinValue,"LEFT JOIN {{participant_attribute}} attribute".$iAttributeID." ON attribute".$iAttributeID.".participant_id=p.participant_id AND attribute".$iAttributeID.".attribute_id=".$iAttributeID);
         }
         
         $aConditions = array(); // this wil hold all conditions

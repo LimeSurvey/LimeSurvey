@@ -50,7 +50,7 @@
             <label for="ugid"><?php $clang->eT("User groups"); ?>:</label>  <select name='ugid' id='ugid' onchange="window.location=this.options[this.selectedIndex].value">
                 <?php echo getUserGroupList($ugid,'optionlist'); ?>
             </select>
-            <?php if (Permission::model()->hasGlobalPermission('superadmin','read'))
+            <?php if (Permission::model()->hasGlobalPermission('usergroups','create'))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/usergroups/sa/add"); ?>'>
                     <img src='<?php echo $imageurl; ?>add.png' alt='<?php $clang->eT("Add new user group"); ?>' /></a>
