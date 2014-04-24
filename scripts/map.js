@@ -18,14 +18,13 @@ $(document).ready(function()
 			}
 		}
 		else if ($("#mapservice_"+question_id).val()==100){
-			// Open Street Map
-			if (osmaps[''+question]==undefined) {
-				osmaps[''+question] = OSGeoInitialize(question,latLng[0],latLng[1]);
+			//  Maps
+			if (osmaps[''+question] == undefined) {
+				osmaps[''+question] = OSGeoInitialize(question,latLng);
 			}
 		}
 		
-		
-		/* Highlight search box text on click */
+		// Highlight search box text on click 
 		$("#searchbox").click(function () {
 		  $(this).select();
 		});
@@ -38,22 +37,30 @@ gmaps = new Object;
 osmaps = new Object;
 zoom = [];
 
-// OSMap functions
-function OSGeoInitialize(question,lat,lng){
 
-	 
+function isvalidCoord(val){
+	if (!isNaN(parseFloat(val)) && (val>-180 && val<180)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+// OSMap functions
+function OSGeoInitialize(question,latLng){
+		
+		// tiles layers def
 		var mapquestOSM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
 		  maxZoom: 19,
 		  subdomains: ["otile1", "otile2", "otile3", "otile4"],
 		  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
 		});
-
 		var mapquestOAM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
 		  maxZoom: 18,
 		  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
 		  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
 		});
-
 		var mapquestHYB = L.layerGroup([L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
 		  maxZoom: 18,
 		  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"]
@@ -63,20 +70,38 @@ function OSGeoInitialize(question,lat,lng){
 		  attribution: 'Labels courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
 		})]);
 	
-	
-		//var map = L.map('map').setView([15, 15], 1);
-		var map = L.map("map", {
+		var map = L.map("map", { 
 			zoom:1,
 			center: [15, 15],
 			layers: [mapquestOSM]
 		});
 		
-		function zoomExtent(){
-			//map.fitBounds([[-180, -90], [180, 90]],{maxZoom:5});
+		function zoomExtent(){ // todo: restrict to rect ?
 			map.setView([15, 15],1);
 		}
 		
-		if (isNaN(parseFloat(lat))) {lat=-9999; lng=-9999;}
+		var pt1 = latLng[0].split("@");
+		var pt2 = latLng[1].split("@");
+		
+		if ((pt1.length == 2) && (pt2.length == 2)) { // is Rect
+			var isRect = true;
+			lat = "";
+			lng = "";
+			minLat = pt1[0];
+			minLng = pt1[1];
+			maxLat = pt2[0];
+			maxLng = pt2[1];
+			map.fitBounds([[minLat, minLng],[maxLat, maxLng]]);
+			UI_update("","");
+		} else { // is default marker position
+			var isRect = false;
+			lat = latLng[0];
+			lng = latLng[1];
+		}
+		
+		if (isNaN(parseFloat(lat)) || isNaN(parseFloat(lng))) {
+			lat=-9999; lng=-9999;
+		}
 		
 		marker = new L.marker([lat,lng], {title:'Current Location',id:1,draggable:'true'});
 		map.addLayer(marker);
@@ -86,7 +111,6 @@ function OSGeoInitialize(question,lat,lng){
 		  subdomains: ["otile1", "otile2", "otile3", "otile4"],
 		  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
 		});
-
 
 		var baseLayers = {
 		  "Street Map": mapquestOSM,
@@ -99,8 +123,6 @@ function OSGeoInitialize(question,lat,lng){
 		var layerControl = L.control.layers(baseLayers, overlays, {
 		  collapsed: true
 		}).addTo(map);
-		
-		//mapquestOSM.addTo(map);
 		
 		map.on('click', 
 			function(e) { 
@@ -116,16 +138,21 @@ function OSGeoInitialize(question,lat,lng){
 				UI_update(position.lat,position.lng)
 		});
 		
-		
 		var name = question.substr(0,question.length - 2);
 		
 		function UI_update(lat,lng){
-			$("#answer"+question).val(Math.round(lat*100000)/100000 + " " + Math.round(lng*100000)/100000);
-			$("#answer"+name).val(Math.round(lat*100000)/100000 + ";" + Math.round(lng*100000)/100000);
+			if (isvalidCoord(lat) && isvalidCoord(lng)) {
+				//$("#answer"+question).val(Math.round(lat*100000)/100000 + " " + Math.round(lng*100000)/100000);
+				$("#answer"+name).val(Math.round(lat*100000)/100000 + ";" + Math.round(lng*100000)/100000);
+				$("#answer_lat"+question).val(Math.round(lat*100000)/100000);
+				$("#answer_lng"+question).val(Math.round(lng*100000)/100000);
+			} else {
+				//$("#answer"+question).val("");
+				$("#answer"+name).val("");
+				$("#answer_lat"+question).val("");
+				$("#answer_lng"+question).val("");
+			}
 			
-			$("#answer_lat"+question).val(Math.round(lat*100000)/100000);
-			$("#answer_lng"+question).val(Math.round(lng*100000)/100000);
-
 		}
 		
 		$('.coords').each(function() {
@@ -149,7 +176,6 @@ function OSGeoInitialize(question,lat,lng){
 					$("#answer"+name).val("-- --");
 					marker.setLatLng(L.latLng(9999,9999));
 				}
-				
 			  }
 			});
 		  });
@@ -158,17 +184,10 @@ function OSGeoInitialize(question,lat,lng){
 			return !isNaN(parseFloat(n)) && isFinite(n);
 		 }
 		  
-// ------------------------------------------------------------------- 
+// ---------------------------------
 /* Typeahead search functionality */
 
-		  //$(function() {
-			$("#zoomExtent").click(function(e) {
-			  zoomExtent();
-			  $("#searchbox").val("");
-			  $("#alertNoData").hide();
-			});
-		  //});
-			
+		
 		   var geonamesBH = new Bloodhound({
 			name: "GeoNames",
 			datumTokenizer: function (d) {
@@ -176,12 +195,11 @@ function OSGeoInitialize(question,lat,lng){
 			},
 			queryTokenizer: Bloodhound.tokenizers.whitespace,
 			remote: {
-			  url: "http://api.geonames.org/searchJSON?username=bootleaf&featureClass=P&maxRows=5&name_startsWith=%QUERY",
+			  url: "http://api.geonames.org/searchJSON?username=limesurvey&featureClass=P&maxRows=5&name_startsWith=%QUERY",
 			  filter: function (data) {
-			  	if (data.geonames.length == 0) {
-				 console.log("Geonames: no data");
-				 $("#alertNoData").show();
-				}
+			  	//if (data.geonames.length == 0) {
+				//no results 
+				//}
 				return $.map(data.geonames, function (result) {
 				  return {
 					name: result.name + ", " + result.countryName,
@@ -193,11 +211,15 @@ function OSGeoInitialize(question,lat,lng){
 			  },
 			  ajax: {
 				beforeSend: function (jqXhr, settings) {
-				  settings.url += "&east=" + osmaps[''+question] .getBounds().getEast() + "&west=" + osmaps[''+question] .getBounds().getWest() + "&north=" + osmaps[''+question] .getBounds().getNorth() + "&south=" + osmaps[''+question] .getBounds().getSouth();
-				  $("#searchicon").removeClass("fa-search").addClass("fa-refresh fa-spin");
+
+					if ($("#restrictToExtent").prop('checked')){
+						settings.url += "&east=" + osmaps[''+question] .getBounds().getEast() + "&west=" + osmaps[''+question] .getBounds().getWest() + "&north=" + osmaps[''+question] .getBounds().getNorth() + "&south=" + osmaps[''+question] .getBounds().getSouth();
+					}
+					$("#searchicon").removeClass("fa-search").addClass("fa-refresh fa-spin");
 				},
 				complete: function (jqXHR, status) {
-				  $('#searchicon').removeClass("fa-refresh fa-spin").addClass("fa-search");
+					geonamesBH.clearRemoteCache(); //clear cache
+					$('#searchicon').removeClass("fa-refresh fa-spin").addClass("fa-search");
 				}
 			  }
 			},
@@ -205,8 +227,6 @@ function OSGeoInitialize(question,lat,lng){
 		  });
 
 			geonamesBH.initialize();
-
-
 
 		  /* instantiate the typeahead UI */
 		  $("#searchbox").typeahead({
@@ -221,7 +241,6 @@ function OSGeoInitialize(question,lat,lng){
 			  header: "<h4 class='typeahead-header'><img src='styles-public/images/globe.png' width='25' height='25'>&nbsp;GeoNames</h4>"
 			}
 		  }).on("typeahead:selected", function (obj, datum) {
-
 			if (datum.source === "GeoNames") {
 			  osmaps[''+question].setView([datum.lat, datum.lng], 13);
 			  marker.setLatLng([datum.lat, datum.lng]);
@@ -241,16 +260,11 @@ function OSGeoInitialize(question,lat,lng){
 		  $(".twitter-typeahead").css("position", "static");
 		  $(".twitter-typeahead").css("display", "block");
 		//});
-//--------------------------------------------------------------------------- end geonames		
+//----------- end geonames		
 	
     return map;
 
 }
-
-
-
-
-
 
 
 //// Google Maps Functions (for API V3) ////
@@ -359,18 +373,6 @@ function getInfoToStore(name, lat, lng, city, state, country, postal){
     $("#answer"+name).val(lat + ';' + lng + ';' + city + ';' + state + ';' + country + ';' + postal);
 }
 
-
-
-
-// geonames search
-
-
-
-
-
-//$("#searchbox").one("click", function () {
-//alert("ajaxStart");
-//});
 
 
 /* Placeholder hack for IE */

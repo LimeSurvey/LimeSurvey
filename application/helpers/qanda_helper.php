@@ -3659,7 +3659,6 @@ function do_shortfreetext($ia)
 				else {
 					$currentLatLong = array("","");
 				}
-                
             }
         }
         // 2 - city; 3 - state; 4 - country; 5 - postal
@@ -3674,42 +3673,26 @@ function do_shortfreetext($ia)
             $strBuild .= "5";
 
         $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
-		
-		
+			
 		// scripts
 		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."typeahead.bundle.min.js");
 		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."leaflet.js");
-		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."bootstrap.min.js");
+		//Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."bootstrap.min.js");
 		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
 	
-	
 		// css
-		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'bootstrap.min.css');
+		//Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'bootstrap.min.css');
 		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'leaflet.css');
 		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
-	
 		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'font-awesome-4.0.3/css/font-awesome.min.css');
-	
-	
+
 		
-        //onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
-	
-	/*
-
-	
-	*/
-	
-		//$ip =getIPAddress();
-	
         $answer = "
-
         <div class=\"question answer-item geoloc-item {$extraclass}\">
         <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\">
 
-
         <input type=\"hidden\" class=\"text location ".$kpclass."\" type=\"text\" style=\"width: 90%;\" name=\"$ia[1]_c\"
         id=\"answer$ia[1]_c\" value=\"$currentLocation\" />
-
 
 		<p>
         Lat:<input class=\"coords\" type=\"text\" style=\"width: 150px;\" name=\"$ia[1]_c1\"
@@ -3718,17 +3701,16 @@ function do_shortfreetext($ia)
         Lng:<input class=\"coords\" type=\"text\" style=\"width: 150px;\" name=\"$ia[1]_c2\"
         id=\"answer_lng$ia[1]_c\" value=\"{$currentLatLong[1]}\" />
 
-	
-		
         <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\"
         value = \"{$strBuild}\" >
         <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\"
         class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
 
-		
 		<div>
-			<div id =\"alertNoData\"  style=\"display: none; position: relative; float: left;\">
-				<strong>No result:</strong> consider <a id=\"zoomExtent\">zoom extent</a>.
+			<div class=\"checkbox\" style=\"position: relative; float: left; margin:5px\">
+				<label>
+					<input type=\"checkbox\" id=\"restrictToExtent\"> Restrict search place to map extent
+				</label>
 			</div>
 			<div class=\"geoname_search\" >
 				<form class=\"navbar-form navbar-right\" role=\"search\">
@@ -3740,34 +3722,16 @@ function do_shortfreetext($ia)
 			</div>
 		</div>
 
-		
-		<div id=\"map\" style=\"width: 100%; height: 400px\">
-
+		<div id=\"map\" style=\"width: 100%; height: {$aQuestionAttributes['location_mapheight']}px;\">
 		</div>
-		
-
-		
 		";
 
-		/*<div id=\"noDataFromGeonames\" class=\"modal fade bs-example-modal-lg\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\">
-		  <div class=\"modal-dialog modal-lg\">
-			<div class=\"modal-content\">
-			     <div class=\"modal-header\">
-					<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>
-					<h4 class=\"modal-title\" id=\"myModalLabel\">test no result...</h4>
-				</div>
-				<div class=\"modal-body\">
-					No results, consider zoomout or zoom-extent
-				</div>
-			</div>
-		  </div>
-		</div>*/
 		
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
         {
             $answer .= "<div class=\"questionhelp\">"
-            . $clang->gT('Click to set the location. After you may also drag and drop the pin.').'</div>';
-            $question_text['help'] = $clang->gT('Click to set the location. You may also drag and drop the pin.');
+            . $clang->gT('Click to set the location or drag and drop the pin. You may may also enter coordinates').'</div>';
+            $question_text['help'] = $clang->gT('Click to set the location or drag and drop the pin. You may may also enter coordinates');
         }
 		//----------------------------------------------------------------------------------- end fred maps
 	}

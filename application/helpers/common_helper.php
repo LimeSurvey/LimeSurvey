@@ -3386,8 +3386,8 @@ function questionAttributes($returnByName=false)
         'sortorder'=>90,
         'inputtype'=>'singleselect',
         'options'=>array(0=>$clang->gT('Off'),
-        1=>$clang->gT('Google Maps'),
-		100=>$clang->gT('OSGeo Maps')
+		100=>$clang->gT('Maps'),
+        1=>$clang->gT('Google Maps')
 		),
         'default' => 0,
         "help"=>$clang->gT("Activate this to show a map above the input field where the user can select a location"),
