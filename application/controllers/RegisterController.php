@@ -193,7 +193,11 @@ class RegisterController extends LSYii_Controller {
 
         $aReplacement['REGISTERERROR'] = $sRegisterError;
         $aReplacement['REGISTERMESSAGE1'] = $clang->gT("You must be registered to complete this survey");
-        $aReplacement['REGISTERMESSAGE2'] = $clang->gT("You may register for this survey if you wish to take part.")."<br />\n".$clang->gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.");
+        if($sStartDate=$this->getStartDate($iSurveyId))
+            $aReplacement['REGISTERMESSAGE2'] = sprintf($clang->gT("You may register for this survey but you have to wait for the %s before starting the survey."),$sStartDate)."<br />\n".$clang->gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.");
+        else
+            $aReplacement['REGISTERMESSAGE2'] = $clang->gT("You may register for this survey if you wish to take part.")."<br />\n".$clang->gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.");
+
         $aData['thissurvey'] = $aSurveyInfo;
         Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
         $aData['languagechanger'] = makeLanguageChangerSurvey($clang->langcode);
@@ -400,6 +404,20 @@ class RegisterController extends LSYii_Controller {
             }
         }
         return $aRegisterAttributes;
+    }
+    /**
+    * Get the date if survey is future
+    * @param $iSurveyId 
+    * @return localized date
+    */
+    public function getStartDate($iSurveyId){
+        $aSurveyInfo=getSurveyInfo($iSurveyId,Yii::app()->lang->langcode);
+        if(empty($aSurveyInfo['startdate']) ||  dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))>=$aSurveyInfo['startdate'])
+            return;
+        Yii::app()->loadHelper("surveytranslator");
+        $aDateFormat=getDateFormatData(getDateFormatForSID($iSurveyId,Yii::app()->lang->langcode),Yii::app()->lang->langcode);
+        $datetimeobj = new Date_Time_Converter($aSurveyInfo['startdate'], 'Y-m-d H:i:s');
+        return $datetimeobj->convert($aDateFormat['phpdate']);
     }
     /**
     * Display needed public page

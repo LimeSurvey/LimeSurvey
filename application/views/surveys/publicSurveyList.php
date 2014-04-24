@@ -19,8 +19,7 @@
         foreach($futureSurveys as $survey)
         {
             $list .= CHtml::openTag('li');
-
-            $list .= CHtml::link($survey->localizedTitle, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->lang->langcode), array('class' => 'surveytitle'));
+            $list .= CHtml::link($survey->localizedTitle, array('register/index', 'sid' => $survey->sid, 'lang' => App()->lang->langcode), array('class' => 'surveytitle'));
             $list .= CHtml::closeTag('li');
             $list .= CHtml::tag('div', array(
                 'data-regformsurvey' => $survey->sid,
