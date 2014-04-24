@@ -36,7 +36,7 @@ class RegisterController extends LSYii_Controller {
     */
     private $sMailMessage;
 
-    function actionAJAXRegisterForm($surveyid)
+    public function actionAJAXRegisterForm($surveyid)
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('replacements');
@@ -67,7 +67,7 @@ class RegisterController extends LSYii_Controller {
     * @param $aRegisterErrors array of errors when try to register
     * @return
     */
-    function actionIndex($sid = null)
+    public function actionIndex($sid = null)
     {
 
         if(!is_null($sid))
@@ -304,7 +304,7 @@ class RegisterController extends LSYii_Controller {
     * @param $iSurveyId 
     * @return integer : the token id created
     */
-    private function getTokenId($iSurveyId)
+    public function getTokenId($iSurveyId)
     {
         $clang = Yii::app()->lang;
         $sLanguage=$clang->langcode;
@@ -363,7 +363,7 @@ class RegisterController extends LSYii_Controller {
     * @param $iSurveyId 
     * @return array : if email is set to sent (before SMTP problem)
     */
-    private function getFieldValue($iSurveyId)
+    public function getFieldValue($iSurveyId)
     {
         //static $aFiledValue; ?
         $sLanguage=Yii::app()->lang->langcode;
@@ -387,7 +387,7 @@ class RegisterController extends LSYii_Controller {
     * @param $iSurveyId 
     * @return array
     */
-    private function getExtraAttributeInfo($iSurveyId)
+    public function getExtraAttributeInfo($iSurveyId)
     {
         $sLanguage=Yii::app()->lang->langcode;
         $aSurveyInfo=getSurveyInfo($iSurveyId,$sLanguage);
