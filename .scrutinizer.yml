@@ -1,10 +1,8 @@
 filter:
-    paths: ["application"]
+    paths: ["application/*"]
 tools:
     php_code_sniffer:
         config:
             standard: "PSR1"
     php_pdepend:
         command: pdepend
-    php_cs_fixer:
-        config: { level: psr1 }
