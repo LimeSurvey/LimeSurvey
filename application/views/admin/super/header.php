@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?= App()->language; ?>" dir="<?= App()->locale->orientation; ?>">
+<html lang="<?= App()->language; ?>" <?= App()->locale->orientation; ?>>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -15,8 +15,8 @@
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
-        if (App()->locale->orientation == 'rtl');
-        {        
+        if (App()->locale->orientation == 'rtl')
+        {
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle-rtl.css" );
         }
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
